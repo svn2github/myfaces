@@ -27,7 +27,7 @@ import org.apache.myfaces.util.ClassUtils;
 
 
 /**
- * Tag to add a tab change listeners to a {@link org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane]
+ * Tag to add a tab change listeners to a {@link org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane}
  *
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$

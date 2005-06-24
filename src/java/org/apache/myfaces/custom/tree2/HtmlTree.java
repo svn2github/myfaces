@@ -170,8 +170,9 @@ public class HtmlTree extends UITreeData
     }
 
     /**
-     * Implements the {@link ActionListener} interface.  Basically, this method is used to listen for
-     * node selection events (when a user has clicked on a leaf node.)
+     * Implements the {@link javax.faces.event.ActionListener} interface.  Basically, this
+     * method is used to listen for node selection events (when a user has clicked on a
+     * leaf node.)
      *
      * @param event ActionEvent
      */

@@ -57,7 +57,7 @@ public interface TreeNode extends Serializable
 
     /**
      * Sets the identifier associated with the {@link TreeNode}.
-     * @param id The identifier
+     * @param identifier The identifier
      */
     public void setIdentifier(String identifier);
 

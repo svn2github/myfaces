@@ -45,8 +45,8 @@ import java.util.*;
  * TreeData is a {@link UIComponent} that supports binding data stored in a tree represented
  * by a {@link TreeNode} instance.  During iterative processing over the tree nodes in the
  * data model, the object for the current node is exposed as a request attribute under the key
- * specified by the <code>var</code> property.  {@link javax.faces.render.Renderer}s of this component should use
- * the appropriate {@link Facet} to assist in rendering.
+ * specified by the <code>var</code> property.  {@link javax.faces.render.Renderer}s of this
+ * component should use the appropriate facet to assist in rendering.
  *
  * @author Sean Schofield
  * @author Hans Bergsten (Some code taken from an example in his O'Reilly JavaServer Faces book. Copied with permission)
@@ -122,7 +122,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             nodeEvent.getComponent().broadcast(nodeEvent);
             setNodeId(currNodeId);
             return;
-        } 
+        }
         else
         {
             super.broadcast(event);
@@ -294,7 +294,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         {
             return;
         }
-        
+
         try
         {
             model.setNodeId(nodeId);
@@ -302,15 +302,15 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         catch (IndexOutOfBoundsException aob)
         {
             /**
-             * This might happen if we are trying to process a commandLink for a node that node that no longer 
-             * exists.  Instead of allowing a RuntimeException to crash the application, we will add a warning 
-             * message so the user can optionally display the warning.  Also, we will allow the user to provide 
+             * This might happen if we are trying to process a commandLink for a node that node that no longer
+             * exists.  Instead of allowing a RuntimeException to crash the application, we will add a warning
+             * message so the user can optionally display the warning.  Also, we will allow the user to provide
              * their own value binding method to be called so they can handle it how they see fit.
              */
             FacesMessage message = MessageUtils.getMessage(MISSING_NODE, new String[] {nodeId});
             message.setSeverity(FacesMessage.SEVERITY_WARN);
             FacesContext.getCurrentInstance().addMessage(getId(), message);
-            
+
             /** @todo call hook */
             /** @todo figure out whether or not to abort this method gracefully */
         }

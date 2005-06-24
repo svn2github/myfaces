@@ -29,7 +29,7 @@ import org.apache.myfaces.util.ClassUtils;
 
 
 /**
- * Tag to add a tree selection listeners to a {@link HtmlTree]
+ * Tag to add a tree selection listeners to a {@link HtmlTree}
  *
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$
