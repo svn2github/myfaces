@@ -288,11 +288,6 @@
     </component>
 
   <component>
-      <component-type>org.apache.myfaces.RssTicker</component-type>
-      <component-class>org.apache.myfaces.custom.rssticker.HtmlRssTicker</component-class>
-  </component>
-
-  <component>
     <component-type>org.apache.myfaces.SaveState</component-type>
     <component-class>org.apache.myfaces.custom.savestate.UISaveState</component-class>
   </component>
@@ -578,12 +573,6 @@
 
       <renderer>
           <component-family>javax.faces.Output</component-family>
-          <renderer-type>org.apache.myfaces.Ticker</renderer-type>
-          <renderer-class>org.apache.myfaces.custom.rssticker.HtmlRssTickerRenderer</renderer-class>
-      </renderer>
-
-      <renderer>
-          <component-family>javax.faces.Output</component-family>
           <renderer-type>org.apache.myfaces.JsValueSet</renderer-type>
           <renderer-class>org.apache.myfaces.custom.jsvalueset.HtmlJsValueSetRenderer</renderer-class>
       </renderer>
@@ -671,11 +660,6 @@
 	<validator>
 		<validator-id>org.apache.myfaces.validator.Email</validator-id>
 		<validator-class>org.apache.myfaces.custom.emailvalidator.EmailValidator</validator-class>
-	</validator>
-
-	<validator>
-		<validator-id>org.apache.myfaces.validator.ISBN</validator-id>
-		<validator-class>org.apache.myfaces.custom.isbnvalidator.ISBNValidator</validator-class>
 	</validator>
 
 	<validator>
