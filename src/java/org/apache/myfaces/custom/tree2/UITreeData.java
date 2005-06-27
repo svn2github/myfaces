@@ -421,7 +421,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     }
 
     /**
-     * Process the child nodes of the supplied parent @{link TreeNode}.  This method is protected so that
+     * Process the child nodes of the supplied parent {@link TreeNode}.  This method is protected so that
      * it can be overriden by a subclass that may want to control how child nodes are processed.
      *
      * @param context       FacesContext
