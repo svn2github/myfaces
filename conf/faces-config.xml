@@ -47,6 +47,11 @@
     <component-type>org.apache.myfaces.HtmlInputHidden</component-type>
     <component-class>org.apache.myfaces.component.html.ext.HtmlInputHidden</component-class>
   </component>
+  
+  <component>
+    <component-type>org.apache.myfaces.HtmlInputSecret</component-type>
+    <component-class>org.apache.myfaces.component.html.ext.HtmlInputSecret</component-class>
+  </component>
 
   <component>
     <component-type>org.apache.myfaces.HtmlInputText</component-type>
@@ -54,8 +59,18 @@
   </component>
 
   <component>
+    <component-type>org.apache.myfaces.HtmlInputTextHelp</component-type>
+    <component-class>org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp</component-class>
+  </component>
+
+  <component>
     <component-type>org.apache.myfaces.HtmlInputTextarea</component-type>
     <component-class>org.apache.myfaces.component.html.ext.HtmlInputTextarea</component-class>
+  </component>
+  
+  <component>
+    <component-type>org.apache.myfaces.HtmlGraphicImage</component-type>
+    <component-class>org.apache.myfaces.component.html.ext.HtmlGraphicImage</component-class>
   </component>
 
   <component>
@@ -159,6 +174,11 @@
   <component>
     <component-type>org.apache.myfaces.HtmlCommandSortHeader</component-type>
     <component-class>org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader</component-class>
+  </component>
+  
+  <component>
+     <component-type>org.apache.myfaces.HtmlTag</component-type>
+     <component-class>org.apache.myfaces.custom.htmlTag.HtmlTag</component-class>
   </component>
 
   <component>
@@ -298,6 +318,11 @@
   </component>
 
   <component>
+    <component-type>org.apache.myfaces.SelectOneLanguage</component-type>
+    <component-class>org.apache.myfaces.custom.selectOneLanguage.SelectOneLanguage</component-class>
+  </component>
+
+  <component>
         <component-type>org.apache.myfaces.Stylesheet</component-type>
       <component-class>org.apache.myfaces.custom.stylesheet.Stylesheet</component-class>
   </component>
@@ -380,11 +405,29 @@
             <renderer-type>org.apache.myfaces.Group</renderer-type>
             <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlGroupRenderer</renderer-class>
         </renderer>
+        
+        <renderer>
+            <component-family>javax.faces.Input</component-family>
+            <renderer-type>org.apache.myfaces.Secret</renderer-type>
+            <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlSecretRenderer</renderer-class>
+        </renderer>
+
+		<renderer>
+            <component-family>javax.faces.Graphic</component-family>
+            <renderer-type>org.apache.myfaces.Image</renderer-type>
+            <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer</renderer-class>
+        </renderer>
 
         <renderer>
             <component-family>javax.faces.Input</component-family>
             <renderer-type>org.apache.myfaces.Text</renderer-type>
             <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Input</component-family>
+            <renderer-type>org.apache.myfaces.TextHelp</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.inputTextHelp.HtmlTextHelpRenderer</renderer-class>
         </renderer>
 
         <renderer>
@@ -594,17 +637,23 @@
             <renderer-type>org.apache.myfaces.SelectOneCountryRenderer</renderer-type>
             <renderer-class>org.apache.myfaces.custom.selectOneCountry.SelectOneCountryRenderer</renderer-class>
         </renderer>
+        
+		<renderer>
+            <component-family>javax.faces.SelectOne</component-family>
+            <renderer-type>org.apache.myfaces.SelectOneLanguageRenderer</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.selectOneLanguage.SelectOneLanguageRenderer</renderer-class>
+        </renderer>
 
       <renderer>
           <component-family>javax.faces.Output</component-family>
           <renderer-type>org.apache.myfaces.Stylesheet</renderer-type>
           <renderer-class>org.apache.myfaces.custom.stylesheet.StylesheetRenderer</renderer-class>
       </renderer>
-
+      
       <renderer>
           <component-family>javax.faces.Output</component-family>
-          <renderer-type>org.apache.myfaces.DivRenderer</renderer-type>
-          <renderer-class>org.apache.myfaces.custom.div.DivRenderer</renderer-class>
+          <renderer-type>org.apache.myfaces.HtmlTagRenderer</renderer-type>
+          <renderer-class>org.apache.myfaces.custom.htmlTag.HtmlTagRenderer</renderer-class>
       </renderer>
 
        <renderer>
