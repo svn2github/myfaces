@@ -87,7 +87,7 @@ public interface TreeModel
     /**
      * Answer the mutable collection of tree model listeners.
      *
-     * @return
+     * @return Collection
      */
     Collection getTreeModelListeners();
 }

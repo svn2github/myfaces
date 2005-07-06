@@ -47,7 +47,7 @@ public abstract class UploadedFileDefaultImplBase implements UploadedFile
     /**
      * Answer the uploaded file contents input stream
      *
-     * @return
+     * @return InputStream
      * @throws IOException
      */
     public abstract InputStream getInputStream() throws IOException;
@@ -73,7 +73,7 @@ public abstract class UploadedFileDefaultImplBase implements UploadedFile
 
     /**
      * Answer the size of this file.
-     * @return
+     * @return long
      */
     public abstract long getSize();
 }

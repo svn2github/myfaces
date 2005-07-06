@@ -61,7 +61,7 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
     /**
      * Answer the uploaded file contents input stream
      *
-     * @return
+     * @return InputStream
      * @throws IOException
      */
     public InputStream getInputStream() throws IOException
@@ -74,7 +74,7 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
 
     /**
      * Answer the size of this file.
-     * @return
+     * @return long
      */
     public long getSize()
     {

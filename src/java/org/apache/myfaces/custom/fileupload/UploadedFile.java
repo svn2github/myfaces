@@ -40,8 +40,8 @@ public interface UploadedFile extends Serializable
     /**
      * Answer the uploaded file contents input stream
      *
-     * @return
      * @throws IOException
+     * @return InputStream
      */
     public InputStream getInputStream() throws IOException;
 
@@ -61,7 +61,7 @@ public interface UploadedFile extends Serializable
 
     /**
      * Answer the size of this file.
-     * @return
+     * @return long
      */
     public long getSize();
 }
