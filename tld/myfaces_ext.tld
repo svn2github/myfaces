@@ -1088,6 +1088,13 @@
                 Default is true.
             </description>
         </attribute>
+        <attribute>
+            <name>immediate</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>True means, that the default ActionListener should be executed immediately (i.e. during Apply Request Values phase of the request processing lifecycle), rather than waiting until the Invoke Application phase.</description>
+        </attribute>
      </tag>
 
     <!-- inputDate -->

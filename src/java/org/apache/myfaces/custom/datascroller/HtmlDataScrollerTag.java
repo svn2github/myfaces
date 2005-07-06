@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.datascroller;
 
 import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.taglib.UIComponentTagBase;
 
 import javax.faces.component.UIComponent;
@@ -114,6 +115,8 @@ public class HtmlDataScrollerTag
     private String _paginatorActiveColumnClass;
     private String _paginatorActiveColumnStyle;
 	private String _renderFacetsIfSinglePage;
+	
+    private String _immediate;
 
     // User Role support
     private String _enabledOnUserRole;
@@ -142,6 +145,7 @@ public class HtmlDataScrollerTag
 		_renderFacetsIfSinglePage=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _immediate=null;
     }
     
     public String getComponentType()
@@ -178,6 +182,8 @@ public class HtmlDataScrollerTag
         setStringProperty(component, PAGINATOR_ACTCOL_STYLE_ATTR, _paginatorActiveColumnStyle);
 		setBooleanProperty(component, RENDER_FACETS_IF_SINGLE_PAGE_ATTR, _renderFacetsIfSinglePage);
 		
+        setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
+
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
     }
@@ -276,6 +282,11 @@ public class HtmlDataScrollerTag
     public void setRenderFacetsIfSinglePage(String renderFacetsIfSinglePage)
     {
 		_renderFacetsIfSinglePage = renderFacetsIfSinglePage;
+    }
+
+    public void setImmediate(String immediate)
+    {
+        _immediate = immediate;
     }
 
     // userrole attributes

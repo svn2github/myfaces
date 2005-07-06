@@ -72,4 +72,9 @@
         <name>renderFacetsIfSinglePage</name>
         <type>boolean</type>
     </field>
+    <field>
+        <name>immediate</name>
+        <type>boolean</type>
+        <default-value>false</default-value>
+    </field>
 </component>
