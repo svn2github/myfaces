@@ -214,7 +214,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 					for (int i = 0, size = columns.getRowCount(); i < size; i++)
 					{
 						columns.setRowIndex(i);
-						for (Iterator facetsIter = child.getFacets().values().iterator(); facetsIter.hasNext();)
+						for (Iterator facetsIter = child.getFacets().values().iterator(); facetsIter
+										.hasNext();)
 						{
 							UIComponent facet = (UIComponent) facetsIter.next();
 							process(context, facet, processAction);
@@ -356,6 +357,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 				}
 			}
 		}
+		_dataModel = null;
+		_isDataModelRestored = false;
 	}
 
 	/**
