@@ -15,12 +15,11 @@
  */
 package org.apache.myfaces.application.jsp;
 
-import org.apache.myfaces.webapp.webxml.ServletMapping;
-import org.apache.myfaces.webapp.webxml.WebXml;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.tiles.*;
+import org.apache.myfaces.webapp.webxml.WebXml;
+import org.apache.myfaces.webapp.webxml.ServletMapping;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;

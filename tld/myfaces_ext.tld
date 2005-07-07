@@ -867,6 +867,7 @@
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
+        &ext_forceId_attribute;
         <!-- UIData attributes -->
         <attribute>
             <name>value</name>

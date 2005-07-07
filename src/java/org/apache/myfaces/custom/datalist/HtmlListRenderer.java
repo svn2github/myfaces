@@ -57,12 +57,18 @@ public class HtmlListRenderer
             if (layout.equals(LAYOUT_UL))
             {
                 writer.startElement(HTML.UL_ELEM, uiComponent);
+
+                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext),null);
+
                 HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
                                                        HTML.COMMON_PASSTROUGH_ATTRIBUTES);
             }
             else if (layout.equals(LAYOUT_OL))
             {
                 writer.startElement(HTML.OL_ELEM, uiComponent);
+
+                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext),null);
+                
                 HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
                                                        HTML.COMMON_PASSTROUGH_ATTRIBUTES);
             }
