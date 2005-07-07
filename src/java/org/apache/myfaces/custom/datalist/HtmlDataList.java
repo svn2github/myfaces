@@ -15,6 +15,8 @@
  */
 package org.apache.myfaces.custom.datalist;
 
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -29,6 +31,30 @@ import java.util.Map;
 public class HtmlDataList
         extends UIData
 {
+
+    public String getClientId(FacesContext context)
+    {
+        String clientId = HtmlComponentUtils.getClientId(
+                this,getRenderer(context),context);
+
+        if(clientId==null)
+        {
+            return super.getClientId(context);
+        }
+        else
+        {
+            int rowIndex = getRowIndex();
+            if (rowIndex == -1)
+            {
+                return clientId;
+            }
+            else
+            {
+                return clientId + "_" + rowIndex;
+            }
+        }
+    }
+
     public void processDecodes(FacesContext context)
     {
         int first = getFirst();
