@@ -601,8 +601,14 @@ function jscalendarPopUpCalendar_Show(ctl){
 }
 
 document.onkeypress = function jscalendarHidecal1 () {
-	if (event.keyCode==27) 
-		jscalendarHideCalendar();
+    try
+    {
+	    if (event && event.keyCode==27)
+		    jscalendarHideCalendar();
+    }
+    catch(ex)
+    {
+    }
 }
 document.onclick = function jscalendarHidecal2 () {
 	if (!jscalendarBShow)
