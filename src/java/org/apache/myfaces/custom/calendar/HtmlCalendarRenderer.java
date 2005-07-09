@@ -633,7 +633,7 @@ public class HtmlCalendarRenderer
         if(converter==null)
             converter = new CalendarDateTimeConverter();
 
-        if (!(submittedValue == null || submittedValue instanceof String))
+        if (submittedValue != null && !(submittedValue instanceof String))
         {
             throw new IllegalArgumentException("Submitted value of type String expected");
         }
