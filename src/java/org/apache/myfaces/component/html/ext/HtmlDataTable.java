@@ -284,37 +284,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
 		super.processUpdates(context);
 
-		if (context.getRenderResponse())
-		{
-			_isValidChilds = false;
-		}
-
 		if (_isDataModelRestored)
 		{
 			updateModelFromPreservedDataModel(context);
 		}
 
-		if (isPreserveSort())
+		if (context.getRenderResponse())
 		{
-			if (_sortColumn != null)
-			{
-				ValueBinding vb = getValueBinding("sortColumn");
-				if (vb != null)
-				{
-					vb.setValue(context, _sortColumn);
-					_sortColumn = null;
-				}
-			}
-
-			if (_sortAscending != null)
-			{
-				ValueBinding vb = getValueBinding("sortAscending");
-				if (vb != null)
-				{
-					vb.setValue(context, _sortAscending);
-					_sortAscending = null;
-				}
-			}
+                    _isValidChilds = false;
 		}
 	}
 
@@ -502,7 +479,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	public Object saveState(FacesContext context)
 	{
 		boolean preserveSort = isPreserveSort();
-		Object values[] = new Object[11];
+		Object values[] = new Object[13];
 		values[0] = super.saveState(context);
 		values[1] = _preserveDataModel;
 		if (isPreserveDataModel())
@@ -514,13 +491,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 			values[2] = null;
 		}
 		values[3] = _preserveSort;
-		values[4] = preserveSort ? getSortColumn() : _sortColumn;
-		values[5] = preserveSort ? Boolean.valueOf(isSortAscending()) : _sortAscending;
+                values[4] = _sortColumn;
+		values[5] = _sortAscending;
 		values[6] = _renderedIfEmpty;
 		values[7] = _rowCountVar;
 		values[8] = _rowIndexVar;
 		values[9] = _rowOnMouseOver;
 		values[10] = _rowOnMouseOut;
+                values[11] = preserveSort ? getSortColumn() : null;
+                values[12] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
+
 		return values;
 	}
 
@@ -547,6 +527,26 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		_rowIndexVar = (String) values[8];
 		_rowOnMouseOver = (String) values[9];
 		_rowOnMouseOut = (String) values[10];
+
+                if (isPreserveSort())
+                {
+                    String sortColumn = (String) values[11];
+                    Boolean sortAscending = (Boolean) values[12];
+                    if (sortColumn != null && sortAscending != null)
+                    {
+                        ValueBinding vb = getValueBinding("sortColumn");
+                        if (vb != null && !vb.isReadOnly(context))
+                        {
+                            vb.setValue(context, sortColumn);
+                        }
+
+                        vb = getValueBinding("sortAscending");
+                        if (vb != null && !vb.isReadOnly(context))
+                        {
+                            vb.setValue(context, sortAscending);
+                        }
+                    }
+		}
 	}
 
 	public _SerializableDataModel getSerializableDataModel()
