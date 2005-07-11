@@ -169,7 +169,7 @@ public class HtmlPanelTabbedPane
     {
         if (_selectedIndex != null) return _selectedIndex.intValue();
         ValueBinding vb = getValueBinding("selectedIndex");
-        Integer v = vb != null ? (Integer)vb.getValue(getFacesContext()) : null;
+        Number v = vb != null ? (Number)vb.getValue(getFacesContext()) : null;
         return v != null ? v.intValue() : DEFAULT_SELECTEDINDEX;
     }
 
