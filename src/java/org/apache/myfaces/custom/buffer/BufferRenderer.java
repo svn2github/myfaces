@@ -78,36 +78,4 @@ public class BufferRenderer extends Renderer {
         }
     }
 
-    private static class HtmlBufferResponseWriterWrapper extends HtmlResponseWriterImpl {
-
-        private ByteArrayOutputStream stream;
-        private PrintWriter writer;
-
-        static public HtmlBufferResponseWriterWrapper getInstance(ResponseWriter initialWriter){
-            ByteArrayOutputStream instanceStream = new ByteArrayOutputStream();
-            PrintWriter instanceWriter = new PrintWriter(instanceStream, true);
-
-            return new HtmlBufferResponseWriterWrapper(initialWriter, instanceStream, instanceWriter);
-        }
-
-        private HtmlBufferResponseWriterWrapper(ResponseWriter initialWriter, ByteArrayOutputStream stream, PrintWriter writer){
-            super(writer, initialWriter.getContentType(), initialWriter.getCharacterEncoding());
-            this.stream = stream;
-            this.writer = writer;
-        }
-
-        public String toString(){
-            try{
-                stream.flush();
-                writer.close();
-
-                return stream.toString( getCharacterEncoding() );
-            }catch(UnsupportedEncodingException e){
-                // an attempt to set an invalid character encoding would have caused this exception before
-                throw new RuntimeException("ResponseWriter accepted invalid character encoding " + getCharacterEncoding());
-            } catch (IOException e) {
-                throw new RuntimeException( e );
-            }
-        }
-    }
 }
