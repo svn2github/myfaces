@@ -319,7 +319,7 @@ public class AddResource {
 
 	        if( insertPosition < 0 ){
 	            log.warn("Response has no <head> or <body> tag:\n"+originalResponse);
-	            insertPosition = 0;
+	            insertPosition = -1;
 	        }
         }
 
@@ -327,16 +327,21 @@ public class AddResource {
 
         if( insertPosition > 0 )
             writer.write( originalResponse.substring(0, insertPosition) );
-        if( addHeaderTags )
+        if(insertPosition>=0 && addHeaderTags )
             writer.write("<head>");
 
-        for(Iterator i = getAdditionalHeaderInfoToRender(request).iterator(); i.hasNext() ;){
-            AdditionalHeaderInfoToRender headerInfo = (AdditionalHeaderInfoToRender) i.next();
-            writer.write( headerInfo.getString(request) );
+        if(insertPosition>=0)
+        {
+            for(Iterator i = getAdditionalHeaderInfoToRender(request).iterator(); i.hasNext() ;){
+                AdditionalHeaderInfoToRender headerInfo = (AdditionalHeaderInfoToRender) i.next();
+                writer.write( headerInfo.getString(request) );
+            }
         }
 
-        if( addHeaderTags )
+        if(insertPosition>=0 && addHeaderTags)
             writer.write("</head>");
+
+        insertPosition=0;
 
         writer.write( originalResponse.substring(insertPosition) );
     }
