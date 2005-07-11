@@ -2,7 +2,6 @@ package org.apache.myfaces.custom.datascroller;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
 
 /**
  * @author MBroekelmann
@@ -28,7 +27,7 @@ public class ScrollerActionEvent extends ActionEvent
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public ScrollerActionEvent(UIComponent component, int pageIndex)
 	{
@@ -50,7 +49,7 @@ public class ScrollerActionEvent extends ActionEvent
 	}
 
 	/**
-	 * @return
+	 * @return int
 	 */
 	public int getPageIndex()
 	{
