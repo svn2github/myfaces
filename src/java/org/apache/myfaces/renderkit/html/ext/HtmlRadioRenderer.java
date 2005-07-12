@@ -15,13 +15,8 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
-import org.apache.myfaces.custom.radio.HtmlRadio;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRadioRendererBase;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import java.io.IOException;
+import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -30,8 +25,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-import java.io.IOException;
-import java.util.List;
+
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.custom.radio.HtmlRadio;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRadioRendererBase;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 
 
 /**

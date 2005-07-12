@@ -15,31 +15,26 @@
  */
 package org.apache.myfaces.custom.tree2;
 
-import org.apache.myfaces.util.MessageUtils;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import javax.faces.component.UIComponentBase;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
-import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
 import javax.faces.event.FacesListener;
-import javax.faces.el.ValueBinding;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.*;
+import javax.faces.event.PhaseId;
 
-import java.text.MessageFormat;
-import java.io.Serializable;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Locale;
-import java.util.*;
+import org.apache.myfaces.util.MessageUtils;
 
 /**
  * TreeData is a {@link UIComponent} that supports binding data stored in a tree represented

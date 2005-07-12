@@ -133,18 +133,20 @@ public class HtmlPopupRenderer
         return popupId;
     }
 
-    private void writeMouseOverAndOutAttribs(String popupId, List children)
-    {
-        for (int i = 0; i < children.size(); i++)
-        {
-            UIComponent uiComponent = (UIComponent) children.get(i);
-
-            callMethod(uiComponent,"onmouseover",new String(popupId+".redisplay();"));
-            callMethod(uiComponent,"onmouseout",new String(popupId+".hide();"));
-
-            writeMouseOverAndOutAttribs(popupId, uiComponent.getChildren());
-        }
-    }
+//  (this is not called from anywhere)
+//    
+//    private void writeMouseOverAndOutAttribs(String popupId, List children)
+//    {
+//        for (int i = 0; i < children.size(); i++)
+//        {
+//            UIComponent uiComponent = (UIComponent) children.get(i);
+//
+//            callMethod(uiComponent,"onmouseover",new String(popupId+".redisplay();"));
+//            callMethod(uiComponent,"onmouseout",new String(popupId+".hide();"));
+//
+//            writeMouseOverAndOutAttribs(popupId, uiComponent.getChildren());
+//        }
+//    }
 
     private void callMethod(UIComponent uiComponent, String propName, String value)
     {

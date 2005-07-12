@@ -120,7 +120,6 @@ public class HtmlNewspaperTableRenderer
                     // skip this child if its not a rendered column 
                     UIComponent child = (UIComponent)children.get(j);
                     if(!(child instanceof UIColumn)) continue;
-                    UIColumn column = (UIColumn)child;
                     if(!child.isRendered()) continue;
                     // draw the element's cell
                     writer.startElement(HTML.TD_ELEM, newspaperTable);

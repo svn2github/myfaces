@@ -15,14 +15,14 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlListboxRendererBase;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
+
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.renderkit.html.HtmlListboxRendererBase;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 
 
 /**

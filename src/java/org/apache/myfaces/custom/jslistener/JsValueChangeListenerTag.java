@@ -3,21 +3,9 @@
  */
 package org.apache.myfaces.custom.jslistener;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.util.AddResource;
-import org.apache.myfaces.custom.jsvalueset.HtmlJsValueSet;
-import org.apache.myfaces.taglib.UIComponentTagBase;
-
-import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.webapp.UIComponentTag;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.Tag;
-import javax.servlet.jsp.tagext.TagSupport;
+
+import org.apache.myfaces.taglib.UIComponentTagBase;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)

@@ -15,11 +15,7 @@
  */
 package org.apache.myfaces.custom.buffer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
@@ -30,7 +26,6 @@ import javax.faces.render.Renderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 

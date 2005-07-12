@@ -15,22 +15,22 @@
  */
 package org.apache.myfaces.custom.tabbedpane;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.component.UserRoleUtils;
-
-import javax.faces.application.ViewHandler;
-import javax.faces.component.*;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
-import javax.faces.FacesException;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)

@@ -78,12 +78,11 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
       HtmlRendererUtils.writePrettyLineSeparator(facesContext);
     	writer.startElement(HTML.DIV_ELEM, null);
 
-      HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel)uiComponent;
       ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
       String viewId = facesContext.getViewRoot().getViewId();
-      String actionURL = viewHandler.getActionURL(facesContext, viewId);
+      viewHandler.getActionURL(facesContext, viewId);
 
-      Application application = facesContext.getApplication();
+      facesContext.getApplication();
     }
 
 

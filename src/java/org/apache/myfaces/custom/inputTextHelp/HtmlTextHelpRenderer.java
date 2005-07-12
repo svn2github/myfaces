@@ -1,19 +1,19 @@
 package org.apache.myfaces.custom.inputTextHelp;
 
-import org.apache.myfaces.component.html.util.AddResource;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
-import org.apache.myfaces.renderkit.html.util.HTMLEncoder;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import java.io.IOException;
-import java.util.Map;
+
+import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
+import org.apache.myfaces.renderkit.html.util.HTMLEncoder;
 
 /**
  * @author Thomas Obereder

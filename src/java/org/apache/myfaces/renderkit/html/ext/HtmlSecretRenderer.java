@@ -17,17 +17,16 @@ package org.apache.myfaces.renderkit.html.ext;
 
 import java.io.IOException;
 
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.html.ext.HtmlInputText;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlSecretRendererBase;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.HtmlSecretRendererBase;
 
 
 /**

@@ -26,7 +26,6 @@ public class TreeNodeBase implements TreeNode
     private String description;
     private boolean leaf;    
     private String identifier;
-    private boolean expanded;
 
     public TreeNodeBase()
     {}

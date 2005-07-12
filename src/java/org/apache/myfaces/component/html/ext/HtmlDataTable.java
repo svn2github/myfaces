@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -338,59 +337,62 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		_isDataModelRestored = false;
 	}
 
-	/**
-	 * TODO: We could perhaps optimize this if we know we are derived from MyFaces UIData implementation
-	 */
-	private boolean isAllChildrenAndFacetsValid()
-	{
-		int first = getFirst();
-		int rows = getRows();
-		int last;
-		if (rows == 0)
-		{
-			last = getRowCount();
-		}
-		else
-		{
-			last = first + rows;
-		}
-		try
-		{
-			for (int rowIndex = first; rowIndex < last; rowIndex++)
-			{
-				setRowIndex(rowIndex);
-				if (isRowAvailable())
-				{
-					if (!isAllEditableValueHoldersValidRecursive(getFacetsAndChildren()))
-					{
-						return false;
-					}
-				}
-			}
-		}
-		finally
-		{
-			setRowIndex(-1);
-		}
-		return true;
-	}
-
-	private boolean isAllEditableValueHoldersValidRecursive(Iterator facetsAndChildrenIterator)
-	{
-		while (facetsAndChildrenIterator.hasNext())
-		{
-			UIComponent c = (UIComponent) facetsAndChildrenIterator.next();
-			if (c instanceof EditableValueHolder && !((EditableValueHolder) c).isValid())
-			{
-				return false;
-			}
-			if (!isAllEditableValueHoldersValidRecursive(c.getFacetsAndChildren()))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+//        (this is not called from anywhere)
+//	/**
+//	 * TODO: We could perhaps optimize this if we know we are derived from MyFaces UIData implementation
+//	 */
+//	private boolean isAllChildrenAndFacetsValid()
+//	{
+//		int first = getFirst();
+//		int rows = getRows();
+//		int last;
+//		if (rows == 0)
+//		{
+//			last = getRowCount();
+//		}
+//		else
+//		{
+//			last = first + rows;
+//		}
+//		try
+//		{
+//			for (int rowIndex = first; rowIndex < last; rowIndex++)
+//			{
+//				setRowIndex(rowIndex);
+//				if (isRowAvailable())
+//				{
+//					if (!isAllEditableValueHoldersValidRecursive(getFacetsAndChildren()))
+//					{
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//		finally
+//		{
+//			setRowIndex(-1);
+//		}
+//		return true;
+//	}
+//
+	
+//  (this is not called from anywhere)
+//	private boolean isAllEditableValueHoldersValidRecursive(Iterator facetsAndChildrenIterator)
+//	{
+//		while (facetsAndChildrenIterator.hasNext())
+//		{
+//			UIComponent c = (UIComponent) facetsAndChildrenIterator.next();
+//			if (c instanceof EditableValueHolder && !((EditableValueHolder) c).isValid())
+//			{
+//				return false;
+//			}
+//			if (!isAllEditableValueHoldersValidRecursive(c.getFacetsAndChildren()))
+//			{
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	public void encodeBegin(FacesContext context) throws IOException
 	{

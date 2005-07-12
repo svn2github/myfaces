@@ -42,8 +42,6 @@ abstract class HtmlDataTableHack extends javax.faces.component.html.HtmlDataTabl
 
 	private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
-	private static final Integer INTEGER_MINUS1 = new Integer(-1);
-
 	private int _rowIndex = -1;
 
 	// will be set to false if the _rowstate and _datamodel should not be saved

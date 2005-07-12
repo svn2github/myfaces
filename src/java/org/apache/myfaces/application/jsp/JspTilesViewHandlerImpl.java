@@ -15,11 +15,9 @@
  */
 package org.apache.myfaces.application.jsp;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.struts.tiles.*;
-import org.apache.myfaces.webapp.webxml.WebXml;
-import org.apache.myfaces.webapp.webxml.ServletMapping;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -32,9 +30,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.webapp.webxml.ServletMapping;
+import org.apache.myfaces.webapp.webxml.WebXml;
+import org.apache.struts.tiles.ComponentContext;
+import org.apache.struts.tiles.ComponentDefinition;
+import org.apache.struts.tiles.Controller;
+import org.apache.struts.tiles.DefinitionsFactory;
+import org.apache.struts.tiles.DefinitionsFactoryConfig;
+import org.apache.struts.tiles.DefinitionsFactoryException;
+import org.apache.struts.tiles.TilesUtil;
 
 /**
  * @author Thomas Spiegl

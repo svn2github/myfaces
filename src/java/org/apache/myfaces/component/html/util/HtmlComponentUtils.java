@@ -32,8 +32,6 @@ import org.apache.myfaces.renderkit.JSFAttr;
  */
 public class HtmlComponentUtils 
 {
-    private static final String TRUE = "true";
-    private static final String KEY_COMPONENT_ID_MAP = "KEY_COMPONENT_ID_MAP";
     
     /**
      * Constructor (Private)

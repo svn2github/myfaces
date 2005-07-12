@@ -15,21 +15,19 @@
  */
 package org.apache.myfaces.custom.tabbedpane;
 
-import org.apache.myfaces.renderkit.RendererUtils;
+import java.util.Iterator;
+import java.util.List;
 
-import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.component.UIComponent;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -54,8 +52,9 @@ public class HtmlPanelTabbedPane
        if (context == null) throw new NullPointerException("context");
        decode(context);
 
-       int tabIdx = 0;
-       int selectedIndex = getSelectedIndex();
+//       int tabIdx = 0;
+//       int selectedIndex = getSelectedIndex();
+       getSelectedIndex();
 
        Iterator it = getFacetsAndChildren();
 

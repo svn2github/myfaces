@@ -18,7 +18,6 @@ package org.apache.myfaces.custom.panelstack;
 import org.apache.myfaces.taglib.UIComponentTagBase;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.servlet.jsp.JspException;
 
 
@@ -75,8 +74,6 @@ public class PanelStackTag
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
-        FacesContext context = FacesContext.getCurrentInstance();
-
         setStringProperty(component, "selectedPanel", selectedPanel);
     }
 }
