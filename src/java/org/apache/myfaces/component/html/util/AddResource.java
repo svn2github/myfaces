@@ -45,7 +45,7 @@ import org.apache.myfaces.renderkit.html.HTML;
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class AddResource {
+public final class AddResource {
     protected static final Log log = LogFactory.getLog(AddResource.class);
 
     private static final String COMPONENTS_PACKAGE = "org.apache.myfaces.custom.";
@@ -54,6 +54,10 @@ public class AddResource {
 
     private static final String ADDITIONAL_HEADER_INFO_REQUEST_ATTRUBITE_NAME = "myFacesHeaderResource2Render";
 
+    private AddResource() {
+    	//no object creation allowed (util clazz)
+    }
+    
     // Methodes to Add resources
 
     /**
