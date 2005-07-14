@@ -75,7 +75,7 @@
 
 <taglib>
 
-    <tlib-version>0.9.0</tlib-version>
+    <tlib-version>1.0.10</tlib-version>
     <jsp-version>1.2</jsp-version>
     <short-name>x</short-name>
     <uri>http://myfaces.apache.org/extensions</uri>
@@ -236,7 +236,7 @@
         &ui_input_attributes;
         &ext_forceId_attribute;
     </tag>
-    
+
     <!-- inputSecret -->
     <tag>
         <name>inputSecret</name>
@@ -312,7 +312,7 @@
         &ext_forceId_attribute;
         &display_value_only_attributes;
     </tag>
-    
+
      <!-- graphicImage -->
     <tag>
         <name>graphicImage</name>
@@ -1634,7 +1634,7 @@
         &user_role_attributes;
         &ext_forceId_attribute;
     </tag>
-    
+
     <!-- selectOneLanguage -->
     <tag>
         <name>selectOneLanguage</name>
@@ -1704,7 +1704,7 @@
 			</description>
 		</attribute>
 	</tag>
-	
+
 	<!-- htmlTag -->
 
 	<tag>
