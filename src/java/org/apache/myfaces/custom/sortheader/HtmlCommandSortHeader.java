@@ -135,7 +135,7 @@ public class HtmlCommandSortHeader
     {
         if (_columnName != null) return _columnName;
         ValueBinding vb = getValueBinding("columnName");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
     }
 
     public void setArrow(boolean arrow)
