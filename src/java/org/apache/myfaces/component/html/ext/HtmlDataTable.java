@@ -24,8 +24,6 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
 import javax.faces.model.DataModel;
 
 import org.apache.commons.logging.Log;
@@ -50,7 +48,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	private static final boolean DEFAULT_SORTASCENDING = true;
 	private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
-	private transient boolean _isDataModelRestored = false;
+	private _SerializableDataModel _preservedDataModel;
 
 	private String _sortColumn = null;
 	private Boolean _sortAscending = null;
@@ -58,13 +56,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	private String _rowOnMouseOut = null;
 
 	private boolean _isValidChilds = true;
-
-	public void setValue(Object value)
-	{
-		_dataModel = null;
-		_isDataModelRestored = false;
-		super.setValue(value);
-	}
 
 	public void setRowIndex(int rowIndex)
 	{
@@ -130,11 +121,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		}
 	}
 
-	public void processRestoreState(FacesContext context, Object state)
-	{
-		super.processRestoreState(context, state);
-	}
-
 	public void processDecodes(FacesContext context)
 	{
 		if (!isRendered())
@@ -143,8 +129,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		}
 		super.processDecodes(context);
 		setRowIndex(-1);
-		processColumnsFacets(context, PROCESS_DECODES);
-		processColumnsChildren(context, PROCESS_DECODES);
+		processColumns(context, PROCESS_DECODES);
 		setRowIndex(-1);
 	}
 
@@ -152,76 +137,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	 * @param context
 	 * @param processAction
 	 */
-	private void processColumnsChildren(FacesContext context, int processAction)
+	private void processColumns(FacesContext context, int processAction)
 	{
-		int first = getFirst();
-		int rows = getRows();
-		int last;
-		if (rows == 0)
+		for (Iterator it = getChildren().iterator(); it.hasNext();)
 		{
-			last = getRowCount();
-		}
-		else
-		{
-			last = first + rows;
-		}
-		for (int rowIndex = first; rowIndex < last; rowIndex++)
-		{
-			setRowIndex(rowIndex);
-			if (isRowAvailable())
-			{
-				for (Iterator it = getChildren().iterator(); it.hasNext();)
-				{
-					UIComponent child = (UIComponent) it.next();
-					if (child instanceof UIColumns)
-					{
-						if (child.isRendered())
-						{
-							UIColumns columns = (UIColumns) child;
-							for (int colIndex = 0, size = columns.getRowCount(); colIndex < size; colIndex++)
-							{
-								columns.setRowIndex(colIndex);
-								for (Iterator columnChildIter = child.getChildren().iterator(); columnChildIter
-												.hasNext();)
-								{
-									UIComponent columnChild = (UIComponent) columnChildIter.next();
-									process(context, columnChild, processAction);
-								}
-							}
-							columns.setRowIndex(-1);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * @param context
-	 * @param processAction
-	 */
-	private void processColumnsFacets(FacesContext context, int processAction)
-	{
-		for (Iterator childIter = getChildren().iterator(); childIter.hasNext();)
-		{
-			UIComponent child = (UIComponent) childIter.next();
+			UIComponent child = (UIComponent) it.next();
 			if (child instanceof UIColumns)
 			{
-				if (child.isRendered())
-				{
-					UIColumns columns = (UIColumns) child;
-					for (int i = 0, size = columns.getRowCount(); i < size; i++)
-					{
-						columns.setRowIndex(i);
-						for (Iterator facetsIter = child.getFacets().values().iterator(); facetsIter
-										.hasNext();)
-						{
-							UIComponent facet = (UIComponent) facetsIter.next();
-							process(context, facet, processAction);
-						}
-					}
-					columns.setRowIndex(-1);
-				}
+				process(context, child, processAction);
 			}
 		}
 	}
@@ -248,26 +171,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		{
 			return;
 		}
-		setRowIndex(-1);
-		processColumnsFacets(context, PROCESS_VALIDATORS);
-		processColumnsChildren(context, PROCESS_VALIDATORS);
-		setRowIndex(-1);
 		super.processValidators(context);
+		processColumns(context, PROCESS_VALIDATORS);
+		setRowIndex(-1);
 
 		if (context.getRenderResponse())
 		{
 			_isValidChilds = false;
 		}
-	}
-
-	public Object processSaveState(FacesContext context)
-	{
-		return super.processSaveState(context);
-	}
-
-	public void broadcast(FacesEvent event) throws AbortProcessingException
-	{
-		super.broadcast(event);
 	}
 
 	public void processUpdates(FacesContext context)
@@ -276,21 +187,18 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		{
 			return;
 		}
-		setRowIndex(-1);
-		processColumnsFacets(context, PROCESS_UPDATES);
-		processColumnsChildren(context, PROCESS_UPDATES);
-		setRowIndex(-1);
-
 		super.processUpdates(context);
+		processColumns(context, PROCESS_UPDATES);
+		setRowIndex(-1);
 
-		if (_isDataModelRestored)
+		if (isPreserveDataModel())
 		{
 			updateModelFromPreservedDataModel(context);
 		}
 
 		if (context.getRenderResponse())
 		{
-                    _isValidChilds = false;
+			_isValidChilds = false;
 		}
 	}
 
@@ -299,7 +207,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		ValueBinding vb = getValueBinding("value");
 		if (vb != null && !vb.isReadOnly(context))
 		{
-			_SerializableDataModel dm = (_SerializableDataModel) _dataModel;
+			_SerializableDataModel dm = (_SerializableDataModel) getDataModel();
 			Class type = vb.getType(context);
 			if (DataModel.class.isAssignableFrom(type))
 			{
@@ -333,66 +241,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 				}
 			}
 		}
-		_dataModel = null;
-		_isDataModelRestored = false;
+		_preservedDataModel = null;
 	}
-
-//        (this is not called from anywhere)
-//	/**
-//	 * TODO: We could perhaps optimize this if we know we are derived from MyFaces UIData implementation
-//	 */
-//	private boolean isAllChildrenAndFacetsValid()
-//	{
-//		int first = getFirst();
-//		int rows = getRows();
-//		int last;
-//		if (rows == 0)
-//		{
-//			last = getRowCount();
-//		}
-//		else
-//		{
-//			last = first + rows;
-//		}
-//		try
-//		{
-//			for (int rowIndex = first; rowIndex < last; rowIndex++)
-//			{
-//				setRowIndex(rowIndex);
-//				if (isRowAvailable())
-//				{
-//					if (!isAllEditableValueHoldersValidRecursive(getFacetsAndChildren()))
-//					{
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//		finally
-//		{
-//			setRowIndex(-1);
-//		}
-//		return true;
-//	}
-//
-	
-//  (this is not called from anywhere)
-//	private boolean isAllEditableValueHoldersValidRecursive(Iterator facetsAndChildrenIterator)
-//	{
-//		while (facetsAndChildrenIterator.hasNext())
-//		{
-//			UIComponent c = (UIComponent) facetsAndChildrenIterator.next();
-//			if (c instanceof EditableValueHolder && !((EditableValueHolder) c).isValid())
-//			{
-//				return false;
-//			}
-//			if (!isAllEditableValueHoldersValidRecursive(c.getFacetsAndChildren()))
-//			{
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
 
 	public void encodeBegin(FacesContext context) throws IOException
 	{
@@ -401,12 +251,20 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
 		if (_isValidChilds)
 		{
-			_isDataModelRestored = false;
+			_preservedDataModel = null;
 		}
 
 		if (isRenderedIfEmpty() || getRowCount() > 0)
 		{
 			super.encodeBegin(context);
+			for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+			{
+				UIComponent component = (UIComponent) iter.next();
+				if (component instanceof UIColumns)
+				{
+					((UIColumns) component).encodeTableBegin(context);
+				}
+			}
 		}
 	}
 
@@ -429,15 +287,23 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		if (isRenderedIfEmpty() || getRowCount() > 0)
 		{
 			super.encodeEnd(context);
+			for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+			{
+				UIComponent component = (UIComponent) iter.next();
+				if (component instanceof UIColumns)
+				{
+					((UIColumns) component).encodeTableEnd(context);
+				}
+			}
 		}
 	}
 
 	public int getFirst()
 	{
-		if (_isDataModelRestored)
+		if (_preservedDataModel != null)
 		{
 			//Rather get the currently restored DataModel attribute
-			return ((_SerializableDataModel) _dataModel).getFirst();
+			return ((_SerializableDataModel) _preservedDataModel).getFirst();
 		}
 		else
 		{
@@ -447,20 +313,20 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
 	public void setFirst(int first)
 	{
-		if (_isDataModelRestored)
+		if (_preservedDataModel != null)
 		{
 			//Also change the currently restored DataModel attribute
-			((_SerializableDataModel) _dataModel).setFirst(first);
+			((_SerializableDataModel) _preservedDataModel).setFirst(first);
 		}
 		super.setFirst(first);
 	}
 
 	public int getRows()
 	{
-		if (_isDataModelRestored)
+		if (_preservedDataModel != null)
 		{
 			//Rather get the currently restored DataModel attribute
-			return ((_SerializableDataModel) _dataModel).getRows();
+			return ((_SerializableDataModel) _preservedDataModel).getRows();
 		}
 		else
 		{
@@ -470,10 +336,10 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
 	public void setRows(int rows)
 	{
-		if (_isDataModelRestored)
+		if (_preservedDataModel != null)
 		{
 			//Also change the currently restored DataModel attribute
-			((_SerializableDataModel) _dataModel).setRows(rows);
+			((_SerializableDataModel) _preservedDataModel).setRows(rows);
 		}
 		super.setRows(rows);
 	}
@@ -493,17 +359,30 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 			values[2] = null;
 		}
 		values[3] = _preserveSort;
-                values[4] = _sortColumn;
+		values[4] = _sortColumn;
 		values[5] = _sortAscending;
 		values[6] = _renderedIfEmpty;
 		values[7] = _rowCountVar;
 		values[8] = _rowIndexVar;
 		values[9] = _rowOnMouseOver;
 		values[10] = _rowOnMouseOut;
-                values[11] = preserveSort ? getSortColumn() : null;
-                values[12] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
 
+		values[11] = preserveSort ? getSortColumn() : null;
+		values[12] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
 		return values;
+	}
+
+	/**
+	 * @see org.apache.myfaces.component.html.ext.HtmlDataTableHack#getDataModel()
+	 */
+	protected DataModel getDataModel()
+	{
+		if (_preservedDataModel != null)
+		{
+			setDataModel(_preservedDataModel);
+			_preservedDataModel = null;
+		}
+		return super.getDataModel();
 	}
 
 	public void restoreState(FacesContext context, Object state)
@@ -513,13 +392,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		_preserveDataModel = (Boolean) values[1];
 		if (isPreserveDataModel())
 		{
-			_dataModel = (_SerializableDataModel) restoreAttachedState(context, values[2]);
-			_isDataModelRestored = true;
+			_preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[2]);
 		}
 		else
 		{
-			_dataModel = null;
-			_isDataModelRestored = false;
+			_preservedDataModel = null;
 		}
 		_preserveSort = (Boolean) values[3];
 		_sortColumn = (String) values[4];
@@ -530,41 +407,42 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		_rowOnMouseOver = (String) values[9];
 		_rowOnMouseOut = (String) values[10];
 
-                if (isPreserveSort())
-                {
-                    String sortColumn = (String) values[11];
-                    Boolean sortAscending = (Boolean) values[12];
-                    if (sortColumn != null && sortAscending != null)
-                    {
-                        ValueBinding vb = getValueBinding("sortColumn");
-                        if (vb != null && !vb.isReadOnly(context))
-                        {
-                            vb.setValue(context, sortColumn);
-                        }
+		if (isPreserveSort())
+		{
+			String sortColumn = (String) values[11];
+			Boolean sortAscending = (Boolean) values[12];
+			if (sortColumn != null && sortAscending != null)
+			{
+				ValueBinding vb = getValueBinding("sortColumn");
+				if (vb != null && !vb.isReadOnly(context))
+				{
+					vb.setValue(context, sortColumn);
+				}
 
-                        vb = getValueBinding("sortAscending");
-                        if (vb != null && !vb.isReadOnly(context))
-                        {
-                            vb.setValue(context, sortAscending);
-                        }
-                    }
+				vb = getValueBinding("sortAscending");
+				if (vb != null && !vb.isReadOnly(context))
+				{
+					vb.setValue(context, sortAscending);
+				}
+			}
 		}
 	}
 
 	public _SerializableDataModel getSerializableDataModel()
 	{
-		if (_dataModel != null)
+		DataModel dm = getDataModel();
+		if (dm instanceof _SerializableDataModel)
 		{
-			if (_dataModel instanceof _SerializableDataModel)
-			{
-				return (_SerializableDataModel) _dataModel;
-			}
-			else
-			{
-				return new _SerializableDataModel(getFirst(), getRows(), _dataModel);
-			}
+			return (_SerializableDataModel) dm;
 		}
+		return createSerializableDataModel();
+	}
 
+	/**
+	 * @return
+	 */
+	private _SerializableDataModel createSerializableDataModel()
+	{
 		Object value = getValue();
 		if (value == null)
 		{

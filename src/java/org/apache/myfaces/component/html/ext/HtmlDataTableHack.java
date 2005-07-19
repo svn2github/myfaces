@@ -1,16 +1,30 @@
+/*
+ * Copyright 2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.myfaces.component.html.ext;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.StateHolder;
+import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.ArrayDataModel;
@@ -30,358 +44,407 @@ import javax.servlet.jsp.jstl.sql.Result;
  */
 abstract class HtmlDataTableHack extends javax.faces.component.html.HtmlDataTable
 {
-	protected DataModel _dataModel = null;
+  private Map _dataModelMap = new HashMap();
 
-	// will be set to false if the data should not be refreshed at the beginning of the encode phase
-	private boolean _isValidChilds = true;
+  // will be set to false if the data should not be refreshed at the beginning of the encode phase
+  private boolean _isValidChilds = true;
 
-	private Map _rowState = new HashMap();
+  // holds for each row the states of the child components of this UIData 
+  private Map _rowStates = null;
 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// Every field and method from here is identical to UIData !!!!!!!!!
+  // contains the initial row state which is used to initialize each row
+  private Object _initialRowState = null;
 
-	private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // Every field and method from here is identical to UIData !!!!!!!!!
 
-	private int _rowIndex = -1;
+  private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
-	// will be set to false if the _rowstate and _datamodel should not be saved
-	private boolean _processUIDataState = true;
+  private int _rowIndex = -1;
 
-	public boolean isRowAvailable()
-	{
-		return getDataModel().isRowAvailable();
-	}
+  public boolean isRowAvailable()
+  {
+    return getDataModel().isRowAvailable();
+  }
 
-	public int getRowCount()
-	{
-		return getDataModel().getRowCount();
-	}
+  public int getRowCount()
+  {
+    return getDataModel().getRowCount();
+  }
 
-	public Object getRowData()
-	{
-		return getDataModel().getRowData();
-	}
+  public Object getRowData()
+  {
+    return getDataModel().getRowData();
+  }
 
-	public int getRowIndex()
-	{
-		return _rowIndex;
-	}
+  public int getRowIndex()
+  {
+    return _rowIndex;
+  }
 
-	/**
-	 * @see javax.faces.component.UIData#processUpdates(javax.faces.context.FacesContext)
-	 */
-	public void processUpdates(FacesContext context)
-	{
-		super.processUpdates(context);
-		// check if a update model error forces the render response for our data
-		if (context.getRenderResponse())
-		{
-			_isValidChilds = false;
-		}
-	}
+  /**
+   * @see javax.faces.component.UIData#processUpdates(javax.faces.context.FacesContext)
+   */
+  public void processUpdates(FacesContext context)
+  {
+    super.processUpdates(context);
+    // check if a update model error forces the render response for our data
+    if (context.getRenderResponse())
+    {
+      _isValidChilds = false;
+    }
+  }
 
-	/**
-	 * @see javax.faces.component.UIData#processValidators(javax.faces.context.FacesContext)
-	 */
-	public void processValidators(FacesContext context)
-	{
-		super.processValidators(context);
-		// check if a validation error forces the render response for our data
-		if (context.getRenderResponse())
-		{
-			_isValidChilds = false;
-		}
-	}
+  /**
+   * @see javax.faces.component.UIData#processValidators(javax.faces.context.FacesContext)
+   */
+  public void processValidators(FacesContext context)
+  {
+    super.processValidators(context);
+    // check if a validation error forces the render response for our data
+    if (context.getRenderResponse())
+    {
+      _isValidChilds = false;
+    }
+  }
 
-	/**
-	 * @see javax.faces.component.UIData#encodeBegin(javax.faces.context.FacesContext)
-	 */
-	public void encodeBegin(FacesContext context) throws IOException
-	{
-		if (_isValidChilds)
-		{
-			//Refresh DataModel for rendering:
-			_dataModel = null;
-		}
-		super.encodeBegin(context);
-	}
+  /**
+   * @see javax.faces.component.UIData#encodeBegin(javax.faces.context.FacesContext)
+   */
+  public void encodeBegin(FacesContext context) throws IOException
+  {
+    if (_isValidChilds)
+    {
+      //Refresh DataModel for rendering:
+      _dataModelMap.clear();
+      _rowStates = null;
+    }
+    super.encodeBegin(context);
+  }
 
-	/**
-	 * @see javax.faces.component.UIData#encodeEnd(javax.faces.context.FacesContext)
-	 */
-	public void encodeEnd(FacesContext context) throws IOException
-	{
-		setRowIndex(-1);
-		super.encodeEnd(context);
-	}
+  /**
+   * @see javax.faces.component.UIComponentBase#encodeEnd(javax.faces.context.FacesContext)
+   */
+  public void encodeEnd(FacesContext context) throws IOException
+  {
+    setRowIndex(-1);
+    super.encodeEnd(context);
+  }
 
-	public void setRowIndex(int rowIndex)
-	{
-		if (_rowIndex == rowIndex)
-		{
-			return;
-		}
+  public void setRowIndex(int rowIndex)
+  {
+    if (_rowIndex == rowIndex)
+    {
+      return;
+    }
 
-		FacesContext context = getFacesContext();
+    FacesContext context = getFacesContext();
 
-		saveDescendantComponentStates(context, getFacetsAndChildren());
+    if (_rowIndex != -1)
+    {
+      if (_rowStates == null)
+      {
+        _rowStates = new HashMap();
+      }
+      _rowStates.put(getClientId(context), processSaveRowState(context));
+    }
+    else if (_initialRowState == null)
+    {
+      _initialRowState = processSaveRowState(context);
+    }
 
-		_rowIndex = rowIndex;
+    _rowIndex = rowIndex;
 
-		DataModel dataModel = getDataModel();
-		dataModel.setRowIndex(rowIndex);
+    DataModel dataModel = getDataModel();
+    dataModel.setRowIndex(rowIndex);
 
-		String var = getVar();
-		if (rowIndex == -1)
-		{
-			if (var != null)
-			{
-				context.getExternalContext().getRequestMap().remove(var);
-			}
-		}
-		else
-		{
-			if (var != null)
-			{
-				if (isRowAvailable())
-				{
-					Object rowData = dataModel.getRowData();
-					context.getExternalContext().getRequestMap().put(var, rowData);
-				}
-				else
-				{
-					context.getExternalContext().getRequestMap().remove(var);
-				}
-			}
-		}
+    String var = getVar();
+    if (rowIndex == -1)
+    {
+      if (var != null)
+      {
+        context.getExternalContext().getRequestMap().remove(var);
+      }
+    }
+    else
+    {
+      if (var != null)
+      {
+        if (isRowAvailable())
+        {
+          Object rowData = dataModel.getRowData();
+          context.getExternalContext().getRequestMap().put(var, rowData);
+        }
+        else
+        {
+          context.getExternalContext().getRequestMap().remove(var);
+        }
+      }
+    }
 
-		restoreDescendantComponentStates(context, getFacetsAndChildren());
-	}
+    if (_rowIndex != -1 && _rowStates != null)
+    {
+      Object state = _rowStates.get(getClientId(context));
+      if (state == null)
+      {
+        state = _initialRowState;
+      }
+      processRestoreRowState(context, state);
+    }
+    else
+    {
+      processRestoreRowState(context, _initialRowState);
+    }
+  }
 
-	private void saveDescendantComponentStates(FacesContext context, Iterator childIterator)
-	{
-		while (childIterator.hasNext())
-		{
-			UIComponent child = (UIComponent) childIterator.next();
-			if (!child.isTransient())
-			{
-				_rowState.put(child.getClientId(context), new ChildStateHolder(context, child));
-				if (!(child instanceof UIData))
-				{
-					saveDescendantComponentStates(context, child.getFacetsAndChildren());
-				}
-			}
-		}
-	}
+  private Object processSaveRowState(FacesContext context)
+  {
+    if (isTransient())
+      return null;
+    List childStates = null;
+    int columnCount = getChildCount();
+    if (columnCount > 0)
+    {
+      for (Iterator colIt = getChildren().iterator(); colIt.hasNext();)
+      {
+        UIComponent child = (UIComponent) colIt.next();
+        if (!child.isTransient())
+        {
+          if (childStates == null)
+          {
+            childStates = new ArrayList(columnCount);
+          }
+          if (child instanceof UIColumn)
+          {
+            childStates.add(new Object[] {child.saveState(context),
+                getColumnChildsState(context, child.getChildren().iterator())});
+          }
+          else
+          {
+            childStates.add(child.processSaveState(context));
+          }
+        }
+      }
+    }
+    return childStates;
+  }
 
-	private void restoreDescendantComponentStates(FacesContext context, Iterator childIterator)
-	{
-		while (childIterator.hasNext())
-		{
-			UIComponent child = (UIComponent) childIterator.next();
-			// the spec 1.1 (3.1.6) says: setting the id will recalculate the clientid  
-			child.setId(child.getId());
-			if (!child.isTransient())
-			{
-				String clientId = child.getClientId(context);
-				ChildStateHolder childStateHolder = (ChildStateHolder) _rowState.get(clientId);
-				if (childStateHolder != null)
-				{
-					childStateHolder.restoreState(context, child);
-				}
-				if (!(child instanceof UIData))
-				{
-					restoreDescendantComponentStates(context, child.getFacetsAndChildren());
-				}
-			}
-		}
-	}
+  private Object getColumnChildsState(FacesContext context, Iterator compIterator)
+  {
+    List result = null;
+    while (compIterator.hasNext())
+    {
+      UIComponent colChild = (UIComponent) compIterator.next();
+      if (!colChild.isTransient())
+      {
+        if (result == null)
+        {
+          result = new ArrayList();
+        }
+        result.add(colChild.processSaveState(context));
+      }
+    }
+    return result;
+  }
 
-	public void setValueBinding(String name, ValueBinding binding)
-	{
-		if (name == null)
-		{
-			throw new NullPointerException("name");
-		}
-		else if (name.equals("value"))
-		{
-			_dataModel = null;
-		}
-		else if (name.equals("var") || name.equals("rowIndex"))
-		{
-			throw new IllegalArgumentException("name " + name);
-		}
-		super.setValueBinding(name, binding);
-	}
+  public void processRestoreRowState(FacesContext context, Object state)
+  {
+    List childrenStates = (List) state;
+    int childCount = getChildCount();
+    if (childCount > 0)
+    {
+      int idx = 0;
+      for (Iterator it = getChildren().iterator(); it.hasNext();)
+      {
+        UIComponent child = (UIComponent) it.next();
+        if (!child.isTransient())
+        {
+          Object childState = childrenStates.get(idx++);
+          if (childState != null)
+          {
+            if (child instanceof UIColumn)
+            {
+              Object[] columnState = (Object[]) childState;
+              setColumnChildsState(context, child.getChildren().iterator(), columnState[1]);
+              child.restoreState(context, columnState[0]);
+            }
+            else
+            {
+              child.processRestoreState(context, childState);
+            }
+          }
+          else
+          {
+            context.getExternalContext().log(
+                "No state found to restore child of component " + getId());
+          }
+        }
+      }
+    }
+  }
 
-	private DataModel getDataModel()
-	{
-		if (_dataModel == null)
-		{
-			_dataModel = createDataModel();
-		}
-		return _dataModel;
-	}
+  private void setColumnChildsState(FacesContext context, Iterator compIterator, Object state)
+  {
+    List childrenList = (List) state;
+    if (childrenList != null)
+    {
+      int idx = 0;
+      while (compIterator.hasNext())
+      {
+        UIComponent child = (UIComponent) compIterator.next();
+        if (!child.isTransient())
+        {
+          Object childState = childrenList.get(idx++);
+          if (childState != null)
+          {
+            child.processRestoreState(context, childState);
+          }
+          else
+          {
+            context.getExternalContext().log(
+                "No state found to restore child of component " + getId());
+          }
+        }
+      }
+    }
+  }
 
-	/**
-	 * Creates a new DataModel around the current value.
-	 */
-	private DataModel createDataModel()
-	{
-		Object value = getValue();
-		if (value == null)
-		{
-			return EMPTY_DATA_MODEL;
-		}
-		else if (value instanceof DataModel)
-		{
-			return (DataModel) value;
-		}
-		else if (value instanceof List)
-		{
-			return new ListDataModel((List) value);
-		}
-		else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
-		{
-			return new ArrayDataModel((Object[]) value);
-		}
-		else if (value instanceof ResultSet)
-		{
-			return new ResultSetDataModel((ResultSet) value);
-		}
-		else if (value instanceof Result)
-		{
-			return new ResultDataModel((Result) value);
-		}
-		else
-		{
-			return new ScalarDataModel(value);
-		}
-	}
+  public void setValueBinding(String name, ValueBinding binding)
+  {
+    if (name == null)
+    {
+      throw new NullPointerException("name");
+    }
+    else if (name.equals("value"))
+    {
+      _dataModelMap.clear();
+      _rowStates = null;
+    }
+    else if (name.equals("var") || name.equals("rowIndex"))
+    {
+      throw new IllegalArgumentException("name " + name);
+    }
+    super.setValueBinding(name, binding);
+  }
 
-	private static final DataModel EMPTY_DATA_MODEL = new DataModel()
-	{
-		public boolean isRowAvailable()
-		{
-			return false;
-		}
+  protected DataModel getDataModel()
+  {
+    String clientID = getParent().getClientId(getFacesContext());
+    DataModel dataModel = (DataModel) _dataModelMap.get(clientID);
+    if (dataModel == null)
+    {
+      dataModel = createDataModel();
+      _dataModelMap.put(clientID, dataModel);
+    }
+    return dataModel;
+  }
 
-		public int getRowCount()
-		{
-			return 0;
-		}
+  protected void setDataModel(DataModel datamodel)
+  {
+    _dataModelMap.put(getParent().getClientId(getFacesContext()), datamodel);
+  }
 
-		public Object getRowData()
-		{
-			throw new IllegalArgumentException();
-		}
+  /**
+   * Creates a new DataModel around the current value.
+   */
+  protected DataModel createDataModel()
+  {
+    Object value = getValue();
+    if (value == null)
+    {
+      return EMPTY_DATA_MODEL;
+    }
+    else if (value instanceof DataModel)
+    {
+      return (DataModel) value;
+    }
+    else if (value instanceof List)
+    {
+      return new ListDataModel((List) value);
+    }
+    else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
+    {
+      return new ArrayDataModel((Object[]) value);
+    }
+    else if (value instanceof ResultSet)
+    {
+      return new ResultSetDataModel((ResultSet) value);
+    }
+    else if (value instanceof Result)
+    {
+      return new ResultDataModel((Result) value);
+    }
+    else
+    {
+      return new ScalarDataModel(value);
+    }
+  }
 
-		public int getRowIndex()
-		{
-			return -1;
-		}
+  private static final DataModel EMPTY_DATA_MODEL = new DataModel()
+  {
+    public boolean isRowAvailable()
+    {
+      return false;
+    }
 
-		public void setRowIndex(int i)
-		{
-			if (i < -1)
-				throw new IndexOutOfBoundsException("Index < 0 : " + i);
-		}
+    public int getRowCount()
+    {
+      return 0;
+    }
 
-		public Object getWrappedData()
-		{
-			return null;
-		}
+    public Object getRowData()
+    {
+      throw new IllegalArgumentException();
+    }
 
-		public void setWrappedData(Object obj)
-		{
-			if (obj == null)
-				return; //Clearing is allowed
-			throw new UnsupportedOperationException(this.getClass().getName()
-							+ " UnsupportedOperationException");
-		}
-	};
+    public int getRowIndex()
+    {
+      return -1;
+    }
 
-	private static class ChildStateHolder implements Serializable
-	{
-		private final Object _state;
+    public void setRowIndex(int i)
+    {
+      if (i < -1)
+        throw new IndexOutOfBoundsException("Index < 0 : " + i);
+    }
 
-		public ChildStateHolder(FacesContext context, StateHolder stateHolder)
-		{
-			_state = stateHolder.saveState(context);
-		}
+    public Object getWrappedData()
+    {
+      return null;
+    }
 
-		public void restoreState(FacesContext context, StateHolder stateHolder)
-		{
-			stateHolder.restoreState(context, _state);
-		}
-	}
+    public void setWrappedData(Object obj)
+    {
+      if (obj == null)
+        return; //Clearing is allowed
+      throw new UnsupportedOperationException(this.getClass().getName()
+          + " UnsupportedOperationException");
+    }
+  };
 
-	/**
-	 * @see javax.faces.component.UIComponentBase#processSaveState(javax.faces.context.FacesContext)
-	 */
-	public Object processSaveState(FacesContext context)
-	{
-		// state of uidata will not be processed
-		_processUIDataState = false;
-		Object state = super.processSaveState(context);
-		_processUIDataState = true;
-		return state;
-	}
+  public Object saveState(FacesContext context)
+  {
+    Object values[] = new Object[2];
+    values[0] = super.saveState(context);
+    values[1] = Boolean.valueOf(_isValidChilds);
 
-	/**
-	 * @see javax.faces.component.UIComponentBase#processRestoreState(javax.faces.context.FacesContext, java.lang.Object)
-	 */
-	public void processRestoreState(FacesContext context, Object state)
-	{
-		_processUIDataState = false;
-		super.processRestoreState(context, state);
-		_processUIDataState = true;
-	}
+    return values;
+  }
 
-	public Object saveState(FacesContext context)
-	{
-		Object values[] = new Object[4];
-		values[0] = super.saveState(context);
+  public void restoreState(FacesContext context, Object state)
+  {
+    Object values[] = (Object[]) state;
+    super.restoreState(context, values[0]);
 
-		if (_processUIDataState)
-		{
-			values[1] = _rowState;
-			values[2] = _dataModel;
-			values[3] = Boolean.valueOf(_isValidChilds);
-		}
-		return values;
-	}
-
-	public void restoreState(FacesContext context, Object state)
-	{
-		Object values[] = (Object[]) state;
-		super.restoreState(context, values[0]);
-
-		if (_processUIDataState)
-		{
-			Map rowState = (Map) values[1];
-			if (rowState != null)
-			{
-				_rowState = rowState;
-			}
-			else
-			{
-				_rowState.clear();
-			}
-
-			_dataModel = (DataModel) values[2];
-
-			Boolean validChilds = (Boolean) values[3];
-			if (validChilds != null)
-			{
-				_isValidChilds = validChilds.booleanValue();
-			}
-			else
-			{
-				// defaults to true
-				_isValidChilds = true;
-			}
-		}
-	}
+    Boolean validChilds = (Boolean) values[1];
+    if (validChilds != null)
+    {
+      _isValidChilds = validChilds.booleanValue();
+    }
+    else
+    {
+      _isValidChilds = true;
+    }
+  }
 
 }
