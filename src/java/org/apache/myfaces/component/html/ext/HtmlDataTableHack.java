@@ -133,6 +133,11 @@ abstract class HtmlDataTableHack extends javax.faces.component.html.HtmlDataTabl
 
   public void setRowIndex(int rowIndex)
   {
+		if(rowIndex < -1)
+		{
+			throw new IllegalArgumentException("rowIndex is less than -1");
+		}
+		
     if (_rowIndex == rowIndex)
     {
       return;

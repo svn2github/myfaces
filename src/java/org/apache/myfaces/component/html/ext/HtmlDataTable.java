@@ -59,6 +59,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
 	public void setRowIndex(int rowIndex)
 	{
+		if(rowIndex < -1)
+		{
+			throw new IllegalArgumentException("rowIndex is less than -1");
+		}
+		
 		String rowIndexVar = getRowIndexVar();
 		String rowCountVar = getRowCountVar();
 		String previousRowDataVar = getPreviousRowDataVar();

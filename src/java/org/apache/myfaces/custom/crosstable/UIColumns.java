@@ -106,6 +106,11 @@ public class UIColumns extends UIData
 
   public void setRowIndex(int colIndex)
   {
+		if(colIndex < -1)
+		{
+			throw new IllegalArgumentException("colIndex is less than -1");
+		}
+		
     if (_colIndex == colIndex)
     {
       return;
