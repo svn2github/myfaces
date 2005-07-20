@@ -140,7 +140,7 @@ public class HtmlCalendarRenderer
             RendererUtils.renderChild(facesContext, inputText);
 
             inputCalendar.getChildren().remove(inputText);
-                        
+
             //Set back the correct id to the input calendar
             inputCalendar.setId(inputText.getId());
 
@@ -688,18 +688,8 @@ public class HtmlCalendarRenderer
             {
                 char c = popupDateFormat.charAt(i);
 
-                if(c=='M')
-                    jsPopupDateFormat.append('M');
-                else if(c=='d')
-                    jsPopupDateFormat.append('d');
-                else if(c=='y')
-                    jsPopupDateFormat.append('y');
-                else if(c==' ')
-                    jsPopupDateFormat.append(' ');
-                else if(c=='.')
-                    jsPopupDateFormat.append('.');
-                else if(c=='/')
-                    jsPopupDateFormat.append('/');
+                if(c=='M' || c=='d' || c=='y' || c==' ' || c=='.' || c=='/' || c=='-')
+                    jsPopupDateFormat.append(c);
             }
             return jsPopupDateFormat.toString().trim();
         }
