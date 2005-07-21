@@ -32,6 +32,8 @@ public class HtmlTableRenderer
         HtmlDataTable table = (HtmlDataTable) uiData;
         String rowOnMouseOver = table.getRowOnMouseOver();
         String rowOnMouseOut = table.getRowOnMouseOut();
+        String rowOnClick = table.getRowOnClick();
+        String rowOnDblClick = table.getRowOnDblClick();
 
         // render onmouseover and onmouseout handlers if not null
         if (rowOnMouseOver != null)
@@ -41,6 +43,14 @@ public class HtmlTableRenderer
         if (rowOnMouseOut != null)
         {
             writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, rowOnMouseOut, null);
+        }
+        if (rowOnClick != null)
+        {
+            writer.writeAttribute(HTML.ONCLICK_ATTR, rowOnClick, null);
+        }
+        if (rowOnDblClick != null)
+        {
+            writer.writeAttribute(HTML.ONDBLCLICK_ATTR, rowOnDblClick, null);
         }
     }
 

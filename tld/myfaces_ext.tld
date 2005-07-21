@@ -223,6 +223,18 @@
                 Defines a JavaScript onmouseout event handler for each table row
             </description>
         </attribute>
+        <attribute>
+            <name>rowOnClick</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Defines a JavaScript onclick event handler for each table row</description>
+        </attribute>
+        <attribute>
+            <name>rowOnDblClick</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Defines a JavaScript ondblclick event handler for each table row</description>
+        </attribute>
      </tag>
 
     <!-- inputHidden -->
@@ -2434,6 +2446,12 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the width of the &lt;TD> elements</description>
+        </attribute>        
      </tag>
 
 </taglib>

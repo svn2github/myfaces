@@ -27,6 +27,7 @@ import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
 public class HtmlColumnsTag extends HtmlComponentBodyTagBase
 {
     private String mVar;
+    private String _width;
 
     /**
      * @see javax.faces.webapp.UIComponentTag#getComponentType()
@@ -48,11 +49,17 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase
     {
         mVar = var;
     }
+    
+    public void setWidth(String width)
+    {
+        _width = width;
+    }
 
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
 
         setStringProperty(component, JSFAttr.VAR_ATTR, mVar);
+        setStringProperty(component, "width", _width);
     }
 }

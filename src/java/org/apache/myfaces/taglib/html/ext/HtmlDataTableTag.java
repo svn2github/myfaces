@@ -52,6 +52,8 @@ public class HtmlDataTableTag
     private String _previousRowDataVar;
     private String _rowOnMouseOver;
     private String _rowOnMouseOut;
+    private String _rowOnClick;
+    private String _rowOnDblClick;
 
     public void release() {
         super.release();
@@ -68,6 +70,8 @@ public class HtmlDataTableTag
         _previousRowDataVar=null;
         _rowOnMouseOver=null;
         _rowOnMouseOut=null;
+        _rowOnClick = null;
+        _rowOnDblClick = null;
 
     }
 
@@ -87,6 +91,8 @@ public class HtmlDataTableTag
         setStringProperty(component, "previousRowDataVar", _previousRowDataVar);
         setStringProperty(component, "rowOnMouseOver", _rowOnMouseOver);
         setStringProperty(component, "rowOnMouseOut", _rowOnMouseOut);
+        setStringProperty(component, "rowOnClick", _rowOnClick);
+        setStringProperty(component, "rowOnDblClick", _rowOnDblClick);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -148,4 +154,15 @@ public class HtmlDataTableTag
     {
         _rowOnMouseOut = rowOnMouseOut;
     }
+
+    public void setRowOnClick(String rowOnClick)
+    {
+        _rowOnClick = rowOnClick;
+    }
+    
+    public void setRowOnDblClick(String rowOnDblClick)
+    {
+        _rowOnDblClick = rowOnDblClick;
+    }
+    
 }
