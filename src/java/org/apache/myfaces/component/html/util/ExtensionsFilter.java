@@ -111,6 +111,8 @@ public class ExtensionsFilter implements Filter {
         // Standard request
         chain.doFilter(extendedRequest, extendedResponse);
         
+        extendedResponse.finishResponse(); 
+        
         if( ! AddResource.hasAdditionalHeaderInfoToRender(extendedRequest) ){
             response.getOutputStream().write( extendedResponse.getBytes());
             return;
