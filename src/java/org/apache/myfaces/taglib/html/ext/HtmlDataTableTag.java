@@ -50,11 +50,17 @@ public class HtmlDataTableTag
     private String _rowIndexVar;
     private String _rowCountVar;
     private String _previousRowDataVar;
-    private String _rowOnMouseOver;
-    private String _rowOnMouseOut;
     private String _rowOnClick;
     private String _rowOnDblClick;
-
+    private String _rowOnMouseDown;
+    private String _rowOnMouseUp;
+    private String _rowOnMouseOver;
+    private String _rowOnMouseMove;
+    private String _rowOnMouseOut;
+    private String _rowOnKeyPress;
+    private String _rowOnKeyDown;
+    private String _rowOnKeyUp;
+    
     public void release() {
         super.release();
 
@@ -68,10 +74,16 @@ public class HtmlDataTableTag
         _rowIndexVar=null;
         _rowCountVar=null;
         _previousRowDataVar=null;
+        _rowOnClick=null;
+        _rowOnDblClick=null;
+        _rowOnMouseDown=null;
+        _rowOnMouseUp=null;
         _rowOnMouseOver=null;
+        _rowOnMouseMove=null;
         _rowOnMouseOut=null;
-        _rowOnClick = null;
-        _rowOnDblClick = null;
+        _rowOnKeyPress=null;
+        _rowOnKeyDown=null;
+        _rowOnKeyUp=null;
 
     }
 
@@ -89,10 +101,16 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowIndexVar", _rowIndexVar);
         setStringProperty(component, "rowCountVar", _rowCountVar);
         setStringProperty(component, "previousRowDataVar", _previousRowDataVar);
-        setStringProperty(component, "rowOnMouseOver", _rowOnMouseOver);
-        setStringProperty(component, "rowOnMouseOut", _rowOnMouseOut);
         setStringProperty(component, "rowOnClick", _rowOnClick);
         setStringProperty(component, "rowOnDblClick", _rowOnDblClick);
+        setStringProperty(component, "rowOnMouseDown", _rowOnMouseDown);
+        setStringProperty(component, "rowOnMouseUp", _rowOnMouseUp);
+        setStringProperty(component, "rowOnMouseOver", _rowOnMouseOver);
+        setStringProperty(component, "rowOnMouseMove", _rowOnMouseMove);
+        setStringProperty(component, "rowOnMouseOut", _rowOnMouseOut);
+        setStringProperty(component, "rowOnKeyPress", _rowOnKeyPress);
+        setStringProperty(component, "rowOnKeyDown", _rowOnKeyDown);
+        setStringProperty(component, "rowOnKeyUp", _rowOnKeyUp);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -157,12 +175,41 @@ public class HtmlDataTableTag
 
     public void setRowOnClick(String rowOnClick)
     {
-        _rowOnClick = rowOnClick;
+      _rowOnClick = rowOnClick;
     }
     
     public void setRowOnDblClick(String rowOnDblClick)
     {
-        _rowOnDblClick = rowOnDblClick;
+      _rowOnDblClick = rowOnDblClick;
     }
     
+    public void setRowOnKeyDown(String rowOnKeyDown)
+    {
+      _rowOnKeyDown = rowOnKeyDown;
+    }
+    
+    public void setRowOnKeyPress(String rowOnKeyPress)
+    {
+      _rowOnKeyPress = rowOnKeyPress;
+    }
+    
+    public void setRowOnKeyUp(String rowOnKeyUp)
+    {
+      _rowOnKeyUp = rowOnKeyUp;
+    }
+
+    public void setRowOnMouseDown(String rowOnMouseDown)
+    {
+      _rowOnMouseDown = rowOnMouseDown;
+    }
+
+    public void setRowOnMouseMove(String rowOnMouseMove)
+    {
+      _rowOnMouseMove = rowOnMouseMove;
+    }
+
+    public void setRowOnMouseUp(String rowOnMouseUp)
+    {
+      _rowOnMouseUp = rowOnMouseUp;
+    }
 }

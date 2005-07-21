@@ -30,28 +30,25 @@ public class HtmlTableRenderer
 
         // get event handlers from component
         HtmlDataTable table = (HtmlDataTable) uiData;
-        String rowOnMouseOver = table.getRowOnMouseOver();
-        String rowOnMouseOut = table.getRowOnMouseOut();
-        String rowOnClick = table.getRowOnClick();
-        String rowOnDblClick = table.getRowOnDblClick();
+        
+        renderRowAttribute(writer, HTML.ONCLICK_ATTR, table.getRowOnClick());
+        renderRowAttribute(writer, HTML.ONDBLCLICK_ATTR, table.getRowOnDblClick());
+        renderRowAttribute(writer, HTML.ONKEYDOWN_ATTR, table.getRowOnKeyDown());
+        renderRowAttribute(writer, HTML.ONKEYPRESS_ATTR, table.getRowOnKeyPress());
+        renderRowAttribute(writer, HTML.ONKEYUP_ATTR, table.getRowOnKeyUp());
+        renderRowAttribute(writer, HTML.ONMOUSEDOWN_ATTR, table.getRowOnMouseDown());
+        renderRowAttribute(writer, HTML.ONMOUSEMOVE_ATTR, table.getRowOnMouseMove());
+        renderRowAttribute(writer, HTML.ONMOUSEOUT_ATTR, table.getRowOnMouseOut());
+        renderRowAttribute(writer, HTML.ONMOUSEOVER_ATTR, table.getRowOnMouseOver());
+        renderRowAttribute(writer, HTML.ONMOUSEUP_ATTR, table.getRowOnMouseUp());
+    }
 
-        // render onmouseover and onmouseout handlers if not null
-        if (rowOnMouseOver != null)
-        {
-            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, rowOnMouseOver, null);
-        }
-        if (rowOnMouseOut != null)
-        {
-            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, rowOnMouseOut, null);
-        }
-        if (rowOnClick != null)
-        {
-            writer.writeAttribute(HTML.ONCLICK_ATTR, rowOnClick, null);
-        }
-        if (rowOnDblClick != null)
-        {
-            writer.writeAttribute(HTML.ONDBLCLICK_ATTR, rowOnDblClick, null);
-        }
+    protected void renderRowAttribute(ResponseWriter writer, String htmlAttribute, Object value) throws IOException
+    {
+      if(value != null)
+      {
+        writer.writeAttribute(htmlAttribute, value, null);
+      }
     }
 
     /**

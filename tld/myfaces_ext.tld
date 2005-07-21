@@ -208,11 +208,51 @@
             </description>
         </attribute>
         <attribute>
+            <name>rowOnClick</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines a JavaScript onclick event handler for each table row
+            </description>
+        </attribute>
+        <attribute>
+            <name>rowOnDblClick</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines a JavaScript ondblclick event handler for each table row
+            </description>
+        </attribute>
+        <attribute>
+            <name>rowOnMouseDown</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines a JavaScript onmpusedown event handler for each table row
+            </description>
+        </attribute>
+        <attribute>
+            <name>rowOnMouseUp</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines a JavaScript onmouseup event handler for each table row
+            </description>
+        </attribute>
+        <attribute>
             <name>rowOnMouseOver</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
                 Defines a JavaScript onmouseover event handler for each table row
+            </description>
+        </attribute>
+        <attribute>
+            <name>rowOnMouseMove</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines a JavaScript onmousemove event handler for each table row
             </description>
         </attribute>
         <attribute>
@@ -224,16 +264,28 @@
             </description>
         </attribute>
         <attribute>
-            <name>rowOnClick</name>
+            <name>rowOnKeyPress</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Defines a JavaScript onclick event handler for each table row</description>
+            <description>
+                Defines a JavaScript onkeypress event handler for each table row
+            </description>
         </attribute>
         <attribute>
-            <name>rowOnDblClick</name>
+            <name>rowOnKeyDown</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Defines a JavaScript ondblclick event handler for each table row</description>
+            <description>
+                Defines a JavaScript onkeydown event handler for each table row
+            </description>
+        </attribute>
+        <attribute>
+            <name>rowOnKeyUp</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines a JavaScript onkeyup event handler for each table row
+            </description>
         </attribute>
      </tag>
 
