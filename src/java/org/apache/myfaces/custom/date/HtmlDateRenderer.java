@@ -101,7 +101,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         }
     }
     
-    private static void encodeInputField(UIComponent uiComponent, ResponseWriter writer, String id,
+    protected static void encodeInputField(UIComponent uiComponent, ResponseWriter writer, String id,
 			String value, int size, boolean disabled, boolean readonly)  throws IOException {
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
@@ -126,12 +126,12 @@ public class HtmlDateRenderer extends HtmlRenderer {
 		writer.endElement(HTML.INPUT_ELEM);
     }
     
-    private static void encodeInputDay(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected static void encodeInputDay(UIComponent uiComponent, ResponseWriter writer, String clientId,
 			UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_DAY_POSTFIX, userData.getDay(), 2, disabled, readonly);
     }
 
-    private static void encodeInputMonth(UIComponent uiComponent, ResponseWriter writer, String clientId, UserData userData, Locale currentLocale,
+    protected static void encodeInputMonth(UIComponent uiComponent, ResponseWriter writer, String clientId, UserData userData, Locale currentLocale,
             boolean disabled, boolean readonly) throws IOException {
         writer.startElement(HTML.SELECT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + ID_MONTH_POSTFIX, null);
@@ -169,27 +169,27 @@ public class HtmlDateRenderer extends HtmlRenderer {
         writer.endElement(HTML.SELECT_ELEM);
     }
 
-    private static void encodeInputYear(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected static void encodeInputYear(UIComponent uiComponent, ResponseWriter writer, String clientId,
 			UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_YEAR_POSTFIX, userData.getYear(), 4, disabled, readonly);
     }
     
-    private static void encodeInputHours(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected static void encodeInputHours(UIComponent uiComponent, ResponseWriter writer, String clientId,
 			UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_HOURS_POSTFIX, userData.getHours(), 2, disabled, readonly);
     }
     
-    private static void encodeInputMinutes(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected static void encodeInputMinutes(UIComponent uiComponent, ResponseWriter writer, String clientId,
 			UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_MINUTES_POSTFIX, userData.getMinutes(), 2, disabled, readonly);
     }
     
-    private static void encodeInputSeconds(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected static void encodeInputSeconds(UIComponent uiComponent, ResponseWriter writer, String clientId,
 			UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_SECONDS_POSTFIX, userData.getSeconds(), 2, disabled, readonly);
     }
     
-    private void encodePopupCalendarButton(FacesContext facesContext, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
+    protected void encodePopupCalendarButton(FacesContext facesContext, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
         HtmlCalendarRenderer.addScriptAndCSSResources(facesContext);
         
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);

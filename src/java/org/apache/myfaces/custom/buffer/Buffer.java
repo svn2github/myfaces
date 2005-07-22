@@ -42,6 +42,10 @@ public class Buffer extends UIComponentBase{
     public void setInto(String intoExpression){
         _intoExpression = intoExpression;
     }
+    
+    protected String getInto() {
+        return _intoExpression;
+    }
 
     public Object saveState(FacesContext context){
         Object values[] = new Object[2];
