@@ -127,6 +127,8 @@ public class HtmlCalendarRenderer
                 inputText.setValue(getConverter(inputCalendar).getAsString(
                         facesContext,inputCalendar,value));
             }
+            inputText.setDisabled(inputCalendar.isDisabled());
+            inputText.setReadonly(inputCalendar.isReadonly());
             inputText.setEnabledOnUserRole(inputCalendar.getEnabledOnUserRole());
             inputText.setVisibleOnUserRole(inputCalendar.getVisibleOnUserRole());
 
@@ -144,23 +146,26 @@ public class HtmlCalendarRenderer
             //Set back the correct id to the input calendar
             inputCalendar.setId(inputText.getId());
 
-            ResponseWriter writer = facesContext.getResponseWriter();
-
-            writer.startElement(HTML.SCRIPT_ELEM,null);
-            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
-            writer.write("<!--\n");
-            writer.writeText(getLocalizedLanguageScript(symbols, months,
-                    timeKeeper.getFirstDayOfWeek(),inputCalendar),null);
-            writer.writeText(getScriptBtnText(inputCalendar.getClientId(facesContext),
-                    dateFormat,inputCalendar.getPopupButtonString()),null);
-            writer.write("\n-->");
-            writer.endElement(HTML.SCRIPT_ELEM);
-
-/*            writer.startElement(HTML.INPUT_ELEM,null);
-            writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_BUTTON,null);
-            writer.writeAttribute(HTML.ONCLICK_ATTR,"popUpCalendar(this, "+inputText.getClientId(facesContext)+
-                    ", \\\"dd.mm.yyyy\\\")",null);
-            writer.endElement(HTML.INPUT_TYPE_BUTTON);*/
+            if (!inputCalendar.isDisabled())
+            {
+	            ResponseWriter writer = facesContext.getResponseWriter();
+	
+	            writer.startElement(HTML.SCRIPT_ELEM,null);
+	            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+	            writer.write("<!--\n");
+	            writer.writeText(getLocalizedLanguageScript(symbols, months,
+	                    timeKeeper.getFirstDayOfWeek(),inputCalendar),null);
+	            writer.writeText(getScriptBtnText(inputCalendar.getClientId(facesContext),
+	                    dateFormat,inputCalendar.getPopupButtonString()),null);
+	            writer.write("\n-->");
+	            writer.endElement(HTML.SCRIPT_ELEM);
+	
+	/*            writer.startElement(HTML.INPUT_ELEM,null);
+	            writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_BUTTON,null);
+	            writer.writeAttribute(HTML.ONCLICK_ATTR,"popUpCalendar(this, "+inputText.getClientId(facesContext)+
+	                    ", \\\"dd.mm.yyyy\\\")",null);
+	            writer.endElement(HTML.INPUT_TYPE_BUTTON);*/
+            }
         }
         else
         {
@@ -519,11 +524,21 @@ public class HtmlCalendarRenderer
         parameter.setName(component.getClientId(facesContext));
         parameter.setValue(converter.getAsString(facesContext, component, valueForLink));
 
-        component.getChildren().add(link);
-        link.getChildren().add(parameter);
-        link.getChildren().add(text);
-
-        RendererUtils.renderChild(facesContext, link);
+        HtmlInputCalendar calendar = (HtmlInputCalendar)component;
+        if (calendar.isDisabled() || calendar.isReadonly()) 
+        {
+        	component.getChildren().add(text);
+        	
+        	RendererUtils.renderChild(facesContext, text);
+        } 
+        else 
+        {
+        	component.getChildren().add(link);
+            link.getChildren().add(parameter);
+            link.getChildren().add(text);
+            
+            RendererUtils.renderChild(facesContext, link);
+        }
     }
 
     private Converter getConverter(UIInput component)
