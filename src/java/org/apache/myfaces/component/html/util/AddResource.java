@@ -345,8 +345,6 @@ public final class AddResource {
         if(insertPosition>=0 && addHeaderTags)
             writer.write("</head>");
 
-        insertPosition=0;
-
         writer.write( originalResponse.substring(insertPosition) );
     }
 
