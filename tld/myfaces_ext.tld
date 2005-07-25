@@ -25,6 +25,7 @@
 <!ENTITY html_button_attributes         SYSTEM "entities/html_button_attributes.xml">
 <!ENTITY html_event_handler_attributes  SYSTEM "entities/html_event_handler_attributes.xml">
 <!ENTITY html_form_attributes           SYSTEM "entities/html_form_attributes.xml">
+<!ENTITY spec_img_attributes            SYSTEM "entities/spec_img_attributes.xml">
 <!ENTITY html_img_attributes            SYSTEM "entities/html_img_attributes.xml">
 <!ENTITY html_input_attributes          SYSTEM "entities/html_input_attributes.xml">
 <!ENTITY html_input_help_attributes     SYSTEM "entities/html_input_help_attributes.xml">
@@ -389,6 +390,7 @@
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_img_attributes;
+        &spec_img_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
     </tag>
