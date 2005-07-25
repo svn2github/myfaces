@@ -35,8 +35,8 @@ import java.io.IOException;
  */
 public class HtmlTree extends UITreeData
 {
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.Tree2";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Tree2";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlTree2";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlTree2";
     private static final String NODE_STATE_KEY = "org.apache.myfaces.tree.NODE_STATE_KEY";
     private UICommand _expandControl;
     private String _varNodeToggler;
