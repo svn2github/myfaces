@@ -384,7 +384,7 @@ public class HtmlTreeRenderer extends Renderer
         UIComponent nodeImgFacet = null;
 
         int bitMask = NOTHING;
-        bitMask += (node.getChildCount()>0) ? CHILDREN : NOTHING;
+        bitMask += (node.isLeaf()) ? NOTHING : CHILDREN;
         bitMask += (tree.isNodeExpanded()) ? EXPANDED : NOTHING;
         bitMask += (tree.isLastChild(tree.getNodeId())) ? LAST : NOTHING;
         bitMask += (showLines) ? LINES : NOTHING;
