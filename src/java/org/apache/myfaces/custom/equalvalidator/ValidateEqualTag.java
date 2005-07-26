@@ -27,8 +27,8 @@ import javax.servlet.jsp.JspException;
  * @version $Revision$ $Date$
  */
 public class ValidateEqualTag extends ValidatorTag {
-
-	//the foreign component_id on which the validation is based.
+  private static final long serialVersionUID = -3249115551944863108L;
+  //the foreign component_id on which the validation is based.
 	private String _for = null;
 
 	public ValidateEqualTag(){

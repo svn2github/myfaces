@@ -30,7 +30,7 @@ import org.apache.myfaces.custom.tree.model.TreePath;
  */
 public class TreeSelectionEvent extends FacesEvent
 {
-
+    private static final long serialVersionUID = -361206105634892091L;
     private TreePath oldSelectionPath;
     private TreePath newSelectionPath;
 

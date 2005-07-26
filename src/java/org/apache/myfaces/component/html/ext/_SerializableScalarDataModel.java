@@ -24,6 +24,7 @@ import java.util.Collections;
 class _SerializableScalarDataModel
         extends _SerializableDataModel
 {
+    private static final long serialVersionUID = 8344668178297539400L;
     //private static final Log log = LogFactory.getLog(_SerializableDataModel.class);
 
     public _SerializableScalarDataModel(int first, int rows, Object scalar)

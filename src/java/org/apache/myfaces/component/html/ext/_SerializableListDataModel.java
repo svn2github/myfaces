@@ -28,6 +28,7 @@ import java.util.List;
 class _SerializableListDataModel
         extends _SerializableDataModel
 {
+    private static final long serialVersionUID = 2579712878688635627L;
     //private static final Log log = LogFactory.getLog(_SerializableDataModel.class);
 
     public _SerializableListDataModel(int first, int rows, List list)

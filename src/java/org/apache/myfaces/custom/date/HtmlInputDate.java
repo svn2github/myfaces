@@ -159,6 +159,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
     
     public static class UserData implements Serializable {
+        private static final long serialVersionUID = -6507279524833267707L;
         private String day;
         private String month;
         private String year;

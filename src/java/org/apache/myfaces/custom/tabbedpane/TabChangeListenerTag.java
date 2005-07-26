@@ -34,7 +34,7 @@ import org.apache.myfaces.util.ClassUtils;
  */
 public class TabChangeListenerTag extends TagSupport
 {
-
+    private static final long serialVersionUID = -6903749011638483023L;
     private String type = null;
 
 

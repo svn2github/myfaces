@@ -28,7 +28,7 @@ import java.io.InputStream;
  */
 public class UploadedFileDefaultMemoryImpl extends UploadedFileDefaultImplBase
 {
-
+    private static final long serialVersionUID = -6006333070975059090L;
     private byte[] bytes;
 
 

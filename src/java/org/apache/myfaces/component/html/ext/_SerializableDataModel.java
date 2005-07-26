@@ -30,8 +30,8 @@ class _SerializableDataModel
         extends DataModel
         implements Serializable
 {
+    private static final long serialVersionUID = -3511848078295893064L;
     //private static final Log log = LogFactory.getLog(_SerializableDataModel.class);
-
     protected int _first;
     protected int _rows;
     protected int _rowCount;

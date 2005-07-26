@@ -24,6 +24,7 @@ import java.sql.ResultSet;
 class _SerializableResultSetDataModel
         extends _SerializableDataModel
 {
+    private static final long serialVersionUID = -917870953917004531L;
     //private static final Log log = LogFactory.getLog(_SerializableDataModel.class);
 
     public _SerializableResultSetDataModel(int first, int rows, ResultSet resultSet)

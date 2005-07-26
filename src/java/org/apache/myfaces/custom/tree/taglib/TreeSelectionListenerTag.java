@@ -36,7 +36,7 @@ import org.apache.myfaces.util.ClassUtils;
  */
 public class TreeSelectionListenerTag extends TagSupport
 {
-
+    private static final long serialVersionUID = 7322612767746076403L;
     private String type = null;
 
 

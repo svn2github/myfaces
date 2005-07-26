@@ -25,6 +25,7 @@ import javax.faces.event.PhaseId;
  */
 
 class FacesEventWrapper extends FacesEvent {
+    private static final long serialVersionUID = -6878195444276533114L;
     private FacesEvent _wrappedFacesEvent;
 
     public FacesEventWrapper(FacesEvent facesEvent, AliasBeansScope redirectComponent) {

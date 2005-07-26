@@ -24,6 +24,7 @@ import javax.faces.model.SelectItem;
 public class NavigationMenuItem
     extends SelectItem
 {
+    private static final long serialVersionUID = 2801735314476639024L;
     private String _icon;
     private String _action;
     boolean _split;

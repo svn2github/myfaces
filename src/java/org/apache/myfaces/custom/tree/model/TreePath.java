@@ -26,8 +26,7 @@ public final class TreePath
         extends Object
         implements Serializable
 {
-
-
+    private static final long serialVersionUID = 8972939732002296134L;
     private Object[] elements;
 
 

@@ -25,6 +25,7 @@ import java.util.SortedMap;
 class _SerializableResultDataModel
         extends _SerializableDataModel
 {
+    private static final long serialVersionUID = -1935350044609953509L;
     //private static final Log log = LogFactory.getLog(_SerializableDataModel.class);
 
     public _SerializableResultDataModel(int first, int rows, javax.servlet.jsp.jstl.sql.Result result)

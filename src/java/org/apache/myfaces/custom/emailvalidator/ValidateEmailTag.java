@@ -25,8 +25,9 @@ import javax.servlet.jsp.JspException;
  */
 public class ValidateEmailTag extends ValidatorTag
 {
+  private static final long serialVersionUID = 6041422002721046221L;
 
-	public ValidateEmailTag()
+  public ValidateEmailTag()
     {
 	}
 

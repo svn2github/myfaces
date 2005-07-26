@@ -24,6 +24,7 @@ import java.util.ArrayList;
 class _SerializableArrayDataModel
         extends _SerializableDataModel
 {
+    private static final long serialVersionUID = -4785289115095508976L;
     //private static final Log log = LogFactory.getLog(_SerializableDataModel.class);
 
     public _SerializableArrayDataModel(int first, int rows, Object[] array)

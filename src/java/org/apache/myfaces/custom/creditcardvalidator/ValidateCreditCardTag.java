@@ -27,7 +27,8 @@ import javax.servlet.jsp.JspException;
  * @version $Revision$ $Date$
  */
 public class ValidateCreditCardTag extends ValidatorTag {
-	//Cardtypes, that are supported by Commons-Validator.
+  private static final long serialVersionUID = 3810660506302799072L;
+  //Cardtypes, that are supported by Commons-Validator.
 	private String _amex = null;
 	private String _discover = null;
 	private String _mastercard = null;

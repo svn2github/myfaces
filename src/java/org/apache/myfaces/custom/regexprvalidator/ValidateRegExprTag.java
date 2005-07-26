@@ -27,8 +27,8 @@ import javax.servlet.jsp.JspException;
  * @version $Revision$ $Date$
  */
 public class ValidateRegExprTag extends ValidatorTag {
-
-	//the pattern, needed by Commons-Validator.
+  private static final long serialVersionUID = -449945949876262076L;
+  //the pattern, needed by Commons-Validator.
 	private String _pattern = null;
 
 	public ValidateRegExprTag(){

@@ -32,8 +32,8 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class UpdateActionListenerTag
         extends TagSupport
 {
+    private static final long serialVersionUID = -6916153064327074092L;
     //private static final Log log = LogFactory.getLog(UpdateActionListenerTag.class);
-
     private String _property;
     private String _value;
     private String _converter;

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class TreeNodeBase implements TreeNode
 {
+    private static final long serialVersionUID = 278589014441538822L;
     private ArrayList children = new ArrayList();
     private String type;
     private String description;

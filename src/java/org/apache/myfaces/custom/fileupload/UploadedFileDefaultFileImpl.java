@@ -28,7 +28,8 @@ import java.io.InputStream;
  */
 public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
 {
-	private transient FileItem fileItem = null;
+  private static final long serialVersionUID = -6401426361519246443L;
+  private transient FileItem fileItem = null;
 
     /*
     TODO/manolito: Do we need an empty constructor?!

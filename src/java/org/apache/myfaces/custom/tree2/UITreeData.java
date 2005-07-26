@@ -540,7 +540,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     private static class SavedState implements Serializable
     {
-
+        private static final long serialVersionUID = 273343276957070557L;
         private Object submittedValue;
         private boolean valid = true;
         private Object value;
@@ -595,7 +595,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     private static class FacesEventWrapper extends FacesEvent
     {
-
+        private static final long serialVersionUID = -3056153249469828447L;
         private FacesEvent _wrappedFacesEvent;
         private String _nodeId;
 

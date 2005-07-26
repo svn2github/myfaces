@@ -35,7 +35,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class IconProviderTag
     extends TagSupport
 {
-
+    private static final long serialVersionUID = -8851450834386187922L;
     private String type = null;
 
 

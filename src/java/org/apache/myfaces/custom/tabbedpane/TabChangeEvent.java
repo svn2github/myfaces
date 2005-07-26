@@ -27,8 +27,8 @@ import javax.faces.event.PhaseId;
 public class TabChangeEvent
         extends FacesEvent
 {
+    private static final long serialVersionUID = -7249763750612129099L;
     //private static final Log log = LogFactory.getLog(TabChangeEvent.class);
-
     private int _oldTabIndex;
     private int _newTabIndex;
 
