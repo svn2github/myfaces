@@ -379,16 +379,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         values[7] = _rowCountVar;
         values[8] = _rowIndexVar;
 
-        values[9] = _rowOnClick = null;
-        values[10] = _rowOnDblClick = null;
-        values[11] = _rowOnMouseDown = null;
-        values[12] = _rowOnMouseUp = null;
-        values[13] = _rowOnMouseOver = null;
-        values[14] = _rowOnMouseMove = null;
-        values[15] = _rowOnMouseOut = null;
-        values[16] = _rowOnKeyPress = null;
-        values[17] = _rowOnKeyDown = null;
-        values[18] = _rowOnKeyUp = null;
+        values[9] = _rowOnClick;
+        values[10] = _rowOnDblClick;
+        values[11] = _rowOnMouseDown;
+        values[12] = _rowOnMouseUp;
+        values[13] = _rowOnMouseOver;
+        values[14] = _rowOnMouseMove;
+        values[15] = _rowOnMouseOut;
+        values[16] = _rowOnKeyPress;
+        values[17] = _rowOnKeyDown;
+        values[18] = _rowOnKeyUp;
 
         values[19] = preserveSort ? getSortColumn() : null;
         values[20] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
