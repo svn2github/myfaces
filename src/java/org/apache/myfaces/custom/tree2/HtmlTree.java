@@ -50,6 +50,7 @@ public class HtmlTree extends UITreeData
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
         _expandControl = new HtmlCommandLink();
+        _expandControl.setParent(this);
     }
 
     // see superclass for documentation
