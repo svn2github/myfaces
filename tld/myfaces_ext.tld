@@ -1841,7 +1841,7 @@
     </tag>
 
 	<!-- rss ticker component -->
-    <tag>
+    <!--tag>
         <name>rssTicker</name>
         <tag-class>org.apache.myfaces.custom.rssticker.HtmlRssTickerTag</tag-class>
         <body-content>JSP</body-content>
@@ -1850,7 +1850,7 @@
         </description>
         &html_universal_attributes;
 		<!-- attribute(s) for the rss ticker... -->
-		<attribute>
+		<!-- attribute>
 			<name>rssUrl</name>
 			<required>true</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -1858,7 +1858,7 @@
 				URL on whichs the rss-information are available.
 			</description>
 		</attribute>
-	</tag>
+	</tag-->
 
    <!-- tree -->
     <tag>
@@ -2403,14 +2403,14 @@
 	</tag>
 
     <!-- Validator for ISBN -->
-     <tag>
+     <!--tag>
         <name>validateISBN</name>
         <tag-class>org.apache.myfaces.custom.isbnvalidator.ValidateISBNTag</tag-class>
         <body-content>JSP</body-content>
         <description>
 			A custom validator for isbn codes, based upons Jakarta Commons.
         </description>
-	</tag>
+	</tag -->
 
     <!-- Validator for Regular Expressions -->
     <tag>
