@@ -342,7 +342,7 @@ abstract class HtmlDataTableHack extends
         }
     }
 
-    private static final DataModel EMPTY_DATA_MODEL = new DataModel()
+    private static final DataModel EMPTY_DATA_MODEL = new _SerializableDataModel()
     {
         public boolean isRowAvailable()
         {
