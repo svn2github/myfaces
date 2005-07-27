@@ -126,6 +126,11 @@ public class HtmlInputCalendar
         return v != null ? v.booleanValue() : false;
     }
 
+    public void setAddResources(Boolean addResources)
+    {
+        _addResources = addResources;
+    }
+
     public void setAddResources(boolean addResources)
     {
         _addResources = Boolean.valueOf(addResources);
