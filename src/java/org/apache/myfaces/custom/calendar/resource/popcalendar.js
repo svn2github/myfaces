@@ -624,7 +624,8 @@ else
   
   function jscalendarOnload() 
   {
-    jscalendarOnloadBackup();
+    if(jscalendarOnloadBackup!=null)
+        jscalendarOnloadBackup();
     jscalendarInit();
   }
 
