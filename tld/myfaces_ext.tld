@@ -1840,26 +1840,6 @@
         </attribute>
     </tag>
 
-	<!-- rss ticker component -->
-    <!--tag>
-        <name>rssTicker</name>
-        <tag-class>org.apache.myfaces.custom.rssticker.HtmlRssTickerTag</tag-class>
-        <body-content>JSP</body-content>
-        <description>
-            Extends standard commandButton by user role support.
-        </description>
-        &html_universal_attributes;
-		<!-- attribute(s) for the rss ticker... -->
-		<!-- attribute>
-			<name>rssUrl</name>
-			<required>true</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				URL on whichs the rss-information are available.
-			</description>
-		</attribute>
-	</tag-->
-
    <!-- tree -->
     <tag>
         <name>tree</name>
