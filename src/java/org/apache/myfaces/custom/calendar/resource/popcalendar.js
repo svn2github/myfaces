@@ -114,7 +114,7 @@ if (jscalendarDom){
 	for	(i=0;i<jscalendarImgsrc.length;i++)
 		jscalendarImg[i] = new Image;
 
-	document.write ("<div onclick='jscalendarBShow=true' id='calendar'	class='"+jscalendarThemePrefix+"-div-style'><table	width="+((jscalendarShowWeekNumber==1)?250:220)+" class='"+jscalendarThemePrefix+"-table-style'><tr class='"+jscalendarThemePrefix+"-title-background-style'><td><table width='"+((jscalendarShowWeekNumber==1)?248:218)+"'><tr><td class='"+jscalendarThemePrefix+"-title-style'><span id='caption'></span></td><td align=right><a href='javascript:jscalendarHideCalendar()'><span id='jscalendarCloseButton'></span></a></td></tr></table></td></tr><tr><td class='"+jscalendarThemePrefix+"-body-style'><span id='content'></span></td></tr>")
+ 	document.write ("<div onclick='jscalendarBShow=true' id='calendar'	class='"+jscalendarThemePrefix+"-div-style'><table	width="+((jscalendarShowWeekNumber==1)?250:220)+" class='"+jscalendarThemePrefix+"-table-style'><tr class='"+jscalendarThemePrefix+"-title-background-style'><td><table width='"+((jscalendarShowWeekNumber==1)?248:218)+"'><tr><td class='"+jscalendarThemePrefix+"-title-style'><span id='caption'></span></td><td align=right><a href='javascript:jscalendarHideCalendar()'><span id='jscalendarCloseButton'></span></a></td></tr></table></td></tr><tr><td class='"+jscalendarThemePrefix+"-body-style'><span id='popupcalendar_content'></span></td></tr>")
 		
 	if (jscalendarShowToday==1)
 		document.write ("<tr class='"+jscalendarThemePrefix+"-today-style'><td class='"+jscalendarThemePrefix+"-today-lbl-style'><span id='lblToday'></span></td></tr>")
@@ -471,7 +471,7 @@ function jscalendarConstructCalendar () {
 		}
 	}
 
-	document.getElementById("content").innerHTML = sHTML;
+	document.getElementById("popupcalendar_content").innerHTML = sHTML;
 	document.getElementById("spanMonth").innerHTML = "&#160;" +	jscalendarMonthName[jscalendarMonthSelected] + "&#160;<IMG id='changeMonth' SRC='"+jscalendarImgDir+"drop1.gif' WIDTH='12' HEIGHT='10' BORDER=0>";
 	document.getElementById("spanYear").innerHTML =	"&#160;" + jscalendarYearSelected	+ "&#160;<IMG id='changeYear' SRC='"+jscalendarImgDir+"drop1.gif' WIDTH='12' HEIGHT='10' BORDER=0>";
 	document.getElementById("jscalendarCloseButton").innerHTML = "<img src='"+jscalendarImgDir+"close.gif' width='15' height='13' border='0' alt='Close the Calendar'>";
