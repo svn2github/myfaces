@@ -619,4 +619,14 @@ document.onclick = function jscalendarHidecal2 () {
 if(jscalendarIe)
 	jscalendarInit();
 else
-	window.onload=jscalendarInit;
+{  
+  var jscalendarOnloadBackup = window.onload;
+  
+  function jscalendarOnload() 
+  {
+    jscalendarOnloadBackup();
+    jscalendarInit();
+  }
+
+  window.onload=jscalendarOnload;
+}
