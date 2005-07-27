@@ -128,7 +128,7 @@ public class HtmlInputCalendar
 
     public void setAddResources(Boolean addResources)
     {
-        _addResources = addResources;
+        _addResources = addResources==null?Boolean.TRUE:addResources;
     }
 
     public void setAddResources(boolean addResources)
