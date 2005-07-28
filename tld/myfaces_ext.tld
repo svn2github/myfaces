@@ -2488,4 +2488,36 @@
         </attribute>        
      </tag>
 
+  <!-- form -->
+    <tag>
+        <name>form</name>
+        <tag-class>org.apache.myfaces.taglib.html.ext.HtmlFormTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Renders a HTML form element which allow defining a different scheme, servername or port for the action url 
+            to which the form is submited
+        </description>
+        &ui_form_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_form_attributes;
+        <attribute>
+            <name>scheme</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the url scheme for the action attribute</description>
+        </attribute>        
+        <attribute>
+            <name>serverName</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the url server name or ip address for the action attribute</description>
+        </attribute>        
+        <attribute>
+            <name>port</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the port for the action attribute</description>
+        </attribute>        
+    </tag>
 </taglib>
