@@ -107,6 +107,14 @@ public class JsValueChangeListenerRenderer
             if(oldValueStr.indexOf(value)!=-1)
                 return;
 
+            //check if multiple change listeners belong to parent component
+            //and if the previous rendered information has to be cleared
+            if(oldValueStr.indexOf("orgApacheMyfacesJsListenerSetExpressionProperty(")> 0
+                       && oldValueStr.indexOf(uiComponent.getClientId(getFacesContext())) < 0)
+            {
+                oldValueStr = oldValueStr.substring(0,oldValueStr.indexOf("orgApacheMyfacesJsListenerSetExpressionProperty("));
+            }
+
             if(oldValueStr.length()>0 && !oldValueStr.endsWith(";"))
                 oldValueStr +=";";
 
