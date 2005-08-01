@@ -5,26 +5,28 @@ package org.apache.myfaces.renderkit.html.ext;
  * @version $Revision$ $Date$
  */
 
-import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import javax.faces.context.FacesContext;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import org.apache.myfaces.component.html.ext.HtmlDataTable;
-import org.apache.myfaces.custom.crosstable.UIColumns;
-import org.apache.myfaces.renderkit.html.HTML;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
-public class HtmlTableRenderer
-        extends HtmlTableRendererBase
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
+import org.apache.myfaces.custom.column.HtmlColumn;
+import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
+
+public class HtmlTableRenderer extends HtmlTableRendererBase
 {
     //private static final Log log = LogFactory.getLog(HtmlTableRenderer.class);
 
-    protected void renderRowStart(
-            FacesContext facesContext,
-            ResponseWriter writer,
-            UIData uiData,
-            String rowStyleClass) throws IOException
+    protected void renderRowStart(FacesContext facesContext,
+                    ResponseWriter writer, UIData uiData, String rowStyleClass)
+                    throws IOException
     {
         super.renderRowStart(facesContext, writer, uiData, rowStyleClass);
 
@@ -43,31 +45,68 @@ public class HtmlTableRenderer
         renderRowAttribute(writer, HTML.ONMOUSEUP_ATTR, table.getRowOnMouseUp());
     }
 
-    protected void renderRowAttribute(ResponseWriter writer, String htmlAttribute, Object value) throws IOException
+    protected void renderRowAttribute(ResponseWriter writer,
+                    String htmlAttribute, Object value) throws IOException
     {
-      if(value != null)
-      {
-        writer.writeAttribute(htmlAttribute, value, null);
-      }
+        if (value != null)
+        {
+            writer.writeAttribute(htmlAttribute, value, null);
+        }
     }
 
     /**
      * handles uicolumns component
      * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.lang.String)
      */
-    protected void encodeColumnChild(FacesContext facesContext, ResponseWriter writer,
-                    UIData uiData, UIComponent component, String columnStyle) throws IOException
+    protected void encodeColumnChild(FacesContext facesContext,
+                    ResponseWriter writer, UIData uiData,
+                    UIComponent component, String columnStyle)
+                    throws IOException
     {
-        super.encodeColumnChild(facesContext, writer, uiData, component, columnStyle);
+        super.encodeColumnChild(facesContext, writer, uiData, component,
+                        columnStyle);
         if (component instanceof UIColumns)
         {
             UIColumns columns = (UIColumns) component;
             for (int k = 0, colSize = columns.getRowCount(); k < colSize; k++)
             {
                 columns.setRowIndex(k);
-                renderColumnBody(facesContext, writer, uiData, component, columnStyle);
+                renderColumnBody(facesContext, writer, uiData, component,
+                                columnStyle);
             }
             columns.setRowIndex(-1);
+        }
+    }
+
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnBody(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.lang.String)
+     */
+    protected void renderColumnBody(FacesContext facesContext,
+                    ResponseWriter writer, UIData uiData,
+                    UIComponent component, String columnStyleClass)
+                    throws IOException
+    {
+        if (component instanceof HtmlColumn)
+        {
+            writer.startElement(HTML.TD_ELEM, uiData);
+            String styleClass = ((HtmlColumn) component).getStyleClass();
+            if (styleClass == null)
+            {
+                styleClass = columnStyleClass;
+            }
+            if (styleClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+            }
+            renderHtmlColumnAttributes(writer, component, null);
+
+            RendererUtils.renderChild(facesContext, component);
+            writer.endElement(HTML.TD_ELEM);
+        }
+        else
+        {
+            super.renderColumnBody(facesContext, writer, uiData, component,
+                            columnStyleClass);
         }
     }
 
@@ -75,12 +114,13 @@ public class HtmlTableRenderer
      * handles uicolumns component
      * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnChildHeaderOrFooterRow(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, java.lang.String, boolean)
      */
-    protected void renderColumnChildHeaderOrFooterRow(FacesContext facesContext,
-                    ResponseWriter writer, UIComponent uiComponent, String styleClass,
-                    boolean header) throws IOException
+    protected void renderColumnChildHeaderOrFooterRow(
+                    FacesContext facesContext, ResponseWriter writer,
+                    UIComponent uiComponent, String styleClass, boolean header)
+                    throws IOException
     {
-        super.renderColumnChildHeaderOrFooterRow(facesContext, writer, uiComponent, styleClass,
-                        header);
+        super.renderColumnChildHeaderOrFooterRow(facesContext, writer,
+                        uiComponent, styleClass, header);
         if (uiComponent instanceof UIColumns)
         {
             UIColumns columns = (UIColumns) uiComponent;
@@ -89,17 +129,120 @@ public class HtmlTableRenderer
                 columns.setRowIndex(i);
                 if (header)
                 {
-                    renderColumnHeaderCell(facesContext, writer, columns, columns.getHeader(),
-                                    styleClass, 0);
+                    renderColumnHeaderCell(facesContext, writer, columns,
+                                    columns.getHeader(), styleClass, 0);
                 }
                 else
                 {
-                    renderColumnFooterCell(facesContext, writer, columns, columns.getFooter(),
-                                    styleClass, 0);
+                    renderColumnFooterCell(facesContext, writer, columns,
+                                    columns.getFooter(), styleClass, 0);
                 }
             }
             columns.setRowIndex(-1);
         }
+    }
+
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnHeaderCell(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, javax.faces.component.UIComponent, java.lang.String, int)
+     */
+    protected void renderColumnHeaderCell(FacesContext facesContext,
+                    ResponseWriter writer, UIComponent uiComponent,
+                    UIComponent facet, String headerStyleClass, int colspan)
+                    throws IOException
+    {
+        if (uiComponent instanceof HtmlColumn)
+        {
+            writer.startElement(HTML.TH_ELEM, uiComponent);
+            if (colspan > 1)
+            {
+                writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(colspan),
+                                null);
+            }
+            String styleClass = ((HtmlColumn) uiComponent)
+                            .getHeaderstyleClass();
+            if (styleClass == null)
+            {
+                styleClass = headerStyleClass;
+            }
+            if (styleClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+            }
+            renderHtmlColumnAttributes(writer, uiComponent, "header");
+            if (facet != null)
+            {
+                RendererUtils.renderChild(facesContext, facet);
+            }
+            writer.endElement(HTML.TH_ELEM);
+        }
+        else
+        {
+            super.renderColumnHeaderCell(facesContext, writer, uiComponent,
+                            facet, headerStyleClass, colspan);
+        }
+    }
+
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnFooterCell(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, javax.faces.component.UIComponent, java.lang.String, int)
+     */
+    protected void renderColumnFooterCell(FacesContext facesContext,
+                    ResponseWriter writer, UIComponent uiComponent,
+                    UIComponent facet, String footerStyleClass, int colspan)
+                    throws IOException
+    {
+        if (uiComponent instanceof HtmlColumn)
+        {
+            writer.startElement(HTML.TD_ELEM, uiComponent);
+            if (colspan > 1)
+            {
+                writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(colspan),
+                                null);
+            }
+            String styleClass = ((HtmlColumn) uiComponent)
+                            .getFooterstyleClass();
+            if (styleClass == null)
+            {
+                styleClass = footerStyleClass;
+            }
+            if (styleClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+            }
+            renderHtmlColumnAttributes(writer, uiComponent, "footer");
+            if (facet != null)
+            {
+                RendererUtils.renderChild(facesContext, facet);
+            }
+            writer.endElement(HTML.TD_ELEM);
+        }
+        else
+        {
+            super.renderColumnFooterCell(facesContext, writer, uiComponent,
+                            facet, footerStyleClass, colspan);
+        }
+    }
+
+    /**
+     * @param writer
+     * @param uiComponent
+     * @param prefix header, footer or null
+     * @throws IOException 
+     */
+    protected void renderHtmlColumnAttributes(ResponseWriter writer,
+                    UIComponent uiComponent, String prefix) throws IOException
+    {
+        String[] attrs = HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE;
+        for (int i = 0, size = attrs.length; i < size; i++)
+        {
+            String attributeName = attrs[i];
+            String compAttrName = prefix != null ? prefix + attributeName : attributeName;
+            HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
+                            compAttrName, attributeName);
+        }
+        String compAttrName = prefix != null ? prefix + HTML.STYLE_ATTR : HTML.STYLE_ATTR;
+        HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
+                        compAttrName, HTML.STYLE_ATTR);
+
     }
 
     /**

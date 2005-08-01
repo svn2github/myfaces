@@ -334,6 +334,11 @@
 		<component-class>org.apache.myfaces.custom.crosstable.UIColumns</component-class>
 	</component>
 
+  <component>
+    <component-type>org.apache.myfaces.HtmlColumn</component-type>
+    <component-class>org.apache.myfaces.custom.column.HtmlColumn</component-class>
+  </component>
+
     <!-- additional "by type" converters -->
 
     <converter>
