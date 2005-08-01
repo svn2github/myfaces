@@ -254,17 +254,18 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 		else
 		{
 			forComp = findComponent(forStr);
-			if (forComp == null)
-			{
-				log.warn("could not find UIData referenced by attribute dataScroller@for = '"
-								+ forStr + "'");
-			}
 		}
-		if (!(forComp instanceof UIData))
+		if (forComp == null)
 		{
 			throw new IllegalArgumentException(
-							"uiComponent referenced by attribute dataScroller@for must be of type "
-											+ UIData.class.getName());
+			        "could not find UIData referenced by attribute dataScroller@for = '"
+					+ forStr + "'");
+		}
+		else if (!(forComp instanceof UIData))
+		{
+			throw new IllegalArgumentException(
+							"uiComponent referenced by attribute dataScroller@for = '" + forStr + "' must be of type "
+											+ UIData.class.getName() + ", not type " + forComp.getClass().getName());
 		}
 		return (UIData) forComp;
 	}
