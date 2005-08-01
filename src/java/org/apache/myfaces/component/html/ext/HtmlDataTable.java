@@ -471,7 +471,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     }
     
     /**
-     * @return
+     * @return _SerializableDataModel
      */
     private _SerializableDataModel createSerializableDataModel()
     {

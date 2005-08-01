@@ -208,7 +208,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		removeVariables(facesContext, scroller);
 	}
 
-	public void renderScroller(FacesContext facesContext, HtmlDataScroller scroller)
+	protected void renderScroller(FacesContext facesContext, HtmlDataScroller scroller)
 					throws IOException
 	{
 		ResponseWriter writer = facesContext.getResponseWriter();
@@ -282,7 +282,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		writer.endElement("table");
 	}
 
-	private void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
+	protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
 					UIComponent facetComp, String facetName) throws IOException
 	{
 		UIComponent link = getLink(facesContext, scroller, facetComp, facetName);

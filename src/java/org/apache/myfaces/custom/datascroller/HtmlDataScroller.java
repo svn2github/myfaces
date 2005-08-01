@@ -422,12 +422,12 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 	private Boolean _renderFacetsIfSinglePage = null;
 	private Boolean _immediate;
 
-	protected static final String FACET_FIRST = "first".intern();
-	protected static final String FACET_PREVIOUS = "previous".intern();
-	protected static final String FACET_NEXT = "next".intern();
-	protected static final String FACET_LAST = "last".intern();
-	protected static final String FACET_FAST_FORWARD = "fastf".intern();
-	protected static final String FACET_FAST_REWIND = "fastr".intern();
+	public static final String FACET_FIRST = "first".intern();
+	public static final String FACET_PREVIOUS = "previous".intern();
+	public static final String FACET_NEXT = "next".intern();
+	public static final String FACET_LAST = "last".intern();
+	public static final String FACET_FAST_FORWARD = "fastf".intern();
+	public static final String FACET_FAST_REWIND = "fastr".intern();
 
 	public HtmlDataScroller()
 	{

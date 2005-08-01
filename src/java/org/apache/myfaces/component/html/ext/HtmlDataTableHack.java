@@ -301,8 +301,7 @@ abstract class HtmlDataTableHack extends
 
     protected void setDataModel(DataModel datamodel)
     {
-        _dataModelMap
-                        .put(getParent().getClientId(getFacesContext()),
+        _dataModelMap.put(getParent().getClientId(getFacesContext()),
                                         datamodel);
     }
 

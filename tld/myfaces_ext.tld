@@ -2455,6 +2455,7 @@
         &ui_graphic_attributes;
         &html_universal_attributes;
         &html_img_attributes;
+        &spec_img_attributes;
         <attribute><name>onclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>ondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>onkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
