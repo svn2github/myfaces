@@ -263,8 +263,8 @@ function jscalendarConstructMonth(){
 function jscalendarPopUpMonth() {
 	jscalendarConstructMonth()
 	jscalendarCrossMonthObj.visibility = (jscalendarDom||jscalendarIe)? "visible"	: "show"
-	jscalendarCrossMonthObj.left = parseInt(jscalendarCrossobj.left) + 50 + "px";
-	jscalendarCrossMonthObj.top =	parseInt(jscalendarCrossobj.top) + 26 + "px";
+	jscalendarCrossMonthObj.left = parseInt(jscalendarCrossobj.left,10) + 50 + "px";
+	jscalendarCrossMonthObj.top =	parseInt(jscalendarCrossobj.top,10) + 26 + "px";
 
 	jscalendarHideElement( 'SELECT', document.getElementById("selectMonth") );
 	jscalendarHideElement( 'APPLET', document.getElementById("selectMonth") );
@@ -303,7 +303,7 @@ function jscalendarDecYear() {
 }
 
 function jscalendarSelectYear(nYear) {
-	jscalendarYearSelected=parseInt(nYear+jscalendarNStartingYear);
+	jscalendarYearSelected=parseInt(nYear+jscalendarNStartingYear,10);
 	jscalendarYearConstructed=false;
 	jscalendarConstructCalendar();
 	jscalendarPopDownYear();
@@ -348,11 +348,11 @@ function jscalendarPopUpYear() {
 
 	jscalendarConstructYear();
 	jscalendarCrossYearObj.visibility = (jscalendarDom||jscalendarIe) ? "visible" : "show";
-	leftOffset = parseInt(jscalendarCrossobj.left) + document.getElementById("spanYear").offsetLeft;
+	leftOffset = parseInt(jscalendarCrossobj.left,10) + document.getElementById("spanYear").offsetLeft;
 	if (jscalendarIe)
 		leftOffset += 6;
 	jscalendarCrossYearObj.left =	leftOffset + "px";
-	jscalendarCrossYearObj.top = parseInt(jscalendarCrossobj.top) +	26 + "px";
+	jscalendarCrossYearObj.top = parseInt(jscalendarCrossobj.top,10) +	26 + "px";
 }
 
 /*** calendar ***/
@@ -444,9 +444,9 @@ function jscalendarConstructCalendar () {
 		sHint = ""
 		for (k=0;k<jscalendarHolidaysCounter;k++)
 		{
-			if ((parseInt(jscalendarHolidays[k].d)==datePointer)&&(parseInt(jscalendarHolidays[k].m)==(jscalendarMonthSelected+1)))
+			if ((parseInt(jscalendarHolidays[k].d,10)==datePointer)&&(parseInt(jscalendarHolidays[k].m,10)==(jscalendarMonthSelected+1)))
 			{
-				if ((parseInt(jscalendarHolidays[k].y)==0)||((parseInt(jscalendarHolidays[k].y)==jscalendarYearSelected)&&(parseInt(jscalendarHolidays[k].y)!=0)))
+				if ((parseInt(jscalendarHolidays[k].y,10)==0)||((parseInt(jscalendarHolidays[k].y,10)==jscalendarYearSelected)&&(parseInt(jscalendarHolidays[k].y,10)!=0)))
 				{
 					sStyle += " "+jscalendarThemePrefix+"-holiday-style";
 					sHint+=sHint==""?jscalendarHolidays[k].desc:"\n"+jscalendarHolidays[k].desc
@@ -509,16 +509,16 @@ function jscalendarPopUpCalendar(ctl, ctl2, format){
 
 				for	(i=0;i<3;i++){
 					if ((aFormat[i]=="d") || (aFormat[i]=="dd")){
-						jscalendarDateSelected = parseInt(aData[i]);
+						jscalendarDateSelected = parseInt(aData[i],10);
 						tokensChanged++;
 					}else if ((aFormat[i]=="m") || (aFormat[i]=="mm") || (aFormat[i]=="M") || (aFormat[i]=="MM")){
-						jscalendarMonthSelected = parseInt(aData[i]) - 1;
+						jscalendarMonthSelected = parseInt(aData[i],10) - 1;
 						tokensChanged++;
 					}else if (aFormat[i]=="yyyy"){
-						jscalendarYearSelected = parseInt(aData[i]);
+						jscalendarYearSelected = parseInt(aData[i],10);
 						tokensChanged++;
 					}else if (aFormat[i]=="yy"){
-					    newYear = parseInt(aData[i]);
+					    newYear = parseInt(aData[i],10);
 
 					    if(newYear>50)
 						    jscalendarYearSelected = 1900+newYear;
@@ -566,9 +566,9 @@ function jscalendarPopUpCalendarForInputDate(clientId, format){
 		jscalendarMyFacesInputDateClientId = clientId;
 		jscalendarDateFormat=format;
 		
-		jscalendarDateSelected = parseInt( document.getElementById(clientId+".day").value );
-		jscalendarMonthSelected = parseInt( document.getElementById(clientId+".month").value )-1;
-		jscalendarYearSelected = parseInt( document.getElementById(clientId+".year").value );
+		jscalendarDateSelected = parseInt( document.getElementById(clientId+".day").value,10);
+		jscalendarMonthSelected = parseInt( document.getElementById(clientId+".month").value,10)-1;
+		jscalendarYearSelected = parseInt( document.getElementById(clientId+".year").value,10);
 		jscalendarCtlNow = document.getElementById(clientId+".day");
 		jscalendarPopUpCalendar_Show(document.getElementById(clientId+".day"));
 	}
