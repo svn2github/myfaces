@@ -19,6 +19,7 @@ import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -30,6 +31,8 @@ import javax.faces.event.PhaseId;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+
+import sun.reflect.generics.scope.Scope;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -48,6 +51,8 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 
 	// just for caching the associated uidata
 	private transient UIData _UIData;
+
+    private MethodBinding _actionListener;
 
 	/**
 	 * @see javax.faces.component.UIComponentBase#queueEvent(javax.faces.event.FacesEvent)
@@ -75,9 +80,12 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 	{
 		super.broadcast(event);
 
-		if (event instanceof ScrollerActionEvent)
+        if (event instanceof ScrollerActionEvent)
 		{
-			ScrollerActionEvent scrollerEvent = (ScrollerActionEvent) event;
+            ScrollerActionEvent scrollerEvent = (ScrollerActionEvent) event;
+
+            broadcastToActionListener(scrollerEvent);
+            
 			UIData uiData = getUIData();
 			if (uiData == null)
 			{
@@ -158,6 +166,32 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 	}
 
 	/**
+     * @param event
+     */
+    protected void broadcastToActionListener(ScrollerActionEvent event)
+    {
+        FacesContext context = getFacesContext();
+
+        MethodBinding actionListenerBinding = getActionListener();
+        if (actionListenerBinding != null)
+        {
+            try
+            {
+                actionListenerBinding.invoke(context, new Object[] {event});
+            }
+            catch (EvaluationException e)
+            {
+                Throwable cause = e.getCause();
+                if (cause != null && cause instanceof AbortProcessingException)
+                {
+                    throw (AbortProcessingException)cause;
+                }
+                throw e;
+            }
+        }
+    }
+
+    /**
 	 * @return int
 	 */
 	public UIData getUIData()
@@ -353,22 +387,21 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 						"defining an action is not supported. use an actionlistener");
 	}
 
-	/**
-	 * @see javax.faces.component.ActionSource#getActionListener()
-	 */
-	public MethodBinding getActionListener()
-	{
-		return null;
-	}
+    /**
+     * @see javax.faces.component.ActionSource#setActionListener(javax.faces.el.MethodBinding)
+     */
+    public void setActionListener(MethodBinding actionListener)
+    {
+        _actionListener = actionListener;
+    }
 
-	/**
-	 * @see javax.faces.component.ActionSource#setActionListener(javax.faces.el.MethodBinding)
-	 */
-	public void setActionListener(MethodBinding actionListener)
-	{
-		throw new UnsupportedOperationException(
-						"defining an action is not supported. use an actionlistener");
-	}
+    /**
+     * @see javax.faces.component.ActionSource#getActionListener()
+     */
+    public MethodBinding getActionListener()
+    {
+        return _actionListener;
+    }
 
 	/**
 	 * @see javax.faces.component.ActionSource#addActionListener(javax.faces.event.ActionListener)
@@ -707,7 +740,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 
 	public Object saveState(FacesContext context)
 	{
-		Object values[] = new Object[22];
+		Object values[] = new Object[23];
 		values[0] = super.saveState(context);
 		values[1] = _for;
 		values[2] = _fastStep;
@@ -730,6 +763,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 		values[19] = _paginatorActiveColumnStyle;
 		values[20] = _renderFacetsIfSinglePage;
 		values[21] = _immediate;
+        values[22] = saveAttachedState(context, _actionListener);
 		return values;
 	}
 
@@ -758,6 +792,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 		_paginatorActiveColumnStyle = (String) values[19];
 		_renderFacetsIfSinglePage = (Boolean) values[20];
 		_immediate = (Boolean) values[21];
+        _actionListener = (MethodBinding)restoreAttachedState(context, values[22]);
 	}
 
 	//------------------ GENERATED CODE END ---------------------------------------

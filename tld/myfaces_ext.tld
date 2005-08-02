@@ -1162,6 +1162,13 @@
             <type>java.lang.String</type>
             <description>True means, that the default ActionListener should be executed immediately (i.e. during Apply Request Values phase of the request processing lifecycle), rather than waiting until the Invoke Application phase.</description>
         </attribute>
+        <attribute>
+            <name>actionListener</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>MethodBinding pointing at method acception an ActionEvent with return type void.</description>
+        </attribute>
      </tag>
 
     <!-- inputDate -->

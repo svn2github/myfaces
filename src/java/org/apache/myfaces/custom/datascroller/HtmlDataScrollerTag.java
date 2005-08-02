@@ -117,6 +117,7 @@ public class HtmlDataScrollerTag
 	private String _renderFacetsIfSinglePage;
 	
     private String _immediate;
+    private String _actionListener;
 
     // User Role support
     private String _enabledOnUserRole;
@@ -146,6 +147,7 @@ public class HtmlDataScrollerTag
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
         _immediate=null;
+        _actionListener=null;
     }
     
     public String getComponentType()
@@ -183,6 +185,7 @@ public class HtmlDataScrollerTag
 		setBooleanProperty(component, RENDER_FACETS_IF_SINGLE_PAGE_ATTR, _renderFacetsIfSinglePage);
 		
         setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
+        setActionListenerProperty(component, _actionListener);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
@@ -287,6 +290,11 @@ public class HtmlDataScrollerTag
     public void setImmediate(String immediate)
     {
         _immediate = immediate;
+    }
+
+    public void setActionListener(String actionListener)
+    {
+        _actionListener = actionListener;
     }
 
     // userrole attributes
