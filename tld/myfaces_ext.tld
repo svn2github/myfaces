@@ -1760,6 +1760,7 @@
 		<description>Places a div around its children</description>
 		&ui_component_attributes;
         &ext_forceId_attribute;
+        &user_role_attributes;
 		<attribute>
 			<name>style</name>
 			<required>false</required>
@@ -1787,6 +1788,7 @@
 		<description>Places the given HTML tag div around its children</description>
 		&ui_component_attributes;
         &ext_forceId_attribute;
+        &user_role_attributes;
         <attribute>
             <name>value</name>
             <required>true</required>

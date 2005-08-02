@@ -21,45 +21,62 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+
 /**
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date: 2005-05-11 11:47:12 -0400 (Wed, 11 May 2005) $
  */
-public class HtmlTagRenderer extends HtmlRenderer {
-  public static final String RENDERER_TYPE = "org.apache.myfaces.HtmlTagRenderer";
+public class HtmlTagRenderer extends HtmlRenderer
+{
+    public static final String RENDERER_TYPE = "org.apache.myfaces.HtmlTagRenderer";
 
-  public void encodeBegin(FacesContext context, UIComponent component)
-      throws IOException {
-    if ((context == null) || (component == null)) {
-      throw new NullPointerException();
+    public void encodeBegin(FacesContext context, UIComponent component)
+            throws IOException
+    {
+        if ((context == null) || (component == null))
+        {
+            throw new NullPointerException();
+        }
+        HtmlTag htmlTag = (HtmlTag) component;
+
+        if (htmlTag.isRendered())
+        {
+            ResponseWriter writer = context.getResponseWriter();
+
+            writer.startElement(htmlTag.getValue().toString(), htmlTag);
+            HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
+
+            String styleClass = htmlTag.getStyleClass();
+            String style = htmlTag.getStyle();
+
+            if (null != styleClass)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+            }
+            if (null != style)
+            {
+                writer.writeAttribute(HTML.STYLE_ATTR, style, null);
+            }
+        }  
     }
-    HtmlTag htmlTag = (HtmlTag) component;
-    ResponseWriter writer = context.getResponseWriter();
 
-    writer.startElement(htmlTag.getValue().toString(), htmlTag);
-    HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
+    public void encodeEnd(FacesContext context, UIComponent component)
+            throws IOException
+    {
+        if ((context == null) || (component == null))
+        {
+            throw new NullPointerException();
+        }
+        HtmlTag htmlTag = (HtmlTag) component;
 
-    String styleClass = htmlTag.getStyleClass();
-    String style = htmlTag.getStyle();
-
-    if(null != styleClass) {
-        writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
+        if (htmlTag.isRendered())
+        {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.endElement(htmlTag.getValue().toString());
+        }
     }
-    if(null != style) {
-        writer.writeAttribute(HTML.STYLE_ATTR, style, null);
-    }
-  }
-
-  public void encodeEnd(FacesContext context, UIComponent component)
-      throws IOException {
-    if ((context == null) || (component == null)) {
-      throw new NullPointerException();
-    }
-    HtmlTag htmlTag = (HtmlTag) component;
-    ResponseWriter writer = context.getResponseWriter();
-    writer.endElement(htmlTag.getValue().toString());
-  }
 }

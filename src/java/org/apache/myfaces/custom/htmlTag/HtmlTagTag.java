@@ -16,6 +16,8 @@
 package org.apache.myfaces.custom.htmlTag;
 
 import javax.faces.component.UIComponent;
+
+import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
 /**
  * @author bdudney (latest modification by $Author$)
@@ -24,6 +26,8 @@ import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
 public class HtmlTagTag extends HtmlOutputTextTagBase {
   private String _style = null;
   private String _styleClass = null;
+  private String _enabledOnUserRole;
+  private String _visibleOnUserRole;
 
   public String getComponentType() {
     return HtmlTag.COMPONENT_TYPE;
@@ -37,6 +41,8 @@ public class HtmlTagTag extends HtmlOutputTextTagBase {
     super.release();
     this._style = null;
     this._styleClass = null;
+    this._enabledOnUserRole=null;
+    this._visibleOnUserRole=null;
   }
 
   /**
@@ -46,6 +52,8 @@ public class HtmlTagTag extends HtmlOutputTextTagBase {
     super.setProperties(component);
     setStringProperty(component, "style", _style);
     setStringProperty(component, "styleClass", _styleClass);
+    setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
+    setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
   }
 
   public void setStyle(String style) {
@@ -54,5 +62,15 @@ public class HtmlTagTag extends HtmlOutputTextTagBase {
 
   public void setStyleClass(String styleClass) {
     this._styleClass = styleClass;
+  }
+  
+  public void setEnabledOnUserRole(String enabledOnUserRole)
+  {
+      _enabledOnUserRole = enabledOnUserRole;
+  }
+
+  public void setVisibleOnUserRole(String visibleOnUserRole)
+  {
+      _visibleOnUserRole = visibleOnUserRole;
   }
 }
