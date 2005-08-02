@@ -19,8 +19,6 @@ import javax.faces.component.UIColumn;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.apache.myfaces.renderkit.html.HTML;
-
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
