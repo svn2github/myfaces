@@ -1706,6 +1706,7 @@
         &standard_select_one_menu_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
+        &display_value_only_attributes;
     </tag>
 
     <!-- selectOneLanguage -->
@@ -1730,6 +1731,7 @@
         &standard_select_one_menu_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
+        &display_value_only_attributes;
     </tag>
 
 	<!-- stylesheet -->
