@@ -87,7 +87,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
 	        encodeInputYear(inputDate, writer, clientId, userData, disabled, readonly);
 	        
 	        if( inputDate.isPopupCalendar() && ! disabled && ! readonly )
-	            encodePopupCalendarButton(facesContext, writer, clientId, currentLocale);
+	            encodePopupCalendarButton(facesContext, uiComponent, writer, clientId, currentLocale);
         }
         if( type.equals("both") ){
             writer.write(" ");
@@ -189,7 +189,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         encodeInputField(uiComponent, writer, clientId + ID_SECONDS_POSTFIX, userData.getSeconds(), 2, disabled, readonly);
     }
     
-    protected void encodePopupCalendarButton(FacesContext facesContext, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
+    protected void encodePopupCalendarButton(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
         HtmlCalendarRenderer.addScriptAndCSSResources(facesContext);
         
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
@@ -210,7 +210,17 @@ public class HtmlDateRenderer extends HtmlRenderer {
         writer.endElement(HTML.SCRIPT_ELEM);
         
         String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext, null);
-        writer.write("<input type='button' onclick='jscalendarPopUpCalendarForInputDate(\""+clientId+"\",\""+dateFormat+"\")' value='...'/>");
+        
+        // render the button
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
+        
+        String jsCalendarFunctionCall = "jscalendarPopUpCalendarForInputDate('"+clientId+"','"+dateFormat+"')";
+        writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
+        writer.writeAttribute(HTML.VALUE_ATTR, "...", null);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
+        
+        writer.endElement(HTML.INPUT_ELEM);
     }
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

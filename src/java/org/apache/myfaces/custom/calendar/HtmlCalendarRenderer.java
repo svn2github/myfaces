@@ -155,8 +155,10 @@ public class HtmlCalendarRenderer
 	            writer.write("<!--\n");
 	            writer.writeText(getLocalizedLanguageScript(symbols, months,
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar),null);
-	            writer.writeText(getScriptBtnText(inputCalendar.getClientId(facesContext),
-	                    dateFormat,inputCalendar.getPopupButtonString()),null);
+	            //writer.writeText(getScriptBtnText(inputCalendar.getClientId(facesContext),
+	            //        dateFormat,inputCalendar.getPopupButtonString()),null);
+                writeScriptBtnText(facesContext, inputCalendar,
+                        dateFormat,inputCalendar.getPopupButtonString());
 	            writer.write("\n-->");
 	            writer.endElement(HTML.SCRIPT_ELEM);
 	
@@ -329,25 +331,30 @@ public class HtmlCalendarRenderer
         script.append(");");
     }
 
-    private String getScriptBtnText(String clientId, String dateFormat, String popupButtonString)
+    private void writeScriptBtnText(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
+        throws IOException
     {
-
-        StringBuffer script = new StringBuffer();
-        script.append("if (!document.layers) {\n");
-        script.append("document.write(");
-        script.append("\"<input type='button' onclick='jscalendarPopUpCalendar(this,this.form.elements[\\\"");
-        script.append(clientId);
-        script.append("\\\"],\\\"");
-        script.append(dateFormat);
-        script.append("\\\")' value='");
+        String clientId = uiComponent.getClientId(facesContext);
+        
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        writer.write("if (!document.layers) {\n");
+        writer.write("document.write('");
+        
+        // render the button
+        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
+        
+        String jsCalendarFunctionCall = "jscalendarPopUpCalendar(this,this.form.elements[\\'"+clientId+"\\'],\\'"+dateFormat+"\\')";
+        writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
         if(popupButtonString==null)
             popupButtonString="...";
-        script.append(popupButtonString);
-        script.append("'/>\"");
-        script.append(");");
-        script.append("\n}");
-
-        return script.toString();
+        writer.writeAttribute(HTML.VALUE_ATTR, popupButtonString, null);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
+        writer.endElement(HTML.INPUT_ELEM);
+        
+        writer.write("');");
+        writer.write("\n}");
     }
 
     private void writeMonthYearHeader(FacesContext facesContext, ResponseWriter writer, UIInput inputComponent, Calendar timeKeeper,
