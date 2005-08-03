@@ -153,14 +153,14 @@ abstract class HtmlDataTableHack extends
             if (_initialDescendantComponentState == null)
             {
                 _initialDescendantComponentState = saveDescendantComponentStates(getChildren()
-                                .iterator());
+                                .iterator(), false);
             }
         }
         else
         {
             _rowStates.put(getClientId(facesContext),
                             saveDescendantComponentStates(getChildren()
-                                            .iterator()));
+                                            .iterator(), false));
         }
 
         _rowIndex = rowIndex;
@@ -197,7 +197,7 @@ abstract class HtmlDataTableHack extends
         if (_rowIndex == -1)
         {
             restoreDescendantComponentStates(getChildren().iterator(),
-                            _initialDescendantComponentState);
+                            _initialDescendantComponentState, false);
         }
         else
         {
@@ -205,18 +205,18 @@ abstract class HtmlDataTableHack extends
             if (rowState == null)
             {
                 restoreDescendantComponentStates(getChildren().iterator(),
-                                _initialDescendantComponentState);
+                                _initialDescendantComponentState, false);
             }
             else
             {
                 restoreDescendantComponentStates(getChildren().iterator(),
-                                rowState);
+                                rowState, false);
             }
         }
     }
 
-    protected void restoreDescendantComponentStates(Iterator childIterator,
-                    Object state)
+    private void restoreDescendantComponentStates(Iterator childIterator,
+            Object state, boolean restoreChildFacets)
     {
         Iterator descendantStateIterator = null;
         while (childIterator.hasNext())
@@ -231,7 +231,7 @@ abstract class HtmlDataTableHack extends
             Object childState = null;
             Object descendantState = null;
             if (descendantStateIterator != null
-                            && descendantStateIterator.hasNext())
+                    && descendantStateIterator.hasNext())
             {
                 Object[] object = (Object[]) descendantStateIterator.next();
                 childState = object[0];
@@ -240,14 +240,24 @@ abstract class HtmlDataTableHack extends
             if (component instanceof EditableValueHolder)
             {
                 ((EditableValueHolderState) childState)
-                                .restoreState((EditableValueHolder) component);
+                        .restoreState((EditableValueHolder) component);
             }
-            restoreDescendantComponentStates(component.getFacetsAndChildren(),
-                            descendantState);
+            Iterator childsIterator;
+            if (restoreChildFacets)
+            {
+                childsIterator = component.getFacetsAndChildren();
+            }
+            else
+            {
+                childsIterator = component.getChildren().iterator();
+            }
+            restoreDescendantComponentStates(childsIterator, descendantState,
+                    true);
         }
     }
 
-    protected Object saveDescendantComponentStates(Iterator childIterator)
+    private Object saveDescendantComponentStates(Iterator childIterator,
+            boolean saveChildFacets)
     {
         Collection childStates = null;
         while (childIterator.hasNext())
@@ -257,15 +267,24 @@ abstract class HtmlDataTableHack extends
                 childStates = new ArrayList();
             }
             UIComponent child = (UIComponent) childIterator.next();
-            Object descendantState = saveDescendantComponentStates(child
-                            .getFacetsAndChildren());
+            Iterator childsIterator;
+            if (saveChildFacets)
+            {
+                childsIterator = child.getFacetsAndChildren();
+            }
+            else
+            {
+                childsIterator = child.getChildren().iterator();
+            }
+            Object descendantState = saveDescendantComponentStates(
+                    childsIterator, true);
             Object state = null;
             if (child instanceof EditableValueHolder)
             {
                 state = new EditableValueHolderState(
-                                (EditableValueHolder) child);
+                        (EditableValueHolder) child);
             }
-            childStates.add(new Object[] {state, descendantState});
+            childStates.add(new Object[] { state, descendantState });
         }
         return childStates;
     }
