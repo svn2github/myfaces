@@ -372,9 +372,14 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             if (value instanceof TreeModel)
             {
                 _model = (TreeModel) value;
-            } else if (value instanceof TreeNode)
+            }
+            else if (value instanceof TreeNode)
             {
-                _model = new TreeModel((TreeNode) value);
+                _model = new TreeModelBase((TreeNode) value);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Value must implement TreeModel interface or be an instance of TreeNode");
             }
         }
 

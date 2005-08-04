@@ -1,5 +1,5 @@
 /*
- * Copyright 2004 The Apache Software Foundation.
+ * Copyright 2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,61 +15,26 @@
  */
 package org.apache.myfaces.custom.tree2;
 
-import javax.faces.component.NamingContainer;
-
-import java.util.StringTokenizer;
-import java.util.ArrayList;
-
 /**
  * Model class for the tree component.  It provides random access to nodes in a tree
  * made up of instances of the {@link TreeNode} class.
  *
  * @author Sean Schofield
- * @author Hans Bergsten (Some code taken from an example in his O'Reilly JavaServer Faces book. Copied with permission)
  * @version $Revision$ $Date$
  */
-public class TreeModel
+public interface TreeModel
 {
-    private final static String SEPARATOR = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-
-    private TreeNode root;
-    private TreeNode currentNode;
-
-    /**
-     * Constructor
-     * @param root The root TreeNode
-     */
-    public TreeModel(TreeNode root)
-    {
-        this.root = root;
-    }
-
     /**
      * Gets the current {@link TreeNode} or <code>null</code> if no node ID is selected.
      * @return The current node
      */
-    public TreeNode getNode()
-    {
-        return currentNode;
-    }
+    public TreeNode getNode();
 
     /**
-     * Sets the current {@link TreeNode} to the specified node ID, which is a colon-separated list
-     * of node indexes.  For instance, "0:0:1" means "the second child node of the first child node
-     * under the root node."
-     *
+     * Sets the current {@link TreeNode} to the specified node ID.
      * @param nodeId The id of the node to set
      */
-    public void setNodeId(String nodeId)
-    {
-        if (nodeId == null)
-        {
-            currentNode = null;
-            return;
-        }
-
-        currentNode = getNodeById(nodeId);
-    }
+    public void setNodeId(String nodeId);
 
     /**
      * Gets an array of String containing the ID's of all of the {@link TreeNode}s in the path to
@@ -80,31 +45,7 @@ public class TreeModel
      * @param nodeId The id of the node for whom the path information is needed.
      * @return String[]
      */
-    public String[] getPathInformation(String nodeId)
-    {
-        if (nodeId == null)
-        {
-            throw new IllegalArgumentException("Cannot determine parents for a null node.");
-        }
-
-        ArrayList pathList = new ArrayList();
-        pathList.add(nodeId);
-
-        while (nodeId.lastIndexOf(SEPARATOR) != -1)
-        {
-            nodeId = nodeId.substring(0, nodeId.lastIndexOf(SEPARATOR));
-            pathList.add(nodeId);
-        }
-
-        String[] pathInfo = new String[pathList.size()];
-
-        for (int i=0; i < pathInfo.length; i++)
-        {
-            pathInfo[i] = (String)pathList.get(pathInfo.length - i - 1);
-        }
-
-        return pathInfo;
-    }
+    public String[] getPathInformation(String nodeId);
 
     /**
      * Indicates whether or not the specified {@link TreeNode} is the last child in the <code>List</code>
@@ -113,41 +54,6 @@ public class TreeModel
      * @param nodeId The ID of the node to check
      * @return boolean
      */
-    public boolean isLastChild(String nodeId)
-    {
-        if (nodeId.lastIndexOf(SEPARATOR) == -1)
-        {
-            // root node considered to be the last child
-            return true;
-        }
+    public boolean isLastChild(String nodeId);
 
-        //first get the id of the parent
-        String parentId = nodeId.substring(0, nodeId.lastIndexOf(SEPARATOR));
-        String childString = nodeId.substring(nodeId.lastIndexOf(SEPARATOR) + 1);
-        int childId = Integer.parseInt(childString);
-        TreeNode parentNode = getNodeById(parentId);
-
-        return  childId + 1== parentNode.getChildCount();
-    }
-
-    private TreeNode getNodeById(String nodeId)
-    {
-        TreeNode node = root;
-
-        StringBuffer sb = new StringBuffer();
-        StringTokenizer st = new StringTokenizer(nodeId, SEPARATOR);
-        sb.append(st.nextToken()).append(SEPARATOR);
-
-        while (st.hasMoreTokens())
-        {
-            int nodeIndex = Integer.parseInt(st.nextToken());
-            sb.append(nodeIndex);
-
-            // don't worry about invalid index, that exception will be caught later and dealt with
-            node = (TreeNode)node.getChildren().get(nodeIndex);
-            sb.append(SEPARATOR);
-        }
-
-        return node;
-    }
 }
