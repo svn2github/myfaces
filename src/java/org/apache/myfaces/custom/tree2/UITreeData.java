@@ -59,7 +59,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     private static final int PROCESS_UPDATES = 3;
 
     private TreeModel _model;
-    private TreeNode _value;
+    private Object _value;
     private String _var;
     private String _nodeId;
     private Map _saved = new HashMap();
@@ -84,7 +84,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     {
         Object values[] = new Object[3];
         values[0] = super.saveState(context);
-        values[1] = _value;
+        //values[1] = _value;
+        values[1] = _model;
         values[2] = _var;
         return ((Object) (values));
     }
@@ -96,7 +97,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
 
-        _value = (TreeNode)values[1];
+        //_value = values[1];
+        _model = (TreeModel)values[1];
         _var = (String)values[2];
     }
 
@@ -212,7 +214,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      *
      * @param value The new value
      */
-    public void setValue(TreeNode value)
+    public void setValue(Object value)
     {
         _model = null;
         _value = value;
@@ -373,13 +375,10 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             {
                 _model = (TreeModel) value;
             }
-            else if (value instanceof TreeNode)
+            else 
             {
-                _model = new TreeModelBase((TreeNode) value);
-            }
-            else
-            {
-                throw new IllegalArgumentException("Value must implement TreeModel interface or be an instance of TreeNode");
+                throw new IllegalArgumentException("Value must now implement TreeModel interface.  " +
+                    "If you were using an instance of TreeNode use TreeModelBase now instead.");
             }
         }
 
@@ -687,4 +686,22 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         return false;
     }
+
+    /**
+     * Toggle the expanded state of the current node.
+     */    
+    public void toggleExpanded()
+    {
+        getDataModel().toggleExpanded(getNodeId());
+    }
+    
+    /**
+     * Indicates whether or not the current {@link TreeNode} is expanded.
+     * @return boolean
+     */
+    public boolean isNodeExpanded()
+    {
+        return getDataModel().isNodeExpanded(getNodeId());
+    }
+    
 }
