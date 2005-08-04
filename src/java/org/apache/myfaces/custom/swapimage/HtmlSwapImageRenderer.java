@@ -83,9 +83,12 @@ public class HtmlSwapImageRenderer
             if (uiComponent instanceof HtmlSwapImage)
             {
                 String swapImageUrl = ((HtmlSwapImage) uiComponent).getSwapImageUrl();
+                swapImageUrl = facesContext.getApplication()
+                .getViewHandler().getResourceURL(facesContext, swapImageUrl);
+
                 if (swapImageUrl != null)
                 {
-                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "SI_MM_swapImage('" + clientId + "','','" + swapImageUrl + "',1);", null);
+                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "SI_MM_swapImage('" + clientId + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
                     writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "SI_MM_swapImgRestore();", null);
                 }
             }
