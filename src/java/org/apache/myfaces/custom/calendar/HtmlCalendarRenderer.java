@@ -155,18 +155,10 @@ public class HtmlCalendarRenderer
 	            writer.write("<!--\n");
 	            writer.writeText(getLocalizedLanguageScript(symbols, months,
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar),null);
-	            //writer.writeText(getScriptBtnText(inputCalendar.getClientId(facesContext),
-	            //        dateFormat,inputCalendar.getPopupButtonString()),null);
-                writeScriptBtnText(facesContext, inputCalendar,
+                writeScriptBtn(facesContext, inputCalendar,
                         dateFormat,inputCalendar.getPopupButtonString());
 	            writer.write("\n-->");
 	            writer.endElement(HTML.SCRIPT_ELEM);
-	
-	/*            writer.startElement(HTML.INPUT_ELEM,null);
-	            writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_BUTTON,null);
-	            writer.writeAttribute(HTML.ONCLICK_ATTR,"popUpCalendar(this, "+inputText.getClientId(facesContext)+
-	                    ", \\\"dd.mm.yyyy\\\")",null);
-	            writer.endElement(HTML.INPUT_TYPE_BUTTON);*/
             }
         }
         else
@@ -331,32 +323,69 @@ public class HtmlCalendarRenderer
         script.append(");");
     }
 
-    private void writeScriptBtnText(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
+    private void writeScriptBtn(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
+        throws IOException
+    {
+        String clientId = uiComponent.getClientId(facesContext);
+        String buttonId = clientId+"_popup_calendar_button";
+        
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
+        boolean renderButtonAsImage = calendar.isRenderPopupButtonAsImage();
+        
+        writer.write("if (!document.layers) {\n");
+        writer.write("document.write('");
+        
+        if (!renderButtonAsImage) {
+            // render the button
+            writer.startElement(HTML.INPUT_ELEM, null);
+            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
+            
+            writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
+            
+            if(popupButtonString==null)
+                popupButtonString="...";
+            writer.writeAttribute(HTML.VALUE_ATTR, popupButtonString, null);
+            /*
+            if (renderButtonAsImage) {
+                writer.writeAttribute(HTML.ID_ATTR, buttonId, null);
+                writer.writeAttribute(HTML.NAME_ATTR, buttonId, null);
+                writer.writeAttribute(HTML.STYLE_ATTR, "visibility:hidden;",null);
+            } else {
+                HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
+            }
+            */
+            writer.endElement(HTML.INPUT_ELEM);
+        } else {
+            // render the image
+            writer.startElement(HTML.IMG_ELEM, null);
+            writer.writeAttribute(HTML.SRC_ATTR, AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "images/calendar.gif", facesContext), null);
+            
+            //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);
+            writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
+            //writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "this.style.cursor=\\'hand\\';", null);
+            //writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "this.style.cursor=\\'default\\';", null);
+            
+            writer.endElement(HTML.IMG_ELEM);
+        }
+        
+        writer.write("');");
+        writer.write("\n}");
+    }
+    
+    private void writeOnclickJsCalendarFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat) 
         throws IOException
     {
         String clientId = uiComponent.getClientId(facesContext);
         
         ResponseWriter writer = facesContext.getResponseWriter();
         
-        writer.write("if (!document.layers) {\n");
-        writer.write("document.write('");
-        
-        // render the button
-        writer.startElement(HTML.INPUT_ELEM, null);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
-        
-        String jsCalendarFunctionCall = "jscalendarPopUpCalendar(this,this.form.elements[\\'"+clientId+"\\'],\\'"+dateFormat+"\\')";
+        String jsCalendarFunctionCall = "jscalendarPopUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
         writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
-        if(popupButtonString==null)
-            popupButtonString="...";
-        writer.writeAttribute(HTML.VALUE_ATTR, popupButtonString, null);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
-        writer.endElement(HTML.INPUT_ELEM);
-        
-        writer.write("');");
-        writer.write("\n}");
     }
 
+    
     private void writeMonthYearHeader(FacesContext facesContext, ResponseWriter writer, UIInput inputComponent, Calendar timeKeeper,
                                       int currentDay, String[] weekdays,
                                       String[] months)

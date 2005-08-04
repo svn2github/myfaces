@@ -37,6 +37,10 @@
         <type>java.lang.String</type>
     </field>
     <field>
+        <name>renderPopupButtonAsImage</name>
+        <type>boolean</type>
+    </field>
+    <field>
         <name>popupDateFormat</name>
         <type>java.lang.String</type>
     </field>

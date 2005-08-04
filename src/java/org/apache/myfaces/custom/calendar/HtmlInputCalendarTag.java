@@ -72,6 +72,7 @@ public class HtmlInputCalendarTag
     private String _addResources;
     private String _popupDateFormat;
     private String _popupButtonString;
+    private String _renderPopupButtonAsImage;
     private String _popupGotoString = null;
     private String _popupTodayString = null;
     private String _popupWeekString = null;
@@ -96,6 +97,7 @@ public class HtmlInputCalendarTag
         _addResources = null;
         _popupDateFormat = null;
         _popupButtonString = null;
+        _renderPopupButtonAsImage = null;
         _popupGotoString = null;
         _popupTodayString = null;
         _popupWeekString = null;
@@ -106,7 +108,6 @@ public class HtmlInputCalendarTag
         _popupSelectDateMessage = null;
         _enabledOnUserRole = null;
         _visibleOnUserRole = null;
-
     }
 
 
@@ -135,6 +136,7 @@ public class HtmlInputCalendarTag
         setBooleanProperty(component,"addResources",(_addResources==null?Boolean.TRUE.toString():_addResources));
         setStringProperty(component,"popupDateFormat",_popupDateFormat);
         setStringProperty(component,"popupButtonString",_popupButtonString);
+        setBooleanProperty(component,"renderPopupButtonAsImage",_renderPopupButtonAsImage);
         setStringProperty(component,"popupGotoString",_popupGotoString);
         setStringProperty(component,"popupTodayString",_popupTodayString);
         setStringProperty(component,"popupWeekString",_popupWeekString);
@@ -187,6 +189,12 @@ public class HtmlInputCalendarTag
     {
         _popupButtonString = popupButtonString;
     }
+    
+    public void setRenderPopupButtonAsImage(String renderPopupButtonAsImage)
+    {
+        _renderPopupButtonAsImage = renderPopupButtonAsImage;
+    }
+
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
