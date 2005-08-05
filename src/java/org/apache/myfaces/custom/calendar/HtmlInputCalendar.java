@@ -142,7 +142,7 @@ public class HtmlInputCalendar
         if (_addResources != null) return _addResources.booleanValue();
         ValueBinding vb = getValueBinding("addResources");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : false;
+        return v != null ? v.booleanValue() : true;
     }
 
     public void setPopupButtonString(String popupButtonString)

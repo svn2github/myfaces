@@ -31,6 +31,7 @@
     <field>
         <name>addResources</name>
         <type>boolean</type>
+        <default>true</default>
     </field>
     <field>
         <name>popupButtonString</name>

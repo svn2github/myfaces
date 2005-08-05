@@ -133,7 +133,7 @@ public class HtmlInputCalendarTag
         setStringProperty(component, "dayCellClass", _dayCellClass);
         setStringProperty(component, "currentDayCellClass", _currentDayCellClass);
         setBooleanProperty(component,"renderAsPopup",_renderAsPopup);
-        setBooleanProperty(component,"addResources",(_addResources==null?Boolean.TRUE.toString():_addResources));
+        setBooleanProperty(component,"addResources",_addResources);
         setStringProperty(component,"popupDateFormat",_popupDateFormat);
         setStringProperty(component,"popupButtonString",_popupButtonString);
         setBooleanProperty(component,"renderPopupButtonAsImage",_renderPopupButtonAsImage);
