@@ -768,6 +768,12 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>Set the string for "Select [date] as date" (do not replace [date], it will be replaced by the current date).</description>
+		</attribute>
+        <attribute>
+            <name>renderButtonAsImage</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>If true, renders a calendar icon instead of the button to pop up the calendar.</description>
         </attribute>
     </tag>
 
