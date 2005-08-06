@@ -137,6 +137,17 @@
             </description>
         </attribute>
         <attribute>
+            <name>forceIdIndexFormula</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+				A formula that overrides the defaut row index in the construction of table's
+				body components.
+				Example : #{myRowVar.key}
+				Warning, the EL should evaluate to a unique value for each row !
+            </description>
+        </attribute>
+        <attribute>
             <name>sortColumn</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>

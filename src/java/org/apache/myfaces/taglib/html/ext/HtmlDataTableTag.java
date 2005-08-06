@@ -41,6 +41,7 @@ public class HtmlDataTableTag
     }
 
     private String _preserveDataModel;
+    private String _forceIdIndexFormula;
     private String _sortColumn;
     private String _sortAscending;
     private String _preserveSort;
@@ -65,6 +66,7 @@ public class HtmlDataTableTag
         super.release();
 
         _preserveDataModel=null;
+        _forceIdIndexFormula=null;
         _sortColumn=null;
         _sortAscending=null;
         _preserveSort=null;
@@ -92,6 +94,7 @@ public class HtmlDataTableTag
         super.setProperties(component);
 
         setBooleanProperty(component, "preserveDataModel", _preserveDataModel);
+        setValueBinding(component, "forceIdIndexFormula", _forceIdIndexFormula);
         setValueBinding(component, "sortColumn", _sortColumn);
         setValueBinding(component, "sortAscending", _sortAscending);
         setBooleanProperty(component, "preserveSort", _preserveSort);
@@ -118,6 +121,11 @@ public class HtmlDataTableTag
         _preserveDataModel = preserveDataModel;
     }
 
+    public void setForceIdIndexFormula(String forceIdIndexFormula)
+    {
+    	_forceIdIndexFormula = forceIdIndexFormula;
+    }
+    
     public void setSortColumn(String sortColumn)
     {
         _sortColumn = sortColumn;

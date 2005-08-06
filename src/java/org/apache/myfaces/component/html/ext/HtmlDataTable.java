@@ -50,6 +50,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
     private _SerializableDataModel _preservedDataModel;
 
+    private String _forceIdIndexFormula = null;
     private String _sortColumn = null;
     private Boolean _sortAscending = null;
     private String _rowOnClick = null;
@@ -62,9 +63,35 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private String _rowOnKeyPress = null;
     private String _rowOnKeyDown = null;
     private String _rowOnKeyUp = null;
-    
 
     private boolean _isValidChilds = true;
+    
+    public String getClientId(FacesContext context)
+    {
+        String standardClientId = super.getClientId(context);
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1)
+        {
+            return standardClientId;
+        }
+        
+        String forcedIdIndex = getForceIdIndexFormula();
+        if( forcedIdIndex == null || forcedIdIndex.length() == 0 )
+        	return standardClientId;
+        
+        // Trick : Remove the last part starting with '_' that contains the rowIndex.
+        // It would be best to not resort to String manipulation,
+        // but we can't get super.super.getClientId() :-(
+        int indexLast_ = standardClientId.lastIndexOf('_');
+        if( indexLast_ == -1 ){
+        	log.warn("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
+        	return standardClientId+'_'+forcedIdIndex;
+        }
+        
+        String parsedForcedClientId = standardClientId.substring(0, indexLast_+1)+forcedIdIndex;
+
+		return parsedForcedClientId;
+    }
 
 	public void setRowIndex(int rowIndex)
 	{
@@ -361,7 +388,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     public Object saveState(FacesContext context)
     {
         boolean preserveSort = isPreserveSort();
-    	Object values[] = new Object[21];
+    	Object values[] = new Object[22];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -373,25 +400,26 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             values[2] = null;
         }
         values[3] = _preserveSort;
-        values[4] = _sortColumn;
-        values[5] = _sortAscending;
-        values[6] = _renderedIfEmpty;
-        values[7] = _rowCountVar;
-        values[8] = _rowIndexVar;
+        values[4] = _forceIdIndexFormula;
+        values[5] = _sortColumn;
+        values[6] = _sortAscending;
+        values[7] = _renderedIfEmpty;
+        values[8] = _rowCountVar;
+        values[9] = _rowIndexVar;
 
-        values[9] = _rowOnClick;
-        values[10] = _rowOnDblClick;
-        values[11] = _rowOnMouseDown;
-        values[12] = _rowOnMouseUp;
-        values[13] = _rowOnMouseOver;
-        values[14] = _rowOnMouseMove;
-        values[15] = _rowOnMouseOut;
-        values[16] = _rowOnKeyPress;
-        values[17] = _rowOnKeyDown;
-        values[18] = _rowOnKeyUp;
+        values[10] = _rowOnClick;
+        values[11] = _rowOnDblClick;
+        values[12] = _rowOnMouseDown;
+        values[13] = _rowOnMouseUp;
+        values[14] = _rowOnMouseOver;
+        values[15] = _rowOnMouseMove;
+        values[16] = _rowOnMouseOut;
+        values[17] = _rowOnKeyPress;
+        values[18] = _rowOnKeyDown;
+        values[19] = _rowOnKeyUp;
 
-        values[19] = preserveSort ? getSortColumn() : null;
-        values[20] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
+        values[20] = preserveSort ? getSortColumn() : null;
+        values[21] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
         return values;
     }
     
@@ -422,27 +450,28 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                 _preservedDataModel = null;
         }
         _preserveSort = (Boolean) values[3];
-        _sortColumn = (String) values[4];
-        _sortAscending = (Boolean) values[5];
-        _renderedIfEmpty = (Boolean) values[6];
-        _rowCountVar = (String) values[7];
-        _rowIndexVar = (String) values[8];
+        _forceIdIndexFormula = (String) values[4];
+        _sortColumn = (String) values[5];
+        _sortAscending = (Boolean) values[6];
+        _renderedIfEmpty = (Boolean) values[7];
+        _rowCountVar = (String) values[8];
+        _rowIndexVar = (String) values[9];
 
-        _rowOnClick = (String) values[9];
-        _rowOnDblClick = (String) values[10];
-        _rowOnMouseDown = (String) values[11];
-        _rowOnMouseUp = (String) values[12];
-        _rowOnMouseOver = (String) values[13];
-        _rowOnMouseMove = (String) values[14];
-        _rowOnMouseOut = (String) values[15];
-        _rowOnKeyPress = (String) values[16];
-        _rowOnKeyDown = (String) values[17];
-        _rowOnKeyUp = (String) values[18];
+        _rowOnClick = (String) values[10];
+        _rowOnDblClick = (String) values[11];
+        _rowOnMouseDown = (String) values[12];
+        _rowOnMouseUp = (String) values[13];
+        _rowOnMouseOver = (String) values[14];
+        _rowOnMouseMove = (String) values[15];
+        _rowOnMouseOut = (String) values[16];
+        _rowOnKeyPress = (String) values[17];
+        _rowOnKeyDown = (String) values[18];
+        _rowOnKeyUp = (String) values[19];
 
         if (isPreserveSort())
         {
-            String sortColumn = (String) values[19];
-            Boolean sortAscending = (Boolean) values[20];
+            String sortColumn = (String) values[20];
+            Boolean sortAscending = (Boolean) values[21];
             if (sortColumn != null && sortAscending != null)
             {
                 ValueBinding vb = getValueBinding("sortColumn");
@@ -514,25 +543,45 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             return super.isRendered();
     }
     
+    
+    public void setForceIdIndexFormula(String forceIdIndexFormula)
+    {
+    	_forceIdIndexFormula = forceIdIndexFormula;
+        ValueBinding vb = getValueBinding("forceIdIndexFormula");
+        if (vb != null)
+        {
+            vb.setValue(getFacesContext(), _forceIdIndexFormula);
+            _forceIdIndexFormula = null;
+        }
+    }
+    
+    public String getForceIdIndexFormula()
+    {
+        if (_forceIdIndexFormula != null)
+            return _forceIdIndexFormula;
+        ValueBinding vb = getValueBinding("forceIdIndexFormula");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
     public void setSortColumn(String sortColumn)
     {
-            _sortColumn = sortColumn;
-            // update model is necessary here, because processUpdates is never called
-            // reason: HtmlCommandSortHeader.isImmediate() == true
-            ValueBinding vb = getValueBinding("sortColumn");
-            if (vb != null)
-            {
-                    vb.setValue(getFacesContext(), _sortColumn);
-                    _sortColumn = null;
-            }
+        _sortColumn = sortColumn;
+        // update model is necessary here, because processUpdates is never called
+        // reason: HtmlCommandSortHeader.isImmediate() == true
+        ValueBinding vb = getValueBinding("sortColumn");
+        if (vb != null)
+        {
+            vb.setValue(getFacesContext(), _sortColumn);
+            _sortColumn = null;
+        }
     }
     
     public String getSortColumn()
     {
-            if (_sortColumn != null)
-                    return _sortColumn;
-            ValueBinding vb = getValueBinding("sortColumn");
-            return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        if (_sortColumn != null)
+            return _sortColumn;
+        ValueBinding vb = getValueBinding("sortColumn");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
     
     public void setSortAscending(boolean sortAscending)
