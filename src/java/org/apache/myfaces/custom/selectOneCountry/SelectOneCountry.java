@@ -15,17 +15,8 @@
  */
 package org.apache.myfaces.custom.selectOneCountry;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeMap;
-
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.html.ext.HtmlSelectOneMenu;
 
@@ -63,62 +54,5 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _maxLength = (Integer)values[1];
-    }
-
-    // -------- Over ridden UIComponent methods -----------
-
-    public void encodeChildren(FacesContext context){
-        // noop
-    }
-
-    public int getChildCount(){
-        return Locale.getISOCountries().length;
-    }
-
-    public List getChildren(){
-        String[] availableCountries = Locale.getISOCountries();
-
-        Locale currentLocale;
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        if( viewRoot != null )
-            currentLocale = viewRoot.getLocale();
-        else
-            currentLocale = facesContext.getApplication().getDefaultLocale();
-
-
-        TreeMap map = new TreeMap();
-        // TreeMap is sorted according to the keys' natural order
-
-        for(int i=0; i<availableCountries.length; i++){
-            String countryCode = availableCountries[i];
-            Locale tmp = new Locale(countryCode, countryCode);
-            map.put(tmp.getDisplayCountry(currentLocale), countryCode);
-        }
-
-        List countriesSelectItems = new ArrayList(availableCountries.length);
-
-        int maxDescriptionLength = _maxLength==null ? Integer.MAX_VALUE : _maxLength.intValue();
-        if( maxDescriptionLength < 5 )
-            maxDescriptionLength = 5;
-
-        for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
-            String countryName = (String) i.next();
-            String countryCode = (String) map.get( countryName );
-            String label;
-            if( countryName.length() <= maxDescriptionLength )
-                label = countryName;
-            else{
-                label = countryName.substring(0, maxDescriptionLength-3)+"...";
-            }
-
-            UISelectItem selectItem = new UISelectItem();
-            selectItem.setValue( new SelectItem(countryCode, label) );
-
-            countriesSelectItems.add( selectItem );
-        }
-
-        return countriesSelectItems;
     }
 }
