@@ -15,17 +15,8 @@
  */
 package org.apache.myfaces.custom.selectOneLanguage;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeMap;
-
-import javax.faces.component.UISelectItem;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.html.ext.HtmlSelectOneMenu;
 
@@ -63,62 +54,5 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _maxLength = (Integer)values[1];
-    }
-
-    // -------- Over ridden UIComponent methods -----------
-
-    public void encodeChildren(FacesContext context){
-        // noop
-    }
-
-    public int getChildCount(){
-        return Locale.getISOLanguages().length;
-    }
-
-    public List getChildren(){
-        String[] availableLanguages = Locale.getISOLanguages();
-
-        Locale currentLocale;
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        if( viewRoot != null )
-            currentLocale = viewRoot.getLocale();
-        else
-            currentLocale = facesContext.getApplication().getDefaultLocale();
-
-
-        TreeMap map = new TreeMap();
-        // TreeMap is sorted according to the keys' natural order
-
-        for(int i=0; i<availableLanguages.length; i++){
-            String languageCode = availableLanguages[i];
-            Locale tmp = new Locale(languageCode);
-            map.put(tmp.getDisplayLanguage(currentLocale), languageCode);
-        }
-
-        List languagesSelectItems = new ArrayList(availableLanguages.length);
-
-        int maxDescriptionLength = _maxLength==null ? Integer.MAX_VALUE : _maxLength.intValue();
-        if( maxDescriptionLength < 5 )
-            maxDescriptionLength = 5;
-
-        for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
-            String languageName = (String) i.next();
-            String languageCode = (String) map.get( languageName );
-            String label;
-            if( languageName.length() <= maxDescriptionLength )
-                label = languageName;
-            else{
-                label = languageName.substring(0, maxDescriptionLength-3)+"...";
-            }
-
-            UISelectItem selectItem = new UISelectItem();
-            selectItem.setValue( new SelectItem(languageCode, label) );
-
-            languagesSelectItems.add( selectItem );
-        }
-
-        return languagesSelectItems;
     }
 }
