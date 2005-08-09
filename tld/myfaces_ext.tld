@@ -1709,6 +1709,7 @@
         <description>
             A localized list of countries choose box.
             The value binds to the country ISO 3166 code.
+            This is the same code as for java.util.Locale.getCountry().
 			The official codes list is available here :
 			http://www.iso.ch/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html
         </description>
@@ -1733,7 +1734,8 @@
         <body-content>JSP</body-content>
         <description>
             A localized list of languages choose box.
-            The value binds to the language ISO 639-2 code (lowercase).
+            The value binds to the language ISO 639 code (lowercase).
+            This is the same code as for java.util.Locale.getLanguage().
 			The official codes list is available here :
 			http://www.loc.gov/standards/iso639-2/englangn.html
         </description>
