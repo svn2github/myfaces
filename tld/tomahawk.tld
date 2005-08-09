@@ -78,10 +78,10 @@
 
     <tlib-version>1.0.10</tlib-version>
     <jsp-version>1.2</jsp-version>
-    <short-name>x</short-name>
-    <uri>http://myfaces.apache.org/extensions</uri>
+    <short-name>t</short-name>
+    <uri>http://myfaces.apache.org/tomahawk</uri>
     <description>
-        Enhanced standard JSP actions and custom MyFaces actions.
+        MyFaces subproject that contains components and other goodies to be used with any JSF implementation.
     </description>
 
 <!--     Extended standard components     -->
