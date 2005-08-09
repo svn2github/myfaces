@@ -332,6 +332,10 @@ public class InputHtml extends HtmlInputText {
     }
     
     static String getHtmlBody(String html){
+    	html = html.trim();
+    	if( html.length() == 0 )
+    		return "";
+
 		String lcText = html.toLowerCase();
         int textLength = lcText.length();
         int bodyStartIndex = -1;
