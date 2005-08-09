@@ -22,9 +22,6 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.component.NamingContainer;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 /**
  * Model class for the tree component.  It provides random access to nodes in a tree
  * made up of instances of the {@link TreeNode} class.
@@ -35,12 +32,17 @@ import java.util.List;
  */
 public class TreeModelBase implements TreeModel
 {
+
+    private static final long serialVersionUID = 3969414475396945742L;
     private static final Log log = LogFactory.getLog(TreeModelBase.class);    
     private final static String SEPARATOR = String.valueOf(NamingContainer.SEPARATOR_CHAR);
 
-    private HashSet _expandedNodes = new HashSet();
+   
     private TreeNode root;
     private TreeNode currentNode;
+    
+    private TreeState treeState = new TreeStateBase();
+ 
 
     /**
      * Constructor
@@ -49,6 +51,18 @@ public class TreeModelBase implements TreeModel
     public TreeModelBase(TreeNode root)
     {
         this.root = root;
+    }
+
+    // see interface    
+    public TreeState getTreeState() 
+    {    	
+    	return treeState;
+    }
+
+    // see interface    
+    public void setTreeState(TreeState treeState) 
+    {
+        this.treeState = treeState;
     }
 
     /**
@@ -157,64 +171,5 @@ public class TreeModelBase implements TreeModel
 
         return node;
     }
-    
-    // see interface
-    public boolean isNodeExpanded(String nodeId)
-    {
-        return (_expandedNodes.contains(nodeId) && !getNode().isLeaf());
-    }
-    
-    // see interface
-    public void toggleExpanded(String nodeId)
-    {
-        if (_expandedNodes.contains(nodeId))
-        {
-            _expandedNodes.remove(nodeId);
-        }
-        else
-        {
-            _expandedNodes.add(nodeId);
-        }
-    }
-
-    /**
-     * If set to true, all nodes will be expanded by default.  NOTE: A value of false is ignored.
-     * @param expandAll boolean
-     */
-    public void setExpandAll(boolean expandAll)
-    {
-        if (expandAll)
-        {
-            TreeNode originalNode = currentNode;
-
-            //List rootChildren = root.getChildren();
-            int kidId = 0;
-
-            //for (int i = 0; i < rootChildren.size(); i++)
-            //{
-                expandEverything(null, kidId++);
-            //}
-    
-            currentNode = originalNode;
-        }
-    }
-    
-    /**
-     * Private helper method that recursviely expands all of the nodes.
-     * @param parentId The id of the parent node (if applicable)
-     * @param childCount The child number of the node to expand (will be incremented as you recurse.)
-     */
-    private void expandEverything(String parentId, int childCount)
-    {
-        String nodeId = (parentId != null) ? parentId + SEPARATOR + childCount : "0";    
-        setNodeId(nodeId);
-        
-        _expandedNodes.add(nodeId);
-        
-        List children = getNode().getChildren();
-        for (int kount=0; kount < children.size(); kount++)
-        {
-            expandEverything(nodeId, kount);
-        }
-    }
+   
 }

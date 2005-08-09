@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.tree2;
 
 import java.io.Serializable;
 
+
 /**
  * Model class for the tree component.  It provides random access to nodes in a tree
  * made up of instances of the {@link TreeNode} class.
@@ -58,17 +59,10 @@ public interface TreeModel extends Serializable
      */
     public boolean isLastChild(String nodeId);
 
-    /**
-     * Indicates whether or not the specified {@link TreeNode} is expanded.
-     * 
-     * @param nodeId The id of the node in question.
-     * @return If the node is expanded.
-     */
-    public boolean isNodeExpanded(String nodeId);
     
-    /**
-     * Toggle the expanded state of the specified {@link TreeNode}.
-     * @param nodeId The id of the node whose expanded state should be toggled.
-     */
-    public void toggleExpanded(String nodeId);
+    public void setTreeState(TreeState state);
+    public TreeState getTreeState();
+    
+    
+    
 }

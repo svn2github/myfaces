@@ -63,6 +63,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     private String _var;
     private String _nodeId;
     private Map _saved = new HashMap();
+    
+    private TreeState _restoredState = null;
 
     /**
      * Constructor
@@ -82,11 +84,20 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     // see superclass for documentation
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
-        //values[1] = _value;
         values[1] = _model;
         values[2] = _var;
+        
+        TreeState t = getDataModel().getTreeState();
+        if ( t == null)
+        {
+            // the model supplier has forgotten to return a valid state manager, but we need one
+            t = new TreeStateBase(); 
+        }
+        
+        // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state            
+        values[3] = (t.isTransient()) ? null : t; 
         return ((Object) (values));
     }
 
@@ -97,10 +108,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
 
-        //_value = values[1];
         _model = (TreeModel)values[1];
         _var = (String)values[2];
+        _restoredState = (TreeState) values[3];
     }
+
 
     public void queueEvent(FacesEvent event)
     {
@@ -361,7 +373,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      *
      * @return TreeModel
      */
-    private TreeModel getDataModel()
+    public TreeModel getDataModel()
     {
         if (_model != null)
         {
@@ -375,13 +387,18 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             {
                 _model = (TreeModel) value;
             }
-            else 
+            else if (value instanceof TreeNode)
             {
-                throw new IllegalArgumentException("Value must now implement TreeModel interface.  " +
-                    "If you were using an instance of TreeNode use TreeModelBase now instead.");
+            	_model = new TreeModelBase((TreeNode) value);
+            } else
+            {
+                throw new IllegalArgumentException("Value must be a TreeModel or TreeNode");
             }
         }
 
+        if (_restoredState != null)
+            _model.setTreeState(_restoredState); // set the restored state (if there is one) on the model
+        
         return _model;
     }
 
@@ -692,7 +709,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */    
     public void toggleExpanded()
     {
-        getDataModel().toggleExpanded(getNodeId());
+        getDataModel().getTreeState().toggleExpanded(getNodeId());
     }
     
     /**
@@ -701,7 +718,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     public boolean isNodeExpanded()
     {
-        return getDataModel().isNodeExpanded(getNodeId());
+        return getDataModel().getTreeState().isNodeExpanded(getNodeId());
     }
     
 }
