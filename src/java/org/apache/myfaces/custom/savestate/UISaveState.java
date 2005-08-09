@@ -32,15 +32,15 @@ public class UISaveState
     {
         Object values[] = new Object[2];
         values[0] = super.saveState(context);
-        values[1] = saveAttachedState(context, getValue());
-        return ((Object) (values));
+        values[1] = getValue();
+        return values;
     }
 
     public void restoreState(FacesContext context, Object state)
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        Object value = restoreAttachedState(context, values[1]);
+        Object value = values[1];
         ValueBinding vb = getValueBinding("value");
         if (vb != null)
         {
