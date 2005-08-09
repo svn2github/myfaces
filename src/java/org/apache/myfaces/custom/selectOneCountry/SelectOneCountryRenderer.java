@@ -80,7 +80,7 @@ public class SelectOneCountryRenderer extends HtmlMenuRenderer {
             map.put(tmp.getDisplayCountry(currentLocale), countryCode);
         }
 
-        List countriesSelectItems = new ArrayList( map.size());
+        List countriesSelectItems = new ArrayList( map.size() );
 
         Integer maxLength = component.getMaxLength();
         int maxDescriptionLength = maxLength==null ? Integer.MAX_VALUE : maxLength.intValue();
@@ -93,9 +93,8 @@ public class SelectOneCountryRenderer extends HtmlMenuRenderer {
             String label;
             if( countryName.length() <= maxDescriptionLength )
                 label = countryName;
-            else{
+            else
                 label = countryName.substring(0, maxDescriptionLength-3)+"...";
-            }
 
             countriesSelectItems.add( new SelectItem(countryCode, label) );
         }
