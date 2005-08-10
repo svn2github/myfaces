@@ -284,9 +284,9 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
         _headerstyle = headerstyle;
     }
 
-    public void setHeaderstyleclass(String headerstyleclass)
+    public void setHeaderstyleClass(String headerstyleClass)
     {
-        _headerstyleClass = headerstyleclass;
+        _headerstyleClass = headerstyleClass;
     }
 
     public void setHeadertitle(String headertitle)
