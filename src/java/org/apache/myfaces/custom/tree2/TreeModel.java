@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.tree2;
 
+import javax.faces.component.NamingContainer;
 import java.io.Serializable;
 
 
@@ -27,6 +28,11 @@ import java.io.Serializable;
  */
 public interface TreeModel extends Serializable
 {
+    /**
+     * Separator char to be used in node path generation.
+     */
+    public final static String SEPARATOR = String.valueOf(NamingContainer.SEPARATOR_CHAR);
+    
     /**
      * Gets the current {@link TreeNode} or <code>null</code> if no node ID is selected.
      * @return The current node

@@ -402,6 +402,45 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         return _model;
     }
 
+    /**
+     * Epands all nodes by default.
+     * @param expandAll boolean
+     */
+    public void expandAll()
+    {
+        String currentNodeId = _nodeId;
+
+        int kidId = 0;
+        expandEverything(null, kidId++);
+        setNodeId(currentNodeId);
+    }
+    
+    /**
+     * Private helper method that recursviely expands all of the nodes.
+     *
+     * @param parentId The id of the parent node (if applicable)
+     * @param childCount The child number of the node to expand (will be incremented as you recurse.)
+     */
+    private void expandEverything(String parentId, int childCount)
+    {
+        String nodeId = (parentId != null) ? parentId + TreeModel.SEPARATOR + childCount : "0";    
+        setNodeId(nodeId);
+
+        TreeNode node = getDataModel().getNode();
+        
+        if (!node.isLeaf() && !isNodeExpanded())
+        {
+            getDataModel().getTreeState().toggleExpanded(nodeId);
+        }
+
+        List children = getNode().getChildren();
+        for (int kount=0; kount < children.size(); kount++)
+        {
+            expandEverything(nodeId, kount);
+        }
+    }
+    
+
     private void processNodes(FacesContext context, int processAction, String parentId, int childLevel)
     {
         UIComponent facet = null;

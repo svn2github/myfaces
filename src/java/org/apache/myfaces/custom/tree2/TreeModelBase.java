@@ -19,7 +19,6 @@ package org.apache.myfaces.custom.tree2;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.faces.component.NamingContainer;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 /**
@@ -35,8 +34,6 @@ public class TreeModelBase implements TreeModel
 
     private static final long serialVersionUID = 3969414475396945742L;
     private static final Log log = LogFactory.getLog(TreeModelBase.class);    
-    private final static String SEPARATOR = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-
    
     private TreeNode root;
     private TreeNode currentNode;
