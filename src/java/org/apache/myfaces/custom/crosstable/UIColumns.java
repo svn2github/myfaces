@@ -43,7 +43,6 @@ import javax.servlet.jsp.jstl.sql.Result;
 public class UIColumns extends UIData
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Columns";
-    public static final String COMPONENT_FAMILY = UIData.COMPONENT_FAMILY;
 
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
     private static final int PROCESS_DECODES = 1;
@@ -61,29 +60,13 @@ public class UIColumns extends UIData
     private UIData _parentUIData;
 
     private Map _dataModelMap = new HashMap();
-
+    
     /**
      *
      */
     public UIColumns()
     {
         super();
-    }
-
-    /**
-     * @see javax.faces.component.UIComponentBase#getRendererType()
-     */
-    public String getRendererType()
-    {
-        return null;
-    }
-
-    /**
-     * @see javax.faces.component.UIComponent#getFamily()
-     */
-    public String getFamily()
-    {
-        return COMPONENT_FAMILY;
     }
 
     public boolean isRowAvailable()

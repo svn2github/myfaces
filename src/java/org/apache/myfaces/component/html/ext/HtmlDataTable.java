@@ -753,6 +753,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	private String _rowCountVar = null;
 	private String _previousRowDataVar = null;
 
+    private String _currentColumnStyleClass = null;
+
 	public HtmlDataTable()
 	{
 	}

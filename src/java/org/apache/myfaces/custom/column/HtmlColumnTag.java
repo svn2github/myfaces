@@ -60,10 +60,12 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
     private String _footeronmouseout;
     private String _footeronmouseover;
     private String _footeronmouseup;
+    
+    private String _width;
 
     public String getComponentType()
     {
-        return HtmlColumn.COMPONENT_TYPE;
+        return HtmlSimpleColumn.COMPONENT_TYPE;
     }
 
     public void release()
@@ -100,6 +102,8 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
         _footeronmouseout = null;
         _footeronmouseover = null;
         _footeronmouseup = null;
+        
+        _width = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -136,6 +140,8 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
         setStringProperty(component, "footeronkeypress", _footeronkeypress);
         setStringProperty(component, "footeronkeydown", _footeronkeydown);
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
+        
+        setStringProperty(component, "width", _width);
     }
 
     public void setFooterdir(String footerdir)
@@ -286,5 +292,10 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
     public void setHeadertitle(String headertitle)
     {
         _headertitle = headertitle;
+    }
+    
+    public void setWidth(String width)
+    {
+        _width = width;
     }
 }

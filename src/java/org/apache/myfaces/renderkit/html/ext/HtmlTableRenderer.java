@@ -6,6 +6,7 @@ package org.apache.myfaces.renderkit.html.ext;
  */
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -25,10 +26,10 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     //private static final Log log = LogFactory.getLog(HtmlTableRenderer.class);
 
     protected void renderRowStart(FacesContext facesContext,
-                    ResponseWriter writer, UIData uiData, String rowStyleClass)
+                    ResponseWriter writer, UIData uiData, Iterator rowStyleClassIterator)
                     throws IOException
     {
-        super.renderRowStart(facesContext, writer, uiData, rowStyleClass);
+        super.renderRowStart(facesContext, writer, uiData, rowStyleClassIterator);
 
         // get event handlers from component
         HtmlDataTable table = (HtmlDataTable) uiData;
@@ -60,11 +61,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      */
     protected void encodeColumnChild(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData,
-                    UIComponent component, String columnStyle)
+                    UIComponent component, Iterator columnStyleIterator)
                     throws IOException
     {
         super.encodeColumnChild(facesContext, writer, uiData, component,
-                        columnStyle);
+                columnStyleIterator);
         if (component instanceof UIColumns)
         {
             UIColumns columns = (UIColumns) component;
@@ -72,7 +73,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             {
                 columns.setRowIndex(k);
                 renderColumnBody(facesContext, writer, uiData, component,
-                                columnStyle);
+                        columnStyleIterator);
             }
             columns.setRowIndex(-1);
         }
@@ -83,16 +84,16 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      */
     protected void renderColumnBody(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData,
-                    UIComponent component, String columnStyleClass)
+                    UIComponent component, Iterator columnStyleIterator)
                     throws IOException
     {
         if (component instanceof HtmlColumn)
         {
             writer.startElement(HTML.TD_ELEM, uiData);
             String styleClass = ((HtmlColumn) component).getStyleClass();
-            if (styleClass == null)
+            if (styleClass == null && columnStyleIterator.hasNext())
             {
-                styleClass = columnStyleClass;
+                styleClass = (String) columnStyleIterator.next();
             }
             if (styleClass != null)
             {
@@ -106,7 +107,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         else
         {
             super.renderColumnBody(facesContext, writer, uiData, component,
-                            columnStyleClass);
+                    columnStyleIterator);
         }
     }
 
@@ -243,6 +244,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
                         compAttrName, HTML.STYLE_ATTR);
 
+        HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
+                HTML.WIDTH_ATTR, HTML.WIDTH_ATTR);
     }
 
     /**
