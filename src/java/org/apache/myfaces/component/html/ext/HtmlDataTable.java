@@ -560,7 +560,10 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (_forceIdIndexFormula != null)
             return _forceIdIndexFormula;
         ValueBinding vb = getValueBinding("forceIdIndexFormula");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+        if( vb == null )
+        	return null;
+        Object eval = vb.getValue(getFacesContext());
+        return eval == null ? null : eval.toString();
     }
     
     public void setSortColumn(String sortColumn)
