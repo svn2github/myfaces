@@ -1249,11 +1249,6 @@
             Right now, the support is limited to one editor per page
             (but you can use tabs to have multiple editors, but only one rendered at a time).
         </description>
-        <attribute>
-	        <name>id</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
         &ui_input_attributes;
         &user_role_attributes;
         &display_value_only_attributes;
@@ -2150,28 +2145,6 @@
         <description>
             Renders a popup which displays on a mouse event.
         </description>
-        <attribute>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                styleClass for popup.
-                Attention! do not try to overwrite position:absolute;
-                and display:none;
-                Provide a padding for Mozilla-based Browsers
-            </description>
-        </attribute>
-        <attribute>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                style for popup.
-                Attention! do not try to overwrite position:absolute;
-                and display:none;
-                Provide a padding for Mozilla-based Browsers
-            </description>
-        </attribute>
         <attribute>
             <name>displayAtDistanceX</name>
             <required>false</required>
