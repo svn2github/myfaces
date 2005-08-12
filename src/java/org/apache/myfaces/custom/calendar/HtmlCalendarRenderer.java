@@ -68,8 +68,17 @@ public class HtmlCalendarRenderer
 
         try
         {
-            value = RendererUtils.getDateValue(inputCalendar);
-        }
+            // value = RendererUtils.getDateValue(inputCalendar);
+            Converter converter = getConverter(inputCalendar);
+            if (converter instanceof DateConverter)
+            {
+                value = ((DateConverter) converter).getAsDate(facesContext, component);
+            }
+            else
+            {
+                value = RendererUtils.getDateValue(inputCalendar);
+            }
+		}
         catch (IllegalArgumentException illegalArgumentException)
         {
             value = null;
@@ -149,7 +158,7 @@ public class HtmlCalendarRenderer
             if (!inputCalendar.isDisabled())
             {
 	            ResponseWriter writer = facesContext.getResponseWriter();
-	
+
 	            writer.startElement(HTML.SCRIPT_ELEM,null);
 	            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
 	            writer.write("<!--\n");
@@ -159,6 +168,12 @@ public class HtmlCalendarRenderer
                         dateFormat,inputCalendar.getPopupButtonString());
 	            writer.write("\n-->");
 	            writer.endElement(HTML.SCRIPT_ELEM);
+
+	/*            writer.startElement(HTML.INPUT_ELEM,null);
+	            writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_BUTTON,null);
+	            writer.writeAttribute(HTML.ONCLICK_ATTR,"popUpCalendar(this, "+inputText.getClientId(facesContext)+
+	                    ", \\\"dd.mm.yyyy\\\")",null);
+	            writer.endElement(HTML.INPUT_TYPE_BUTTON);*/
             }
         }
         else
@@ -327,16 +342,15 @@ public class HtmlCalendarRenderer
         throws IOException
     {
         String clientId = uiComponent.getClientId(facesContext);
-        String buttonId = clientId+"_popup_calendar_button";
-        
+
         ResponseWriter writer = facesContext.getResponseWriter();
-        
+
         HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
         boolean renderButtonAsImage = calendar.isRenderPopupButtonAsImage();
         
         writer.write("if (!document.layers) {\n");
         writer.write("document.write('");
-        
+
         if (!renderButtonAsImage) {
             // render the button
             writer.startElement(HTML.INPUT_ELEM, null);
@@ -369,7 +383,7 @@ public class HtmlCalendarRenderer
             
             writer.endElement(HTML.IMG_ELEM);
         }
-        
+
         writer.write("');");
         writer.write("\n}");
     }
@@ -561,18 +575,18 @@ public class HtmlCalendarRenderer
         parameter.setValue(converter.getAsString(facesContext, component, valueForLink));
 
         HtmlInputCalendar calendar = (HtmlInputCalendar)component;
-        if (calendar.isDisabled() || calendar.isReadonly()) 
+        if (calendar.isDisabled() || calendar.isReadonly())
         {
         	component.getChildren().add(text);
-        	
+
         	RendererUtils.renderChild(facesContext, text);
-        } 
-        else 
+        }
+        else
         {
         	component.getChildren().add(link);
             link.getChildren().add(parameter);
             link.getChildren().add(text);
-            
+
             RendererUtils.renderChild(facesContext, link);
         }
     }
@@ -692,7 +706,12 @@ public class HtmlCalendarRenderer
         return converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
     }
 
-    public static class CalendarDateTimeConverter implements Converter
+    public interface DateConverter extends Converter
+    {
+        public Date getAsDate(FacesContext facesContext, UIComponent uiComponent);
+    }
+
+	public static class CalendarDateTimeConverter implements DateConverter
     {
 
         public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s)
@@ -719,12 +738,16 @@ public class HtmlCalendarRenderer
             }
             catch (ParseException e)
             {
-                ConverterException ex = new ConverterException(e);
-                throw ex;
+                throw new ConverterException(e);
             }
         }
 
-        public static String createJSPopupFormat(FacesContext facesContext, String popupDateFormat)
+        public Date getAsDate(FacesContext facesContext, UIComponent uiComponent)
+        {
+            return RendererUtils.getDateValue(uiComponent);
+        }
+
+		public static String createJSPopupFormat(FacesContext facesContext, String popupDateFormat)
         {
 
             if(popupDateFormat == null)
