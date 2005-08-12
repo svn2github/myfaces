@@ -18,6 +18,7 @@ package org.apache.myfaces.taglib.html.ext;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.taglib.html.HtmlDataTableTagBase;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 
@@ -61,8 +62,10 @@ public class HtmlDataTableTag
     private String _rowOnKeyPress;
     private String _rowOnKeyDown;
     private String _rowOnKeyUp;
+    private String _rowId;
     
-    public void release() {
+    public void release() 
+    {
         super.release();
 
         _preserveDataModel=null;
@@ -86,6 +89,7 @@ public class HtmlDataTableTag
         _rowOnKeyPress=null;
         _rowOnKeyDown=null;
         _rowOnKeyUp=null;
+        _rowId=null;
 
     }
 
@@ -114,6 +118,7 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowOnKeyPress", _rowOnKeyPress);
         setStringProperty(component, "rowOnKeyDown", _rowOnKeyDown);
         setStringProperty(component, "rowOnKeyUp", _rowOnKeyUp);
+        setStringProperty(component, JSFAttr.ROW_ID, _rowId);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -123,7 +128,7 @@ public class HtmlDataTableTag
 
     public void setForceIdIndexFormula(String forceIdIndexFormula)
     {
-    	_forceIdIndexFormula = forceIdIndexFormula;
+        _forceIdIndexFormula = forceIdIndexFormula;
     }
     
     public void setSortColumn(String sortColumn)
@@ -219,5 +224,10 @@ public class HtmlDataTableTag
     public void setRowOnMouseUp(String rowOnMouseUp)
     {
       _rowOnMouseUp = rowOnMouseUp;
+    }
+    
+    public void setRowId(String rowId)
+    {
+      _rowId = rowId;
     }
 }
