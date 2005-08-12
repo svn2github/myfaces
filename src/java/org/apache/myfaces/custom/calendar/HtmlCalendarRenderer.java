@@ -51,6 +51,7 @@ import java.util.List;
 public class HtmlCalendarRenderer
         extends HtmlRenderer
 {
+    private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.calendar.JAVASCRIPT_ENCODED";
 
     //private static Log log = LogFactory.getLog(HtmlCalendarRenderer.class);
 
@@ -241,6 +242,12 @@ public class HtmlCalendarRenderer
      * @throws IOException
      */
     static public void addScriptAndCSSResources(FacesContext facesContext) throws IOException{
+        // check to see if javascript has already been written (which could happen if more than one calendar on the same page)
+        if (facesContext.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
+        {
+            return;
+        }
+
         // Add the javascript and CSS pages
         AddResource.addStyleSheet(HtmlCalendarRenderer.class, "WH/theme.css", facesContext);
         AddResource.addStyleSheet(HtmlCalendarRenderer.class, "DB/theme.css", facesContext);
@@ -257,6 +264,8 @@ public class HtmlCalendarRenderer
                 	 )
                 +"\")");
         writer.endElement(HTML.SCRIPT_ELEM);
+
+        facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
 
     public static String getLocalizedLanguageScript(DateFormatSymbols symbols,
@@ -341,8 +350,6 @@ public class HtmlCalendarRenderer
     private void writeScriptBtn(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
         throws IOException
     {
-        String clientId = uiComponent.getClientId(facesContext);
-
         ResponseWriter writer = facesContext.getResponseWriter();
 
         HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
