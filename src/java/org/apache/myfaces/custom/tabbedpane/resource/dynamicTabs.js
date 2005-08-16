@@ -1,6 +1,14 @@
-function myFaces_showPanelTab(headerId, paneId, visibleTabIndex, allHeaderCellsIDs, allPanesIDs, activeHeaderStyleClass, inactiveHeaderStyleClass, activeSubHeaderStyleClass, inactiveSubHeaderStyleClass){
+function myFaces_showPanelTab(
+	tabIndex, tabIndexSubmitFieldID,
+	headerId, paneId,
+	allHeaderCellsIDs, allPanesIDs,
+	activeHeaderStyleClass, inactiveHeaderStyleClass,
+	activeSubHeaderStyleClass, inactiveSubHeaderStyleClass){
+
 	if( ! document.getElementById ) // Too Old Browser. Fallback on server side switch
 		return true;
+		
+	document.getElementById(tabIndexSubmitFieldID).value = tabIndex;
 
 	// Change Headers styles
 	for(var i = 0; i < allHeaderCellsIDs.length; i++){

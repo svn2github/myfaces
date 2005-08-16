@@ -157,11 +157,18 @@ public class HtmlTabbedPaneRenderer
 	        
 	        writer.endElement(HTML.SCRIPT_ELEM);
 	        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+	        
+	        String submitFieldIDAndName = getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext);
+	        writer.startElement(HTML.INPUT_ELEM, tabbedPane);
+	        writer.writeAttribute(HTML.ID_ATTR, submitFieldIDAndName, null);
+	        writer.writeAttribute(HTML.NAME_ATTR, submitFieldIDAndName, null);
+	        writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
+	        writer.endElement(HTML.INPUT_ELEM);
         }
         
         writeTableStart(writer, facesContext, tabbedPane);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-        writer.startElement(HTML.TR_ELEM, uiComponent);
+        writer.startElement(HTML.TR_ELEM, tabbedPane);
 
         //Tab headers
         int tabIdx = 0;
@@ -195,7 +202,7 @@ public class HtmlTabbedPaneRenderer
         //Empty tab cell on the right for better look
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         HtmlRendererUtils.writePrettyIndent(facesContext);
-        writer.startElement(HTML.TD_ELEM, uiComponent);
+        writer.startElement(HTML.TD_ELEM, tabbedPane);
         writer.writeAttribute(HTML.CLASS_ATTR, EMPTY_HEADER_CELL_CLASS, null);
         writer.write("&#160;");
         writer.endElement(HTML.TD_ELEM);
@@ -204,14 +211,14 @@ public class HtmlTabbedPaneRenderer
 
         //Sub header cells
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-        writer.startElement(HTML.TR_ELEM, uiComponent);
+        writer.startElement(HTML.TR_ELEM, tabbedPane);
         writeSubHeaderCells(writer, facesContext, tabbedPane, visibleTabCount, visibleTabSelectedIdx);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.endElement(HTML.TR_ELEM);
 
         //Tabs
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-        writer.startElement(HTML.TR_ELEM, uiComponent);
+        writer.startElement(HTML.TR_ELEM, tabbedPane);
         writer.startElement(HTML.TD_ELEM, tabbedPane);
         writer.writeAttribute(HTML.COLSPAN_ATTR, Integer.toString(visibleTabCount + 1), null);
         String tabContentStyleClass = tabbedPane.getTabContentStyleClass();
@@ -257,6 +264,19 @@ public class HtmlTabbedPaneRenderer
                     return;
                 }
                 tabIdx++;
+            }
+        }
+        
+        // No request due to a header button pressed.
+        // Restore a client-side switch
+        if( isDynamic() ){
+        	String clientSideIndex = (String)paramMap.get(getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext));
+        	if (clientSideIndex != null && clientSideIndex.length() > 0)
+            {
+                tabbedPane.queueEvent(new TabChangeEvent(tabbedPane,
+                                                         tabbedPane.getSelectedIndex(),
+                                                         Integer.parseInt(clientSideIndex)));
+                return;
             }
         }
     }
@@ -342,6 +362,10 @@ public class HtmlTabbedPaneRenderer
     	String originalID = tabbedPane.getClientId( facesContext );
     	return originalID.replace(':','_');
     }
+    
+    protected String getTabIndexSubmitFieldIDAndName(HtmlPanelTabbedPane tabbedPane, FacesContext facesContext){
+    	return tabbedPane.getClientId(facesContext)+"_indexSubmit";
+    }
 
     protected String getHeaderCellID(HtmlPanelTab tab, FacesContext facesContext){
     	return tab.getClientId(facesContext)+"_headerCell";
@@ -398,7 +422,7 @@ public class HtmlTabbedPaneRenderer
 
         if (disabled) {
             writer.startElement(HTML.LABEL_ELEM, tabbedPane);
-            writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null);
+            // writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null); // Usefull ?
             writer.writeText(label, null);
             writer.endElement(HTML.LABEL_ELEM);
         } else {
@@ -414,15 +438,11 @@ public class HtmlTabbedPaneRenderer
             	String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
 	            writer.writeAttribute(HTML.ONCLICK_ATTR,
 	        			"return myFaces_showPanelTab("
-	            			+'\''+getHeaderCellID(tab, facesContext)+"',"
-	        				+'\''+tab.getClientId(facesContext)+"',"
-	        				+visibleTabIndex+','
-	        				+getHeaderCellsIDsVar(tabbedPane,facesContext)+','
-							+getTabsIDsVar(tabbedPane,facesContext)+','
-							+ (activeUserClass==null ? "null" : '\''+activeUserClass+'\'')+','
-							+ (inactiveUserClass==null ? "null" : '\''+inactiveUserClass+'\'')+','
-							+ (activeSubStyleUserClass==null ? "null" : '\''+activeSubStyleUserClass+'\'')+','
-							+ (inactiveSubStyleUserClass==null ? "null" : '\''+inactiveSubStyleUserClass+'\'')+");",
+	            			+tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
+	            			+'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext)+"',"
+	        				+getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
+							+ (activeUserClass==null ? "null" : '\''+activeUserClass+'\'')+','+ (inactiveUserClass==null ? "null" : '\''+inactiveUserClass+'\'')+','
+							+ (activeSubStyleUserClass==null ? "null" : '\''+activeSubStyleUserClass+'\'')+','+ (inactiveSubStyleUserClass==null ? "null" : '\''+inactiveSubStyleUserClass+'\'')+");",
 						null);
             }
 
