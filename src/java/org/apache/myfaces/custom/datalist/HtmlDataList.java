@@ -86,6 +86,8 @@ public class HtmlDataList
         }
 
         setRowIndex(-1);
+
+        super.processDecodes(context);
     }
 
     public void processUpdates(FacesContext context)
@@ -119,6 +121,8 @@ public class HtmlDataList
         }
 
         setRowIndex(-1);
+        
+        super.processUpdates(context);
     }
 
 
@@ -153,6 +157,8 @@ public class HtmlDataList
         }
 
         setRowIndex(-1);
+        
+        super.processValidators(context);
     }
 
 
