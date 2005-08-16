@@ -273,9 +273,7 @@ public class HtmlTabbedPaneRenderer
         	String clientSideIndex = (String)paramMap.get(getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext));
         	if (clientSideIndex != null && clientSideIndex.length() > 0)
             {
-                tabbedPane.queueEvent(new TabChangeEvent(tabbedPane,
-                                                         tabbedPane.getSelectedIndex(),
-                                                         Integer.parseInt(clientSideIndex)));
+        		tabbedPane.setSelectedIndex( Integer.parseInt(clientSideIndex) );
                 return;
             }
         }
