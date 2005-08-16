@@ -74,7 +74,11 @@ public class HtmlTabbedPaneRenderer
     	// NoOp
     }
     
-    protected boolean isDynamic(){
+    /**
+     * This method will be removed.
+     * It's just a provision in case we need to explicitly allow to disable the client-side switch.
+     */
+    private boolean isDynamic(){
     	return true;
     }
 
