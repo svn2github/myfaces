@@ -126,6 +126,7 @@ public class HtmlCalendarRenderer
 
             RendererUtils.copyHtmlInputTextAttributes(inputCalendar, inputText);
 
+            inputText.setConverter(null); // value for this transient component will already be converted
             inputText.setTransient(true);
 
             if (value == null && inputCalendar.getSubmittedValue() != null)
