@@ -16,6 +16,8 @@
 package org.apache.myfaces.custom.tabbedpane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +29,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.util.AddResource;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -39,68 +43,25 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 public class HtmlTabbedPaneRenderer
         extends HtmlRenderer
 {
-    //private static final Log log = LogFactory.getLog(HtmlTabbedPaneRenderer.class);
+    private static final String ACTIVE_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_activeHeaderCell";
+    private static final String INACTIVE_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_inactiveHeaderCell";
+    private static final String DISABLED_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_disabledHeaderCell";
+    private static final String EMPTY_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_emptyHeaderCell";
+    private static final String SUB_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_subHeaderCell";
+    private static final String SUB_HEADER_CELL_CLASS_ACTIVE = "myFaces_panelTabbedPane_subHeaderCell_active";
+    private static final String SUB_HEADER_CELL_CLASS_INACTIVE = "myFaces_panelTabbedPane_subHeaderCell_inactive";
+    private static final String SUB_HEADER_CELL_CLASS_FIRST = "myFaces_panelTabbedPane_subHeaderCell_first";
+    private static final String SUB_HEADER_CELL_CLASS_LAST = "myFaces_panelTabbedPane_subHeaderCell_last";
+    private static final String TAB_PANE_CLASS = "myFaces_panelTabbedPane_pane";
 
-    private static final String TABLE_STYLE =
-        "border-style: none; " +
-        "padding: 0px; " +
-        "border-spacing: 0px; " +
-        "empty-cells: show; ";
-
-    private static final String ACTIVE_HEADER_CELL_STYLE =
-        "border-top: 2px outset #CCCCCC; " +
-        "border-right: 2px outset #CCCCCC; " +
-        "border-bottom: 0px none; " +
-        "border-left: 2px outset #CCCCCC; " +
-        "text-align: center; ";
-
-    private static final String INACTIVE_HEADER_CELL_STYLE =
-        "border-top: 1px outset #CCCCCC; " +
-        "border-right: 1px outset #CCCCCC; " +
-        "border-bottom: 0px none; " +
-        "border-left: 1px outset #CCCCCC; " +
-        "text-align: center; " +
-        "background-color: #CCCCCC; ";
-
-    private static final String EMPTY_HEADER_CELL_STYLE =
-        "border-top: 0px none; " +
-        "border-right: 0px none; " +
-        "border-bottom: 0px none; " +
-        "border-left: 0px none; ";
-
-    private static final String SUB_HEADER_CELL_STYLE =
-        "height: 2px; " +
-        "line-height: 0px; font-size: 0px; " +
-        "border-bottom: 0px none; ";
-
-    private static final String TAB_CELL_STYLE =
-        "border-top: 0px none; " +
-        "border-right: 2px outset #CCCCCC; " +
-        "border-bottom: 2px outset #CCCCCC; " +
-        "border-left: 2px outset #CCCCCC; " +
-        "padding: 10px; ";
-
-    private static final String NO_BORDER_STYLE =
-        "0px none; ";
-
-    private static final String BORDER_STYLE =
-        "2px outset #CCCCCC; ";
-
-    private static final String BUTTON_STYLE_ACTIVE
-        = "border-style:none; width:100%; cursor:pointer;";
-    private static final String BUTTON_STYLE_INACTIVE
-        = "border-style:none; width:100%; cursor:pointer; background-color:#CCCCCC;";
-
-    private static final String BUTTON_STYLE_DISABLED
-        = "border-style:none; width:100%; cursor:normal;";
-
-    private static final String DEFAULT_BG_COLOR = "#FFFFFF";
+    private static final String DEFAULT_BG_COLOR = "white";
 
     private static final String AUTO_FORM_SUFFIX = ".autoform";
 
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
+    	// NoOp
     }
 
     public boolean getRendersChildren()
@@ -110,23 +71,41 @@ public class HtmlTabbedPaneRenderer
 
     public void encodeChildren(FacesContext facescontext, UIComponent uicomponent) throws IOException
     {
+    	// NoOp
+    }
+    
+    protected boolean isDynamic(){
+    	return true;
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlPanelTabbedPane.class);
-
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-
         HtmlPanelTabbedPane tabbedPane = (HtmlPanelTabbedPane)uiComponent;
-        int selectedIndex = tabbedPane.getSelectedIndex();
-
         if (tabbedPane.getBgcolor() == null)
         {
             tabbedPane.setBgcolor(DEFAULT_BG_COLOR);
         }
+        
+        AddResource.addStyleSheet(HtmlTabbedPaneRenderer.class, "defaultStyles.css", facesContext);
+
+        if( isDynamic() ){
+        	AddResource.addJavaScriptToHeader(HtmlTabbedPaneRenderer.class, "dynamicTabs.js", facesContext);
+        	AddResource.addInlineStyleToHeader(
+        			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
+        			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+TAB_PANE_CLASS+",\n" +
+        			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+SUB_HEADER_CELL_CLASS+"{\n"+
+        				"background-color:" + tabbedPane.getBgcolor()+";\n"+
+        			"}\n",
+        			facesContext);
+        }
+        
+        
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+
+        int selectedIndex = tabbedPane.getSelectedIndex();
 
         UIForm parentForm = RendererUtils.findParentForm(tabbedPane);
         if (parentForm == null)
@@ -134,6 +113,48 @@ public class HtmlTabbedPaneRenderer
             writeFormStart(writer, facesContext, tabbedPane);
         }
 
+        List children = tabbedPane.getChildren();
+        
+        if( isDynamic() ){
+        	List headerIDs = new ArrayList();
+	        List tabIDs = new ArrayList();
+	        for (int i = 0, len = children.size(); i < len; i++)
+	        {
+	            UIComponent child = getUIComponent((UIComponent)children.get(i));
+	            if (child instanceof HtmlPanelTab && child.isRendered()){
+	            	HtmlPanelTab tab = (HtmlPanelTab) child;
+	            	tabIDs.add( child.getClientId(facesContext) );
+	            	if( ! isDisabled(facesContext, tab) )
+	            		headerIDs.add( getHeaderCellID(tab, facesContext) );
+	            }
+	        }
+        
+	        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+	        writer.startElement(HTML.SCRIPT_ELEM, tabbedPane);
+	        writer.write('\n');
+	        
+	        writer.write( getHeaderCellsIDsVar(tabbedPane,facesContext)+"= new Array(" );
+	        for(Iterator ids=headerIDs.iterator(); ids.hasNext();){
+	        	String id = (String)ids.next();
+	        	writer.write('"'+JavascriptUtils.encodeString( id )+'"');
+	        	if( ids.hasNext() )
+	        		writer.write(',');
+	        }
+	        writer.write( ");\n" ); // end Array
+	        
+	        writer.write( getTabsIDsVar(tabbedPane,facesContext)+"= new Array(" );
+	        for(Iterator ids=tabIDs.iterator(); ids.hasNext();){
+	        	String id = (String)ids.next();
+	        	writer.write('"'+JavascriptUtils.encodeString( id )+'"');
+	        	if( ids.hasNext() )
+	        		writer.write(',');
+	        }
+	        writer.write( ");\n" ); // end Array
+	        
+	        writer.endElement(HTML.SCRIPT_ELEM);
+	        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        }
+        
         writeTableStart(writer, facesContext, tabbedPane);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.TR_ELEM, uiComponent);
@@ -142,7 +163,6 @@ public class HtmlTabbedPaneRenderer
         int tabIdx = 0;
         int visibleTabCount = 0;
         int visibleTabSelectedIdx = -1;
-        List children = tabbedPane.getChildren();
         for (int i = 0, len = children.size(); i < len; i++)
         {
             UIComponent child = getUIComponent((UIComponent)children.get(i));
@@ -150,8 +170,14 @@ public class HtmlTabbedPaneRenderer
             {
                 if (child.isRendered())
                 {
-                    writeHeaderCell(writer, facesContext, tabbedPane,
-                                    (HtmlPanelTab)child, tabIdx, tabIdx == selectedIndex, isDisabled(facesContext, child));
+                    writeHeaderCell(writer,
+                    				facesContext,
+                    				tabbedPane,
+                                    (HtmlPanelTab)child,
+                                    tabIdx,
+                                    visibleTabCount,
+                                    tabIdx == selectedIndex,
+                                    isDisabled(facesContext, child));
                     if (tabIdx == selectedIndex)
                     {
                         visibleTabSelectedIdx = visibleTabCount;
@@ -166,7 +192,7 @@ public class HtmlTabbedPaneRenderer
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         HtmlRendererUtils.writePrettyIndent(facesContext);
         writer.startElement(HTML.TD_ELEM, uiComponent);
-        writer.writeAttribute(HTML.STYLE_ATTR, EMPTY_HEADER_CELL_STYLE, null);
+        writer.writeAttribute(HTML.CLASS_ATTR, EMPTY_HEADER_CELL_CLASS, null);
         writer.write("&#160;");
         writer.endElement(HTML.TD_ELEM);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
@@ -175,15 +201,21 @@ public class HtmlTabbedPaneRenderer
         //Sub header cells
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.TR_ELEM, uiComponent);
-        writeSubHeaderCells(writer,  facesContext, tabbedPane, visibleTabCount, visibleTabSelectedIdx, false);
+        writeSubHeaderCells(writer, facesContext, tabbedPane, visibleTabCount, visibleTabSelectedIdx);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.endElement(HTML.TR_ELEM);
 
-        //Tab
+        //Tabs
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.TR_ELEM, uiComponent);
-        writeTabCell(writer,  facesContext, tabbedPane, visibleTabCount, selectedIndex);
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        writer.startElement(HTML.TD_ELEM, tabbedPane);
+        writer.writeAttribute(HTML.COLSPAN_ATTR, Integer.toString(visibleTabCount + 1), null);
+        String tabContentStyleClass = tabbedPane.getTabContentStyleClass();
+        writer.writeAttribute(HTML.CLASS_ATTR, TAB_PANE_CLASS+(tabContentStyleClass==null ? "" : " "+tabContentStyleClass), null);
+        
+        writeTabsContents(writer,  facesContext, tabbedPane, selectedIndex);
+        
+        writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);
 
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
@@ -244,41 +276,84 @@ public class HtmlTabbedPaneRenderer
                                  null);
         writer.flush();
     }
-
+    
+    protected String getHeaderCellsIDsVar(HtmlPanelTabbedPane tabbedPane, FacesContext facesContext){
+    	return JavascriptUtils.getValidJavascriptName(
+    			"panelTabbedPane_"+tabbedPane.getClientId(facesContext)+"_HeadersIDs",
+    			false);
+    }
+    
+    protected String getTabsIDsVar(HtmlPanelTabbedPane tabbedPane, FacesContext facesContext){
+    	return JavascriptUtils.getValidJavascriptName(
+    			"panelTabbedPane_"+tabbedPane.getClientId(facesContext)+"_IDs",
+    			false);
+    }
+    
+    protected String getDefaultActiveHeaderStyleClass(HtmlPanelTabbedPane tabbedPane, FacesContext facesContext){
+    	return JavascriptUtils.getValidJavascriptName(
+    			"panelTabbedPane_"+tabbedPane.getClientId(facesContext)+"_ActiveStyle",
+    			false);
+    }
+    
+    protected String getActiveHeaderClasses(HtmlPanelTabbedPane tabbedPane){
+    	String userActiveStyleClass = tabbedPane.getActiveTabStyleClass();
+    	
+    	if( userActiveStyleClass == null || userActiveStyleClass.length() == 0 )
+    		return ACTIVE_HEADER_CELL_CLASS;
+    	
+    	return ACTIVE_HEADER_CELL_CLASS+' '+userActiveStyleClass;
+    }
+    
+    protected String getInactiveHeaderClasses(HtmlPanelTabbedPane tabbedPane){
+    	String userInactiveStyleClass = tabbedPane.getInactiveTabStyleClass();
+    	
+    	if( userInactiveStyleClass == null || userInactiveStyleClass.length() == 0 )
+    		return INACTIVE_HEADER_CELL_CLASS;
+    	
+    	return INACTIVE_HEADER_CELL_CLASS+' '+userInactiveStyleClass;
+    }
 
     protected void writeTableStart(ResponseWriter writer,
                                    FacesContext facesContext,
                                    HtmlPanelTabbedPane tabbedPane)
         throws IOException
     {
-        String oldStyle = tabbedPane.getStyle();
-        if (oldStyle == null)
-        {
-            tabbedPane.setStyle(TABLE_STYLE);
-        }
-        else
-        {
-            tabbedPane.setStyle(TABLE_STYLE + "; " + oldStyle);
-        }
-
         String oldBgColor = tabbedPane.getBgcolor();
         tabbedPane.setBgcolor(null);
 
         writer.startElement(HTML.TABLE_ELEM, tabbedPane);
+        writer.writeAttribute(HTML.ID_ATTR, getTableStylableId(tabbedPane,facesContext), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "myFaces_panelTabbedPane", null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
         HtmlRendererUtils.renderHTMLAttributes(writer, tabbedPane, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         writer.flush();
 
-        tabbedPane.setStyle(oldStyle);
         tabbedPane.setBgcolor(oldBgColor);
     }
+    
+    /**
+     * As the colon (:) can't be used in CSS, transforms the id to make it safe to use for CSS. 
+     */
+    protected String getTableStylableId(HtmlPanelTabbedPane tabbedPane, FacesContext facesContext){
+    	String originalID = tabbedPane.getClientId( facesContext );
+    	return originalID.replace(':','_');
+    }
 
+    protected String getHeaderCellID(HtmlPanelTab tab, FacesContext facesContext){
+    	return tab.getClientId(facesContext)+"_headerCell";
+    }
+    
+    // Do not change without modifying the .js
+    private String getSubHeaderCellID(HtmlPanelTab tab, FacesContext facesContext){
+    	return tab.getClientId(facesContext)+"_headerCell_sub";
+    }
 
     protected void writeHeaderCell(ResponseWriter writer,
                                    FacesContext facesContext,
                                    HtmlPanelTabbedPane tabbedPane,
                                    HtmlPanelTab tab,
                                    int tabIndex,
+                                   int visibleTabIndex,
                                    boolean active,
                                    boolean disabled)
         throws IOException
@@ -286,27 +361,28 @@ public class HtmlTabbedPaneRenderer
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         HtmlRendererUtils.writePrettyIndent(facesContext);
         writer.startElement(HTML.TD_ELEM, tabbedPane);
-        if (active)
+        writer.writeAttribute(HTML.ID_ATTR, getHeaderCellID(tab, facesContext), null);
+        
+        if (disabled)
         {
-            writer.writeAttribute(HTML.STYLE_ATTR,
-                                  ACTIVE_HEADER_CELL_STYLE + "background-color:" + tabbedPane.getBgcolor(),
+        	String disabledClass = tabbedPane.getDisabledTabStyleClass();
+            writer.writeAttribute(HTML.CLASS_ATTR,
+            					  DISABLED_HEADER_CELL_CLASS + (disabledClass==null ? "" : ' '+disabledClass),
                                   null);
-
-            HtmlRendererUtils.renderHTMLAttribute(writer, tabbedPane, "activeTabStyleClass", HTML.STYLE_CLASS_ATTR);
         }
-        else if (disabled)
-        {
-            writer.writeAttribute(HTML.STYLE_ATTR,
-                                  INACTIVE_HEADER_CELL_STYLE,
-                                  null);
-            HtmlRendererUtils.renderHTMLAttribute(writer, tabbedPane, "disabledTabStyleClass", HTML.STYLE_CLASS_ATTR);
-        }
-        else
-        {
-            writer.writeAttribute(HTML.STYLE_ATTR,
-                                  INACTIVE_HEADER_CELL_STYLE,
-                                  null);
-            HtmlRendererUtils.renderHTMLAttribute(writer, tabbedPane, "inactiveTabStyleClass", HTML.STYLE_CLASS_ATTR);
+        else{
+        	if (active)
+	        {
+	            writer.writeAttribute(HTML.CLASS_ATTR,
+	                                  getActiveHeaderClasses(tabbedPane),
+	                                  null);
+	        }
+	        else
+	        {
+	            writer.writeAttribute(HTML.CLASS_ATTR,
+	            					  getInactiveHeaderClasses(tabbedPane),
+	                                  null);
+	        }
         }
 
 
@@ -319,28 +395,33 @@ public class HtmlTabbedPaneRenderer
         if (disabled) {
             writer.startElement(HTML.LABEL_ELEM, tabbedPane);
             writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null);
-            writer.writeAttribute(HTML.STYLE_ATTR, BUTTON_STYLE_DISABLED, null);
             writer.writeText(label, null);
             writer.endElement(HTML.LABEL_ELEM);
         } else {
-            //Button
-            writer.startElement(HTML.INPUT_ELEM, tabbedPane);
+        	// Button
+    		writer.startElement(HTML.INPUT_ELEM, tabbedPane);
             writer.writeAttribute(HTML.TYPE_ATTR, "submit", null);
             writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null);
             writer.writeAttribute(HTML.VALUE_ATTR, label, null);
+            if( isDynamic() ){
+            	String activeUserClass = tabbedPane.getActiveTabStyleClass();
+            	String inactiveUserClass = tabbedPane.getInactiveTabStyleClass();
+            	String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();
+            	String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
+	            writer.writeAttribute(HTML.ONCLICK_ATTR,
+	        			"return myFaces_showPanelTab("
+	            			+'\''+getHeaderCellID(tab, facesContext)+"',"
+	        				+'\''+tab.getClientId(facesContext)+"',"
+	        				+visibleTabIndex+','
+	        				+getHeaderCellsIDsVar(tabbedPane,facesContext)+','
+							+getTabsIDsVar(tabbedPane,facesContext)+','
+							+ (activeUserClass==null ? "null" : '\''+activeUserClass+'\'')+','
+							+ (inactiveUserClass==null ? "null" : '\''+inactiveUserClass+'\'')+','
+							+ (activeSubStyleUserClass==null ? "null" : '\''+activeSubStyleUserClass+'\'')+','
+							+ (inactiveSubStyleUserClass==null ? "null" : '\''+inactiveSubStyleUserClass+'\'')+");",
+						null);
+            }
 
-            if (active)
-            {
-                writer.writeAttribute(HTML.STYLE_ATTR,
-                    BUTTON_STYLE_ACTIVE + "background-color:" + tabbedPane.getBgcolor(),
-                    null);
-            }
-            else
-            {
-                writer.writeAttribute(HTML.STYLE_ATTR,
-                    BUTTON_STYLE_INACTIVE,
-                    null);
-            }
             writer.endElement(HTML.INPUT_ELEM);
         }
         writer.endElement(HTML.TD_ELEM);
@@ -351,69 +432,92 @@ public class HtmlTabbedPaneRenderer
                                        FacesContext facesContext,
                                        HtmlPanelTabbedPane tabbedPane,
                                        int visibleTabCount,
-                                       int visibleTabSelectedIndex,
-                                       boolean disabled)
+                                       int visibleTabSelectedIndex)
             throws IOException
     {
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0, cnt = visibleTabCount + 1; i < cnt; i++)
+    	String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();
+    	String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
+    	
+    	List children = tabbedPane.getChildren();
+        StringBuffer classes = new StringBuffer();
+        for (int i = 0, len = children.size(), renderedIndex = 0; i < len; i++)
         {
-            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            HtmlRendererUtils.writePrettyIndent(facesContext);
-            writer.startElement(HTML.TD_ELEM, tabbedPane);
-            buf.setLength(0);
-            buf.append(SUB_HEADER_CELL_STYLE);
-            buf.append("border-top:").append(i == visibleTabSelectedIndex ? NO_BORDER_STYLE : BORDER_STYLE);
-            buf.append("border-right:").append(i + 1 < cnt ? NO_BORDER_STYLE : BORDER_STYLE);
-            buf.append("border-left:").append(i > 0 ? NO_BORDER_STYLE : BORDER_STYLE);
-            buf.append("background-color:").append(tabbedPane.getBgcolor());
-            writer.writeAttribute(HTML.STYLE_ATTR, buf.toString(), null);
+            UIComponent child = getUIComponent((UIComponent)children.get(i));
+            if (child instanceof HtmlPanelTab && child.isRendered())
+            {
+            	HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+                HtmlRendererUtils.writePrettyIndent(facesContext);
+                writer.startElement(HTML.TD_ELEM, tabbedPane);
+                writer.writeAttribute(HTML.ID_ATTR, getSubHeaderCellID((HtmlPanelTab)child, facesContext), null);
+                classes.setLength(0);
+                classes.append(SUB_HEADER_CELL_CLASS);
+                if( renderedIndex == 0 ){
+                	classes.append(' ');
+                	classes.append(SUB_HEADER_CELL_CLASS_FIRST);
+                }
+                if( renderedIndex == visibleTabCount ){
+                	classes.append(' ');
+                	classes.append(SUB_HEADER_CELL_CLASS_LAST);
+                	if( activeSubStyleUserClass != null ){
+                		classes.append(' ');
+                		classes.append(activeSubStyleUserClass);
+                	}
+                }else{
+                	if( inactiveSubStyleUserClass != null ){
+                		classes.append(' ');
+                		classes.append(inactiveSubStyleUserClass);
+                	}
+                }
 
-            if (i == visibleTabSelectedIndex) {
-                HtmlRendererUtils.renderHTMLAttribute(writer, tabbedPane, "activeSubStyleClass", HTML.STYLE_CLASS_ATTR);
-            } else {
-                HtmlRendererUtils.renderHTMLAttribute(writer, tabbedPane, "inactiveSubStyleClass", HTML.STYLE_CLASS_ATTR);
+            	classes.append(' ');
+                classes.append(renderedIndex == visibleTabSelectedIndex ? SUB_HEADER_CELL_CLASS_ACTIVE : SUB_HEADER_CELL_CLASS_INACTIVE);
+                
+                writer.writeAttribute(HTML.CLASS_ATTR, classes.toString(), null);
+
+                writer.write("&#160;");
+                writer.endElement(HTML.TD_ELEM);
+                
+            	renderedIndex++;
             }
-
-            writer.write("&#160;");
-            writer.endElement(HTML.TD_ELEM);
         }
+        
+        // Empty Cell Sub
+        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        HtmlRendererUtils.writePrettyIndent(facesContext);
+        writer.startElement(HTML.TD_ELEM, tabbedPane);
+        writer.writeAttribute(
+        		HTML.CLASS_ATTR,
+        		SUB_HEADER_CELL_CLASS+' '+SUB_HEADER_CELL_CLASS_LAST
+        		+(inactiveSubStyleUserClass != null ? ' '+inactiveSubStyleUserClass : ""),
+        		 null);
+        writer.write("&#160;");
+        writer.endElement(HTML.TD_ELEM);
     }
 
-
-    protected void writeTabCell(ResponseWriter writer, FacesContext facesContext, HtmlPanelTabbedPane tabbedPane,
-           int tabCount, int selectedIndex) throws IOException {
+    protected void writeTabsContents(ResponseWriter writer, FacesContext facesContext, HtmlPanelTabbedPane tabbedPane,
+           int selectedIndex) throws IOException {
        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-       HtmlRendererUtils.writePrettyIndent(facesContext);
-       writer.startElement(HTML.TD_ELEM, tabbedPane);
-       writer.writeAttribute(HTML.COLSPAN_ATTR, Integer.toString(tabCount + 1), null);
-       writer.writeAttribute(HTML.STYLE_ATTR, TAB_CELL_STYLE + "background-color:" + tabbedPane.getBgcolor(), null);
-       HtmlRendererUtils.renderHTMLAttribute(writer, tabbedPane, "tabContentStyleClass", HTML.STYLE_CLASS_ATTR);
-
+            
        int tabIdx = 0;
        List children = tabbedPane.getChildren();
        for (int i = 0, len = children.size(); i < len; i++) {
            UIComponent child = getUIComponent((UIComponent) children.get(i));
            if (child instanceof HtmlPanelTab) {
+        	   HtmlPanelTab tab = (HtmlPanelTab)child;
+        	   writer.startElement(HTML.DIV_ELEM, tabbedPane);
+               writer.writeAttribute(HTML.ID_ATTR, tab.getClientId(facesContext), null);
                // the inactive tabs are hidden with a div-tag
                if (tabIdx != selectedIndex) {
-                   writer.startElement(HTML.DIV_ELEM, tabbedPane);
                    writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
-                   RendererUtils.renderChild(facesContext, child);
-                   writer.endElement(HTML.DIV_ELEM);
                }
-               else
-               {
-                   RendererUtils.renderChild(facesContext, child);
-               }
+               RendererUtils.renderChild(facesContext, child);
+               writer.endElement(HTML.DIV_ELEM);
 
                tabIdx++;
            } else {
                RendererUtils.renderChild(facesContext, child);
            }
        }
-
-       writer.endElement(HTML.TD_ELEM);
    }
 
     private UIComponent getUIComponent(UIComponent uiComponent)
@@ -429,7 +533,6 @@ public class HtmlTabbedPaneRenderer
         return uiComponent;
     }
 
-
     protected void writeFormEnd(ResponseWriter writer,
                                 FacesContext facesContext)
         throws IOException
@@ -440,7 +543,6 @@ public class HtmlTabbedPaneRenderer
 
         writer.endElement(HTML.FORM_ELEM);
     }
-
 
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
     {
