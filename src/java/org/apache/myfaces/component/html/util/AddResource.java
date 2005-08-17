@@ -287,6 +287,13 @@ public final class AddResource {
         return request.getAttribute(ADDITIONAL_HEADER_INFO_REQUEST_ATTRUBITE_NAME) != null;
     }
 
+    /**
+     * Add the resources to the &lt;head&gt; of the page.
+     * If the head tag is missing, but the &lt;body&gt; tag is present, the head tag is added.
+     * If both are missing, no resources is added.
+     * 
+     * TODO : Change the ordering so that the user header CSS & JS override MyFaces' ones.
+     */
     static public void writeWithFullHeader(HttpServletRequest request,
             ExtensionsResponseWrapper responseWrapper,
             HttpServletResponse response) throws IOException{
@@ -345,7 +352,7 @@ public final class AddResource {
         if(insertPosition>=0 && addHeaderTags)
             writer.write("</head>");
 
-        writer.write( originalResponse.substring(insertPosition) );
+        writer.write( insertPosition > 0 ? originalResponse.substring(insertPosition) : originalResponse );
     }
 
     private static class AdditionalHeaderInfoToRender{
