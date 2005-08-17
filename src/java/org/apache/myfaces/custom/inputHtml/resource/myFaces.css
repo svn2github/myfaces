@@ -2,6 +2,9 @@ div.kupu-fulleditor .kupu-editorframe {
 	height: 100%;
 	border: silver solid 1px;
 }
+div.kupu-fulleditor .kupu-editor-textarea {
+	height: 100%;
+}
 .kupu-fulleditor{
 	padding-bottom: 47px;
 }

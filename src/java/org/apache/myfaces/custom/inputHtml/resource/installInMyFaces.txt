@@ -6,5 +6,6 @@ Keep the files myFaces.css & myFacesUtils.js
 Check for the // myFaces comments in the following files :
 	- kupustart_form.js
 	- kupucontentfilters.js
+	- kupueditor.js
 
 Overwrite all other files with the ones of Kupu distribution (common directory).

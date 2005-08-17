@@ -524,9 +524,40 @@ function KupuEditor(document, config, logger) {
             this._setDesignMode();
             success = true;
         } catch (e) {
+        
+        	// BEGIN myFaces special Code
+        	// Maybe Kupu is in a hidden parent node.
+        	if (this._designModeSetAttempts < 2) {
+        		var hiddingElements = new Array();
+				for(var currentNode = this.getDocument().getEditable().parentNode ;
+					currentNode.getAttribute ;
+					currentNode = currentNode.parentNode){
+
+					if( currentNode.style.display=='none' ){
+						hiddingElements.push( currentNode );
+						currentNode.style.display='block';
+					}
+				}
+				
+	        	try{					
+					this._setDesignMode();
+		            success = true;
+		        } catch (e2) {
+	        		// NoOp
+	        	}
+				
+				while(hiddingElements.length > 0 ){
+					hiddingElements.pop().style.display='none';
+				}
+	        	
+	        }
+	        
             // register a function to the timer_instance because 
             // window.setTimeout can't refer to 'this'...
-            timer_instance.registerFunction(this, this._setDesignModeWhenReady, 100);
+            if( ! success )
+	            timer_instance.registerFunction(this, this._setDesignModeWhenReady, 100);
+	            
+			// END myFaces special code.
         };
         if (success) {
             // provide an 'afterInit' method on KupuEditor.prototype

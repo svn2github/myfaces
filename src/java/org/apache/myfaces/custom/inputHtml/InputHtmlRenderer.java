@@ -1090,6 +1090,10 @@ public class InputHtmlRenderer extends HtmlRenderer {
             	writer.writeAttribute(HTML.FRAMEBORDER_ATTR, "0", null);
             	writer.writeAttribute(HTML.SCROLLING_ATTR, "auto", null);
             	writer.writeAttribute(HTML.SRC_ATTR, "about:blank", null); // Text loaded afterward by javascript
+            	
+            	// Warning, this is special to MyFaces, to allow to have the component in a hidden tab.
+            	writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "this.contentWindow.document.designMode='on'", null);
+            	
             	writer.endElement(HTML.IFRAME_ELEM);
             	
             	writer.startElement(HTML.TEXTAREA_ELEM, null);
