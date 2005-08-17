@@ -11,11 +11,10 @@
 // $Id$
 
 function startKupu() {
-    // initialize the editor, initKupu groks 1 arg, a reference to the iframe
-    var frame = getFromSelector('kupu-editor'); 
-    var kupu = initKupu(frame);
-    
-    // first let's load the message catalog
+    // initialize the editor, this version groks an array of iframeids
+    var iframeids = new Array('kupu_1', 'kupu_2', 'kupu_3');
+    var kupu = initKupu(iframeids); 
+
     // if there's no global 'i18n_message_catalog' variable available, don't
     // try to load any translations
     if (!window.i18n_message_catalog) {
@@ -28,9 +27,8 @@ function startKupu() {
         if (this.readyState == 4) {
             var status = this.status;
             if (status != '200') {
-            	// myFaces : alert disabled right now (Needs to be fixed)
-                //alert(_('Error loading translation (status ${status} ' +
-                //        '), falling back to english'), {'status': status});
+                alert(_('Error loading translation (status ${status} ' +
+                        '), falling back to english'), {'status': status});
                 continueStartKupu(kupu);
                 return;
             };

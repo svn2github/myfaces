@@ -1,6 +1,6 @@
 /*****************************************************************************
  *
- * Copyright (c) 2003-2004 Kupu Contributors. All rights reserved.
+ * Copyright (c) 2003-2005 Kupu Contributors. All rights reserved.
  *
  * This software is distributed under the terms of the Kupu
  * License. See LICENSE.txt for license text. For a list of Kupu
@@ -471,7 +471,7 @@ function XhtmlValidation(editor) {
                     xhtmlnode.setAttribute(attr.name, attr.value);
                 };
             };
-        }
+        };
         if (editor.getBrowserName()=="IE") {
             this['class'] = function(name, htmlnode, xhtmlnode) {
                 var val = htmlnode.className;
@@ -501,11 +501,12 @@ function XhtmlValidation(editor) {
                 for (var i = styles.length; i >= 0; i--) if (styles[i]) {
                     var parts = /^([^:]+): *(.*)$/.exec(styles[i]);
                     var name = parts[1].toLowerCase();
-                    if (validation.styleWhitelist[name]) {
+                    // myFaces : Remove this right now as the white list is really too small
+                    //if (validation.styleWhitelist[name]) {
                         styles[i] = name+': '+parts[2];
-                    } else {
-                        styles.splice(i,1); // delete
-                    }
+                    //} else {
+                    //    styles.splice(i,1); // delete
+                    //}
                 }
                 if (styles[styles.length-1]) styles.push('');
                 val = styles.join('; ').strip();
@@ -584,9 +585,6 @@ function XhtmlValidation(editor) {
         }
 
         var kids = htmlnode.childNodes;
-        if (kids && /base|meta|link|hr|param|img|area|input|br|basefont|isindex|col/.exec(nodename)) {
-            kids = []; // IE bug: base can think it has children
-        }
         var permittedChildren = this.States[parentnode.tagName] || permitted;
 
         if (kids.length == 0) {
@@ -599,6 +597,15 @@ function XhtmlValidation(editor) {
         } else {
             for (var i = 0; i < kids.length; i++) {
                 var kid = kids[i];
+
+                if (kid.parentNode !== htmlnode) {
+                    if (kid.tagName == 'BODY') {
+                        if (nodename != 'html') continue;
+                    } else if (kid.parentNode.tagName === htmlnode.tagName) {
+                        continue; // IE bug: nodes appear multiple places
+                    }
+                }
+                
                 if (kid.nodeType == 1) {
                     var newkid = this._convertNodes(ownerdoc, kid, parentnode, permittedChildren);
                     if (newkid != null) {
