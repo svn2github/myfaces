@@ -297,7 +297,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         if (isRenderedIfEmpty() || getRowCount() > 0)
         {
-            super.encodeBegin(context);
             for (Iterator iter = getChildren().iterator(); iter.hasNext();)
             {
                 UIComponent component = (UIComponent) iter.next();
@@ -306,6 +305,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                         ((UIColumns) component).encodeTableBegin(context);
                 }
             }
+            super.encodeBegin(context);
         }
     }
     
