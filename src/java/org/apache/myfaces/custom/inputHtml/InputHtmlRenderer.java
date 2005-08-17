@@ -134,8 +134,11 @@ public class InputHtmlRenderer extends HtmlRenderer {
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupueditor.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupubasetools.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuloggers.js", context);
+        
+        // TODO : Remove kupunoi18n & use i18n
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupunoi18n.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "i18n.js/i18n.js", context);
+        //AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "i18n.js/i18n.js", context);
+        
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucleanupexpressions.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucontentfilters.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucontextmenu.js", context);
