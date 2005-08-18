@@ -10,7 +10,8 @@
 
 // $Id$
 
-function startKupu() {
+// myFaces : added parameter
+function startKupu( iframeId ) {
     // first let's load the message catalog
     // if there's no global 'i18n_message_catalog' variable available, don't
     // try to load any translations
@@ -30,7 +31,8 @@ function startKupu() {
     };
     
     // initialize the editor, initKupu groks 1 arg, a reference to the iframe
-    var frame = getFromSelector('kupu-editor'); 
+    // myFaces : added iframeId
+    var frame = getFromSelector( iframeId ); 
     var kupu = initKupu(frame);
     
     // this makes the editor's content_changed attribute set according to changes
@@ -38,6 +40,7 @@ function startKupu() {
     // details)
     kupu.registerContentChanger(getFromSelector('kupu-editor-textarea'));
 
+	/* myFaces : disable this
     // let's register saveOnPart(), to ask the user if he wants to save when 
     // leaving after editing
     if (kupu.getBrowserName() == 'IE') {
@@ -54,6 +57,7 @@ function startKupu() {
             addEventHandler(window, 'unload', saveOnPart);
         };
     };
+    */
 
     // and now we can initialize...
     kupu.initialize();

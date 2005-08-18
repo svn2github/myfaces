@@ -18,45 +18,77 @@
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-var myFacesKupuTextToLoad;
-var myFacesKupuClientId;
-var myFacesKupuFormId;
-var myFacesKupuOriginalDocOnSubmit;
+var myFacesKupuTextsToLoad = new Array();
+var myFacesKupuClientIDs = new Array();
+var myFacesKupuFormsIds = new Array();
+var myFacesKupuIFramesIds = new Array();
 var myFacesKupuResourceBaseURL;
+var myFacesKupuDocOnLoadSet = false;
+var myFacesKupuOriginalDocOnLoad;
+var myFacesKupuProcessedFormsIds = new Array();
+var myFacesKupuOriginalFormsOnSubmits = new Array();
+var myFacesKupuEditors;
 
 function myFacesKupuSet(text, clientId, formId, resourceBaseURL){
-	myFacesKupuTextToLoad = text;
-	myFacesKupuClientId = clientId;
-	myFacesKupuFormId = formId;
+	myFacesKupuTextsToLoad.push( text );
+	myFacesKupuClientIDs.push( clientId );
+	myFacesKupuFormsIds.push( formId );
+	myFacesKupuIFramesIds.push( myFacesKupuGetIFrameId(clientId) );
 	myFacesKupuResourceBaseURL = resourceBaseURL;
-	
-	var onLoadSrc;
-    if( document.all ) // IE
-		onLoadSrc = document.body;
-	else // Mozilla
-		onLoadSrc = window;
 
-	myFacesKupuOriginalDocOnLoad = onLoadSrc.onload;
-	onLoadSrc.onload = myFacesKupuInit;
+	if( ! myFacesKupuDocOnLoadSet ){
+		var onLoadSrc;
+	    if( document.all ) // IE
+			onLoadSrc = document.body;
+		else // Mozilla
+			onLoadSrc = window;
+
+		myFacesKupuOriginalDocOnLoad = onLoadSrc.onload;
+		onLoadSrc.onload = myFacesKupuInit;
+		
+		myFacesKupuDocOnLoadSet = true;
+	}
 	
-	var form = document.forms[myFacesKupuFormId];
-	myFacesKupuOriginalDocOnSubmit = form.onsubmit;
-	form.onsubmit = myFacesKupuSubmit;
+	var formAlreadyProcessed = false;
+	for(var i=0 ; i<myFacesKupuProcessedFormsIds.length && ! formAlreadyProcessed ; i++){
+		if( myFacesKupuProcessedFormsIds[i] == formId )
+			formAlreadyProcessed = true;
+	}
+	if( ! formAlreadyProcessed ){
+		myFacesKupuProcessedFormsIds.push( formId );
+		var form = document.forms[formId];
+		myFacesKupuOriginalFormsOnSubmits.push( form.onsubmit );
+		form.onsubmit = myFacesKupuFormSubmit;
+	}
+}
+
+// Must match InputHtmlRenderer.getIFrameID
+function myFacesKupuGetIFrameId(clientId){
+	return clientId+"_iframe";
 }
 
 function myFacesKupuInit(){
 	if( myFacesKupuOriginalDocOnLoad )
 		myFacesKupuOriginalDocOnLoad();
 
-	kupu = startKupu();
-
-	kupu.getInnerDocument().documentElement.getElementsByTagName('body')[0].innerHTML = myFacesKupuTextToLoad;
+	for(var i=0 ; i<myFacesKupuTextsToLoad.length ; i++){
+		myFacesKupuEditors = startKupu( myFacesKupuIFramesIds[i] );
+		document.getElementById(myFacesKupuIFramesIds[i]).contentWindow.document.getElementsByTagName('body')[0].innerHTML=myFacesKupuTextsToLoad[i];
+	}
 }
 
-function myFacesKupuSubmit(){
-	kupu.prepareForm(document.forms[myFacesKupuFormId], myFacesKupuClientId);
-	if( myFacesKupuOriginalDocOnSubmit )
-		return myFacesKupuOriginalDocOnSubmit();
+function myFacesKupuReactivateDesignMode(iframe){
+	iframe.contentWindow.document.designMode='on';
+}
+
+function myFacesKupuFormSubmit(){
+	for(var i=0 ; i<myFacesKupuFormsIds.length ; i++){
+		myFacesKupuEditors.prepareForm(document.forms[myFacesKupuFormsIds[i]], myFacesKupuClientIDs[i]);
+	}
+	
+	originalFormOnSubmit = myFacesKupuOriginalFormsOnSubmits[0]; // TODO : Fix (How do we get the calling frame ??)
+	if( originalFormOnSubmit )
+		return originalFormOnSubmit();
 }
 
 // Redefine or extend buggy kupu functions

@@ -134,20 +134,22 @@ public class InputHtmlRenderer extends HtmlRenderer {
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupueditor.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupubasetools.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuloggers.js", context);
-        
-        // TODO : Remove kupunoi18n & use i18n
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupunoi18n.js", context);
         //AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "i18n.js/i18n.js", context);
-        
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucleanupexpressions.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucontentfilters.js", context);
+        
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucontextmenu.js", context);
+        
 		AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuinit.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupustart_form.js", context);
+        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupustart.js", context);
+        
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupusourceedit.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuspellchecker.js", context);
         AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupudrawers.js", context);
-
+        
+        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "myFacesUtils.js", context);
+        
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement(HTML.DIV_ELEM,null);
@@ -183,7 +185,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
 									writer.write("(\\W)'");
 								writer.endElement("reg");
 								writer.startElement("replacement",null);
-									writer.write("\\1&#x2018;");
+									writer.write("\\1&#x8216;");
 								writer.endElement("replacement");
 							writer.endElement("expression");
 							writer.startElement("expression",null);
@@ -191,7 +193,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
 									writer.write("'");
 								writer.endElement("reg");
 								writer.startElement("replacement",null);
-									writer.write("&#x2019;");
+									writer.write("&#x8217;");
 								writer.endElement("replacement");
 							writer.endElement("expression");
 		                writer.endElement("set");
@@ -255,6 +257,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                         writer.writeAttribute(HTML.CLASS_ATTR, "kupu-zoom",null);
                         writer.writeAttribute(HTML.ID_ATTR, "kupu-zoom-button",null);
                         writer.writeAttribute(HTML.TITLE_ATTR, "zoom: alt-x",null);
+                        writer.writeAttribute("i18n:attributes", "title", null);
                         writer.writeAttribute(HTML.ACCESSKEY_ATTR, "x",null);
                             writer.write(" ");
                         writer.endElement(HTML.BUTTON_ELEM);
@@ -262,7 +265,8 @@ public class InputHtmlRenderer extends HtmlRenderer {
             				writer.startElement(HTML.BUTTON_ELEM,null);
                             writer.writeAttribute(HTML.TYPE_ATTR, "button",null);
             				writer.writeAttribute(HTML.CLASS_ATTR, "kupu-logo",null);
-            				writer.writeAttribute(HTML.TITLE_ATTR, "Kupu 1.3rc2",null);
+            				writer.writeAttribute(HTML.TITLE_ATTR, "Kupu 1.3rc3",null);
+            				writer.writeAttribute("i18n:attributes", "title", null);
             				writer.writeAttribute(HTML.ACCESSKEY_ATTR, "k",null);
             				writer.writeAttribute(HTML.ONCLICK_ATTR, "window.open('http://kupu.oscom.org');",null);
             					writer.write(" ");
@@ -572,7 +576,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                              					writer.endElement(HTML.TH_ELEM);
                              					writer.startElement(HTML.TD_ELEM,null);
                              						writer.startElement(HTML.SELECT_ELEM,null);
-                             						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-classchooser", null);
+                             						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-addclasschooser", null);
                              							writeOption(writer, "plain", "Plain");
                              							writeOption(writer, "listing", "Listing");
                              							writeOption(writer, "grid", "Grid");
@@ -1085,14 +1089,15 @@ public class InputHtmlRenderer extends HtmlRenderer {
             writer.writeAttribute(HTML.CLASS_ATTR,
                     "kupu-editorframe"+(editor.getStyleClass()==null ? "" : " "+editor.getStyleClass()), null);
             	writer.startElement(HTML.IFRAME_ELEM, null);
-            	writer.writeAttribute(HTML.ID_ATTR, "kupu-editor", null);
+            	writer.writeAttribute(HTML.ID_ATTR, getIFrameID(editor, context), null);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-editor-iframe", null);
             	writer.writeAttribute(HTML.FRAMEBORDER_ATTR, "0", null);
             	writer.writeAttribute(HTML.SCROLLING_ATTR, "auto", null);
-            	writer.writeAttribute(HTML.SRC_ATTR, "about:blank", null); // Text loaded afterward by javascript
+            	writer.writeAttribute(HTML.SRC_ATTR, "about:blank", null); // Text is loaded afterward by javascript
             	
             	// Warning, this is special to MyFaces, to allow to have the component in a hidden tab.
-            	writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "this.contentWindow.document.designMode='on'", null);
+            	writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "myFacesKupuReactivateDesignMode(this)", null);
+            	writer.writeAttribute(HTML.ONFOCUS_ATTR, "myFacesKupuReactivateDesignMode(this)", null);
             	
             	writer.endElement(HTML.IFRAME_ELEM);
             	
@@ -1108,8 +1113,6 @@ public class InputHtmlRenderer extends HtmlRenderer {
         String text = editor.getValueAsHtmlDocument( context );
         String encodedText = text == null ? "" : JavascriptUtils.encodeString( text );
 
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "myFacesUtils.js", context);
-
         String resourceBaseURL = AddResource.getResourceMappedPath(InputHtmlRenderer.class, "", context);
 
         writer.startElement(HTML.SCRIPT_ELEM, null);
@@ -1123,6 +1126,10 @@ public class InputHtmlRenderer extends HtmlRenderer {
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
+	static private String getIFrameID(InputHtml editor, FacesContext context){
+		return editor.getClientId(context)+"_iframe";
+	}
+	
     static private void writeTag(ResponseWriter writer, String tagName, String tagBody) throws IOException{
 		writer.startElement(tagName, null);
 		writer.writeText(tagBody, null);
