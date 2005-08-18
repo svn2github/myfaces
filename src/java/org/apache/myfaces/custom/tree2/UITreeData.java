@@ -213,10 +213,15 @@ public class UITreeData extends UIComponentBase implements NamingContainer
          * do want to keep the saved state so that we can render the node with
          * the invalid value.
          */
+    	   	
         if (!keepSaved(context))
         {
             _saved = new HashMap();
         }
+        
+        // FIX for MYFACES-404
+        // do not use the cached model the render phase
+        _model = null;
 
         super.encodeBegin(context);
     }
