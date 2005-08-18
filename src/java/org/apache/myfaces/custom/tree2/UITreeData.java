@@ -81,13 +81,12 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         return COMPONENT_FAMILY;
     }
 
-    // see superclass for documentation
+    //  see superclass for documentation
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[4];
+        Object values[] = new Object[3];
         values[0] = super.saveState(context);
-        values[1] = _model;
-        values[2] = _var;
+        values[1] = _var;
         
         TreeState t = getDataModel().getTreeState();
         if ( t == null)
@@ -97,7 +96,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         }
         
         // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state            
-        values[3] = (t.isTransient()) ? null : t; 
+        values[2] = (t.isTransient()) ? null : t; 
         return ((Object) (values));
     }
 
@@ -108,9 +107,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
 
-        _model = (TreeModel)values[1];
-        _var = (String)values[2];
-        _restoredState = (TreeState) values[3];
+        _var = (String)values[1];
+        _restoredState = (TreeState) values[2];
     }
 
 
