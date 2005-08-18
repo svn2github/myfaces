@@ -224,6 +224,17 @@ public class UIColumns extends UIData
         }
         return childStates;
     }
+    
+    /**
+     * @see javax.faces.component.UIData#setValue(java.lang.Object)
+     */
+    public void setValue(Object value)
+    {
+        super.setValue(value);
+        _dataModelMap.clear();
+        _cellStates.clear();
+        _isValidChilds = true;
+    }
 
     public void setValueBinding(String name, ValueBinding binding)
     {

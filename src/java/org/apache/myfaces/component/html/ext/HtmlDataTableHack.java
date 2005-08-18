@@ -305,6 +305,17 @@ abstract class HtmlDataTableHack extends
         }
         super.setValueBinding(name, binding);
     }
+    
+    /**
+     * @see javax.faces.component.UIData#setValue(java.lang.Object)
+     */
+    public void setValue(Object value)
+    {
+        super.setValue(value);
+        _dataModelMap.clear();
+        _rowStates.clear();
+        _isValidChilds = true;
+    }
 
     protected DataModel getDataModel()
     {
