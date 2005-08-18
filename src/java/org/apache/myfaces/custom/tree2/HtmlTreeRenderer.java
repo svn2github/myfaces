@@ -484,7 +484,7 @@ public class HtmlTreeRenderer extends Renderer
             if (expandFacet != null)
             {
                 UIGraphic expandImg = (UIGraphic)expandFacet;
-                expandImgSrc = expandImg.getUrl();
+                expandImgSrc = context.getApplication().getViewHandler().getResourceURL(context, expandImg.getUrl());
                 if (expandImg.isRendered())
                 {
                     expandImg.setId(IMAGE_PREFIX + context.getViewRoot().createUniqueId());
@@ -497,7 +497,7 @@ public class HtmlTreeRenderer extends Renderer
             if (collapseFacet != null)
             {
                 UIGraphic collapseImg = (UIGraphic)collapseFacet;
-                collapseImgSrc = collapseImg.getUrl();
+                collapseImgSrc = context.getApplication().getViewHandler().getResourceURL(context, collapseImg.getUrl());
                 if (collapseImg.isRendered())
                 {
                     collapseImg.setId(IMAGE_PREFIX + context.getViewRoot().createUniqueId());
