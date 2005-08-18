@@ -37,7 +37,7 @@ class _SerializableArrayDataModel
             _rows = _rowCount - first;
         }
         _list = new ArrayList(_rows);
-        for (int i = 0; i < _rowCount; i++)
+        for (int i = 0; i < _rows && _first + i < _rowCount; i++)
         {
             _list.add(array[_first + i]);
         }
