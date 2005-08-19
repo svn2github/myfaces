@@ -43,6 +43,7 @@ public class ExtensionsFilter implements Filter {
     private int uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
     private String uploadRepositoryPath = null; //standard temp directory
+    private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
 
     /**
      * Init method for this filter
@@ -85,6 +86,15 @@ public class ExtensionsFilter implements Filter {
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        if(request.getAttribute(DOFILTER_CALLED)!=null)
+        {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        request.setAttribute(DOFILTER_CALLED,"true");
+
         if (!(response instanceof HttpServletResponse)) {
             chain.doFilter(request, response);
             return;
