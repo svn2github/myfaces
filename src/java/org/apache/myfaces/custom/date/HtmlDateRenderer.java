@@ -80,6 +80,9 @@ public class HtmlDateRenderer extends HtmlRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
         if( ! type.equals("time")){
 	        encodeInputDay(inputDate, writer, clientId, userData, disabled, readonly);
@@ -99,6 +102,8 @@ public class HtmlDateRenderer extends HtmlRenderer {
 	        writer.write(":");
 	        encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
         }
+        
+        writer.endElement(HTML.SPAN_ELEM);
     }
     
     protected static void encodeInputField(UIComponent uiComponent, ResponseWriter writer, String id,
