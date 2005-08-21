@@ -63,7 +63,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     private String _var;
     private String _nodeId;
     private Map _saved = new HashMap();
-    
+
     private TreeState _restoredState = null;
 
     /**
@@ -87,16 +87,16 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         Object values[] = new Object[3];
         values[0] = super.saveState(context);
         values[1] = _var;
-        
+
         TreeState t = getDataModel().getTreeState();
         if ( t == null)
         {
             // the model supplier has forgotten to return a valid state manager, but we need one
-            t = new TreeStateBase(); 
+            t = new TreeStateBase();
         }
-        
-        // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state            
-        values[2] = (t.isTransient()) ? null : t; 
+
+        // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state
+        values[2] = (t.isTransient()) ? null : t;
         return ((Object) (values));
     }
 
@@ -211,12 +211,12 @@ public class UITreeData extends UIComponentBase implements NamingContainer
          * do want to keep the saved state so that we can render the node with
          * the invalid value.
          */
-    	   	
+
         if (!keepSaved(context))
         {
             _saved = new HashMap();
         }
-        
+
         // FIX for MYFACES-404
         // do not use the cached model the render phase
         _model = null;
@@ -401,7 +401,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         if (_restoredState != null)
             _model.setTreeState(_restoredState); // set the restored state (if there is one) on the model
-        
+
         return _model;
     }
 
@@ -417,7 +417,25 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         expandEverything(null, kidId++);
         setNodeId(currentNodeId);
     }
-    
+
+    /**
+     * Expands all of the nodes in the specfied path.
+     * @param nodePath The path to expand.
+     */
+    public void expandPath(String[] nodePath)
+    {
+        getDataModel().getTreeState().expandPath(nodePath);
+    }
+
+    /**
+     * Expands all of the nodes in the specfied path.
+     * @param nodePath The path to expand.
+     */
+    public void collapsePath(String[] nodePath)
+    {
+        getDataModel().getTreeState().collapsePath(nodePath);
+    }
+
     /**
      * Private helper method that recursviely expands all of the nodes.
      *
@@ -426,11 +444,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     private void expandEverything(String parentId, int childCount)
     {
-        String nodeId = (parentId != null) ? parentId + TreeModel.SEPARATOR + childCount : "0";    
+        String nodeId = (parentId != null) ? parentId + TreeModel.SEPARATOR + childCount : "0";
         setNodeId(nodeId);
 
         TreeNode node = getDataModel().getNode();
-        
+
         if (!node.isLeaf() && !isNodeExpanded())
         {
             getDataModel().getTreeState().toggleExpanded(nodeId);
@@ -442,7 +460,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             expandEverything(nodeId, kount);
         }
     }
-    
+
 
     private void processNodes(FacesContext context, int processAction, String parentId, int childLevel)
     {
@@ -748,12 +766,12 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
     /**
      * Toggle the expanded state of the current node.
-     */    
+     */
     public void toggleExpanded()
     {
         getDataModel().getTreeState().toggleExpanded(getNodeId());
     }
-    
+
     /**
      * Indicates whether or not the current {@link TreeNode} is expanded.
      * @return boolean
@@ -762,5 +780,5 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     {
         return getDataModel().getTreeState().isNodeExpanded(getNodeId());
     }
-    
+
 }
