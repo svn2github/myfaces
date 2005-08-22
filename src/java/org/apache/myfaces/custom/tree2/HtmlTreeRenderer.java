@@ -75,6 +75,47 @@ public class HtmlTreeRenderer extends Renderer
         return true;
     }
 
+    private void restoreStateFromCookies(FacesContext context, UIComponent component) {
+    	String nodeId = null;
+        HtmlTree tree = (HtmlTree)component;
+        String originalNodeId = tree.getNodeId();
+    	
+    	Map cookieMap = context.getExternalContext().getRequestCookieMap();
+        Cookie treeCookie = (Cookie)cookieMap.get(component.getId());
+        if (treeCookie == null || treeCookie.getValue() == null)
+        {
+            return;
+        }
+
+        String nodeState = null;
+        Map attrMap = getCookieAttr(treeCookie);
+        Iterator i = attrMap.keySet().iterator();
+        while (i.hasNext())
+        {
+            nodeId = (String)i.next();
+            nodeState = (String)attrMap.get(nodeId);
+
+            if (NODE_STATE_EXPANDED.equals(nodeState))
+            {
+                tree.setNodeId(nodeId);
+                if (!tree.isNodeExpanded())
+                {
+                    tree.toggleExpanded();
+                }
+                tree.setNodeId(originalNodeId);
+            }
+            else if (NODE_STATE_CLOSED.equals(nodeState))
+            {
+                tree.setNodeId(nodeId);
+                if (tree.isNodeExpanded())
+                {
+                    tree.toggleExpanded();
+                }
+                tree.setNodeId(originalNodeId);
+            }
+        }
+    }
+
     public void decode(FacesContext context, UIComponent component)
     {
         super.decode(context, component);
@@ -91,40 +132,7 @@ public class HtmlTreeRenderer extends Renderer
                 return;
             }
 
-            Map cookieMap = context.getExternalContext().getRequestCookieMap();
-            Cookie treeCookie = (Cookie)cookieMap.get(component.getId());
-            if (treeCookie == null || treeCookie.getValue() == null)
-            {
-                return;
-            }
-
-            String nodeState = null;
-            Map attrMap = getCookieAttr(treeCookie);
-            Iterator i = attrMap.keySet().iterator();
-            while (i.hasNext())
-            {
-                nodeId = (String)i.next();
-                nodeState = (String)attrMap.get(nodeId);
-
-                if (NODE_STATE_EXPANDED.equals(nodeState))
-                {
-                    tree.setNodeId(nodeId);
-                    if (!tree.isNodeExpanded())
-                    {
-                        tree.toggleExpanded();
-                    }
-                    tree.setNodeId(originalNodeId);
-                }
-                else if (NODE_STATE_CLOSED.equals(nodeState))
-                {
-                    tree.setNodeId(nodeId);
-                    if (tree.isNodeExpanded())
-                    {
-                        tree.toggleExpanded();
-                    }
-                    tree.setNodeId(originalNodeId);
-                }
-            }
+            restoreStateFromCookies(context, component);
         }
         else
         {
@@ -143,6 +151,11 @@ public class HtmlTreeRenderer extends Renderer
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
+    	HtmlTree tree = (HtmlTree)component;
+    	// try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode 
+    	if (!tree.getDataModel().getTreeState().isTransient() && getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true) && getBoolean(component, JSFAttr.PRESERVE_TOGGLE, true))
+    		restoreStateFromCookies(context, component);
+    	
         // write javascript functions
         encodeJavascript(context, component);
     }
