@@ -8,3 +8,6 @@ div.kupu-fulleditor .kupu-editor-textarea {
 .kupu-fulleditor{
 	padding-bottom: 42px;
 }
+div.kupu-fulleditor-zoomed .kupu-editor-iframe{
+   background-color: white;
+}
