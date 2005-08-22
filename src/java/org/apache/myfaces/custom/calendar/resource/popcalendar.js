@@ -55,21 +55,21 @@ function jscalendarHideElement( elmID, overDiv ){
       obj = document.all.tags( elmID )[i];
       if( !obj || !obj.offsetParent )
         continue;
-  
+
       // Find the element's offsetTop and offsetLeft relative to the BODY tag.
       objLeft   = obj.offsetLeft;
       objTop    = obj.offsetTop;
       objParent = obj.offsetParent;
-      
+
       while( objParent.tagName.toUpperCase() != "BODY" ){
         objLeft  += objParent.offsetLeft;
         objTop   += objParent.offsetTop;
         objParent = objParent.offsetParent;
       }
-  
+
       objHeight = obj.offsetHeight;
       objWidth = obj.offsetWidth;
-  
+
       if(( overDiv.offsetLeft + overDiv.offsetWidth ) <= objLeft );
       else if(( overDiv.offsetTop + overDiv.offsetHeight ) <= objTop );
       else if( overDiv.offsetTop >= ( objTop + objHeight ));
@@ -87,10 +87,10 @@ function jscalendarShowElement( elmID ){
   if( jscalendarIe ){
     for( i = 0; i < document.all.tags( elmID ).length; i++ ){
       obj = document.all.tags( elmID )[i];
-      
+
       if( !obj || !obj.offsetParent )
         continue;
-    
+
       obj.style.visibility = "";
     }
   }
@@ -115,10 +115,10 @@ if (jscalendarDom){
 		jscalendarImg[i] = new Image;
 
  	document.write ("<div onclick='jscalendarBShow=true' id='calendar'	class='"+jscalendarThemePrefix+"-div-style'><table	width="+((jscalendarShowWeekNumber==1)?250:220)+" class='"+jscalendarThemePrefix+"-table-style'><tr class='"+jscalendarThemePrefix+"-title-background-style'><td><table width='"+((jscalendarShowWeekNumber==1)?248:218)+"'><tr><td class='"+jscalendarThemePrefix+"-title-style'><span id='caption'></span></td><td align=right><a href='javascript:jscalendarHideCalendar()'><span id='jscalendarCloseButton'></span></a></td></tr></table></td></tr><tr><td class='"+jscalendarThemePrefix+"-body-style'><span id='popupcalendar_content'></span></td></tr>")
-		
+
 	if (jscalendarShowToday==1)
 		document.write ("<tr class='"+jscalendarThemePrefix+"-today-style'><td class='"+jscalendarThemePrefix+"-today-lbl-style'><span id='lblToday'></span></td></tr>")
-		
+
 	document.write ("</table></div><div id='selectMonth' class='"+jscalendarThemePrefix+"-div-style'></div><div id='selectYear' class='"+jscalendarThemePrefix+"-div-style'></div>");
 }
 
@@ -153,7 +153,7 @@ function jscalendarInit(){
 		sHTML1+="<span id='spanRight' class='"+jscalendarThemePrefix+"-title-control-normal-style' onmouseover='jscalendarSwapImage(\"changeRight\",\"right2.gif\");this.className=\""+jscalendarThemePrefix+"-title-control-select-style\"; window.status=\""+jscalendarScrollRightMessage+"\"' onmouseout='clearInterval(jscalendarIntervalID1);jscalendarSwapImage(\"changeRight\",\"right1.gif\"); this.className=\""+jscalendarThemePrefix+"-title-control-normal-style\"; window.status=\"\"' onclick='jscalendarIncMonth()' onmousedown='clearTimeout(jscalendarTimeoutID1);jscalendarTimeoutID1=setTimeout(\"jscalendarStartIncMonth()\",500)'	onmouseup='clearTimeout(jscalendarTimeoutID1);clearInterval(jscalendarIntervalID1)'>&nbsp<IMG id='changeRight' SRC='"+jscalendarImgDir+"right1.gif'	width=10 height=11 BORDER=0>&nbsp</span>&nbsp"
 		sHTML1+="<span id='spanMonth' class='"+jscalendarThemePrefix+"-title-control-normal-style' onmouseover='jscalendarSwapImage(\"changeMonth\",\"drop2.gif\"); this.className=\""+jscalendarThemePrefix+"-title-control-select-style\"; window.status=\""+jscalendarSelectMonthMessage+"\"' onmouseout='jscalendarSwapImage(\"changeMonth\",\"drop1.gif\"); this.className=\""+jscalendarThemePrefix+"-title-control-normal-style\"; window.status=\"\"' onclick='jscalendarPopUpMonth()'></span>&#160;"
 		sHTML1+="<span id='spanYear'  class='"+jscalendarThemePrefix+"-title-control-normal-style' onmouseover='jscalendarSwapImage(\"changeYear\",\"drop2.gif\");  this.className=\""+jscalendarThemePrefix+"-title-control-select-style\"; window.status=\""+jscalendarSelectYearMessage+"\"'	onmouseout='jscalendarSwapImage(\"changeYear\",\"drop1.gif\"); this.className=\""+jscalendarThemePrefix+"-title-control-normal-style\"; window.status=\"\"'	onclick='jscalendarPopUpYear()'></span>&#160;"
-		
+
 		document.getElementById("caption").innerHTML = sHTML1;
 
 		jscalendarBPageLoaded = true;
@@ -263,8 +263,8 @@ function jscalendarConstructMonth(){
 function jscalendarPopUpMonth() {
 	jscalendarConstructMonth()
 	jscalendarCrossMonthObj.visibility = (jscalendarDom||jscalendarIe)? "visible"	: "show"
-	jscalendarCrossMonthObj.left = parseInt(jscalendarCrossobj.left,10) + 50 + "px";
-	jscalendarCrossMonthObj.top =	parseInt(jscalendarCrossobj.top,10) + 26 + "px";
+	jscalendarCrossMonthObj.left = parseInt(formatInt(jscalendarCrossobj.left),10) + 50 + "px";
+	jscalendarCrossMonthObj.top =	parseInt( formatInt(jscalendarCrossobj.top),10) + 26 + "px";
 
 	jscalendarHideElement( 'SELECT', document.getElementById("selectMonth") );
 	jscalendarHideElement( 'APPLET', document.getElementById("selectMonth") );
@@ -303,7 +303,7 @@ function jscalendarDecYear() {
 }
 
 function jscalendarSelectYear(nYear) {
-	jscalendarYearSelected=parseInt(nYear+jscalendarNStartingYear,10);
+	jscalendarYearSelected=parseInt( formatInt(nYear+jscalendarNStartingYear),10);
 	jscalendarYearConstructed=false;
 	jscalendarConstructCalendar();
 	jscalendarPopDownYear();
@@ -348,11 +348,11 @@ function jscalendarPopUpYear() {
 
 	jscalendarConstructYear();
 	jscalendarCrossYearObj.visibility = (jscalendarDom||jscalendarIe) ? "visible" : "show";
-	leftOffset = parseInt(jscalendarCrossobj.left,10) + document.getElementById("spanYear").offsetLeft;
+	leftOffset = parseInt( formatInt(jscalendarCrossobj.left),10) + document.getElementById("spanYear").offsetLeft;
 	if (jscalendarIe)
 		leftOffset += 6;
 	jscalendarCrossYearObj.left =	leftOffset + "px";
-	jscalendarCrossYearObj.top = parseInt(jscalendarCrossobj.top,10) +	26 + "px";
+	jscalendarCrossYearObj.top = parseInt( formatInt(jscalendarCrossobj.top),10) +	26 + "px";
 }
 
 /*** calendar ***/
@@ -368,7 +368,7 @@ function jscalendarWeekNbr(n) {
 	// L = d4 / 1460
 	// d1 = ((d4 - L) mod 365) + L
 	// WeekNumber = d1 / 7 + 1
-	
+
 	year = n.getFullYear();
 	month = n.getMonth() + 1;
 	if (jscalendarStartAt == 0)
@@ -406,7 +406,7 @@ function jscalendarConstructCalendar () {
 
 	datePointer	= 0;
 	dayPointer = startDate.getDay() - jscalendarStartAt;
-	
+
 	if (dayPointer<0)
 		dayPointer = 6;
 
@@ -444,9 +444,9 @@ function jscalendarConstructCalendar () {
 		sHint = ""
 		for (k=0;k<jscalendarHolidaysCounter;k++)
 		{
-			if ((parseInt(jscalendarHolidays[k].d,10)==datePointer)&&(parseInt(jscalendarHolidays[k].m,10)==(jscalendarMonthSelected+1)))
+			if ((parseInt( formatInt(jscalendarHolidays[k].d),10)==datePointer)&&(parseInt( formatInt(jscalendarHolidays[k].m),10)==(jscalendarMonthSelected+1)))
 			{
-				if ((parseInt(jscalendarHolidays[k].y,10)==0)||((parseInt(jscalendarHolidays[k].y,10)==jscalendarYearSelected)&&(parseInt(jscalendarHolidays[k].y,10)!=0)))
+				if ((parseInt( formatInt(jscalendarHolidays[k].y),10)==0)||((parseInt( formatInt(jscalendarHolidays[k].y),10)==jscalendarYearSelected)&&(parseInt( formatInt(jscalendarHolidays[k].y),10)!=0)))
 				{
 					sStyle += " "+jscalendarThemePrefix+"-holiday-style";
 					sHint+=sHint==""?jscalendarHolidays[k].desc:"\n"+jscalendarHolidays[k].desc
@@ -509,16 +509,16 @@ function jscalendarPopUpCalendar(ctl, ctl2, format){
 
 				for	(i=0;i<3;i++){
 					if ((aFormat[i]=="d") || (aFormat[i]=="dd")){
-						jscalendarDateSelected = parseInt(aData[i],10);
+						jscalendarDateSelected = parseInt( formatInt(aData[i]),10);
 						tokensChanged++;
 					}else if ((aFormat[i]=="m") || (aFormat[i]=="mm") || (aFormat[i]=="M") || (aFormat[i]=="MM")){
-						jscalendarMonthSelected = parseInt(aData[i],10) - 1;
+						jscalendarMonthSelected = parseInt( formatInt(aData[i]),10) - 1;
 						tokensChanged++;
 					}else if (aFormat[i]=="yyyy"){
-						jscalendarYearSelected = parseInt(aData[i],10);
+						jscalendarYearSelected = parseInt( formatInt(aData[i]),10);
 						tokensChanged++;
 					}else if (aFormat[i]=="yy"){
-					    newYear = parseInt(aData[i],10);
+					    newYear = parseInt( formatInt(aData[i]),10);
 
 					    if(newYear>50)
 						    jscalendarYearSelected = 1900+newYear;
@@ -549,7 +549,7 @@ function jscalendarPopUpCalendar(ctl, ctl2, format){
 				jscalendarMonthSelected =	jscalendarMonthNow;
 				jscalendarYearSelected = jscalendarYearNow;
 			}
-			
+
 			jscalendarPopUpCalendar_Show(ctl);
 		}else{
 			jscalendarHideCalendar();
@@ -565,10 +565,10 @@ function jscalendarPopUpCalendarForInputDate(clientId, format){
 		jscalendarMyFacesCtlType = "x:inputDate";
 		jscalendarMyFacesInputDateClientId = clientId;
 		jscalendarDateFormat=format;
-		
-		jscalendarDateSelected = parseInt( document.getElementById(clientId+".day").value,10);
-		jscalendarMonthSelected = parseInt( document.getElementById(clientId+".month").value,10)-1;
-		jscalendarYearSelected = parseInt( document.getElementById(clientId+".year").value,10);
+
+		jscalendarDateSelected = parseInt(  formatInt(document.getElementById(clientId+".day").value),10);
+		jscalendarMonthSelected = parseInt( formatInt( document.getElementById(clientId+".month").value),10)-1;
+		jscalendarYearSelected = parseInt(  formatInt(document.getElementById(clientId+".year").value),10);
 		jscalendarCtlNow = document.getElementById(clientId+".day");
 		jscalendarPopUpCalendar_Show(document.getElementById(clientId+".day"));
 	}
@@ -581,7 +581,7 @@ function jscalendarPopUpCalendar_Show(ctl){
 
 	var	leftpos = 0;
 	var	toppos = 0;
-	
+
 	var aTag = ctl;
 	do {
 		aTag = aTag.offsetParent;
@@ -619,10 +619,10 @@ document.onclick = function jscalendarHidecal2 () {
 if(jscalendarIe)
 	jscalendarInit();
 else
-{  
+{
   var jscalendarOnloadBackup = window.onload;
-  
-  function jscalendarOnload() 
+
+  function jscalendarOnload()
   {
     if(jscalendarOnloadBackup!=null)
         jscalendarOnloadBackup();
@@ -630,4 +630,19 @@ else
   }
 
   window.onload=jscalendarOnload;
+}
+
+
+function formatInt(str){
+
+    if(typeof str != "undefined"){
+
+	  //truncate 0 for number less than 10
+      if (str.charAt(0)=="0"){
+         return str.charAt(1);
+      }
+
+    }
+	  return str;
+
 }
