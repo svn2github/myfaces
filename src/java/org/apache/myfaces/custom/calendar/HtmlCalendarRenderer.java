@@ -143,10 +143,10 @@ public class HtmlCalendarRenderer
             inputText.setEnabledOnUserRole(inputCalendar.getEnabledOnUserRole());
             inputText.setVisibleOnUserRole(inputCalendar.getVisibleOnUserRole());
 
-            //This is where to components with the same id are in the tree,
+            //This is where two components with the same id are in the tree,
             //so make sure that during the rendering the id is unique.
 
-            inputCalendar.setId(facesContext.getViewRoot().createUniqueId());
+            inputCalendar.setId(inputCalendar.getId()+"tempId");
 
             inputCalendar.getChildren().add(inputText);
 
