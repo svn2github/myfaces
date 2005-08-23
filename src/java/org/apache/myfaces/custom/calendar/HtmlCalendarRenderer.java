@@ -383,6 +383,7 @@ public class HtmlCalendarRenderer
             // render the image
             writer.startElement(HTML.IMG_ELEM, uiComponent);
             writer.writeAttribute(HTML.SRC_ATTR, AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "images/calendar.gif", facesContext), null);
+            writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
             
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);
             writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
