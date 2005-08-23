@@ -28,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -63,10 +64,10 @@ public final class AddResource {
     /**
      * Adds the given Javascript resource to the document body.
      */
-    public static void addJavaScriptHere(Class componentClass, String resourceFileName, FacesContext context) throws IOException{
+    public static void addJavaScriptHere(Class componentClass, String resourceFileName, FacesContext context, UIComponent component) throws IOException{
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement(HTML.SCRIPT_ELEM,null);
+        writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
         writer.writeURIAttribute(HTML.SRC_ATTR,
                 getResourceMappedPath(componentClass, resourceFileName, context),
@@ -74,6 +75,13 @@ public final class AddResource {
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
+    /**
+     * Adds the given Javascript resource to the document body, without passing UIComponent.
+     */
+    public static void addJavaScriptHere(Class componentClass, String resourceFileName, FacesContext context) throws IOException{
+        addJavaScriptHere(componentClass, resourceFileName,context,null);
+    }    
+    
     /**
      * Adds the given Javascript resource to the document Header.
      * If the script is already has already been referenced, it's added only once.

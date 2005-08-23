@@ -152,103 +152,103 @@ public class InputHtmlRenderer extends HtmlRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement(HTML.DIV_ELEM,null);
+        writer.startElement(HTML.DIV_ELEM,editor);
         writer.writeAttribute(HTML.STYLE_ATTR, "display: none;",null);
 
-        	writer.startElement("xml", null);
+        	writer.startElement("xml", editor);
         	writer.writeAttribute("id", "kupuconfig", null);
         	writer.writeAttribute(HTML.CLASS_ATTR, "kupuconfig", null);
 
-        		writer.startElement("kupuconfig", null);
+        		writer.startElement("kupuconfig", editor);
 
-	        		writeTag(writer, "dst", "fulldoc.html");
-	        		writeTag(writer, "use_css", "1");
-	        		writeTag(writer, "reload_after_save", "0");
-	        		writeTag(writer, "strict_output", "1");
-	        		writeTag(writer, "content_type", "application/xhtml+xml");
-	        		writeTag(writer, "compatible_singletons", "1");
+	        		writeTag(writer, "dst", "fulldoc.html", editor);
+	        		writeTag(writer, "use_css", "1", editor);
+	        		writeTag(writer, "reload_after_save", "0", editor);
+	        		writeTag(writer, "strict_output", "1", editor);
+	        		writeTag(writer, "content_type", "application/xhtml+xml", editor);
+	        		writeTag(writer, "compatible_singletons", "1", editor);
 
-					writer.startElement("table_classes", null);
-	        			writeTag(writer, "class", "plain");
-	        			writeTag(writer, "class", "listing");
-	        			writeTag(writer, "class", "grid");
-	        			writeTag(writer, "class", "data");
+					writer.startElement("table_classes", editor);
+	        			writeTag(writer, "class", "plain", editor);
+	        			writeTag(writer, "class", "listing", editor);
+	        			writeTag(writer, "class", "grid", editor);
+	        			writeTag(writer, "class", "data", editor);
 					writer.endElement("table_classes");
 
-					writer.startElement("cleanup_expressions",null);
-						writer.startElement("set",null);
-							writer.startElement("name",null);
+					writer.startElement("cleanup_expressions",editor);
+						writer.startElement("set",editor);
+							writer.startElement("name",editor);
 								writer.write("Convert single quotes to curly ones");
 							writer.endElement("name");
-							writer.startElement("expression",null);
-								writer.startElement("reg",null);
+							writer.startElement("expression",editor);
+								writer.startElement("reg",editor);
 									writer.write("(\\W)'");
 								writer.endElement("reg");
-								writer.startElement("replacement",null);
+								writer.startElement("replacement",editor);
 									writer.write("\\1&#x8216;");
 								writer.endElement("replacement");
 							writer.endElement("expression");
-							writer.startElement("expression",null);
-								writer.startElement("reg",null);
+							writer.startElement("expression",editor);
+								writer.startElement("reg",editor);
 									writer.write("'");
 								writer.endElement("reg");
-								writer.startElement("replacement",null);
+								writer.startElement("replacement",editor);
 									writer.write("&#x8217;");
 								writer.endElement("replacement");
 							writer.endElement("expression");
 		                writer.endElement("set");
-						writer.startElement("set",null);
-						writer.startElement("name",null);
+						writer.startElement("set",editor);
+						writer.startElement("name",editor);
 							writer.write("Reduce whitespace");
 						writer.endElement("name");
-						writer.startElement("expression",null);
-							writer.startElement("reg",null);
+						writer.startElement("expression",editor);
+							writer.startElement("reg",editor);
 								writer.write("[\\n\\r\\t]");
 							writer.endElement("reg");
-							writer.startElement("replacement",null);
+							writer.startElement("replacement",editor);
 								writer.write("\\x20");
 							writer.endElement("replacement");
 						writer.endElement("expression");
-						writer.startElement("expression",null);
-							writer.startElement("reg",null);
+						writer.startElement("expression",editor);
+							writer.startElement("reg",editor);
 								writer.write("[ ]{2}");
 							writer.endElement("reg");
-							writer.startElement("replacement",null);
+							writer.startElement("replacement",editor);
 								writer.write("\\x20");
 							writer.endElement("replacement");
 						writer.endElement("expression");
 					  writer.endElement("set");
 		            writer.endElement("cleanup_expressions");
 
-					writeTag(writer, "image_xsl_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/drawer.xsl", context));
-					writeTag(writer, "link_xsl_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/drawer.xsl", context));
+					writeTag(writer, "image_xsl_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/drawer.xsl", context), editor);
+					writeTag(writer, "link_xsl_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/drawer.xsl", context), editor);
 
 					// TODO : Make this work (reference available images, ...).
-					writeTag(writer, "image_libraries_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/imagelibrary.xml", context));
-					writeTag(writer, "link_libraries_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/linklibrary.xml", context));
-	        		writeTag(writer, "search_images_uri", "");
-	        		writeTag(writer, "search_links_uri", "");
+					writeTag(writer, "image_libraries_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/imagelibrary.xml", context), editor);
+					writeTag(writer, "link_libraries_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/linklibrary.xml", context), editor);
+	        		writeTag(writer, "search_images_uri", "", editor);
+	        		writeTag(writer, "search_links_uri", "", editor);
 
         		writer.endElement("kupuconfig");
 			writer.endElement("xml");
    		writer.endElement(HTML.DIV_ELEM);
 
 
-		writer.startElement(HTML.DIV_ELEM,null);
+		writer.startElement(HTML.DIV_ELEM,editor);
         writer.writeAttribute(HTML.CLASS_ATTR, "kupu-fulleditor", null);
 
         	//
         	// Toolbar
         	//
-        	writer.startElement(HTML.DIV_ELEM,null);
+        	writer.startElement(HTML.DIV_ELEM,editor);
 			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb",null);
 			writer.writeAttribute(HTML.ID_ATTR, "toolbar",null);
 
-				writer.startElement(HTML.SPAN_ELEM,null);
+				writer.startElement(HTML.SPAN_ELEM,editor);
 				writer.writeAttribute(HTML.ID_ATTR, "kupu-tb-buttons",null);
 				writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttons",null);
 
-    				writer.startElement(HTML.SPAN_ELEM,null);
+    				writer.startElement(HTML.SPAN_ELEM,editor);
     				writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup",null);
         			writer.writeAttribute(HTML.ID_ATTR, "kupu-logo",null);
         			writer.writeAttribute(HTML.STYLE_ATTR, "float: right", null);
@@ -262,7 +262,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                             writer.write(" ");
                         writer.endElement(HTML.BUTTON_ELEM);
                         if( editor.isAddKupuLogo() ){
-            				writer.startElement(HTML.BUTTON_ELEM,null);
+            				writer.startElement(HTML.BUTTON_ELEM,editor);
                             writer.writeAttribute(HTML.TYPE_ATTR, "button",null);
             				writer.writeAttribute(HTML.CLASS_ATTR, "kupu-logo",null);
             				writer.writeAttribute(HTML.TITLE_ATTR, "Kupu 1.3rc3",null);
@@ -274,18 +274,18 @@ public class InputHtmlRenderer extends HtmlRenderer {
                         }
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SELECT_ELEM,null);
+                	writer.startElement(HTML.SELECT_ELEM,editor);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-tb-styles",null);
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "P",null);
                 		writer.writeAttribute("i18n:translate", "paragraph-normal", null);
                 			writer.write("Normal");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "H1",null);
-                			writer.startElement(HTML.SPAN_ELEM,null);
+                			writer.startElement(HTML.SPAN_ELEM,editor);
                 			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 			writer.writeAttribute("i18n:translate", "heading", null);
                 				writer.write("Heading");
@@ -293,9 +293,9 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 			writer.write(" 1");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM, editor);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "H2",null);
-                			writer.startElement(HTML.SPAN_ELEM,null);
+                			writer.startElement(HTML.SPAN_ELEM,editor);
                 			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 			writer.writeAttribute("i18n:translate", "heading", null);
                 				writer.write("Heading");
@@ -303,9 +303,9 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 			writer.write(" 2");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "H3",null);
-                			writer.startElement(HTML.SPAN_ELEM,null);
+                			writer.startElement(HTML.SPAN_ELEM,editor);
                 			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 			writer.writeAttribute("i18n:translate", "heading", null);
                 				writer.write("Heading");
@@ -313,9 +313,9 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 			writer.write(" 3");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "H4",null);
-                			writer.startElement(HTML.SPAN_ELEM,null);
+                			writer.startElement(HTML.SPAN_ELEM,editor);
                 			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 			writer.writeAttribute("i18n:translate", "heading", null);
                 				writer.write("Heading");
@@ -323,9 +323,9 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 			writer.write(" 4");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "H5",null);
-                			writer.startElement(HTML.SPAN_ELEM,null);
+                			writer.startElement(HTML.SPAN_ELEM,editor);
                 			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 			writer.writeAttribute("i18n:translate", "heading", null);
                 				writer.write("Heading");
@@ -333,9 +333,9 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 			writer.write(" 5");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "H6",null);
-                			writer.startElement(HTML.SPAN_ELEM,null);
+                			writer.startElement(HTML.SPAN_ELEM,editor);
                 			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 			writer.writeAttribute("i18n:translate", "heading", null);
                 				writer.write("Heading");
@@ -343,7 +343,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 			writer.write(" 6");
                 		writer.endElement(HTML.OPTION_ELEM);
 
-                		writer.startElement(HTML.OPTION_ELEM,null);
+                		writer.startElement(HTML.OPTION_ELEM,editor);
                 		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                 		writer.writeAttribute(HTML.VALUE_ATTR, "PRE",null);
                 		writer.writeAttribute("i18n:translate", "paragraph-formatted", null);
@@ -352,155 +352,155 @@ public class InputHtmlRenderer extends HtmlRenderer {
 
                 	writer.endElement(HTML.SELECT_ELEM);
 
-					writer.startElement(HTML.SPAN_ELEM,null);
+					writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
 					writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
-                		writeButton(writer, "kupu-save", "Save", "s");
+                		writeButton(writer, "kupu-save", "Save", "s", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-basicmarkup", null);
-                		writeButton(writer, "kupu-bold", "bold: alt-b", "b");
-                		writeButton(writer, "kupu-italic", "italic: alt-i", "i");
-                		writeButton(writer, "kupu-underline", "underline: alt-u", "u");
+                		writeButton(writer, "kupu-bold", "bold: alt-b", "b", editor);
+                		writeButton(writer, "kupu-italic", "italic: alt-i", "i", editor);
+                		writeButton(writer, "kupu-underline", "underline: alt-u", "u", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-subsuper", null);
-                		writeButton(writer, "kupu-subscript", "subscript: alt--", "-");
-                		writeButton(writer, "kupu-superscript", "superscript: alt-+", "+");
+                		writeButton(writer, "kupu-subscript", "subscript: alt--", "-", editor);
+                		writeButton(writer, "kupu-superscript", "superscript: alt-+", "+", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
-                		writeButton(writer, "kupu-forecolor", "text color: alt-f", "f");
-                		writeButton(writer, "kupu-hilitecolor", "background color: alt-h", "h");
+                		writeButton(writer, "kupu-forecolor", "text color: alt-f", "f", editor);
+                		writeButton(writer, "kupu-hilitecolor", "background color: alt-h", "h", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-justify", null);
-                		writeButton(writer, "kupu-justifyleft", "left justify: alt-l", "l");
-                		writeButton(writer, "kupu-justifycenter", "center justify: alt-c", "c");
-                		writeButton(writer, "kupu-justifyright", "right justify: alt-r", "r");
+                		writeButton(writer, "kupu-justifyleft", "left justify: alt-l", "l", editor);
+                		writeButton(writer, "kupu-justifycenter", "center justify: alt-c", "c", editor);
+                		writeButton(writer, "kupu-justifyright", "right justify: alt-r", "r", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-list", null);
-                		writeButton(writer, "kupu-insertorderedlist", "numbered list: alt-#", "#", "kupu-list-ol-addbutton");
-                		writeButton(writer, "kupu-insertunorderedlist", "unordered list: alt-*", "*", "kupu-list-ul-addbutton");
+                		writeButton(writer, "kupu-insertorderedlist", "numbered list: alt-#", "#", "kupu-list-ol-addbutton", editor);
+                		writeButton(writer, "kupu-insertunorderedlist", "unordered list: alt-*", "*", "kupu-list-ul-addbutton", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-definitionlist", null);
-                		writeButton(writer, "kupu-insertdefinitionlist", "definition list: alt-=", "=", "kupu-list-dl-addbutton");
+                		writeButton(writer, "kupu-insertdefinitionlist", "definition list: alt-=", "=", "kupu-list-dl-addbutton", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-indent", null);
-                		writeButton(writer, "kupu-outdent", "outdent: alt-<", "<");
-                		writeButton(writer, "kupu-indent", "indent: alt->", ">");
+                		writeButton(writer, "kupu-outdent", "outdent: alt-<", "<", editor);
+                		writeButton(writer, "kupu-indent", "indent: alt->", ">", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                     if( ! editor.isAllowExternalLinks() ){
                         writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
                     }
-                		writeButton(writer, "kupu-image", "image", null, "kupu-imagelibdrawer-button", false); // TODO : Enable
-                		writeButton(writer, "kupu-inthyperlink", "link", null, "kupu-linklibdrawer-button", false); // TODO : Enable
-                		writeButton(writer, "kupu-exthyperlink", "external link", null, "kupu-linkdrawer-button");
-                		writeButton(writer, "kupu-table", "table", null, "kupu-tabledrawer-button");
+                		writeButton(writer, "kupu-image", "image", null, "kupu-imagelibdrawer-button", false, editor); // TODO : Enable
+                		writeButton(writer, "kupu-inthyperlink", "link", null, "kupu-linklibdrawer-button", false, editor); // TODO : Enable
+                		writeButton(writer, "kupu-exthyperlink", "external link", null, "kupu-linkdrawer-button", editor);
+                		writeButton(writer, "kupu-table", "table", null, "kupu-tabledrawer-button", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-remove", null);
-                		writeButton(writer, "kupu-removeimage invisible", "Remove image", null, "kupu-removeimage-button");
-                		writeButton(writer, "kupu-removelink invisible", "Remove link", null, "kupu-removelink-button");
+                		writeButton(writer, "kupu-removeimage invisible", "Remove image", null, "kupu-removeimage-button", editor);
+                		writeButton(writer, "kupu-removelink invisible", "Remove link", null, "kupu-removelink-button", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
 
-                   	writer.startElement(HTML.SPAN_ELEM,null);
+                   	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup", null);
                 	writer.writeAttribute(HTML.ID_ATTR, "kupu-bg-undo", null);
-                		writeButton(writer, "kupu-undo", "undo: alt-z", "z");
-                		writeButton(writer, "kupu-redo", "redo: alt-y", "y");
+                		writeButton(writer, "kupu-undo", "undo: alt-z", "z", editor);
+                		writeButton(writer, "kupu-redo", "redo: alt-y", "y", editor);
                 	writer.endElement(HTML.SPAN_ELEM);
                 	
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup kupu-spellchecker-span", null);
                     writer.writeAttribute(HTML.ID_ATTR, "kupu-spellchecker", null);
                 	//if( ! editor.isAllowEditSource() ){
                 	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
         			//}
-                		writeButton(writer, "kupu-spellchecker", "check spelling", null);
+                		writeButton(writer, "kupu-spellchecker", "check spelling", null, editor);
                  	writer.endElement(HTML.SPAN_ELEM);
 
-                	writer.startElement(HTML.SPAN_ELEM,null);
+                	writer.startElement(HTML.SPAN_ELEM,editor);
                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tb-buttongroup kupu-source-span", null);
                     writer.writeAttribute(HTML.ID_ATTR, "kupu-source", null);
                 	if( ! editor.isAllowEditSource() ){
                 	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
         			}
-                		writeButton(writer, "kupu-source", "edit HTML code", null);
+                		writeButton(writer, "kupu-source", "edit HTML code", null, editor);
                  	writer.endElement(HTML.SPAN_ELEM);
 
                 writer.endElement(HTML.SPAN_ELEM); // kupu-tb-buttons
 
-             	writer.startElement(HTML.SELECT_ELEM,null);
+             	writer.startElement(HTML.SELECT_ELEM,editor);
              	writer.writeAttribute(HTML.ID_ATTR, "kupu-ulstyles", null);
              	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-ulstyles", null);
-             		writeOption(writer, "disc", "list-disc", "&#x25CF;");		// TODO : Check as last parameter has been removed.
-             		writeOption(writer, "square", "list-square", "&#x25A0;");
-             		writeOption(writer, "circle", "list-circle", "&#x25CB;");
-             		writeOption(writer, "none", "list-nobullet", "no bullet");
+             		writeOption(writer, "disc", "list-disc", "&#x25CF;", editor);		// TODO : Check as last parameter has been removed.
+             		writeOption(writer, "square", "list-square", "&#x25A0;", editor);
+             		writeOption(writer, "circle", "list-circle", "&#x25CB;", editor);
+             		writeOption(writer, "none", "list-nobullet", "no bullet", editor);
              	writer.endElement(HTML.SELECT_ELEM);
 
-             	writer.startElement(HTML.SELECT_ELEM,null);
+             	writer.startElement(HTML.SELECT_ELEM,editor);
              	writer.writeAttribute(HTML.ID_ATTR, "kupu-olstyles", null);
              	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-olstyles", null);
-             		writeOption(writer, "decimal", "list-decimal", "1");
-             		writeOption(writer, "upper-roman", "list-upperroman", "I");
-             		writeOption(writer, "lower-roman", "list-lowerroman", "i");
-             		writeOption(writer, "upper-alpha", "list-upperalpha", "A");
-             		writeOption(writer, "lower-alpha", "list-loweralpha", "a");
+             		writeOption(writer, "decimal", "list-decimal", "1", editor);
+             		writeOption(writer, "upper-roman", "list-upperroman", "I", editor);
+             		writeOption(writer, "lower-roman", "list-lowerroman", "i", editor);
+             		writeOption(writer, "upper-alpha", "list-upperalpha", "A", editor);
+             		writeOption(writer, "lower-alpha", "list-loweralpha", "a", editor);
              	writer.endElement(HTML.SELECT_ELEM);
 
-             	writer.startElement(HTML.DIV_ELEM,null);
+             	writer.startElement(HTML.DIV_ELEM,editor);
              	writer.writeAttribute(HTML.STYLE_ATTR, "display:block;", null);
                	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-librarydrawer-parent", null);
              	writer.endElement(HTML.DIV_ELEM);
 
                 // External Link drawer
-             	writer.startElement(HTML.DIV_ELEM,null);
+             	writer.startElement(HTML.DIV_ELEM,editor);
              	writer.writeAttribute(HTML.ID_ATTR, "kupu-linkdrawer", null);
              	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-drawer kupu-linkdrawer", null);
-                 	writer.startElement(HTML.H1_ELEM,null);
+                 	writer.startElement(HTML.H1_ELEM,editor);
                  	writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                  	writer.writeAttribute("i18n:translate", "", null);
                  		writer.write("External Link");
                  	writer.endElement(HTML.H1_ELEM);
-                 	writer.startElement(HTML.DIV_ELEM,null);
+                 	writer.startElement(HTML.DIV_ELEM,editor);
                  	writer.writeAttribute(HTML.ID_ATTR, "kupu-linkdrawer-addlink", null);
                     writer.writeAttribute(HTML.CLASS_ATTR, "kupu-panels kupu-linkdrawer-addlink", null);
-                     	writer.startElement(HTML.TABLE_ELEM,null);
+                     	writer.startElement(HTML.TABLE_ELEM,editor);
                      	writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
-                     		writer.startElement(HTML.TR_ELEM,null);
-                         		writer.startElement(HTML.TD_ELEM,null);
-                                    writer.startElement(HTML.DIV_ELEM,null);
+                     		writer.startElement(HTML.TR_ELEM,editor);
+                         		writer.startElement(HTML.TD_ELEM,editor);
+                                    writer.startElement(HTML.DIV_ELEM,editor);
                                     writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-label", null);
-                                        writer.startElement(HTML.SPAN_ELEM,null);
+                                        writer.startElement(HTML.SPAN_ELEM,editor);
                                      		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
                                      		writer.writeAttribute("i18n:translate", "items-matching-keyword", null);
                                      			writer.write("Link the highlighted text to this URL:");
                                  		writer.endElement(HTML.SPAN_ELEM);
                                     writer.endElement(HTML.DIV_ELEM);
-                                    writer.startElement(HTML.INPUT_ELEM,null);
+                                    writer.startElement(HTML.INPUT_ELEM,editor);
                                     writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-st kupu-linkdrawer-input", null);
                                     writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
                                     writer.writeAttribute(HTML.ONKEYPRESS_ATTR, "return HandleDrawerEnter(event, 'linkdrawer-preview');", null);
@@ -508,7 +508,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                                 writer.endElement(HTML.TD_ELEM);
                                 writer.startElement(HTML.TD_ELEM,null);
                                 writer.writeAttribute(HTML.CLASS_ATTR, "kupu-preview-button", null);
-                                    writer.startElement(HTML.BUTTON_ELEM,null);
+                                    writer.startElement(HTML.BUTTON_ELEM,editor);
                                     writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
                                     writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
                                     writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.preview()", null);
@@ -516,11 +516,11 @@ public class InputHtmlRenderer extends HtmlRenderer {
                                     writer.endElement(HTML.BUTTON_ELEM);
                                 writer.endElement(HTML.TD_ELEM);
                      		writer.endElement(HTML.TR_ELEM);
-                            writer.startElement(HTML.TR_ELEM,null);
-                                writer.startElement(HTML.TD_ELEM,null);
+                            writer.startElement(HTML.TR_ELEM,editor);
+                                writer.startElement(HTML.TD_ELEM,editor);
                                 writer.writeAttribute(HTML.COLSPAN_ATTR, "2", null);
                                 writer.writeAttribute(HTML.ALIGN_ATTR, "center", null);
-                                    writer.startElement(HTML.IFRAME_ELEM,null);
+                                    writer.startElement(HTML.IFRAME_ELEM,editor);
                                     writer.writeAttribute(HTML.FRAMEBORDER_ATTR, "1", null);
                                     writer.writeAttribute(HTML.SCROLLING_ATTR, "auto", null);
                                     writer.writeAttribute(HTML.WIDTH_ATTR, "440", null);
@@ -532,15 +532,15 @@ public class InputHtmlRenderer extends HtmlRenderer {
                             writer.endElement(HTML.TR_ELEM);
                      	writer.endElement(HTML.TABLE_ELEM);
                      	
-                     	writer.startElement(HTML.DIV_ELEM,null);
+                     	writer.startElement(HTML.DIV_ELEM,editor);
                      	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialogbuttons", null);
-                     		writer.startElement(HTML.BUTTON_ELEM,null);
+                     		writer.startElement(HTML.BUTTON_ELEM,editor);
                      		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
                      		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
                      		writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.save()", null);
                      			writer.write("Ok");
                      		writer.endElement(HTML.BUTTON_ELEM);
-                     		writer.startElement(HTML.BUTTON_ELEM,null);
+                     		writer.startElement(HTML.BUTTON_ELEM,editor);
                      		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
                      		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
                      		writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.closeDrawer()", null);
@@ -551,47 +551,47 @@ public class InputHtmlRenderer extends HtmlRenderer {
              	writer.endElement(HTML.DIV_ELEM);
 
                 // Table drawer
-             	writer.startElement(HTML.DIV_ELEM,null);
+             	writer.startElement(HTML.DIV_ELEM,editor);
              	writer.writeAttribute(HTML.ID_ATTR, "kupu-tabledrawer",null);
              	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-drawer kupu-tabledrawer",null);
-             	    writer.startElement(HTML.H1_ELEM,null);
+             	    writer.startElement(HTML.H1_ELEM,editor);
              	        writer.write("Table");
                     writer.endElement(HTML.H1_ELEM);
-                    writer.startElement(HTML.DIV_ELEM,null);
+                    writer.startElement(HTML.DIV_ELEM,editor);
                     writer.writeAttribute(HTML.CLASS_ATTR, "kupu-panels", null);
-                 		writer.startElement(HTML.TABLE_ELEM,null);
+                 		writer.startElement(HTML.TABLE_ELEM,editor);
                         writer.writeAttribute(HTML.WIDTH_ATTR, "300",null);
-                            writer.startElement(HTML.TR_ELEM,null);
+                            writer.startElement(HTML.TR_ELEM,editor);
                             writer.writeAttribute(HTML.CLASS_ATTR, "kupu-panelsrow",null);
-                                writer.startElement(HTML.TD_ELEM,null);
+                                writer.startElement(HTML.TD_ELEM,editor);
                                 writer.writeAttribute(HTML.CLASS_ATTR, "kupu-panel",null);
                                 
-                                	writer.startElement(HTML.DIV_ELEM,null);
+                                	writer.startElement(HTML.DIV_ELEM,editor);
                                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-addtable", null);
-                                    	writer.startElement(HTML.TABLE_ELEM,null);
-                             				writer.startElement(HTML.TR_ELEM,null);
-                             					writer.startElement(HTML.TH_ELEM,null);
+                                    	writer.startElement(HTML.TABLE_ELEM,editor);
+                             				writer.startElement(HTML.TR_ELEM,editor);
+                             					writer.startElement(HTML.TH_ELEM,editor);
                              					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
                              						writer.write("Table Class");
                              					writer.endElement(HTML.TH_ELEM);
-                             					writer.startElement(HTML.TD_ELEM,null);
-                             						writer.startElement(HTML.SELECT_ELEM,null);
+                             					writer.startElement(HTML.TD_ELEM,editor);
+                             						writer.startElement(HTML.SELECT_ELEM,editor);
                              						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-addclasschooser", null);
-                             							writeOption(writer, "plain", "Plain");
-                             							writeOption(writer, "listing", "Listing");
-                             							writeOption(writer, "grid", "Grid");
-                             							writeOption(writer, "data", "Data");
+                             							writeOption(writer, "plain", "Plain", editor);
+                             							writeOption(writer, "listing", "Listing", editor);
+                             							writeOption(writer, "grid", "Grid", editor);
+                             							writeOption(writer, "data", "Data", editor);
                              						writer.endElement(HTML.SELECT_ELEM);
                              					writer.endElement(HTML.TD_ELEM);
                              				writer.endElement(HTML.TR_ELEM);
 
-                             				writer.startElement(HTML.TR_ELEM, null);
-	                             				writer.startElement(HTML.TH_ELEM,null);
+                             				writer.startElement(HTML.TR_ELEM, editor);
+	                             				writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         						writer.write("Rows");
 	                         					writer.endElement(HTML.TH_ELEM);
-                             					writer.startElement(HTML.TD_ELEM, null);
-                             						writer.startElement(HTML.INPUT_ELEM, null);
+                             					writer.startElement(HTML.TD_ELEM, editor);
+                             						writer.startElement(HTML.INPUT_ELEM, editor);
                              						writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
                              						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-newrows", null);
                              						writer.writeAttribute(HTML.VALUE_ATTR, "3", null); // MyFaces special
@@ -600,13 +600,13 @@ public class InputHtmlRenderer extends HtmlRenderer {
                              					writer.endElement(HTML.TD_ELEM);
                              				writer.endElement(HTML.TR_ELEM);
                              				
-                             				writer.startElement(HTML.TR_ELEM, null);
-	                             				writer.startElement(HTML.TH_ELEM,null);
+                             				writer.startElement(HTML.TR_ELEM, editor);
+	                             				writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         						writer.write("Columns");
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM, null);
-	                         						writer.startElement(HTML.INPUT_ELEM, null);
+	                         					writer.startElement(HTML.TD_ELEM, editor);
+	                         						writer.startElement(HTML.INPUT_ELEM, editor);
 	                         						writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
 	                         						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-newcols", null);
 	                         						writer.writeAttribute(HTML.VALUE_ATTR, "3", null); // MyFaces special
@@ -615,36 +615,36 @@ public class InputHtmlRenderer extends HtmlRenderer {
 	                         					writer.endElement(HTML.TD_ELEM);
 	                         				writer.endElement(HTML.TR_ELEM);
 	                         				
-	                         				writer.startElement(HTML.TR_ELEM, null);
-	                             				writer.startElement(HTML.TH_ELEM,null);
+	                         				writer.startElement(HTML.TR_ELEM, editor);
+	                             				writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM, null);
-	                         						writer.startElement(HTML.LABEL_ELEM, null);
-		                         						writer.startElement(HTML.INPUT_ELEM, null);
+	                         					writer.startElement(HTML.TD_ELEM, editor);
+	                         						writer.startElement(HTML.LABEL_ELEM, editor);
+		                         						writer.startElement(HTML.INPUT_ELEM, editor);
 		                         						writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
 		                         						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-makeheader", null);
 		                         						writer.writeAttribute(HTML.ONKEYPRESS_ATTR, "return HandleDrawerEnter(event);", null);
 		                         						writer.endElement(HTML.INPUT_ELEM);
-		                         						writer.startElement(HTML.SPAN_ELEM, null);
+		                         						writer.startElement(HTML.SPAN_ELEM, editor);
 		                         							writer.write("Create Headings");
 		                         						writer.endElement(HTML.SPAN_ELEM);
 		                         					writer.endElement(HTML.LABEL_ELEM);
 	                         					writer.endElement(HTML.TD_ELEM);
 	                         				writer.endElement(HTML.TR_ELEM);
 	                         				
-	                         				writer.startElement(HTML.TR_ELEM, null);
-	                             				writer.startElement(HTML.TH_ELEM,null);
+	                         				writer.startElement(HTML.TR_ELEM, editor);
+	                             				writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM, null);
-		                         					writer.startElement(HTML.BUTTON_ELEM, null);
+	                         					writer.startElement(HTML.TD_ELEM, editor);
+		                         					writer.startElement(HTML.BUTTON_ELEM, editor);
 	         										writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 	         										writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
 	         										writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.createTable()", null);
 	         											writer.write("Add Table");
 	         										writer.endElement(HTML.BUTTON_ELEM);
-	         										writer.startElement(HTML.BUTTON_ELEM, null);
+	         										writer.startElement(HTML.BUTTON_ELEM, editor);
                                                     writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
                                                     writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
                                                     writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.fixAllTables()", null);
@@ -656,55 +656,55 @@ public class InputHtmlRenderer extends HtmlRenderer {
 	                         			writer.endElement(HTML.TABLE_ELEM);
 	                         		writer.endElement(HTML.DIV_ELEM);
 
-	                         		writer.startElement(HTML.DIV_ELEM,null);
+	                         		writer.startElement(HTML.DIV_ELEM,editor);
                                 	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-edittable", null);
-                                    	writer.startElement(HTML.TABLE_ELEM,null);
-                             				writer.startElement(HTML.TR_ELEM,null);
-                             					writer.startElement(HTML.TH_ELEM,null);
+                                    	writer.startElement(HTML.TABLE_ELEM,editor);
+                             				writer.startElement(HTML.TR_ELEM,editor);
+                             					writer.startElement(HTML.TH_ELEM,editor);
                              					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
                              						writer.write("Table Class");
                              					writer.endElement(HTML.TH_ELEM);
-                             					writer.startElement(HTML.TD_ELEM,null);
-                             						writer.startElement(HTML.SELECT_ELEM,null);
+                             					writer.startElement(HTML.TD_ELEM,editor);
+                             						writer.startElement(HTML.SELECT_ELEM,editor);
                              						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-editclasschooser", null);
                              						writer.writeAttribute(HTML.ONCHANGE_ATTR, "drawertool.current_drawer.setTableClass(this.options[this.selectedIndex].value)", null);
-                             							writeOption(writer, "plain", "Plain");
-                             							writeOption(writer, "listing", "Listing");
-                             							writeOption(writer, "grid", "Grid");
-                             							writeOption(writer, "data", "Data");
+                             							writeOption(writer, "plain", "Plain", editor);
+                             							writeOption(writer, "listing", "Listing", editor);
+                             							writeOption(writer, "grid", "Grid", editor);
+                             							writeOption(writer, "data", "Data", editor);
                              						writer.endElement(HTML.SELECT_ELEM);
                              					writer.endElement(HTML.TD_ELEM);
                              				writer.endElement(HTML.TR_ELEM);
                              				
-                             				writer.startElement(HTML.TR_ELEM,null);
-	                         					writer.startElement(HTML.TH_ELEM,null);
+                             				writer.startElement(HTML.TR_ELEM,editor);
+	                         					writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         						writer.write("Current column alignment");
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM,null);
-	                         						writer.startElement(HTML.SELECT_ELEM,null);
+	                         					writer.startElement(HTML.TD_ELEM,editor);
+	                         						writer.startElement(HTML.SELECT_ELEM,editor);
 	                         						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-tabledrawer-alignchooser", null);
 	                         						writer.writeAttribute(HTML.ONCHANGE_ATTR, "drawertool.current_drawer.tool.setColumnAlign(this.options[this.selectedIndex].value)", null);
-	                         						writeOption(writer, "left", "Left");
-                         							writeOption(writer, "center", "Center");
-                         							writeOption(writer, "right", "Right");
+	                         						writeOption(writer, "left", "Left", editor);
+                         							writeOption(writer, "center", "Center", editor);
+                         							writeOption(writer, "right", "Right", editor);
 	                         						writer.endElement(HTML.SELECT_ELEM);
 	                         					writer.endElement(HTML.TD_ELEM);
 	                         				writer.endElement(HTML.TR_ELEM);
                              				
-	                         				writer.startElement(HTML.TR_ELEM,null);
-	                         					writer.startElement(HTML.TH_ELEM,null);
+	                         				writer.startElement(HTML.TR_ELEM,editor);
+	                         					writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         						writer.write("Column");
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM,null);
-		                         					writer.startElement(HTML.BUTTON_ELEM, null);
+	                         					writer.startElement(HTML.TD_ELEM,editor);
+		                         					writer.startElement(HTML.BUTTON_ELEM, editor);
 		                     						writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		                     						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
 		                     						writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.addTableColumn()", null);
 		                     							writer.write("Add");
 		                     						writer.endElement(HTML.BUTTON_ELEM);
-		                     						writer.startElement(HTML.BUTTON_ELEM, null);
+		                     						writer.startElement(HTML.BUTTON_ELEM, editor);
 		                     						writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		                     						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
 		                     						writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.delTableColumn()", null);
@@ -713,19 +713,19 @@ public class InputHtmlRenderer extends HtmlRenderer {
 	                         					writer.endElement(HTML.TD_ELEM);
 	                         				writer.endElement(HTML.TR_ELEM);
 	                         				
-	                         				writer.startElement(HTML.TR_ELEM,null);
-	                         					writer.startElement(HTML.TH_ELEM,null);
+	                         				writer.startElement(HTML.TR_ELEM,editor);
+	                         					writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         						writer.write("Row");
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM,null);
-		                         					writer.startElement(HTML.BUTTON_ELEM, null);
+	                         					writer.startElement(HTML.TD_ELEM,editor);
+		                         					writer.startElement(HTML.BUTTON_ELEM, editor);
 		                     						writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		                     						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
 		                     						writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.addTableRow()", null);
 		                     							writer.write("Add");
 		                     						writer.endElement(HTML.BUTTON_ELEM);
-		                     						writer.startElement(HTML.BUTTON_ELEM, null);
+		                     						writer.startElement(HTML.BUTTON_ELEM, editor);
 		                     						writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		                     						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
 		                     						writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.delTableRow()", null);
@@ -734,13 +734,13 @@ public class InputHtmlRenderer extends HtmlRenderer {
 	                         					writer.endElement(HTML.TD_ELEM);
 	                         				writer.endElement(HTML.TR_ELEM);
 	                         				
-	                         				writer.startElement(HTML.TR_ELEM,null);
-	                         					writer.startElement(HTML.TH_ELEM,null);
+	                         				writer.startElement(HTML.TR_ELEM,editor);
+	                         					writer.startElement(HTML.TH_ELEM,editor);
 	                         					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	                         						writer.write("Fix Table");
 	                         					writer.endElement(HTML.TH_ELEM);
-	                         					writer.startElement(HTML.TD_ELEM,null);
-		                         					writer.startElement(HTML.BUTTON_ELEM, null);
+	                         					writer.startElement(HTML.TD_ELEM,editor);
+		                         					writer.startElement(HTML.BUTTON_ELEM, editor);
 		                     						writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		                     						writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
 		                     						writer.writeAttribute(HTML.ONCLICK_ATTR, "drawertool.current_drawer.fixTable()", null);
@@ -755,9 +755,9 @@ public class InputHtmlRenderer extends HtmlRenderer {
                             writer.endElement(HTML.TR_ELEM);
                         writer.endElement(HTML.TABLE_ELEM);
                         
-                        writer.startElement(HTML.DIV_ELEM,null);
+                        writer.startElement(HTML.DIV_ELEM,editor);
                         writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialogbuttons", null);
-                            writer.startElement(HTML.BUTTON_ELEM,null);
+                            writer.startElement(HTML.BUTTON_ELEM,editor);
                             writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
                             writer.writeAttribute(HTML.CLASS_ATTR, "kupu-dialog-button", null);
                             writer.writeAttribute(HTML.ONMOUSEDOWN_ATTR, "window.status ='onmousedown';", null);
@@ -774,75 +774,75 @@ public class InputHtmlRenderer extends HtmlRenderer {
             //
             // Tool Boxes
             //
-            writer.startElement(HTML.DIV_ELEM, null);
+            writer.startElement(HTML.DIV_ELEM, editor);
             writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolboxes", null);
         	if( ! editor.isShowAnyToolBox() ){
         	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
         	}
 
             	// Properties tool box
-            	writer.startElement(HTML.DIV_ELEM, null);
+            	writer.startElement(HTML.DIV_ELEM, editor);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-properties", null);
             	if( ! editor.isShowPropertiesToolBox() ){
             	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
             	}
-            		writer.startElement(HTML.H1_ELEM, null);
+            		writer.startElement(HTML.H1_ELEM, editor);
             			writer.write("Properties");
             		writer.endElement(HTML.H1_ELEM);
             		
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
             			writer.write("Title:");
             		writer.endElement(HTML.DIV_ELEM);
-            		writer.startElement(HTML.INPUT_ELEM, null);
+            		writer.startElement(HTML.INPUT_ELEM, editor);
                     writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
             		writer.writeAttribute(HTML.ID_ATTR, "kupu-properties-title", null);
             		writer.endElement(HTML.INPUT_ELEM);
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
             			writer.write("Description:");
             		writer.endElement(HTML.DIV_ELEM);
-            		writer.startElement(HTML.TEXTAREA_ELEM, null);
+            		writer.startElement(HTML.TEXTAREA_ELEM, editor);
             			writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
             			writer.writeAttribute(HTML.ID_ATTR, "kupu-properties-description", null);
             		writer.endElement(HTML.TEXTAREA_ELEM);
             	writer.endElement(HTML.DIV_ELEM);
 
             	// Links tool box
-            	writer.startElement(HTML.DIV_ELEM, null);
+            	writer.startElement(HTML.DIV_ELEM, editor);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-links", null);
             	if( ! editor.isShowLinksToolBox() ){
             	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
             	}
-            		writer.startElement(HTML.H1_ELEM, null);
+            		writer.startElement(HTML.H1_ELEM, editor);
             		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
             		writer.writeAttribute("i18n:translate", "links", null);
             			writer.write("Links");
             		writer.endElement(HTML.H1_ELEM);
 
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-addlink", null);
 
-	            		writer.startElement(HTML.DIV_ELEM, null);
+	            		writer.startElement(HTML.DIV_ELEM, editor);
 	            		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
-	            			writer.startElement(HTML.SPAN_ELEM, null);
+	            			writer.startElement(HTML.SPAN_ELEM, editor);
 	            			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
 	            			writer.writeAttribute("i18n:translate", "items-matching-keyword", null);
 	            				writer.write("Link the highlighted text to this URL:");
 	            			writer.endElement(HTML.SPAN_ELEM);
 	            		writer.endElement(HTML.DIV_ELEM);
 
-	            		writer.startElement(HTML.INPUT_ELEM, null);
+	            		writer.startElement(HTML.INPUT_ELEM, editor);
 	            		writer.writeAttribute(HTML.ID_ATTR, "kupu-link-input", null);
 	            		writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
 	            		writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
 	            		writer.endElement(HTML.INPUT_ELEM);
 
-	            		writer.startElement(HTML.DIV_ELEM, null);
+	            		writer.startElement(HTML.DIV_ELEM, editor);
 	            		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-buttons", null);
-	            			writer.startElement(HTML.BUTTON_ELEM, null);
+	            			writer.startElement(HTML.BUTTON_ELEM, editor);
 	            			writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 	            			writer.writeAttribute(HTML.ID_ATTR, "kupu-link-button", null);
 	            			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-action", null);
@@ -854,52 +854,52 @@ public class InputHtmlRenderer extends HtmlRenderer {
             	writer.endElement(HTML.DIV_ELEM);
             	
             	// Images tool box
-            	writer.startElement(HTML.DIV_ELEM, null);
+            	writer.startElement(HTML.DIV_ELEM, editor);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-images", null);
             	if( ! editor.isShowImagesToolBox() ){
             	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
             	}
-            		writer.startElement(HTML.H1_ELEM, null);
+            		writer.startElement(HTML.H1_ELEM, editor);
             		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
             		writer.writeAttribute("i18n:translate", "images", null);
             			writer.write("Images");
             		writer.endElement(HTML.H1_ELEM);
             		
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
-	            		writer.startElement(HTML.SPAN_ELEM, null);
+	            		writer.startElement(HTML.SPAN_ELEM, editor);
 	        			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
 	        			writer.writeAttribute("i18n:translate", "", null);
 	        				writer.write("Image float:");
 	           			writer.endElement(HTML.SPAN_ELEM);
             		writer.endElement(HTML.DIV_ELEM);
-            		writer.startElement(HTML.SELECT_ELEM, null);
+            		writer.startElement(HTML.SELECT_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
             		writer.writeAttribute(HTML.ID_ATTR, "kupu-image-float-select", null);
-            			writeOption(writer, "image-inline", "Inline");
-            			writeOption(writer, "image-left", "Left");
-            			writeOption(writer, "image-right", "Right");
+            			writeOption(writer, "image-inline", "Inline", editor);
+            			writeOption(writer, "image-left", "Left", editor);
+            			writeOption(writer, "image-right", "Right", editor);
             		writer.endElement(HTML.SELECT_ELEM);
 
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
-            			writer.startElement(HTML.SPAN_ELEM, null);
+            			writer.startElement(HTML.SPAN_ELEM, editor);
             			writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
             			writer.writeAttribute("i18n:translate", "", null);
             				writer.write("Insert image at the following URL:");
             			writer.endElement(HTML.SPAN_ELEM);
             		writer.endElement(HTML.DIV_ELEM);
-            		writer.startElement(HTML.INPUT_ELEM, null);
+            		writer.startElement(HTML.INPUT_ELEM, editor);
             		writer.writeAttribute(HTML.ID_ATTR, "kupu-image-input", null);
             		writer.writeAttribute(HTML.VALUE_ATTR, "kupuimages/kupu_icon.gif", null);
             		writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
             		writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
             		writer.endElement(HTML.INPUT_ELEM);
 
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-buttons", null);
-            			writer.startElement(HTML.BUTTON_ELEM, null);
+            			writer.startElement(HTML.BUTTON_ELEM, editor);
             			writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
             			writer.writeAttribute(HTML.ID_ATTR, "kupu-image-addbutton", null);
             			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-action", null);
@@ -910,24 +910,24 @@ public class InputHtmlRenderer extends HtmlRenderer {
             	writer.endElement(HTML.DIV_ELEM);
 
             	// Tables tool box
-            	writer.startElement(HTML.DIV_ELEM, null);
+            	writer.startElement(HTML.DIV_ELEM, editor);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-tables", null);
             	if( ! editor.isShowTablesToolBox() ){
             	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
             	}
-            		writer.startElement(HTML.H1_ELEM, null);
+            		writer.startElement(HTML.H1_ELEM, editor);
             		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
             		writer.writeAttribute("i18n:translate", "table-inspector", null);
             			writer.write("Tables");
             		writer.endElement(HTML.H1_ELEM);
 
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
-            			writer.startElement(HTML.SPAN_ELEM, null);
+            			writer.startElement(HTML.SPAN_ELEM, editor);
             				writer.write("Table Class:");
             			writer.endElement(HTML.SPAN_ELEM);
-            			writer.startElement(HTML.SELECT_ELEM, null);
+            			writer.startElement(HTML.SELECT_ELEM, editor);
                         writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
             			writer.writeAttribute(HTML.ID_ATTR, "kupu-table-classchooser", null);
             				writer.write(' ');
@@ -935,76 +935,76 @@ public class InputHtmlRenderer extends HtmlRenderer {
             		writer.endElement(HTML.DIV_ELEM);
 
             		// Add table
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-addtable", null);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-addtable", null);
-            			writer.startElement(HTML.DIV_ELEM, null);
+            			writer.startElement(HTML.DIV_ELEM, editor);
             			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
             				writer.write("Rows:");
             			writer.endElement(HTML.DIV_ELEM);
-            			writer.startElement(HTML.INPUT_ELEM, null);
+            			writer.startElement(HTML.INPUT_ELEM, editor);
                         writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
             			writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
             			writer.writeAttribute(HTML.ID_ATTR, "kupu-table-newrows", null);
             			writer.endElement(HTML.INPUT_ELEM);
 
-	        			writer.startElement(HTML.DIV_ELEM, null);
+	        			writer.startElement(HTML.DIV_ELEM, editor);
 	        			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	        				writer.write("Columns:");
 	        			writer.endElement(HTML.DIV_ELEM);
-	        			writer.startElement(HTML.INPUT_ELEM, null);
+	        			writer.startElement(HTML.INPUT_ELEM, editor);
                         writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
 	        			writer.writeAttribute(HTML.TYPE_ATTR, "text", null);
 	        			writer.writeAttribute(HTML.ID_ATTR, "kupu-table-newcols", null);
 	        			writer.endElement(HTML.INPUT_ELEM);
 
-	        			writer.startElement(HTML.DIV_ELEM, null);
+	        			writer.startElement(HTML.DIV_ELEM, editor);
 	        			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
 	    					writer.write("Headings:");
-	    					writer.startElement(HTML.INPUT_ELEM, null);
+	    					writer.startElement(HTML.INPUT_ELEM, editor);
 	    					writer.writeAttribute(HTML.NAME_ATTR, "kupu-table-makeheader", null);
 	    					writer.writeAttribute(HTML.ID_ATTR, "kupu-table-makeheader", null);
 	            			writer.writeAttribute(HTML.TYPE_ATTR, "checkbox", null);
 	            			writer.endElement(HTML.INPUT_ELEM);
-	            			writer.startElement(HTML.LABEL_ELEM, null);
+	            			writer.startElement(HTML.LABEL_ELEM, editor);
 	            			writer.writeAttribute(HTML.FOR_ATTR, "kupu-table-makeheader", null);
 	            				writer.write("Create");
 	            			writer.endElement(HTML.LABEL_ELEM);
 	        			writer.endElement(HTML.DIV_ELEM);
 
-	        			writer.startElement(HTML.DIV_ELEM, null);
+	        			writer.startElement(HTML.DIV_ELEM, editor);
 	        			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-buttons", null);
-	        				writeButton(writer, "kupu-table-fixall-button", "Fix Table");
-	        				writeButton(writer, "kupu-table-addtable-button", "Add Table");
+	        				writeButton(writer, "kupu-table-fixall-button", "Fix Table", editor);
+	        				writeButton(writer, "kupu-table-addtable-button", "Add Table", editor);
 	        			writer.endElement(HTML.DIV_ELEM);
 	        		writer.endElement(HTML.DIV_ELEM); // Add table
 
 	        		// Edit table
-	        		writer.startElement(HTML.DIV_ELEM, null);
+	        		writer.startElement(HTML.DIV_ELEM, editor);
         			writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-edittable", null);
         			writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-edittable", null);
 
-        				writer.startElement(HTML.DIV_ELEM, null);
+        				writer.startElement(HTML.DIV_ELEM, editor);
         				writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
         					writer.write("Col Align:");
-        					writer.startElement(HTML.SELECT_ELEM, null);
+        					writer.startElement(HTML.SELECT_ELEM, editor);
                             writer.writeAttribute(HTML.CLASS_ATTR, "wide", null);
     	            		writer.writeAttribute(HTML.ID_ATTR, "kupu-table-alignchooser", null);
-    	            			writeOption(writer, "left", "Left");
-    	            			writeOption(writer, "center", "Center");
-    	            			writeOption(writer, "right", "Right");
+    	            			writeOption(writer, "left", "Left", editor);
+    	            			writeOption(writer, "center", "Center", editor);
+    	            			writeOption(writer, "right", "Right", editor);
     	            		writer.endElement(HTML.SELECT_ELEM);
         				writer.endElement(HTML.DIV_ELEM);
 
-                        writer.startElement(HTML.DIV_ELEM,null);
+                        writer.startElement(HTML.DIV_ELEM,editor);
                         writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-buttons", null);
             				writer.write("<br/>");
-            				writeButton(writer, "kupu-table-addcolumn-button", "Add Column");
-            				writeButton(writer, "kupu-table-delcolumn-button", "Remove Column");
+            				writeButton(writer, "kupu-table-addcolumn-button", "Add Column", editor);
+            				writeButton(writer, "kupu-table-delcolumn-button", "Remove Column", editor);
             				writer.write("<br/>");
-            				writeButton(writer, "kupu-table-addrow-button", "Add Row");
-            				writeButton(writer, "kupu-table-delrow-button", "Remove Row");
-                            writeButton(writer, "kupu-table-fix-button", "Fix");
+            				writeButton(writer, "kupu-table-addrow-button", "Add Row", editor);
+            				writeButton(writer, "kupu-table-delrow-button", "Remove Row", editor);
+                            writeButton(writer, "kupu-table-fix-button", "Fix", editor);
                         writer.endElement(HTML.DIV_ELEM);
 
         			writer.endElement(HTML.DIV_ELEM); // Edit table
@@ -1012,32 +1012,32 @@ public class InputHtmlRenderer extends HtmlRenderer {
             	writer.endElement(HTML.DIV_ELEM);
 
             	// Cleanup expressions tool box
-            	writer.startElement(HTML.DIV_ELEM, null);
+            	writer.startElement(HTML.DIV_ELEM, editor);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-cleanupexpressions", null);
             	if( ! editor.isShowCleanupExpressionsToolBox() ){
             	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
             	}
-            		writer.startElement(HTML.H1_ELEM, null);
+            		writer.startElement(HTML.H1_ELEM, editor);
             		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
             		writer.writeAttribute("i18n:translate", "", null);
             			writer.write("Cleanup expressions");
             		writer.endElement(HTML.H1_ELEM);
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
-						writer.startElement(HTML.SPAN_ELEM,null);
+						writer.startElement(HTML.SPAN_ELEM,editor);
 						writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
 	            		writer.writeAttribute("i18n:translate", "", null);
 							writer.write("Select a cleanup action:");
 						writer.endElement(HTML.SPAN_ELEM);
             		writer.endElement(HTML.DIV_ELEM);
-					writer.startElement(HTML.SELECT_ELEM,null);
+					writer.startElement(HTML.SELECT_ELEM,editor);
 					writer.writeAttribute(HTML.ID_ATTR, "kupucleanupexpressionselect", null);
 					writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-st", null);
 					writer.endElement(HTML.SELECT_ELEM);
-					writer.startElement(HTML.DIV_ELEM,null);
+					writer.startElement(HTML.DIV_ELEM,editor);
 					writer.writeAttribute(HTML.STYLE_ATTR,"text-align: center",null);
-						writer.startElement(HTML.BUTTON_ELEM,null);
+						writer.startElement(HTML.BUTTON_ELEM,editor);
 						writer.writeAttribute(HTML.TYPE_ATTR,"button",null);
 						writer.writeAttribute(HTML.ID_ATTR,"kupucleanupexpressionbutton",null);
 						writer.writeAttribute(HTML.CLASS_ATTR,"kupu-toolbox-action",null);
@@ -1047,18 +1047,18 @@ public class InputHtmlRenderer extends HtmlRenderer {
             	writer.endElement(HTML.DIV_ELEM);
 
             	// Debug tool box
-            	writer.startElement(HTML.DIV_ELEM, null);
+            	writer.startElement(HTML.DIV_ELEM, editor);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-debug", null);
             	if( ! editor.isShowDebugToolBox() ){
             	    writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
             	}
-            		writer.startElement(HTML.H1_ELEM, null);
+            		writer.startElement(HTML.H1_ELEM, editor);
             		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
             		writer.writeAttribute("i18n:translate", "debug-log", null);
             			writer.write("Debug Log");
             		writer.endElement(HTML.H1_ELEM);
-            		writer.startElement(HTML.DIV_ELEM, null);
+            		writer.startElement(HTML.DIV_ELEM, editor);
             		writer.writeAttribute(HTML.ID_ATTR, "kupu-toolbox-debuglog", null);
             		writer.writeAttribute(HTML.CLASS_ATTR, "kupu-toolbox-label", null);
             		writer.endElement(HTML.DIV_ELEM);
@@ -1067,7 +1067,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
             writer.endElement(HTML.DIV_ELEM); // kupu-toolboxes
 
             // Color Chooser
-            writer.startElement(HTML.TABLE_ELEM, null);
+            writer.startElement(HTML.TABLE_ELEM, editor);
             writer.writeAttribute(HTML.ID_ATTR, "kupu-colorchooser", null);
             writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
             writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
@@ -1075,7 +1075,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
             writer.endElement(HTML.TABLE_ELEM);
 
             // Edit space
-            writer.startElement(HTML.DIV_ELEM, null);
+            writer.startElement(HTML.DIV_ELEM, editor);
             if( !editor.isShowAnyToolBox() ){
                 writer.writeAttribute(HTML.STYLE_ATTR, "margin-right: 0.3em", null);
             }
@@ -1088,7 +1088,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
             }
             writer.writeAttribute(HTML.CLASS_ATTR,
                     "kupu-editorframe"+(editor.getStyleClass()==null ? "" : " "+editor.getStyleClass()), null);
-            	writer.startElement(HTML.IFRAME_ELEM, null);
+            	writer.startElement(HTML.IFRAME_ELEM, editor);
             	writer.writeAttribute(HTML.ID_ATTR, getIFrameID(editor, context), null);
             	writer.writeAttribute(HTML.CLASS_ATTR, "kupu-editor-iframe", null);
             	writer.writeAttribute(HTML.FRAMEBORDER_ATTR, "0", null);
@@ -1101,7 +1101,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
             	
             	writer.endElement(HTML.IFRAME_ELEM);
             	
-            	writer.startElement(HTML.TEXTAREA_ELEM, null);
+            	writer.startElement(HTML.TEXTAREA_ELEM, editor);
                 writer.writeAttribute(HTML.CLASS_ATTR, "kupu-editor-textarea", null);
             	writer.writeAttribute(HTML.ID_ATTR, "kupu-editor-textarea", null);
             		writer.write(' ');
@@ -1115,7 +1115,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
 
         String resourceBaseURL = AddResource.getResourceMappedPath(InputHtmlRenderer.class, "", context);
 
-        writer.startElement(HTML.SCRIPT_ELEM, null);
+        writer.startElement(HTML.SCRIPT_ELEM, editor);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         	writer.write("myFacesKupuSet(" +
         			"\""+encodedText+"\"," +
@@ -1130,22 +1130,22 @@ public class InputHtmlRenderer extends HtmlRenderer {
 		return editor.getClientId(context)+"_iframe";
 	}
 	
-    static private void writeTag(ResponseWriter writer, String tagName, String tagBody) throws IOException{
-		writer.startElement(tagName, null);
+    static private void writeTag(ResponseWriter writer, String tagName, String tagBody, UIComponent component) throws IOException{
+		writer.startElement(tagName, component);
 		writer.writeText(tagBody, null);
 		writer.endElement(tagName);
     }
 
-    static private void writeButton(ResponseWriter writer, String classAttr, String title, String accessKey) throws IOException{
-        writeButton(writer, classAttr, title, accessKey, classAttr+"-button");
+    static private void writeButton(ResponseWriter writer, String classAttr, String title, String accessKey, UIComponent component) throws IOException{
+        writeButton(writer, classAttr, title, accessKey, classAttr+"-button", component);
     }
 
-    static private void writeButton(ResponseWriter writer, String classAttr, String title, String accessKey, String id) throws IOException{
-        writeButton(writer, classAttr, title, accessKey, id, true);
+    static private void writeButton(ResponseWriter writer, String classAttr, String title, String accessKey, String id, UIComponent component) throws IOException{
+        writeButton(writer, classAttr, title, accessKey, id, true, component);
     }
 
-    static private void writeButton(ResponseWriter writer, String classAttr, String title, String accessKey, String id, boolean display) throws IOException{
-		writer.startElement(HTML.BUTTON_ELEM,null);
+    static private void writeButton(ResponseWriter writer, String classAttr, String title, String accessKey, String id, boolean display, UIComponent component) throws IOException{
+		writer.startElement(HTML.BUTTON_ELEM, component);
 		writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
 		writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
 		writer.writeAttribute(HTML.CLASS_ATTR, classAttr, null);
@@ -1161,23 +1161,23 @@ public class InputHtmlRenderer extends HtmlRenderer {
 		writer.endElement(HTML.BUTTON_ELEM);
     }
 
-    static private void writeButton(ResponseWriter writer, String id, String text) throws IOException{
-        writer.startElement(HTML.BUTTON_ELEM, null);
+    static private void writeButton(ResponseWriter writer, String id, String text, UIComponent component) throws IOException{
+        writer.startElement(HTML.BUTTON_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.ID_ATTR, id, null);
         	writer.write(text);
         writer.endElement(HTML.BUTTON_ELEM);
 	}
 
-    static private void writeOption(ResponseWriter writer, String value, String body) throws IOException{
-        writer.startElement(HTML.OPTION_ELEM,null);
+    static private void writeOption(ResponseWriter writer, String value, String body, UIComponent component) throws IOException{
+        writer.startElement(HTML.OPTION_ELEM,component);
         writer.writeAttribute(HTML.VALUE_ATTR, value, null);
         	writer.write(body);
         writer.endElement(HTML.OPTION_ELEM);
     }
 
-    static private void writeOption(ResponseWriter writer, String value, String translate, String body) throws IOException{
-        writer.startElement(HTML.OPTION_ELEM,null);
+    static private void writeOption(ResponseWriter writer, String value, String translate, String body, UIComponent component) throws IOException{
+        writer.startElement(HTML.OPTION_ELEM,component);
         writer.writeAttribute("xmlns:i18n", "http://xml.zope.org/namespaces/i18n", null);
         writer.writeAttribute(HTML.VALUE_ATTR, value, null);
         writer.writeAttribute("i18n:translate", translate, null);

@@ -93,11 +93,11 @@ public class HtmlLayoutRenderer
         UIComponent body = panelLayout.getBody();
         UIComponent footer = panelLayout.getFooter();
 
-        writer.startElement(HTML.TABLE_ELEM, null);
+        writer.startElement(HTML.TABLE_ELEM, panelLayout);
         HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         if (header != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             renderTableCell(facesContext, writer, header,
                             (navigation != null && body != null) ? 2 : 1,
                             panelLayout.getHeaderClass(),
@@ -106,7 +106,7 @@ public class HtmlLayoutRenderer
         }
         if (navigation != null || body != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             if (navigation != null)
             {
                 renderTableCell(facesContext, writer, navigation, 0,
@@ -123,7 +123,7 @@ public class HtmlLayoutRenderer
         }
         if (footer != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             renderTableCell(facesContext, writer, footer,
                             (navigation != null && body != null) ? 2 : 1,
                             panelLayout.getFooterClass(),
@@ -143,11 +143,11 @@ public class HtmlLayoutRenderer
         UIComponent body = panelLayout.getBody();
         UIComponent footer = panelLayout.getFooter();
 
-        writer.startElement(HTML.TABLE_ELEM, null);
+        writer.startElement(HTML.TABLE_ELEM, panelLayout);
         HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         if (header != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             renderTableCell(facesContext, writer, header,
                             (navigation != null && body != null) ? 2 : 1,
                             panelLayout.getHeaderClass(),
@@ -156,7 +156,7 @@ public class HtmlLayoutRenderer
         }
         if (navigation != null || body != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             if (body != null)
             {
                 renderTableCell(facesContext, writer, body, 0,
@@ -173,7 +173,7 @@ public class HtmlLayoutRenderer
         }
         if (footer != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             renderTableCell(facesContext, writer, footer,
                             (navigation != null && body != null) ? 2 : 1,
                             panelLayout.getFooterClass(),
@@ -193,11 +193,11 @@ public class HtmlLayoutRenderer
         UIComponent body = panelLayout.getBody();
         UIComponent footer = panelLayout.getFooter();
 
-        writer.startElement(HTML.TABLE_ELEM, null);
+        writer.startElement(HTML.TABLE_ELEM, panelLayout);
         HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         if (footer != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             renderTableCell(facesContext, writer, footer,
                             (navigation != null && body != null) ? 2 : 1,
                             panelLayout.getFooterClass(),
@@ -206,7 +206,7 @@ public class HtmlLayoutRenderer
         }
         if (navigation != null || body != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             if (navigation != null)
             {
                 renderTableCell(facesContext, writer, navigation, 0,
@@ -223,7 +223,7 @@ public class HtmlLayoutRenderer
         }
         if (header != null)
         {
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, panelLayout);
             renderTableCell(facesContext, writer, header,
                             (navigation != null && body != null) ? 2 : 1,
                             panelLayout.getHeaderClass(),
@@ -242,7 +242,7 @@ public class HtmlLayoutRenderer
                                    String style)
             throws IOException
     {
-        writer.startElement(HTML.TD_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, component);
         if (colspan > 0)
         {
             writer.writeAttribute(HTML.COLSPAN_ATTR, Integer.toString(colspan), null);

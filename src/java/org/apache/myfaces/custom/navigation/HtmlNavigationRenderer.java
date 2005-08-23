@@ -89,7 +89,7 @@ public class HtmlNavigationRenderer
         if (panelNav.getChildCount() > 0)
         {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            writer.startElement(HTML.TABLE_ELEM, null);
+            writer.startElement(HTML.TABLE_ELEM, component);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
             if (panelNav.getStyle() == null && panelNav.getStyleClass() == null)
             {
@@ -127,13 +127,13 @@ public class HtmlNavigationRenderer
                 String style = getNavigationItemStyle(panelNav, (HtmlCommandNavigation)child);
                 String styleClass = getNavigationItemClass(panelNav, (HtmlCommandNavigation)child);
 
-                writer.startElement(HTML.TR_ELEM, null);
-                writer.startElement(HTML.TD_ELEM, null);
+                writer.startElement(HTML.TR_ELEM, panelNav);
+                writer.startElement(HTML.TD_ELEM, panelNav);
                 writeStyleAttributes(writer, style, styleClass);
 
                 if (style != null || styleClass != null)
                 {
-                    writer.startElement(HTML.SPAN_ELEM, null);
+                    writer.startElement(HTML.SPAN_ELEM, panelNav);
                     writeStyleAttributes(writer, style, styleClass);
                 }
                 indent(writer, level);
@@ -160,13 +160,13 @@ public class HtmlNavigationRenderer
                 String style = panelNav.getSeparatorStyle();
                 String styleClass = panelNav.getSeparatorClass();
 
-                writer.startElement(HTML.TR_ELEM, null);
-                writer.startElement(HTML.TD_ELEM, null);
+                writer.startElement(HTML.TR_ELEM, panelNav);
+                writer.startElement(HTML.TD_ELEM, panelNav);
                 writeStyleAttributes(writer, style, styleClass);
 
                 if (style != null || styleClass != null)
                 {
-                    writer.startElement(HTML.SPAN_ELEM, null);
+                    writer.startElement(HTML.SPAN_ELEM, panelNav);
                     writeStyleAttributes(writer, style, styleClass);
                 }
                 indent(writer, level);

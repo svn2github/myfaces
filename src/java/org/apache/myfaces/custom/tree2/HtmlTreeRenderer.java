@@ -360,11 +360,11 @@ public class HtmlTreeRenderer extends Renderer
     protected void beforeNodeEncode(FacesContext context, ResponseWriter out, HtmlTree tree)
         throws IOException
     {
-        out.startElement(HTML.TABLE_ELEM, null);
+        out.startElement(HTML.TABLE_ELEM, tree);
         out.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         out.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
         out.writeAttribute(HTML.BORDER_ATTR, "0", null);
-        out.startElement(HTML.TR_ELEM, null);
+        out.startElement(HTML.TR_ELEM, tree);
     }
 
     protected void afterNodeEncode(FacesContext context, ResponseWriter out)
@@ -589,18 +589,18 @@ public class HtmlTreeRenderer extends Renderer
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         if (javascriptLocation == null)
         {
-            AddResource.addJavaScriptHere(HtmlTreeRenderer.class, "javascript/tree.js", context);
-            AddResource.addJavaScriptHere(HtmlTreeRenderer.class, "javascript/cookielib.js", context);
+            AddResource.addJavaScriptHere(HtmlTreeRenderer.class, "javascript/tree.js", context, component);
+            AddResource.addJavaScriptHere(HtmlTreeRenderer.class, "javascript/cookielib.js", context, component);
         }
         else
         {
-            out.startElement(HTML.SCRIPT_ELEM, null);
+            out.startElement(HTML.SCRIPT_ELEM, component);
             out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
             out.writeAttribute(HTML.SRC_ATTR,
                                javascriptLocation + "/tree.js", null);
             out.endElement(HTML.SCRIPT_ELEM);
 
-            out.startElement(HTML.SCRIPT_ELEM, null);
+            out.startElement(HTML.SCRIPT_ELEM, component);
             out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
             out.writeAttribute(HTML.SRC_ATTR,
                                javascriptLocation + "/cookielib.js", null);

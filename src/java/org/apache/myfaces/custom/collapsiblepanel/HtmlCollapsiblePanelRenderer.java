@@ -61,7 +61,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
       if (!collapsiblePanel.isCollapsed()) {
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         // TODO apply styles from the parent element to this DIV
-      	writer.startElement(HTML.DIV_ELEM, null);
+      	writer.startElement(HTML.DIV_ELEM, uiComponent);
       	RendererUtils.renderChildren(facesContext, uiComponent);
         writer.endElement(HTML.DIV_ELEM );
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
@@ -76,7 +76,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
       ResponseWriter writer = facesContext.getResponseWriter();
 
       HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-    	writer.startElement(HTML.DIV_ELEM, null);
+      writer.startElement(HTML.DIV_ELEM, uiComponent);
 
       ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
       String viewId = facesContext.getViewRoot().getViewId();

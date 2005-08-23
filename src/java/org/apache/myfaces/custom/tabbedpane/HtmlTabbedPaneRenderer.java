@@ -289,7 +289,7 @@ public class HtmlTabbedPaneRenderer
         String actionURL = viewHandler.getActionURL(facesContext, viewId);
 
         //write out auto form
-        writer.startElement(HTML.FORM_ELEM, null);
+        writer.startElement(HTML.FORM_ELEM, tabbedPane);
         writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + AUTO_FORM_SUFFIX, null);
         writer.writeAttribute(HTML.STYLE_ATTR, "display:inline", null);
         writer.writeAttribute(HTML.METHOD_ATTR, "post", null);

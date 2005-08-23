@@ -97,7 +97,7 @@ public class HtmlCalendarRenderer
         if(inputCalendar.isRenderAsPopup())
         {
             if(inputCalendar.isAddResources())
-                addScriptAndCSSResources(facesContext);
+                addScriptAndCSSResources(facesContext, component);
 
             String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext,
                     inputCalendar.getPopupDateFormat());
@@ -161,7 +161,7 @@ public class HtmlCalendarRenderer
             {
 	            ResponseWriter writer = facesContext.getResponseWriter();
 
-	            writer.startElement(HTML.SCRIPT_ELEM,null);
+	            writer.startElement(HTML.SCRIPT_ELEM, component);
 	            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
 	            writer.write("<!--\n");
 	            writer.writeText(getLocalizedLanguageScript(symbols, months,
@@ -242,7 +242,7 @@ public class HtmlCalendarRenderer
      * Used by the x:inputDate renderer : HTMLDateRenderer
      * @throws IOException
      */
-    static public void addScriptAndCSSResources(FacesContext facesContext) throws IOException{
+    static public void addScriptAndCSSResources(FacesContext facesContext, UIComponent component) throws IOException{
         // check to see if javascript has already been written (which could happen if more than one calendar on the same page)
         if (facesContext.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
         {
@@ -256,7 +256,7 @@ public class HtmlCalendarRenderer
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        writer.startElement(HTML.SCRIPT_ELEM, null);
+        writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         writer.write(
                 "jscalendarSetImageDirectory(\""
@@ -361,7 +361,7 @@ public class HtmlCalendarRenderer
 
         if (!renderButtonAsImage) {
             // render the button
-            writer.startElement(HTML.INPUT_ELEM, null);
+            writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
             
             writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
@@ -381,7 +381,7 @@ public class HtmlCalendarRenderer
             writer.endElement(HTML.INPUT_ELEM);
         } else {
             // render the image
-            writer.startElement(HTML.IMG_ELEM, null);
+            writer.startElement(HTML.IMG_ELEM, uiComponent);
             writer.writeAttribute(HTML.SRC_ATTR, AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "images/calendar.gif", facesContext), null);
             
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);

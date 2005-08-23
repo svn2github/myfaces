@@ -158,7 +158,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
             String monthNumber = Integer.toString(i+1);
 
             writer.write("\t\t");
-            writer.startElement(HTML.OPTION_ELEM, null);
+            writer.startElement(HTML.OPTION_ELEM, uiComponent);
             writer.writeAttribute(HTML.VALUE_ATTR, monthNumber, null);
 
             if (i == selectedMonth)
@@ -195,7 +195,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
     }
     
     protected void encodePopupCalendarButton(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
-        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext);
+        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext, uiComponent);
         
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
 
@@ -205,7 +205,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
                 							Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
                 							null);
         
-        writer.startElement(HTML.SCRIPT_ELEM,null);
+        writer.startElement(HTML.SCRIPT_ELEM,uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
         	writer.write(localizedLanguageScript);
         	//writer.write("if (!document.layers) {\n");
@@ -217,7 +217,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext, null);
         
         // render the button
-        writer.startElement(HTML.INPUT_ELEM, null);
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
         
         String jsCalendarFunctionCall = "jscalendarPopUpCalendarForInputDate('"+clientId+"','"+dateFormat+"')";

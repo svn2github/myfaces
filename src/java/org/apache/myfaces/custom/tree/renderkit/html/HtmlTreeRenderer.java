@@ -71,7 +71,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         HtmlTree tree = (HtmlTree) component;
 
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-        writer.startElement(HTML.TABLE_ELEM, null);
+        writer.startElement(HTML.TABLE_ELEM, component);
         HtmlRendererUtils.renderHTMLAttributes(writer, tree, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         writer.writeAttribute(HTML.BORDER_ATTR, ZERO, null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, ZERO, null);
@@ -87,7 +87,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         renderFacet(facesContext, writer, component, true, maxLevel);
 
         // Render children.
-        renderChildren(facesContext, writer, tree, childNodes, maxLevel, tree.getIconProvider());
+        renderChildren(facesContext, writer, tree, childNodes, maxLevel, tree.getIconProvider(), component);
 
         // Render footer.
         renderFacet(facesContext, writer, component, false, maxLevel);
@@ -227,9 +227,9 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
      * @throws IOException Throws an IOException.
      */
     protected void renderChildren(FacesContext facesContext, ResponseWriter writer, HtmlTree tree, List children,
-            int maxLevel, IconProvider iconProvider) throws IOException
+            int maxLevel, IconProvider iconProvider, UIComponent component) throws IOException
     {
-        renderChildren(facesContext, writer, tree, children, maxLevel, iconProvider, 0);
+        renderChildren(facesContext, writer, tree, children, maxLevel, iconProvider, 0, component);
     }
 
     /**
@@ -247,7 +247,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
      * @throws IOException Throws an IOException.
      */
     protected void renderChildren(FacesContext facesContext, ResponseWriter writer, HtmlTree tree, List children,
-            int maxLevel, IconProvider iconProvider, int rowClassIndex) throws IOException
+            int maxLevel, IconProvider iconProvider, int rowClassIndex, UIComponent component) throws IOException
     {
         String rowClasses = tree.getRowClasses();
         String columnClasses = tree.getColumnClasses();
@@ -271,7 +271,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
             }
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
 
-            writer.startElement(HTML.TR_ELEM, null);
+            writer.startElement(HTML.TR_ELEM, component);
 
             if (rowClassIndex < rowClassesCount)
             {
@@ -327,7 +327,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
 
             if (child.getChildCount() > 0)
             {
-                renderChildren(facesContext, writer, tree, child.getChildren(), maxLevel, iconProvider, rowClassIndex);
+                renderChildren(facesContext, writer, tree, child.getChildren(), maxLevel, iconProvider, rowClassIndex, component);
                 if (rowClassesCount > 0)
                 {
                     rowClassIndex += (child.getChildCount() % rowClassesCount);
@@ -361,7 +361,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         for (int i = 0; i < layout.length - 1; i++)
         {
             int state = layout[i];
-            writer.startElement(HTML.TD_ELEM, null);
+            writer.startElement(HTML.TD_ELEM, child);
             String url = getLayoutImage(tree, state);
 
             if ((url != null) && (url.length() > 0))
@@ -396,7 +396,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         }
 
         // command link
-        writer.startElement(HTML.TD_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, tree);
         int state = layout[layout.length - 1];
         String url = getLayoutImage(tree, state);
 
@@ -438,7 +438,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
 
         if ((url != null) && (url.length() > 0))
         {
-            writer.startElement(HTML.TD_ELEM, null);
+            writer.startElement(HTML.TD_ELEM, tree);
             if (iconClass != null)
             {
                 writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
@@ -453,7 +453,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         }
 
         // node label
-        writer.startElement(HTML.TD_ELEM, null);
+        writer.startElement(HTML.TD_ELEM, tree);
         writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(labelColSpan), null);
         if (child.isSelected() && tree.getSelectedNodeClass() != null)
         {

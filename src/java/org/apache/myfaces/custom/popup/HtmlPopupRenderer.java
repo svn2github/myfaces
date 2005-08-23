@@ -61,7 +61,7 @@ public class HtmlPopupRenderer
 
         String popupId = writePopupScript(
                 facesContext, popup.getClientId(facesContext),
-                popup.getDisplayAtDistanceX(),popup.getDisplayAtDistanceY());
+                popup.getDisplayAtDistanceX(),popup.getDisplayAtDistanceY(), uiComponent);
 
         //writeMouseOverAndOutAttribs(popupId, popupFacet.getChildren());
 
@@ -109,7 +109,7 @@ public class HtmlPopupRenderer
     }
 
     private String writePopupScript(FacesContext context, String clientId,
-                                    Integer displayAtDistanceX, Integer displayAtDistanceY)
+                                    Integer displayAtDistanceX, Integer displayAtDistanceY, UIComponent uiComponent)
         throws IOException
     {
         AddResource.addJavaScriptToHeader(
@@ -123,7 +123,7 @@ public class HtmlPopupRenderer
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement(HTML.SCRIPT_ELEM,null);
+        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
         writer.writeText("var "+popupId+"=new orgApacheMyfacesPopup('"+clientId+"',"+
                 (displayAtDistanceX==null?-5:displayAtDistanceX.intValue())+","+
