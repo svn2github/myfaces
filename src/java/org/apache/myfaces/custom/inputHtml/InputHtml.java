@@ -364,8 +364,13 @@ public class InputHtml extends HtmlInputText {
            || bodyStartIndex > bodyEndIndex
            || bodyStartIndex>=textLength || bodyEndIndex>=textLength ){
 
-        	if( lcText.indexOf("<body/>")==-1 || lcText.indexOf("<body />")==-1 )
+        	if( lcText.indexOf("<body/>")!=-1 || lcText.indexOf("<body />")!=-1 )
         		return "";
+        	
+        	int htmlStartIndex = lcText.indexOf("<html>");
+        	int htmlEndIndex = lcText.indexOf("</html>");
+        	if( htmlStartIndex != -1 && htmlEndIndex > htmlStartIndex )
+        		return html.substring(htmlStartIndex+6, htmlEndIndex);
         	
         	log.warn("Couldn't extract HTML body from :\n"+html);
             return html.trim();
