@@ -2290,6 +2290,13 @@
         <name>saveState</name>
         <tag-class>org.apache.myfaces.custom.savestate.SaveStateTag</tag-class>
         <body-content>JSP</body-content>
+        <description>
+            saveState enables you to persist beans and values longer than
+            request scope, but shorter than session scope. It is ideal for
+            persisting backing beans and values with the same scope as your view
+            components. It does this by saving the target state with the
+            component tree.
+        </description>
         <attribute>
             <name>id</name>
             <required>false</required>
