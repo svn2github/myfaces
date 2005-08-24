@@ -64,7 +64,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private String _rowOnKeyDown = null;
     private String _rowOnKeyUp = null;
 
-    private boolean _isValidChilds = true;
+    private boolean _isValidChildren = true;
     
     public String getClientId(FacesContext context)
     {
@@ -218,7 +218,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         if (context.getRenderResponse())
         {
-            _isValidChilds = false;
+            _isValidChildren = false;
         }
     }
     
@@ -239,7 +239,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         if (context.getRenderResponse())
         {
-            _isValidChilds = false;
+            _isValidChildren = false;
         }
     }
     
@@ -290,7 +290,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (!isRendered())
             return;
 
-        if (_isValidChilds)
+        if (_isValidChildren)
         {
             _preservedDataModel = null;
         }
@@ -740,6 +740,21 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     _rowOnMouseUp = rowOnMouseUp;
   }
 
+    protected boolean isValidChildren() {
+        return _isValidChildren;
+    }
+
+    protected void setIsValidChildren(boolean isValidChildren) {
+        _isValidChildren = isValidChildren;
+    }
+
+    protected _SerializableDataModel getPreservedDataModel() {
+        return _preservedDataModel;
+    }
+
+    protected void setPreservedDataModel(_SerializableDataModel preservedDataModel) {
+        _preservedDataModel = preservedDataModel;
+    }
 	//------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataTable";
