@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
@@ -45,9 +44,13 @@ public class HtmlTagRenderer extends HtmlRenderer
 
         if (htmlTag.isRendered())
         {
+        	String tag = htmlTag.getValue().toString();
+        	if( tag.trim().length() == 0 ) // Don't render the tag, but renders the childs.
+        		return;
+        	
             ResponseWriter writer = context.getResponseWriter();
 
-            writer.startElement(htmlTag.getValue().toString(), htmlTag);
+            writer.startElement(tag, htmlTag);
             HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
 
             String styleClass = htmlTag.getStyleClass();
@@ -75,8 +78,12 @@ public class HtmlTagRenderer extends HtmlRenderer
 
         if (htmlTag.isRendered())
         {
+        	String tag = htmlTag.getValue().toString();
+        	if( tag.trim().length() == 0 )
+        		return;
+        	
             ResponseWriter writer = context.getResponseWriter();
-            writer.endElement(htmlTag.getValue().toString());
+            writer.endElement( tag );
         }
     }
 }

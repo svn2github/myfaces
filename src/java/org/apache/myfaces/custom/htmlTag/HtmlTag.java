@@ -19,7 +19,6 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
@@ -30,7 +29,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  */
 public class HtmlTag extends UIOutput implements UserRoleAware
 {
-
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlTag";
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
     private static final String DEFAULT_RENDERER_TYPE = HtmlTagRenderer.RENDERER_TYPE;
