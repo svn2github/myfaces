@@ -132,21 +132,20 @@ public final class AddResource {
      * Note : set context to null if you want the path after the application context path.
      */
     public static String getResourceMappedPath(Class componentClass, String resourceFileName, FacesContext context){
-        HttpServletRequest request = null;
-        if( context != null )
-            request = (HttpServletRequest)context.getExternalContext().getRequest();
-
+        String contextPath = null;
+        if( context != null ){
+            contextPath = context.getExternalContext().getRequestContextPath();
+        }
+        
         return getResourceMappedPath(
                 getComponentName(componentClass),
                 resourceFileName,
-                request);
+                contextPath);
     }
 
-    protected static String getResourceMappedPath(String componentName, String resourceFileName, HttpServletRequest request){
-        String contextPath = "";
-        if( request != null )
-            contextPath = request.getContextPath();
-        return contextPath+RESOURCE_VIRTUAL_PATH+"/"+componentName+'/'+getCacheKey()+'/'+resourceFileName;
+    private static String getResourceMappedPath(String componentName, String resourceFileName, String contextPath){
+       String returnString = RESOURCE_VIRTUAL_PATH+"/"+componentName+'/'+getCacheKey()+'/'+resourceFileName;
+       return (contextPath == null) ? returnString : contextPath + returnString;
     }
 
 	private static long getCacheKey(){
@@ -430,25 +429,34 @@ public final class AddResource {
             return inlineText.equals(toCompare.inlineText);
         }
 
+        /**
+         * @Deprecated
+         */
         public String getString(HttpServletRequest request){
-            switch (type) {
-           case TYPE_JS:
-                    return "<script "
-                        +"src=\""+getResourceMappedPath(componentName, resourceFileName, request)+"\" "
-                        +(deferJS ? "defer=\"true\" " : "")
-                        +"type=\"text/javascript\""
-                        +">"
-                        +"</script>\n";
-           case TYPE_CSS:
-               return "<link rel=\"stylesheet\" "
-               	+"href=\""+getResourceMappedPath(componentName, resourceFileName, request)+"\" "
-               	+"type=\"text/css\"/>\n";
-           case TYPE_CSS_INLINE:
-               return "<style type=\"text/css\">"+inlineText+"</style>\n";
-            default:
-                log.warn("Unknown type:"+type);
-                return "<link href=\""+"\"/>\n";
-            }
+           return getString(request.getContextPath());
         }
+ 
+        public String getString(String contextPath){
+           switch (type) {
+          case TYPE_JS:
+                   return "<script "
+                       +"src=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
+                       +(deferJS ? "defer=\"true\" " : "")
+                       +"type=\"text/javascript\""
+                       +">"
+                       +"</script>\n";
+          case TYPE_CSS:
+              return "<link rel=\"stylesheet\" "
+                +"href=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
+                +"type=\"text/css\"/>\n";
+          case TYPE_CSS_INLINE:
+              return "<style type=\"text/css\">"+inlineText+"</style>\n";
+           default:
+               log.warn("Unknown type:"+type);
+               return "<link href=\""+"\"/>\n";
+           }
+       }
+
+    
     }
 }
