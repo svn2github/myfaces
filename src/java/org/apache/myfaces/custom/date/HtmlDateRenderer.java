@@ -92,15 +92,17 @@ public class HtmlDateRenderer extends HtmlRenderer {
 	        if( inputDate.isPopupCalendar() && ! disabled && ! readonly )
 	            encodePopupCalendarButton(facesContext, uiComponent, writer, clientId, currentLocale);
         }
-        if( type.equals("both") ){
+        if( type.equals("both") || type.equals("full")){
             writer.write(" ");
         }
         if( ! type.equals("date")){
 	        encodeInputHours(uiComponent, writer, clientId, userData, disabled, readonly);
 	        writer.write(":");
 	        encodeInputMinutes(uiComponent, writer, clientId, userData, disabled, readonly);
-	        writer.write(":");
-	        encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
+	        if (type.equals("full")|| type.equals("time")) {
+						writer.write(":");
+	        	encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
+					}
         }
         
         writer.endElement(HTML.SPAN_ELEM);
@@ -253,7 +255,8 @@ public class HtmlDateRenderer extends HtmlRenderer {
         if( ! type.equals( "date" ) ){
             userData.setHours( (String) requestMap.get(clientId + ID_HOURS_POSTFIX) );
             userData.setMinutes( (String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
-            userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
+            if (type.equals("full") || type.equals("time"))
+							userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
         }
 
         inputDate.setSubmittedValue( userData );
