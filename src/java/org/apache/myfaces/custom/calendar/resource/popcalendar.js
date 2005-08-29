@@ -570,6 +570,9 @@ function jscalendarPopUpCalendarForInputDate(clientId, format){
 		jscalendarMonthSelected = parseInt( formatInt( document.getElementById(clientId+".month").value),10)-1;
 		jscalendarYearSelected = parseInt(  formatInt(document.getElementById(clientId+".year").value),10);
 		jscalendarCtlNow = document.getElementById(clientId+".day");
+		if(isNaN(jscalendarYearSelected)){
+			jscalendarYearSelected = jscalendarYearNow;
+		}		
 		jscalendarPopUpCalendar_Show(document.getElementById(clientId+".day"));
 	}
 }
