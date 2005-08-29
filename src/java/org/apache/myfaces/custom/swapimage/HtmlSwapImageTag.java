@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.swapimage;
 
-import org.apache.myfaces.taglib.html.HtmlGraphicImageTagBase;
+import org.apache.myfaces.taglib.html.ext.HtmlGraphicImageTag;
 
 import javax.faces.component.UIComponent;
 
@@ -24,7 +24,7 @@ import javax.faces.component.UIComponent;
  * @version $Revision$ $Date$
  */
 public class HtmlSwapImageTag
-        extends HtmlGraphicImageTagBase
+        extends HtmlGraphicImageTag
 {
     private static final String RENDERER_TYPE = "org.apache.myfaces.SwapImage";
 
