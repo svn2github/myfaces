@@ -122,7 +122,21 @@ public class JsValueChangeListenerRenderer
 
         }
 
-        uiComponent.getAttributes().put(propName, value);
+        if(value != null)
+        {
+            uiComponent.getAttributes().put(propName, value);
+        }
+        else
+        {
+            try
+            {
+                uiComponent.getAttributes().remove(propName);
+            }
+            catch(Exception ex)
+            {
+                log.error("the value could not be removed : ",ex);
+            }
+        }
     }
 
 

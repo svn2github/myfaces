@@ -172,7 +172,7 @@ public class HtmlPopupRenderer
                 oldValueStr +=";";
         }
 
-        value = oldValueStr + genCommentary+value;
+        value = oldValueStr+genCommentary+value;
 
         uiComponent.getAttributes().put(propName, value);
     }

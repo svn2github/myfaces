@@ -66,7 +66,10 @@ public class HtmlNavigationMenuItemTag
         super.setProperties(component);
         setStringProperty(component, ICON_ATTR, _icon);
         // set action attribute as String!
-        component.getAttributes().put(ACTION_ATTR, _action);
+
+        if(_action != null)
+            component.getAttributes().put(ACTION_ATTR, _action);
+
         setBooleanProperty(component, SPLIT_ATTR, _split);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
