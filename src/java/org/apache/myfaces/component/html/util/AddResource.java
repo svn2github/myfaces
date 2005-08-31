@@ -143,7 +143,7 @@ public final class AddResource {
                 contextPath);
     }
 
-    private static String getResourceMappedPath(String componentName, String resourceFileName, String contextPath){
+    protected static String getResourceMappedPath(String componentName, String resourceFileName, String contextPath){
        String returnString = RESOURCE_VIRTUAL_PATH+"/"+componentName+'/'+getCacheKey()+'/'+resourceFileName;
        return (contextPath == null) ? returnString : contextPath + returnString;
     }
