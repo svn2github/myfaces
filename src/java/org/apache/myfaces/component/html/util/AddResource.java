@@ -352,7 +352,7 @@ public final class AddResource {
         {
             for(Iterator i = getAdditionalHeaderInfoToRender(request).iterator(); i.hasNext() ;){
                 AdditionalHeaderInfoToRender headerInfo = (AdditionalHeaderInfoToRender) i.next();
-                writer.write( headerInfo.getString(request) );
+                writer.write( headerInfo.getString(request.getContextPath()) );
             }
         }
 
@@ -428,35 +428,26 @@ public final class AddResource {
 
             return inlineText.equals(toCompare.inlineText);
         }
-
-        /**
-         * @Deprecated
-         */
-        public String getString(HttpServletRequest request){
-           return getString(request.getContextPath());
-        }
  
         public String getString(String contextPath){
-           switch (type) {
-          case TYPE_JS:
-                   return "<script "
-                       +"src=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
-                       +(deferJS ? "defer=\"true\" " : "")
-                       +"type=\"text/javascript\""
-                       +">"
-                       +"</script>\n";
-          case TYPE_CSS:
-              return "<link rel=\"stylesheet\" "
-                +"href=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
-                +"type=\"text/css\"/>\n";
-          case TYPE_CSS_INLINE:
-              return "<style type=\"text/css\">"+inlineText+"</style>\n";
-           default:
-               log.warn("Unknown type:"+type);
-               return "<link href=\""+"\"/>\n";
-           }
-       }
-
-    
+        	switch (type) {
+        		case TYPE_JS:
+        			return "<script "
+        				+"src=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
+        				+(deferJS ? "defer=\"true\" " : "")
+        				+"type=\"text/javascript\""
+        				+">"
+        				+"</script>\n";
+        		case TYPE_CSS:
+        			return "<link rel=\"stylesheet\" "
+        				+"href=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
+        				+"type=\"text/css\"/>\n";
+        		case TYPE_CSS_INLINE:
+        			return "<style type=\"text/css\">"+inlineText+"</style>\n";
+        		default:
+        			log.warn("Unknown type:"+type);
+        			return "<link href=\""+"\"/>\n";
+        	}
+        }
     }
 }
