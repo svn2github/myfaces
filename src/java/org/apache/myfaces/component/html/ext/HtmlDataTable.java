@@ -727,7 +727,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
   {
     if (_rowStyle != null)
       return _rowStyle;
-    ValueBinding vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
+    ValueBinding vb = getValueBinding(JSFAttr.ROW_STYLE_ATTR);
     return vb != null ? (String) vb.getValue(getFacesContext()) : null;
   }
 
