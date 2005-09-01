@@ -16,6 +16,7 @@ import javax.faces.context.ResponseWriter;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
@@ -45,7 +46,44 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         renderRowAttribute(writer, HTML.ONMOUSEOVER_ATTR, table.getRowOnMouseOver());
         renderRowAttribute(writer, HTML.ONMOUSEUP_ATTR, table.getRowOnMouseUp());
     }
-
+    
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderRowStyle(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, java.util.Iterator)
+     */
+    protected void renderRowStyle(FacesContext facesContext, ResponseWriter writer, UIData uiData, Iterator rowStyleIterator) throws IOException
+    {
+      String rowStyleClass;
+      String rowStyle;
+      if (uiData instanceof HtmlDataTable)
+      {
+        HtmlDataTable datatable = (HtmlDataTable) uiData;
+        rowStyleClass = datatable.getRowStyleClass();
+        rowStyle = datatable.getRowStyle();
+      }
+      else
+      {
+        rowStyleClass = (String) uiData.getAttributes().get(JSFAttr.ROW_STYLECLASS_ATTR);
+        rowStyle = (String) uiData.getAttributes().get(JSFAttr.ROW_STYLE_ATTR);
+      }
+      if(rowStyleClass == null)
+      {
+        super.renderRowStyle(facesContext, writer, uiData, rowStyleIterator);
+      }
+      else
+      {
+        if(rowStyleIterator.hasNext())
+        {
+          // skip next row style
+          rowStyleIterator.next();
+        }
+        writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass, null);
+      }
+      if(rowStyle != null)
+      {
+        writer.writeAttribute(HTML.STYLE_ATTR, rowStyle, null);
+      }
+    }
+    
     protected void renderRowAttribute(ResponseWriter writer,
                     String htmlAttribute, Object value) throws IOException
     {
@@ -91,9 +129,17 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         {
             writer.startElement(HTML.TD_ELEM, uiData);
             String styleClass = ((HtmlColumn) component).getStyleClass();
-            if (styleClass == null && columnStyleIterator.hasNext())
+            if(columnStyleIterator.hasNext())
             {
-                styleClass = (String) columnStyleIterator.next();
+              if (styleClass == null)
+              {
+                  styleClass = (String) columnStyleIterator.next();
+              }
+              else
+              {
+                // skip the column style class
+                columnStyleIterator.next();
+              }
             }
             if (styleClass != null)
             {

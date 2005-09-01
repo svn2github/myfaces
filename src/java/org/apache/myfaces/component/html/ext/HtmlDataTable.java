@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -63,6 +64,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private String _rowOnKeyPress = null;
     private String _rowOnKeyDown = null;
     private String _rowOnKeyUp = null;
+    private String _rowStyleClass = null;
+    private String _rowStyle = null;
 
     private boolean _isValidChildren = true;
     
@@ -388,7 +391,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     public Object saveState(FacesContext context)
     {
         boolean preserveSort = isPreserveSort();
-    	Object values[] = new Object[22];
+    	Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -417,9 +420,12 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         values[17] = _rowOnKeyPress;
         values[18] = _rowOnKeyDown;
         values[19] = _rowOnKeyUp;
+        
+        values[20] = _rowStyleClass;
+        values[21] = _rowStyle;
 
-        values[20] = preserveSort ? getSortColumn() : null;
-        values[21] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
+        values[22] = preserveSort ? getSortColumn() : null;
+        values[23] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
         return values;
     }
     
@@ -468,10 +474,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         _rowOnKeyDown = (String) values[18];
         _rowOnKeyUp = (String) values[19];
 
+        _rowStyleClass = (String) values[20];
+        _rowStyle = (String) values[21];
+
         if (isPreserveSort())
         {
-            String sortColumn = (String) values[20];
-            Boolean sortAscending = (Boolean) values[21];
+            String sortColumn = (String) values[22];
+            Boolean sortAscending = (Boolean) values[23];
             if (sortColumn != null && sortAscending != null)
             {
                 ValueBinding vb = getValueBinding("sortColumn");
@@ -699,6 +708,32 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
   public void setRowOnKeyUp(String rowOnKeyUp)
   {
     _rowOnKeyUp = rowOnKeyUp;
+  }
+
+  public String getRowStyleClass()
+  {
+    if (_rowStyleClass != null)
+      return _rowStyleClass;
+    ValueBinding vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
+    return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+  }
+
+  public void setRowStyleClass(String rowStyleClass)
+  {
+    _rowStyleClass = rowStyleClass;
+  }
+
+  public String getRowStyle()
+  {
+    if (_rowStyle != null)
+      return _rowStyle;
+    ValueBinding vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
+    return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+  }
+
+  public void setRowStyle(String rowStyle)
+  {
+    _rowStyle = rowStyle;
   }
 
   public String getRowOnMouseDown()

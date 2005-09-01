@@ -64,6 +64,9 @@ public class HtmlDataTableTag
     private String _rowOnKeyUp;
     private String _rowId;
     
+    private String _rowStyleClass;
+    private String _rowStyle;
+    
     public void release() 
     {
         super.release();
@@ -91,6 +94,8 @@ public class HtmlDataTableTag
         _rowOnKeyUp=null;
         _rowId=null;
 
+        _rowStyleClass = null;
+        _rowStyle = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -119,6 +124,9 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowOnKeyDown", _rowOnKeyDown);
         setStringProperty(component, "rowOnKeyUp", _rowOnKeyUp);
         setStringProperty(component, JSFAttr.ROW_ID, _rowId);
+        
+        setStringProperty(component, JSFAttr.ROW_STYLECLASS_ATTR, _rowStyleClass);
+        setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -229,5 +237,15 @@ public class HtmlDataTableTag
     public void setRowId(String rowId)
     {
       _rowId = rowId;
+    }
+    
+    public void setRowStyleClass(String rowStyleClass)
+    {
+      _rowStyleClass = rowStyleClass;
+    }
+    
+    public void setRowStyle(String rowStyle)
+    {
+      _rowStyle = rowStyle;
     }
 }
