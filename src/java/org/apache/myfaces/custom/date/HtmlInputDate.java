@@ -1,12 +1,12 @@
 /*
  * Copyright 2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -38,39 +39,40 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     public static final String COMPONENT_FAMILY = "javax.faces.Input";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Date";
     private static final boolean DEFAULT_DISABLED = false;
-    
+
 	private Boolean _readonly = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
-    
+
     /**
-     * Same as for f:convertDateTime 
+     * Same as for f:convertDateTime
      * Specifies what contents the string value will be formatted to include, or parsed expecting.
      * Valid values are "date", "time", and "both". Default value is "date".
      */
     private String _type = null;
     private Boolean _popupCalendar = null;
-    
-    
+    private String _timeZone = null;
+
+
     private Boolean _disabled = null;
-    
+
     // Values to hold the data entered by the user
     private UserData _userData = null;
-    
+
     public HtmlInputDate() {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
-    
+
     public void setUserData(UserData userData){
         this._userData = userData;
     }
 
     public UserData getUserData(Locale currentLocale){
         if( _userData == null )
-            _userData = new UserData((Date) getValue(), currentLocale);
+            _userData = new UserData((Date) getValue(), currentLocale, getTimeZone());
         return _userData;
     }
-    
+
 	public String getType() {
 		if (_type != null) return _type;
 		ValueBinding vb = getValueBinding("type");
@@ -79,7 +81,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 	public void setType(String string) {
 		_type = string;
 	}
-	
+
     public boolean isPopupCalendar(){
    		if (_popupCalendar != null)
    		    return _popupCalendar.booleanValue();
@@ -88,6 +90,16 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
     public void setPopupCalendar(boolean popupCalendar){
         this._popupCalendar = Boolean.valueOf(popupCalendar);
+    }
+
+    public String getTimeZone(){
+        if(_timeZone != null) return _timeZone;
+        ValueBinding vb = getValueBinding("timeZone");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+    
+    public void setTimeZone(String timeZone){
+        _timeZone = timeZone;
     }
 
     public boolean isReadonly(){
@@ -122,7 +134,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
         return super.isRendered();
     }
-	
+
     public boolean isDisabled(){
         if (_disabled != null) return _disabled.booleanValue();
         ValueBinding vb = getValueBinding("disabled");
@@ -132,9 +144,9 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     public void setDisabled(boolean disabled) {
         _disabled = Boolean.valueOf(disabled);
     }
-	
+
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[8];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = _type;
         values[2] = _popupCalendar;
@@ -143,6 +155,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 		values[5] = _readonly;
         values[6] = _enabledOnUserRole;
         values[7] = _visibleOnUserRole;
+        values[8] = _timeZone;
         return values;
     }
 
@@ -156,8 +169,9 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 		_readonly = (Boolean)values[5];
         _enabledOnUserRole = (String)values[6];
         _visibleOnUserRole = (String)values[7];
+        _timeZone = (String)values[8];
     }
-    
+
     public static class UserData implements Serializable {
         private static final long serialVersionUID = -6507279524833267707L;
         private String day;
@@ -166,12 +180,17 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         private String hours;
         private String minutes;
         private String seconds;
-        
-        public UserData(Date date, Locale currentLocale){
+        private TimeZone timeZone = null;
+
+        public UserData(Date date, Locale currentLocale, String _timeZone){
             if( date == null )
                 date = new Date();
-            
+
             Calendar calendar = Calendar.getInstance(currentLocale);
+            if (_timeZone != null) {
+				timeZone = TimeZone.getTimeZone(_timeZone);
+                calendar.setTimeZone(timeZone);
+			}
             calendar.setTime( date );
             day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
             month = Integer.toString(calendar.get(Calendar.MONTH)+1);
@@ -180,16 +199,18 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             minutes = Integer.toString(calendar.get(Calendar.MINUTE));
             seconds = Integer.toString(calendar.get(Calendar.SECOND));
         }
-        
+
         public Date parse() throws ParseException{
             SimpleDateFormat fullFormat = new SimpleDateFormat( "dd MM yyyy HH mm ss" );
+            if (timeZone != null)
+                fullFormat.setTimeZone(timeZone);
             return fullFormat.parse(day+" "+month+" "+year+" "+hours+" "+minutes+" "+seconds);
         }
-        
+
         private String formatedInt(String toFormat){
             if( toFormat == null )
                 return null;
-            
+
             int i = -1;
             try{
                 i = Integer.parseInt( toFormat );
@@ -200,8 +221,8 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
                 return "0"+i;
             return Integer.toString(i);
         }
-        
-        
+
+
         public String getDay() {
             return formatedInt( day );
         }
@@ -215,14 +236,14 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         public void setMonth(String month) {
             this.month = month;
         }
-        
+
         public String getYear() {
             return year;
         }
         public void setYear(String year) {
             this.year = year;
         }
-        
+
         public String getHours() {
             return formatedInt( hours );
         }

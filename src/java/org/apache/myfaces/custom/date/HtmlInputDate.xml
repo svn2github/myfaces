@@ -13,6 +13,10 @@
         <type>java.lang.String</type>
     </field>
 	<field>
+        <name>timeZone</name>
+        <type>java.lang.String</type>
+    </field>
+	<field>
         <name>disabled</name>
         <type>java.lang.String</type>
     </field>
