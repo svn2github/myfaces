@@ -51,19 +51,11 @@ public class HtmlTagRenderer extends HtmlRenderer
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement(tag, htmlTag);
-            HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
-
-            String styleClass = htmlTag.getStyleClass();
-            String style = htmlTag.getStyle();
-
-            if (null != styleClass)
-            {
-                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-            }
-            if (null != style)
-            {
-                writer.writeAttribute(HTML.STYLE_ATTR, style, null);
-            }
+            HtmlRendererUtils.writeIdIfNecessary(writer, htmlTag, context);
+            
+            // TODO : Use HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+            String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
+            HtmlRendererUtils.renderHTMLAttributes(writer, htmlTag, supportedAttributes);
         }  
     }
 
