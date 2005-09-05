@@ -96,7 +96,7 @@ public class InputHtmlTag extends UIComponentTagBase {
         setStringProperty(component, "styleClass", styleClass);
 
 		setStringProperty(component, "fallback", fallback);
-        setBooleanProperty(component, "type", type);
+        setStringProperty(component, "type", type);
 
         setBooleanProperty(component, "allowEditSource", allowEditSource);
         setBooleanProperty(component, "allowExternalLinks", allowExternalLinks);
