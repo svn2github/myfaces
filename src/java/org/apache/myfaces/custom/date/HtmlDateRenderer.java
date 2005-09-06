@@ -151,6 +151,9 @@ public class HtmlDateRenderer extends HtmlRenderer {
         if (disabled) {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
         }
+        if (readonly) {
+            writer.writeAttribute(HTML.READONLY_ATTR, Boolean.TRUE, null);
+        }
 
         int selectedMonth = userData.getMonth() == null ? -1 : Integer.parseInt(userData.getMonth())-1;
 
