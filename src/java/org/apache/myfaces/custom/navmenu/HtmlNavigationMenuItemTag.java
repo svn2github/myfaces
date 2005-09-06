@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.navmenu;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.taglib.core.SelectItemTagBase;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 
@@ -32,8 +33,8 @@ public class HtmlNavigationMenuItemTag
     private static final String ACTION_ATTR = "action";
     private static final String SPLIT_ATTR  = "split";
 
-    private String _icon = null;
-    private String _action = null;
+    private String _icon;
+    private String _action;
     private String _split;
 
     // User Role support
@@ -48,6 +49,7 @@ public class HtmlNavigationMenuItemTag
         _split= null;
         _enabledOnUserRole= null;
         _visibleOnUserRole= null;
+
     }
 
     public String getComponentType()
