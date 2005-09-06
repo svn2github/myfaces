@@ -1421,6 +1421,11 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>rendered</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
         <name>navigationMenuItems</name>
