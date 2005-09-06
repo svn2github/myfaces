@@ -60,7 +60,7 @@ public class UIColumns extends UIData
     private UIData _parentUIData;
 
     private Map _dataModelMap = new HashMap();
-    
+
     /**
      *
      */
@@ -112,10 +112,8 @@ public class UIColumns extends UIData
         }
         else
         {
-            _cellStates
-                            .put(
-                                            getClientId(facesContext),
-                                            saveDescendantComponentStates(getFacetsAndChildren()));
+            _cellStates.put(getClientId(facesContext),
+                    saveDescendantComponentStates(getFacetsAndChildren()));
         }
 
         _colIndex = colIndex;
@@ -139,12 +137,12 @@ public class UIColumns extends UIData
                 {
                     Object rowData = dataModel.getRowData();
                     facesContext.getExternalContext().getRequestMap().put(var,
-                                    rowData);
+                            rowData);
                 }
                 else
                 {
                     facesContext.getExternalContext().getRequestMap().remove(
-                                    var);
+                            var);
                 }
             }
         }
@@ -152,7 +150,7 @@ public class UIColumns extends UIData
         if (_colIndex == -1)
         {
             restoreDescendantComponentStates(getFacetsAndChildren(),
-                            _initialDescendantComponentState);
+                    _initialDescendantComponentState);
         }
         else
         {
@@ -160,18 +158,18 @@ public class UIColumns extends UIData
             if (rowState == null)
             {
                 restoreDescendantComponentStates(getFacetsAndChildren(),
-                                _initialDescendantComponentState);
+                        _initialDescendantComponentState);
             }
             else
             {
                 restoreDescendantComponentStates(getFacetsAndChildren(),
-                                rowState);
+                        rowState);
             }
         }
     }
 
     protected void restoreDescendantComponentStates(Iterator childIterator,
-                    Object state)
+            Object state)
     {
         Iterator descendantStateIterator = null;
         while (childIterator.hasNext())
@@ -183,22 +181,25 @@ public class UIColumns extends UIData
             UIComponent component = (UIComponent) childIterator.next();
             // reset the client id (see spec 3.1.6)
             component.setId(component.getId());
-            Object childState = null;
-            Object descendantState = null;
-            if (descendantStateIterator != null
-                            && descendantStateIterator.hasNext())
+            if (!component.isTransient())
             {
-                Object[] object = (Object[]) descendantStateIterator.next();
-                childState = object[0];
-                descendantState = object[1];
+                Object childState = null;
+                Object descendantState = null;
+                if (descendantStateIterator != null
+                        && descendantStateIterator.hasNext())
+                {
+                    Object[] object = (Object[]) descendantStateIterator.next();
+                    childState = object[0];
+                    descendantState = object[1];
+                }
+                if (component instanceof EditableValueHolder)
+                {
+                    ((EditableValueHolderState) childState)
+                            .restoreState((EditableValueHolder) component);
+                }
+                restoreDescendantComponentStates(component
+                        .getFacetsAndChildren(), descendantState);
             }
-            if (component instanceof EditableValueHolder)
-            {
-                ((EditableValueHolderState) childState)
-                                .restoreState((EditableValueHolder) component);
-            }
-            restoreDescendantComponentStates(component.getFacetsAndChildren(),
-                            descendantState);
         }
     }
 
@@ -212,19 +213,22 @@ public class UIColumns extends UIData
                 childStates = new ArrayList();
             }
             UIComponent child = (UIComponent) childIterator.next();
-            Object descendantState = saveDescendantComponentStates(child
-                            .getFacetsAndChildren());
-            Object state = null;
-            if (child instanceof EditableValueHolder)
+            if (!child.isTransient())
             {
-                state = new EditableValueHolderState(
-                                (EditableValueHolder) child);
+                Object descendantState = saveDescendantComponentStates(child
+                        .getFacetsAndChildren());
+                Object state = null;
+                if (child instanceof EditableValueHolder)
+                {
+                    state = new EditableValueHolderState(
+                            (EditableValueHolder) child);
+                }
+                childStates.add(new Object[] { state, descendantState });
             }
-            childStates.add(new Object[] {state, descendantState});
         }
         return childStates;
     }
-    
+
     /**
      * @see javax.faces.component.UIData#setValue(java.lang.Object)
      */
@@ -256,7 +260,7 @@ public class UIColumns extends UIData
     protected DataModel getDataModel()
     {
         String clientID = getParentUIData().getParent().getClientId(
-                        getFacesContext());
+                getFacesContext());
         DataModel dataModel = (DataModel) _dataModelMap.get(clientID);
         if (dataModel == null)
         {
@@ -269,7 +273,7 @@ public class UIColumns extends UIData
     protected void setDataModel(DataModel dataModel)
     {
         _dataModelMap.put(getParentUIData().getParent().getClientId(
-                        getFacesContext()), dataModel);
+                getFacesContext()), dataModel);
     }
 
     /**
@@ -346,7 +350,7 @@ public class UIColumns extends UIData
             if (obj == null)
                 return; //Clearing is allowed
             throw new UnsupportedOperationException(this.getClass().getName()
-                            + " UnsupportedOperationException");
+                    + " UnsupportedOperationException");
         }
     };
 
@@ -400,7 +404,7 @@ public class UIColumns extends UIData
             if (isRowAvailable())
             {
                 for (Iterator facetsIter = getFacets().values().iterator(); facetsIter
-                                .hasNext();)
+                        .hasNext();)
                 {
                     UIComponent facet = (UIComponent) facetsIter.next();
                     process(context, facet, processAction);
@@ -450,7 +454,7 @@ public class UIColumns extends UIData
             if (!(parent instanceof UIData))
             {
                 throw new IllegalStateException(
-                                "UIColumns component must be a child of a UIData component");
+                        "UIColumns component must be a child of a UIData component");
             }
             _parentUIData = (UIData) parent;
         }
@@ -477,10 +481,10 @@ public class UIColumns extends UIData
             if (isRowAvailable())
             {
                 for (Iterator columnChildIter = getChildren().iterator(); columnChildIter
-                                .hasNext();)
+                        .hasNext();)
                 {
                     UIComponent columnChild = (UIComponent) columnChildIter
-                                    .next();
+                            .next();
                     process(context, columnChild, processAction);
                 }
             }
@@ -531,19 +535,19 @@ public class UIColumns extends UIData
     }
 
     private void process(FacesContext context, UIComponent component,
-                    int processAction)
+            int processAction)
     {
         switch (processAction)
         {
-            case PROCESS_DECODES:
-                component.processDecodes(context);
-                break;
-            case PROCESS_VALIDATORS:
-                component.processValidators(context);
-                break;
-            case PROCESS_UPDATES:
-                component.processUpdates(context);
-                break;
+        case PROCESS_DECODES:
+            component.processDecodes(context);
+            break;
+        case PROCESS_VALIDATORS:
+            component.processValidators(context);
+            break;
+        case PROCESS_UPDATES:
+            component.processUpdates(context);
+            break;
         }
     }
 

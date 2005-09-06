@@ -228,31 +228,34 @@ abstract class HtmlDataTableHack extends
             UIComponent component = (UIComponent) childIterator.next();
             // reset the client id (see spec 3.1.6)
             component.setId(component.getId());
-            Object childState = null;
-            Object descendantState = null;
-            if (descendantStateIterator != null
-                    && descendantStateIterator.hasNext())
+            if(!component.isTransient())
             {
-                Object[] object = (Object[]) descendantStateIterator.next();
-                childState = object[0];
-                descendantState = object[1];
+                Object childState = null;
+                Object descendantState = null;
+                if (descendantStateIterator != null
+                        && descendantStateIterator.hasNext())
+                {
+                    Object[] object = (Object[]) descendantStateIterator.next();
+                    childState = object[0];
+                    descendantState = object[1];
+                }
+                if (component instanceof EditableValueHolder)
+                {
+                    ((EditableValueHolderState) childState)
+                            .restoreState((EditableValueHolder) component);
+                }
+                Iterator childsIterator;
+                if (restoreChildFacets)
+                {
+                    childsIterator = component.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = component.getChildren().iterator();
+                }
+                restoreDescendantComponentStates(childsIterator, descendantState,
+                        true);
             }
-            if (component instanceof EditableValueHolder)
-            {
-                ((EditableValueHolderState) childState)
-                        .restoreState((EditableValueHolder) component);
-            }
-            Iterator childsIterator;
-            if (restoreChildFacets)
-            {
-                childsIterator = component.getFacetsAndChildren();
-            }
-            else
-            {
-                childsIterator = component.getChildren().iterator();
-            }
-            restoreDescendantComponentStates(childsIterator, descendantState,
-                    true);
         }
     }
 
@@ -267,24 +270,27 @@ abstract class HtmlDataTableHack extends
                 childStates = new ArrayList();
             }
             UIComponent child = (UIComponent) childIterator.next();
-            Iterator childsIterator;
-            if (saveChildFacets)
+            if(!child.isTransient())
             {
-                childsIterator = child.getFacetsAndChildren();
+                Iterator childsIterator;
+                if (saveChildFacets)
+                {
+                    childsIterator = child.getFacetsAndChildren();
+                }
+                else
+                {
+                    childsIterator = child.getChildren().iterator();
+                }
+                Object descendantState = saveDescendantComponentStates(
+                        childsIterator, true);
+                Object state = null;
+                if (child instanceof EditableValueHolder)
+                {
+                    state = new EditableValueHolderState(
+                            (EditableValueHolder) child);
+                }
+                childStates.add(new Object[] { state, descendantState });
             }
-            else
-            {
-                childsIterator = child.getChildren().iterator();
-            }
-            Object descendantState = saveDescendantComponentStates(
-                    childsIterator, true);
-            Object state = null;
-            if (child instanceof EditableValueHolder)
-            {
-                state = new EditableValueHolderState(
-                        (EditableValueHolder) child);
-            }
-            childStates.add(new Object[] { state, descendantState });
         }
         return childStates;
     }
