@@ -59,6 +59,7 @@ abstract class HtmlDataTableHack extends
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // Every field and method from here is identical to UIData !!!!!!!!!
+    // EXCEPTION: we can create a DataModel from a Collection
 
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
@@ -358,6 +359,11 @@ abstract class HtmlDataTableHack extends
         else if (value instanceof List)
         {
             return new ListDataModel((List) value);
+        }
+        // accept a Collection is not supported in the Spec
+        else if (value instanceof Collection)
+        {
+            return new ListDataModel(new ArrayList((Collection) value));
         }
         else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
         {
