@@ -37,7 +37,7 @@ public class HtmlMenuRenderer
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
         {
-            return false;
+            return true;
         }
         else
         {

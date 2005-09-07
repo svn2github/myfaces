@@ -36,7 +36,7 @@ public class HtmlListboxRenderer
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
         {
-            return false;
+            return true;
         }
         else
         {

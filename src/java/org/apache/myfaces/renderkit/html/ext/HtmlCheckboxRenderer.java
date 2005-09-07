@@ -148,7 +148,7 @@ public class HtmlCheckboxRenderer
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
         {
-            return false;
+            return true;
         }
         else
         {

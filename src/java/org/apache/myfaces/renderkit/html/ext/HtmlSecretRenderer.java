@@ -41,7 +41,7 @@ public class HtmlSecretRenderer
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
         {
-            return false;
+            return true;
         }
         else
         {

@@ -38,7 +38,7 @@ public class HtmlTextareaRenderer
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
         {
-            return false;
+            return true;
         }
         else
         {
