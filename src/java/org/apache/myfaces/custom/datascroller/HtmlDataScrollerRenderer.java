@@ -285,7 +285,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 	protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
 					UIComponent facetComp, String facetName) throws IOException
 	{
-		UIComponent link = getLink(facesContext, scroller, facetComp, facetName);
+		UIComponent link = getLink(facesContext, scroller, facetName);
 		link.encodeBegin(facesContext);
 		facetComp.encodeBegin(facesContext);
 		if (facetComp.getRendersChildren())
@@ -412,7 +412,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 	}
 
 	protected HtmlCommandLink getLink(FacesContext facesContext, HtmlDataScroller scroller,
-					UIComponent facetComp, String facetName)
+					String facetName)
 	{
 		Application application = facesContext.getApplication();
 
@@ -428,9 +428,6 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		parameter.setValue(facetName);
 		List children = link.getChildren();
 		children.add(parameter);
-		if (facetComp != null)
-			children.add(facetComp);
-		// dirty, cause facet-comp is now child from link & scroller!
 		scroller.getChildren().add(link);
 		return link;
 	}
