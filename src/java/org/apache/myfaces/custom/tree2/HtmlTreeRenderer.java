@@ -76,11 +76,11 @@ public class HtmlTreeRenderer extends Renderer
     }
 
     private void restoreStateFromCookies(FacesContext context, UIComponent component) {
-    	String nodeId = null;
+        String nodeId = null;
         HtmlTree tree = (HtmlTree)component;
         String originalNodeId = tree.getNodeId();
-    	
-    	Map cookieMap = context.getExternalContext().getRequestCookieMap();
+        
+        Map cookieMap = context.getExternalContext().getRequestCookieMap();
         Cookie treeCookie = (Cookie)cookieMap.get(component.getId());
         if (treeCookie == null || treeCookie.getValue() == null)
         {
@@ -151,11 +151,11 @@ public class HtmlTreeRenderer extends Renderer
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
-    	HtmlTree tree = (HtmlTree)component;
-    	// try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode 
-    	if (!tree.getDataModel().getTreeState().isTransient() && getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true) && getBoolean(component, JSFAttr.PRESERVE_TOGGLE, true))
-    		restoreStateFromCookies(context, component);
-    	
+        HtmlTree tree = (HtmlTree)component;
+        // try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode 
+        if (!tree.getDataModel().getTreeState().isTransient() && getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true) && getBoolean(component, JSFAttr.PRESERVE_TOGGLE, true))
+            restoreStateFromCookies(context, component);
+        
         // write javascript functions
         encodeJavascript(context, component);
     }
@@ -454,7 +454,18 @@ public class HtmlTreeRenderer extends Renderer
                 altSrc = "nav-plus-line-last.gif";
                 break;
 
+            // unacceptable bitmask combinations
+            
+            case (EXPANDED + LINES):
+            case (EXPANDED + LINES + LAST):
+            case (EXPANDED):
+            case (EXPANDED + LAST):
+                
+                throw new IllegalStateException("Encountered a node ["+ nodeId + "] + with an illogical state.  " +
+                                                "Node is expanded but it is also considered a leaf (a leaf cannot be considered expanded.");                                                
+
             default:
+                // catch all for any other combinations
                 throw new IllegalArgumentException("Invalid bit mask of " + bitMask);
         }
 
