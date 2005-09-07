@@ -78,7 +78,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
         HtmlRendererUtils.renderDisplayValueOnlyAttributes(editor, writer);
 
         String text = RendererUtils.getStringValue(context, editor);
-        writer.write( InputHtml.getHtmlBody( text ) );
+        writer.write( editor.getHtmlBody( text ) );
 
         writer.endElement(HTML.SPAN_ELEM);
 	}
@@ -101,13 +101,13 @@ public class InputHtmlRenderer extends HtmlRenderer {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
 
         String text = RendererUtils.getStringValue(context, editor);
-        writer.write( htmlToPlainText( text ) );
+        writer.write( htmlToPlainText(text, editor) );
 
         writer.endElement(HTML.TEXTAREA_ELEM);
 	}
 
-	private static String htmlToPlainText(String html){
-		return InputHtml.getHtmlBody( html )
+	private static String htmlToPlainText(String html, InputHtml editor){
+		return editor.getHtmlBody( html )
 				.replaceAll("<br.*>","\n")
 				.replaceAll("<.+?>", "");
 	}
@@ -1195,9 +1195,8 @@ public class InputHtmlRenderer extends HtmlRenderer {
 	    if (paramMap.containsKey(clientId)) {
 	        //request parameter found, set submittedValue
 			String submitedText = (String)paramMap.get(clientId);
-			String htmlText = ! useFallback(editor) ?
-							submitedText :
-							HTMLEncoder.encode(submitedText, true, true);
+			String htmlText = useFallback(editor) ? HTMLEncoder.encode(submitedText, true, true) : submitedText;
+							
 	        ((EditableValueHolder) uiComponent).setSubmittedValue( htmlText );
 	    } else {
 	        //request parameter not found, nothing to decode - set submitted value to empty

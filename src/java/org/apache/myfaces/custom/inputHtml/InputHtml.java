@@ -328,10 +328,13 @@ public class InputHtml extends HtmlInputText {
             return text.trim();
 
         // Extract the fragment from the document.
-        return getHtmlBody( text );
+        String fragment = getHtmlBody( text );
+        if( fragment.endsWith("<br />") )
+        	return fragment.substring(0, fragment.length()-6);
+        return fragment;
     }
     
-    static String getHtmlBody(String html){
+    String getHtmlBody(String html){
     	html = html.trim();
     	if( html.length() == 0 )
     		return "";
@@ -372,7 +375,8 @@ public class InputHtml extends HtmlInputText {
         	if( htmlStartIndex != -1 && htmlEndIndex > htmlStartIndex )
         		return html.substring(htmlStartIndex+6, htmlEndIndex);
         	
-        	log.warn("Couldn't extract HTML body from :\n"+html);
+        	if( isTypeDocument() )
+        		log.warn("Couldn't extract HTML body from :\n"+html);
             return html.trim();
         }
 
