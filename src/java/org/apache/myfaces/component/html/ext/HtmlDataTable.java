@@ -298,29 +298,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             _preservedDataModel = null;
         }
 
-        if (isRenderedIfEmpty() || getRowCount() > 0)
+        for (Iterator iter = getChildren().iterator(); iter.hasNext();)
         {
-            for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+            UIComponent component = (UIComponent) iter.next();
+            if (component instanceof UIColumns)
             {
-                UIComponent component = (UIComponent) iter.next();
-                if (component instanceof UIColumns)
-                {
-                        ((UIColumns) component).encodeTableBegin(context);
-                }
+                    ((UIColumns) component).encodeTableBegin(context);
             }
-            super.encodeBegin(context);
         }
-    }
-    
-    /**
-     * @see javax.faces.component.UIComponentBase#encodeChildren(javax.faces.context.FacesContext)
-     */
-    public void encodeChildren(FacesContext context) throws IOException
-    {
-        if (isRenderedIfEmpty() || getRowCount() > 0)
-        {
-            super.encodeChildren(context);
-        }
+        
+        super.encodeBegin(context);
     }
     
     /**
@@ -328,16 +315,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
      */
     public void encodeEnd(FacesContext context) throws IOException
     {
-        if (isRenderedIfEmpty() || getRowCount() > 0)
+        super.encodeEnd(context);
+        for (Iterator iter = getChildren().iterator(); iter.hasNext();)
         {
-            super.encodeEnd(context);
-            for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+            UIComponent component = (UIComponent) iter.next();
+            if (component instanceof UIColumns)
             {
-                UIComponent component = (UIComponent) iter.next();
-                if (component instanceof UIColumns)
-                {
-                    ((UIColumns) component).encodeTableEnd(context);
-                }
+                ((UIColumns) component).encodeTableEnd(context);
             }
         }
     }

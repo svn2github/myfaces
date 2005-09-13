@@ -1,10 +1,5 @@
 package org.apache.myfaces.renderkit.html.ext;
 
-/**
- * @author Manfred Geiler (latest modification by $Author$)
- * @version $Revision$ $Date$
- */
-
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -22,9 +17,70 @@ import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
 
+/**
+ * @author Manfred Geiler (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 public class HtmlTableRenderer extends HtmlTableRendererBase
 {
     //private static final Log log = LogFactory.getLog(HtmlTableRenderer.class);
+  
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    {
+        if (uiComponent instanceof HtmlDataTable)
+        {
+            HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
+            if (htmlDataTable.isRenderedIfEmpty() || htmlDataTable.getRowCount() > 0)
+            {
+                super.encodeBegin(facesContext, uiComponent);
+            }
+        }
+        else
+        {
+            super.encodeBegin(facesContext, uiComponent);
+        }
+    }
+
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException
+    {
+        if (component instanceof HtmlDataTable)
+        {
+            HtmlDataTable htmlDataTable = (HtmlDataTable) component;
+            if (htmlDataTable.isRenderedIfEmpty() || htmlDataTable.getRowCount() > 0)
+            {
+                super.encodeChildren(facesContext, component);
+            }
+        }
+        else
+        {
+            super.encodeChildren(facesContext, component);
+        }
+    }
+
+    /**
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    {
+        if (uiComponent instanceof HtmlDataTable)
+        {
+            HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
+            if (htmlDataTable.isRenderedIfEmpty() || htmlDataTable.getRowCount() > 0)
+            {
+                super.encodeEnd(facesContext, uiComponent);
+            }
+        }
+        else
+        {
+            super.encodeEnd(facesContext, uiComponent);
+        }
+    }
 
     protected void renderRowStart(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData, Iterator rowStyleClassIterator)
