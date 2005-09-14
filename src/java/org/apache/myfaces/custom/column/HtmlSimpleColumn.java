@@ -863,7 +863,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[46];
+        Object[] values = new Object[47];
         values[0] = super.saveState(context);
 
         values[1] = _headerdir;
@@ -913,6 +913,8 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         values[43] = _onmouseout;
         values[44] = _onmouseover;
         values[45] = _onmouseup;
+        
+        values[46] = _width;
 
         return values;
     }
@@ -972,5 +974,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _onmouseout = (String) values[43];
         _onmouseover = (String) values[44];
         _onmouseup = (String) values[45];
+        
+        _width = (String) values[46];
     }
 }
