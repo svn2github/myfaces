@@ -142,10 +142,8 @@ public class HtmlTreeRenderer extends Renderer
             {
                 return;
             }
-
-            tree.setNodeId(nodeId);
-            tree.toggleExpanded();
-            tree.setNodeId(originalNodeId);
+            
+            component.queueEvent(new ToggleExpandedEvent(component, nodeId));
         }
     }
 

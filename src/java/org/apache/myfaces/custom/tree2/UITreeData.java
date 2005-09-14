@@ -130,6 +130,14 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             setNodeId(currNodeId);
             return;
         }
+        else if(event instanceof ToggleExpandedEvent)
+        {
+            ToggleExpandedEvent toggleEvent = (ToggleExpandedEvent) event;
+            String currentNodeId = getNodeId();
+            setNodeId(toggleEvent.getNodeId());
+            toggleExpanded();
+            setNodeId(currentNodeId);
+        }
         else
         {
             super.broadcast(event);
@@ -492,8 +500,10 @@ public class UITreeData extends UIComponentBase implements NamingContainer
                 facet.processUpdates(context);
                 break;
         }
-
-        processChildNodes(context, node, processAction);
+        if(isNodeExpanded())
+        {
+            processChildNodes(context, node, processAction);
+        }
     }
 
     /**
