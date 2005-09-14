@@ -17,6 +17,8 @@ package org.apache.myfaces.component.html.ext;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -509,6 +512,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             else if (value instanceof List)
             {
                     return new _SerializableListDataModel(getFirst(), getRows(), (List) value);
+            }
+            // accept a Collection is not supported in the Spec
+            else if (value instanceof Collection)
+            {
+                return new _SerializableListDataModel(getFirst(), getRows(), new ArrayList((Collection) value));
             }
             else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
             {
