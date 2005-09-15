@@ -616,20 +616,22 @@ document.onclick = function jscalendarHidecal2 () {
 	jscalendarBShow = false;
 }
 
-if(jscalendarIe)
-	jscalendarInit();
-else
-{
-  var jscalendarOnloadBackup = window.onload;
-
-  function jscalendarOnload()
-  {
-    if(jscalendarOnloadBackup!=null)
-        jscalendarOnloadBackup();
-    jscalendarInit();
-  }
-
-  window.onload=jscalendarOnload;
+function loadPopupScript() {
+	if(jscalendarIe)
+		jscalendarInit();
+	else
+	{
+	  var jscalendarOnloadBackup = window.onload;
+	
+	  function jscalendarOnload()
+	  {
+	    if(jscalendarOnloadBackup!=null)
+	        jscalendarOnloadBackup();
+	    jscalendarInit();
+	  }
+	
+	  window.onload=jscalendarOnload;
+	}
 }
 
 
