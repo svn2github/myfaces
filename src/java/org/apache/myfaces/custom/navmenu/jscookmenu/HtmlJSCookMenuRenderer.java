@@ -134,7 +134,7 @@ public class HtmlJSCookMenuRenderer
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             StringBuffer script = new StringBuffer();
             script.append("\n" + "var ").append(getMenuId(context, component)).append(" =\n[");
-            encodeNavigationMenuItems(context, writer,
+            encodeNavigationMenuItems(context, script,
                                       (NavigationMenuItem[]) list.toArray(new NavigationMenuItem[list.size()]),
                                       uiNavMenuItemList,
                                       myId);
@@ -147,7 +147,7 @@ public class HtmlJSCookMenuRenderer
     }
 
     private void encodeNavigationMenuItems(FacesContext context,
-                                           ResponseWriter writer,
+                                           StringBuffer writer,
                                            NavigationMenuItem[] items,
                                            List uiNavMenuItemList,
                                            String menuId)
@@ -173,54 +173,54 @@ public class HtmlJSCookMenuRenderer
 
             if (i > 0)
             {
-                writer.write(",\n");
+                writer.append(",\n");
             }
 
             if (item.isSplit())
             {
-                writer.write("_cmSplit,");
+                writer.append("_cmSplit,");
             }
 
-            writer.write("[");
+            writer.append("[");
             if (item.getIcon() != null)
             {
                 String iconSrc = context.getApplication().getViewHandler().getResourceURL(context, item.getIcon());
-                writer.write("'<img src=\"");
-                writer.write(context.getExternalContext().encodeResourceURL(iconSrc));
-                writer.write("\"/>'");
+                writer.append("'<img src=\"");
+                writer.append(context.getExternalContext().encodeResourceURL(iconSrc));
+                writer.append("\"/>'");
             }
             else
             {
-                writer.write("null");
+                writer.append("null");
             }
-            writer.write(", '");
+            writer.append(", '");
             if( item.getLabel() != null ) {
-                writer.write(JavascriptUtils.encodeString(item.getLabel()));
+                writer.append(JavascriptUtils.encodeString(item.getLabel()));
             }
-            writer.write("', ");
+            writer.append("', ");
             if (item.getAction() != null && ! item.isDisabled())
             {
-                writer.write("'");
-                writer.write(menuId);
-                writer.write(':');
-                writer.write(item.getAction());
+                writer.append("'");
+                writer.append(menuId);
+                writer.append(':');
+                writer.append(item.getAction());
                 if (uiNavMenuItem != null) {
                     encodeValueBinding(writer, uiNavMenuItem, item);
                 }
-                writer.write("'");
+                writer.append("'");
             }
             else
             {
-                writer.write("null");
+                writer.append("null");
             }
-            writer.write(", 'linkDummyForm', null"); // TODO Change here to allow the use of non dummy form if possible.
+            writer.append(", 'linkDummyForm', null"); // TODO Change here to allow the use of non dummy form if possible.
 
             if (item.isRendered() && ! item.isDisabled()) {
                 // render children only if parent is visible/enabled
                 NavigationMenuItem[] menuItems = item.getNavigationMenuItems();
                 if (menuItems != null && menuItems.length > 0)
                 {
-                    writer.write(",");
+                    writer.append(",");
                     if (uiNavMenuItem != null)
                     {
                         encodeNavigationMenuItems(context, writer, menuItems, 
@@ -231,11 +231,11 @@ public class HtmlJSCookMenuRenderer
                     } 
                 }
             }
-            writer.write("]");
+            writer.append("]");
         }
     }
 
-    private void encodeValueBinding(ResponseWriter writer, UINavigationMenuItem uiNavMenuItem, 
+    private void encodeValueBinding(StringBuffer writer, UINavigationMenuItem uiNavMenuItem,
             NavigationMenuItem item) throws IOException 
     {
         ValueBinding vb = uiNavMenuItem.getValueBinding("NavMenuItemValue");
@@ -251,10 +251,10 @@ public class HtmlJSCookMenuRenderer
             return;
         }
         
-        writer.write(";");
-        writer.write(vbExpression);
-        writer.write("=");
-        writer.write(tempObj.toString());
+        writer.append(";");
+        writer.append(vbExpression);
+        writer.append("=");
+        writer.append(tempObj.toString());
     }
     
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
