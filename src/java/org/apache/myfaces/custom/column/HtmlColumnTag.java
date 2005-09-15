@@ -15,13 +15,15 @@
  */
 package org.apache.myfaces.custom.column;
 
+import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
+
 import javax.faces.component.UIComponent;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
+public class HtmlColumnTag extends HtmlComponentBodyTagBase
 {
     //HTML universal attributes for header
     private String _headerdir;
@@ -60,12 +62,17 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
     private String _footeronmouseout;
     private String _footeronmouseover;
     private String _footeronmouseup;
-    
+
     private String _width;
 
     public String getComponentType()
     {
         return HtmlSimpleColumn.COMPONENT_TYPE;
+    }
+
+    public String getRendererType()
+    {
+        return null;
     }
 
     public void release()
@@ -102,7 +109,7 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
         _footeronmouseout = null;
         _footeronmouseover = null;
         _footeronmouseup = null;
-        
+
         _width = null;
     }
 
@@ -140,7 +147,7 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
         setStringProperty(component, "footeronkeypress", _footeronkeypress);
         setStringProperty(component, "footeronkeydown", _footeronkeydown);
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
-        
+
         setStringProperty(component, "width", _width);
     }
 
@@ -293,7 +300,7 @@ public class HtmlColumnTag extends org.apache.myfaces.taglib.html.HtmlColumnTag
     {
         _headertitle = headertitle;
     }
-    
+
     public void setWidth(String width)
     {
         _width = width;
