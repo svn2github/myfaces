@@ -22,6 +22,7 @@ import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
 import org.apache.myfaces.el.SimpleActionMethodBinding;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
@@ -129,15 +130,19 @@ public class HtmlJSCookMenuRenderer
             
             ResponseWriter writer = context.getResponseWriter();
 
-            writer.write("\n<script type=\"text/javascript\"><!--\n" +
-                         "var " + getMenuId( context, component ) + " =\n[");
+            writer.startElement(HTML.SCRIPT_ELEM,component);
+            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+            StringBuffer script = new StringBuffer();
+            script.append("\n" + "var ").append(getMenuId(context, component)).append(" =\n[");
             encodeNavigationMenuItems(context, writer,
                                       (NavigationMenuItem[]) list.toArray(new NavigationMenuItem[list.size()]),
                                       uiNavMenuItemList,
                                       myId);
 
-            writer.write("];\n" +
-                         "--></script>\n");
+            script.append("];");
+            script.append("\n//");
+            writer.writeComment(script.toString());
+            writer.endElement(HTML.SCRIPT_ELEM);
         }
     }
 

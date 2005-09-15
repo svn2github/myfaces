@@ -258,12 +258,13 @@ public class HtmlCalendarRenderer
 
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.write(
-                "loadPopupScript();jscalendarSetImageDirectory(\""
-                	+JavascriptUtils.encodeString(
-                	        AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "DB/", facesContext)
-                	 )
-                +"\")");
+        StringBuffer script = new StringBuffer();
+        script.append("\n");
+        script.append("loadPopupScript();jscalendarSetImageDirectory(\"").append(JavascriptUtils.encodeString(
+                AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "DB/", facesContext)
+        )).append("\")");
+        script.append("\n//");
+        writer.writeComment(script.toString());
         writer.endElement(HTML.SCRIPT_ELEM);
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
@@ -355,7 +356,7 @@ public class HtmlCalendarRenderer
 
         HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
         boolean renderButtonAsImage = calendar.isRenderPopupButtonAsImage();
-        
+
         writer.write("if (!document.layers) {\n");
         writer.write("document.write('");
 
@@ -363,9 +364,9 @@ public class HtmlCalendarRenderer
             // render the button
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
-            
+
             writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
-            
+
             if(popupButtonString==null)
                 popupButtonString="...";
             writer.writeAttribute(HTML.VALUE_ATTR, popupButtonString, null);
@@ -384,26 +385,26 @@ public class HtmlCalendarRenderer
             writer.startElement(HTML.IMG_ELEM, uiComponent);
             writer.writeAttribute(HTML.SRC_ATTR, AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "images/calendar.gif", facesContext), null);
             writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
-            
+
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);
             writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
             //writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "this.style.cursor=\\'hand\\';", null);
             //writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "this.style.cursor=\\'default\\';", null);
-            
+
             writer.endElement(HTML.IMG_ELEM);
         }
 
         writer.write("');");
         writer.write("\n}");
     }
-    
-    private void writeOnclickJsCalendarFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat) 
+
+    private void writeOnclickJsCalendarFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
         throws IOException
     {
         String clientId = uiComponent.getClientId(facesContext);
-        
+
         ResponseWriter writer = facesContext.getResponseWriter();
-        
+
         String jsCalendarFunctionCall = "jscalendarPopUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
         writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
     }
