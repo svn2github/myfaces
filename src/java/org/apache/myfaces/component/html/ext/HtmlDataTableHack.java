@@ -43,7 +43,7 @@ import javax.servlet.jsp.jstl.sql.Result;
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-abstract class HtmlDataTableHack extends
+public abstract class HtmlDataTableHack extends
                 javax.faces.component.html.HtmlDataTable
 {
     private Map _dataModelMap = new HashMap();

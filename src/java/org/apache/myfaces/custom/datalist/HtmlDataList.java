@@ -15,21 +15,21 @@
  */
 package org.apache.myfaces.custom.datalist;
 
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class HtmlDataList
-        extends UIData
+        extends org.apache.myfaces.component.html.ext.HtmlDataTableHack
 {
 
     public String getClientId(FacesContext context)
