@@ -99,39 +99,43 @@ public class HtmlFileUploadRenderer
         //Filters. We try to find the MultipartWrapper, but if a filter has wrapped
         //the ServletRequest with a class other than HttpServletRequestWrapper
         //this will fail.
-        ServletRequest multipartRequest = (ServletRequest)facesContext.getExternalContext().getRequest();
-        while (multipartRequest != null &&
-               !(multipartRequest instanceof MultipartRequestWrapper))
+        //todo: fix this to work in PortletRequest as well
+        if(facesContext.getExternalContext().getRequest() instanceof ServletRequest)
         {
-            if (multipartRequest instanceof HttpServletRequestWrapper)
+            ServletRequest multipartRequest = (ServletRequest)facesContext.getExternalContext().getRequest();
+            while (multipartRequest != null &&
+                   !(multipartRequest instanceof MultipartRequestWrapper))
             {
-                multipartRequest = ((HttpServletRequestWrapper)multipartRequest).getRequest();
+                if (multipartRequest instanceof HttpServletRequestWrapper)
+                {
+                    multipartRequest = ((HttpServletRequestWrapper)multipartRequest).getRequest();
+                }
+                else
+                {
+                    multipartRequest = null;
+                }
             }
-            else
-            {
-                multipartRequest = null;
-            }
-        }
 
-        if (multipartRequest != null)
-        {
-        	MultipartRequestWrapper mpReq = (MultipartRequestWrapper)multipartRequest;
-
-            String paramName = uiComponent.getClientId(facesContext);
-            FileItem fileItem = mpReq.getFileItem(paramName);
-            if (fileItem != null)
+            if (multipartRequest != null)
             {
-                try{
-                    UploadedFile upFile;
-                    String implementation = ((HtmlInputFileUpload) uiComponent).getStorage();
-                    if( implementation == null || ("memory").equals( implementation ) )
-                        upFile = new UploadedFileDefaultMemoryImpl( fileItem );
-                    else
-                        upFile = new UploadedFileDefaultFileImpl( fileItem );
-                    ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
-                    ((HtmlInputFileUpload)uiComponent).setValid(true);
-                }catch(IOException ioe){
-                    log.error(ioe);
+                MultipartRequestWrapper mpReq = (MultipartRequestWrapper)multipartRequest;
+
+                String paramName = uiComponent.getClientId(facesContext);
+                FileItem fileItem = mpReq.getFileItem(paramName);
+                if (fileItem != null)
+                {
+                    try{
+                        UploadedFile upFile;
+                        String implementation = ((HtmlInputFileUpload) uiComponent).getStorage();
+                        if( implementation == null || ("memory").equals( implementation ) )
+                            upFile = new UploadedFileDefaultMemoryImpl( fileItem );
+                        else
+                            upFile = new UploadedFileDefaultFileImpl( fileItem );
+                        ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
+                        ((HtmlInputFileUpload)uiComponent).setValid(true);
+                    }catch(IOException ioe){
+                        log.error(ioe);
+                    }
                 }
             }
         }

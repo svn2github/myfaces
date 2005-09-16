@@ -143,9 +143,26 @@ public final class AddResource {
                 contextPath);
     }
 
+    public static String getResourceBasePath(Class componentClass, FacesContext context){
+        String contextPath = null;
+        if( context != null ){
+            contextPath = context.getExternalContext().getRequestContextPath();
+        }
+
+        return getResourceBasePath(
+                getComponentName(componentClass),
+                contextPath);
+    }
+
+    public static String getResourceBasePath(String componentName, String contextPath)
+    {
+        String returnString = RESOURCE_VIRTUAL_PATH+"/"+componentName+'/'+getCacheKey();
+        return (contextPath == null) ? returnString : contextPath + returnString;
+    }
+
     protected static String getResourceMappedPath(String componentName, String resourceFileName, String contextPath){
-       String returnString = RESOURCE_VIRTUAL_PATH+"/"+componentName+'/'+getCacheKey()+'/'+resourceFileName;
-       return (contextPath == null) ? returnString : contextPath + returnString;
+       return getResourceBasePath(componentName,contextPath)+'/'
+               +resourceFileName;
     }
 
 	private static long getCacheKey(){
@@ -285,6 +302,8 @@ public final class AddResource {
     }
 
     private static void addAdditionalHeaderInfoToRender(FacesContext context, AdditionalHeaderInfoToRender info){
+
+        //todo: fix this to work in PortletRequest as well
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         Set set = getAdditionalHeaderInfoToRender( request );
         set.add( info );
