@@ -55,7 +55,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
     private static final String ID_HOURS_POSTFIX = ".hours";
     private static final String ID_MINUTES_POSTFIX = ".minutes";
     private static final String ID_SECONDS_POSTFIX = ".seconds";
-    
+
     protected boolean isDisabled(FacesContext facesContext, HtmlInputDate inputDate) {
         if( !UserRoleUtils.isEnabledOnUserRole(inputDate) )
             return false;
@@ -200,16 +200,19 @@ public class HtmlDateRenderer extends HtmlRenderer {
     }
     
     protected void encodePopupCalendarButton(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
-        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext, uiComponent);
-        
+
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
+
+        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext, symbols, 
+                HtmlCalendarRenderer.mapMonths(symbols), Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
+                uiComponent);
 
         String localizedLanguageScript = HtmlCalendarRenderer.getLocalizedLanguageScript(
                 							symbols,
                 							HtmlCalendarRenderer.mapMonths(symbols),
                 							Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
                 							null);
-        
+
         writer.startElement(HTML.SCRIPT_ELEM,uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
         	writer.write(localizedLanguageScript);
@@ -218,18 +221,18 @@ public class HtmlDateRenderer extends HtmlRenderer {
             //writer.write("\n}");
 
         writer.endElement(HTML.SCRIPT_ELEM);
-        
+
         String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext, null);
-        
+
         // render the button
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
-        
+
         String jsCalendarFunctionCall = "jscalendarPopUpCalendarForInputDate('"+clientId+"','"+dateFormat+"')";
         writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
         writer.writeAttribute(HTML.VALUE_ATTR, "...", null);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
-        
+
         writer.endElement(HTML.INPUT_ELEM);
     }
 
