@@ -63,22 +63,25 @@ function orgApacheMyfacesPopupRedisplay()
 }
 
 function orgApacheMyfacesPopupGetScrollingX() {
-    var x = 0;
-
-    if (document.body && document.body.scrollLeft && !isNaN(document.body.scrollLeft)) {
-        x = document.body.scrollLeft;
-    }
-
-    return x;
+    if (self.pageXOffset) {
+        return self.pageXOffset;
+    } else if (document.documentElement && document.documentElement.scrollLeft) {
+        return document.documentElement.scrollLeft;
+    } else if (document.body) {
+        return document.body.scrollLeft;
+    } else {
+        return 0;
+        }
 }
 
 function orgApacheMyfacesPopupGetScrollingY() {
-
-    var y = 0;
-
-    if (document.body && document.body.scrollTop && !isNaN(document.body.scrollTop)) {
-        y = document.body.scrollTop;
+    if (self.pageYOffset) {
+        return self.pageYOffset;
+    } else if (document.documentElement && document.documentElement.scrollTop) {
+        return document.documentElement.scrollTop;
+    } else if (document.body) {
+        return document.body.scrollTop;
+    } else {
+        return 0;
     }
-
-    return y;
 }
