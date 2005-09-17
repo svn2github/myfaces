@@ -23,9 +23,11 @@ import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.util.MessageUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
@@ -309,7 +311,7 @@ public class HtmlCalendarRenderer
 
         StringBuffer script = new StringBuffer();
         defineStringArray(script, "jscalendarMonthName", months);
-        defineStringArray(script, "jscalendarMonthName2", months);        
+        defineStringArray(script, "jscalendarMonthName2", months);
         defineStringArray(script, "jscalendarDayName", weekDays);
         setIntegerVariable(script, "jscalendarStartAt",realFirstDayOfWeek);
 
@@ -746,6 +748,7 @@ public class HtmlCalendarRenderer
 
 	public static class CalendarDateTimeConverter implements DateConverter
     {
+        private static final String CONVERSION_MESSAGE_ID = "org.apache.myfaces.calendar.CONVERSION";
 
         public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s)
         {
@@ -771,7 +774,9 @@ public class HtmlCalendarRenderer
             }
             catch (ParseException e)
             {
-                throw new ConverterException(e);
+                FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
+                        uiComponent.getId(),s});
+                throw new ConverterException(msg,e);
             }
         }
 
