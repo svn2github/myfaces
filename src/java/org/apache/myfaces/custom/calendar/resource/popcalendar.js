@@ -637,7 +637,7 @@ function loadPopupScript() {
 
 function formatInt(str){
 
-    if(typeof str != "undefined"){
+    if(typeof str == 'string'){
 
 	  //truncate 0 for number less than 10
       if (str.charAt(0)=="0"){
