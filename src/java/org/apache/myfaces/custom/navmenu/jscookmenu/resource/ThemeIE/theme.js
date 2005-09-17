@@ -1,6 +1,9 @@
 
 var cmThemeIEBase = 'jscookmenu/ThemeIE/';
 
+if(myThemeIEBase)
+    cmThemeIEBase = myThemeIEBase;
+
 var cmThemeIE =
 {
   	// main menu display attributes

@@ -121,6 +121,16 @@ public final class AddResource {
     }
 
     /**
+     * Adds the given Script to the document Header.
+     * If the style sheet is already has already been referenced, it's added only once.
+     */
+    public static void addInlineScriptToHeader(String inlineScript, FacesContext context){
+        AdditionalHeaderInfoToRender scriptInfo =
+            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS_INLINE, inlineScript);
+        addAdditionalHeaderInfoToRender(context, scriptInfo );
+    }
+
+    /**
      * Get the Path used to retrieve an internal resource for a custom component.
      * Example : You can use this to initialize javascript scripts so that they know the path of some other resources
      * (image, css, ...).
@@ -385,6 +395,7 @@ public final class AddResource {
         static final int TYPE_JS = 0;
         static final int TYPE_CSS = 1;
         static final int TYPE_CSS_INLINE = 2;
+        static final int TYPE_JS_INLINE = 3;
 
         public int type;
         public boolean deferJS = false;
@@ -408,8 +419,8 @@ public final class AddResource {
         }
 
         public AdditionalHeaderInfoToRender(int infoType, String inlineText) {
-            if( infoType != TYPE_CSS_INLINE )
-                log.error("This constructor only supports TYPE_CSS_INLINE");
+            if( infoType != TYPE_CSS_INLINE  && infoType != TYPE_JS_INLINE)
+                log.error("This constructor only supports TYPE_CSS_INLINE or TYPE_JS_INLINE");
             this.type = infoType;
             this.inlineText = inlineText;
         }
@@ -463,7 +474,9 @@ public final class AddResource {
         				+"type=\"text/css\"/>\n";
         		case TYPE_CSS_INLINE:
         			return "<style type=\"text/css\">"+inlineText+"</style>\n";
-        		default:
+                case TYPE_JS_INLINE:
+                    return "<script type=\"text/javascript\">"+inlineText+"</script>\n";
+                default:
         			log.warn("Unknown type:"+type);
         			return "<link href=\""+"\"/>\n";
         	}

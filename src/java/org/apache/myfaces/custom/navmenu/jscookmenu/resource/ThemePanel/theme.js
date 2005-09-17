@@ -2,6 +2,9 @@
 // directory of where all the images are
 var cmThemePanelBase = 'jscookmenu/ThemePanel/';
 
+if(myThemePanelBase)
+    cmThemePanelBase = myThemePanelBase;
+
 var cmThemePanel =
 {
   	// main menu display attributes

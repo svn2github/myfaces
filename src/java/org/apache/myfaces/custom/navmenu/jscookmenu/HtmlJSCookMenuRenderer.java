@@ -268,16 +268,41 @@ public class HtmlJSCookMenuRenderer
         AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "MyFacesHack.js", context);
 
         if( theme.equals( "ThemeOffice" ) ){
-        	AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeOffice/theme.js", context);
+            StringBuffer buf = new StringBuffer();
+            buf.append("myThemeOfficeBase='");
+            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+            buf.append("/ThemeOffice/';");
+
+        	AddResource.addInlineScriptToHeader(buf.toString(), context);
+
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeOffice/theme.js", context);
         	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemeOffice/theme.css", context);
         }else if( theme.equals( "ThemeMiniBlack" ) ){
-        	AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeMiniBlack/theme.js", context);
+            StringBuffer buf = new StringBuffer();
+            buf.append("myThemeMiniBlackBase='");
+            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+            buf.append("/ThemeMiniBlack/';");
+
+        	AddResource.addInlineScriptToHeader(buf.toString(), context);
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeMiniBlack/theme.js", context);
         	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemeMiniBlack/theme.css", context);
         }else if( theme.equals( "ThemeIE" ) ){
-        	AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeIE/theme.js", context);
+            StringBuffer buf = new StringBuffer();
+            buf.append("myThemeIEBase='");
+            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+            buf.append("/ThemeIE/';");
+
+        	AddResource.addInlineScriptToHeader(buf.toString(), context);
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeIE/theme.js", context);
         	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemeIE/theme.css", context);
         }else if( theme.equals( "ThemePanel" ) ){
-        	AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemePanel/theme.js", context);
+            StringBuffer buf = new StringBuffer();
+            buf.append("myThemePanelBase='");
+            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+            buf.append("/ThemePanel/';");
+
+        	AddResource.addInlineScriptToHeader(buf.toString(), context);
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemePanel/theme.js", context);
         	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemePanel/theme.css", context);
         }
         	// Otherwise ?? bug ??
@@ -285,18 +310,37 @@ public class HtmlJSCookMenuRenderer
 
         String menuId = getMenuId(context, component);
 
-        writer.write("<div id=\"" + menuId + "\"></div>\n" +
-                     "<script type=\"text/javascript\"><!--\n" +
-                     "\tcmDraw ('" + menuId + "', " + menuId + ", '" + menu.getLayout() + "', cm" + theme + ", '" + theme + "');\n" +
-                     "--></script>\n");
+        writer.write("<div id=\"");
+        writer.write(menuId);
+        writer.write("\"></div>\n");
+        writer.startElement(HTML.SCRIPT_ELEM,menu);
+        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+
+        StringBuffer buf = new StringBuffer();
+        buf.append("\n");
+        buf.append("\tcmDraw ('").
+                append(menuId).
+                append("', ").
+                append(menuId).
+                append(", '").
+                append(menu.getLayout()).
+                append("', cm").
+                append(theme).
+                append(", '").
+                append(theme).
+                append("');");
+        buf.append("\n//");
+
+        writer.writeComment(buf.toString());
+        writer.endElement(HTML.SCRIPT_ELEM);
     }
 
     /**
-     * TODO Give this a good comment.
+     * Fetch the very last part of the menu id.
      * 
      * @param context
      * @param component
-     * @return
+     * @return String id of the menu
      */
     private String getMenuId(FacesContext context, UIComponent component) {
         String menuId = component.getClientId(context).replaceAll(":","_") + "_menu";
