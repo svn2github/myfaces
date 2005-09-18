@@ -466,6 +466,8 @@ public final class AddResource {
             HtmlResponseWriterImpl responseWriter = new HtmlResponseWriterImpl(
                     writer,contentType,characterEncoding);
 
+            responseWriter.writeText("\n",null);
+
             switch (type) {
                 case TYPE_JS:
                     responseWriter.startElement(HTML.SCRIPT_ELEM,null);

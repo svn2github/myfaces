@@ -24,6 +24,7 @@ import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.faces.application.Application;
@@ -151,8 +152,8 @@ public class HtmlCalendarRenderer
 	            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
 	            writer.writeText(getLocalizedLanguageScript(symbols, months,
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar),null);
-                writeScriptBtn(facesContext, inputCalendar,
-                        dateFormat,inputCalendar.getPopupButtonString());
+                writer.writeText(getScriptBtn(facesContext, inputCalendar,
+                        dateFormat,inputCalendar.getPopupButtonString()),null);
 	            writer.endElement(HTML.SCRIPT_ELEM);
 
 	/*            writer.startElement(HTML.INPUT_ELEM,null);
@@ -376,10 +377,11 @@ public class HtmlCalendarRenderer
         script.append(");");
     }
 
-    private void writeScriptBtn(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
+    private String getScriptBtn(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
         throws IOException
     {
-        ResponseWriter writer = facesContext.getResponseWriter();
+        HtmlBufferResponseWriterWrapper writer = HtmlBufferResponseWriterWrapper.
+                getInstance(facesContext.getResponseWriter());
 
         HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
         boolean renderButtonAsImage = calendar.isRenderPopupButtonAsImage();
@@ -392,7 +394,7 @@ public class HtmlCalendarRenderer
             writer.startElement(HTML.INPUT_ELEM, uiComponent);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
 
-            writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
+            writeOnclickJsCalendarFunctionCall(writer,facesContext,uiComponent,dateFormat);
 
             if(popupButtonString==null)
                 popupButtonString="...";
@@ -414,7 +416,7 @@ public class HtmlCalendarRenderer
             writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
 
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);
-            writeOnclickJsCalendarFunctionCall(facesContext,uiComponent,dateFormat);
+            writeOnclickJsCalendarFunctionCall(writer, facesContext,uiComponent,dateFormat);
             //writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "this.style.cursor=\\'hand\\';", null);
             //writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "this.style.cursor=\\'default\\';", null);
 
@@ -423,14 +425,16 @@ public class HtmlCalendarRenderer
 
         writer.write("');");
         writer.write("\n}");
+
+        return writer.toString();
     }
 
-    private void writeOnclickJsCalendarFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
+    private void writeOnclickJsCalendarFunctionCall(ResponseWriter writer,
+                                                    FacesContext facesContext,
+                                                    UIComponent uiComponent, String dateFormat)
         throws IOException
     {
         String clientId = uiComponent.getClientId(facesContext);
-
-        ResponseWriter writer = facesContext.getResponseWriter();
 
         String jsCalendarFunctionCall = "jscalendarPopUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
         writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
