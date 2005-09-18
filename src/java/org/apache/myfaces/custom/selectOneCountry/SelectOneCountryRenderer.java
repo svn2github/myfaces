@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.selectOneCountry;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.faces.component.UIComponent;
@@ -40,16 +41,27 @@ public class SelectOneCountryRenderer extends HtmlMenuRenderer {
 	{
 		RendererUtils.checkParamValidity(facesContext, component, null);
 		
+		SelectOneCountry selectOneCountry = (SelectOneCountry) component;
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
 		if(HtmlRendererUtils.isDisplayValueOnly(component))
 		{
-		    HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
+		    //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
+			writer.startElement(HTML.SPAN_ELEM, selectOneCountry);
+	        HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
+	    
+	        String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
+            HtmlRendererUtils.renderHTMLAttributes(writer, selectOneCountry, supportedAttributes);
+	        
+	        String countryCode = selectOneCountry.getValue().toString();
+	        String countryName = new Locale(countryCode, countryCode).getDisplayCountry( facesContext.getViewRoot().getLocale() );
+	        
+	        writer.write( countryName );
+	        
+	        writer.endElement(HTML.SPAN_ELEM);
 		    return;
 		}
 		
-		SelectOneCountry selectOneCountry = (SelectOneCountry) component;
-
-		ResponseWriter writer = facesContext.getResponseWriter();
-
         writer.startElement(HTML.SELECT_ELEM, selectOneCountry);
         HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
         writer.writeAttribute(HTML.NAME_ATTR, component.getClientId(facesContext), null);
