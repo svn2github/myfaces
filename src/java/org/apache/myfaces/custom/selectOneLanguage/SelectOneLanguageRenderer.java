@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.selectOneLanguage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.faces.component.UIComponent;
@@ -39,17 +40,28 @@ public class SelectOneLanguageRenderer extends HtmlMenuRenderer {
     throws IOException
 	{
 		RendererUtils.checkParamValidity(facesContext, component, null);
+
+		SelectOneLanguage selectOneLanguage = (SelectOneLanguage) component;
+		ResponseWriter writer = facesContext.getResponseWriter();
 		
 		if(HtmlRendererUtils.isDisplayValueOnly(component))
 		{
-		    HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
+		    //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
+			writer.startElement(HTML.SPAN_ELEM, selectOneLanguage);
+	        HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
+	    
+	        String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
+            HtmlRendererUtils.renderHTMLAttributes(writer, selectOneLanguage, supportedAttributes);
+	        
+	        String languageCode = selectOneLanguage.getValue().toString();
+	        String languageName = new Locale(languageCode).getDisplayLanguage( facesContext.getViewRoot().getLocale() );
+	        
+	        writer.write( languageName );
+	        
+	        writer.endElement(HTML.SPAN_ELEM);
 		    return;
 		}
 		
-		SelectOneLanguage selectOneLanguage = (SelectOneLanguage) component;
-
-		ResponseWriter writer = facesContext.getResponseWriter();
-
         writer.startElement(HTML.SELECT_ELEM, component);
         HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
         writer.writeAttribute(HTML.NAME_ATTR, selectOneLanguage.getClientId(facesContext), null);
