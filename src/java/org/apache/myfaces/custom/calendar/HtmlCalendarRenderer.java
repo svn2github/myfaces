@@ -108,25 +108,7 @@ public class HtmlCalendarRenderer
 
             Application application = facesContext.getApplication();
 
-            HtmlInputText inputText = null;
-
-            List li = inputCalendar.getChildren();
-
-            for (int i = 0; i < li.size(); i++)
-            {
-                UIComponent uiComponent = (UIComponent) li.get(i);
-
-                if(uiComponent instanceof HtmlInputText)
-                {
-                    inputText = (HtmlInputText) uiComponent;
-                    break;
-                }
-            }
-
-            if(inputText == null)
-            {
-                inputText = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
-            }
+            HtmlInputText inputText = getOrCreateInputTextChild(inputCalendar, application);
 
             RendererUtils.copyHtmlInputTextAttributes(inputCalendar, inputText);
 
@@ -167,12 +149,10 @@ public class HtmlCalendarRenderer
 
 	            writer.startElement(HTML.SCRIPT_ELEM, component);
 	            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
-	            writer.write("<!--\n");
 	            writer.writeText(getLocalizedLanguageScript(symbols, months,
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar),null);
                 writeScriptBtn(facesContext, inputCalendar,
                         dateFormat,inputCalendar.getPopupButtonString());
-	            writer.write("\n-->");
 	            writer.endElement(HTML.SCRIPT_ELEM);
 
 	/*            writer.startElement(HTML.INPUT_ELEM,null);
@@ -242,6 +222,30 @@ public class HtmlCalendarRenderer
         }
     }
 
+    private HtmlInputText getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
+    {
+        HtmlInputText inputText = null;
+
+        List li = inputCalendar.getChildren();
+
+        for (int i = 0; i < li.size(); i++)
+        {
+            UIComponent uiComponent = (UIComponent) li.get(i);
+
+            if(uiComponent instanceof HtmlInputText)
+            {
+                inputText = (HtmlInputText) uiComponent;
+                break;
+            }
+        }
+
+        if(inputText == null)
+        {
+            inputText = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
+        }
+        return inputText;
+    }
+
     /**
      * Used by the x:inputDate renderer : HTMLDateRenderer
      * @throws IOException
@@ -271,11 +275,9 @@ public class HtmlCalendarRenderer
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         StringBuffer script = new StringBuffer();
-        script.append("\n");
         script.append("loadPopupScript();");
         appendImageDirectory(script, facesContext);
-        script.append("\n//");
-        writer.writeComment(script.toString());
+        writer.writeText(script.toString(),null);
         writer.endElement(HTML.SCRIPT_ELEM);
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);

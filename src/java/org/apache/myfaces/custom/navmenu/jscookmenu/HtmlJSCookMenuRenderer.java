@@ -133,15 +133,14 @@ public class HtmlJSCookMenuRenderer
             writer.startElement(HTML.SCRIPT_ELEM,component);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             StringBuffer script = new StringBuffer();
-            script.append("\n" + "var ").append(getMenuId(context, component)).append(" =\n[");
+            script.append("var ").append(getMenuId(context, component)).append(" =\n[");
             encodeNavigationMenuItems(context, script,
                                       (NavigationMenuItem[]) list.toArray(new NavigationMenuItem[list.size()]),
                                       uiNavMenuItemList,
                                       myId);
 
             script.append("];");
-            script.append("\n//");
-            writer.writeComment(script.toString());
+            writer.writeText(script.toString(),null);
             writer.endElement(HTML.SCRIPT_ELEM);
         }
     }
@@ -317,7 +316,6 @@ public class HtmlJSCookMenuRenderer
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
 
         StringBuffer buf = new StringBuffer();
-        buf.append("\n");
         buf.append("\tcmDraw ('").
                 append(menuId).
                 append("', ").
@@ -329,9 +327,8 @@ public class HtmlJSCookMenuRenderer
                 append(", '").
                 append(theme).
                 append("');");
-        buf.append("\n//");
 
-        writer.writeComment(buf.toString());
+        writer.writeText(buf.toString(),null);
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
