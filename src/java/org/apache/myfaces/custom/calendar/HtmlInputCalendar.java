@@ -33,7 +33,6 @@ public class HtmlInputCalendar
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputCalendar";
-    public static final String COMPONENT_FAMILY = "javax.faces.Input";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Calendar";
 
     private String _monthYearRowClass = null;
@@ -59,11 +58,6 @@ public class HtmlInputCalendar
     public HtmlInputCalendar()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
-    }
-
-    public String getFamily()
-    {
-        return COMPONENT_FAMILY;
     }
 
     public void setMonthYearRowClass(String monthYearRowClass)

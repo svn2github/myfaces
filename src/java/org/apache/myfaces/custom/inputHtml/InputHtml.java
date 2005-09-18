@@ -59,10 +59,6 @@ public class InputHtml extends HtmlInputText {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
     public Object saveState(FacesContext context) {
         Object values[] = new Object[5];
         values[0] = super.saveState(context);

@@ -31,7 +31,6 @@ public class HtmlInputFileUpload
         implements UserRoleAware
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputFileUpload";
-    public static final String COMPONENT_FAMILY = "javax.faces.Input";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FileUpload";
 
     private String _accept = null;
@@ -65,11 +64,6 @@ public class HtmlInputFileUpload
 	public void setStorage(String string) {
 		_storage = string;
 	}
-
-    public String getFamily()
-    {
-        return COMPONENT_FAMILY;
-    }
 
     public void setAccept(String accept)
     {
