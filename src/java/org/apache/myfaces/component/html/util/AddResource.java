@@ -15,10 +15,7 @@
  */
 package org.apache.myfaces.component.html.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -56,9 +55,9 @@ public final class AddResource {
     private static final String ADDITIONAL_HEADER_INFO_REQUEST_ATTRUBITE_NAME = "myFacesHeaderResource2Render";
 
     private AddResource() {
-    	//no object creation allowed (util clazz)
+        //no object creation allowed (util clazz)
     }
-    
+
     // Methodes to Add resources
 
     /**
@@ -80,8 +79,8 @@ public final class AddResource {
      */
     public static void addJavaScriptHere(Class componentClass, String resourceFileName, FacesContext context) throws IOException{
         addJavaScriptHere(componentClass, resourceFileName,context,null);
-    }    
-    
+    }
+
     /**
      * Adds the given Javascript resource to the document Header.
      * If the script is already has already been referenced, it's added only once.
@@ -146,7 +145,7 @@ public final class AddResource {
         if( context != null ){
             contextPath = context.getExternalContext().getRequestContextPath();
         }
-        
+
         return getResourceMappedPath(
                 getComponentName(componentClass),
                 resourceFileName,
@@ -175,29 +174,29 @@ public final class AddResource {
                +resourceFileName;
     }
 
-	private static long getCacheKey(){
-		// A 100 sec. delay between 2 deployement should be enough
-		// and helps reduce the URL length.
-		return getLastModified() / 100000; 
-	}
+    private static long getCacheKey(){
+        // A 100 sec. delay between 2 deployement should be enough
+        // and helps reduce the URL length.
+        return getLastModified() / 100000;
+    }
 
-	private static long lastModified = 0;
-	private static long getLastModified(){
-		if( lastModified == 0 ){
-			final String format = "yyyy-MM-dd HH:mm:ss Z"; // Must match the one used in the build file
-	        final String bundleName = AddResource.class.getName();
-	        ResourceBundle resources = ResourceBundle.getBundle( bundleName );
-			String sLastModified = resources.getString("lastModified");
-			try {
-				lastModified = new SimpleDateFormat(format).parse( sLastModified ).getTime();
-			} catch (ParseException e) {
-				lastModified = new Date().getTime();
-				log.error("Unparsable lastModified : "+sLastModified);
-			}
-		}
-		
-		return lastModified; 
-	}
+    private static long lastModified = 0;
+    private static long getLastModified(){
+        if( lastModified == 0 ){
+            final String format = "yyyy-MM-dd HH:mm:ss Z"; // Must match the one used in the build file
+            final String bundleName = AddResource.class.getName();
+            ResourceBundle resources = ResourceBundle.getBundle( bundleName );
+            String sLastModified = resources.getString("lastModified");
+            try {
+                lastModified = new SimpleDateFormat(format).parse( sLastModified ).getTime();
+            } catch (ParseException e) {
+                lastModified = new Date().getTime();
+                log.error("Unparsable lastModified : "+sLastModified);
+            }
+        }
+
+        return lastModified;
+    }
 
     public static boolean isResourceMappedPath(HttpServletRequest request){
         return request.getRequestURI().indexOf( RESOURCE_VIRTUAL_PATH ) != -1;
@@ -216,8 +215,8 @@ public final class AddResource {
         int posEndComponentName = uri.indexOf("/", posStartComponentName);
         String componentName = uri.substring(posStartComponentName, posEndComponentName);
 
-		// Skip cache key
-		int posStartResourceFileName = uri.indexOf("/", posEndComponentName+1)+1;
+        // Skip cache key
+        int posStartResourceFileName = uri.indexOf("/", posEndComponentName+1)+1;
 
         String resourceFileName = uri.substring(posStartResourceFileName);
 
@@ -247,7 +246,7 @@ public final class AddResource {
             component = getComponent(componentName);
         } catch (ClassNotFoundException e) {
             log.error("Class not found for component "+componentName);
-			return null;
+            return null;
         }
         while( resourceFileName.startsWith(".") || resourceFileName.startsWith("/") || resourceFileName.startsWith("\\") )
                 resourceFileName = resourceFileName.substring(1);
@@ -283,13 +282,13 @@ public final class AddResource {
                     ". Check that this file is available in the classpath in sub-directory /resource of the component-directory.");
         }
 
-		response.setDateHeader("Last-Modified", getLastModified());
+        response.setDateHeader("Last-Modified", getLastModified());
 
-		// Set browser cache to a week.
-		// There is no risk, as the cache key is part of the URL.
-		Calendar expires = Calendar.getInstance();
-		expires.add(Calendar.DAY_OF_YEAR, 7);
-		response.setDateHeader("Expires", expires.getTimeInMillis());
+        // Set browser cache to a week.
+        // There is no risk, as the cache key is part of the URL.
+        Calendar expires = Calendar.getInstance();
+        expires.add(Calendar.DAY_OF_YEAR, 7);
+        response.setDateHeader("Expires", expires.getTimeInMillis());
 
         OutputStream os = response.getOutputStream();
         int c;
@@ -331,8 +330,8 @@ public final class AddResource {
      * TODO : Change the ordering so that the user header CSS & JS override MyFaces' ones.
      */
     static public void writeWithFullHeader(HttpServletRequest request,
-            ExtensionsResponseWrapper responseWrapper,
-            HttpServletResponse response) throws IOException{
+                                           ExtensionsResponseWrapper responseWrapper,
+                                           HttpServletResponse response) throws IOException{
 
         String originalResponse = responseWrapper.toString();
 
@@ -341,33 +340,33 @@ public final class AddResource {
         int insertPosition = originalResponse.indexOf( "</head>" );
 
         if( insertPosition < 0 ){
-			insertPosition = originalResponse.indexOf( "</HEAD>" );
+            insertPosition = originalResponse.indexOf( "</HEAD>" );
 
-	        if( insertPosition < 0 ){
-	            insertPosition = originalResponse.indexOf( "<body" );
-	            addHeaderTags = true;
+            if( insertPosition < 0 ){
+                insertPosition = originalResponse.indexOf( "<body" );
+                addHeaderTags = true;
 
-		        if( insertPosition < 0 ){
-		        	insertPosition = originalResponse.indexOf( "<BODY" );
-		            addHeaderTags = true;
+                if( insertPosition < 0 ){
+                    insertPosition = originalResponse.indexOf( "<BODY" );
+                    addHeaderTags = true;
 
-			        if( insertPosition < 0 ){
-			 	       // the two most common cases head/HEAD and body/BODY did not work, so we try it with lowercase
-			           String lowerCase = originalResponse.toLowerCase(response.getLocale());
-			           insertPosition = lowerCase.indexOf( "</head>" );
+                    if( insertPosition < 0 ){
+                        // the two most common cases head/HEAD and body/BODY did not work, so we try it with lowercase
+                       String lowerCase = originalResponse.toLowerCase(response.getLocale());
+                       insertPosition = lowerCase.indexOf( "</head>" );
 
-			           if( insertPosition < 0 ){
-			    	       insertPosition = lowerCase.indexOf( "<body" );
-			               addHeaderTags = true;
-			           }
-			        }
-		        }
-	        }
+                       if( insertPosition < 0 ){
+                           insertPosition = lowerCase.indexOf( "<body" );
+                           addHeaderTags = true;
+                       }
+                    }
+                }
+            }
 
-	        if( insertPosition < 0 ){
-	            log.warn("Response has no <head> or <body> tag:\n"+originalResponse);
-	            insertPosition = -1;
-	        }
+            if( insertPosition < 0 ){
+                log.warn("Response has no <head> or <body> tag:\n"+originalResponse);
+                insertPosition = -1;
+            }
         }
 
         PrintWriter writer = response.getWriter();
@@ -381,7 +380,8 @@ public final class AddResource {
         {
             for(Iterator i = getAdditionalHeaderInfoToRender(request).iterator(); i.hasNext() ;){
                 AdditionalHeaderInfoToRender headerInfo = (AdditionalHeaderInfoToRender) i.next();
-                writer.write( headerInfo.getString(request.getContextPath()) );
+                headerInfo.writeString(request.getContextPath(),writer,
+                        HtmlRendererUtils.selectContentType(request.getHeader("accept")),null);
             }
         }
 
@@ -458,28 +458,51 @@ public final class AddResource {
 
             return inlineText.equals(toCompare.inlineText);
         }
- 
-        public String getString(String contextPath){
-        	switch (type) {
-        		case TYPE_JS:
-        			return "<script "
-        				+"src=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
-        				+(deferJS ? "defer=\"true\" " : "")
-        				+"type=\"text/javascript\""
-        				+">"
-        				+"</script>\n";
-        		case TYPE_CSS:
-        			return "<link rel=\"stylesheet\" "
-        				+"href=\""+getResourceMappedPath(componentName, resourceFileName, contextPath)+"\" "
-        				+"type=\"text/css\"/>\n";
-        		case TYPE_CSS_INLINE:
-        			return "<style type=\"text/css\">"+inlineText+"</style>\n";
+
+        public void writeString(String contextPath, Writer writer, String contentType,
+                                String characterEncoding) throws IOException
+        {
+
+            HtmlResponseWriterImpl responseWriter = new HtmlResponseWriterImpl(
+                    writer,contentType,characterEncoding);
+
+            switch (type) {
+                case TYPE_JS:
+                    responseWriter.startElement(HTML.SCRIPT_ELEM,null);
+                    responseWriter.writeAttribute(HTML.SRC_ATTR,
+                            getResourceMappedPath(componentName, resourceFileName, contextPath),null);
+
+                    if(deferJS)
+                        responseWriter.writeAttribute("defer","true",null);
+                    responseWriter.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+                    responseWriter.endElement(HTML.SCRIPT_ELEM);
+                    break;
+                case TYPE_CSS:
+                    responseWriter.startElement("link",null);
+                    responseWriter.writeAttribute("rel","stylesheet",null);
+                    responseWriter.writeAttribute(HTML.HREF_ATTR,
+                            getResourceMappedPath(componentName, resourceFileName, contextPath),null);
+
+                    responseWriter.writeAttribute(HTML.TYPE_ATTR,"text/css",null);
+                    responseWriter.endElement("link");
+                    break;
+
+                case TYPE_CSS_INLINE:
+                    responseWriter.startElement(HTML.STYLE_ELEM,null);
+                    responseWriter.writeAttribute("rel","stylesheet",null);
+                    responseWriter.writeAttribute(HTML.TYPE_ATTR,"text/css",null);
+                    responseWriter.writeText(inlineText,null);
+                    responseWriter.endElement(HTML.STYLE_ELEM);
+                    break;
                 case TYPE_JS_INLINE:
-                    return "<script type=\"text/javascript\">"+inlineText+"</script>\n";
+                    responseWriter.startElement(HTML.SCRIPT_ELEM,null);
+                    responseWriter.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+                    responseWriter.writeText(inlineText,null);
+                    responseWriter.endElement(HTML.SCRIPT_ELEM);
+                    break;
                 default:
-        			log.warn("Unknown type:"+type);
-        			return "<link href=\""+"\"/>\n";
-        	}
+                    log.warn("Unknown type:"+type);
+            }
         }
     }
 }
