@@ -45,6 +45,7 @@ public class UINavigationMenuItem
 
     public UINavigationMenuItem()
     {
+        super();
     }
 
     public String getFamily()

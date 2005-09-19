@@ -57,6 +57,7 @@ public class HtmlInputText
 
     public HtmlInputText()
     {
+        super();
     }
 
 
