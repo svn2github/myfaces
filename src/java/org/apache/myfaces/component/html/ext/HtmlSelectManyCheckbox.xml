@@ -7,6 +7,10 @@
     <base-class>javax.faces.component.html.HtmlSelectManyCheckbox</base-class>
     <component-type>org.apache.myfaces.HtmlSelectManyCheckbox</component-type>
     <field>
+        <name>layoutWidth</name>
+        <type>java.lang.String</type>
+    </field>
+    <field>
         <name>enabledOnUserRole</name>
         <type>java.lang.String</type>
     </field>

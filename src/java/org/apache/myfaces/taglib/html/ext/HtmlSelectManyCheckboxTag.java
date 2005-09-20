@@ -39,7 +39,9 @@ public class HtmlSelectManyCheckboxTag
     {
         return "org.apache.myfaces.Checkbox";
     }
-
+    
+    private String _layoutWidth;
+    
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
 
@@ -49,6 +51,9 @@ public class HtmlSelectManyCheckboxTag
 
     public void release() {
         super.release();
+
+        _layoutWidth=null;
+
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
 
@@ -60,12 +65,19 @@ public class HtmlSelectManyCheckboxTag
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
+        setStringProperty(component, "layoutWidth", _layoutWidth);
+
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
 
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
+    }
+
+    public void setLayoutWidth(String layoutWidth)
+    {
+        _layoutWidth = layoutWidth;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)

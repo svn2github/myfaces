@@ -655,6 +655,16 @@
             of value "spread" (see custom checkbox tag).
         </description>
         &standard_select_many_checkbox_attributes;
+        <attribute>
+            <name>layoutWidth</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                A number representing the amount of checkbox rows if
+                the layout is lineDirection and checkbox columns if
+                the layout is pageDirection.
+            </description>
+        </attribute>
         &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;

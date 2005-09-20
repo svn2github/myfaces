@@ -15,10 +15,15 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox;
 import org.apache.myfaces.custom.checkbox.HtmlCheckbox;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlCheckboxRendererBase;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 
@@ -27,6 +32,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
 import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
@@ -41,7 +47,11 @@ import java.util.Set;
 public class HtmlCheckboxRenderer
         extends HtmlCheckboxRendererBase
 {
-    //private static final Log log = LogFactory.getLog(HtmlRadioRenderer.class);
+    private static final Log log = LogFactory.getLog(HtmlCheckboxRenderer.class);
+
+    private static final String PAGE_DIRECTION = "pageDirection";
+
+    private static final String LINE_DIRECTION = "lineDirection";
 
     private static final String LAYOUT_SPREAD = "spread";
 
@@ -78,6 +88,187 @@ public class HtmlCheckboxRenderer
         {
             throw new IllegalArgumentException("Unsupported component class " + component.getClass().getName());
         }
+    }
+
+    public void renderCheckboxList(FacesContext facesContext,
+            UISelectMany selectMany) throws IOException
+    {
+        final String layout = getLayout(selectMany);
+        if (layout != null)
+        {
+            Converter converter = getConverter(facesContext, selectMany);
+            if (layout.equals(PAGE_DIRECTION))
+            {
+                renderCheckboxListVertically(facesContext, selectMany,
+                        converter);
+            }
+            else if (layout.equals(LINE_DIRECTION))
+            {
+                renderCheckboxListHorizontally(facesContext, selectMany,
+                        converter);
+            }
+            else
+            {
+                log.error("Wrong layout attribute for component "
+                        + selectMany.getClientId(facesContext) + ": " + layout);
+            }
+        }
+    }
+
+    protected void renderCheckboxListHorizontally(FacesContext facesContext,
+            UISelectMany selectMany, Converter converter) throws IOException
+    {
+        Set lookupSet = RendererUtils.getSubmittedValuesAsSet(facesContext,
+                selectMany, converter, selectMany);
+        boolean useSubmittedValues = lookupSet != null;
+        if (!useSubmittedValues)
+        {
+            lookupSet = RendererUtils.getSelectedValuesAsSet(facesContext,
+                    selectMany, converter, selectMany);
+        }
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.TABLE_ELEM, selectMany);
+        HtmlRendererUtils.renderHTMLAttributes(writer, selectMany,
+                HTML.SELECT_TABLE_PASSTHROUGH_ATTRIBUTES);
+        HtmlRendererUtils.writeIdIfNecessary(writer, selectMany, facesContext);
+
+        final int numRows = getLayoutWidth(selectMany);
+        for (int i = 0; i < numRows; i++)
+        {
+            renderRowForHorizontal(facesContext, selectMany, converter,
+                    lookupSet, writer, numRows, i);
+        }
+
+        writer.endElement(HTML.TABLE_ELEM);
+    }
+
+    protected void renderRowForHorizontal(FacesContext facesContext,
+            UISelectMany selectMany, Converter converter, Set lookupSet,
+            ResponseWriter writer, int totalRows, int rowNum)
+            throws IOException
+    {
+
+        writer.startElement(HTML.TR_ELEM, selectMany);
+        int colNum = 0;
+        List items = RendererUtils.getSelectItemList(selectMany);
+        for (int count = rowNum; count < items.size(); count++)
+        {
+            int mod = count % totalRows;
+            if (mod == rowNum)
+            {
+                colNum++;
+                SelectItem selectItem = (SelectItem) items.get(count);
+                writer.startElement(HTML.TD_ELEM, selectMany);
+                writer.startElement(HTML.LABEL_ELEM, selectMany);
+                renderGroupOrItemCheckbox(facesContext, selectMany, selectItem,
+                        lookupSet != null, lookupSet, converter, false);
+                writer.endElement(HTML.LABEL_ELEM);
+                writer.endElement(HTML.TD_ELEM);
+            }
+        }
+        int totalItems = items.size();
+        int totalCols = totalCols = (totalItems / totalRows);
+        if (totalItems % totalRows != 0)
+        {
+            totalCols++;
+        }
+        if (colNum < totalCols)
+        {
+            writer.startElement(HTML.TD_ELEM, selectMany);
+            writer.endElement(HTML.TD_ELEM);
+        }
+        writer.endElement(HTML.TR_ELEM);
+    }
+
+    protected void renderCheckboxListVertically(FacesContext facesContext,
+            UISelectMany selectMany, Converter converter) throws IOException
+    {
+
+        Set lookupSet = RendererUtils.getSubmittedValuesAsSet(facesContext,
+                selectMany, converter, selectMany);
+        boolean useSubmittedValues = lookupSet != null;
+        if (!useSubmittedValues)
+        {
+            lookupSet = RendererUtils.getSelectedValuesAsSet(facesContext,
+                    selectMany, converter, selectMany);
+        }
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.TABLE_ELEM, selectMany);
+        HtmlRendererUtils.renderHTMLAttributes(writer, selectMany,
+                HTML.SELECT_TABLE_PASSTHROUGH_ATTRIBUTES);
+        HtmlRendererUtils.writeIdIfNecessary(writer, selectMany, facesContext);
+
+        List items = RendererUtils.getSelectItemList(selectMany);
+        int totalItems = items.size();
+        for (int count = 0; count < totalItems; count++)
+        {
+            writer.startElement(HTML.TR_ELEM, selectMany);
+            final int numCols = getLayoutWidth(selectMany);
+            for (int i = 0; i < numCols; i++)
+            {
+                writer.startElement(HTML.TD_ELEM, selectMany);
+                if (count < totalItems)
+                {
+                    SelectItem selectItem = (SelectItem) items.get(count);
+                    writer.startElement(HTML.LABEL_ELEM, selectMany);
+                    renderGroupOrItemCheckbox(facesContext, selectMany,
+                            selectItem, lookupSet != null, lookupSet,
+                            converter, true);
+                    writer.endElement(HTML.LABEL_ELEM);
+                }
+                writer.endElement(HTML.TD_ELEM);
+                if (i < numCols - 1)
+                {
+                    count += 1;
+                }
+            }
+            writer.endElement(HTML.TR_ELEM);
+        }
+        writer.endElement(HTML.TABLE_ELEM);
+    }
+
+    /**
+     * Determines the layout setting.  Defaults to
+     * <code>lineDirection</code> if not specified.
+     * @param selectMany the component
+     * @return the layout
+     */
+    protected String getLayout(UISelectMany selectMany) {
+        String layout = super.getLayout(selectMany);
+        if (layout == null) {
+            layout = LINE_DIRECTION;
+        }
+        return layout;
+    }
+    /**
+     * Gets the layout width.
+     * Returns the default layout width of 1 if the layout width
+     * is not set or is less than 1.  
+     * @param selectMany the component
+     * @return the layout width
+     */
+    protected int getLayoutWidth(UISelectMany selectMany) {
+        String layoutWidthString = null;
+        if (selectMany instanceof HtmlSelectManyCheckbox) {
+            layoutWidthString = ((HtmlSelectManyCheckbox) selectMany).getLayoutWidth();
+        } else {
+            layoutWidthString = (String) selectMany.getAttributes().get(JSFAttr.LAYOUT_WIDTH_ATTR);
+        }
+        final int defaultLayoutWidth = 1;
+        int layoutWidth = defaultLayoutWidth;
+        try {
+            if (layoutWidthString != null && layoutWidthString.trim().length() > 0) {
+                layoutWidth = Integer.parseInt(layoutWidthString);
+            }
+            if (layoutWidth < 1) {
+                layoutWidth = defaultLayoutWidth;
+            }
+        } catch (Exception e) {
+            layoutWidth = defaultLayoutWidth;
+        }
+        return layoutWidth;
     }
 
     private void renderSingleCheckbox(FacesContext facesContext, HtmlCheckbox checkbox) throws IOException
@@ -167,4 +358,23 @@ public class HtmlCheckboxRenderer
             super.decode(facesContext, uiComponent);
         }
     }
+
+    protected Converter getConverter(FacesContext facesContext,
+            UISelectMany selectMany)
+    {
+        Converter converter;
+        try
+        {
+            converter = RendererUtils.findUISelectManyConverter(facesContext,
+                    selectMany);
+        }
+        catch (FacesException e)
+        {
+            log.error("Error finding Converter for component with id "
+                    + selectMany.getClientId(facesContext));
+            converter = null;
+        }
+        return converter;
+    }
+
 }

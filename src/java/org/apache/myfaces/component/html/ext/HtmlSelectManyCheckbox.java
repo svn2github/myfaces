@@ -47,6 +47,7 @@ public class HtmlSelectManyCheckbox
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectManyCheckbox";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
+    private String _layoutWidth = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _displayValueOnly = null;
@@ -57,6 +58,17 @@ public class HtmlSelectManyCheckbox
     {
     }
 
+    public void setLayoutWidth(String layoutWidth)
+    {
+        _layoutWidth = layoutWidth;
+    }
+
+    public String getLayoutWidth()
+    {
+        if (_layoutWidth != null) return _layoutWidth;
+        ValueBinding vb = getValueBinding("layoutWidth");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
@@ -129,13 +141,14 @@ public class HtmlSelectManyCheckbox
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
-        values[1] = _enabledOnUserRole;
-        values[2] = _visibleOnUserRole;
-        values[3] = _displayValueOnly;
-        values[4] = _displayValueOnlyStyle;
-        values[5] = _displayValueOnlyStyleClass;
+        values[1] = _layoutWidth;
+        values[2] = _enabledOnUserRole;
+        values[3] = _visibleOnUserRole;
+        values[4] = _displayValueOnly;
+        values[5] = _displayValueOnlyStyle;
+        values[6] = _displayValueOnlyStyleClass;
         return ((Object) (values));
     }
 
@@ -143,11 +156,12 @@ public class HtmlSelectManyCheckbox
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        _enabledOnUserRole = (String)values[1];
-        _visibleOnUserRole = (String)values[2];
-        _displayValueOnly = (Boolean)values[3];
-        _displayValueOnlyStyle = (String)values[4];
-        _displayValueOnlyStyleClass = (String)values[5];
+        _layoutWidth = (String)values[1];
+        _enabledOnUserRole = (String)values[2];
+        _visibleOnUserRole = (String)values[3];
+        _displayValueOnly = (Boolean)values[4];
+        _displayValueOnlyStyle = (String)values[5];
+        _displayValueOnlyStyleClass = (String)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }
