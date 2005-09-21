@@ -553,6 +553,8 @@ public class UIColumns extends UIData
 
     public void encodeTableBegin(FacesContext context)
     {
+        setRowIndex(-1);
+
         if (_isValidChilds)
         {
             //Refresh DataModel for rendering:

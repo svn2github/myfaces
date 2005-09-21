@@ -27,7 +27,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -293,6 +292,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     
     public void encodeBegin(FacesContext context) throws IOException
     {
+        setRowIndex(-1);
+        
         if (!isRendered())
             return;
 
