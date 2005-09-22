@@ -55,7 +55,23 @@ public class HtmlComponentUtils
                                      FacesContext context)
     {
         // see if the originally supplied id should be used 
-        Boolean forceValue = (Boolean)component.getAttributes().get(JSFAttr.FORCE_ID_ATTR);
+        Boolean forceValue = null;
+
+        Object forceValueObj = component.getAttributes().get(JSFAttr.FORCE_ID_ATTR);
+
+        if(forceValueObj instanceof Boolean)
+        {
+            forceValue = (Boolean)forceValueObj;
+        }
+        else if(forceValueObj instanceof String)
+        {
+            forceValue = Boolean.valueOf((String) forceValueObj);
+        }
+        else if(forceValueObj != null)
+        {
+            throw new IllegalStateException("forceId must be instanceof 'Boolean' or 'String'");
+        }
+
         boolean forceId = false;
         
         if (forceValue != null)
