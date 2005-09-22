@@ -91,7 +91,10 @@ public class HtmlNavigationRenderer
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.TABLE_ELEM, component);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
-            if (panelNav.getStyle() == null && panelNav.getStyleClass() == null)
+            
+            boolean isBorderAlreadyDefined = component.getAttributes().containsKey(HTML.BORDER_ATTR);
+            
+            if (panelNav.getStyle() == null && panelNav.getStyleClass() == null && !isBorderAlreadyDefined)
             {
                 writer.writeAttribute(HTML.BORDER_ATTR, ZERO_INTEGER, null);
             }
