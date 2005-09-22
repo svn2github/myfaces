@@ -201,10 +201,17 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         }
 
         public Date parse() throws ParseException{
-            SimpleDateFormat fullFormat = new SimpleDateFormat( "dd MM yyyy HH mm ss" );
+            Calendar tempCalendar=Calendar.getInstance();
             if (timeZone != null)
-                fullFormat.setTimeZone(timeZone);
-            return fullFormat.parse(day+" "+month+" "+year+" "+hours+" "+minutes+" "+seconds);
+                   tempCalendar.setTimeZone(timeZone);
+            
+            tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
+            tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
+            tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
+            tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
+            tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
+            
+            return tempCalendar.getTime();
         }
 
         private String formatedInt(String toFormat){
