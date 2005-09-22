@@ -41,6 +41,19 @@ public class HtmlSelectOneRadio
 
         return clientId;
     }
+   
+    /**
+     * Overridden method, as extended select one value doesn't necessaraly
+     * have to be contained within select list, for example, forceId="true" and
+     * forceIdIndex="false" then component may be used in datatable.
+     */
+    protected void validateValue(FacesContext context, Object value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+    }
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
@@ -87,7 +100,7 @@ public class HtmlSelectOneRadio
         ValueBinding vb = getValueBinding("displayValueOnly");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null;
-    }    
+    }
 
     public boolean isDisplayValueOnly() {
         if (_displayValueOnly != null) return _displayValueOnly.booleanValue();
