@@ -292,8 +292,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     
     public void encodeBegin(FacesContext context) throws IOException
     {
-        setRowIndex(-1);
-        
         if (!isRendered())
             return;
 

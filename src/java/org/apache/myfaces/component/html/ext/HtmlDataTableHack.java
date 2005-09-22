@@ -116,7 +116,6 @@ public abstract class HtmlDataTableHack extends
      */
     public void encodeBegin(FacesContext context) throws IOException
     {
-        setRowIndex(-1);
         if (_isValidChilds)
         {
             //Refresh DataModel for rendering:
