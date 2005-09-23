@@ -25,8 +25,7 @@ import javax.faces.component.UIComponent;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlNavigationMenuItemTag
-    extends SelectItemTagBase
+public class HtmlNavigationMenuItemTag extends SelectItemTagBase
 {
 
     private static final String ICON_ATTR   = "icon";

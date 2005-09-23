@@ -26,11 +26,8 @@ import javax.faces.context.FacesContext;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class UINavigationMenuItem
-    extends UISelectItem
-    implements UserRoleAware
+public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
 {
-
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
@@ -75,7 +72,7 @@ public class UINavigationMenuItem
         if (_split != null) return _split.booleanValue();
         ValueBinding vb = getValueBinding("split");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : false;
+        return v != null && v.booleanValue();
     }
 
     public void setAction(String action)
@@ -123,7 +120,7 @@ public class UINavigationMenuItem
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = _icon;
         values[2] = _split;

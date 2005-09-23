@@ -892,6 +892,40 @@
         </attribute>
     </tag>
 
+    <!-- commandNavigation2 -->
+    <tag>
+        <name>commandNavigation2</name>
+        <tag-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItemTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Must be nested inside a panel_navigation action and renders a
+            clickable navigation item.
+            This action is derived from the standard command_link action and
+            has equal attributes.
+            (Replaces former "navigation_item" tag.)
+        </description>
+        <!--TODO: make id attribute mandatory -->
+        &ui_command_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_anchor_attributes;
+        &user_role_attributes;
+        <!-- HtmlCommandLink attributes -->
+        <!--TODO: is in JSF API, but there is no corresponding tag in HTML 4.0.. What to do?-->
+        <attribute>
+            <name>onblur</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <!--TODO: is in JSF API, but there is no corresponding tag in HTML 4.0.. What to do?-->
+        <attribute>
+            <name>onfocus</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <!-- TODO attributes image, label - old todo.. still necessary?-->
+    </tag>
+
     <!-- commandNavigation -->
     <tag>
         <name>commandNavigation</name>
@@ -1531,6 +1565,89 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>CSS style to be used for the table cell.</description>
+        </attribute>
+    </tag>
+
+    <!-- panelNavigation2 -->
+    <tag>
+        <name>panelNavigation2</name>
+        <tag-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenuTag</tag-class>
+        <body-content>JSP</body-content>
+        &ui_panel_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_table_attributes;
+        <attribute>
+            <name>itemClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS class of closed navigation items.
+            </description>
+        </attribute>
+        <attribute>
+            <name>openItemClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS class of open navigation items.
+            </description>
+        </attribute>
+        <attribute>
+            <name>activeItemClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS class of the active navigation item.
+            </description>
+        </attribute>
+        <attribute>
+            <name>separatorClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS class for the td element of a separator.
+            </description>
+        </attribute>
+        <attribute>
+            <name>itemStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS Style of closed navigation items.
+            </description>
+        </attribute>
+        <attribute>
+            <name>openItemStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS Style of open navigation items.
+            </description>
+        </attribute>
+        <attribute>
+            <name>activeItemStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS Style of the active navigation item.
+            </description>
+        </attribute>
+        <attribute>
+            <name>separatorStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The CSS Style for the td element of a separator.
+            </description>
+        </attribute>
+        <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Table or List Layout (default is Table) 
+            </description>
         </attribute>
     </tag>
 

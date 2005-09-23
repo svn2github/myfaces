@@ -12,6 +12,14 @@
         <type>java.lang.String</type>
     </field>
     <field>
+        <name>open</name>
+        <type>boolean</type>
+    </field>
+    <field>
+        <name>active</name>
+        <type>boolean</type>
+    </field>
+    <field>
         <name>split</name>
         <type>boolean</type>
     </field>

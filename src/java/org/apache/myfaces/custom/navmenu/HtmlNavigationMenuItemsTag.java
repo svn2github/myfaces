@@ -21,8 +21,7 @@ import org.apache.myfaces.taglib.UIComponentTagBase;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlNavigationMenuItemsTag
-        extends UIComponentTagBase
+public class HtmlNavigationMenuItemsTag extends UIComponentTagBase
 {
     //private static final Log log = LogFactory.getLog(HtmlNavigationMenuItemsTag.class);
 

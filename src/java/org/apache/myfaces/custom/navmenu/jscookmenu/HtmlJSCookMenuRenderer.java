@@ -235,7 +235,7 @@ public class HtmlJSCookMenuRenderer
     }
 
     private void encodeValueBinding(StringBuffer writer, UINavigationMenuItem uiNavMenuItem,
-            NavigationMenuItem item) throws IOException 
+            NavigationMenuItem item)
     {
         ValueBinding vb = uiNavMenuItem.getValueBinding("NavMenuItemValue");
         if (vb == null) {

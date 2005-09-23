@@ -169,6 +169,11 @@
   </component>
 
   <component>
+    <component-type>org.apache.myfaces.HtmlCommandNavigationItem</component-type>
+    <component-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItem</component-class>
+  </component>
+
+  <component>
     <component-type>org.apache.myfaces.HtmlCommandSortHeader</component-type>
     <component-class>org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader</component-class>
   </component>
@@ -232,6 +237,11 @@
     <component-type>org.apache.myfaces.HtmlPanelNavigation</component-type>
     <component-class>org.apache.myfaces.custom.navigation.HtmlPanelNavigation</component-class>
   </component>
+
+    <component>
+      <component-type>org.apache.myfaces.HtmlPanelNavigationMenu</component-type>
+      <component-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu</component-class>
+    </component>
 
   <component>
     <component-type>org.apache.myfaces.HtmlPanelTab</component-type>
@@ -575,9 +585,21 @@
         </renderer>
 
         <renderer>
+            <component-family>javax.faces.Panel</component-family>
+            <renderer-type>org.apache.myfaces.NavigationMenu</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlNavigationMenuRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
             <component-family>javax.faces.Command</component-family>
             <renderer-type>org.apache.myfaces.Navigation</renderer-type>
             <renderer-class>org.apache.myfaces.custom.navigation.HtmlNavigationRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Command</component-family>
+            <renderer-type>org.apache.myfaces.NavigationMenu</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlNavigationMenuRenderer</renderer-class>
         </renderer>
 
         <renderer>

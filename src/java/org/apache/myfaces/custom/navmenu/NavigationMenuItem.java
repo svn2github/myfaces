@@ -21,8 +21,7 @@ import javax.faces.model.SelectItem;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class NavigationMenuItem
-    extends SelectItem
+public class NavigationMenuItem extends SelectItem
 {
     private static final long serialVersionUID = 2801735314476639024L;
     private String _icon;
