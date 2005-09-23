@@ -180,57 +180,60 @@ public class HtmlJSCookMenuRenderer
                 writer.append("_cmSplit,");
             }
 
-            writer.append("[");
-            if (item.getIcon() != null)
+            if (!item.isSplit()) 
             {
-                String iconSrc = context.getApplication().getViewHandler().getResourceURL(context, item.getIcon());
-                writer.append("'<img src=\"");
-                writer.append(context.getExternalContext().encodeResourceURL(iconSrc));
-                writer.append("\"/>'");
-            }
-            else
-            {
-                writer.append("null");
-            }
-            writer.append(", '");
-            if( item.getLabel() != null ) {
-                writer.append(JavascriptUtils.encodeString(item.getLabel()));
-            }
-            writer.append("', ");
-            if (item.getAction() != null && ! item.isDisabled())
-            {
-                writer.append("'");
-                writer.append(menuId);
-                writer.append(':');
-                writer.append(item.getAction());
-                if (uiNavMenuItem != null) {
-                    encodeValueBinding(writer, uiNavMenuItem, item);
-                }
-                writer.append("'");
-            }
-            else
-            {
-                writer.append("null");
-            }
-            writer.append(", 'linkDummyForm', null"); // TODO Change here to allow the use of non dummy form if possible.
-
-            if (item.isRendered() && ! item.isDisabled()) {
-                // render children only if parent is visible/enabled
-                NavigationMenuItem[] menuItems = item.getNavigationMenuItems();
-                if (menuItems != null && menuItems.length > 0)
+                writer.append("[");
+                if (item.getIcon() != null)
                 {
-                    writer.append(",");
-                    if (uiNavMenuItem != null)
-                    {
-                        encodeNavigationMenuItems(context, writer, menuItems, 
-                                uiNavMenuItem.getChildren(), menuId);
-                    } else {
-                        encodeNavigationMenuItems(context, writer, menuItems,
-                                new ArrayList(1), menuId);
-                    } 
+                    String iconSrc = context.getApplication().getViewHandler().getResourceURL(context, item.getIcon());
+                    writer.append("'<img src=\"");
+                    writer.append(context.getExternalContext().encodeResourceURL(iconSrc));
+                    writer.append("\"/>'");
                 }
+                else
+                {
+                    writer.append("null");
+                }
+                writer.append(", '");
+                if( item.getLabel() != null ) {
+                    writer.append(JavascriptUtils.encodeString(item.getLabel()));
+                }
+                writer.append("', ");
+                if (item.getAction() != null && ! item.isDisabled())
+                {
+                    writer.append("'");
+                    writer.append(menuId);
+                    writer.append(':');
+                    writer.append(item.getAction());
+                    if (uiNavMenuItem != null) {
+                        encodeValueBinding(writer, uiNavMenuItem, item);
+                    }
+                    writer.append("'");
+                }
+                else
+                {
+                    writer.append("null");
+                }
+                writer.append(", 'linkDummyForm', null"); // TODO Change here to allow the use of non dummy form if possible.
+                
+                if (item.isRendered() && ! item.isDisabled()) {
+                    // render children only if parent is visible/enabled
+                    NavigationMenuItem[] menuItems = item.getNavigationMenuItems();
+                    if (menuItems != null && menuItems.length > 0)
+                    {
+                        writer.append(",");
+                        if (uiNavMenuItem != null)
+                        {
+                            encodeNavigationMenuItems(context, writer, menuItems, 
+                                    uiNavMenuItem.getChildren(), menuId);
+                        } else {
+                            encodeNavigationMenuItems(context, writer, menuItems,
+                                    new ArrayList(1), menuId);
+                        } 
+                    }
+                }
+                writer.append("]");
             }
-            writer.append("]");
         }
     }
 
