@@ -62,6 +62,7 @@ public class HtmlTreeRenderer extends Renderer
     private static final String NODE_STATE_CLOSED = "c";
     private static final String SEPARATOR = String.valueOf(NamingContainer.SEPARATOR_CHAR);
     private static final String IMAGE_PREFIX = "t2";
+    private static final String TOGGLE_ID = "t2g";
 
     private static final int NOTHING = 0;
     private static final int CHILDREN = 1;
@@ -483,9 +484,10 @@ public class HtmlTreeRenderer extends Renderer
             out.writeURIAttribute("background", getImageSrc(context, tree, "line-trunk.gif"), null);
         }
 
-        // add the appropriate image for the nav control
+//      add the appropriate image for the nav control
         UIGraphic image = new UIGraphic();
-        image.setId(IMAGE_PREFIX + context.getViewRoot().createUniqueId());
+        image.setId(IMAGE_PREFIX);
+        image.setParent(tree);
         image.setUrl(navSrcUrl);
         Map imageAttrs = image.getAttributes();
         imageAttrs.put(HTML.WIDTH_ATTR, "19");
@@ -509,7 +511,8 @@ public class HtmlTreeRenderer extends Renderer
                 expandImgSrc = context.getApplication().getViewHandler().getResourceURL(context, expandImg.getUrl());
                 if (expandImg.isRendered())
                 {
-                    expandImg.setId(IMAGE_PREFIX + context.getViewRoot().createUniqueId());
+                    expandImg.setId(IMAGE_PREFIX + NODE_STATE_EXPANDED);
+                    expandImg.setParent(tree);
                     nodeImageId = expandImg.getClientId(context);
                     nodeImgFacet = expandFacet;
                 }
@@ -522,7 +525,8 @@ public class HtmlTreeRenderer extends Renderer
                 collapseImgSrc = context.getApplication().getViewHandler().getResourceURL(context, collapseImg.getUrl());
                 if (collapseImg.isRendered())
                 {
-                    collapseImg.setId(IMAGE_PREFIX + context.getViewRoot().createUniqueId());
+                    collapseImg.setId(IMAGE_PREFIX + NODE_STATE_CLOSED);
+                    collapseImg.setParent(tree);
                     nodeImageId = collapseImg.getClientId(context);
                     nodeImgFacet = collapseFacet;
                 }
@@ -556,13 +560,14 @@ public class HtmlTreeRenderer extends Renderer
                 imageAttrs.put(HTML.STYLE_ATTR, "cursor:hand;cursor:pointer");
             }
             RendererUtils.renderChild(context, image);
+
         }
         else
         {
             // set up the expand control and remove whatever children (if any) this control had previously
             UICommand expandControl = tree.getExpandControl();
-            expandControl.setId(context.getViewRoot().createUniqueId());
             expandControl.getChildren().clear();
+            expandControl.setId(TOGGLE_ID);
 
             UIParameter param = new UIParameter();
             param.setName(tree.getId() + NamingContainer.SEPARATOR_CHAR + NAV_COMMAND);
