@@ -286,11 +286,11 @@ public class HtmlCalendarRenderer
 
     private static void appendImageDirectory(StringBuffer script, FacesContext facesContext)
     {
-        script.append("jscalendarSetImageDirectory(\"");
+        script.append("jscalendarSetImageDirectory('");
         script.append(JavascriptUtils.encodeString(
                 AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "DB/", facesContext)
         ));
-        script.append("\");");
+        script.append("');");
     }
 
     public static String getLocalizedLanguageScript(DateFormatSymbols symbols,
