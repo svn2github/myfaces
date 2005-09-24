@@ -3,10 +3,14 @@ package org.apache.myfaces.custom.navmenu.htmlnavmenu;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
+import org.apache.commons.logging.Log;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UIViewRoot;
 import java.util.List;
 import java.util.Iterator;
 import java.io.IOException;
@@ -28,6 +32,10 @@ class HtmlNavigationMenuRendererUtils
         {
             UIComponent child = (UIComponent)it.next();
             if (!child.isRendered()) continue;
+            if (child instanceof UINavigationMenuItem)
+            {
+                renderChildrenListLayout(facesContext, writer, panelNav, child.getChildren(), level);
+            }
             if (child instanceof HtmlCommandNavigationItem)
             {
                 //navigation item
@@ -206,7 +214,7 @@ class HtmlNavigationMenuRendererUtils
 
     public static boolean isListLayout(HtmlPanelNavigationMenu panelNav)
     {
-        return "List".equalsIgnoreCase(panelNav.getLayout());
+        return !"Table".equalsIgnoreCase(panelNav.getLayout());
     }
 
     public static void renderChildren(FacesContext facesContext, HtmlCommandNavigationItem component) throws IOException
@@ -224,4 +232,62 @@ class HtmlNavigationMenuRendererUtils
         }
     }
 
+    public static void debugTree(Log log, List children, int level)
+    {
+        for (Iterator it = children.iterator(); it.hasNext(); )
+        {
+            UIComponent child = (UIComponent) it.next();
+            if (child instanceof UINavigationMenuItem)
+            {
+                UINavigationMenuItem item = (UINavigationMenuItem) child;
+                StringBuffer buf = new StringBuffer();
+                for (int i = 0; i < level * 4; i++) buf.append(' ');
+                log.debug(buf.toString() + "--> " + item.getItemLabel());
+                debugTree(log, child.getChildren(), level + 1);
+            }
+            else if (child instanceof HtmlCommandNavigationItem)
+            {
+                HtmlCommandNavigationItem item = (HtmlCommandNavigationItem) child;
+                StringBuffer buf = new StringBuffer();
+                for (int i = 0; i < level * 4; i++) buf.append(' ');
+                String value;
+                if (item.getChildren().size() > 0 && item.getChildren().get(0) instanceof UIOutput)
+                {
+                    UIOutput uiOutput = (UIOutput) item.getChildren().get(0);
+                    value = uiOutput.getValue() != null ? uiOutput.getValue().toString() : "?";
+                }
+                else
+                {
+                    value = item.getValue() != null ? item.getValue().toString() : "";
+                }
+                log.debug(buf.toString() + value);
+                debugTree(log, child.getChildren(), level + 1);
+            }
+        }
+    }
+
+    public static HtmlCommandNavigationItem findPreviousItem(UIViewRoot previousViewRoot, String clientId)
+    {
+        HtmlCommandNavigationItem previousItem = null;
+        if (previousViewRoot != null)
+        {
+            UIComponent previousComp = previousViewRoot.findComponent(clientId);
+            if (previousComp instanceof HtmlCommandNavigationItem)
+            {
+                previousItem = (HtmlCommandNavigationItem) previousComp;
+            }
+        }
+        return previousItem;
+    }
+
+    public static boolean isValueReference(String value)
+    {
+        if (value == null) throw new NullPointerException("value");
+
+        int start = value.indexOf("#{");
+        if (start < 0) return false;
+
+        int end = value.lastIndexOf('}');
+        return (end >=0 && start < end);
+    }
 }

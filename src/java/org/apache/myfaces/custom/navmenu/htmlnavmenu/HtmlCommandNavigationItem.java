@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * @author Manfred Geiler
  * @author Thomas Spiegl
  */
 public class HtmlCommandNavigationItem extends HtmlCommandLink

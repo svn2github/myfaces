@@ -35,7 +35,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup
 {
     private static final Log log = LogFactory.getLog(HtmlPanelNavigationMenu.class);
 
-    private static final String PREVIOUS_VIEW_ROOT = HtmlPanelNavigationMenu.class.getName() + ".PREVIOUS_VIEW_ROOT";
+    static final String PREVIOUS_VIEW_ROOT = HtmlPanelNavigationMenu.class.getName() + ".PREVIOUS_VIEW_ROOT";
     private boolean _itemOpenActiveStatesRestored = false;
 
     public void decode(FacesContext context)

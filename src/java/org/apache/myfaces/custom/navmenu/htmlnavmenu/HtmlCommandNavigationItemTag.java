@@ -23,6 +23,8 @@ import org.apache.myfaces.taglib.html.ext.HtmlCommandLinkTag;
  */
 public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
 {
+
+
     public String getComponentType()
     {
         return HtmlCommandNavigationItem.COMPONENT_TYPE;
@@ -30,6 +32,6 @@ public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.NavigationMenu";
+        return HtmlNavigationMenuRenderer.RENDERER_TYPE;
     }
 }
