@@ -202,6 +202,10 @@ public class HtmlTreeRenderer extends Renderer
         else
         {
             tree.setNodeId("0");
+            if(!tree.isNodeExpanded())
+            {
+                tree.toggleExpanded();
+            }
             TreeNode rootNode = tree.getNode();
             List rootChildren = rootNode.getChildren();
             int kidId = 0;
