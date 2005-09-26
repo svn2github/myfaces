@@ -108,6 +108,57 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
     }
 
+    protected void renderListLayout(FacesContext facesContext, HtmlPanelNavigationMenu component) throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
+
+        if (panelNav.getChildCount() > 0)
+        {
+            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            writer.startElement(HTML.UL_ELEM, component);
+            HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
+
+            HtmlNavigationMenuRendererUtils.renderChildrenListLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
+
+            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            writer.endElement(HTML.UL_ELEM);
+        }
+        else
+        {
+            if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
+        }
+    }
+
+    private void renderTableLayout(FacesContext facesContext, HtmlPanelNavigationMenu component) throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
+
+        if (panelNav.getChildCount() > 0)
+        {
+            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            writer.startElement(HTML.TABLE_ELEM, component);
+            HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
+            if (panelNav.getStyle() == null && panelNav.getStyleClass() == null)
+            {
+                writer.writeAttribute(HTML.BORDER_ATTR, ZERO_INTEGER, null);
+            }
+
+            HtmlNavigationMenuRendererUtils.renderChildrenTableLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
+
+            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            writer.endElement(HTML.TABLE_ELEM);
+        }
+        else
+        {
+            if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
+        }
+    }
+    
+    /**
+     * look for UINavigationMenuItem && UISelectItems & create components
+     */
     private void preprocessNavigationItems(FacesContext facesContext, UIComponent parent,
                                            UIViewRoot previousViewRoot, List children)
     {
@@ -199,58 +250,20 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             }
             else
             {
-                uiOutput.setValue(HtmlNavigationMenuRendererUtils.getValue(facesContext, "value", uiNavMenuItem.getValue()));
+                Object value = uiNavMenuItem.getValue();
+                if (value != null &&
+                    HtmlNavigationMenuRendererUtils.isValueReference(value.toString()))
+                {
+                    uiOutput.setValueBinding("value",
+                                             facesContext.getApplication().createValueBinding(value.toString()));
+                }
+                else
+                {
+                    uiOutput.setValue(uiNavMenuItem.getValue());
+                }
             }
             // process next level
             preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren());
-        }
-    }
-
-    protected void renderListLayout(FacesContext facesContext, HtmlPanelNavigationMenu component) throws IOException
-    {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
-
-        if (panelNav.getChildCount() > 0)
-        {
-            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            writer.startElement(HTML.UL_ELEM, component);
-            HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
-
-            HtmlNavigationMenuRendererUtils.renderChildrenListLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
-
-            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            writer.endElement(HTML.UL_ELEM);
-        }
-        else
-        {
-            if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
-        }
-    }
-
-    private void renderTableLayout(FacesContext facesContext, HtmlPanelNavigationMenu component) throws IOException
-    {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
-
-        if (panelNav.getChildCount() > 0)
-        {
-            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            writer.startElement(HTML.TABLE_ELEM, component);
-            HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
-            if (panelNav.getStyle() == null && panelNav.getStyleClass() == null)
-            {
-                writer.writeAttribute(HTML.BORDER_ATTR, ZERO_INTEGER, null);
-            }
-
-            HtmlNavigationMenuRendererUtils.renderChildrenTableLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
-
-            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            writer.endElement(HTML.TABLE_ELEM);
-        }
-        else
-        {
-            if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
         }
     }
 

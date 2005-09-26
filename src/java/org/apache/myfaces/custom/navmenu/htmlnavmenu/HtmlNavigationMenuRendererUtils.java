@@ -297,19 +297,7 @@ class HtmlNavigationMenuRendererUtils
         }
         return mb;
     }
-
-    public static Object getValue(FacesContext facesContext, String key, Object value)
-    {
-        if (value == null)
-            return null;
-        String strValue = value.toString();
-        if (HtmlNavigationMenuRendererUtils.isValueReference(strValue))
-        {
-            return facesContext.getApplication().createValueBinding(strValue);
-        }
-        return value;
-    }
-
+    
     public static boolean isValueReference(String value)
     {
         if (value == null)
