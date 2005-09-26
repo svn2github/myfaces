@@ -4,6 +4,7 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
+import org.apache.myfaces.el.SimpleActionMethodBinding;
 import org.apache.commons.logging.Log;
 
 import javax.faces.context.FacesContext;
@@ -11,12 +12,15 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
+import javax.faces.el.MethodBinding;
+import javax.faces.webapp.UIComponentTag;
 import java.util.List;
 import java.util.Iterator;
 import java.io.IOException;
 
 /**
  * @author Thomas Spiegl
+ * @author Manfred Geiler
  */
 class HtmlNavigationMenuRendererUtils
 {
@@ -232,7 +236,7 @@ class HtmlNavigationMenuRendererUtils
         }
     }
 
-    public static void debugTree(Log log, List children, int level)
+    public static void debugTree(Log log, FacesContext facesContext, List children, int level)
     {
         for (Iterator it = children.iterator(); it.hasNext(); )
         {
@@ -242,8 +246,8 @@ class HtmlNavigationMenuRendererUtils
                 UINavigationMenuItem item = (UINavigationMenuItem) child;
                 StringBuffer buf = new StringBuffer();
                 for (int i = 0; i < level * 4; i++) buf.append(' ');
-                log.debug(buf.toString() + "--> " + item.getItemLabel());
-                debugTree(log, child.getChildren(), level + 1);
+                log.debug(buf.toString() + "--> " + item.getItemLabel() + " id:" + item.getClientId(facesContext));
+                debugTree(log, facesContext, child.getChildren(), level + 1);
             }
             else if (child instanceof HtmlCommandNavigationItem)
             {
@@ -260,8 +264,8 @@ class HtmlNavigationMenuRendererUtils
                 {
                     value = item.getValue() != null ? item.getValue().toString() : "";
                 }
-                log.debug(buf.toString() + value);
-                debugTree(log, child.getChildren(), level + 1);
+                log.debug(buf.toString() + value + " id:" + item.getClientId(facesContext));
+                debugTree(log, facesContext, child.getChildren(), level + 1);
             }
         }
     }
@@ -280,14 +284,36 @@ class HtmlNavigationMenuRendererUtils
         return previousItem;
     }
 
+    public static MethodBinding getMethodBinding(FacesContext facesContext, String value)
+    {
+        MethodBinding mb;
+        if (HtmlNavigationMenuRendererUtils.isValueReference(value))
+        {
+            mb = facesContext.getApplication().createMethodBinding(value, null);
+        }
+        else
+        {
+            mb = new SimpleActionMethodBinding(value);
+        }
+        return mb;
+    }
+
+    public static Object getValue(FacesContext facesContext, String key, Object value)
+    {
+        if (value == null)
+            return null;
+        String strValue = value.toString();
+        if (HtmlNavigationMenuRendererUtils.isValueReference(strValue))
+        {
+            return facesContext.getApplication().createValueBinding(strValue);
+        }
+        return value;
+    }
+
     public static boolean isValueReference(String value)
     {
-        if (value == null) throw new NullPointerException("value");
-
-        int start = value.indexOf("#{");
-        if (start < 0) return false;
-
-        int end = value.lastIndexOf('}');
-        return (end >=0 && start < end);
+        if (value == null)
+            return false;
+        return UIComponentTag.isValueReference(value);
     }
 }

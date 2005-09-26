@@ -78,36 +78,7 @@ public class NavigationMenuUtils
             }
             else if (child instanceof UISelectItems)
             {
-                Object value = ((UISelectItems)child).getValue();
-                if (value instanceof NavigationMenuItem)
-                {
-                    list.add(value);
-                }
-                else if (value instanceof NavigationMenuItem[])
-                {
-                    for (int i = 0; i < ((NavigationMenuItem[])value).length; i++)
-                    {
-                        list.add(((NavigationMenuItem[])value)[i]);
-                    }
-                }
-                else if (value instanceof Collection)
-                {
-                    for (Iterator it = ((Collection)value).iterator(); it.hasNext();)
-                    {
-                        Object item = it.next();
-                        if (!(item instanceof NavigationMenuItem))
-                        {
-                            FacesContext facesContext = FacesContext.getCurrentInstance();
-                            throw new IllegalArgumentException("Collection referenced by UINavigationMenuItems with id " + child.getClientId(facesContext) + " does not contain Objects of type NavigationMenuItem");
-                        }
-                        list.add(item);
-                    }
-                }
-                else
-                {
-                    FacesContext facesContext = FacesContext.getCurrentInstance();
-                    throw new IllegalArgumentException("Value binding of UINavigationMenuItems with id " + child.getClientId(facesContext) + " does not reference an Object of type NavigationMenuItem, NavigationMenuItem[], Collection or Map");
-                }
+                addNavigationMenuItems((UISelectItems) child, list);
             }
             else
             {
@@ -118,6 +89,40 @@ public class NavigationMenuUtils
         }
 
         return list;
+    }
+
+    public static void addNavigationMenuItems(UISelectItems child, List list)
+    {
+        Object value = ((UISelectItems)child).getValue();
+        if (value instanceof NavigationMenuItem)
+        {
+            list.add(value);
+        }
+        else if (value instanceof NavigationMenuItem[])
+        {
+            for (int i = 0; i < ((NavigationMenuItem[])value).length; i++)
+            {
+                list.add(((NavigationMenuItem[])value)[i]);
+            }
+        }
+        else if (value instanceof Collection)
+        {
+            for (Iterator it = ((Collection)value).iterator(); it.hasNext();)
+            {
+                Object item = it.next();
+                if (!(item instanceof NavigationMenuItem))
+                {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    throw new IllegalArgumentException("Collection referenced by UINavigationMenuItems with id " + child.getClientId(facesContext) + " does not contain Objects of type NavigationMenuItem");
+                }
+                list.add(item);
+            }
+        }
+        else
+        {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            throw new IllegalArgumentException("Value binding of UINavigationMenuItems with id " + child.getClientId(facesContext) + " does not reference an Object of type NavigationMenuItem, NavigationMenuItem[], Collection or Map");
+        }
     }
 
 }

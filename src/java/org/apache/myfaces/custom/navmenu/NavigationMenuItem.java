@@ -16,6 +16,9 @@
 package org.apache.myfaces.custom.navmenu;
 
 import javax.faces.model.SelectItem;
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -28,7 +31,15 @@ public class NavigationMenuItem extends SelectItem
     private String _action;
     boolean _split;
     private boolean rendered = true;
-    private NavigationMenuItem[] _navigationMenuItems = null;
+    private List _navigationMenuItems = null;
+
+    public NavigationMenuItem(String label, String action)
+    {
+        super(label, label);
+        _action = action;
+        _icon = null;
+        _split = false;
+    }
 
     public NavigationMenuItem(String label, String action, String icon, boolean split)
     {
@@ -104,11 +115,27 @@ public class NavigationMenuItem extends SelectItem
 
     public NavigationMenuItem[] getNavigationMenuItems()
     {
-        return _navigationMenuItems;
+        if (_navigationMenuItems == null)
+        {
+            return new NavigationMenuItem[0];
+        }
+        return (NavigationMenuItem[]) _navigationMenuItems.toArray(new NavigationMenuItem[_navigationMenuItems.size()]);
     }
 
     public void setNavigationMenuItems(NavigationMenuItem[] navigationMenuItems)
     {
-        _navigationMenuItems = navigationMenuItems;
+        _navigationMenuItems = Arrays.asList(navigationMenuItems);
+    }
+
+    public void setNavigationMenuItems(List list)
+    {
+        _navigationMenuItems = list;
+    }
+
+    public void add(NavigationMenuItem navigationMenuItem)
+    {
+        if (_navigationMenuItems == null)
+            _navigationMenuItems = new ArrayList();
+        _navigationMenuItems.add(navigationMenuItem);
     }
 }
