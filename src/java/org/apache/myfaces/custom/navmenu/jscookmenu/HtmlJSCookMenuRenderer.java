@@ -357,11 +357,11 @@ public class HtmlJSCookMenuRenderer
 
         if(styleLocation != null)
         {
-            AddResource.addJavaScriptToHeader(styleLocation, "theme.css", context);
+            AddResource.addStyleSheet(styleLocation, "theme.css", context);
         }
         else
         {
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
+            AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
         }
     }
 
