@@ -21,6 +21,7 @@ import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
 import org.apache.myfaces.el.SimpleActionMethodBinding;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
@@ -85,30 +86,30 @@ public class HtmlJSCookMenuRenderer
         }
     }
 
-    private String decodeValueBinding(String actionParam, FacesContext context) 
+    private String decodeValueBinding(String actionParam, FacesContext context)
     {
-        int idx = actionParam.indexOf(";#{"); 
+        int idx = actionParam.indexOf(";#{");
         if (idx == -1) {
             return actionParam;
         }
-        
+
         String newActionParam = actionParam.substring(0, idx);
         String vbParam = actionParam.substring(idx + 1);
-        
+
         idx = vbParam.indexOf('=');
         if (idx == -1) {
             return newActionParam;
         }
         String vbExpressionString = vbParam.substring(0, idx);
         String vbValue = vbParam.substring(idx + 1);
-        
-        ValueBinding vb = 
-            context.getApplication().createValueBinding(vbExpressionString);        
+
+        ValueBinding vb =
+            context.getApplication().createValueBinding(vbExpressionString);
         vb.setValue(context, vbValue);
-        
+
         return newActionParam;
     }
-    
+
     public boolean getRendersChildren()
     {
         return true;
@@ -127,7 +128,7 @@ public class HtmlJSCookMenuRenderer
             dummyFormResponseWriter.setWriteDummyForm(true);
 
             String myId = getMenuId(context, component);
-            
+
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement(HTML.SCRIPT_ELEM,component);
@@ -222,12 +223,12 @@ public class HtmlJSCookMenuRenderer
                     writer.append(",");
                     if (uiNavMenuItem != null)
                     {
-                        encodeNavigationMenuItems(context, writer, menuItems, 
+                        encodeNavigationMenuItems(context, writer, menuItems,
                                 uiNavMenuItem.getChildren(), menuId);
                     } else {
                         encodeNavigationMenuItems(context, writer, menuItems,
                                 new ArrayList(1), menuId);
-                    } 
+                    }
                 }
             }
             writer.append("]");
@@ -262,49 +263,9 @@ public class HtmlJSCookMenuRenderer
         HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
         
         String theme = menu.getTheme();
-        
-        AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "JSCookMenu.js", context);
-        AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "MyFacesHack.js", context);
 
-        if( theme.equals( "ThemeOffice" ) ){
-            StringBuffer buf = new StringBuffer();
-            buf.append("myThemeOfficeBase='");
-            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
-            buf.append("/ThemeOffice/';");
+        addResourcesToHeader(theme,menu,context);
 
-        	AddResource.addInlineScriptToHeader(buf.toString(), context);
-
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeOffice/theme.js", context);
-        	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemeOffice/theme.css", context);
-        }else if( theme.equals( "ThemeMiniBlack" ) ){
-            StringBuffer buf = new StringBuffer();
-            buf.append("myThemeMiniBlackBase='");
-            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
-            buf.append("/ThemeMiniBlack/';");
-
-        	AddResource.addInlineScriptToHeader(buf.toString(), context);
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeMiniBlack/theme.js", context);
-        	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemeMiniBlack/theme.css", context);
-        }else if( theme.equals( "ThemeIE" ) ){
-            StringBuffer buf = new StringBuffer();
-            buf.append("myThemeIEBase='");
-            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
-            buf.append("/ThemeIE/';");
-
-        	AddResource.addInlineScriptToHeader(buf.toString(), context);
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemeIE/theme.js", context);
-        	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemeIE/theme.css", context);
-        }else if( theme.equals( "ThemePanel" ) ){
-            StringBuffer buf = new StringBuffer();
-            buf.append("myThemePanelBase='");
-            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
-            buf.append("/ThemePanel/';");
-
-        	AddResource.addInlineScriptToHeader(buf.toString(), context);
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "ThemePanel/theme.js", context);
-        	AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, "ThemePanel/theme.css", context);
-        }
-        	// Otherwise ?? bug ??
         ResponseWriter writer = context.getResponseWriter();
 
         String menuId = getMenuId(context, component);
@@ -330,6 +291,78 @@ public class HtmlJSCookMenuRenderer
 
         writer.writeText(buf.toString(),null);
         writer.endElement(HTML.SCRIPT_ELEM);
+    }
+
+    private void addResourcesToHeader(String themeName, HtmlCommandJSCookMenu menu, FacesContext context)
+    {
+        String javascriptLocation = (String) menu.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
+        String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
+
+        if(javascriptLocation != null)
+        {
+            AddResource.addJavaScriptToHeader(javascriptLocation, "JSCookMenu.js", context);
+            AddResource.addJavaScriptToHeader(javascriptLocation, "MyFacesHack.js", context);
+        }
+        else
+        {
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "JSCookMenu.js", context);
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "MyFacesHack.js", context);
+        }
+
+        addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, context);
+    }
+
+    private void addThemeSpecificResources(String themeName, String styleLocation, String javascriptLocation, String imageLocation, FacesContext context)
+    {
+        if(themeName != null)
+        {
+            if(!(themeName.equals("ThemeOffice") || themeName.equals("ThemeMiniBlack")
+                || themeName.equals("ThemeIE") || themeName.equals("ThemePanel")))
+            {
+                throw new IllegalArgumentException("You provided a wrong themeName. Must be one of ThemeOffice, ThemeMiniBlack, ThemeIE or ThemePanel");
+            }
+        }
+        else
+        {
+            if(styleLocation == null || javascriptLocation == null || imageLocation == null)
+                throw new IllegalArgumentException("If you don't provide a theme, "+
+                        "you need to provide all resource-paths.");
+        }
+
+        StringBuffer buf = new StringBuffer();
+        buf.append("my");
+        buf.append(themeName);
+        buf.append("Base='");
+        if(imageLocation!=null)
+        {
+            buf.append(AddResource.getResourceBasePath(imageLocation));
+        }
+        else
+        {
+            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+            buf.append("/ThemeOffice/';");
+        }
+
+        AddResource.addInlineScriptToHeader(buf.toString(), context);
+
+        if(javascriptLocation != null)
+        {
+            AddResource.addJavaScriptToHeader(javascriptLocation, "theme.js", context);
+        }
+        else
+        {
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.js", context);
+        }
+
+        if(styleLocation != null)
+        {
+            AddResource.addJavaScriptToHeader(javascriptLocation, "theme.css", context);
+        }
+        else
+        {
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
+        }
     }
 
     /**

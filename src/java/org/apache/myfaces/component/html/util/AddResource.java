@@ -64,13 +64,33 @@ public final class AddResource {
      * Adds the given Javascript resource to the document body.
      */
     public static void addJavaScriptHere(Class componentClass, String resourceFileName, FacesContext context, UIComponent component) throws IOException{
+
+        addJavaScriptHere(componentClass, null, resourceFileName, context, component);
+
+    }
+
+    private static void addJavaScriptHere(
+            Class componentClass, String baseDirectory, String resourceFileName, FacesContext context, UIComponent component)
+            throws IOException
+    {
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
-        writer.writeURIAttribute(HTML.SRC_ATTR,
-                getResourceMappedPath(componentClass, resourceFileName, context),
-                null);
+
+        if(baseDirectory != null)
+        {
+            writer.writeURIAttribute(HTML.SRC_ATTR,
+                    getResourceBasePath(baseDirectory)+resourceFileName, null);
+        }
+        else
+        {
+            writer.writeURIAttribute(HTML.SRC_ATTR,
+                    getResourceMappedPath(componentClass, resourceFileName, context),
+                    null);
+        }
+
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
@@ -79,6 +99,13 @@ public final class AddResource {
      */
     public static void addJavaScriptHere(Class componentClass, String resourceFileName, FacesContext context) throws IOException{
         addJavaScriptHere(componentClass, resourceFileName,context,null);
+    }
+
+    /**
+     * Adds the given Javascript resource to the document body, without passing UIComponent.
+     */
+    public static void addJavaScriptHere(String baseDirectory, String resourceFileName, FacesContext context) throws IOException{
+        addJavaScriptHere(null, baseDirectory, resourceFileName,context,null);
     }
 
     /**
@@ -100,12 +127,40 @@ public final class AddResource {
     }
 
     /**
+     * Adds the given Javascript resource to the document Header.
+     * If the script is already has already been referenced, it's added only once.
+     */
+    public static void addJavaScriptToHeader(String baseDirectory, String resourceFileName, FacesContext context){
+        addJavaScriptToHeader(baseDirectory, resourceFileName, false, context);
+    }
+
+    /**
+     * Adds the given Javascript resource to the document Header.
+     * If the script is already has already been referenced, it's added only once.
+     */
+    public static void addJavaScriptToHeader(String baseDirectory, String resourceFileName, boolean defer, FacesContext context){
+        AdditionalHeaderInfoToRender jsInfo =
+            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS, baseDirectory, resourceFileName, defer);
+        addAdditionalHeaderInfoToRender(context, jsInfo );
+    }
+
+    /**
      * Adds the given Style Sheet to the document Header.
      * If the style sheet is already has already been referenced, it's added only once.
      */
     public static void addStyleSheet(Class componentClass, String resourceFileName, FacesContext context){
         AdditionalHeaderInfoToRender cssInfo =
             new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_CSS, componentClass, resourceFileName);
+        addAdditionalHeaderInfoToRender(context, cssInfo );
+    }
+
+    /**
+     * Adds the given Style Sheet to the document Header.
+     * If the style sheet is already has already been referenced, it's added only once.
+     */
+    public static void addStyleSheet(String baseDirectory, String resourceFileName, FacesContext context){
+        AdditionalHeaderInfoToRender cssInfo =
+            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_CSS, baseDirectory, resourceFileName);
         addAdditionalHeaderInfoToRender(context, cssInfo );
     }
 
@@ -150,6 +205,11 @@ public final class AddResource {
                 getComponentName(componentClass),
                 resourceFileName,
                 contextPath);
+    }
+
+    public static String getResourceBasePath(String baseDirectory)
+    {
+        return baseDirectory+(baseDirectory.endsWith("/")?"":"/");
     }
 
     public static String getResourceBasePath(Class componentClass, FacesContext context){
@@ -400,8 +460,24 @@ public final class AddResource {
         public int type;
         public boolean deferJS = false;
         public String componentName;
+        public String baseDirectory;
         public String resourceFileName;
         public String inlineText;
+
+        public AdditionalHeaderInfoToRender(int infoType, String baseDirectory, String resourceFileName) {
+            this.type = infoType;
+            this.baseDirectory = baseDirectory;
+            this.resourceFileName = resourceFileName;
+        }
+
+        public AdditionalHeaderInfoToRender(int infoType, String baseDirectory, String resourceFileName, boolean defer) {
+            if( defer && infoType != TYPE_JS )
+                log.error("Defer can only be used for scripts.");
+            this.type = infoType;
+            this.baseDirectory = baseDirectory;
+            this.resourceFileName = resourceFileName;
+            this.deferJS = defer;
+        }
 
         public AdditionalHeaderInfoToRender(int infoType, Class componentClass, String resourceFileName) {
             this.type = infoType;
@@ -471,8 +547,18 @@ public final class AddResource {
             switch (type) {
                 case TYPE_JS:
                     responseWriter.startElement(HTML.SCRIPT_ELEM,null);
-                    responseWriter.writeAttribute(HTML.SRC_ATTR,
+
+                    if(baseDirectory != null)
+                    {
+                        responseWriter.writeAttribute(HTML.SRC_ATTR,
+                            getResourceBasePath(baseDirectory)+resourceFileName,
+                            null);
+                    }
+                    else
+                    {
+                        responseWriter.writeAttribute(HTML.SRC_ATTR,
                             getResourceMappedPath(componentName, resourceFileName, contextPath),null);
+                    }
 
                     if(deferJS)
                         responseWriter.writeAttribute("defer","true",null);
@@ -482,8 +568,19 @@ public final class AddResource {
                 case TYPE_CSS:
                     responseWriter.startElement("link",null);
                     responseWriter.writeAttribute("rel","stylesheet",null);
-                    responseWriter.writeAttribute(HTML.HREF_ATTR,
+
+                    if(baseDirectory != null )
+                    {
+                        responseWriter.writeAttribute(
+                                HTML.HREF_ATTR,
+                                baseDirectory+(baseDirectory.endsWith("/")?"":"/")+resourceFileName,
+                                null);
+                    }
+                    else
+                    {
+                        responseWriter.writeAttribute(HTML.HREF_ATTR,
                             getResourceMappedPath(componentName, resourceFileName, contextPath),null);
+                    }
 
                     responseWriter.writeAttribute(HTML.TYPE_ATTR,"text/css",null);
                     responseWriter.endElement("link");
