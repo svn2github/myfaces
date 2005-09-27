@@ -357,7 +357,7 @@ public class HtmlJSCookMenuRenderer
 
         if(styleLocation != null)
         {
-            AddResource.addJavaScriptToHeader(javascriptLocation, "theme.css", context);
+            AddResource.addJavaScriptToHeader(styleLocation, "theme.css", context);
         }
         else
         {
