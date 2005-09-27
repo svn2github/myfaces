@@ -1483,6 +1483,7 @@
         <body-content>JSP</body-content>
         &ui_component_attributes;
         &user_role_attributes;
+        &alt_location_attributes;
         <!-- jscookMenu attributes -->
         <attribute>
             <name>layout</name>
