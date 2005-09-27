@@ -154,11 +154,12 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         _model = null;
         _saved = new HashMap();
+        
+        setNodeId(null);
+        decode(context);
 
         processNodes(context, PROCESS_DECODES, null, 0);
 
-        setNodeId(null);
-        decode(context);
     }
 
     // see superclass for documentation

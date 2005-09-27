@@ -116,6 +116,7 @@ public class HtmlTreeRenderer extends Renderer
             }
         }
     }
+    
 
     public void decode(FacesContext context, UIComponent component)
     {
@@ -128,12 +129,7 @@ public class HtmlTreeRenderer extends Renderer
 
         if (getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true))
         {
-            if (!getBoolean(component, JSFAttr.PRESERVE_TOGGLE, true))
-            {
-                return;
-            }
-
-            restoreStateFromCookies(context, component);
+        	restoreStateFromCookies(context, component);
         }
         else
         {
