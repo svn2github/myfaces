@@ -487,7 +487,6 @@ public class HtmlTreeRenderer extends Renderer
 //      add the appropriate image for the nav control
         UIGraphic image = new UIGraphic();
         image.setId(IMAGE_PREFIX);
-        image.setParent(tree);
         image.setUrl(navSrcUrl);
         Map imageAttrs = image.getAttributes();
         imageAttrs.put(HTML.WIDTH_ATTR, "19");
@@ -532,6 +531,7 @@ public class HtmlTreeRenderer extends Renderer
                 }
             }
 
+            image.setParent(tree);
             if (node.getChildCount() > 0)
             {
                 String onClick = new StringBuffer()
