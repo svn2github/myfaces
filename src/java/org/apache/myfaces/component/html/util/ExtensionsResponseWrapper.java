@@ -39,6 +39,7 @@ public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
 
     public ExtensionsResponseWrapper(HttpServletResponse response){
         super( response );
+
         stream = new ByteArrayOutputStream();
     }
 

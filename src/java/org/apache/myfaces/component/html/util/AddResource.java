@@ -69,7 +69,7 @@ public final class AddResource {
 
     }
 
-    private static void addJavaScriptHere(
+    public static void addJavaScriptHere(
             Class componentClass, String baseDirectory, String resourceFileName, FacesContext context, UIComponent component)
             throws IOException
     {
@@ -121,9 +121,7 @@ public final class AddResource {
      * If the script is already has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(Class componentClass, String resourceFileName, boolean defer, FacesContext context){
-        AdditionalHeaderInfoToRender jsInfo =
-            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS, componentClass, resourceFileName, defer);
-        addAdditionalHeaderInfoToRender(context, jsInfo );
+        addJavaScriptToHeader(componentClass, null, resourceFileName, defer, context);
     }
 
     /**
@@ -139,8 +137,26 @@ public final class AddResource {
      * If the script is already has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(String baseDirectory, String resourceFileName, boolean defer, FacesContext context){
-        AdditionalHeaderInfoToRender jsInfo =
-            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS, baseDirectory, resourceFileName, defer);
+        addJavaScriptToHeader(null, baseDirectory, resourceFileName, defer, context);
+    }
+
+    /**
+     * Adds the given Javascript resource to the document Header.
+     * If the script is already has already been referenced, it's added only once.
+     */
+    public static void addJavaScriptToHeader(Class componentClass,
+                                             String baseDirectory, String resourceFileName, boolean defer, FacesContext context){
+        AdditionalHeaderInfoToRender jsInfo = null;
+
+        if(baseDirectory!=null)
+        {
+            jsInfo = new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS, baseDirectory, resourceFileName, defer);
+        }
+        else
+        {
+            jsInfo = new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS, componentClass, resourceFileName, defer);
+        }
+
         addAdditionalHeaderInfoToRender(context, jsInfo );
     }
 
@@ -149,9 +165,7 @@ public final class AddResource {
      * If the style sheet is already has already been referenced, it's added only once.
      */
     public static void addStyleSheet(Class componentClass, String resourceFileName, FacesContext context){
-        AdditionalHeaderInfoToRender cssInfo =
-            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_CSS, componentClass, resourceFileName);
-        addAdditionalHeaderInfoToRender(context, cssInfo );
+        addStyleSheet(componentClass, null, resourceFileName, context);
     }
 
     /**
@@ -159,8 +173,27 @@ public final class AddResource {
      * If the style sheet is already has already been referenced, it's added only once.
      */
     public static void addStyleSheet(String baseDirectory, String resourceFileName, FacesContext context){
-        AdditionalHeaderInfoToRender cssInfo =
-            new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_CSS, baseDirectory, resourceFileName);
+        addStyleSheet(null, baseDirectory, resourceFileName, context);
+    }
+
+    /**
+     * Adds the given Style Sheet to the document Header.
+     * If the style sheet is already has already been referenced, it's added only once.
+     */
+    public static void addStyleSheet(Class componentClass,
+                                     String baseDirectory, String resourceFileName, FacesContext context){
+
+        AdditionalHeaderInfoToRender cssInfo = null;
+        if(baseDirectory!=null)
+        {
+            cssInfo = new AdditionalHeaderInfoToRender(
+                    AdditionalHeaderInfoToRender.TYPE_CSS, baseDirectory, resourceFileName);
+        }
+        else
+        {
+            cssInfo = new AdditionalHeaderInfoToRender(
+                    AdditionalHeaderInfoToRender.TYPE_CSS, componentClass, resourceFileName);
+        }
         addAdditionalHeaderInfoToRender(context, cssInfo );
     }
 

@@ -304,16 +304,8 @@ public class HtmlJSCookMenuRenderer
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
-        if(javascriptLocation != null)
-        {
-            AddResource.addJavaScriptToHeader(javascriptLocation, "JSCookMenu.js", context);
-            AddResource.addJavaScriptToHeader(javascriptLocation, "MyFacesHack.js", context);
-        }
-        else
-        {
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "JSCookMenu.js", context);
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "MyFacesHack.js", context);
-        }
+        AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, javascriptLocation, "JSCookMenu.js", false, context);
+        AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, javascriptLocation, "MyFacesHack.js", false, context);
 
         addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, context);
     }
