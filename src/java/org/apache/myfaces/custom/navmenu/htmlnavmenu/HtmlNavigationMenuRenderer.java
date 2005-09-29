@@ -218,6 +218,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         {
             newItem.setRendererType(RENDERER_TYPE);
             parent.getChildren().add(i + 1, newItem);
+            newItem.setId(parent.getClientId(facesContext) + i);
             newItem.setParent(parent);
             // set action
             newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
