@@ -15,8 +15,6 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import java.util.Iterator;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -27,7 +25,6 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
-
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
@@ -41,7 +38,7 @@ public class HtmlSelectOneRadio
         extends javax.faces.component.html.HtmlSelectOneRadio
         implements UserRoleAware, DisplayValueOnlyCapable
 {
-		public String getClientId(FacesContext context)
+    public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
         if (clientId == null)
@@ -81,20 +78,9 @@ public class HtmlSelectOneRadio
             //Check required and empty
             if (isRequired() && empty)
             {
-              //Only add this message once, not for every radio button in set
-            	String clientId = this.getClientId(context);
-            	Iterator messages = context.getMessages(clientId);
-            	boolean messageExists = messages.hasNext();
-            	
-            	if(!messageExists)
-            	{
-            		//Add message
-            		FacesMessage message = MessageUtils.getMessage(REQUIRED_MESSAGE_ID, new Object[]{clientId});
-            		message.setSeverity(FacesMessage.SEVERITY_WARN);
-            		context.addMessage(clientId, message);
-            		
+                MessageUtils.addMessage(FacesMessage.SEVERITY_WARN, REQUIRED_MESSAGE_ID,
+                        new Object[] {getId()});
                 setValid(false);
-            	}
                 return;
             }
 
@@ -105,7 +91,7 @@ public class HtmlSelectOneRadio
             }
         }
     }
-		
+
     private static void callValidators(FacesContext context, UIInput input, Object convertedValue)
     {
         Validator[] validators = input.getValidators();
