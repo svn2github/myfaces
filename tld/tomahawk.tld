@@ -124,8 +124,8 @@
             sortColumn, sortAscending and preserveSort.
         </description>
         &standard_data_table_attributes;
-        &extended_data_table_attributes;
         <!-- MyFaces extensions -->
+        &extended_data_table_attributes;
         &ext_forceId_attribute;
         &user_role_attributes;
      </tag>
