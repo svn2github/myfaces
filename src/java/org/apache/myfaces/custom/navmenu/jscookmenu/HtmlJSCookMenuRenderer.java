@@ -179,11 +179,6 @@ public class HtmlJSCookMenuRenderer
             if (item.isSplit())
             {
                 writer.append("_cmSplit,");
-                
-                if (item.getLabel().equals("0")) 
-                {
-                    continue;
-                }
             }
 
             writer.append("[");
@@ -255,18 +250,18 @@ public class HtmlJSCookMenuRenderer
         if (tempObj == null) {
             return;
         }
-        
+
         writer.append(";");
         writer.append(vbExpression);
         writer.append("=");
         writer.append(tempObj.toString());
     }
-    
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
     {
         RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
         HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
-        
+
         String theme = menu.getTheme();
 
         addResourcesToHeader(theme,menu,context);
@@ -304,8 +299,16 @@ public class HtmlJSCookMenuRenderer
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
-        AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, javascriptLocation, "JSCookMenu.js", false, context);
-        AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, javascriptLocation, "MyFacesHack.js", false, context);
+        if(javascriptLocation != null)
+        {
+            AddResource.addJavaScriptToHeader(javascriptLocation, "JSCookMenu.js", context);
+            AddResource.addJavaScriptToHeader(javascriptLocation, "MyFacesHack.js", context);
+        }
+        else
+        {
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "JSCookMenu.js", context);
+            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, "MyFacesHack.js", context);
+        }
 
         addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, context);
     }

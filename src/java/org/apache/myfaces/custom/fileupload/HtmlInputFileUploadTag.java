@@ -37,7 +37,7 @@ public class HtmlInputFileUploadTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.FileUpload";
+        return HtmlInputFileUpload.DEFAULT_RENDERER_TYPE;
     }
 
     // UIComponent attributes --> already implemented in UIComponentTagBase
