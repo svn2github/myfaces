@@ -96,7 +96,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                 facesContext.getExternalContext().getRequestMap().get(HtmlPanelNavigationMenu.PREVIOUS_VIEW_ROOT);
             // get old view
             // preprocess component tree
-            preprocessNavigationItems(facesContext, panelNav, previousViewRoot, panelNav.getChildren());
+            preprocessNavigationItems(facesContext, panelNav, previousViewRoot, panelNav.getChildren(), new UniqueId());
             // render list
             if (log.isDebugEnabled())
                 HtmlNavigationMenuRendererUtils.debugTree(log, facesContext, panelNav.getChildren(), 0);
@@ -160,7 +160,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
      * look for UINavigationMenuItem && UISelectItems & create components
      */
     private void preprocessNavigationItems(FacesContext facesContext, UIComponent parent,
-                                           UIViewRoot previousViewRoot, List children)
+                                           UIViewRoot previousViewRoot, List children, UniqueId uniqueId)
     {
         for (int i = 0; i < children.size(); i++)
         {
@@ -169,7 +169,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             if (child instanceof UINavigationMenuItem)
             {
                 UINavigationMenuItem uiNavMenuItem = (UINavigationMenuItem) child;
-                createHtmlCommandNavigationItem(facesContext, previousViewRoot, parent, i, uiNavMenuItem);
+                createHtmlCommandNavigationItem(facesContext, previousViewRoot, parent, i, uiNavMenuItem, uniqueId);
             }
             else if (child instanceof UISelectItems)
             {
@@ -208,7 +208,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
     }
 
     private void createHtmlCommandNavigationItem(FacesContext facesContext, UIViewRoot previousViewRoot,
-                                                 UIComponent parent, int i, UINavigationMenuItem uiNavMenuItem)
+                                                 UIComponent parent, int i, UINavigationMenuItem uiNavMenuItem, UniqueId uniqueId)
     {
         // Create HtmlCommandNavigationItem
         HtmlCommandNavigationItem newItem = (HtmlCommandNavigationItem)
@@ -216,9 +216,11 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         String clientId = newItem.getClientId(facesContext);
         if (facesContext.getViewRoot().findComponent(clientId) == null)
         {
+            String parentId = parent.getClientId(facesContext);
             newItem.setRendererType(RENDERER_TYPE);
             parent.getChildren().add(i + 1, newItem);
-            newItem.setId(parent.getClientId(facesContext) + i);
+            int id = uniqueId.next();
+            newItem.setId(parentId + "_item" + id);
             newItem.setParent(parent);
             // set action
             newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
@@ -235,6 +237,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             }
             // Create and add UIOutput
             UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
+            uiOutput.setId(parentId + "_itemout" + id);
             newItem.getChildren().add(uiOutput);
             uiOutput.setParent(newItem);
             if (uiNavMenuItem.getItemLabel() != null)
@@ -264,7 +267,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                 }
             }
             // process next level
-            preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren());
+            preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren(), uniqueId);
         }
     }
 
@@ -315,6 +318,16 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         else
         {
             return ((HtmlPanelNavigationMenu)navPanel).getItemClass();
+        }
+    }
+
+    private static class UniqueId
+    {
+        private int _id;
+
+        public int next()
+        {
+            return _id++;
         }
     }
 
