@@ -179,6 +179,11 @@ public class HtmlJSCookMenuRenderer
             if (item.isSplit())
             {
                 writer.append("_cmSplit,");
+
+                if (item.getLabel().equals("0"))
+                {
+                    continue;
+                }
             }
 
             writer.append("[");
