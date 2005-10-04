@@ -55,21 +55,12 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 
     private Boolean _disabled = null;
 
-    // Values to hold the data entered by the user
-    private UserData _userData = null;
-
     public HtmlInputDate() {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-    public void setUserData(UserData userData){
-        this._userData = userData;
-    }
-
     public UserData getUserData(Locale currentLocale){
-        if( _userData == null )
-            _userData = new UserData((Date) getValue(), currentLocale, getTimeZone());
-        return _userData;
+        return new UserData((Date) getValue(), currentLocale, getTimeZone());
     }
 
 	public String getType() {
@@ -145,16 +136,15 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = _type;
         values[2] = _popupCalendar;
-        values[3] = _userData;
-        values[4] = _disabled;
-		values[5] = _readonly;
-        values[6] = _enabledOnUserRole;
-        values[7] = _visibleOnUserRole;
-        values[8] = _timeZone;
+        values[3] = _disabled;
+		values[4] = _readonly;
+        values[5] = _enabledOnUserRole;
+        values[6] = _visibleOnUserRole;
+        values[7] = _timeZone;
         return values;
     }
 
@@ -163,12 +153,11 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         super.restoreState(context, values[0]);
         _type = (String)values[1];
         _popupCalendar = (Boolean)values[2];
-        _userData = (UserData)values[3];
-        _disabled = (Boolean)values[4];
-		_readonly = (Boolean)values[5];
-        _enabledOnUserRole = (String)values[6];
-        _visibleOnUserRole = (String)values[7];
-        _timeZone = (String)values[8];
+        _disabled = (Boolean)values[3];
+		_readonly = (Boolean)values[4];
+        _enabledOnUserRole = (String)values[5];
+        _visibleOnUserRole = (String)values[6];
+        _timeZone = (String)values[7];
     }
 
     public static class UserData implements Serializable {
