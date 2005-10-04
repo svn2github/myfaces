@@ -35,6 +35,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -160,10 +162,8 @@ public class HtmlCheckboxRenderer
                 colNum++;
                 SelectItem selectItem = (SelectItem) items.get(count);
                 writer.startElement(HTML.TD_ELEM, selectMany);
-                writer.startElement(HTML.LABEL_ELEM, selectMany);
                 renderGroupOrItemCheckbox(facesContext, selectMany, selectItem,
                         lookupSet != null, lookupSet, converter, false);
-                writer.endElement(HTML.LABEL_ELEM);
                 writer.endElement(HTML.TD_ELEM);
             }
         }
@@ -212,11 +212,9 @@ public class HtmlCheckboxRenderer
                 if (count < totalItems)
                 {
                     SelectItem selectItem = (SelectItem) items.get(count);
-                    writer.startElement(HTML.LABEL_ELEM, selectMany);
                     renderGroupOrItemCheckbox(facesContext, selectMany,
                             selectItem, lookupSet != null, lookupSet,
                             converter, true);
-                    writer.endElement(HTML.LABEL_ELEM);
                 }
                 writer.endElement(HTML.TD_ELEM);
                 if (i < numCols - 1)
@@ -226,6 +224,97 @@ public class HtmlCheckboxRenderer
             }
             writer.endElement(HTML.TR_ELEM);
         }
+        writer.endElement(HTML.TABLE_ELEM);
+    }
+
+    protected void renderGroupOrItemCheckbox(FacesContext facesContext,
+            UIComponent uiComponent, SelectItem selectItem,
+            boolean useSubmittedValues, Set lookupSet,
+            Converter converter, boolean pageDirectionLayout) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        boolean isSelectItemGroup = (selectItem instanceof SelectItemGroup);
+
+        if (isSelectItemGroup)
+        {
+            SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
+            renderCheckboxGroup(facesContext, uiComponent, selectItemGroup,
+                    useSubmittedValues, lookupSet, converter,
+                    pageDirectionLayout);
+        }
+        else
+        {
+            UISelectMany selectMany = (UISelectMany) uiComponent;
+            Object itemValue = selectItem.getValue(); // TODO : Check here for getSubmittedValue. Look at RendererUtils.getValue
+            String itemStrValue = getItemStringValue(facesContext, selectMany,
+                    converter, itemValue);
+
+            boolean checked = (useSubmittedValues && lookupSet
+                    .contains(itemStrValue))
+                    || (!useSubmittedValues && lookupSet.contains(itemValue));
+
+            boolean disabled = selectItem.isDisabled();
+
+            writer.startElement(HTML.LABEL_ELEM, selectMany);
+            renderLabelClassIfNecessary(facesContext, selectMany, disabled);
+            renderCheckbox(facesContext, selectMany, itemStrValue, selectItem
+                    .getLabel(), disabled, checked, false);
+            writer.endElement(HTML.LABEL_ELEM);
+        }
+    }
+
+    protected void renderLabelClassIfNecessary(FacesContext facesContext,
+            UISelectMany selectMany, boolean disabled) throws IOException
+    {
+        String labelClass = null;
+        boolean componentDisabled = isDisabled(facesContext, selectMany);
+        if (componentDisabled || disabled)
+        {
+            labelClass = (String) selectMany.getAttributes().get(
+                    JSFAttr.DISABLED_CLASS_ATTR);
+        }
+        else
+        {
+            labelClass = (String) selectMany.getAttributes().get(
+                    JSFAttr.ENABLED_CLASS_ATTR);
+        }
+        if (labelClass != null)
+        {
+            ResponseWriter writer = facesContext.getResponseWriter();
+            writer.writeAttribute("class", labelClass, "labelClass");
+        }
+    }
+
+    protected void renderCheckboxGroup(FacesContext facesContext,
+            UIComponent uiComponent, SelectItemGroup selectItemGroup,
+            boolean useSubmittedValues, Set lookupSet,
+            Converter converter, boolean pageDirectionLayout) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        UISelectMany selectMany = (UISelectMany)uiComponent;
+        writer.startElement(HTML.TABLE_ELEM, selectMany);
+        if (pageDirectionLayout)
+            writer.startElement(HTML.TR_ELEM, selectMany);
+        writer.startElement(HTML.TD_ELEM, selectMany);
+        writer.write(selectItemGroup.getLabel());
+        writer.endElement(HTML.TD_ELEM);
+        
+        if (pageDirectionLayout) {
+            writer.endElement(HTML.TR_ELEM);
+            writer.startElement(HTML.TR_ELEM, selectMany);
+        }
+        writer.startElement(HTML.TD_ELEM, selectMany);
+        writer.startElement(HTML.TABLE_ELEM, selectMany);
+        writer.writeAttribute(HTML.BORDER_ATTR, "0", null);
+
+        SelectItem[] selectItems = selectItemGroup.getSelectItems();
+        for (int i=0; i<selectItems.length; i++) {
+            renderGroupOrItemCheckbox(facesContext, selectMany, selectItems[i], useSubmittedValues, lookupSet, converter, pageDirectionLayout);
+        }
+        
+        writer.endElement(HTML.TABLE_ELEM);
+        writer.endElement(HTML.TD_ELEM);
+        if (pageDirectionLayout)
+            writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.TABLE_ELEM);
     }
 
@@ -295,33 +384,16 @@ public class HtmlCheckboxRenderer
         }
 
         UISelectMany uiSelectMany = (UISelectMany)uiComponent;
-        Converter converter;
+        Converter converter = getConverter(facesContext, uiSelectMany);
         List selectItemList = RendererUtils.getSelectItemList(uiSelectMany);
         if (index >= selectItemList.size())
         {
             throw new IndexOutOfBoundsException("index " + index + " >= " + selectItemList.size());
         }
 
-        try
-        {
-            converter = RendererUtils.findUISelectManyConverter(facesContext, uiSelectMany);
-        }
-        catch (FacesException e)
-        {
-            converter = null;
-        }
-
         SelectItem selectItem = (SelectItem)selectItemList.get(index);
         Object itemValue = selectItem.getValue();
-        String itemStrValue;
-        if (converter == null)
-        {
-            itemStrValue = itemValue.toString();
-        }
-        else
-        {
-            itemStrValue = converter.getAsString(facesContext, uiSelectMany, itemValue);
-        }
+        String itemStrValue = getItemStringValue(facesContext, uiSelectMany, converter, itemValue);
 
         //TODO: we must cache this Set!
         Set lookupSet = RendererUtils.getSelectedValuesAsSet(facesContext, uiComponent, converter, uiSelectMany);
@@ -357,6 +429,20 @@ public class HtmlCheckboxRenderer
         {
             super.decode(facesContext, uiComponent);
         }
+    }
+
+    protected String getItemStringValue(FacesContext facesContext, UISelectMany selectMany, 
+            Converter converter, Object itemValue) {
+        String itemStrValue;
+        if (converter == null)
+        {
+            itemStrValue = itemValue.toString();
+        }
+        else
+        {
+            itemStrValue = converter.getAsString(facesContext, selectMany, itemValue);
+        }
+        return itemStrValue;
     }
 
     protected Converter getConverter(FacesContext facesContext,
