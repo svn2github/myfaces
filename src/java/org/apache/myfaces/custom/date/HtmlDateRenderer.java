@@ -248,9 +248,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         UserData userData = (UserData) inputDate.getSubmittedValue();
         if( userData == null ) {
             userData = inputDate.getUserData(currentLocale);
-        } else {
-          inputDate.setUserData(userData);
-        }
+
         String clientId = inputDate.getClientId(facesContext);
         String type = inputDate.getType();
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
