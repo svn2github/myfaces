@@ -184,7 +184,7 @@ public final class AddResource {
                                      String baseDirectory, String resourceFileName, FacesContext context){
 
         AdditionalHeaderInfoToRender cssInfo = null;
-        if(baseDirectory!=null)
+        if(baseDirectory!=null && baseDirectory.trim().length()>0)
         {
             cssInfo = new AdditionalHeaderInfoToRender(
                     AdditionalHeaderInfoToRender.TYPE_CSS, baseDirectory, resourceFileName);
