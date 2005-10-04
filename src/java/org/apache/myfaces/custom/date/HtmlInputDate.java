@@ -209,6 +209,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
             tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
             tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
+            tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
             
             return tempCalendar.getTime();
         }
