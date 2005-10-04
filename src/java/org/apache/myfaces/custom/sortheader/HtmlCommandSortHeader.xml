@@ -7,7 +7,7 @@
     <base-class>org.apache.myfaces.component.html.ext.HtmlCommandLink</base-class>
     <component-type>org.apache.myfaces.HtmlCommandSortHeader</component-type>
     <component-family>javax.faces.Command</component-family>
-    <renderer-type>javax.faces.Link</renderer-type>
+    <renderer-type>org.apache.myfaces.SortHeader</renderer-type>
     <field>
         <name>columnName</name>
         <type>java.lang.String</type>

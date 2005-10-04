@@ -36,7 +36,7 @@ public class HtmlCommandSortHeaderTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.SortHeader";
+        return HtmlCommandSortHeader.DEFAULT_RENDERER_TYPE;
     }
 
     private String _columnName;

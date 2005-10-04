@@ -111,7 +111,7 @@ public class HtmlCommandSortHeader
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCommandSortHeader";
     public static final String COMPONENT_FAMILY = "javax.faces.Command";
-    private static final String DEFAULT_RENDERER_TYPE = "javax.faces.Link";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SortHeader";
 
     private String _columnName = null;
     private Boolean _arrow = null;
