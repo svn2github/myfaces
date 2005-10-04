@@ -17,10 +17,12 @@ package org.apache.myfaces.renderkit.html.ext;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.HtmlLinkRendererBase;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 /**
@@ -43,6 +45,16 @@ public class HtmlLinkRenderer
         if (UserRoleUtils.isEnabledOnUserRole(component))
         {
             super.renderCommandLinkStart(facesContext, component, clientId, value, style, styleClass);
+        }
+        else
+        {
+            // render value as required by JSF 1.1 renderkitdocs
+            if(value != null)
+            {
+                ResponseWriter writer = facesContext.getResponseWriter();
+
+                writer.writeText(value.toString(), JSFAttr.VALUE_ATTR);
+            }
         }
     }
 
