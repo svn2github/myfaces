@@ -45,6 +45,14 @@ function jscalendarHideElement( elmID, overDiv ){
         objTop   += objParent.offsetTop;
         objParent = objParent.offsetParent;
       }
+      
+      objParent = obj.offsetParent;
+
+      while( objParent.tagName.toUpperCase() != "BODY" ){
+        objLeft  -= objParent.scrollLeft;
+        objTop   -= objParent.scrollTop;
+        objParent = objParent.parentNode;
+      }
 
       objHeight = obj.offsetHeight;
       objWidth = obj.offsetWidth;
@@ -563,9 +571,41 @@ function jscalendarPopUpCalendar_Show(ctl){
 		leftpos	+= aTag.offsetLeft;
 		toppos += aTag.offsetTop;
 	} while(aTag.tagName!="BODY");
+	
+	var leftScrollOffset = 0;
+	var topScrollOffset = 0;
+	
+	aTag = ctl;
+	do {
+		leftScrollOffset += aTag.scrollLeft;
+		topScrollOffset += aTag.scrollTop;
+		aTag = aTag.parentNode;
+	} while(aTag.tagName!="BODY");
+	
+	var bodyRect = getVisibleBodyRectangle();
+	var cal = document.getElementById("calendar");
+	var top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight +	2;
+	var left = ctl.offsetLeft + leftpos - leftScrollOffset;
 
-	jscalendarCrossobj.left = jscalendarFixedX==-1 ? ctl.offsetLeft	+ leftpos + "px": jscalendarFixedX;
-	jscalendarCrossobj.top = jscalendarFixedY==-1 ?	ctl.offsetTop +	toppos + ctl.offsetHeight +	2 + "px": jscalendarFixedY;
+	if (left + cal.offsetWidth > bodyRect.right)
+	{
+		left = bodyRect.right - cal.offsetWidth;
+	}
+	if (top + cal.offsetHeight > bodyRect.bottom)
+	{
+		top = bodyRect.bottom - cal.offsetHeight;
+	}
+	if (left < bodyRect.left)
+	{
+		left = bodyRect.left;
+	}
+	if (top < bodyRect.top)
+	{
+		top = bodyRect.top;
+	}
+
+	jscalendarCrossobj.left = jscalendarFixedX==-1 ? left + "px": jscalendarFixedX;
+	jscalendarCrossobj.top = jscalendarFixedY==-1 ? top + "px": jscalendarFixedY;
 	jscalendarConstructCalendar (1, jscalendarMonthSelected, jscalendarYearSelected);
 	jscalendarCrossobj.visibility=(jscalendarDom||jscalendarIe)? "visible" : "show";
 
@@ -573,6 +613,58 @@ function jscalendarPopUpCalendar_Show(ctl){
 	jscalendarHideElement( 'APPLET', document.getElementById("calendar") );
 
 	jscalendarBShow = true;
+}
+
+function getVisibleBodyRectangle()
+{
+	var visibleRect = new Rectangle();
+	
+	if (window.pageYOffset != undefined)
+	{
+		//Most non IE
+		visibleRect.top = window.pageYOffset;
+		visibleRect.left = window.pageXOffset;
+	} 
+	else if(document.body && document.body.scrollTop )
+	{
+    	//IE 6 strict mode
+    	visibleRect.top = document.body.scrollTop;
+    	visibleRect.left = document.body.scrollLeft;
+  	} 
+  	else if(document.documentElement && document.documentElement.scrollTop ) 
+    {
+    	//Older IE
+    	visibleRect.top = document.documentElement.scrollTop;
+    	visibleRect.left = document.documentElement.scrollLeft;
+    }
+    
+	if( window.innerWidth != undefined ) 
+	{
+    	//Most non-IE
+    	visibleRect.right = visibleRect.left + window.innerWidth;
+    	visibleRect.bottom = visibleRect.top + window.innerHeight;
+  	} 
+  	else if( document.documentElement && document.documentElement.clientHeight ) 
+    {
+    	//IE 6 strict mode
+    	visibleRect.right = visibleRect.left + document.documentElement.clientWidth;
+    	visibleRect.bottom = visibleRect.top + document.documentElement.clientHeight;
+  	} 
+  	else if( document.body && document.body.clientHeight ) 
+  	{
+	    //IE 4 compatible
+	    visibleRect.right = visibleRect.left + document.body.clientWidth;
+	    visibleRect.bottom = visibleRect.top + document.body.clientHeight;
+  	}
+	return visibleRect;
+}
+
+function Rectangle()
+{
+	this.top = 0;
+	this.left = 0;
+	this.bottom = 0;
+	this.right = 0;
 }
 
 document.onkeypress = function jscalendarHidecal1 () {
