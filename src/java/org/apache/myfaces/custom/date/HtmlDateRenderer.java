@@ -246,7 +246,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
         Locale currentLocale = facesContext.getViewRoot().getLocale();
         UserData userData = (UserData) inputDate.getSubmittedValue();
-        if( userData == null ) {
+        if( userData == null )
             userData = inputDate.getUserData(currentLocale);
 
         String clientId = inputDate.getClientId(facesContext);
