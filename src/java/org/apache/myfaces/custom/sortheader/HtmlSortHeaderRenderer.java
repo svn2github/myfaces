@@ -19,6 +19,7 @@ import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlLinkRendererBase;
+import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -46,7 +47,7 @@ import java.io.IOException;
  *
  */
 public class HtmlSortHeaderRenderer
-        extends HtmlLinkRendererBase
+        extends HtmlLinkRenderer
 {
     private static final String FACET_ASCENDING = "ascending";
     private static final String FACET_DESCENDING = "descending";
