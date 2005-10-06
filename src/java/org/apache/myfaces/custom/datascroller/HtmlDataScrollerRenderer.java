@@ -215,6 +215,12 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
 		if (!scroller.isRenderFacetsIfSinglePage() && scroller.getPageCount() <= 1)
 			return;
+        
+        if (scroller.getFirst() == null && scroller.getFastRewind() == null
+                && scroller.getPrevious() == null && !scroller.isPaginator()
+                && scroller.getNext() == null && scroller.getFastForward() == null
+                && scroller.getLast() == null)
+            return;
 
 		writer.startElement("table", scroller);
 		String styleClass = scroller.getStyleClass();
