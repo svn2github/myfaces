@@ -50,7 +50,7 @@ public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
 
     public String toString(){
     	try{
-    		return stream.toString(getCharacterEncoding());
+            return stream.toString(getCharacterEncoding());
     	}catch(UnsupportedEncodingException e){
     		// an attempt to set an invalid character encoding would have caused this exception before
             throw new RuntimeException("Response accepted invalid character encoding " + getCharacterEncoding());

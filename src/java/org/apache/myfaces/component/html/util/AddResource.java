@@ -110,7 +110,7 @@ public final class AddResource {
 
     /**
      * Adds the given Javascript resource to the document Header.
-     * If the script is already has already been referenced, it's added only once.
+     * If the script has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(Class componentClass, String resourceFileName, FacesContext context){
         addJavaScriptToHeader(componentClass, resourceFileName, false, context);
@@ -118,7 +118,7 @@ public final class AddResource {
 
     /**
      * Adds the given Javascript resource to the document Header.
-     * If the script is already has already been referenced, it's added only once.
+     * If the script has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(Class componentClass, String resourceFileName, boolean defer, FacesContext context){
         addJavaScriptToHeader(componentClass, null, resourceFileName, defer, context);
@@ -126,7 +126,7 @@ public final class AddResource {
 
     /**
      * Adds the given Javascript resource to the document Header.
-     * If the script is already has already been referenced, it's added only once.
+     * If the script has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(String baseDirectory, String resourceFileName, FacesContext context){
         addJavaScriptToHeader(baseDirectory, resourceFileName, false, context);
@@ -134,7 +134,7 @@ public final class AddResource {
 
     /**
      * Adds the given Javascript resource to the document Header.
-     * If the script is already has already been referenced, it's added only once.
+     * If the script has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(String baseDirectory, String resourceFileName, boolean defer, FacesContext context){
         addJavaScriptToHeader(null, baseDirectory, resourceFileName, defer, context);
@@ -142,7 +142,7 @@ public final class AddResource {
 
     /**
      * Adds the given Javascript resource to the document Header.
-     * If the script is already has already been referenced, it's added only once.
+     * If the script has already been referenced, it's added only once.
      */
     public static void addJavaScriptToHeader(Class componentClass,
                                              String baseDirectory, String resourceFileName, boolean defer, FacesContext context){
@@ -162,7 +162,7 @@ public final class AddResource {
 
     /**
      * Adds the given Style Sheet to the document Header.
-     * If the style sheet is already has already been referenced, it's added only once.
+     * If the style sheet has already been referenced, it's added only once.
      */
     public static void addStyleSheet(Class componentClass, String resourceFileName, FacesContext context){
         addStyleSheet(componentClass, null, resourceFileName, context);
@@ -170,7 +170,7 @@ public final class AddResource {
 
     /**
      * Adds the given Style Sheet to the document Header.
-     * If the style sheet is already has already been referenced, it's added only once.
+     * If the style sheet has already been referenced, it's added only once.
      */
     public static void addStyleSheet(String baseDirectory, String resourceFileName, FacesContext context){
         addStyleSheet(null, baseDirectory, resourceFileName, context);
@@ -178,7 +178,7 @@ public final class AddResource {
 
     /**
      * Adds the given Style Sheet to the document Header.
-     * If the style sheet is already has already been referenced, it's added only once.
+     * If the style sheet has already been referenced, it's added only once.
      */
     public static void addStyleSheet(Class componentClass,
                                      String baseDirectory, String resourceFileName, FacesContext context){
@@ -199,7 +199,7 @@ public final class AddResource {
 
     /**
      * Adds the given Style Sheet to the document Header.
-     * If the style sheet is already has already been referenced, it's added only once.
+     * If the style sheet has already been referenced, it's added only once.
      */
     public static void addInlineStyleToHeader(String inlineStyle, FacesContext context){
         AdditionalHeaderInfoToRender cssInfo =
@@ -209,7 +209,7 @@ public final class AddResource {
 
     /**
      * Adds the given Script to the document Header.
-     * If the style sheet is already has already been referenced, it's added only once.
+     * If the style sheet has already been referenced, it's added only once.
      */
     public static void addInlineScriptToHeader(String inlineScript, FacesContext context){
         AdditionalHeaderInfoToRender scriptInfo =
@@ -426,50 +426,37 @@ public final class AddResource {
                                            ExtensionsResponseWrapper responseWrapper,
                                            HttpServletResponse response) throws IOException{
 
-        String originalResponse = responseWrapper.toString();
+        StringBuffer originalResponse = new StringBuffer(responseWrapper.toString());
 
-        // try the most common cases first
+        ParseCallbackListener l = new ParseCallbackListener();
+        ReducedHTMLParser.parse(originalResponse, l);
+
+        int headerInsertPosition = l.getHeaderInsertPosition();
+        int bodyInsertPosition = l.getBodyInsertPosition();
+        int beforeBodyPosition = l.getBeforeBodyPosition();
         boolean addHeaderTags = false;
-        int insertPosition = originalResponse.indexOf( "</head>" );
 
-        if( insertPosition < 0 ){
-            insertPosition = originalResponse.indexOf( "</HEAD>" );
-
-            if( insertPosition < 0 ){
-                insertPosition = originalResponse.indexOf( "<body" );
+        if(headerInsertPosition == -1)
+        {
+            if(beforeBodyPosition!=-1)
+            {
                 addHeaderTags = true;
-
-                if( insertPosition < 0 ){
-                    insertPosition = originalResponse.indexOf( "<BODY" );
-                    addHeaderTags = true;
-
-                    if( insertPosition < 0 ){
-                        // the two most common cases head/HEAD and body/BODY did not work, so we try it with lowercase
-                       String lowerCase = originalResponse.toLowerCase(response.getLocale());
-                       insertPosition = lowerCase.indexOf( "</head>" );
-
-                       if( insertPosition < 0 ){
-                           insertPosition = lowerCase.indexOf( "<body" );
-                           addHeaderTags = true;
-                       }
-                    }
-                }
+                headerInsertPosition=beforeBodyPosition;
             }
-
-            if( insertPosition < 0 ){
+            else
+            {
                 log.warn("Response has no <head> or <body> tag:\n"+originalResponse);
-                insertPosition = -1;
             }
         }
 
         PrintWriter writer = response.getWriter();
 
-        if( insertPosition > 0 )
-            writer.write( originalResponse.substring(0, insertPosition) );
-        if(insertPosition>=0 && addHeaderTags )
+        if( headerInsertPosition > 0 )
+            writer.write( originalResponse.substring(0, headerInsertPosition) );
+        if(headerInsertPosition >=0 && addHeaderTags )
             writer.write("<head>");
 
-        if(insertPosition>=0)
+        if(headerInsertPosition >= 0)
         {
             for(Iterator i = getAdditionalHeaderInfoToRender(request).iterator(); i.hasNext() ;){
                 AdditionalHeaderInfoToRender headerInfo = (AdditionalHeaderInfoToRender) i.next();
@@ -478,10 +465,11 @@ public final class AddResource {
             }
         }
 
-        if(insertPosition>=0 && addHeaderTags)
+        if(headerInsertPosition >=0 && addHeaderTags)
             writer.write("</head>");
 
-        writer.write( insertPosition > 0 ? originalResponse.substring(insertPosition) : originalResponse );
+        writer.write( headerInsertPosition > 0 ?
+                originalResponse.substring(headerInsertPosition) : originalResponse.toString());
     }
 
     private static class AdditionalHeaderInfoToRender{
@@ -635,6 +623,60 @@ public final class AddResource {
                 default:
                     log.warn("Unknown type:"+type);
             }
+        }
+    }
+
+    private static class ParseCallbackListener implements CallbackListener
+    {
+        private int headerInsertPosition=-1;
+        private int bodyInsertPosition=-1;
+        private int beforeBodyPosition=-1;
+
+        public void openedStartTag(int charIndex, int tagIdentifier)
+        {
+            if(tagIdentifier==ReducedHTMLParser.BODY_TAG)
+            {
+                beforeBodyPosition = charIndex;
+            }
+        }
+
+        public void closedStartTag(int charIndex, int tagIdentifier)
+        {
+            if(tagIdentifier== ReducedHTMLParser.HEAD_TAG)
+            {
+                headerInsertPosition = charIndex+1;
+            }
+            else if(tagIdentifier==ReducedHTMLParser.BODY_TAG)
+            {
+                bodyInsertPosition = charIndex+1;
+            }
+        }
+
+        public void openedEndTag(int charIndex, int tagIdentifier)
+        {
+        }
+
+        public void closedEndTag(int charIndex, int tagIdentifier)
+        {
+        }
+
+        public void attribute(int charIndex, int tagIdentifier, String key, String value)
+        {
+        }
+
+        public int getHeaderInsertPosition()
+        {
+            return headerInsertPosition;
+        }
+
+        public int getBodyInsertPosition()
+        {
+            return bodyInsertPosition;
+        }
+
+        public int getBeforeBodyPosition()
+        {
+            return beforeBodyPosition;
         }
     }
 }

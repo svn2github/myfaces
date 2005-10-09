@@ -209,7 +209,7 @@ SimpleDateFormat.prototype = {
 
     _parseNum: function(context, dateStr, posCount, dateIndex)
     {
-        for(var i=posCount;i>0;i--)
+        for(var i=Math.min(posCount,dateStr.length-dateIndex);i>0;i--)
         {
             var numStr = dateStr.substring(dateIndex,dateIndex+i);
 
