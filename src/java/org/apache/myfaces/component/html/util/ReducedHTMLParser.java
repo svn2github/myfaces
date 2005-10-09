@@ -1,0 +1,200 @@
+/**
+ * Copyright 2004 by Irian Marinschek & Spiegl Software OEG
+ */
+package org.apache.myfaces.component.html.util;
+
+/**
+ * @author Martin Marinschek
+ * @version $Revision: $ $Date: $
+ *          <p/>
+ *          $Log: $
+ */
+class ReducedHTMLParser
+{
+    public static final int BODY_TAG = 0;
+    public static final int HEAD_TAG = 1;
+    public static final int SCRIPT_TAG = 2;
+
+    public static void parse(CharSequence seq, CallbackListener l)
+    {
+        char[] lastChars = new char[10];
+        int currentTagIdentifier = -1;
+        boolean openedTag = false;
+        boolean openedStartTag=false;
+        int openedTagIndex=-1;
+        boolean closeSymbolEncountered = false;
+        boolean commentMode = false;
+        boolean attributeMode = false;
+        char attributeOpenChar = 0;
+        boolean scriptMode = false;
+
+
+        for(int i=0; i<seq.length();i++)
+        {
+            char c = seq.charAt(i);
+
+            if(!commentMode && !attributeMode &&
+                    lastChars[1]=='-' &&
+                        lastChars[0]=='-' &&
+                                c=='>')
+            {
+                commentMode = true;
+            }
+            else if(commentMode && !attributeMode &&
+                    lastChars[2]=='<' &&
+                        lastChars[1]=='!' &&
+                            lastChars[0]=='-' &&
+                                c=='-')
+            {
+                commentMode = false;
+            }
+            else if(!commentMode && !scriptMode && !attributeMode && !openedTag && c=='<')
+            {
+                openedTag = true;
+                openedTagIndex = i;
+            }
+            else if(!commentMode && !scriptMode && !attributeMode && openedTag && c=='>')
+            {
+                if(currentTagIdentifier != -1)
+                {
+                    if(openedStartTag)
+                    {
+                        l.closedStartTag(i,currentTagIdentifier);
+
+                        if(closeSymbolEncountered)
+                        {
+                            if(currentTagIdentifier==SCRIPT_TAG)
+                                scriptMode = false;
+
+                            l.closedEndTag(i,currentTagIdentifier);
+                        }
+                    }
+                    else
+                    {
+                        if(currentTagIdentifier==SCRIPT_TAG)
+                            scriptMode = false;
+
+                        l.closedEndTag(i,currentTagIdentifier);
+                    }
+                }
+
+                openedTagIndex = -1;
+                openedTag = false;
+                openedStartTag = false;
+                currentTagIdentifier = -1;
+                closeSymbolEncountered = false;
+            }
+            else if(!commentMode && !scriptMode && openedTag && !attributeMode && (c=='"' || c=='\''))
+            {
+                attributeMode = true;
+                attributeOpenChar = c;
+            }
+            else if(!commentMode && !scriptMode && openedTag && attributeMode && (c=='"' || c=='\'') && lastChars[0]!='\\')
+            {
+                if(c==attributeOpenChar)
+                {
+                    attributeMode = false;
+                }
+            }
+            else if(!commentMode && !scriptMode && !attributeMode && openedTag && c=='/')
+            {
+                closeSymbolEncountered = true;
+            }
+            else if(!commentMode && !scriptMode && !attributeMode && openedTag &&
+                    (lastChars[2]=='b' || lastChars[2]=='B') &&
+                        (lastChars[1]=='o' || lastChars[1]=='O') &&
+                            (lastChars[0]=='d' || lastChars[0]=='D') &&
+                                (c=='y' || c=='Y'))
+            {
+                currentTagIdentifier = BODY_TAG;
+
+                openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
+                        currentTagIdentifier);
+
+
+            }
+            else if(!commentMode && !scriptMode && !attributeMode && openedTag &&
+                    (lastChars[2]=='h' || lastChars[2]=='H') &&
+                        (lastChars[1]=='e' || lastChars[1]=='E')&&
+                            (lastChars[0]=='a' || lastChars[1]=='A')&&
+                                (c=='d' || c=='D'))
+            {
+                currentTagIdentifier = HEAD_TAG;
+
+                openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
+                        currentTagIdentifier);
+            }
+            else if(!commentMode && !attributeMode && openedTag &&
+                (lastChars[4]=='s' || lastChars[4]=='S') &&
+                    (lastChars[3]=='c' || lastChars[3]=='C') &&
+                        (lastChars[2]=='r' || lastChars[2]=='R') &&
+                            (lastChars[1]=='i' || lastChars[1]=='I')&&
+                                (lastChars[0]=='p' || lastChars[0]=='P')&&
+                                    (c=='t' || c=='T'))
+            {
+                currentTagIdentifier = SCRIPT_TAG;
+
+                scriptMode = true;
+
+                openedStartTag = handleTag(closeSymbolEncountered, l,
+                        openedTagIndex, openedStartTag, currentTagIdentifier);
+            }
+
+            lastChars[9]=lastChars[8];
+            lastChars[8]=lastChars[7];
+            lastChars[7]=lastChars[6];
+            lastChars[6]=lastChars[5];
+            lastChars[5]=lastChars[6];
+            lastChars[4]=lastChars[5];
+            lastChars[3]=lastChars[4];
+            lastChars[2]=lastChars[1];
+            lastChars[1]=lastChars[0];
+            lastChars[0]=c;
+        }
+    }
+
+    private static boolean handleTag(boolean closeSymbolEncountered, CallbackListener l,
+                                     int openedTagIndex, boolean openedStartTag, int currentTagIdentifier)
+    {
+        if(closeSymbolEncountered)
+        {
+            l.openedEndTag(openedTagIndex,currentTagIdentifier);
+        }
+        else
+        {
+            l.openedStartTag(openedTagIndex,currentTagIdentifier);
+            openedStartTag = true;
+        }
+        return openedStartTag;
+    }
+
+    public static void main(String[] args)
+    {
+        ReducedHTMLParser.parse(new StringBuffer("<html><head></head><body =\"xx'<body/>'x\"><xxx></xxx></body></html"),new CallbackListener(){
+            public void openedStartTag(int charIndex, int tagIdentifier)
+            {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            public void closedStartTag(int charIndex, int tagIdentifier)
+            {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            public void openedEndTag(int charIndex, int tagIdentifier)
+            {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            public void closedEndTag(int charIndex, int tagIdentifier)
+            {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            public void attribute(int charIndex, int tagIdentifier, String key, String value)
+            {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
+    }
+}
