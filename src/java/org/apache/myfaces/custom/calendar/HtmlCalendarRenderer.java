@@ -25,6 +25,7 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.util.MessageUtils;
 import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
+import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.faces.application.Application;
@@ -95,7 +96,7 @@ public class HtmlCalendarRenderer
 
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
 
-        String[] weekdays = mapWeekdays(symbols);
+        String[] weekdays = mapShortWeekdays(symbols);
         String[] months = mapMonths(symbols);
 
         if(inputCalendar.isRenderAsPopup())
@@ -262,6 +263,8 @@ public class HtmlCalendarRenderer
         // Add the javascript and CSS pages
         AddResource.addStyleSheet(HtmlCalendarRenderer.class, "WH/theme.css", facesContext);
         AddResource.addStyleSheet(HtmlCalendarRenderer.class, "DB/theme.css", facesContext);
+        AddResource.addJavaScriptToHeader(PrototypeResourceLoader.class, "prototype.js", facesContext);
+        AddResource.addJavaScriptToHeader(HtmlCalendarRenderer.class, "date.js", facesContext);
         AddResource.addJavaScriptToHeader(HtmlCalendarRenderer.class, "popcalendar_init.js", facesContext);
 
         StringBuffer imageScript = new StringBuffer();
@@ -303,11 +306,11 @@ public class HtmlCalendarRenderer
 
         if(realFirstDayOfWeek==0)
         {
-            weekDays = mapWeekdaysStartingWithSunday(symbols);
+            weekDays = mapShortWeekdaysStartingWithSunday(symbols);
         }
         else if(realFirstDayOfWeek==1)
         {
-            weekDays = mapWeekdays(symbols);
+            weekDays = mapShortWeekdays(symbols);
         }
         else
             throw new IllegalStateException("Week may only start with sunday or monday.");
@@ -340,6 +343,21 @@ public class HtmlCalendarRenderer
                 setStringVariable(script, "jscalendarSelectDateMessage",inputCalendar.getPopupSelectDateMessage());
         }
 
+        setVariable(script,"jscalendarDateFormatSymbols","new DateFormatSymbols()");
+
+        defineStringArray(script,"jscalendarDateFormatSymbols.weekdays",
+                mapWeekdaysStartingWithSunday(symbols));
+        defineStringArray(script,"jscalendarDateFormatSymbols.shortWeekdays",
+                mapShortWeekdaysStartingWithSunday(symbols));
+        defineStringArray(script,"jscalendarDateFormatSymbols.shortMonths",
+                mapShortMonths(symbols));
+        defineStringArray(script,"jscalendarDateFormatSymbols.months",
+                mapMonths(symbols));
+        defineStringArray(script,"jscalendarDateFormatSymbols.eras",
+                symbols.getEras());
+        defineStringArray(script,"jscalendarDateFormatSymbols.ampms",
+                symbols.getAmPmStrings());
+
         return script.toString();
     }
 
@@ -348,6 +366,14 @@ public class HtmlCalendarRenderer
         script.append(name);
         script.append(" = ");
         script.append(value);
+        script.append(";\n");
+    }
+
+    private static void setVariable(StringBuffer script, String name, Object value)
+    {
+        script.append(name);
+        script.append(" = ");
+        script.append(value.toString());
         script.append(";\n");
     }
 
@@ -664,7 +690,7 @@ public class HtmlCalendarRenderer
         }
     }
 
-    private static String[] mapWeekdays(DateFormatSymbols symbols)
+    private static String[] mapShortWeekdays(DateFormatSymbols symbols)
     {
         String[] weekdays = new String[7];
 
@@ -681,11 +707,28 @@ public class HtmlCalendarRenderer
         return weekdays;
     }
 
-    private static String[] mapWeekdaysStartingWithSunday(DateFormatSymbols symbols)
+    private static String[] mapShortWeekdaysStartingWithSunday(DateFormatSymbols symbols)
     {
         String[] weekdays = new String[7];
 
         String[] localeWeekdays = symbols.getShortWeekdays();
+
+        weekdays[0] = localeWeekdays[Calendar.SUNDAY];
+        weekdays[1] = localeWeekdays[Calendar.MONDAY];
+        weekdays[2] = localeWeekdays[Calendar.TUESDAY];
+        weekdays[3] = localeWeekdays[Calendar.WEDNESDAY];
+        weekdays[4] = localeWeekdays[Calendar.THURSDAY];
+        weekdays[5] = localeWeekdays[Calendar.FRIDAY];
+        weekdays[6] = localeWeekdays[Calendar.SATURDAY];
+
+        return weekdays;
+    }
+
+    private static String[] mapWeekdaysStartingWithSunday(DateFormatSymbols symbols)
+    {
+        String[] weekdays = new String[7];
+
+        String[] localeWeekdays = symbols.getWeekdays();
 
         weekdays[0] = localeWeekdays[Calendar.SUNDAY];
         weekdays[1] = localeWeekdays[Calendar.MONDAY];
@@ -703,6 +746,28 @@ public class HtmlCalendarRenderer
         String[] months = new String[12];
 
         String[] localeMonths = symbols.getMonths();
+
+        months[0] = localeMonths[Calendar.JANUARY];
+        months[1] = localeMonths[Calendar.FEBRUARY];
+        months[2] = localeMonths[Calendar.MARCH];
+        months[3] = localeMonths[Calendar.APRIL];
+        months[4] = localeMonths[Calendar.MAY];
+        months[5] = localeMonths[Calendar.JUNE];
+        months[6] = localeMonths[Calendar.JULY];
+        months[7] = localeMonths[Calendar.AUGUST];
+        months[8] = localeMonths[Calendar.SEPTEMBER];
+        months[9] = localeMonths[Calendar.OCTOBER];
+        months[10] = localeMonths[Calendar.NOVEMBER];
+        months[11] = localeMonths[Calendar.DECEMBER];
+
+        return months;
+    }
+
+    public static String[] mapShortMonths(DateFormatSymbols symbols)
+    {
+        String[] months = new String[12];
+
+        String[] localeMonths = symbols.getShortMonths();
 
         months[0] = localeMonths[Calendar.JANUARY];
         months[1] = localeMonths[Calendar.FEBRUARY];
@@ -800,16 +865,7 @@ public class HtmlCalendarRenderer
                 popupDateFormat = defaultDateFormat.toPattern();
             }
 
-            StringBuffer jsPopupDateFormat = new StringBuffer();
-
-            for(int i=0;i<popupDateFormat.length();i++)
-            {
-                char c = popupDateFormat.charAt(i);
-
-                if(c=='M' || c=='d' || c=='y' || c==' ' || c=='.' || c=='/' || c=='-')
-                    jsPopupDateFormat.append(c);
-            }
-            return jsPopupDateFormat.toString().trim();
+            return popupDateFormat;
         }
 
         public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o)
@@ -838,7 +894,7 @@ public class HtmlCalendarRenderer
         private static SimpleDateFormat createStandardDateFormat(FacesContext facesContext)
         {
             DateFormat dateFormat;
-            dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT,
+            dateFormat = DateFormat.getDateInstance(DateFormat.SHORT,
                     facesContext.getViewRoot().getLocale());
 
             if(dateFormat instanceof SimpleDateFormat)
@@ -847,5 +903,14 @@ public class HtmlCalendarRenderer
                 return new SimpleDateFormat("dd.MM.yyyy");
         }
 
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        SimpleDateFormat format = new SimpleDateFormat("M/d/yy h:mm a");
+
+        System.out.println(format.get2DigitYearStart());
+
+        System.out.println(format.format(format.parse("10/10/2005 6:00 AM")));
     }
 }

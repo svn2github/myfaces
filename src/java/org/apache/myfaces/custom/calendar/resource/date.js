@@ -1,18 +1,18 @@
 /*
- * Copyright 2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright 2004 The Apache Software Foundation.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 var DateFormatSymbols = Class.create();
 DateFormatSymbols.prototype = {
@@ -20,17 +20,20 @@ DateFormatSymbols.prototype = {
     {
         this.eras = new Array('BC', 'AD');
         this.months = new Array('January', 'February', 'March', 'April',
-                'May', 'June', 'July', 'August', 'October',
+                'May', 'June', 'July', 'August', 'September', 'October',
                 'November', 'December', 'Undecimber');
-        this.months = new Array('Jan', 'Feb', 'Mar', 'Apr',
-                'May', 'Jun', 'Jul', 'Aug', 'Oct',
+        this.shortMonths = new Array('Jan', 'Feb', 'Mar', 'Apr',
+                'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
                 'Nov', 'Dec', 'Und');
-        this.weekdays = new Array('', 'Sunday', 'Monday', 'Tuesday',
+        this.weekdays = new Array('Sunday', 'Monday', 'Tuesday',
                 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        this.shortWeekdays = new Array('', 'Sun', 'Mon', 'Tue',
+        this.shortWeekdays = new Array('Sun', 'Mon', 'Tue',
                 'Wed', 'Thu', 'Fri', 'Sat');
         this.ampms = new Array('AM', 'PM');
         this.zoneStrings = new Array(new Array(0, 'long-name', 'short-name'));
+        var threshold = new Date();
+        threshold.setYear(threshold.getYear()-80);
+        this.twoDigitYearStart = threshold;
     },
 }
 
@@ -41,8 +44,10 @@ SimpleDateFormatParserContext.prototype = {
         this.newIndex=0;
         this.retValue=0;
         this.year=0;
+        this.ambigousYear=false;
         this.month=0;
         this.day=0;
+        this.dayOfWeek=0;
         this.hour=0;
         this.min=0;
         this.sec=0;
@@ -56,7 +61,7 @@ SimpleDateFormat.prototype = {
     initialize: function(pattern, dateFormatSymbols)
     {
         this.pattern = pattern;
-        this.dateFormatSymbols = dateFormatSymbols;
+        this.dateFormatSymbols = dateFormatSymbols ? dateFormatSymbols : new DateFormatSymbols();
     },
 
 
@@ -74,16 +79,10 @@ SimpleDateFormat.prototype = {
 
         if(date != null)
         {
-            var yearStr = date.getYear()+"";
-
-            if (yearStr.length < 4)
-            {
-                  yearStr=(parseInt(yearStr)+1900)+"";
-            }
-
-            context.year = parseInt(yearStr);
+            context.year = this._fullYearFromDate(date.getYear());
             context.month = date.getMonth();
             context.day = date.getDate();
+            context.dayOfWeek = date.getDay();
             context.hour = date.getHours();
             context.min = date.getMinutes();
             context.sec = date.getSeconds();
@@ -170,12 +169,22 @@ SimpleDateFormat.prototype = {
 
     parse: function(dateStr)
     {
+        if(!dateStr || dateStr.length==0)
+            return null;
+
         var context = this._handle(dateStr, null, true);
 
+        if(context.retvalue==-1)
+            return null;
+
+        this._adjustTwoDigitYear(context);
+
+        return this._createDateFromContext(context);
+    },
+    _createDateFromContext: function(context) {
         return new Date(context.year, context.month,
                 context.day,context.hour,context.min,context.sec);
     },
-
     format: function(date)
     {
         var context = this._handle(null, date, false);
@@ -183,25 +192,17 @@ SimpleDateFormat.prototype = {
         return context.dateStr;
     },
 
-    parseString: function(context, dateStr, dateIndex, strings)
+    _parseString: function(context, dateStr, dateIndex, strings)
     {
-        for(var i=0; i<strings.length;i++)
-        {
-            var currentStrings = strings[0];
-
-            for (var j = 0; j < currentStrings.length; j++)
-            {
-                var currentString = currentStrings[j];
-
-                if(dateStr.substring(dateIndex,dateIndex+currentString.length).equals(currentString))
-                {
-                    context.newIndex=dateIndex+currentString.length;
-                    context.retValue=j;
-                    return context;
-                }
-            }
+        var fragment = dateStr.substr(dateIndex);
+        var index = this._prefixOf(strings, fragment);
+        if (index != -1) {
+          context.retValue = index;
+          context.newIndex = dateIndex + strings[index].length;
+          return context;
         }
 
+        context.retValue=-1;
         context.newIndex=-1;
         return context;
     },
@@ -210,17 +211,18 @@ SimpleDateFormat.prototype = {
     {
         for(var i=posCount;i>0;i--)
         {
-            var numStr = dateStr.substring(dateIndex,dateIndex+posCount);
+            var numStr = dateStr.substring(dateIndex,dateIndex+i);
 
-            context.retValue = parseInt(numStr);
+            context.retValue = this._parseInt(numStr);
 
-            if(context.retValue == Number.NaN)
+            if(context.retValue == -1)
                 continue;
 
-            context.newIndex = dateIndex+posCount;
+            context.newIndex = dateIndex+i;
             return context;
         }
 
+        context.retValue = -1;
         context.newIndex = -1;
         return context;
     },
@@ -235,24 +237,74 @@ SimpleDateFormat.prototype = {
         {
             if(parse)
             {
+                /* XXX @Arvid: whatever we do, we need to try to parse
+                    the full year format - length means nothing for
+                    parsing, only for formatting, so says SimpleDateFormat javadoc.
+                    only if we run into problems as there are no separator chars, we
+                    should use exact length parsing - how are we going to handle this?
+
+                    Additionally, the threshold was not quite correct - it needs to
+                    be set to current date - 80years...
+
+                    this is done after parsing now!
+
+                if (patternSub.length <= 3) {
+                  this._parseNum(context, dateStr,2,dateIndex);
+                  context.year = (context.retValue < 26)
+                      ? 2000 + context.retValue : 1900 + context.retValue;
+                } else {
+                  this._parseNum(context, dateStr,4,dateIndex);
+                  context.year = context.retValue;
+                }*/
                 this._parseNum(context, dateStr,4,dateIndex);
-                context.year = context.retValue;
+
+                if((context.newIndex-dateIndex)<4)
+                {
+                    context.year = context.retValue+1900;
+                    context.ambigousYear = true;
+                }
+                else
+                {
+                    context.year = context.retValue;
+                }
             }
             else
             {
-                this._formatNum(context,context.year,patternSub.length);
+                this._formatNum(context,context.year,patternSub.length <= 3 ? 2 : 4,true);
             }
         }
         else if(patternSub.charAt(0)=='M')
         {
             if(parse)
             {
+              if (patternSub.length == 3) {
+                var fragment = dateStr.substr(dateIndex, 3);
+                var index = this._indexOf(this.dateFormatSymbols.shortMonths, fragment);
+                if (index != -1) {
+                  context.month = index;
+                  context.newIndex = dateIndex + 3;
+                }
+              } else if (patternSub.length >= 4) {
+                var fragment = dateStr.substr(dateIndex);
+                var index = this._prefixOf(this.dateFormatSymbols.months, fragment);
+                if (index != -1) {
+                  context.month = index;
+                  context.newIndex = dateIndex + this.dateFormatSymbols.months[index].length;
+                }
+              } else {
                 this._parseNum(context, dateStr,2,dateIndex);
                 context.month = context.retValue-1;
+              }
             }
             else
             {
-                this._formatNum(context,context.month+1,patternSub.length);
+                if (patternSub.length == 3) {
+                  context.dateStr += this.dateFormatSymbols.shortMonths[context.month];
+                } else if (patternSub.length >= 4) {
+                  context.dateStr += this.dateFormatSymbols.months[context.month];
+                } else {
+                  this._formatNum(context,context.month+1,patternSub.length);
+                }
             }
         }
         else if(patternSub.charAt(0)=='d')
@@ -265,6 +317,36 @@ SimpleDateFormat.prototype = {
             else
             {
                 this._formatNum(context,context.day,patternSub.length);
+            }
+        }
+        else if(patternSub.charAt(0)=='E')
+        {
+            if(parse)
+            {
+              // XXX dayOfWeek is not used to generate date at the moment
+              if (patternSub.length <= 3) {
+                var fragment = dateStr.substr(dateIndex, 3);
+                var index = this._indexOf(this.dateFormatSymbols.shortWeekdays, fragment);
+                if (index != -1) {
+                  context.dayOfWeek = index;
+                  context.newIndex = dateIndex + 3;
+                }
+              } else {
+                var fragment = dateStr.substr(dateIndex);
+                var index = this._prefixOf(this.dateFormatSymbols.weekdays, fragment);
+                if (index != -1) {
+                  context.dayOfWeek = index;
+                  context.newIndex = dateIndex + this.dateFormatSymbols.weekdays[index].length;
+                }
+              }
+            }
+            else
+            {
+              if (patternSub.length <= 3) {
+                context.dateStr += this.dateFormatSymbols.shortWeekdays[context.dayOfWeek];
+              } else {
+                context.dateStr += this.dateFormatSymbols.weekdays[context.dayOfWeek];
+              }
             }
         }
         else if(patternSub.charAt(0)=='H' ||
@@ -308,12 +390,12 @@ SimpleDateFormat.prototype = {
         {
             if(parse)
             {
-                parseString(context, dateStr,dateIndex,new Array(ampms));
+                this._parseString(context, dateStr,dateIndex,this.dateFormatSymbols.ampms);
                 context.ampm = context.retValue;
             }
             else
             {
-                this._formatNum(context,context.ampm,patternSub.length);
+                context.dateStr += this.dateFormatSymbols.ampms[context.ampm];
             }
         }
         else
@@ -330,13 +412,77 @@ SimpleDateFormat.prototype = {
         }
     },
 
-    _formatNum: function (context, num, length)
+    _formatNum: function (context, num, length, ensureLength)
     {
         var str = num+"";
 
         while(str.length<length)
             str="0"+str;
 
+        // XXX do we have to distinguish left and right 'cutting'
+        //ensureLength - enable cutting only for parameters like the year, the other
+        if (ensureLength && str.length > length) {
+          str = str.substr(str.length - length);
+        }
+
         context.dateStr+=str;
+    },
+
+    // perhaps add to Array.prototype
+    _indexOf: function (array, value) {
+      for (var i = 0; i < array.length; ++i) {
+        if (array[i] == value) {
+          return i;
+        }
+      }
+      return -1;
+    },
+
+    _prefixOf: function (array, value) {
+      for (var i = 0; i < array.length; ++i) {
+        if (value.indexOf(array[i]) == 0) {
+          return i;
+        }
+      }
+      return -1;
+    },
+
+    _parseInt: function(value) {
+        var sum = 0;
+
+        for(var i=0;i<value.length;i++)
+        {
+            var c = value.charAt(i);
+
+            if(c<'0'||c>'9')
+            {
+                return -1;
+            }
+            sum = sum*10+(c-'0');
+        }
+
+        return sum;
+    },
+    _fullYearFromDate: function(year) {
+
+        var yearStr = year+"";
+
+        if (yearStr.length < 4)
+        {
+            return year+1900;
+        }
+
+        return year;
+    },
+    _adjustTwoDigitYear: function(context) {
+
+        if(context.ambigousYear)
+        {
+            var date = this._createDateFromContext(context);
+            var threshold = this.dateFormatSymbols.twoDigitYearStart;
+
+            if(date.getTime()<threshold.getTime())
+                context.year += 100;
+        }
     }
 }

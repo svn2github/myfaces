@@ -6,21 +6,24 @@
 
 var	jscalendarCrossobj, jscalendarCrossMonthObj, jscalendarCrossYearObj,
     jscalendarMonthSelected, jscalendarYearSelected, jscalendarDateSelected,
+    jscalendarHoursSelected=0, jscalendarMinutesSelected=0, jscalendarSecondsSelected=0,
     jscalendarOmonthSelected, jscalendarOyearSelected, jscalendarOdateSelected,
     jscalendarMonthConstructed, jscalendarYearConstructed, jscalendarIntervalID1, jscalendarIntervalID2,
     jscalendarTimeoutID1, jscalendarTimeoutID2, jscalendarCtlToPlaceValue, jscalendarCtlNow, jscalendarDateFormat, jscalendarNStartingYear
 
-var	jscalendarBPageLoaded=false
-var	jscalendarIe=document.all
-var	jscalendarDom=document.getElementById
+var	jscalendarBPageLoaded=false;
+var	jscalendarIe=document.all;
+var	jscalendarDom=document.getElementById;
 
-var	jscalendarNs4=document.layers
-var	jscalendarToday =	new	Date()
-var	jscalendarDateNow	 = jscalendarToday.getDate()
-var	jscalendarMonthNow = jscalendarToday.getMonth()
-var	jscalendarYearNow	 = jscalendarToday.getYear()
-var	jscalendarImgsrc = new Array("drop1.gif","drop2.gif","left1.gif","left2.gif","right1.gif","right2.gif")
-var	jscalendarImg	= new Array()
+var	jscalendarNs4=document.layers;
+var jscalendarDateFormatSymbols = null;
+var	jscalendarToday =	new	Date();
+var jscalendarTodayFormat = "dd.MM.yyyy";
+var	jscalendarDateNow	 = jscalendarToday.getDate();
+var	jscalendarMonthNow = jscalendarToday.getMonth();
+var	jscalendarYearNow	 = jscalendarToday.getYear();
+var	jscalendarImgsrc = new Array("drop1.gif","drop2.gif","left1.gif","left2.gif","right1.gif","right2.gif");
+var	jscalendarImg	= new Array();
 
 var jscalendarBShow = false;
 
@@ -130,7 +133,7 @@ function jscalendarInit(){
 		jscalendarYearConstructed=false;
 
 		if (jscalendarShowToday==1)
-			document.getElementById("lblToday").innerHTML =	jscalendarTodayString + " <a onmousemove='window.status=\""+jscalendarGotoString+"\"' onmouseout='window.status=\"\"' title='"+jscalendarGotoString+"' class='"+jscalendarThemePrefix+"-today-style' href='javascript:jscalendarMonthSelected=jscalendarMonthNow;jscalendarYearSelected=jscalendarYearNow;jscalendarConstructCalendar();'>"+jscalendarDayName[(jscalendarToday.getDay()-jscalendarStartAt==-1)?6:(jscalendarToday.getDay()-jscalendarStartAt)]+", " + jscalendarDateNow + " " + jscalendarMonthName[jscalendarMonthNow].substring(0,3)	+ "	" +	jscalendarYearNow	+ "</a>";
+			document.getElementById("lblToday").innerHTML =	jscalendarTodayString + " <a onmousemove='window.status=\""+jscalendarGotoString+"\"' onmouseout='window.status=\"\"' title='"+jscalendarGotoString+"' class='"+jscalendarThemePrefix+"-today-style' href='javascript:jscalendarMonthSelected=jscalendarMonthNow;jscalendarYearSelected=jscalendarYearNow;jscalendarConstructCalendar();'>"+jscalendarTodayIsDate()+"</a>";
 
 		var sHTML1 ="<span id='spanLeft'  class='"+jscalendarThemePrefix+"-title-control-normal-style' onmouseover='jscalendarSwapImage(\"changeLeft\",\"left2.gif\");  this.className=\""+jscalendarThemePrefix+"-title-control-select-style\"; window.status=\""+jscalendarScrollLeftMessage+"\"' onclick='javascript:jscalendarDecMonth()' onmouseout='clearInterval(jscalendarIntervalID1);jscalendarSwapImage(\"changeLeft\",\"left1.gif\"); this.className=\""+jscalendarThemePrefix+"-title-control-normal-style\"; window.status=\"\"' onmousedown='clearTimeout(jscalendarTimeoutID1);jscalendarTimeoutID1=setTimeout(\"jscalendarStartDecMonth()\",500)'	onmouseup='clearTimeout(jscalendarTimeoutID1);clearInterval(jscalendarIntervalID1)'>&nbsp<IMG id='changeLeft' src='"+jscalendarImgDir+"left1.gif' width=10 height=11 border=0>&nbsp</span>&#160;"
 		sHTML1+="<span id='spanRight' class='"+jscalendarThemePrefix+"-title-control-normal-style' onmouseover='jscalendarSwapImage(\"changeRight\",\"right2.gif\");this.className=\""+jscalendarThemePrefix+"-title-control-select-style\"; window.status=\""+jscalendarScrollRightMessage+"\"' onmouseout='clearInterval(jscalendarIntervalID1);jscalendarSwapImage(\"changeRight\",\"right1.gif\"); this.className=\""+jscalendarThemePrefix+"-title-control-normal-style\"; window.status=\"\"' onclick='jscalendarIncMonth()' onmousedown='clearTimeout(jscalendarTimeoutID1);jscalendarTimeoutID1=setTimeout(\"jscalendarStartIncMonth()\",500)'	onmouseup='clearTimeout(jscalendarTimeoutID1);clearInterval(jscalendarIntervalID1)'>&nbsp<IMG id='changeRight' src='"+jscalendarImgDir+"right1.gif'	width=10 height=11 border=0>&nbsp</span>&nbsp"
@@ -141,6 +144,11 @@ function jscalendarInit(){
 
 		jscalendarBPageLoaded = true;
 	}
+}
+
+function jscalendarTodayIsDate(){
+    var format = new SimpleDateFormat(jscalendarTodayFormat,jscalendarDateFormatSymbols);
+    return format.format(jscalendarToday);
 }
 
 function jscalendarHideCalendar(){
@@ -157,25 +165,8 @@ function jscalendarPadZero(num){
 }
 
 function jscalendarConstructDate(d,m,y){
-	var sTmp = jscalendarDateFormat
-	sTmp = sTmp.replace	("dd","<e>")
-	sTmp = sTmp.replace	("d","<d>")
-	sTmp = sTmp.replace	("<e>",jscalendarPadZero(d))
-	sTmp = sTmp.replace	("<d>",d)
-	sTmp = sTmp.replace	("mmmm","<p>")
-	sTmp = sTmp.replace	("MMMM","<p>")
-	sTmp = sTmp.replace	("mmm","<o>")
-	sTmp = sTmp.replace	("MMM","<o>")
-	sTmp = sTmp.replace	("mm","<n>")
-	sTmp = sTmp.replace	("MM","<n>")
-	sTmp = sTmp.replace	("m","<m>")
-	sTmp = sTmp.replace	("M","<m>")
-	sTmp = sTmp.replace	("<m>",m+1)
-	sTmp = sTmp.replace	("<n>",jscalendarPadZero(m+1))
-	sTmp = sTmp.replace	("<o>",jscalendarMonthName[m])
-	sTmp = sTmp.replace	("<p>",jscalendarMonthName2[m])
-	sTmp = sTmp.replace	("yyyy",y)
-	return sTmp.replace ("yy",jscalendarPadZero(y%100))
+    var format = new SimpleDateFormat(jscalendarDateFormat,jscalendarDateFormatSymbols);
+    return format.format(new Date(y,m,d,jscalendarHoursSelected,jscalendarMinutesSelected,jscalendarSecondsSelected));
 }
 
 function jscalendarCloseCalendar() {
@@ -466,69 +457,29 @@ function jscalendarPopUpCalendar(ctl, ctl2, format){
 			jscalendarCtlToPlaceValue = ctl2;
 			jscalendarDateFormat=format;
 
-			var formatChar = " ";
-			aFormat	= jscalendarDateFormat.split(formatChar)
-			if (aFormat.length<3){
-				formatChar = "/";
-				aFormat	= jscalendarDateFormat.split(formatChar)
-				if (aFormat.length<3){
-					formatChar = ".";
-					aFormat	= jscalendarDateFormat.split(formatChar)
-					if (aFormat.length<3){
-						formatChar = "-";
-						aFormat	= jscalendarDateFormat.split(formatChar)
-						if (aFormat.length<3){
-							// invalid date	format
-							formatChar="";
-						}
-					}
-				}
-			}
+            var simpleDateFormat = new SimpleDateFormat(jscalendarDateFormat, jscalendarDateFormatSymbols);
+            var dateSelected = simpleDateFormat.parse(ctl2.value);
 
-			var tokensChanged =	0;
-			if ( formatChar	!= "" ){
-				// use user's date
-				aData =	ctl2.value.split(formatChar)
+            if(dateSelected)
+            {
+                jscalendarSecondsSelected = dateSelected.getSeconds();
+                jscalendarMinutesSelected = dateSelected.getMinutes();
+                jscalendarHoursSelected = dateSelected.getHours();
+                jscalendarDateSelected = dateSelected.getDate();
+                jscalendarMonthSelected = dateSelected.getMonth();
 
-				for	(i=0;i<3;i++){
-					if ((aFormat[i]=="d") || (aFormat[i]=="dd")){
-						jscalendarDateSelected = parseInt( formatInt(aData[i]),10);
-						tokensChanged++;
-					}else if ((aFormat[i]=="m") || (aFormat[i]=="mm") || (aFormat[i]=="M") || (aFormat[i]=="MM")){
-						jscalendarMonthSelected = parseInt( formatInt(aData[i]),10) - 1;
-						tokensChanged++;
-					}else if (aFormat[i]=="yyyy"){
-						jscalendarYearSelected = parseInt( formatInt(aData[i]),10);
-						tokensChanged++;
-					}else if (aFormat[i]=="yy"){
-					    newYear = parseInt( formatInt(aData[i]),10);
+                var yearStr = dateSelected.getYear()+"";
 
-					    if(newYear>50)
-						    jscalendarYearSelected = 1900+newYear;
-						else
-						    jscalendarYearSelected = 2000+newYear;
+                if (yearStr.length < 4)
+                {
+                      yearStr=(parseInt(yearStr, 10)+1900)+"";
+                }
 
-						tokensChanged++
-					}else if (aFormat[i]=="mmm" || aFormat[i]=="MMM"){
-						for	(j=0; j<12;	j++){
-							if (aData[i]==jscalendarMonthName[j]){
-								jscalendarMonthSelected=j;
-								tokensChanged++;
-							}
-						}
-					}else if (aFormat[i]=="mmmm" || aFormat[i]=="MMMM"){
-						for	(j=0; j<12;	j++){
-							if (aData[i]==jscalendarMonthName2[j]){
-								jscalendarMonthSelected=j;
-								tokensChanged++;
-							}
-						}
-					}
-				}
-			}
-
-			if ((tokensChanged!=3)||isNaN(jscalendarDateSelected)||isNaN(jscalendarMonthSelected)||isNaN(jscalendarYearSelected)){
-				jscalendarDateSelected = jscalendarDateNow;
+                jscalendarYearSelected = parseInt(yearStr, 10);
+            }
+            else
+            {
+                jscalendarDateSelected = jscalendarDateNow;
 				jscalendarMonthSelected =	jscalendarMonthNow;
 				jscalendarYearSelected = jscalendarYearNow;
 			}
