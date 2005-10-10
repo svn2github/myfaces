@@ -658,7 +658,7 @@ function formatInt(str){
     if(typeof str == 'string'){
 
 	  //truncate 0 for number less than 10
-      if (str.charAt(0)=="0"){
+      if (str.charAt && str.charAt(0)=="0"){ // <----- Change, added str.charAt for method availability detection (MYFACES)
          return str.charAt(1);
       }
 
