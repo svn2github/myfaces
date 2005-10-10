@@ -102,7 +102,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		String pageIndexVar = scroller.getPageIndexVar();
 		if (pageIndexVar != null)
 		{
-			int pageIndex = scroller.getPageIndex();
+			int pageIndex = (scroller.getRowCount() > 0)? scroller.getPageIndex() : 0;
 			requestMap.put(pageIndexVar, new Integer(pageIndex));
 		}
 		String rowsCountVar = scroller.getRowsCountVar();
@@ -123,7 +123,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		String firstRowIndexVar = scroller.getFirstRowIndexVar();
 		if (firstRowIndexVar != null)
 		{
-			int firstRowIndex = scroller.getFirstRow() + 1;
+            int firstRowIndex = (scroller.getRowCount() > 0)? scroller.getFirstRow() + 1 : 0;
 			requestMap.put(firstRowIndexVar, new Integer(firstRowIndex));
 		}
 		String lastRowIndexVar = scroller.getLastRowIndexVar();
