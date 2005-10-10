@@ -29,6 +29,8 @@ public class NavigationMenuItem extends SelectItem
     private static final long serialVersionUID = 2801735314476639024L;
     private String _icon;
     private String _action;
+    private boolean _open;
+    private boolean _active;
     boolean _split;
     private boolean rendered = true;
     private List _navigationMenuItems = null;
@@ -111,6 +113,26 @@ public class NavigationMenuItem extends SelectItem
     public void setIcon(String icon)
     {
         _icon = icon;
+    }
+
+    public boolean isOpen()
+    {
+        return _open;
+    }
+
+    public void setOpen(boolean open)
+    {
+        _open = open;
+    }
+
+    public boolean isActive()
+    {
+        return _active;
+    }
+
+    public void setActive(boolean active)
+    {
+        _active = active;
     }
 
     public NavigationMenuItem[] getNavigationMenuItems()

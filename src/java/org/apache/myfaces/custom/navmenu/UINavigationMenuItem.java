@@ -39,6 +39,8 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
     private String _action = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
+    private Boolean _open = null;
+    private Boolean _active = null;
 
     public UINavigationMenuItem()
     {
@@ -78,6 +80,32 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
     public void setAction(String action)
     {
         _action = action;
+    }
+
+    public void setOpen(boolean open)
+    {
+        _open = Boolean.valueOf(open);
+    }
+
+    public boolean isOpen()
+    {
+        if (_open != null) return _open.booleanValue();
+        ValueBinding vb = getValueBinding("open");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setActive(boolean active)
+    {
+        _active = Boolean.valueOf(active);
+    }
+
+    public boolean isActive()
+    {
+        if (_active != null) return _active.booleanValue();
+        ValueBinding vb = getValueBinding("active");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
     }
 
     public String getAction()
@@ -127,9 +155,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
         values[3] = _action;
         values[4] = _enabledOnUserRole;
         values[5] = _visibleOnUserRole;
+        values[6] = _open;
+        values[7] = _active;
         return ((Object) (values));
     }
-
+    
     public void restoreState(FacesContext context, Object state)
     {
         Object values[] = (Object[])state;
@@ -139,6 +169,8 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
         _action = (String)values[3];
         _enabledOnUserRole = (String)values[4];
         _visibleOnUserRole = (String)values[5];
+        _open = (Boolean)values[6];
+        _active = (Boolean)values[7];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

@@ -197,6 +197,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                 newItem.setRendered(uiNavMenuItem.isRendered());
                 newItem.setSplit(uiNavMenuItem.isSplit());
                 newItem.setItemLabel(uiNavMenuItem.getLabel());
+                newItem.setOpen(uiNavMenuItem.isOpen());
+                newItem.setActive(uiNavMenuItem.isActive());
                 newItem.setTransient(false);
                 if (uiNavMenuItem.getNavigationMenuItems() != null && uiNavMenuItem.getNavigationMenuItems().length > 0)
                 {
@@ -234,6 +236,11 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             {
                 newItem.setActive(Boolean.valueOf(previousItem.isActive()));
                 newItem.setOpen(Boolean.valueOf(previousItem.isOpen()));
+            }
+            else
+            {
+                if (uiNavMenuItem.isOpen()) newItem.toggleOpen();
+                newItem.setActive(Boolean.valueOf(uiNavMenuItem.isActive()));
             }
             // Create and add UIOutput
             UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
