@@ -155,7 +155,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
         }
     }
-    
+
     /**
      * look for UINavigationMenuItem && UISelectItems & create components
      */
@@ -215,14 +215,14 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         // Create HtmlCommandNavigationItem
         HtmlCommandNavigationItem newItem = (HtmlCommandNavigationItem)
             facesContext.getApplication().createComponent(HtmlCommandNavigationItem.COMPONENT_TYPE);
+        String parentId = parent.getClientId(facesContext);
+        int id = uniqueId.next();
+        newItem.setId(parentId + "_item" + id);
         String clientId = newItem.getClientId(facesContext);
         if (facesContext.getViewRoot().findComponent(clientId) == null)
         {
-            String parentId = parent.getClientId(facesContext);
             newItem.setRendererType(RENDERER_TYPE);
             parent.getChildren().add(i + 1, newItem);
-            int id = uniqueId.next();
-            newItem.setId(parentId + "_item" + id);
             newItem.setParent(parent);
             // set action
             newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
@@ -275,6 +275,10 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             }
             // process next level
             preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren(), uniqueId);
+        }
+        else
+        {
+            uniqueId.decrease();
         }
     }
 
@@ -335,6 +339,11 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         public int next()
         {
             return _id++;
+        }
+
+        public void decrease()
+        {
+            _id--;
         }
     }
 
