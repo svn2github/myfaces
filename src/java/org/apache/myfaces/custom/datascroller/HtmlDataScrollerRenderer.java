@@ -74,7 +74,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
 		Map parameter = context.getExternalContext().getRequestParameterMap();
 		String param = (String) parameter.get(component.getClientId(context));
-		if (param != null)
+		if (param != null && param.length() > 0)
 		{
 			if (param.startsWith(PAGE_NAVIGATION))
 			{
