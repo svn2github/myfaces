@@ -96,7 +96,28 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                 facesContext.getExternalContext().getRequestMap().get(HtmlPanelNavigationMenu.PREVIOUS_VIEW_ROOT);
             // get old view
             // preprocess component tree
-            preprocessNavigationItems(facesContext, panelNav, previousViewRoot, panelNav.getChildren(), new UniqueId());
+            boolean preprocess = true;
+            if (previousViewRoot != null)
+            {
+                HtmlPanelNavigationMenu panelNavPrev =
+                    (HtmlPanelNavigationMenu) previousViewRoot.findComponent(panelNav.getClientId(facesContext));
+                if (panelNavPrev != null)
+                {
+                    preprocess = false;
+                    if (!panelNavPrev.equals(panelNav))
+                    {
+                        // substitute panelnav
+                        UIComponent parent = panelNav.getParent();
+                        int insertPos = parent.getChildren().indexOf(panelNav);
+                        parent.getChildren().set(insertPos, panelNavPrev);
+                        panelNavPrev.setParent(parent);
+                        panelNav.setParent(null);
+                        panelNav = panelNavPrev;
+                    }
+                }
+            }
+            if (preprocess)
+                preprocessNavigationItems(facesContext, panelNav, previousViewRoot, panelNav.getChildren(), new UniqueId());
             // render list
             if (log.isDebugEnabled())
                 HtmlNavigationMenuRendererUtils.debugTree(log, facesContext, panelNav.getChildren(), 0);
@@ -174,6 +195,10 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             else if (child instanceof UISelectItems)
             {
                 List list = new ArrayList();
+                if (child.getId() == null)
+                {
+                    child.setId("testit");
+                }
                 NavigationMenuUtils.addNavigationMenuItems((UISelectItems) child, list);
                 addUINavigationMenuItems(facesContext, parent, children, i + 1, list);
             }
@@ -182,29 +207,29 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
 
     private void addUINavigationMenuItems(FacesContext facesContext, UIComponent parent, List children, int startIndex, List menuItems)
     {
+        String clientId = parent.getClientId(facesContext);
+        clientId = clientId.replaceAll(":", "_");
         for (int j = 0, sizej = menuItems.size(); j < sizej; j++)
         {
             NavigationMenuItem uiNavMenuItem = (NavigationMenuItem) menuItems.get(j);
             UINavigationMenuItem newItem =
                 (UINavigationMenuItem) facesContext.getApplication().createComponent(UINavigationMenuItem.COMPONENT_TYPE);
-            String clientId = newItem.getClientId(facesContext);
-            if (facesContext.getViewRoot().findComponent(clientId) == null)
+            newItem.setId(clientId + "_uinavmitem" + (startIndex + j));
+            newItem.getClientId(facesContext); // create clientid
+            newItem.setParent(parent);
+            children.add(startIndex++, newItem);
+            newItem.setAction(uiNavMenuItem.getAction());
+            newItem.setIcon(uiNavMenuItem.getIcon());
+            newItem.setRendered(uiNavMenuItem.isRendered());
+            newItem.setSplit(uiNavMenuItem.isSplit());
+            newItem.setItemLabel(uiNavMenuItem.getLabel());
+            newItem.setOpen(uiNavMenuItem.isOpen());
+            newItem.setActive(uiNavMenuItem.isActive());
+            newItem.setTransient(false);
+            if (uiNavMenuItem.getNavigationMenuItems() != null && uiNavMenuItem.getNavigationMenuItems().length > 0)
             {
-                newItem.setParent(parent);
-                children.add(startIndex++, newItem);
-                newItem.setAction(uiNavMenuItem.getAction());
-                newItem.setIcon(uiNavMenuItem.getIcon());
-                newItem.setRendered(uiNavMenuItem.isRendered());
-                newItem.setSplit(uiNavMenuItem.isSplit());
-                newItem.setItemLabel(uiNavMenuItem.getLabel());
-                newItem.setOpen(uiNavMenuItem.isOpen());
-                newItem.setActive(uiNavMenuItem.isActive());
-                newItem.setTransient(false);
-                if (uiNavMenuItem.getNavigationMenuItems() != null && uiNavMenuItem.getNavigationMenuItems().length > 0)
-                {
-                    addUINavigationMenuItems(facesContext, newItem, newItem.getChildren(), 0,
-                                             Arrays.asList(uiNavMenuItem.getNavigationMenuItems()));
-                }
+                addUINavigationMenuItems(facesContext, newItem, newItem.getChildren(), 0,
+                                         Arrays.asList(uiNavMenuItem.getNavigationMenuItems()));
             }
         }
     }
@@ -216,70 +241,65 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         HtmlCommandNavigationItem newItem = (HtmlCommandNavigationItem)
             facesContext.getApplication().createComponent(HtmlCommandNavigationItem.COMPONENT_TYPE);
         String parentId = parent.getClientId(facesContext);
+        parentId = parentId.replaceAll(":", "_");
         int id = uniqueId.next();
         newItem.setId(parentId + "_item" + id);
-        String clientId = newItem.getClientId(facesContext);
-        if (facesContext.getViewRoot().findComponent(clientId) == null)
+        newItem.getClientId(facesContext); // create clientid
+        newItem.setRendererType(RENDERER_TYPE);
+        parent.getChildren().add(i + 1, newItem);
+        newItem.setParent(parent);
+        // set action
+        newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
+        // transient, rendered
+        newItem.setTransient(uiNavMenuItem.isTransient());
+        newItem.setRendered(uiNavMenuItem.isRendered());
+        // restore state
+        HtmlCommandNavigationItem previousItem =
+            HtmlNavigationMenuRendererUtils.findPreviousItem(previousViewRoot, newItem.getClientId(facesContext));
+        if (previousItem != null)
         {
-            newItem.setRendererType(RENDERER_TYPE);
-            parent.getChildren().add(i + 1, newItem);
-            newItem.setParent(parent);
-            // set action
-            newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
-            // transient, rendered
-            newItem.setTransient(uiNavMenuItem.isTransient());
-            newItem.setRendered(uiNavMenuItem.isRendered());
-            // restore state
-            HtmlCommandNavigationItem previousItem =
-                HtmlNavigationMenuRendererUtils.findPreviousItem(previousViewRoot, newItem.getClientId(facesContext));
-            if (previousItem != null)
-            {
-                newItem.setActive(Boolean.valueOf(previousItem.isActive()));
-                newItem.setOpen(Boolean.valueOf(previousItem.isOpen()));
-            }
-            else
-            {
-                if (uiNavMenuItem.isOpen()) newItem.toggleOpen();
-                newItem.setActive(Boolean.valueOf(uiNavMenuItem.isActive()));
-            }
-            // Create and add UIOutput
-            UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
-            uiOutput.setId(parentId + "_itemout" + id);
-            newItem.getChildren().add(uiOutput);
-            uiOutput.setParent(newItem);
-            if (uiNavMenuItem.getItemLabel() != null)
-            {
-                if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getItemLabel()))
-                {
-                    uiOutput.setValueBinding("value",
-                                             facesContext.getApplication().createValueBinding(uiNavMenuItem.getItemLabel()));
-                }
-                else
-                {
-                    uiOutput.setValue(uiNavMenuItem.getItemLabel());
-                }
-            }
-            else
-            {
-                Object value = uiNavMenuItem.getValue();
-                if (value != null &&
-                    HtmlNavigationMenuRendererUtils.isValueReference(value.toString()))
-                {
-                    uiOutput.setValueBinding("value",
-                                             facesContext.getApplication().createValueBinding(value.toString()));
-                }
-                else
-                {
-                    uiOutput.setValue(uiNavMenuItem.getValue());
-                }
-            }
-            // process next level
-            preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren(), uniqueId);
+            newItem.setActive(Boolean.valueOf(previousItem.isActive()));
+            newItem.setOpen(Boolean.valueOf(previousItem.isOpen()));
         }
         else
         {
-            uniqueId.decrease();
+            if (uiNavMenuItem.isOpen()) newItem.toggleOpen();
+            newItem.setActive(Boolean.valueOf(uiNavMenuItem.isActive()));
         }
+        // Create and add UIOutput
+        UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
+        uiOutput.setId(parentId + "_txt" + id);
+        uiOutput.getClientId(facesContext); // create clientid
+        newItem.getChildren().add(uiOutput);
+        uiOutput.setParent(newItem);
+        if (uiNavMenuItem.getItemLabel() != null)
+        {
+            if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getItemLabel()))
+            {
+                uiOutput.setValueBinding("value",
+                                         facesContext.getApplication().createValueBinding(uiNavMenuItem.getItemLabel()));
+            }
+            else
+            {
+                uiOutput.setValue(uiNavMenuItem.getItemLabel());
+            }
+        }
+        else
+        {
+            Object value = uiNavMenuItem.getValue();
+            if (value != null &&
+                HtmlNavigationMenuRendererUtils.isValueReference(value.toString()))
+            {
+                uiOutput.setValueBinding("value",
+                                         facesContext.getApplication().createValueBinding(value.toString()));
+            }
+            else
+            {
+                uiOutput.setValue(uiNavMenuItem.getValue());
+            }
+        }
+        // process next level
+        preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren(), uniqueId);
     }
 
 // protected

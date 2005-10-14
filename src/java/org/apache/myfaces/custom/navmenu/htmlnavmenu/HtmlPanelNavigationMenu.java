@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.UIComponent;
+import javax.faces.component.NamingContainer;
 import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.Iterator;
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */
-public class HtmlPanelNavigationMenu extends HtmlPanelGroup
+public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingContainer
 {
     private static final Log log = LogFactory.getLog(HtmlPanelNavigationMenu.class);
 
