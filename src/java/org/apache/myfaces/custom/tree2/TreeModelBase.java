@@ -53,7 +53,7 @@ public class TreeModelBase implements TreeModel
     // see interface    
     public TreeState getTreeState() 
     {    	
-    	return treeState;
+        return treeState;
     }
 
     // see interface    
@@ -152,18 +152,14 @@ public class TreeModelBase implements TreeModel
     {
         TreeNode node = root;
 
-        StringBuffer sb = new StringBuffer();
         StringTokenizer st = new StringTokenizer(nodeId, SEPARATOR);
-        sb.append(st.nextToken()).append(SEPARATOR);
 
         while (st.hasMoreTokens())
         {
             int nodeIndex = Integer.parseInt(st.nextToken());
-            sb.append(nodeIndex);
 
             // don't worry about invalid index, that exception will be caught later and dealt with
             node = (TreeNode)node.getChildren().get(nodeIndex);
-            sb.append(SEPARATOR);
         }
 
         return node;
