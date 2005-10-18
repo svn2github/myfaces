@@ -94,7 +94,7 @@ public class HtmlDataListTag
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
     
-        setStringProperty(component, HTML.ITEM_STYLE_CLASS_ATTR, _itemStyleClass);
+        setStringProperty(component, "itemStyleClass", _itemStyleClass);
     }
 
     public void setRows(String rows)
