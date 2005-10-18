@@ -14,10 +14,8 @@
 * limitations under the License.
 */
 
-var DateFormatSymbols = Class.create();
-DateFormatSymbols.prototype = {
-    initialize: function()
-    {
+DateFormatSymbols = function()
+{
         this.eras = new Array('BC', 'AD');
         this.months = new Array('January', 'February', 'March', 'April',
                 'May', 'June', 'July', 'August', 'September', 'October',
@@ -34,13 +32,10 @@ DateFormatSymbols.prototype = {
         var threshold = new Date();
         threshold.setYear(threshold.getYear()-80);
         this.twoDigitYearStart = threshold;
-    },
 }
 
-var SimpleDateFormatParserContext = Class.create();
-SimpleDateFormatParserContext.prototype = {
-    initialize: function()
-    {
+SimpleDateFormatParserContext = function()
+{
         this.newIndex=0;
         this.retValue=0;
         this.year=0;
@@ -53,19 +48,14 @@ SimpleDateFormatParserContext.prototype = {
         this.sec=0;
         this.ampm=0;
         this.dateStr="";
-    },
 }
 
-var SimpleDateFormat = Class.create();
-SimpleDateFormat.prototype = {
-    initialize: function(pattern, dateFormatSymbols)
-    {
+SimpleDateFormat = function(pattern, dateFormatSymbols)
+{
         this.pattern = pattern;
         this.dateFormatSymbols = dateFormatSymbols ? dateFormatSymbols : new DateFormatSymbols();
-    },
-
-
-    _handle: function(dateStr, date, parse)
+}
+SimpleDateFormat.prototype._handle = function(dateStr, date, parse)
     {
         var patternIndex = 0;
         var dateIndex = 0;
@@ -165,9 +155,9 @@ SimpleDateFormat.prototype = {
                 dateStr, dateIndex, parse);
 
         return context;
-    },
+    };
 
-    parse: function(dateStr)
+SimpleDateFormat.prototype.parse = function(dateStr)
     {
         if(!dateStr || dateStr.length==0)
             return null;
@@ -180,19 +170,20 @@ SimpleDateFormat.prototype = {
         this._adjustTwoDigitYear(context);
 
         return this._createDateFromContext(context);
-    },
-    _createDateFromContext: function(context) {
+    };
+SimpleDateFormat.prototype._createDateFromContext=function(context)
+    {
         return new Date(context.year, context.month,
                 context.day,context.hour,context.min,context.sec);
-    },
-    format: function(date)
+    };
+SimpleDateFormat.prototype.format = function(date)
     {
         var context = this._handle(null, date, false);
 
         return context.dateStr;
-    },
+    };
 
-    _parseString: function(context, dateStr, dateIndex, strings)
+SimpleDateFormat.prototype._parseString = function(context, dateStr, dateIndex, strings)
     {
         var fragment = dateStr.substr(dateIndex);
         var index = this._prefixOf(strings, fragment);
@@ -205,9 +196,9 @@ SimpleDateFormat.prototype = {
         context.retValue=-1;
         context.newIndex=-1;
         return context;
-    },
+    };
 
-    _parseNum: function(context, dateStr, posCount, dateIndex)
+SimpleDateFormat.prototype._parseNum = function(context, dateStr, posCount, dateIndex)
     {
         for(var i=Math.min(posCount,dateStr.length-dateIndex);i>0;i--)
         {
@@ -225,10 +216,9 @@ SimpleDateFormat.prototype = {
         context.retValue = -1;
         context.newIndex = -1;
         return context;
-    },
+    };
 
-    _handlePatternSub: function(context, patternSub, dateStr,
-                                  dateIndex, parse)
+SimpleDateFormat.prototype._handlePatternSub = function(context, patternSub, dateStr, dateIndex, parse)
     {
         if(patternSub==null || patternSub.length==0)
             return;
@@ -266,6 +256,7 @@ SimpleDateFormat.prototype = {
                 else
                 {
                     context.year = context.retValue;
+
                 }
             }
             else
@@ -410,9 +401,9 @@ SimpleDateFormat.prototype = {
             }
 
         }
-    },
+    };
 
-    _formatNum: function (context, num, length, ensureLength)
+SimpleDateFormat.prototype._formatNum = function (context, num, length, ensureLength)
     {
         var str = num+"";
 
@@ -426,28 +417,31 @@ SimpleDateFormat.prototype = {
         }
 
         context.dateStr+=str;
-    },
+    };
 
     // perhaps add to Array.prototype
-    _indexOf: function (array, value) {
+SimpleDateFormat.prototype._indexOf = function (array, value)
+    {
       for (var i = 0; i < array.length; ++i) {
         if (array[i] == value) {
           return i;
         }
       }
       return -1;
-    },
+    };
 
-    _prefixOf: function (array, value) {
+SimpleDateFormat.prototype._prefixOf = function (array, value)
+    {
       for (var i = 0; i < array.length; ++i) {
         if (value.indexOf(array[i]) == 0) {
           return i;
         }
       }
       return -1;
-    },
+    };
 
-    _parseInt: function(value) {
+SimpleDateFormat.prototype._parseInt = function(value)
+    {
         var sum = 0;
 
         for(var i=0;i<value.length;i++)
@@ -462,8 +456,9 @@ SimpleDateFormat.prototype = {
         }
 
         return sum;
-    },
-    _fullYearFromDate: function(year) {
+    };
+SimpleDateFormat.prototype._fullYearFromDate = function(year)
+    {
 
         var yearStr = year+"";
 
@@ -473,8 +468,9 @@ SimpleDateFormat.prototype = {
         }
 
         return year;
-    },
-    _adjustTwoDigitYear: function(context) {
+    };
+SimpleDateFormat.prototype._adjustTwoDigitYear = function(context)
+    {
 
         if(context.ambigousYear)
         {
@@ -484,5 +480,5 @@ SimpleDateFormat.prototype = {
             if(date.getTime()<threshold.getTime())
                 context.year += 100;
         }
-    }
-}
+    };
+
