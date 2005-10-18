@@ -15,16 +15,22 @@
  */
 package org.apache.myfaces.component.html.util;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -34,8 +40,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -53,6 +59,8 @@ public final class AddResource {
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
     private static final String ADDITIONAL_HEADER_INFO_REQUEST_ATTRUBITE_NAME = "myFacesHeaderResource2Render";
+
+    private static Set registeredClasses = new HashSet();
 
     private AddResource() {
         //no object creation allowed (util clazz)
@@ -147,7 +155,7 @@ public final class AddResource {
     public static void addJavaScriptToHeader(Class componentClass,
                                              String baseDirectory, String resourceFileName, boolean defer, FacesContext context){
         AdditionalHeaderInfoToRender jsInfo = null;
-
+        
         if(baseDirectory!=null)
         {
             jsInfo = new AdditionalHeaderInfoToRender(AdditionalHeaderInfoToRender.TYPE_JS, baseDirectory, resourceFileName, defer);
@@ -235,7 +243,7 @@ public final class AddResource {
         }
 
         return getResourceMappedPath(
-                getComponentName(componentClass),
+                getValidatedClassName(componentClass),
                 resourceFileName,
                 contextPath);
     }
@@ -252,7 +260,7 @@ public final class AddResource {
         }
 
         return getResourceBasePath(
-                getComponentName(componentClass),
+                getValidatedClassName(componentClass),
                 contextPath);
     }
 
@@ -302,57 +310,76 @@ public final class AddResource {
      */
     private static String[] getResourceInfoFromPath(HttpServletRequest request){
         String uri = request.getRequestURI();
-        String componentNameStartsAfter = RESOURCE_VIRTUAL_PATH+'/';
+        String classNameStartsAfter = RESOURCE_VIRTUAL_PATH+'/';
 
-        int posStartComponentName = uri.indexOf( componentNameStartsAfter )+componentNameStartsAfter.length();
-        int posEndComponentName = uri.indexOf("/", posStartComponentName);
-        String componentName = uri.substring(posStartComponentName, posEndComponentName);
+        int posStartClassName = uri.indexOf( classNameStartsAfter )+classNameStartsAfter.length();
+        int posEndClassName = uri.indexOf("/", posStartClassName);
+        String className = uri.substring(posStartClassName, posEndClassName);
 
         // Skip cache key
-        int posStartResourceFileName = uri.indexOf("/", posEndComponentName+1)+1;
+        int posStartResourceFileName = uri.indexOf("/", posEndClassName+1)+1;
 
         String resourceFileName = uri.substring(posStartResourceFileName);
 
-        return new String[]{componentName, resourceFileName};
+        return new String[]{className, resourceFileName};
     }
 
-    protected static String getComponentName(Class componentClass){
+    /**
+     * Only classes of package org.apache.myfaces.custom 
+     * or registered classes are allowed to load resources.
+     *  
+     * @param clazz the class to register
+     */
+    public static void registerAccess(Class clazz)
+    {
+        registeredClasses.add(clazz);
+    }
+
+    private static String getValidatedClassName(Class componentClass)
+    {
+        validateClass(componentClass);
+        return componentClass.getName();
+    }
+
+    private static void validateClass(Class componentClass)
+    {
         String name = componentClass.getName();
-        if( ! name.startsWith(COMPONENTS_PACKAGE) ){
-            log.error("getComponentName called for non extension component : "+name+"\n"+
-                    "For security reasons, only components member of the "+COMPONENTS_PACKAGE+" are allowed to add ressources.");
-            return null;
+        if (!(registeredClasses.contains(componentClass) || name.startsWith(COMPONENTS_PACKAGE)))
+        {
+            throw new FacesException(
+                    "For security reasons, only components member of the "
+                            + COMPONENTS_PACKAGE
+                            + " or registered classes (use AddResource.registerAccess) are allowed to add resources.");
         }
-
-        name = name.substring( COMPONENTS_PACKAGE.length() );
-
-        return name;
     }
 
-    static Class getComponent(String componentName) throws ClassNotFoundException{
-        return Class.forName( COMPONENTS_PACKAGE+componentName );
-    }
-
-    static private InputStream getResource(String componentName, String resourceFileName) {
-        Class component;
+    static private InputStream getResource(String className, String resourceFileName) {
+        Class clazz;
         try {
-            component = getComponent(componentName);
+            clazz = getClass(className);
         } catch (ClassNotFoundException e) {
-            log.error("Class not found for component "+componentName);
+            log.error("Class not found for component "+className);
             return null;
         }
         while( resourceFileName.startsWith(".") || resourceFileName.startsWith("/") || resourceFileName.startsWith("\\") )
                 resourceFileName = resourceFileName.substring(1);
 
-        return component.getResourceAsStream( "resource/"+resourceFileName );
+        return clazz.getResourceAsStream( "resource/"+resourceFileName );
+    }
+
+    private static Class getClass(String className) throws ClassNotFoundException
+    {
+        Class clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+        validateClass(clazz);
+        return clazz;
     }
 
     static public void serveResource(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String[] resourceInfo = getResourceInfoFromPath(request);
-        String componentName = resourceInfo[0];
+        String className = resourceInfo[0];
         String resourceFileName = resourceInfo[1];
 
-        log.debug("Serving resource "+resourceFileName+" for component "+componentName);
+        log.debug("Serving resource "+resourceFileName+" for package "+className);
 
         String lcResourceFileName = resourceFileName.toLowerCase();
 
@@ -369,10 +396,10 @@ public final class AddResource {
         else if( lcResourceFileName.endsWith(".xml")  || lcResourceFileName.endsWith(".xsl") )
             response.setContentType("text/xml"); // XSL has to be served as XML.
 
-        InputStream is = getResource(componentName, resourceFileName);
+        InputStream is = getResource(className, resourceFileName);
         if( is == null ){
-            throw new IOException("Unable to find resource "+resourceFileName+" for component "+componentName+
-                    ". Check that this file is available in the classpath in sub-directory /resource of the component-directory.");
+            throw new IOException("Unable to find resource "+resourceFileName+" for resource "+className+
+                    ". Check that this file is available in the classpath in sub-directory /resource of the package-directory.");
         }
 
         response.setDateHeader("Last-Modified", getLastModified());
@@ -502,7 +529,7 @@ public final class AddResource {
 
         public AdditionalHeaderInfoToRender(int infoType, Class componentClass, String resourceFileName) {
             this.type = infoType;
-            this.componentName = getComponentName(componentClass);
+            this.componentName = getValidatedClassName(componentClass);
             this.resourceFileName = resourceFileName;
         }
 
@@ -510,7 +537,7 @@ public final class AddResource {
             if( defer && infoType != TYPE_JS )
                 log.error("Defer can only be used for scripts.");
             this.type = infoType;
-            this.componentName = getComponentName(componentClass);
+            this.componentName = getValidatedClassName(componentClass);
             this.resourceFileName = resourceFileName;
             this.deferJS = defer;
         }
