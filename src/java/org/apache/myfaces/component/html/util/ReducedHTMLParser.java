@@ -34,34 +34,44 @@ class ReducedHTMLParser
             char c = seq.charAt(i);
 
             if(!commentMode && !attributeMode &&
-                    lastChars[1]=='-' &&
-                        lastChars[0]=='-' &&
+                    lastChars[2]=='-' &&
+                        lastChars[1]=='-' &&
+                            lastChars[0]=='!' &&
                                 c=='>')
             {
                 commentMode = true;
             }
             else if(commentMode && !attributeMode &&
-                    lastChars[2]=='<' &&
-                        lastChars[1]=='!' &&
+                    lastChars[1]=='<' &&
                             lastChars[0]=='-' &&
                                 c=='-')
             {
                 commentMode = false;
             }
-            else if(!commentMode && !scriptMode && !attributeMode && !openedTag && c=='<')
+            else if (!commentMode)
             {
-                openedTag = true;
-                openedTagIndex = i;
-            }
-            else if(!commentMode && !scriptMode && !attributeMode && openedTag && c=='>')
-            {
-                if(currentTagIdentifier != -1)
+                if(!scriptMode && !attributeMode && !openedTag && c=='<')
                 {
-                    if(openedStartTag)
+                    openedTag = true;
+                    openedTagIndex = i;
+                }
+                else if(!scriptMode && !attributeMode && openedTag && c=='>')
+                {
+                    if(currentTagIdentifier != -1)
                     {
-                        l.closedStartTag(i,currentTagIdentifier);
+                        if(openedStartTag)
+                        {
+                            l.closedStartTag(i,currentTagIdentifier);
 
-                        if(closeSymbolEncountered)
+                            if(closeSymbolEncountered)
+                            {
+                                if(currentTagIdentifier==SCRIPT_TAG)
+                                    scriptMode = false;
+
+                                l.closedEndTag(i,currentTagIdentifier);
+                            }
+                        }
+                        else
                         {
                             if(currentTagIdentifier==SCRIPT_TAG)
                                 scriptMode = false;
@@ -69,84 +79,77 @@ class ReducedHTMLParser
                             l.closedEndTag(i,currentTagIdentifier);
                         }
                     }
-                    else
-                    {
-                        if(currentTagIdentifier==SCRIPT_TAG)
-                            scriptMode = false;
 
-                        l.closedEndTag(i,currentTagIdentifier);
+                    openedTagIndex = -1;
+                    openedTag = false;
+                    openedStartTag = false;
+                    currentTagIdentifier = -1;
+                    closeSymbolEncountered = false;
+                }
+                else if(!scriptMode && openedTag && !attributeMode && (c=='"' || c=='\''))
+                {
+                    attributeMode = true;
+                    attributeOpenChar = c;
+                }
+                else if(!scriptMode && openedTag && attributeMode && (c=='"' || c=='\'') && lastChars[0]!='\\')
+                {
+                    if(c==attributeOpenChar)
+                    {
+                        attributeMode = false;
                     }
                 }
-
-                openedTagIndex = -1;
-                openedTag = false;
-                openedStartTag = false;
-                currentTagIdentifier = -1;
-                closeSymbolEncountered = false;
-            }
-            else if(!commentMode && !scriptMode && openedTag && !attributeMode && (c=='"' || c=='\''))
-            {
-                attributeMode = true;
-                attributeOpenChar = c;
-            }
-            else if(!commentMode && !scriptMode && openedTag && attributeMode && (c=='"' || c=='\'') && lastChars[0]!='\\')
-            {
-                if(c==attributeOpenChar)
+                else if(!scriptMode && !attributeMode && openedTag && c=='/')
                 {
-                    attributeMode = false;
+                    closeSymbolEncountered = true;
                 }
-            }
-            else if(!commentMode && !scriptMode && !attributeMode && openedTag && c=='/')
-            {
-                closeSymbolEncountered = true;
-            }
-            else if(!commentMode && !scriptMode && !attributeMode && openedTag &&
-                    (lastChars[2]=='b' || lastChars[2]=='B') &&
-                        (lastChars[1]=='o' || lastChars[1]=='O') &&
-                            (lastChars[0]=='d' || lastChars[0]=='D') &&
-                                (c=='y' || c=='Y'))
-            {
-                currentTagIdentifier = BODY_TAG;
+                else if(!scriptMode && !attributeMode && openedTag &&
+                        (lastChars[2]=='b' || lastChars[2]=='B') &&
+                            (lastChars[1]=='o' || lastChars[1]=='O') &&
+                                (lastChars[0]=='d' || lastChars[0]=='D') &&
+                                    (c=='y' || c=='Y'))
+                {
+                    currentTagIdentifier = BODY_TAG;
 
-                openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
-                        currentTagIdentifier);
+                    openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
+                            currentTagIdentifier);
 
 
-            }
-            else if(!commentMode && !scriptMode && !attributeMode && openedTag &&
-                    (lastChars[2]=='h' || lastChars[2]=='H') &&
-                        (lastChars[1]=='e' || lastChars[1]=='E')&&
-                            (lastChars[0]=='a' || lastChars[1]=='A')&&
-                                (c=='d' || c=='D'))
-            {
-                currentTagIdentifier = HEAD_TAG;
+                }
+                else if(!scriptMode && !attributeMode && openedTag &&
+                        (lastChars[2]=='h' || lastChars[2]=='H') &&
+                            (lastChars[1]=='e' || lastChars[1]=='E')&&
+                                (lastChars[0]=='a' || lastChars[1]=='A')&&
+                                    (c=='d' || c=='D'))
+                {
+                    currentTagIdentifier = HEAD_TAG;
 
-                openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
-                        currentTagIdentifier);
-            }
-            else if(!commentMode && !attributeMode && openedTag &&
-                (lastChars[4]=='s' || lastChars[4]=='S') &&
-                    (lastChars[3]=='c' || lastChars[3]=='C') &&
-                        (lastChars[2]=='r' || lastChars[2]=='R') &&
-                            (lastChars[1]=='i' || lastChars[1]=='I')&&
-                                (lastChars[0]=='p' || lastChars[0]=='P')&&
-                                    (c=='t' || c=='T'))
-            {
-                currentTagIdentifier = SCRIPT_TAG;
+                    openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
+                            currentTagIdentifier);
+                }
+                else if(!attributeMode && openedTag &&
+                    (lastChars[4]=='s' || lastChars[4]=='S') &&
+                        (lastChars[3]=='c' || lastChars[3]=='C') &&
+                            (lastChars[2]=='r' || lastChars[2]=='R') &&
+                                (lastChars[1]=='i' || lastChars[1]=='I')&&
+                                    (lastChars[0]=='p' || lastChars[0]=='P')&&
+                                        (c=='t' || c=='T'))
+                {
+                    currentTagIdentifier = SCRIPT_TAG;
 
-                scriptMode = true;
+                    scriptMode = true;
 
-                openedStartTag = handleTag(closeSymbolEncountered, l,
-                        openedTagIndex, openedStartTag, currentTagIdentifier);
+                    openedStartTag = handleTag(closeSymbolEncountered, l,
+                            openedTagIndex, openedStartTag, currentTagIdentifier);
+                }
             }
 
             lastChars[9]=lastChars[8];
             lastChars[8]=lastChars[7];
             lastChars[7]=lastChars[6];
             lastChars[6]=lastChars[5];
-            lastChars[5]=lastChars[6];
-            lastChars[4]=lastChars[5];
-            lastChars[3]=lastChars[4];
+            lastChars[5]=lastChars[4];
+            lastChars[4]=lastChars[3];
+            lastChars[3]=lastChars[2];
             lastChars[2]=lastChars[1];
             lastChars[1]=lastChars[0];
             lastChars[0]=c;
