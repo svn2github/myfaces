@@ -138,10 +138,9 @@ public class HtmlListRenderer
                 if (layout != null && (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL))))
                 {
                     writer.startElement(HTML.LI_ELEM, component);
-                    HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                            new String[] { HTML.ITEM_STYLE_CLASS_ATTR} );
+                    HtmlRendererUtils.renderHTMLAttribute(writer,component,"itemStyleClass",HTML.STYLE_CLASS_ATTR);
                 }
-                
+
                 RendererUtils.renderChildren(facesContext, component);
 
                 if (layout != null && (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL))))
