@@ -18,8 +18,6 @@ package org.apache.myfaces.component.html.util;
 /**
  * @author Martin Marinschek
  * @version $Revision: $ $Date: $
- *          <p/>
- *          $Log: $
  */
 public class ReducedHTMLParser
 {
