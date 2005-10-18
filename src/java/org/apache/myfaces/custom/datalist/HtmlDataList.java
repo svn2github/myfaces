@@ -218,6 +218,7 @@ public class HtmlDataList
     private String _onmouseup = null;
     private String _style = null;
     private String _styleClass = null;
+    private String _itemStyleClass = null;
     private String _title = null;
 
     public HtmlDataList()
@@ -405,7 +406,19 @@ public class HtmlDataList
         ValueBinding vb = getValueBinding("styleClass");
         return vb != null ? (String)vb.getValue(getFacesContext()) : null;
     }
+    
+    public void setItemStyleClass(String itemStyleClass)
+    {
+        _itemStyleClass = itemStyleClass;
+    }
 
+    public String getItemStyleClass()
+    {
+        if (_itemStyleClass != null) return _itemStyleClass;
+        ValueBinding vb = getValueBinding("itemStyleClass");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+    
     public void setTitle(String title)
     {
         _title = title;

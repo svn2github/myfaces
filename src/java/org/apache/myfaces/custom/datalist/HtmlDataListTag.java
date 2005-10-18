@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.datalist;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
 
 import javax.faces.component.UIComponent;
@@ -61,6 +62,9 @@ public class HtmlDataListTag
     // User Role support
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
+    
+    //CSS class for List Items
+    private String _itemStyleClass;
 
     public void release() {
         super.release();
@@ -72,6 +76,7 @@ public class HtmlDataListTag
         _rowCountVar=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _itemStyleClass=null;
     }
 
     protected void setProperties(UIComponent component)
@@ -88,6 +93,8 @@ public class HtmlDataListTag
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
+    
+        setStringProperty(component, HTML.ITEM_STYLE_CLASS_ATTR, _itemStyleClass);
     }
 
     public void setRows(String rows)
@@ -129,4 +136,13 @@ public class HtmlDataListTag
     {
         _visibleOnUserRole = visibleOnUserRole;
     }
+    
+    public void setItemStyleClass(String itemStyleClass) {
+    	_itemStyleClass = itemStyleClass;
+    }
+    
+    public String getItemStyleClass() {
+    	return _itemStyleClass;
+    }
+    
 }

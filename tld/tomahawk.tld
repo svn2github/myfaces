@@ -877,6 +877,14 @@
                 similar to the var parameter.
             </description>
         </attribute>
+        <attribute>
+            <name>itemStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+              CSS class to be applied to individual items in the list
+            </description>
+        </attribute>
      </tag>
 
     <!-- dataScroller -->
