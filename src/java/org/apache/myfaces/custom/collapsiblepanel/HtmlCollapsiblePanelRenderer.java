@@ -35,9 +35,10 @@ import java.util.List;
  * @author Kalle Korhonen (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
+public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
+{
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
-    private static final String LINK_ID     = "ToggleCollapsed".intern();
+    private static final String LINK_ID = "ToggleCollapsed".intern();
 
     public boolean getRendersChildren()
     {
@@ -46,96 +47,109 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
 
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
-      // RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
-      ResponseWriter writer = facesContext.getResponseWriter();
-      HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel)uiComponent;
+        // RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
 
-      HtmlCommandLink link = getLink(facesContext, collapsiblePanel);
-      collapsiblePanel.getChildren().add(link);
+        HtmlCommandLink link = getLink(facesContext, collapsiblePanel);
+        collapsiblePanel.getChildren().add(link);
 
-      // Always render the link to toggle the collapsed state
-      RendererUtils.renderChild(facesContext, link);
-      link.setRendered(false);
+        // Always render the link to toggle the collapsed state
+        RendererUtils.renderChild(facesContext, link);
+        link.setRendered(false);
 
-      // conditionally render the rest of the children
-      if (!collapsiblePanel.isCollapsed()) {
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-        // TODO apply styles from the parent element to this DIV
-      	writer.startElement(HTML.DIV_ELEM, uiComponent);
-      	RendererUtils.renderChildren(facesContext, uiComponent);
-        writer.endElement(HTML.DIV_ELEM );
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-      }
+        // conditionally render the rest of the children
+        if (!collapsiblePanel.isCollapsed())
+        {
+            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            // TODO apply styles from the parent element to this DIV
+            writer.startElement(HTML.DIV_ELEM, uiComponent);
+            RendererUtils.renderChildren(facesContext, uiComponent);
+            writer.endElement(HTML.DIV_ELEM);
+            HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        }
+        else
+        {
+            UIComponent component = collapsiblePanel.getFacet("closedContent");
+            if (component != null)
+            {
+                writer.startElement(HTML.DIV_ELEM, uiComponent);
+                RendererUtils.renderChild(facesContext, component);
+                writer.endElement(HTML.DIV_ELEM);
+                HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            }
+        }
 
-      link.setRendered(true);
+        link.setRendered(true);
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
-      RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
-      ResponseWriter writer = facesContext.getResponseWriter();
+        RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
+        ResponseWriter writer = facesContext.getResponseWriter();
 
-      HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-      writer.startElement(HTML.DIV_ELEM, uiComponent);
+        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        writer.startElement(HTML.DIV_ELEM, uiComponent);
 
-      ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
-      String viewId = facesContext.getViewRoot().getViewId();
-      viewHandler.getActionURL(facesContext, viewId);
+        ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
+        String viewId = facesContext.getViewRoot().getViewId();
+        viewHandler.getActionURL(facesContext, viewId);
 
-      facesContext.getApplication();
+        facesContext.getApplication();
     }
 
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
-      //RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
-      ResponseWriter writer = facesContext.getResponseWriter();
-      writer.endElement(HTML.DIV_ELEM );
-      HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        //RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement(HTML.DIV_ELEM);
+        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
     }
 
     public void decode(FacesContext facesContext, UIComponent uiComponent)
     {
-    		RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
-        HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel)uiComponent;
-        String reqValue = (String)facesContext.getExternalContext().getRequestParameterMap().get(HtmlRendererUtils.getHiddenCommandLinkFieldName(HtmlRendererUtils.getFormName(collapsiblePanel, facesContext)));
-    		//log.debug("new component's id is " + collapsiblePanel.getClientId(facesContext) + ", req id is " + reqValue);
-        if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(reqValue)) collapsiblePanel.setCollapsed(!collapsiblePanel.isCollapsed() );
+        RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
+        HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
+        String reqValue = (String) facesContext.getExternalContext().getRequestParameterMap().get(HtmlRendererUtils.getHiddenCommandLinkFieldName(HtmlRendererUtils.getFormName(collapsiblePanel, facesContext)));
+        //log.debug("new component's id is " + collapsiblePanel.getClientId(facesContext) + ", req id is " + reqValue);
+        if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(reqValue))
+            collapsiblePanel.setCollapsed(!collapsiblePanel.isCollapsed());
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlCollapsiblePanel collapsiblePanel)
-        throws IOException
+            throws IOException
     {
         Application application = facesContext.getApplication();
-        HtmlCommandLink link = (HtmlCommandLink)application.createComponent(HtmlCommandLink.COMPONENT_TYPE);
-        link.setId(collapsiblePanel.getId() + LINK_ID );
+        HtmlCommandLink link = (HtmlCommandLink) application.createComponent(HtmlCommandLink.COMPONENT_TYPE);
+        link.setId(collapsiblePanel.getId() + LINK_ID);
         link.setTransient(true);
         link.setImmediate(true);
         //link.addActionListener(new ChangeCollapsedHandler());
 
         List children = link.getChildren();
-				// Create the indicator. You could later make this conditional and render optional images instead
-				HtmlOutputText uiText = (HtmlOutputText)application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-				uiText.setTransient(true);
-				uiText.setValue(collapsiblePanel.isCollapsed() ? "&gt;" : "&#957;");
-				uiText.setEscape(false);
-				uiText.setStyleClass(collapsiblePanel.getStyleClass());
-				uiText.setStyle(collapsiblePanel.getStyle());
-				children.add(uiText);
+        // Create the indicator. You could later make this conditional and render optional images instead
+        HtmlOutputText uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
+        uiText.setTransient(true);
+        uiText.setValue(collapsiblePanel.isCollapsed() ? "&gt;" : "&#957;");
+        uiText.setEscape(false);
+        uiText.setStyleClass(collapsiblePanel.getStyleClass());
+        uiText.setStyle(collapsiblePanel.getStyle());
+        children.add(uiText);
 
-				// Create the optional label
+        // Create the optional label
         String label = collapsiblePanel.getValue();
-				if (label != null) {
-					uiText = (HtmlOutputText)application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-					uiText.setTransient(true);
-					uiText.setValue(" " + label);
-					uiText.setStyleClass(collapsiblePanel.getStyleClass());
-					uiText.setStyle(collapsiblePanel.getStyle());
-					children.add(uiText);
-				}
-				return link;
+        if (label != null)
+        {
+            uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
+            uiText.setTransient(true);
+            uiText.setValue(" " + label);
+            uiText.setStyleClass(collapsiblePanel.getStyleClass());
+            uiText.setStyle(collapsiblePanel.getStyle());
+            children.add(uiText);
+        }
+        return link;
     }
-
 
     // Couldn't get an ActionListner for a link to work properly. With each page submit, one more
     // event was fired. I assume it is because the link component was set to transparent, and I didn't

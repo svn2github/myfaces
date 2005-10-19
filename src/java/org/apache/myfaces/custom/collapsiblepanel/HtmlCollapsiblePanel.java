@@ -16,8 +16,10 @@
 package org.apache.myfaces.custom.collapsiblepanel;
 
 import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import java.util.Iterator;
 
 /**
  * @author Kalle Korhonen (latest modification by $Author$)
@@ -27,8 +29,43 @@ import javax.faces.el.ValueBinding;
  */
 public class HtmlCollapsiblePanel extends HtmlPanelGroup
 {
-  	//private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
-	
+      //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
+
+    public void processDecodes(FacesContext context)
+    {
+        if (context == null) throw new NullPointerException("context");
+
+        if (!isRendered()) return;
+
+        try
+        {
+            decode(context);
+        }
+        catch (RuntimeException e)
+        {
+            context.renderResponse();
+            throw e;
+        }
+
+        if(isCollapsed())
+        {
+            for (Iterator it = getChildren().iterator(); it.hasNext(); )
+            {
+                UIComponent child = (UIComponent)it.next();
+                child.processDecodes(context);
+            }
+        }
+        else
+        {
+            UIComponent component = getFacet("closedContent");
+
+            if(component != null)
+            {
+                component.processDecodes(context);
+            }
+        }
+    }
+
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
     private static final boolean DEFAULT_COLLAPSED = true;
 
@@ -38,7 +75,7 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup
 
     private Boolean _collapsed = null;
     private String _value = null;
-    
+
     public HtmlCollapsiblePanel()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -61,7 +98,7 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null ? v.booleanValue() : DEFAULT_COLLAPSED;
     }
-    
+
     public void setValue(String value)
     {
         _value = value;
@@ -85,7 +122,7 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup
 
     public void restoreState(FacesContext context, Object state)
     {
-    	  Object values[] = (Object[])state;
+          Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _collapsed = (Boolean)values[1];
         _value = (String)values[2];
