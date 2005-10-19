@@ -295,7 +295,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (!isRendered())
             return;
 
-        if (_isValidChildren)
+        if (_isValidChildren && !hasErrorMessages(context))
         {
             _preservedDataModel = null;
         }

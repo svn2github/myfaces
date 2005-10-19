@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -554,14 +555,26 @@ public class UIColumns extends UIData
     public void encodeTableBegin(FacesContext context)
     {
         setRowIndex(-1);
-
-        if (_isValidChilds)
+        _initialDescendantComponentState = null;
+        if (_isValidChilds && !hasErrorMessages(context))
         {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
             _cellStates.clear();
-            _initialDescendantComponentState = null;
         }
+    }
+
+    protected boolean hasErrorMessages(FacesContext context)
+    {
+        for(Iterator iter = context.getMessages(); iter.hasNext();)
+        {
+            FacesMessage message = (FacesMessage) iter.next();
+            if(FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void encodeTableEnd(FacesContext context)

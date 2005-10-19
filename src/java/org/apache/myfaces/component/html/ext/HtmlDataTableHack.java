@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -116,16 +117,29 @@ public abstract class HtmlDataTableHack extends
      */
     public void encodeBegin(FacesContext context) throws IOException
     {
-        if (_isValidChilds)
+        _initialDescendantComponentState = null;
+        if (_isValidChilds && !hasErrorMessages(context))
         {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
             _rowStates.clear();
-            _initialDescendantComponentState = null;
         }
         super.encodeBegin(context);
     }
 
+    protected boolean hasErrorMessages(FacesContext context)
+    {
+        for(Iterator iter = context.getMessages(); iter.hasNext();)
+        {
+            FacesMessage message = (FacesMessage) iter.next();
+            if(FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * @see javax.faces.component.UIComponentBase#encodeEnd(javax.faces.context.FacesContext)
      */
