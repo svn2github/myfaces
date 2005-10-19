@@ -150,16 +150,22 @@ public class TreeModelBase implements TreeModel
 
     private TreeNode getNodeById(String nodeId)
     {
-        TreeNode node = root;
-
+        TreeNode node = null;
+        
         StringTokenizer st = new StringTokenizer(nodeId, SEPARATOR);
 
         while (st.hasMoreTokens())
         {
             int nodeIndex = Integer.parseInt(st.nextToken());
-
-            // don't worry about invalid index, that exception will be caught later and dealt with
-            node = (TreeNode)node.getChildren().get(nodeIndex);
+            if(node == null)
+            {
+                node = root;
+            }
+            else
+            {
+                // don't worry about invalid index, that exception will be caught later and dealt with
+                node = (TreeNode)node.getChildren().get(nodeIndex);
+            }
         }
 
         return node;
