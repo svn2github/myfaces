@@ -51,12 +51,34 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
         ResponseWriter writer = facesContext.getResponseWriter();
         HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
 
-        HtmlCommandLink link = getLink(facesContext, collapsiblePanel);
-        collapsiblePanel.getChildren().add(link);
+        UIComponent headerComp = collapsiblePanel.getFacet("header");
+        UIComponent linkToReset = null;
+
+        if(headerComp!=null)
+        {
+            linkToReset = headerComp.findComponent(LINK_ID);
+
+            if(linkToReset != null)
+            {
+                linkToReset.setId(collapsiblePanel.getId() + LINK_ID);
+            }
+        }
+        else
+        {
+            HtmlCommandLink link = getLink(facesContext, collapsiblePanel);
+            collapsiblePanel.getChildren().add(link);
+
+            headerComp = link;
+        }
+
+        facesContext.getExternalContext().getRequestMap().put("collapsed",
+                            Boolean.valueOf(collapsiblePanel.isCollapsed()));
 
         // Always render the link to toggle the collapsed state
-        RendererUtils.renderChild(facesContext, link);
-        link.setRendered(false);
+        RendererUtils.renderChild(facesContext, headerComp);
+        headerComp.setRendered(false);
+
+        facesContext.getExternalContext().getRequestMap().remove("collapsed");
 
         // conditionally render the rest of the children
         if (!collapsiblePanel.isCollapsed())
@@ -80,7 +102,12 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
             }
         }
 
-        link.setRendered(true);
+        headerComp.setRendered(true);
+
+        if(linkToReset != null)
+        {
+            linkToReset.setId(LINK_ID);
+        }
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
