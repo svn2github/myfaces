@@ -416,7 +416,6 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
     /**
      * Epands all nodes by default.
-     * @param expandAll boolean
      */
     public void expandAll()
     {

@@ -151,7 +151,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     /**
      * handles uicolumns component
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.lang.String)
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
      */
     protected void encodeColumnChild(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData,
@@ -174,7 +174,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnBody(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.lang.String)
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnBody(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
      */
     protected void renderColumnBody(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData,
