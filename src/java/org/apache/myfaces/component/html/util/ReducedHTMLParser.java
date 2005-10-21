@@ -126,7 +126,7 @@ public class ReducedHTMLParser
 
                 }
                 else if(!scriptMode && !attributeMode && openedTag &&
-                        lastChars[3]=='<' && // Added this to make sure it's not <thead> this was messing up in screen with datatable
+                        (lastChars[3]=='<' || Character.isWhitespace(lastChars[3])) && // Added this to make sure it's not <thead> this was messing up in screen with datatable
                         (lastChars[2]=='h' || lastChars[2]=='H') &&
                             (lastChars[1]=='e' || lastChars[1]=='E')&&
                                 (lastChars[0]=='a' || lastChars[1]=='A')&&
