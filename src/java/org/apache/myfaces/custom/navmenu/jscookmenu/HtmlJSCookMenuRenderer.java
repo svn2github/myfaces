@@ -15,18 +15,10 @@
  */
 package org.apache.myfaces.custom.navmenu.jscookmenu;
 
-import org.apache.myfaces.component.html.util.AddResource;
-import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
-import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
-import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
-import org.apache.myfaces.el.SimpleActionMethodBinding;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,10 +27,21 @@ import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.webapp.UIComponentTag;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
+import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
+import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
+import org.apache.myfaces.el.SimpleActionMethodBinding;
+import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 
 /**
  * @author Thomas Spiegl
@@ -47,10 +50,18 @@ import java.util.Map;
 public class HtmlJSCookMenuRenderer
     extends HtmlRenderer
 {
-    //private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
+    private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
 
     private static final String JSCOOK_ACTION_PARAM = "jscook_action";
 
+    private static final Map builtInThemes = new java.util.HashMap();
+    static {
+	    builtInThemes.put("ThemeOffice", "/ThemeOffice/");
+	    builtInThemes.put("ThemeMiniBlack", "/ThemeMiniBlack/");
+	    builtInThemes.put("ThemeIE", "/ThemeIE/");
+	    builtInThemes.put("ThemePanel", "/ThemePanel/");
+    }
+    
     public void decode(FacesContext context, UIComponent component)
     {
         RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
@@ -268,6 +279,10 @@ public class HtmlJSCookMenuRenderer
         HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
 
         String theme = menu.getTheme();
+        if (theme == null) {
+                // should never happen; theme is a required attribute in the jsp tag definition
+        	throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
+        }
 
         addResourcesToHeader(theme,menu,context);
 
@@ -318,55 +333,105 @@ public class HtmlJSCookMenuRenderer
         addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, context);
     }
 
-    private void addThemeSpecificResources(String themeName, String styleLocation, String javascriptLocation, String imageLocation, FacesContext context)
+    /**
+     * A theme for a menu requires a number of external files; this method
+     * outputs those into the page head section.
+     * 
+     * @param themeName is the name of the theme for this menu. It is never
+     * null. It may match one of the built-in theme names or may be a custom
+     * theme defined by the application.
+     *
+     * @param styleLocation is the URL of a directory containing a 
+     * "theme.css" file. A stylesheet link tag will be inserted into
+     * the page header referencing that file. If null then if the
+     * themeName is a built-in one then a reference to the appropriate
+     * built-in stylesheet is generated (requires the ExtensionsFilter).
+     * If null and a custom theme is used then no stylesheet link will be 
+     * generated here.
+     * 
+     * @param javascriptLocation is the URL of a directory containing a 
+     * "theme.js" file. A script tag will be inserted into the page header
+     * referencing that file. If null then if the themeName is a built-in
+     * one then a reference to the built-in stylesheet is generated (requires
+     * the ExtensionsFilter). If null and a custom theme is used then no
+     * stylesheet link will be generated here.
+     * 
+     * @param imageLocation is the URL of a directory containing files
+     * (esp. image files) used by the theme.js file to define the menu
+     * theme. A javascript variable of name "my{themeName}Base" is
+     * generated in the page header containing this URL, so that the
+     * theme.js script can locate the files. If null then if the themeName
+     * is a built-in one then the URL to the appropriate resource directory
+     * is generated (requires the ExtensionsFilter). If null and a custom
+     * theme is used then no javascript variable will be generated here.
+     * 
+     * @param context is the current faces context.
+     */
+    private void addThemeSpecificResources(String themeName, String styleLocation, 
+    		String javascriptLocation, String imageLocation, FacesContext context)
     {
-        if(themeName != null)
+    	String themeLocation = (String) builtInThemes.get(themeName);
+        if(themeLocation == null)
         {
-            if(!(themeName.equals("ThemeOffice") || themeName.equals("ThemeMiniBlack")
-                || themeName.equals("ThemeIE") || themeName.equals("ThemePanel")))
-            {
-                throw new IllegalArgumentException("You provided a wrong themeName. Must be one of ThemeOffice, ThemeMiniBlack, ThemeIE or ThemePanel");
-            }
-        }
-        else
-        {
-            if(styleLocation == null || javascriptLocation == null || imageLocation == null)
-                throw new IllegalArgumentException("If you don't provide a theme, "+
-                        "you need to provide all resource-paths.");
+        	log.debug("Unknown theme name '" + themeName + "' specified.");
         }
 
-        StringBuffer buf = new StringBuffer();
-        buf.append("my");
-        buf.append(themeName);
-        buf.append("Base='");
-        if(imageLocation!=null)
-        {
-            buf.append(AddResource.getResourceBasePath(imageLocation));
-        }
-        else
-        {
-            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
-            buf.append("/ThemeOffice/';");
+        if ((imageLocation != null) || (themeLocation != null)) {
+        	// Generate a javascript variable containing a reference to the
+        	// directory containing theme image files, for use by the theme
+        	// javascript file. If neither of these is defined (ie a custom
+        	// theme was specified but no imageLocation) then presumably the
+        	// theme.js file uses some other mechanism to determine where
+        	// its image files are.
+	        StringBuffer buf = new StringBuffer();
+	        buf.append("var my");
+	        buf.append(themeName);
+	        buf.append("Base='");
+	        if(imageLocation!=null)
+	        {
+	            buf.append(AddResource.getResourceBasePath(imageLocation));
+	        }
+	        else
+	        {
+	            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+	            buf.append(themeLocation);
+	        }
+
+	        AddResource.addInlineScriptToHeader(buf.toString(), context);
         }
 
-        AddResource.addInlineScriptToHeader(buf.toString(), context);
+        if ((javascriptLocation != null) || (themeLocation != null)) {
+        	// Generate a <script> tag in the page header pointing to the
+        	// theme.js file for this theme. If neither of these is defined
+        	// then presumably the theme.js file is referenced by a <script>
+        	// tag hard-wired into the page or inserted via some other means.
+	        if(javascriptLocation != null)
+	        {
+	        	// For now, assume that if the user specified a location for a custom
+	        	// version of the jscookMenu.js file then the theme.js file can be found
+	        	// in the same location.
+	            AddResource.addJavaScriptToHeader(javascriptLocation, "theme.js", context);
+	        }
+	        else
+	        {
+	        	// Using a built-in theme, so we know where the theme.js file is.
+	            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.js", context);
+	        }
+        }
 
-        if(javascriptLocation != null)
-        {
-            AddResource.addJavaScriptToHeader(javascriptLocation, "theme.js", context);
-        }
-        else
-        {
-            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.js", context);
-        }
-
-        if(styleLocation != null)
-        {
-            AddResource.addStyleSheet(styleLocation, "theme.css", context);
-        }
-        else
-        {
-            AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
+        if ((styleLocation != null) || (themeLocation != null)) {
+        	// Generate a <link type="text/css"> tag in the page header pointing to
+        	// the theme stylesheet. If neither of these is defined then presumably
+        	// the stylesheet is referenced by a <link> tag hard-wired into the page
+        	// or inserted via some other means.
+	        if(styleLocation != null)
+	        {
+	            AddResource.addStyleSheet(styleLocation, "theme.css", context);
+	        }
+	        else
+	        {
+	            AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
+	        }
         }
     }
 
