@@ -70,15 +70,9 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 
             headerComp = link;
         }
-
-        facesContext.getExternalContext().getRequestMap().put("collapsed",
-                            Boolean.valueOf(collapsiblePanel.isCollapsed()));
-
-        // Always render the link to toggle the collapsed state
+        // Always render the header - to be able toggle the collapsed state
         RendererUtils.renderChild(facesContext, headerComp);
         headerComp.setRendered(false);
-
-        facesContext.getExternalContext().getRequestMap().remove("collapsed");
 
         // conditionally render the rest of the children
         if (!collapsiblePanel.isCollapsed())

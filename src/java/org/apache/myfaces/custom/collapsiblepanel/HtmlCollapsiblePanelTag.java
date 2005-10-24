@@ -40,12 +40,16 @@ public class HtmlCollapsiblePanelTag
 
     private String _collapsed;
     private String _value;
+    private String _var;
+    private String _collapsedVar;
     // User Role support --> already handled by HtmlPanelGroupTag
 
     public void release() {
         super.release();
         _collapsed=null;
         _value=null;
+        _var=null;
+        _collapsedVar=null;
     }
 
     protected void setProperties(UIComponent component)
@@ -54,7 +58,8 @@ public class HtmlCollapsiblePanelTag
 
         setBooleanProperty(component, "collapsed", _collapsed);
         setStringProperty(component, "value", _value);
-
+        setStringProperty(component,"var",_var);
+        setStringProperty(component,"collapsedVar",_collapsedVar);
     }
 
 
@@ -66,5 +71,15 @@ public class HtmlCollapsiblePanelTag
     public void setValue(String value)
     {
         _value = value;
+    }
+
+    public void setVar(String var)
+    {
+        _var = var;
+    }
+
+    public void setCollapsedVar(String collapsedVar)
+    {
+        _collapsedVar = collapsedVar;
     }
 }
