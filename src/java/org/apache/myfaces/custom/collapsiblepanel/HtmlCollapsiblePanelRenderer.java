@@ -53,13 +53,15 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 
         UIComponent headerComp = collapsiblePanel.getFacet("header");
         UIComponent linkToReset = null;
+        String resetId = null;
 
         if(headerComp!=null)
         {
-            linkToReset = headerComp.findComponent(LINK_ID);
+            linkToReset = RendererUtils.findComponent(headerComp,HtmlHeaderLink.class);
 
             if(linkToReset != null)
             {
+                resetId = linkToReset.getId();
                 linkToReset.setId(collapsiblePanel.getId() + LINK_ID);
             }
         }
@@ -100,7 +102,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 
         if(linkToReset != null)
         {
-            linkToReset.setId(LINK_ID);
+            linkToReset.setId(resetId);
         }
     }
 

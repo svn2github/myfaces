@@ -55,6 +55,7 @@
 <!ENTITY user_role_attributes           SYSTEM "entities/user_role_attributes.xml">
 <!ENTITY standard_command_button_attributes  SYSTEM "entities/standard_command_button_attributes.xml">
 <!ENTITY standard_command_link_attributes    SYSTEM "entities/standard_command_link_attributes.xml">
+<!ENTITY extended_command_link_attributes    SYSTEM "entities/extended_command_link_attributes.xml">
 <!ENTITY standard_data_table_attributes      SYSTEM "entities/standard_data_table_attributes.xml">
 <!ENTITY extended_data_table_attributes      SYSTEM "entities/extended_data_table_attributes.xml">
 <!ENTITY standard_input_text_attributes      SYSTEM "entities/standard_input_text_attributes.xml">
@@ -108,9 +109,18 @@
         <description>
             Extends standard commandLink by user role support and the HTML target attribute.
         </description>
-        &standard_command_link_attributes;
-        &user_role_attributes;
-        &ext_forceId_attribute;
+        &extended_command_link_attributes;
+    </tag>
+
+    <!-- headerLink -->
+    <tag>
+        <name>headerLink</name>
+        <tag-class>org.apache.myfaces.custom.collapsiblepanel.HtmlHeaderLinkTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard commandLink by user role support and the HTML target attribute.
+        </description>
+        &extended_command_link_attributes;
     </tag>
 
     <!-- dataTable -->
