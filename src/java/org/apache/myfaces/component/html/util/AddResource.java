@@ -52,7 +52,7 @@ public final class AddResource
 
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
-    private static StringBuilder ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
+    private static StringBuffer ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
 
     private static final String HEADER_INFO_REQUEST_ATTRUBITE_NAME = AddResource.class.getName()
             + ".HEADER_INFO";
@@ -217,7 +217,7 @@ public final class AddResource
     {
         if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG == null)
         {
-            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = new StringBuilder();
+            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = new StringBuffer();
 
             ADDITIONAL_JAVASCRIPT_TO_BODY_TAG.append(" ").append(JavaScriptEventName).append("=\"").append(addedJavaScript);
         }
