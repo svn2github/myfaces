@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.tree.renderkit.html;
 
+import org.apache.myfaces.component.html.util.AddResource;
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.HtmlTreeColumn;
 import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
@@ -44,6 +45,20 @@ import java.util.List;
  */
 public class HtmlTreeRenderer extends HtmlTableRendererBase
 {
+    // Defaut images
+    private static final String DEFAULT_IMAGE_ICON_LINE = "images/line.gif";
+    private static final String DEFAULT_IMAGE_ICON_NOLINE = "images/noline.gif";
+    private static final String DEFAULT_IMAGE_ICON_CHILD_FIRST = "images/line_first.gif";
+    private static final String DEFAULT_IMAGE_ICON_CHILD_MIDDLE = "images/line_middle.gif";
+    private static final String DEFAULT_IMAGE_ICON_CHILD_LAST = "images/line_last.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_OPEN = "images/node_open.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_OPEN_FIRST = "images/node_open_first.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_OPEN_MIDDLE = "images/node_open_middle.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_OPEN_LAST = "images/node_open_last.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE = "images/node_close.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE_FIRST = "images/node_close_first.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE_MIDDLE = "images/node_close_middle.gif";
+    private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE_LAST = "images/node_close_last.gif";
 
     private static final Integer ZERO = new Integer(0);
 
@@ -337,6 +352,12 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         }
     }
 
+    public String getDefaultImagePath(FacesContext context, String relativePathInResourceFolder)
+    {
+        AddResource instance = AddResource.getInstance(context);
+        return instance.getResourceUri(context, HtmlTree.class, relativePathInResourceFolder, false);
+    }
+
     /**
      * <p>
      * Render the column where the tree is displayed.
@@ -362,7 +383,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         {
             int state = layout[i];
             writer.startElement(HTML.TD_ELEM, child);
-            String url = getLayoutImage(tree, state);
+            String url = getLayoutImage(facesContext, tree, state);
 
             if ((url != null) && (url.length() > 0))
             {
@@ -398,7 +419,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         // command link
         writer.startElement(HTML.TD_ELEM, tree);
         int state = layout[layout.length - 1];
-        String url = getLayoutImage(tree, state);
+        String url = getLayoutImage(facesContext, tree, state);
 
         if (state == HtmlTreeNode.CHILD || state == HtmlTreeNode.CHILD_FIRST || state == HtmlTreeNode.CHILD_LAST)
         {
@@ -409,7 +430,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         {
             HtmlTreeImageCommandLink expandCollapse = (HtmlTreeImageCommandLink) child
                     .getExpandCollapseCommand(facesContext);
-            expandCollapse.setImage(getLayoutImage(tree, layout[layout.length - 1]));
+            expandCollapse.setImage(getLayoutImage(facesContext, tree, layout[layout.length - 1]));
 
             expandCollapse.encodeBegin(facesContext);
             expandCollapse.encodeEnd(facesContext);
@@ -428,7 +449,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
             if (!child.isLeaf(facesContext))
             {
                 // todo: icon provider
-                url = HtmlTree.getDefaultImagePath( DEFAULT_IMAGE_ICON_FOLDER );
+                url = getDefaultImagePath(facesContext, DEFAULT_IMAGE_ICON_FOLDER );
             }
             else
             {
@@ -509,38 +530,48 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         writer.endElement(HTML.IMG_ELEM);
     }
 
-    protected String getLayoutImage(HtmlTree tree, int state)
+    protected String getLayoutImage(FacesContext context, HtmlTree tree, int state)
     {
         switch (state)
         {
         case HtmlTreeNode.OPEN:
-            return tree.getIconNodeOpenMiddle();
+            return getImageUrl(context, tree.getIconNodeOpenMiddle(), DEFAULT_IMAGE_ICON_NODE_OPEN_MIDDLE);
         case HtmlTreeNode.OPEN_FIRST:
-            return tree.getIconNodeOpenFirst();
+            return getImageUrl(context, tree.getIconNodeOpenFirst(), DEFAULT_IMAGE_ICON_NODE_OPEN_FIRST);
         case HtmlTreeNode.OPEN_LAST:
-            return tree.getIconNodeOpenLast();
+            return getImageUrl(context, tree.getIconNodeOpenLast(), DEFAULT_IMAGE_ICON_NODE_OPEN_LAST);            
         case HtmlTreeNode.OPEN_SINGLE:
-            return tree.getIconNodeOpen();
+            return getImageUrl(context, tree.getIconNodeOpen(), DEFAULT_IMAGE_ICON_NODE_OPEN);            
         case HtmlTreeNode.CLOSED:
-            return tree.getIconNodeCloseMiddle();
+            return getImageUrl(context, tree.getIconNodeCloseMiddle(), DEFAULT_IMAGE_ICON_NODE_CLOSE_MIDDLE);            
         case HtmlTreeNode.CLOSED_FIRST:
-            return tree.getIconNodeCloseFirst();
+            return getImageUrl(context, tree.getIconNodeCloseFirst(), DEFAULT_IMAGE_ICON_NODE_CLOSE_FIRST);            
         case HtmlTreeNode.CLOSED_LAST:
-            return tree.getIconNodeCloseLast();
+            return getImageUrl(context, tree.getIconNodeCloseLast(), DEFAULT_IMAGE_ICON_NODE_CLOSE_LAST);            
         case HtmlTreeNode.CLOSED_SINGLE:
-            return tree.getIconNodeClose();
+            return getImageUrl(context, tree.getIconNodeClose(), DEFAULT_IMAGE_ICON_NODE_CLOSE);            
         case HtmlTreeNode.CHILD:
-            return tree.getIconChildMiddle();
+            return getImageUrl(context, tree.getIconChildMiddle(), DEFAULT_IMAGE_ICON_CHILD_MIDDLE);            
         case HtmlTreeNode.CHILD_FIRST:
-            return tree.getIconChildFirst();
+            return getImageUrl(context, tree.getIconChildFirst(), DEFAULT_IMAGE_ICON_CHILD_FIRST);            
         case HtmlTreeNode.CHILD_LAST:
-            return tree.getIconChildLast();
+            return getImageUrl(context, tree.getIconChildLast(), DEFAULT_IMAGE_ICON_CHILD_LAST);            
         case HtmlTreeNode.LINE:
-            return tree.getIconLine();
+            return getImageUrl(context, tree.getIconLine(), DEFAULT_IMAGE_ICON_LINE);            
         case HtmlTreeNode.EMPTY:
-            return tree.getIconNoline();
+            return getImageUrl(context, tree.getIconNoline(), DEFAULT_IMAGE_ICON_NOLINE);            
         default:
-            return tree.getIconNoline();
+            return getImageUrl(context, tree.getIconNoline(), DEFAULT_IMAGE_ICON_NOLINE);
         }
+    }
+
+    protected String getImageUrl(FacesContext context, String userValue, String resourceValue)
+    {
+        AddResource addResource = AddResource.getInstance(context);
+        if(userValue != null)
+        {
+            return addResource.getResourceUri(context, userValue, false);
+        }
+        return addResource.getResourceUri(context, HtmlTree.class, resourceValue, false);
     }
 }

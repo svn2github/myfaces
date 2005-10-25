@@ -124,34 +124,36 @@ public class InputHtmlRenderer extends HtmlRenderer {
             formId = tmpComponent.getClientId(context);
         }
 
+        AddResource addResource = AddResource.getInstance(context);
+        addResource.addStyleSheet(context, InputHtmlRenderer.class, "kupustyles.css");
+        addResource.addStyleSheet(context, InputHtmlRenderer.class, "kupudrawerstyles.css");
+        addResource.addStyleSheet(context, InputHtmlRenderer.class, "myFaces.css");
 
-        AddResource.addStyleSheet(InputHtmlRenderer.class, "kupustyles.css", context);
-        AddResource.addStyleSheet(InputHtmlRenderer.class, "kupudrawerstyles.css", context);
-        AddResource.addStyleSheet(InputHtmlRenderer.class, "myFaces.css", context);
-
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "sarissa.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "sarissa_ieemu_xpath.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuhelpers.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupueditor.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupubasetools.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuloggers.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupunoi18n.js", context);
-        //AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "i18n/i18n.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucleanupexpressions.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucontentfilters.js", context);
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "sarissa.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "sarissa_ieemu_xpath.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuhelpers.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupueditor.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupubasetools.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuloggers.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupunoi18n.js");
+        //addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "i18n/i18n.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupucleanupexpressions.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupucontentfilters.js");
         
-        if( editor.isShowAnyToolBox() )
-        	AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kuputoolcollapser.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupucontextmenu.js", context);
+        if (editor.isShowAnyToolBox())
+        {
+            addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kuputoolcollapser.js");
+        }
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupucontextmenu.js");
         
-		AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuinit.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupustart.js", context);
+		addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuinit.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupustart.js");
         
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupusourceedit.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupuspellchecker.js", context);
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "kupudrawers.js", context);
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupusourceedit.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuspellchecker.js");
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupudrawers.js");
         
-        AddResource.addJavaScriptToHeader(InputHtmlRenderer.class, "myFacesUtils.js", context);
+        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "myFacesUtils.js");
         
         ResponseWriter writer = context.getResponseWriter();
 
@@ -223,12 +225,12 @@ public class InputHtmlRenderer extends HtmlRenderer {
 					  writer.endElement("set");
 		            writer.endElement("cleanup_expressions");
 
-					writeTag(writer, "image_xsl_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/drawer.xsl", context), editor);
-					writeTag(writer, "link_xsl_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/drawer.xsl", context), editor);
+					writeTag(writer, "image_xsl_uri", addResource.getResourceUri(context, InputHtmlRenderer.class, "kupudrawers/drawer.xsl"), editor);
+					writeTag(writer, "link_xsl_uri", addResource.getResourceUri(context, InputHtmlRenderer.class, "kupudrawers/drawer.xsl"), editor);
 
 					// TODO : Make this work (reference available images, ...).
-					writeTag(writer, "image_libraries_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/imagelibrary.xml", context), editor);
-					writeTag(writer, "link_libraries_uri", AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupudrawers/linklibrary.xml", context), editor);
+					writeTag(writer, "image_libraries_uri", addResource.getResourceUri(context, InputHtmlRenderer.class, "kupudrawers/imagelibrary.xml"), editor);
+					writeTag(writer, "link_libraries_uri", addResource.getResourceUri(context, InputHtmlRenderer.class, "kupudrawers/linklibrary.xml"), editor);
 	        		writeTag(writer, "search_images_uri", "", editor);
 	        		writeTag(writer, "search_links_uri", "", editor);
 
@@ -529,7 +531,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                                     writer.writeAttribute(HTML.WIDTH_ATTR, "440", null);
                                     writer.writeAttribute(HTML.HEIGHT_ATTR, "198", null);
                                     writer.writeAttribute(HTML.CLASS_ATTR, "kupu-linkdrawer-preview", null);
-                                    writer.writeAttribute(HTML.SRC_ATTR, AddResource.getResourceMappedPath(InputHtmlRenderer.class, "kupublank.html", context), null);
+                                    writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(context, InputHtmlRenderer.class, "kupublank.html"), null);
                                     writer.endElement(HTML.IFRAME_ELEM);
                                 writer.endElement(HTML.TD_ELEM);
                             writer.endElement(HTML.TR_ELEM);
@@ -1098,10 +1100,10 @@ public class InputHtmlRenderer extends HtmlRenderer {
             }
             if( editor.getStyle()!=null ){
                 // Convert the style into an style declaration so that it doesn't preempt the Zoom works as it's relying on changing the class
-                AddResource.addInlineStyleToHeader(
+                addResource.addInlineStyleToHeader(
+                        context,
 						"#kupu-editor{height: inherit;}\n"+
-						"div.kupu-fulleditor{"+editor.getStyle()+"}",
-						context);
+						"div.kupu-fulleditor{"+editor.getStyle()+"}");
             }
             writer.writeAttribute(HTML.CLASS_ATTR,
                     "kupu-editorframe"+(editor.getStyleClass()==null ? "" : " "+editor.getStyleClass()), null);
@@ -1130,7 +1132,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
         String text = editor.getValueAsHtmlDocument( context );
         String encodedText = text == null ? "" : JavascriptUtils.encodeString( text );
 
-        String resourceBaseURL = AddResource.getResourceMappedPath(InputHtmlRenderer.class, "", context);
+        String resourceBaseURL = addResource.getResourceUri(context, InputHtmlRenderer.class, null);
 
         writer.startElement(HTML.SCRIPT_ELEM, editor);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);

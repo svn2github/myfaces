@@ -2,7 +2,7 @@ package org.apache.myfaces.component.html.util;
 
 /**
  * @author Martin Marinschek
- * @version $Revision: $ $Date: $
+ * @version $Revision$ $Date$
  *          <p/>
  *          $Log: $
  */

@@ -103,9 +103,10 @@ public class ExtensionsFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response; 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        // Serve myFaces internal resources files 
-        if( AddResource.isResourceMappedPath( httpRequest ) ){
-            AddResource.serveResource(httpRequest, httpResponse);
+        // Serve resources
+        AddResource addResource = AddResource.getInstance(httpRequest);
+        if( addResource.isResourceUri( httpRequest ) ){
+            addResource.serveResource(httpRequest, httpResponse);
             return;
         }
         
@@ -121,15 +122,15 @@ public class ExtensionsFilter implements Filter {
         // Standard request
         chain.doFilter(extendedRequest, extendedResponse);
         
-        extendedResponse.finishResponse(); 
+        extendedResponse.finishResponse();
         
-        if( ! AddResource.hasAdditionalHeaderInfoToRender(extendedRequest) ){
+        if( ! addResource.hasHeaderInfos(extendedRequest) ){
             response.getOutputStream().write( extendedResponse.getBytes());
             return;
         }
         
         // Some headerInfo has to be added
-        AddResource.writeWithFullHeader(extendedRequest, extendedResponse, (HttpServletResponse)response);
+        addResource.writeWithFullHeader(extendedRequest, extendedResponse, (HttpServletResponse)response);
     }
     
     /**

@@ -84,7 +84,7 @@ public class TreeTag extends UIComponentTagBase {
 
     private boolean expandRoot;
 
-    private long expireListeners = HtmlTree.DEFAULT_EXPIRE_LISTENERS;
+    private String expireListeners;
 
     public String getComponentType() {
         return "org.apache.myfaces.HtmlTree";
@@ -321,11 +321,11 @@ public class TreeTag extends UIComponentTagBase {
         this.expandRoot = expandRoot;
     }
 
-    public long getExpireListeners() {
+    public String getExpireListeners() {
         return expireListeners;
     }
 
-    public void setExpireListeners(long expireListeners) {
+    public void setExpireListeners(String expireListeners) {
         this.expireListeners = expireListeners;
     }
 
@@ -389,7 +389,6 @@ public class TreeTag extends UIComponentTagBase {
         selectedNodeClass = null;
         iconClass = null;
         expandRoot = false;
-        expireListeners = HtmlTree.DEFAULT_EXPIRE_LISTENERS;
     }
 
     /**
@@ -436,6 +435,6 @@ public class TreeTag extends UIComponentTagBase {
         setStringProperty(component, "nodeClass", nodeClass);
         setStringProperty(component, "selectedNodeClass", selectedNodeClass);
         setStringProperty(component, "iconClass", iconClass);
-        ((HtmlTree) component).setExpireListeners(expireListeners);
+        setLongProperty(component, "expireListeners", expireListeners);
     }
 }

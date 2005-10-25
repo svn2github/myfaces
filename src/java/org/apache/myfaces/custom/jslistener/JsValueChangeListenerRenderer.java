@@ -38,8 +38,9 @@ public class JsValueChangeListenerRenderer
         String expressionValue = jsValueChangeListener.getExpressionValue();
         String property = jsValueChangeListener.getProperty();
 
-        AddResource.addJavaScriptToHeader(
-                JsValueChangeListenerTag.class, "JSListener.js", false, getFacesContext());
+        AddResource.getInstance(facesContext).addJavaScriptToHeader(
+                facesContext, JsValueChangeListenerRenderer.class,
+                "JSListener.js");
 
         if(aFor!=null)
         {

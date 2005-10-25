@@ -112,8 +112,7 @@ public class HtmlPopupRenderer
                                     Integer displayAtDistanceX, Integer displayAtDistanceY, UIComponent uiComponent)
         throws IOException
     {
-        AddResource.addJavaScriptToHeader(
-                HtmlPopupRenderer.class, "JSPopup.js", false, context);
+        AddResource.getInstance(context).addJavaScriptToHeader(context, HtmlPopupRenderer.class, "JSPopup.js");
 
         String popupId = (clientId+"Popup").replaceAll(":","_");
 

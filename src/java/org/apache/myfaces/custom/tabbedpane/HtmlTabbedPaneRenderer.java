@@ -91,17 +91,18 @@ public class HtmlTabbedPaneRenderer
             tabbedPane.setBgcolor(DEFAULT_BG_COLOR);
         }
         
-        AddResource.addStyleSheet(HtmlTabbedPaneRenderer.class, "defaultStyles.css", facesContext);
+        AddResource addResource = AddResource.getInstance(facesContext);
+        addResource.addStyleSheet(facesContext, HtmlTabbedPaneRenderer.class, "defaultStyles.css");
 
         if( isDynamic() ){
-        	AddResource.addJavaScriptToHeader(HtmlTabbedPaneRenderer.class, "dynamicTabs.js", facesContext);
-        	AddResource.addInlineStyleToHeader(
+            addResource.addJavaScriptToHeader(facesContext, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
+            addResource.addInlineStyleToHeader(facesContext,
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+TAB_PANE_CLASS+",\n" +
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+SUB_HEADER_CELL_CLASS+"{\n"+
         				"background-color:" + tabbedPane.getBgcolor()+";\n"+
-        			"}\n",
-        			facesContext);
+        			"}\n"
+        			);
         }
         
         

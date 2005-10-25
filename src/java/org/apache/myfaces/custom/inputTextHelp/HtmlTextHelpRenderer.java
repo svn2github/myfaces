@@ -162,8 +162,7 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
 
     private static void addJavaScriptResources(FacesContext facesContext)
     {
-        AddResource.addJavaScriptToHeader(HtmlTextHelpRenderer.class,
-                                            "inputTextHelp.js",
-                                            facesContext);
+        AddResource.getInstance(facesContext).addJavaScriptToHeader(
+                facesContext, HtmlTextHelpRenderer.class, "inputTextHelp.js");
     }
 }

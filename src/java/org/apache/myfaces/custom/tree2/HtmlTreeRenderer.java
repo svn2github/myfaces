@@ -53,7 +53,6 @@ public class HtmlTreeRenderer extends Renderer
     protected static final String TOGGLE_SPAN = "org.apache.myfaces.tree.TOGGLE_SPAN";
     protected static final String ROOT_NODE_ID = "0";
 
-    private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.tree.JAVASCRIPT_ENCODED";
     private static final String NAV_COMMAND = "org.apache.myfaces.tree.NAV_COMMAND";
     private static final String ENCODING = "UTF-8";
     private static final String ATTRIB_DELIM = ";";
@@ -325,8 +324,8 @@ public class HtmlTreeRenderer extends Renderer
         {
             boolean lastChild = tree.isLastChild((String)pathInfo[i]);
             String lineSrc = (!lastChild && showLines)
-                             ? getImageSrc(context, tree, "line-trunk.gif")
-                             : getImageSrc(context, tree, "spacer.gif");
+                             ? getImageSrc(context, tree, "line-trunk.gif", true)
+                             : getImageSrc(context, tree, "spacer.gif", true);
 
             out.startElement(HTML.TD_ELEM, tree);
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
@@ -469,9 +468,9 @@ public class HtmlTreeRenderer extends Renderer
         }
 
         // adjust navSrc and altSrc so that the images can be retrieved using the extensions filter
-        String navSrcUrl = getImageSrc(null, tree, navSrc);
-        navSrc = getImageSrc(context, tree, navSrc);
-        altSrc = getImageSrc(context, tree, altSrc);
+        String navSrcUrl = getImageSrc(context, tree, navSrc, false);
+        navSrc = getImageSrc(context, tree, navSrc, true);
+        altSrc = getImageSrc(context, tree, altSrc, true);
 
         // render nav cell
         out.startElement(HTML.TD_ELEM, tree);
@@ -481,7 +480,7 @@ public class HtmlTreeRenderer extends Renderer
 
         if ((bitMask & LINES)!=0 && (bitMask & LAST)==0)
         {
-            out.writeURIAttribute("background", getImageSrc(context, tree, "line-trunk.gif"), null);
+            out.writeURIAttribute("background", getImageSrc(context, tree, "line-trunk.gif", true), null);
         }
 
 //      add the appropriate image for the nav control
@@ -592,36 +591,19 @@ public class HtmlTreeRenderer extends Renderer
      */
     private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
     {
-        // check to see if javascript has already been written (which could happen if more than one tree on the same page)
-        if (context.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
-        {
-            return;
-        }
-
         // render javascript function for client-side toggle (it won't be used if user has opted for server-side toggle)
-        ResponseWriter out = context.getResponseWriter();
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        AddResource addResource = AddResource.getInstance(context);
         if (javascriptLocation == null)
         {
-            AddResource.addJavaScriptHere(HtmlTreeRenderer.class, "javascript/tree.js", context, component);
-            AddResource.addJavaScriptHere(HtmlTreeRenderer.class, "javascript/cookielib.js", context, component);
+            addResource.addJavaScriptToHeader(context, HtmlTreeRenderer.class, "javascript/tree.js");
+            addResource.addJavaScriptToHeader(context, HtmlTreeRenderer.class, "javascript/cookielib.js");
         }
         else
         {
-            out.startElement(HTML.SCRIPT_ELEM, component);
-            out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-            out.writeAttribute(HTML.SRC_ATTR,
-                               javascriptLocation + "/tree.js", null);
-            out.endElement(HTML.SCRIPT_ELEM);
-
-            out.startElement(HTML.SCRIPT_ELEM, component);
-            out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
-            out.writeAttribute(HTML.SRC_ATTR,
-                               javascriptLocation + "/cookielib.js", null);
-            out.endElement(HTML.SCRIPT_ELEM);
+            addResource.addJavaScriptToHeader(context, javascriptLocation + "/tree.js");
+            addResource.addJavaScriptToHeader(context, javascriptLocation + "/cookielib.js");
         }
-
-        context.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
 
     /**
@@ -634,17 +616,18 @@ public class HtmlTreeRenderer extends Renderer
      * @param imageName The name of the image file to use.
      * @return The image src information.
      */
-    private String getImageSrc(FacesContext context, UIComponent component, String imageName)
+    private String getImageSrc(FacesContext context, UIComponent component, String imageName, boolean withContextPath)
     {
         String imageLocation = (String)component.getAttributes().get(JSFAttr.IMAGE_LOCATION);
+        AddResource addResource = AddResource.getInstance(context);
         if (imageLocation == null)
         {
-            return AddResource.getResourceMappedPath(HtmlTreeRenderer.class,
-                "images/" + imageName, context);
+            return addResource.getResourceUri(context, HtmlTreeRenderer.class,
+                "images/" + imageName, withContextPath);
         }
         else
         {
-            return imageLocation + "/" + imageName;
+            return addResource.getResourceUri(context, imageLocation + "/" + imageName, withContextPath);
         }
     }
 

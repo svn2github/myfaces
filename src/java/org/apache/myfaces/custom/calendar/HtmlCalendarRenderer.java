@@ -259,20 +259,20 @@ public class HtmlCalendarRenderer
         {
             return;
         }
-
+        AddResource addresource = AddResource.getInstance(facesContext);
         // Add the javascript and CSS pages
-        AddResource.addStyleSheet(HtmlCalendarRenderer.class, "WH/theme.css", facesContext);
-        AddResource.addStyleSheet(HtmlCalendarRenderer.class, "DB/theme.css", facesContext);
-        AddResource.addJavaScriptToHeader(PrototypeResourceLoader.class, "prototype.js", facesContext);
-        AddResource.addJavaScriptToHeader(HtmlCalendarRenderer.class, "date.js", facesContext);
-        AddResource.addJavaScriptToHeader(HtmlCalendarRenderer.class, "popcalendar_init.js", facesContext);
+        addresource.addStyleSheet(facesContext, HtmlCalendarRenderer.class, "WH/theme.css");
+        addresource.addStyleSheet(facesContext, HtmlCalendarRenderer.class, "DB/theme.css");
+        addresource.addJavaScriptToHeader(facesContext, PrototypeResourceLoader.class, "prototype.js");
+        addresource.addJavaScriptToHeader(facesContext, HtmlCalendarRenderer.class, "date.js");
+        addresource.addJavaScriptToHeader(facesContext, HtmlCalendarRenderer.class, "popcalendar_init.js");
 
         StringBuffer imageScript = new StringBuffer();
         appendImageDirectory(imageScript, facesContext);
-        AddResource.addInlineScriptToHeader(imageScript.toString(),facesContext);
-        AddResource.addInlineScriptToHeader(getLocalizedLanguageScript(symbols,months,firstDayOfWeek,
-                uiComponent),facesContext);
-        AddResource.addJavaScriptToHeader(HtmlCalendarRenderer.class, "popcalendar.js", facesContext);
+        addresource.addInlineScriptToHeader(facesContext, imageScript.toString());
+        addresource.addInlineScriptToHeader(facesContext, getLocalizedLanguageScript(symbols,months,firstDayOfWeek,
+                                        uiComponent));
+        addresource.addJavaScriptToHeader(facesContext, HtmlCalendarRenderer.class, "popcalendar.js");
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -290,8 +290,8 @@ public class HtmlCalendarRenderer
     private static void appendImageDirectory(StringBuffer script, FacesContext facesContext)
     {
         script.append("jscalendarSetImageDirectory('");
-        script.append(JavascriptUtils.encodeString(
-                AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "DB/", facesContext)
+        script.append(JavascriptUtils.encodeString(AddResource.getInstance(facesContext)
+                .getResourceUri(facesContext, HtmlCalendarRenderer.class, "DB/")
         ));
         script.append("');");
     }
@@ -438,7 +438,8 @@ public class HtmlCalendarRenderer
         } else {
             // render the image
             writer.startElement(HTML.IMG_ELEM, uiComponent);
-            writer.writeAttribute(HTML.SRC_ATTR, AddResource.getResourceMappedPath(HtmlCalendarRenderer.class, "images/calendar.gif", facesContext), null);
+            AddResource addResource = AddResource.getInstance(facesContext);
+            writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
             writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
 
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);

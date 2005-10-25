@@ -17,12 +17,12 @@ package org.apache.myfaces.custom.swapimage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.util.AddResource;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.component.html.util.AddResource;
 import org.apache.myfaces.custom.navigation.HtmlCommandNavigation;
 
 import javax.faces.component.UIComponent;
@@ -47,7 +47,8 @@ public class HtmlSwapImageRenderer
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        AddResource.addJavaScriptToHeader(HtmlSwapImage.class, "swapimage.js", facesContext);
+        AddResource.getInstance(facesContext).addJavaScriptToHeader(facesContext,
+                HtmlSwapImage.class, "swapimage.js");
 
         String url;
         if (uiComponent instanceof HtmlSwapImage)
