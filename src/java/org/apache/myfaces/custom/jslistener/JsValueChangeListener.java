@@ -22,6 +22,7 @@ public class JsValueChangeListener extends UIOutput
     private String _for = null;
     private String _expressionValue = null;
     private String _property = null;
+    private String _bodyTagEvent;
 
     public JsValueChangeListener()
     {
@@ -69,15 +70,27 @@ public class JsValueChangeListener extends UIOutput
         return vb != null ? (String)vb.getValue(getFacesContext()) : null;
     }
 
+    public String getBodyTagEvent()
+    {
+        if (_bodyTagEvent != null) return _bodyTagEvent;
+        ValueBinding vb = getValueBinding("bodyTagEvent");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setBodyTagEvent(String bodyTagEvent)
+    {
+        _bodyTagEvent = bodyTagEvent;
+    }
 
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[4];
+        Object values[] = new Object[5];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _expressionValue;
         values[3] = _property;
+        values[4] = _bodyTagEvent;
         return ((Object) (values));
     }
 
@@ -88,6 +101,7 @@ public class JsValueChangeListener extends UIOutput
         _for = (String)values[1];
         _expressionValue = (String)values[2];
         _property = (String)values[3];
+        _bodyTagEvent = (String) values[4];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

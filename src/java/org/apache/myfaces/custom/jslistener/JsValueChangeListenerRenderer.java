@@ -3,18 +3,17 @@
  */
 package org.apache.myfaces.custom.jslistener;
 
-import java.io.IOException;
-
-import javax.faces.application.Application;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.util.AddResource;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
+
+import javax.faces.application.Application;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)
@@ -90,15 +89,22 @@ public class JsValueChangeListenerRenderer
                     ",'"+expressionValue+"');";
 
 
-            callMethod(parent, "onchange",methodCall);
+            callMethod(jsValueChangeListener, "onchange",methodCall);
+
+            if (jsValueChangeListener.getBodyTagEvent() != null)
+            {
+                callMethod(jsValueChangeListener, jsValueChangeListener.getBodyTagEvent(), methodCall);
+            }
 
         }
     }
 
-    private void callMethod(UIComponent uiComponent, String propName, String value)
+    private void callMethod(JsValueChangeListener jsValueChangeListener, String propName, String value)
     {
-        Object oldValue = uiComponent.getAttributes().get(propName);
+        UIComponent parent = jsValueChangeListener.getParent();
 
+        Object oldValue = parent.getAttributes().get(propName);
+        
         if(oldValue != null)
         {
             String oldValueStr = oldValue.toString().trim();
@@ -110,7 +116,7 @@ public class JsValueChangeListenerRenderer
             //check if multiple change listeners belong to parent component
             //and if the previous rendered information has to be cleared
             if(oldValueStr.indexOf("orgApacheMyfacesJsListenerSetExpressionProperty(")> 0
-                       && oldValueStr.indexOf(uiComponent.getClientId(getFacesContext())) < 0)
+                       && oldValueStr.indexOf(parent.getClientId(getFacesContext())) < 0)
             {
                 oldValueStr = oldValueStr.substring(0,oldValueStr.indexOf("orgApacheMyfacesJsListenerSetExpressionProperty("));
             }
@@ -122,15 +128,19 @@ public class JsValueChangeListenerRenderer
 
         }
 
-        if(value != null)
+        if (!propName.equals("onchange") && value != null)
         {
-            uiComponent.getAttributes().put(propName, value);
+            AddResource.addJavaScriptToBodyTag(jsValueChangeListener.getBodyTagEvent(), value);
+        }
+        else if(value != null)
+        {
+            parent.getAttributes().put(propName, value);
         }
         else
         {
             try
             {
-                uiComponent.getAttributes().remove(propName);
+                parent.getAttributes().remove(propName);
             }
             catch(Exception ex)
             {

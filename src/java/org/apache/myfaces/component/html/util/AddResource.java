@@ -15,20 +15,11 @@
  */
 package org.apache.myfaces.component.html.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -36,12 +27,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -59,6 +48,8 @@ public final class AddResource {
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
     private static final String ADDITIONAL_HEADER_INFO_REQUEST_ATTRUBITE_NAME = "myFacesHeaderResource2Render";
+
+    private static StringBuilder ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
 
     private static Set registeredClasses = new HashSet();
 
@@ -166,6 +157,20 @@ public final class AddResource {
         }
 
         addAdditionalHeaderInfoToRender(context, jsInfo );
+    }
+
+    public static void addJavaScriptToBodyTag(String JavaScriptEventName, String addedJavaScript)
+    {
+        if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG == null)
+        {
+            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = new StringBuilder();
+
+            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG.append(" ").append(JavaScriptEventName).append("=\"").append(addedJavaScript);
+        }
+        else
+        {
+            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG.append(addedJavaScript);
+        }
     }
 
     /**
@@ -492,8 +497,16 @@ public final class AddResource {
             }
         }
 
-        if(headerInsertPosition >=0 && addHeaderTags)
+        if(headerInsertPosition >=0 && addHeaderTags){}
             writer.write("</head>");
+
+        if (bodyInsertPosition > 0)
+        {
+            if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG != null)
+            {
+                originalResponse.insert( bodyInsertPosition + 5, ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\"" );
+            }
+        }
 
         writer.write( headerInsertPosition > 0 ?
                 originalResponse.substring(headerInsertPosition) : originalResponse.toString());

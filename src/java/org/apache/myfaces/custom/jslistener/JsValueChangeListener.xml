@@ -20,4 +20,8 @@
         <name>property</name>
         <type>java.lang.String</type>
     </field>
+    <field>
+        <name>bodyTagEvent</name>
+        <type>java.lang.String</type>
+    </field>
 </component>
