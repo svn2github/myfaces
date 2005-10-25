@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.MethodBinding;
@@ -38,6 +39,7 @@ import org.apache.myfaces.el.SimpleActionMethodBinding;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlFormRendererBase;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
@@ -56,10 +58,10 @@ public class HtmlJSCookMenuRenderer
 
     private static final Map builtInThemes = new java.util.HashMap();
     static {
-	    builtInThemes.put("ThemeOffice", "/ThemeOffice/");
-	    builtInThemes.put("ThemeMiniBlack", "/ThemeMiniBlack/");
-	    builtInThemes.put("ThemeIE", "/ThemeIE/");
-	    builtInThemes.put("ThemePanel", "/ThemePanel/");
+        builtInThemes.put("ThemeOffice", "/ThemeOffice/");
+        builtInThemes.put("ThemeMiniBlack", "/ThemeMiniBlack/");
+        builtInThemes.put("ThemeIE", "/ThemeIE/");
+        builtInThemes.put("ThemePanel", "/ThemePanel/");
     }
     
     public void decode(FacesContext context, UIComponent component)
@@ -133,10 +135,18 @@ public class HtmlJSCookMenuRenderer
         List list = NavigationMenuUtils.getNavigationMenuItemList(component);
         if (list.size() > 0)
         {
+            UIForm parentForm = getParentForm(component);
+            String formName = getFormName(parentForm,context);
             List uiNavMenuItemList = component.getChildren();
-            DummyFormResponseWriter dummyFormResponseWriter = DummyFormUtils.getDummyFormResponseWriter(context);
-            dummyFormResponseWriter.addDummyFormParameter(JSCOOK_ACTION_PARAM);
-            dummyFormResponseWriter.setWriteDummyForm(true);
+            if( formName == null ) {
+                DummyFormResponseWriter dummyFormResponseWriter = DummyFormUtils.getDummyFormResponseWriter(context);
+                dummyFormResponseWriter.addDummyFormParameter(JSCOOK_ACTION_PARAM);
+                dummyFormResponseWriter.setWriteDummyForm(true);
+                formName = dummyFormResponseWriter.getDummyFormName();
+            }
+            else {
+                HtmlFormRendererBase.addHiddenCommandParameter(parentForm,JSCOOK_ACTION_PARAM);
+            }
 
             String myId = getMenuId(context, component);
 
@@ -149,7 +159,7 @@ public class HtmlJSCookMenuRenderer
             encodeNavigationMenuItems(context, script,
                                       (NavigationMenuItem[]) list.toArray(new NavigationMenuItem[list.size()]),
                                       uiNavMenuItemList,
-                                      myId);
+                                      myId, formName);
 
             script.append("];");
             writer.writeText(script.toString(),null);
@@ -157,11 +167,42 @@ public class HtmlJSCookMenuRenderer
         }
     }
 
+    /**
+     * Method getFormName.
+     * 
+     * @param sortColumnHeader SortColumnHeader
+     * @param facesContext FacesContext
+     * @return String
+     */
+    private String getFormName(UIForm parentForm,
+            FacesContext facesContext) {
+        // See if we are in a form
+        if (parentForm != null) { return parentForm.getClientId(facesContext); }
+
+        // Not in a form. Return the child form's name
+        return null;
+    }
+    
+    /**
+     * Get the parent UIForm. If no parent is a UIForm then returns null.
+     * 
+     * @param component
+     * @return UIForm
+     */
+    private UIForm getParentForm(UIComponent component) {
+        // See if we are in a form
+        UIComponent parent = component.getParent();
+        while (parent != null && !(parent instanceof UIForm)) {
+            parent = parent.getParent();
+        }
+        return (UIForm) parent;
+    }
+    
     private void encodeNavigationMenuItems(FacesContext context,
                                            StringBuffer writer,
                                            NavigationMenuItem[] items,
                                            List uiNavMenuItemList,
-                                           String menuId)
+                                           String menuId, String formName)
         throws IOException
     {
         for (int i = 0; i < items.length; i++)
@@ -190,7 +231,7 @@ public class HtmlJSCookMenuRenderer
             if (item.isSplit())
             {
                 writer.append("_cmSplit,");
-
+                
                 if (item.getLabel().equals("0"))
                 {
                     continue;
@@ -229,8 +270,11 @@ public class HtmlJSCookMenuRenderer
             {
                 writer.append("null");
             }
-            writer.append(", 'linkDummyForm', null"); // TODO Change here to allow the use of non dummy form if possible.
-
+            writer.append(", '");
+            // Change here to allow the use of non dummy form.
+            writer.append(formName);
+            writer.append("', null");
+            
             if (item.isRendered() && ! item.isDisabled()) {
                 // render children only if parent is visible/enabled
                 NavigationMenuItem[] menuItems = item.getNavigationMenuItems();
@@ -240,10 +284,10 @@ public class HtmlJSCookMenuRenderer
                     if (uiNavMenuItem != null)
                     {
                         encodeNavigationMenuItems(context, writer, menuItems,
-                                uiNavMenuItem.getChildren(), menuId);
+                                uiNavMenuItem.getChildren(), menuId, formName);
                     } else {
                         encodeNavigationMenuItems(context, writer, menuItems,
-                                new ArrayList(1), menuId);
+                                new ArrayList(1), menuId, formName);
                     }
                 }
             }
@@ -281,7 +325,7 @@ public class HtmlJSCookMenuRenderer
         String theme = menu.getTheme();
         if (theme == null) {
                 // should never happen; theme is a required attribute in the jsp tag definition
-        	throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
+            throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
         }
 
         addResourcesToHeader(theme,menu,context);
@@ -368,70 +412,71 @@ public class HtmlJSCookMenuRenderer
      * @param context is the current faces context.
      */
     private void addThemeSpecificResources(String themeName, String styleLocation, 
-    		String javascriptLocation, String imageLocation, FacesContext context)
+            String javascriptLocation, String imageLocation, FacesContext context)
     {
-    	String themeLocation = (String) builtInThemes.get(themeName);
+        String themeLocation = (String) builtInThemes.get(themeName);
         if(themeLocation == null)
         {
-        	log.debug("Unknown theme name '" + themeName + "' specified.");
+            log.debug("Unknown theme name '" + themeName + "' specified.");
         }
 
         if ((imageLocation != null) || (themeLocation != null)) {
-        	// Generate a javascript variable containing a reference to the
-        	// directory containing theme image files, for use by the theme
-        	// javascript file. If neither of these is defined (ie a custom
-        	// theme was specified but no imageLocation) then presumably the
-        	// theme.js file uses some other mechanism to determine where
-        	// its image files are.
-	        StringBuffer buf = new StringBuffer();
-	        buf.append("var my");
-	        buf.append(themeName);
-	        buf.append("Base='");
-	        if(imageLocation!=null)
-	        {
-	            buf.append(AddResource.getResourceBasePath(imageLocation));
-	        }
-	        else
-	        {
-	            buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
-	            buf.append(themeLocation);
-	        }
+            // Generate a javascript variable containing a reference to the
+            // directory containing theme image files, for use by the theme
+            // javascript file. If neither of these is defined (ie a custom
+            // theme was specified but no imageLocation) then presumably the
+            // theme.js file uses some other mechanism to determine where
+            // its image files are.
+            StringBuffer buf = new StringBuffer();
+            buf.append("var my");
+            buf.append(themeName);
+            buf.append("Base='");
+            if(imageLocation!=null)
+            {
+                buf.append(AddResource.getResourceBasePath(imageLocation+themeName));
+            }
+            else
+            {
+                buf.append(AddResource.getResourceBasePath(HtmlJSCookMenuRenderer.class,context));
+                buf.append(themeLocation);
+            }
+            buf.append( "';");
 
-	        AddResource.addInlineScriptToHeader(buf.toString(), context);
+            AddResource.addInlineScriptToHeader(buf.toString(), context);
         }
 
         if ((javascriptLocation != null) || (themeLocation != null)) {
-        	// Generate a <script> tag in the page header pointing to the
-        	// theme.js file for this theme. If neither of these is defined
-        	// then presumably the theme.js file is referenced by a <script>
-        	// tag hard-wired into the page or inserted via some other means.
-	        if(javascriptLocation != null)
-	        {
-	        	// For now, assume that if the user specified a location for a custom
-	        	// version of the jscookMenu.js file then the theme.js file can be found
-	        	// in the same location.
-	            AddResource.addJavaScriptToHeader(javascriptLocation, "theme.js", context);
-	        }
-	        else
-	        {
-	        	// Using a built-in theme, so we know where the theme.js file is.
-	            AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.js", context);
-	        }
+            // Generate a <script> tag in the page header pointing to the
+            // theme.js file for this theme. If neither of these is defined
+            // then presumably the theme.js file is referenced by a <script>
+            // tag hard-wired into the page or inserted via some other means.
+            if(javascriptLocation != null)
+            {
+                // For now, assume that if the user specified a location for a custom
+                // version of the jscookMenu.js file then the theme.js file can be found
+                // in the same location.
+                AddResource.addJavaScriptToHeader(javascriptLocation, themeName+"/theme.js", context);
+            }
+            else
+            {
+                // Using a built-in theme, so we know where the theme.js file is.
+                AddResource.addJavaScriptToHeader(HtmlJSCookMenuRenderer.class, themeName+"/theme.js", context);
+            }
         }
 
         if ((styleLocation != null) || (themeLocation != null)) {
-        	// Generate a <link type="text/css"> tag in the page header pointing to
-        	// the theme stylesheet. If neither of these is defined then presumably
-        	// the stylesheet is referenced by a <link> tag hard-wired into the page
-        	// or inserted via some other means.
-	        if(styleLocation != null)
-	        {
-	            AddResource.addStyleSheet(styleLocation, "theme.css", context);
-	        }
-	        else
-	        {
-	            AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
-	        }
+            // Generate a <link type="text/css"> tag in the page header pointing to
+            // the theme stylesheet. If neither of these is defined then presumably
+            // the stylesheet is referenced by a <link> tag hard-wired into the page
+            // or inserted via some other means.
+            if(styleLocation != null)
+            {
+                AddResource.addStyleSheet(styleLocation, themeName+"/theme.css", context);
+            }
+            else
+            {
+                AddResource.addStyleSheet(HtmlJSCookMenuRenderer.class, themeName+"/theme.css", context);
+            }
         }
     }
 
