@@ -29,7 +29,8 @@ public interface ResourceHandler
     /**
      * Returns the resource loader class which is used to load the resource 
      * 
-     * @return
+     * @return a class which implements org.apache.myfaces.component.html.util.ResourceLoader
+     * @see ResourceLoader
      */
     Class getResourceLoaderClass(); 
     

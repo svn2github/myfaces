@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 public interface ResourceLoader
 {
     /**
+     * Called by AddResource to render external resource data 
+     * 
      * @param request the request 
      * @param response the response to write the resource content to
      * @param resourceUri contains the uri part after the uri which 

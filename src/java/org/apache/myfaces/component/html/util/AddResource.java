@@ -165,7 +165,10 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource to the document Header.
+     * Adds the given Javascript resource to the document Header by supplying 
+     * an resourcehandler instance. Use this method to have full control about building 
+     * the reference url to identify the resource and to customize how the resource 
+     * is written to the response.
      * If the script has already been referenced, it's added only once.
      */
     public void addJavaScriptToHeader(FacesContext context, ResourceHandler resourceHandler)
