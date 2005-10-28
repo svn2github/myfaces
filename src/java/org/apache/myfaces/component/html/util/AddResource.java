@@ -15,19 +15,6 @@
  */
 package org.apache.myfaces.component.html.util;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
@@ -35,6 +22,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
+
+import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -521,15 +516,16 @@ public final class AddResource
         if (headerInsertPosition >= 0 && addHeaderTags)
             writer.write("</head>");
 
-        writer.write(headerInsertPosition > 0 ? originalResponse
-                .substring(headerInsertPosition) : originalResponse.toString());
         if (bodyInsertPosition > 0)
         {
             if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG != null)
             {
-                originalResponse.insert( bodyInsertPosition + 5, ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\"" );
+                originalResponse.insert( bodyInsertPosition-1, " "+ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\" " );
             }
         }
+
+        writer.write(headerInsertPosition > 0 ? originalResponse
+                .substring(headerInsertPosition) : originalResponse.toString());
     }
 
     private HeaderInfo getStyleInstance(FacesContext context, ResourceHandler resourceHandler)
