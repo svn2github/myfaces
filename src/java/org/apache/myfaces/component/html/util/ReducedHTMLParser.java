@@ -17,7 +17,7 @@ package org.apache.myfaces.component.html.util;
 
 /**
  * @author Martin Marinschek
- * @version $Revision$ $Date$
+ * @version $Revision: $ $Date: $
  */
 public class ReducedHTMLParser
 {
@@ -36,8 +36,7 @@ public class ReducedHTMLParser
         boolean commentMode = false;
         boolean attributeMode = false;
         char attributeOpenChar = 0;
-        boolean scriptMode = false;
-
+        
 
         for(int i=0; i<seq.length();i++)
         {
@@ -60,12 +59,12 @@ public class ReducedHTMLParser
             }
             else if (!commentMode)
             {
-                if(!scriptMode && !attributeMode && !openedTag && c=='<')
+                if(!attributeMode && !openedTag && c=='<')
                 {
                     openedTag = true;
                     openedTagIndex = i;
                 }
-                else if(!scriptMode && !attributeMode && openedTag && c=='>')
+                else if(!attributeMode && openedTag && c=='>')
                 {
                     if(currentTagIdentifier != -1)
                     {
@@ -75,17 +74,11 @@ public class ReducedHTMLParser
 
                             if(closeSymbolEncountered)
                             {
-                                if(currentTagIdentifier==SCRIPT_TAG)
-                                    scriptMode = false;
-
                                 l.closedEndTag(i,currentTagIdentifier);
                             }
                         }
                         else
                         {
-                            if(currentTagIdentifier==SCRIPT_TAG)
-                                scriptMode = false;
-
                             l.closedEndTag(i,currentTagIdentifier);
                         }
                     }
@@ -93,26 +86,27 @@ public class ReducedHTMLParser
                     openedTagIndex = -1;
                     openedTag = false;
                     openedStartTag = false;
-                    currentTagIdentifier = -1;
                     closeSymbolEncountered = false;
+                    currentTagIdentifier = -1;
                 }
-                else if(!scriptMode && openedTag && !attributeMode && (c=='"' || c=='\''))
+                else if(openedTag && !attributeMode && (c=='"' || c=='\''))
                 {
                     attributeMode = true;
                     attributeOpenChar = c;
                 }
-                else if(!scriptMode && openedTag && attributeMode && (c=='"' || c=='\'') && lastChars[0]!='\\')
+                else if(openedTag && attributeMode && (c=='"' || c=='\'') && lastChars[0]!='\\')
                 {
                     if(c==attributeOpenChar)
                     {
                         attributeMode = false;
                     }
                 }
-                else if(!scriptMode && !attributeMode && openedTag && c=='/')
+                else if(!attributeMode && openedTag && c=='/')
                 {
                     closeSymbolEncountered = true;
                 }
-                else if(!scriptMode && !attributeMode && openedTag &&
+                else if(!attributeMode && openedTag &&
+                     (lastChars[3]=='<' || Character.isWhitespace(lastChars[3]) || lastChars[3]=='/') && // Added this to make sure it's not <tbody> this was messing up in screen with datatable
                         (lastChars[2]=='b' || lastChars[2]=='B') &&
                             (lastChars[1]=='o' || lastChars[1]=='O') &&
                                 (lastChars[0]=='d' || lastChars[0]=='D') &&
@@ -120,13 +114,14 @@ public class ReducedHTMLParser
                 {
                     currentTagIdentifier = BODY_TAG;
 
-                    openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
-                            currentTagIdentifier);
-
-
+                    if (lastChars[3] != '/')
+                    {
+                        openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
+                                currentTagIdentifier);
+                    }
                 }
-                else if(!scriptMode && !attributeMode && openedTag &&
-                        (lastChars[3]=='<' || Character.isWhitespace(lastChars[3])) && // Added this to make sure it's not <thead> this was messing up in screen with datatable
+                else if(!attributeMode && openedTag &&
+                        (lastChars[3]=='<' || Character.isWhitespace(lastChars[3]) || lastChars[3]=='/' ) && // Added this to make sure it's not <thead> this was messing up in screen with datatable
                         (lastChars[2]=='h' || lastChars[2]=='H') &&
                             (lastChars[1]=='e' || lastChars[1]=='E')&&
                                 (lastChars[0]=='a' || lastChars[1]=='A')&&
@@ -134,23 +129,28 @@ public class ReducedHTMLParser
                 {
                     currentTagIdentifier = HEAD_TAG;
 
-                    openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
-                            currentTagIdentifier);
+                    if (lastChars[3] != '/')
+                    {
+                        openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
+                                currentTagIdentifier);
+                    }
                 }
                 else if(!attributeMode && openedTag &&
-                    (lastChars[4]=='s' || lastChars[4]=='S') &&
-                        (lastChars[3]=='c' || lastChars[3]=='C') &&
-                            (lastChars[2]=='r' || lastChars[2]=='R') &&
-                                (lastChars[1]=='i' || lastChars[1]=='I')&&
-                                    (lastChars[0]=='p' || lastChars[0]=='P')&&
-                                        (c=='t' || c=='T'))
+                    (lastChars[5]=='<' || Character.isWhitespace(lastChars[5]) || lastChars[5]=='/' ) && // Added this to make sure it's not type="text/javascript" or language="JavaScript" inside the script tag
+                        (lastChars[4]=='s' || lastChars[4]=='S') &&
+                            (lastChars[3]=='c' || lastChars[3]=='C') &&
+                                (lastChars[2]=='r' || lastChars[2]=='R') &&
+                                    (lastChars[1]=='i' || lastChars[1]=='I')&&
+                                        (lastChars[0]=='p' || lastChars[0]=='P')&&
+                                            (c=='t' || c=='T'))
                 {
                     currentTagIdentifier = SCRIPT_TAG;
 
-                    scriptMode = true;
-
-                    openedStartTag = handleTag(closeSymbolEncountered, l,
-                            openedTagIndex, openedStartTag, currentTagIdentifier);
+                    if (lastChars[5] != '/')
+                    {
+                        openedStartTag = handleTag(closeSymbolEncountered, l,
+                                openedTagIndex, openedStartTag, currentTagIdentifier);
+                    }
                 }
             }
 
@@ -184,7 +184,12 @@ public class ReducedHTMLParser
 
     public static void main(String[] args)
     {
-        ReducedHTMLParser.parse(new StringBuffer("<html><head></head><body =\"xx'<body/>'x\"><xxx></xxx></body></html"),new CallbackListener(){
+        ReducedHTMLParser.parse(new StringBuffer("<html><head>\n"
+                + "        <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/adas.css\" />\n"
+                + "        <script src=\"/js/adas.js\" type=\"text/javascript\" language=\"JavaScript\"> </script>\n"
+                + "        <title>MyFaces</title>\n"
+                + "    </head>\n"
+                + "    <body> </body>'x\"><xxx></xxx></html"),new CallbackListener(){
             public void openedStartTag(int charIndex, int tagIdentifier)
             {
                 //To change body of implemented methods use File | Settings | File Templates.
