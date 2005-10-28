@@ -75,11 +75,17 @@ public class HtmlTabbedPaneRenderer
     }
     
     /**
-     * This method will be removed.
-     * It's just a provision in case we need to explicitly allow to disable the client-side switch.
+     * Write out information about the toggling mode - the component might
+     * be toggled server side or client side.
+     *
+     * @param uiComponent
      */
-    private boolean isDynamic(){
-    	return true;
+    private boolean isDynamic(HtmlPanelTabbedPane uiComponent){
+
+        Boolean serverSideTabSwitch = (Boolean)
+                uiComponent.getAttributes().get("serverSideTabSwitch");
+
+        return serverSideTabSwitch != null ? serverSideTabSwitch.booleanValue() : false;
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
@@ -90,19 +96,20 @@ public class HtmlTabbedPaneRenderer
         {
             tabbedPane.setBgcolor(DEFAULT_BG_COLOR);
         }
-        
-        AddResource addResource = AddResource.getInstance(facesContext);
-        addResource.addStyleSheet(facesContext, HtmlTabbedPaneRenderer.class, "defaultStyles.css");
 
-        if( isDynamic() ){
-            addResource.addJavaScriptToHeader(facesContext, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
-            addResource.addInlineStyleToHeader(facesContext,
+        AddResource addResource = AddResource.getInstance(facesContext);
+        
+        addResource.addStyleSheet(facesContext,
+                HtmlTabbedPaneRenderer.class, "defaultStyles.css");
+
+        if( isDynamic(tabbedPane) ){
+        	addResource.addJavaScriptToHeader(facesContext, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
+        	addResource.addInlineStyleToHeader(facesContext,
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+TAB_PANE_CLASS+",\n" +
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+SUB_HEADER_CELL_CLASS+"{\n"+
         				"background-color:" + tabbedPane.getBgcolor()+";\n"+
-        			"}\n"
-        			);
+        			"}\n");
         }
         
         
@@ -120,7 +127,7 @@ public class HtmlTabbedPaneRenderer
 
         List children = tabbedPane.getChildren();
         
-        if( isDynamic() ){
+        if( isDynamic(tabbedPane) ){
         	List headerIDs = new ArrayList();
 	        List tabIDs = new ArrayList();
 	        for (int i = 0, len = children.size(); i < len; i++)
@@ -270,7 +277,7 @@ public class HtmlTabbedPaneRenderer
         
         // No request due to a header button pressed.
         // Restore a client-side switch
-        if( isDynamic() ){
+        if( isDynamic(tabbedPane) ){
         	String clientSideIndex = (String)paramMap.get(getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext));
         	if (clientSideIndex != null && clientSideIndex.length() > 0)
             {
@@ -430,7 +437,7 @@ public class HtmlTabbedPaneRenderer
             writer.writeAttribute(HTML.TYPE_ATTR, "submit", null);
             writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null);
             writer.writeAttribute(HTML.VALUE_ATTR, label, null);
-            if( isDynamic() ){
+            if( isDynamic(tabbedPane) ){
             	String activeUserClass = tabbedPane.getActiveTabStyleClass();
             	String inactiveUserClass = tabbedPane.getInactiveTabStyleClass();
             	String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();

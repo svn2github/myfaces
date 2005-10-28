@@ -62,6 +62,7 @@ public class HtmlPanelTabbedPaneTag
     private String _activeSubStyleClass;
     private String _inactiveSubStyleClass;
     private String _tabContentStyleClass;
+    private String _serverSideTabSwitch;
     // User Role support --> already handled by HtmlPanelGroupTag
 
 
@@ -89,8 +90,38 @@ public class HtmlPanelTabbedPaneTag
         setStringProperty(component, "activeSubStyleClass", _activeSubStyleClass);
         setStringProperty(component, "inactiveSubStyleClass", _inactiveSubStyleClass);
         setStringProperty(component, "tabContentStyleClass", _tabContentStyleClass);
+        setBooleanProperty(component, "serverSideTabSwitch", _serverSideTabSwitch);
     }
 
+
+    public void release()
+    {
+        super.release();
+        _selectedIndex=null;
+        _align = null;
+        _border = null;
+        _cellpadding = null;
+        _cellspacing = null;
+        _datafld = null;
+        _datasrc = null;
+        _dataformatas = null;
+        _frame = null;
+        _rules = null;
+        _summary = null;
+        _width = null;
+        _activeTabStyleClass = null;
+        _inactiveTabStyleClass = null;
+        _disabledTabStyleClass = null;
+        _activeSubStyleClass = null;
+        _inactiveSubStyleClass = null;
+        _tabContentStyleClass = null;
+        _serverSideTabSwitch = null;
+    }
+
+    public void setServerSideTabSwitch(String serverSideTabSwitch)
+    {
+        _serverSideTabSwitch = serverSideTabSwitch;
+    }
 
     public void setSelectedIndex(String selectedIndex)
     {
@@ -181,22 +212,14 @@ public class HtmlPanelTabbedPaneTag
         _inactiveSubStyleClass = inactiveSubStyleClass;
     }
 
-
     public void setTabContentStyleClass(String tabContentStyleClass)
     {
         _tabContentStyleClass = tabContentStyleClass;
     }
 
-
-    public String getDisabledTabStyleClass()
-    {
-        return _disabledTabStyleClass;
-    }
-
-
     public void setDisabledTabStyleClass(String disabledTabStyleClass)
     {
-        this._disabledTabStyleClass = disabledTabStyleClass;
+        _disabledTabStyleClass = disabledTabStyleClass;
     }
 
 }
