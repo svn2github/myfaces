@@ -71,6 +71,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
             collapsiblePanel.getChildren().add(link);
 
             headerComp = link;
+
         }
         // Always render the header - to be able toggle the collapsed state
         RendererUtils.renderChild(facesContext, headerComp);
