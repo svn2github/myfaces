@@ -521,9 +521,8 @@ public final class AddResource
         if (headerInsertPosition >= 0 && addHeaderTags)
             writer.write("</head>");
 
-        writer
-                .write(headerInsertPosition > 0 ? originalResponse.substring(headerInsertPosition) : originalResponse
-                        .toString());
+        writer.write(headerInsertPosition > 0 ? originalResponse
+                .substring(headerInsertPosition) : originalResponse.toString());
         if (bodyInsertPosition > 0)
         {
             if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG != null)
@@ -531,9 +530,6 @@ public final class AddResource
                 originalResponse.insert( bodyInsertPosition + 5, ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\"" );
             }
         }
-
-        writer.write( headerInsertPosition > 0 ?
-                originalResponse.substring(headerInsertPosition) : originalResponse.toString());
     }
 
     private HeaderInfo getStyleInstance(FacesContext context, ResourceHandler resourceHandler)
