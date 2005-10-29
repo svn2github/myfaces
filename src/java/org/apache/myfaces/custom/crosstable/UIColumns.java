@@ -89,6 +89,17 @@ public class UIColumns extends UIData
     {
         return _colIndex;
     }
+    
+    public String getClientId(FacesContext context)
+    {
+        String clientId = super.getClientId(context);
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1)
+        {
+            return clientId;
+        }
+        return clientId + "_" + rowIndex;
+    }
 
     public void setRowIndex(int colIndex)
     {
