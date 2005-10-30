@@ -133,7 +133,10 @@ public class HtmlCollapsiblePanel extends UIInput
         removeVars(context);
     }
 
-
+    public void updateModel(FacesContext context)
+    {
+        super.updateModel(context);
+    }
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 

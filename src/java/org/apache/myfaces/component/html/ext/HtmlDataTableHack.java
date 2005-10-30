@@ -122,7 +122,7 @@ public abstract class HtmlDataTableHack extends
         {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
-            _rowStates.clear();
+            //_rowStates.clear(); todo: should not be necessary.
         }
         super.encodeBegin(context);
     }
