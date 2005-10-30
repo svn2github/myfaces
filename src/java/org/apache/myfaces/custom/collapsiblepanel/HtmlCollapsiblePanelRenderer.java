@@ -23,13 +23,16 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import javax.faces.application.Application;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Kalle Korhonen (latest modification by $Author$)
@@ -39,6 +42,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 {
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
     private static final String LINK_ID = "ToggleCollapsed".intern();
+    private static final String COLLAPSED_STATE_ID = "CollapsedState".intern();
 
     public boolean getRendersChildren()
     {
@@ -71,8 +75,14 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
             collapsiblePanel.getChildren().add(link);
 
             headerComp = link;
-
         }
+
+        //Render the current state - collapsed or not - of the panel.
+        HtmlRendererUtils.renderHiddenInputField(writer,collapsiblePanel.getClientId(facesContext)+
+                COLLAPSED_STATE_ID,
+                collapsiblePanel.getSubmittedValue()!=null?
+                        collapsiblePanel.getSubmittedValue():(collapsiblePanel.isCollapsed()+""));
+
         // Always render the header - to be able toggle the collapsed state
         RendererUtils.renderChild(facesContext, headerComp);
         headerComp.setRendered(false);
@@ -135,10 +145,26 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
         HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
-        String reqValue = (String) facesContext.getExternalContext().getRequestParameterMap().get(HtmlRendererUtils.getHiddenCommandLinkFieldName(HtmlRendererUtils.getFormName(collapsiblePanel, facesContext)));
-        //log.debug("new component's id is " + collapsiblePanel.getClientId(facesContext) + ", req id is " + reqValue);
-        if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(reqValue))
-            collapsiblePanel.setCollapsed(!collapsiblePanel.isCollapsed());
+
+        Map reqParams = facesContext.getExternalContext().getRequestParameterMap();
+
+        String togglingIndicated = (String) reqParams.get(HtmlRendererUtils.getHiddenCommandLinkFieldName(HtmlRendererUtils.getFormName(collapsiblePanel, facesContext)));
+        String reqValue = (String) reqParams.get(
+                collapsiblePanel.getClientId(facesContext)+COLLAPSED_STATE_ID);
+
+        if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(togglingIndicated))
+        {
+            if(reqValue!=null)
+                collapsiblePanel.setSubmittedValue(""+!Boolean.valueOf(reqValue).booleanValue());
+            else
+                collapsiblePanel.setSubmittedValue(""+!collapsiblePanel.isCollapsed());
+        }
+        else
+        {
+            if(reqValue!=null)
+                collapsiblePanel.setSubmittedValue(""+Boolean.valueOf(reqValue).booleanValue());
+        }
+
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlCollapsiblePanel collapsiblePanel)
@@ -173,6 +199,16 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
             children.add(uiText);
         }
         return link;
+    }
+
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException
+    {
+        if(submittedValue instanceof String)
+        {
+            return Boolean.valueOf((String) submittedValue);
+        }
+
+        return super.getConvertedValue(context, component, submittedValue);
     }
 
     // Couldn't get an ActionListner for a link to work properly. With each page submit, one more

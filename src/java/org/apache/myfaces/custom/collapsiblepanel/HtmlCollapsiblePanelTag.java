@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
-import org.apache.myfaces.taglib.html.ext.HtmlPanelGroupTag;
+import org.apache.myfaces.taglib.html.HtmlInputTagBase;
 
 import javax.faces.component.UIComponent;
 
@@ -24,7 +24,7 @@ import javax.faces.component.UIComponent;
  * @version $Revision$ $Date$
  */
 public class HtmlCollapsiblePanelTag
-        extends HtmlPanelGroupTag
+        extends HtmlInputTagBase
 {
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanelTag.class);
 
@@ -38,39 +38,31 @@ public class HtmlCollapsiblePanelTag
         return "org.apache.myfaces.CollapsiblePanel";
     }
 
-    private String _collapsed;
-    private String _value;
+    private String _title;
     private String _var;
-    private String _collapsedVar;
+    private String _titleVar;
     // User Role support --> already handled by HtmlPanelGroupTag
 
     public void release() {
         super.release();
-        _collapsed=null;
-        _value=null;
+        _title=null;
         _var=null;
-        _collapsedVar=null;
+        _titleVar=null;
     }
 
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
 
-        setBooleanProperty(component, "collapsed", _collapsed);
-        setStringProperty(component, "value", _value);
+        setBooleanProperty(component, "title", _title);
         setStringProperty(component,"var",_var);
-        setStringProperty(component,"collapsedVar",_collapsedVar);
+        setStringProperty(component,"titleVar",_titleVar);
     }
 
 
-    public void setCollapsed(String collapsed)
+    public void setTitle(String title)
     {
-        _collapsed = collapsed;
-    }
-    
-    public void setValue(String value)
-    {
-        _value = value;
+        _title = title;
     }
 
     public void setVar(String var)
@@ -78,8 +70,8 @@ public class HtmlCollapsiblePanelTag
         _var = var;
     }
 
-    public void setCollapsedVar(String collapsedVar)
+    public void setTitleVar(String titleVar)
     {
-        _collapsedVar = collapsedVar;
+        _titleVar = titleVar;
     }
 }

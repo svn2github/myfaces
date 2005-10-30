@@ -34,10 +34,8 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  *
  */
-public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValueHolder
+public class HtmlCollapsiblePanel extends UIInput
 {
-    private UIInput _inputDelegate = new UIInput();
-
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
 
     public void processDecodes(FacesContext context)
@@ -135,8 +133,9 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValu
         removeVars(context);
     }
 
+
+
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
-    private static final boolean DEFAULT_COLLAPSED = true;
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCollapsiblePanel";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
@@ -145,6 +144,8 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValu
     private String _var = null;
     private String _title = null;
     private String _titleVar = null;
+    private String _style = null;
+    private String _styleClass = null;
 
     public HtmlCollapsiblePanel()
     {
@@ -154,11 +155,6 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValu
     public String getFamily()
     {
         return COMPONENT_FAMILY;
-    }
-
-    public void setCollapsed(boolean collapsed)
-    {
-        setValue(Boolean.valueOf(collapsed));
     }
 
     public boolean isCollapsed()
@@ -173,31 +169,6 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValu
         return true;
     }
 
-    public void setValue(Object value)
-    {
-        _inputDelegate.setValue(value);
-    }
-
-    public Object getLocalValue()
-    {
-        return _inputDelegate.getLocalValue();
-    }
-
-    public Object getValue()
-    {
-        return _inputDelegate.getValue();
-    }
-
-    public Converter getConverter()
-    {
-        return _inputDelegate.getConverter();
-    }
-
-    public void setConverter(Converter converter)
-    {
-        _inputDelegate.setConverter(converter);
-    }
-
     public String getTitle()
     {
         if (_title != null) return _title;
@@ -208,6 +179,30 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValu
     public void setTitle(String title)
     {
         _title = title;
+    }
+
+    public String getStyle()
+    {
+        if (_style != null) return _style;
+        ValueBinding vb = getValueBinding("style");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setStyle(String style)
+    {
+        _style = style;
+    }
+
+    public String getStyleClass()
+    {
+        if (_styleClass != null) return _styleClass;
+        ValueBinding vb = getValueBinding("styleClass");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setStyleClass(String styleClass)
+    {
+        _styleClass = styleClass;
     }
 
     public void setVar(String var)
@@ -238,122 +233,20 @@ public class HtmlCollapsiblePanel extends HtmlPanelGroup implements EditableValu
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[5];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
-        values[1] = _inputDelegate.saveState(context);
-        values[2] = _title;
-        values[3] = _var;
-        values[4] = _titleVar;
+        values[1] = _title;
+        values[2] = _var;
+        values[3] = _titleVar;
         return ((Object) (values));
     }
 
     public void restoreState(FacesContext context, Object state)
     {
-          Object values[] = (Object[])state;
+        Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        _inputDelegate.restoreState(context, values[1]);
-        _title = (String)values[2];
-        _var = (String)values[3];
-        _titleVar = (String) values[4];
-    }
-
-    public Object getSubmittedValue()
-    {
-        return _inputDelegate.getSubmittedValue();
-    }
-
-    public void setSubmittedValue(Object submittedValue)
-    {
-        _inputDelegate.setSubmittedValue(submittedValue);
-    }
-
-    public boolean isLocalValueSet()
-    {
-        return _inputDelegate.isLocalValueSet();
-    }
-
-    public void setLocalValueSet(boolean localValueSet)
-    {
-        _inputDelegate.setLocalValueSet(localValueSet);
-    }
-
-    public boolean isValid()
-    {
-        return _inputDelegate.isValid();
-    }
-
-    public void setValid(boolean valid)
-    {
-        _inputDelegate.setValid(valid);
-    }
-
-    public boolean isRequired()
-    {
-        return _inputDelegate.isRequired();
-    }
-
-    public void setRequired(boolean required)
-    {
-        _inputDelegate.setRequired(required);
-    }
-
-    public boolean isImmediate()
-    {
-        return _inputDelegate.isImmediate();
-    }
-
-    public void setImmediate(boolean immediate)
-    {
-        _inputDelegate.setImmediate(immediate);
-    }
-
-    public MethodBinding getValidator()
-    {
-        return _inputDelegate.getValidator();
-    }
-
-    public void setValidator(MethodBinding validatorBinding)
-    {
-        _inputDelegate.setValidator(validatorBinding);
-    }
-
-    public MethodBinding getValueChangeListener()
-    {
-        return _inputDelegate.getValueChangeListener();
-    }
-
-    public void setValueChangeListener(MethodBinding valueChangeMethod)
-    {
-        _inputDelegate.setValueChangeListener(valueChangeMethod);
-    }
-
-    public void addValidator(Validator validator)
-    {
-        _inputDelegate.addValidator(validator);
-    }
-
-    public Validator[] getValidators()
-    {
-        return _inputDelegate.getValidators();
-    }
-
-    public void removeValidator(Validator validator)
-    {
-        _inputDelegate.removeValidator(validator);
-    }
-
-    public void addValueChangeListener(ValueChangeListener listener)
-    {
-        _inputDelegate.addValueChangeListener(listener);
-    }
-
-    public ValueChangeListener[] getValueChangeListeners()
-    {
-        return _inputDelegate.getValueChangeListeners();
-    }
-
-    public void removeValueChangeListener(ValueChangeListener listener)
-    {
-        _inputDelegate.removeValueChangeListener(listener);
+        _title = (String)values[1];
+        _var = (String)values[2];
+        _titleVar = (String) values[3];
     }
 }
