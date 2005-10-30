@@ -1673,22 +1673,14 @@
         &html_event_handler_attributes;
         &user_role_attributes;
         <attribute>
-            <name>collapsed</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-               Boolean value indicating whether the panel is collapsed by default.
-               In collapsed state, the body of the panel is not rendered. If you
-               provide a facet with name 'closedContent', this facet is rendered
-               instead.
-            </description>
-        </attribute>
-        <attribute>
             <name>value</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                Label for collapsible panel.
+               Boolean value indicating whether the panel is collapsed.
+               In collapsed state, the body of the panel is not rendered. If you
+               provide a facet with name 'closedContent', this facet is rendered
+               instead.
             </description>
         </attribute>
         <attribute>
@@ -1696,19 +1688,27 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-               This variable is defined to hold the value of the
-               component - you can use it for custom headers you define
-               in a facet with name 'header'.
-            </description>
-        </attribute>
-        <attribute>
-            <name>collapsedVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
                The variable which you can use to check for the collapsed
                state of the enclosing component. This is especially
                useful for custom headers you define in a facet with name 'header'.
+            </description>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Title for collapsible panel - shown in header.
+            </description>
+        </attribute>
+        <attribute>
+            <name>titleVar</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+               This variable is defined to hold the title label of the
+               component - you can use it for custom headers you define
+               in a facet with name 'header'.
             </description>
         </attribute>
     </tag>

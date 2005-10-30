@@ -162,7 +162,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
         children.add(uiText);
 
         // Create the optional label
-        String label = collapsiblePanel.getValue();
+        String label = collapsiblePanel.getTitle();
         if (label != null)
         {
             uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
