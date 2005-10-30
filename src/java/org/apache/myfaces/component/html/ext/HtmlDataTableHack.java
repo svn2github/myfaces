@@ -27,7 +27,6 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIColumn;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.ArrayDataModel;
@@ -53,7 +52,7 @@ public abstract class HtmlDataTableHack extends
     // will be set to false if the data should not be refreshed at the beginning of the encode phase
     private boolean _isValidChilds = true;
 
-    // holds for each row the states of the child components of this UIData 
+    // holds for each row the states of the child components of this UIData
     private Map _rowStates = new HashMap();
 
     // contains the initial row state which is used to initialize each row
@@ -87,112 +86,6 @@ public abstract class HtmlDataTableHack extends
         return _rowIndex;
     }
 
-    public Object processSaveState(FacesContext context)
-    {
-        Object[] state = new Object[2];
-        state[0] = super.processSaveState(context);
-
-        List childStates = new ArrayList();
-        state[1] = childStates;
-
-        int first = getFirst();
-        int rows = getRows();
-        int last;
-        if (rows == 0)
-        {
-            last = getRowCount();
-        }
-        else
-        {
-            last = first + rows;
-        }
-        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
-        {
-            setRowIndex(rowIndex);
-
-            //scrolled past the last row
-            if (!isRowAvailable())
-                break;
-
-            for (Iterator it = getChildren().iterator(); it.hasNext();)
-            {
-                UIComponent child = (UIComponent) it.next();
-                if (child instanceof UIColumn)
-                {
-                    if (!child.isRendered())
-                    {
-                        //Column is not visible
-                        continue;
-                    }
-                    for (Iterator columnChildIter = child.getChildren()
-                            .iterator(); columnChildIter.hasNext();)
-                    {
-                        UIComponent columnChild = (UIComponent) columnChildIter
-                                .next();
-                        childStates.add(columnChild.saveState(context));
-                    }
-                }
-            }
-        }
-
-        return state;
-    }
-
-    public void processRestoreState(FacesContext context, Object state)
-    {
-        Object[] values = (Object[]) state;
-
-        setRowIndex(-1);
-
-        super.processRestoreState(context, values[0]);
-
-        List childStates = (List) values[1];
-
-        int first = getFirst();
-        int rows = getRows();
-        int last;
-        if (rows == 0)
-        {
-            last = getRowCount();
-        }
-        else
-        {
-            last = first + rows;
-        }
-        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
-        {
-            setRowIndex(rowIndex);
-
-            //scrolled past the last row
-            if (!isRowAvailable())
-                break;
-
-            for (Iterator it = getChildren().iterator(); it.hasNext();)
-            {
-                UIComponent child = (UIComponent) it.next();
-                if (child instanceof UIColumn)
-                {
-                    if (!child.isRendered())
-                    {
-                        //Column is not visible
-                        continue;
-                    }
-                    int i=0;
-                    for (Iterator columnChildIter = child.getChildren()
-                            .iterator(); columnChildIter.hasNext();)
-                    {
-                        UIComponent columnChild = (UIComponent) columnChildIter
-                                .next();
-                        columnChild.restoreState(context, childStates.get(i));
-                        i++;
-                    }
-                }
-            }
-        }
-
-        setRowIndex(-1);
-    }
-
     /**
      * @see javax.faces.component.UIData#processUpdates(javax.faces.context.FacesContext)
      */
@@ -224,12 +117,12 @@ public abstract class HtmlDataTableHack extends
      */
     public void encodeBegin(FacesContext context) throws IOException
     {
-        //_initialDescendantComponentState = null;
+        _initialDescendantComponentState = null;
         if (_isValidChilds && !hasErrorMessages(context))
         {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
-            //_rowStates.clear();
+            _rowStates.clear();
         }
         super.encodeBegin(context);
     }
@@ -246,7 +139,7 @@ public abstract class HtmlDataTableHack extends
         }
         return false;
     }
-    
+
     /**
      * @see javax.faces.component.UIComponentBase#encodeEnd(javax.faces.context.FacesContext)
      */
@@ -372,8 +265,11 @@ public abstract class HtmlDataTableHack extends
                     childState = object[0];
                     descendantState = object[1];
                 }
-                ((ComponentState) childState)
-                            .restoreState(FacesContext.getCurrentInstance(),component);
+                if (component instanceof EditableValueHolder)
+                {
+                    ((EditableValueHolderState) childState)
+                            .restoreState((EditableValueHolder) component);
+                }
                 Iterator childsIterator;
                 if (restoreChildFacets)
                 {
@@ -414,7 +310,11 @@ public abstract class HtmlDataTableHack extends
                 Object descendantState = saveDescendantComponentStates(
                         childsIterator, true);
                 Object state = null;
-                state = new ComponentState(child,FacesContext.getCurrentInstance());
+                if (child instanceof EditableValueHolder)
+                {
+                    state = new EditableValueHolderState(
+                            (EditableValueHolder) child);
+                }
                 childStates.add(new Object[] { state, descendantState });
             }
         }
@@ -437,7 +337,7 @@ public abstract class HtmlDataTableHack extends
         }
         super.setValueBinding(name, binding);
     }
-    
+
     /**
      * @see javax.faces.component.UIData#setValue(java.lang.Object)
      */
@@ -550,53 +450,27 @@ public abstract class HtmlDataTableHack extends
         }
     };
 
-    private class ComponentState
+    private class EditableValueHolderState
     {
-        private final boolean _editableValueHolder;
         private final Object _value;
         private final boolean _localValueSet;
         private final boolean _valid;
         private final Object _submittedValue;
-        private final Object _savedState;
 
-        public ComponentState(UIComponent cmp, FacesContext context)
+        public EditableValueHolderState(EditableValueHolder evh)
         {
-            _savedState = cmp.saveState(context);
-
-            if(cmp instanceof EditableValueHolder)
-            {
-                EditableValueHolder evh = (EditableValueHolder) cmp;
-
-                _editableValueHolder=true;
-                _value = evh.getLocalValue();
-                _localValueSet = evh.isLocalValueSet();
-                _valid = evh.isValid();
-                _submittedValue = evh.getSubmittedValue();
-            }
-            else
-            {
-                _editableValueHolder=false;
-                _value=null;
-                _localValueSet=false;
-                _valid=false;
-                _submittedValue=null;
-            }
+            _value = evh.getLocalValue();
+            _localValueSet = evh.isLocalValueSet();
+            _valid = evh.isValid();
+            _submittedValue = evh.getSubmittedValue();
         }
 
-
-        public void restoreState(FacesContext context, UIComponent cmp)
+        public void restoreState(EditableValueHolder evh)
         {
-            cmp.restoreState(context,_savedState);
-
-            if(cmp instanceof EditableValueHolder)
-            {
-                EditableValueHolder evh = (EditableValueHolder) cmp;
-
-                evh.setValue(_value);
-                evh.setLocalValueSet(_localValueSet);
-                evh.setValid(_valid);
-                evh.setSubmittedValue(_submittedValue);
-            }
+            evh.setValue(_value);
+            evh.setLocalValueSet(_localValueSet);
+            evh.setValid(_valid);
+            evh.setSubmittedValue(_submittedValue);
         }
     }
 }
