@@ -15,205 +15,396 @@
  */
 package org.apache.myfaces.component.html.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- * @author Martin Marinschek
- * @version $Revision: $ $Date: $
+ * A class which detects the open/close tags in an HTML document and reports
+ * them to a listener class. 
+ * <p>
+ * This is unfortunately necessary when using JSF with JSP, as tags in the body
+ * of the document can need to output commands into the document at points
+ * earlier than the tag occurred (particularly into the document HEAD section).
+ * This can only be implemented by buffering the response and post-processing
+ * it to find the relevant HTML tags and modifying the buffer as needed.
+ * 
+ * @version $Revision$ $Date$
  */
 public class ReducedHTMLParser
 {
+    // IMPLEMENTATION NOTE:
+    //
+    // Many of the methods on this class are package-scope. This is intended
+    // solely for the purpose of unit-testing. This class does not expect
+    // other classes in this package to access its methods.
+
+    private static final Log log = LogFactory.getLog(ReducedHTMLParser.class);
+
     public static final int BODY_TAG = 0;
     public static final int HEAD_TAG = 1;
     public static final int SCRIPT_TAG = 2;
 
+    private static final int STATE_READY = 0;
+    private static final int STATE_IN_COMMENT = 1;
+    private static final int STATE_IN_TAG = 2;
+    
+    private int offset;
+    private CharSequence seq;
+    private CallbackListener listener;
+    
     public static void parse(CharSequence seq, CallbackListener l)
     {
-        char[] lastChars = new char[10];
-        int currentTagIdentifier = -1;
-        boolean openedTag = false;
-        boolean openedStartTag=false;
-        int openedTagIndex=-1;
-        boolean closeSymbolEncountered = false;
-        boolean commentMode = false;
-        boolean attributeMode = false;
-        char attributeOpenChar = 0;
+        new ReducedHTMLParser(seq, l).parse();
+    }
+    
+    /**
+     * Constructor, package-scope for unit testing.
+     * 
+     * @param s is the sequence of chars to parse.
+     * @param l is the listener to invoke callbacks on.
+     */
+    ReducedHTMLParser(CharSequence s, CallbackListener l) {
+        seq = s;
+        listener = l;
+    }
+
+    /**
+     * Return true if there are no more characters to parse.
+     */
+    boolean isFinished() {
+        return offset >= seq.length();
+    }
+
+    /**
+     * Advance the current parse position over any whitespace characters.
+     */
+    void consumeWhitespace() {
+        while (offset < seq.length()) {
+            char c = seq.charAt(offset);
+            if (!Character.isWhitespace(c)) {
+                break;
+            }
+            ++offset;
+        }
+    }
+
+    /**
+     * Eat up a sequence of non-whitespace characters and return them.
+     */
+    String consumeNonWhitespace() {
+        int wordStart = offset;
+        while (offset < seq.length()) {
+            char c = seq.charAt(offset);
+            if (Character.isWhitespace(c)) {
+                break;
+            }
+            ++offset;
+        }
+        if (wordStart == offset) {
+            return null;
+        } else {
+            return seq.subSequence(wordStart, offset).toString();
+        }
+    }
+
+    /**
+     * If the next chars in the input sequence exactly match the specified
+     * string then skip over them and return true.
+     * <p>
+     * If there is not a match then leave the current parse position 
+     * unchanged and return false.
+     * 
+     * @param s is the exact string to match.
+     * @return true if the input contains exactly the param s
+     */
+    boolean consumeMatch(String s) {
+        if (offset + s.length() > seq.length()) {
+            // seq isn't long enough to contain the specified string
+            return false;
+        }
+
+        int i = 0;
+        while (i < s.length()) {
+            if (seq.charAt(offset+i) == s.charAt(i)) {
+                ++i;
+            } else {
+                return false;
+            }
+        }
         
+        offset += i;
+        return true;
+    }
 
-        for(int i=0; i<seq.length();i++)
-        {
-            char c = seq.charAt(i);
-
-            if(!commentMode && !attributeMode &&
-                    lastChars[2]=='-' &&
-                        lastChars[1]=='-' &&
-                            lastChars[0]=='!' &&
-                                c=='>')
-            {
-                commentMode = true;
+    /**
+     * Eat up a sequence of chars which form a valid XML element name.
+     * <p>
+     * TODO: implement this properly in compliance with spec
+     */
+    String consumeElementName() {
+        consumeWhitespace();
+        int nameStart = offset;
+        while (!isFinished()) {
+            boolean ok = false;
+            char c = seq.charAt(offset);
+            if (Character.isLetterOrDigit(seq.charAt(offset))) {
+                ok = true;
+            } else if (c == '_') {
+                ok = true;
+            } else if (c == '-') {
+                ok = true;
+            } else if (c == ':') {
+                ok = true;
             }
-            else if(commentMode && !attributeMode &&
-                    lastChars[1]=='<' &&
-                            lastChars[0]=='-' &&
-                                c=='-')
-            {
-                commentMode = false;
-            }
-            else if (!commentMode)
-            {
-                if(!attributeMode && !openedTag && c=='<')
-                {
-                    openedTag = true;
-                    openedTagIndex = i;
-                }
-                else if(!attributeMode && openedTag && c=='>')
-                {
-                    if(currentTagIdentifier != -1)
-                    {
-                        if(openedStartTag)
-                        {
-                            l.closedStartTag(i,currentTagIdentifier);
-
-                            if(closeSymbolEncountered)
-                            {
-                                l.closedEndTag(i,currentTagIdentifier);
-                            }
-                        }
-                        else
-                        {
-                            l.closedEndTag(i,currentTagIdentifier);
-                        }
-                    }
-
-                    openedTagIndex = -1;
-                    openedTag = false;
-                    openedStartTag = false;
-                    closeSymbolEncountered = false;
-                    currentTagIdentifier = -1;
-                }
-                else if(openedTag && !attributeMode && (c=='"' || c=='\''))
-                {
-                    attributeMode = true;
-                    attributeOpenChar = c;
-                }
-                else if(openedTag && attributeMode && (c=='"' || c=='\'') && lastChars[0]!='\\')
-                {
-                    if(c==attributeOpenChar)
-                    {
-                        attributeMode = false;
-                    }
-                }
-                else if(!attributeMode && openedTag && c=='/')
-                {
-                    closeSymbolEncountered = true;
-                }
-                else if(!attributeMode && openedTag &&
-                     (lastChars[3]=='<' || Character.isWhitespace(lastChars[3]) || lastChars[3]=='/') && // Added this to make sure it's not <tbody> this was messing up in screen with datatable
-                        (lastChars[2]=='b' || lastChars[2]=='B') &&
-                            (lastChars[1]=='o' || lastChars[1]=='O') &&
-                                (lastChars[0]=='d' || lastChars[0]=='D') &&
-                                    (c=='y' || c=='Y'))
-                {
-                    currentTagIdentifier = BODY_TAG;
-
-                    if (lastChars[3] != '/')
-                    {
-                        openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
-                                currentTagIdentifier);
-                    }
-                }
-                else if(!attributeMode && openedTag &&
-                        (lastChars[3]=='<' || Character.isWhitespace(lastChars[3]) || lastChars[3]=='/' ) && // Added this to make sure it's not <thead> this was messing up in screen with datatable
-                        (lastChars[2]=='h' || lastChars[2]=='H') &&
-                            (lastChars[1]=='e' || lastChars[1]=='E')&&
-                                (lastChars[0]=='a' || lastChars[1]=='A')&&
-                                    (c=='d' || c=='D'))
-                {
-                    currentTagIdentifier = HEAD_TAG;
-
-                    if (lastChars[3] != '/')
-                    {
-                        openedStartTag = handleTag(closeSymbolEncountered, l, openedTagIndex, openedStartTag,
-                                currentTagIdentifier);
-                    }
-                }
-                else if(!attributeMode && openedTag &&
-                    (lastChars[5]=='<' || Character.isWhitespace(lastChars[5]) || lastChars[5]=='/' ) && // Added this to make sure it's not type="text/javascript" or language="JavaScript" inside the script tag
-                        (lastChars[4]=='s' || lastChars[4]=='S') &&
-                            (lastChars[3]=='c' || lastChars[3]=='C') &&
-                                (lastChars[2]=='r' || lastChars[2]=='R') &&
-                                    (lastChars[1]=='i' || lastChars[1]=='I')&&
-                                        (lastChars[0]=='p' || lastChars[0]=='P')&&
-                                            (c=='t' || c=='T'))
-                {
-                    currentTagIdentifier = SCRIPT_TAG;
-
-                    if (lastChars[5] != '/')
-                    {
-                        openedStartTag = handleTag(closeSymbolEncountered, l,
-                                openedTagIndex, openedStartTag, currentTagIdentifier);
-                    }
-                }
+            
+            if (!ok) {
+                break;
             }
 
-            lastChars[9]=lastChars[8];
-            lastChars[8]=lastChars[7];
-            lastChars[7]=lastChars[6];
-            lastChars[6]=lastChars[5];
-            lastChars[5]=lastChars[4];
-            lastChars[4]=lastChars[3];
-            lastChars[3]=lastChars[2];
-            lastChars[2]=lastChars[1];
-            lastChars[1]=lastChars[0];
-            lastChars[0]=c;
+            ++offset;
+        }
+        
+        if (nameStart == offset) {
+            return null;
+        } else {
+            return seq.subSequence(nameStart, offset).toString();
         }
     }
 
-    private static boolean handleTag(boolean closeSymbolEncountered, CallbackListener l,
-                                     int openedTagIndex, boolean openedStartTag, int currentTagIdentifier)
-    {
-        if(closeSymbolEncountered)
-        {
-            l.openedEndTag(openedTagIndex,currentTagIdentifier);
-        }
-        else
-        {
-            l.openedStartTag(openedTagIndex,currentTagIdentifier);
-            openedStartTag = true;
-        }
-        return openedStartTag;
+    /**
+     * Eat up a sequence of chars which form a valid XML attribute name. 
+     * <p>
+     * TODO: implement this properly in compliance with spec
+     */
+    String consumeAttrName() {
+        // for now, assume elements and attributes have same rules
+        return consumeElementName();
     }
 
-    public static void main(String[] args)
-    {
-        ReducedHTMLParser.parse(new StringBuffer("<html><head>\n"
-                + "        <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/adas.css\" />\n"
-                + "        <script src=\"/js/adas.js\" type=\"text/javascript\" language=\"JavaScript\"> </script>\n"
-                + "        <title>MyFaces</title>\n"
-                + "    </head>\n"
-                + "    <body> </body>'x\"><xxx></xxx></html"),new CallbackListener(){
-            public void openedStartTag(int charIndex, int tagIdentifier)
-            {
-                //To change body of implemented methods use File | Settings | File Templates.
+    /**
+     * Eat up a string which is terminated with the specified quote
+     * character. This means handling escaped quote chars within the
+     * string.
+     * <p>
+     * This method assumes that the leading quote has already been
+     * consumed.
+     */
+    String consumeString(char quote) {
+        // TODO: should we consider a string to be terminated by a newline?
+        // that would help with runaway strings but I think that multiline
+        // strings *are* allowed...
+        StringBuffer stringBuf = new StringBuffer();
+        boolean escaping = false;
+        while (!isFinished()) {
+            char c = seq.charAt(offset);
+            ++offset;
+            if (c == quote) {
+                if (!escaping) {
+                    break;
+                } else {
+                    stringBuf.append(c);
+                    escaping = false;
+                }
+            } else if (c == '\\') {
+                if (escaping) {
+                    // append a real backslash
+                    stringBuf.append(c);
+                    escaping = false;
+                } else {
+                    escaping = true;
+                }
+            } else {
+                stringBuf.append(c);
+            }
+        }
+        return stringBuf.toString();
+    }
+
+    /**
+     * Assuming we have already encountered "attrname=", consume the
+     * value part of the attribute definition. Note that unlike XML,
+     * HTML doesn't have to quote its attribute values.
+     * 
+     * @return the attribute value. If the attr-value was quoted, 
+     * the returned value will not include the quote chars.
+     */
+    String consumeAttrValue() {
+        consumeWhitespace();
+        char singleQuote = '\'';
+        
+        if (consumeMatch("'")) {
+            return consumeString('\'');
+        } else if (consumeMatch("\"")) {
+            return consumeString('"');
+        } else {
+            return consumeNonWhitespace();
+        }
+    }
+
+    /**
+     * Discard all characters in the input until one in the specified
+     * string (character-set) is found.
+     * 
+     * @param s is a set of characters that should not be discarded.
+     */
+    void consumeExcept(String s) {
+        while (offset < seq.length()) {
+            char c = seq.charAt(offset);
+            if (s.indexOf(c) >= 0) {
+                // char is in the exception set
+                return;
+            }
+            
+            ++offset;
+        }
+    }
+
+    /**
+     * Process the entire input buffer, invoking callbacks on the listener
+     * object as appropriate.
+     */
+    void parse() {
+        int state = STATE_READY;
+        
+        int currentTagStart = -1;
+        String currentTagName = null;
+        
+        offset = 0;
+        while (offset < seq.length())
+        {
+            if (state == STATE_READY) {
+                // in this state, nothing but "<" has any significance
+                consumeExcept("<");
+                if (isFinished()) {
+                    break;
+                }
+
+                if (consumeMatch("<!--")) {
+                    // VERIFY: can "< ! --" start a comment?
+                    state = STATE_IN_COMMENT;
+                } else if (consumeMatch("</")) {
+                    // VERIFY: is "< / foo >" a valid end-tag?
+
+                    int tagStart = offset - 2;
+                    String tagName = consumeElementName();
+                    consumeWhitespace();
+                    if (!consumeMatch(">")) {
+                        throw new Error("Malformed end tag");
+                    }
+
+                    // We can't verify that the tag names balance because this is HTML
+                    // we are processing, not XML.
+
+                    // stay in state READY
+                    state = STATE_READY;
+
+                    // inform user that the tag has been closed
+                    closedTag(tagStart, offset, tagName);
+                } else if (consumeMatch("<")) {
+                    // We can't tell the user that the tag has closed until after we have
+                    // processed any attributes and found the real end of the tag. So save
+                    // the current info until the end of this tag.
+                    currentTagStart = offset - 1;
+                    currentTagName = consumeElementName();
+                    state = STATE_IN_TAG;
+                } else {
+                    // should never get here
+                    throw new Error("Internal error");
+                }
+                
+                continue;
             }
 
-            public void closedStartTag(int charIndex, int tagIdentifier)
-            {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
+            if (state == STATE_IN_COMMENT) {
+                // VERIFY: does "-- >" close a comment?
 
-            public void openedEndTag(int charIndex, int tagIdentifier)
-            {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
+                // in this state, nothing but "-->" has any significance
+                consumeExcept("-");
+                if (isFinished()) {
+                    break;
+                }
 
-            public void closedEndTag(int charIndex, int tagIdentifier)
-            {
-                //To change body of implemented methods use File | Settings | File Templates.
+                if (consumeMatch("-->")) {
+                    state = STATE_READY;
+                } else  {
+                    // false call; hyphen is not end of comment
+                    consumeMatch("-");
+                }
+                
+                continue;
             }
+            
+            if (state == STATE_IN_TAG) {
+                consumeWhitespace();
+                
+                if (consumeMatch("/>")) {
+                    // ok, end of element
+                    state = STATE_READY;
+                    closedTag(currentTagStart, offset, currentTagName);
+                    
+                    // and reset vars just in case...
+                    currentTagStart = -1;
+                    currentTagName = null;
+                } else if (consumeMatch(">")) {
+                    // end of open tag, but not end of element
+                    state = STATE_READY;
+                    openedTag(currentTagStart, offset, currentTagName);
+                    
+                    // and reset vars just in case...
+                    currentTagStart = -1;
+                    currentTagName = null;
+                } else {
+                    // xml attribute
+                    String attrName = consumeAttrName();
+                    consumeWhitespace();
+                    
+                    // html can have "stand-alone" attributes with no following equals sign
+                    if (consumeMatch("=")) {
+                        String attrValue = consumeAttrValue();
+                    }
+                }
+                
+                continue;
+            }
+        }
+    }
 
-            public void attribute(int charIndex, int tagIdentifier, String key, String value)
-            {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
+    /**
+     * Invoke a callback method to inform the listener that we have found a start tag.
+     * 
+     * @param startOffset
+     * @param endOffset
+     * @param tagName
+     */
+    void openedTag(int startOffset, int endOffset, String tagName) {
+        log.debug("Found open tag at " + startOffset + ":" + endOffset + ":" + tagName);
+        System.out.println("Found open tag at " + startOffset + ":" + endOffset + ":" + tagName);
+        
+        if ("head".equalsIgnoreCase(tagName)) {
+            listener.openedStartTag(startOffset, HEAD_TAG);
+            listener.closedStartTag(endOffset, HEAD_TAG);
+        } else if ("body".equalsIgnoreCase(tagName)) {
+            listener.openedStartTag(startOffset, BODY_TAG);
+            listener.closedStartTag(endOffset, BODY_TAG);
+        } else if ("script".equalsIgnoreCase(tagName)) {
+            listener.openedStartTag(startOffset, SCRIPT_TAG);
+            listener.closedStartTag(endOffset, SCRIPT_TAG);
+        }
+    }
+
+    void closedTag(int startOffset, int endOffset, String tagName) {
+        log.debug("Found close tag at " + startOffset + ":" + endOffset + ":" + tagName);
+        System.out.println("Found close tag at " + startOffset + ":" + endOffset + ":" + tagName);
+        
+        if ("head".equalsIgnoreCase(tagName)) {
+            listener.openedEndTag(startOffset, HEAD_TAG);
+            listener.closedEndTag(endOffset, HEAD_TAG);
+        } else if ("body".equalsIgnoreCase(tagName)) {
+            listener.openedEndTag(startOffset, BODY_TAG);
+            listener.closedEndTag(endOffset, BODY_TAG);
+        } else if ("script".equalsIgnoreCase(tagName)) {
+            listener.openedEndTag(startOffset, SCRIPT_TAG);
+            listener.closedEndTag(endOffset, SCRIPT_TAG);
+        }
     }
 }
