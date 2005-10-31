@@ -651,7 +651,7 @@ public class HtmlCalendarRenderer
         }
         else
         {
-        	component.getChildren().add(link);
+        	RendererUtils.addOrReplaceChild(component,link);
             link.getChildren().add(parameter);
             link.getChildren().add(text);
 
