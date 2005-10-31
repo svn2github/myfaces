@@ -38,7 +38,7 @@ public class HtmlDataTableTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Table";
+        return HtmlDataTable.DEFAULT_RENDERER_TYPE;
     }
 
     private String _preserveDataModel;
