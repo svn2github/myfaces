@@ -92,7 +92,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         	log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
         	return standardClientId+'_'+forcedIdIndex;
         }
-        
+
         String parsedForcedClientId = standardClientId.substring(0, indexLast_+1)+forcedIdIndex;
 
 		return parsedForcedClientId;
@@ -784,7 +784,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	//------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataTable";
-	private static final boolean DEFAULT_PRESERVEDATAMODEL = false;
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Table";
+
+    private static final boolean DEFAULT_PRESERVEDATAMODEL = false;
 	private static final boolean DEFAULT_PRESERVESORT = true;
 	private static final boolean DEFAULT_RENDEREDIFEMPTY = true;
 
@@ -797,11 +799,10 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	private String _rowCountVar = null;
 	private String _previousRowDataVar = null;
 
-    private String _currentColumnStyleClass = null;
-
-	public HtmlDataTable()
-	{
-	}
+    public HtmlDataTable()
+    {
+        setRendererType(DEFAULT_RENDERER_TYPE);
+    }
 
 	public void setPreserveDataModel(boolean preserveDataModel)
 	{
