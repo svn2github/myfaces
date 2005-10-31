@@ -89,7 +89,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         // but we can't get super.super.getClientId() :-(
         int indexLast_ = standardClientId.lastIndexOf('_');
         if( indexLast_ == -1 ){
-        	log.warn("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
+        	log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
         	return standardClientId+'_'+forcedIdIndex;
         }
         
