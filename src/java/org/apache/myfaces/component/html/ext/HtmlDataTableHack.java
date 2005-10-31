@@ -340,8 +340,14 @@ public abstract class HtmlDataTableHack extends
 
     protected DataModel getDataModel()
     {
-        String clientID = getParent().getClientId(getFacesContext());
-        DataModel dataModel = (DataModel) _dataModelMap.get(clientID);
+        DataModel dataModel = null;
+        String clientID = "";
+        
+        UIComponent parent = getParent();
+        if (parent != null) {
+            clientID = parent.getClientId(getFacesContext());
+        }
+        dataModel = (DataModel) _dataModelMap.get(clientID);
         if (dataModel == null)
         {
             dataModel = createDataModel();
@@ -352,8 +358,13 @@ public abstract class HtmlDataTableHack extends
 
     protected void setDataModel(DataModel datamodel)
     {
-        _dataModelMap.put(getParent().getClientId(getFacesContext()),
-                                        datamodel);
+        UIComponent parent = getParent();
+        String clientID = "";
+        if(parent != null)
+        {
+            clientID = parent.getClientId(getFacesContext());
+        }
+        _dataModelMap.put(clientID, datamodel);
     }
 
     /**

@@ -260,8 +260,12 @@ public class UIColumns extends UIData
 
     protected DataModel getDataModel()
     {
-        String clientID = getParentUIData().getParent().getClientId(
-                getFacesContext());
+        String clientID = "";
+        UIComponent parent = getParentUIData().getParent();
+        if(parent != null)
+        {
+            clientID = parent.getClientId(getFacesContext());
+        }
         DataModel dataModel = (DataModel) _dataModelMap.get(clientID);
         if (dataModel == null)
         {
@@ -273,8 +277,13 @@ public class UIColumns extends UIData
 
     protected void setDataModel(DataModel dataModel)
     {
-        _dataModelMap.put(getParentUIData().getParent().getClientId(
-                getFacesContext()), dataModel);
+        UIComponent parent = getParentUIData().getParent();
+        String clientID = "";
+        if(parent != null)
+        {
+            clientID = parent.getClientId(getFacesContext());
+        }
+        _dataModelMap.put(clientID, dataModel);
     }
 
     /**
