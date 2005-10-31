@@ -1648,6 +1648,14 @@
                 Style class of the active tab content cell.
             </description>
         </attribute>
+        <attribute>
+            <name>serverSideTabSwitch</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Toggle client-side/server-side tab switches.
+            </description>
+        </attribute>
     </tag>
 
     <!-- tab change listener -->
