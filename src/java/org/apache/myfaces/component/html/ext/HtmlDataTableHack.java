@@ -230,17 +230,6 @@ public abstract class HtmlDataTableHack extends
         }
     }
 
-    public String getClientId(FacesContext context)
-    {
-        String clientId = super.getClientId(context);
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1)
-        {
-            return clientId;
-        }
-        return clientId + "_" + rowIndex;
-    }
-
     private void restoreDescendantComponentStates(Iterator childIterator,
             Object state, boolean restoreChildFacets)
     {
