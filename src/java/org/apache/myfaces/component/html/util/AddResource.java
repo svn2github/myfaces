@@ -152,7 +152,7 @@ public final class AddResource
      */
     protected void validateResourceLoader(Class resourceloader)
     {
-        if (!MyFacesResourceLoader.class.isAssignableFrom(resourceloader))
+        if (!ResourceLoader.class.isAssignableFrom(resourceloader))
         {
             throw new FacesException("Class " + resourceloader.getName() + " must implement "
                     + ResourceLoader.class.getName());
@@ -405,7 +405,7 @@ public final class AddResource
         {
             Class resourceLoader = getClass(className);
             validateResourceLoader(resourceLoader);
-            ((MyFacesResourceLoader) resourceLoader.newInstance()).serveResource(request, response,
+            ((ResourceLoader) resourceLoader.newInstance()).serveResource(request, response,
                     resourceUri);
             response.flushBuffer();
         }
