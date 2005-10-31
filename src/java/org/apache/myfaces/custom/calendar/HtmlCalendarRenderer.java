@@ -492,6 +492,7 @@ public class HtmlCalendarRenderer
     {
         Calendar cal = copyCalendar(facesContext, timeKeeper);
 
+        cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + shift);
 
         if(currentDay > cal.getActualMaximum(Calendar.DAY_OF_MONTH))
