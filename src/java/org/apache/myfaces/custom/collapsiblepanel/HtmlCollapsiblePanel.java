@@ -15,18 +15,12 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
-import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.component.UIComponent;
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.el.MethodBinding;
-import javax.faces.validator.Validator;
-import javax.faces.event.ValueChangeListener;
-import javax.faces.convert.Converter;
-import java.util.Iterator;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * @author Kalle Korhonen (latest modification by $Author$)
@@ -44,7 +38,32 @@ public class HtmlCollapsiblePanel extends UIInput
 
         if (!isRendered()) return;
 
-        if(isCollapsed())
+        try
+        {
+            decode(context);
+        }
+        catch (RuntimeException e)
+        {
+            context.renderResponse();
+            throw e;
+        }
+
+        UIComponent headerComponent = getFacet("header");
+
+        if(headerComponent != null)
+        {
+            for (Iterator it = headerComponent.getChildren().iterator(); it.hasNext(); )
+            {
+                UIComponent child = (UIComponent)it.next();
+
+                if(!(child instanceof HtmlHeaderLink))
+                {
+                    child.processDecodes(context);
+                }
+            }
+        }
+
+        if(getSubmittedValue()!=null?isCollapsed(getSubmittedValue()):isCollapsed(getValue()))
         {
             UIComponent component = getFacet("closedContent");
 
@@ -60,16 +79,6 @@ public class HtmlCollapsiblePanel extends UIInput
                 UIComponent child = (UIComponent)it.next();
                 child.processDecodes(context);
             }
-        }
-
-        try
-        {
-            decode(context);
-        }
-        catch (RuntimeException e)
-        {
-            context.renderResponse();
-            throw e;
         }
     }
 
@@ -162,7 +171,12 @@ public class HtmlCollapsiblePanel extends UIInput
 
     public boolean isCollapsed()
     {
-        Object value = getValue();
+        return isCollapsed(getValue());
+    }
+
+    private static boolean isCollapsed(Object collapsedValue)
+    {
+        Object value = collapsedValue;
 
         if(value instanceof Boolean)
         {
