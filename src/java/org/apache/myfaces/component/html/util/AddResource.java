@@ -49,7 +49,7 @@ public final class AddResource
 
     private static StringBuffer ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
 
-    private static final String HEADER_INFO_REQUEST_ATTRUBITE_NAME = AddResource.class.getName()
+    private static final String HEADER_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
             + ".HEADER_INFO";
 
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
@@ -438,11 +438,11 @@ public final class AddResource
 
     private Set getHeaderInfos(HttpServletRequest request)
     {
-        Set set = (Set) request.getAttribute(HEADER_INFO_REQUEST_ATTRUBITE_NAME);
+        Set set = (Set) request.getAttribute(HEADER_INFO_REQUEST_ATTRIBUTE_NAME);
         if (set == null)
         {
             set = new LinkedHashSet();
-            request.setAttribute(HEADER_INFO_REQUEST_ATTRUBITE_NAME, set);
+            request.setAttribute(HEADER_INFO_REQUEST_ATTRIBUTE_NAME, set);
         }
         return set;
     }
@@ -457,7 +457,7 @@ public final class AddResource
 
     public boolean hasHeaderInfos(HttpServletRequest request)
     {
-        return request.getAttribute(HEADER_INFO_REQUEST_ATTRUBITE_NAME) != null;
+        return request.getAttribute(HEADER_INFO_REQUEST_ATTRIBUTE_NAME) != null;
     }
 
     /**
