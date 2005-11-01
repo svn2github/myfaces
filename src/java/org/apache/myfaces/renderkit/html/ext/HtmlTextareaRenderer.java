@@ -42,7 +42,7 @@ public class HtmlTextareaRenderer
         }
         else
         {
-            return super.isDisabled(facesContext, uiComponent);
+            return isDisabled(facesContext, uiComponent);
         }
     }
 
@@ -57,7 +57,7 @@ public class HtmlTextareaRenderer
         }
         else
         {
-            super.encodeTextArea(facesContext, uiComponent);
+            encodeTextArea(facesContext, uiComponent);
         }
     }
 
