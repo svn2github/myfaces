@@ -378,8 +378,7 @@ public class ReducedHTMLParser
      */
     void openedTag(int startOffset, int endOffset, String tagName) {
         log.debug("Found open tag at " + startOffset + ":" + endOffset + ":" + tagName);
-        System.out.println("Found open tag at " + startOffset + ":" + endOffset + ":" + tagName);
-        
+
         if ("head".equalsIgnoreCase(tagName)) {
             listener.openedStartTag(startOffset, HEAD_TAG);
             listener.closedStartTag(endOffset, HEAD_TAG);
@@ -394,7 +393,6 @@ public class ReducedHTMLParser
 
     void closedTag(int startOffset, int endOffset, String tagName) {
         log.debug("Found close tag at " + startOffset + ":" + endOffset + ":" + tagName);
-        System.out.println("Found close tag at " + startOffset + ":" + endOffset + ":" + tagName);
         
         if ("head".equalsIgnoreCase(tagName)) {
             listener.openedEndTag(startOffset, HEAD_TAG);
