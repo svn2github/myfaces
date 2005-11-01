@@ -18,13 +18,17 @@ package org.apache.myfaces.custom.collapsiblepanel;
 import org.apache.myfaces.taglib.html.HtmlInputTagBase;
 
 import javax.faces.component.UIComponent;
+import javax.servlet.jsp.tagext.BodyTag;
+import javax.servlet.jsp.tagext.BodyContent;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * @author Kalle Korhonen (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class HtmlCollapsiblePanelTag
-        extends HtmlInputTagBase
+        extends HtmlInputTagBase implements BodyTag
 {
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanelTag.class);
 
@@ -48,6 +52,7 @@ public class HtmlCollapsiblePanelTag
         _title=null;
         _var=null;
         _titleVar=null;
+        bodyContent = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -74,4 +79,47 @@ public class HtmlCollapsiblePanelTag
     {
         _titleVar = titleVar;
     }
+
+    // API field
+    protected BodyContent bodyContent;
+
+
+    public int doAfterBody()
+            throws JspException
+    {
+        return getDoAfterBodyValue();
+    }
+
+    public void doInitBody()
+            throws JspException
+    {
+    }
+
+    public BodyContent getBodyContent()
+    {
+        return bodyContent;
+    }
+
+    public void setBodyContent(BodyContent bodyContent)
+    {
+        this.bodyContent = bodyContent;
+    }
+
+    public JspWriter getPreviousOut()
+    {
+        return bodyContent.getEnclosingWriter();
+    }
+
+    protected int getDoStartValue()
+            throws JspException
+    {
+        return BodyTag.EVAL_BODY_BUFFERED;
+    }
+
+    protected int getDoAfterBodyValue()
+            throws JspException
+    {
+        return BodyTag.SKIP_BODY;
+    }
+
 }
