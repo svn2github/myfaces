@@ -49,6 +49,7 @@ public class ReducedHTMLParser
     private static final int STATE_IN_TAG = 2;
     
     private int offset;
+    private int lineNumber;
     private CharSequence seq;
     private CallbackListener listener;
     
@@ -75,15 +76,32 @@ public class ReducedHTMLParser
         return offset >= seq.length();
     }
 
+    int getCurrentLineNumber() {
+         return lineNumber;
+    }
+
     /**
      * Advance the current parse position over any whitespace characters.
      */
     void consumeWhitespace() {
+        boolean crSeen = false;
+
         while (offset < seq.length()) {
             char c = seq.charAt(offset);
             if (!Character.isWhitespace(c)) {
                 break;
             }
+
+            // Track line number for error messages.
+            if (c == '\r') {
+                ++lineNumber;
+                crSeen = true;
+            } else if ((c == '\n') && !crSeen) {
+                ++lineNumber;
+            } else {
+                crSeen = false;
+            }
+
             ++offset;
         }
     }
@@ -193,6 +211,11 @@ public class ReducedHTMLParser
         // TODO: should we consider a string to be terminated by a newline?
         // that would help with runaway strings but I think that multiline
         // strings *are* allowed...
+
+         //
+         // TODO: detect newlines within strings and increment lineNumber.
+         // This isn't so important, though; they aren't common and being a
+         // few lines out in an error message isn't serious either.
         StringBuffer stringBuf = new StringBuffer();
         boolean escaping = false;
         while (!isFinished()) {
@@ -248,12 +271,24 @@ public class ReducedHTMLParser
      * @param s is a set of characters that should not be discarded.
      */
     void consumeExcept(String s) {
+         boolean crSeen = false;
+
         while (offset < seq.length()) {
             char c = seq.charAt(offset);
             if (s.indexOf(c) >= 0) {
                 // char is in the exception set
                 return;
             }
+
+             // Track line number for error messages.
+             if (c == '\r') {
+                 ++lineNumber;
+                 crSeen = true;
+             } else if ((c == '\n') && !crSeen) {
+                 ++lineNumber;
+             } else {
+                 crSeen = false;
+             }
             
             ++offset;
         }
@@ -268,7 +303,8 @@ public class ReducedHTMLParser
         
         int currentTagStart = -1;
         String currentTagName = null;
-        
+
+        lineNumber = 1;
         offset = 0;
         while (offset < seq.length())
         {
@@ -282,6 +318,10 @@ public class ReducedHTMLParser
                 if (consumeMatch("<!--")) {
                     // VERIFY: can "< ! --" start a comment?
                     state = STATE_IN_COMMENT;
+                 } else if (consumeMatch("<!")) {
+                     // xml processing instruction or <!DOCTYPE> tag
+                     // we don't need to actually do anything here
+                     log.debug("PI found at line " + getCurrentLineNumber());
                 } else if (consumeMatch("</")) {
                     // VERIFY: is "< / foo >" a valid end-tag?
 
@@ -306,10 +346,17 @@ public class ReducedHTMLParser
                     // the current info until the end of this tag.
                     currentTagStart = offset - 1;
                     currentTagName = consumeElementName();
-                    state = STATE_IN_TAG;
+                    if (currentTagName == null) {
+                        log.warn("Invalid HTML; bare lessthan sign found at line "
+                            + getCurrentLineNumber());
+                        // remain in STATE_READY; this isn't really the start of
+                        // an xml element.
+                    } else {
+                        state = STATE_IN_TAG;
+                    }
                 } else {
                     // should never get here
-                    throw new Error("Internal error");
+                    throw new Error("Internal error at line " + getCurrentLineNumber());
                 }
                 
                 continue;

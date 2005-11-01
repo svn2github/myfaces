@@ -182,6 +182,10 @@ public class HtmlCollapsiblePanel extends UIInput
         {
             return ((Boolean) value).booleanValue();
         }
+        else if (value instanceof String)
+        {
+            return Boolean.valueOf((String) value).booleanValue();
+        }
 
         return true;
     }
