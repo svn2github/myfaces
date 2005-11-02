@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Iterator;
 
 /**
+ * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
+ * for helping to develop this component.
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */

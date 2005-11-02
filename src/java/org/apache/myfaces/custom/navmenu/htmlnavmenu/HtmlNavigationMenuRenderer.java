@@ -37,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
+ * for helping to develop this component.
  * @author Thomas Spiegl
  * @author Manfred Geiler
  */
@@ -249,7 +251,10 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         parent.getChildren().add(i + 1, newItem);
         newItem.setParent(parent);
         // set action
-        newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
+        if (uiNavMenuItem.getAction() != null)
+        {
+            newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
+        }
         // transient, rendered
         newItem.setTransient(uiNavMenuItem.isTransient());
         newItem.setRendered(uiNavMenuItem.isRendered());
