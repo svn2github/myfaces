@@ -168,14 +168,14 @@ public class HtmlSelectManyCheckbox
     }
     //------------------ GENERATED CODE END ---------------------------------------
 
+    private Boolean _forceId = null;
+
     public void setForceId(boolean b)
     {
         _forceId = Boolean.valueOf(b);
     }
 
-    private Boolean _forceId = null;
-
-    public boolean getForceId()
+    public boolean isForceId()
     {
         if (_forceId != null) return _forceId.booleanValue();
         ValueBinding vb = getValueBinding("forceId");

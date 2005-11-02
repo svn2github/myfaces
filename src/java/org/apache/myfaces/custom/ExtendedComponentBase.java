@@ -23,5 +23,5 @@ package org.apache.myfaces.custom;
 public interface ExtendedComponentBase
 {
     public void setForceId(boolean b);
-    public boolean getForceId();
+    public boolean isForceId();
 }
