@@ -55,13 +55,15 @@ public class NavigationMenuUtils
                 else
                 {
                     UINavigationMenuItem uiItem = (UINavigationMenuItem)child;
-                    String label = uiItem.getItemLabel();
-                    if (label == null && uiItem.getItemValue() != null)
+                    String itemLabel = uiItem.getItemLabel();
+                    Object itemValue = uiItem.getItemValue();
+                    if (itemValue == null) itemValue = "";
+                    if (itemLabel == null)
                     {
-                        label = uiItem.getItemValue().toString();
+                        itemLabel = itemValue.toString();
                     }
-                    item = new NavigationMenuItem(uiItem.getItemValue(),
-                                                  label,
+                    item = new NavigationMenuItem(itemValue,
+                                                  itemLabel,
                                                   uiItem.getItemDescription(),
                                                   uiItem.isItemDisabled() || ! UserRoleUtils.isEnabledOnUserRole(uiItem),
                                                   uiItem.isRendered(),
