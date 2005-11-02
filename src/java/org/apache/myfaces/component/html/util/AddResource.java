@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -47,14 +48,22 @@ public final class AddResource
 
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
-    private static StringBuffer ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
+    private static final String HEADER_BEGIN_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
+            + ".HEADER_BEGIN_INFO";
 
-    private static final String HEADER_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
-            + ".HEADER_INFO";
+    private static final String BODY_END_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
+            + ".BODY_END_INFO";
+
+    private static final String BODY_ONLOAD_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
+            + ".BODY_ONLOAD_INFO";
 
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
 
     protected final String _contextPath;
+
+    public static final int HEADER_BEGIN = 0;
+    public static final int BODY_END = 1;
+    public static final int BODY_ONLOAD = 2;
 
     private AddResource(String contextPath)
     {
@@ -160,125 +169,121 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource to the document Header by supplying
+     * Adds the given Javascript resource at the specified document position by supplying
      * an resourcehandler instance. Use this method to have full control about building
      * the reference url to identify the resource and to customize how the resource
      * is written to the response.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptToHeader(FacesContext context, ResourceHandler resourceHandler)
+    public void addJavaScriptAtPosition(FacesContext context, int position, ResourceHandler resourceHandler)
     {
-        addJavaScriptToHeader(context, resourceHandler, false);
+        addJavaScriptAtPosition(context, position, resourceHandler, false);
     }
 
     /**
-     * Adds the given Javascript resource to the document Header.
+     * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptToHeader(FacesContext context, Class myfacesCustomComponent,
-            String resourceName)
+    public void addJavaScriptAtPosition(FacesContext context, int position, Class myfacesCustomComponent,
+                                        String resourceName)
     {
-        addJavaScriptToHeader(context, new MyFacesResourceHandler(myfacesCustomComponent,
+        addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
                 resourceName));
     }
 
     /**
-     * Adds the given Javascript resource to the document Header.
+     * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptToHeader(FacesContext context, Class myfacesCustomComponent,
-            String resourceName, boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, int position, Class myfacesCustomComponent,
+                                        String resourceName, boolean defer)
     {
-        addJavaScriptToHeader(context, new MyFacesResourceHandler(myfacesCustomComponent,
+        addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
                 resourceName), defer);
     }
 
     /**
-     * Adds the given Javascript resource to the document Header.
+     * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptToHeader(FacesContext context, String uri)
+    public void addJavaScriptAtPosition(FacesContext context, int position, String uri)
     {
-        addJavaScriptToHeader(context, uri, false);
+        addJavaScriptAtPosition(context, position, uri, false);
     }
 
     /**
-     * Adds the given Javascript resource to the document Header.
+     * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptToHeader(FacesContext context, String uri, boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, int position, String uri, boolean defer)
     {
-        addHeaderInfo(context, getScriptInstance(context, uri, defer));
+        addPositionedInfo(context, position, getScriptInstance(context, uri, defer));
     }
 
-    public static void addJavaScriptToBodyTag(String JavaScriptEventName, String addedJavaScript)
+    public void addJavaScriptToBodyTag(FacesContext context,
+                                       String javascriptEventName, String addedJavaScript)
     {
-        if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG == null)
-        {
-            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = new StringBuffer();
+        AttributeInfo info = new AttributeInfo();
+        info.setAttributeName(javascriptEventName);
+        info.setAttributeValue(addedJavaScript);
 
-            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG.append(" ").append(JavaScriptEventName).append("=\"").append(addedJavaScript);
-        }
-        else
-        {
-            ADDITIONAL_JAVASCRIPT_TO_BODY_TAG.append(addedJavaScript);
-        }
+        addPositionedInfo(context, BODY_ONLOAD, info);
     }
 
     /**
-     * Adds the given Javascript resource to the document Header.
+     * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptToHeader(FacesContext context, ResourceHandler resourceHandler,
-            boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, int position, ResourceHandler resourceHandler,
+                                        boolean defer)
     {
         validateResourceHandler(resourceHandler);
-        addHeaderInfo(context, getScriptInstance(context, resourceHandler, defer));
+        addPositionedInfo(context, position, getScriptInstance(context, resourceHandler, defer));
     }
 
     /**
-     * Adds the given Style Sheet to the document Header.
+     * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, Class myfacesCustomComponent,
+    public void addStyleSheet(FacesContext context, int position, Class myfacesCustomComponent,
             String resourceName)
     {
-        addStyleSheet(context, new MyFacesResourceHandler(myfacesCustomComponent, resourceName));
+        addStyleSheet(context, position, new MyFacesResourceHandler(myfacesCustomComponent, resourceName));
     }
 
     /**
-     * Adds the given Style Sheet to the document Header.
+     * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, String uri)
+    public void addStyleSheet(FacesContext context, int position, String uri)
     {
-        addHeaderInfo(context, getStyleInstance(context, uri));
+        addPositionedInfo(context, position, getStyleInstance(context, uri));
     }
 
     /**
-     * Adds the given Style Sheet to the document Header.
+     * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, ResourceHandler resourceHandler)
+    public void addStyleSheet(FacesContext context, int position, ResourceHandler resourceHandler)
     {
         validateResourceHandler(resourceHandler);
-        addHeaderInfo(context, getStyleInstance(context, resourceHandler));
+        addPositionedInfo(context, position, getStyleInstance(context, resourceHandler));
     }
 
     /**
-     * Adds the given Inline Style to the document Header.
+     * Adds the given Inline Style at the specified document position.
      */
-    public void addInlineStyleToHeader(FacesContext context, String inlineStyle)
+    public void addInlineStyleAtPosition(FacesContext context, int position, String inlineStyle)
     {
-        addHeaderInfo(context, getInlineStyleInstance(inlineStyle));
+        addPositionedInfo(context, position, getInlineStyleInstance(inlineStyle));
     }
 
     /**
-     * Adds the given Inline Script to the document Header.
+     * Adds the given Inline Script at the specified document position.
      */
-    public void addInlineScriptToHeader(FacesContext context, String inlineScript)
+    public void addInlineScriptAtPosition(FacesContext context, int position, String inlineScript)
     {
-        addHeaderInfo(context, getInlineScriptInstance(inlineScript));
+        addPositionedInfo(context, position, getInlineScriptInstance(inlineScript));
     }
 
     public String getResourceUri(FacesContext context, Class myfacesCustomComponent, String resource, boolean withContextPath)
@@ -434,38 +439,78 @@ public final class AddResource
         }
     }
 
-    // Header stuffs
+    // Positioned stuffs
 
-    private Set getHeaderInfos(HttpServletRequest request)
+    private Set getHeaderBeginInfos(HttpServletRequest request)
     {
-        Set set = (Set) request.getAttribute(HEADER_INFO_REQUEST_ATTRIBUTE_NAME);
+        Set set = (Set) request.getAttribute(HEADER_BEGIN_INFO_REQUEST_ATTRIBUTE_NAME);
         if (set == null)
         {
             set = new LinkedHashSet();
-            request.setAttribute(HEADER_INFO_REQUEST_ATTRIBUTE_NAME, set);
+            request.setAttribute(HEADER_BEGIN_INFO_REQUEST_ATTRIBUTE_NAME, set);
         }
         return set;
     }
 
-    private void addHeaderInfo(FacesContext context, HeaderInfo info)
+    private Set getBodyEndInfos(HttpServletRequest request)
     {
-        //todo: fix this to work in PortletRequest as well
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        Set set = getHeaderInfos(request);
-        set.add(info);
+        Set set = (Set) request.getAttribute(BODY_END_INFO_REQUEST_ATTRIBUTE_NAME);
+        if (set == null)
+        {
+            set = new LinkedHashSet();
+            request.setAttribute(BODY_END_INFO_REQUEST_ATTRIBUTE_NAME, set);
+        }
+        return set;
     }
 
-    public boolean hasHeaderInfos(HttpServletRequest request)
+    private Set getBodyOnloadInfos(HttpServletRequest request)
     {
-        return request.getAttribute(HEADER_INFO_REQUEST_ATTRIBUTE_NAME) != null;
+        Set set = (Set) request.getAttribute(BODY_ONLOAD_INFO_REQUEST_ATTRIBUTE_NAME);
+        if (set == null)
+        {
+            set = new LinkedHashSet();
+            request.setAttribute(BODY_ONLOAD_INFO_REQUEST_ATTRIBUTE_NAME, set);
+        }
+        return set;
+    }
+
+    private void addPositionedInfo(FacesContext context, int position, PositionedInfo info)
+    {
+        if(position == HEADER_BEGIN)
+        {
+            //todo: fix this to work in PortletRequest as well
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            Set set = getHeaderBeginInfos(request);
+            set.add(info);
+        }
+        else if(position == BODY_END)
+        {
+            //todo: fix this to work in PortletRequest as well
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            Set set = getBodyEndInfos(request);
+            set.add(info);
+
+        }
+        else if(position == BODY_ONLOAD)
+        {
+            //todo: fix this to work in PortletRequest as well
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            Set set = getBodyOnloadInfos(request);
+            set.add(info);
+        }
+    }
+
+    public boolean hasHeaderBeginInfos(HttpServletRequest request)
+    {
+        return request.getAttribute(HEADER_BEGIN_INFO_REQUEST_ATTRIBUTE_NAME) != null;
     }
 
     /**
      * Add the resources to the &lt;head&gt; of the page.
      * If the head tag is missing, but the &lt;body&gt; tag is present, the head tag is added.
-     * If both are missing, no resources is added.
+     * If both are missing, no resource is added.
      *
-     * TODO : Change the ordering so that the user header CSS & JS override MyFaces' ones.
+     * The ordering is such that the user header CSS & JS override the MyFaces' ones.
      */
     public void writeWithFullHeader(HttpServletRequest request,
             ExtensionsResponseWrapper responseWrapper, HttpServletResponse response)
@@ -480,6 +525,8 @@ public final class AddResource
         int headerInsertPosition = l.getHeaderInsertPosition();
         int bodyInsertPosition = l.getBodyInsertPosition();
         int beforeBodyPosition = l.getBeforeBodyPosition();
+        int afterBodyContentInsertPosition = l.getAfterBodyContentInsertPosition();
+
         boolean addHeaderTags = false;
 
         if (headerInsertPosition == -1)
@@ -498,72 +545,147 @@ public final class AddResource
         ResponseWriter writer = new HtmlResponseWriterImpl(response.getWriter(), HtmlRendererUtils
                 .selectContentType(request.getHeader("accept")), null);
 
-        if (headerInsertPosition > 0)
-            writer.write(originalResponse.substring(0, headerInsertPosition));
-        if (headerInsertPosition >= 0 && addHeaderTags)
-            writer.write("<head>");
+        if(afterBodyContentInsertPosition >=0)
+        {
+            HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper.
+                getInstance(writer);
+
+            for (Iterator i = getBodyEndInfos(request).iterator(); i.hasNext();)
+            {
+                writerWrapper.write("\n");
+
+                PositionedInfo positionedInfo = (PositionedInfo) i.next();
+
+                if(!(positionedInfo instanceof WritablePositionedInfo))
+                    throw new IllegalStateException("positionedInfo of type : "+
+                            positionedInfo.getClass().getName());
+                ((WritablePositionedInfo) positionedInfo).
+                        writePositionedInfo(response, writerWrapper);
+            }
+
+            originalResponse.insert(headerInsertPosition,writerWrapper.toString());
+        }
+
+        if(bodyInsertPosition>0)
+        {
+            StringBuffer buf = new StringBuffer();
+
+            int i=0;
+
+            for (Iterator it = getBodyOnloadInfos(request).iterator(); it.hasNext();)
+            {
+                AttributeInfo positionedInfo = (AttributeInfo) it.next();
+                if(i==0)
+                {
+                    buf.append(positionedInfo.getAttributeName());
+                    buf.append("=\"");
+                }
+                buf.append(positionedInfo.getAttributeValue());
+
+                i++;
+            }
+
+            buf.append("\"");
+
+            originalResponse.insert( bodyInsertPosition-1, " "+
+                    buf.toString());
+        }
 
         if (headerInsertPosition >= 0)
         {
-            for (Iterator i = getHeaderInfos(request).iterator(); i.hasNext();)
+            HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper.
+                getInstance(writer);
+
+            if(addHeaderTags)
+                writerWrapper.write("<head>");
+
+            for (Iterator i = getHeaderBeginInfos(request).iterator(); i.hasNext();)
             {
-                writer.write("\n");
-                HeaderInfo headerInfo = (HeaderInfo) i.next();
-                headerInfo.writeHeaderInfo(response, writer);
+                writerWrapper.write("\n");
+
+                PositionedInfo positionedInfo = (PositionedInfo) i.next();
+
+                if(!(positionedInfo instanceof WritablePositionedInfo))
+                    throw new IllegalStateException("positionedInfo of type : "+
+                            positionedInfo.getClass().getName());
+                ((WritablePositionedInfo) positionedInfo).
+                        writePositionedInfo(response, writerWrapper);
             }
+
+            if(addHeaderTags)
+                writerWrapper.write("</head>");
+
+            originalResponse.insert(headerInsertPosition,writerWrapper.toString());
+
         }
 
-        if (headerInsertPosition >= 0 && addHeaderTags)
-            writer.write("</head>");
-
-        if (bodyInsertPosition > 0)
-        {
-            if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG != null)
-            {
-                originalResponse.insert( bodyInsertPosition-2, " "+ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\" " );
-
-                ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
-            }
-        }
-
-        writer.write(headerInsertPosition > 0 ? originalResponse
-                .substring(headerInsertPosition) : originalResponse.toString());
+        writer.write(originalResponse.toString());
     }
 
-    private HeaderInfo getStyleInstance(FacesContext context, ResourceHandler resourceHandler)
+    private PositionedInfo getStyleInstance(FacesContext context, ResourceHandler resourceHandler)
     {
-        return new StyleHeaderInfo(getResourceUri(context, resourceHandler));
+        return new StylePositionedInfo(getResourceUri(context, resourceHandler));
     }
 
-    private HeaderInfo getScriptInstance(FacesContext context, ResourceHandler resourceHandler,
+    private PositionedInfo getScriptInstance(FacesContext context, ResourceHandler resourceHandler,
             boolean defer)
     {
-        return new ScriptHeaderInfo(getResourceUri(context, resourceHandler), defer);
+        return new ScriptPositionedInfo(getResourceUri(context, resourceHandler), defer);
     }
 
-    private HeaderInfo getStyleInstance(FacesContext context, String uri)
+    private PositionedInfo getStyleInstance(FacesContext context, String uri)
     {
-        return new StyleHeaderInfo(getResourceUri(context, uri));
+        return new StylePositionedInfo(getResourceUri(context, uri));
     }
 
-    protected HeaderInfo getScriptInstance(FacesContext context, String uri, boolean defer)
+    protected PositionedInfo getScriptInstance(FacesContext context, String uri, boolean defer)
     {
-        return new ScriptHeaderInfo(getResourceUri(context, uri), defer);
+        return new ScriptPositionedInfo(getResourceUri(context, uri), defer);
     }
 
-    private HeaderInfo getInlineScriptInstance(String inlineScript)
+    private PositionedInfo getInlineScriptInstance(String inlineScript)
     {
-        return new InlineScriptHeaderInfo(inlineScript);
+        return new InlineScriptPositionedInfo(inlineScript);
     }
 
-    private HeaderInfo getInlineStyleInstance(String inlineStyle)
+    private PositionedInfo getInlineStyleInstance(String inlineStyle)
     {
-        return new InlineStyleHeaderInfo(inlineStyle);
+        return new InlineStylePositionedInfo(inlineStyle);
     }
 
-    private interface HeaderInfo
+    private interface PositionedInfo
     {
-        public abstract void writeHeaderInfo(HttpServletResponse response, ResponseWriter writer)
+    }
+
+    private static class AttributeInfo implements PositionedInfo
+    {
+        private String _attributeName;
+        private String _attributeValue;
+
+        public String getAttributeName()
+        {
+            return _attributeName;
+        }
+
+        public void setAttributeName(String attributeName)
+        {
+            _attributeName = attributeName;
+        }
+
+        public String getAttributeValue()
+        {
+            return _attributeValue;
+        }
+
+        public void setAttributeValue(String attributeValue)
+        {
+            _attributeValue = attributeValue;
+        }
+    }
+
+    private interface WritablePositionedInfo extends PositionedInfo
+    {
+        public abstract void writePositionedInfo(HttpServletResponse response, ResponseWriter writer)
                 throws IOException;
     }
 
@@ -605,14 +727,14 @@ public final class AddResource
         }
     }
 
-    private class StyleHeaderInfo extends AbstractResourceUri implements HeaderInfo
+    private class StylePositionedInfo extends AbstractResourceUri implements WritablePositionedInfo
     {
-        protected StyleHeaderInfo(String resourceUri)
+        protected StylePositionedInfo(String resourceUri)
         {
             super(resourceUri);
         }
 
-        public void writeHeaderInfo(HttpServletResponse response, ResponseWriter writer)
+        public void writePositionedInfo(HttpServletResponse response, ResponseWriter writer)
                 throws IOException
         {
             writer.startElement(HTML.LINK_ELEM, null);
@@ -623,11 +745,11 @@ public final class AddResource
         }
     }
 
-    private class ScriptHeaderInfo extends AbstractResourceUri implements HeaderInfo
+    private class ScriptPositionedInfo extends AbstractResourceUri implements WritablePositionedInfo
     {
         protected final boolean _defer;
 
-        public ScriptHeaderInfo(String resourceUri, boolean defer)
+        public ScriptPositionedInfo(String resourceUri, boolean defer)
         {
             super(resourceUri);
             _defer = defer;
@@ -642,16 +764,16 @@ public final class AddResource
         {
             if (super.equals(obj))
             {
-                if (obj instanceof ScriptHeaderInfo)
+                if (obj instanceof ScriptPositionedInfo)
                 {
-                    ScriptHeaderInfo other = (ScriptHeaderInfo) obj;
+                    ScriptPositionedInfo other = (ScriptPositionedInfo) obj;
                     return new EqualsBuilder().append(_defer, other._defer).isEquals();
                 }
             }
             return false;
         }
 
-        public void writeHeaderInfo(HttpServletResponse response, ResponseWriter writer)
+        public void writePositionedInfo(HttpServletResponse response, ResponseWriter writer)
                 throws IOException
         {
             writer.startElement(HTML.SCRIPT_ELEM, null);
@@ -666,11 +788,11 @@ public final class AddResource
         }
     }
 
-    private abstract class InlineHeaderInfo implements HeaderInfo
+    private abstract class InlinePositionedInfo implements WritablePositionedInfo
     {
         private final String _inlineValue;
 
-        protected InlineHeaderInfo(String inlineValue)
+        protected InlinePositionedInfo(String inlineValue)
         {
             _inlineValue = inlineValue;
         }
@@ -695,23 +817,23 @@ public final class AddResource
             {
                 return true;
             }
-            if (obj instanceof InlineHeaderInfo)
+            if (obj instanceof InlinePositionedInfo)
             {
-                InlineHeaderInfo other = (InlineHeaderInfo) obj;
+                InlinePositionedInfo other = (InlinePositionedInfo) obj;
                 return new EqualsBuilder().append(_inlineValue, other._inlineValue).isEquals();
             }
             return false;
         }
     }
 
-    private class InlineScriptHeaderInfo extends InlineHeaderInfo
+    private class InlineScriptPositionedInfo extends InlinePositionedInfo
     {
-        protected InlineScriptHeaderInfo(String inlineScript)
+        protected InlineScriptPositionedInfo(String inlineScript)
         {
             super(inlineScript);
         }
 
-        public void writeHeaderInfo(HttpServletResponse response, ResponseWriter writer)
+        public void writePositionedInfo(HttpServletResponse response, ResponseWriter writer)
                 throws IOException
         {
             writer.startElement(HTML.SCRIPT_ELEM, null);
@@ -721,14 +843,14 @@ public final class AddResource
         }
     }
 
-    private class InlineStyleHeaderInfo extends InlineHeaderInfo
+    private class InlineStylePositionedInfo extends InlinePositionedInfo
     {
-        protected InlineStyleHeaderInfo(String inlineStyle)
+        protected InlineStylePositionedInfo(String inlineStyle)
         {
             super(inlineStyle);
         }
 
-        public void writeHeaderInfo(HttpServletResponse response, ResponseWriter writer)
+        public void writePositionedInfo(HttpServletResponse response, ResponseWriter writer)
                 throws IOException
         {
             writer.startElement(HTML.STYLE_ELEM, null);
@@ -744,6 +866,7 @@ public final class AddResource
         private int headerInsertPosition = -1;
         private int bodyInsertPosition = -1;
         private int beforeBodyPosition = -1;
+        private int afterBodyContentInsertPosition=-1;
 
         public void openedStartTag(int charIndex, int tagIdentifier)
         {
@@ -757,16 +880,20 @@ public final class AddResource
         {
             if (tagIdentifier == ReducedHTMLParser.HEAD_TAG)
             {
-                headerInsertPosition = charIndex + 1;
+                headerInsertPosition = charIndex;
             }
             else if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
             {
-                bodyInsertPosition = charIndex + 1;
+                bodyInsertPosition = charIndex;
             }
         }
 
         public void openedEndTag(int charIndex, int tagIdentifier)
         {
+            if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
+            {
+                afterBodyContentInsertPosition = charIndex;
+            }
         }
 
         public void closedEndTag(int charIndex, int tagIdentifier)
@@ -790,6 +917,11 @@ public final class AddResource
         public int getBeforeBodyPosition()
         {
             return beforeBodyPosition;
+        }
+
+        public int getAfterBodyContentInsertPosition()
+        {
+            return afterBodyContentInsertPosition;
         }
     }
 }
