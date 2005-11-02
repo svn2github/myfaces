@@ -170,22 +170,29 @@ public class HtmlSelectManyCheckbox
 
     public void setForceId(boolean b)
     {
-        getAttributes().put("forceId",Boolean.valueOf(b));
+        _forceId = Boolean.valueOf(b);
     }
+
+    private Boolean _forceId = null;
 
     public boolean getForceId()
     {
-        Object forceId = getAttributes().get("forceId");
+        if (_forceId != null) return _forceId.booleanValue();
+        ValueBinding vb = getValueBinding("forceId");
+        return vb != null && booleanFromObject(vb.getValue(getFacesContext()), false);
+    }
 
-        if(forceId instanceof Boolean)
+    private static boolean booleanFromObject(Object obj, boolean defaultValue)
+    {
+        if(obj instanceof Boolean)
         {
-            return ((Boolean) forceId).booleanValue();
+            return ((Boolean) obj).booleanValue();
         }
-        else if(forceId instanceof String)
+        else if(obj instanceof String)
         {
-            return Boolean.valueOf(((String) forceId)).booleanValue();
+            return Boolean.valueOf(((String) obj)).booleanValue();
         }
 
-        return false;
+        return defaultValue;
     }
 }
