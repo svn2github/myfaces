@@ -80,12 +80,12 @@ public class HtmlTabbedPaneRenderer
      *
      * @param uiComponent
      */
-    private boolean isDynamic(HtmlPanelTabbedPane uiComponent){
+    private boolean isClientSide(HtmlPanelTabbedPane uiComponent){
 
         Boolean serverSideTabSwitch = (Boolean)
                 uiComponent.getAttributes().get("serverSideTabSwitch");
 
-        return serverSideTabSwitch != null ? serverSideTabSwitch.booleanValue() : false;
+        return serverSideTabSwitch != null ? !serverSideTabSwitch.booleanValue() : true;
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
@@ -102,7 +102,7 @@ public class HtmlTabbedPaneRenderer
         addResource.addStyleSheet(facesContext,
                 HtmlTabbedPaneRenderer.class, "defaultStyles.css");
 
-        if( isDynamic(tabbedPane) ){
+        if( isClientSide(tabbedPane) ){
         	addResource.addJavaScriptToHeader(facesContext, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
         	addResource.addInlineStyleToHeader(facesContext,
         			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
@@ -127,7 +127,7 @@ public class HtmlTabbedPaneRenderer
 
         List children = tabbedPane.getChildren();
         
-        if( isDynamic(tabbedPane) ){
+        if( isClientSide(tabbedPane) ){
         	List headerIDs = new ArrayList();
 	        List tabIDs = new ArrayList();
 	        for (int i = 0, len = children.size(); i < len; i++)
@@ -277,7 +277,7 @@ public class HtmlTabbedPaneRenderer
         
         // No request due to a header button pressed.
         // Restore a client-side switch
-        if( isDynamic(tabbedPane) ){
+        if( isClientSide(tabbedPane) ){
         	String clientSideIndex = (String)paramMap.get(getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext));
         	if (clientSideIndex != null && clientSideIndex.length() > 0)
             {
@@ -437,7 +437,7 @@ public class HtmlTabbedPaneRenderer
             writer.writeAttribute(HTML.TYPE_ATTR, "submit", null);
             writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null);
             writer.writeAttribute(HTML.VALUE_ATTR, label, null);
-            if( isDynamic(tabbedPane) ){
+            if( isClientSide(tabbedPane) ){
             	String activeUserClass = tabbedPane.getActiveTabStyleClass();
             	String inactiveUserClass = tabbedPane.getInactiveTabStyleClass();
             	String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();
