@@ -125,35 +125,35 @@ public class InputHtmlRenderer extends HtmlRenderer {
         }
 
         AddResource addResource = AddResource.getInstance(context);
-        addResource.addStyleSheet(context, InputHtmlRenderer.class, "kupustyles.css");
-        addResource.addStyleSheet(context, InputHtmlRenderer.class, "kupudrawerstyles.css");
-        addResource.addStyleSheet(context, InputHtmlRenderer.class, "myFaces.css");
+        addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupustyles.css");
+        addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupudrawerstyles.css");
+        addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "myFaces.css");
 
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "sarissa.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "sarissa_ieemu_xpath.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuhelpers.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupueditor.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupubasetools.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuloggers.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupunoi18n.js");
-        //addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "i18n/i18n.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupucleanupexpressions.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupucontentfilters.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "sarissa.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "sarissa_ieemu_xpath.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuhelpers.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupueditor.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupubasetools.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuloggers.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupunoi18n.js");
+        //addResource.addJavaScriptAtPosition(context, InputHtmlRenderer.class, "i18n/i18n.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupucleanupexpressions.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupucontentfilters.js");
         
         if (editor.isShowAnyToolBox())
         {
-            addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kuputoolcollapser.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kuputoolcollapser.js");
         }
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupucontextmenu.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupucontextmenu.js");
         
-		addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuinit.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupustart.js");
+		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuinit.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupustart.js");
         
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupusourceedit.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupuspellchecker.js");
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "kupudrawers.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupusourceedit.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuspellchecker.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupudrawers.js");
         
-        addResource.addJavaScriptToHeader(context, InputHtmlRenderer.class, "myFacesUtils.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "myFacesUtils.js");
         
         ResponseWriter writer = context.getResponseWriter();
 
@@ -1100,10 +1100,10 @@ public class InputHtmlRenderer extends HtmlRenderer {
             }
             if( editor.getStyle()!=null ){
                 // Convert the style into an style declaration so that it doesn't preempt the Zoom works as it's relying on changing the class
-                addResource.addInlineStyleToHeader(
-                        context,
-						"#kupu-editor{height: inherit;}\n"+
-						"div.kupu-fulleditor{"+editor.getStyle()+"}");
+                addResource.addInlineStyleAtPosition(
+                        context, AddResource.HEADER_BEGIN, 
+                        "#kupu-editor{height: inherit;}\n"+
+                        "div.kupu-fulleditor{"+editor.getStyle()+"}");
             }
             writer.writeAttribute(HTML.CLASS_ATTR,
                     "kupu-editorframe"+(editor.getStyleClass()==null ? "" : " "+editor.getStyleClass()), null);

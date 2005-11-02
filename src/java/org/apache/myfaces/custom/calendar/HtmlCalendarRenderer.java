@@ -261,18 +261,18 @@ public class HtmlCalendarRenderer
         }
         AddResource addresource = AddResource.getInstance(facesContext);
         // Add the javascript and CSS pages
-        addresource.addStyleSheet(facesContext, HtmlCalendarRenderer.class, "WH/theme.css");
-        addresource.addStyleSheet(facesContext, HtmlCalendarRenderer.class, "DB/theme.css");
-        addresource.addJavaScriptToHeader(facesContext, PrototypeResourceLoader.class, "prototype.js");
-        addresource.addJavaScriptToHeader(facesContext, HtmlCalendarRenderer.class, "date.js");
-        addresource.addJavaScriptToHeader(facesContext, HtmlCalendarRenderer.class, "popcalendar_init.js");
+        addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "WH/theme.css");
+        addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "DB/theme.css");
+        addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
+        addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
+        addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar_init.js");
 
         StringBuffer imageScript = new StringBuffer();
         appendImageDirectory(imageScript, facesContext);
-        addresource.addInlineScriptToHeader(facesContext, imageScript.toString());
-        addresource.addInlineScriptToHeader(facesContext, getLocalizedLanguageScript(symbols,months,firstDayOfWeek,
+        addresource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, imageScript.toString());
+        addresource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, getLocalizedLanguageScript(symbols,months,firstDayOfWeek,
                                         uiComponent));
-        addresource.addJavaScriptToHeader(facesContext, HtmlCalendarRenderer.class, "popcalendar.js");
+        addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
 
         ResponseWriter writer = facesContext.getResponseWriter();
 

@@ -47,7 +47,7 @@ public class HtmlSwapImageRenderer
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        AddResource.getInstance(facesContext).addJavaScriptToHeader(facesContext,
+        AddResource.getInstance(facesContext).addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, 
                 HtmlSwapImage.class, "swapimage.js");
 
         String url;

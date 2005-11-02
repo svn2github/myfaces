@@ -596,13 +596,13 @@ public class HtmlTreeRenderer extends Renderer
         AddResource addResource = AddResource.getInstance(context);
         if (javascriptLocation == null)
         {
-            addResource.addJavaScriptToHeader(context, HtmlTreeRenderer.class, "javascript/tree.js");
-            addResource.addJavaScriptToHeader(context, HtmlTreeRenderer.class, "javascript/cookielib.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/tree.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/cookielib.js");
         }
         else
         {
-            addResource.addJavaScriptToHeader(context, javascriptLocation + "/tree.js");
-            addResource.addJavaScriptToHeader(context, javascriptLocation + "/cookielib.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/tree.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/cookielib.js");
         }
     }
 

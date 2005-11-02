@@ -99,17 +99,17 @@ public class HtmlTabbedPaneRenderer
 
         AddResource addResource = AddResource.getInstance(facesContext);
         
-        addResource.addStyleSheet(facesContext,
+        addResource.addStyleSheet(facesContext,AddResource.HEADER_BEGIN, 
                 HtmlTabbedPaneRenderer.class, "defaultStyles.css");
 
         if( isClientSide(tabbedPane) ){
-        	addResource.addJavaScriptToHeader(facesContext, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
-        	addResource.addInlineStyleToHeader(facesContext,
-        			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
-        			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+TAB_PANE_CLASS+",\n" +
-        			'#'+getTableStylableId(tabbedPane,facesContext)+" ."+SUB_HEADER_CELL_CLASS+"{\n"+
-        				"background-color:" + tabbedPane.getBgcolor()+";\n"+
-        			"}\n");
+        	addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
+        	addResource.addInlineStyleAtPosition(facesContext,AddResource.HEADER_BEGIN, 
+                    '#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
+                    '#'+getTableStylableId(tabbedPane,facesContext)+" ."+TAB_PANE_CLASS+",\n" +
+                    '#'+getTableStylableId(tabbedPane,facesContext)+" ."+SUB_HEADER_CELL_CLASS+"{\n"+
+                        "background-color:" + tabbedPane.getBgcolor()+";\n"+
+                    "}\n");
         }
         
         

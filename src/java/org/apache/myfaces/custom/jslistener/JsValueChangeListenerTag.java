@@ -117,7 +117,7 @@ String aFor = getValueOrBinding(_for);
 String expressionValue = getValueOrBinding(_expressionValue);
 String property = getValueOrBinding(_property);
 
-AddResource.addJavaScriptToHeader(
+AddResource.addJavaScriptAtPosition(
       JsValueChangeListenerTag.class, "JSListener.js", false, getFacesContext());
 
 //Component was just created, so we add the Listener

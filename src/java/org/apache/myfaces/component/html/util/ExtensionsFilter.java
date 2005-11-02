@@ -124,7 +124,7 @@ public class ExtensionsFilter implements Filter {
         
         extendedResponse.finishResponse();
         
-        if( ! addResource.hasHeaderInfos(extendedRequest) ){
+        if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
             response.getOutputStream().write( extendedResponse.getBytes());
             return;
         }

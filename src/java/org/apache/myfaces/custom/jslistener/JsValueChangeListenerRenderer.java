@@ -38,8 +38,8 @@ public class JsValueChangeListenerRenderer
         String expressionValue = jsValueChangeListener.getExpressionValue();
         String property = jsValueChangeListener.getProperty();
 
-        AddResource.getInstance(facesContext).addJavaScriptToHeader(
-                facesContext, JsValueChangeListenerRenderer.class,
+        AddResource.getInstance(facesContext).addJavaScriptAtPosition(
+                facesContext, AddResource.HEADER_BEGIN, JsValueChangeListenerRenderer.class,
                 "JSListener.js");
 
         if(aFor!=null)
@@ -90,17 +90,17 @@ public class JsValueChangeListenerRenderer
                     ",'"+expressionValue+"');";
 
 
-            callMethod(jsValueChangeListener, "onchange",methodCall);
+            callMethod(facesContext, jsValueChangeListener, "onchange",methodCall);
 
             if (jsValueChangeListener.getBodyTagEvent() != null)
             {
-                callMethod(jsValueChangeListener, jsValueChangeListener.getBodyTagEvent(), methodCall);
+                callMethod(facesContext, jsValueChangeListener, jsValueChangeListener.getBodyTagEvent(), methodCall);
             }
 
         }
     }
 
-    private void callMethod(JsValueChangeListener jsValueChangeListener, String propName, String value)
+    private void callMethod(FacesContext context, JsValueChangeListener jsValueChangeListener, String propName, String value)
     {
         UIComponent parent = jsValueChangeListener.getParent();
 
@@ -131,7 +131,8 @@ public class JsValueChangeListenerRenderer
 
         if (!propName.equals("onchange") && value != null)
         {
-            AddResource.addJavaScriptToBodyTag(jsValueChangeListener.getBodyTagEvent(), value);
+            AddResource.getInstance(context).
+                    addJavaScriptToBodyTag(context,jsValueChangeListener.getBodyTagEvent(), value);
         }
         else if(value != null)
         {

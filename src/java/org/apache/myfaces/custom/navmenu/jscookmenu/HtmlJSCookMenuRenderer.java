@@ -33,7 +33,6 @@ import javax.faces.webapp.UIComponentTag;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.util.AddResource;
-import org.apache.myfaces.component.html.util.ParameterResourceHandler;
 import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
 import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
@@ -374,13 +373,13 @@ public class HtmlJSCookMenuRenderer
 
         if(javascriptLocation != null)
         {
-            addResource.addJavaScriptToHeader(context, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
-            addResource.addJavaScriptToHeader(context, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
         }
         else
         {
-            addResource.addJavaScriptToHeader(context, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
-            addResource.addJavaScriptToHeader(context, HtmlJSCookMenuRenderer.class, MYFACES_HACK_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, MYFACES_HACK_SCRIPT);
         }
 
         addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, context);
@@ -455,7 +454,7 @@ public class HtmlJSCookMenuRenderer
                         HtmlJSCookMenuRenderer.class, themeLocation)));
             }
             buf.append("';");
-            addResource.addInlineScriptToHeader(context, buf.toString());
+            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
         }
 
 
@@ -470,13 +469,13 @@ public class HtmlJSCookMenuRenderer
                 // For now, assume that if the user specified a location for a custom
                 // version of the jscookMenu.js file then the theme.js file can be found
                 // in the same location.
-                addResource.addJavaScriptToHeader(context, javascriptLocation + "/" + themeName
+                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + themeName
                         + "/theme.js");
             }
             else
             {
                 // Using a built-in theme, so we know where the theme.js file is.
-                addResource.addJavaScriptToHeader(context, HtmlJSCookMenuRenderer.class, themeName
+                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
                         + "/theme.js");
             }
         }
@@ -489,11 +488,11 @@ public class HtmlJSCookMenuRenderer
             // or inserted via some other means.
             if (styleLocation != null)
             {
-                addResource.addStyleSheet(context, styleLocation + "/" + themeName + "/theme.css");
+                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, styleLocation + "/" + themeName + "/theme.css");
             }
             else
             {
-                addResource.addStyleSheet(context, HtmlJSCookMenuRenderer.class, themeName
+                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
                         + "/theme.css");
             }
         }
