@@ -520,7 +520,9 @@ public final class AddResource
         {
             if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG != null)
             {
-                originalResponse.insert( bodyInsertPosition-1, " "+ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\" " );
+                originalResponse.insert( bodyInsertPosition-2, " "+ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\" " );
+
+                ADDITIONAL_JAVASCRIPT_TO_BODY_TAG = null;
             }
         }
 
