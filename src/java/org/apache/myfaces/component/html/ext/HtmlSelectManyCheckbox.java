@@ -19,6 +19,7 @@ import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.custom.ExtendedComponentBase;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -29,8 +30,10 @@ import javax.faces.el.ValueBinding;
  */
 public class HtmlSelectManyCheckbox
         extends javax.faces.component.html.HtmlSelectManyCheckbox
-        implements UserRoleAware, DisplayValueOnlyCapable
+        implements UserRoleAware, DisplayValueOnlyCapable, ExtendedComponentBase
 {
+
+
     public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
@@ -164,4 +167,25 @@ public class HtmlSelectManyCheckbox
         _displayValueOnlyStyleClass = (String)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
+
+    public void setForceId(boolean b)
+    {
+        getAttributes().put("forceId",Boolean.valueOf(b));
+    }
+
+    public boolean getForceId()
+    {
+        Object forceId = getAttributes().get("forceId");
+
+        if(forceId instanceof Boolean)
+        {
+            return ((Boolean) forceId).booleanValue();
+        }
+        else if(forceId instanceof String)
+        {
+            return Boolean.valueOf(((String) forceId)).booleanValue();
+        }
+
+        return false;
+    }
 }
