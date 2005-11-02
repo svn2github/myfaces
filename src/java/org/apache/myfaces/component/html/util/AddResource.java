@@ -160,9 +160,9 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource to the document Header by supplying 
-     * an resourcehandler instance. Use this method to have full control about building 
-     * the reference url to identify the resource and to customize how the resource 
+     * Adds the given Javascript resource to the document Header by supplying
+     * an resourcehandler instance. Use this method to have full control about building
+     * the reference url to identify the resource and to customize how the resource
      * is written to the response.
      * If the script has already been referenced, it's added only once.
      */
@@ -464,7 +464,7 @@ public final class AddResource
      * Add the resources to the &lt;head&gt; of the page.
      * If the head tag is missing, but the &lt;body&gt; tag is present, the head tag is added.
      * If both are missing, no resources is added.
-     * 
+     *
      * TODO : Change the ordering so that the user header CSS & JS override MyFaces' ones.
      */
     public void writeWithFullHeader(HttpServletRequest request,
@@ -520,7 +520,7 @@ public final class AddResource
         {
             if (ADDITIONAL_JAVASCRIPT_TO_BODY_TAG != null)
             {
-                originalResponse.insert( bodyInsertPosition, " "+ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\" " );
+                originalResponse.insert( bodyInsertPosition-1, " "+ADDITIONAL_JAVASCRIPT_TO_BODY_TAG + "\" " );
             }
         }
 
