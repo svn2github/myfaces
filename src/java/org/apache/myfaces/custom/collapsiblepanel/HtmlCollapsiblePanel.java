@@ -30,6 +30,7 @@ import java.util.Iterator;
  */
 public class HtmlCollapsiblePanel extends UIInput
 {
+    private boolean _currentlyCollapsed;
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
 
     public void processDecodes(FacesContext context)
@@ -63,7 +64,7 @@ public class HtmlCollapsiblePanel extends UIInput
             }
         }
 
-        if(getSubmittedValue()!=null?isCollapsed(getSubmittedValue()):isCollapsed(getValue()))
+        if(isCurrentlyCollapsed())
         {
             UIComponent component = getFacet("closedContent");
 
@@ -174,7 +175,7 @@ public class HtmlCollapsiblePanel extends UIInput
         return isCollapsed(getValue());
     }
 
-    private static boolean isCollapsed(Object collapsedValue)
+    public static boolean isCollapsed(Object collapsedValue)
     {
         Object value = collapsedValue;
 
@@ -269,5 +270,15 @@ public class HtmlCollapsiblePanel extends UIInput
         _title = (String)values[1];
         _var = (String)values[2];
         _titleVar = (String) values[3];
+    }
+
+    public void setCurrentlyCollapsed(boolean collapsed)
+    {
+        _currentlyCollapsed = collapsed;
+    }
+
+    public boolean isCurrentlyCollapsed()
+    {
+        return _currentlyCollapsed;
     }
 }

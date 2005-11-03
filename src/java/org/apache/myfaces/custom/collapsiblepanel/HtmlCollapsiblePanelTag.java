@@ -59,7 +59,7 @@ public class HtmlCollapsiblePanelTag
     {
         super.setProperties(component);
 
-        setBooleanProperty(component, "title", _title);
+        setStringProperty(component, "title", _title);
         setStringProperty(component,"var",_var);
         setStringProperty(component,"titleVar",_titleVar);
     }

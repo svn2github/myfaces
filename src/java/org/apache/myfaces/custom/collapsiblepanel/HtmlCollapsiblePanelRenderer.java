@@ -23,7 +23,6 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import javax.faces.application.Application;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -152,17 +151,19 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
         String reqValue = (String) reqParams.get(
                 collapsiblePanel.getClientId(facesContext)+COLLAPSED_STATE_ID);
 
+        collapsiblePanel.setCurrentlyCollapsed(HtmlCollapsiblePanel.isCollapsed(reqValue));
+
         if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(togglingIndicated))
         {
             if(reqValue!=null)
-                collapsiblePanel.setSubmittedValue(""+!Boolean.valueOf(reqValue).booleanValue());
+                collapsiblePanel.setSubmittedValue(""+!collapsiblePanel.isCurrentlyCollapsed());
             else
                 collapsiblePanel.setSubmittedValue(""+!collapsiblePanel.isCollapsed());
         }
         else
         {
             if(reqValue!=null)
-                collapsiblePanel.setSubmittedValue(""+Boolean.valueOf(reqValue).booleanValue());
+                collapsiblePanel.setSubmittedValue(""+collapsiblePanel.isCurrentlyCollapsed());
         }
 
     }
@@ -228,7 +229,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
     		if (!(actionEvent.getComponent().getParent() instanceof HtmlCollapsiblePanel) )
     			throw new AbortProcessingException("The parent of the action source was of unexpected type, HtmlCollapsiblePanel was expected");
     		HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel)actionEvent.getComponent().getParent();
-    		collapsiblePanel.setCollapsed(!collapsiblePanel.isCollapsed() );
+    		collapsiblePanel.setFirstCollapsed(!collapsiblePanel.isFirstCollapsed() );
         // Note that we need to remove the listeners here, otherwise they will be fired again for old components,
         // don't quite understand why
         ActionListener[] listeners = collapsiblePanel.getLink().getActionListeners();
