@@ -15,12 +15,14 @@
  */
 package org.apache.myfaces.custom.fileupload;
 
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
-
+import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util.MessageUtils;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -32,6 +34,7 @@ public class HtmlInputFileUpload
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputFileUpload";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FileUpload";
+    public static final String SIZE_LIMIT_MESSAGE_ID = "org.apache.myfaces.FileUpload.SIZE_LIMIT";
 
     private String _accept = null;
     private String _enabledOnUserRole = null;
@@ -107,7 +110,24 @@ public class HtmlInputFileUpload
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
         return super.isRendered();
     }
-
+    
+    protected void validateValue(FacesContext context, Object convertedValue)
+    {
+        super.validateValue(context, convertedValue);
+        if (isValid() && getMaxlength() >= 0)
+        {
+            UploadedFile file = (UploadedFile) convertedValue;
+            if(file.getSize() > getMaxlength())
+            {
+                MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+                        SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
+                                new Integer(getMaxlength()) },
+                        getClientId(context), context);
+                setValid(false);
+            }
+        }
+    }
+    
     public Object saveState(FacesContext context)
     {
         Object values[] = new Object[5];
