@@ -117,7 +117,7 @@ public class HtmlInputFileUpload
         if (isValid() && getMaxlength() >= 0)
         {
             UploadedFile file = (UploadedFile) convertedValue;
-            if(file.getSize() > getMaxlength())
+            if(file != null && file.getSize() > getMaxlength())
             {
                 MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
                         SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
