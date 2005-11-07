@@ -1229,7 +1229,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException {
         RendererUtils.checkParamValidity(facesContext, uiComponent, InputHtml.class);
 		InputHtml editor = (InputHtml) uiComponent;
-        String submittedDocument = (String) RendererUtils.getConvertedUIOutputValue(facesContext, editor, submittedValue);
-        return editor.getValueFromDocument( submittedDocument );
+        String submittedDocument = editor.getValueFromDocument((String)submittedValue);
+        return RendererUtils.getConvertedUIOutputValue(facesContext, editor, submittedDocument); 
     }
 }
