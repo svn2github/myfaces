@@ -34,9 +34,20 @@ import java.util.*;
 
 /**
  * This is a utility class to render link to resources used by custom components.
- * Mostly used to avoid having to include <script src="..."></script>
+ * Mostly used to avoid having to include [script src="..."][/script]
  * in the head of the pages before using a component.
- *
+ * <p>
+ * When used together with the ExtensionsFilter, this class can allow components
+ * in the body of a page to emit script and stylesheet references into the page
+ * head section. The relevant methods on this object simply queue the changes,
+ * and when the page is complete the ExtensionsFilter calls back into this 
+ * class to allow it to insert the commands into the buffered response.
+ * <p>
+ * This class also works with the ExtensionsFilter to allow components to
+ * emit references to javascript/css/etc which are bundled in the component's
+ * jar file. Special URLs are generated which the ExtensionsFilter will later
+ * handle by retrieving the specified resource from the classpath.
+ * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -70,10 +81,31 @@ public final class AddResource
         _contextPath = contextPath;
     }
 
+    /**
+     * Map of AddResource instances keyed by context path. This map will have
+     * more than one entry only if the myfaces library is in the "shared"
+     * classpath of a container where more than one webapp can see it
+     * simultaneously.
+     */
     private static final Map _addResourceMap = new HashMap();
 
-    private static AddResource getInstance(String contextPath)
+    /*
+     * Internal factory method.
+     * <p>
+     * Return an instance of AddResource keyed by context path, or create one
+     * if no such instance already exists. Note that the same AddResource object
+     * is shared among all threads servicing the same webapp, so all methods
+     * on this class are required to be threadsafe.
+     * <p>
+     * Note that this method is package-scope for the purposes of unit-testing only.
+     * This method should be treated as private by non-test code.
+     */
+    static AddResource getInstance(String contextPath)
     {
+        // Yes, this method does use a variant of the "double locking" idiom
+        // which is well documented to be invalid for general use. However
+        // it is believed safe for use here because AddResource objects in
+        // _addResourceMap are never removed or replaced.
         AddResource instance = (AddResource) _addResourceMap.get(contextPath);
         if (instance == null)
         {
@@ -100,14 +132,29 @@ public final class AddResource
         return getInstance(request.getContextPath());
     }
 
-    // Methodes to Add resources
+    // Methods to add resources
 
+    /**
+     * Insert a [script src="url"] entry at the current location in the response.
+     * The resource is expected to be in the classpath, at the same location as the
+     * specified component + "/resource".
+     * <p>
+     * Example: when customComponent is class example.Widget, and 
+     * resourceName is script.js, the resource will be retrieved from 
+     * "example/Widget/resource/script.js" in the classpath.
+     */
     public void addJavaScriptHere(FacesContext context, Class myfacesCustomComponent,
             String resourceName) throws IOException
     {
         addJavaScriptHere(context, new MyFacesResourceHandler(myfacesCustomComponent, resourceName));
     }
 
+    /**
+     * Insert a [script src="url"] entry at the current location in the response.
+     * 
+     * @param uri is the location of the desired resource, relative to the base
+     * directory of the webapp (ie its contextPath). 
+     */
     public void addJavaScriptHere(FacesContext context, String uri) throws IOException
     {
         ResponseWriter writer = context.getResponseWriter();
@@ -119,6 +166,17 @@ public final class AddResource
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
+    /**
+     * Insert a [script src="url"] entry at the current location in the response.
+     * 
+     * @param context
+     * 
+     * @param resourceHandler is an object which specifies exactly how to build the url
+     * that is emitted into the script tag. Code which needs to generate URLs in ways
+     * that this class does not support by default can implement a custom ResourceHandler.
+     * 
+     * @throws IOException
+     */
     public void addJavaScriptHere(FacesContext context, ResourceHandler resourceHandler)
             throws IOException
     {
@@ -169,11 +227,20 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource at the specified document position by supplying
-     * an resourcehandler instance. Use this method to have full control about building
-     * the reference url to identify the resource and to customize how the resource
-     * is written to the response.
+     * Adds the given Javascript resource to the document header at the specified
+     * document positioy by supplying a resourcehandler instance.
+     * <p>
+     * Use this method to have full control about building the reference url
+     * to identify the resource and to customize how the resource is 
+     * written to the response. In most cases, however, one of the convenience
+     * methods on this class can be used without requiring a custom ResourceHandler
+     * to be provided.
+     * <p>
      * If the script has already been referenced, it's added only once.
+     * <p>
+     * Note that this method <i>queues</i> the javascript for insertion, and that
+     * the script is inserted into the buffered response by the ExtensionsFilter
+     * after the page is complete.
      */
     public void addJavaScriptAtPosition(FacesContext context, int position, ResourceHandler resourceHandler)
     {
@@ -181,8 +248,16 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource at the specified document position.
-     * If the script has already been referenced, it's added only once.
+     * Insert a [script src="url"] entry into the document header at the
+     * specified document position. If the script has already been
+     * referenced, it's added only once.
+     * <p> 
+     * The resource is expected to be in the classpath, at the same location as the
+     * specified component + "/resource".
+     * <p>
+     * Example: when customComponent is class example.Widget, and 
+     * resourceName is script.js, the resource will be retrieved from 
+     * "example/Widget/resource/script.js" in the classpath.
      */
     public void addJavaScriptAtPosition(FacesContext context, int position, Class myfacesCustomComponent,
                                         String resourceName)
@@ -192,8 +267,14 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource at the specified document position.
-     * If the script has already been referenced, it's added only once.
+     * Insert a [script src="url"] entry into the document header at the
+     * specified document position. If the script has already been
+     * referenced, it's added only once.
+     * 
+     * @param defer specifies whether the html attribute "defer" is set on the
+     * generated script tag. If this is true then the browser will continue
+     * processing the html page without waiting for the specified script to
+     * load and be run.
      */
     public void addJavaScriptAtPosition(FacesContext context, int position, Class myfacesCustomComponent,
                                         String resourceName, boolean defer)
@@ -203,8 +284,12 @@ public final class AddResource
     }
 
     /**
-     * Adds the given Javascript resource at the specified document position.
-     * If the script has already been referenced, it's added only once.
+     * Insert a [script src="url"] entry into the document header at the
+     * specified document position. If the script has already been
+     * referenced, it's added only once.
+     * 
+     * @param uri is the location of the desired resource, relative to the base
+     * directory of the webapp (ie its contextPath). 
      */
     public void addJavaScriptAtPosition(FacesContext context, int position, String uri)
     {
