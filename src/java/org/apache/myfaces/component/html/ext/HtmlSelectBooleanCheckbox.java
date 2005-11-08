@@ -50,12 +50,12 @@ public class HtmlSelectBooleanCheckbox
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectBooleanCheckbox";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
     private static final boolean DEFAULT_ESCAPE = true;
-    
+
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _displayValueOnly = null;
-	private String _displayValueOnlyStyle = null;
-	private String _displayValueOnlyStyleClass = null;
+    private String _displayValueOnlyStyle = null;
+    private String _displayValueOnlyStyleClass = null;
     private Boolean _escape = null;
 
     public HtmlSelectBooleanCheckbox()
@@ -125,7 +125,7 @@ public class HtmlSelectBooleanCheckbox
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
 
-public void setEscape(boolean escape)
+    public void setEscape(boolean escape)
     {
         _escape = Boolean.valueOf(escape);
     }

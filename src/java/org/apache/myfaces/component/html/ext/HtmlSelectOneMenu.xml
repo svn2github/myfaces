@@ -27,4 +27,9 @@
         <name>displayValueOnlyStyleClass</name>
         <type>java.lang.String</type>
     </field>
+    <field>
+        <name>escape</name>
+        <type>boolean</type>
+        <default-value>true</default-value>
+    </field>
 </component>

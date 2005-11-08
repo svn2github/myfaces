@@ -30,6 +30,7 @@ import org.apache.myfaces.component.DisplayValueOnlyCapable;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.EscapeCapable;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.util.MessageUtils;
 
@@ -39,7 +40,7 @@ import org.apache.myfaces.util.MessageUtils;
  */
 public class HtmlSelectOneRadio
         extends javax.faces.component.html.HtmlSelectOneRadio
-        implements UserRoleAware, DisplayValueOnlyCapable
+        implements UserRoleAware, DisplayValueOnlyCapable, EscapeCapable
 {
 		public String getClientId(FacesContext context)
     {
@@ -51,7 +52,7 @@ public class HtmlSelectOneRadio
 
         return clientId;
     }
-   
+
 		/**
      * Overridden method, as with extended seletOne, value doesn't necessaraly
      * have to be contained within select list, for example, when forceId="true" and
@@ -85,14 +86,14 @@ public class HtmlSelectOneRadio
             	String clientId = this.getClientId(context);
             	Iterator messages = context.getMessages(clientId);
             	boolean messageExists = messages.hasNext();
-            	
+
             	if(!messageExists)
             	{
             		//Add message
             		FacesMessage message = MessageUtils.getMessage(REQUIRED_MESSAGE_ID, new Object[]{clientId});
             		message.setSeverity(FacesMessage.SEVERITY_WARN);
             		context.addMessage(clientId, message);
-            		
+
                 setValid(false);
             	}
                 return;
@@ -105,7 +106,7 @@ public class HtmlSelectOneRadio
             }
         }
     }
-		
+
     private static void callValidators(FacesContext context, UIInput input, Object convertedValue)
     {
         Validator[] validators = input.getValidators();
@@ -263,4 +264,20 @@ public class HtmlSelectOneRadio
         _displayValueOnlyStyleClass = (String)values[5];
     }
     //------------------ GENERATED CODE END ---------------------------------------
+
+    private Boolean _escape = null;
+    private static final boolean DEFAULT_ESCAPE = true;
+
+    public void setEscape(boolean escape)
+    {
+        _escape = Boolean.valueOf(escape);
+    }
+
+    public boolean isEscape()
+    {
+        if (_escape != null) return _escape.booleanValue();
+        ValueBinding vb = getValueBinding("escape");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_ESCAPE;
+    }
 }

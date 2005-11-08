@@ -18,6 +18,7 @@ package org.apache.myfaces.component.html.ext;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.component.EscapeCapable;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 import javax.faces.context.FacesContext;
@@ -29,7 +30,7 @@ import javax.faces.el.ValueBinding;
  */
 public class HtmlSelectOneListbox
         extends javax.faces.component.html.HtmlSelectOneListbox
-        implements UserRoleAware, DisplayValueOnlyCapable
+        implements UserRoleAware, DisplayValueOnlyCapable, EscapeCapable
 {
     public String getClientId(FacesContext context)
     {
@@ -87,7 +88,7 @@ public class HtmlSelectOneListbox
         ValueBinding vb = getValueBinding("displayValueOnly");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null;
-    }    
+    }
 
     public boolean isDisplayValueOnly() {
         if (_displayValueOnly != null) return _displayValueOnly.booleanValue();
@@ -149,4 +150,20 @@ public class HtmlSelectOneListbox
         _displayValueOnlyStyleClass = (String)values[5];
     }
     //------------------ GENERATED CODE END ---------------------------------------
+
+    private Boolean _escape = null;
+    private static final boolean DEFAULT_ESCAPE = true;
+
+    public void setEscape(boolean escape)
+    {
+        _escape = Boolean.valueOf(escape);
+    }
+
+    public boolean isEscape()
+    {
+        if (_escape != null) return _escape.booleanValue();
+        ValueBinding vb = getValueBinding("escape");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_ESCAPE;
+    }
 }
