@@ -6,6 +6,7 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
 import org.apache.myfaces.el.SimpleActionMethodBinding;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -14,6 +15,7 @@ import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.el.MethodBinding;
 import javax.faces.webapp.UIComponentTag;
+import javax.faces.event.ActionEvent;
 import java.util.List;
 import java.util.Iterator;
 import java.io.IOException;
@@ -24,6 +26,10 @@ import java.io.IOException;
  */
 class HtmlNavigationMenuRendererUtils
 {
+    private static final Log log = LogFactory.getLog(HtmlNavigationMenuRendererUtils.class);
+
+    private static final Class[] ACTION_LISTENER_ARGS = {ActionEvent.class};
+
     private HtmlNavigationMenuRendererUtils() {}
 
     public static void renderChildrenListLayout(FacesContext facesContext,
@@ -284,16 +290,24 @@ class HtmlNavigationMenuRendererUtils
         return previousItem;
     }
 
-    public static MethodBinding getMethodBinding(FacesContext facesContext, String value)
+    public static MethodBinding getMethodBinding(FacesContext facesContext, String value, boolean actionListener)
     {
         MethodBinding mb;
         if (HtmlNavigationMenuRendererUtils.isValueReference(value))
         {
-            mb = facesContext.getApplication().createMethodBinding(value, null);
+            mb = facesContext.getApplication().createMethodBinding(value, actionListener ? ACTION_LISTENER_ARGS : null);
         }
         else
         {
-            mb = new SimpleActionMethodBinding(value);
+            if (actionListener)
+            {
+                log.error("Invalid actionListener value " + value + " (has to be ValueReference!)");
+                mb = null;
+            }
+            else
+            {
+                mb = new SimpleActionMethodBinding(value);
+            }
         }
         return mb;
     }

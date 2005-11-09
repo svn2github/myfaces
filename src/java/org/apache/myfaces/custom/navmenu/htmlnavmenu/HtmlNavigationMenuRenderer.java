@@ -31,6 +31,7 @@ import javax.faces.component.UISelectItems;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,7 +221,15 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             newItem.getClientId(facesContext); // create clientid
             newItem.setParent(parent);
             children.add(startIndex++, newItem);
-            newItem.setAction(uiNavMenuItem.getAction());
+            if (uiNavMenuItem.getAction() != null)
+            {
+                newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction(), false));
+            }
+            if (uiNavMenuItem.getActionListener() != null)
+            {
+                newItem.setActionListener(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext,
+                                                                                           uiNavMenuItem.getActionListener(), true));
+            }
             newItem.setIcon(uiNavMenuItem.getIcon());
             newItem.setRendered(uiNavMenuItem.isRendered());
             newItem.setSplit(uiNavMenuItem.isSplit());
@@ -250,11 +259,17 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         newItem.setRendererType(RENDERER_TYPE);
         parent.getChildren().add(i + 1, newItem);
         newItem.setParent(parent);
-        // set action
-        if (uiNavMenuItem.getAction() != null)
+        // set action & actionListner
+        newItem.setAction(uiNavMenuItem.getAction());
+        newItem.setActionListener(uiNavMenuItem.getActionListener());
+        ActionListener[] listeners = uiNavMenuItem.getActionListeners();
+        for (int j = 0; j < listeners.length; j++)
         {
-            newItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, uiNavMenuItem.getAction()));
+            newItem.addActionListener(listeners[j]);
+
         }
+        // immeditate
+        newItem.setImmediate(uiNavMenuItem.isImmediate());
         // transient, rendered
         newItem.setTransient(uiNavMenuItem.isTransient());
         newItem.setRendered(uiNavMenuItem.isRendered());

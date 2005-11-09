@@ -34,6 +34,8 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
 
     private String _icon;
     private String _action;
+    private String _actionListener;
+    private String _immediate;
     private String _split;
 
     // User Role support
@@ -66,21 +68,24 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
         setItemValue("0"); // itemValue not used
         super.setProperties(component);
         setStringProperty(component, ICON_ATTR, _icon);
-        // set action attribute as String!
-
-        if(_action != null)
-            component.getAttributes().put(ACTION_ATTR, _action);
 
         setBooleanProperty(component, SPLIT_ATTR, _split);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
+        setActionProperty(component, _action);
+        setActionListenerProperty(component, _actionListener);
+        setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
     }
-
 
     public void setAction(String action)
     {
         _action = action;
+    }
+
+    public void setActionListener(String actionListener)
+    {
+        _actionListener = actionListener;
     }
 
     public void setIcon(String icon)
@@ -91,6 +96,11 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
     public void setSplit(String split)
     {
         _split = split;
+    }
+
+    public void setImmediate(String immediate)
+    {
+        _immediate = immediate;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)

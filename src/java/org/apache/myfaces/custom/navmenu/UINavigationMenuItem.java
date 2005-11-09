@@ -19,28 +19,32 @@ import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.UserRoleAware;
 
 import javax.faces.component.UISelectItem;
+import javax.faces.component.ActionSource;
 import javax.faces.el.ValueBinding;
+import javax.faces.el.MethodBinding;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionListener;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
+public class UINavigationMenuItem extends UISelectItem implements UserRoleAware, ActionSource
 {
-
-    //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
+    private static final boolean DEFAULT_IMMEDIATE = true;
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.NavigationMenuItem";
     public static final String COMPONENT_FAMILY = "javax.faces.SelectItem";
 
     private String _icon = null;
     private Boolean _split = null;
-    private String _action = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _open = null;
     private Boolean _active = null;
+    private MethodBinding _action = null;
+    private MethodBinding _actionListener = null;
+    private Boolean _immediate = null;
 
     public UINavigationMenuItem()
     {
@@ -77,11 +81,6 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
         return v != null && v.booleanValue();
     }
 
-    public void setAction(String action)
-    {
-        _action = action;
-    }
-
     public void setOpen(boolean open)
     {
         _open = Boolean.valueOf(open);
@@ -108,12 +107,56 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
         return v != null && v.booleanValue();
     }
 
-    public String getAction()
+    public void setImmediate(boolean immediate)
     {
-        if (_action != null) return _action;
-        ValueBinding vb = getValueBinding("action");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        _immediate = Boolean.valueOf(immediate);
     }
+
+    public boolean isImmediate()
+    {
+        if (_immediate != null) return _immediate.booleanValue();
+        ValueBinding vb = getValueBinding("immediate");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_IMMEDIATE;
+    }
+
+    // Action Source
+
+    public void setAction(MethodBinding action)
+    {
+        _action = action;
+    }
+
+    public MethodBinding getAction()
+    {
+        return _action;
+    }
+
+    public void setActionListener(MethodBinding actionListener)
+    {
+        _actionListener = actionListener;
+    }
+
+    public MethodBinding getActionListener()
+    {
+        return _actionListener;
+    }
+
+    public void addActionListener(ActionListener listener)
+    {
+        addFacesListener(listener);
+    }
+
+    public ActionListener[] getActionListeners()
+    {
+        return (ActionListener[])getFacesListeners(ActionListener.class);
+    }
+
+    public void removeActionListener(ActionListener listener)
+    {
+        removeFacesListener(listener);
+    }
+    // Action Source
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
@@ -139,7 +182,6 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
         return vb != null ? (String)vb.getValue(getFacesContext()) : null;
     }
 
-
     public boolean isRendered()
     {
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
@@ -148,29 +190,32 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[8];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = _icon;
         values[2] = _split;
-        values[3] = _action;
+        values[3] = saveAttachedState(context, _action);
         values[4] = _enabledOnUserRole;
         values[5] = _visibleOnUserRole;
         values[6] = _open;
         values[7] = _active;
+        values[8] = saveAttachedState(context, _actionListener);
+        values[9] = _immediate;
         return ((Object) (values));
     }
-    
+
     public void restoreState(FacesContext context, Object state)
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _icon = (String)values[1];
         _split = (Boolean)values[2];
-        _action = (String)values[3];
+        _action = (MethodBinding)restoreAttachedState(context, values[3]);
         _enabledOnUserRole = (String)values[4];
         _visibleOnUserRole = (String)values[5];
         _open = (Boolean)values[6];
         _active = (Boolean)values[7];
+        _actionListener = (MethodBinding)restoreAttachedState(context, values[8]);
+        _immediate = (Boolean)values[9];
     }
-    //------------------ GENERATED CODE END ---------------------------------------
 }

@@ -22,6 +22,7 @@ import org.apache.myfaces.component.UserRoleUtils;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import java.util.*;
 
 /**
@@ -62,15 +63,32 @@ public class NavigationMenuUtils
                     {
                         itemLabel = itemValue.toString();
                     }
+                    String actionStr = null;
+                    MethodBinding action = uiItem.getAction();
+                    if (action != null)
+                    {
+                        FacesContext context = FacesContext.getCurrentInstance();
+                        if (action.getType(context) == String.class)
+                        {
+                            actionStr = (String) action.invoke(context, null);
+                        }
+                        else
+                        {
+                            actionStr = action.getExpressionString();
+                        }
+                    }
                     item = new NavigationMenuItem(itemValue,
                                                   itemLabel,
                                                   uiItem.getItemDescription(),
                                                   uiItem.isItemDisabled() || ! UserRoleUtils.isEnabledOnUserRole(uiItem),
                                                   uiItem.isRendered(),
-                                                  uiItem.getAction(),
+                                                  actionStr,
                                                   uiItem.getIcon(),
                                                   uiItem.isSplit());
+                    if (uiItem.getActionListener() != null)
+                        item.setActionListener(uiItem.getActionListener().getExpressionString());
                 }
+
                 list.add(item);
                 if (child.getChildCount() > 0)
                 {

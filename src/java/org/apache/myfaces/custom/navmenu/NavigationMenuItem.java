@@ -29,6 +29,7 @@ public class NavigationMenuItem extends SelectItem
     private static final long serialVersionUID = 2801735314476639024L;
     private String _icon;
     private String _action;
+    private String _actionListener;
     private boolean _open;
     private boolean _active;
     boolean _split;
@@ -133,6 +134,16 @@ public class NavigationMenuItem extends SelectItem
     public void setActive(boolean active)
     {
         _active = active;
+    }
+
+    public String getActionListener()
+    {
+        return _actionListener;
+    }
+
+    public void setActionListener(String actionListener)
+    {
+        _actionListener = actionListener;
     }
 
     public NavigationMenuItem[] getNavigationMenuItems()
