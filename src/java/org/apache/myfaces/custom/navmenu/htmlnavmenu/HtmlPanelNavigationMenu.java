@@ -101,7 +101,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlPanelNavigationMenu";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Navigation";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.NavigationMenu";
 
     private String _itemClass = null;
     private String _openItemClass = null;
