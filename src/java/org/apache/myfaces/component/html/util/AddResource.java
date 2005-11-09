@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -72,9 +73,9 @@ public final class AddResource
 
     protected final String _contextPath;
 
-    public static final int HEADER_BEGIN = 0;
-    public static final int BODY_END = 1;
-    public static final int BODY_ONLOAD = 2;
+    public static final Position HEADER_BEGIN = new Position(0);
+    public static final Position BODY_END = new Position(1);
+    public static final Position BODY_ONLOAD = new Position(2);
 
     private AddResource(String contextPath)
     {
@@ -242,7 +243,7 @@ public final class AddResource
      * the script is inserted into the buffered response by the ExtensionsFilter
      * after the page is complete.
      */
-    public void addJavaScriptAtPosition(FacesContext context, int position, ResourceHandler resourceHandler)
+    public void addJavaScriptAtPosition(FacesContext context, Position position, ResourceHandler resourceHandler)
     {
         addJavaScriptAtPosition(context, position, resourceHandler, false);
     }
@@ -259,7 +260,7 @@ public final class AddResource
      * resourceName is script.js, the resource will be retrieved from 
      * "example/Widget/resource/script.js" in the classpath.
      */
-    public void addJavaScriptAtPosition(FacesContext context, int position, Class myfacesCustomComponent,
+    public void addJavaScriptAtPosition(FacesContext context, Position position, Class myfacesCustomComponent,
                                         String resourceName)
     {
         addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
@@ -276,7 +277,7 @@ public final class AddResource
      * processing the html page without waiting for the specified script to
      * load and be run.
      */
-    public void addJavaScriptAtPosition(FacesContext context, int position, Class myfacesCustomComponent,
+    public void addJavaScriptAtPosition(FacesContext context, Position position, Class myfacesCustomComponent,
                                         String resourceName, boolean defer)
     {
         addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
@@ -291,7 +292,7 @@ public final class AddResource
      * @param uri is the location of the desired resource, relative to the base
      * directory of the webapp (ie its contextPath). 
      */
-    public void addJavaScriptAtPosition(FacesContext context, int position, String uri)
+    public void addJavaScriptAtPosition(FacesContext context, Position position, String uri)
     {
         addJavaScriptAtPosition(context, position, uri, false);
     }
@@ -300,7 +301,7 @@ public final class AddResource
      * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptAtPosition(FacesContext context, int position, String uri, boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, Position position, String uri, boolean defer)
     {
         addPositionedInfo(context, position, getScriptInstance(context, uri, defer));
     }
@@ -319,7 +320,7 @@ public final class AddResource
      * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptAtPosition(FacesContext context, int position, ResourceHandler resourceHandler,
+    public void addJavaScriptAtPosition(FacesContext context, Position position, ResourceHandler resourceHandler,
                                         boolean defer)
     {
         validateResourceHandler(resourceHandler);
@@ -330,7 +331,7 @@ public final class AddResource
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, int position, Class myfacesCustomComponent,
+    public void addStyleSheet(FacesContext context, Position position, Class myfacesCustomComponent,
             String resourceName)
     {
         addStyleSheet(context, position, new MyFacesResourceHandler(myfacesCustomComponent, resourceName));
@@ -340,7 +341,7 @@ public final class AddResource
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, int position, String uri)
+    public void addStyleSheet(FacesContext context, Position position, String uri)
     {
         addPositionedInfo(context, position, getStyleInstance(context, uri));
     }
@@ -349,7 +350,7 @@ public final class AddResource
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, int position, ResourceHandler resourceHandler)
+    public void addStyleSheet(FacesContext context, Position position, ResourceHandler resourceHandler)
     {
         validateResourceHandler(resourceHandler);
         addPositionedInfo(context, position, getStyleInstance(context, resourceHandler));
@@ -358,7 +359,7 @@ public final class AddResource
     /**
      * Adds the given Inline Style at the specified document position.
      */
-    public void addInlineStyleAtPosition(FacesContext context, int position, String inlineStyle)
+    public void addInlineStyleAtPosition(FacesContext context, Position position, String inlineStyle)
     {
         addPositionedInfo(context, position, getInlineStyleInstance(inlineStyle));
     }
@@ -366,7 +367,7 @@ public final class AddResource
     /**
      * Adds the given Inline Script at the specified document position.
      */
-    public void addInlineScriptAtPosition(FacesContext context, int position, String inlineScript)
+    public void addInlineScriptAtPosition(FacesContext context, Position position, String inlineScript)
     {
         addPositionedInfo(context, position, getInlineScriptInstance(inlineScript));
     }
@@ -559,16 +560,16 @@ public final class AddResource
         return set;
     }
 
-    private void addPositionedInfo(FacesContext context, int position, PositionedInfo info)
+    private void addPositionedInfo(FacesContext context, Position position, PositionedInfo info)
     {
-        if(position == HEADER_BEGIN)
+        if(HEADER_BEGIN.equals(position))
         {
             //todo: fix this to work in PortletRequest as well
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
             Set set = getHeaderBeginInfos(request);
             set.add(info);
         }
-        else if(position == BODY_END)
+        else if(BODY_END.equals(position))
         {
             //todo: fix this to work in PortletRequest as well
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -576,7 +577,7 @@ public final class AddResource
             set.add(info);
 
         }
-        else if(position == BODY_ONLOAD)
+        else if(BODY_ONLOAD.equals(position))
         {
             //todo: fix this to work in PortletRequest as well
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -736,6 +737,38 @@ public final class AddResource
     private PositionedInfo getInlineStyleInstance(String inlineStyle)
     {
         return new InlineStylePositionedInfo(inlineStyle);
+    }
+
+    public static class Position
+    {
+        private final int _pos;
+
+        private Position(int pos)
+        {
+            _pos = pos;            
+        }
+        
+        public boolean equals(Object obj)
+        {
+            if(obj == null)
+            {
+                return false;
+            }
+            if(obj == this)
+            {
+                return true;
+            }
+            if(obj instanceof Position)
+            {
+                return ((Position)obj)._pos == _pos;
+            }
+            return false;
+        }
+        
+        public int hashCode()
+        {
+            return _pos;
+        }
     }
 
     private interface PositionedInfo
