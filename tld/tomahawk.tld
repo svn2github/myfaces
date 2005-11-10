@@ -1114,11 +1114,11 @@
         &html_event_handler_attributes;
         &html_input_attributes;
 		&user_role_attributes;
-		<!-- type == date | time | both -->
         <attribute>
 	        <name>type</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
+            <description>date | time | short_time | both | full</description>
         </attribute>
         <attribute>
 	        <name>popupCalendar</name>
@@ -1129,6 +1129,12 @@
             <name>timeZone</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+	        <name>ampm</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>If true, use 12hr times with AM/PM selector; if false, use 24hr time.  Default false.</description>
         </attribute>
     </tag>
 

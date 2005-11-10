@@ -51,6 +51,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     private String _type = null;
     private Boolean _popupCalendar = null;
     private String _timeZone = null;
+    private Boolean _ampm = null;
 
 
     private Boolean _disabled = null;
@@ -60,7 +61,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
 
     public UserData getUserData(Locale currentLocale){
-        return new UserData((Date) getValue(), currentLocale, getTimeZone());
+        return new UserData((Date) getValue(), currentLocale, getTimeZone(), isAmpm());
     }
 
 	public String getType() {
@@ -80,6 +81,16 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
     public void setPopupCalendar(boolean popupCalendar){
         this._popupCalendar = Boolean.valueOf(popupCalendar);
+    }
+    
+    public boolean isAmpm(){
+   		if (_ampm != null)
+   		    return _ampm.booleanValue();
+   		ValueBinding vb = getValueBinding("ampm");
+   		return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+    }
+    public void setAmpm(boolean ampm){
+        this._ampm = Boolean.valueOf(ampm);
     }
 
     public String getTimeZone(){
@@ -136,7 +147,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[8];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = _type;
         values[2] = _popupCalendar;
@@ -145,6 +156,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         values[5] = _enabledOnUserRole;
         values[6] = _visibleOnUserRole;
         values[7] = _timeZone;
+        values[8] = _ampm;
         return values;
     }
 
@@ -158,6 +170,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         _enabledOnUserRole = (String)values[5];
         _visibleOnUserRole = (String)values[6];
         _timeZone = (String)values[7];
+        _ampm = (Boolean)values[8];
     }
 
     public static class UserData implements Serializable {
@@ -169,8 +182,11 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         private String minutes;
         private String seconds;
         private TimeZone timeZone = null;
+        private String ampm;
+        private boolean uses_ampm;
 
-        public UserData(Date date, Locale currentLocale, String _timeZone){
+        public UserData(Date date, Locale currentLocale, String _timeZone, boolean uses_ampm){
+        	this.uses_ampm = uses_ampm;
             if( date == null )
                 date = new Date();
 
@@ -183,7 +199,17 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
             month = Integer.toString(calendar.get(Calendar.MONTH)+1);
             year = Integer.toString(calendar.get(Calendar.YEAR));
-            hours = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+            if (uses_ampm) {
+            	int int_hours = calendar.get(Calendar.HOUR);
+            	// ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
+            	if (int_hours == 0) {
+            		int_hours = 12;
+            	}
+            	hours = Integer.toString(int_hours);
+                ampm = Integer.toString(calendar.get(Calendar.AM_PM));
+            } else {
+            	hours = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY));
+            }
             minutes = Integer.toString(calendar.get(Calendar.MINUTE));
             seconds = Integer.toString(calendar.get(Calendar.SECOND));
         }
@@ -196,9 +222,20 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
             tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
             tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
-            tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
+            if (uses_ampm) {
+            	int int_hours = Integer.parseInt(hours);
+            	// ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
+            	if (int_hours == 12) {
+        			int_hours = 0;
+            	}
+            	tempCalendar.set(Calendar.HOUR,int_hours);
+                tempCalendar.set(Calendar.AM_PM,Integer.parseInt(ampm));
+            } else {
+            	tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
+            }
             tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
             tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
+            tempCalendar.set(Calendar.MILLISECOND, 0);
             
             return tempCalendar.getTime();
         }
@@ -258,6 +295,13 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         }
         public void setSeconds(String seconds) {
             this.seconds = seconds;
+        }
+        
+        public String getAmpm() {
+            return ampm;
+        }
+        public void setAmpm(String ampm) {
+            this.ampm = ampm;
         }
     }
 }

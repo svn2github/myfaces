@@ -35,6 +35,7 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
 
     // HtmlInputDate attributes
     private String type;
+    private String ampm;
     private String popupCalendar;
     private String timeZone;
 
@@ -58,6 +59,7 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
         enabledOnUserRole=null;
         visibleOnUserRole=null;
         type=null;
+        ampm=null;
         popupCalendar=null;
         timeZone = null;
     }
@@ -67,6 +69,7 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
 
         setStringProperty(component, "type", type);
         setBooleanProperty(component, "popupCalendar", popupCalendar);
+        setBooleanProperty(component, "ampm", ampm);
         setStringProperty(component, "timeZone", timeZone);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, enabledOnUserRole);
@@ -79,6 +82,10 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
 
     public void setPopupCalendar(String popupCalendar){
         this.popupCalendar = popupCalendar;
+    }
+
+    public void setAmpm(String ampm){
+        this.ampm = ampm;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole){

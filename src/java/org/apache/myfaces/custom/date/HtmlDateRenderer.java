@@ -55,6 +55,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
     private static final String ID_HOURS_POSTFIX = ".hours";
     private static final String ID_MINUTES_POSTFIX = ".minutes";
     private static final String ID_SECONDS_POSTFIX = ".seconds";
+    private static final String ID_AMPM_POSTFIX = ".ampm";
 
     protected boolean isDisabled(FacesContext facesContext, HtmlInputDate inputDate) {
         if( !UserRoleUtils.isEnabledOnUserRole(inputDate) )
@@ -72,6 +73,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         if( userData == null )
             userData = inputDate.getUserData(currentLocale);
         String type = inputDate.getType();
+        boolean ampm = inputDate.isAmpm();
         String clientId = uiComponent.getClientId(facesContext);
 
         boolean disabled = isDisabled(facesContext, inputDate);
@@ -84,7 +86,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
-        if( ! type.equals("time")){
+        if( ! (type.equals("time") || type.equals("short_time"))){
 	        encodeInputDay(inputDate, writer, clientId, userData, disabled, readonly);
 	        encodeInputMonth(inputDate, writer, clientId, userData, currentLocale, disabled, readonly);
 	        encodeInputYear(inputDate, writer, clientId, userData, disabled, readonly);
@@ -103,6 +105,9 @@ public class HtmlDateRenderer extends HtmlRenderer {
 						writer.write(":");
 	        	encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
 					}
+            if (ampm) {
+                encodeInputAmpm(uiComponent, writer, clientId, userData, disabled, readonly, currentLocale);
+            }
         }
         
         writer.endElement(HTML.SPAN_ELEM);
@@ -199,6 +204,46 @@ public class HtmlDateRenderer extends HtmlRenderer {
         encodeInputField(uiComponent, writer, clientId + ID_SECONDS_POSTFIX, userData.getSeconds(), 2, disabled, readonly);
     }
     
+    protected void encodeAmpmChoice(DateFormatSymbols symbols, UIComponent uiComponent, ResponseWriter writer, int calendar_ampm, int selected) throws IOException {
+    	String[] ampm_choices = symbols.getAmPmStrings();
+        writer.write("\t\t");
+        writer.startElement(HTML.OPTION_ELEM, uiComponent);
+        writer.writeAttribute(HTML.VALUE_ATTR, calendar_ampm, null);
+        if (calendar_ampm == selected)
+            writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
+        writer.writeText(ampm_choices[calendar_ampm], null);
+        writer.endElement(HTML.OPTION_ELEM);
+    }
+    
+    protected void encodeInputAmpm(UIComponent uiComponent, ResponseWriter writer, String clientId,
+			UserData userData, boolean disabled, boolean readonly, Locale currentLocale) throws IOException {
+        writer.startElement(HTML.SELECT_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId + ID_AMPM_POSTFIX, null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId + ID_AMPM_POSTFIX, null);
+        writer.writeAttribute(HTML.SIZE_ATTR, "1", null);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+
+        if (disabled) {
+            writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
+        }
+        if (readonly) {
+            writer.writeAttribute(HTML.READONLY_ATTR, Boolean.TRUE, null);
+        }
+
+        DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
+        
+        int selectedAmpm = userData.getAmpm() == null ? -1 : Integer.parseInt(userData.getAmpm());
+        encodeAmpmChoice(symbols, uiComponent, writer, Calendar.AM, selectedAmpm);
+        encodeAmpmChoice(symbols, uiComponent, writer, Calendar.PM, selectedAmpm);
+
+
+        // bug #970747: force separate end tag
+        writer.writeText("", null);
+        writer.endElement(HTML.SELECT_ELEM);
+    }
+    
     protected void encodePopupCalendarButton(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
 
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
@@ -253,7 +298,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         String type = inputDate.getType();
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
 
-        if( ! type.equals( "time" ) ){
+        if( ! (type.equals( "time" ) || type.equals( "short_time" )) ){
             userData.setDay( (String) requestMap.get(clientId + ID_DAY_POSTFIX) );
             userData.setMonth( (String) requestMap.get(clientId + ID_MONTH_POSTFIX) );
             userData.setYear( (String) requestMap.get(clientId + ID_YEAR_POSTFIX) );
@@ -263,7 +308,12 @@ public class HtmlDateRenderer extends HtmlRenderer {
             userData.setHours( (String) requestMap.get(clientId + ID_HOURS_POSTFIX) );
             userData.setMinutes( (String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
             if (type.equals("full") || type.equals("time"))
-							userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
+				userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
+            else
+            	userData.setSeconds("0");
+            if (inputDate.isAmpm()) {
+            	userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
+            }
         }
 
         inputDate.setSubmittedValue( userData );
