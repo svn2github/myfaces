@@ -110,8 +110,16 @@ Autocompleter.Base.prototype = {
     Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
   },
 
+  resetWidth: function() {
+    this.update.style.width = this.element.offsetWidth + 'px';
+    if (this.update.scrollWidth - 8 > this.element.offsetWidth) {
+      this.update.style.width = (this.update.scrollWidth - 6) + 'px';
+    }
+  },
+
   show: function() {
     if(this.update.style.display=='none') this.options.onShow(this.element, this.update);
+    this.resetWidth();
     if(!this.iefix && (navigator.appVersion.indexOf('MSIE')>0) && this.update.style.position=='absolute') {
       new Insertion.After(this.update,
        '<iframe id="' + this.update.id + '_iefix" '+
