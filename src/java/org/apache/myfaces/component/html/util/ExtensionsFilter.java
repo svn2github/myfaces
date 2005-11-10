@@ -130,7 +130,9 @@ public class ExtensionsFilter implements Filter {
         }
         
         // Some headerInfo has to be added
-        addResource.writeWithFullHeader(extendedRequest, extendedResponse, (HttpServletResponse)response);
+        addResource.writeWithFullHeader(extendedRequest, 
+            extendedResponse.toString(), 
+            (HttpServletResponse)response);
     }
     
     /**

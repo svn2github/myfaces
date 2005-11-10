@@ -599,11 +599,11 @@ public final class AddResource
      * The ordering is such that the user header CSS & JS override the MyFaces' ones.
      */
     public void writeWithFullHeader(HttpServletRequest request,
-            ExtensionsResponseWrapper responseWrapper, HttpServletResponse response)
+            String bufferedResponse, HttpServletResponse response)
             throws IOException
     {
 
-        StringBuffer originalResponse = new StringBuffer(responseWrapper.toString());
+        StringBuffer originalResponse = new StringBuffer(bufferedResponse);
 
         ParseCallbackListener l = new ParseCallbackListener();
         ReducedHTMLParser.parse(originalResponse, l);
