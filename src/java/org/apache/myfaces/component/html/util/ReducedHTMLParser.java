@@ -27,6 +27,9 @@ import org.apache.commons.logging.LogFactory;
  * earlier than the tag occurred (particularly into the document HEAD section).
  * This can only be implemented by buffering the response and post-processing
  * it to find the relevant HTML tags and modifying the buffer as needed.
+ * <p>
+ * This class tries to do the parsing as quickly as possible; many of the
+ * details of HTML are not relevant for the purposes this class is used for.
  * 
  * @version $Revision$ $Date$
  */
@@ -47,6 +50,8 @@ public class ReducedHTMLParser
     private static final int STATE_READY = 0;
     private static final int STATE_IN_COMMENT = 1;
     private static final int STATE_IN_TAG = 2;
+    private static final int STATE_IN_MARKED_SECTION = 3;
+    private static final int STATE_EXPECTING_ETAGO = 4;
     
     private int offset;
     private int lineNumber;
@@ -211,11 +216,10 @@ public class ReducedHTMLParser
         // TODO: should we consider a string to be terminated by a newline?
         // that would help with runaway strings but I think that multiline
         // strings *are* allowed...
-
-         //
-         // TODO: detect newlines within strings and increment lineNumber.
-         // This isn't so important, though; they aren't common and being a
-         // few lines out in an error message isn't serious either.
+        //
+        // TODO: detect newlines within strings and increment lineNumber.
+        // This isn't so important, though; they aren't common and being a
+        // few lines out in an error message isn't serious either.
         StringBuffer stringBuf = new StringBuffer();
         boolean escaping = false;
         while (!isFinished()) {
@@ -271,7 +275,7 @@ public class ReducedHTMLParser
      * @param s is a set of characters that should not be discarded.
      */
     void consumeExcept(String s) {
-         boolean crSeen = false;
+        boolean crSeen = false;
 
         while (offset < seq.length()) {
             char c = seq.charAt(offset);
@@ -290,6 +294,16 @@ public class ReducedHTMLParser
                  crSeen = false;
              }
             
+            // Track line number for error messages.
+            if (c == '\r') {
+                ++lineNumber;
+                crSeen = true;
+            } else if ((c == '\n') && !crSeen) {
+                ++lineNumber;
+            } else {
+                crSeen = false;
+            }
+
             ++offset;
         }
     }
@@ -306,8 +320,19 @@ public class ReducedHTMLParser
 
         lineNumber = 1;
         offset = 0;
+        int lastOffset = offset -1;
         while (offset < seq.length())
         {
+            // Sanity check; each pass through this loop must increase the offset.
+            // Failure to do this means a hang situation has occurred.
+            if (offset <= lastOffset)
+            {
+                // throw new RuntimeException("Infinite loop detected in ReducedHTMLParser");
+                log.error("Infinite loop detected in ReducedHTMLParser; parsing skipped");
+                //return;
+            }
+            lastOffset = offset;
+                
             if (state == STATE_READY) {
                 // in this state, nothing but "<" has any significance
                 consumeExcept("<");
@@ -316,30 +341,38 @@ public class ReducedHTMLParser
                 }
 
                 if (consumeMatch("<!--")) {
-                    // VERIFY: can "< ! --" start a comment?
+                    // Note that whitespace is *not* permitted in <!--
                     state = STATE_IN_COMMENT;
-                 } else if (consumeMatch("<!")) {
-                     // xml processing instruction or <!DOCTYPE> tag
-                     // we don't need to actually do anything here
-                     log.debug("PI found at line " + getCurrentLineNumber());
+                } else if (consumeMatch("<![")) {
+                    // Start of a "marked section", eg "<![CDATA" or 
+                    // "<![INCLUDE" or "<![IGNORE". These always terminate 
+                    // with "]]>"
+                    log.debug("Marked section found at line " + getCurrentLineNumber());
+                    state = STATE_IN_MARKED_SECTION;
+                } else if (consumeMatch("<!DOCTYPE")) {
+                    log.debug("DOCTYPE found at line " + getCurrentLineNumber());
+                    // we don't need to actually do anything here; the
+                    // tag can't contain a bare "<", so the first "<"
+                    // indicates the start of the next real tag.
+                    //
+                    // TODO: Handle case where the DOCTYPE includes an internal DTD. In
+                    // that case there *will* be embedded < chars in the document. However
+                    // that's very unlikely to be used in a JSF page, so this is pretty low
+                    // priority.
+                } else if (consumeMatch("<?")) {
+                    // xml processing instruction or <!DOCTYPE> tag
+                    // we don't need to actually do anything here; the
+                    // tag can't contain a bare "<", so the first "<"
+                    // indicates the start of the next real tag.
+                    log.debug("PI found at line " + getCurrentLineNumber());
                 } else if (consumeMatch("</")) {
-                    // VERIFY: is "< / foo >" a valid end-tag?
-
-                    int tagStart = offset - 2;
-                    String tagName = consumeElementName();
-                    consumeWhitespace();
-                    if (!consumeMatch(">")) {
-                        throw new Error("Malformed end tag");
+                    if (!processEndTag()) {
+                        // message already logged
+                        return;
                     }
-
-                    // We can't verify that the tag names balance because this is HTML
-                    // we are processing, not XML.
 
                     // stay in state READY
                     state = STATE_READY;
-
-                    // inform user that the tag has been closed
-                    closedTag(tagStart, offset, tagName);
                 } else if (consumeMatch("<")) {
                     // We can't tell the user that the tag has closed until after we have
                     // processed any attributes and found the real end of the tag. So save
@@ -363,9 +396,10 @@ public class ReducedHTMLParser
             }
 
             if (state == STATE_IN_COMMENT) {
-                // VERIFY: does "-- >" close a comment?
+                // TODO: handle "--  >", which is a valid way to close a
+                // comment according to the specs.
 
-                // in this state, nothing but "-->" has any significance
+                // in this state, nothing but "--" has any significance
                 consumeExcept("-");
                 if (isFinished()) {
                     break;
@@ -393,8 +427,17 @@ public class ReducedHTMLParser
                     currentTagStart = -1;
                     currentTagName = null;
                 } else if (consumeMatch(">")) {
+                    if (currentTagName.equalsIgnoreCase("script") 
+                        || currentTagName.equalsIgnoreCase("style")) {
+                        // We've just started a special tag which can contain anything except
+                        // the ETAGO marker ("</"). See
+                        // http://www.w3.org/TR/REC-html40/appendix/notes.html#notes-specifying-data
+                        state = STATE_EXPECTING_ETAGO;
+                    } else {
+                        state = STATE_READY;
+                    }
+
                     // end of open tag, but not end of element
-                    state = STATE_READY;
                     openedTag(currentTagStart, offset, currentTagName);
                     
                     // and reset vars just in case...
@@ -403,17 +446,94 @@ public class ReducedHTMLParser
                 } else {
                     // xml attribute
                     String attrName = consumeAttrName();
-                    consumeWhitespace();
-                    
-                    // html can have "stand-alone" attributes with no following equals sign
-                    if (consumeMatch("=")) {
-                        String attrValue = consumeAttrValue();
+                    if (attrName == null) {
+                        // Oops, we found something quite unexpected in this tag.
+                        // The best we can do is probably to drop back to looking
+                        // for "/>", though that does risk us misinterpreting the
+                        // contents of an attribute's associated string value.
+                        log.warn("Invalid tag found: unexpected input while looking for attr name or '/>'"
+                                + " at line " + getCurrentLineNumber());
+                        state = STATE_EXPECTING_ETAGO;
+                        // and consume one character
+                        ++offset;
+                    } else {
+                        consumeWhitespace();
+                        
+                        // html can have "stand-alone" attributes with no following equals sign
+                        if (consumeMatch("=")) {
+                            String attrValue = consumeAttrValue();
+                        }
                     }
                 }
                 
                 continue;
             }
+
+            if (state == STATE_IN_MARKED_SECTION) {
+                // in this state, nothing but "]]>" has any significance
+                consumeExcept("]");
+                if (isFinished()) {
+                    break;
+                }
+
+                if (consumeMatch("]]>")) {
+                    state = STATE_READY;
+                } else  {
+                    // false call; ] is not end of cdata section
+                    consumeMatch("]");
+                }
+                
+                continue;
+            }
+
+            if (state == STATE_EXPECTING_ETAGO) {
+                // The term "ETAGO" is the official spec term for "</".
+                consumeExcept("<");
+                if (isFinished()) {
+                    log.debug("Malformed input page; input terminated while tag not closed.");
+                    break;
+                }
+
+                if (consumeMatch("</")) {
+                    if (!processEndTag()) {
+                        return;
+                    }
+                    state = STATE_READY;
+                } else  {
+                    // false call; < does not start an ETAGO
+                    consumeMatch("<");
+                }
+                
+                continue;
+            }
         }
+    }
+
+    /**
+     * Invoked when "&lt;/" has been seen in the input, this method
+     * handles the parsing of the end tag and the invocation of the
+     * appropriate callback method.
+     *  
+     * @return true if the tag was successfully parsed, and false
+     * if there was a fatal parsing error.
+     */
+    private boolean processEndTag() {
+        int tagStart = offset - 2;
+        String tagName = consumeElementName();
+        consumeWhitespace();
+        if (!consumeMatch(">")) {
+            log.error("Malformed end tag at line " + getCurrentLineNumber()
+                    + "; skipping parsing");
+            return false;
+        }
+
+
+        // inform user that the tag has been closed
+        closedTag(tagStart, offset, tagName);
+
+        // We can't verify that the tag names balance because this is HTML
+        // we are processing, not XML.
+        return true;
     }
 
     /**

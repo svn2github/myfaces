@@ -29,20 +29,24 @@ public class ReducedHTMLParserTest extends TestCase
 {
     public static class ParseCallbackListener implements CallbackListener
     {
-        // records the offset immedately after <head>
-        int headerInsertPosition = -1;
-        
-        // records the offset immediately after <body>
-        int bodyInsertPosition = -1;
-        
-        // records the offset immediately before <body>
-        int beforeBodyPosition = -1;
+        int beforeHeadStart = -1;
+        int afterHeadStart = -1;
+        int beforeHeadEnd = -1;
+        int afterHeadEnd = -1;
+        int beforeBodyStart = -1;
+        int afterBodyStart = -1;
+        int beforeBodyEnd = -1;
+        int afterBodyEnd = -1;
 
         public void openedStartTag(int charIndex, int tagIdentifier)
         {
-            if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
+            if (tagIdentifier == ReducedHTMLParser.HEAD_TAG)
             {
-                beforeBodyPosition = charIndex;
+                beforeHeadStart = charIndex;
+            } 
+            else if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
+            {
+                beforeBodyStart = charIndex;
             }
         }
 
@@ -50,20 +54,36 @@ public class ReducedHTMLParserTest extends TestCase
         {
             if (tagIdentifier == ReducedHTMLParser.HEAD_TAG)
             {
-                headerInsertPosition = charIndex;
+                afterHeadStart = charIndex;
             }
             else if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
             {
-                bodyInsertPosition = charIndex;
+                afterBodyStart = charIndex;
             }
         }
 
         public void openedEndTag(int charIndex, int tagIdentifier)
         {
+            if (tagIdentifier == ReducedHTMLParser.HEAD_TAG)
+            {
+                beforeHeadEnd = charIndex;
+            } 
+            else if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
+            {
+                beforeBodyEnd = charIndex;
+            }
         }
 
         public void closedEndTag(int charIndex, int tagIdentifier)
         {
+            if (tagIdentifier == ReducedHTMLParser.HEAD_TAG)
+            {
+                afterHeadEnd = charIndex;
+            }
+            else if (tagIdentifier == ReducedHTMLParser.BODY_TAG)
+            {
+                afterBodyEnd = charIndex;
+            }
         }
 
         public void attribute(int charIndex, int tagIdentifier, String key, String value)
@@ -191,7 +211,8 @@ public class ReducedHTMLParserTest extends TestCase
         assertFalse("Match non-matching pattern", parser.consumeMatch("aa"));
     }
     
-    public void testConsumeElementName() {
+    public void testConsumeElementName() 
+    {
         CharSequence seq = "  foo  t:foo t:FooBar t:foo_bar element-name/>";
         CallbackListener listener = new ParseCallbackListener();
         ReducedHTMLParser parser = new ReducedHTMLParser(seq, listener);
@@ -213,7 +234,8 @@ public class ReducedHTMLParserTest extends TestCase
         assertEquals("Element name matched", "element-name", name5);
     }
     
-    public void testConsumeStringBasic() {
+    public void testConsumeStringBasic() 
+    {
         CharSequence s1 = "'string1' \"string2\"";
         CallbackListener listener = new ParseCallbackListener();
         ReducedHTMLParser parser = new ReducedHTMLParser(s1, listener);
@@ -233,7 +255,8 @@ public class ReducedHTMLParserTest extends TestCase
         assertEquals("String correctly parsed", "string2", str2);
     }
     
-    public void testConsumeStringEscapedQuote() {
+    public void testConsumeStringEscapedQuote() 
+    {
         char quoteMark = '\'';
         
         // build literal sequence 'don\'t quote me' not-in-the-string
@@ -254,7 +277,8 @@ public class ReducedHTMLParserTest extends TestCase
         assertEquals("String correctly parsed", "don't quote me", str1);
     }
     
-    public void testConsumeStringEscapedEscape() {
+    public void testConsumeStringEscapedEscape() 
+    {
         char quoteMark = '\'';
         char backSlash = '\\';
         
@@ -281,7 +305,8 @@ public class ReducedHTMLParserTest extends TestCase
         assertEquals("String correctly parsed", "don" + backSlash, str1);
     }
 
-    public void testConsumeAttrValue() {
+    public void testConsumeAttrValue() 
+    {
         CharSequence seq = "  bare 'quoted 1' \"quoted 2\" bare2 ";
         CallbackListener listener = new ParseCallbackListener();
         ReducedHTMLParser parser = new ReducedHTMLParser(seq, listener);
@@ -299,7 +324,8 @@ public class ReducedHTMLParserTest extends TestCase
         assertEquals("Attr value matched", "bare2", val4);
     }
     
-    public void testConsumeExcept() {
+    public void testConsumeExcept() 
+    {
         CharSequence seq = "abc$$#dd  ee#ff-gghh ii";
         CallbackListener listener = new ParseCallbackListener();
         ReducedHTMLParser parser = new ReducedHTMLParser(seq, listener);
@@ -322,8 +348,104 @@ public class ReducedHTMLParserTest extends TestCase
         parser.consumeExcept("z");
     }
 
+    // test parsing completes when a lessthan is not followed by an element name,
+    // and there is just whitespace up to end of the input.
+    public void testParseBadTagNoElementName1() 
+    {
+        String s = "xxxx \n\n <# \n\n";
+        CallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(s, listener);
+        
+        parser.parse();
+        assertTrue(parser.isFinished());
+    }
+
+    // test parsing completes when a lessthan is not followed by an element name,
+    public void testParseBadTagNoElementName2() 
+    {
+        String s = "xxxx \n\n <# \n\n hi there";
+        CallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(s, listener);
+        
+        parser.parse();
+        assertTrue(parser.isFinished());
+    }
+
+    // test parsing completes when an invalid char is found where an attribute name
+    // is expected.
+    public void testParseBadTagInvalidAttributeName() 
+    {
+        String s = "<foo )/>";
+        CallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(s, listener);
+        
+        parser.parse();
+        assertTrue(parser.isFinished());
+    }
+
+    // test CDATA sections are handled
+    public void testParseCDATA() 
+    {
+        String s = "xx<head> <![CDATA[ <head> ]]> <body>";
+        ParseCallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(s, listener);
+        
+        parser.parse();
+        assertTrue(parser.isFinished());
+        assertEquals("CDATA works", 8, listener.afterHeadStart);
+        assertEquals("CDATA works", 30, listener.beforeBodyStart);
+    }
+
+    // test PI sections are handled
+    public void testParsePI() 
+    {
+        String s = "<?xml version=\"1.0\"?> xx<head> ";
+        ParseCallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(s, listener);
+        
+        parser.parse();
+        assertTrue(parser.isFinished());
+        assertEquals("PI works", 30, listener.afterHeadStart);
+    }
+
+    // Test script element support; the spec states that a <script> or
+    // <style> tag can contain anything except "/>"
+    public void testScript() 
+    {
+        String s1 = "<head>";
+        String s2 = "<script type='text/javascript'>"
+            + "if (1<2) alert('foo');\n"
+            + "if (1>2) alert('bar');\n"
+            + "</script>";
+        String s3 = "</head>";
+        String s4 = "<body>";
+        String s5 = "</body>";
+
+        StringBuffer buf = new StringBuffer();
+        buf.append(s1);
+        buf.append(s2);
+        buf.append(s3);
+        buf.append(s4);
+        buf.append(s5);
+
+        ParseCallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(buf.toString(), listener);
+        
+        parser.parse();
+        assertTrue(parser.isFinished());
+        assertEquals("Script works", s1.length(), listener.afterHeadStart);
+        int beforeHeadEnd = s1.length() + s2.length();
+        assertEquals("Script works", beforeHeadEnd, listener.beforeHeadEnd);
+        int beforeBodyStart = beforeHeadEnd + s3.length();
+        assertEquals("Script works", beforeBodyStart, listener.beforeBodyStart);
+        int beforeBodyEnd = beforeBodyStart + s4.length();
+        assertEquals("Script works", beforeBodyEnd, listener.beforeBodyEnd);
+    }
+
     // test the full parse method
-    public void testParse() {
+    public void testParse() 
+    {
+        String s0 = "<!DOCTYPE PUBLIC \"sss\" \"http:foo\">\n";
         String s1 = "<html><head>";
         String s2 = "\n<!-- a comment --><title>foo</title>";
         String s3 = "</head>";
@@ -338,6 +460,7 @@ public class ReducedHTMLParserTest extends TestCase
         String s8 = "</body> </html>";
 
         StringBuffer buf = new StringBuffer();
+        buf.append(s0);
         buf.append(s1);
         buf.append(s2);
         buf.append(s3);
@@ -354,13 +477,13 @@ public class ReducedHTMLParserTest extends TestCase
         
         // check that listener has correctly computed the offset to the char just
         // before the </head> tag starts.
-        int afterHeadPos = s1.length();
-        assertEquals("Pos after <head> tag ", afterHeadPos, listener.headerInsertPosition);
+        int afterHeadStart = s0.length() + s1.length();
+        assertEquals("Pos after <head> tag ", afterHeadStart, listener.afterHeadStart);
         
-        int beforeBodyPos = s1.length() + s2.length() + s3.length();
-        assertEquals("Pos before <body> tag", beforeBodyPos, listener.beforeBodyPosition);
+        int beforeBodyStart = afterHeadStart + s2.length() + s3.length();
+        assertEquals("Pos before <body> tag", beforeBodyStart, listener.beforeBodyStart);
         
-        int afterBodyPos = s1.length() + s2.length() + s3.length() + s4.length();
-        assertEquals("Pos after <body> tag", afterBodyPos, listener.bodyInsertPosition);
+        int afterBodyStart = beforeBodyStart + s4.length();
+        assertEquals("Pos after <body> tag", afterBodyStart, listener.afterBodyStart);
     }
 }
