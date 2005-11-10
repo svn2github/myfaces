@@ -83,13 +83,18 @@ public class StringArrayConverter
                     {
                         buf.append(',');
                     }
+
                     String s = strings[i];
-                    if (escapeCommas)
+
+                    if(s!=null)
                     {
-                        //Encode, so that commas within Strings are escaped
-                        s = URLEncoder.encode(s, "UTF-8");
+                        if (escapeCommas)
+                        {
+                            //Encode, so that commas within Strings are escaped
+                            s = URLEncoder.encode(s, "UTF-8");
+                        }
+                        buf.append(s);
                     }
-                    buf.append(s);
                 }
                 return buf.toString();
             }
