@@ -20,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * A class which detects the open/close tags in an HTML document and reports
- * them to a listener class. 
+ * them to a listener class.
  * <p>
  * This is unfortunately necessary when using JSF with JSP, as tags in the body
  * of the document can need to output commands into the document at points
@@ -52,81 +52,98 @@ public class ReducedHTMLParser
     private static final int STATE_IN_TAG = 2;
     private static final int STATE_IN_MARKED_SECTION = 3;
     private static final int STATE_EXPECTING_ETAGO = 4;
-    
-    private int offset;
-    private int lineNumber;
-    private CharSequence seq;
-    private CallbackListener listener;
-    
+
+    private int _offset;
+    private int _lineNumber;
+    private CharSequence _seq;
+    private CallbackListener _listener;
+
     public static void parse(CharSequence seq, CallbackListener l)
     {
         new ReducedHTMLParser(seq, l).parse();
     }
-    
+
     /**
      * Constructor, package-scope for unit testing.
-     * 
+     *
      * @param s is the sequence of chars to parse.
      * @param l is the listener to invoke callbacks on.
      */
-    ReducedHTMLParser(CharSequence s, CallbackListener l) {
-        seq = s;
-        listener = l;
+    ReducedHTMLParser(CharSequence s, CallbackListener l)
+    {
+        _seq = s;
+        _listener = l;
     }
 
     /**
      * Return true if there are no more characters to parse.
      */
-    boolean isFinished() {
-        return offset >= seq.length();
+    boolean isFinished()
+    {
+        return _offset >= _seq.length();
     }
 
-    int getCurrentLineNumber() {
-         return lineNumber;
+    int getCurrentLineNumber()
+    {
+         return _lineNumber;
     }
 
     /**
      * Advance the current parse position over any whitespace characters.
      */
-    void consumeWhitespace() {
+    void consumeWhitespace()
+    {
         boolean crSeen = false;
 
-        while (offset < seq.length()) {
-            char c = seq.charAt(offset);
-            if (!Character.isWhitespace(c)) {
+        while (_offset < _seq.length())
+        {
+            char c = _seq.charAt(_offset);
+            if (!Character.isWhitespace(c))
+            {
                 break;
             }
 
             // Track line number for error messages.
-            if (c == '\r') {
-                ++lineNumber;
+            if (c == '\r')
+            {
+                ++_lineNumber;
                 crSeen = true;
-            } else if ((c == '\n') && !crSeen) {
-                ++lineNumber;
-            } else {
+            }
+            else if ((c == '\n') && !crSeen)
+            {
+                ++_lineNumber;
+            }
+            else
+            {
                 crSeen = false;
             }
 
-            ++offset;
+            ++_offset;
         }
     }
 
     /**
      * Eat up a sequence of non-whitespace characters and return them.
      */
-    String consumeNonWhitespace() {
-        int wordStart = offset;
-        while (offset < seq.length()) {
-            char c = seq.charAt(offset);
-            if (Character.isWhitespace(c)) {
+    String consumeNonWhitespace()
+    {
+        int wordStart = _offset;
+        while (_offset < _seq.length())
+        {
+            char c = _seq.charAt(_offset);
+            if (Character.isWhitespace(c))
+            {
                 break;
             }
-            ++offset;
+            ++_offset;
         }
-        if (wordStart == offset) {
+        if (wordStart == _offset)
+        {
             return null;
-        } else {
-            return seq.subSequence(wordStart, offset).toString();
+        }
+        else
+        {
+            return _seq.subSequence(wordStart, _offset).toString();
         }
     }
 
@@ -134,28 +151,34 @@ public class ReducedHTMLParser
      * If the next chars in the input sequence exactly match the specified
      * string then skip over them and return true.
      * <p>
-     * If there is not a match then leave the current parse position 
+     * If there is not a match then leave the current parse position
      * unchanged and return false.
-     * 
+     *
      * @param s is the exact string to match.
      * @return true if the input contains exactly the param s
      */
-    boolean consumeMatch(String s) {
-        if (offset + s.length() > seq.length()) {
+    boolean consumeMatch(String s)
+    {
+        if (_offset + s.length() > _seq.length())
+        {
             // seq isn't long enough to contain the specified string
             return false;
         }
 
         int i = 0;
-        while (i < s.length()) {
-            if (seq.charAt(offset+i) == s.charAt(i)) {
+        while (i < s.length())
+        {
+            if (_seq.charAt(_offset+i) == s.charAt(i))
+            {
                 ++i;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
-        
-        offset += i;
+
+        _offset += i;
         return true;
     }
 
@@ -164,42 +187,56 @@ public class ReducedHTMLParser
      * <p>
      * TODO: implement this properly in compliance with spec
      */
-    String consumeElementName() {
+    String consumeElementName()
+    {
         consumeWhitespace();
-        int nameStart = offset;
-        while (!isFinished()) {
+        int nameStart = _offset;
+        while (!isFinished())
+        {
             boolean ok = false;
-            char c = seq.charAt(offset);
-            if (Character.isLetterOrDigit(seq.charAt(offset))) {
-                ok = true;
-            } else if (c == '_') {
-                ok = true;
-            } else if (c == '-') {
-                ok = true;
-            } else if (c == ':') {
+            char c = _seq.charAt(_offset);
+            if (Character.isLetterOrDigit(_seq.charAt(_offset)))
+            {
                 ok = true;
             }
-            
-            if (!ok) {
+            else if (c == '_')
+            {
+                ok = true;
+            }
+            else if (c == '-')
+            {
+                ok = true;
+            }
+            else if (c == ':')
+            {
+                ok = true;
+            }
+
+            if (!ok)
+            {
                 break;
             }
 
-            ++offset;
+            ++_offset;
         }
-        
-        if (nameStart == offset) {
+
+        if (nameStart == _offset)
+        {
             return null;
-        } else {
-            return seq.subSequence(nameStart, offset).toString();
+        }
+        else
+        {
+            return _seq.subSequence(nameStart, _offset).toString();
         }
     }
 
     /**
-     * Eat up a sequence of chars which form a valid XML attribute name. 
+     * Eat up a sequence of chars which form a valid XML attribute name.
      * <p>
      * TODO: implement this properly in compliance with spec
      */
-    String consumeAttrName() {
+    String consumeAttrName()
+    {
         // for now, assume elements and attributes have same rules
         return consumeElementName();
     }
@@ -212,7 +249,8 @@ public class ReducedHTMLParser
      * This method assumes that the leading quote has already been
      * consumed.
      */
-    String consumeString(char quote) {
+    String consumeString(char quote)
+    {
         // TODO: should we consider a string to be terminated by a newline?
         // that would help with runaway strings but I think that multiline
         // strings *are* allowed...
@@ -222,25 +260,37 @@ public class ReducedHTMLParser
         // few lines out in an error message isn't serious either.
         StringBuffer stringBuf = new StringBuffer();
         boolean escaping = false;
-        while (!isFinished()) {
-            char c = seq.charAt(offset);
-            ++offset;
-            if (c == quote) {
-                if (!escaping) {
+        while (!isFinished())
+        {
+            char c = _seq.charAt(_offset);
+            ++_offset;
+            if (c == quote)
+            {
+                if (!escaping)
+                {
                     break;
-                } else {
+                }
+                else
+                {
                     stringBuf.append(c);
                     escaping = false;
                 }
-            } else if (c == '\\') {
-                if (escaping) {
+            }
+            else if (c == '\\')
+            {
+                if (escaping)
+                {
                     // append a real backslash
                     stringBuf.append(c);
                     escaping = false;
-                } else {
+                }
+                else
+                {
                     escaping = true;
                 }
-            } else {
+            }
+            else
+            {
                 stringBuf.append(c);
             }
         }
@@ -251,19 +301,25 @@ public class ReducedHTMLParser
      * Assuming we have already encountered "attrname=", consume the
      * value part of the attribute definition. Note that unlike XML,
      * HTML doesn't have to quote its attribute values.
-     * 
-     * @return the attribute value. If the attr-value was quoted, 
+     *
+     * @return the attribute value. If the attr-value was quoted,
      * the returned value will not include the quote chars.
      */
-    String consumeAttrValue() {
+    String consumeAttrValue()
+    {
         consumeWhitespace();
         char singleQuote = '\'';
-        
-        if (consumeMatch("'")) {
+
+        if (consumeMatch("'"))
+        {
             return consumeString('\'');
-        } else if (consumeMatch("\"")) {
+        }
+        else if (consumeMatch("\""))
+        {
             return consumeString('"');
-        } else {
+        }
+        else
+        {
             return consumeNonWhitespace();
         }
     }
@@ -271,40 +327,53 @@ public class ReducedHTMLParser
     /**
      * Discard all characters in the input until one in the specified
      * string (character-set) is found.
-     * 
+     *
      * @param s is a set of characters that should not be discarded.
      */
-    void consumeExcept(String s) {
+    void consumeExcept(String s)
+    {
         boolean crSeen = false;
 
-        while (offset < seq.length()) {
-            char c = seq.charAt(offset);
-            if (s.indexOf(c) >= 0) {
+        while (_offset < _seq.length())
+        {
+            char c = _seq.charAt(_offset);
+            if (s.indexOf(c) >= 0)
+            {
                 // char is in the exception set
                 return;
             }
 
              // Track line number for error messages.
-             if (c == '\r') {
-                 ++lineNumber;
+             if (c == '\r')
+             {
+                 ++_lineNumber;
                  crSeen = true;
-             } else if ((c == '\n') && !crSeen) {
-                 ++lineNumber;
-             } else {
+             }
+             else if ((c == '\n') && !crSeen)
+             {
+                 ++_lineNumber;
+             }
+             else
+             {
                  crSeen = false;
              }
-            
+
             // Track line number for error messages.
-            if (c == '\r') {
-                ++lineNumber;
+            if (c == '\r')
+            {
+                ++_lineNumber;
                 crSeen = true;
-            } else if ((c == '\n') && !crSeen) {
-                ++lineNumber;
-            } else {
+            }
+            else if ((c == '\n') && !crSeen)
+            {
+                ++_lineNumber;
+            }
+            else
+            {
                 crSeen = false;
             }
 
-            ++offset;
+            ++_offset;
         }
     }
 
@@ -312,44 +381,52 @@ public class ReducedHTMLParser
      * Process the entire input buffer, invoking callbacks on the listener
      * object as appropriate.
      */
-    void parse() {
+    void parse()
+    {
         int state = STATE_READY;
-        
+
         int currentTagStart = -1;
         String currentTagName = null;
 
-        lineNumber = 1;
-        offset = 0;
-        int lastOffset = offset -1;
-        while (offset < seq.length())
+        _lineNumber = 1;
+        _offset = 0;
+        int lastOffset = _offset -1;
+        while (_offset < _seq.length())
         {
             // Sanity check; each pass through this loop must increase the offset.
             // Failure to do this means a hang situation has occurred.
-            if (offset <= lastOffset)
+            if (_offset <= lastOffset)
             {
                 // throw new RuntimeException("Infinite loop detected in ReducedHTMLParser");
                 log.error("Infinite loop detected in ReducedHTMLParser; parsing skipped");
                 //return;
             }
-            lastOffset = offset;
-                
-            if (state == STATE_READY) {
+            lastOffset = _offset;
+
+            if (state == STATE_READY)
+            {
                 // in this state, nothing but "<" has any significance
                 consumeExcept("<");
-                if (isFinished()) {
+                if (isFinished())
+                {
                     break;
                 }
 
-                if (consumeMatch("<!--")) {
+                if (consumeMatch("<!--"))
+                {
                     // Note that whitespace is *not* permitted in <!--
                     state = STATE_IN_COMMENT;
-                } else if (consumeMatch("<![")) {
-                    // Start of a "marked section", eg "<![CDATA" or 
-                    // "<![INCLUDE" or "<![IGNORE". These always terminate 
+                }
+                else if (consumeMatch("<!["))
+                {
+                    // Start of a "marked section", eg "<![CDATA" or
+                    // "<![INCLUDE" or "<![IGNORE". These always terminate
                     // with "]]>"
                     log.debug("Marked section found at line " + getCurrentLineNumber());
                     state = STATE_IN_MARKED_SECTION;
-                } else if (consumeMatch("<!DOCTYPE")) {
+                }
+                else if (consumeMatch("<!DOCTYPE"))
+                {
                     log.debug("DOCTYPE found at line " + getCurrentLineNumber());
                     // we don't need to actually do anything here; the
                     // tag can't contain a bare "<", so the first "<"
@@ -359,94 +436,121 @@ public class ReducedHTMLParser
                     // that case there *will* be embedded < chars in the document. However
                     // that's very unlikely to be used in a JSF page, so this is pretty low
                     // priority.
-                } else if (consumeMatch("<?")) {
+                }
+                else if (consumeMatch("<?"))
+                {
                     // xml processing instruction or <!DOCTYPE> tag
                     // we don't need to actually do anything here; the
                     // tag can't contain a bare "<", so the first "<"
                     // indicates the start of the next real tag.
                     log.debug("PI found at line " + getCurrentLineNumber());
-                } else if (consumeMatch("</")) {
-                    if (!processEndTag()) {
+                }
+                else if (consumeMatch("</"))
+                {
+                    if (!processEndTag())
+                    {
                         // message already logged
                         return;
                     }
 
                     // stay in state READY
                     state = STATE_READY;
-                } else if (consumeMatch("<")) {
+                }
+                else if (consumeMatch("<"))
+                {
                     // We can't tell the user that the tag has closed until after we have
                     // processed any attributes and found the real end of the tag. So save
                     // the current info until the end of this tag.
-                    currentTagStart = offset - 1;
+                    currentTagStart = _offset - 1;
                     currentTagName = consumeElementName();
-                    if (currentTagName == null) {
+                    if (currentTagName == null)
+                    {
                         log.warn("Invalid HTML; bare lessthan sign found at line "
                             + getCurrentLineNumber());
                         // remain in STATE_READY; this isn't really the start of
                         // an xml element.
-                    } else {
+                    }
+                    else
+                    {
                         state = STATE_IN_TAG;
                     }
-                } else {
+                }
+                else
+                {
                     // should never get here
                     throw new Error("Internal error at line " + getCurrentLineNumber());
                 }
-                
+
                 continue;
             }
 
-            if (state == STATE_IN_COMMENT) {
+            if (state == STATE_IN_COMMENT)
+            {
                 // TODO: handle "--  >", which is a valid way to close a
                 // comment according to the specs.
 
                 // in this state, nothing but "--" has any significance
                 consumeExcept("-");
-                if (isFinished()) {
+                if (isFinished())
+                {
                     break;
                 }
 
-                if (consumeMatch("-->")) {
+                if (consumeMatch("-->"))
+                {
                     state = STATE_READY;
-                } else  {
+                }
+                else
+                {
                     // false call; hyphen is not end of comment
                     consumeMatch("-");
                 }
-                
+
                 continue;
             }
-            
-            if (state == STATE_IN_TAG) {
+
+            if (state == STATE_IN_TAG)
+            {
                 consumeWhitespace();
-                
-                if (consumeMatch("/>")) {
+
+                if (consumeMatch("/>"))
+                {
                     // ok, end of element
                     state = STATE_READY;
-                    closedTag(currentTagStart, offset, currentTagName);
-                    
+                    closedTag(currentTagStart, _offset, currentTagName);
+
                     // and reset vars just in case...
                     currentTagStart = -1;
                     currentTagName = null;
-                } else if (consumeMatch(">")) {
-                    if (currentTagName.equalsIgnoreCase("script") 
-                        || currentTagName.equalsIgnoreCase("style")) {
+                }
+                else if (consumeMatch(">"))
+                {
+                    if (currentTagName.equalsIgnoreCase("script")
+                        || currentTagName.equalsIgnoreCase("style"))
+                    {
                         // We've just started a special tag which can contain anything except
                         // the ETAGO marker ("</"). See
                         // http://www.w3.org/TR/REC-html40/appendix/notes.html#notes-specifying-data
                         state = STATE_EXPECTING_ETAGO;
-                    } else {
+                    }
+                    else
+                    {
                         state = STATE_READY;
                     }
 
                     // end of open tag, but not end of element
-                    openedTag(currentTagStart, offset, currentTagName);
-                    
+                    openedTag(currentTagStart, _offset, currentTagName);
+
                     // and reset vars just in case...
                     currentTagStart = -1;
                     currentTagName = null;
-                } else {
+                }
+                else
+                {
                     // xml attribute
                     String attrName = consumeAttrName();
-                    if (attrName == null) {
+                    if (attrName == null)
+                    {
                         // Oops, we found something quite unexpected in this tag.
                         // The best we can do is probably to drop back to looking
                         // for "/>", though that does risk us misinterpreting the
@@ -455,55 +559,69 @@ public class ReducedHTMLParser
                                 + " at line " + getCurrentLineNumber());
                         state = STATE_EXPECTING_ETAGO;
                         // and consume one character
-                        ++offset;
-                    } else {
+                        ++_offset;
+                    }
+                    else
+                    {
                         consumeWhitespace();
-                        
+
                         // html can have "stand-alone" attributes with no following equals sign
-                        if (consumeMatch("=")) {
+                        if (consumeMatch("="))
+                        {
                             String attrValue = consumeAttrValue();
                         }
                     }
                 }
-                
+
                 continue;
             }
 
-            if (state == STATE_IN_MARKED_SECTION) {
+            if (state == STATE_IN_MARKED_SECTION)
+            {
                 // in this state, nothing but "]]>" has any significance
                 consumeExcept("]");
-                if (isFinished()) {
+                if (isFinished())
+                {
                     break;
                 }
 
-                if (consumeMatch("]]>")) {
+                if (consumeMatch("]]>"))
+                {
                     state = STATE_READY;
-                } else  {
+                }
+                else
+                {
                     // false call; ] is not end of cdata section
                     consumeMatch("]");
                 }
-                
+
                 continue;
             }
 
-            if (state == STATE_EXPECTING_ETAGO) {
+            if (state == STATE_EXPECTING_ETAGO)
+            {
                 // The term "ETAGO" is the official spec term for "</".
                 consumeExcept("<");
-                if (isFinished()) {
+                if (isFinished())
+                {
                     log.debug("Malformed input page; input terminated while tag not closed.");
                     break;
                 }
 
-                if (consumeMatch("</")) {
-                    if (!processEndTag()) {
+                if (consumeMatch("</"))
+                {
+                    if (!processEndTag())
+                    {
                         return;
                     }
                     state = STATE_READY;
-                } else  {
+                }
+                else
+                {
                     // false call; < does not start an ETAGO
                     consumeMatch("<");
                 }
-                
+
                 continue;
             }
         }
@@ -513,15 +631,17 @@ public class ReducedHTMLParser
      * Invoked when "&lt;/" has been seen in the input, this method
      * handles the parsing of the end tag and the invocation of the
      * appropriate callback method.
-     *  
+     *
      * @return true if the tag was successfully parsed, and false
      * if there was a fatal parsing error.
      */
-    private boolean processEndTag() {
-        int tagStart = offset - 2;
+    private boolean processEndTag()
+    {
+        int tagStart = _offset - 2;
         String tagName = consumeElementName();
         consumeWhitespace();
-        if (!consumeMatch(">")) {
+        if (!consumeMatch(">"))
+        {
             log.error("Malformed end tag at line " + getCurrentLineNumber()
                     + "; skipping parsing");
             return false;
@@ -529,7 +649,7 @@ public class ReducedHTMLParser
 
 
         // inform user that the tag has been closed
-        closedTag(tagStart, offset, tagName);
+        closedTag(tagStart, _offset, tagName);
 
         // We can't verify that the tag names balance because this is HTML
         // we are processing, not XML.
@@ -538,38 +658,50 @@ public class ReducedHTMLParser
 
     /**
      * Invoke a callback method to inform the listener that we have found a start tag.
-     * 
+     *
      * @param startOffset
      * @param endOffset
      * @param tagName
      */
-    void openedTag(int startOffset, int endOffset, String tagName) {
+    void openedTag(int startOffset, int endOffset, String tagName)
+    {
         //log.debug("Found open tag at " + startOffset + ":" + endOffset + ":" + tagName);
 
-        if ("head".equalsIgnoreCase(tagName)) {
-            listener.openedStartTag(startOffset, HEAD_TAG);
-            listener.closedStartTag(endOffset, HEAD_TAG);
-        } else if ("body".equalsIgnoreCase(tagName)) {
-            listener.openedStartTag(startOffset, BODY_TAG);
-            listener.closedStartTag(endOffset, BODY_TAG);
-        } else if ("script".equalsIgnoreCase(tagName)) {
-            listener.openedStartTag(startOffset, SCRIPT_TAG);
-            listener.closedStartTag(endOffset, SCRIPT_TAG);
+        if ("head".equalsIgnoreCase(tagName))
+        {
+            _listener.openedStartTag(startOffset, HEAD_TAG);
+            _listener.closedStartTag(endOffset, HEAD_TAG);
+        }
+        else if ("body".equalsIgnoreCase(tagName))
+        {
+            _listener.openedStartTag(startOffset, BODY_TAG);
+            _listener.closedStartTag(endOffset, BODY_TAG);
+        }
+        else if ("script".equalsIgnoreCase(tagName))
+        {
+            _listener.openedStartTag(startOffset, SCRIPT_TAG);
+            _listener.closedStartTag(endOffset, SCRIPT_TAG);
         }
     }
 
-    void closedTag(int startOffset, int endOffset, String tagName) {
+    void closedTag(int startOffset, int endOffset, String tagName)
+    {
         //log.debug("Found close tag at " + startOffset + ":" + endOffset + ":" + tagName);
-        
-        if ("head".equalsIgnoreCase(tagName)) {
-            listener.openedEndTag(startOffset, HEAD_TAG);
-            listener.closedEndTag(endOffset, HEAD_TAG);
-        } else if ("body".equalsIgnoreCase(tagName)) {
-            listener.openedEndTag(startOffset, BODY_TAG);
-            listener.closedEndTag(endOffset, BODY_TAG);
-        } else if ("script".equalsIgnoreCase(tagName)) {
-            listener.openedEndTag(startOffset, SCRIPT_TAG);
-            listener.closedEndTag(endOffset, SCRIPT_TAG);
+
+        if ("head".equalsIgnoreCase(tagName))
+        {
+            _listener.openedEndTag(startOffset, HEAD_TAG);
+            _listener.closedEndTag(endOffset, HEAD_TAG);
+        }
+        else if ("body".equalsIgnoreCase(tagName))
+        {
+            _listener.openedEndTag(startOffset, BODY_TAG);
+            _listener.closedEndTag(endOffset, BODY_TAG);
+        }
+        else if ("script".equalsIgnoreCase(tagName))
+        {
+            _listener.openedEndTag(startOffset, SCRIPT_TAG);
+            _listener.closedEndTag(endOffset, SCRIPT_TAG);
         }
     }
 }
