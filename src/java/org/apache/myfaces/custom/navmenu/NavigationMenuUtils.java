@@ -67,14 +67,13 @@ public class NavigationMenuUtils
                     MethodBinding action = uiItem.getAction();
                     if (action != null)
                     {
-                        FacesContext context = FacesContext.getCurrentInstance();
-                        if (action.getType(context) == String.class)
+                        if (action.getExpressionString() != null)
                         {
-                            actionStr = (String) action.invoke(context, null);
+                            actionStr = action.getExpressionString();
                         }
                         else
                         {
-                            actionStr = action.getExpressionString();
+                            actionStr = action.toString();
                         }
                     }
                     item = new NavigationMenuItem(itemValue,
