@@ -48,6 +48,24 @@ import java.util.*;
  * emit references to javascript/css/etc which are bundled in the component's
  * jar file. Special URLs are generated which the ExtensionsFilter will later
  * handle by retrieving the specified resource from the classpath.
+ * <p>
+ * The special URL format is:
+ * <pre>
+ * {contextPath}/faces/myFacesExtensionResource/
+ *    {resourceLoaderName}/{cacheKey}/{resourceURI}
+ * </pre>
+ * Where:
+ * <ul>
+ * <li> {contextPath} is the context path of the current webapp
+ * <li> {resourceLoaderName} is the fully-qualified name of a class which 
+ *  implements the ResourceLoader interface. When a browser app sends a request
+ *  for the specified resource, an instance of the specified ResourceLoader class
+ *  will be created and passed the resourceURI part of the URL for resolving to the
+ *  actual resource to be served back. The standard MyFaces ResourceLoader
+ *  implementation only serves resources for files stored beneath path
+ *  org/apache/myfaces/custom in the classpath but non-myfaces code can provide their
+ *  own ResourceLoader implementations.
+ * </ul>
  * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -90,7 +108,7 @@ public final class AddResource
      */
     private static final Map _addResourceMap = new HashMap();
 
-    /*
+    /**
      * Internal factory method.
      * <p>
      * Return an instance of AddResource keyed by context path, or create one
@@ -204,6 +222,11 @@ public final class AddResource
     }
 
     /**
+     * Verify that the resource handler is acceptable. Null is not
+     * valid, and the getResourceLoaderClass method must return a
+     * Class object whose instances implements the ResourceLoader
+     * interface.
+     * 
      * @param resourceHandler
      */
     protected void validateResourceHandler(ResourceHandler resourceHandler)
@@ -216,6 +239,9 @@ public final class AddResource
     }
 
     /**
+     * Given a Class object, verify that the instances of that class 
+     * implement the ResourceLoader interface.
+     * 
      * @param resourceloader
      */
     protected void validateResourceLoader(Class resourceloader)
@@ -442,6 +468,37 @@ public final class AddResource
         return getResourceUri(context, sb.toString(), withContextPath);
     }
 
+    /**
+     * Return a value used in the {cacheKey} part of a generated URL for a
+     * resource reference.
+     * <p>
+     * Caching in browsers normally works by having files served to them
+     * include last-modified and expiry-time http headers. Until the expiry
+     * time is reached, a browser will silently use its cached version. After
+     * the expiry time, it will send a "get if modified since {time}" message,
+     * where {time} is the last-modified header from the version it has cached.
+     * <p>
+     * Unfortunately this scheme only works well for resources represented as
+     * plain files on disk, where the webserver can easily and efficiently see
+     * the last-modified time of the resource file. When that query has to be
+     * processed by a servlet that doesn't scale well, even when it is possible
+     * to determine the resource's last-modified date from servlet code.
+     * <p>
+     * Fortunately, for the AddResource class a static resource is only ever
+     * accessed because a URL was embedded by this class in a dynamic page.
+     * This makes it possible to implement caching by instead marking every
+     * resource served with a very long expiry time, but forcing the URL that
+     * points to the resource to change whenever the old cached version becomes
+     * invalid; the browser effectively thinks it is fetching a different
+     * resource that it hasn't seen before. This is implemented by embedding
+     * a "cache key" in the generated URL.
+     * <p>
+     * Rather than using the actual modification date of a resource as the
+     * cache key, we simply use the webapp deployment time. This means that all
+     * data cached by browsers will become invalid after a webapp deploy (all
+     * the urls to the resources change). It also means that changes that occur
+     * to a resource <i>without</i> a webapp redeploy will not be seen by browsers.
+     */
     protected long getCacheKey(FacesContext context)
     {
         // cache key is hold in application scope so it is recreated on redeploying the webapp.
@@ -484,8 +541,7 @@ public final class AddResource
 
         int posStartClassName = uri.indexOf(classNameStartsAfter) + classNameStartsAfter.length();
         int posEndClassName = uri.indexOf(PATH_SEPARATOR, posStartClassName);
-        String className;
-        className = uri.substring(posStartClassName, posEndClassName);
+        String className = uri.substring(posStartClassName, posEndClassName);
         int posEndCacheKey = uri.indexOf(PATH_SEPARATOR, posEndClassName + 1);
         String resourceUri = null;
         if (posEndCacheKey + 1 < uri.length())
@@ -619,11 +675,14 @@ public final class AddResource
         {
             if (beforeBodyPosition != -1)
             {
+                // The input html has a body start tag, but no head tags. We therefore
+                // need to insert head start/end tags for our content to live in.
                 addHeaderTags = true;
                 headerInsertPosition = beforeBodyPosition;
             }
             else
             {
+                // neither head nor body tags in the input
                 log.warn("Response has no <head> or <body> tag:\n" + originalResponse);
             }
         }
@@ -633,6 +692,7 @@ public final class AddResource
 
         if(afterBodyContentInsertPosition >=0)
         {
+            // insert all the items that want to go immediately after the <body> tag.
             HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper.
                 getInstance(writer);
 

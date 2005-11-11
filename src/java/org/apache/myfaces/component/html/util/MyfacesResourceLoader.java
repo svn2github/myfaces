@@ -44,6 +44,19 @@ class MyFacesResourceLoader implements ResourceLoader
 
     private static long lastModified = 0;
 
+    /**
+     * Get the last-modified time of the resource.
+     * <p>
+     * Unfortunately this is not possible with files inside jars. Instead, the
+     * MyFaces build process ensures that there is a file AddResource.properties
+     * which has the datestamp of the time the build process was run. This method
+     * simply gets that value and returns it.
+     * <p>
+     * Note that this method is not related to the generation of "cache key"
+     * values by the AddResource class, nor does it affect the caching behaviour
+     * of web browsers. This value simply goes into the http headers as the
+     * last-modified time of the specified resource.
+     */
     private static long getLastModified()
     {
         if (lastModified == 0)
@@ -67,7 +80,22 @@ class MyFacesResourceLoader implements ResourceLoader
     }
 
     /**
-     * @see org.apache.myfaces.component.html.util.ResourceLoader#serveResource(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
+     * Given a URI of form "{partial.class.name}/{resourceName}", locate the
+     * specified file within the current classpath and write it to the
+     * response object.
+     * <p>
+     * The partial class name has "org.apache.myfaces.custom." prepended
+     * to it to form the fully qualified classname. This class object is
+     * loaded, and Class.getResourceAsStream is called on it, passing
+     * a uri of "resource/" + {resourceName}.
+     * <p>
+     * The data written to the response stream includes http headers
+     * which define the mime content-type; this is deduced from the
+     * filename suffix of the resource.
+     * <p>
+     * @see org.apache.myfaces.component.html.util.ResourceLoader#
+     *   serveResource(javax.servlet.http.HttpServletRequest, 
+     *     javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(HttpServletRequest request, HttpServletResponse response,
             String resourceUri) throws IOException
@@ -123,9 +151,7 @@ class MyFacesResourceLoader implements ResourceLoader
     }
 
     /**
-     * @param request
-     * @param response
-     * @param in
+     * Copy the content of the specified input stream to the servlet response.
      */
     protected void writeResource(HttpServletRequest request, HttpServletResponse response,
             InputStream in) throws IOException
@@ -145,18 +171,29 @@ class MyFacesResourceLoader implements ResourceLoader
         }
     }
 
+    /**
+     * Output http headers telling the browser (and possibly intermediate caches) how
+     * to cache this data.
+     * <p>
+     * The expiry time in this header info is set to 7 days. This is not a problem as
+     * the overall URI contains a "cache key" that changes whenever the webapp is
+     * redeployed (see AddResource.getCacheKey), meaning that all browsers will
+     * effectively reload files on webapp redeploy.
+     */
     protected void defineCaching(HttpServletRequest request, HttpServletResponse response,
             String resource)
     {
         response.setDateHeader("Last-Modified", getLastModified());
 
-        // Set browser cache to a week.
-        // There is no risk, as the cache key is part of the URL.
         Calendar expires = Calendar.getInstance();
         expires.add(Calendar.DAY_OF_YEAR, 7);
         response.setDateHeader("Expires", expires.getTimeInMillis());
     }
 
+    /**
+     * Output http headers indicating the mime-type of the content being served.
+     * The mime-type output is determined by the resource filename suffix.
+     */
     protected void defineContentHeaders(HttpServletRequest request, HttpServletResponse response,
             String resource)
     {
@@ -179,6 +216,7 @@ class MyFacesResourceLoader implements ResourceLoader
         return Thread.currentThread().getContextClassLoader().loadClass(componentClass);
     }
 
+    // NOTE: This method is not being used. Perhaps it can be removed?
     protected void validateCustomComponent(Class myfacesCustomComponent)
     {
         if (!myfacesCustomComponent.getName().startsWith(ORG_APACHE_MYFACES_CUSTOM + "."))
