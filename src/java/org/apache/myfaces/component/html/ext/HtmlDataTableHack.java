@@ -64,7 +64,11 @@ public abstract class HtmlDataTableHack extends
 
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
+    private static final boolean DEFAULT_PRESERVEROWSTATES = false;
+
     private int _rowIndex = -1;
+
+    private Boolean _preserveRowStates;
 
     public boolean isRowAvailable()
     {
@@ -122,9 +126,26 @@ public abstract class HtmlDataTableHack extends
         {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
-            //_rowStates.clear(); todo: should not be necessary.
+            if(!isPreserveRowStates())
+            {
+                _rowStates.clear();
+            }
         }
         super.encodeBegin(context);
+    }
+
+    public void setPreserveRowStates(boolean preserveRowStates)
+    {
+        _preserveRowStates = Boolean.valueOf(preserveRowStates);
+    }
+
+    public boolean isPreserveRowStates()
+    {
+        if (_preserveRowStates != null)
+            return _preserveRowStates.booleanValue();
+        ValueBinding vb = getValueBinding("preserveRowStates");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_PRESERVEROWSTATES;
     }
 
     protected boolean hasErrorMessages(FacesContext context)
@@ -406,6 +427,21 @@ public abstract class HtmlDataTableHack extends
         {
             return new ScalarDataModel(value);
         }
+    }
+    
+    public Object saveState(FacesContext context)
+    {
+        Object[] values = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = _preserveRowStates;
+        return values;
+    }
+    
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] values = (Object[])state;
+        super.restoreState(context, values[0]);
+        _preserveRowStates = (Boolean) values[1];
     }
 
     private static final DataModel EMPTY_DATA_MODEL = new _SerializableDataModel()
