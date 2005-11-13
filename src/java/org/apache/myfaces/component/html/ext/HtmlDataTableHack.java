@@ -128,9 +128,7 @@ public abstract class HtmlDataTableHack extends
             _dataModelMap.clear();
             if(!isPreserveRowStates())
             {
-            // TODO : Check this.
-            // Removed because it generates an infinite loop somewhere.
-            //    _rowStates.clear();
+            	_rowStates.clear();
             }
         }
         super.encodeBegin(context);
