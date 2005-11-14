@@ -396,7 +396,8 @@ public class HtmlTreeRenderer extends Renderer
 
         int bitMask = NOTHING;
         bitMask += (node.isLeaf()) ? NOTHING : CHILDREN;
-        bitMask += (tree.isNodeExpanded()) ? EXPANDED : NOTHING;
+        if (bitMask == CHILDREN) // if there are no children, ignore expand state -> more flexible with dynamic tree-structures
+        	bitMask += (tree.isNodeExpanded()) ? EXPANDED : NOTHING;
         bitMask += (tree.isLastChild(tree.getNodeId())) ? LAST : NOTHING;
         bitMask += (showLines) ? LINES : NOTHING;
 
