@@ -715,26 +715,27 @@ public final class AddResource
         if(bodyInsertPosition>0)
         {
             StringBuffer buf = new StringBuffer();
-
-            int i=0;
-
-            for (Iterator it = getBodyOnloadInfos(request).iterator(); it.hasNext();)
+            Set bodyInfos = getBodyOnloadInfos(request);
+            if (bodyInfos.size() > 0) 
             {
-                AttributeInfo positionedInfo = (AttributeInfo) it.next();
-                if(i==0)
+                int i=0;
+                for (Iterator it = getBodyOnloadInfos(request).iterator(); it.hasNext();)
                 {
-                    buf.append(positionedInfo.getAttributeName());
-                    buf.append("=\"");
+                    AttributeInfo positionedInfo = (AttributeInfo) it.next();
+                    if(i==0)
+                    {
+                        buf.append(positionedInfo.getAttributeName());
+                        buf.append("=\"");
+                    }
+                    buf.append(positionedInfo.getAttributeValue());
+    
+                    i++;
                 }
-                buf.append(positionedInfo.getAttributeValue());
 
-                i++;
+                buf.append("\"");
+                originalResponse.insert( bodyInsertPosition-1, " "+
+                        buf.toString());
             }
-
-            buf.append("\"");
-
-            originalResponse.insert( bodyInsertPosition-1, " "+
-                    buf.toString());
         }
 
         if (headerInsertPosition >= 0)
