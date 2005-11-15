@@ -89,7 +89,7 @@ public class HtmlPopupRenderer
         if(closeExitPopup==null || closeExitPopup.booleanValue())
             writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, new String(popupId+".hide();"),null);
 
-        RendererUtils.renderChildren(facesContext, popupFacet);
+        RendererUtils.renderChild(facesContext, popupFacet);
         writer.endElement(HTML.DIV_ELEM);
     }
 
