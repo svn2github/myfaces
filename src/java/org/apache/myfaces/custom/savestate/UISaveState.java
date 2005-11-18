@@ -20,8 +20,38 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 /**
- * This component defines a model value (via the "value" attribute),
- * of which the state has to be saved and restored by the StateRenderer.
+ * Provides the ability to store a model value inside the view's component tree.
+ * <p>
+ * JSF provides three scopes for managed beans and therefore all the model
+ * objects that the managed beans reference:  request, session, application.
+ * However a common requirement is a way for a model object to have a scope
+ * that is tied to the duration of the current view; that is longer than the
+ * request scope but shorter than session scope. 
+ * <p>
+ * This component simply holds a reference to an arbitrary object (specified
+ * by the value property). Because this object is an ordinary component whose
+ * scope is the current view, the reference to the model automatically has that
+ * same scope. 
+ * <p>
+ * When the value is an EL expression, then after the view is restored the
+ * recreated target object is stored at the specified location.
+ * <p>
+ * The object being saved must either:
+ * <ul>
+ * <li>implement java.io.Serializable, or
+ * <li>implement javax.faces.component.StateHolder and have a default
+ *   constructor.
+ * </ul>
+ * <p>
+ * Note that the saved object can be "chained" from view to view
+ * in order to extend its lifetime from a single view to a sequence
+ * of views if desired. A UISaveState component with an EL expression
+ * such as "#{someBean}" will save the object state after render, and
+ * restore it on postback. If navigation occurs to some other view
+ * and that view has a UISaveState component with the same EL expression
+ * then the object will simply be saved into the new view, thus extending
+ * its lifetime.
+ * <p>
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
