@@ -87,16 +87,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         Object values[] = new Object[3];
         values[0] = super.saveState(context);
         values[1] = _var;
-
-        TreeState t = getDataModel().getTreeState();
-        if ( t == null)
-        {
-            // the model supplier has forgotten to return a valid state manager, but we need one
-            t = new TreeStateBase();
-        }
-
-        // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state
-        values[2] = (t.isTransient()) ? null : t;
+        values[2] = _restoredState;
         return ((Object) (values));
     }
 
@@ -111,6 +102,22 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         _restoredState = (TreeState) values[2];
     }
 
+    public void encodeEnd(FacesContext context) throws IOException {
+    	super.encodeEnd(context);
+    	
+    	// prepare to save the tree state -- fix for MYFACES-618
+    	// should be done in saveState() but Sun RI does not call saveState() and restoreState()
+    	// with javax.faces.STATE_SAVING_METHOD = server
+    	TreeState state = getDataModel().getTreeState();
+        if ( state == null)
+        {
+            // the model supplier has forgotten to return a valid state manager, but we need one
+        	state = new TreeStateBase();
+        }
+        // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state
+        _restoredState = (state.isTransient()) ? null : state;
+    	
+    }
 
     public void queueEvent(FacesEvent event)
     {
