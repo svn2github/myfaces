@@ -37,7 +37,6 @@ public class HtmlMessage
         {
             clientId = super.getClientId(context);
         }
-
         return clientId;
     }
 
@@ -67,7 +66,7 @@ public class HtmlMessage
     {
         if (_summaryFormat != null) return _summaryFormat;
         ValueBinding vb = getValueBinding("summaryFormat");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     public void setDetailFormat(String detailFormat)
@@ -79,7 +78,7 @@ public class HtmlMessage
     {
         if (_detailFormat != null) return _detailFormat;
         ValueBinding vb = getValueBinding("detailFormat");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -91,7 +90,7 @@ public class HtmlMessage
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -103,7 +102,7 @@ public class HtmlMessage
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     public void setReplaceIdWithLabel(boolean replaceIdWithLabel)
@@ -115,7 +114,7 @@ public class HtmlMessage
     {
         if (_replaceIdWithLabel != null) return _replaceIdWithLabel.booleanValue();
         ValueBinding vb = getValueBinding("replaceIdWithLabel");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return v != null ? v.booleanValue() : false;
     }
 
@@ -140,13 +139,13 @@ public class HtmlMessage
 
     public void restoreState(FacesContext context, Object state)
     {
-        Object values[] = (Object[])state;
+        Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _summaryFormat = (String)values[1];
-        _detailFormat = (String)values[2];
-        _enabledOnUserRole = (String)values[3];
-        _visibleOnUserRole = (String)values[4];
-        _replaceIdWithLabel = (Boolean)values[5];
+        _summaryFormat = (String) values[1];
+        _detailFormat = (String) values[2];
+        _enabledOnUserRole = (String) values[3];
+        _visibleOnUserRole = (String) values[4];
+        _replaceIdWithLabel = (Boolean) values[5];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

@@ -15,6 +15,8 @@
  */
 package org.apache.myfaces.component.html.ext;
 
+import org.apache.myfaces.custom.ExtendedComponentBase;
+
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ import javax.servlet.jsp.jstl.sql.Result;
  * @version $Revision$ $Date$
  */
 public abstract class HtmlDataTableHack extends
-                javax.faces.component.html.HtmlDataTable
+                javax.faces.component.html.HtmlDataTable implements ExtendedComponentBase
 {
     private Map _dataModelMap = new HashMap();
 
@@ -67,6 +69,7 @@ public abstract class HtmlDataTableHack extends
     private static final boolean DEFAULT_PRESERVEROWSTATES = false;
 
     private int _rowIndex = -1;
+    private Boolean _forceId;
 
     private Boolean _preserveRowStates;
 
@@ -508,5 +511,31 @@ public abstract class HtmlDataTableHack extends
             evh.setValid(_valid);
             evh.setSubmittedValue(_submittedValue);
         }
+    }
+
+    public void setForceId(boolean b)
+    {
+        _forceId = Boolean.valueOf(b);
+    }
+
+    public boolean isForceId()
+    {
+        if (_forceId != null) return _forceId.booleanValue();
+        ValueBinding vb = getValueBinding("forceId");
+        return vb != null && booleanFromObject(vb.getValue(getFacesContext()), false);
+    }
+
+    private static boolean booleanFromObject(Object obj, boolean defaultValue)
+    {
+        if(obj instanceof Boolean)
+        {
+            return ((Boolean) obj).booleanValue();
+        }
+        else if(obj instanceof String)
+        {
+            return Boolean.valueOf(((String) obj)).booleanValue();
+        }
+
+        return defaultValue;
     }
 }

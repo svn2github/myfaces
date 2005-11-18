@@ -18,6 +18,7 @@ package org.apache.myfaces.taglib.html.ext;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlMessage;
 import org.apache.myfaces.taglib.html.HtmlMessageTagBase;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 
@@ -57,6 +58,12 @@ public class HtmlMessageTag
     }
     protected void setProperties(UIComponent component)
     {
+        // setting message properties
+        if(getId() == null){
+            // default id so client side scripts can use this (ie: ajax), this will obviously break things if someone specifies an id, so please don't specify an id if using Ajax components!
+            setId("msgFor_" + getFor());
+            setForceId("true");
+        }
         super.setProperties(component);
 
         setStringProperty(component, "summaryFormat", _summaryFormat);
@@ -64,6 +71,7 @@ public class HtmlMessageTag
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
         setBooleanProperty(component, "replaceIdWithLabel",_replaceIdWithLabel==null?Boolean.TRUE.toString():_replaceIdWithLabel);
+
     }
 
     public void setSummaryFormat(String summaryFormat)
