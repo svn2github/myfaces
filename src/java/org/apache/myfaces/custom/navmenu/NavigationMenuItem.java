@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 /**
+ * A node in a tree of menu items.<br>
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -116,6 +117,11 @@ public class NavigationMenuItem extends SelectItem
         _icon = icon;
     }
 
+    /**
+     * Relevant only for types of menus which can leave a menu in an "expanded"
+     * state across requests. Returns true if the menu is currently open
+     * (displaying its child items).
+     */
     public boolean isOpen()
     {
         return _open;
@@ -146,25 +152,44 @@ public class NavigationMenuItem extends SelectItem
         _actionListener = actionListener;
     }
 
+    /**
+     * Get the array of child nodes of this menu item. If this node has
+     * no children then an empty array is returned. The array is a copy
+     * of the internal data of this object, so changes to the array will
+     * not affect the state of this object. The members of the array 
+     * are the actual children of this object, however (the copy is not
+     * a "deep clone").
+     */
     public NavigationMenuItem[] getNavigationMenuItems()
     {
         if (_navigationMenuItems == null)
         {
             return new NavigationMenuItem[0];
         }
-        return (NavigationMenuItem[]) _navigationMenuItems.toArray(new NavigationMenuItem[_navigationMenuItems.size()]);
+        return (NavigationMenuItem[]) _navigationMenuItems.toArray(
+                new NavigationMenuItem[_navigationMenuItems.size()]);
     }
 
+    /** Set the child nodes of this menu item. */
     public void setNavigationMenuItems(NavigationMenuItem[] navigationMenuItems)
     {
         _navigationMenuItems = Arrays.asList(navigationMenuItems);
     }
 
+    /** Set the child nodes of this menu item. */
     public void setNavigationMenuItems(List list)
     {
         _navigationMenuItems = list;
     }
 
+    /**
+     * Add another node to the end of the list of child nodes of
+     * this menu item.
+     * <p>
+     * Note that if setNavigationMenuItems(array) was called previously,
+     * then this method will throw an exception as the child list will
+     * be of fixed length.
+     */
     public void add(NavigationMenuItem navigationMenuItem)
     {
         if (_navigationMenuItems == null)
