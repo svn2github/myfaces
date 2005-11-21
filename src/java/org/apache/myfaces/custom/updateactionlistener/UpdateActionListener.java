@@ -27,6 +27,34 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
 /**
+ * Set an arbitrary property on a managed bean when an "action" component is
+ * selected by the user.
+ * <p>
+ * An instance of this listener type can be attached to any UIComponent which
+ * is an ActionSource (eg a link or button). When the associated component
+ * fires its action event, this listener will read the value specified by
+ * attribute "value" and assign it to the property specified by attribute
+ * "property". The value attribute may be a literal value or may be a
+ * value-binding; the property is always expected to be a value-binding.
+ * <p>
+ * An optional Converter may be associated with this listener, and if present
+ * will be invoked to convert the value to the datatype expected by the
+ * target property. When no converter is available, a default one will be
+ * retrieved from the Application object.
+ * <p>
+ * A common use for this listener is to attach it to an HtmlCommandLink
+ * component, storing some constant value into a managed bean property.
+ * After the navigation associated with that link is done, components in
+ * the new view can look at that property to determine which link was
+ * clicked.
+ * <p>
+ * Both the fetching of "value" and the updating of "property" occur in
+ * the invoke-application phase unless "immediate" is set on the ActionSource
+ * component in which case they both occur in the apply-request-values phase.
+ * The update is guaranteed to occur before the invocation of the method
+ * specified by attribute "action" on the ActionSource (because all
+ * actionListeners are executed before the action attribute).
+ * <p>
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
