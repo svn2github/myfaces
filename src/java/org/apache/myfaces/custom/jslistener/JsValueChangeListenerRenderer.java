@@ -110,16 +110,11 @@ public class JsValueChangeListenerRenderer
         {
             String oldValueStr = oldValue.toString().trim();
 
-            //check if method call has already been added...
-            if(oldValueStr.indexOf(value)!=-1)
-                return;
-
-            //check if multiple change listeners belong to parent component
-            //and if the previous rendered information has to be cleared
-            if(oldValueStr.indexOf("orgApacheMyfacesJsListenerSetExpressionProperty(")> 0
-                       && oldValueStr.indexOf(parent.getClientId(getFacesContext())) < 0)
+            // render the jsValueChangeListener script only for each parent component 
+            if(oldValueStr.indexOf(parent.getClientId(FacesContext.getCurrentInstance())) < 0
+            		&& oldValueStr.length() > 0)
             {
-                oldValueStr = oldValueStr.substring(0,oldValueStr.indexOf("orgApacheMyfacesJsListenerSetExpressionProperty("));
+            	oldValueStr = "";
             }
 
             if(oldValueStr.length()>0 && !oldValueStr.endsWith(";"))
