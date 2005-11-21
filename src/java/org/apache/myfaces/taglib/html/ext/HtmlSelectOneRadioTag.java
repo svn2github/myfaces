@@ -19,6 +19,7 @@ import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlSelectOneRadio;
 import org.apache.myfaces.taglib.html.HtmlSelectOneRadioTagBase;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 
@@ -40,6 +41,7 @@ public class HtmlSelectOneRadioTag
         return "org.apache.myfaces.Radio";
     }
 
+    private String _escape;
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
 
@@ -49,6 +51,7 @@ public class HtmlSelectOneRadioTag
 
     public void release() {
         super.release();
+        _escape=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
 
@@ -60,12 +63,18 @@ public class HtmlSelectOneRadioTag
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
+        setBooleanProperty(component, JSFAttr.ESCAPE_ATTR, _escape);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
 
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
+    }
+
+    public void setEscape(String escape)
+    {
+        _escape = escape;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)

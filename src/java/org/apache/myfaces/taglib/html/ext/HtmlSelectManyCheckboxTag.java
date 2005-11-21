@@ -19,6 +19,7 @@ import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox;
 import org.apache.myfaces.taglib.html.HtmlSelectManyCheckboxTagBase;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 
@@ -39,9 +40,9 @@ public class HtmlSelectManyCheckboxTag
     {
         return "org.apache.myfaces.Checkbox";
     }
-    
+
+    private String _escape;
     private String _layoutWidth;
-    
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
 
@@ -53,7 +54,7 @@ public class HtmlSelectManyCheckboxTag
         super.release();
 
         _layoutWidth=null;
-
+        _escape=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
 
@@ -66,7 +67,7 @@ public class HtmlSelectManyCheckboxTag
     {
         super.setProperties(component);
         setStringProperty(component, "layoutWidth", _layoutWidth);
-
+        setBooleanProperty(component, JSFAttr.ESCAPE_ATTR, _escape);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
 
@@ -78,6 +79,11 @@ public class HtmlSelectManyCheckboxTag
     public void setLayoutWidth(String layoutWidth)
     {
         _layoutWidth = layoutWidth;
+    }
+
+    public void setEscape(String escape)
+    {
+        _escape = escape;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
