@@ -37,7 +37,7 @@ public class MyFacesResourceHandler implements ResourceHandler
      *   wishing to serve resources from other locations in the classpath
      *   must write a custom ResourceHandler implementation.
      *   
-     * @param resource is the name of a file that can be found in dir
+     * @param resourceName is the name of a file that can be found in dir
      *  "resource/{resourceName} relative to the location of the specified
      *  component class in the classpath.
      */
