@@ -18,12 +18,8 @@ package org.apache.myfaces.taglib.html.ext;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlMessage;
 import org.apache.myfaces.taglib.html.HtmlMessageTagBase;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -32,7 +28,7 @@ import javax.faces.context.FacesContext;
 public class HtmlMessageTag
         extends HtmlMessageTagBase
 {
-    private static final Log log = LogFactory.getLog(HtmlMessageTag.class);
+    //private static final Log log = LogFactory.getLog(HtmlOutputFormatTag.class);
 
     public String getComponentType()
     {
@@ -50,8 +46,7 @@ public class HtmlMessageTag
     private String _visibleOnUserRole;
     private String _replaceIdWithLabel;
 
-    public void release()
-    {
+    public void release() {
         super.release();
 
         _summaryFormat = null;
@@ -60,33 +55,15 @@ public class HtmlMessageTag
         _visibleOnUserRole = null;
         _replaceIdWithLabel = null;
     }
-
     protected void setProperties(UIComponent component)
     {
-        // setting message properties
         super.setProperties(component);
 
         setStringProperty(component, "summaryFormat", _summaryFormat);
         setStringProperty(component, "detailFormat", _detailFormat);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
-        setBooleanProperty(component, "replaceIdWithLabel", _replaceIdWithLabel == null ? Boolean.TRUE.toString() : _replaceIdWithLabel);
-
-    }
-
-    protected String getOrCreateUniqueId(FacesContext context)
-    {
-        String id = getId();
-        if (id == null)
-        {
-            // default id so client side scripts can use this (ie: ajax), this will obviously break things if someone specifies an id, so please don't specify an id if using Ajax components!
-            id = "msgFor_" + getFor();
-            log.debug("Setting id on MessageTag: " + id);
-            setForceId("true");
-        }
-        //String id = super.getOrCreateUniqueId(context);
-        //log.debug("ID after getorcreate: " + id);
-        return id;
+        setBooleanProperty(component, "replaceIdWithLabel",_replaceIdWithLabel==null?Boolean.TRUE.toString():_replaceIdWithLabel);
     }
 
     public void setSummaryFormat(String summaryFormat)

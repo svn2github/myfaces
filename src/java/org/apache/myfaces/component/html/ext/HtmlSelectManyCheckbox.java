@@ -40,6 +40,7 @@ public class HtmlSelectManyCheckbox
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
         if (clientId == null)
         {
+            System.out.println("Getting new id for " + this.getId() + " NOT FORCED");
             clientId = super.getClientId(context);
         }
 
@@ -145,7 +146,7 @@ public class HtmlSelectManyCheckbox
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[7];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = _layoutWidth;
         values[2] = _enabledOnUserRole;
@@ -153,6 +154,8 @@ public class HtmlSelectManyCheckbox
         values[4] = _displayValueOnly;
         values[5] = _displayValueOnlyStyle;
         values[6] = _displayValueOnlyStyleClass;
+        values[7] = _forceId;
+        values[8] = _escape;
         return ((Object) (values));
     }
 
@@ -166,6 +169,8 @@ public class HtmlSelectManyCheckbox
         _displayValueOnly = (Boolean)values[4];
         _displayValueOnlyStyle = (String)values[5];
         _displayValueOnlyStyleClass = (String)values[6];
+        _forceId = (Boolean) values[7];
+        _escape = (Boolean) values[8];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 
