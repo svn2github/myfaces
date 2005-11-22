@@ -33,6 +33,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.HTML;
 
 /**
+ * A ResourceLoader capable of fetching resources from the classpath,
+ * but only for classes under package org.apache.myfaces.custom.
+ * 
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
