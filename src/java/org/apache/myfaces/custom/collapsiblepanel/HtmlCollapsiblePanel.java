@@ -37,6 +37,8 @@ public class HtmlCollapsiblePanel extends UIInput
     {
         if (context == null) throw new NullPointerException("context");
 
+        initialiseVars(context);
+
         if (!isRendered()) return;
 
         try
@@ -81,6 +83,8 @@ public class HtmlCollapsiblePanel extends UIInput
                 child.processDecodes(context);
             }
         }
+        
+        removeVars(context);
     }
 
     public String getClientId(FacesContext context)
