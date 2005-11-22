@@ -51,7 +51,7 @@ public class HtmlMessageRenderer
             throws IOException
     {
         super.encodeEnd(facesContext, component);   //check for NP
-        renderMessage(facesContext, component, true);
+        renderMessage(facesContext, component); 
     }
 
     protected String getSummary(FacesContext facesContext,
