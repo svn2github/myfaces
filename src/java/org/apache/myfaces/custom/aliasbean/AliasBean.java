@@ -32,8 +32,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * The aliasBean tag allows you to create a temporary name for a real bean
- * which is visible only to the children of the aliasBean.
+ * The aliasBean tag allows you to create a temporary name for a real bean.
+ * The temporary name exists (is visible) only to the children of the aliasBean.
  * <p>
  * Suppose you have a block of components you use often but with
  * different beans. The aliasBean allows you to create a separate JSP
