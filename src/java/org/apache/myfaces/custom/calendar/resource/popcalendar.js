@@ -51,10 +51,15 @@ function jscalendarHideElement( elmID, overDiv ){
       
       objParent = obj.offsetParent;
 
-      while( objParent.tagName.toUpperCase() != "BODY" ){
-        objLeft  -= objParent.scrollLeft;
-        objTop   -= objParent.scrollTop;
-        objParent = objParent.parentNode;
+      // added a try-catch to the next loop (MYFACES-870)
+      try {
+	      while( objParent.tagName.toUpperCase() != "BODY" ){
+	        objLeft  -= objParent.scrollLeft;
+	        objTop   -= objParent.scrollTop;
+	        objParent = objParent.parentNode;
+     	 }
+      } catch (ex) {
+          // ignore
       }
 
       objHeight = obj.offsetHeight;
@@ -517,21 +522,28 @@ function jscalendarPopUpCalendar_Show(ctl){
 	var	toppos = 0;
 
 	var aTag = ctl;
-	do {
-		aTag = aTag.offsetParent;
-		leftpos	+= aTag.offsetLeft;
-		toppos += aTag.offsetTop;
-	} while(aTag.tagName!="BODY");
+	// Added try-catch to the next loop (MYFACES-870)
+	try {
+		do {
+			aTag = aTag.offsetParent;
+			leftpos	+= aTag.offsetLeft;
+			toppos += aTag.offsetTop;
+		} while(aTag.tagName!="BODY");
+	} catch (ex) {
+       // ignore
+    }
 	
 	var leftScrollOffset = 0;
 	var topScrollOffset = 0;
 	
 	aTag = ctl;
-	do {
-		leftScrollOffset += aTag.scrollLeft;
-		topScrollOffset += aTag.scrollTop;
-		aTag = aTag.parentNode;
-	} while(aTag.tagName!="BODY");
+	// Added try-catch (MYFACES-870)
+	try {
+		do {
+			leftScrollOffset += aTag.scrollLeft;
+			topScrollOffset += aTag.scrollTop;
+			aTag = aTag.parentNode;
+		} while(aTag.tagName!="BODY");
 	
 	var bodyRect = getVisibleBodyRectangle();
 	var cal = document.getElementById("calendar");
