@@ -119,12 +119,6 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                     }
                 }
             }
-            else
-            {
-                HtmlPanelNavigationMenu panelNavPrev =
-                    (HtmlPanelNavigationMenu) facesContext.getViewRoot().findComponent(panelNav.getClientId(facesContext));
-                if (panelNavPrev != null && panelNavPrev == panelNav) preprocess = false; // ViewRoot stored in session
-            }
             if (preprocess)
                 preprocessNavigationItems(facesContext, panelNav, previousViewRoot, panelNav.getChildren(), new UniqueId());
             // render list
