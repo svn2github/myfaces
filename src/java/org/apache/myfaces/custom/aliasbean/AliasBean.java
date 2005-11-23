@@ -32,14 +32,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * The aliasBean tag allows you to link a fictive bean to a real bean.
- * 
- * Let's suppose you have a subform you use often but with different beans.
- * <br/>The aliasBean allows you to design the subform with a fictive bean and
- * to include it in all the pages where you use it. You just need to make an
- * alias to the real bean named after the fictive bean before invoking the
- * fictive bean. <br/>This making it possible to have a library of reusable
- * generic subforms.
+ * The aliasBean tag allows you to create a temporary name for a real bean
+ * which is visible only to the children of the aliasBean.
+ * <p>
+ * Suppose you have a block of components you use often but with
+ * different beans. The aliasBean allows you to create a separate JSP
+ * page (or equivalent) containing these beans, where the value-bindings
+ * refer to some fictive bean name. Wherever you wish to use this block
+ * you then declare an alias component mapping the fictive name to whatever
+ * bean you really want to apply the block to, then use jsp:include
+ * (or equivalent) to include the reusable block of components. This makes
+ * it possible to have a library of reusable generic subforms.
+ * <p>
+ * Note, however, that AliasBean does not work for component bindings; JSF1.1
+ * just has no mechanism available to set up the alias during the "restore view"
+ * phase while the bindings of its children are being re-established, and then
+ * remove the alias after the child bindings are done.
  * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -66,6 +74,13 @@ public class AliasBean extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    /**
+     * Define the "fictive" name which will be visible to the children
+     * of this component as an alias to the "real" object specified
+     * by the value attribute of this component.
+     * 
+     * @param aliasBeanExpression
+     */
     public void setAlias(String aliasBeanExpression){
         alias.setAliasBeanExpression( aliasBeanExpression );
     }
@@ -77,6 +92,7 @@ public class AliasBean extends UIComponentBase {
         ValueBinding vb = getValueBinding("value");
         return vb != null ? (String)vb.getValue(getFacesContext()) : null;
     }
+
     public void setValue(String valueExpression){
         alias.setValueExpression( valueExpression );
     }
