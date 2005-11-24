@@ -58,11 +58,14 @@ class HtmlNavigationMenuRendererUtils
                 writer.startElement(HTML.LI_ELEM, panelNav);
                 HtmlNavigationMenuRendererUtils.writeStyleAttributes(writer, style, styleClass);
 
+                Object value = navItem.getValue();
+                navItem.setValue(null); // unset value, value must not be rendered
                 navItem.encodeBegin(facesContext);
                 HtmlNavigationMenuRendererUtils.renderChildren(facesContext, navItem);
                 navItem.encodeEnd(facesContext);
+                navItem.setValue(value); // restore value
 
-                if (child.getChildCount() > 0)
+                if (hasCommandNavigationItemChildren(navItem))
                 {
                     writer.startElement(HTML.UL_ELEM, panelNav);
                     //HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
@@ -72,6 +75,19 @@ class HtmlNavigationMenuRendererUtils
                 writer.endElement(HTML.LI_ELEM);
             }
         }
+    }
+
+    private static boolean hasCommandNavigationItemChildren(HtmlCommandNavigationItem item)
+    {
+        List children = item.getChildren();
+        for (int i = 0, sizei = children.size(); i < sizei; i++)
+        {
+            if (children.get(i) instanceof HtmlCommandNavigationItem)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void renderChildrenTableLayout(FacesContext facesContext,
@@ -140,7 +156,7 @@ class HtmlNavigationMenuRendererUtils
                 if (style != null || styleClass != null)
                 {
                     writer.endElement(HTML.SPAN_ELEM);
-                }
+                }                                                             
 
                 writer.endElement(HTML.TD_ELEM);
                 writer.endElement(HTML.TR_ELEM);

@@ -97,8 +97,6 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         }
     }
 
-//------------------ GENERATED CODE BEGIN (do not modify!) --------------------
-
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlPanelNavigationMenu";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.NavigationMenu";
@@ -112,6 +110,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     private String _activeItemStyle = null;
     private String _separatorStyle = null;
     private String _layout = null;
+    private Boolean _preprocessed = Boolean.FALSE;
 
     public HtmlPanelNavigationMenu()
     {
@@ -231,10 +230,19 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         _layout = layout;
     }
 
+    public Boolean getPreprocessed()
+    {
+        return _preprocessed;
+    }
+
+    public void setPreprocessed(Boolean preprocessed)
+    {
+        _preprocessed = preprocessed;
+    }
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[10];
+        Object values[] = new Object[11];
         values[0] = super.saveState(context);
         values[1] = _itemClass;
         values[2] = _openItemClass;
@@ -245,6 +253,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         values[7] = _activeItemStyle;
         values[8] = _separatorStyle;
         values[9] = _layout;
+        values[10] = _preprocessed;
         return ((Object) (values));
     }
 
@@ -261,6 +270,6 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         _activeItemStyle = (String)values[7];
         _separatorStyle = (String)values[8];
         _layout = (String)values[9];
+        _preprocessed = (Boolean)values[10];
     }
-//------------------ GENERATED CODE END ---------------------------------------
 }

@@ -95,32 +95,47 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
         if (HtmlNavigationMenuRendererUtils.isListLayout(panelNav))
         {
-            UIViewRoot previousViewRoot = (UIViewRoot)
-                facesContext.getExternalContext().getRequestMap().get(HtmlPanelNavigationMenu.PREVIOUS_VIEW_ROOT);
-            // get old view
-            // preprocess component tree
+            UIViewRoot previousViewRoot;
             boolean preprocess = true;
-            if (previousViewRoot != null)
+            if (facesContext.getApplication().getStateManager().isSavingStateInClient(facesContext))
             {
-                HtmlPanelNavigationMenu panelNavPrev =
-                    (HtmlPanelNavigationMenu) previousViewRoot.findComponent(panelNav.getClientId(facesContext));
-                if (panelNavPrev != null)
+                // client statesaving
+                previousViewRoot = (UIViewRoot)facesContext.getExternalContext().getRequestMap().get(HtmlPanelNavigationMenu.PREVIOUS_VIEW_ROOT);
+                // get old view
+                // preprocess component tree
+                if (previousViewRoot != null)
                 {
-                    preprocess = false;
-                    if (!panelNavPrev.equals(panelNav))
+                    HtmlPanelNavigationMenu panelNavPrev =
+                        (HtmlPanelNavigationMenu) previousViewRoot.findComponent(panelNav.getClientId(facesContext));
+                    facesContext.getApplication().getStateManager().isSavingStateInClient(facesContext);
+                    if (panelNavPrev != null)
                     {
-                        // substitute panelnav
-                        UIComponent parent = panelNav.getParent();
-                        int insertPos = parent.getChildren().indexOf(panelNav);
-                        parent.getChildren().set(insertPos, panelNavPrev);
-                        panelNavPrev.setParent(parent);
-                        panelNav.setParent(null);
-                        panelNav = panelNavPrev;
+                        preprocess = false;
+                        if (!panelNavPrev.equals(panelNav))
+                        {
+                            // substitute panelnav
+                            UIComponent parent = panelNav.getParent();
+                            int insertPos = parent.getChildren().indexOf(panelNav);
+                            parent.getChildren().set(insertPos, panelNavPrev);
+                            panelNavPrev.setParent(parent);
+                            panelNav.setParent(null);
+                            panelNav = panelNavPrev;
+                        }
                     }
                 }
             }
+            else
+            {
+                previousViewRoot = facesContext.getViewRoot();
+                // server statesaving
+                if (panelNav.getPreprocessed() != null && panelNav.getPreprocessed().booleanValue())
+                    preprocess = false;
+            }
             if (preprocess)
+            {
+                panelNav.setPreprocessed(Boolean.TRUE);
                 preprocessNavigationItems(facesContext, panelNav, previousViewRoot, panelNav.getChildren(), new UniqueId());
+            }
             // render list
             if (log.isDebugEnabled())
                 HtmlNavigationMenuRendererUtils.debugTree(log, facesContext, panelNav.getChildren(), 0);
@@ -236,6 +251,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             newItem.setItemLabel(uiNavMenuItem.getLabel());
             newItem.setOpen(uiNavMenuItem.isOpen());
             newItem.setActive(uiNavMenuItem.isActive());
+            newItem.setValue(uiNavMenuItem.getValue());
             newItem.setTransient(false);
             if (uiNavMenuItem.getNavigationMenuItems() != null && uiNavMenuItem.getNavigationMenuItems().length > 0)
             {
@@ -268,8 +284,10 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             newItem.addActionListener(listeners[j]);
 
         }
+        // value
+        newItem.setValue(uiNavMenuItem.getValue());
         // immeditate
-        newItem.setImmediate(uiNavMenuItem.isImmediate());
+         newItem.setImmediate(uiNavMenuItem.isImmediate());
         // transient, rendered
         newItem.setTransient(uiNavMenuItem.isTransient());
         newItem.setRendered(uiNavMenuItem.isRendered());
