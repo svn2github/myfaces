@@ -934,6 +934,11 @@
             <name>for</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
+            <description>
+              The JSF id of a UIData component that this scroller will affect.
+              If this attribute is not present then the datascroller must be
+              a child of a UIData comopnent.
+            </description>
         </attribute>
         <attribute>
             <name>fastStep</name>
