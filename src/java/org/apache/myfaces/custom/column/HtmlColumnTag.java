@@ -216,9 +216,9 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
         _footerstyle = footerstyle;
     }
 
-    public void setFooterstyleclass(String footerstyleclass)
+    public void setFooterstyleClass(String footerstyleClass)
     {
-        _footerstyleClass = footerstyleclass;
+        _footerstyleClass = footerstyleClass;
     }
 
     public void setFootertitle(String footertitle)
