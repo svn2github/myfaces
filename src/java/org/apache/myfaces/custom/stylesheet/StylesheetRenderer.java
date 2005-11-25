@@ -24,10 +24,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.renderkit.html.HtmlRenderer;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
