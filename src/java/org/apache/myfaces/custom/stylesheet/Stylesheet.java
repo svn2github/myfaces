@@ -36,6 +36,8 @@ public class Stylesheet extends UIOutput {
 	private static final Log log = LogFactory.getLog(Stylesheet.class);
 
     private String _path = null;
+    private Boolean _inline = null;
+    private String _media = null;
 
 
     // ------------------------------------------------------------ Constructors
@@ -63,20 +65,54 @@ public class Stylesheet extends UIOutput {
     public void setPath(String path) {
         this._path = path;
     }
+    
+    /**
+     * @return true if the styles are inlined to the jsp file
+     */
+    public boolean isInline() {
+        if (this._inline != null)
+          return this._inline.booleanValue();
+            ValueBinding vb = getValueBinding("inline");
+            return ((vb != null) ? (Boolean) vb.getValue(getFacesContext())
+                : Boolean.FALSE).booleanValue();
+      }
 
+    /**
+     * @param inline if true, the css-file is inlined to the jsp file. Default is false.
+     */
+    public void setInline(boolean inline) {
+        this._inline = Boolean.valueOf(inline);
+    }
+    
+
+    public String getMedia() {
+    	if (this._media != null)
+    		return this._media;
+    	ValueBinding vb = getValueBinding("media");
+    		return ((vb != null) ? (String) vb.getValue(getFacesContext()) : null);
+    	}
+    
+    public void setMedia(String media) {
+    	this._media = media;  
+    }
+    
     public void restoreState(FacesContext context, Object state) {
 
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         _path = (String) values[1];
+        _inline = (Boolean) values[2];
+        _media = (String) values[3];
 
     }
 
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[2];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = _path;
+        values[2] = _inline;
+        values[3] = _media;
         return values;
 
     }

@@ -1923,6 +1923,43 @@
 				URL for CSS-file.
 			</description>
 		</attribute>
+		<attribute>
+			<name>inline</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>
+				Inline the stylesheet file content as &lt;style&gt;-tag in contrast
+                to refere it as &lt;link&gt;-tag.
+			</description>
+		</attribute>
+		<attribute>
+			<name>media</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>
+				Define the target media of the styles:
+				screen
+				    Intended for non-paged computer screens.
+				tty
+				    Intended for media using a fixed-pitch character grid, such as teletypes, terminals, or portable devices with limited display capabilities.
+				tv
+				    Intended for television-type devices (low resolution, color, limited scrollability).
+				projection
+				    Intended for projectors.
+				handheld
+				    Intended for handheld devices (small screen, monochrome, bitmapped graphics, limited bandwidth).
+				print
+				    Intended for paged, opaque material and for documents viewed on screen in print preview mode.
+				braille
+				    Intended for braille tactile feedback devices.
+				aural
+				    Intended for speech synthesizers.
+				all
+				    Suitable for all devices. 
+                Could be a comma separated list.
+                See also http://www.w3.org/TR/REC-html40/types.html#type-media-descriptors
+			</description>
+		</attribute>
 	</tag>
 
 	<!-- div -->

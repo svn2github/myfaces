@@ -27,6 +27,8 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
 
 
     private String _path = null;
+    private boolean _inline = false;
+    
 	// User Role support
 	private String _enabledOnUserRole;
 	private String _visibleOnUserRole;
@@ -76,4 +78,16 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
 	public void setVisibleOnUserRole(String string) {
 		_visibleOnUserRole = string;
 	}
+
+  
+  public boolean isInline()
+  {
+    return _inline;
+  }
+
+  
+  public void setInline(boolean inline)
+  {
+    this._inline = inline;
+  }
 }
