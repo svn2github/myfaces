@@ -544,6 +544,9 @@ function jscalendarPopUpCalendar_Show(ctl){
 			topScrollOffset += aTag.scrollTop;
 			aTag = aTag.parentNode;
 		} while(aTag.tagName!="BODY");
+	} catch (ex) {
+		 // ignore
+	} 
 	
 	var bodyRect = getVisibleBodyRectangle();
 	var cal = document.getElementById("calendar");
