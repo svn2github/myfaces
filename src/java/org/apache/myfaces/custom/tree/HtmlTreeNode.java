@@ -338,9 +338,8 @@ public class HtmlTreeNode
         node.setPath(getPath().pathByAddingChild(child));
         node.setUserObject(child);
         int state = CHILD;
-        int childChildCount = model.getChildCount(child);
 
-        if (childChildCount == 0)
+        if (model.isLeaf(child))
         {
 
             if (childCount > 1)
