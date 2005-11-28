@@ -33,6 +33,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
 
 /**
+ * A component which works together with a UIData component to allow a
+ * user to view a large list of data one "page" at a time, and navigate
+ * between pages.
+ *  
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -53,7 +57,14 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
     private MethodBinding _actionListener;
 
 	/**
-	 * @see javax.faces.component.UIComponentBase#queueEvent(javax.faces.event.FacesEvent)
+     * Catch any attempts to queue events for this component, and ensure
+     * the event's phase is set appropriately. Events are expected to be
+     * queued by this component's renderer.
+     * <p>
+     * When this component is marked "immediate", any ActionEvent will
+     * be marked to fire in the "apply request values" phase. When this
+     * component is not immediate the event will fire during the
+     * "invoke application" phase instead.
 	 */
 	public void queueEvent(FacesEvent event)
 	{
@@ -72,7 +83,20 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 	}
 
 	/**
-	 * @see javax.faces.component.UIComponentBase#broadcast(javax.faces.event.FacesEvent)
+     * Invoke any action listeners attached to this class.
+     * <p>
+     * After listener invocation, the associated UIData's properties get
+     * updated:
+     * <ul>
+     * <li>if the user selected an absolute page# then setFirst is called with
+     * uiData.getRows() * pageNumber.
+     * <li>if the user selected the "first page" option then setFirst(0) is called.
+     * <li>if the user selected the "previous page" option then setFirst is decremented
+     * by uiData.getRows().
+     * <li>if the user selected the "fast rewind" option then setFirst is decremented
+     * by uiData.getRows() * fastStep.
+     * <li>next, fast-forward and last options have the obvious effect.
+     * </ul>
 	 */
 	public void broadcast(FacesEvent event) throws AbortProcessingException
 	{
@@ -84,6 +108,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 
             broadcastToActionListener(scrollerEvent);
             
+            // huh? getUIData never returns null.
 			UIData uiData = getUIData();
 			if (uiData == null)
 			{
@@ -274,6 +299,19 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
 		return getUIData().getFirst();
 	}
 
+    /**
+     * Find the UIData component associated with this scroller.
+     * <p>
+     * If the "for" attribute is not null then that value is used to find the
+     * specified component by id. Both "relative" and "absolute" ids are allowed;
+     * see method UIComponent.findComponent for details.
+     * <p>
+     * If the "for" attribute is not defined, then this component is expected to
+     * be a child of a UIData component.
+     * 
+     * @throws IllegalArgumentException if an associated UIData component
+     * cannot be found.
+     */
 	protected UIData findUIData()
 	{
 		String forStr = getFor();

@@ -22,54 +22,10 @@ import org.apache.myfaces.taglib.UIComponentTagBase;
 import javax.faces.component.UIComponent;
 
 /**
+ * JSP tag class for the HtmlDataScroller component.
+ * 
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
- * $Log: HtmlDataScrollerTag.java,v $
- * Revision 1.11  2005/02/18 17:19:30  matzew
- * added release() to tag clazzes.
- *
- * Revision 1.10  2005/01/04 00:28:06  svieujot
- * dataScroller, add rowsCountVar, displayedRowsCountVar, firstRowIndexVar and lastRowIndexVar attributes.
- *
- * Revision 1.9  2004/10/13 11:50:57  matze
- * renamed packages to org.apache
- *
- * Revision 1.8  2004/10/05 09:22:57  manolito
- * #1019443 no setter method corresponding to TLD declared attribute
- *
- * Revision 1.7  2004/08/15 23:30:47  o_rossmueller
- * fixed typo in setPaginatorActiveColumnClass
- *
- * Revision 1.6  2004/07/05 13:59:15  royalts
- * added paginator functionality to dataScroller
- *
- * Revision 1.5  2004/07/01 21:53:07  mwessendorf
- * ASF switch
- *
- * Revision 1.4  2004/06/23 13:44:30  royalts
- * no message
- *
- * Revision 1.3  2004/06/21 12:15:23  royalts
- * no message
- *
- * Revision 1.2  2004/06/21 09:46:58  royalts
- * no message
- *
- * Revision 1.1  2004/06/18 12:31:41  royalts
- * DataScroller implementation
- *
- * Revision 1.4  2004/05/18 14:31:37  manolito
- * user role support completely moved to components source tree
- *
- * Revision 1.3  2004/04/05 11:04:52  manolito
- * setter for renderer type removed, no more default renderer type needed
- *
- * Revision 1.2  2004/04/01 12:57:40  manolito
- * additional extended component classes for user role support
- *
- * Revision 1.1  2004/03/31 12:15:26  manolito
- * custom component refactoring
- *
  */
 public class HtmlDataScrollerTag
         extends UIComponentTagBase

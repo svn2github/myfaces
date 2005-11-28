@@ -33,27 +33,10 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 
 /**
+ * Renderer for the HtmlDataScroller component.
+ * 
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
- * $Log: HtmlDataScrollerRenderer.java,v $
- * Revision 1.19  2005/01/04 01:42:23  svieujot
- * Bugfix for last page.
- *
- * Revision 1.18  2005/01/04 00:28:07  svieujot
- * dataScroller, add rowsCountVar, displayedRowsCountVar, firstRowIndexVar and lastRowIndexVar attributes.
- *
- * Revision 1.17  2004/12/18 16:31:21  tomsp
- * fixed issue MYFACES-1
- *
- * Revision 1.16  2004/10/13 11:50:57  matze
- * renamed packages to org.apache
- *
- * Revision 1.15  2004/09/02 08:57:17  manolito
- * missing setTransient
- *
- * Revision 1.14  2004/08/25 16:02:12  manolito
- * Prevent division by zero in getPageIndex
- *
  */
 public class HtmlDataScrollerRenderer extends HtmlRenderer
 {
@@ -68,6 +51,11 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		return true;
 	}
 
+    /**
+     * Determine which datascroller navigation option the user chose (if any),
+     * and if they did then queue the appropriate ScrollerActionEvent for
+     * later execution.
+     */
 	public void decode(FacesContext context, UIComponent component)
 	{
 		RendererUtils.checkParamValidity(context, component, HtmlDataScroller.class);
@@ -78,16 +66,23 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		{
 			if (param.startsWith(PAGE_NAVIGATION))
 			{
+                // the user chose a specific page# to jump to
 				component.queueEvent(new ScrollerActionEvent(component, Integer.parseInt(param
 								.substring(PAGE_NAVIGATION.length(), param.length()))));
 			}
 			else
 			{
+                // the user chose first/last/prev/next/fastrewind/fastforward
 				component.queueEvent(new ScrollerActionEvent(component, param));
 			}
 		}
 	}
 
+    /**
+     * Expose much of the internal state of this component so that UIComponents
+     * nested within this component can very flexibly display the component state
+     * to the user.
+     */
 	protected void setVariables(FacesContext facescontext, HtmlDataScroller scroller)
 					throws IOException
 	{
@@ -300,6 +295,10 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 		link.encodeEnd(facesContext);
 	}
 
+    /**
+     * The "paginator" is a sequence of page numbers which the user can click
+     * on to leap directly to a specific page of data.
+     */
 	protected void renderPaginator(FacesContext facesContext, HtmlDataScroller scroller)
 					throws IOException
 	{

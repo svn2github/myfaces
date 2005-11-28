@@ -19,6 +19,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
 /**
+ * An event representing a click on some scroller control to
+ * change the currently displayed table rows.
+ * 
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -31,8 +34,11 @@ public class ScrollerActionEvent extends ActionEvent
 	private final int mPageIndex;
 
 	/**
-	 * @param component
-	 * @param scrollerfacet
+     * An event representing a user's choice of navigation option
+     * <i>except</i> jumping to a specific page.
+     * <o>
+     * Param scrollerFacet contains the name of the operation performed,
+     * which matches one of the public HtmlDataScroller.FACET_* constants.
 	 */
 	public ScrollerActionEvent(UIComponent component, String scrollerfacet)
 	{
@@ -42,7 +48,12 @@ public class ScrollerActionEvent extends ActionEvent
 	}
 
 	/**
-	 *
+	 * An event representing a user's choice to jump straight to page
+     * #pageIndex of the available pages of data.
+     * 
+     * @param component is the DataScroller component 
+     * @param pageIndex is in the range 0..(nPages-1), where nPages
+     * is (rowsOfDataAvailable/rowsPerPage).
 	 */
 	public ScrollerActionEvent(UIComponent component, int pageIndex)
 	{
@@ -56,7 +67,8 @@ public class ScrollerActionEvent extends ActionEvent
 	}
 
 	/**
-	 * @return Returns the scrollerfacet.
+     * Returns a string which matches one of the HtmlDataScroller.FACET_*
+     * public constants, or null if the user chose a page# navigation option.
 	 */
 	public String getScrollerfacet()
 	{
@@ -64,7 +76,8 @@ public class ScrollerActionEvent extends ActionEvent
 	}
 
 	/**
-	 * @return int
+     * Return the page of data the user wants to see, or -1 if the
+     * user didn't choose a page# navigation option. 
 	 */
 	public int getPageIndex()
 	{
