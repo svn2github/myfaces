@@ -50,7 +50,7 @@ public class HtmlDataScrollerTag
     private static final String PAGINATOR_COL_STYLE_ATTR    = "paginatorColumnStyle";
     private static final String PAGINATOR_ACTCOL_CLASS_ATTR = "paginatorActiveColumnClass";
     private static final String PAGINATOR_ACTCOL_STYLE_ATTR = "paginatorActiveColumnStyle";
-	private static final String RENDER_FACETS_IF_SINGLE_PAGE_ATTR = "renderFacetsIfSinglePage";
+    private static final String RENDER_FACETS_IF_SINGLE_PAGE_ATTR = "renderFacetsIfSinglePage";
 
     private String _for;
     private String _fastStep;
@@ -70,8 +70,8 @@ public class HtmlDataScrollerTag
     private String _paginatorColumnStyle;
     private String _paginatorActiveColumnClass;
     private String _paginatorActiveColumnStyle;
-	private String _renderFacetsIfSinglePage;
-	
+    private String _renderFacetsIfSinglePage;
+    
     private String _immediate;
     private String _actionListener;
 
@@ -99,7 +99,7 @@ public class HtmlDataScrollerTag
         _paginatorColumnStyle=null;
         _paginatorActiveColumnClass=null;
         _paginatorActiveColumnStyle=null;
-		_renderFacetsIfSinglePage=null;
+        _renderFacetsIfSinglePage=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
         _immediate=null;
@@ -138,8 +138,8 @@ public class HtmlDataScrollerTag
         setStringProperty(component, PAGINATOR_COL_STYLE_ATTR, _paginatorColumnStyle);
         setStringProperty(component, PAGINATOR_ACTCOL_CLASS_ATTR, _paginatorActiveColumnClass);
         setStringProperty(component, PAGINATOR_ACTCOL_STYLE_ATTR, _paginatorActiveColumnStyle);
-		setBooleanProperty(component, RENDER_FACETS_IF_SINGLE_PAGE_ATTR, _renderFacetsIfSinglePage);
-		
+        setBooleanProperty(component, RENDER_FACETS_IF_SINGLE_PAGE_ATTR, _renderFacetsIfSinglePage);
+        
         setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
         setActionListenerProperty(component, _actionListener);
 
@@ -240,7 +240,7 @@ public class HtmlDataScrollerTag
 
     public void setRenderFacetsIfSinglePage(String renderFacetsIfSinglePage)
     {
-		_renderFacetsIfSinglePage = renderFacetsIfSinglePage;
+        _renderFacetsIfSinglePage = renderFacetsIfSinglePage;
     }
 
     public void setImmediate(String immediate)
