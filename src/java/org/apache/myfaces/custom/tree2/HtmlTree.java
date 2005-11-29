@@ -156,7 +156,7 @@ public class HtmlTree extends UITreeData
 //        return null;
 //    }
 
-    /**
+    /*
      * Indicates whether or not the current {@link TreeNode} is expanded.
      * @return boolean
      */
