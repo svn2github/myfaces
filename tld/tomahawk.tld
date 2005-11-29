@@ -821,7 +821,7 @@
         &html_anchor_attributes;
         &user_role_attributes;
         <!-- HtmlCommandLink attributes -->
-        &html_blur_focus_attributes;
+        &html_focus_blur_attributes;
         <!-- TODO attributes image, label - old todo.. still necessary?-->
     </tag>
 
@@ -853,7 +853,7 @@
         &html_event_handler_attributes;
         &html_anchor_attributes;
         &user_role_attributes;
-        &html_blur_focus_attributes;
+        &html_focus_blur_attributes;
         <!-- TODO attributes image, label - old todo.. still necessary?-->
     </tag>
 
