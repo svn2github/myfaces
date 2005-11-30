@@ -103,7 +103,7 @@ function CookieLib_setCookie(cookieName, attribMap)
     for (var name in attribMap)
     {
         var value = attribMap[name];
-        if (value != undefined && value != null && value != "")
+        if (value != undefined && value != null && value != "" && typeof(value) != "function")
         {
             if (name.indexOf(CookieLib.ATTRIB_KEYVAL) < 0 && value.indexOf(CookieLib.ATTRIB_KEYVAL) < 0 &&
                 name.indexOf(CookieLib.ATTRIB_DELIM) < 0 && value.indexOf(CookieLib.ATTRIB_DELIM) < 0)
