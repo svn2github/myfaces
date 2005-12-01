@@ -23,6 +23,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Provide a serializable equivalent of the standard DataModel classes.
+ * <p>
+ * The standard JSF UIData components accept a DataModel as the "value" for
+ * the ordered sequence of objects to be rendered in the table. Various
+ * types (List, array, ResultSet) are also accepted and automatically
+ * wrapped in one of the standard DataModel classes.
+ * <p>  
+ * The standard DataModel classes are not Serializable by default, because
+ * there is no state in the class which needs to be preserved between render
+ * and postback. And the standard UIData components don't serialize the
+ * data model object, just the EL expression for the "value" attribute; the
+ * data itself is refetched when needed by re-evaluating the EL expression.
+ * <p>
+ * However there can be good reasons to serialize the list of data that is
+ * <i>wrapped</i> by the DataModel along with the UIData component. For these
+ * cases, the tomahawk t:dataTable component offers a "preserveDataModel" flag
+ * that will automatically serialize the data model along with the
+ * HtmlDataTable component; it does this by invoking the "value" binding of
+ * the t:dataTable then creating an instance of this class or one of its
+ * subclasses instead of the standard JSF DataModels.
+ * <p>
+ * This class performs two roles. It is the base implementation for specialised
+ * classes that wrap various datatypes that can be returned from the table's
+ * "value" binding. It also implements the case where the value object
+ * returned is of type DataModel.
+ * <p>
+ * When the UIData's "value" binding returns a DataModel instance, this class
+ * extracts each rowData object from the wrapped data of the original
+ * DataModel and adds these objects to an instance of this class which
+ * <i>is</i> Serializable. Of course the rowdata objects must be serializable
+ * for this to work. As a side-effect, however, the original DataModel object
+ * will be discarded, and replaced by an instance of this class. This means
+ * that any special optimisations or behaviour of the concrete DataModel
+ * subclass will be lost.
+ *
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
