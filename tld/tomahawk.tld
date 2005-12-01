@@ -22,6 +22,10 @@
 <!ENTITY display_value_only_attributes  SYSTEM "entities/display_value_only_attributes.xml">
 <!ENTITY ext_forceId_attribute          SYSTEM "entities/ext_forceId_attribute.xml">
 <!ENTITY ext_escape_attribute           SYSTEM "entities/ext_escape_attribute.xml">
+<!ENTITY faces_binding_attribute        SYSTEM "entities/faces_binding_attribute.xml">
+<!ENTITY faces_id_optional_attribute    SYSTEM "entities/faces_id_optional_attribute.xml">
+<!ENTITY faces_id_required_attribute    SYSTEM "entities/faces_id_required_attribute.xml">
+<!ENTITY faces_rendered_attribute       SYSTEM "entities/faces_rendered_attribute.xml">
 <!ENTITY html_anchor_attributes         SYSTEM "entities/html_anchor_attributes.xml">
 <!ENTITY html_button_attributes         SYSTEM "entities/html_button_attributes.xml">
 <!ENTITY html_event_handler_attributes  SYSTEM "entities/html_event_handler_attributes.xml">
@@ -1386,6 +1390,7 @@
         Unless otherwise specified, all attributes accept static values or EL expressions.</description>
         &ui_select_item_attributes;
         &user_role_attributes;
+        &faces_rendered_attribute;
         <!-- navigationMenuItem attributes -->
         <attribute>
             <name>icon</name>
@@ -1399,11 +1404,6 @@
         </attribute>
         <attribute>
             <name>action</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>rendered</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
