@@ -43,6 +43,8 @@ function jscalendarHideElement( elmID, overDiv ){
       objTop    = obj.offsetTop;
       objParent = obj.offsetParent;
 
+	// this loop has been commented (MYFACES-870)
+	/*
       while( objParent.tagName.toUpperCase() != "BODY" ){
         objLeft  += objParent.offsetLeft;
         objTop   += objParent.offsetTop;
@@ -50,6 +52,7 @@ function jscalendarHideElement( elmID, overDiv ){
       }
       
       objParent = obj.offsetParent;
+      */
 
       // added a try-catch to the next loop (MYFACES-870)
       try {
