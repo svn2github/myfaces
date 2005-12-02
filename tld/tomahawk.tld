@@ -116,8 +116,8 @@
         <body-content>JSP</body-content>
         <description>
             Extends standard commandButton by user role support.
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_command_button_attributes;
         &user_role_attributes;
@@ -132,7 +132,7 @@
         <description>
             Extends standard commandLink by user role support and the HTML target attribute.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &extended_command_link_attributes;
     </tag>
@@ -145,7 +145,7 @@
         <description>
             Extends standard commandLink by user role support and the HTML target attribute.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &extended_command_link_attributes;
     </tag>
@@ -160,7 +160,7 @@
             data_table action: see attribute descriptions for preserveDataModel,
             sortColumn, sortAscending and preserveSort.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_data_table_attributes;
         <!-- MyFaces extensions -->
@@ -177,7 +177,7 @@
         <description>
             Extends standard inputHidden by providing additional MyFaces goodies.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &ui_input_attributes;
         &ext_forceId_attribute;
@@ -189,9 +189,9 @@
         <tag-class>org.apache.myfaces.taglib.html.ext.HtmlInputSecretTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-            Extends standard inputSecret.
+            Extends standard inputSecret, adding the "redisplay" property.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &html_datafld_datasrc_dataformatas_attributes;
         &ui_input_attributes;
@@ -221,7 +221,7 @@
         <description>
             Extends standard inputText by user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &html_datafld_datasrc_dataformatas_attributes;
         &standard_input_text_attributes;
@@ -238,7 +238,7 @@
         <description>
             Extends standard inputText by helptext support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_input_text_attributes;
         &user_role_attributes;
@@ -255,7 +255,7 @@
         <description>
             Extends standard inputTextarea by user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_input_textarea_attributes;
         &user_role_attributes;
@@ -271,7 +271,7 @@
         <description>
             Extends standard graphicImage.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &ui_graphic_attributes;
         &html_universal_attributes;
@@ -290,7 +290,7 @@
         <description>
             MyFaces extension to the standard messages tag: see summaryDetailSeparator attribute.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_message_attributes;
         <!-- MyFaces extensions -->
@@ -339,7 +339,7 @@
         <description>
             MyFaces extension to the standard messages tag: see showInputLabel attribute.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_messages_attributes;
         <!-- MyFaces extensions -->
@@ -399,7 +399,7 @@
         <description>
             Extends standard outputLabel with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_output_label_attributes;
         &user_role_attributes;
@@ -414,7 +414,7 @@
         <description>
             Extends standard outputText with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_output_text_attributes;
         &user_role_attributes;
@@ -429,7 +429,7 @@
         <description>
             Extends standard panelGrid with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_panel_grid_attributes;
         &user_role_attributes;
@@ -445,7 +445,7 @@
         <description>
             Extends standard panelGroup with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_panel_group_attributes;
         &user_role_attributes;
@@ -461,7 +461,7 @@
         <description>
             Extends standard selectOneMenu with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_select_one_menu_attributes;
         &ext_escape_attribute;
@@ -478,7 +478,7 @@
         <description>
             Extends standard selectManyMenu with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_select_many_menu_attributes;
         &ext_escape_attribute;
@@ -497,7 +497,7 @@
             Additionally this extended selectOneRadio accepts a layout attribute
             of value "spread" (see custom radio tag).
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_select_one_radio_attributes;
         &ext_escape_attribute;
@@ -514,7 +514,7 @@
         <description>
             Extends standard selectBooleanCheckbox with user role support.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_select_boolean_checkbox_attributes;
         &user_role_attributes;
@@ -532,7 +532,7 @@
             Additionally this extended selectManyCheckbox accepts a layout attribute
             of value "spread" (see custom checkbox tag).
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &standard_select_many_checkbox_attributes;
         &ext_escape_attribute;
@@ -607,25 +607,36 @@
             <name>monthYearRowClass</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>CSS class to be used on the TR element for the header-row showing month and year.</description>
+            <description>
+                CSS class to be used on the TR element for the header-row
+                showing month and year.
+            </description>
         </attribute>
         <attribute>
             <name>weekRowClass</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>CSS class to be used on the TR element for the header-row showing the week-days.</description>
+            <description>
+                CSS class to be used on the TR element for the header-row
+                showing the week-days.
+            </description>
         </attribute>
         <attribute>
             <name>dayCellClass</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>CSS class to be used for the TD element containing a day days.</description>
+            <description>
+                CSS class to be used for the TD element containing a day days.
+            </description>
         </attribute>
         <attribute>
             <name>currentDayCellClass</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>CSS class to be used for the TD element of the currently selected date.</description>
+            <description>
+                CSS class to be used for the TD element of the currently
+                selected date.
+            </description>
         </attribute>
         <attribute>
             <name>renderAsPopup</name>
@@ -637,7 +648,10 @@
             <name>addResources</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Automatically add the input-calendar scripts and css files to the header - set that to false to provide the scripts yourself.</description>
+            <description>
+                Automatically add the input-calendar scripts and css files to
+                the header - set that to false to provide the scripts yourself.
+            </description>
         </attribute>
         <attribute>
             <name>popupDateFormat</name>
@@ -649,7 +663,10 @@
             <name>popupButtonString</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Defines the string displayed on the button which leads to the calendar-popup-window (... by default).</description>
+            <description>
+                Defines the string displayed on the button which leads to the
+                calendar-popup-window (... by default).
+            </description>
         </attribute>
         <attribute>
             <name>popupGotoString</name>
@@ -697,8 +714,11 @@
             <name>popupSelectDateMessage</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for "Select [date] as date" (do not replace [date], it will be replaced by the current date).</description>
-		</attribute>
+            <description>
+                Set the string for "Select [date] as date" (do not replace
+                [date], it will be replaced by the current date).
+            </description>
+        </attribute>
         <attribute>
             <name>renderPopupButtonAsImage</name>
             <required>false</required>
@@ -746,9 +766,12 @@
         <name>jsValueSet</name>
         <tag-class>org.apache.myfaces.custom.jsvalueset.HtmlJsValueSetTag</tag-class>
         <body-content>empty</body-content>
-        <description>Setting a value from the model in java-script so that it can be used (e.g. by the value change listener) afterwards.
+        <description>
+            Setting a value from the model in java-script so that it can be
+            used (e.g. by the value change listener) afterwards.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         <attribute>
           <name>name</name>
           <required>true</required>
@@ -803,20 +826,21 @@
         <body-content>JSP</body-content>
         <description>
             Must be nested inside a panel_navigation action and renders a
-            clickable navigation item.
-            This action is derived from the standard command_link action and
-            has equal attributes.
+            clickable navigation item. This action is derived from the standard
+            command_link action and has equal attributes.
             (Replaces former "navigation_item" tag.)
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+ 
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         <attribute>
             <name>id</name>
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>The developer-assigned ID of this component.  The ID must be unique within the scope of the tag's 
-            enclosing naming container (e.g., h:form or f:subview).  This value must be a static value.
+            <description>
+                The developer-assigned ID of this component.  The ID must be
+                unique within the scope of the tag's enclosing naming container
+                (e.g., h:form or f:subview).  This value must be a static value.
             </description>
         </attribute>
         &ui_command_attributes;
@@ -952,12 +976,15 @@
             <name>layout</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>
+            <description><![CDATA[
                 simple|unorderedList|orderedList
-                simple = for each dataRow all children are simply rendered
-                unorderedList = the list is rendered as HTML unordered list (= bullet list)
-                orderedList = the list is rendered as HTML ordered list
+                <ul>
+                  <li>simple = for each dataRow all children are simply rendered</li>
+                  <li>unorderedList = the list is rendered as HTML unordered list (= bullet list)</li>
+                  <li>orderedList = the list is rendered as HTML ordered list</li>
+                </ul>
                 Default: simple
+                ]]>
             </description>
         </attribute>
         <attribute>
@@ -1166,7 +1193,12 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>True means, that the default ActionListener should be executed immediately (i.e. during Apply Request Values phase of the request processing lifecycle), rather than waiting until the Invoke Application phase.</description>
+            <description>
+                True means that the default ActionListener should be executed
+                immediately (i.e. during Apply Request Values phase of the
+                request processing lifecycle), rather than waiting until the
+                Invoke Application phase.
+            </description>
         </attribute>
         <attribute>
             <name>actionListener</name>
@@ -1189,15 +1221,18 @@
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_input_attributes;
-		&user_role_attributes;
+        &user_role_attributes;
         <attribute>
-	        <name>type</name>
+            <name>type</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Specifies the type of value to be accepted.  Values include:  date | time | short_time | both | full</description>
+            <description>
+                Specifies the type of value to be accepted.  Valid values are:
+                date | time | short_time | both | full
+            </description>
         </attribute>
         <attribute>
-	        <name>popupCalendar</name>
+            <name>popupCalendar</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
@@ -1207,10 +1242,13 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-	        <name>ampm</name>
+            <name>ampm</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>If true, use 12hr times with AM/PM selector; if false, use 24hr time.  Default false.</description>
+            <description>
+                If true, use 12hr times with AM/PM selector; if false,
+                use 24hr time.  Default false.
+            </description>
         </attribute>
     </tag>
 
@@ -1238,7 +1276,7 @@
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-	        <name>storage</name>
+            <name>storage</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
@@ -1260,122 +1298,122 @@
         &user_role_attributes;
         &display_value_only_attributes;
         <attribute>
-	        <name>style</name>
+            <name>style</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-	        <name>styleClass</name>
+            <name>styleClass</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
         <attribute>
-	        <name>fallback</name>
+            <name>fallback</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-            	Use a text area instead of the javascript HTML editor.
-            	Default is false.
-            	Use with caution.
+                Use a text area instead of the javascript HTML editor.
+                Default is false.
+                Use with caution.
             </description>
         </attribute>
         <attribute>
-	        <name>type</name>
+            <name>type</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-            	The type of the value. It can be either fragment for an HTML fragment (default)
-            	or document for a full HTML document, with head, title, body, ... tags.
+                The type of the value. It can be either fragment for an HTML fragment (default)
+                or document for a full HTML document, with head, title, body, ... tags.
             </description>
         </attribute>
-       	<attribute>
-	        <name>allowEditSource</name>
+           <attribute>
+            <name>allowEditSource</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-            	Allows the user to edit the HTML source code.
-            	Default is true.
+                Allows the user to edit the HTML source code.
+                Default is true.
             </description>
-       	</attribute>
-		<attribute>
-	        <name>allowExternalLinks</name>
+           </attribute>
+        <attribute>
+            <name>allowExternalLinks</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-            	Allows the user to insert external links.
-            	Default is true.
+                Allows the user to insert external links.
+                Default is true.
             </description>
-       	</attribute>
-       	<attribute>
-	        <name>addKupuLogo</name>
+           </attribute>
+           <attribute>
+            <name>addKupuLogo</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-            	Show the Kupu Logo in the buttons bar.
-            	Default is true.
+                Show the Kupu Logo in the buttons bar.
+                Default is true.
             </description>
-       	</attribute>
-       	<attribute>
-	        <name>showAllToolBoxes</name>
+           </attribute>
+           <attribute>
+            <name>showAllToolBoxes</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Shortcut to avoid setting all the showXXToolBox to true.
-            	Default is false.
-            </description>
-        </attribute>
-       	<attribute>
-	        <name>showPropertiesToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Show the Properties tool box next to the text.
-            	Default is false.
+            <description>
+                Shortcut to avoid setting all the showXXToolBox to true.
+                Default is false.
             </description>
         </attribute>
-       	<attribute>
-	        <name>showLinksToolBox</name>
+           <attribute>
+            <name>showPropertiesToolBox</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Show the Links tool box next to the text.
-            	Default is false.
+            <description>
+                Show the Properties tool box next to the text.
+                Default is false.
             </description>
         </attribute>
-       	<attribute>
-	        <name>showImagesToolBox</name>
+           <attribute>
+            <name>showLinksToolBox</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Show the Images tool box next to the text.
-            	Default is false.
+            <description>
+                Show the Links tool box next to the text.
+                Default is false.
             </description>
         </attribute>
-       	<attribute>
-	        <name>showTablesToolBox</name>
+           <attribute>
+            <name>showImagesToolBox</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Show the Tables tool box next to the text.
-            	Default is false.
+            <description>
+                Show the Images tool box next to the text.
+                Default is false.
             </description>
         </attribute>
-		<attribute>
-	        <name>showCleanupExpressionsToolBox</name>
+           <attribute>
+            <name>showTablesToolBox</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Show the Cleanup Expressions tool box next to the text.
-            	Default is false.
+            <description>
+                Show the Tables tool box next to the text.
+                Default is false.
             </description>
         </attribute>
-       	<attribute>
-	        <name>showDebugToolBox</name>
+        <attribute>
+            <name>showCleanupExpressionsToolBox</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-			<description>
-            	Show the Debug tool box next to the text.
-            	Default is false.
+            <description>
+                Show the Cleanup Expressions tool box next to the text.
+                Default is false.
+            </description>
+        </attribute>
+           <attribute>
+            <name>showDebugToolBox</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Show the Debug tool box next to the text.
+                Default is false.
             </description>
         </attribute>
     </tag>
@@ -1385,9 +1423,11 @@
         <name>navigationMenuItem</name>
         <tag-class>org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItemTag</tag-class>
         <body-content>JSP</body-content>
-        <description>A menu item.  Used by navigationMenu, jscookMenu.
+        <description>
+            A menu item.  Used by navigationMenu, jscookMenu.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_select_item_attributes;
         &user_role_attributes;
         &faces_rendered_attribute;
@@ -1446,8 +1486,10 @@
         <tag-class>org.apache.myfaces.custom.layout.HtmlPanelLayoutTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Determines where its children are positioned within the page
+            relative to each other, similar to a Swing layout component.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
@@ -1457,12 +1499,15 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>
+            <description><![CDATA[
+                <pre>
                 layout           | header | navigation | body  | footer
                 =================|========|============|=======|========
                 classic (Default)| top    | left       | right | bottom
                 navigationRight  | top    | right      | left  | bottom
                 upsideDown       | bottom | left       | right | top
+                </pre>
+                ]]>
             </description>
         </attribute>
         <attribute>
@@ -1520,10 +1565,13 @@
         <name>panelNavigation2</name>
         <tag-class>org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenuTag</tag-class>
         <body-content>JSP</body-content>
-        <description> Renders a vertical menu structure with support for nested menu items.
-        The menu is rendered as unordered List.  The menu-tree can be dynamically build using NavigationMenuItem(s).
+        <description>
+            Renders a vertical menu structure with support for nested menu items.
+            The menu is rendered as unordered List.  The menu-tree can be
+            dynamically build using NavigationMenuItem(s).
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
@@ -1686,8 +1734,10 @@
         <tag-class>org.apache.myfaces.custom.tabbedpane.HtmlPanelTabTag</tag-class>
         <body-content>JSP</body-content>
         <description>
+            TODO: Document this component
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
@@ -1708,8 +1758,10 @@
         <tag-class>org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPaneTag</tag-class>
         <body-content>JSP</body-content>
         <description>
+            TODO: Document this component
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
@@ -1787,8 +1839,10 @@
         <tag-class>org.apache.myfaces.custom.tabbedpane.TabChangeListenerTag</tag-class>
         <body-content>empty</body-content>
         <description>
+            TODO: Document this component
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         <attribute>
             <name>type</name>
             <required>true</required>
@@ -1803,8 +1857,12 @@
         <tag-class>org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanelTag</tag-class>
         <body-content>JSP</body-content>
         <description>
+            A component which just renders as a single icon when "collapsed",
+            hiding all child components. When open, the child components can
+            be seen.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
@@ -1850,7 +1908,7 @@
         </attribute>
     </tag>
 
-	<!-- selectOneCountry -->
+    <!-- selectOneCountry -->
     <tag>
         <name>selectOneCountry</name>
         <tag-class>org.apache.myfaces.custom.selectOneCountry.SelectOneCountryTag</tag-class>
@@ -1859,8 +1917,8 @@
             A localized list of countries choose box.
             The value binds to the country ISO 3166 code.
             This is the same code as for java.util.Locale.getCountry().
-			The official codes list is available here :
-			http://www.iso.ch/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html
+            The official codes list is available here :
+            http://www.iso.ch/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html
         
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
@@ -1887,8 +1945,8 @@
             A localized list of languages choose box.
             The value binds to the language ISO 639 code (lowercase).
             This is the same code as for java.util.Locale.getLanguage().
-			The official codes list is available here :
-			http://www.loc.gov/standards/iso639-2/englangn.html
+            The official codes list is available here :
+            http://www.loc.gov/standards/iso639-2/englangn.html
         
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
@@ -1906,102 +1964,115 @@
         &display_value_only_attributes;
     </tag>
 
-	<!-- stylesheet -->
+    <!-- stylesheet -->
 
-	<tag>
-		<name>stylesheet</name>
-		<tag-class>org.apache.myfaces.custom.stylesheet.StylesheetTag</tag-class>
-		<body-content>JSP</body-content>
-		<description>a component, which renders the path to a common CSS-file</description>
-		&ui_component_attributes;
-		&user_role_attributes;
-		<attribute>
-			<name>path</name>
-			<required>true</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				URL for CSS-file.
-			</description>
-		</attribute>
-		<attribute>
-			<name>inline</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				Inline the stylesheet file content as &lt;style&gt;-tag in contrast
-                to refere it as &lt;link&gt;-tag.
-			</description>
-		</attribute>
-		<attribute>
-			<name>media</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				Define the target media of the styles:
-				screen
-				    Intended for non-paged computer screens.
-				tty
-				    Intended for media using a fixed-pitch character grid, such as teletypes, terminals, or portable devices with limited display capabilities.
-				tv
-				    Intended for television-type devices (low resolution, color, limited scrollability).
-				projection
-				    Intended for projectors.
-				handheld
-				    Intended for handheld devices (small screen, monochrome, bitmapped graphics, limited bandwidth).
-				print
-				    Intended for paged, opaque material and for documents viewed on screen in print preview mode.
-				braille
-				    Intended for braille tactile feedback devices.
-				aural
-				    Intended for speech synthesizers.
-				all
-				    Suitable for all devices. 
+    <tag>
+        <name>stylesheet</name>
+        <tag-class>org.apache.myfaces.custom.stylesheet.StylesheetTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>Renders the path to a common CSS-file</description>
+        &ui_component_attributes;
+        &user_role_attributes;
+        <attribute>
+            <name>path</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                URL for CSS-file.
+            </description>
+        </attribute>
+        <attribute>
+            <name>inline</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description><![CDATA[
+                Inline the stylesheet file content as <style> in contrast
+                to referencing it as <link>.
+                ]]>
+            </description>
+        </attribute>
+        <attribute>
+            <name>media</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description><![CDATA[
+                Define the target media of the styles:
+                <dl>
+                  <dt>screen</dt>
+                  <dd>Intended for non-paged computer screens.</dd>
+                  <dt>tty</dt>
+                  <dd>Intended for media using a fixed-pitch character grid, such
+                    as teletypes, terminals, or portable devices with limited 
+                    display capabilities.</dd>
+                  <dt>tv</dt>
+                  <dd>Intended for television-type devices (low resolution,
+                    color, limited scrollability).</dd>
+                  <dt>projection</dt>
+                  <dd>Intended for projectors.</dd>
+                  <dt>handheld</dt>
+                  <dd>Intended for handheld devices (small screen, monochrome,
+                    bitmapped graphics, limited bandwidth).</dd>
+                  <dt>print</dt>
+                  <dd>Intended for paged, opaque material and for documents
+                    viewed on screen in print preview mode.</dd>
+                  <dt>braille</dt>
+                  <dd>Intended for braille tactile feedback devices.</dd>
+                  <dt>aural</dt>
+                  <dd>Intended for speech synthesizers.</dd>
+                  <dt>all</dt>
+                  <dd>Suitable for all devices.</dd>
+                </dl>
                 Could be a comma separated list.
                 See also http://www.w3.org/TR/REC-html40/types.html#type-media-descriptors
-			</description>
-		</attribute>
-	</tag>
+                ]]>
+            </description>
+        </attribute>
+    </tag>
 
-	<!-- div -->
+    <!-- div -->
 
-	<tag>
-		<name>div</name>
-		<tag-class>org.apache.myfaces.custom.div.DivTag</tag-class>
-		<body-content>JSP</body-content>
-		<description>Places a div around its children.
+    <tag>
+        <name>div</name>
+        <tag-class>org.apache.myfaces.custom.div.DivTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Places a div around its children.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
-		&ui_component_attributes;
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
+        &ui_component_attributes;
         &ext_forceId_attribute;
         &user_role_attributes;
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				The style to use for this div.
-			</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				The class to use for this div.
-			</description>
-		</attribute>
-	</tag>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The style to use for this div.
+            </description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The class to use for this div.
+            </description>
+        </attribute>
+    </tag>
 
-	<!-- htmlTag -->
+    <!-- htmlTag -->
 
-	<tag>
-		<name>htmlTag</name>
-		<tag-class>org.apache.myfaces.custom.htmlTag.HtmlTagTag</tag-class>
-		<body-content>JSP</body-content>
-		<description>Places the given HTML tag div around its children.
+    <tag>
+        <name>htmlTag</name>
+        <tag-class>org.apache.myfaces.custom.htmlTag.HtmlTagTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Places the given HTML tag div around its children.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
-		&ui_component_attributes;
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
+        &ui_component_attributes;
         &ext_forceId_attribute;
         &user_role_attributes;
         <attribute>
@@ -2009,26 +2080,26 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				The name of the tag. For example, use h1 to generate an h1 tag.
-			</description>
+                The name of the tag. For example, use h1 to generate an h1 tag.
+            </description>
         </attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				The style to use for this tag.
-			</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<description>
-				The class to use for this tag.
-			</description>
-		</attribute>
-	</tag>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The style to use for this tag.
+            </description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The class to use for this tag.
+            </description>
+        </attribute>
+    </tag>
 
 
     <!-- radio -->
@@ -2043,7 +2114,7 @@
             All HTML pass-through attributes for this input are taken from the associated
             selectOneRadio.
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
         &ui_component_attributes;
         &user_role_attributes;
@@ -2205,7 +2276,10 @@
             <name>expireListeners</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>Time interval the tree will remain registered as a TreeModelListener without being accessed</description>
+            <description>
+                Time interval the tree will remain registered as a
+                TreeModelListener without being accessed
+            </description>
         </attribute>
     </tag>
 
@@ -2214,8 +2288,10 @@
         <tag-class>org.apache.myfaces.custom.tree.taglib.TreeSelectionListenerTag</tag-class>
         <body-content>empty</body-content>
         <description>
+            TODO: Document this component
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         <attribute>
             <name>type</name>
             <required>true</required>
@@ -2228,8 +2304,10 @@
         <tag-class>org.apache.myfaces.custom.tree.taglib.IconProviderTag</tag-class>
         <body-content>empty</body-content>
         <description>
+            TODO: Document this component
         
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         <attribute>
             <name>type</name>
             <required>true</required>
@@ -2283,14 +2361,17 @@
         <name>tree2</name>
         <tag-class>org.apache.myfaces.custom.tree2.TreeTag</tag-class>
         <body-content>JSP</body-content>
-        <description> A component that provides an HTML-based tree from data supplied by a backing bean. 
-        The tree is highly customizable and allows for fine-grained control over the appearance of each 
-        of the nodes depending on their type. Almost any type of JSF component (text, image, checkbox, 
-        etc.) can be rendered inside the nodes and there is an option for client-side or server-side 
-        toggling of the expand/collapse state.
-        
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+        <description>
+            A component that provides an HTML-based tree from data supplied
+            by a backing bean. The tree is highly customizable and allows
+            for fine-grained control over the appearance of each of the
+            nodes depending on their type. Almost any type of JSF component
+            (text, image, checkbox, etc.) can be rendered inside the nodes
+            and there is an option for client-side or server-side toggling
+            of the expand/collapse state.
+
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         <attribute>
             <name>value</name>
             <required>true</required>
@@ -2348,10 +2429,11 @@
         <name>panelStack</name>
         <tag-class>org.apache.myfaces.custom.panelstack.PanelStackTag</tag-class>
         <body-content>JSP</body-content>
-        <description> A stack of panels, to switch panels dynamically.
-        
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+        <description>
+            A stack of panels, to switch panels dynamically.
+
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         <attribute>
             <name>id</name>
             <required>false</required>
@@ -2445,20 +2527,27 @@
 
 <!--     Custom non-component tags     -->
 
-	<!-- aliasBean -->
+    <!-- aliasBean -->
     <tag>
         <name>aliasBean</name>
         <tag-class>org.apache.myfaces.custom.aliasbean.AliasBeanTag</tag-class>
         <body-content>JSP</body-content>
-        <description>
-            A tag that defines a new bean (alias) with a given value.
-            This allows you to design a subform with a generic (fictive) beans and to include it in all the pages where you use it.
-			You just need to make an alias to the real bean named after the generic bean before including the subform.
-
-			When used within an aliasBeansScope tag, this tag adds the alias to the aliasBeansScope.
-			This makes configuration with multiple aliasBeans easier to write.
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+        <description><![CDATA[
+            <p>
+            A tag that defines a new bean (alias) with a given value. This
+            allows you to design a subform with a generic (fictive) bean and
+            to include it in all the pages where you use it. You just need to
+            make an alias mapping the fictive bean name to the real bean before
+            including the subform.
+            </p>
+            <p>
+            When used within an aliasBeansScope tag, this tag adds the alias to the aliasBeansScope.
+            This makes configuration with multiple aliasBeans easier to write.
+            </p>
+            <p>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+            </p>
+            ]]>
         </description>
         <attribute>
             <name>id</name>
@@ -2472,8 +2561,8 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                The bean that will be set to the given value.
-                Example : #{holder}
+                The variable that will be created to hold a reference to the existing value.
+                This must be an EL expression.  Example : #{theBean}
             </description>
         </attribute>
         <attribute>
@@ -2481,8 +2570,9 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                The value that the alias can be set to.
-				This can be a string (like "toto") or a reference to an existing bean (like "#{myBean.member1}").
+                The existing value that the alias can be set to. This can be a
+                literal string (like "toto") or a reference to an existing
+                bean (like "#{myBean.member1}").
             </description>
         </attribute>
     </tag>
@@ -2602,7 +2692,7 @@
         <tag-class>org.apache.myfaces.custom.creditcardvalidator.ValidateCreditCardTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-			A custom validator for creditCards, based upon Jakarta Commons.
+            A custom validator for creditCards, based upon Jakarta Commons.
         
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
@@ -2612,7 +2702,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				none of the given cardtypes is allowed.
+                none of the given cardtypes is allowed.
             </description>
         </attribute>
         <attribute>
@@ -2620,7 +2710,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				american express cards
+                american express cards
             </description>
         </attribute>
         <attribute>
@@ -2628,7 +2718,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				validation for visa
+                validation for visa
             </description>
         </attribute>
         <attribute>
@@ -2636,7 +2726,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				validation for mastercard
+                validation for mastercard
             </description>
         </attribute>
         <attribute>
@@ -2644,7 +2734,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				validation for discover
+                validation for discover
             </description>
         </attribute>
     </tag>
@@ -2655,11 +2745,11 @@
         <tag-class>org.apache.myfaces.custom.emailvalidator.ValidateEmailTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-			A custom validator for email address format, based upons Jakarta Commons.
+            A custom validator for email address format, based upons Jakarta Commons.
         
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-	</tag>
+    </tag>
 
     <!-- Validator for ISBN -->
      <!--tag>
@@ -2667,9 +2757,9 @@
         <tag-class>org.apache.myfaces.custom.isbnvalidator.ValidateISBNTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-			A custom validator for isbn codes, based upons Jakarta Commons.
+            A custom validator for isbn codes, based upons Jakarta Commons.
         </description>
-	</tag -->
+    </tag -->
 
     <!-- Validator for Regular Expressions -->
     <tag>
@@ -2677,7 +2767,7 @@
         <tag-class>org.apache.myfaces.custom.regexprvalidator.ValidateRegExprTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-			A custom validator for reg. expr., based upons Jakarta Commons.
+            A custom validator for reg. expr., based upons Jakarta Commons.
         
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
@@ -2687,10 +2777,10 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				the pattern, which is the base of the validation
+                the pattern, which is the base of the validation
             </description>
         </attribute>
-	</tag>
+    </tag>
 
     <!-- Validator for Equal -->
      <tag>
@@ -2698,7 +2788,7 @@
         <tag-class>org.apache.myfaces.custom.equalvalidator.ValidateEqualTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-			A custom validator for validations against foreign component values.
+            A custom validator for validations against foreign component values.
         
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
@@ -2708,10 +2798,10 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				the id of the foreign component, which is needed for the validation
+                the id of the foreign component, which is needed for the validation
             </description>
         </attribute>
-	</tag>
+    </tag>
 
     <!-- swap_image -->
     <tag>
@@ -2726,7 +2816,7 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				the url of the image displayed onmouseover
+                the url of the image displayed onmouseover
             </description>
         </attribute>
         <attribute>
@@ -2734,7 +2824,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-				activeImage will be rendered if: swapImage is a direct child of commandNavigation
+                activeImage will be rendered if: swapImage is a direct child of commandNavigation
                 and the commandNavigation.isActive
             </description>
         </attribute>
@@ -2749,17 +2839,19 @@
         <attribute><name>onkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
     </tag>
 
-	<!-- columns -->
+    <!-- columns -->
     <tag>
         <name>columns</name>
         <tag-class>org.apache.myfaces.custom.crosstable.HtmlColumnsTag</tag-class>
         <body-content>JSP</body-content>
-        <description>The tag allows dynamic columns in a datatable.
+        <description>
+            The tag allows dynamic columns in a datatable. The UIColumns 
+            component is used below a t:datatable to create a dynamic count
+            of columns. It is used like a UIData component which iterates
+            through a datamodel to create the columns.
 
-The UIColumns component is used below a t:datatable to create a dynamic count of columns. It is used like a UIData component which iterates through a datamodel to create the columns.
-        
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_component_attributes;
         &ui_column_attributes;
         <attribute>
@@ -2781,7 +2873,12 @@ The UIColumns component is used below a t:datatable to create a dynamic count of
         <attribute><name>headerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerstyleClass</name><required>false</required><rtexprvalue>false</rtexprvalue><description>Corresponds to the HTML class attribute.</description></attribute>
+        <attribute>
+            <name>headerstyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute.</description>
+        </attribute>
         <attribute><name>headeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
@@ -2798,7 +2895,12 @@ The UIColumns component is used below a t:datatable to create a dynamic count of
         <attribute><name>footerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerstyleClass</name><required>false</required><rtexprvalue>false</rtexprvalue><description>Corresponds to the HTML class attribute.</description></attribute>
+        <attribute>
+            <name>footerstyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute.</description>
+        </attribute>
         <attribute><name>footeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
@@ -2824,13 +2926,14 @@ The UIColumns component is used below a t:datatable to create a dynamic count of
         <name>column</name>
         <tag-class>org.apache.myfaces.custom.column.HtmlColumnTag</tag-class>
         <body-content>JSP</body-content>
-        <description>A tag that extend h:column to provide HTML passthrough attributes.
+        <description>
+            A tag that extend h:column to provide HTML passthrough attributes.
+            Tag t:column can be used instead of h:column in a t:datatable. It
+            provides HTML passthrough attributes for header (th), footer (td)
+            and row cells (td).
 
-t:column can be used instead of h:column in a t:datatable. It provides HTML passthrough 
-attributes for header (th), footer (td) and row cells (td).
-
-        
-        Unless otherwise specified, all attributes accept static values or EL expressions.        </description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_component_attributes;
         &ui_column_attributes;
         &html_universal_attributes;
@@ -2841,7 +2944,12 @@ attributes for header (th), footer (td) and row cells (td).
         <attribute><name>headerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerstyleClass</name><required>false</required><rtexprvalue>false</rtexprvalue><description>Corresponds to the HTML class attribute.</description></attribute>
+        <attribute>
+            <name>headerstyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute.</description>
+        </attribute>
         <attribute><name>headeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
@@ -2858,7 +2966,12 @@ attributes for header (th), footer (td) and row cells (td).
         <attribute><name>footerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerstyleClass</name><required>false</required><rtexprvalue>false</rtexprvalue><description>Corresponds to the HTML class attribute.</description></attribute>
+        <attribute>
+            <name>footerstyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute.</description>
+        </attribute>
         <attribute><name>footeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
