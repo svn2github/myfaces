@@ -19,6 +19,7 @@ import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -70,7 +71,7 @@ public class HtmlInputText
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -82,7 +83,7 @@ public class HtmlInputText
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public boolean isRendered()
@@ -120,7 +121,7 @@ public class HtmlInputText
     {
         if (_displayValueOnlyStyle != null) return _displayValueOnlyStyle;
         ValueBinding vb = getValueBinding("displayValueOnlyStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 	
     public void setDisplayValueOnlyStyleClass(String displayValueOnlyStyleClass)
@@ -132,7 +133,7 @@ public class HtmlInputText
     {
         if (_displayValueOnlyStyleClass != null) return _displayValueOnlyStyleClass;
         ValueBinding vb = getValueBinding("displayValueOnlyStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public Object saveState(FacesContext context)

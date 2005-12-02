@@ -15,12 +15,15 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * @author Kalle Korhonen (latest modification by $Author$)
@@ -199,7 +202,7 @@ public class HtmlCollapsiblePanel extends UIInput
     {
         if (_title != null) return _title;
         ValueBinding vb = getValueBinding("title");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setTitle(String title)
@@ -211,7 +214,7 @@ public class HtmlCollapsiblePanel extends UIInput
     {
         if (_style != null) return _style;
         ValueBinding vb = getValueBinding("style");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyle(String style)
@@ -223,7 +226,7 @@ public class HtmlCollapsiblePanel extends UIInput
     {
         if (_styleClass != null) return _styleClass;
         ValueBinding vb = getValueBinding("styleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyleClass(String styleClass)
@@ -240,7 +243,7 @@ public class HtmlCollapsiblePanel extends UIInput
     {
         if (_var != null) return _var;
         ValueBinding vb = getValueBinding("var");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setTitleVar(String titleVar)
@@ -252,7 +255,7 @@ public class HtmlCollapsiblePanel extends UIInput
     {
         if (_titleVar != null) return _titleVar;
         ValueBinding vb = getValueBinding("titleVar");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     //------------------ GENERATED CODE END ---------------------------------------

@@ -15,11 +15,12 @@
  */
 package org.apache.myfaces.custom.inputTextHelp;
 
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
-import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * @author Thomas Obereder
@@ -53,7 +54,7 @@ public class HtmlInputTextHelp extends HtmlInputText
     {
         if(_helpText != null) return _helpText;
         ValueBinding vb = getValueBinding("helpText");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setHelpText(String helpText)

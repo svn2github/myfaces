@@ -15,14 +15,13 @@
  */
 package org.apache.myfaces.custom.datalist;
 
-import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -129,7 +128,7 @@ public class HtmlDataList
     {
         if (_layout != null) return _layout;
         ValueBinding vb = getValueBinding("layout");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setRowIndexVar(String rowIndexVar)
@@ -141,7 +140,7 @@ public class HtmlDataList
     {
         if (_rowIndexVar != null) return _rowIndexVar;
         ValueBinding vb = getValueBinding("rowIndexVar");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setRowCountVar(String rowCountVar)
@@ -153,7 +152,7 @@ public class HtmlDataList
     {
         if (_rowCountVar != null) return _rowCountVar;
         ValueBinding vb = getValueBinding("rowCountVar");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnclick(String onclick)
@@ -165,7 +164,7 @@ public class HtmlDataList
     {
         if (_onclick != null) return _onclick;
         ValueBinding vb = getValueBinding("onclick");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOndblclick(String ondblclick)
@@ -177,7 +176,7 @@ public class HtmlDataList
     {
         if (_ondblclick != null) return _ondblclick;
         ValueBinding vb = getValueBinding("ondblclick");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnkeydown(String onkeydown)
@@ -189,7 +188,7 @@ public class HtmlDataList
     {
         if (_onkeydown != null) return _onkeydown;
         ValueBinding vb = getValueBinding("onkeydown");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnkeypress(String onkeypress)
@@ -201,7 +200,7 @@ public class HtmlDataList
     {
         if (_onkeypress != null) return _onkeypress;
         ValueBinding vb = getValueBinding("onkeypress");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnkeyup(String onkeyup)
@@ -213,7 +212,7 @@ public class HtmlDataList
     {
         if (_onkeyup != null) return _onkeyup;
         ValueBinding vb = getValueBinding("onkeyup");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnmousedown(String onmousedown)
@@ -225,7 +224,7 @@ public class HtmlDataList
     {
         if (_onmousedown != null) return _onmousedown;
         ValueBinding vb = getValueBinding("onmousedown");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnmousemove(String onmousemove)
@@ -237,7 +236,7 @@ public class HtmlDataList
     {
         if (_onmousemove != null) return _onmousemove;
         ValueBinding vb = getValueBinding("onmousemove");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnmouseout(String onmouseout)
@@ -249,7 +248,7 @@ public class HtmlDataList
     {
         if (_onmouseout != null) return _onmouseout;
         ValueBinding vb = getValueBinding("onmouseout");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnmouseover(String onmouseover)
@@ -261,7 +260,7 @@ public class HtmlDataList
     {
         if (_onmouseover != null) return _onmouseover;
         ValueBinding vb = getValueBinding("onmouseover");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnmouseup(String onmouseup)
@@ -273,7 +272,7 @@ public class HtmlDataList
     {
         if (_onmouseup != null) return _onmouseup;
         ValueBinding vb = getValueBinding("onmouseup");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyle(String style)
@@ -285,7 +284,7 @@ public class HtmlDataList
     {
         if (_style != null) return _style;
         ValueBinding vb = getValueBinding("style");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyleClass(String styleClass)
@@ -297,7 +296,7 @@ public class HtmlDataList
     {
         if (_styleClass != null) return _styleClass;
         ValueBinding vb = getValueBinding("styleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     
     public void setItemStyleClass(String itemStyleClass)
@@ -309,7 +308,7 @@ public class HtmlDataList
     {
         if (_itemStyleClass != null) return _itemStyleClass;
         ValueBinding vb = getValueBinding("itemStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     
     public void setTitle(String title)
@@ -321,7 +320,7 @@ public class HtmlDataList
     {
         if (_title != null) return _title;
         ValueBinding vb = getValueBinding("title");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

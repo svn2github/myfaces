@@ -15,6 +15,8 @@
  */
 package org.apache.myfaces.custom.checkbox;
 
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -60,7 +62,7 @@ public class HtmlCheckbox
     {
         if (_for != null) return _for;
         ValueBinding vb = getValueBinding("for");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setIndex(int index)

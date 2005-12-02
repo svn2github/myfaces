@@ -15,14 +15,15 @@
  */
 package org.apache.myfaces.custom.fileupload;
 
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.util.MessageUtils;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -60,7 +61,7 @@ public class HtmlInputFileUpload
 	public String getStorage() {
 		if (_storage != null) return _storage;
 		ValueBinding vb = getValueBinding("storage");
-		return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
 
 	}
 
@@ -77,7 +78,7 @@ public class HtmlInputFileUpload
     {
         if (_accept != null) return _accept;
         ValueBinding vb = getValueBinding("accept");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -89,7 +90,7 @@ public class HtmlInputFileUpload
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -101,7 +102,7 @@ public class HtmlInputFileUpload
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

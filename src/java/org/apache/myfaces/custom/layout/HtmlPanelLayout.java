@@ -15,6 +15,8 @@
  */
 package org.apache.myfaces.custom.layout;
 
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
@@ -90,7 +92,7 @@ public class HtmlPanelLayout
     {
         if (_layout != null) return _layout;
         ValueBinding vb = getValueBinding("layout");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setHeaderClass(String headerClass)
@@ -102,7 +104,7 @@ public class HtmlPanelLayout
     {
         if (_headerClass != null) return _headerClass;
         ValueBinding vb = getValueBinding("headerClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setNavigationClass(String navigationClass)
@@ -114,7 +116,7 @@ public class HtmlPanelLayout
     {
         if (_navigationClass != null) return _navigationClass;
         ValueBinding vb = getValueBinding("navigationClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setBodyClass(String bodyClass)
@@ -126,7 +128,7 @@ public class HtmlPanelLayout
     {
         if (_bodyClass != null) return _bodyClass;
         ValueBinding vb = getValueBinding("bodyClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setFooterClass(String footerClass)
@@ -138,7 +140,7 @@ public class HtmlPanelLayout
     {
         if (_footerClass != null) return _footerClass;
         ValueBinding vb = getValueBinding("footerClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setHeaderStyle(String headerStyle)
@@ -150,7 +152,7 @@ public class HtmlPanelLayout
     {
         if (_headerStyle != null) return _headerStyle;
         ValueBinding vb = getValueBinding("headerStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setNavigationStyle(String navigationStyle)
@@ -162,7 +164,7 @@ public class HtmlPanelLayout
     {
         if (_navigationStyle != null) return _navigationStyle;
         ValueBinding vb = getValueBinding("navigationStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setBodyStyle(String bodyStyle)
@@ -174,7 +176,7 @@ public class HtmlPanelLayout
     {
         if (_bodyStyle != null) return _bodyStyle;
         ValueBinding vb = getValueBinding("bodyStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setFooterStyle(String footerStyle)
@@ -186,7 +188,7 @@ public class HtmlPanelLayout
     {
         if (_footerStyle != null) return _footerStyle;
         ValueBinding vb = getValueBinding("footerStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

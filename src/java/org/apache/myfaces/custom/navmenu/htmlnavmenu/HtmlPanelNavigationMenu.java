@@ -15,18 +15,20 @@
  */
 package org.apache.myfaces.custom.navmenu.htmlnavmenu;
 
-import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.util._ComponentUtils;
 
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.UIComponent;
 import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import java.io.IOException;
-import java.util.List;
-import java.util.Iterator;
 
 /**
  * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
@@ -131,7 +133,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_itemClass != null) return _itemClass;
         ValueBinding vb = getValueBinding("itemClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOpenItemClass(String openItemClass)
@@ -143,7 +145,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_openItemClass != null) return _openItemClass;
         ValueBinding vb = getValueBinding("openItemClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setActiveItemClass(String activeItemClass)
@@ -155,7 +157,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_activeItemClass != null) return _activeItemClass;
         ValueBinding vb = getValueBinding("activeItemClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setSeparatorClass(String separatorClass)
@@ -167,7 +169,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_separatorClass != null) return _separatorClass;
         ValueBinding vb = getValueBinding("separatorClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setItemStyle(String itemStyle)
@@ -179,7 +181,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_itemStyle != null) return _itemStyle;
         ValueBinding vb = getValueBinding("itemStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOpenItemStyle(String openItemStyle)
@@ -191,7 +193,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_openItemStyle != null) return _openItemStyle;
         ValueBinding vb = getValueBinding("openItemStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setActiveItemStyle(String activeItemStyle)
@@ -203,7 +205,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_activeItemStyle != null) return _activeItemStyle;
         ValueBinding vb = getValueBinding("activeItemStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setSeparatorStyle(String separatorStyle)
@@ -215,14 +217,14 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         if (_separatorStyle != null) return _separatorStyle;
         ValueBinding vb = getValueBinding("separatorStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public String getLayout()
     {
         if (_layout != null) return _layout;
         ValueBinding vb = getValueBinding("layout");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setLayout(String layout)

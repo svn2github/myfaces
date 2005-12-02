@@ -18,6 +18,7 @@ package org.apache.myfaces.component.html.ext;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -69,7 +70,7 @@ public class HtmlMessages
     {
         if (_summaryFormat != null) return _summaryFormat;
         ValueBinding vb = getValueBinding("summaryFormat");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setGlobalSummaryFormat(String globalSummaryFormat)
@@ -81,7 +82,7 @@ public class HtmlMessages
     {
         if (_globalSummaryFormat != null) return _globalSummaryFormat;
         ValueBinding vb = getValueBinding("globalSummaryFormat");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setDetailFormat(String detailFormat)
@@ -93,7 +94,7 @@ public class HtmlMessages
     {
         if (_detailFormat != null) return _detailFormat;
         ValueBinding vb = getValueBinding("detailFormat");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -105,7 +106,7 @@ public class HtmlMessages
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -117,7 +118,7 @@ public class HtmlMessages
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setReplaceIdWithLabel(boolean replaceIdWithLabel)

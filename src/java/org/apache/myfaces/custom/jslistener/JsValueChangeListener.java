@@ -3,6 +3,8 @@
  */
 package org.apache.myfaces.custom.jslistener;
 
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -43,7 +45,7 @@ public class JsValueChangeListener extends UIOutput
     {
         if (_for != null) return _for;
         ValueBinding vb = getValueBinding("for");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setExpressionValue(String expressionValue)
@@ -55,7 +57,7 @@ public class JsValueChangeListener extends UIOutput
     {
         if (_expressionValue != null) return _expressionValue;
         ValueBinding vb = getValueBinding("expressionValue");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setProperty(String property)
@@ -67,14 +69,14 @@ public class JsValueChangeListener extends UIOutput
     {
         if (_property != null) return _property;
         ValueBinding vb = getValueBinding("property");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public String getBodyTagEvent()
     {
         if (_bodyTagEvent != null) return _bodyTagEvent;
         ValueBinding vb = getValueBinding("bodyTagEvent");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setBodyTagEvent(String bodyTagEvent)

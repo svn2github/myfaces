@@ -15,9 +15,10 @@
  */
 package org.apache.myfaces.custom.panelstack;
 
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
-
 import javax.faces.el.ValueBinding;
 
 
@@ -57,7 +58,7 @@ public class HtmlPanelStack extends HtmlPanelGroup
     {
         if (selectedPanel != null) return selectedPanel;
         ValueBinding vb = getValueBinding("selectedPanel");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public Object saveState(FacesContext context)

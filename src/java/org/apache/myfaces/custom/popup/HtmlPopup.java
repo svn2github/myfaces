@@ -15,10 +15,12 @@
  */
 package org.apache.myfaces.custom.popup;
 
-import javax.faces.component.UIComponentBase;
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIComponent;
-import javax.faces.el.ValueBinding;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)
@@ -79,7 +81,7 @@ public class HtmlPopup
     {
         if (_style != null) return _style;
         ValueBinding vb = getValueBinding("style");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyleClass(String styleClass)
@@ -91,7 +93,7 @@ public class HtmlPopup
     {
         if (_styleClass != null) return _styleClass;
         ValueBinding vb = getValueBinding("styleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setDisplayAtDistanceX(Integer displayAtDistanceX)

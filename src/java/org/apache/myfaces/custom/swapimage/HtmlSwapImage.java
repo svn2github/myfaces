@@ -16,10 +16,11 @@
 package org.apache.myfaces.custom.swapimage;
 
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.component.UIGraphic;
-import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * @author Thomas Spiegl
@@ -73,7 +74,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_swapImageUrl != null) return _swapImageUrl;
         ValueBinding vb = getValueBinding("swapImageUrl");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setActiveImageUrl(String activeImageUrl)
@@ -85,7 +86,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_activeImageUrl != null) return _activeImageUrl;
         ValueBinding vb = getValueBinding("activeImageUrl");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setAlt(String alt)
@@ -97,7 +98,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_alt != null) return _alt;
         ValueBinding vb = getValueBinding("alt");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setDir(String dir)
@@ -109,7 +110,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_dir != null) return _dir;
         ValueBinding vb = getValueBinding("dir");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setHeight(String height)
@@ -121,7 +122,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_height != null) return _height;
         ValueBinding vb = getValueBinding("height");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setIsmap(boolean ismap)
@@ -146,7 +147,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_lang != null) return _lang;
         ValueBinding vb = getValueBinding("lang");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setLongdesc(String longdesc)
@@ -158,7 +159,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_longdesc != null) return _longdesc;
         ValueBinding vb = getValueBinding("longdesc");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnclick(String onclick)
@@ -170,7 +171,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_onclick != null) return _onclick;
         ValueBinding vb = getValueBinding("onclick");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOndblclick(String ondblclick)
@@ -182,7 +183,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_ondblclick != null) return _ondblclick;
         ValueBinding vb = getValueBinding("ondblclick");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnkeydown(String onkeydown)
@@ -194,7 +195,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_onkeydown != null) return _onkeydown;
         ValueBinding vb = getValueBinding("onkeydown");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnkeypress(String onkeypress)
@@ -206,7 +207,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_onkeypress != null) return _onkeypress;
         ValueBinding vb = getValueBinding("onkeypress");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setOnkeyup(String onkeyup)
@@ -218,7 +219,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_onkeyup != null) return _onkeyup;
         ValueBinding vb = getValueBinding("onkeyup");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyle(String style)
@@ -230,7 +231,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_style != null) return _style;
         ValueBinding vb = getValueBinding("style");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setStyleClass(String styleClass)
@@ -242,7 +243,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_styleClass != null) return _styleClass;
         ValueBinding vb = getValueBinding("styleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setTitle(String title)
@@ -254,7 +255,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_title != null) return _title;
         ValueBinding vb = getValueBinding("title");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setUsemap(String usemap)
@@ -266,7 +267,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_usemap != null) return _usemap;
         ValueBinding vb = getValueBinding("usemap");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setWidth(String width)
@@ -278,7 +279,7 @@ public class HtmlSwapImage extends UIGraphic
     {
         if (_width != null) return _width;
         ValueBinding vb = getValueBinding("width");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

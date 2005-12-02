@@ -15,12 +15,13 @@
  */
 package org.apache.myfaces.custom.navmenu.jscookmenu;
 
-import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.component.UICommand;
-import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -65,7 +66,7 @@ public class HtmlCommandJSCookMenu
     {
         if (_layout != null) return _layout;
         ValueBinding vb = getValueBinding("layout");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setTheme(String theme)
@@ -77,7 +78,7 @@ public class HtmlCommandJSCookMenu
     {
         if (_theme != null) return _theme;
         ValueBinding vb = getValueBinding("theme");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -89,7 +90,7 @@ public class HtmlCommandJSCookMenu
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -101,7 +102,7 @@ public class HtmlCommandJSCookMenu
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public boolean isRendered()

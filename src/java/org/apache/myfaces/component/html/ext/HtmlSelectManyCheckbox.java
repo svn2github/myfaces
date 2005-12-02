@@ -15,12 +15,13 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.EscapeCapable;
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.custom.ExtendedComponentBase;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -72,7 +73,7 @@ public class HtmlSelectManyCheckbox
     {
         if (_layoutWidth != null) return _layoutWidth;
         ValueBinding vb = getValueBinding("layoutWidth");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -84,7 +85,7 @@ public class HtmlSelectManyCheckbox
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -96,7 +97,7 @@ public class HtmlSelectManyCheckbox
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public boolean isSetDisplayValueOnly() {
@@ -120,7 +121,7 @@ public class HtmlSelectManyCheckbox
     public String getDisplayValueOnlyStyle() {
         if (_displayValueOnlyStyle != null) return _displayValueOnlyStyle;
         ValueBinding vb = getValueBinding("displayValueOnlyStyle");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setDisplayValueOnlyStyle(String displayValueOnlyStyle) {
@@ -130,7 +131,7 @@ public class HtmlSelectManyCheckbox
     public String getDisplayValueOnlyStyleClass() {
         if (_displayValueOnlyStyleClass != null) return _displayValueOnlyStyleClass;
         ValueBinding vb = getValueBinding("displayValueOnlyStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setDisplayValueOnlyStyleClass(String displayValueOnlyStyleClass) {

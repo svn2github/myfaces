@@ -18,6 +18,8 @@ package org.apache.myfaces.custom.tabbedpane;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
@@ -181,7 +183,7 @@ public class HtmlPanelTabbedPane
     {
         if (_bgcolor != null) return _bgcolor;
         ValueBinding vb = getValueBinding("bgcolor");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setActiveTabStyleClass(String activeTabStyleClass)
@@ -193,7 +195,7 @@ public class HtmlPanelTabbedPane
     {
         if (_activeTabStyleClass != null) return _activeTabStyleClass;
         ValueBinding vb = getValueBinding("activeTabStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setInactiveTabStyleClass(String inactiveTabStyleClass)
@@ -205,7 +207,7 @@ public class HtmlPanelTabbedPane
     {
         if (_inactiveTabStyleClass != null) return _inactiveTabStyleClass;
         ValueBinding vb = getValueBinding("inactiveTabStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setActiveSubStyleClass(String activeSubStyleClass)
@@ -217,7 +219,7 @@ public class HtmlPanelTabbedPane
     {
         if (_activeSubStyleClass != null) return _activeSubStyleClass;
         ValueBinding vb = getValueBinding("activeSubStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setInactiveSubStyleClass(String inactiveSubStyleClass)
@@ -229,7 +231,7 @@ public class HtmlPanelTabbedPane
     {
         if (_inactiveSubStyleClass != null) return _inactiveSubStyleClass;
         ValueBinding vb = getValueBinding("inactiveSubStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setTabContentStyleClass(String tabContentStyleClass)
@@ -241,7 +243,7 @@ public class HtmlPanelTabbedPane
     {
         if (_tabContentStyleClass != null) return _tabContentStyleClass;
         ValueBinding vb = getValueBinding("tabContentStyleClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

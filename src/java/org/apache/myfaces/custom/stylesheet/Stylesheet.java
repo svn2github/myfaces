@@ -15,12 +15,13 @@
  */
 package org.apache.myfaces.custom.stylesheet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -59,7 +60,7 @@ public class Stylesheet extends UIOutput {
 
 		if (_path != null) return _path;
 		ValueBinding vb = getValueBinding("path");
-		return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPath(String path) {

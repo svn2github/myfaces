@@ -15,14 +15,15 @@
  */
 package org.apache.myfaces.custom.navmenu;
 
-import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
-import javax.faces.component.UISelectItem;
 import javax.faces.component.ActionSource;
-import javax.faces.el.ValueBinding;
-import javax.faces.el.MethodBinding;
+import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionListener;
 
 /**
@@ -65,7 +66,7 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
     {
         if (_icon != null) return _icon;
         ValueBinding vb = getValueBinding("icon");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setSplit(boolean split)
@@ -167,7 +168,7 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -179,7 +180,7 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public boolean isRendered()

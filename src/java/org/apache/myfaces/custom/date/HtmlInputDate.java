@@ -22,12 +22,13 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
+
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -67,7 +68,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 	public String getType() {
 		if (_type != null) return _type;
 		ValueBinding vb = getValueBinding("type");
-		return vb != null ? (String)vb.getValue(getFacesContext()) : "date";
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : "date";
 	}
 	public void setType(String string) {
 		_type = string;
@@ -96,7 +97,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     public String getTimeZone(){
         if(_timeZone != null) return _timeZone;
         ValueBinding vb = getValueBinding("timeZone");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     
     public void setTimeZone(String timeZone){
@@ -119,7 +120,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     public String getEnabledOnUserRole(){
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole){
@@ -128,7 +129,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     public String getVisibleOnUserRole(){
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public boolean isRendered(){

@@ -4,10 +4,11 @@
 package org.apache.myfaces.custom.jsvalueset;
 
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.component.UIOutput;
-import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)
@@ -44,7 +45,7 @@ public class HtmlJsValueSet extends UIOutput
     {
         if (_name != null) return _name;
         ValueBinding vb = getValueBinding("name");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

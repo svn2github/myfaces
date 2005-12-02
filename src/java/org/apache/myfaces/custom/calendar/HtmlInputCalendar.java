@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.calendar;
 
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
@@ -69,7 +70,7 @@ public class HtmlInputCalendar
     {
         if (_monthYearRowClass != null) return _monthYearRowClass;
         ValueBinding vb = getValueBinding("monthYearRowClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setWeekRowClass(String weekRowClass)
@@ -81,7 +82,7 @@ public class HtmlInputCalendar
     {
         if (_weekRowClass != null) return _weekRowClass;
         ValueBinding vb = getValueBinding("weekRowClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setDayCellClass(String dayCellClass)
@@ -93,7 +94,7 @@ public class HtmlInputCalendar
     {
         if (_dayCellClass != null) return _dayCellClass;
         ValueBinding vb = getValueBinding("dayCellClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setCurrentDayCellClass(String currentDayCellClass)
@@ -105,7 +106,7 @@ public class HtmlInputCalendar
     {
         if (_currentDayCellClass != null) return _currentDayCellClass;
         ValueBinding vb = getValueBinding("currentDayCellClass");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setRenderAsPopup(boolean renderAsPopup)
@@ -148,7 +149,7 @@ public class HtmlInputCalendar
     {
         if (_popupButtonString != null) return _popupButtonString;
         ValueBinding vb = getValueBinding("popupButtonString");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     
     public void setRenderPopupButtonAsImage(boolean renderPopupButtonAsImage)
@@ -173,7 +174,7 @@ public class HtmlInputCalendar
     {
         if (_popupDateFormat != null) return _popupDateFormat;
         ValueBinding vb = getValueBinding("popupDateFormat");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -185,7 +186,7 @@ public class HtmlInputCalendar
     {
         if (_enabledOnUserRole != null) return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -197,7 +198,7 @@ public class HtmlInputCalendar
     {
         if (_visibleOnUserRole != null) return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupGotoString(String popupGotoString)
@@ -209,7 +210,7 @@ public class HtmlInputCalendar
     {
         if (_popupGotoString != null) return _popupGotoString;
         ValueBinding vb = getValueBinding("popupGotoString");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupTodayString(String popupTodayString)
@@ -221,7 +222,7 @@ public class HtmlInputCalendar
     {
         if (_popupTodayString != null) return _popupTodayString;
         ValueBinding vb = getValueBinding("popupTodayString");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupWeekString(String popupWeekString)
@@ -233,7 +234,7 @@ public class HtmlInputCalendar
     {
         if (_popupWeekString != null) return _popupWeekString;
         ValueBinding vb = getValueBinding("popupWeekString");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupScrollLeftMessage(String popupScrollLeftMessage)
@@ -245,7 +246,7 @@ public class HtmlInputCalendar
     {
         if (_popupScrollLeftMessage != null) return _popupScrollLeftMessage;
         ValueBinding vb = getValueBinding("popupScrollLeftMessage");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupScrollRightMessage(String popupScrollRightMessage)
@@ -257,7 +258,7 @@ public class HtmlInputCalendar
     {
         if (_popupScrollRightMessage != null) return _popupScrollRightMessage;
         ValueBinding vb = getValueBinding("popupScrollRightMessage");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupSelectMonthMessage(String popupSelectMonthMessage)
@@ -269,7 +270,7 @@ public class HtmlInputCalendar
     {
         if (_popupSelectMonthMessage != null) return _popupSelectMonthMessage;
         ValueBinding vb = getValueBinding("popupSelectMonthMessage");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupSelectYearMessage(String popupSelectYearMessage)
@@ -281,7 +282,7 @@ public class HtmlInputCalendar
     {
         if (_popupSelectYearMessage != null) return _popupSelectYearMessage;
         ValueBinding vb = getValueBinding("popupSelectYearMessage");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPopupSelectDateMessage(String popupSelectDateMessage)
@@ -293,7 +294,7 @@ public class HtmlInputCalendar
     {
         if (_popupSelectDateMessage != null) return _popupSelectDateMessage;
         ValueBinding vb = getValueBinding("popupSelectDateMessage");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
 

@@ -15,13 +15,14 @@
  */
 package org.apache.myfaces.custom.inputHtml;
 
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.util._ComponentUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * HTML Editor using the kupu library.
@@ -127,7 +128,7 @@ public class InputHtml extends HtmlInputText {
    		if (_style != null)
    		    return _style;
     	ValueBinding vb = getValueBinding("style");
-   		return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+   		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     public void setStyle(String style){
    		this._style = style;
@@ -137,7 +138,7 @@ public class InputHtml extends HtmlInputText {
    		if (_styleClass != null)
    		    return _styleClass;
     	ValueBinding vb = getValueBinding("styleClass");
-   		return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+   		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     public void setStyleClass(String styleClass){
    		this._styleClass = styleClass;
@@ -157,7 +158,7 @@ public class InputHtml extends HtmlInputText {
         if (_type != null)
             return _type;
         ValueBinding vb = getValueBinding("type");
-        return vb != null ? (String)vb.getValue(getFacesContext()) : "fragment";
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : "fragment";
     }
     public void setType(String _type){
         this._type = _type;
