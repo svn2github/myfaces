@@ -16,12 +16,17 @@
 package org.apache.myfaces.custom.div;
 
 import org.apache.myfaces.custom.htmlTag.HtmlTagTag;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.servlet.jsp.JspException;
+
 /**
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class DivTag extends HtmlTagTag {
-	
+
   public DivTag() {
     super();
   }
@@ -29,4 +34,22 @@ public class DivTag extends HtmlTagTag {
   public String getComponentType() {
     return Div.COMPONENT_TYPE;
   }
+
+    protected UIComponent findComponent(FacesContext context) throws JspException
+    {
+        return super.findComponent(context);
+    }
+
+    public UIComponent getComponentInstance()
+    {
+        return super.getComponentInstance();
+    }
+
+    protected void setProperties(UIComponent component)
+    {
+        if(!(component instanceof Div))
+            throw new IllegalArgumentException("component must be of type 'Div'");
+
+        super.setProperties(component);
+    }
 }
