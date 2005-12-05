@@ -32,6 +32,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionListener;
+import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -282,22 +283,26 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         for (int j = 0; j < listeners.length; j++)
         {
             newItem.addActionListener(listeners[j]);
-
         }
         // value
         newItem.setValue(uiNavMenuItem.getValue());
         // immeditate
-         newItem.setImmediate(uiNavMenuItem.isImmediate());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "immediate"))
+            newItem.setImmediate(uiNavMenuItem.isImmediate());
         // transient, rendered
-        newItem.setTransient(uiNavMenuItem.isTransient());
-        newItem.setRendered(uiNavMenuItem.isRendered());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "transient"))
+            newItem.setTransient(uiNavMenuItem.isTransient());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "rendered"))
+            newItem.setRendered(uiNavMenuItem.isRendered());
         // restore state
         HtmlCommandNavigationItem previousItem =
             HtmlNavigationMenuRendererUtils.findPreviousItem(previousViewRoot, newItem.getClientId(facesContext));
         if (previousItem != null)
         {
-            newItem.setActive(Boolean.valueOf(previousItem.isActive()));
-            newItem.setOpen(Boolean.valueOf(previousItem.isOpen()));
+            if (!copyValueBinding(uiNavMenuItem, newItem, "active"))
+                newItem.setActive(Boolean.valueOf(previousItem.isActive()));
+            if (!copyValueBinding(uiNavMenuItem, newItem, "open"))
+                newItem.setOpen(Boolean.valueOf(previousItem.isOpen()));
         }
         else
         {
@@ -338,6 +343,15 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
         // process next level
         preprocessNavigationItems(facesContext, newItem, previousViewRoot, uiNavMenuItem.getChildren(), uniqueId);
+    }
+
+    private boolean copyValueBinding(UIComponent source, UIComponent target, String binding)
+    {
+        ValueBinding valueBinding = source.getValueBinding(binding);
+        if (valueBinding == null)
+            return false;
+        target.setValueBinding(binding, valueBinding);
+        return true;
     }
 
 // protected
