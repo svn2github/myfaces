@@ -536,7 +536,7 @@ public final class AddResource
     public void serveResource(HttpServletRequest request, HttpServletResponse response)
             throws IOException
     {
-        String uri = request.getRequestURI();
+        String uri = request.getContextPath() + request.getServletPath() + request.getPathInfo();
         String classNameStartsAfter = RESOURCE_VIRTUAL_PATH + '/';
 
         int posStartClassName = uri.indexOf(classNameStartsAfter) + classNameStartsAfter.length();
