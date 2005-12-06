@@ -39,6 +39,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.convert.DateTimeConverter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -105,8 +106,17 @@ public class HtmlCalendarRenderer
                 addScriptAndCSSResources(facesContext, symbols, months,
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar);
 
-            String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext,
-                    inputCalendar.getPopupDateFormat());
+             // Check for an enclosed converter:
+             UIInput uiInput = (UIInput) component;
+             Converter converter = uiInput.getConverter();
+             String dateFormat = null;
+             if (converter != null && converter instanceof DateTimeConverter) {
+                 dateFormat = ((DateTimeConverter) converter).getPattern();
+             }
+             if (dateFormat == null) {
+                 dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext,
+                         inputCalendar.getPopupDateFormat());
+             }
 
             Application application = facesContext.getApplication();
 
