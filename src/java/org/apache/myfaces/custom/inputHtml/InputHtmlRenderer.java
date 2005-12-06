@@ -16,17 +16,23 @@
 package org.apache.myfaces.custom.inputHtml;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.custom.tabbedpane.HtmlPanelTab;
+import org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
@@ -47,6 +53,8 @@ public class InputHtmlRenderer extends HtmlRenderer {
 	// TODO : Allow disabeling of tag filtering
 	// TODO : Fix height while zoomed
 
+	private static final Log log = LogFactory.getLog(HtmlRendererUtils.class);
+	
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent) {
         if( !UserRoleUtils.isEnabledOnUserRole(uiComponent) )
             return false;
@@ -66,9 +74,113 @@ public class InputHtmlRenderer extends HtmlRenderer {
 			encodeDisplayValueOnly(context, editor);
 		else if( useFallback(editor) )
 			encodeEndFallBackMode(context, editor);
-		else
-			encodeEndNormalMode(context, editor);
+		else{
+			// HACK
+			// As only one inputHtml is supported by page in this version,
+			// we need to make sure we don't encode hidden inputHtml
+			// TODO : Fix this by supporting multiple inputHtml per page.
+			
+			if( ! isVisible(editor) ){
+				encodeHidden(context, editor);
+			}else if( ! hasThisPageAlreadyRenderedAnInputHtml( context ) ){
+				encodeEndNormalMode(context, editor);
+				setThisPageAlreadyRenderedAnInputHtml( context );
+			}else{
+				log.warn("Only one inputHtml can be displayed at the same time. The component will be rendered isung a textarea." +
+						"\nConpoment : "+RendererUtils.getPathToComponent( editor ));
+				encodeEndFallBackMode(context, editor);
+			}
+		}
     }
+    
+    static private boolean hasThisPageAlreadyRenderedAnInputHtml(FacesContext context){
+    		return context.getExternalContext().getRequestMap().containsKey( InputHtmlRenderer.class );
+    }
+    
+    static private void setThisPageAlreadyRenderedAnInputHtml(FacesContext context){
+		context.getExternalContext().getRequestMap().put(InputHtmlRenderer.class, Boolean.TRUE);
+    }	
+    
+    /**
+     * Try to figure out if this component is visible to avoid rendering the code if not necessary.
+     */
+    private boolean isVisible(InputHtml editor){
+    		for(UIComponent parent = editor.getParent(); parent != null ; parent = parent.getParent()){
+    			if( parent instanceof HtmlPanelTab ){
+    				HtmlPanelTab panelTab = (HtmlPanelTab) parent;
+    				HtmlPanelTabbedPane panelTabbedPane = null;
+    				for(UIComponent panelAncestor=panelTab.getParent(); panelAncestor!=null ; panelAncestor=panelAncestor.getParent()){
+    					if( panelAncestor instanceof HtmlPanelTabbedPane ){
+    						panelTabbedPane = (HtmlPanelTabbedPane)panelAncestor;
+    						break;
+    					}
+    				}
+    				
+    				if( panelTabbedPane != null ){
+					if( panelTabbedPane.isClientSide() ){
+						parent = panelTabbedPane;
+						continue;
+					}
+					
+					// Not client side tabbed pane.
+					// We need to check if the current panel tab is bisible;
+					int selectedIndex = panelTabbedPane.getSelectedIndex();
+					List children = panelTabbedPane.getChildren();
+					int tabIdx = 0;
+					for (int i = 0, len = children.size(); i < len && tabIdx <= selectedIndex ; i++){
+			            UIComponent child = htmlTabbedPaneRenderer_getUIComponent((UIComponent)children.get(i));
+			            if (child instanceof HtmlPanelTab){
+			            		if( child == panelTab ){
+			            			if( ! child.isRendered() || tabIdx != selectedIndex){
+			                        return false;
+			                    }else{
+			                    		// It's visible. Check at upper level.
+			                    		parent = panelTabbedPane;
+									continue;
+			                    }
+			            		}
+			                tabIdx++;
+			            }
+    					}
+    				}else{
+    					log.debug("pannelTabbedPane == null for component "+RendererUtils.getPathToComponent(panelTab));
+    				}
+    			}
+    		}
+    		
+    		return true;
+    }
+    
+    /**
+     * This is a copy of HtmlTabbedPaneRenderer.getUIComponent
+     */
+    private UIComponent htmlTabbedPaneRenderer_getUIComponent(UIComponent uiComponent)
+    {
+        if (uiComponent instanceof UIForm || uiComponent instanceof UINamingContainer)
+        {
+            List children = uiComponent.getChildren();
+            for (int i = 0, len = children.size(); i < len; i++)
+            {
+                uiComponent = htmlTabbedPaneRenderer_getUIComponent((UIComponent)children.get(i));
+            }
+        }
+        return uiComponent;
+    }
+    
+    private void encodeHidden(FacesContext context, InputHtml editor) throws IOException {
+		String clientId = editor.getClientId(context);
+		// Use a hidden textarea
+		ResponseWriter writer = context.getResponseWriter();
+        writer.startElement(HTML.TEXTAREA_ELEM, editor);
+
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
+
+        String text = RendererUtils.getStringValue(context, editor);
+        writer.writeText(text, JSFAttr.VALUE_ATTR);
+
+        writer.endElement(HTML.TEXTAREA_ELEM);
+	}
 
 	private void encodeDisplayValueOnly(FacesContext context, InputHtml editor) throws IOException {
 		// Use only a textarea
@@ -1208,21 +1320,19 @@ public class InputHtmlRenderer extends HtmlRenderer {
         RendererUtils.checkParamValidity(facesContext, uiComponent, InputHtml.class);
 		InputHtml editor = (InputHtml) uiComponent;
 
-		Map paramMap = facesContext.getExternalContext()
-	            .getRequestParameterMap();
+		Map paramMap = facesContext.getExternalContext().getRequestParameterMap();
 	    String clientId = uiComponent.getClientId(facesContext);
+System.out.println("Decoding +++++++++ "+clientId);
 	    if (paramMap.containsKey(clientId)) {
 	        //request parameter found, set submittedValue
 			String submitedText = (String)paramMap.get(clientId);
+System.out.println("Found !!!!!!!!!!!!\n"+submitedText+"\n!!!!!!!!!!!!!!!!!!!!!!!!");
 			String htmlText = useFallback(editor) ? HTMLEncoder.encode(submitedText, true, true) : submitedText;
 							
-	        ((EditableValueHolder) uiComponent).setSubmittedValue( htmlText );
+	        editor.setSubmittedValue( htmlText );
 	    } else {
-	        //request parameter not found, nothing to decode - set submitted value to empty
-	        //if the component has not been disabled
-	        if(!HtmlRendererUtils.isDisabledOrReadOnly(editor)) {
-	            ((EditableValueHolder) uiComponent).setSubmittedValue( RendererUtils.EMPTY_STRING );
-	        }
+            log.warn("There should always be a submitted value for an inputHtml if it is rendered, its form is submitted, and it is not read-only. Component : "+
+                    RendererUtils.getPathToComponent( editor ));
 	    }
     }
 
