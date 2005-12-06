@@ -117,7 +117,7 @@ public class HtmlRadioRenderer
             converter = null;
         }
 
-        Object currentValue = uiSelectOne.getValue();
+        Object currentValue = RendererUtils.getObjectValue(uiSelectOne);
         SelectItem selectItem = (SelectItem)selectItemList.get(index);
         Object itemValue = selectItem.getValue();
         String itemStrValue;
