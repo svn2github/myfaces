@@ -155,6 +155,27 @@ public class HtmlCollapsiblePanel extends UIInput
         super.updateModel(context);
     }
 
+    public boolean isCollapsed()
+    {
+        return isCollapsed(getValue());
+    }
+
+    public static boolean isCollapsed(Object collapsedValue)
+    {
+        Object value = collapsedValue;
+
+        if(value instanceof Boolean)
+        {
+            return ((Boolean) value).booleanValue();
+        }
+        else if (value instanceof String)
+        {
+            return Boolean.valueOf((String) value).booleanValue();
+        }
+
+        return true;
+    }
+
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCollapsiblePanel";
@@ -175,27 +196,6 @@ public class HtmlCollapsiblePanel extends UIInput
     public String getFamily()
     {
         return COMPONENT_FAMILY;
-    }
-
-    public boolean isCollapsed()
-    {
-        return isCollapsed(getValue());
-    }
-
-    public static boolean isCollapsed(Object collapsedValue)
-    {
-        Object value = collapsedValue;
-
-        if(value instanceof Boolean)
-        {
-            return ((Boolean) value).booleanValue();
-        }
-        else if (value instanceof String)
-        {
-            return Boolean.valueOf((String) value).booleanValue();
-        }
-
-        return true;
     }
 
     public String getTitle()
