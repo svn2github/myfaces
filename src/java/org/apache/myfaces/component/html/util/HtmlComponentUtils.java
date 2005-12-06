@@ -22,6 +22,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * <p>Utility class for providing basic functionality to the HTML faces 
@@ -30,15 +32,16 @@ import org.apache.myfaces.renderkit.JSFAttr;
  * @author Sean Schofield
  * @version $Revision$ $Date$
  */
-public class HtmlComponentUtils 
+public class HtmlComponentUtils
 {
-    
+    private static Log log = LogFactory.getLog(HtmlComponentUtils.class);
+
     /**
      * Constructor (Private)
      */
-    private HtmlComponentUtils() 
+    private HtmlComponentUtils()
     {}
-    
+
     /**
      * Gets the client id associated with the component.  Checks the forceId 
      * attribute of the component (if present) and uses the orginally supplied 
@@ -50,39 +53,19 @@ public class HtmlComponentUtils
      * @param context Additional context information to help in the request.
      * @return The clientId to use with the specified component.
      */
-    public static String getClientId(UIComponent component, 
-                                     Renderer renderer, 
+    public static String getClientId(UIComponent component,
+                                     Renderer renderer,
                                      FacesContext context)
     {
-        // see if the originally supplied id should be used 
-        Boolean forceValue = null;
 
-        Object forceValueObj = component.getAttributes().get(JSFAttr.FORCE_ID_ATTR);
+        //forceId enabled?
+        boolean forceId = getBooleanValue(JSFAttr.FORCE_ID_ATTR,
+                component.getAttributes().get(JSFAttr.FORCE_ID_ATTR),false);
 
-        if(forceValueObj instanceof Boolean)
-        {
-            forceValue = (Boolean)forceValueObj;
-        }
-        else if(forceValueObj instanceof String)
-        {
-            forceValue = Boolean.valueOf((String) forceValueObj);
-        }
-        else if(forceValueObj != null)
-        {
-            throw new IllegalStateException("forceId must be instanceof 'Boolean' or 'String'");
-        }
-
-        boolean forceId = false;
-        
-        if (forceValue != null)
-        {
-            forceId = forceValue.booleanValue();
-        }        
-        
         if (forceId && component.getId() != null)
         {
             String clientId = component.getId();
-            
+
             /**
              * See if there is a parent naming container.  If there is ...
              */
@@ -91,14 +74,9 @@ public class HtmlComponentUtils
             {
                 if (parentContainer instanceof UIData)
                 {
-                    // see if the originally supplied id should be used 
-                    Boolean forceIdIndexValue = (Boolean)component.getAttributes().get(JSFAttr.FORCE_ID_INDEX_ATTR);
-                    boolean forceIdIndex = true;
-
-                    if (forceIdIndexValue != null)
-                    {
-                        forceIdIndex = forceIdIndexValue.booleanValue();
-                    }        
+                    // see if the originally supplied id should be used
+                    boolean forceIdIndex = getBooleanValue(JSFAttr.FORCE_ID_ATTR,
+                            component.getAttributes().get(JSFAttr.FORCE_ID_INDEX_ATTR),true);
 
                     // note: user may have specifically requested that we do not add the special forceId [index] suffix
                     if (forceIdIndex)
@@ -110,13 +88,13 @@ public class HtmlComponentUtils
                     }
                 }
             }
-            
+
             // JSF spec requires that renderer get a chance to convert the id
             if (renderer != null)
             {
                 clientId = renderer.convertClientId(context, clientId);
             }
-            
+
             return clientId;
         }
         else
@@ -124,7 +102,28 @@ public class HtmlComponentUtils
             return null;
         }
     }
-    
+
+    private static boolean getBooleanValue(String attribute, Object value, boolean defaultValue)
+    {
+        if(value instanceof Boolean)
+        {
+            return ((Boolean) value).booleanValue();
+        }
+        else if(value instanceof String)
+        {
+            return Boolean.valueOf((String) value).booleanValue();
+        }
+        else if(value != null)
+        {
+            log.error("value for attribute "+attribute+
+                    " must be instanceof 'Boolean' or 'String', is of type : "+value.getClass());
+
+            return defaultValue;
+        }
+
+        return defaultValue;
+    }
+
     /**
      * Locates the {@link NamingContainer} associated with the givem 
      * {@link UIComponent}.
@@ -134,8 +133,8 @@ public class HtmlComponentUtils
      *    if no naming container is found.
      * @return The parent naming container (or root if applicable).
      */
-    public static UIComponent findParentNamingContainer(UIComponent component, 
-        boolean returnRootIfNotFound)
+    public static UIComponent findParentNamingContainer(UIComponent component,
+                                                        boolean returnRootIfNotFound)
     {
         UIComponent parent = component.getParent();
         if (returnRootIfNotFound && parent == null)
@@ -160,5 +159,5 @@ public class HtmlComponentUtils
             }
         }
         return null;
-    }    
+    }
 }

@@ -17,14 +17,6 @@ package org.apache.myfaces.component.html.ext;
 
 import java.util.Iterator;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
-import org.apache.myfaces.component.EscapeCapable;
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-import org.apache.myfaces.util.MessageUtils;
-import org.apache.myfaces.util._ComponentUtils;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -34,15 +26,28 @@ import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.myfaces.component.DisplayValueOnlyCapable;
+
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.util._ComponentUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class HtmlSelectOneRadio
         extends javax.faces.component.html.HtmlSelectOneRadio
-        implements UserRoleAware, DisplayValueOnlyCapable, EscapeCapable
+        implements UserRoleAware, DisplayValueOnlyCapable
 {
-		public String getClientId(FacesContext context)
+    private static Log log = LogFactory.getLog(HtmlSelectOneRadio.class);
+
+    public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
         if (clientId == null)
@@ -53,18 +58,22 @@ public class HtmlSelectOneRadio
         return clientId;
     }
 
-		/**
-     * Overridden method, as with extended seletOne, value doesn't necessaraly
+    /**
+     * Overridden method, as with extended seletOne, value doesn't necessarily
      * have to be contained within select list, for example, when forceId="true" and
      * forceIdIndex="false" then component may be used in datatable.
      */
     protected void validateValue(FacesContext context, Object value)
     {
         //Is this radio button used within a datatable (forceId=true and forceIdIndex=false)
-        Boolean forceId = (Boolean) this.getAttributes().get("forceId");
-        Boolean forceIdIndex = (Boolean) this.getAttributes().get("forceIdIndex");
-        boolean dataTable = forceId != null && forceId.booleanValue()
-                && !(forceIdIndex != null && forceIdIndex.booleanValue());
+        boolean forceId = getBooleanValue(JSFAttr.FORCE_ID_ATTR,
+                this.getAttributes().get(JSFAttr.FORCE_ID_ATTR), false);
+
+//      see if the originally supplied id should be used
+        boolean forceIdIndex = getBooleanValue(JSFAttr.FORCE_ID_INDEX_ATTR,
+                this.getAttributes().get(JSFAttr.FORCE_ID_INDEX_ATTR), true);
+
+        boolean dataTable = forceId && !forceIdIndex;
 
         if (!dataTable)
         {
@@ -94,7 +103,7 @@ public class HtmlSelectOneRadio
             		message.setSeverity(FacesMessage.SEVERITY_WARN);
             		context.addMessage(clientId, message);
 
-                setValid(false);
+                    setValid(false);
             	}
                 return;
             }
@@ -105,6 +114,28 @@ public class HtmlSelectOneRadio
                 callValidators(context, this, value);
             }
         }
+    }
+
+
+    private static boolean getBooleanValue(String attribute, Object value, boolean defaultValue)
+    {
+        if(value instanceof Boolean)
+        {
+            return ((Boolean) value).booleanValue();
+        }
+        else if(value instanceof String)
+        {
+            return Boolean.valueOf((String) value).booleanValue();
+        }
+        else if(value != null)
+        {
+            log.error("value for attribute "+attribute+
+                    " must be instanceof 'Boolean' or 'String', is of type : "+value.getClass());
+
+            return defaultValue;
+        }
+
+        return defaultValue;
     }
 
     private static void callValidators(FacesContext context, UIInput input, Object convertedValue)
@@ -165,8 +196,8 @@ public class HtmlSelectOneRadio
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _displayValueOnly = null;
-	private String _displayValueOnlyStyle = null;
-	private String _displayValueOnlyStyleClass = null;
+    private String _displayValueOnlyStyle = null;
+    private String _displayValueOnlyStyleClass = null;
 
     public HtmlSelectOneRadio()
     {
@@ -264,20 +295,4 @@ public class HtmlSelectOneRadio
         _displayValueOnlyStyleClass = (String)values[5];
     }
     //------------------ GENERATED CODE END ---------------------------------------
-
-    private Boolean _escape = null;
-    private static final boolean DEFAULT_ESCAPE = true;
-
-    public void setEscape(boolean escape)
-    {
-        _escape = Boolean.valueOf(escape);
-    }
-
-    public boolean isEscape()
-    {
-        if (_escape != null) return _escape.booleanValue();
-        ValueBinding vb = getValueBinding("escape");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : DEFAULT_ESCAPE;
-    }
 }
