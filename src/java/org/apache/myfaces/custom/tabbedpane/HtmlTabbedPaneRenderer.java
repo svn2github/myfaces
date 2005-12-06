@@ -73,20 +73,6 @@ public class HtmlTabbedPaneRenderer
     {
     	// NoOp
     }
-    
-    /**
-     * Write out information about the toggling mode - the component might
-     * be toggled server side or client side.
-     *
-     * @param uiComponent
-     */
-    private boolean isClientSide(HtmlPanelTabbedPane uiComponent){
-
-        Boolean serverSideTabSwitch = (Boolean)
-                uiComponent.getAttributes().get("serverSideTabSwitch");
-
-        return serverSideTabSwitch != null ? !serverSideTabSwitch.booleanValue() : true;
-    }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
@@ -102,9 +88,9 @@ public class HtmlTabbedPaneRenderer
         addResource.addStyleSheet(facesContext,AddResource.HEADER_BEGIN, 
                 HtmlTabbedPaneRenderer.class, "defaultStyles.css");
 
-        if( isClientSide(tabbedPane) ){
-        	addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
-        	addResource.addInlineStyleAtPosition(facesContext,AddResource.HEADER_BEGIN, 
+        if( tabbedPane.isClientSide() ){
+        		addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlTabbedPaneRenderer.class, "dynamicTabs.js");
+        		addResource.addInlineStyleAtPosition(facesContext,AddResource.HEADER_BEGIN, 
                     '#'+getTableStylableId(tabbedPane,facesContext)+" ."+ACTIVE_HEADER_CELL_CLASS+" input,\n" +
                     '#'+getTableStylableId(tabbedPane,facesContext)+" ."+TAB_PANE_CLASS+",\n" +
                     '#'+getTableStylableId(tabbedPane,facesContext)+" ."+SUB_HEADER_CELL_CLASS+"{\n"+
@@ -127,7 +113,7 @@ public class HtmlTabbedPaneRenderer
 
         List children = tabbedPane.getChildren();
         
-        if( isClientSide(tabbedPane) ){
+        if( tabbedPane.isClientSide() ){
         	List headerIDs = new ArrayList();
 	        List tabIDs = new ArrayList();
 	        for (int i = 0, len = children.size(); i < len; i++)
@@ -277,7 +263,7 @@ public class HtmlTabbedPaneRenderer
         
         // No request due to a header button pressed.
         // Restore a client-side switch
-        if( isClientSide(tabbedPane) ){
+        if( tabbedPane.isClientSide() ){
         	String clientSideIndex = (String)paramMap.get(getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext));
         	if (clientSideIndex != null && clientSideIndex.length() > 0)
             {
@@ -437,7 +423,7 @@ public class HtmlTabbedPaneRenderer
             writer.writeAttribute(HTML.TYPE_ATTR, "submit", null);
             writer.writeAttribute(HTML.NAME_ATTR, tabbedPane.getClientId(facesContext) + "." + tabIndex, null);
             writer.writeAttribute(HTML.VALUE_ATTR, label, null);
-            if( isClientSide(tabbedPane) ){
+            if( tabbedPane.isClientSide() ){
             	String activeUserClass = tabbedPane.getActiveTabStyleClass();
             	String inactiveUserClass = tabbedPane.getInactiveTabStyleClass();
             	String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();

@@ -56,7 +56,6 @@ public class HtmlPanelTabbedPane
 
 //       int tabIdx = 0;
 //       int selectedIndex = getSelectedIndex();
-       getSelectedIndex();
 
        Iterator it = getFacetsAndChildren();
 
@@ -133,6 +132,16 @@ public class HtmlPanelTabbedPane
                 }
             }
         }
+    }
+    
+    /**
+     * Write out information about the toggling mode - the component might
+     * be toggled server side or client side.
+     */
+    public boolean isClientSide(){
+        Boolean serverSideTabSwitch = (Boolean)getAttributes().get("serverSideTabSwitch");
+
+        return serverSideTabSwitch != null ? !serverSideTabSwitch.booleanValue() : true;
     }
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
