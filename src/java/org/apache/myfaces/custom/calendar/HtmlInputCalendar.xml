@@ -38,6 +38,14 @@
         <type>java.lang.String</type>
     </field>
     <field>
+        <name>popupButtonStyle</name>
+        <type>java.lang.String</type>
+    </field>
+    <field>
+        <name>popupButtonStyleClass</name>
+        <type>java.lang.String</type>
+    </field>
+    <field>
         <name>renderPopupButtonAsImage</name>
         <type>boolean</type>
     </field>

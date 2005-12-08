@@ -669,6 +669,24 @@
             </description>
         </attribute>
         <attribute>
+            <name>popupButtonStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines the css style for the button which leads to the
+                calendar-popup-window.
+            </description>
+        </attribute>
+        <attribute>
+            <name>popupButtonStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Defines the css style class for the button which leads to the
+                calendar-popup-window.
+            </description>
+        </attribute>
+        <attribute>
             <name>popupGotoString</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>

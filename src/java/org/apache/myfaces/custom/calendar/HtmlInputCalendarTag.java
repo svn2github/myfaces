@@ -72,6 +72,8 @@ public class HtmlInputCalendarTag
     private String _addResources;
     private String _popupDateFormat;
     private String _popupButtonString;
+    private String _popupButtonStyle;
+    private String _popupButtonStyleClass;
     private String _renderPopupButtonAsImage;
     private String _popupGotoString = null;
     private String _popupTodayString = null;
@@ -97,6 +99,8 @@ public class HtmlInputCalendarTag
         _addResources = null;
         _popupDateFormat = null;
         _popupButtonString = null;
+        _popupButtonStyle = null;
+        _popupButtonStyleClass = null;
         _renderPopupButtonAsImage = null;
         _popupGotoString = null;
         _popupTodayString = null;
@@ -136,6 +140,8 @@ public class HtmlInputCalendarTag
         setBooleanProperty(component,"addResources",_addResources);
         setStringProperty(component,"popupDateFormat",_popupDateFormat);
         setStringProperty(component,"popupButtonString",_popupButtonString);
+        setStringProperty(component,"popupButtonStyle",_popupButtonStyle);
+        setStringProperty(component,"popupButtonStyleClass",_popupButtonStyleClass);
         setBooleanProperty(component,"renderPopupButtonAsImage",_renderPopupButtonAsImage);
         setStringProperty(component,"popupGotoString",_popupGotoString);
         setStringProperty(component,"popupTodayString",_popupTodayString);
@@ -190,6 +196,16 @@ public class HtmlInputCalendarTag
         _popupButtonString = popupButtonString;
     }
     
+    public void setPopupButtonStyle(String popupButtonStyle)
+    {
+        _popupButtonStyle = popupButtonStyle;
+    }
+
+    public void setPopupButtonStyleClass(String popupButtonStyleClass)
+    {
+        _popupButtonStyleClass = popupButtonStyleClass;
+    }
+
     public void setRenderPopupButtonAsImage(String renderPopupButtonAsImage)
     {
         _renderPopupButtonAsImage = renderPopupButtonAsImage;

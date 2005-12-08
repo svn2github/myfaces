@@ -435,6 +435,19 @@ public class HtmlCalendarRenderer
             if(popupButtonString==null)
                 popupButtonString="...";
             writer.writeAttribute(HTML.VALUE_ATTR, StringEscapeUtils.escapeJavaScript(popupButtonString), null);
+            
+            String popupButtonStyle = calendar.getPopupButtonStyle();
+            if(popupButtonStyle != null)
+            {
+                writer.writeAttribute(HTML.STYLE_ATTR, popupButtonStyle, null);
+            }
+            
+            String popupButtonStyleClass = calendar.getPopupButtonStyleClass();
+            if(popupButtonStyleClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
+            }
+
             /*
             if (renderButtonAsImage) {
                 writer.writeAttribute(HTML.ID_ATTR, buttonId, null);
@@ -450,7 +463,22 @@ public class HtmlCalendarRenderer
             writer.startElement(HTML.IMG_ELEM, uiComponent);
             AddResource addResource = AddResource.getInstance(facesContext);
             writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
-            writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
+            
+            String popupButtonStyle = calendar.getPopupButtonStyle();
+            if(popupButtonStyle != null)
+            {
+                writer.writeAttribute(HTML.STYLE_ATTR, popupButtonStyle, null);
+            }
+            else
+            {
+                writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
+            }
+            
+            String popupButtonStyleClass = calendar.getPopupButtonStyleClass();
+            if(popupButtonStyleClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
+            }
 
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);
             writeOnclickJsCalendarFunctionCall(writer, facesContext,uiComponent,dateFormat);

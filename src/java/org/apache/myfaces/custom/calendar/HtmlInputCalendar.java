@@ -43,6 +43,8 @@ public class HtmlInputCalendar
     private Boolean _renderAsPopup = null;
     private Boolean _addResources = null;
     private String _popupButtonString = null;
+    private String _popupButtonStyle = null;
+    private String _popupButtonStyleClass = null;
     private Boolean _renderPopupButtonAsImage = null;
     private String _popupDateFormat = null;
     private String _enabledOnUserRole = null;
@@ -152,6 +154,30 @@ public class HtmlInputCalendar
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
     
+    public void setPopupButtonStyle(String popupButtonStyle)
+    {
+        _popupButtonStyle = popupButtonStyle;
+    }
+
+    public String getPopupButtonStyle()
+    {
+        if (_popupButtonStyle != null) return _popupButtonStyle;
+        ValueBinding vb = getValueBinding("popupButtonStyle");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setPopupButtonStyleClass(String popupButtonStyleClass)
+    {
+        _popupButtonStyleClass = popupButtonStyleClass;
+    }
+
+    public String getPopupButtonStyleClass()
+    {
+        if (_popupButtonStyleClass != null) return _popupButtonStyleClass;
+        ValueBinding vb = getValueBinding("popupButtonStyleClass");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
     public void setRenderPopupButtonAsImage(boolean renderPopupButtonAsImage)
     {
         _renderPopupButtonAsImage = Boolean.valueOf(renderPopupButtonAsImage);
