@@ -850,24 +850,11 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        <attribute>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.String</type>
-            <description>
-                The developer-assigned ID of this component.  The ID must be
-                unique within the scope of the tag's enclosing naming container
-                (e.g., h:form or f:subview).  This value must be a static value.
-            </description>
-        </attribute>
         &ui_command_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_anchor_attributes;
         &user_role_attributes;
-        <!-- HtmlCommandLink attributes -->
-        &html_focus_blur_attributes;
         <!-- TODO attributes image, label - old todo.. still necessary?-->
     </tag>
 
@@ -885,21 +872,11 @@
 
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        <attribute>
-            <name>id</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.String</type>
-            <description>The developer-assigned ID of this component.  The ID must be unique within the scope of the tag's
-            enclosing naming container (e.g., h:form or f:subview).  This value must be a static value.
-            </description>
-        </attribute>
         &ui_command_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_anchor_attributes;
         &user_role_attributes;
-        &html_focus_blur_attributes;
         <!-- TODO attributes image, label - old todo.. still necessary?-->
     </tag>
 
@@ -1874,12 +1851,13 @@
         <name>collapsiblePanel</name>
         <tag-class>org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanelTag</tag-class>
         <body-content>JSP</body-content>
-        <description>
-            A component which just renders as a single icon when "collapsed",
-            hiding all child components. When open, the child components can
-            be seen.
-
-            Unless otherwise specified, all attributes accept static values or EL expressions.
+        <description><![CDATA[
+            A component which just renders as a single icon (with optional label)
+            when "collapsed", hiding all child components. When open, the child
+            components can be seen.
+            <p>
+            The title attribute defines the label shown for the collapsible panel.
+            ]]>
         </description>
         &ui_panel_attributes;
         &html_universal_attributes;
@@ -1904,14 +1882,6 @@
                The variable which you can use to check for the collapsed
                state of the enclosing component. This is especially
                useful for custom headers you define in a facet with name 'header'.
-            </description>
-        </attribute>
-        <attribute>
-            <name>title</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Label for collapsible panel.
             </description>
         </attribute>
         <attribute>
