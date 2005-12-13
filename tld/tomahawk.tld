@@ -95,6 +95,39 @@
 <!ENTITY standard_select_one_menu_attributes SYSTEM "entities/standard_select_one_menu_attributes.xml">
 <!ENTITY standard_select_one_radio_attributes SYSTEM "entities/standard_select_one_radio_attributes.xml">
 <!ENTITY alt_location_attributes             SYSTEM "entities/alt_location_attributes.xml">
+
+<!ENTITY tomahawk_input_secret_attributes 
+      SYSTEM "tomahawk-entities/tomahawk_input_secret_attributes.xml">
+<!ENTITY tomahawk_message_attributes 
+      SYSTEM "tomahawk-entities/tomahawk_message_attributes.xml">
+<!ENTITY tomahawk_messages_attributes 
+      SYSTEM "tomahawk-entities/tomahawk_messages_attributes.xml">
+<!ENTITY tomahawk_select_many_checkbox_attributes 
+      SYSTEM "tomahawk-entities/tomahawk_select_many_checkbox_attributes.xml">
+<!ENTITY tomahawk_input_calendar_attributes
+      SYSTEM "tomahawk-entities/tomahawk_input_calendar_attributes.xml">
+<!ENTITY tomahawk_js_value_change_listener_attributes
+      SYSTEM "tomahawk-entities/tomahawk_js_value_change_listener_attributes.xml">
+<!ENTITY tomahawk_js_value_set_attributes
+      SYSTEM "tomahawk-entities/tomahawk_js_value_set_attributes.xml">
+<!ENTITY tomahawk_checkbox_attributes
+      SYSTEM "tomahawk-entities/tomahawk_checkbox_attributes.xml">
+<!ENTITY tomahawk_command_sort_header_attributes
+      SYSTEM "tomahawk-entities/tomahawk_command_sort_header_attributes.xml">
+<!ENTITY tomahawk_data_list_attributes
+      SYSTEM "tomahawk-entities/tomahawk_data_list_attributes.xml">
+<!ENTITY tomahawk_data_scroller_attributes
+      SYSTEM "tomahawk-entities/tomahawk_data_scroller_attributes.xml">
+<!ENTITY tomahawk_input_date_attributes
+      SYSTEM "tomahawk-entities/tomahawk_input_date_attributes.xml">
+<!ENTITY tomahawk_input_file_upload_attributes
+      SYSTEM "tomahawk-entities/tomahawk_input_file_upload_attributes.xml">
+<!ENTITY tomahawk_input_html_attributes
+      SYSTEM "tomahawk-entities/tomahawk_input_html_attributes.xml">
+<!ENTITY tomahawk_navigation_menu_item_attributes
+      SYSTEM "tomahawk-entities/tomahawk_navigation_menu_item_attributes.xml">
+<!ENTITY tomahawk_js_cook_menu_attributes
+      SYSTEM "tomahawk-entities/tomahawk_js_cook_menu_attributes.xml">
 ]>
 
 <taglib>
@@ -201,16 +234,7 @@
         &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;
-        <!-- SecretRenderer attributes -->
-        <attribute>
-            <name>redisplay</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If true, the value will be re-sent (in plaintext) when the form
-                is rerendered (see JSF.7.4.4). Default is false.
-            </description>
-        </attribute>
+        &tomahawk_input_secret_attributes;
     </tag>
 
     <!-- inputText -->
@@ -296,39 +320,7 @@
         <!-- MyFaces extensions -->
         &user_role_attributes;
         &ext_forceId_attribute;
-        <attribute>
-            <name>summaryFormat</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If present, instead of rendering the message summary, a MessageFormat with this
-                attribute as pattern is created. The format method of this MessageFormat is
-                called with the message summary as the first argument and the label of the
-                associated component (if any) as the second argument.
-                Example: "{0}:"
-            </description>
-        </attribute>
-        <attribute>
-            <name>detailFormat</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If present, instead of rendering the message detail, a MessageFormat with this
-                attribute as pattern is created. The format method of this MessageFormat is
-                called with the message detail as the first argument and the label of the
-                associated component (if any) as the second argument.
-                Example: "The input in field {1} is wrong: {0}"
-            </description>
-        </attribute>
-        <attribute>
-            <name>replaceIdWithLabel</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If present, all occurrences of the id of the component for which the message
-                is rendered will be replaced by the label. Default: true.
-            </description>
-        </attribute>
+        &tomahawk_message_attributes;
     </tag>
 
     <!-- messages -->
@@ -345,50 +337,7 @@
         <!-- MyFaces extensions -->
         &user_role_attributes;
         &ext_forceId_attribute;
-        <attribute>
-            <name>summaryFormat</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If present, instead of rendering the message summary, a MessageFormat with this
-                attribute as pattern is created. The format method of this MessageFormat is
-                called with the message summary as the first argument and the label of the
-                associated component (if any) as the second argument.
-                Example: "{0}:" or "{0} in field {1}"
-            </description>
-        </attribute>
-        <attribute>
-            <name>globalSummaryFormat</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Like summaryFormat, but applies to global messages (i.e. messages not associated
-                with a component). If no globalSummaryFormat is given, the summaryFormat is used for
-                global messages.
-                Example: "{0}:"
-            </description>
-        </attribute>
-        <attribute>
-            <name>detailFormat</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If present, instead of rendering the message detail, a MessageFormat with this
-                attribute as pattern is created. The format method of this MessageFormat is
-                called with the message detail as the first argument and the label of the
-                associated component (if any) as the second argument.
-                Example: "The input in field {1} is wrong: {0}"
-            </description>
-        </attribute>
-        <attribute>
-            <name>replaceIdWithLabel</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If present, all occurrences of the id of the component for which the message
-                is rendered will be replaced by the label.
-            </description>
-        </attribute>
+        &tomahawk_messages_attributes;
     </tag>
 
     <!-- outputLabel -->
@@ -536,16 +485,7 @@
         </description>
         &standard_select_many_checkbox_attributes;
         &ext_escape_attribute;
-        <attribute>
-            <name>layoutWidth</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A integer representing the number of checkbox rows if
-                the layout is lineDirection and checkbox columns if
-                the layout is pageDirection.
-            </description>
-        </attribute>
+        &tomahawk_select_many_checkbox_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;
@@ -603,146 +543,7 @@
         &html_input_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
-        <attribute>
-            <name>monthYearRowClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                CSS class to be used on the TR element for the header-row
-                showing month and year.
-            </description>
-        </attribute>
-        <attribute>
-            <name>weekRowClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                CSS class to be used on the TR element for the header-row
-                showing the week-days.
-            </description>
-        </attribute>
-        <attribute>
-            <name>dayCellClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                CSS class to be used for the TD element containing a day days.
-            </description>
-        </attribute>
-        <attribute>
-            <name>currentDayCellClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                CSS class to be used for the TD element of the currently
-                selected date.
-            </description>
-        </attribute>
-        <attribute>
-            <name>renderAsPopup</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Render the input-calendar as a java-script popup on client.</description>
-        </attribute>
-        <attribute>
-            <name>addResources</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Automatically add the input-calendar scripts and css files to
-                the header - set that to false to provide the scripts yourself.
-            </description>
-        </attribute>
-        <attribute>
-            <name>popupDateFormat</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Defines the date format used by the java-script popup on client.</description>
-        </attribute>
-        <attribute>
-            <name>popupButtonString</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Defines the string displayed on the button which leads to the
-                calendar-popup-window (... by default).
-            </description>
-        </attribute>
-        <attribute>
-            <name>popupButtonStyle</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Defines the css style for the button which leads to the
-                calendar-popup-window.
-            </description>
-        </attribute>
-        <attribute>
-            <name>popupButtonStyleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Defines the css style class for the button which leads to the
-                calendar-popup-window.
-            </description>
-        </attribute>
-        <attribute>
-            <name>popupGotoString</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for "Go To Current Month"</description>
-        </attribute>
-        <attribute>
-            <name>popupTodayString</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for "Today is"</description>
-        </attribute>
-        <attribute>
-            <name>popupWeekString</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for "Wk"</description>
-        </attribute>
-        <attribute>
-            <name>popupScrollLeftMessage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for scrolling to the left.</description>
-        </attribute>
-        <attribute>
-            <name>popupScrollRightMessage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for scrolling to the right.</description>
-        </attribute>
-        <attribute>
-            <name>popupSelectMonthMessage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for "Click to select a month".</description>
-        </attribute>
-        <attribute>
-            <name>popupSelectYearMessage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Set the string for "Click to select a year".</description>
-        </attribute>
-        <attribute>
-            <name>popupSelectDateMessage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Set the string for "Select [date] as date" (do not replace
-                [date], it will be replaced by the current date).
-            </description>
-        </attribute>
-        <attribute>
-            <name>renderPopupButtonAsImage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>If true, renders a calendar icon instead of the button to pop up the calendar.</description>
-        </attribute>
+        &tomahawk_input_calendar_attributes;
     </tag>
 
     <!-- jsValueChangeListener -->
@@ -750,33 +551,12 @@
         <name>jsValueChangeListener</name>
         <tag-class>org.apache.myfaces.custom.jslistener.JsValueChangeListenerTag</tag-class>
         <body-content>empty</body-content>
-        <description>Value change listener on client side.
+        <description>
+            Value change listener on client side.
 
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
-        <attribute>
-          <name>for</name>
-          <required>false</required>
-          <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-          <name>property</name>
-          <required>false</required>
-          <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-          <name>expressionValue</name>
-          <required>true</required>
-          <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-          <name>bodyTagEvent</name>
-          <required>false</required>
-          <rtexprvalue>false</rtexprvalue>
-          <description>
-            If specified this JavaScript event will be inserted in the body tag.
-            JavaScript code will be the same like it is rendered in the parent component.
-          </description>
-        </attribute>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
+        &tomahawk_js_value_change_listener_attributes;
     </tag>
 
     <!-- jsValueSet -->
@@ -790,16 +570,7 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        <attribute>
-          <name>name</name>
-          <required>true</required>
-          <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-          <name>value</name>
-          <required>true</required>
-          <rtexprvalue>false</rtexprvalue>
-        </attribute>
+        &tomahawk_js_value_set_attributes;
     </tag>
 
     <!-- checkbox -->
@@ -818,23 +589,7 @@
         </description>
         &ui_component_attributes;
         &user_role_attributes;
-        <!-- HtmlCheckbox attributes -->
-        <attribute>
-            <name>for</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                id of the referenced extended selectManyCheckbox component
-            </description>
-        </attribute>
-        <attribute>
-            <name>index</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                n-th SelectItem of referenced UISelectMany starting with 0.
-            </description>
-        </attribute>
+        &tomahawk_checkbox_attributes;
     </tag>
 
     <!-- commandNavigation2 -->
@@ -905,28 +660,7 @@
         &html_event_handler_attributes;
         &html_anchor_attributes;
         &user_role_attributes;
-        <!-- HtmlCommandSortHeader attributes -->
-        <attribute>
-            <name>columnName</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                The name of this column.
-                This name must uniquely identify this column among all other (sortable) columns
-                in the same data_table.
-                The sortColumn attribute of the embedding data_table reflects the current
-                sort column (see extended data_table).
-            </description>
-        </attribute>
-        <attribute>
-            <name>arrow</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Indicates whether an arrow, that shows the sort direction should be rendered.
-                Default: false
-            </description>
-        </attribute>
+        &tomahawk_command_sort_header_attributes;
     </tag>
 
     <!-- dataList -->
@@ -944,70 +678,7 @@
         &html_universal_attributes;
         &html_event_handler_attributes;
         &ext_forceId_attribute;
-        <!-- UIData attributes -->
-        <attribute>
-            <name>value</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Supported types see JSF Spec 4.1.3</description>
-        </attribute>
-        <attribute>
-            <name>var</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>rows</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>first</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        &user_role_attributes;
-        <attribute>
-            <name>layout</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description><![CDATA[
-                simple|unorderedList|orderedList
-                <ul>
-                  <li>simple = for each dataRow all children are simply rendered</li>
-                  <li>unorderedList = the list is rendered as HTML unordered list (= bullet list)</li>
-                  <li>orderedList = the list is rendered as HTML ordered list</li>
-                </ul>
-                Default: simple
-                ]]>
-            </description>
-        </attribute>
-        <attribute>
-            <name>rowIndexVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the current rowIndex is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>rowCountVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the rowCount is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>itemStyleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-              CSS class to be applied to individual items in the list
-            </description>
-        </attribute>
+        &tomahawk_data_list_attributes;
      </tag>
 
     <!-- dataScroller -->
@@ -1024,184 +695,7 @@
         </description>
         &ui_component_attributes;
         &user_role_attributes;
-        <attribute>
-            <name>for</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-              The JSF id of a UIData component that this scroller will affect.
-              If this attribute is not present then the datascroller must be
-              a child of a UIData comopnent.
-            </description>
-        </attribute>
-        <attribute>
-            <name>fastStep</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>step (pages) used for fastforward and fastrewind</description>
-        </attribute>
-        <attribute>
-            <name>pageIndexVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the actual page index is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>pageCountVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the actual page count is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>rowsCountVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the actual rows count is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>displayedRowsCountVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the actual displayed rows count is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>firstRowIndexVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the actual first displayed row index is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>lastRowIndexVar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                A parameter name, under which the actual last displayed row index is set in request scope
-                similar to the var parameter.
-            </description>
-        </attribute>
-        <attribute>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                styleClass for scroller table
-            </description>
-        </attribute>
-        <attribute>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                style for scroller table
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginator</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If set true, then the paginator gets rendered
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorMaxPages</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                The maximum amount of pages to be displayed in the paginator.
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorTableClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                styleclass for pagingator
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorTableStyle</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                style for pagingator
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorColumnClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                styleClass for paginator's column
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorColumnStyle</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                style for paginator's column
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorActiveColumnClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                styleClass for paginator's column with pageIndex = currentPageIndex
-            </description>
-        </attribute>
-        <attribute>
-            <name>paginatorActiveColumnStyle</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                style for paginator's column with pageIndex = currentPageIndex
-            </description>
-        </attribute>
-        <attribute>
-            <name>renderFacetsIfSinglePage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If set to false, the facets aren't renderd if all the lines are contained on a single page.
-                Default is true.
-            </description>
-        </attribute>
-        <attribute>
-            <name>immediate</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.String</type>
-            <description>
-                True means that the default ActionListener should be executed
-                immediately (i.e. during Apply Request Values phase of the
-                request processing lifecycle), rather than waiting until the
-                Invoke Application phase.
-            </description>
-        </attribute>
-        <attribute>
-            <name>actionListener</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.String</type>
-            <description>MethodBinding pointing at method acception an ActionEvent with return type void.</description>
-        </attribute>
+        &tomahawk_data_scroller_attributes;
      </tag>
 
     <!-- inputDate -->
@@ -1217,34 +711,7 @@
         &html_event_handler_attributes;
         &html_input_attributes;
         &user_role_attributes;
-        <attribute>
-            <name>type</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Specifies the type of value to be accepted.  Valid values are:
-                date | time | short_time | both | full
-            </description>
-        </attribute>
-        <attribute>
-            <name>popupCalendar</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>timeZone</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>ampm</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                If true, use 12hr times with AM/PM selector; if false,
-                use 24hr time.  Default false.
-            </description>
-        </attribute>
+        &tomahawk_input_date_attributes;
     </tag>
 
     <!-- inputFileUpload -->
@@ -1264,17 +731,7 @@
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_input_attributes;
-        <!-- HTML 4.0 input type="file" attributes -->
-        <attribute>
-            <name>accept</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>storage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
+        &tomahawk_input_file_upload_attributes;
     </tag>
 
     <!-- inputHtml -->
@@ -1292,125 +749,7 @@
         &ui_input_attributes;
         &user_role_attributes;
         &display_value_only_attributes;
-        <attribute>
-            <name>style</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>styleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>fallback</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Use a text area instead of the javascript HTML editor.
-                Default is false.
-                Use with caution.
-            </description>
-        </attribute>
-        <attribute>
-            <name>type</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                The type of the value. It can be either fragment for an HTML fragment (default)
-                or document for a full HTML document, with head, title, body, ... tags.
-            </description>
-        </attribute>
-           <attribute>
-            <name>allowEditSource</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Allows the user to edit the HTML source code.
-                Default is true.
-            </description>
-           </attribute>
-        <attribute>
-            <name>allowExternalLinks</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Allows the user to insert external links.
-                Default is true.
-            </description>
-           </attribute>
-           <attribute>
-            <name>addKupuLogo</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Kupu Logo in the buttons bar.
-                Default is true.
-            </description>
-           </attribute>
-           <attribute>
-            <name>showAllToolBoxes</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Shortcut to avoid setting all the showXXToolBox to true.
-                Default is false.
-            </description>
-        </attribute>
-           <attribute>
-            <name>showPropertiesToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Properties tool box next to the text.
-                Default is false.
-            </description>
-        </attribute>
-           <attribute>
-            <name>showLinksToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Links tool box next to the text.
-                Default is false.
-            </description>
-        </attribute>
-           <attribute>
-            <name>showImagesToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Images tool box next to the text.
-                Default is false.
-            </description>
-        </attribute>
-           <attribute>
-            <name>showTablesToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Tables tool box next to the text.
-                Default is false.
-            </description>
-        </attribute>
-        <attribute>
-            <name>showCleanupExpressionsToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Cleanup Expressions tool box next to the text.
-                Default is false.
-            </description>
-        </attribute>
-           <attribute>
-            <name>showDebugToolBox</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                Show the Debug tool box next to the text.
-                Default is false.
-            </description>
-        </attribute>
+        &tomahawk_input_html_attributes;
     </tag>
 
     <!-- navigationMenu, jscookMenu -->
@@ -1426,53 +765,31 @@
         &ui_select_item_attributes;
         &user_role_attributes;
         &faces_rendered_attribute;
-        <!-- navigationMenuItem attributes -->
-        <attribute>
-            <name>icon</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>split</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>action</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
+        &tomahawk_navigation_menu_item_attributes;
     </tag>
     <tag>
         <name>navigationMenuItems</name>
         <tag-class>org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItemsTag</tag-class>
         <body-content>empty</body-content>
         <description>
-
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            A tree of menu items as returned by a value-expression.
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_select_items_attributes;
     </tag>
     <tag>
         <name>jscookMenu</name>
         <tag-class>org.apache.myfaces.custom.navmenu.jscookmenu.HtmlJSCookMenuTag</tag-class>
         <body-content>JSP</body-content>
-        <description> Renders a Javascript Menu.  Nested NavigationMenuItem(s) are rendered as Javascript Menu.
+        <description>
+            Renders a Javascript Menu.  Nested NavigationMenuItem(s) are rendered as Javascript Menu.
 
-        Unless otherwise specified, all attributes accept static values or EL expressions.</description>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+        </description>
         &ui_component_attributes;
         &user_role_attributes;
         &alt_location_attributes;
-        <!-- jscookMenu attributes -->
-        <attribute>
-            <name>layout</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>theme</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
+        &tomahawk_js_cook_menu_attributes;
     </tag>
 
     <!-- panelLayout -->
