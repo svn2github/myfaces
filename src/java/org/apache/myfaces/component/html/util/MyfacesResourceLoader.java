@@ -24,13 +24,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.HTML;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * A ResourceLoader capable of fetching resources from the classpath,
@@ -97,11 +98,11 @@ class MyFacesResourceLoader implements ResourceLoader
      * filename suffix of the resource.
      * <p>
      * @see org.apache.myfaces.component.html.util.ResourceLoader#
-     *   serveResource(javax.servlet.http.HttpServletRequest, 
-     *     javax.servlet.http.HttpServletResponse, java.lang.String)
+     *   serveResource(javax.servlet.ServletContext, 
+     *     javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
-    public void serveResource(HttpServletRequest request, HttpServletResponse response,
-            String resourceUri) throws IOException
+    public void serveResource(ServletContext context, HttpServletRequest request,
+            HttpServletResponse response, String resourceUri) throws IOException
     {
         String[] uriParts = resourceUri.split("/", 2);
 

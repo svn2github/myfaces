@@ -17,16 +17,17 @@ package org.apache.myfaces.component.html.util;
 
 import java.io.IOException;
 
+import org.apache.commons.fileupload.FileUpload;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileUpload;
 
 /**
  * This filters is mandatory for the use of many components.
@@ -38,11 +39,14 @@ import org.apache.commons.fileupload.FileUpload;
  */
 public class ExtensionsFilter implements Filter {
 
-    private int uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
+    private int _uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
 
-    private int uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
+    private int _uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
-    private String uploadRepositoryPath = null; //standard temp directory
+    private String _uploadRepositoryPath = null; //standard temp directory
+
+    private ServletContext _servletContext;
+    
     private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
 
     /**
@@ -52,13 +56,15 @@ public class ExtensionsFilter implements Filter {
 
         String param = filterConfig.getInitParameter("uploadMaxFileSize");
 
-        uploadMaxFileSize = resolveSize(param, uploadMaxFileSize);
+        _uploadMaxFileSize = resolveSize(param, _uploadMaxFileSize);
 
         param = filterConfig.getInitParameter("uploadThresholdSize");
 
-        uploadThresholdSize = resolveSize(param, uploadThresholdSize);
+        _uploadThresholdSize = resolveSize(param, _uploadThresholdSize);
 
-        uploadRepositoryPath = filterConfig.getInitParameter("uploadRepositoryPath");
+        _uploadRepositoryPath = filterConfig.getInitParameter("uploadRepositoryPath");
+        
+        _servletContext = filterConfig.getServletContext();
     }
 
     private int resolveSize(String param, int defaultValue) {
@@ -106,7 +112,7 @@ public class ExtensionsFilter implements Filter {
         // Serve resources
         AddResource addResource = AddResource.getInstance(httpRequest);
         if( addResource.isResourceUri( httpRequest ) ){
-            addResource.serveResource(httpRequest, httpResponse);
+            addResource.serveResource(_servletContext, httpRequest, httpResponse);
             return;
         }
         
@@ -114,7 +120,7 @@ public class ExtensionsFilter implements Filter {
         
         // For multipart/form-data requests
         if (FileUpload.isMultipartContent(httpRequest)) {
-            extendedRequest = new MultipartRequestWrapper(httpRequest, uploadMaxFileSize, uploadThresholdSize, uploadRepositoryPath);
+            extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
         }
         
         ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);

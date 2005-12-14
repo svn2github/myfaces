@@ -18,6 +18,7 @@ package org.apache.myfaces.component.html.util;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,7 +33,7 @@ public interface ResourceLoader
 {
     /**
      * Called by AddResource to render external resource data 
-     * 
+     * @param context TODO
      * @param request the request 
      * @param response the response to write the resource content to
      * @param resourceUri contains the uri part after the uri which 
@@ -40,6 +41,6 @@ public interface ResourceLoader
      * 
      * @throws IOException
      */
-    public void serveResource(HttpServletRequest request, 
+    public void serveResource(ServletContext context, HttpServletRequest request,
             HttpServletResponse response, String resourceUri) throws IOException;
 }

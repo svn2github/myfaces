@@ -15,23 +15,28 @@
  */
 package org.apache.myfaces.component.html.util;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
-import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.*;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -78,13 +83,15 @@ public final class AddResource
 
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
-    private static final String HEADER_BEGIN_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
+    private static final String HEADER_BEGIN_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class
+            .getName()
             + ".HEADER_BEGIN_INFO";
 
     private static final String BODY_END_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
             + ".BODY_END_INFO";
 
-    private static final String BODY_ONLOAD_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class.getName()
+    private static final String BODY_ONLOAD_INFO_REQUEST_ATTRIBUTE_NAME = AddResource.class
+            .getName()
             + ".BODY_ONLOAD_INFO";
 
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
@@ -269,7 +276,8 @@ public final class AddResource
      * the script is inserted into the buffered response by the ExtensionsFilter
      * after the page is complete.
      */
-    public void addJavaScriptAtPosition(FacesContext context, Position position, ResourceHandler resourceHandler)
+    public void addJavaScriptAtPosition(FacesContext context, Position position,
+            ResourceHandler resourceHandler)
     {
         addJavaScriptAtPosition(context, position, resourceHandler, false);
     }
@@ -286,11 +294,11 @@ public final class AddResource
      * resourceName is script.js, the resource will be retrieved from 
      * "example/Widget/resource/script.js" in the classpath.
      */
-    public void addJavaScriptAtPosition(FacesContext context, Position position, Class myfacesCustomComponent,
-                                        String resourceName)
+    public void addJavaScriptAtPosition(FacesContext context, Position position,
+            Class myfacesCustomComponent, String resourceName)
     {
-        addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
-                resourceName));
+        addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(
+                myfacesCustomComponent, resourceName));
     }
 
     /**
@@ -303,11 +311,11 @@ public final class AddResource
      * processing the html page without waiting for the specified script to
      * load and be run.
      */
-    public void addJavaScriptAtPosition(FacesContext context, Position position, Class myfacesCustomComponent,
-                                        String resourceName, boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, Position position,
+            Class myfacesCustomComponent, String resourceName, boolean defer)
     {
-        addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
-                resourceName), defer);
+        addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(
+                myfacesCustomComponent, resourceName), defer);
     }
 
     /**
@@ -327,13 +335,14 @@ public final class AddResource
      * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptAtPosition(FacesContext context, Position position, String uri, boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, Position position, String uri,
+            boolean defer)
     {
         addPositionedInfo(context, position, getScriptInstance(context, uri, defer));
     }
 
-    public void addJavaScriptToBodyTag(FacesContext context,
-                                       String javascriptEventName, String addedJavaScript)
+    public void addJavaScriptToBodyTag(FacesContext context, String javascriptEventName,
+            String addedJavaScript)
     {
         AttributeInfo info = new AttributeInfo();
         info.setAttributeName(javascriptEventName);
@@ -346,8 +355,8 @@ public final class AddResource
      * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-    public void addJavaScriptAtPosition(FacesContext context, Position position, ResourceHandler resourceHandler,
-                                        boolean defer)
+    public void addJavaScriptAtPosition(FacesContext context, Position position,
+            ResourceHandler resourceHandler, boolean defer)
     {
         validateResourceHandler(resourceHandler);
         addPositionedInfo(context, position, getScriptInstance(context, resourceHandler, defer));
@@ -357,10 +366,11 @@ public final class AddResource
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, Position position, Class myfacesCustomComponent,
-            String resourceName)
+    public void addStyleSheet(FacesContext context, Position position,
+            Class myfacesCustomComponent, String resourceName)
     {
-        addStyleSheet(context, position, new MyFacesResourceHandler(myfacesCustomComponent, resourceName));
+        addStyleSheet(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
+                resourceName));
     }
 
     /**
@@ -376,7 +386,8 @@ public final class AddResource
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
-    public void addStyleSheet(FacesContext context, Position position, ResourceHandler resourceHandler)
+    public void addStyleSheet(FacesContext context, Position position,
+            ResourceHandler resourceHandler)
     {
         validateResourceHandler(resourceHandler);
         addPositionedInfo(context, position, getStyleInstance(context, resourceHandler));
@@ -393,14 +404,17 @@ public final class AddResource
     /**
      * Adds the given Inline Script at the specified document position.
      */
-    public void addInlineScriptAtPosition(FacesContext context, Position position, String inlineScript)
+    public void addInlineScriptAtPosition(FacesContext context, Position position,
+            String inlineScript)
     {
         addPositionedInfo(context, position, getInlineScriptInstance(inlineScript));
     }
 
-    public String getResourceUri(FacesContext context, Class myfacesCustomComponent, String resource, boolean withContextPath)
+    public String getResourceUri(FacesContext context, Class myfacesCustomComponent,
+            String resource, boolean withContextPath)
     {
-        return getResourceUri(context, new MyFacesResourceHandler(myfacesCustomComponent, resource), withContextPath);
+        return getResourceUri(context,
+                new MyFacesResourceHandler(myfacesCustomComponent, resource), withContextPath);
     }
 
     public String getResourceUri(FacesContext context, Class myfacesCustomComponent, String resource)
@@ -420,17 +434,21 @@ public final class AddResource
         }
         return getResourceUri(context, resourceHandler.getResourceLoaderClass(), true) + uri;
     }
+
     /**
      * Get the Path used to retrieve an resource.
      */
-    public String getResourceUri(FacesContext context, ResourceHandler resourceHandler, boolean withContextPath)
+    public String getResourceUri(FacesContext context, ResourceHandler resourceHandler,
+            boolean withContextPath)
     {
         String uri = resourceHandler.getResourceUri(context);
         if (uri == null)
         {
-            return getResourceUri(context, resourceHandler.getResourceLoaderClass(), withContextPath);
+            return getResourceUri(context, resourceHandler.getResourceLoaderClass(),
+                    withContextPath);
         }
-        return getResourceUri(context, resourceHandler.getResourceLoaderClass(), withContextPath) + uri;
+        return getResourceUri(context, resourceHandler.getResourceLoaderClass(), withContextPath)
+                + uri;
     }
 
     /**
@@ -446,7 +464,7 @@ public final class AddResource
      */
     public String getResourceUri(FacesContext context, String uri, boolean withContextPath)
     {
-        if(withContextPath)
+        if (withContextPath)
         {
             return context.getApplication().getViewHandler().getResourceURL(context, uri);
         }
@@ -456,7 +474,8 @@ public final class AddResource
     /**
      * Get the Path used to retrieve an resource.
      */
-    protected String getResourceUri(FacesContext context, Class resourceLoader, boolean withContextPath)
+    protected String getResourceUri(FacesContext context, Class resourceLoader,
+            boolean withContextPath)
     {
         StringBuffer sb = new StringBuffer(200);
         sb.append(RESOURCE_VIRTUAL_PATH);
@@ -533,11 +552,12 @@ public final class AddResource
         return clazz;
     }
 
-    public void serveResource(HttpServletRequest request, HttpServletResponse response)
-            throws IOException
+    public void serveResource(ServletContext context, HttpServletRequest request,
+            HttpServletResponse response) throws IOException
     {
-    		String pathInfo = request.getPathInfo();
-        String uri = request.getContextPath() + request.getServletPath() + (pathInfo == null ? "" : pathInfo);
+        String pathInfo = request.getPathInfo();
+        String uri = request.getContextPath() + request.getServletPath()
+                + (pathInfo == null ? "" : pathInfo);
         String classNameStartsAfter = RESOURCE_VIRTUAL_PATH + '/';
 
         int posStartClassName = uri.indexOf(classNameStartsAfter) + classNameStartsAfter.length();
@@ -553,8 +573,8 @@ public final class AddResource
         {
             Class resourceLoader = getClass(className);
             validateResourceLoader(resourceLoader);
-            ((ResourceLoader) resourceLoader.newInstance()).serveResource(request, response,
-                    resourceUri);
+            ((ResourceLoader) resourceLoader.newInstance()).serveResource(context, request,
+                    response, resourceUri);
             response.flushBuffer();
         }
         catch (ClassNotFoundException e)
@@ -619,25 +639,28 @@ public final class AddResource
 
     private void addPositionedInfo(FacesContext context, Position position, PositionedInfo info)
     {
-        if(HEADER_BEGIN.equals(position))
+        if (HEADER_BEGIN.equals(position))
         {
             //todo: fix this to work in PortletRequest as well
-            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext()
+                    .getRequest();
             Set set = getHeaderBeginInfos(request);
             set.add(info);
         }
-        else if(BODY_END.equals(position))
+        else if (BODY_END.equals(position))
         {
             //todo: fix this to work in PortletRequest as well
-            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext()
+                    .getRequest();
             Set set = getBodyEndInfos(request);
             set.add(info);
 
         }
-        else if(BODY_ONLOAD.equals(position))
+        else if (BODY_ONLOAD.equals(position))
         {
             //todo: fix this to work in PortletRequest as well
-            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext()
+                    .getRequest();
             Set set = getBodyOnloadInfos(request);
             set.add(info);
         }
@@ -655,9 +678,8 @@ public final class AddResource
      *
      * The ordering is such that the user header CSS & JS override the MyFaces' ones.
      */
-    public void writeWithFullHeader(HttpServletRequest request,
-            String bufferedResponse, HttpServletResponse response)
-            throws IOException
+    public void writeWithFullHeader(HttpServletRequest request, String bufferedResponse,
+            HttpServletResponse response) throws IOException
     {
 
         StringBuffer originalResponse = new StringBuffer(bufferedResponse);
@@ -691,11 +713,11 @@ public final class AddResource
         ResponseWriter writer = new HtmlResponseWriterImpl(response.getWriter(), HtmlRendererUtils
                 .selectContentType(request.getHeader("accept")), null);
 
-        if(afterBodyContentInsertPosition >=0)
+        if (afterBodyContentInsertPosition >= 0)
         {
             // insert all the items that want to go immediately after the <body> tag.
-            HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper.
-                getInstance(writer);
+            HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper
+                    .getInstance(writer);
 
             for (Iterator i = getBodyEndInfos(request).iterator(); i.hasNext();)
             {
@@ -703,48 +725,47 @@ public final class AddResource
 
                 PositionedInfo positionedInfo = (PositionedInfo) i.next();
 
-                if(!(positionedInfo instanceof WritablePositionedInfo))
-                    throw new IllegalStateException("positionedInfo of type : "+
-                            positionedInfo.getClass().getName());
-                ((WritablePositionedInfo) positionedInfo).
-                        writePositionedInfo(response, writerWrapper);
+                if (!(positionedInfo instanceof WritablePositionedInfo))
+                    throw new IllegalStateException("positionedInfo of type : "
+                            + positionedInfo.getClass().getName());
+                ((WritablePositionedInfo) positionedInfo).writePositionedInfo(response,
+                        writerWrapper);
             }
 
-            originalResponse.insert(headerInsertPosition,writerWrapper.toString());
+            originalResponse.insert(headerInsertPosition, writerWrapper.toString());
         }
 
-        if(bodyInsertPosition>0)
+        if (bodyInsertPosition > 0)
         {
             StringBuffer buf = new StringBuffer();
             Set bodyInfos = getBodyOnloadInfos(request);
-            if (bodyInfos.size() > 0) 
+            if (bodyInfos.size() > 0)
             {
-                int i=0;
+                int i = 0;
                 for (Iterator it = getBodyOnloadInfos(request).iterator(); it.hasNext();)
                 {
                     AttributeInfo positionedInfo = (AttributeInfo) it.next();
-                    if(i==0)
+                    if (i == 0)
                     {
                         buf.append(positionedInfo.getAttributeName());
                         buf.append("=\"");
                     }
                     buf.append(positionedInfo.getAttributeValue());
-    
+
                     i++;
                 }
 
                 buf.append("\"");
-                originalResponse.insert( bodyInsertPosition-1, " "+
-                        buf.toString());
+                originalResponse.insert(bodyInsertPosition - 1, " " + buf.toString());
             }
         }
 
         if (headerInsertPosition >= 0)
         {
-            HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper.
-                getInstance(writer);
+            HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper
+                    .getInstance(writer);
 
-            if(addHeaderTags)
+            if (addHeaderTags)
                 writerWrapper.write("<head>");
 
             for (Iterator i = getHeaderBeginInfos(request).iterator(); i.hasNext();)
@@ -753,17 +774,17 @@ public final class AddResource
 
                 PositionedInfo positionedInfo = (PositionedInfo) i.next();
 
-                if(!(positionedInfo instanceof WritablePositionedInfo))
-                    throw new IllegalStateException("positionedInfo of type : "+
-                            positionedInfo.getClass().getName());
-                ((WritablePositionedInfo) positionedInfo).
-                        writePositionedInfo(response, writerWrapper);
+                if (!(positionedInfo instanceof WritablePositionedInfo))
+                    throw new IllegalStateException("positionedInfo of type : "
+                            + positionedInfo.getClass().getName());
+                ((WritablePositionedInfo) positionedInfo).writePositionedInfo(response,
+                        writerWrapper);
             }
 
-            if(addHeaderTags)
+            if (addHeaderTags)
                 writerWrapper.write("</head>");
 
-            originalResponse.insert(headerInsertPosition,writerWrapper.toString());
+            originalResponse.insert(headerInsertPosition, writerWrapper.toString());
 
         }
 
@@ -807,26 +828,26 @@ public final class AddResource
 
         private Position(int pos)
         {
-            _pos = pos;            
+            _pos = pos;
         }
-        
+
         public boolean equals(Object obj)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return false;
             }
-            if(obj == this)
+            if (obj == this)
             {
                 return true;
             }
-            if(obj instanceof Position)
+            if (obj instanceof Position)
             {
-                return ((Position)obj)._pos == _pos;
+                return ((Position) obj)._pos == _pos;
             }
             return false;
         }
-        
+
         public int hashCode()
         {
             return _pos;
@@ -925,7 +946,8 @@ public final class AddResource
         }
     }
 
-    private class ScriptPositionedInfo extends AbstractResourceUri implements WritablePositionedInfo
+    private class ScriptPositionedInfo extends AbstractResourceUri implements
+            WritablePositionedInfo
     {
         protected final boolean _defer;
 
@@ -1046,7 +1068,7 @@ public final class AddResource
         private int headerInsertPosition = -1;
         private int bodyInsertPosition = -1;
         private int beforeBodyPosition = -1;
-        private int afterBodyContentInsertPosition=-1;
+        private int afterBodyContentInsertPosition = -1;
 
         public void openedStartTag(int charIndex, int tagIdentifier)
         {
