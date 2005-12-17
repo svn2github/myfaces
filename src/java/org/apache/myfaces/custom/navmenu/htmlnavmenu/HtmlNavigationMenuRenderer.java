@@ -159,13 +159,16 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                 if (prevItem.isOpen() || prevItem.isActive())
                 {
                     HtmlCommandNavigationItem item = (HtmlCommandNavigationItem) panelNav.findComponent(uiComponent.getClientId(facesContext));
-                    if (!copyValueBinding(prevItem, item, "active"))
-                        item.setActive(prevItem.isActive() ? Boolean.TRUE : Boolean.FALSE);
-                    if (!copyValueBinding(prevItem, item, "open"))
-                        item.setOpen(prevItem.isOpen());
-                    item.toggleOpen();
-                    if (prevItem.isOpen())
-                        restoreOpenActiveStates(facesContext, panelNavPrev, panelNav, prevItem.getChildren());
+                    if (item != null)
+                    {
+                        if (!copyValueBinding(prevItem, item, "active"))
+                            item.setActive(prevItem.isActive());
+                        if (!copyValueBinding(prevItem, item, "open"))
+                            item.setOpen(prevItem.isOpen());
+                        item.toggleOpen();
+                        if (prevItem.isOpen())
+                            restoreOpenActiveStates(facesContext, panelNavPrev, panelNav, prevItem.getChildren());
+                    }
                 }
             }
         }
@@ -332,7 +335,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             newItem.setRendered(uiNavMenuItem.isRendered());
 
         if (uiNavMenuItem.isOpen()) newItem.toggleOpen();
-        newItem.setActive(Boolean.valueOf(uiNavMenuItem.isActive()));
+        newItem.setActive(uiNavMenuItem.isActive());
 
         // Create and add UIOutput
         UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);

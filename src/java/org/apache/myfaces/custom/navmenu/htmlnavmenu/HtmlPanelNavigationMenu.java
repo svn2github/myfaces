@@ -86,7 +86,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
                 if (previousItem != null)
                 {
                     ((HtmlCommandNavigationItem)child).setOpen(previousItem.isOpen());
-                    ((HtmlCommandNavigationItem)child).setActive(Boolean.valueOf(previousItem.isActive()));
+                    ((HtmlCommandNavigationItem)child).setActive(previousItem.isActive());
                 }
                 else
                 {

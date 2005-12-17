@@ -74,9 +74,9 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         return v != null && v.booleanValue();
     }
 
-    public void setActive(Boolean active)
+    public void setActive(boolean active)
     {
-        _active = active;
+        _active = active ? Boolean.TRUE : Boolean.FALSE;
     }
 
     /**
@@ -154,7 +154,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
                     deactivateAllChildren(p.getChildren().iterator());
                 }
                 //...activate this item
-                setActive(Boolean.TRUE);
+                setActive(true);
             }
             else
             {
@@ -189,7 +189,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             UIComponent ni = (UIComponent)children.next();
             if (ni instanceof HtmlCommandNavigationItem)
             {
-                ((HtmlCommandNavigationItem)ni).setActive(Boolean.FALSE);
+                ((HtmlCommandNavigationItem)ni).setActive(false);
                 if (ni.getChildCount() > 0)
                 {
                     deactivateAllChildren(ni.getChildren().iterator());
