@@ -663,6 +663,23 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+        <attribute>
+            <name>open</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+               Menu node is open.
+            </description>
+        </attribute>
+        <attribute>
+            <name>active</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+               Menu node is active.
+            </description>
+        </attribute>
+
         &ui_command_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
