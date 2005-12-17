@@ -31,12 +31,16 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
     private static final String ICON_ATTR   = "icon";
     private static final String ACTION_ATTR = "action";
     private static final String SPLIT_ATTR  = "split";
+    private static final String OPEN_ATTR  = "open";
+    private static final String ACTIVE_ATTR  = "active";
 
     private String _icon;
     private String _action;
     private String _actionListener;
     private String _immediate;
     private String _split;
+    private String _open;
+    private String _active;
 
     // User Role support
     private String _enabledOnUserRole;

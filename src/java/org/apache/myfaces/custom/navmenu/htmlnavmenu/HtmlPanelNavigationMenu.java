@@ -42,6 +42,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
 
     static final String PREVIOUS_VIEW_ROOT = HtmlPanelNavigationMenu.class.getName() + ".PREVIOUS_VIEW_ROOT";
     private boolean _itemOpenActiveStatesRestored = false;
+    private transient Object[] _state;
 
     public void decode(FacesContext context)
     {
@@ -262,6 +263,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     public void restoreState(FacesContext context, Object state)
     {
         Object values[] = (Object[])state;
+        _state = values;
         super.restoreState(context, values[0]);
         _itemClass = (String)values[1];
         _openItemClass = (String)values[2];

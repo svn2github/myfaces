@@ -17,13 +17,19 @@ package org.apache.myfaces.custom.navmenu.htmlnavmenu;
 
 import org.apache.myfaces.taglib.html.ext.HtmlCommandLinkTag;
 
+import javax.faces.component.UIComponent;
+
 /**
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */
 public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
 {
+    private static final String OPEN_ATTR   = "open".intern();
+    private static final String ACTIVE_ATTR = "active".intern();
 
+    private String _open;
+    private String _active;
 
     public String getComponentType()
     {
@@ -33,5 +39,23 @@ public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
     public String getRendererType()
     {
         return HtmlNavigationMenuRenderer.RENDERER_TYPE;
+    }
+
+    protected void setProperties(UIComponent component)
+    {
+        super.setProperties(component);
+
+        setBooleanProperty(component, OPEN_ATTR, _open);
+        setBooleanProperty(component, ACTIVE_ATTR, _active);
+    }
+
+    public void setOpen(String open)
+    {
+        _open = open;
+    }
+
+    public void setActive(String active)
+    {
+        _active = active;
     }
 }

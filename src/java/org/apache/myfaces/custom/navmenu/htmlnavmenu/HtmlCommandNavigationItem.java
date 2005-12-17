@@ -268,5 +268,4 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
 
 
     //------------------ GENERATED CODE END ---------------------------------------
-
 }
