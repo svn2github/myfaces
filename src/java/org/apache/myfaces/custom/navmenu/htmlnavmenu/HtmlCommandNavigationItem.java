@@ -61,9 +61,9 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         return v != null && v.booleanValue();
     }
 
-    public void setOpen(Boolean open)
+    public void setOpen(boolean open)
     {
-        _open = open;
+        _open = open ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public boolean isActive()
@@ -119,7 +119,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             if (getChildCount() > 0)
             {
                 //item is a menu group --> close item
-                setOpen(Boolean.FALSE);
+                setOpen(false);
             }
         }
         else
@@ -135,7 +135,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             {
                 if (p instanceof HtmlCommandNavigationItem)
                 {
-                    ((HtmlCommandNavigationItem)p).setOpen(Boolean.TRUE);
+                    ((HtmlCommandNavigationItem)p).setOpen(true);
                 }
                 p = p.getParent();
             }
@@ -159,7 +159,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             else
             {
                 //open item
-                setOpen(Boolean.TRUE);
+                setOpen(true);
             }
         }
     }
@@ -205,7 +205,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             UIComponent ni = (UIComponent)children.next();
             if (ni instanceof HtmlCommandNavigationItem)
             {
-                ((HtmlCommandNavigationItem)ni).setOpen(Boolean.FALSE);
+                ((HtmlCommandNavigationItem)ni).setOpen(false);
                 if (ni.getChildCount() > 0)
                 {
                     closeAllChildren(ni.getChildren().iterator());
