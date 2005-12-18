@@ -50,7 +50,7 @@ function jscalendarHideElement( elmID, overDiv ){
         objTop   += objParent.offsetTop;
         objParent = objParent.offsetParent;
       }
-      
+
       objParent = obj.offsetParent;
       */
 
@@ -155,7 +155,7 @@ function jscalendarInit(){
 }
 
 function jscalendarTodayIsDate(){
-    var format = new SimpleDateFormat(jscalendarTodayFormat,jscalendarDateFormatSymbols);
+    var format = new org_apache_myfaces_SimpleDateFormat(jscalendarTodayFormat,jscalendarDateFormatSymbols);
     return format.format(jscalendarToday);
 }
 
@@ -173,7 +173,7 @@ function jscalendarPadZero(num){
 }
 
 function jscalendarConstructDate(d,m,y){
-    var format = new SimpleDateFormat(jscalendarDateFormat,jscalendarDateFormatSymbols);
+    var format = new org_apache_myfaces_SimpleDateFormat(jscalendarDateFormat,jscalendarDateFormatSymbols);
     return format.format(new Date(y,m,d,jscalendarHoursSelected,jscalendarMinutesSelected,jscalendarSecondsSelected));
 }
 
@@ -465,7 +465,7 @@ function jscalendarPopUpCalendar(ctl, ctl2, format){
 			jscalendarCtlToPlaceValue = ctl2;
 			jscalendarDateFormat=format;
 
-            var simpleDateFormat = new SimpleDateFormat(jscalendarDateFormat, jscalendarDateFormatSymbols);
+            var simpleDateFormat = new org_apache_myfaces_SimpleDateFormat(jscalendarDateFormat, jscalendarDateFormatSymbols);
             var dateSelected = simpleDateFormat.parse(ctl2.value);
 
             if(dateSelected)
@@ -535,10 +535,10 @@ function jscalendarPopUpCalendar_Show(ctl){
 	} catch (ex) {
        // ignore
     }
-	
+
 	var leftScrollOffset = 0;
 	var topScrollOffset = 0;
-	
+
 	aTag = ctl;
 	// Added try-catch (MYFACES-870)
 	try {
@@ -549,8 +549,8 @@ function jscalendarPopUpCalendar_Show(ctl){
 		} while(aTag.tagName!="BODY");
 	} catch (ex) {
 		 // ignore
-	} 
-	
+	}
+
 	var bodyRect = getVisibleBodyRectangle();
 	var cal = document.getElementById("calendar");
 	var top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight +	2;
@@ -587,39 +587,39 @@ function jscalendarPopUpCalendar_Show(ctl){
 function getVisibleBodyRectangle()
 {
 	var visibleRect = new Rectangle();
-	
+
 	if (window.pageYOffset != undefined)
 	{
 		//Most non IE
 		visibleRect.top = window.pageYOffset;
 		visibleRect.left = window.pageXOffset;
-	} 
+	}
 	else if(document.body && document.body.scrollTop )
 	{
     	//IE 6 strict mode
     	visibleRect.top = document.body.scrollTop;
     	visibleRect.left = document.body.scrollLeft;
-  	} 
-  	else if(document.documentElement && document.documentElement.scrollTop ) 
+  	}
+  	else if(document.documentElement && document.documentElement.scrollTop )
     {
     	//Older IE
     	visibleRect.top = document.documentElement.scrollTop;
     	visibleRect.left = document.documentElement.scrollLeft;
     }
-    
-	if( window.innerWidth != undefined ) 
+
+	if( window.innerWidth != undefined )
 	{
     	//Most non-IE
     	visibleRect.right = visibleRect.left + window.innerWidth;
     	visibleRect.bottom = visibleRect.top + window.innerHeight;
-  	} 
-  	else if( document.documentElement && document.documentElement.clientHeight ) 
+  	}
+  	else if( document.documentElement && document.documentElement.clientHeight )
     {
     	//IE 6 strict mode
     	visibleRect.right = visibleRect.left + document.documentElement.clientWidth;
     	visibleRect.bottom = visibleRect.top + document.documentElement.clientHeight;
-  	} 
-  	else if( document.body && document.body.clientHeight ) 
+  	}
+  	else if( document.body && document.body.clientHeight )
   	{
 	    //IE 4 compatible
 	    visibleRect.right = visibleRect.left + document.body.clientWidth;
@@ -658,14 +658,14 @@ function loadPopupScript() {
 	else
 	{
 	  var jscalendarOnloadBackup = window.onload;
-	
+
 	  function jscalendarOnload()
 	  {
 	    if(jscalendarOnloadBackup!=null)
 	        jscalendarOnloadBackup();
 	    jscalendarInit();
 	  }
-	
+
 	  window.onload=jscalendarOnload;
 	}
 }

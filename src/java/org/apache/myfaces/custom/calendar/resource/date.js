@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-DateFormatSymbols = function()
+org_apache_myfaces_DateFormatSymbols = function()
 {
         this.eras = new Array('BC', 'AD');
         this.months = new Array('January', 'February', 'March', 'April',
@@ -34,7 +34,7 @@ DateFormatSymbols = function()
         this.twoDigitYearStart = threshold;
 }
 
-SimpleDateFormatParserContext = function()
+org_apache_myfaces_SimpleDateFormatParserContext = function()
 {
         this.newIndex=0;
         this.retValue=0;
@@ -50,12 +50,13 @@ SimpleDateFormatParserContext = function()
         this.dateStr="";
 }
 
-SimpleDateFormat = function(pattern, dateFormatSymbols)
+org_apache_myfaces_SimpleDateFormat = function(pattern, dateFormatSymbols)
 {
         this.pattern = pattern;
-        this.dateFormatSymbols = dateFormatSymbols ? dateFormatSymbols : new DateFormatSymbols();
+        this.dateFormatSymbols = dateFormatSymbols ? dateFormatSymbols :
+                new org_apache_myfaces_DateFormatSymbols();
 }
-SimpleDateFormat.prototype._handle = function(dateStr, date, parse)
+org_apache_myfaces_SimpleDateFormat.prototype._handle = function(dateStr, date, parse)
     {
         var patternIndex = 0;
         var dateIndex = 0;
@@ -65,7 +66,7 @@ SimpleDateFormat.prototype._handle = function(dateStr, date, parse)
         var nextChar=0;
         var patternSub = null;
 
-        var context = new SimpleDateFormatParserContext();
+        var context = new org_apache_myfaces_SimpleDateFormatParserContext();
 
         if(date != null)
         {
@@ -157,7 +158,7 @@ SimpleDateFormat.prototype._handle = function(dateStr, date, parse)
         return context;
     };
 
-SimpleDateFormat.prototype.parse = function(dateStr)
+org_apache_myfaces_SimpleDateFormat.prototype.parse = function(dateStr)
     {
         if(!dateStr || dateStr.length==0)
             return null;
@@ -171,19 +172,19 @@ SimpleDateFormat.prototype.parse = function(dateStr)
 
         return this._createDateFromContext(context);
     };
-SimpleDateFormat.prototype._createDateFromContext=function(context)
+org_apache_myfaces_SimpleDateFormat.prototype._createDateFromContext=function(context)
     {
         return new Date(context.year, context.month,
                 context.day,context.hour,context.min,context.sec);
     };
-SimpleDateFormat.prototype.format = function(date)
+org_apache_myfaces_SimpleDateFormat.prototype.format = function(date)
     {
         var context = this._handle(null, date, false);
 
         return context.dateStr;
     };
 
-SimpleDateFormat.prototype._parseString = function(context, dateStr, dateIndex, strings)
+org_apache_myfaces_SimpleDateFormat.prototype._parseString = function(context, dateStr, dateIndex, strings)
     {
         var fragment = dateStr.substr(dateIndex);
         var index = this._prefixOf(strings, fragment);
@@ -198,7 +199,7 @@ SimpleDateFormat.prototype._parseString = function(context, dateStr, dateIndex, 
         return context;
     };
 
-SimpleDateFormat.prototype._parseNum = function(context, dateStr, posCount, dateIndex)
+org_apache_myfaces_SimpleDateFormat.prototype._parseNum = function(context, dateStr, posCount, dateIndex)
     {
         for(var i=Math.min(posCount,dateStr.length-dateIndex);i>0;i--)
         {
@@ -218,7 +219,7 @@ SimpleDateFormat.prototype._parseNum = function(context, dateStr, posCount, date
         return context;
     };
 
-SimpleDateFormat.prototype._handlePatternSub = function(context, patternSub, dateStr, dateIndex, parse)
+org_apache_myfaces_SimpleDateFormat.prototype._handlePatternSub = function(context, patternSub, dateStr, dateIndex, parse)
     {
         if(patternSub==null || patternSub.length==0)
             return;
@@ -403,7 +404,7 @@ SimpleDateFormat.prototype._handlePatternSub = function(context, patternSub, dat
         }
     };
 
-SimpleDateFormat.prototype._formatNum = function (context, num, length, ensureLength)
+org_apache_myfaces_SimpleDateFormat.prototype._formatNum = function (context, num, length, ensureLength)
     {
         var str = num+"";
 
@@ -420,7 +421,7 @@ SimpleDateFormat.prototype._formatNum = function (context, num, length, ensureLe
     };
 
     // perhaps add to Array.prototype
-SimpleDateFormat.prototype._indexOf = function (array, value)
+org_apache_myfaces_SimpleDateFormat.prototype._indexOf = function (array, value)
     {
       for (var i = 0; i < array.length; ++i) {
         if (array[i] == value) {
@@ -430,7 +431,7 @@ SimpleDateFormat.prototype._indexOf = function (array, value)
       return -1;
     };
 
-SimpleDateFormat.prototype._prefixOf = function (array, value)
+org_apache_myfaces_SimpleDateFormat.prototype._prefixOf = function (array, value)
     {
       for (var i = 0; i < array.length; ++i) {
         if (value.indexOf(array[i]) == 0) {
@@ -440,7 +441,7 @@ SimpleDateFormat.prototype._prefixOf = function (array, value)
       return -1;
     };
 
-SimpleDateFormat.prototype._parseInt = function(value)
+org_apache_myfaces_SimpleDateFormat.prototype._parseInt = function(value)
     {
         var sum = 0;
 
@@ -457,7 +458,7 @@ SimpleDateFormat.prototype._parseInt = function(value)
 
         return sum;
     };
-SimpleDateFormat.prototype._fullYearFromDate = function(year)
+org_apache_myfaces_SimpleDateFormat.prototype._fullYearFromDate = function(year)
     {
 
         var yearStr = year+"";
@@ -469,7 +470,7 @@ SimpleDateFormat.prototype._fullYearFromDate = function(year)
 
         return year;
     };
-SimpleDateFormat.prototype._adjustTwoDigitYear = function(context)
+org_apache_myfaces_SimpleDateFormat.prototype._adjustTwoDigitYear = function(context)
     {
 
         if(context.ambigousYear)

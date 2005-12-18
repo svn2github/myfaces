@@ -353,7 +353,7 @@ public class HtmlCalendarRenderer
                 setStringVariable(script, "jscalendarSelectDateMessage",inputCalendar.getPopupSelectDateMessage());
         }
 
-        setVariable(script,"jscalendarDateFormatSymbols","new DateFormatSymbols()");
+        setVariable(script,"jscalendarDateFormatSymbols","new org_apache_myfaces_DateFormatSymbols()");
 
         defineStringArray(script,"jscalendarDateFormatSymbols.weekdays",
                 mapWeekdaysStartingWithSunday(symbols));

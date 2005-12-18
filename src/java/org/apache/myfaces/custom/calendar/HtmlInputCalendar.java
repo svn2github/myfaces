@@ -153,7 +153,7 @@ public class HtmlInputCalendar
         ValueBinding vb = getValueBinding("popupButtonString");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
-    
+
     public void setPopupButtonStyle(String popupButtonStyle)
     {
         _popupButtonStyle = popupButtonStyle;
