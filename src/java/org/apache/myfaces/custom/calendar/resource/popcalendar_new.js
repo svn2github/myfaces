@@ -53,9 +53,6 @@ org_apache_myfaces_PopupCalendar = function()
     this.selectedDate = new org_apache_myfaces_DateParts(0,0,0,0,0,0);
     this.saveSelectedDate = new org_apache_myfaces_DateParts(0,0,0,0,0,0);
 
-    this.crossObj;
-    this.crossMonthObj;
-    this.crossYearObj;
     this.monthConstructed=false;
     this.yearConstructed=false;
     this.intervalID1;
@@ -79,6 +76,18 @@ org_apache_myfaces_PopupCalendar = function()
     this.yearNow = this.today.getYear();
     this.imgSrc = new Array("drop1.gif","drop2.gif","left1.gif","left2.gif","right1.gif","right2.gif");
     this.img = new Array();
+
+    //elements which need to change their dynamical
+    //representation over time
+    this.calendarDiv;
+    this.selectMonthDiv;
+    this.selectYearDiv;
+    this.todaySpan=null;
+    this.captionSpan=null;
+    this.monthSpan=null;
+    this.yearSpan=null
+    this.changeMonthImg=null;
+    this.changeYearImg=null;
 
     this.holidaysCounter = 0;
     this.holidays = new Array();
@@ -158,25 +167,12 @@ org_apache_myfaces_PopupCalendar.prototype.addHoliday=function(d, m, y, desc){
 }
 
 org_apache_myfaces_PopupCalendar.prototype._swapImage=function(srcImg, destImg){
-	if (this.ie)
-		document.getElementById(srcImg).setAttribute("src",this.initData.imgDir + destImg);
+	srcImg.setAttribute("src",this.initData.imgDir + destImg);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._getCrossObj=function(elem_id){
     return document.getElementById(elem_id).style;
     //old way of doing this: (this.dom) ? document.getElementById("calendar").style : this.ie ? document.all.calendar : document.calendar;
-}
-
-org_apache_myfaces_PopupCalendar.prototype._addEvent=function(obj, evType, fn){
- if (obj.addEventListener){
-   obj.addEventListener(evType, fn, false);
-   return true;
- } else if (obj.attachEvent){
-   var r = obj.attachEvent("on"+evType, fn);
-   return r;
- } else {
-   return false;
- }
 }
 
 org_apache_myfaces_PopupCalendar.prototype._keypresshandler=function(){
@@ -199,31 +195,34 @@ org_apache_myfaces_PopupCalendar.prototype._clickhandler=function(){
 org_apache_myfaces_PopupCalendar.prototype.init=function(){
     if (this.dom){
 
-        if(!document.getElementById('calendar'))
+        if(!this.calendarDiv)
         {
             for	(i=0;i<this.imgSrc.length;i++)
                 this.img[i] = new Image;
 
             var bodyTag = document.getElementsByTagName("body")[0];
 
-            var mainDiv = document.createElement("div");
-            mainDiv.setAttribute("id","calendar");
-            mainDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
+            this.calendarDiv = document.createElement("div");
+            this.calendarDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
 
-            this._addEvent(mainDiv,"click",function(){this.bShow=true;}.bind(this));
+            Event.observe(this.calendarDiv,"click",function(){this.bShow=true;}.bind(this),false);
 
-            bodyTag.appendChild(mainDiv);
+            bodyTag.appendChild(this.calendarDiv);
 
             var mainTable = document.createElement("table");
             mainTable.setAttribute("style","width:"+((this.initData.showWeekNumber==1)?250:220)+"px;");
             mainTable.setAttribute("class",this.initData.themePrefix+"-table-style");
 
-            mainDiv.appendChild(mainTable);
+            this.calendarDiv.appendChild(mainTable);
+
+            //This is necessary for IE. If you don't create a tbody element, the table will never show up!
+            var mainBody = document.createElement("tbody");
+            mainTable.appendChild(mainBody);
 
             var mainRow = document.createElement("tr");
             mainRow.setAttribute("class",this.initData.themePrefix+"-title-background-style");
 
-            mainTable.appendChild(mainRow);
+            mainBody.appendChild(mainRow);
 
             var mainCell = document.createElement("td");
 
@@ -232,18 +231,20 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             var contentTable = document.createElement("table");
             contentTable.setAttribute("style","width:"+((this.initData.showWeekNumber==1)?248:218)+"px;");
 
+            var contentBody = document.createElement("tbody");
+            contentTable.appendChild(contentBody);
+
             mainCell.appendChild(contentTable);
 
             var headerRow = document.createElement("tr");
-            contentTable.appendChild(headerRow);
+            contentBody.appendChild(headerRow);
 
             var captionCell = document.createElement("td");
             captionCell.setAttribute("class",this.initData.themePrefix+"-title-style");
             headerRow.appendChild(captionCell);
 
-            var captionSpan = document.createElement("span");
-            captionSpan.setAttribute("id","caption");
-            captionCell.appendChild(captionSpan);
+            this.captionSpan = document.createElement("span");
+            captionCell.appendChild(this.captionSpan);
 
             var closeButtonCell = document.createElement("td");
             closeButtonCell.setAttribute("style","text-align:right;");
@@ -251,7 +252,10 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 
             var closeCalendarLink = document.createElement("a");
             closeCalendarLink.setAttribute("href","#");
-            this._addEvent(closeCalendarLink,"click",function(){this._hideCalendar();}.bind(this));
+            Event.observe(closeCalendarLink,"click",function(){
+                this._hideCalendar();
+                return false;
+            }.bind(this),false);
 
             closeButtonCell.appendChild(closeCalendarLink);
 
@@ -261,7 +265,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             closeCalendarLink.appendChild(closeCalendarSpan);
 
             var contentRow = document.createElement("tr");
-            contentTable.appendChild(contentRow);
+            mainBody.appendChild(contentRow);
 
             var contentCell = document.createElement("td");
             contentCell.setAttribute("class",this.initData.themePrefix+"-body-style");
@@ -275,28 +279,25 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             {
                 var todayRow = document.createElement("tr");
                 todayRow.setAttribute("class",this.initData.themePrefix+"-today-style");
-                mainTable.appendChild(todayRow);
+                mainBody.appendChild(todayRow);
 
                 var todayCell = document.createElement("td");
                 todayCell.setAttribute("class",this.initData.themePrefix+"-today-lbl-style");
                 todayRow.appendChild(todayCell);
 
-                var todaySpan = document.createElement("span");
-                todaySpan.setAttribute("id","lblToday");
-                todayCell.appendChild(todaySpan);
+                this.todaySpan = document.createElement("span");
+                todayCell.appendChild(this.todaySpan);
             }
 
-            var selectMonthDiv = document.createElement("div");
-            selectMonthDiv.setAttribute("id","selectMonth");
-            selectMonthDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
+            this.selectMonthDiv = document.createElement("div");
+            this.selectMonthDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
 
-            bodyTag.appendChild(selectMonthDiv);
+            bodyTag.appendChild(this.selectMonthDiv);
 
-            var selectYearDiv = document.createElement("div");
-            selectYearDiv.setAttribute("id","selectYear");
-            selectYearDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
+            this.selectYearDiv = document.createElement("div");
+            this.selectYearDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
 
-            bodyTag.appendChild(selectYearDiv);
+            bodyTag.appendChild(this.selectYearDiv);
 
             //document.write ("<div onclick='this.bShow=true' id='calendar' class='"+this.initData.themePrefix+"-div-style'>");
             //document.write ("<table width="+((this.initData.showWeekNumber==1)?250:220)+" class='"+this.initData.themePrefix+"-table-style'>");
@@ -315,8 +316,8 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             //document.write ("</table></div>");
             //document.write("<div id='selectMonth' class='"+this.initData.themePrefix+"-div-style'></div><div id='selectYear' class='"+this.initData.themePrefix+"-div-style'></div>");
 
-            this._addEvent(document,"keypress",this._keypresshandler.bind(this));
-            this._addEvent(document,"click",this._clickhandler.bind(this));
+            Event.observe(document,"keypress",this._keypresshandler.bind(this),false);
+            Event.observe(document,"click",this._clickhandler.bind(this),false);
         }
     }
 
@@ -325,30 +326,148 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 		if (!this.ie)
 			this.yearNow += 1900;
 
-		this.crossObj=this._getCrossObj("calendar");
 		this._hideCalendar();
-
-		this.crossMonthObj=this._getCrossObj("selectMonth");
-
-		this.crossYearObj=this._getCrossObj("selectYear");
 
 		this.monthConstructed=false;
 		this.yearConstructed=false;
 
 		if (this.initData.showToday==1)
-			document.getElementById("lblToday").innerHTML =	this.initData.todayString + " <a onmousemove='window.status=\""+this.initData.gotoString+"\"' onmouseout='window.status=\"\"' title='"+this.initData.gotoString+"' class='"+this.initData.themePrefix+"-today-style' href='javascript:this.selectedDate.month=this.monthNow;this.selectedDate.year=this.yearNow;this._constructCalendar();'>"+this._todayIsDate()+"</a>";
+        {
+            this.todaySpan.appendChild(document.createTextNode(this.initData.todayString+" "))
 
-		var sHTML1 ="<span id='spanLeft'  class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeLeft\",\"left2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.scrollLeftMessage+"\"' onclick='javascript:this._decMonth()' onmouseout='clearInterval(this.intervalID1);this._swapImage(\"changeLeft\",\"left1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"' onmousedown='clearTimeout(this.timeoutID1);this.timeoutID1=setTimeout(\"this._startDecMonth()\",500)'	onmouseup='clearTimeout(this.timeoutID1);clearInterval(this.intervalID1)'>&#160;<img id='changeLeft' src='"+this.initData.imgDir+"left1.gif' width=10 height=11 border=0 />&#160;</span>&#160;"
-		sHTML1+="<span id='spanRight' class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeRight\",\"right2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.scrollRightMessage+"\"' onmouseout='clearInterval(this.intervalID1);this._swapImage(\"changeRight\",\"right1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"' onclick='this._incMonth()' onmousedown='clearTimeout(this.timeoutID1);this.timeoutID1=setTimeout(\"this._startIncMonth()\",500)'	onmouseup='clearTimeout(this.timeoutID1);clearInterval(this.intervalID1)'>&#160;<img id='changeRight' src='"+this.initData.imgDir+"right1.gif'	width=10 height=11 border=0 />&#160;</span>&#160;"
-		sHTML1+="<span id='spanMonth' class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeMonth\",\"drop2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.selectMonthMessage+"\"' onmouseout='this._swapImage(\"changeMonth\",\"drop1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"' onclick='this._popUpMonth()'></span>&#160;"
-		sHTML1+="<span id='spanYear'  class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeYear\",\"drop2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.selectYearMessage+"\"'	onmouseout='this._swapImage(\"changeYear\",\"drop1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"'	onclick='this._popUpYear()'></span>&#160;"
+            var todayLink = document.createElement("a");
+            todayLink.setAttribute("class",this.initData.themePrefix+"-today-style");
+            todayLink.setAttribute("title",this.initData.gotoString);
+            todayLink.setAttribute("href","#")
+            todayLink.appendChild(document.createTextNode(this._todayIsDate()));
+            Event.observe(todayLink,"click",function(){
+                this.selectedDate.month=this.monthNow;
+                this.selectedDate.year=this.yearNow;
+                this._constructCalendar();
+                return false;
+            }.bind(this),false);
+            Event.observe(todayLink,"mousemove",function(){
+                window.status=this.initData.gotoString;
+            }.bind(this),false);
+            Event.observe(todayLink,"mouseout",function(){
+                window.status="";
+            }.bind(this),false);
 
-		document.getElementById("caption").innerHTML = sHTML1;
+            this.todaySpan.appendChild(todayLink);
+        }
 
-		this.bPageLoaded = true;
+        this._appendNavToCaption("left");
+        this._appendNavToCaption("right");
+
+        //var sHTML1 ="<span id='spanLeft'  class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeLeft\",\"left2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.scrollLeftMessage+"\"' onclick='javascript:this._decMonth()' onmouseout='clearInterval(this.intervalID1);this._swapImage(\"changeLeft\",\"left1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"' onmousedown='clearTimeout(this.timeoutID1);this.timeoutID1=setTimeout(\"this._startDecMonth()\",500)'	onmouseup='clearTimeout(this.timeoutID1);clearInterval(this.intervalID1)'>&#160;<img id='changeLeft' src='"+this.initData.imgDir+"left1.gif' width=10 height=11 border=0 />&#160;</span>&#160;"
+		//sHTML1+=    "<span id='spanRight' class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeRight\",\"right2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.scrollRightMessage+"\"' onclick='javascript:this._incMonth()' onmouseout='clearInterval(this.intervalID1);this._swapImage(\"changeRight\",\"right1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"' onmousedown='clearTimeout(this.timeoutID1);this.timeoutID1=setTimeout(\"this._startIncMonth()\",500)'	onmouseup='clearTimeout(this.timeoutID1);clearInterval(this.intervalID1)'>&#160;<img id='changeRight' src='"+this.initData.imgDir+"right1.gif'	width=10 height=11 border=0 />&#160;</span>&#160;"
+		//var sHTML1="<span id='spanMonth' class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeMonth\",\"drop2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.selectMonthMessage+"\"' onmouseout='this._swapImage(\"changeMonth\",\"drop1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"' onclick='this._popUpMonth()'></span>&#160;"
+		//sHTML1+="<span id='spanYear'  class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeYear\",\"drop2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.selectYearMessage+"\"'	onmouseout='this._swapImage(\"changeYear\",\"drop1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"'	onclick='this._popUpYear()'></span>&#160;"
+
+        this.monthSpan = document.createElement("span");
+        this.monthSpan.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
+
+        Event.observe(this.monthSpan,"mouseover",function(){
+            this._swapImage(this.changeMonthImg,"drop2.gif");
+            this.className=this.initData.themePrefix+"-title-control-select-style";
+            window.status=this.selectMonthMessage;
+        }.bind(this),false);
+
+        Event.observe(this.monthSpan,"mouseout",function(){
+            this._swapImage(this.changeMonthImg,"drop1.gif");
+            this.className=this.initData.themePrefix+"-title-control-normal-style";
+            window.status="";
+        }.bind(this),false);
+
+        Event.observe(this.monthSpan,"click",function(){
+            this._popUpMonth();
+        }.bind(this),false);
+
+        this.captionSpan.appendChild(this.monthSpan);
+        this._appendNbsp(this.captionSpan);
+
+        this.yearSpan = document.createElement("span");
+        this.yearSpan.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
+
+        Event.observe(this.yearSpan,"mouseover",function(){
+            this._swapImage(this.changeYearImg,"drop2.gif");
+            this.className=this.initData.themePrefix+"-title-control-select-style";
+            window.status=this.selectYearMessage;
+        }.bind(this),false);
+
+        Event.observe(this.yearSpan,"mouseout",function(){
+            this._swapImage(this.changeYearImg,"drop1.gif");
+            this.className=this.initData.themePrefix+"-title-control-normal-style";
+            window.status="";
+        }.bind(this),false);
+
+        Event.observe(this.yearSpan,"click",function(){
+            this._popUpYear();
+        }.bind(this),false);
+
+        this.captionSpan.appendChild(this.yearSpan);
+        this._appendNbsp(this.captionSpan);
+
+        this.bPageLoaded = true;
 	}
 }
 
+ org_apache_myfaces_PopupCalendar.prototype._appendNavToCaption=function(direction){
+    var imgLeft = document.createElement("img");
+    imgLeft.setAttribute("src",this.initData.imgDir+direction+"1.gif");
+    imgLeft.setAttribute("style","width:10px;height:11px;border:0px;")
+
+    var spanLeft = document.createElement("span");
+    spanLeft.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
+    Event.observe(spanLeft,"mouseover",function(){
+        this._swapImage(imgLeft,direction+"2.gif");
+        this.className=this.initData.themePrefix+"-title-control-select-style";
+        if(direction=="left"){
+            window.status=this.scrollLeftMessage;
+        } else {
+            window.status=this.scrollRightMessage;
+        }
+    }.bind(this),false);
+    Event.observe(spanLeft,"click",function(){
+        if(direction=="left"){
+            this._decMonth();
+        } else{
+            this._incMonth();
+        }
+    }.bind(this),false);
+    Event.observe(spanLeft,"mouseout",function(){
+        clearInterval(this.intervalID1);
+        this._swapImage(imgLeft,direction+"1.gif");
+        this.className=""+this.initData.themePrefix+"-title-control-normal-style";
+        window.status="";
+    }.bind(this),false);
+    Event.observe(spanLeft,"mousedown",function(){
+        clearTimeout(this.timeoutID1);
+        this.timeoutID1=setTimeout((function(){
+            if(direction=="left")
+            {
+                this._startDecMonth();
+            }
+            else
+            {
+                this._startIncMonth();
+            }
+        }).bind(this),500)
+    }.bind(this),false);
+    Event.observe(spanLeft,"mouseup",function(){
+        clearTimeout(this.timeoutID1);
+        clearInterval(this.intervalID1);
+    }.bind(this),false);
+
+    this._appendNbsp(spanLeft);
+    spanLeft.appendChild(imgLeft);
+    this._appendNbsp(spanLeft);
+    this.captionSpan.appendChild(spanLeft);
+    this._appendNbsp(spanLeft);
+ }
+org_apache_myfaces_PopupCalendar.prototype._appendNbsp=function(element){
+    element.appendChild(document.createTextNode(String.fromCharCode(160)));
+}
  org_apache_myfaces_PopupCalendar.prototype._todayIsDate=function(){
     var format = new org_apache_myfaces_SimpleDateFormat(this.todayDateFormat,this.dateFormatSymbols);
     return format.format(this.today);
@@ -356,8 +475,8 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 
 org_apache_myfaces_PopupCalendar.prototype._hideCalendar=function(){
 	this.crossObj.visibility="hidden"
-	if (this.crossMonthObj != null){this.crossMonthObj.visibility="hidden"}
-	if (this.crossYearObj != null){this.crossYearObj.visibility="hidden"}
+	if (this.crossMonthObj != null){this.crossMonthObj.visibility="hidden";}
+	if (this.crossYearObj != null){this.crossYearObj.visibility="hidden";}
 
     this._showElement( 'SELECT' );
 	this._showElement( 'APPLET' );
@@ -395,11 +514,11 @@ org_apache_myfaces_PopupCalendar.prototype._closeCalendar=function() {
 /*** Month Pulldown	***/
 
 org_apache_myfaces_PopupCalendar.prototype._startDecMonth=function(){
-	this.intervalID1=setInterval("_decMonth()",80);
+	this.intervalID1=setInterval((function(){this._decMonth}).bind(this),80);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._startIncMonth=function(){
-	this.intervalID1=setInterval("_incMonth()",80);
+	this.intervalID1=setInterval((function(){this._incMonth}).bind(this),80);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._incMonth=function(){
@@ -408,7 +527,7 @@ org_apache_myfaces_PopupCalendar.prototype._incMonth=function(){
 		this.selectedDate.month=0;
 		this.selectedDate.year++;
 	}
-	_constructCalendar();
+	this._constructCalendar();
 }
 
 org_apache_myfaces_PopupCalendar.prototype._decMonth=function() {
@@ -417,34 +536,45 @@ org_apache_myfaces_PopupCalendar.prototype._decMonth=function() {
 		this.selectedDate.month=11
 		this.selectedDate.year--
 	}
-	_constructCalendar()
+	this._constructCalendar()
 }
 
 org_apache_myfaces_PopupCalendar.prototype._constructMonth=function(){
-	_popDownYear();
+	this._popDownYear();
 	if (!this.monthConstructed) {
-		var sHTML =	"";
-		for	(i=0; i<12;	i++) {
+
+        var selectMonthTable = document.createElement("table");
+        selectMonthTable.setAttribute("style","width:70px;border-collapse:collapse;")
+        selectMonthTable.setAttribute("class",this.initData.themePrefix+"-dropdown-style");
+        Event.observe(selectMonthTable,"mouseover",function(){
+            clearTimeout(this.timeoutID1);
+        }.bind(this),false);
+        Event.observe(selectMonthTable,"mouseout",function(event){
+            clearTimeout(this.timeoutID1);
+            this.timeoutID1=setTimeout((function(){this._popDownMonth()}).bind(this),100);
+            event.cancelBubble=true;
+        }.bindAsEventListener(this),false);
+
+        //todo:
+        for	(i=0; i<12;	i++) {
 			var sName = this.initData.monthName[i];
 			if (i==this.selectedDate.month)
 				sName =	"<b>" +	sName +	"</b>";
-			sHTML += "<tr><td id='m" + i + "' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onclick='this.monthConstructed=false;this.selectedDate.month=" + i + ";_constructCalendar();_popDownMonth();event.cancelBubble=true'>&#160;" + sName + "&#160;</td></tr>";
+			sHTML += "<tr><td id='m" + i + "' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onclick='this.monthConstructed=false;this.selectedDate.month=" + i + ";this_constructCalendar();this._popDownMonth();event.cancelBubble=true'>&#160;" + sName + "&#160;</td></tr>";
 		}
 
-		document.getElementById("selectMonth").innerHTML = "<table width='70' class='"+this.initData.themePrefix+"-dropdown-style'  cellspacing=0 onmouseover='clearTimeout(this.timeoutID1)'	onmouseout='clearTimeout(this.timeoutID1);this.timeoutID1=setTimeout(\"_popDownMonth()\",100);event.cancelBubble=true'>" +	sHTML +	"</table>";
-
-		this.monthConstructed=true;
+        this.monthConstructed=true;
 	}
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popUpMonth=function() {
-	_constructMonth()
+	this._constructMonth()
 	this.crossMonthObj.visibility = (this.dom||this.ie)? "visible"	: "show"
-	this.crossMonthObj.left = parseInt(formatInt(this.crossObj.left),10) + 50 + "px";
-	this.crossMonthObj.top =	parseInt( formatInt(this.crossObj.top),10) + 26 + "px";
+	this.crossMonthObj.left = parseInt(this._formatInt(this.crossObj.left),10) + 50 + "px";
+	this.crossMonthObj.top =	parseInt( this._formatInt(this.crossObj.top),10) + 26 + "px";
 
-	_hideElement( 'SELECT', document.getElementById("selectMonth") );
-	_hideElement( 'APPLET', document.getElementById("selectMonth") );
+	this._hideElement( 'SELECT', selectMonthDiv );
+	this._hideElement( 'APPLET', selectMonthDiv );
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popDownMonth=function()	{
@@ -473,21 +603,21 @@ org_apache_myfaces_PopupCalendar.prototype._decYear=function() {
 		{ txtYear =	"&#160;<B>"	+ newYear +	"</B>&#160;" }
 		else
 		{ txtYear =	"&#160;" + newYear + "&#160;" }
-		document.getElementById("y"+i).innerHTML = txtYear
+		document.getElementById("y"+i).innerHTML = txtYear;
 	}
 	this.nStartingYear--;
 	this.bShow=true;
 }
 
 org_apache_myfaces_PopupCalendar.prototype._selectYear=function(nYear) {
-	this.selectedDate.year=parseInt( formatInt(nYear+this.nStartingYear),10);
+	this.selectedDate.year=parseInt( this._formatInt(nYear+this.nStartingYear),10);
 	this.yearConstructed=false;
-	_constructCalendar();
-	_popDownYear();
+	this._constructCalendar();
+	this._popDownYear();
 }
 
 org_apache_myfaces_PopupCalendar.prototype._constructYear=function() {
-	_popDownMonth();
+	this._popDownMonth();
 	var sHTML =	"";
 	if (!this.yearConstructed) {
 
@@ -500,13 +630,13 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear=function() {
 			if (i==this.selectedDate.year)
 				sName =	"<b>"+sName+"</b>";
 
-			sHTML += "<tr><td id='y"+j+"' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onclick='_selectYear("+j+");event.cancelBubble=true'>&#160;"+sName+"&#160;</td></tr>";
+			sHTML += "<tr><td id='y"+j+"' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onclick='this._selectYear("+j+");event.cancelBubble=true'>&#160;"+sName+"&#160;</td></tr>";
 			j++;
 		}
 
 		sHTML += "<tr><td align='center' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='clearInterval(this.intervalID2); this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onmousedown='clearInterval(this.intervalID2);this.intervalID2=setInterval(\"_incYear()\",30)'	onmouseup='clearInterval(this.intervalID2)'>+</td></tr>";
 
-		document.getElementById("selectYear").innerHTML	= "<table width='44' class='"+this.initData.themePrefix+"-dropdown-style' onmouseover='clearTimeout(this.timeoutID2)' onmouseout='clearTimeout(this.timeoutID2);this.timeoutID2=setTimeout(\"_popDownYear()\",100)' cellspacing='0'>"+sHTML+"</table>";
+		selectYearDiv.innerHTML	= "<table width='44' class='"+this.initData.themePrefix+"-dropdown-style' onmouseover='clearTimeout(this.timeoutID2)' onmouseout='clearTimeout(this.timeoutID2);this.timeoutID2=setTimeout(\"_popDownYear()\",100)' cellspacing='0'>"+sHTML+"</table>";
 
 		this.yearConstructed = true;
 	}
@@ -525,11 +655,11 @@ org_apache_myfaces_PopupCalendar.prototype._popUpYear=function() {
 
 	_constructYear();
 	this.crossYearObj.visibility = (this.dom||this.ie) ? "visible" : "show";
-	leftOffset = parseInt( formatInt(this.crossObj.left),10) + document.getElementById("spanYear").offsetLeft;
+	leftOffset = parseInt( this._formatInt(this.crossObj.left),10) + document.getElementById("spanYear").offsetLeft;
 	if (this.ie)
 		leftOffset += 6;
 	this.crossYearObj.left =	leftOffset + "px";
-	this.crossYearObj.top = parseInt( formatInt(this.crossObj.top),10) +	26 + "px";
+	this.crossYearObj.top = parseInt( this._formatInt(this.crossObj.top),10) +	26 + "px";
 }
 
 /*** calendar ***/
@@ -593,7 +723,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar=function() {
 		sHTML += "<td width=27><b>" + this.initData.weekString + "</b></td><td width=1 rowspan=7 class='"+this.initData.themePrefix+"-weeknumber-div-style'><img src='"+this.initData.imgDir+"divider.gif' width=1></td>";
 
 	for	(i=0; i<7; i++)
-		sHTML += "<td width='27' align='right'><B>"+ this.initData.dayName[i]+"</B></td>";
+		sHTML += "<td width='27' align='right'><b>"+ this.initData.dayName[i]+"</b></td>";
 
 	sHTML +="</tr><tr>";
 
@@ -621,9 +751,9 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar=function() {
 		sHint = ""
 		for (k=0;k<this.holidaysCounter;k++)
 		{
-			if ((parseInt( formatInt(this.holidays[k].d),10)==datePointer)&&(parseInt( formatInt(this.holidays[k].m),10)==(this.selectedDate.month+1)))
+			if ((parseInt( this._formatInt(this.holidays[k].d),10)==datePointer)&&(parseInt( this._formatInt(this.holidays[k].m),10)==(this.selectedDate.month+1)))
 			{
-				if ((parseInt( formatInt(this.holidays[k].y),10)==0)||((parseInt( formatInt(this.holidays[k].y),10)==this.selectedDate.year)&&(parseInt( formatInt(this.holidays[k].y),10)!=0)))
+				if ((parseInt( this._formatInt(this.holidays[k].y),10)==0)||((parseInt( this._formatInt(this.holidays[k].y),10)==this.selectedDate.year)&&(parseInt( this._formatInt(this.holidays[k].y),10)!=0)))
 				{
 					sStyle += " "+this.initData.themePrefix+"-holiday-style";
 					sHint+=sHint==""?this.holidays[k].desc:"\n"+this.holidays[k].desc
@@ -649,15 +779,15 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar=function() {
 	}
 
 	document.getElementById("popupcalendar_content").innerHTML = sHTML;
-	document.getElementById("spanMonth").innerHTML = "&#160;" +	this.initData.monthName[this.selectedDate.month] + "&#160;<img id='changeMonth' src='"+this.initData.imgDir+"drop1.gif' width='12' height='10' border=0>";
-	document.getElementById("spanYear").innerHTML =	"&#160;" + this.selectedDate.year	+ "&#160;<img id='changeYear' src='"+this.initData.imgDir+"drop1.gif' width='12' height='10' border=0>";
+	this.monthSpan.innerHTML = "&#160;" +	this.initData.monthName[this.selectedDate.month] + "&#160;<img id='changeMonth' src='"+this.initData.imgDir+"drop1.gif' width='12' height='10' border=0>";
+	this.yearSpan.innerHTML =	"&#160;" + this.selectedDate.year	+ "&#160;<img id='changeYear' src='"+this.initData.imgDir+"drop1.gif' width='12' height='10' border=0>";
 	document.getElementById("closeButton").innerHTML = "<img src='"+this.initData.imgDir+"close.gif' width='15' height='13' border='0' alt='Close the Calendar'>";
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar=function(ctl, ctl2, format){
-	if (this.bPageLoaded){
+    if (this.bPageLoaded){
 		if ( this.crossObj.visibility == "hidden" ) {
-			this.ctlToPlaceValue = ctl2;
+            this.ctlToPlaceValue = ctl2;
 			this.todayDateFormat=format;
 
             var simpleDateFormat = new org_apache_myfaces_SimpleDateFormat(this.todayDateFormat, this.dateFormatSymbols);
@@ -703,9 +833,9 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate=function(c
 		this.myFacesInputDateClientId = clientId;
 		this.todayDateFormat=format;
 
-		this.selectedDate.date = parseInt(  formatInt(document.getElementById(clientId+".day").value),10);
-		this.selectedDate.month = parseInt( formatInt( document.getElementById(clientId+".month").value),10)-1;
-		this.selectedDate.year = parseInt(  formatInt(document.getElementById(clientId+".year").value),10);
+		this.selectedDate.date = parseInt(  this._formatInt(document.getElementById(clientId+".day").value),10);
+		this.selectedDate.month = parseInt( this._formatInt( document.getElementById(clientId+".month").value),10)-1;
+		this.selectedDate.year = parseInt(  this._formatInt(document.getElementById(clientId+".year").value),10);
 		this.ctlNow = document.getElementById(clientId+".day");
 		this._popUpCalendar_Show(document.getElementById(clientId+".day"));
 	}
@@ -771,9 +901,10 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show=function(ctl){
 	this.crossObj.left = this.initData.fixedX==-1 ? left + "px": this.initData.fixedX;
 	this.crossObj.top = this.initData.fixedY==-1 ? top + "px": this.initData.fixedY;
 	this._constructCalendar (1, this.selectedDate.month, this.selectedDate.year);
-	this.crossObj.visibility=(this.dom||this.ie)? "visible" : "show";
 
-	this._hideElement( 'SELECT', document.getElementById("calendar") );
+    this.crossObj.visibility=(this.dom||this.ie)? "visible" : "show";
+
+    this._hideElement( 'SELECT', document.getElementById("calendar") );
 	this._hideElement( 'APPLET', document.getElementById("calendar") );
 
 	this.bShow = true;

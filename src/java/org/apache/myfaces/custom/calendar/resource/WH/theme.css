@@ -67,7 +67,7 @@
 
 /* Default attributes unselected (mouse-off) item in drop down lists (month and year). */
 .jscalendar-WH-dropdown-normal-style {
-	background-color: #0;
+	background-color: #000;
 }
 
 /* Default attributes of calendar body (weekday titles and numbers). */
