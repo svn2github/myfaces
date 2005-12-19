@@ -167,7 +167,9 @@ org_apache_myfaces_PopupCalendar.prototype.addHoliday=function(d, m, y, desc){
 }
 
 org_apache_myfaces_PopupCalendar.prototype._swapImage=function(srcImg, destImg){
-	srcImg.setAttribute("src",this.initData.imgDir + destImg);
+
+    if(srcImg)
+        srcImg.setAttribute("src",this.initData.imgDir + destImg);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._getCrossObj=function(elem_id){
@@ -252,10 +254,10 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 
             var closeCalendarLink = document.createElement("a");
             closeCalendarLink.setAttribute("href","#");
-            Event.observe(closeCalendarLink,"click",function(){
+            Event.observe(closeCalendarLink,"click",function(event){
                 this._hideCalendar();
-                return false;
-            }.bind(this),false);
+                Event.stop(event);
+            }.bindAsEventListener(this),false);
 
             closeButtonCell.appendChild(closeCalendarLink);
 
@@ -340,12 +342,12 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             todayLink.setAttribute("title",this.initData.gotoString);
             todayLink.setAttribute("href","#")
             todayLink.appendChild(document.createTextNode(this._todayIsDate()));
-            Event.observe(todayLink,"click",function(){
+            Event.observe(todayLink,"click",function(event){
                 this.selectedDate.month=this.monthNow;
                 this.selectedDate.year=this.yearNow;
                 this._constructCalendar();
-                return false;
-            }.bind(this),false);
+                Event.stop(event);
+            }.bindAsEventListener(this),false);
             Event.observe(todayLink,"mousemove",function(){
                 window.status=this.initData.gotoString;
             }.bind(this),false);
@@ -367,17 +369,17 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
         this.monthSpan = document.createElement("span");
         this.monthSpan.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
 
-        Event.observe(this.monthSpan,"mouseover",function(){
+        Event.observe(this.monthSpan,"mouseover",function(event){
             this._swapImage(this.changeMonthImg,"drop2.gif");
-            this.className=this.initData.themePrefix+"-title-control-select-style";
+            Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
             window.status=this.selectMonthMessage;
-        }.bind(this),false);
+        }.bindAsEventListener(this),false);
 
-        Event.observe(this.monthSpan,"mouseout",function(){
+        Event.observe(this.monthSpan,"mouseout",function(event){
             this._swapImage(this.changeMonthImg,"drop1.gif");
-            this.className=this.initData.themePrefix+"-title-control-normal-style";
+            Event.element(event).className=this.initData.themePrefix+"-title-control-normal-style";
             window.status="";
-        }.bind(this),false);
+        }.bindAsEventListener(this),false);
 
         Event.observe(this.monthSpan,"click",function(){
             this._popUpMonth();
@@ -389,17 +391,17 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
         this.yearSpan = document.createElement("span");
         this.yearSpan.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
 
-        Event.observe(this.yearSpan,"mouseover",function(){
+        Event.observe(this.yearSpan,"mouseover",function(event){
             this._swapImage(this.changeYearImg,"drop2.gif");
-            this.className=this.initData.themePrefix+"-title-control-select-style";
+            Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
             window.status=this.selectYearMessage;
-        }.bind(this),false);
+        }.bindAsEventListener(this),false);
 
-        Event.observe(this.yearSpan,"mouseout",function(){
+        Event.observe(this.yearSpan,"mouseout",function(event){
             this._swapImage(this.changeYearImg,"drop1.gif");
-            this.className=this.initData.themePrefix+"-title-control-normal-style";
+            Event.element(event).className=this.initData.themePrefix+"-title-control-normal-style";
             window.status="";
-        }.bind(this),false);
+        }.bindAsEventListener(this),false);
 
         Event.observe(this.yearSpan,"click",function(){
             this._popUpYear();
@@ -419,15 +421,15 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 
     var spanLeft = document.createElement("span");
     spanLeft.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
-    Event.observe(spanLeft,"mouseover",function(){
+    Event.observe(spanLeft,"mouseover",function(event){
         this._swapImage(imgLeft,direction+"2.gif");
-        this.className=this.initData.themePrefix+"-title-control-select-style";
+        Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
         if(direction=="left"){
             window.status=this.scrollLeftMessage;
         } else {
             window.status=this.scrollRightMessage;
         }
-    }.bind(this),false);
+    }.bindAsEventListener(this),false);
     Event.observe(spanLeft,"click",function(){
         if(direction=="left"){
             this._decMonth();
@@ -435,12 +437,12 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             this._incMonth();
         }
     }.bind(this),false);
-    Event.observe(spanLeft,"mouseout",function(){
+    Event.observe(spanLeft,"mouseout",function(event){
         clearInterval(this.intervalID1);
         this._swapImage(imgLeft,direction+"1.gif");
-        this.className=""+this.initData.themePrefix+"-title-control-normal-style";
+        Event.element(event).className=""+this.initData.themePrefix+"-title-control-normal-style";
         window.status="";
-    }.bind(this),false);
+    }.bindAsEventListener(this),false);
     Event.observe(spanLeft,"mousedown",function(){
         clearTimeout(this.timeoutID1);
         this.timeoutID1=setTimeout((function(){
@@ -466,7 +468,8 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
     this._appendNbsp(spanLeft);
  }
 org_apache_myfaces_PopupCalendar.prototype._appendNbsp=function(element){
-    element.appendChild(document.createTextNode(String.fromCharCode(160)));
+    if(element)
+        element.appendChild(document.createTextNode(String.fromCharCode(160)));
 }
  org_apache_myfaces_PopupCalendar.prototype._todayIsDate=function(){
     var format = new org_apache_myfaces_SimpleDateFormat(this.todayDateFormat,this.dateFormatSymbols);
@@ -474,9 +477,9 @@ org_apache_myfaces_PopupCalendar.prototype._appendNbsp=function(element){
 }
 
 org_apache_myfaces_PopupCalendar.prototype._hideCalendar=function(){
-	this.crossObj.visibility="hidden"
-	if (this.crossMonthObj != null){this.crossMonthObj.visibility="hidden";}
-	if (this.crossYearObj != null){this.crossYearObj.visibility="hidden";}
+	this.calendarDiv.style.visibility="hidden"
+	if (this.selectMonthDiv.style != null){this.selectMonthDiv.style.visibility="hidden";}
+	if (this.selectYearDiv.style != null){this.selectYearDiv.style.visibility="hidden";}
 
     this._showElement( 'SELECT' );
 	this._showElement( 'APPLET' );
@@ -539,6 +542,12 @@ org_apache_myfaces_PopupCalendar.prototype._decMonth=function() {
 	this._constructCalendar()
 }
 
+
+org_apache_myfaces_PopupCalendar.prototype._removeAllChildren=function(element){
+    while (element && element.hasChildNodes())
+        element.removeChild(element.lastChild);
+}
+
 org_apache_myfaces_PopupCalendar.prototype._constructMonth=function(){
 	this._popDownYear();
 	if (!this.monthConstructed) {
@@ -546,22 +555,67 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth=function(){
         var selectMonthTable = document.createElement("table");
         selectMonthTable.setAttribute("style","width:70px;border-collapse:collapse;")
         selectMonthTable.setAttribute("class",this.initData.themePrefix+"-dropdown-style");
+
+        this._removeAllChildren(this.selectMonthDiv);
+
+        this.selectMonthDiv.appendChild(selectMonthTable);
+
         Event.observe(selectMonthTable,"mouseover",function(){
             clearTimeout(this.timeoutID1);
         }.bind(this),false);
         Event.observe(selectMonthTable,"mouseout",function(event){
             clearTimeout(this.timeoutID1);
             this.timeoutID1=setTimeout((function(){this._popDownMonth()}).bind(this),100);
-            event.cancelBubble=true;
+            Event.stop(event);
         }.bindAsEventListener(this),false);
 
-        //todo:
+        var selectMonthTableBody = document.createElement("tbody");
+        selectMonthTable.appendChild(selectMonthTableBody);
+
         for	(i=0; i<12;	i++) {
 			var sName = this.initData.monthName[i];
-			if (i==this.selectedDate.month)
-				sName =	"<b>" +	sName +	"</b>";
-			sHTML += "<tr><td id='m" + i + "' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onclick='this.monthConstructed=false;this.selectedDate.month=" + i + ";this_constructCalendar();this._popDownMonth();event.cancelBubble=true'>&#160;" + sName + "&#160;</td></tr>";
-		}
+
+            var sNameNode = null;
+
+            if (i==this.selectedDate.month)
+            {
+                sNameNode = document.createElement("span");
+                sNameNode.setAttribute("style","font-weight:bold;");
+                sNameNode.appendChild(document.createTextNode(sName));
+            }
+            else
+            {
+                sNameNode = document.createTextNode(sName);
+            }
+
+            var monthRow = document.createElement("tr");
+            selectMonthTableBody.appendChild(monthRow);
+
+            var monthCell = document.createElement("td");
+            monthCell.setAttribute("id","m"+i);
+            monthRow.appendChild(monthCell);
+
+            Event.observe(monthCell,"mouseover",function(event){
+                Event.element(event).className=this.initData.themePrefix+"-dropdown-select-style";
+            }.bind(this),false);
+
+            Event.observe(monthCell,"mouseout",function(event){
+                Event.element(event).className=this.initData.themePrefix+"-dropdown-normal-style";
+            }.bind(this),false);
+
+            Event.observe(monthCell,"click",function(event){
+                this.monthConstructed=false;
+                //todo: proper solution for passing the current index into the event handler
+                this.selectedDate.month=parseInt(Event.element(event).getAttribute("id").substring(1));
+                this._constructCalendar();
+                this._popDownMonth();
+                Event.stop(event);
+            }.bindAsEventListener(this),false);
+
+            this._appendNbsp(monthCell);
+            monthCell.appendChild(sNameNode);
+            this._appendNbsp(monthCell);
+        }
 
         this.monthConstructed=true;
 	}
@@ -569,51 +623,61 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth=function(){
 
 org_apache_myfaces_PopupCalendar.prototype._popUpMonth=function() {
 	this._constructMonth()
-	this.crossMonthObj.visibility = (this.dom||this.ie)? "visible"	: "show"
-	this.crossMonthObj.left = parseInt(this._formatInt(this.crossObj.left),10) + 50 + "px";
-	this.crossMonthObj.top =	parseInt( this._formatInt(this.crossObj.top),10) + 26 + "px";
+	this.selectMonthDiv.style.visibility = (this.dom||this.ie)? "visible"	: "show"
+	this.selectMonthDiv.style.left = parseInt(this._formatInt(this.calendarDiv.style.left),10) + 50 + "px";
+	this.selectMonthDiv.style.top =	parseInt( this._formatInt(this.calendarDiv.style.top),10) + 26 + "px";
 
-	this._hideElement( 'SELECT', selectMonthDiv );
-	this._hideElement( 'APPLET', selectMonthDiv );
+	this._hideElement( 'SELECT', this.selectMonthDiv );
+	this._hideElement( 'APPLET', this.selectMonthDiv );
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popDownMonth=function()	{
-	this.crossMonthObj.visibility= "hidden"
+	this.selectMonthDiv.style.visibility= "hidden";
 }
 
 /*** Year Pulldown ***/
 
 org_apache_myfaces_PopupCalendar.prototype._incYear=function() {
-	for	(i=0; i<7; i++){
-		newYear	= (i+this.nStartingYear)+1
-		if (newYear==this.selectedDate.year)
-		{ txtYear =	"&#160;<B>"	+ newYear +	"</B>&#160;" }
-		else
-		{ txtYear =	"&#160;" + newYear + "&#160;" }
-		document.getElementById("y"+i).innerHTML = txtYear;
-	}
+	for	(i=0; i<7; i++)
+    {
+		newYear	= (i+this.nStartingYear)+1;
+
+        this._createAndAddYear(newYear,i);
+    }
 	this.nStartingYear++;
 	this.bShow=true;
 }
 
+org_apache_myfaces_PopupCalendar.prototype._createAndAddYear=function(newYear,i) {
+    var parentNode=document.getElementById("y"+i);
+
+    this._removeAllChildren(parentNode);
+
+    if (newYear==this.selectedDate.year)
+    {
+        this._appendNbsp(parentNode);
+        var newYearSpan = document.createElement("span");
+        newYearSpan.appendChild(document.createTextNode(newYear));
+        parentNode.appendChild(newYearSpan);
+        this._appendNbsp(parentNode);
+    }
+    else
+    {
+        this._appendNbsp(parentNode);
+        parentNode.appendChild(document.createTextNode(newYear));
+        this._appendNbsp(parentNode);
+    }
+}
+
+
 org_apache_myfaces_PopupCalendar.prototype._decYear=function() {
 	for	(i=0; i<7; i++){
-		newYear	= (i+this.nStartingYear)-1
-		if (newYear==this.selectedDate.year)
-		{ txtYear =	"&#160;<B>"	+ newYear +	"</B>&#160;" }
-		else
-		{ txtYear =	"&#160;" + newYear + "&#160;" }
-		document.getElementById("y"+i).innerHTML = txtYear;
+		newYear	= (i+this.nStartingYear)-1;
+
+        this._createAndAddYear(newYear,i);
 	}
 	this.nStartingYear--;
 	this.bShow=true;
-}
-
-org_apache_myfaces_PopupCalendar.prototype._selectYear=function(nYear) {
-	this.selectedDate.year=parseInt( this._formatInt(nYear+this.nStartingYear),10);
-	this.yearConstructed=false;
-	this._constructCalendar();
-	this._popDownYear();
 }
 
 org_apache_myfaces_PopupCalendar.prototype._constructYear=function() {
@@ -621,22 +685,137 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear=function() {
 	var sHTML =	"";
 	if (!this.yearConstructed) {
 
-		sHTML =	"<tr><td align='center'	onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='clearInterval(this.intervalID1); this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onmousedown='clearInterval(this.intervalID1);this.intervalID1=setInterval(\"_decYear()\",30)' onmouseup='clearInterval(this.intervalID1)'>-</td></tr>";
+        var selectYearTable = document.createElement("table");
+        selectYearTable.setAttribute("style","width:44px;border-collapse:collapse;")
+        selectYearTable.setAttribute("class",this.initData.themePrefix+"-dropdown-style");
 
-		var j =	0;
+        this._removeAllChildren(this.selectYearDiv);
+
+        this.selectYearDiv.appendChild(selectYearTable);
+
+        Event.observe(selectYearTable,"mouseover",function(){
+            clearTimeout(this.timeoutID2);
+        }.bind(this),false);
+        Event.observe(selectYearTable,"mouseout",function(event){
+            clearTimeout(this.timeoutID2);
+            this.timeoutID2=setTimeout((function(){this._popDownYear()}).bind(this),100);
+            Event.stop(event);
+        }.bindAsEventListener(this),false);
+
+
+        var selectYearTableBody = document.createElement("tbody");
+        selectYearTable.appendChild(selectYearTableBody);
+
+        var selectYearRowMinus = document.createElement("tr");
+        selectYearTableBody.appendChild(selectYearRowMinus);
+
+        var selectYearCellMinus = document.createElement("td");
+        selectYearCellMinus.setAttribute("align","center");
+
+        selectYearCellMinus.appendChild(document.createTextNode("-"));
+
+        selectYearRowMinus.appendChild(selectYearCellMinus);
+
+        Event.observe(selectYearCellMinus,"mouseover",function(event){
+            Event.element(event).className=this.initData.themePrefix+"-dropdown-select-style";
+        }.bindAsEventListener(this),false);
+
+        Event.observe(selectYearCellMinus,"mouseout",function(event){
+            clearInterval(this.intervalID1);
+            Event.element(event).className=this.initData.themePrefix+"-dropdown-normal-style";
+        }.bindAsEventListener(this),false);
+
+        Event.observe(selectYearCellMinus,"mousedown",function(event){
+            clearInterval(this.intervalID1);
+            this.intervalID1=setInterval((function(){this._decYear();}).bind(this),30);
+            Event.stop(event);
+        }.bindAsEventListener(this),false);
+
+        Event.observe(selectYearCellMinus,"mouseup",function(event){
+            clearInterval(this.intervalID1);
+            Event.stop(event);
+        }.bindAsEventListener(this),false);
+
+
+        //sHTML =	"<tr><td align='center'	onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='clearInterval(this.intervalID1); this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onmousedown='clearInterval(this.intervalID1);this.intervalID1=setInterval(\"_decYear()\",30)' onmouseup='clearInterval(this.intervalID1)'>-</td></tr>";
+
         this.nStartingYear = this.selectedDate.year-3;
-		for	(i=this.selectedDate.year-3; i<=(this.selectedDate.year+3); i++) {
-			var sName =	i;
-			if (i==this.selectedDate.year)
-				sName =	"<b>"+sName+"</b>";
+        var j=0;
+        for	(i=this.selectedDate.year-3; i<=(this.selectedDate.year+3); i++) {
+			var sName = i;
 
-			sHTML += "<tr><td id='y"+j+"' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onclick='this._selectYear("+j+");event.cancelBubble=true'>&#160;"+sName+"&#160;</td></tr>";
-			j++;
-		}
+            var sNameNode = null;
 
-		sHTML += "<tr><td align='center' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='clearInterval(this.intervalID2); this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onmousedown='clearInterval(this.intervalID2);this.intervalID2=setInterval(\"_incYear()\",30)'	onmouseup='clearInterval(this.intervalID2)'>+</td></tr>";
+            if (i==this.selectedDate.year)
+            {
+                sNameNode = document.createElement("span");
+                sNameNode.setAttribute("style","font-weight:bold;");
+                sNameNode.appendChild(document.createTextNode(sName));
+            }
+            else
+            {
+                sNameNode = document.createTextNode(sName);
+            }
 
-		selectYearDiv.innerHTML	= "<table width='44' class='"+this.initData.themePrefix+"-dropdown-style' onmouseover='clearTimeout(this.timeoutID2)' onmouseout='clearTimeout(this.timeoutID2);this.timeoutID2=setTimeout(\"_popDownYear()\",100)' cellspacing='0'>"+sHTML+"</table>";
+            var yearRow = document.createElement("tr");
+            selectYearTableBody.appendChild(yearRow);
+
+            var yearCell = document.createElement("td");
+            yearCell.setAttribute("id","y"+j);
+            yearRow.appendChild(yearCell);
+
+            Event.observe(yearCell,"mouseover",function(event){
+                Event.element(event).className=this.initData.themePrefix+"-dropdown-select-style";
+            }.bind(this),false);
+
+            Event.observe(yearCell,"mouseout",function(event){
+                Event.element(event).className=this.initData.themePrefix+"-dropdown-normal-style";
+            }.bind(this),false);
+
+            Event.observe(yearCell,"click",function(event){
+                //todo: proper solution for passing the current index into the event handler
+                var elem = Event.element(event);
+                var sYear = elem.childNodes[1].nodeValue;
+                this.selectedDate.year=parseInt(this._formatInt(sYear,10));
+                this.yearConstructed=false;
+                this._popDownYear();
+                this._constructCalendar();
+                Event.stop(event);
+            }.bindAsEventListener(this),false);
+
+            this._appendNbsp(yearCell);
+            yearCell.appendChild(sNameNode);
+            this._appendNbsp(yearCell);
+            j++;
+        }
+
+        var selectYearRowPlus = document.createElement("tr");
+        selectYearTableBody.appendChild(selectYearRowPlus);
+
+        var selectYearCellPlus = document.createElement("td");
+        selectYearCellPlus.setAttribute("align","center");
+
+        selectYearCellPlus.appendChild(document.createTextNode("+"));
+
+        selectYearRowPlus.appendChild(selectYearCellPlus);
+
+        Event.observe(selectYearCellPlus,"mouseover",function(event){
+            Event.element(event).className=this.initData.themePrefix+"-dropdown-select-style";
+        }.bindAsEventListener(this),false);
+
+        Event.observe(selectYearCellPlus,"mouseout",function(event){
+            clearInterval(this.intervalID2);
+            Event.element(event).className=this.initData.themePrefix+"-dropdown-normal-style";
+        }.bindAsEventListener(this),false);
+
+        Event.observe(selectYearCellPlus,"mousedown",function(event){
+            clearInterval(this.intervalID2);
+            this.intervalID2=setInterval((function(){this._incYear();}).bind(this),30);
+        }.bindAsEventListener(this),false);
+
+        Event.observe(selectYearCellPlus,"mouseup",function(event){
+            clearInterval(this.intervalID2);
+        }.bindAsEventListener(this),false);
 
 		this.yearConstructed = true;
 	}
@@ -647,19 +826,19 @@ org_apache_myfaces_PopupCalendar.prototype._popDownYear=function() {
 	clearTimeout(this.timeoutID1);
 	clearInterval(this.intervalID2);
 	clearTimeout(this.timeoutID2);
-	this.crossYearObj.visibility= "hidden";
+	this.selectYearDiv.style.visibility= "hidden";
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popUpYear=function() {
 	var	leftOffset;
 
-	_constructYear();
-	this.crossYearObj.visibility = (this.dom||this.ie) ? "visible" : "show";
-	leftOffset = parseInt( this._formatInt(this.crossObj.left),10) + document.getElementById("spanYear").offsetLeft;
+	this._constructYear();
+	this.selectYearDiv.style.visibility = (this.dom||this.ie) ? "visible" : "show";
+	leftOffset = parseInt( this._formatInt(this.calendarDiv.style.left),10) + this.yearSpan.offsetLeft;
 	if (this.ie)
 		leftOffset += 6;
-	this.crossYearObj.left =	leftOffset + "px";
-	this.crossYearObj.top = parseInt( this._formatInt(this.crossObj.top),10) +	26 + "px";
+	this.selectYearDiv.style.left =	leftOffset + "px";
+	this.selectYearDiv.style.top = parseInt( this._formatInt(this.calendarDiv.style.top),10) +	26 + "px";
 }
 
 /*** calendar ***/
@@ -786,7 +965,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar=function() {
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar=function(ctl, ctl2, format){
     if (this.bPageLoaded){
-		if ( this.crossObj.visibility == "hidden" ) {
+		if ( this.calendarDiv.style.visibility == "hidden" ) {
             this.ctlToPlaceValue = ctl2;
 			this.todayDateFormat=format;
 
@@ -877,7 +1056,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show=function(ctl){
 	}
 
 	var bodyRect = this._getVisibleBodyRectangle();
-	var cal = document.getElementById("calendar");
+	var cal = this.calendarDiv;
 	var top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight +	2;
 	var left = ctl.offsetLeft + leftpos - leftScrollOffset;
 
@@ -898,14 +1077,14 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show=function(ctl){
 		top = bodyRect.top;
 	}
 
-	this.crossObj.left = this.initData.fixedX==-1 ? left + "px": this.initData.fixedX;
-	this.crossObj.top = this.initData.fixedY==-1 ? top + "px": this.initData.fixedY;
+	this.calendarDiv.style.left = this.initData.fixedX==-1 ? left + "px": this.initData.fixedX;
+	this.calendarDiv.style.top = this.initData.fixedY==-1 ? top + "px": this.initData.fixedY;
 	this._constructCalendar (1, this.selectedDate.month, this.selectedDate.year);
 
-    this.crossObj.visibility=(this.dom||this.ie)? "visible" : "show";
+    this.calendarDiv.style.visibility=(this.dom||this.ie)? "visible" : "show";
 
-    this._hideElement( 'SELECT', document.getElementById("calendar") );
-	this._hideElement( 'APPLET', document.getElementById("calendar") );
+    this._hideElement( 'SELECT', this.calendarDiv );
+	this._hideElement( 'APPLET', this.calendarDiv );
 
 	this.bShow = true;
 }
