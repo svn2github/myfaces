@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.date;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -214,29 +215,31 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             seconds = Integer.toString(calendar.get(Calendar.SECOND));
         }
 
-        public Date parse() throws NumberFormatException {
+        public Date parse() throws ParseException{
             Calendar tempCalendar=Calendar.getInstance();
             if (timeZone != null)
                    tempCalendar.setTimeZone(timeZone);
-            
-            tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
-            tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
-            tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
-            if (uses_ampm) {
-            	int int_hours = Integer.parseInt(hours);
-            	// ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
-            	if (int_hours == 12) {
-        			int_hours = 0;
-            	}
-            	tempCalendar.set(Calendar.HOUR,int_hours);
-                tempCalendar.set(Calendar.AM_PM,Integer.parseInt(ampm));
-            } else {
-            	tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
-            }
-            tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
-            tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
-            tempCalendar.set(Calendar.MILLISECOND, 0);
-            
+            try{
+	            tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
+	            tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
+	            tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
+	            if (uses_ampm) {
+	            	int int_hours = Integer.parseInt(hours);
+	            	// ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
+	            	if (int_hours == 12) {
+	        			int_hours = 0;
+	            	}
+	            	tempCalendar.set(Calendar.HOUR,int_hours);
+	                tempCalendar.set(Calendar.AM_PM,Integer.parseInt(ampm));
+	            } else {
+	            	tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
+	            }
+	            tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
+	            tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
+	            tempCalendar.set(Calendar.MILLISECOND, 0);
+            } catch (NumberFormatException e) {
+            	throw new ParseException(e.getMessage(),0);
+            } 
             return tempCalendar.getTime();
         }
 
