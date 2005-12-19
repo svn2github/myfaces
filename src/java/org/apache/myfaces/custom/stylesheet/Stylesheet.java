@@ -15,13 +15,12 @@
  */
 package org.apache.myfaces.custom.stylesheet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.util._ComponentUtils;
-
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.util._ComponentUtils;
 
 
 /**
@@ -34,11 +33,13 @@ public class Stylesheet extends UIOutput {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.Stylesheet";
 	public static final String COMPONENT_FAMILY = "javax.faces.Output";
 	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Stylesheet";
-	private static final Log log = LogFactory.getLog(Stylesheet.class);
 
     private String _path = null;
     private Boolean _inline = null;
     private String _media = null;
+    private String _enabledOnUserRole = null;
+    private String _visibleOnUserRole = null;
+
 
 
     // ------------------------------------------------------------ Constructors
@@ -97,6 +98,37 @@ public class Stylesheet extends UIOutput {
     	this._media = media;  
     }
     
+    public void setEnabledOnUserRole(String enabledOnUserRole)
+    {
+        _enabledOnUserRole = enabledOnUserRole;
+    }
+
+    public String getEnabledOnUserRole()
+    {
+        if (_enabledOnUserRole != null) return _enabledOnUserRole;
+        ValueBinding vb = getValueBinding("enabledOnUserRole");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setVisibleOnUserRole(String visibleOnUserRole)
+    {
+        _visibleOnUserRole = visibleOnUserRole;
+    }
+
+    public String getVisibleOnUserRole()
+    {
+        if (_visibleOnUserRole != null) return _visibleOnUserRole;
+        ValueBinding vb = getValueBinding("visibleOnUserRole");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public boolean isRendered()
+    {
+        if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
+        return super.isRendered();
+    }
+
+    
     public void restoreState(FacesContext context, Object state) {
 
         Object values[] = (Object[]) state;
@@ -104,16 +136,20 @@ public class Stylesheet extends UIOutput {
         _path = (String) values[1];
         _inline = (Boolean) values[2];
         _media = (String) values[3];
+        _enabledOnUserRole = (String) values[4];
+        _visibleOnUserRole = (String) values[5];
 
     }
 
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[4];
+        Object values[] = new Object[6];
         values[0] = super.saveState(context);
         values[1] = _path;
         values[2] = _inline;
         values[3] = _media;
+        values[4] = _enabledOnUserRole;
+        values[5] = _visibleOnUserRole;
         return values;
 
     }

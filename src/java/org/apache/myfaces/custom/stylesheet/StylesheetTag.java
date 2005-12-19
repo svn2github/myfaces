@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.stylesheet;
 
 import javax.faces.component.UIComponent;
 
+import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
 
 /**
@@ -67,6 +68,8 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
         setStringProperty(component, "path", _path);
         setStringProperty(component, "media", _media);
         setBooleanProperty(component, "inline", Boolean.toString(_inline));
+        setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
+        setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
 
     }
 
