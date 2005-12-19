@@ -17,7 +17,6 @@ package org.apache.myfaces.custom.date;
 
 import java.io.IOException;
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
@@ -323,7 +322,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         UserData userData = (UserData) submittedValue;
         try {
             return userData.parse();
-        } catch (ParseException e) {
+        } catch (NumberFormatException e) {
             Object[] args = {uiComponent.getId()};
             throw new ConverterException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, DATE_MESSAGE_ID, args));
         }

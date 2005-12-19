@@ -16,7 +16,6 @@
 package org.apache.myfaces.custom.date;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -215,7 +214,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             seconds = Integer.toString(calendar.get(Calendar.SECOND));
         }
 
-        public Date parse() throws ParseException{
+        public Date parse() throws NumberFormatException {
             Calendar tempCalendar=Calendar.getInstance();
             if (timeZone != null)
                    tempCalendar.setTimeZone(timeZone);
