@@ -245,7 +245,12 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         {
             UIComponent child = (UIComponent)children.get(i);
             if (!child.isRendered()) continue;
-            if (child instanceof UINavigationMenuItem)
+            if (child instanceof HtmlCommandNavigationItem)
+            {
+            	HtmlCommandNavigationItem navMenuItem = (HtmlCommandNavigationItem) child;
+            	preprocessNavigationItems(facesContext, navMenuItem, navMenuItem.getChildren(), uniqueId);
+            }
+            else if (child instanceof UINavigationMenuItem)
             {
                 UINavigationMenuItem uiNavMenuItem = (UINavigationMenuItem) child;
                 createHtmlCommandNavigationItem(facesContext, parent, i, uiNavMenuItem, uniqueId);
@@ -370,6 +375,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             }
         }
         // process next level
+        log.debug("Instance of UINavigationMenuItem, preprocess childrens");
         preprocessNavigationItems(facesContext, newItem, uiNavMenuItem.getChildren(), uniqueId);
     }
 
