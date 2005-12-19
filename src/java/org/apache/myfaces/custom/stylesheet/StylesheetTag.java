@@ -27,6 +27,7 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
 
 
     private String _path = null;
+    private String _media = null;
     private boolean _inline = false;
     
 	// User Role support
@@ -50,6 +51,7 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
 
         super.release();
         _path=null;
+        _media=null;
     	_enabledOnUserRole=null;
     	_visibleOnUserRole=null;
 
@@ -63,6 +65,8 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
 
         super.setProperties(component);
         setStringProperty(component, "path", _path);
+        setStringProperty(component, "media", _media);
+        setBooleanProperty(component, "inline", Boolean.toString(_inline));
 
     }
 
@@ -70,6 +74,9 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
 
     public void setPath(String path) {
         this._path = path;
+    }
+    public void setMedia(String media) {
+        this._media = media;
     }
 	public void setEnabledOnUserRole(String string) {
 		_enabledOnUserRole = string;
