@@ -69,7 +69,8 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
 
     protected void setProperties(UIComponent component)
     {
-        setItemValue("0"); // itemValue not used
+        if (getItemValue() == null)
+            setItemValue("0"); // itemValue not used
         super.setProperties(component);
         setStringProperty(component, ICON_ATTR, _icon);
 

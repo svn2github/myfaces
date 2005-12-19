@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -61,6 +62,7 @@ public class HtmlJSCookMenuRenderer
     private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
 
     private static final String JSCOOK_ACTION_PARAM = "jscook_action";
+    private static final Class[] ACTION_LISTENER_ARGS = {ActionEvent.class};
 
     private static final Map builtInThemes = new java.util.HashMap();
     static {
@@ -80,27 +82,46 @@ public class HtmlJSCookMenuRenderer
                 !actionParam.trim().equals("null"))
         {
             String compId = getMenuId(context,component);
-            int idx = actionParam.lastIndexOf(':');
-            if (idx == -1) {
-                return;
-            }
-            String actionId = actionParam.substring(0, idx);
-            if (! compId.equals(actionId)) {
-                return;
-            }
-            actionParam = actionParam.substring(idx + 1);
-            actionParam = decodeValueBinding(actionParam, context);
-            MethodBinding mb;
-            if (UIComponentTag.isValueReference(actionParam))
+            StringTokenizer tokenizer = new StringTokenizer(actionParam, ":");
+            if (tokenizer.countTokens() > 1)
             {
-                mb = context.getApplication().createMethodBinding(actionParam, null);
+                String actionId = tokenizer.nextToken();
+                if (! compId.equals(actionId)) {
+                    return;
+                }
+                while (tokenizer.hasMoreTokens()) {
+                    String action = tokenizer.nextToken();
+                    if (action.startsWith("A")) {
+                        action  = action.substring(1, action.length());
+                        action = decodeValueBinding(action, context);
+                        MethodBinding mb;
+                        if (UIComponentTag.isValueReference(action)) {
+                            mb = context.getApplication().createMethodBinding(action, null);
+                        }
+                        else {
+                            mb = new SimpleActionMethodBinding(action);
+                        }
+                        ((HtmlCommandJSCookMenu)component).setAction(mb);
+                    }
+                    else if (action.startsWith("L")) {
+                        action  = action.substring(1, action.length());
+                        String value = null;
+                        int idx = action.indexOf(";");
+                        if (idx > 0 && idx < action.length()-1) {
+                            value = action.substring(idx + 1, action.length());
+                            action = action.substring(0, idx);
+                            ((HtmlCommandJSCookMenu)component).setValue(value);
+                        }
+                        MethodBinding mb;
+                        if (UIComponentTag.isValueReference(action)) {
+                            mb = context.getApplication().createMethodBinding(action, ACTION_LISTENER_ARGS);
+                            ((HtmlCommandJSCookMenu)component).setActionListener(mb);
+                            if (value != null)
+                                ((HtmlCommandJSCookMenu)component).setValue(value);
+                        }
+                    }
+                }
             }
-            else
-            {
-                mb = new SimpleActionMethodBinding(actionParam);
-            }
-            ((HtmlCommandJSCookMenu)component).setAction(mb);
-
             component.queueEvent(new ActionEvent(component));
         }
     }
@@ -261,16 +282,36 @@ public class HtmlJSCookMenuRenderer
                 writer.append(JavascriptUtils.encodeString(item.getLabel()));
             }
             writer.append("', ");
-            if (item.getAction() != null && ! item.isDisabled())
+            StringBuffer actionStr = new StringBuffer();
+            if ((item.getAction() != null || item.getActionListener() != null) && ! item.isDisabled())
             {
-                writer.append("'");
-                writer.append(menuId);
-                writer.append(':');
-                writer.append(item.getAction());
-                if (uiNavMenuItem != null) {
-                    encodeValueBinding(writer, uiNavMenuItem, item);
+                actionStr.append("'");
+                actionStr.append(menuId);
+                if (item.getActionListener() != null)
+                {
+                    actionStr.append(":L");
+                    actionStr.append(item.getActionListener());
+                    if (uiNavMenuItem != null && uiNavMenuItem.getItemValue() != null)
+                    {
+                        actionStr.append(';');
+                        actionStr.append(item.getValue());
+                    }
+                    else if (item.getValue() != null)
+                    {
+                        actionStr.append(';');
+                        actionStr.append(item.getValue());
+                    }
                 }
-                writer.append("'");
+                if (item.getAction() != null)
+                {
+                    actionStr.append(":A");
+                    actionStr.append(item.getAction());
+                    if (uiNavMenuItem != null) {
+                        encodeValueBinding(actionStr, uiNavMenuItem, item);
+                    }
+                }
+                actionStr.append("'");
+                writer.append(actionStr.toString());
             }
             else
             {
