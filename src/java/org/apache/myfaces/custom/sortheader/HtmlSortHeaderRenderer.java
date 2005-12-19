@@ -15,16 +15,16 @@
  */
 package org.apache.myfaces.custom.sortheader;
 
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.html.ext.HtmlDataTable;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlLinkRendererBase;
-import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
+
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
