@@ -57,6 +57,9 @@ public class HtmlInputCalendar
     private String _popupSelectMonthMessage = null;
     private String _popupSelectYearMessage = null;
     private String _popupSelectDateMessage = null;
+    private String _popupTheme = null;
+    private String _popupButtonImageUrl = null;
+    private String _helpText = null;
 
     public HtmlInputCalendar()
     {
@@ -323,6 +326,42 @@ public class HtmlInputCalendar
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
+    public String getPopupTheme()
+    {
+        if (_popupTheme != null) return _popupTheme;
+        ValueBinding vb = getValueBinding("popupTheme");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setPopupTheme(String popupTheme)
+    {
+        _popupTheme = popupTheme;
+    }
+
+    public String getPopupButtonImageUrl()
+    {
+        if (_popupButtonImageUrl != null) return _popupButtonImageUrl;
+        ValueBinding vb = getValueBinding("popupButtonImageUrl");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setPopupButtonImageUrl(String popupButtonImageUrl)
+    {
+        _popupButtonImageUrl = popupButtonImageUrl;
+    }
+
+    public String getHelpText()
+    {
+        if (_helpText != null) return _helpText;
+        ValueBinding vb = getValueBinding("helpText");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setHelpText(String helpText)
+    {
+        _helpText = helpText;
+    }
+
 
     public boolean isRendered()
     {
@@ -332,7 +371,7 @@ public class HtmlInputCalendar
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[22];
+        Object values[] = new Object[25];
         values[0] = super.saveState(context);
         values[1] = _monthYearRowClass;
         values[2] = _weekRowClass;
@@ -355,6 +394,9 @@ public class HtmlInputCalendar
         values[19] = _popupSelectDateMessage;
         values[20] = _popupButtonStyle;
         values[21] = _popupButtonStyleClass;
+        values[22] = _popupTheme;
+        values[23] = _popupButtonImageUrl;
+        values[24] = _helpText;
         return ((Object) (values));
     }
 
@@ -383,6 +425,9 @@ public class HtmlInputCalendar
         _popupSelectDateMessage = (String)values[19];
         _popupButtonStyle = (String)values[20];
         _popupButtonStyleClass = (String)values[21];
+        _popupTheme = (String)values[22];
+        _popupButtonImageUrl = (String)values[23];
+        _helpText = (String)values[24];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

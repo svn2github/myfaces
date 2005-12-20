@@ -19,6 +19,7 @@ import org.apache.myfaces.component.html.util.AddResource;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -114,12 +115,7 @@ public class HtmlPopupRenderer
     {
         AddResource.getInstance(context).addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlPopupRenderer.class, "JSPopup.js");
 
-        String popupId = (clientId+"Popup").replaceAll(":","_");
-
-        while(popupId.startsWith("_"))
-        {
-            popupId = popupId.substring(1);
-        }
+        String popupId = JavascriptUtils.getValidJavascriptName(clientId+"Popup",false);
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, uiComponent);

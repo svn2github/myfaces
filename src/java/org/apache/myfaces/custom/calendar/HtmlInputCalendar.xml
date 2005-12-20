@@ -92,5 +92,17 @@
     <field>
         <name>popupSelectDateMessage</name>
         <type>java.lang.String</type>
-    </field>                
+    </field>
+    <field>
+        <name>popupButtonImageUrl</name>
+        <type>java.lang.String</type>
+    </field>
+    <field>
+        <name>popupTheme</name>
+        <type>java.lang.String</type>
+    </field>
+    <field>
+        <name>helpText</name>
+        <type>java.lang.String</type>
+    </field>
 </component>

@@ -84,6 +84,8 @@ org_apache_myfaces_PopupCalendar = function()
     this.selectYearDiv;
     this.todaySpan=null;
     this.captionSpan=null;
+    this.contentSpan=null;
+    this.closeCalendarSpan=null;
     this.monthSpan=null;
     this.yearSpan=null
     this.changeMonthImg=null;
@@ -205,7 +207,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             var bodyTag = document.getElementsByTagName("body")[0];
 
             this.calendarDiv = document.createElement("div");
-            this.calendarDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
+            this.calendarDiv.className=this.initData.themePrefix+"-div-style";
 
             Event.observe(this.calendarDiv,"click",function(){this.bShow=true;}.bind(this),false);
 
@@ -213,7 +215,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 
             var mainTable = document.createElement("table");
             mainTable.setAttribute("style","width:"+((this.initData.showWeekNumber==1)?250:220)+"px;");
-            mainTable.setAttribute("class",this.initData.themePrefix+"-table-style");
+            mainTable.className=this.initData.themePrefix+"-table-style";
 
             this.calendarDiv.appendChild(mainTable);
 
@@ -222,7 +224,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             mainTable.appendChild(mainBody);
 
             var mainRow = document.createElement("tr");
-            mainRow.setAttribute("class",this.initData.themePrefix+"-title-background-style");
+            mainRow.className=this.initData.themePrefix+"-title-background-style";
 
             mainBody.appendChild(mainRow);
 
@@ -242,7 +244,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             contentBody.appendChild(headerRow);
 
             var captionCell = document.createElement("td");
-            captionCell.setAttribute("class",this.initData.themePrefix+"-title-style");
+            captionCell.className=this.initData.themePrefix+"-title-style";
             headerRow.appendChild(captionCell);
 
             this.captionSpan = document.createElement("span");
@@ -261,30 +263,28 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 
             closeButtonCell.appendChild(closeCalendarLink);
 
-            var closeCalendarSpan = document.createElement("span");
-            closeCalendarSpan.setAttribute("id","closeButton");
+            this.closeCalendarSpan = document.createElement("span");
 
-            closeCalendarLink.appendChild(closeCalendarSpan);
+            closeCalendarLink.appendChild(this.closeCalendarSpan);
 
             var contentRow = document.createElement("tr");
             mainBody.appendChild(contentRow);
 
             var contentCell = document.createElement("td");
-            contentCell.setAttribute("class",this.initData.themePrefix+"-body-style");
+            contentCell.className=this.initData.themePrefix+"-body-style";
             contentRow.appendChild(contentCell);
 
-            var contentSpan = document.createElement("span");
-            contentSpan.setAttribute("id","popupcalendar_content");
-            contentCell.appendChild(contentSpan);
+            this.contentSpan = document.createElement("span");
+            contentCell.appendChild(this.contentSpan);
 
             if(this.initData.showToday==1)
             {
                 var todayRow = document.createElement("tr");
-                todayRow.setAttribute("class",this.initData.themePrefix+"-today-style");
+                todayRow.className=this.initData.themePrefix+"-today-style";
                 mainBody.appendChild(todayRow);
 
                 var todayCell = document.createElement("td");
-                todayCell.setAttribute("class",this.initData.themePrefix+"-today-lbl-style");
+                todayCell.className=this.initData.themePrefix+"-today-lbl-style";
                 todayRow.appendChild(todayCell);
 
                 this.todaySpan = document.createElement("span");
@@ -292,12 +292,12 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             }
 
             this.selectMonthDiv = document.createElement("div");
-            this.selectMonthDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
+            this.selectMonthDiv.className=this.initData.themePrefix+"-div-style";
 
             bodyTag.appendChild(this.selectMonthDiv);
 
             this.selectYearDiv = document.createElement("div");
-            this.selectYearDiv.setAttribute("class",this.initData.themePrefix+"-div-style");
+            this.selectYearDiv.className=this.initData.themePrefix+"-div-style";
 
             bodyTag.appendChild(this.selectYearDiv);
 
@@ -338,7 +338,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             this.todaySpan.appendChild(document.createTextNode(this.initData.todayString+" "))
 
             var todayLink = document.createElement("a");
-            todayLink.setAttribute("class",this.initData.themePrefix+"-today-style");
+            todayLink.className=this.initData.themePrefix+"-today-style";
             todayLink.setAttribute("title",this.initData.gotoString);
             todayLink.setAttribute("href","#")
             todayLink.appendChild(document.createTextNode(this._todayIsDate()));
@@ -367,7 +367,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
 		//sHTML1+="<span id='spanYear'  class='"+this.initData.themePrefix+"-title-control-normal-style' onmouseover='this._swapImage(\"changeYear\",\"drop2.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-select-style\"; window.status=\""+this.selectYearMessage+"\"'	onmouseout='this._swapImage(\"changeYear\",\"drop1.gif\"); this.className=\""+this.initData.themePrefix+"-title-control-normal-style\"; window.status=\"\"'	onclick='this._popUpYear()'></span>&#160;"
 
         this.monthSpan = document.createElement("span");
-        this.monthSpan.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
+        this.monthSpan.className=this.initData.themePrefix+"-title-control-normal-style";
 
         Event.observe(this.monthSpan,"mouseover",function(event){
             this._swapImage(this.changeMonthImg,"drop2.gif");
@@ -389,7 +389,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
         this._appendNbsp(this.captionSpan);
 
         this.yearSpan = document.createElement("span");
-        this.yearSpan.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
+        this.yearSpan.className=this.initData.themePrefix+"-title-control-normal-style";
 
         Event.observe(this.yearSpan,"mouseover",function(event){
             this._swapImage(this.changeYearImg,"drop2.gif");
@@ -420,7 +420,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
     imgLeft.setAttribute("style","width:10px;height:11px;border:0px;")
 
     var spanLeft = document.createElement("span");
-    spanLeft.setAttribute("class",this.initData.themePrefix+"-title-control-normal-style");
+    spanLeft.className=this.initData.themePrefix+"-title-control-normal-style";
     Event.observe(spanLeft,"mouseover",function(event){
         this._swapImage(imgLeft,direction+"2.gif");
         Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
@@ -554,7 +554,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth=function(){
 
         var selectMonthTable = document.createElement("table");
         selectMonthTable.setAttribute("style","width:70px;border-collapse:collapse;")
-        selectMonthTable.setAttribute("class",this.initData.themePrefix+"-dropdown-style");
+        selectMonthTable.className=this.initData.themePrefix+"-dropdown-style";
 
         this._removeAllChildren(this.selectMonthDiv);
 
@@ -687,7 +687,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear=function() {
 
         var selectYearTable = document.createElement("table");
         selectYearTable.setAttribute("style","width:44px;border-collapse:collapse;")
-        selectYearTable.setAttribute("class",this.initData.themePrefix+"-dropdown-style");
+        selectYearTable.className=this.initData.themePrefix+"-dropdown-style";
 
         this._removeAllChildren(this.selectYearDiv);
 
@@ -875,6 +875,69 @@ org_apache_myfaces_PopupCalendar.prototype._weekNbr=function(n) {
 	return week;
 }
 
+org_apache_myfaces_PopupCalendar.prototype._appendCell=function(parentElement,value) {
+    var cell = document.createElement("td");
+    cell.setAttribute("style","text-align:right;");
+
+    if(value && value != "")
+    {
+        cell.appendChild(document.createTextNode(value));
+    }
+    else
+    {
+        this._appendNbsp(cell);
+    }
+
+    parentElement.appendChild(cell);
+}
+
+org_apache_myfaces_PopupCalendar.prototype._getDateStyle=function(datePointer) {
+    var sStyle=this.initData.themePrefix+"-normal-day-style"; //regular day
+
+    if ((datePointer==this.dateNow)&&
+        (this.selectedDate.month==this.monthNow)&&(this.selectedDate.year==this.yearNow)) //today
+    { sStyle = this.initData.themePrefix+"-current-day-style"; }
+    else if	(dayPointer % 7 == (this.initData.startAt * -1) +1) //end-of-the-week day
+    { sStyle = this.initData.themePrefix+"-end-of-weekday-style"; }
+
+    //selected day
+    if ((datePointer==this.saveSelectedDate.date) &&
+        (this.selectedDate.month==this.saveSelectedDate.month)	&&
+        (this.selectedDate.year==this.saveSelectedDate.year))
+    { sStyle += " "+this.initData.themePrefix+"-selected-day-style"; }
+
+    for (k=0;k<this.holidaysCounter;k++)
+    {
+        if ((parseInt( this._formatInt(this.holidays[k].d),10)==datePointer)&&(parseInt( this._formatInt(this.holidays[k].m),10)==(this.selectedDate.month+1)))
+        {
+            if ((parseInt( this._formatInt(this.holidays[k].y),10)==0)||((parseInt( this._formatInt(this.holidays[k].y),10)==this.selectedDate.year)&&(parseInt( this._formatInt(this.holidays[k].y),10)!=0)))
+            {
+                sStyle += " "+this.initData.themePrefix+"-holiday-style";
+            }
+        }
+    }
+
+    return sStyle;
+}
+
+org_apache_myfaces_PopupCalendar.prototype._getHolidayHint=function(datePointer) {
+    var sHint = "";
+    for (k=0;k<this.holidaysCounter;k++)
+    {
+        if ((parseInt( this._formatInt(this.holidays[k].d),10)==datePointer)&&(parseInt( this._formatInt(this.holidays[k].m),10)==(this.selectedDate.month+1)))
+        {
+            if ((parseInt( this._formatInt(this.holidays[k].y),10)==0)||((parseInt( this._formatInt(this.holidays[k].y),10)==this.selectedDate.year)&&(parseInt( this._formatInt(this.holidays[k].y),10)!=0)))
+            {
+                sHint+=sHint==""?this.holidays[k].desc:"\n"+this.holidays[k].desc;
+            }
+        }
+    }
+
+    return sHint;
+}
+
+
+
 org_apache_myfaces_PopupCalendar.prototype._constructCalendar=function() {
 	var aNumDays = Array (31,0,31,30,31,30,31,31,30,31,30,31);
 
@@ -886,81 +949,164 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar=function() {
 		endDate	= new Date (this.selectedDate.year,this.selectedDate.month+1,1);
 		endDate	= new Date (endDate	- (24*60*60*1000));
 		numDaysInMonth = endDate.getDate();
-	}else
+	} else {
 		numDaysInMonth = aNumDays[this.selectedDate.month];
+    }
 
-
-	datePointer	= 0;
+    datePointer	= 0;
 	dayPointer = startDate.getDay() - this.initData.startAt;
 
 	if (dayPointer<0)
 		dayPointer = 6;
 
-	var sHTML = "<table border=0 class='"+this.initData.themePrefix+"-body-style'><tr>"
+    this._removeAllChildren(this.contentSpan);
+
+    var contentTable = document.createElement("table");
+    contentTable.setAttribute("style","border:0px;")
+    contentTable.className=this.initData.themePrefix+"-body-style";
+
+    this.contentSpan.appendChild(contentTable);
+
+    var contentBody = document.createElement("tbody");
+    contentTable.appendChild(contentBody);
+
+    var contentRow = document.createElement("tr");
+    contentBody.appendChild(contentRow);
+
+    if (this.initData.showWeekNumber==1)
+    {
+        var showWeekNumberCell = document.createElement("td");
+        showWeekNumberCell.setAttribute("style","width:27px;font-weight:bold;");
+
+        contentRow.appendChild(showWeekNumberCell);
+
+        showWeekNumberCell.appendChild(document.createTextNode(this.initData.weekString));
+
+        var dividerCell = document.createElement("td");
+        dividerCell.setAttribute("style","width:1px;")
+        dividerCell.setAttribute("rowSpan","7");
+        dividerCell.className=this.initData.themePrefix+"-weeknumber-div-style";
+
+        contentRow.appendChild(dividerCell);
+
+        var dividerImg = document.createElement("img");
+        dividerImg.setAttribute("src",this.initData.imgDir+"divider.gif");
+        dividerImg.setAttribute("style","width:1px;");
+        dividerCell.appendChild(dividerImg);
+    }
+
+    for	(i=0; i<7; i++)
+    {
+        var dayNameCell = document.createElement("td");
+        dayNameCell.setAttribute("style","width:27px;text-align:right;font-weight:bold;")
+        contentRow.appendChild(dayNameCell);
+
+        dayNameCell.appendChild(document.createTextNode(this.initData.dayName[i]));
+    }
+
+    var currentRow = document.createElement("tr");
+    contentBody.appendChild(currentRow);
 
 	if (this.initData.showWeekNumber==1)
-		sHTML += "<td width=27><b>" + this.initData.weekString + "</b></td><td width=1 rowspan=7 class='"+this.initData.themePrefix+"-weeknumber-div-style'><img src='"+this.initData.imgDir+"divider.gif' width=1></td>";
+    {
+        this._appendCell(currentRow,this._weekNbr(startDate)+" ");
+    }
 
-	for	(i=0; i<7; i++)
-		sHTML += "<td width='27' align='right'><b>"+ this.initData.dayName[i]+"</b></td>";
+    for	( var i=1; i<=dayPointer;i++ )
+    {
+        this._appendCell(currentRow);
+    }
 
-	sHTML +="</tr><tr>";
-
-	if (this.initData.showWeekNumber==1)
-		sHTML += "<td align=right>" + this._weekNbr(startDate) + "&#160;</td>";
-
-	for	( var i=1; i<=dayPointer;i++ )
-		sHTML += "<td>&#160;</td>";
-
-	for	( datePointer=1; datePointer<=numDaysInMonth; datePointer++ ){
+    for	( datePointer=1; datePointer<=numDaysInMonth; datePointer++ ){
 		dayPointer++;
-		sHTML += "<td align=right>";
+        var dateCell = document.createElement("td");
+        dateCell.setAttribute("style","text-align:right;");
 
-		var sStyle=this.initData.themePrefix+"-normal-day-style"; //regular day
+        currentRow.appendChild(dateCell);
 
-		if ((datePointer==this.dateNow)&&(this.selectedDate.month==this.monthNow)&&(this.selectedDate.year==this.yearNow)) //today
-		{ sStyle = this.initData.themePrefix+"-current-day-style"; }
-		else if	(dayPointer % 7 == (this.initData.startAt * -1) +1) //end-of-the-week day
-		{ sStyle = this.initData.themePrefix+"-end-of-weekday-style"; }
+        var sStyle = this._getDateStyle(datePointer);
+        var sHint = this._getHolidayHint(datePointer);
 
-		//selected day
-		if ((datePointer==this.saveSelectedDate.date) &&	(this.selectedDate.month==this.saveSelectedDate.month)	&& (this.selectedDate.year==this.saveSelectedDate.year))
-		{ sStyle += " "+this.initData.themePrefix+"-selected-day-style"; }
+        var sSelectStyle = sStyle+" "+this.initData.themePrefix+"-would-be-selected-day-style";
+		var sNormalStyle = sStyle;
 
-		sHint = ""
-		for (k=0;k<this.holidaysCounter;k++)
-		{
-			if ((parseInt( this._formatInt(this.holidays[k].d),10)==datePointer)&&(parseInt( this._formatInt(this.holidays[k].m),10)==(this.selectedDate.month+1)))
-			{
-				if ((parseInt( this._formatInt(this.holidays[k].y),10)==0)||((parseInt( this._formatInt(this.holidays[k].y),10)==this.selectedDate.year)&&(parseInt( this._formatInt(this.holidays[k].y),10)!=0)))
-				{
-					sStyle += " "+this.initData.themePrefix+"-holiday-style";
-					sHint+=sHint==""?this.holidays[k].desc:"\n"+this.holidays[k].desc
-				}
-			}
-		}
+        var dateLink = document.createElement("a");
+        dateLink.className=sStyle;
+        dateLink.setAttribute("href","#");
+        dateLink.setAttribute("title","sHint");
 
-		var regexp= /\"/g
-		sHint=sHint.replace(regexp,"&quot;");
+        dateLink.sNormalStyle=sNormalStyle;
+        dateLink.sSelectStyle=sSelectStyle;
+        dateLink.datePointer=datePointer;
 
-		sSelectStyle = sStyle+" "+this.initData.themePrefix+"-would-be-selected-day-style";
-		sNormalStyle = sStyle;
+        dateCell.appendChild(dateLink);
 
-		dateMessage = "onmousemove='window.status=\""+this.initData.selectDateMessage.replace("[date]",this._constructDate(datePointer,this.selectedDate.month,this.selectedDate.year))+"\"' onmouseout='this.className=\""+sNormalStyle+"\"; window.status=\"\"' "
+        Event.observe(dateLink,"mousemove",function(event){
+            window.status=this.initData.selectDateMessage.replace("[date]",this._constructDate(datePointer,this.selectedDate.month,this.selectedDate.year));
+        }.bindAsEventListener(this),false);
+        Event.observe(dateLink,"mouseout",function(event){
+            var elem=Event.element(event);
+            elem.className=elem.sNormalStyle;
+            window.status="";
+        }.bindAsEventListener(this),false);
+        Event.observe(dateLink,"click",function(event){
+            var elem=Event.element(event);
+            this.selectedDate.date=elem.datePointer;
+            this._closeCalendar();
+        }.bindAsEventListener(this),false);
+        Event.observe(dateLink,"mouseover",function(event){
+            var elem=Event.element(event);
+            elem.className=elem.sSelectStyle;
+        }.bindAsEventListener(this),false);
 
-		sHTML += "<a class='"+sStyle+"' "+dateMessage+" title=\"" + sHint + "\" href='javascript:this.selectedDate.date="+datePointer+";this._closeCalendar();' onmouseover='this.className=\""+sSelectStyle+"\";' >&#160;" + datePointer + "&#160;</a>";
+        this._appendNbsp(dateLink);
+        dateLink.appendChild(document.createTextNode(datePointer));
+        this._appendNbsp(dateLink);
 
 		if ((dayPointer+this.initData.startAt) % 7 == this.initData.startAt) {
-			sHTML += "</tr><tr>";
+			currentRow = document.createElement("tr");
+            contentBody.appendChild(currentRow);
+
 			if ((this.initData.showWeekNumber==1)&&(datePointer<numDaysInMonth))
-				sHTML += "<td align=right>" + (this._weekNbr(new Date(this.selectedDate.year,this.selectedDate.month,datePointer+1))) + "&#160;</td>";
+            {
+                this._appendCell(currentRow,this._weekNbr(new Date(this.selectedDate.year,this.selectedDate.month,datePointer+1))+" ");
+            }
+
 		}
 	}
 
-	document.getElementById("popupcalendar_content").innerHTML = sHTML;
-	this.monthSpan.innerHTML = "&#160;" +	this.initData.monthName[this.selectedDate.month] + "&#160;<img id='changeMonth' src='"+this.initData.imgDir+"drop1.gif' width='12' height='10' border=0>";
-	this.yearSpan.innerHTML =	"&#160;" + this.selectedDate.year	+ "&#160;<img id='changeYear' src='"+this.initData.imgDir+"drop1.gif' width='12' height='10' border=0>";
-	document.getElementById("closeButton").innerHTML = "<img src='"+this.initData.imgDir+"close.gif' width='15' height='13' border='0' alt='Close the Calendar'>";
+    this._removeAllChildren(this.monthSpan);
+
+    this._appendNbsp(this.monthSpan);
+    this.monthSpan.appendChild(document.createTextNode(this.initData.monthName[this.selectedDate.month]));
+    this._appendNbsp(this.monthSpan);
+
+    this.changeMonthImg = document.createElement("img");
+    this.changeMonthImg.setAttribute("src",this.initData.imgDir+"drop1.gif");
+    this.changeMonthImg.setAttribute("style","width:12px;height:10px;border:0px;");
+
+    this.monthSpan.appendChild(this.changeMonthImg);
+
+    this._removeAllChildren(this.yearSpan);
+
+    this._appendNbsp(this.yearSpan);
+    this.yearSpan.appendChild(document.createTextNode(this.selectedDate.year));
+    this._appendNbsp(this.yearSpan);
+
+    this.changeYearImg = document.createElement("img");
+    this.changeYearImg.setAttribute("src",this.initData.imgDir+"drop1.gif");
+    this.changeYearImg.setAttribute("style","width:12px;height:10px;border:0px;");
+
+    this.yearSpan.appendChild(this.changeYearImg);
+
+    this._removeAllChildren(this.closeCalendarSpan);
+
+    var closeButtonImg = document.createElement("img");
+    closeButtonImg.setAttribute("src",this.initData.imgDir+"close.gif");
+    closeButtonImg.setAttribute("style","width:15px;height:13px;border:0px;");
+    closeButtonImg.setAttribute("alt","Close the calendar");
+
+    this.closeCalendarSpan.appendChild(closeButtonImg);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar=function(ctl, ctl2, format){

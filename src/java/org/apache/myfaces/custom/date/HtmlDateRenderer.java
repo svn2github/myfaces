@@ -248,19 +248,18 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
 
-        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext, symbols, 
-                HtmlCalendarRenderer.mapMonths(symbols), Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
-                uiComponent);
+        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext,uiComponent);
 
-        String localizedLanguageScript = HtmlCalendarRenderer.getLocalizedLanguageScript(
+        //todo: urgent! needs fixing with new version of popupCalendar - see HtmlCalendarRenderer
+        String localizedLanguageScript = HtmlCalendarRenderer.getLocalizedLanguageScript(facesContext,
                 							symbols,
                 							HtmlCalendarRenderer.mapMonths(symbols),
                 							Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
-                							null);
+                							null,null);
 
         writer.startElement(HTML.SCRIPT_ELEM,uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
-        	writer.write(localizedLanguageScript);
+        writer.write(localizedLanguageScript);
         	//writer.write("if (!document.layers) {\n");
         		//writer.write("document.write(\"<input type='button' onclick='jscalendarPopUpCalendarForInputDate(\\\""+clientId+"\\\")' value='...'/>\");");
             //writer.write("\n}");

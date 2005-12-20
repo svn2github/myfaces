@@ -83,6 +83,9 @@ public class HtmlInputCalendarTag
     private String _popupSelectMonthMessage = null;
     private String _popupSelectYearMessage = null;
     private String _popupSelectDateMessage = null;
+    private String _popupTheme = null;
+    private String _popupButtonImageUrl = null;
+    private String _helpText;
 
     // User Role support
     private String _enabledOnUserRole;
@@ -112,6 +115,9 @@ public class HtmlInputCalendarTag
         _popupSelectDateMessage = null;
         _enabledOnUserRole = null;
         _visibleOnUserRole = null;
+        _popupTheme=null;
+        _popupButtonImageUrl=null;
+        _helpText = null;
     }
 
 
@@ -151,6 +157,9 @@ public class HtmlInputCalendarTag
         setStringProperty(component,"popupSelectMonthMessage",_popupSelectMonthMessage);
         setStringProperty(component,"popupSelectYearMessage",_popupSelectYearMessage);
         setStringProperty(component,"popupSelectDateMessage",_popupSelectDateMessage);
+        setStringProperty(component,"popupTheme",_popupTheme);
+        setStringProperty(component,"popupButtonImageUrl",_popupButtonImageUrl);
+        setStringProperty(component,"helpText",_helpText);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
@@ -260,6 +269,21 @@ public class HtmlInputCalendarTag
     public void setPopupWeekString(String popupWeekString)
     {
         _popupWeekString = popupWeekString;
+    }
+
+    public void setPopupTheme(String popupTheme)
+    {
+        _popupTheme = popupTheme;
+    }
+
+    public void setPopupButtonImageUrl(String popupButtonImageUrl)
+    {
+        _popupButtonImageUrl = popupButtonImageUrl;
+    }
+
+    public void setHelpText(String helpText)
+    {
+        _helpText = helpText;
     }
 
     public void setAccesskey(String accesskey)

@@ -133,8 +133,31 @@
             </description>
         </attribute>
         <attribute>
+            <name>popupTheme</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Set the theme-prefix for this component.
+            </description>
+        </attribute>
+        <attribute>
+            <name>popupButtonImageUrl</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Url to the image for this popupButton.
+            </description>
+        </attribute>
+        <attribute>
             <name>renderPopupButtonAsImage</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>If true, renders a calendar icon instead of the button to pop up the calendar.</description>
         </attribute>
+        <attribute>
+            <name>helpText</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>The text that will be rendered in the field - helping the user to find the right format to enter into the field.</description>
+        </attribute>
+

@@ -602,6 +602,7 @@
         &user_role_attributes;
         &ext_forceId_attribute;
         &tomahawk_input_calendar_attributes;
+        &alt_location_attributes;
     </tag>
 
     <!-- jsValueChangeListener -->
