@@ -27,7 +27,6 @@ import org.apache.myfaces.util.MessageUtils;
 import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.custom.inputTextHelp.HtmlTextHelpRenderer;
-import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.faces.application.Application;
@@ -121,14 +120,14 @@ public class HtmlCalendarRenderer
 
             Application application = facesContext.getApplication();
 
-            HtmlInputTextHelp inputText = getOrCreateInputTextChild(inputCalendar, application);
+            HtmlInputText inputText = getOrCreateInputTextChild(inputCalendar, application);
 
             RendererUtils.copyHtmlInputTextAttributes(inputCalendar, inputText);
 
             inputText.setConverter(null); // value for this transient component will already be converted
             inputText.setTransient(true);
-            inputText.setHelpText(inputCalendar.getHelpText());
-            inputText.setSelectText(true);
+            //inputText.setHelpText(inputCalendar.getHelpText());
+            //inputText.setSelectText(true);
 
             if (value == null && inputCalendar.getSubmittedValue() != null)
             {
@@ -237,9 +236,9 @@ public class HtmlCalendarRenderer
         }
     }
 
-    private HtmlInputTextHelp getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
+    private HtmlInputText getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
     {
-        HtmlInputTextHelp inputText = null;
+        HtmlInputText inputText = null;
 
         List li = inputCalendar.getChildren();
 
@@ -247,16 +246,16 @@ public class HtmlCalendarRenderer
         {
             UIComponent uiComponent = (UIComponent) li.get(i);
 
-            if(uiComponent instanceof HtmlInputTextHelp)
+            if(uiComponent instanceof HtmlInputText)
             {
-                inputText = (HtmlInputTextHelp) uiComponent;
+                inputText = (HtmlInputText) uiComponent;
                 break;
             }
         }
 
         if(inputText == null)
         {
-            inputText = (HtmlInputTextHelp) application.createComponent(HtmlInputTextHelp.COMPONENT_TYPE);
+            inputText = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
         }
         return inputText;
     }
@@ -289,18 +288,18 @@ public class HtmlCalendarRenderer
 
         if(javascriptLocation==null)
         {
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "pt.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
         }
         else
         {
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/prototype.js");
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/pt.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/popcalendar.js");
         }
 
-        HtmlTextHelpRenderer.addJavaScriptResources(facesContext);
+        //HtmlTextHelpRenderer.addJavaScriptResources(facesContext);
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
@@ -313,7 +312,7 @@ public class HtmlCalendarRenderer
         if( uiComponent instanceof HtmlInputCalendar ){
 
             HtmlInputCalendar inputCalendar = (HtmlInputCalendar) uiComponent;
-            int realFirstDayOfWeek = firstDayOfWeek-1/*Java has different starting-point*/;
+            int realFirstDayOfWeek = firstDayOfWeek-1;//Java has different starting-point;
 
             String[] weekDays;
 
@@ -481,10 +480,7 @@ public class HtmlCalendarRenderer
                 writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
             }
 
-            //writer.writeAttribute(HTML.ONCLICK_ATTR, "document.getElementById(\\'"+buttonId+"\\').click()",null);
             writeOnclickJsCalendarFunctionCall(writer, facesContext,uiComponent,dateFormat);
-            //writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "this.style.cursor=\\'hand\\';", null);
-            //writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "this.style.cursor=\\'default\\';", null);
 
             writer.endElement(HTML.IMG_ELEM);
         }

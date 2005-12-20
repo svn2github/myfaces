@@ -597,7 +597,7 @@ public final class AddResource
         }
         catch (Throwable e)
         {
-            log.error("Error while serving resource: " + e.getMessage(), e);
+            log.error("Error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

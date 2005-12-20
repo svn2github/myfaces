@@ -44,7 +44,7 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
         {
             HtmlInputTextHelp helpTextComp = (HtmlInputTextHelp) component;
             addJavaScriptResources(facesContext);
-            renderInputTextHelp(facesContext, (UIInput)helpTextComp);
+            renderInputTextHelp(facesContext, helpTextComp);
         }
         else
         {
@@ -173,6 +173,6 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
         AddResource.getInstance(facesContext).addJavaScriptAtPosition(
                 facesContext, AddResource.HEADER_BEGIN, HtmlTextHelpRenderer.class, "inputTextHelp.js");
 
-        facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);        
+        facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
 }
