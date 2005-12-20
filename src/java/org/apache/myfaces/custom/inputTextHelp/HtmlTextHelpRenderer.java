@@ -36,6 +36,8 @@ import org.apache.myfaces.renderkit.html.util.HTMLEncoder;
  */
 public class HtmlTextHelpRenderer extends HtmlTextRenderer
 {
+    private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.inputTextHelp.JAVASCRIPT_ENCODED";
+
     protected void renderNormal(FacesContext facesContext, UIComponent component) throws IOException
     {
         if(component instanceof HtmlInputTextHelp)
@@ -160,9 +162,17 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
         return super.getConvertedValue(facesContext, component, submittedValue);
     }
 
-    private static void addJavaScriptResources(FacesContext facesContext)
+    public static void addJavaScriptResources(FacesContext facesContext)
     {
+        // check to see if javascript has already been written (which could happen if more than one calendar on the same page)
+        if (facesContext.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
+        {
+            return;
+        }
+
         AddResource.getInstance(facesContext).addJavaScriptAtPosition(
                 facesContext, AddResource.HEADER_BEGIN, HtmlTextHelpRenderer.class, "inputTextHelp.js");
+
+        facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);        
     }
 }

@@ -26,6 +26,8 @@ import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.util.MessageUtils;
 import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
+import org.apache.myfaces.custom.inputTextHelp.HtmlTextHelpRenderer;
+import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.faces.application.Application;
@@ -119,12 +121,14 @@ public class HtmlCalendarRenderer
 
             Application application = facesContext.getApplication();
 
-            HtmlInputText inputText = getOrCreateInputTextChild(inputCalendar, application);
+            HtmlInputTextHelp inputText = getOrCreateInputTextChild(inputCalendar, application);
 
             RendererUtils.copyHtmlInputTextAttributes(inputCalendar, inputText);
 
             inputText.setConverter(null); // value for this transient component will already be converted
             inputText.setTransient(true);
+            inputText.setHelpText(inputCalendar.getHelpText());
+            inputText.setSelectText(true);
 
             if (value == null && inputCalendar.getSubmittedValue() != null)
             {
@@ -233,9 +237,9 @@ public class HtmlCalendarRenderer
         }
     }
 
-    private HtmlInputText getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
+    private HtmlInputTextHelp getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
     {
-        HtmlInputText inputText = null;
+        HtmlInputTextHelp inputText = null;
 
         List li = inputCalendar.getChildren();
 
@@ -243,16 +247,16 @@ public class HtmlCalendarRenderer
         {
             UIComponent uiComponent = (UIComponent) li.get(i);
 
-            if(uiComponent instanceof HtmlInputText)
+            if(uiComponent instanceof HtmlInputTextHelp)
             {
-                inputText = (HtmlInputText) uiComponent;
+                inputText = (HtmlInputTextHelp) uiComponent;
                 break;
             }
         }
 
         if(inputText == null)
         {
-            inputText = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
+            inputText = (HtmlInputTextHelp) application.createComponent(HtmlInputTextHelp.COMPONENT_TYPE);
         }
         return inputText;
     }
@@ -295,6 +299,9 @@ public class HtmlCalendarRenderer
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/popcalendar.js");
         }
+
+        HtmlTextHelpRenderer.addJavaScriptResources(facesContext);
+
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
 
@@ -853,16 +860,21 @@ public class HtmlCalendarRenderer
         public Date getAsDate(FacesContext facesContext, UIComponent uiComponent);
     }
 
-	public static class CalendarDateTimeConverter implements DateConverter
+    private static String getHelperString(UIComponent uiComponent)
+    {
+        return uiComponent instanceof HtmlInputCalendar?((HtmlInputCalendar) uiComponent).getHelpText():null;
+    }
+
+    public static class CalendarDateTimeConverter implements DateConverter
     {
         private static final String CONVERSION_MESSAGE_ID = "org.apache.myfaces.calendar.CONVERSION";
 
         public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s)
         {
-            if(s==null || s.trim().length()==0)
+            if(s==null || s.trim().length()==0 || s.equals(getHelperString(uiComponent)))
                 return null;
 
-            DateFormat dateFormat = null;
+            DateFormat dateFormat;
 
             if(uiComponent instanceof HtmlInputCalendar && ((HtmlInputCalendar) uiComponent).isRenderAsPopup())
             {
@@ -909,9 +921,9 @@ public class HtmlCalendarRenderer
             Date date = (Date) o;
 
             if(date==null)
-                return null;
+                return getHelperString(uiComponent);
 
-            DateFormat dateFormat = null;
+            DateFormat dateFormat;
 
             if(uiComponent instanceof HtmlInputCalendar && ((HtmlInputCalendar) uiComponent).isRenderAsPopup())
             {

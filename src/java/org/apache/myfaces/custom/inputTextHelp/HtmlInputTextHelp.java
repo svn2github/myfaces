@@ -31,6 +31,7 @@ public class HtmlInputTextHelp extends HtmlInputText
     public static final String JS_FUNCTION_SELECT_TEXT = "selectText";
     public static final String JS_FUNCTION_RESET_HELP = "resetHelpValue";
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputTextHelp";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.TextHelp";
 
     private String _helpText = null;
     private Boolean _selectText = null;
@@ -48,6 +49,7 @@ public class HtmlInputTextHelp extends HtmlInputText
 
     public HtmlInputTextHelp()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
     public String getHelpText()

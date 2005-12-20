@@ -35,7 +35,7 @@ public class HtmlInputTextHelpTag extends HtmlInputTextTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.TextHelp";
+        return HtmlInputTextHelp.DEFAULT_RENDERER_TYPE;
     }
 
     public void release()
