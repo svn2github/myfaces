@@ -1,0 +1,51 @@
+        <!-- header attributes -->
+        <attribute><name>headerdir</name>     <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute>
+            <name>headerstyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute.</description>
+        </attribute>
+        <attribute><name>headeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronmouseup</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronmouseover</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronmousemove</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronmouseout</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronkeydown</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headeronkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+
+        <!-- footer attributes -->
+        <attribute><name>footerdir</name>     <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute>
+            <name>footerstyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute.</description>
+        </attribute>
+        <attribute><name>footeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronmouseup</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronmouseover</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronmousemove</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronmouseout</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronkeydown</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footeronkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+
+        <attribute>
+            <name>width</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the width of the &lt;TD> elements</description>
+        </attribute>
+

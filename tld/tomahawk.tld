@@ -112,6 +112,8 @@
       SYSTEM "tomahawk-entities/tomahawk_js_value_set_attributes.xml">
 <!ENTITY tomahawk_checkbox_attributes
       SYSTEM "tomahawk-entities/tomahawk_checkbox_attributes.xml">
+<!ENTITY tomahawk_command_navigation_2_attributes
+      SYSTEM "tomahawk-entities/tomahawk_command_navigation_2_attributes.xml">
 <!ENTITY tomahawk_command_sort_header_attributes
       SYSTEM "tomahawk-entities/tomahawk_command_sort_header_attributes.xml">
 <!ENTITY tomahawk_data_list_attributes
@@ -186,6 +188,10 @@
       SYSTEM "tomahawk-entities/tomahawk_validate_equal_attributes.xml">
 <!ENTITY tomahawk_swap_image_attributes
       SYSTEM "tomahawk-entities/tomahawk_swap_image_attributes.xml">
+<!ENTITY tomahawk_columns_attributes
+      SYSTEM "tomahawk-entities/tomahawk_columns_attributes.xml">
+<!ENTITY tomahawk_column_attributes
+      SYSTEM "tomahawk-entities/tomahawk_column_attributes.xml">
 ]>
 
 <taglib>
@@ -664,23 +670,7 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        <attribute>
-            <name>open</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-               Menu node is open.
-            </description>
-        </attribute>
-        <attribute>
-            <name>active</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-               Menu node is active.
-            </description>
-        </attribute>
-
+        &tomahawk_command_navigation_2_attributes;
         &ui_command_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
@@ -1322,11 +1312,6 @@
         &tomahawk_update_action_listener_attributes;
     </tag>
 
-
-<!-- validators -->
-
-
-        <!-- creditCard -->
     <tag>
         <name>validateCreditCard</name>
         <tag-class>org.apache.myfaces.custom.creditcardvalidator.ValidateCreditCardTag</tag-class>
@@ -1339,7 +1324,6 @@
         &tomahawk_validate_credit_card_attributes;
     </tag>
 
-    <!-- Validator for Email -->
      <tag>
         <name>validateEmail</name>
         <tag-class>org.apache.myfaces.custom.emailvalidator.ValidateEmailTag</tag-class>
@@ -1359,9 +1343,9 @@
         <description>
             A custom validator for isbn codes, based upons Jakarta Commons.
         </description>
-    </tag -->
+    </tag>
+    -->
 
-    <!-- Validator for Regular Expressions -->
     <tag>
         <name>validateRegExpr</name>
         <tag-class>org.apache.myfaces.custom.regexprvalidator.ValidateRegExprTag</tag-class>
@@ -1374,7 +1358,6 @@
         &tomahawk_validate_regexpr_attributes;
     </tag>
 
-    <!-- Validator for Equal -->
      <tag>
         <name>validateEqual</name>
         <tag-class>org.apache.myfaces.custom.equalvalidator.ValidateEqualTag</tag-class>
@@ -1387,7 +1370,6 @@
         &tomahawk_validate_equal_attributes;
     </tag>
 
-    <!-- swap_image -->
     <tag>
         <name>swapImage</name>
         <tag-class>org.apache.myfaces.custom.swapimage.HtmlSwapImageTag</tag-class>
@@ -1403,7 +1385,6 @@
         &spec_img_attributes;
     </tag>
 
-    <!-- columns -->
     <tag>
         <name>columns</name>
         <tag-class>org.apache.myfaces.custom.crosstable.HtmlColumnsTag</tag-class>
@@ -1420,73 +1401,10 @@
         &ui_column_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
-
-        <attribute>
-            <name>value</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Supported types see JSF Spec 4.1.3</description>
-        </attribute>
-        <attribute>
-            <name>var</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
-
-        <!-- header attributes -->
-        <attribute><name>headerdir</name>     <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute>
-            <name>headerstyleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Corresponds to the HTML class attribute.</description>
-        </attribute>
-        <attribute><name>headeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmouseup</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmouseover</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmousemove</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmouseout</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronkeydown</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-
-        <!-- footer attributes -->
-        <attribute><name>footerdir</name>     <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute>
-            <name>footerstyleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Corresponds to the HTML class attribute.</description>
-        </attribute>
-        <attribute><name>footeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmouseup</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmouseover</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmousemove</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmouseout</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronkeydown</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-
-        <attribute>
-            <name>width</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>This attribute can be used to set the width of the &lt;TD> elements</description>
-        </attribute>
+        &tomahawk_columns_attributes;
+        &tomahawk_column_attributes;
      </tag>
 
-
-  <!-- column -->
     <tag>
         <name>column</name>
         <tag-class>org.apache.myfaces.custom.column.HtmlColumnTag</tag-class>
@@ -1503,57 +1421,7 @@
         &ui_column_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
-
-        <!-- header attributes -->
-        <attribute><name>headerdir</name>     <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute>
-            <name>headerstyleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Corresponds to the HTML class attribute.</description>
-        </attribute>
-        <attribute><name>headeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmouseup</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmouseover</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmousemove</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronmouseout</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronkeydown</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>headeronkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-
-        <!-- footer attributes -->
-        <attribute><name>footerdir</name>     <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute>
-            <name>footerstyleClass</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>Corresponds to the HTML class attribute.</description>
-        </attribute>
-        <attribute><name>footeronclick</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footerondblclick</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmousedown</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmouseup</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmouseover</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmousemove</name><required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronmouseout</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronkeypress</name> <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronkeydown</name>  <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-        <attribute><name>footeronkeyup</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
-
-        <attribute>
-            <name>width</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>This attribute can be used to set the width of the &lt;TD> elements</description>
-        </attribute>
+        &tomahawk_column_attributes;
      </tag>
 
 </taglib>
