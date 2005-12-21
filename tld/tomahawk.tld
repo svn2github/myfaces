@@ -1049,16 +1049,26 @@
         &tomahawk_div_attributes;
     </tag>
 
-    <!-- htmlTag -->
-
     <tag>
         <name>htmlTag</name>
         <tag-class>org.apache.myfaces.custom.htmlTag.HtmlTagTag</tag-class>
         <body-content>JSP</body-content>
-        <description>
-            Places the given HTML tag div around its children.
-
-            Unless otherwise specified, all attributes accept static values or EL expressions.
+        <description><![CDATA[
+            Creates an arbitrary HTML tag which encloses any child components.
+            The value attribute specifies the name of the generated tag.
+            <p>
+            If value is an empty string then no tag will be generated, but
+            the child components will be rendered. This differs from setting
+            rendered=false, which prevents child components from being rendered
+            at all.
+            <p>
+            There is currently no facility for adding attributes to the
+            generated html tag other than those explicitly supported by the
+            attributes on this JSF component.
+            <p>
+            Unless otherwise specified, all attributes accept static values
+            or EL expressions.
+            ]]>
         </description>
         &ui_component_attributes;
         &ext_forceId_attribute;
