@@ -27,6 +27,7 @@ import org.apache.myfaces.util.MessageUtils;
 import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.custom.inputTextHelp.HtmlTextHelpRenderer;
+import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.faces.application.Application;
@@ -120,14 +121,14 @@ public class HtmlCalendarRenderer
 
             Application application = facesContext.getApplication();
 
-            HtmlInputText inputText = getOrCreateInputTextChild(inputCalendar, application);
+            HtmlInputTextHelp inputText = getOrCreateInputTextChild(inputCalendar, application);
 
             RendererUtils.copyHtmlInputTextAttributes(inputCalendar, inputText);
 
             inputText.setConverter(null); // value for this transient component will already be converted
             inputText.setTransient(true);
-            //inputText.setHelpText(inputCalendar.getHelpText());
-            //inputText.setSelectText(true);
+            inputText.setHelpText(inputCalendar.getHelpText());
+            inputText.setSelectText(true);
 
             if (value == null && inputCalendar.getSubmittedValue() != null)
             {
@@ -157,22 +158,28 @@ public class HtmlCalendarRenderer
             //Set back the correct id to the input calendar
             inputCalendar.setId(inputText.getId());
 
+            ResponseWriter writer = facesContext.getResponseWriter();
+
+            writer.startElement(HTML.SPAN_ELEM,inputCalendar);
+            writer.writeAttribute(HTML.ID_ATTR,inputCalendar.getClientId(facesContext)+"Span",
+                    JSFAttr.ID_ATTR);
+            writer.endElement(HTML.SPAN_ELEM);
+
             if (!inputCalendar.isDisabled())
             {
-	            ResponseWriter writer = facesContext.getResponseWriter();
-
 	            writer.startElement(HTML.SCRIPT_ELEM, component);
 	            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
 
                 String calendarVar = JavascriptUtils.getValidJavascriptName(
                         inputCalendar.getClientId(facesContext)+"CalendarVar",false);
 
-                writer.writeText("alert('1'); var "+calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
+                writer.writeText("var "+calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
                 writer.writeText(getLocalizedLanguageScript(facesContext,symbols, months,
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
-                writer.writeText(calendarVar+".init();\n",null);
+                writer.writeText(calendarVar+".init(document.getElementById('"+
+                        inputCalendar.getClientId(facesContext)+"Span"+"'));\n",null);
                 writer.writeText(getScriptBtn(facesContext, inputCalendar,
-                        dateFormat,inputCalendar.getPopupButtonString()+"\n"),null);
+                        dateFormat,inputCalendar.getPopupButtonString())+"\n",null);
 	            writer.endElement(HTML.SCRIPT_ELEM);
             }
         }
@@ -236,9 +243,9 @@ public class HtmlCalendarRenderer
         }
     }
 
-    private HtmlInputText getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
+    private HtmlInputTextHelp getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
     {
-        HtmlInputText inputText = null;
+        HtmlInputTextHelp inputText = null;
 
         List li = inputCalendar.getChildren();
 
@@ -246,16 +253,16 @@ public class HtmlCalendarRenderer
         {
             UIComponent uiComponent = (UIComponent) li.get(i);
 
-            if(uiComponent instanceof HtmlInputText)
+            if(uiComponent instanceof HtmlInputTextHelp)
             {
-                inputText = (HtmlInputText) uiComponent;
+                inputText = (HtmlInputTextHelp) uiComponent;
                 break;
             }
         }
 
         if(inputText == null)
         {
-            inputText = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
+            inputText = (HtmlInputTextHelp) application.createComponent(HtmlInputTextHelp.COMPONENT_TYPE);
         }
         return inputText;
     }
@@ -500,7 +507,7 @@ public class HtmlCalendarRenderer
 
         String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
 
-        String jsCalendarFunctionCall = clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
+        String jsCalendarFunctionCall = "document.getElementById(\\'"+clientId+"\\').value=\\'\\'; "+clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
         writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
     }
 

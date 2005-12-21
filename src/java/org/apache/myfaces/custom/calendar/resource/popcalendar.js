@@ -198,7 +198,7 @@ org_apache_myfaces_PopupCalendar.prototype._clickhandler=function(){
     this.bShow = false;
 }
 
-org_apache_myfaces_PopupCalendar.prototype.init=function(){
+org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
     if (this.dom){
 
         if(!this.calendarDiv)
@@ -206,7 +206,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(){
             for	(i=0;i<this.imgSrc.length;i++)
                 this.img[i] = new Image;
 
-            var bodyTag = document.getElementsByTagName("body")[0];
+            var bodyTag = containerCtl;
 
             this.calendarDiv = document.createElement("div");
             this.calendarDiv.className=this.initData.themePrefix+"-div-style";
@@ -1280,3 +1280,4 @@ org_apache_myfaces_PopupCalendar.prototype._formatInt=function(str){
 	  return str;
 
 }
+
