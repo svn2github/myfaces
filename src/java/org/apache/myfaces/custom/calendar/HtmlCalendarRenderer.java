@@ -167,12 +167,12 @@ public class HtmlCalendarRenderer
                 String calendarVar = JavascriptUtils.getValidJavascriptName(
                         inputCalendar.getClientId(facesContext)+"CalendarVar",false);
 
-                writer.writeText("var "+calendarVar+"=new org_apache_myfaces_PopupCalendar();",null);
+                writer.writeText("alert('1'); var "+calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
                 writer.writeText(getLocalizedLanguageScript(facesContext,symbols, months,
-	                    timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar),null);
-                writer.writeText(calendarVar+".init();",null);
+	                    timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
+                writer.writeText(calendarVar+".init();\n",null);
                 writer.writeText(getScriptBtn(facesContext, inputCalendar,
-                        dateFormat,inputCalendar.getPopupButtonString()),null);
+                        dateFormat,inputCalendar.getPopupButtonString()+"\n"),null);
 	            writer.endElement(HTML.SCRIPT_ELEM);
             }
         }
@@ -409,7 +409,7 @@ public class HtmlCalendarRenderer
             script.append("\"");
         }
 
-        script.append(");");
+        script.append(");\n");
     }
 
     private String getScriptBtn(FacesContext facesContext, UIComponent uiComponent, String dateFormat, String popupButtonString)
@@ -421,7 +421,7 @@ public class HtmlCalendarRenderer
         HtmlInputCalendar calendar = (HtmlInputCalendar)uiComponent;
         boolean renderButtonAsImage = calendar.isRenderPopupButtonAsImage();
 
-        writer.write("if (!document.layers) {\n");
+        writer.write("\nif (!document.layers) {\n");
         writer.write("document.write('");
 
         if (!renderButtonAsImage) {
@@ -434,13 +434,13 @@ public class HtmlCalendarRenderer
             if(popupButtonString==null)
                 popupButtonString="...";
             writer.writeAttribute(HTML.VALUE_ATTR, StringEscapeUtils.escapeJavaScript(popupButtonString), null);
-            
+
             String popupButtonStyle = calendar.getPopupButtonStyle();
             if(popupButtonStyle != null)
             {
                 writer.writeAttribute(HTML.STYLE_ATTR, popupButtonStyle, null);
             }
-            
+
             String popupButtonStyleClass = calendar.getPopupButtonStyleClass();
             if(popupButtonStyleClass != null)
             {
@@ -463,7 +463,7 @@ public class HtmlCalendarRenderer
             {
                 writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
             }
-            
+
             String popupButtonStyle = calendar.getPopupButtonStyle();
             if(popupButtonStyle != null)
             {
@@ -473,7 +473,7 @@ public class HtmlCalendarRenderer
             {
                 writer.writeAttribute(HTML.STYLE_ATTR, "vertical-align:bottom;", null);
             }
-            
+
             String popupButtonStyleClass = calendar.getPopupButtonStyleClass();
             if(popupButtonStyleClass != null)
             {
@@ -504,7 +504,7 @@ public class HtmlCalendarRenderer
         writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
     }
 
-    
+
     private void writeMonthYearHeader(FacesContext facesContext, ResponseWriter writer, UIInput inputComponent, Calendar timeKeeper,
                                       int currentDay, String[] weekdays,
                                       String[] months)
