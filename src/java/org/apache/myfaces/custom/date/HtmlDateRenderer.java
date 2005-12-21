@@ -30,12 +30,15 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
+import org.apache.myfaces.custom.calendar.FunctionCallProvider;
 import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer.CalendarDateTimeConverter;
 import org.apache.myfaces.custom.date.HtmlInputDate.UserData;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.util.MessageUtils;
 
 /**
@@ -250,34 +253,40 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
         HtmlCalendarRenderer.addScriptAndCSSResources(facesContext,uiComponent);
 
-        //todo: urgent! needs fixing with new version of popupCalendar - see HtmlCalendarRenderer
+        String calendarVar = JavascriptUtils.getValidJavascriptName(
+                uiComponent.getClientId(facesContext)+"CalendarVar",false);
+        String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext, null);
+
         String localizedLanguageScript = HtmlCalendarRenderer.getLocalizedLanguageScript(facesContext,
-                							symbols,
-                							HtmlCalendarRenderer.mapMonths(symbols),
-                							Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
-                							null,null);
+                							symbols,Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
+                							uiComponent,calendarVar);
+
+        writer.startElement(HTML.SPAN_ELEM,uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext)+"Span",
+                JSFAttr.ID_ATTR);
+        writer.endElement(HTML.SPAN_ELEM);
 
         writer.startElement(HTML.SCRIPT_ELEM,uiComponent);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+
+        writer.writeText("var "+calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
         writer.write(localizedLanguageScript);
-        	//writer.write("if (!document.layers) {\n");
-        		//writer.write("document.write(\"<input type='button' onclick='jscalendarPopUpCalendarForInputDate(\\\""+clientId+"\\\")' value='...'/>\");");
-            //writer.write("\n}");
+        writer.writeText(calendarVar+".init(document.getElementById('"+
+                uiComponent.getClientId(facesContext)+"Span"+"'));\n",null);
+        writer.writeText(HtmlCalendarRenderer.getScriptBtn(facesContext, uiComponent,
+                dateFormat,"...",new FunctionCallProvider(){
+            public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
+            {
+                String clientId = uiComponent.getClientId(facesContext);
+
+                String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
+
+                return clientVar+"._popUpCalendarForInputDate(\\'"+clientId+"\\',\\'"+dateFormat+"\\');";
+
+            }
+        })+"\n",null);
 
         writer.endElement(HTML.SCRIPT_ELEM);
-
-        String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext, null);
-
-        // render the button
-        writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON, null);
-
-        String jsCalendarFunctionCall = "jscalendarPopUpCalendarForInputDate('"+clientId+"','"+dateFormat+"')";
-        writer.writeAttribute(HTML.ONCLICK_ATTR, jsCalendarFunctionCall, null);
-        writer.writeAttribute(HTML.VALUE_ATTR, "...", null);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
-
-        writer.endElement(HTML.INPUT_ELEM);
     }
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
