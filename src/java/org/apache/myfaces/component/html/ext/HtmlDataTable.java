@@ -305,10 +305,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             UIComponent component = (UIComponent) iter.next();
             if (component instanceof UIColumns)
             {
-                    ((UIColumns) component).encodeTableBegin(context);
+                // Merge the columns from the tomahawk dynamic component
+                // into this object.
+                ((UIColumns) component).encodeTableBegin(context);
             }
         }
         
+        // Now invoke the superclass encodeBegin, which will eventually
+        // execute the encodeBegin for the associated renderer.
         super.encodeBegin(context);
     }
     
