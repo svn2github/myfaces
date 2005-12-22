@@ -18,6 +18,8 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
 
 /**
+ * Renderer for the Tomahawk extended HtmlDataTable component.
+ * 
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -150,7 +152,31 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * handles uicolumns component
+     * Render the specified column object using the current row data.
+     * <p>
+     * When the component is a UIColumn object, the inherited method is
+     * invoked to render a single table cell.
+     * <p>
+     * In addition to the inherited functionality, support is implemented
+     * here for UIColumns children. When a UIColumns child is encountered:
+     * <pre>
+     * For each dynamic column in that UIColumns child:
+     *   * Select the column (which sets variable named by the var attribute
+     *     to refer to the current column object) 
+     *   * Call this.renderColumnBody passing the UIColumns object.
+     * </pre>
+     * The renderColumnBody method eventually:
+     * <ul>
+     * <li>emits TD
+     * <li>calls encodeBegin on the UIColumns (which does nothing)
+     * <li>calls rendering methods on all children of the UIColumns
+     * <li>calls encodeEnd on the UIColumns (which does nothing)
+     * <li> emits /TD
+     * </ul>
+     * If the children of the UIColumns access the variable named by the var
+     * attribute on the UIColumns object, then they end up rendering content
+     * that is extracted from the current column object.  
+     * 
      * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
      */
     protected void encodeColumnChild(FacesContext facesContext,
@@ -214,7 +240,24 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * handles uicolumns component
+     * Render the header or footer of the specified column object.
+     * <p>
+     * When the component is a UIColumn object, the inherited method is
+     * invoked to render a single header cell.
+     * <p>
+     * In addition to the inherited functionality, support is implemented
+     * here for UIColumns children. When a UIColumns child is encountered:
+     * <pre>
+     * For each dynamic column in that UIColumns child:
+     *   * Select the column (which sets variable named by the var attribute
+     *     to refer to the current column object) 
+     *   * Call this.renderColumnHeaderCell or this.renderColumnFooterCell
+     *     passing the header or footer facet of the UIColumns object.
+     * </pre>
+     * If the facet of the UIColumns accesses the variable named by the var
+     * attribute on the UIColumns object, then it ends up rendering content
+     * that is extracted from the current column object.
+     *   
      * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnChildHeaderOrFooterRow(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, java.lang.String, boolean)
      */
     protected void renderColumnChildHeaderOrFooterRow(
@@ -325,12 +368,6 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
     }
 
-    /**
-     * @param writer
-     * @param uiComponent
-     * @param prefix header, footer or null
-     * @throws IOException 
-     */
     protected void renderHtmlColumnAttributes(ResponseWriter writer,
                     UIComponent uiComponent, String prefix) throws IOException
     {
@@ -351,8 +388,14 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * handles uicolumns component
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#determineChildColSpan(javax.faces.component.UIComponent)
+     * Return the number of columns spanned by the specified component.
+     * <p>
+     * For normal components, use the inherited implementation.
+     * For UIColumns children, return the number of dynamic columns rendered
+     * by that child.
+     * 
+     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase
+     *   #determineChildColSpan(javax.faces.component.UIComponent)
      */
     protected int determineChildColSpan(UIComponent uiComponent)
     {
@@ -365,7 +408,9 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * handles uicolumns component
+     * Return true if the specified component has a facet that needs to be
+     * rendered in a THEAD or TFOOT section.
+     * 
      * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#hasFacet(boolean, javax.faces.component.UIComponent)
      */
     protected boolean hasFacet(boolean header, UIComponent uiComponent)
@@ -373,6 +418,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         boolean result = super.hasFacet(header, uiComponent);
         if (!result && uiComponent instanceof UIColumns)
         {
+            // Why is this necessary? It seems to me that the inherited
+            // implementation will work fine with a UIColumns component...
             UIColumns columns = (UIColumns) uiComponent;
             result = header ? columns.getHeader() != null : columns.getFooter() != null;
         }
