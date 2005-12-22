@@ -38,6 +38,39 @@ import javax.faces.model.ScalarDataModel;
 import javax.servlet.jsp.jstl.sql.Result;
 
 /**
+ * An object which can be a child of a t:dataTable, and inserts a dynamic
+ * set of columns into the parent table. The set of columns inserted are
+ * defined by a collection returned from a value-binding.
+ * <p>
+ * Class org.apache.myfaces.component.html.ext.HtmlDataTable (aka t:dataTable)
+ * has special-case code to detect a child of this type, and invoke the
+ * necessary methods on this class. This class does not work with other
+ * UIData implementations. There is no renderer for this component; the
+ * HtmlTableRenderer associated with ext.HtmlDataTable is UIColumns-aware,
+ * and implements the necessary logic itself.
+ * <p>
+ * This class is actually a UIData itself, which is effectively "merged"
+ * with the parent HtmlDataTable. It can't be used as a stand-alone table,
+ * however, because it uses the DataModel returned by the "value" value-binding
+ * to define the columns, and depends on the parent table's "value" 
+ * value-binding to define the row DataModel.
+ * <p>
+ * The "value" attribute of this class must be a value-binding which
+ * returns a DataModel of objects (or a List, Array or ResultSet which
+ * automatically gets wrapped in the appropriate DataModel). 
+ * <p>
+ * In a normal table, each UIColumn child has facets and child components
+ * which define that column. In this component, the same child components
+ * apply to each column (ie are repeated dataModel.size times). However
+ * as the columns are rendered, the current DataModel object (ie the object
+ * defining the current column) is stored into a variable whose name
+ * is defined by attribute "var". This allows the child components of
+ * this component to refer to attributes on those objects to set things
+ * like the current column's name. When the objects must be rendered as
+ * different components (eg h:outputText or h:outputDate), multiple
+ * child components can be used with rendered attributes selecting the
+ * appropriate one depending upon the current column object's data.
+ * 
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -46,6 +79,7 @@ public class UIColumns extends UIData
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Columns";
 
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+    
     private static final int PROCESS_DECODES = 1;
     private static final int PROCESS_VALIDATORS = 2;
     private static final int PROCESS_UPDATES = 3;
@@ -62,34 +96,40 @@ public class UIColumns extends UIData
 
     private Map _dataModelMap = new HashMap();
 
-    /**
-     *
-     */
     public UIColumns()
     {
         super();
     }
 
+    /**
+     * Return true if there are any more <i>columns</i> to process.
+     */
     public boolean isRowAvailable()
     {
         return getDataModel().isRowAvailable();
     }
 
+    /**
+     * Get the number of dynamic columns represented by this instance.
+     */
     public int getRowCount()
     {
         return getDataModel().getRowCount();
     }
 
+    /** Get the object representing the current column. */
     public Object getRowData()
     {
         return getDataModel().getRowData();
     }
 
+    /** Get the currently selected column index. */
     public int getRowIndex()
     {
         return _colIndex;
     }
     
+    /** Set the currently selected column. */
     public void setRowIndex(int colIndex)
     {
         if (colIndex < -1)
@@ -230,9 +270,6 @@ public class UIColumns extends UIData
         return childStates;
     }
 
-    /**
-     * @see javax.faces.component.UIData#setValue(java.lang.Object)
-     */
     public void setValue(Object value)
     {
         super.setValue(value);
@@ -258,6 +295,10 @@ public class UIColumns extends UIData
         super.setValueBinding(name, binding);
     }
 
+    /**
+     * Get a DataModel whose wrapped data contains a collection of
+     * objects representing columns.
+     */
     protected DataModel getDataModel()
     {
         String clientID = "";
@@ -365,6 +406,8 @@ public class UIColumns extends UIData
     };
 
     /**
+     * Update the input component (if any) in each dynamic column.
+     * 
      * @see javax.faces.component.UIData#processDecodes(javax.faces.context.FacesContext)
      */
     public void processDecodes(FacesContext context)
@@ -390,10 +433,6 @@ public class UIColumns extends UIData
         }
     }
 
-    /**
-     * @param context
-     * @param process_decodes2
-     */
     private void processColumnsFacets(FacesContext context, int processAction)
     {
         int first = getFirst();
@@ -424,10 +463,6 @@ public class UIColumns extends UIData
         setRowIndex(-1);
     }
 
-    /**
-     * @param context
-     * @param process_decodes2
-     */
     private void processRows(FacesContext context, int processAction)
     {
         UIData parentUIData = getParentUIData();
@@ -454,7 +489,10 @@ public class UIColumns extends UIData
     }
 
     /**
-     * 
+     * Return the UIData this component is nested within.
+     * <p>
+     * Actually, this component will only function correctly when nested within
+     * an org.apache.myfaces.component.html.ext.HtmlDataTable.
      */
     private UIData getParentUIData()
     {
@@ -561,6 +599,10 @@ public class UIColumns extends UIData
         }
     }
 
+    /**
+     * Called from HtmlDataTable.encodeBegin, ie called once when rendering
+     * for the entire table starts.
+     */
     public void encodeTableBegin(FacesContext context)
     {
         setRowIndex(-1);
@@ -586,6 +628,10 @@ public class UIColumns extends UIData
         return false;
     }
 
+    /**
+     * Called from HtmlDataTable.encodeEnd, ie called once after rendering
+     * for the entire table has completed.
+     */
     public void encodeTableEnd(FacesContext context)
     {
         setRowIndex(-1);
