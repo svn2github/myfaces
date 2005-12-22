@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.prototype;
 
-/**This class is a mere locator object
+/**Marker interface which is a mere locator
  * for the AddResource class to find the
  * prototype Resources in the resources package.
  *
@@ -24,7 +24,7 @@ package org.apache.myfaces.custom.prototype;
  *          <p/>
  *          $Log: $
  */
-public class PrototypeResourceLoader
+public interface PrototypeResourceLoader
 {
-    private PrototypeResourceLoader() {}
+
 }
