@@ -15,20 +15,15 @@
  */
 package org.apache.myfaces.custom.calendar;
 
-import org.apache.myfaces.component.html.ext.HtmlInputText;
-import org.apache.myfaces.component.html.util.AddResource;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
-import org.apache.myfaces.util.MessageUtils;
-import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
-import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
-import org.apache.myfaces.custom.inputTextHelp.HtmlTextHelpRenderer;
-import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
-import org.apache.commons.lang.StringEscapeUtils;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -42,15 +37,18 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.DateTimeConverter;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.List;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
+import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
+import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.util.MessageUtils;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)
