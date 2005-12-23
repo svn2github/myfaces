@@ -131,6 +131,7 @@ public class UpdateActionListener
             Class type = updateBinding.getType(context);
             if (!type.equals(String.class) && ! type.equals(Object.class))
             {
+                String converterErrorMessage = "No Converter registered with UpdateActionListener and no appropriate standard converter found. Needed to convert String to " + type.getName();
                 Converter converter = getConverter();
                 if (converter == null)
                 {
@@ -140,8 +141,12 @@ public class UpdateActionListener
                     }
                     catch (Exception e)
                     {
-                        throw new FacesException("No Converter registered with UpdateActionListener and no appropriate standard converter found. Needed to convert String to " + type.getName(), e);
+                        throw new FacesException(converterErrorMessage, e);
                     }
+                }
+                if (null == converter)
+                {
+                    throw new FacesException(converterErrorMessage);
                 }
                 v = converter.getAsObject(context, context.getViewRoot(), (String)v);
             }
