@@ -63,6 +63,7 @@ org_apache_myfaces_PopupCalendar = function()
     this.timeoutID2;
     this.ctlToPlaceValue;
     this.ctlNow;
+    this.containerCtl
     this.dateFormat;
     this.nStartingYear;
     this.bPageLoaded=false;
@@ -102,68 +103,37 @@ org_apache_myfaces_PopupCalendar = function()
     this.inputDateClientId;
 }
 
-/* hides <select> and <applet> objects (for IE only) */
-org_apache_myfaces_PopupCalendar.prototype._hideElement = function( elmID, overDiv ){
-  if( this.ie ){
-    for( i = 0; i < document.all.tags( elmID ).length; i++ ){
-      obj = document.all.tags( elmID )[i];
-      if( !obj || !obj.offsetParent )
-        continue;
+org_apache_myfaces_PopupCalendar.prototype._hideElement=function(elmID, overDiv) {
+    if(document.all) {
+    	var iframe = document.getElementById(overDiv.id+"_IFRAME");
 
-      // Find the element's offsetTop and offsetLeft relative to the BODY tag.
-      objLeft   = obj.offsetLeft;
-      objTop    = obj.offsetTop;
-      objParent = obj.offsetParent;
 
-	// this loop has been commented (MYFACES-870)
-	/*
-      while( objParent.tagName.toUpperCase() != "BODY" ){
-        objLeft  += objParent.offsetLeft;
-        objTop   += objParent.offsetTop;
-        objParent = objParent.offsetParent;
-      }
+		if(iframe == null) {
+			iframe = document.createElement("<iframe id='"+overDiv.id+"_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
+	   		this.iePopupHideIFrame=iframe;
+            this.containerCtl.appendChild(this.iePopupHideIFrame);
+   		} else {
+   			this.iePopupHideIFrame = iframe;
+   		}
 
-      objParent = obj.offsetParent;
-      */
+		var popup  = overDiv;
 
-      // added a try-catch to the next loop (MYFACES-870)
-      try {
-	      while( objParent.tagName.toUpperCase() != "BODY" ){
-	        objLeft  -= objParent.scrollLeft;
-	        objTop   -= objParent.scrollTop;
-	        objParent = objParent.parentNode;
-     	 }
-      } catch (ex) {
-          // ignore
-      }
-
-      objHeight = obj.offsetHeight;
-      objWidth = obj.offsetWidth;
-
-      if(( overDiv.offsetLeft + overDiv.offsetWidth ) <= objLeft );
-      else if(( overDiv.offsetTop + overDiv.offsetHeight ) <= objTop );
-      else if( overDiv.offsetTop >= ( objTop + objHeight ));
-      else if( overDiv.offsetLeft >= ( objLeft + objWidth ));
-      else
-        obj.style.visibility = "hidden";
+        popup.style.zIndex	= 99;
+        iframe.style.zIndex = popup.style.zIndex - 1;
+        iframe.style.width 	= popup.offsetWidth;
+        iframe.style.height = popup.offsetHeight;
+        iframe.style.top 	= popup.style.top;
+        iframe.style.left 	= popup.style.left;
+        iframe.style.display = "block";
+        iframe.style.visibility = "visible"; /*we have to set an explicit visible otherwise it wont work*/
     }
-  }
 }
 
-/*
-* unhides <select> and <applet> objects (for IE only)
-*/
 org_apache_myfaces_PopupCalendar.prototype._showElement=function( elmID ){
-  if( this.ie ){
-    for( i = 0; i < document.all.tags( elmID ).length; i++ ){
-      obj = document.all.tags( elmID )[i];
-
-      if( !obj || !obj.offsetParent )
-        continue;
-
-      obj.style.visibility = "";
+    if(this.iePopupHideIFrame)
+    {
+        this.iePopupHideIFrame.style.display = "none";
     }
-  }
 }
 
 org_apache_myfaces_PopupCalendar.prototype.addHoliday=function(d, m, y, desc){
@@ -206,14 +176,14 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
             for	(i=0;i<this.imgSrc.length;i++)
                 this.img[i] = new Image;
 
-            var bodyTag = containerCtl;
+            this.containerCtl = containerCtl;
 
             this.calendarDiv = document.createElement("div");
             this.calendarDiv.className=this.initData.themePrefix+"-div-style";
 
             Event.observe(this.calendarDiv,"click",function(){this.bShow=true;}.bind(this),false);
 
-            bodyTag.appendChild(this.calendarDiv);
+            this.containerCtl.appendChild(this.calendarDiv);
 
             var mainTable = document.createElement("table");
             mainTable.setAttribute("style","width:"+((this.initData.showWeekNumber==1)?250:220)+"px;");
@@ -296,12 +266,12 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
             this.selectMonthDiv = document.createElement("div");
             this.selectMonthDiv.className=this.initData.themePrefix+"-div-style";
 
-            bodyTag.appendChild(this.selectMonthDiv);
+            this.containerCtl.appendChild(this.selectMonthDiv);
 
             this.selectYearDiv = document.createElement("div");
             this.selectYearDiv.className=this.initData.themePrefix+"-div-style";
 
-            bodyTag.appendChild(this.selectYearDiv);
+            this.containerCtl.appendChild(this.selectYearDiv);
 
             Event.observe(document,"keypress",this._keypresshandler.bind(this),false);
             Event.observe(document,"click",this._clickhandler.bind(this),false);
