@@ -150,24 +150,6 @@ org_apache_myfaces_PopupCalendar.prototype._showElement=function(overDiv){
   }
 }
 
-// This function returns a string that contains a "stack trace."
-function stacktrace() {
-    var s = "";  // This is the string we'll return.
-    // Loop through the stack of functions, using the caller property of
-    // one arguments object to refer to the next arguments object on the
-    // stack.
-    for(var a = arguments.caller; a != null; a = a.caller) {
-        // Add the name of the current function to the return value.
-        s += funcname(a.callee) + "\n";
-
-        // Because of a bug in Navigator 4.0, we need this line to break.
-        // a.caller will equal a rather than null when we reach the end
-        // of the stack. The following line works around this.
-        if (a.caller == a) break;
-    }
-    return s;
-}
-
 org_apache_myfaces_PopupCalendar.prototype.addHoliday=function(d, m, y, desc){
 	this.holidays[this.holidaysCounter++] = new org_apache_myfaces_HolidayRec ( d, m, y, desc );
 }
