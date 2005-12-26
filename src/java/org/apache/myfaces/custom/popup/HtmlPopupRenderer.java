@@ -88,7 +88,7 @@ public class HtmlPopupRenderer
         Boolean closeExitPopup = popup.getClosePopupOnExitingPopup();
 
         if(closeExitPopup==null || closeExitPopup.booleanValue())
-            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, new String(popupId+".hide();"),null);
+            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, popupId + ".hide();",null);
 
         RendererUtils.renderChild(facesContext, popupFacet);
         writer.endElement(HTML.DIV_ELEM);
@@ -100,10 +100,10 @@ public class HtmlPopupRenderer
         {
             UIComponent uiComponent = (UIComponent) children.get(i);
 
-            callMethod(uiComponent,"onmouseover",new String(popupId+".display(event);"));
+            callMethod(uiComponent,"onmouseover", popupId + ".display(event);");
 
             if(renderMouseOut)
-                callMethod(uiComponent,"onmouseout",new String(popupId+".hide(event);"));
+                callMethod(uiComponent,"onmouseout", popupId + ".hide(event);");
 
             writeMouseOverAttribs(popupId, uiComponent.getChildren(),renderMouseOut);
         }
@@ -128,20 +128,6 @@ public class HtmlPopupRenderer
         return popupId;
     }
 
-//  (this is not called from anywhere)
-//    
-//    private void writeMouseOverAndOutAttribs(String popupId, List children)
-//    {
-//        for (int i = 0; i < children.size(); i++)
-//        {
-//            UIComponent uiComponent = (UIComponent) children.get(i);
-//
-//            callMethod(uiComponent,"onmouseover",new String(popupId+".redisplay();"));
-//            callMethod(uiComponent,"onmouseout",new String(popupId+".hide();"));
-//
-//            writeMouseOverAndOutAttribs(popupId, uiComponent.getChildren());
-//        }
-//    }
 
     private void callMethod(UIComponent uiComponent, String propName, String value)
     {
