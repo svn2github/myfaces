@@ -40,11 +40,22 @@
 	cursor: pointer;
 }
 
+/* Normal appearance of images in calendar title. */
+/* Note: The right, left and down icons are images, jscalendar-DBich must be edited if you need to change them. */
+.jscalendar-DB-title-img-normal-style {
+	cursor: pointer;
+}
+
 /* Moused-over (selected) appearance of controls in calendar title. */
 .jscalendar-DB-title-control-select-style {
 	border-style: solid;
 	border-width: 1;
 	border-color: #88AAFF;
+	cursor: pointer;
+}
+
+/* Moused-over (selected) appearance of controls in calendar title. */
+.jscalendar-DB-title-img-select-style {
 	cursor: pointer;
 }
 

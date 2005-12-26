@@ -127,7 +127,7 @@ org_apache_myfaces_PopupCalendar.prototype._recalculateElement=function(overDiv)
     {
       var popup  = overDiv;
 
-      popup.style.zIndex	= 99;
+      popup.style.zIndex	= 98;
 
       iframe.style.zIndex = popup.style.zIndex - 1;
       iframe.style.width 	= popup.offsetWidth;
@@ -158,11 +158,6 @@ org_apache_myfaces_PopupCalendar.prototype._swapImage=function(srcImg, destImg){
 
     if(srcImg)
         srcImg.setAttribute("src",this.initData.imgDir + destImg);
-}
-
-org_apache_myfaces_PopupCalendar.prototype._getCrossObj=function(elem_id){
-    return document.getElementById(elem_id).style;
-    //old way of doing this: (this.dom) ? document.getElementById("calendar").style : this.ie ? document.all.calendar : document.calendar;
 }
 
 org_apache_myfaces_PopupCalendar.prototype._keypresshandler=function(){
@@ -341,13 +336,13 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
 
         Event.observe(this.monthSpan,"mouseover",function(event){
             this._swapImage(this.changeMonthImg,"drop2.gif");
-            Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
+            this.monthSpan.className=this.initData.themePrefix+"-title-control-select-style";
             window.status=this.selectMonthMessage;
         }.bindAsEventListener(this),false);
 
         Event.observe(this.monthSpan,"mouseout",function(event){
             this._swapImage(this.changeMonthImg,"drop1.gif");
-            Event.element(event).className=this.initData.themePrefix+"-title-control-normal-style";
+            this.monthSpan.className=this.initData.themePrefix+"-title-control-normal-style";
             window.status="";
         }.bindAsEventListener(this),false);
 
@@ -363,13 +358,13 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
 
         Event.observe(this.yearSpan,"mouseover",function(event){
             this._swapImage(this.changeYearImg,"drop2.gif");
-            Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
+            this.yearSpan.className=this.initData.themePrefix+"-title-control-select-style";
             window.status=this.selectYearMessage;
         }.bindAsEventListener(this),false);
 
         Event.observe(this.yearSpan,"mouseout",function(event){
             this._swapImage(this.changeYearImg,"drop1.gif");
-            Event.element(event).className=this.initData.themePrefix+"-title-control-normal-style";
+            this.yearSpan.className=this.initData.themePrefix+"-title-control-normal-style";
             window.status="";
         }.bindAsEventListener(this),false);
 
@@ -390,10 +385,22 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
     imgLeft.setAttribute("style","width:10px;height:11px;border:0px;")
 
     var spanLeft = document.createElement("span");
+
+    this._createControl(direction,spanLeft,imgLeft);
+
+    this._appendNbsp(spanLeft);
+    spanLeft.appendChild(imgLeft);
+    this._appendNbsp(spanLeft);
+    this.captionSpan.appendChild(spanLeft);
+    this._appendNbsp(spanLeft);
+ }
+
+org_apache_myfaces_PopupCalendar.prototype._createControl=function(direction,spanLeft,imgLeft)
+{
     spanLeft.className=this.initData.themePrefix+"-title-control-normal-style";
     Event.observe(spanLeft,"mouseover",function(event){
         this._swapImage(imgLeft,direction+"2.gif");
-        Event.element(event).className=this.initData.themePrefix+"-title-control-select-style";
+        spanLeft.className=this.initData.themePrefix+"-title-control-select-style";
         if(direction=="left"){
             window.status=this.scrollLeftMessage;
         } else {
@@ -410,7 +417,7 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
     Event.observe(spanLeft,"mouseout",function(event){
         clearInterval(this.intervalID1);
         this._swapImage(imgLeft,direction+"1.gif");
-        Event.element(event).className=""+this.initData.themePrefix+"-title-control-normal-style";
+        spanLeft.className=""+this.initData.themePrefix+"-title-control-normal-style";
         window.status="";
     }.bindAsEventListener(this),false);
     Event.observe(spanLeft,"mousedown",function(){
@@ -430,13 +437,8 @@ org_apache_myfaces_PopupCalendar.prototype.init=function(containerCtl){
         clearTimeout(this.timeoutID1);
         clearInterval(this.intervalID1);
     }.bind(this),false);
+}
 
-    this._appendNbsp(spanLeft);
-    spanLeft.appendChild(imgLeft);
-    this._appendNbsp(spanLeft);
-    this.captionSpan.appendChild(spanLeft);
-    this._appendNbsp(spanLeft);
- }
 org_apache_myfaces_PopupCalendar.prototype._appendNbsp=function(element){
     if(element)
         element.appendChild(document.createTextNode(String.fromCharCode(160)));
