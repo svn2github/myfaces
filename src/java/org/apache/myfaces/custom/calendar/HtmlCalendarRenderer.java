@@ -184,7 +184,7 @@ public class HtmlCalendarRenderer
 
                         String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
 
-                        return "document.getElementById(\\'"+clientId+"\\').value=\\'\\'; "+clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
+                        return clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
                     }
                 })+"\n",null);
 	            writer.endElement(HTML.SCRIPT_ELEM);
