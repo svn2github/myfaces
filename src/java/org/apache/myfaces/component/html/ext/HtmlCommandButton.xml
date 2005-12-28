@@ -14,4 +14,8 @@
         <name>visibleOnUserRole</name>
         <type>java.lang.String</type>
     </field>
+    <field>
+        <name>actionFor</name>
+        <type>java.lang.String</type>
+    </field>
 </component>

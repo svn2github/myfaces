@@ -49,6 +49,7 @@ public class HtmlCommandButton
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
+    private String _actionFor = null;
 
     public HtmlCommandButton()
     {
@@ -79,6 +80,18 @@ public class HtmlCommandButton
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
+    public void setActionFor(String actionFor)
+    {
+        _actionFor = actionFor;
+    }
+
+    public String getActionFor()
+    {
+        if (_actionFor != null) return _actionFor;
+        ValueBinding vb = getValueBinding("actionFor");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
 
     public boolean isRendered()
     {
@@ -88,11 +101,12 @@ public class HtmlCommandButton
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
-        return ((Object) (values));
+        values[3] = _actionFor;
+        return values;
     }
 
     public void restoreState(FacesContext context, Object state)
@@ -101,6 +115,7 @@ public class HtmlCommandButton
         super.restoreState(context, values[0]);
         _enabledOnUserRole = (String)values[1];
         _visibleOnUserRole = (String)values[2];
+        _actionFor = (String) values[3];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

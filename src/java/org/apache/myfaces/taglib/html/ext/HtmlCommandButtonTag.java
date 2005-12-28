@@ -40,12 +40,14 @@ public class HtmlCommandButtonTag
 
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
+    private String _actionFor;
 
     public void release() {
         super.release();
 
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _actionFor=null;
     }
 
     protected void setProperties(UIComponent component)
@@ -53,6 +55,7 @@ public class HtmlCommandButtonTag
         super.setProperties(component);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
+        setStringProperty(component, "actionFor", _actionFor);
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -63,6 +66,11 @@ public class HtmlCommandButtonTag
     public void setVisibleOnUserRole(String visibleOnUserRole)
     {
         _visibleOnUserRole = visibleOnUserRole;
+    }
+
+    public void setActionFor(String actionFor)
+    {
+        _actionFor = actionFor;
     }
 
 }

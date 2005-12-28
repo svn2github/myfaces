@@ -53,6 +53,7 @@ public class HtmlCommandLink
     private String _target = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
+    private String _actionFor = null;
 
     public HtmlCommandLink()
     {
@@ -96,6 +97,18 @@ public class HtmlCommandLink
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
+    public void setActionFor(String actionFor)
+    {
+        _actionFor = actionFor;
+    }
+
+    public String getActionFor()
+    {
+        if (_actionFor != null) return _actionFor;
+        ValueBinding vb = getValueBinding("actionFor");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
 
     public boolean isRendered()
     {
@@ -105,12 +118,13 @@ public class HtmlCommandLink
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[4];
+        Object values[] = new Object[5];
         values[0] = super.saveState(context);
         values[1] = _target;
         values[2] = _enabledOnUserRole;
         values[3] = _visibleOnUserRole;
-        return ((Object) (values));
+        values[4] = _actionFor;
+        return values;
     }
 
     public void restoreState(FacesContext context, Object state)
@@ -120,6 +134,7 @@ public class HtmlCommandLink
         _target = (String)values[1];
         _enabledOnUserRole = (String)values[2];
         _visibleOnUserRole = (String)values[3];
+        _actionFor = (String)values[4];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

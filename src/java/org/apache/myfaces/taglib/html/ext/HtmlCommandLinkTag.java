@@ -45,11 +45,14 @@ public class HtmlCommandLinkTag
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
 
+    private String _actionFor;
+
     public void release() {
         super.release();
 
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _actionFor = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -57,6 +60,8 @@ public class HtmlCommandLinkTag
         super.setProperties(component);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
+        setStringProperty(component, "actionFor", _actionFor);
+
     }
 
 
@@ -68,5 +73,10 @@ public class HtmlCommandLinkTag
     public void setVisibleOnUserRole(String visibleOnUserRole)
     {
         _visibleOnUserRole = visibleOnUserRole;
+    }
+
+    public void setActionFor(String actionFor)
+    {
+        _actionFor = actionFor;
     }
 }
