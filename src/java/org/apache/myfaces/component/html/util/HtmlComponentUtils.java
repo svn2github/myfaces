@@ -32,7 +32,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Sean Schofield
  * @version $Revision$ $Date$
  */
-public class HtmlComponentUtils
+public final class HtmlComponentUtils
 {
     private static Log log = LogFactory.getLog(HtmlComponentUtils.class);
 
