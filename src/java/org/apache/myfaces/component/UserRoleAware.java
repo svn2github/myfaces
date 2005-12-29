@@ -25,12 +25,12 @@ package org.apache.myfaces.component;
  */
 public interface UserRoleAware
 {
-    public static final String ENABLED_ON_USER_ROLE_ATTR = "enabledOnUserRole";
-    public static final String VISIBLE_ON_USER_ROLE_ATTR = "visibleOnUserRole";
+    static final String ENABLED_ON_USER_ROLE_ATTR = "enabledOnUserRole";
+    static final String VISIBLE_ON_USER_ROLE_ATTR = "visibleOnUserRole";
 
-    public String getEnabledOnUserRole();
-    public void setEnabledOnUserRole(String userRole);
+    String getEnabledOnUserRole();
+    void setEnabledOnUserRole(String userRole);
 
-    public String getVisibleOnUserRole();
-    public void setVisibleOnUserRole(String userRole);
+    String getVisibleOnUserRole();
+    void setVisibleOnUserRole(String userRole);
 }
