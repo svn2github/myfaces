@@ -15,12 +15,13 @@
  */
 package org.apache.myfaces.taglib.html.ext;
 
+import javax.faces.component.UIComponent;
+
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlInputTextarea;
+import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.taglib.html.HtmlInputTextareaTagBase;
-
-import javax.faces.component.UIComponent;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -29,14 +30,16 @@ import javax.faces.component.UIComponent;
 public class HtmlInputTextareaTag
         extends HtmlInputTextareaTagBase
 {
-    public String getComponentType()
+    private static final String TEXTAREA_RENDERER = "org.apache.myfaces.Textarea";
+
+	public String getComponentType()
     {
         return HtmlInputTextarea.COMPONENT_TYPE;
     }
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Textarea";
+        return TEXTAREA_RENDERER;
     }
 
     private String _enabledOnUserRole;
@@ -46,6 +49,8 @@ public class HtmlInputTextareaTag
 	private String _displayValueOnlyStyle;
 	private String _displayValueOnlyStyleClass;
 
+    private String _wrap;
+	
     public void release() {
         super.release();
 
@@ -55,6 +60,8 @@ public class HtmlInputTextareaTag
         _displayValueOnly=null;
         _displayValueOnlyStyle=null;
         _displayValueOnlyStyleClass=null;
+        
+        _wrap = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -66,6 +73,9 @@ public class HtmlInputTextareaTag
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
+        
+        setStringProperty(component, HTML.WRAP_ATTR, _wrap);
+        
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -91,5 +101,9 @@ public class HtmlInputTextareaTag
     public void setDisplayValueOnlyStyleClass(String displayValueOnlyStyleClass)
     {
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
+    }
+    public void setWrap(String wrap)
+    {
+        _wrap = wrap;
     }
 }

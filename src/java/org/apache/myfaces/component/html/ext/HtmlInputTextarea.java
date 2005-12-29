@@ -15,14 +15,14 @@
  */
 package org.apache.myfaces.component.html.ext;
 
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+
 import org.apache.myfaces.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.util._ComponentUtils;
-
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -54,6 +54,7 @@ public class HtmlInputTextarea
     private Boolean _displayValueOnly = null;
 	private String _displayValueOnlyStyle = null;
 	private String _displayValueOnlyStyleClass = null;
+	private String _wrap = null;
 
     public HtmlInputTextarea()
     {
@@ -152,5 +153,14 @@ public class HtmlInputTextarea
     public void setDisplayValueOnlyStyleClass(String displayValueOnlyStyleClass) {
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
-}
 
+
+	public String getWrap() {
+		return _wrap;
+	}
+
+
+	public void setWrap(String wrap) {
+		_wrap = wrap;
+	}
+}

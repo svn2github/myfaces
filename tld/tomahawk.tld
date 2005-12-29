@@ -21,6 +21,7 @@
   "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd" [
 <!ENTITY display_value_only_attributes  SYSTEM "entities/display_value_only_attributes.xml">
 <!ENTITY ext_forceId_attribute          SYSTEM "entities/ext_forceId_attribute.xml">
+<!ENTITY ext_textarea_attribute         SYSTEM "entities/ext_textarea_attribute.xml">
 <!ENTITY ext_actionfor_attribute        SYSTEM "entities/ext_actionfor_attribute.xml">
 <!ENTITY ext_escape_attribute           SYSTEM "entities/ext_escape_attribute.xml">
 <!ENTITY faces_binding_attribute        SYSTEM "entities/faces_binding_attribute.xml">
@@ -350,6 +351,7 @@
         &standard_input_textarea_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
+        &ext_textarea_attribute;
         &display_value_only_attributes;
     </tag>
 
