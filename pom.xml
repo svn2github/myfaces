@@ -5,7 +5,7 @@
   <groupId>myfaces.apache.org</groupId>
   <artifactId>tomahawk</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.2</version>
+  <version>1.1.2-SNAPSHOT</version>
   <name>Tomahawk</name>
   <url>http://myfaces.apache.org</url>
   <description>
@@ -15,7 +15,7 @@
   <parent>
     <groupId>myfaces.apache.org</groupId>
     <artifactId>myfaces</artifactId>
-    <version>1.1.2</version>
+    <version>1.1.2-SNAPSHOT</version>
   </parent>
 
   <dependencies>
@@ -30,21 +30,21 @@
     <dependency>
       <groupId>myfaces.apache.org</groupId>
       <artifactId>myfaces-api</artifactId>
-      <version>1.1.2</version>
+      <version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
     </dependency>
     
     <dependency>
       <groupId>myfaces.apache.org</groupId>
       <artifactId>myfaces-commons</artifactId>
-      <version>1.1.2</version>
+      <version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>myfaces.apache.org</groupId>
       <artifactId>myfaces-impl</artifactId>
-      <version>1.1.2</version>
+      <version>1.1.2-SNAPSHOT</version>
 			<scope>compile</scope>
     </dependency>
         
