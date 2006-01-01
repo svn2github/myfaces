@@ -155,4 +155,75 @@
 		</plugins>
   </build>
   
+  <reporting>
+	  <plugins>
+	    <plugin>
+	      <inherited>false</inherited>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-project-info-reports-plugin</artifactId>
+	      <reportSets>
+					<reportSet>
+					  <reports>
+	                       <report>project-team</report>					  
+						   <report>dependencies</report>
+						   <report>mailing-list</report>
+                           <report>issue-tracking</report>
+                           <report>license</report>
+                           <report>scm</report>
+					  </reports>
+					</reportSet>
+	      </reportSets>
+	    </plugin>
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<version>2.0-beta-3</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jxr-maven-plugin</artifactId>
+      </plugin>      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.0-beta-1</version>
+        <configuration>
+          <tags>TODO, FIXME, XXX, @deprecated</tags>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>surefire-report-maven-plugin</artifactId>
+      </plugin>
+      
+      <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>changelog-maven-plugin</artifactId>
+      <version>2.0-beta-1</version>
+      <reportSets>
+        <reportSet>
+          <id>dual-report</id>
+          <configuration>
+            <type>range</type>
+            <range>30</range>
+          </configuration>
+          <reports>
+            <report>changelog</report>
+            <report>file-activity</report>
+            <report>dev-activity</report>
+          </reports>
+        </reportSet>
+      </reportSets>
+    </plugin>
+            	    
+	  </plugins>
+  </reporting>
+  
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk</url>
+  </scm>
+  
 </project>
