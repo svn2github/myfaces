@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="MyFaces Tomahawk">
+  <bannerLeft>
+    <name>MyFaces Tomahawk</name>
+    <src>images/banner-logo.png</src>
+    <href>http://myfaces.apache.org/</href>
+  </bannerLeft>
+  <bannerRight>
+    <src>images/banner-faces.png</src>
+  </bannerRight>
+  <body>
+    <links>
+      <item name="Apache" href="http://www.apache.org/" />
+    </links>
+    
+    <menu name="Tomahawk">
+      <item name="Overview" href="index.html"/>
+      <item name="Extensions filter" href="extensionsFilter.html"/>  
+    </menu>
+    
+    <menu name="Components">
+      <item name="JSCook Menu" href="jscookmenu.html"/>
+      <item name="Tree2" href="tree2.html"/>  
+      <item name="Newspaper Table" href="newspaperTable.html"/>  
+      <item name="Alias Bean" href="aliasBean.html"/>
+      <item name="Buffer" href="buffer.html"/>  
+      <item name="File Upload" href="fileUpload.html"/>  
+      <item name="TabbedPane" href="tabbedPane.html"/>
+      <item name="Calendar" href="calendar.html"/>  
+      <item name="Popup" href="popup.html"/>  
+      <item name="Javascript Listener" href="javascriptListener.html"/>  
+      <item name="Date" href="inputDate.html"/>  
+      <item name="Html Editor" href="htmlEditor.html"/>  
+      <item name="Html Tag" href="htmlTag.html"/>  
+      <item name="Data List" href="dataList.html"/>  
+      <item name="Tree" href="tree.html"/>  
+      <item name="Tree Table" href="treeTable.html"/>  
+      <item name="Panel Stack" href="panelStack.html"/>  
+      <item name="Style Sheet" href="stylesheet.html"/>  
+      <item name="Sort Header" href="commandSortHeader.html"/>  
+      <item name="Data Scroller" href="dataScroller.html"/>  
+      <item name="Extended Data Table" href="extDataTable.html"/>
+      <item name="Panel Navigation" href="panelNavigation.html"/> 
+      <item name="Panel Navigation 2" href="panelNavigation2"/> 
+      <item name="UI Save State" href="uiSaveState.html"/> 
+      <item name="Columns" href="columns.html"/> 
+      <item name="Column" href="column.html"/>   
+    </menu>    
+    
+    <menu name="Validators">
+      <item name="validateCreditCard" href="validateCreditCard.html"/>
+      <item name="validateUrl" href="validateUrl.html"/>  
+      <item name="validateEmail" href="validateEmail.html"/>  
+      <item name="validateEqual" href="validateEqual.html"/>
+      <item name="validateRegExpr" href="validateRegExpr.html"/>  
+    </menu>    
+    
+    <menu name="Other Goodies">
+      <item name="forceId" href="forceId.html"/>
+      <item name="Tiles Support" href="tiles.html"/>  
+    </menu>    
+
+    ${reports}
+    
+  </body>
+</project>
