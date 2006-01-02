@@ -56,7 +56,11 @@ public class StylesheetRenderer extends HtmlRenderer {
             writer.writeAttribute("media", stylesheet.getMedia(), null);
           }          
           //writer.writeText("<!--\n", null);
-          writer.writeText(loadFile(context.getExternalContext().getRequestContextPath(), stylesheet.getPath()), null);
+          Object text = loadFile(context.getExternalContext().getRequestContextPath(), stylesheet.getPath());
+          if (text != null)
+          {
+              writer.writeText(text, null);
+          }
           //writer.writeText("\n-->", null);
           writer.endElement("style");  
         }
