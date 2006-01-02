@@ -2,12 +2,14 @@
 <project name="MyFaces Tomahawk">
   <bannerLeft>
     <name>MyFaces Tomahawk</name>
-    <src>images/banner-logo.png</src>
+    <src>images/myfaces-logo.png</src>
     <href>http://myfaces.apache.org/</href>
   </bannerLeft>
+<!--  
   <bannerRight>
-    <src>images/banner-faces.png</src>
+    <name>Tomahawk</name>
   </bannerRight>
+-->  
   <body>
     <links>
       <item name="Apache" href="http://www.apache.org/" />

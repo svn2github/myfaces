@@ -63,26 +63,15 @@ p {
   color: #000;
 }
 #breadcrumbs {
-	height: 13px;
-	background-image: url(../images/breadcrumbs.jpg);
-	padding: 5px 10px 14px 20px;
+	color: #DDDDDD;
+	padding: 5px 5px 5px 5px;
 }
+
 * html #breadcrumbs {
 	padding-bottom: 8px;
 }
 #leftColumn {
-	margin: 10px 0 10px 0;
-	border-top-color: #ccc;
-	border-top-style: solid;
-	border-top-width: 1px;
-	border-right-color: #ccc;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-bottom-color: #ccc;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	padding-right: 5px;
-	padding-left: 5px;
+  background-color: #B2C4E0;
 }
 #navcolumn h5 {
 	font-size: smaller;
@@ -97,7 +86,7 @@ p {
 
 table.bodyTable th {
   color: white;
-  background-color: #fec;
+  background-color: #4C6C8F;
   text-align: left;
   font-weight: bold;
 }
@@ -145,8 +134,7 @@ table {
   color: #003300;
 }
 #banner {
-	height: 95px;
-	background: url(../images/banner-back.jpg);
+	background-color: #284462;
 }
 #navcolumn ul {
 	margin: 5px 0 15px -0em;
@@ -178,7 +166,7 @@ table {
 }
 
 div#leftColumn {
-  background: #eff;
+  background: #B2C4E0;
   border-color: #999 #EEE #EEE #999;
   border-width: 1px;
   border-style: solid;
@@ -193,5 +181,9 @@ div#leftColumn {
 }
 
 #breadcrumbs{
-  background: #fec;
+  background: #4C6C8F;
+}
+
+#banner {
+  border-bottom: 1px solid #4C6C8F;
 }
