@@ -49,8 +49,8 @@ h2 {
 }
 h3 {
 	padding: 4px 4px 4px 24px;
-	color: #666;
-	background-color: #ccc;
+	color: #FFFFFF;
+	background-color: #4C6C8F;
 	font-weight: bold;
 	font-size: 14px;
 	background-image: url(../images/h3.jpg);
@@ -86,7 +86,7 @@ p {
 
 table.bodyTable th {
   color: white;
-  background-color: #4C6C8F;
+  background-color: #999999;
   text-align: left;
   font-weight: bold;
 }
