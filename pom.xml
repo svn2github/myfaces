@@ -130,6 +130,9 @@
     <build>
         <resources>
             <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
                 <directory>src/main/resources-facesconfig</directory>
             </resource>
         </resources>
