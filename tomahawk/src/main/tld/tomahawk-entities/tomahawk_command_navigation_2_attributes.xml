@@ -1,0 +1,16 @@
+        <attribute>
+            <name>open</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+               Menu node is open.
+            </description>
+        </attribute>
+        <attribute>
+            <name>active</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+               Menu node is active.
+            </description>
+        </attribute>

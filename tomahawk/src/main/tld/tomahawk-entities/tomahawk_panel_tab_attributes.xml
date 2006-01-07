@@ -1,0 +1,8 @@
+        <attribute>
+            <name>label</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                Label of this tab.
+            </description>
+        </attribute>
