@@ -6,33 +6,14 @@
     <artifactId>tomahawk</artifactId>
     <packaging>jar</packaging>
     <version>1.1.2-SNAPSHOT</version>
-    <name>Tomahawk</name>
-    <url>http://myfaces.apache.org</url>
-    <description>
-        This is the Tomahawk Subproject Description [INSERT MORE STUFF HERE]
-    </description>
 
     <parent>
         <groupId>org.apache.myfaces</groupId>
-        <artifactId>myfaces</artifactId>
+        <artifactId>myfaces-tomahawk</artifactId>
         <version>1.1.2-SNAPSHOT</version>
     </parent>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.apache.myfaces</groupId>
-            <artifactId>myfaces-api</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.myfaces</groupId>
-            <artifactId>myfaces-commons</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.apache.myfaces</groupId>
@@ -223,10 +204,5 @@
         </plugins>
     </reporting>
 
-    <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk</url>
-    </scm>
-
+   
 </project>
