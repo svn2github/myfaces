@@ -1,9 +1,0 @@
-        <attribute>
-            <name>newspaperColumns</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                The number of columns to wrap the table over.
-                Default: 1
-            </description>
-        </attribute>

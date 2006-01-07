@@ -1,8 +1,0 @@
-        <attribute>
-            <name>pattern</name>
-            <required>true</required>
-            <rtexprvalue>false</rtexprvalue>
-            <description>
-                the pattern, which is the base of the validation
-            </description>
-        </attribute>
