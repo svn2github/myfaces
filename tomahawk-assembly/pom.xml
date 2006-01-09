@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.apache.myfaces</groupId>
+  <artifactId>tomahawk-assembly</artifactId>
+  <packaging>pom</packaging>
+  <name>Tomahawk Assembly</name>
+  <description>
+  	This is the MyFaces Assembly [INSERT MORE STUFF HERE]
+  </description>
+
+  <parent>
+    <groupId>org.apache.myfaces</groupId>
+    <artifactId>myfaces</artifactId>
+    <version>1.1.2-SNAPSHOT</version>
+  </parent>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.0-beta-1</version>
+        <configuration>
+          <descriptor>src/main/assembly/dep.xml</descriptor>
+          <finalName>tomahawk-${version}</finalName>
+          <outputDirectory>target</outputDirectory>
+          <workDirectory>target/assembly/work</workDirectory>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+  <dependencies>
+      <dependency>
+        <groupId>org.apache.myfaces</groupId>
+        <artifactId>tomahawk</artifactId>
+        <version>${version}</version>
+      </dependency>
+  </dependencies>
+  
+</project>
