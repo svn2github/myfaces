@@ -243,7 +243,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         for (int i = 0; i < children.size(); i++)
         {
             UIComponent child = (UIComponent)children.get(i);
-            if (!child.isRendered()) continue;
+
             if (child instanceof HtmlCommandNavigationItem)
             {
             	HtmlCommandNavigationItem navMenuItem = (HtmlCommandNavigationItem) child;
