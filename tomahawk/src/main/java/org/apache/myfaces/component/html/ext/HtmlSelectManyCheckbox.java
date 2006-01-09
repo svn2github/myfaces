@@ -41,7 +41,6 @@ public class HtmlSelectManyCheckbox
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
         if (clientId == null)
         {
-            System.out.println("Getting new id for " + this.getId() + " NOT FORCED");
             clientId = super.getClientId(context);
         }
 

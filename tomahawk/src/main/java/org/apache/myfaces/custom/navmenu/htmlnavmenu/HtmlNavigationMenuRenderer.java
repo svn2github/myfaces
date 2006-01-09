@@ -132,7 +132,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                     HtmlPanelNavigationMenu panelNavPrev = findPreviousPanelNav(facesContext, panelNav);
                     if (panelNavPrev != null)
                     {
-                        restoreOpenActiveStates(facesContext, panelNavPrev, panelNav, panelNavPrev.getChildren());
+                        restoreOpenActiveStates(facesContext, panelNav, panelNavPrev.getChildren());
                     }
                 }
             }
@@ -147,7 +147,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
     }
 
-    private void restoreOpenActiveStates(FacesContext facesContext, HtmlPanelNavigationMenu panelNavPrev,
+    private void restoreOpenActiveStates(FacesContext facesContext,
                                          HtmlPanelNavigationMenu panelNav, List children)
     {
         for (int i = 0, size = children.size(); i < size; i++)
@@ -167,7 +167,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                             item.setOpen(prevItem.isOpen());
                         item.toggleOpen();
                         if (prevItem.isOpen())
-                            restoreOpenActiveStates(facesContext, panelNavPrev, panelNav, prevItem.getChildren());
+                            restoreOpenActiveStates(facesContext, panelNav, prevItem.getChildren());
                     }
                 }
             }
@@ -209,15 +209,14 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
     }
 
-    private void renderTableLayout(FacesContext facesContext, HtmlPanelNavigationMenu component) throws IOException
+    private void renderTableLayout(FacesContext facesContext, HtmlPanelNavigationMenu panelNav) throws IOException
     {
         ResponseWriter writer = facesContext.getResponseWriter();
-        HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
 
         if (panelNav.getChildCount() > 0)
         {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-            writer.startElement(HTML.TABLE_ELEM, component);
+            writer.startElement(HTML.TABLE_ELEM, panelNav);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
             if (panelNav.getStyle() == null && panelNav.getStyleClass() == null)
             {
