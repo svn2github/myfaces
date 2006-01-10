@@ -15,11 +15,15 @@
  */
 package org.apache.myfaces.custom.datalist;
 
+import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.util._ComponentUtils;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -30,7 +34,92 @@ import javax.faces.el.ValueBinding;
 public class HtmlDataList
         extends org.apache.myfaces.component.html.ext.HtmlDataTableHack
 {
+	private static Log log = LogFactory.getLog(HtmlDataList.class);
+    private static final int PROCESS_DECODES = 1;
+    private static final int PROCESS_VALIDATORS = 2; // not currently in use
+    private static final int PROCESS_UPDATES = 3; // not currently in use
 
+    /**
+     * Throws NullPointerException if context is null.  Sets row index to -1, 
+     * calls processChildren, sets row index to -1.
+     */
+
+    public void processDecodes(FacesContext context)
+    {
+
+        if (context == null)
+            throw new NullPointerException("context");
+        if (!isRendered())
+            return;
+
+        setRowIndex(-1);
+        processChildren(context, PROCESS_DECODES);
+        setRowIndex(-1);
+    }
+
+    /**
+     * Iterates over all children, processes each according to the specified 
+     * process action if the child is rendered.
+     */
+
+    public void processChildren(FacesContext context, int processAction)
+    {
+        // use this method for processing other than decode ?
+        int first = getFirst();
+        int rows = getRows();
+        int last = rows == 0 ? getRowCount() : first + rows;
+
+        if (log.isTraceEnabled())
+        {
+            log.trace("processing " + getChildCount()
+                            + " children: starting at " + first
+                            + ", ending at " + last);
+        }
+
+        for (int rowIndex = first; last == -1 || rowIndex < last; rowIndex++)
+        {
+
+            setRowIndex(rowIndex);
+
+            if (!isRowAvailable())
+            {
+                if (log.isTraceEnabled())
+                {
+                    log.trace("scrolled past the last row, aborting");
+                }
+                break;
+            }
+
+            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            {
+                UIComponent child = (UIComponent) it.next();
+                if (child.isRendered())
+                    process(context, child, processAction);
+            }
+        }
+    }
+
+    /**
+     * Copy and pasted from UIData in order to maintain binary compatibility.
+     */
+
+    private void process(FacesContext context, UIComponent component,
+            int processAction)
+    {
+        switch (processAction)
+        {
+        case PROCESS_DECODES:
+            component.processDecodes(context);
+            break;
+        case PROCESS_VALIDATORS:
+            component.processValidators(context);
+            break;
+        case PROCESS_UPDATES:
+            component.processUpdates(context);
+            break;
+        }
+    }
+    
     public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(
