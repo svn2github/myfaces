@@ -15,15 +15,13 @@
  */
 package org.apache.myfaces.custom.tree2;
 
-import javax.faces.context.FacesContext;
+import java.util.Map;
+
 import javax.faces.component.UICommand;
 import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.io.IOException;
+import javax.faces.event.ActionEvent;
 
 
 /**

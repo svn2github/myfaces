@@ -15,12 +15,11 @@
  */
 package org.apache.myfaces.custom.datalist;
 
+import javax.faces.component.UIComponent;
+
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
-
-import javax.faces.component.UIComponent;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
