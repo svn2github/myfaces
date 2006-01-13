@@ -52,11 +52,6 @@ public class HtmlCommandJSCookMenu
         return COMPONENT_FAMILY;
     }
 
-    public boolean isImmediate()
-    {
-        return true;
-    }
-
     public void setLayout(String layout)
     {
         _layout = layout;

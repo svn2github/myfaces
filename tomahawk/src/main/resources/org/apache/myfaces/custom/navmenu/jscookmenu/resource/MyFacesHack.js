@@ -25,7 +25,7 @@ function cmItemMouseUp (obj, index)
             window.open (link, '_self');
         } else {
             // Link is a JSF action
-            var dummyForm = document.forms['linkDummyForm'];
+            var dummyForm = document.forms[target];
             dummyForm.elements['jscook_action'].value = link;
             dummyForm.submit();
         }

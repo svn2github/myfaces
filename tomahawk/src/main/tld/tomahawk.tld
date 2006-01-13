@@ -859,6 +859,7 @@
         &ui_component_attributes;
         &user_role_attributes;
         &alt_location_attributes;
+        &faces_immediate_attribute;
         &tomahawk_js_cook_menu_attributes;
     </tag>
 

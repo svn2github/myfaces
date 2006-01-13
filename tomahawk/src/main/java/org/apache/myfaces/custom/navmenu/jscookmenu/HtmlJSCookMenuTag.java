@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.navmenu.jscookmenu;
 
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.taglib.UIComponentTagBase;
 import org.apache.myfaces.component.UserRoleAware;
 
@@ -39,6 +40,7 @@ public class HtmlJSCookMenuTag
     // User Role support
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
+    private String _immediate;
 
     public void release() {
         super.release();
@@ -67,6 +69,8 @@ public class HtmlJSCookMenuTag
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
+        
+        setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
     }
 
     public void setLayout(String layout)
@@ -87,5 +91,10 @@ public class HtmlJSCookMenuTag
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
         _enabledOnUserRole = enabledOnUserRole;
+    }
+    
+    public void setImmediate(String immediate)
+    {
+        _immediate = immediate;
     }
 }

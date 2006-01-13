@@ -1,5 +1,6 @@
 <!-- UICommand attributes -->
 &ui_component_attributes;
+&faces_immediate_attribute;
 
 <attribute>
     <name>action</name>
@@ -25,20 +26,6 @@
         listener method accepts a parameter of type javax.faces.event.ActionEvent
         and returns void. The phase that this event is fired in can be controlled
         via the immediate attribute.
-    </description>
-</attribute>
-<attribute>
-    <name>immediate</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>
-        A boolean value that identifies the phase during which action events
-        should fire. During normal event processing, action methods and
-        action listener methods are fired during the "invoke application"
-        phase of request processing. If this attribute is set to "true",
-        these methods are fired instead at the end of the "apply request
-        values" phase.
     </description>
 </attribute>
 <attribute>
