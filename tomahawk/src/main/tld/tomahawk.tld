@@ -28,6 +28,7 @@
 <!ENTITY faces_id_optional_attribute    SYSTEM "entities/faces_id_optional_attribute.xml">
 <!ENTITY faces_id_required_attribute    SYSTEM "entities/faces_id_required_attribute.xml">
 <!ENTITY faces_rendered_attribute       SYSTEM "entities/faces_rendered_attribute.xml">
+<!ENTITY faces_immediate_attribute      SYSTEM "entities/faces_immediate_attribute.xml">
 <!ENTITY html_anchor_attributes         SYSTEM "entities/html_anchor_attributes.xml">
 <!ENTITY html_button_attributes         SYSTEM "entities/html_button_attributes.xml">
 <!ENTITY html_event_handler_attributes  SYSTEM "entities/html_event_handler_attributes.xml">
