@@ -21,5 +21,19 @@
         <include>NOTICE*</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>target/javadoc</directory>
+      <outputDirectory>javadoc</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet>
+    <!--fileSet>
+      <directory>target/tlddoc</directory>
+      <outputDirectory>tlddoc</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet-->
   </fileSets>
 </assembly>
