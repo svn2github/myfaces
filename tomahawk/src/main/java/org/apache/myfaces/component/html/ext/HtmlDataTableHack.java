@@ -15,8 +15,6 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.myfaces.custom.ExtendedComponentBase;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -38,6 +37,8 @@ import javax.faces.model.ResultDataModel;
 import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
 import javax.servlet.jsp.jstl.sql.Result;
+
+import org.apache.myfaces.custom.ExtendedComponentBase;
 
 /**
  * Reimplement all UIData functionality to be able to have (protected) access
@@ -91,6 +92,37 @@ public abstract class HtmlDataTableHack extends
     public int getRowIndex()
     {
         return _rowIndex;
+    }
+    
+    /**
+     * Hack since RI does not call getRowIndex()
+     */
+    public String getClientId(FacesContext context)
+    {
+        String clientId = super.getClientId(context);
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1)
+        {
+            return clientId;
+        }
+        // the following code tries to avoid rowindex to be twice in the client id
+        int index = clientId.lastIndexOf(NamingContainer.SEPARATOR_CHAR);
+        if(index != -1)
+        {
+            String rowIndexString = clientId.substring(index + 1);
+            try
+            {
+                if(Integer.parseInt(rowIndexString) == rowIndex)
+                {
+                    return clientId;
+                }
+            }
+            catch(NumberFormatException e)
+            {
+                return clientId + NamingContainer.SEPARATOR_CHAR + rowIndex;
+            }
+        }
+        return clientId + NamingContainer.SEPARATOR_CHAR + rowIndex;
     }
 
     /**
