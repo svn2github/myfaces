@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -84,14 +85,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if( forcedIdIndex == null || forcedIdIndex.length() == 0 )
             return standardClientId;
         
-        // Trick : Remove the last part starting with '_' that contains the rowIndex.
+        // Trick : Remove the last part starting with NamingContainer.SEPARATOR_CHAR that contains the rowIndex.
         // It would be best to not resort to String manipulation,
         // but we can't get super.super.getClientId() :-(
-        int indexLast_ = standardClientId.lastIndexOf('_');
+        int indexLast_ = standardClientId.lastIndexOf(NamingContainer.SEPARATOR_CHAR);
         if( indexLast_ == -1 )
         {
             log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
-            return standardClientId+'_'+forcedIdIndex;
+            return standardClientId+NamingContainer.SEPARATOR_CHAR+forcedIdIndex;
         }
 
         String parsedForcedClientId = standardClientId.substring(0, indexLast_+1)+forcedIdIndex;
