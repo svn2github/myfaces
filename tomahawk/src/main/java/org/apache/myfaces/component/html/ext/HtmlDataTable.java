@@ -82,88 +82,89 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         
         String forcedIdIndex = getForceIdIndexFormula();
         if( forcedIdIndex == null || forcedIdIndex.length() == 0 )
-        	return standardClientId;
+            return standardClientId;
         
         // Trick : Remove the last part starting with '_' that contains the rowIndex.
         // It would be best to not resort to String manipulation,
         // but we can't get super.super.getClientId() :-(
         int indexLast_ = standardClientId.lastIndexOf('_');
-        if( indexLast_ == -1 ){
-        	log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
-        	return standardClientId+'_'+forcedIdIndex;
+        if( indexLast_ == -1 )
+        {
+            log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
+            return standardClientId+'_'+forcedIdIndex;
         }
 
         String parsedForcedClientId = standardClientId.substring(0, indexLast_+1)+forcedIdIndex;
 
-		return parsedForcedClientId;
+        return parsedForcedClientId;
     }
 
-	public void setRowIndex(int rowIndex)
-	{
-		if(rowIndex < -1)
-		{
-			throw new IllegalArgumentException("rowIndex is less than -1");
-		}
-		
-		String rowIndexVar = getRowIndexVar();
-		String rowCountVar = getRowCountVar();
-		String previousRowDataVar = getPreviousRowDataVar();
-		if (rowIndexVar != null || rowCountVar != null || previousRowDataVar != null)
-		{
-			Map requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+    public void setRowIndex(int rowIndex)
+    {
+        if(rowIndex < -1)
+        {
+            throw new IllegalArgumentException("rowIndex is less than -1");
+        }
+
+        String rowIndexVar = getRowIndexVar();
+        String rowCountVar = getRowCountVar();
+        String previousRowDataVar = getPreviousRowDataVar();
+        if (rowIndexVar != null || rowCountVar != null || previousRowDataVar != null)
+        {
+            Map requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
 
             if (previousRowDataVar != null && rowIndex >= 0) //we only need to provide the previousRowDataVar for a valid rowIndex
             {
-                    if (isRowAvailable())
-                    {
-                            //previous row is available
-                            requestMap.put(previousRowDataVar, getRowData());
-                    }
-                    else
-                    {
-                            //no previous row available
-                            requestMap.put(previousRowDataVar, null);
-                    }
+                if (isRowAvailable())
+                {
+                    //previous row is available
+                    requestMap.put(previousRowDataVar, getRowData());
+                }
+                else
+                {
+                    //no previous row available
+                    requestMap.put(previousRowDataVar, null);
+                }
             }
 
             super.setRowIndex(rowIndex);
 
             if (rowIndex >= 0)
             {
-                    //regular row index, update request scope variables
-                    if (rowIndexVar != null)
-                    {
-                            requestMap.put(rowIndexVar, new Integer(rowIndex));
-                    }
+                //regular row index, update request scope variables
+                if (rowIndexVar != null)
+                {
+                    requestMap.put(rowIndexVar, new Integer(rowIndex));
+                }
 
-                    if (rowCountVar != null)
-                    {
-                            requestMap.put(rowCountVar, new Integer(getRowCount()));
-                    }
+                if (rowCountVar != null)
+                {
+                    requestMap.put(rowCountVar, new Integer(getRowCount()));
+                }
             }
             else
             {
-                    //rowIndex == -1 means end of loop --> remove request scope variables
-                    if (rowIndexVar != null)
-                    {
-                            requestMap.remove(rowIndexVar);
-                    }
+                //rowIndex == -1 means end of loop --> remove request scope variables
+                if (rowIndexVar != null)
+                {
+                    requestMap.remove(rowIndexVar);
+                }
 
-                    if (rowCountVar != null)
-                    {
-                            requestMap.remove(rowCountVar);
-                    }
+                if (rowCountVar != null)
+                {
+                    requestMap.remove(rowCountVar);
+                }
 
-                    if (previousRowDataVar != null)
-                    {
-                            requestMap.remove(previousRowDataVar);
-                    }
+                if (previousRowDataVar != null)
+                {
+                    requestMap.remove(previousRowDataVar);
+                }
             }
         }
         else
         {
-                // no extended var attributes defined, no special treatment
-             super.setRowIndex(rowIndex);
+            // no extended var attributes defined, no special treatment
+            super.setRowIndex(rowIndex);
         }
     }
 
@@ -279,11 +280,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                 List lst = (List) dm.getWrappedData();
                 if (lst.size() > 0)
                 {
-                        vb.setValue(context, lst.get(0));
+                    vb.setValue(context, lst.get(0));
                 }
                 else
                 {
-                        vb.setValue(context, null);
+                    vb.setValue(context, null);
                 }
             }
         }
@@ -381,7 +382,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     public Object saveState(FacesContext context)
     {
         boolean preserveSort = isPreserveSort();
-    	Object values[] = new Object[24];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -424,12 +425,12 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
      */
     protected DataModel getDataModel()
     {
-            if (_preservedDataModel != null)
-            {
-                    setDataModel(_preservedDataModel);
-                    _preservedDataModel = null;
-            }
-            return super.getDataModel();
+        if (_preservedDataModel != null)
+        {
+            setDataModel(_preservedDataModel);
+            _preservedDataModel = null;
+        }
+        return super.getDataModel();
     }
     
     public void restoreState(FacesContext context, Object state)
@@ -439,11 +440,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         _preserveDataModel = (Boolean) values[1];
         if (isPreserveDataModel())
         {
-                _preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[2]);
+            _preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[2]);
         }
         else
         {
-                _preservedDataModel = null;
+            _preservedDataModel = null;
         }
         _preserveSort = (Boolean) values[3];
         _forceIdIndexFormula = (String) values[4];
@@ -506,15 +507,15 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             Object value = getValue();
             if (value == null)
             {
-                    return null;
+                return null;
             }
             else if (value instanceof DataModel)
             {
-                    return new _SerializableDataModel(getFirst(), getRows(), (DataModel) value);
+                return new _SerializableDataModel(getFirst(), getRows(), (DataModel) value);
             }
             else if (value instanceof List)
             {
-                    return new _SerializableListDataModel(getFirst(), getRows(), (List) value);
+                return new _SerializableListDataModel(getFirst(), getRows(), (List) value);
             }
             // accept a Collection is not supported in the Spec
             else if (value instanceof Collection)
@@ -523,34 +524,34 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             }
             else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
             {
-                    return new _SerializableArrayDataModel(getFirst(), getRows(), (Object[]) value);
+                return new _SerializableArrayDataModel(getFirst(), getRows(), (Object[]) value);
             }
             else if (value instanceof ResultSet)
             {
-                    return new _SerializableResultSetDataModel(getFirst(), getRows(), (ResultSet) value);
+                return new _SerializableResultSetDataModel(getFirst(), getRows(), (ResultSet) value);
             }
             else if (value instanceof javax.servlet.jsp.jstl.sql.Result)
             {
-                    return new _SerializableResultDataModel(getFirst(), getRows(),
-                                                    (javax.servlet.jsp.jstl.sql.Result) value);
+                return new _SerializableResultDataModel(getFirst(), getRows(),
+                                 (javax.servlet.jsp.jstl.sql.Result) value);
             }
             else
             {
-                    return new _SerializableScalarDataModel(getFirst(), getRows(), value);
+                return new _SerializableScalarDataModel(getFirst(), getRows(), value);
             }
     }
     
     public boolean isRendered()
     {
             if (!UserRoleUtils.isVisibleOnUserRole(this))
-                    return false;
+                return false;
             return super.isRendered();
     }
     
     
     public void setForceIdIndexFormula(String forceIdIndexFormula)
     {
-    	_forceIdIndexFormula = forceIdIndexFormula;
+        _forceIdIndexFormula = forceIdIndexFormula;
         ValueBinding vb = getValueBinding("forceIdIndexFormula");
         if (vb != null)
         {
@@ -565,7 +566,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             return _forceIdIndexFormula;
         ValueBinding vb = getValueBinding("forceIdIndexFormula");
         if( vb == null )
-        	return null;
+            return null;
         Object eval = vb.getValue(getFacesContext());
         return eval == null ? null : eval.toString();
     }
@@ -612,8 +613,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             ValueBinding vb = getValueBinding("sortAscending");
             if (vb != null)
             {
-                    vb.setValue(getFacesContext(), _sortAscending);
-                    _sortAscending = null;
+                vb.setValue(getFacesContext(), _sortAscending);
+                _sortAscending = null;
             }
     }
     
@@ -798,135 +799,136 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     protected void setPreservedDataModel(_SerializableDataModel preservedDataModel) {
         _preservedDataModel = preservedDataModel;
     }
-	//------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataTable";
+    //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
+
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataTable";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Table";
 
     private static final boolean DEFAULT_PRESERVEDATAMODEL = false;
-	private static final boolean DEFAULT_PRESERVESORT = true;
-	private static final boolean DEFAULT_RENDEREDIFEMPTY = true;
+    private static final boolean DEFAULT_PRESERVESORT = true;
+    private static final boolean DEFAULT_RENDEREDIFEMPTY = true;
 
-	private Boolean _preserveDataModel = null;
-	private Boolean _preserveSort = null;
-	private String _enabledOnUserRole = null;
-	private String _visibleOnUserRole = null;
-	private Boolean _renderedIfEmpty = null;
-	private String _rowIndexVar = null;
-	private String _rowCountVar = null;
-	private String _previousRowDataVar = null;
+    private Boolean _preserveDataModel = null;
+    private Boolean _preserveSort = null;
+    private String _enabledOnUserRole = null;
+    private String _visibleOnUserRole = null;
+    private Boolean _renderedIfEmpty = null;
+    private String _rowIndexVar = null;
+    private String _rowCountVar = null;
+    private String _previousRowDataVar = null;
 
     public HtmlDataTable()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-	public void setPreserveDataModel(boolean preserveDataModel)
-	{
-		_preserveDataModel = Boolean.valueOf(preserveDataModel);
-	}
+    public void setPreserveDataModel(boolean preserveDataModel)
+    {
+        _preserveDataModel = Boolean.valueOf(preserveDataModel);
+    }
 
-	public boolean isPreserveDataModel()
-	{
-		if (_preserveDataModel != null)
-			return _preserveDataModel.booleanValue();
-		ValueBinding vb = getValueBinding("preserveDataModel");
-		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-		return v != null ? v.booleanValue() : DEFAULT_PRESERVEDATAMODEL;
-	}
+    public boolean isPreserveDataModel()
+    {
+        if (_preserveDataModel != null)
+            return _preserveDataModel.booleanValue();
+        ValueBinding vb = getValueBinding("preserveDataModel");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_PRESERVEDATAMODEL;
+    }
 
-	public void setPreserveSort(boolean preserveSort)
-	{
-		_preserveSort = Boolean.valueOf(preserveSort);
-	}
+    public void setPreserveSort(boolean preserveSort)
+    {
+        _preserveSort = Boolean.valueOf(preserveSort);
+    }
 
-	public boolean isPreserveSort()
-	{
-		if (_preserveSort != null)
-			return _preserveSort.booleanValue();
-		ValueBinding vb = getValueBinding("preserveSort");
-		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-		return v != null ? v.booleanValue() : DEFAULT_PRESERVESORT;
-	}
+    public boolean isPreserveSort()
+    {
+        if (_preserveSort != null)
+            return _preserveSort.booleanValue();
+        ValueBinding vb = getValueBinding("preserveSort");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_PRESERVESORT;
+    }
 
-	public void setEnabledOnUserRole(String enabledOnUserRole)
-	{
-		_enabledOnUserRole = enabledOnUserRole;
-	}
+    public void setEnabledOnUserRole(String enabledOnUserRole)
+    {
+        _enabledOnUserRole = enabledOnUserRole;
+    }
 
-	public String getEnabledOnUserRole()
-	{
-		if (_enabledOnUserRole != null)
-			return _enabledOnUserRole;
-		ValueBinding vb = getValueBinding("enabledOnUserRole");
-		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-	}
+    public String getEnabledOnUserRole()
+    {
+        if (_enabledOnUserRole != null)
+            return _enabledOnUserRole;
+        ValueBinding vb = getValueBinding("enabledOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
-	public void setVisibleOnUserRole(String visibleOnUserRole)
-	{
-		_visibleOnUserRole = visibleOnUserRole;
-	}
+    public void setVisibleOnUserRole(String visibleOnUserRole)
+    {
+        _visibleOnUserRole = visibleOnUserRole;
+    }
 
-	public String getVisibleOnUserRole()
-	{
-		if (_visibleOnUserRole != null)
-			return _visibleOnUserRole;
-		ValueBinding vb = getValueBinding("visibleOnUserRole");
-		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-	}
+    public String getVisibleOnUserRole()
+    {
+        if (_visibleOnUserRole != null)
+            return _visibleOnUserRole;
+        ValueBinding vb = getValueBinding("visibleOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
-	public void setRenderedIfEmpty(boolean renderedIfEmpty)
-	{
-		_renderedIfEmpty = Boolean.valueOf(renderedIfEmpty);
-	}
+    public void setRenderedIfEmpty(boolean renderedIfEmpty)
+    {
+        _renderedIfEmpty = Boolean.valueOf(renderedIfEmpty);
+    }
 
-	public boolean isRenderedIfEmpty()
-	{
-		if (_renderedIfEmpty != null)
-			return _renderedIfEmpty.booleanValue();
-		ValueBinding vb = getValueBinding("renderedIfEmpty");
-		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-		return v != null ? v.booleanValue() : DEFAULT_RENDEREDIFEMPTY;
-	}
+    public boolean isRenderedIfEmpty()
+    {
+        if (_renderedIfEmpty != null)
+            return _renderedIfEmpty.booleanValue();
+        ValueBinding vb = getValueBinding("renderedIfEmpty");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_RENDEREDIFEMPTY;
+    }
 
-	public void setRowIndexVar(String rowIndexVar)
-	{
-		_rowIndexVar = rowIndexVar;
-	}
+    public void setRowIndexVar(String rowIndexVar)
+    {
+        _rowIndexVar = rowIndexVar;
+    }
 
-	public String getRowIndexVar()
-	{
-		if (_rowIndexVar != null)
-			return _rowIndexVar;
-		ValueBinding vb = getValueBinding("rowIndexVar");
-		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-	}
+    public String getRowIndexVar()
+    {
+        if (_rowIndexVar != null)
+            return _rowIndexVar;
+        ValueBinding vb = getValueBinding("rowIndexVar");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
-	public void setRowCountVar(String rowCountVar)
-	{
-		_rowCountVar = rowCountVar;
-	}
+    public void setRowCountVar(String rowCountVar)
+    {
+        _rowCountVar = rowCountVar;
+    }
 
-	public String getRowCountVar()
-	{
-		if (_rowCountVar != null)
-			return _rowCountVar;
-		ValueBinding vb = getValueBinding("rowCountVar");
-		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-	}
+    public String getRowCountVar()
+    {
+        if (_rowCountVar != null)
+            return _rowCountVar;
+        ValueBinding vb = getValueBinding("rowCountVar");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
-	public void setPreviousRowDataVar(String previousRowDataVar)
-	{
-		_previousRowDataVar = previousRowDataVar;
-	}
+    public void setPreviousRowDataVar(String previousRowDataVar)
+    {
+        _previousRowDataVar = previousRowDataVar;
+    }
 
-	public String getPreviousRowDataVar()
-	{
-		if (_previousRowDataVar != null)
-			return _previousRowDataVar;
-		ValueBinding vb = getValueBinding("previousRowDataVar");
-		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-	}
+    public String getPreviousRowDataVar()
+    {
+        if (_previousRowDataVar != null)
+            return _previousRowDataVar;
+        ValueBinding vb = getValueBinding("previousRowDataVar");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
-	//------------------ GENERATED CODE END ---------------------------------------
+    //------------------ GENERATED CODE END ---------------------------------------
 }
