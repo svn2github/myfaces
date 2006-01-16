@@ -570,6 +570,19 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         return eval == null ? null : eval.toString();
     }
     
+    /**
+     * Specify what column the data should be sorted on.
+     * <p>
+     * Note that calling this method <i>immediately</i> stores the value
+     * via any value-binding with name "sortColumn". This is done because
+     * this method is called by the HtmlCommandSortHeader component when
+     * the user has clicked on a column's sort header. In this case, the
+     * the model getter method mapped for name "value" needs to read this
+     * value in able to return the data in the desired order - but the
+     * HtmlCommandSortHeader component is usually "immediate" in order to
+     * avoid validating the enclosing form. Yes, this is rather hacky -
+     * but it works.
+     */
     public void setSortColumn(String sortColumn)
     {
         _sortColumn = sortColumn;
