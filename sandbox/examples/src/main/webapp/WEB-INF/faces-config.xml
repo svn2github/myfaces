@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE faces-config PUBLIC
+ "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+ "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!--
+ * Copyright 2004-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+
+  <!-- sandbox components -->
+
+  <component>
+    <component-type>org.apache.myfaces.InputSuggestAjax</component-type>
+    <component-class>org.apache.myfaces.custom.inputsuggestajax.InputSuggestAjax</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.HtmlSelectManyCheckboxAjax</component-type>
+    <component-class>org.apache.myfaces.custom.inputAjax.HtmlSelectManyCheckboxAjax</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.HtmlSelectOneRadioAjax</component-type>
+    <component-class>org.apache.myfaces.custom.inputAjax.HtmlSelectOneRadioAjax</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.InputTextAjax</component-type>
+    <component-class>org.apache.myfaces.custom.inputAjax.HtmlInputTextAjax</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.SelectBooleanCheckboxAjax</component-type>
+    <component-class>org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjax</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.Planner</component-type>
+    <component-class>org.apache.myfaces.custom.schedule.HtmlPlanner</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.Schedule</component-type>
+    <component-class>org.apache.myfaces.custom.schedule.HtmlSchedule</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.AutoUpdateDataTable</component-type>
+    <component-class>org.apache.myfaces.custom.autoupdatedatatable.AutoUpdateDataTable</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.HtmlAccordionPanel</component-type>
+    <component-class>org.apache.myfaces.custom.accordion.HtmlAccordionPanel</component-class>
+  </component>
+
+    <component>
+   		<component-type>org.apache.myfaces.Focus</component-type>
+   		<component-class>org.apache.myfaces.custom.focus.HtmlFocus</component-class>
+  	</component>
+
+  <component>
+    <component-type>org.apache.myfaces.HtmlForm</component-type>
+    <component-class>org.apache.myfaces.custom.form.HtmlForm</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.Fieldset</component-type>
+    <component-class>org.apache.myfaces.custom.fieldset.Fieldset</component-class>
+  </component>
+
+  <component>
+    <component-type>org.apache.myfaces.GraphicImageDynamic</component-type>
+    <component-class>org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamic</component-class>
+  </component>
+
+  <component>
+	<component-type>org.apache.myfaces.Scope</component-type>
+	<component-class>org.apache.myfaces.custom.scope.UIScope</component-class>
+  </component>
+
+  <component>
+	<component-type>org.apache.myfaces.HtmlSelectManyPicklist</component-type>
+	<component-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist</component-class>
+  </component>
+
+  <!-- sandbox converters -->
+
+  <converter>
+    <converter-id>org.apache.myfaces.custom.convertboolean.BooleanConverter</converter-id>
+    <converter-class>org.apache.myfaces.custom.convertboolean.BooleanConverter</converter-class>
+  </converter>
+
+  <converter>
+     <converter-id>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-id>
+     <converter-class>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-class>
+  </converter>
+
+
+  <!-- sandbox managed beans -->
+  <managed-bean>
+	<managed-bean-name>ScopeContainer</managed-bean-name>
+	<managed-bean-class>org.apache.myfaces.custom.scope.ScopeHolder</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <!-- sandbox renderkit -->
+
+  <render-kit>
+
+    <render-kit-id>HTML_BASIC</render-kit-id>
+
+    <!-- extended standard renderers -->
+
+    <!-- custom component renderers -->
+    <renderer>
+      <component-family>javax.faces.Input</component-family>
+      <renderer-type>org.apache.myfaces.InputSuggest</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.suggest.InputSuggestRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.Input</component-family>
+      <renderer-type>org.apache.myfaces.InputSuggestAjax</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.inputsuggestajax.InputSuggestAjaxRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.SelectMany</component-family>
+      <renderer-type>org.apache.myfaces.CheckboxAjax</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlSelectManyCheckboxAjaxRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.SelectOne</component-family>
+      <renderer-type>org.apache.myfaces.SelectOneRadioAjax</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlSelectOneRadioAjaxRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.Input</component-family>
+      <renderer-type>org.apache.myfaces.InputTextAjax</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlInputTextAjaxRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.SelectBoolean</component-family>
+      <renderer-type>org.apache.myfaces.CheckboxAjax</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjaxRenderer</renderer-class>
+    </renderer>
+
+
+
+    <renderer>
+      <component-family>javax.faces.Panel</component-family>
+      <renderer-type>org.apache.myfaces.Planner</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.schedule.renderer.PlannerRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.Panel</component-family>
+      <renderer-type>org.apache.myfaces.Schedule</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.schedule.renderer.ScheduleDelegatingRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>javax.faces.Data</component-family>
+      <renderer-type>org.apache.myfaces.AutoUpdateDataTable</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.autoupdatedatatable.AutoUpdateDataTableRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+       <component-family>javax.faces.Panel</component-family>
+       <renderer-type>org.apache.myfaces.AccordionPanel</renderer-type>
+       <renderer-class>org.apache.myfaces.custom.accordion.HtmlAccordionPanelRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+       <component-family>javax.faces.Output</component-family>
+       <renderer-type>org.apache.myfaces.Focus</renderer-type>
+       <renderer-class>org.apache.myfaces.custom.focus.HtmlFocusRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+       <component-family>javax.faces.Form</component-family>
+       <renderer-type>org.apache.myfaces.Form</renderer-type>
+       <renderer-class>org.apache.myfaces.custom.form.HtmlFormRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+       <component-family>javax.faces.Output</component-family>
+       <renderer-type>org.apache.myfaces.FieldsetRenderer</renderer-type>
+       <renderer-class>org.apache.myfaces.custom.fieldset.FieldsetRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+       <component-family>javax.faces.Graphic</component-family>
+       <renderer-type>org.apache.myfaces.GraphicImageDynamicRenderer</renderer-type>
+       <renderer-class>org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamicRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+		<component-family>javax.faces.Output</component-family>
+		<renderer-type>script.aculo.us.renderer</renderer-type>
+		<renderer-class>org.apache.myfaces.custom.effect.EffectRenderer</renderer-class>
+	</renderer>
+
+    <renderer>
+        <component-family>javax.faces.SelectMany</component-family>
+        <renderer-type>org.apache.myfaces.PicklistRenderer</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.picklist.HtmlPicklistRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+        <component-family>javax.faces.Message</component-family>
+        <renderer-type>org.apache.myfaces.MessageSandbox</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlMessageRenderer</renderer-class>
+    </renderer>
+
+  </render-kit>
+
+
+  <lifecycle>
+      <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
+      <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxPhaseListener</phase-listener>
+  	  <phase-listener>org.apache.myfaces.custom.scope.AfterScopePhaseListener</phase-listener>
+  </lifecycle>
+  
+  <!--custom validators -->
+  <validator>
+      <validator-id>org.apache.myfaces.validator.Url</validator-id>
+      <validator-class>org.apache.myfaces.custom.urlvalidator.UrlValidator</validator-class>
+  </validator>
+  <validator>
+      <validator-id>org.apache.myfaces.validator.ISBN</validator-id>
+      <validator-class>org.apache.myfaces.custom.isbnvalidator.ISBNValidator</validator-class>
+  </validator>
+  <validator>
+      <description>CompareTo validator</description>
+      <validator-id>org.apache.myfaces.validator.CompareTo</validator-id>
+      <validator-class>org.apache.myfaces.custom.comparetovalidator.CompareToValidator</validator-class>
+  </validator>
+	
+</faces-config>

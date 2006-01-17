@@ -1,0 +1,624 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config>
+
+
+    <!-- managed bean for autoUpdateDataTable-->
+
+    <managed-bean>
+        <managed-bean-name>autoUpdateDataTableBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.autoupdatedatatable.AutoUpdateDataTableBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+
+    <!-- managed bean for ajaxInputSuggest-->
+
+     <managed-bean>
+        <managed-bean-name>inputSuggestAjax</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+  <!-- Managed Beans for inputSuggest.jsp -->
+
+  <managed-bean>
+    <managed-bean-name>user</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.inputsuggest.User</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+     <!-- managed bean for inputAjax components -->
+    <managed-bean>
+        <managed-bean-name>inputAjaxBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.inputAjax.InputAjaxBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>userHandler</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.inputsuggest.UserHandler</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>user</property-name>
+      <value>#{user}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>choices</property-name>
+      <value>#{choices}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>choices</managed-bean-name>
+    <managed-bean-class>java.util.TreeMap</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+    <map-entries>
+        <map-entry>
+            <key>1</key>
+            <value>Alabama</value>
+        </map-entry>
+      <map-entry>
+        <key>2</key>
+        <value>Alaska</value>
+      </map-entry>
+      <map-entry>
+        <key>3</key>
+        <value>Arizona</value>
+      </map-entry>
+      <map-entry>
+        <key>4</key>
+        <value>Arkansas</value>
+      </map-entry>
+      <map-entry>
+        <key>5</key>
+        <value>California</value>
+      </map-entry>
+      <map-entry>
+        <key>6</key>
+        <value>Colorado</value>
+      </map-entry>
+      <map-entry>
+        <key>7</key>
+        <value>Connecticut</value>
+      </map-entry>
+      <map-entry>
+        <key>8</key>
+        <value>Delaware</value>
+      </map-entry>
+      <map-entry>
+        <key>9</key>
+        <value>Florida</value>
+      </map-entry>
+      <map-entry>
+        <key>10</key>
+        <value>Georgia</value>
+      </map-entry>
+      <map-entry>
+        <key>11</key>
+        <value>Hawaii</value>
+      </map-entry>
+      <map-entry>
+        <key>12</key>
+        <value>Idaho</value>
+      </map-entry>
+      <map-entry>
+        <key>13</key>
+        <value>Illinois</value>
+      </map-entry>
+      <map-entry>
+        <key>14</key>
+        <value>Indiana</value>
+      </map-entry>
+      <map-entry>
+        <key>15</key>
+        <value>Iowa</value>
+      </map-entry>
+      <map-entry>
+        <key>16</key>
+        <value>Kansas</value>
+      </map-entry>
+      <map-entry>
+        <key>17</key>
+        <value>Kentucky</value>
+      </map-entry>
+      <map-entry>
+        <key>18</key>
+        <value>Louisiana</value>
+      </map-entry>
+      <map-entry>
+        <key>19</key>
+        <value>Maine</value>
+      </map-entry>
+      <map-entry>
+        <key>20</key>
+        <value>Maryland</value>
+      </map-entry>
+      <map-entry>
+        <key>21</key>
+        <value>Massachusetts</value>
+      </map-entry>
+      <map-entry>
+        <key>22</key>
+        <value>Michigan</value>
+      </map-entry>
+      <map-entry>
+        <key>23</key>
+        <value>Minnesota</value>
+      </map-entry>
+      <map-entry>
+        <key>24</key>
+        <value>Mississippi</value>
+      </map-entry>
+      <map-entry>
+        <key>25</key>
+        <value>Missouri</value>
+      </map-entry>
+      <map-entry>
+        <key>26</key>
+        <value>Montana</value>
+      </map-entry>
+      <map-entry>
+        <key>27</key>
+        <value>Nebraska</value>
+      </map-entry>
+      <map-entry>
+        <key>28</key>
+        <value>Nevada</value>
+      </map-entry>
+      <map-entry>
+        <key>29</key>
+        <value>New Hampshire</value>
+      </map-entry>
+      <map-entry>
+        <key>30</key>
+        <value>New Jersey</value>
+      </map-entry>
+      <map-entry>
+        <key>31</key>
+        <value>New Mexico</value>
+      </map-entry>
+      <map-entry>
+        <key>32</key>
+        <value>New York</value>
+      </map-entry>
+      <map-entry>
+        <key>33</key>
+        <value>North Carolina</value>
+      </map-entry>
+      <map-entry>
+        <key>34</key>
+        <value>North Dakota</value>
+      </map-entry>
+      <map-entry>
+        <key>35</key>
+        <value>Ohio</value>
+      </map-entry>
+      <map-entry>
+        <key>36</key>
+        <value>Oklahoma</value>
+      </map-entry>
+      <map-entry>
+        <key>37</key>
+        <value>Oregon</value>
+      </map-entry>
+      <map-entry>
+        <key>38</key>
+        <value>Pennsylvania</value>
+      </map-entry>
+      <map-entry>
+        <key>39</key>
+        <value>Rhode Island</value>
+      </map-entry>
+      <map-entry>
+        <key>40</key>
+        <value>South Carolina</value>
+      </map-entry>
+      <map-entry>
+        <key>41</key>
+        <value>South Dakota</value>
+      </map-entry>
+      <map-entry>
+        <key>42</key>
+        <value>Tennessee</value>
+      </map-entry>
+      <map-entry>
+        <key>43</key>
+        <value>Texas</value>
+      </map-entry>
+      <map-entry>
+        <key>44</key>
+        <value>Utah</value>
+      </map-entry>
+      <map-entry>
+        <key>45</key>
+        <value>Vermont</value>
+      </map-entry>
+      <map-entry>
+        <key>46</key>
+        <value>Virginia</value>
+      </map-entry>
+      <map-entry>
+        <key>47</key>
+        <value>Washington</value>
+      </map-entry>
+      <map-entry>
+        <key>48</key>
+        <value>West Virginia</value>
+      </map-entry>
+      <map-entry>
+        <key>49</key>
+        <value>Wisconsin</value>
+      </map-entry>
+      <map-entry>
+        <key>50</key>
+        <value>Wyoming</value>
+      </map-entry>
+    </map-entries>
+  </managed-bean>
+
+
+  <!--  managed beans for schedule examples -->
+  <managed-bean>
+  	<managed-bean-name>today</managed-bean-name>
+  	<managed-bean-class>java.util.Date</managed-bean-class>
+  	<managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  
+  <managed-bean>
+  	<managed-bean-name>scheduleModel1</managed-bean-name>
+  	<managed-bean-class>org.apache.myfaces.custom.schedule.model.SimpleScheduleModel</managed-bean-class>
+  	<managed-bean-scope>session</managed-bean-scope>
+  		<managed-property>
+  			<property-name>mode</property-name>
+  			<value>1</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>selectedDate</property-name>
+  			<value>#{today}</value>
+  		</managed-property>
+  </managed-bean>
+  
+  <managed-bean>
+    <managed-bean-name>scheduleHandler1</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.schedule.ScheduleExampleHandler</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel1}</value>
+    	</managed-property>
+  </managed-bean>
+  
+  <managed-bean>
+  	<managed-bean-name>addEntryHandler</managed-bean-name>
+  	<managed-bean-class>org.apache.myfaces.examples.schedule.AddEntryHandler</managed-bean-class>
+  	<managed-bean-scope>request</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel1}</value>
+    	</managed-property>
+  </managed-bean>
+  
+  <managed-bean>
+  	<managed-bean-name>scheduleModel2</managed-bean-name>
+  	<managed-bean-class>org.apache.myfaces.custom.schedule.model.SimpleScheduleModel</managed-bean-class>
+  	<managed-bean-scope>session</managed-bean-scope>
+  		<managed-property>
+  			<property-name>mode</property-name>
+  			<value>1</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>selectedDate</property-name>
+  			<value>#{today}</value>
+  		</managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>scheduleHandler2</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.schedule.ScheduleExampleHandler</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+  </managed-bean>
+  
+  <managed-bean>
+  	<managed-bean-name>scheduleSettings2</managed-bean-name>
+  	<managed-bean-class>org.apache.myfaces.examples.schedule.ScheduleSettings</managed-bean-class>
+  	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+  		<managed-property>
+  			<property-name>visibleStartHour</property-name>
+  			<value>8</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>visibleEndHour</property-name>
+  			<value>18</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>workingStartHour</property-name>
+  			<value>9</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>workingEndHour</property-name>
+  			<value>17</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>tooltip</property-name>
+  			<value>true</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>readonly</property-name>
+  			<value>false</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>theme</property-name>
+  			<value>default</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>headerDateFormat</property-name>
+  			<value>yyyy-MM-dd</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>compactWeekRowHeight</property-name>
+  			<value>200</value>
+  		</managed-property>
+  		<managed-property>
+  			<property-name>compactMonthRowHeight</property-name>
+  			<value>100</value>
+  		</managed-property>
+  </managed-bean>
+
+  <managed-bean>
+  	<managed-bean-name>scheduleThemeChoices</managed-bean-name>
+  	<managed-bean-class>java.util.TreeMap</managed-bean-class>
+  	<managed-bean-scope>application</managed-bean-scope>
+  	<map-entries>
+  		<map-entry>
+  			<key>default</key>
+  			<value>default</value>
+  		</map-entry>
+  		<map-entry>
+  			<key>evolution</key>
+  			<value>evolution</value>
+  		</map-entry>
+  		<map-entry>
+  			<key>outlookxp</key>
+  			<value>outlookxp</value>
+  		</map-entry>
+  	</map-entries>
+  </managed-bean>
+
+
+<!-- managed bean for graphicImageAjax-->
+
+	<managed-bean>
+		<managed-bean-name>graphicImageDynamicBean</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>graphicImageDynamicTextBean</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicTextBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+	<!--  manage bean for the selectManyPicklist component -->
+	<managed-bean>
+		<managed-bean-name>picklistBean</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.picklist.PicklistBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Managed beans for the scope shop  -->
+	<managed-bean>
+		<managed-bean-name>ScopeBean</managed-bean-name>
+		<managed-bean-class>
+			org.apache.myfaces.examples.scope.ScopeBean
+		</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+		<managed-property>
+			<property-name>firstname</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>lastname</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>street</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>number</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>country</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>selectedproduct1</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>selectedproduct2</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>selectedproduct3</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>selectedproduct4</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>selectedproduct5</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>zipcode</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+		<managed-property>
+			<property-name>city</property-name>
+			<property-class>java.lang.String</property-class>
+			<value />
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>catalog</managed-bean-name>
+		<managed-bean-class>
+			org.apache.myfaces.examples.scope.Catalog
+		</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+
+
+    <managed-bean>
+		<managed-bean-name>dateTimeConverterBean</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.dateTimeConverter.DateTimeConverterBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+
+	<!-- navigational rules for the schedule examples -->
+	<navigation-rule>
+		<from-view-id>/schedule.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>schedule1</from-outcome>
+			<to-view-id>/schedule/example1.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>schedule2</from-outcome>
+			<to-view-id>/schedule/example2.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>schedule3</from-outcome>
+			<to-view-id>/schedule/example3.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>schedule4</from-outcome>
+			<to-view-id>/schedule/example4.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/schedule/example2.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>add_entry</from-outcome>
+			<to-view-id>/schedule/addentry.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/schedule/addentry.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/schedule/example2.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/schedule/example2.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/schedule/addentry.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/schedule/example3.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>edit_settings</from-outcome>
+			<to-view-id>/schedule/editsettings.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/schedule/editsettings.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/schedule/example3.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/schedule/example3.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/schedule/editsettings.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+
+
+    <!-- navigational rules for the wizard -->
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_scope_shop</from-outcome>
+			<to-view-id>/scopeshop/page1.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshop/page1.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>go_next</from-outcome>
+			<to-view-id>/scopeshop/page2.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshop/page2.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>go_next</from-outcome>
+			<to-view-id>/scopeshop/page3.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>go_reset</from-outcome>
+			<to-view-id>/scopeshop/resetscope.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshop/page3.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>go_previous</from-outcome>
+			<to-view-id>/scopeshop/page2.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshop/*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_first</from-outcome>
+			<to-view-id>/scopeshop/page1.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>go_home</from-outcome>
+			<to-view-id>/home.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- navigational rules for the wizard end -->
+</faces-config>
