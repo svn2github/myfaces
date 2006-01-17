@@ -4,15 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
   <name>Tomahawk Examples</name>
-  <groupId>org.apache.myfaces</groupId>
-  <artifactId>tomahawk-examples</artifactId>
+  <groupId>org.apache.myfaces.tomahawk</groupId>
+  <artifactId>tomahawk-examples-project</artifactId>
   
   <parent>
-    <groupId>org.apache.myfaces</groupId>
-    <artifactId>myfaces-tomahawk</artifactId>
+    <groupId>org.apache.myfaces.tomahawk</groupId>
+    <artifactId>tomahawk-project</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
-
 
   <modules>
     <module>blank</module>
@@ -20,6 +19,15 @@
     <module>tiles</module>
     <module>wap</module>
   </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.myfaces.tomahawk</groupId>
+      <artifactId>tomahawk</artifactId>
+      <version>${version}</version>
+      <scope>compile</scope>
+    </dependency> 
+  </dependencies>
 
 </project>
 

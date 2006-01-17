@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.myfaces.tomahawk</groupId>
+  <artifactId>sandbox-project</artifactId>
+  <packaging>pom</packaging>
+  <name>MyFaces Sandbox</name>
+  <url>http://myfaces.apache.org</url>
+  <!-- TODO which url has sandbox? -->
+  <version>1.1.2-SNAPSHOT</version>	 
+  <description>
+    This is the MyFaces Sandbox Subproject Description [INSERT MORE STUFF HERE]
+  </description>
+
+  <parent>
+    <groupId>org.apache.myfaces.tomahawk</groupId>
+    <artifactId>tomahawk-project</artifactId>
+		<version>1.1.2-SNAPSHOT</version>	  
+  </parent>
+
+  <modules>
+    <module>core</module>
+    <module>examples</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/sandbox/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/sandbox/trunk</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/myfaces/sandbox/trunk</url>
+  </scm>
+
+</project>

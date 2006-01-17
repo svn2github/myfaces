@@ -21,11 +21,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.myfaces</groupId>
-    <artifactId>myfaces-sandbox</artifactId>
+    <groupId>org.apache.myfaces.tomahawk</groupId>
+    <artifactId>sandbox-project</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
-  <artifactId>sandbox-examples</artifactId>
+  <artifactId>tomahawk-sandbox-examples</artifactId>
   <packaging>war</packaging>
   <name>MyFaces Examples: Sandbox</name>
   <build>
@@ -34,8 +34,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.myfaces</groupId>
-      <artifactId>sandbox</artifactId>
+      <groupId>org.apache.myfaces.tomahawk</groupId>
+      <artifactId>tomahawk-sandbox</artifactId>
       <version>${version}</version>
       <scope>compile</scope>
     </dependency>

@@ -21,8 +21,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.myfaces</groupId>
-    <artifactId>tomahawk-examples</artifactId>
+    <groupId>org.apache.myfaces.tomahawk</groupId>
+    <artifactId>tomahawk-examples-project</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
   <artifactId>myfaces-example-wap</artifactId>
@@ -31,14 +31,5 @@
   <build>
     <finalName>myfaces-example-wap</finalName>
   </build>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.myfaces</groupId>
-      <artifactId>tomahawk</artifactId>
-      <version>${version}</version>
-      <scope>compile</scope>
-    </dependency> 
-  </dependencies>
 
 </project>
