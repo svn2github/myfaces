@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!--
+ * Copyright 2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd" [
+
+<!--
+===========================================================================
+Shared Entities.  These entities already exist in the impl and tomahawk
+packages.  They are reproduced here so the TLD can function as it would if
+the component were added to the tomahawk project.  Developers should not be
+changing these.  All new entities for sandbox components should be added to
+the entities directory.
+===========================================================================
+-->
+
+<!ENTITY display_value_only_attributes  SYSTEM "entities-share/display_value_only_attributes.xml">
+<!ENTITY ext_forceId_attribute          SYSTEM "entities-share/ext_forceId_attribute.xml">
+<!ENTITY ext_ajax_attributes            SYSTEM "entities-share/ext_ajax_attributes.xml">
+
+<!ENTITY faces_binding_attribute        SYSTEM "entities-share/faces_binding_attribute.xml">
+<!ENTITY faces_id_optional_attribute    SYSTEM "entities-share/faces_id_optional_attribute.xml">
+<!ENTITY faces_id_required_attribute    SYSTEM "entities-share/faces_id_required_attribute.xml">
+<!ENTITY faces_rendered_attribute       SYSTEM "entities-share/faces_rendered_attribute.xml">
+
+<!ENTITY html_alt_attribute             SYSTEM "entities-share/html_attributes/alt.xml">
+<!ENTITY html_align_attribute           SYSTEM "entities-share/html_attributes/align.xml">
+<!ENTITY html_target_attribute          SYSTEM "entities-share/html_attributes/target.xml">
+<!ENTITY html_accesskey_attribute       SYSTEM "entities-share/html_attributes/accesskey.xml">
+<!ENTITY html_anchor_attributes         SYSTEM "entities-share/html_anchor_attributes.xml">
+<!ENTITY html_bgcolor_attribute         SYSTEM "entities-share/html_attributes/bgcolor.xml">
+<!ENTITY html_border_attribute          SYSTEM "entities-share/html_attributes/border.xml">
+<!ENTITY html_button_attributes         SYSTEM "entities-share/html_button_attributes.xml">
+<!ENTITY html_datafld_datasrc_dataformatas_attributes   SYSTEM "entities-share/html_attributes/datafld_datasrc_dataformatas.xml">
+<!ENTITY html_disabled_attribute        SYSTEM "entities-share/html_attributes/disabled.xml">
+<!ENTITY html_event_handler_attributes  SYSTEM "entities-share/html_event_handler_attributes.xml">
+<!ENTITY html_focus_blur_attributes     SYSTEM "entities-share/html_attributes/focus_blur.xml">
+<!ENTITY html_form_attributes           SYSTEM "entities-share/html_form_attributes.xml">
+<!ENTITY html_img_attributes            SYSTEM "entities-share/html_img_attributes.xml">
+<!ENTITY spec_img_attributes            SYSTEM "entities-share/spec_img_attributes.xml">
+<!ENTITY html_input_attributes          SYSTEM "entities-share/html_input_attributes.xml">
+<!ENTITY html_input_help_attributes     SYSTEM "entities-share/html_input_help_attributes.xml">
+<!ENTITY html_input_checkbox_attributes SYSTEM "entities-share/html_input_checkbox_attributes.xml">
+<!ENTITY html_input_radio_attributes    SYSTEM "entities-share/html_input_radio_attributes.xml">
+<!ENTITY html_label_attributes          SYSTEM "entities-share/html_label_attributes.xml">
+<!ENTITY html_onchange_attribute        SYSTEM "entities-share/html_attributes/onchange.xml">
+<!ENTITY html_onselect_attribute        SYSTEM "entities-share/html_attributes/onselect.xml">
+<!ENTITY html_readonly_attribute        SYSTEM "entities-share/html_attributes/readonly.xml">
+<!ENTITY html_tabindex_attribute        SYSTEM "entities-share/html_attributes/tabindex.xml">
+<!ENTITY html_select_attributes         SYSTEM "entities-share/html_select_attributes.xml">
+<!ENTITY html_table_attributes          SYSTEM "entities-share/html_table_attributes.xml">
+<!ENTITY html_textarea_attributes       SYSTEM "entities-share/html_textarea_attributes.xml">
+<!ENTITY html_universal_attributes      SYSTEM "entities-share/html_universal_attributes.xml">
+<!ENTITY ui_column_attributes           SYSTEM "entities-share/ui_column_attributes.xml">
+<!ENTITY ui_command_attributes          SYSTEM "entities-share/ui_command_attributes.xml">
+<!ENTITY ui_component_attributes        SYSTEM "entities-share/ui_component_attributes.xml">
+<!ENTITY ui_form_attributes             SYSTEM "entities-share/ui_form_attributes.xml">
+<!ENTITY ui_graphic_attributes          SYSTEM "entities-share/ui_graphic_attributes.xml">
+<!ENTITY ui_input_attributes            SYSTEM "entities-share/ui_input_attributes.xml">
+<!ENTITY ui_message_attributes          SYSTEM "entities-share/ui_message_attributes.xml">
+<!ENTITY ui_messages_attributes         SYSTEM "entities-share/ui_messages_attributes.xml">
+<!ENTITY ui_output_attributes           SYSTEM "entities-share/ui_output_attributes.xml">
+<!ENTITY ui_panel_attributes            SYSTEM "entities-share/ui_panel_attributes.xml">
+<!ENTITY ui_parameter_attributes        SYSTEM "entities-share/ui_parameter_attributes.xml">
+<!ENTITY ui_select_boolean_attributes   SYSTEM "entities-share/ui_select_boolean_attributes.xml">
+<!ENTITY ui_select_item_attributes      SYSTEM "entities-share/ui_select_item_attributes.xml">
+<!ENTITY ui_select_items_attributes     SYSTEM "entities-share/ui_select_items_attributes.xml">
+<!ENTITY ui_select_many_attributes      SYSTEM "entities-share/ui_select_many_attributes.xml">
+<!ENTITY ui_select_one_attributes       SYSTEM "entities-share/ui_select_one_attributes.xml">
+<!ENTITY ui_table_renderer_attributes   SYSTEM "entities-share/ui_table_renderer_attributes.xml">
+<!ENTITY user_role_attributes           SYSTEM "entities-share/user_role_attributes.xml">
+<!ENTITY standard_command_button_attributes  SYSTEM "entities-share/standard_command_button_attributes.xml">
+<!ENTITY standard_command_link_attributes    SYSTEM "entities-share/standard_command_link_attributes.xml">
+<!ENTITY standard_data_table_attributes      SYSTEM "entities-share/standard_data_table_attributes.xml">
+<!ENTITY extended_data_table_attributes      SYSTEM "entities-share/extended_data_table_attributes.xml">
+<!ENTITY standard_input_text_attributes      SYSTEM "entities-share/standard_input_text_attributes.xml">
+<!ENTITY standard_input_textarea_attributes  SYSTEM "entities-share/standard_input_textarea_attributes.xml">
+<!ENTITY standard_message_attributes         SYSTEM "entities-share/standard_message_attributes.xml">
+<!ENTITY standard_messages_attributes        SYSTEM "entities-share/standard_messages_attributes.xml">
+<!ENTITY standard_output_label_attributes    SYSTEM "entities-share/standard_output_label_attributes.xml">
+<!ENTITY standard_output_text_attributes     SYSTEM "entities-share/standard_output_text_attributes.xml">
+<!ENTITY standard_panel_grid_attributes     SYSTEM "entities-share/standard_panel_grid_attributes.xml">
+<!ENTITY standard_panel_group_attributes     SYSTEM "entities-share/standard_panel_group_attributes.xml">
+<!ENTITY standard_select_boolean_checkbox_attributes  SYSTEM "entities-share/standard_select_boolean_checkbox_attributes.xml">
+<!ENTITY standard_select_many_checkbox_attributes SYSTEM "entities-share/standard_select_many_checkbox_attributes.xml">
+<!ENTITY standard_select_many_listbox_attributes SYSTEM "entities-share/standard_select_many_listbox_attributes.xml">
+<!ENTITY standard_select_many_menu_attributes SYSTEM "entities-share/standard_select_many_menu_attributes.xml">
+<!ENTITY standard_select_one_listbox_attributes SYSTEM "entities-share/standard_select_one_listbox_attributes.xml">
+<!ENTITY standard_select_one_menu_attributes SYSTEM "entities-share/standard_select_one_menu_attributes.xml">
+<!ENTITY standard_select_one_radio_attributes SYSTEM "entities-share/standard_select_one_radio_attributes.xml">
+<!ENTITY alt_location_attributes             SYSTEM "entities-share/alt_location_attributes.xml">
+
+<!--
+===========================================================================
+Sandbox-related entities.
+===========================================================================
+-->
+<!ENTITY html_input_suggest_attributes       SYSTEM "entities/html_input_suggest_attributes.xml">
+<!ENTITY ui_schedule_attributes       SYSTEM "entities/ui_schedule_attributes.xml">
+<!ENTITY html_schedule_attributes       SYSTEM "entities/html_schedule_attributes.xml">
+<!ENTITY html_planner_attributes       SYSTEM "entities/html_planner_attributes.xml">
+<!ENTITY html_focus_attributes       SYSTEM "entities/html_focus_attributes.xml">
+<!ENTITY validator_compare_to_attributes       SYSTEM "entities/validator_compare_to_attributes.xml">
+]>
+
+<taglib>
+
+    <tlib-version>1.0.10</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>s</short-name>
+    <uri>http://myfaces.apache.org/sandbox</uri>
+    <description>
+        Enhanced standard JSP actions and custom MyFaces actions.
+    </description>
+
+    <!-- inputSuggest -->
+    <tag>
+        <name>inputSuggest</name>
+        <tag-class>org.apache.myfaces.custom.suggest.InputSuggestTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Provides an input textbox with "suggest" functionality.
+        </description>
+        &standard_input_text_attributes;
+        &ext_forceId_attribute;
+        &alt_location_attributes;
+        &html_input_suggest_attributes;
+    </tag>
+
+
+     <!-- planner -->
+     <tag>
+       <name>planner</name>
+       <tag-class>org.apache.myfaces.custom.schedule.PlannerTag</tag-class>
+       <body-content>empty</body-content>
+       <display-name>Planner component</display-name>
+       <description>
+           A meeting planner component, similar to the ones found in Outlook or Evolution.
+       </description>
+       &ui_component_attributes;
+       &ui_schedule_attributes;
+       &html_planner_attributes;
+    </tag>
+
+
+     <!-- schedule -->
+     <tag>
+       <name>schedule</name>
+       <tag-class>org.apache.myfaces.custom.schedule.ScheduleTag</tag-class>
+       <body-content>empty</body-content>
+       <display-name>Schedule component</display-name>
+       <description>
+          A schedule component similar to the ones found in Outlook or Evolution
+       </description>
+       &ui_command_attributes;
+       &ui_schedule_attributes;
+       &html_schedule_attributes;
+    </tag>
+
+    <!-- inputsuggestajax -->
+    <tag>
+        <name>inputSuggestAjax</name>
+        <tag-class>org.apache.myfaces.custom.inputsuggestajax.InputSuggestAjaxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Provides an input textbox with "suggest" functionality, using a remote connection to the server.
+        The difference to inputSuggest is that a custom drop down is rendered.
+        </description>
+        &standard_input_text_attributes;
+        &ext_forceId_attribute;
+        &alt_location_attributes;
+        &html_input_suggest_attributes;
+        &display_value_only_attributes;
+        &user_role_attributes;
+
+        <attribute>
+            <name>suggestedItemsMethod</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Reference to the method which returns the suggested items</description>
+        </attribute>
+
+        <attribute>
+            <name>maxSuggestedItems</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>optional attribute to identify the max size of suggested Values</description>
+        </attribute>
+
+        <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description></description>
+        </attribute>
+
+        <attribute>
+            <name>popupStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Style for the window with a suggested list of items;pop up for each incoming Ajax response </description>
+        </attribute>
+
+        <attribute>
+            <name>popupStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response </description>
+        </attribute>
+
+        <attribute>
+            <name>popupId</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Id for the pop up window</description>
+        </attribute>
+
+        <attribute>
+            <name>listId</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Id for the unordered list included in the pop up window</description>
+        </attribute>
+
+        <attribute>
+            <name>listStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Style for the unordered list included in the pop up window</description>
+        </attribute>
+
+        <attribute>
+            <name>listStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>StyleClass for the unordered list included in the pop up window</description>
+        </attribute>
+
+        <attribute>
+            <name>listItemStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Id for the pop up window</description>
+        </attribute>
+
+        <attribute>
+            <name>listItemStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Id for the pop up window</description>
+        </attribute>
+
+
+
+    </tag>
+
+   <!-- focus -->
+   <tag>
+      <name>focus</name>
+      <tag-class>org.apache.myfaces.custom.focus.HtmlFocusTag</tag-class>
+       &ui_component_attributes;
+       &html_focus_attributes;
+    </tag>
+
+
+    <!-- form -->
+    <tag>
+        <name>form</name>
+        <tag-class>org.apache.myfaces.custom.form.HtmlFormTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Renders a HTML form element which allow defining a different scheme, servername or port for the action url
+            to which the form is submited
+        </description>
+        &ui_form_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_form_attributes;
+        <attribute>
+            <name>scheme</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the url scheme for the action attribute</description>
+        </attribute>
+        <attribute>
+            <name>serverName</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the url server name or ip address for the action attribute</description>
+        </attribute>
+        <attribute>
+            <name>port</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute can be used to set the port for the action attribute</description>
+        </attribute>
+    </tag>
+
+    <!-- Validators -->
+    <!-- Validator for Url -->
+    <tag>
+       <name>validateUrl</name>
+       <tag-class>org.apache.myfaces.custom.urlvalidator.ValidateUrlTag</tag-class>
+       <body-content>JSP</body-content>
+       <description>
+             A custom validator for url format, based upons Jakarta Commons.
+        </description>
+    </tag>
+
+    <!-- Validator for isbn codes -->
+    <tag>
+        <name>validateISBN</name>
+        <tag-class>org.apache.myfaces.custom.isbnvalidator.ValidateISBNTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            A custom validator for isbn codes, based upons Jakarta Commons.
+        </description>
+    </tag>
+
+    <!-- Validator for comparing two component values -->
+    <tag>
+        <name>validateCompareTo</name>
+        <tag-class>org.apache.myfaces.custom.comparetovalidator.ValidateCompareToTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Validation by comparing the value of this component with another component.
+        </description>
+        &validator_compare_to_attributes;
+    </tag>
+
+    <!-- autoUpdateDataTable -->
+    <tag>
+        <name>autoUpdateDataTable</name>
+        <tag-class>org.apache.myfaces.custom.autoupdatedatatable.AutoUpdateDataTableTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extended data_table that adds some additional features to the standard
+            data_table action: see attribute descriptions for preserveDataModel,
+            sortColumn, sortAscending and preserveSort.
+        </description>
+
+        &standard_data_table_attributes;
+        <!-- MyFaces extensions -->
+        &extended_data_table_attributes;
+        &ext_forceId_attribute;
+        &user_role_attributes;
+
+        <attribute>
+            <name>frequency</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines in seconds the interval of reloads. if no value is specified
+                2 seconds will be default.
+            </description>
+        </attribute>
+        <attribute>
+            <name>onSuccess</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Define javascript function to call after successful refresh.
+            </description>
+        </attribute>
+     </tag>
+
+    <!-- accordionPanel -->
+    <tag>
+        <name>accordionPanel</name>
+        <tag-class>org.apache.myfaces.custom.accordion.HtmlAccordionPanelTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            A group of panels, which can be opened and closed.
+            See attribute layout for further description on how opening and closing works.
+
+            Extends standard panelGroup by user role support.
+        </description>
+        &standard_panel_group_attributes;
+        &user_role_attributes;
+        <!-- MyFaces extensions -->
+        &ext_forceId_attribute;
+        &display_value_only_attributes;
+
+        <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the layout of this accordionPanel.
+                If you set this to 'accordion', opening a panel
+                will close all other panels.
+                If you set this to 'toggling', opening a panel
+                doesn't affect the state of the other panels.
+                You can close a panel by clicking on the header
+                of this panel a second time.
+            </description>
+        </attribute>
+        <attribute>
+            <name>expandedBackColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the background color for expanded state.
+            </description>
+        </attribute>
+        <attribute>
+            <name>expandedTextColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the text color for expanded state.
+            </description>
+        </attribute>
+        <attribute>
+            <name>expandedFontWeight</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the font weight for expanded state.
+            </description>
+        </attribute>
+        <attribute>
+            <name>collapsedBackColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the background color for collapsed state.
+            </description>
+        </attribute>
+        <attribute>
+            <name>collapsedTextColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the text color for collapsed state.
+            </description>
+        </attribute>
+        <attribute>
+            <name>collapsedFontWeight</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the font weight for collapsed state.
+            </description>
+        </attribute>
+        <attribute>
+            <name>hoverBackColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the background color on hover.
+            </description>
+        </attribute>
+        <attribute>
+            <name>hoverTextColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the text color on hover.
+            </description>
+        </attribute>
+        <attribute>
+            <name>borderColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Defines the color of the border.
+            </description>
+        </attribute>
+     </tag>
+
+    <!-- Converter for Boolean values -->
+    <tag>
+        <name>convertBoolean</name>
+        <tag-class>org.apache.myfaces.custom.convertboolean.ConvertBooleanTag</tag-class>
+        <display-name>Boolean Converter</display-name>
+        <description>
+            Converts a boolean to custom format (yes/no), (1/0), etc.
+        </description>
+
+        <attribute>
+            <name>trueValue</name>
+            <required>false</required>
+            <description>Value representing a boolean true, e.g. TRUE, yes, 1, etc.</description>
+        </attribute>
+
+        <attribute>
+            <name>falseValue</name>
+            <required>false</required>
+            <description>Value representing a boolean false, e.g. FALSE, no, 0, etc.</description>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>convertDateTime</name>
+        <tag-class>org.apache.myfaces.custom.convertDateTime.ConvertDateTimeTag</tag-class>
+        <display-name>DateTime Converter</display-name>
+        <description>
+            Convert date time using normal system timezone like it should
+        </description>
+
+      <attribute>
+            <name>dateStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>default|short|medium|long|full</description>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>locale</description>
+        </attribute>
+        <attribute>
+            <name>pattern</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Custom formatting pattern</description>
+        </attribute>
+        <attribute>
+            <name>timeStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>default|short|medium|long|full</description>
+        </attribute>
+        <attribute>
+            <name>timeZone</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>timeZone</description>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>date|time|both</description>
+        </attribute>
+    </tag>
+
+    <!-- fieldset -->
+    <tag>
+        <name>fieldset</name>
+        <tag-class>org.apache.myfaces.custom.fieldset.FieldsetTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>Renders an HTML Fieldset</description>
+        &ui_component_attributes;
+        &ext_forceId_attribute;
+        &user_role_attributes;
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The style to use for this div.
+            </description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The class to use for this div.
+            </description>
+        </attribute>
+        <attribute>
+            <name>legend</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The fieldset's legend.
+            </description>
+        </attribute>
+    </tag>
+
+     <!-- graphicImage -->
+    <tag>
+        <name>graphicImageDynamic</name>
+        <tag-class>org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamicTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard graphicImage.
+        </description>
+        &ui_component_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_img_attributes;
+        &spec_img_attributes;
+        &user_role_attributes;
+        &ext_forceId_attribute;
+
+        <attribute>
+            <name>imageRendererClass</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>The class which implements 
+            org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer.
+            The image renderer is responsible for loading the image.
+            The class must have a default constructor.
+            Any request scoped attribute or managed bean is not available when 
+            this image renderer is instantiated and used.
+            The image renderer must render the binary data for the image by using the 
+            parameters passed by nested f:param elements 
+            and/or using session or application scoped beans</description>
+        </attribute>
+
+    </tag>
+
+    <!--  effect -->
+    <tag>
+        <name>effect</name>
+        <tag-class>
+            org.apache.myfaces.custom.effect.EffectTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>provides javascript effects
+            which are from the script.aculo.us library
+            and from the fat fade anything technique library
+        </description>
+
+        &faces_id_required_attribute;
+        &faces_rendered_attribute;
+
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>fade</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>squish</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>puff</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>scale</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+        <attribute>
+            <name>scaleSize</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+        </attribute>
+
+        <attribute>
+            <name>pulsate</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>fadeColor</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+    
+    <!-- selectManyPicklist -->
+    <tag>
+       <name>selectManyPicklist</name>
+       <tag-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklistTag</tag-class>
+       <body-content>JSP</body-content>
+       <display-name>selecManyPicklist component</display-name>
+       <description>
+          A picklist component that allows to select items from one list to another
+       </description>
+       &standard_select_many_listbox_attributes;
+       &user_role_attributes;
+    </tag>
+
+     <!-- selectManyCheckboxAjax -->
+    <tag>
+        <name>selectManyCheckboxAjax</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlSelectManyCheckboxAjaxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard selectManyCheckbox allowing for dynamic ajax submitting.
+        </description>
+        &standard_select_many_checkbox_attributes;
+        &ext_forceId_attribute;
+        &ext_ajax_attributes;
+    </tag>
+
+    <tag>
+        <name>selectOneRadioAjax</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlSelectOneRadioAjaxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard selectOneRadio allowing for dynamic ajax submitting.
+        </description>
+        &standard_select_many_checkbox_attributes;
+        &ext_forceId_attribute;
+        &ext_ajax_attributes;
+    </tag>
+
+    <tag>
+        <name>inputTextAjax</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlInputTextAjaxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard inputText allowing for dynamic ajax submitting.
+        </description>
+        &standard_input_text_attributes;
+        &ext_forceId_attribute;
+        &ext_ajax_attributes;
+        <attribute>
+            <name>showOkButton</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Whether to show an ok button before sending update.</description>
+        </attribute>
+        <attribute>
+            <name>okText</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Test for button</description>
+        </attribute>
+        <attribute>
+            <name>showCancelButton</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Whether to show cancel button</description>
+        </attribute>
+        <attribute>
+            <name>cancelText</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Text for cancel</description>
+        </attribute>
+    </tag>
+
+     <tag>
+        <name>selectBooleanCheckboxAjax</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjaxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard selectBooleanCheckbox by user role support.
+        </description>
+        &standard_select_boolean_checkbox_attributes;
+        &user_role_attributes;
+        &ext_forceId_attribute;
+        &display_value_only_attributes;
+        &ext_ajax_attributes;
+        <attribute>
+            <name>onImage</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Image to show instead of checkox when boolean value is true</description>
+        </attribute>
+        <attribute>
+            <name>offImage</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Image to show instead of checkox when boolean value is false</description>
+        </attribute>
+    </tag>
+     <tag>
+        <name>selectBooleanCheckboxAjax</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjaxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends standard selectBooleanCheckbox by user role support.
+        </description>
+        &standard_select_boolean_checkbox_attributes;
+        &user_role_attributes;
+        &ext_forceId_attribute;
+        &display_value_only_attributes;
+        &ext_ajax_attributes;
+        <attribute>
+            <name>onImage</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Image to show instead of checkox when boolean value is true</description>
+        </attribute>
+        <attribute>
+            <name>offImage</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Image to show instead of checkox when boolean value is false</description>
+        </attribute>
+    </tag>
+
+
+    <!-- message, special for ajax stuff to enable client side message updates, could roll this into tomahawk at some point -->
+    <tag>
+        <name>message</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlMessageTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            MyFaces extension to the standard messages tag: see summaryDetailSeparator attribute
+        </description>
+        &standard_message_attributes;
+        <!-- MyFaces extensions -->
+        &user_role_attributes;
+        &ext_forceId_attribute;
+        <attribute>
+            <name>summaryFormat</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If present, instead of rendering the message summary, a MessageFormat with this
+                attribute as pattern is created. The format method of this MessageFormat is
+                called with the message summary as the first argument and the label of the
+                associated component (if any) as the second argument.
+                Example: "{0}:"
+            </description>
+        </attribute>
+        <attribute>
+            <name>detailFormat</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If present, instead of rendering the message detail, a MessageFormat with this
+                attribute as pattern is created. The format method of this MessageFormat is
+                called with the message detail as the first argument and the label of the
+                associated component (if any) as the second argument.
+                Example: "The input in field {1} is wrong: {0}"
+            </description>
+        </attribute>
+        <attribute>
+            <name>replaceIdWithLabel</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If present, all occurrences of the id of the component for which the message
+                is rendered will be replaced by the label. Standard is true for the extended
+                message renderer.
+            </description>
+        </attribute>
+    </tag>
+
+</taglib>

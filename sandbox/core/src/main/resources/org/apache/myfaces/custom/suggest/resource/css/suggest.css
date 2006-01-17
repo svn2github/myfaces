@@ -1,0 +1,13 @@
+.ACdiv {
+    height: 15px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    vertical-align: middle;
+    padding-left: 1px;
+    position: relative;
+}
+
+.AChighlighted {
+    color: white;
+    background-color: #3366CC;
+}

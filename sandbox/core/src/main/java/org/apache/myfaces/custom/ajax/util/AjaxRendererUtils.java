@@ -1,0 +1,348 @@
+/*
+ * Copyright 2004-2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.myfaces.custom.ajax.util;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.custom.ajax.AjaxCallbacks;
+import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
+import org.apache.myfaces.custom.util.ComponentUtils;
+import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlMessageRendererBase;
+
+/**
+ * @author Travis Reeder (latest modification by $Author: mmarinschek $)
+ * @version $Revision: 290397 $ $Date: 2005-09-20 10:35:09 +0200 (Di, 20 Sep 2005) $
+ */
+public final class AjaxRendererUtils
+{
+	/**
+	 * util class.
+	 *
+	 */
+	private AjaxRendererUtils(){
+		//util clazz
+	}
+	
+    private static final Log log = LogFactory.getLog(AjaxRendererUtils.class);
+    public static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.custom.inputAjax.JAVASCRIPT_ENCODED";
+    public static final String JS_MYFACES_NAMESPACE = "_MyFaces_inputAjax_";
+
+    public static void addPrototypeScript(FacesContext context, UIComponent component, AddResource addResource)
+    {
+        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        if (javascriptLocation != null)
+        {
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
+        }
+        else
+        {
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
+        }
+    }
+
+    public static void writeAjaxScript(FacesContext context, ResponseWriter out, AjaxCallbacks component)
+            throws IOException
+    {
+        writeAjaxScript(context, out, component, null);
+    }
+
+    /**
+     * Not really liking having the extraParams thing, seems to inflexible for altering other things
+     *
+     * @param context
+     * @param out
+     * @param component
+     * @param extraParams
+     * @throws IOException
+     */
+    public static void writeAjaxScript(FacesContext context, ResponseWriter out, AjaxCallbacks component, String extraParams) throws IOException
+    {
+        UIComponent uiComponent = (UIComponent) component;
+        //String clientId = uiComponent.getClientId(context);
+        String viewId = context.getViewRoot().getViewId();
+        ViewHandler viewHandler = context.getApplication().getViewHandler();
+        String ajaxURL = viewHandler.getActionURL(context, viewId);
+
+
+        String jsNameSpace = uiComponent.getId() + JS_MYFACES_NAMESPACE;
+
+        out.startElement(HTML.SCRIPT_ELEM, null);
+        out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+
+        // todo: only namespace the things that are specific to the component and only output those a second time, use comment below to limit
+        // // check to see if javascript has already been written
+
+        if (!context.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
+        {
+            // output global functions
+            // utility functions todo: these should be part of a standard js include
+            // clear a field
+            StringBuffer buff = new StringBuffer();
+            buff.append("function ").append(JS_MYFACES_NAMESPACE).append("clearById(elname){\n")
+                    .append("    var el = document.getElementById(elname);\n")
+                    .append("    el.value = \"\";\n")
+                    .append("}\n");
+            out.writeText(buff.toString(), null);
+        }
+
+        out.writeText("var " + jsNameSpace + "ajaxUrl = '" + ajaxURL + "';\n", null);
+        if (component.getOnSuccess() != null)
+            out.writeText("var " + jsNameSpace + "onSuccessFunction = " + component.getOnSuccess() + ";\n", null);
+        if (component.getOnFailure() != null)
+            out.writeText("var " + jsNameSpace + "onFailureFunction = " + component.getOnFailure() + ";\n", null);
+        if (component.getOnStart() != null)
+            out.writeText("var " + jsNameSpace + "onStartFunction = " + component.getOnStart() + ";\n", null);
+
+        StringBuffer buff = new StringBuffer();
+        buff.append("\n")
+                .append("function ").append(jsNameSpace).append("notifyElement(originalRequest, successful)\n")
+                .append("{\n")
+                .append("    //alert(\"originalRequest: \" + originalRequest + \" - \" + successful + \"\\ntext: \" + originalRequest.responseText);\n")
+                .append("    var errorArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"error\");\n")
+                .append("    if(errorArray && errorArray.length > 0){\n")
+                        // could easily loop this and handle more than one error at a time
+                .append("        var myObError = errorArray[0];\n")
+                .append("        var errorClientId = myObError.getAttribute(\"elname\");\n")
+                .append("        var errorSeverity = myObError.getAttribute(\"severity\");\n")
+                .append("        var errorSummary = myObError.getAttribute(\"summary\");\n")
+                .append("        var errorDetail = null;")
+                .append("        var errorDetailElements = myObError.getElementsByTagName(\"detail\");\n")
+                .append("        if(errorDetailElements) errorDetail = errorDetailElements[0].text;")
+                .append("        var style = myObError.getAttribute(\"style\");\n")
+                .append("        var styleClass = myObError.getAttribute(\"styleClass\");\n")
+                .append("        ")
+                .append(jsNameSpace).append("displayError(errorClientId, errorSeverity, errorSummary, errorDetail, styleClass, style);\n")
+                .append("    }\n")
+                .append("    var myObElementArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"elementUpdated\");\n")
+                .append("    if(myObElementArray && myObElementArray.length > 0){")
+                .append("       var myObElement = myObElementArray[0];\n")
+                .append("       var elname = myObElement.getAttribute(\"elname\");\n")
+                .append("       var elvalue = myObElement.getAttribute(\"elvalue\");\n")
+                .append("       if (successful)\n")
+                .append("       {\n");
+        if (component.getOnSuccess() != null)
+        {
+            buff.append("        ").append(jsNameSpace).append("onSuccessFunction(elname, elvalue);\n");
+        }
+        buff.append("        ").append(jsNameSpace).append("clearError(elname);\n");
+        buff.append("    }\n")
+                .append("        else\n")
+                .append("        {\n");
+        if (component.getOnFailure() != null)
+            buff.append("        ").append(jsNameSpace).append("onFailureFunction(elname, elvalue);\n");
+        buff.append("        }\n").append("     }\n").append("}\n");
+
+        // displayError function shows any errors sent back
+        buff.append("function ").append(jsNameSpace).append("displayError(elname, severity, summary, detail, styleClass, style){\n")
+                .append("    var msgSpan = document.getElementById(\"msgFor_\" + elname);\n")
+                .append("    if(msgSpan){\n")
+                .append("        var summaryAndDetail = summary;")
+                .append("        if(detail) summaryAndDetail += \": \" + detail;") // be nice to make the details in a tooltip
+                .append("        msgSpan.innerHTML = summaryAndDetail;\n")
+                .append("        if(styleClass) msgSpan.className = styleClass;\n")
+                        //.append("        if(style) msgSpan.style = style;") // guess you can't swap out the entire style like this
+                .append("    }\n")
+                .append("}\n");
+        // clearError function to remove error display if there was one previously
+        buff.append("function ").append(jsNameSpace).append("clearError(elname){\n")
+                .append("    var msgSpan = document.getElementById(\"msgFor_\" + elname);\n")
+                .append("    if(msgSpan){\n")
+                .append("        msgSpan.innerHTML = \"\";\n")
+                .append("    }\n")
+                .append("}\n");
+
+        buff.append("function ").append(jsNameSpace)
+                .append("notifyElementFailure(originalRequest){\n")
+                .append("    ").append(jsNameSpace)
+                .append("notifyElement(originalRequest, false);\n" + "}\n");
+
+        buff.append("function ").append(jsNameSpace)
+                .append("notifyElementSuccess(originalRequest){\n")
+                .append("    ").append(jsNameSpace)
+                .append("notifyElement(originalRequest, true);\n");
+        buff.append("}\n")
+                .append("function ").append(jsNameSpace)
+                .append("complete(originalRequest){\n")
+                        // todo: allow for an onComplete attribute
+                .append("}\n");
+        // a function that takes an element id
+        buff.append("function ").append(jsNameSpace).append("ajaxSubmit1(elname){\n")
+                .append("    var el = document.getElementById(elname);\n")
+                .append("    var elvalue = el.value;\n")
+                .append("    ")
+                .append(jsNameSpace)
+                .append("ajaxSubmit(elname, elvalue, el);\n")
+                .append("}\n");
+        // a function that can take the actual element for things like HtmlSelectMany
+        buff.append("function ").append(jsNameSpace).append("ajaxSubmit2(el, elname){\n")
+                .append("    var elvalue = el.value;\n")
+                .append("    ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, el);\n")
+                .append("}\n");
+
+        // and now the actual function that will send the request
+        buff.append("function ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, el){\n");
+        if (component.getOnStart() != null)
+            buff.append("    ").append(jsNameSpace).append("onStartFunction(elname, elvalue);\n");
+        buff.append("    var pars = \"affectedAjaxComponent=\" + elname + \"&elname=\" + elname + \"&elvalue=\" + elvalue + \"");
+        buff.append("&\" + elname + \"=\" + elvalue + \"");
+        if (extraParams != null)
+        {
+            buff.append(extraParams);
+        }
+        if (context.getApplication().getStateManager().isSavingStateInClient(context))
+        {
+            buff.append("&jsf_tree_64=\"+encodeURIComponent(document.getElementById(\"jsf_tree_64\").value)+\"&jsf_state_64=\"+encodeURIComponent(document.getElementById(\"jsf_state_64\").value)+\"&jsf_viewid=\"+encodeURIComponent(document.getElementById(\"jsf_viewid\").value)+\"");
+        }
+        buff.append("\";\n");
+        buff.append("    var " + "_ajaxRequest = new Ajax.Request(\n")
+                .append("    ").append(jsNameSpace).append("ajaxUrl,\n")
+                .append("    {method: 'post'" + ", parameters: pars");
+        buff.append(", onComplete: ").append(jsNameSpace).append("complete");
+        buff.append(", onSuccess: ").append(jsNameSpace).append("notifyElementSuccess");
+        buff.append(", onFailure: ").append(jsNameSpace).append("notifyElementFailure");
+        buff.append("} \n" +
+                "            );\n" +
+                "}");
+
+        out.writeText(buff.toString(), null);
+
+        out.endElement(HTML.SCRIPT_ELEM);
+
+
+        context.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
+    }
+
+
+    public static void encodeAjax(FacesContext context, UIComponent component)
+            throws IOException
+    {
+
+        encodeAjax(context, component, null);
+    }
+
+    /**
+     * Outputs elementUpdate elements with the client id and value.
+     * Also outputs error elements.
+     *
+     * @param context
+     * @param component
+     * @param extraReturnAttributes
+     * @throws IOException
+     */
+    public static void encodeAjax(FacesContext context, UIComponent component, Map extraReturnAttributes) throws IOException
+    {
+        String clientId = component.getClientId(context);
+        Object responseOb = context.getExternalContext().getResponse();
+        if (responseOb instanceof HttpServletResponse)
+        {
+            HttpServletResponse response = (HttpServletResponse) responseOb;
+            //response.setContentType("application/xml");
+            response.reset();
+            //response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/xml");
+
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+            StringBuffer buff = new StringBuffer();
+            buff.append("<?xml version=\"1.0\"?>");
+            buff.append("<response>");
+            // send error messages
+            boolean hasErrorMessages = false;
+            Iterator iter = context.getMessages(clientId);
+            while (iter.hasNext())
+            {
+
+                FacesMessage msg = (FacesMessage) iter.next();
+                String style = "";
+                String styleClass = "";
+
+                String msgForId = "msgFor_" + clientId;
+                System.out.println("Looking for component: " + msgForId);
+                UIComponent msgComponent = ComponentUtils.findComponent(context, context.getViewRoot(), msgForId);
+                if (msgComponent != null)
+                {
+                    System.out.println("Component found");
+                    // then send to update single component
+                    // get styleclass
+                    String[] styleAndClass = HtmlMessageRendererBase.getStyleAndStyleClass(msgComponent, msg.getSeverity());
+                    style = styleAndClass[0];
+                    styleClass = styleAndClass[1];
+                    System.out.println("style: " + style);
+                }
+                else
+                {
+                    // send to update global messages, maybe this could happen on the client side though ?
+                }
+                buff.append("<error elname=\"").append(request.getParameter("elname"))
+                        .append("\" severity=\"").append(msg.getSeverity().toString());
+                if (styleClass != null) buff.append("\" styleClass=\"").append(styleClass);
+                if (style != null) buff.append("\" style=\"").append(style);
+                buff.append("\" summary=\"").append(msg.getSummary())
+                        .append("\" >\n");
+                String detail = msg.getDetail();
+                if (detail != null)
+                {
+                    buff.append("<detail>");
+                    buff.append(msg.getDetail());
+                    buff.append("</detail>\n");
+                }
+                buff.append("</error>\n");
+                hasErrorMessages = true;
+            }
+            if (!hasErrorMessages)
+            {
+                // send elementUpdated messages
+                buff.append("<elementUpdated elname=\"").append(request.getParameter("elname"));
+                buff.append("\" elvalue=\"").append(request.getParameter("elvalue")).append("\"");
+                if (extraReturnAttributes != null)
+                {
+                    Iterator iter2 = extraReturnAttributes.keySet().iterator();
+                    while (iter2.hasNext())
+                    {
+                        String key = (String) iter2.next();
+                        buff.append(" ").append(key).append("=\"").append(extraReturnAttributes.get(key).toString()).append("\"");
+                    }
+                }
+                buff.append(" />");
+                buff.append("\n");
+            }
+            buff.append("</response>");
+            String output = buff.toString();
+            log.debug(output);
+            PrintWriter out = response.getWriter();
+            out.print(output);
+            out.flush();
+
+        }
+    }
+}
