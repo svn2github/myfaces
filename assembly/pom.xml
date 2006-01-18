@@ -11,7 +11,7 @@
 
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
-    <artifactId>tomahawk.project</artifactId>
+    <artifactId>tomahawk-project</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
 
@@ -32,13 +32,13 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.apache.myfaces</groupId>
+                  <groupId>org.apache.myfaces.tomahawk</groupId>
                   <artifactId>tomahawk</artifactId>
                   <version>${version}</version>
                   <classifier>javadoc</classifier>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.myfaces</groupId>
+                  <groupId>org.apache.myfaces.commons</groupId>
                   <artifactId>myfaces-commons</artifactId>
                   <!-- TODO find one way to define the common version -->
                   <version>1.1.2-SNAPSHOT</version>
@@ -71,7 +71,7 @@
            </execution-->
 
         </executions>
-      </plugin
+      </plugin>
 
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -90,7 +90,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.myfaces</groupId>
+      <groupId>org.apache.myfaces.tomahawk</groupId>
       <artifactId>tomahawk</artifactId>
       <version>${version}</version>
     </dependency>
