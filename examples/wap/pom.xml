@@ -25,9 +25,14 @@
     <artifactId>tomahawk-examples-project</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples/wap</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples/wap</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/examples/wap</url>
+  </scm>   
   <artifactId>myfaces-example-wap</artifactId>
   <packaging>war</packaging>
-  <name>MyFaces Examples: WAP</name>
+  <name>Tomahawk Examples: WAP</name>
   <build>
     <finalName>myfaces-example-wap</finalName>
   </build>

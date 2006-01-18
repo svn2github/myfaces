@@ -18,16 +18,15 @@
     <artifactId>tomahawk-project</artifactId>
 		<version>1.1.2-SNAPSHOT</version>	  
   </parent>
-
-  <modules>
-    <module>core</module>
-    <module>examples</module>
-  </modules>
-
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox</url>
   </scm>
+
+  <modules>
+    <module>core</module>
+    <module>examples</module>
+  </modules>
 
 </project>

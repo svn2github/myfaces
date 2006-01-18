@@ -20,14 +20,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <artifactId>tomahawk-sandbox-examples</artifactId>
+  <packaging>war</packaging>
+  <name>Sandbox Examples</name>
+
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
     <artifactId>sandbox-project</artifactId>
     <version>1.1.2-SNAPSHOT</version>
   </parent>
-  <artifactId>tomahawk-sandbox-examples</artifactId>
-  <packaging>war</packaging>
-  <name>MyFaces Examples: Sandbox</name>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/examples</url>
+  </scm>
+
   <build>
     <finalName>myfaces-example-sandbox</finalName>
   </build>
