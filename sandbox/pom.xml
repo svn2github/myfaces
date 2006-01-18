@@ -5,7 +5,7 @@
   <groupId>org.apache.myfaces.tomahawk</groupId>
   <artifactId>sandbox-project</artifactId>
   <packaging>pom</packaging>
-  <name>MyFaces Sandbox</name>
+  <name>Sandbox Project</name>
   <url>http://myfaces.apache.org</url>
   <!-- TODO which url has sandbox? -->
   <version>1.1.2-SNAPSHOT</version>	 
@@ -25,9 +25,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/sandbox/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/sandbox/trunk</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/myfaces/sandbox/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</developerConnection>
+    <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox</url>
   </scm>
 
 </project>
