@@ -48,6 +48,29 @@
               <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-lib</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.tomahawk</groupId>
+                  <artifactId>tomahawk</artifactId>
+                  <version>${version}</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.commons</groupId>
+                  <artifactId>myfaces-commons</artifactId>
+                  <!-- TODO find one way to define the common version -->
+                  <version>1.1.2-SNAPSHOT</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.directory}/assembly-lib</outputDirectory>
+            </configuration>
+          </execution>
 
           <!--execution>
             <id>copy-tlddoc</id>
