@@ -98,7 +98,7 @@
 
         <t:dataTable id="test_dt" var="person" value="#{thirdCollapsiblePanelBean.persons}" preserveDataModel="false">
             <h:column>
-                <t:collapsiblePanel id="test4" var="test4collapsed">
+                <t:collapsiblePanel id="test4" var="test4collapsed" value="#{person.collapsed}">
                     <f:facet name="header">
                         <t:div style="width:500px;background-color:#CCCCCC;">
                             <h:outputText value="Person"/>
