@@ -145,6 +145,8 @@ public class AddResourceTest extends TestCase
             _servletResponseControl.setReturnValue("encoded(/test/scripts/script1)", MockControl.ZERO_OR_MORE);
             _servletResponse.getWriter();
             _servletResponseControl.setReturnValue(new PrintWriter(_writer), MockControl.ZERO_OR_MORE);
+            _servletResponse.getCharacterEncoding();
+            _servletResponseControl.setReturnValue("UTF-8", MockControl.ZERO_OR_MORE);
             _servletResponseControl.replay();
 
             // The FacesContext needs FactoryFinder configured.
