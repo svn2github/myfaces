@@ -17,7 +17,7 @@
     <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/core</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/core</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/core</url>
-  </scm> 
+  </scm>
 
   <dependencies>
 
