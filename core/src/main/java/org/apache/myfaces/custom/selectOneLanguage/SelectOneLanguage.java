@@ -49,7 +49,7 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
 
 	public Integer getMaxLength() {
 		if (_maxLength != null) return _maxLength;
-		ValueBinding vb = getValueBinding("length");
+		ValueBinding vb = getValueBinding("maxLength");
 		return vb != null ? (Integer)vb.getValue(getFacesContext()) : null;
 	}
 	public void setMaxLength(Integer maxLength) {
