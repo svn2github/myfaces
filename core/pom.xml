@@ -56,13 +56,6 @@
       <scope>compile</scope>
     </dependency>
 
-    <!--dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>3.1</version>
-      <scope>compile</scope>
-    </dependency-->
-
     <dependency>
       <groupId>portlet-api</groupId>
       <artifactId>portlet-api</artifactId>
@@ -75,6 +68,7 @@
       <artifactId>struts</artifactId>
       <version>1.2.8</version>
       <scope>compile</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
