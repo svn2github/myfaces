@@ -20,22 +20,6 @@
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/assembly</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/assembly</url>
   </scm>
-  
-  <distributionManagement>
-<!--
-    <repository>
-      <id>apache-maven</id>
-      <name>Apache Maven Repository</name>
-      <url>scpexe://people.apache.org/www/www.apache.org/dist/maven-repository</url>
-    </repository>
--->
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>myfaces-nightly-builds</id>
-      <name>Apache My Faces Nightly Builds</name>
-      <url>scpexe://minotaur.apache.org/www/cvs.apache.org/builds/myfaces/</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <build>
 
@@ -124,8 +108,19 @@
         <configuration>
           <descriptor>src/main/assembly/dep.xml</descriptor>
           <finalName>tomahawk-${version}</finalName>
-          <outputDirectory>target</outputDirectory>
+          <outputDirectory>target/assembly/out</outputDirectory>
           <workDirectory>target/assembly/work</workDirectory>
+        </configuration>
+      </plugin>
+
+       <plugin>
+        <groupId>org.apache.myfaces.maven</groupId>
+        <artifactId>wagon-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <configuration>
+          <id>myfaces-nightly-builds</id>
+          <url>scpexe://minotaur.apache.org/www/cvs.apache.org/builds/myfaces/</url>
+          <inputDirectory>target/assembly/out</inputDirectory>
         </configuration>
       </plugin>
 
