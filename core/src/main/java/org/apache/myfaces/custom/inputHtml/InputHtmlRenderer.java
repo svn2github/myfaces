@@ -29,7 +29,7 @@ import javax.faces.convert.ConverterException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTab;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane;
 import org.apache.myfaces.renderkit.JSFAttr;

@@ -18,6 +18,7 @@ package org.apache.myfaces.component.html.util;
 import java.io.IOException;
 
 import org.apache.commons.fileupload.FileUpload;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

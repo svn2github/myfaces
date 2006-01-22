@@ -28,6 +28,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -62,11 +63,11 @@ public class BufferRenderer extends Renderer {
 
         if( bufferWriter.getDummyFormParams() != null ){
             try{ // Attempt to add the dummy form params (will not work with Sun RI)
-				DummyFormResponseWriter dummyFormResponseWriter = DummyFormUtils.getDummyFormResponseWriter( facesContext );
-				for(Iterator i = bufferWriter.getDummyFormParams().iterator() ; i.hasNext() ;)
-					dummyFormResponseWriter.addDummyFormParameter( i.next().toString() );
-				if( bufferWriter.isWriteDummyForm() )
-					dummyFormResponseWriter.setWriteDummyForm( true );
+                DummyFormResponseWriter dummyFormResponseWriter = DummyFormUtils.getDummyFormResponseWriter( facesContext );
+                for(Iterator i = bufferWriter.getDummyFormParams().iterator() ; i.hasNext() ;)
+                    dummyFormResponseWriter.addDummyFormParameter( i.next().toString() );
+                if( bufferWriter.isWriteDummyForm() )
+                    dummyFormResponseWriter.setWriteDummyForm( true );
             } catch (Exception e) {
                 log.warn("Dummy form parameters are not supported by this JSF implementation.");
             }

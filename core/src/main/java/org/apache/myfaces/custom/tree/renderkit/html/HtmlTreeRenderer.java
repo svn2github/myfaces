@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.tree.renderkit.html;
 
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.HtmlTreeColumn;
 import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;

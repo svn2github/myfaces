@@ -39,8 +39,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.DateTimeConverter;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.myfaces.component.html.util.AddResource;
-import org.apache.myfaces.custom.buffer.HtmlBufferResponseWriterWrapper;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -48,6 +47,7 @@ import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.util.MessageUtils;
 
 /**
