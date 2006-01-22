@@ -82,9 +82,6 @@
 				<t:navigationMenuItem id="nav_2_4_10"
 					itemLabel="#{example_messages['nav_treeTable']}"
 					action="go_treeTable" icon="images/myfaces.gif" />
-				<t:navigationMenuItem id="nav_2_4_11"
-					itemLabel="#{example_messages['nav_rssTicker']}"
-					action="go_rssticker" icon="images/myfaces.gif" />
 				<t:navigationMenuItem id="nav_2_4_12"
 					itemLabel="#{example_messages['nav_dataScroller']}"
 					action="go_datascroller" icon="images/myfaces.gif" />
