@@ -17,7 +17,7 @@
 package org.apache.myfaces.custom.inputsuggestajax;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.ajax.api.AjaxPhaseListener;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;

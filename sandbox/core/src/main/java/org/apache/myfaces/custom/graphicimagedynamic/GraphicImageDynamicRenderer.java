@@ -27,9 +27,9 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.component.html.util.ParameterResourceHandler;
-import org.apache.myfaces.component.html.util.ResourceLoader;
+import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
@@ -195,7 +195,7 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
     }
 
     /**
-     * @see org.apache.myfaces.component.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
+     * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
             HttpServletResponse response, String resourceUri) throws IOException

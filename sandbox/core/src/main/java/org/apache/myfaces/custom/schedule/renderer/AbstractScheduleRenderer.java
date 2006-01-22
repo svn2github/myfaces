@@ -30,7 +30,7 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
 
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;

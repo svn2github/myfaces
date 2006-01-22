@@ -29,7 +29,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;

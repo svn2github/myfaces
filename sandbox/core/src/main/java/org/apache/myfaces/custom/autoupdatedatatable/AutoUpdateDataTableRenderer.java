@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.autoupdatedatatable;
 
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;

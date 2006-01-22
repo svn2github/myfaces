@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.accordion;
 
-import org.apache.myfaces.component.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTab;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
