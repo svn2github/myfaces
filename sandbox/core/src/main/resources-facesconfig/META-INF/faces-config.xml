@@ -99,6 +99,11 @@
 	<component-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist</component-class>
   </component>
 
+  <component>
+	<component-type>org.apache.myfaces.SubForm</component-type>
+	<component-class>org.apache.myfaces.custom.subform.SubForm</component-class>
+  </component>
+
   <!-- sandbox converters -->
 
   <converter>
@@ -231,6 +236,18 @@
         <renderer-type>org.apache.myfaces.MessageSandbox</renderer-type>
         <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlMessageRenderer</renderer-class>
     </renderer>
+
+    <renderer>
+        <component-family>javax.faces.Form</component-family>
+        <renderer-type>org.apache.myfaces.SubForm</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.subform.SubFormRenderer</renderer-class>
+    </renderer>
+
+   <!-- <renderer>
+        <component-family>javax.faces.Messages</component-family>
+        <renderer-type>org.apache.myfaces.MessagesSandbox</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlMessagesRenderer</renderer-class>
+    </renderer> -->
 
   </render-kit>
 

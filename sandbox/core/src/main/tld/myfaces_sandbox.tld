@@ -791,6 +791,24 @@ Sandbox-related entities.
             <type>java.lang.String</type>
             <description>Text for cancel</description>
         </attribute>
+        <attribute>
+            <name>errorStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>StyleClass for the input field where the error occures.
+                         Useful if there is only one messages area for a few inputTextAjax fields
+            </description>
+        </attribute>
+        <attribute>
+            <name>errorStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Style for the input field where the error occures.
+                         Useful if there is only one messages area for a few inputTextAjax fields
+            </description>
+        </attribute>
     </tag>
 
      <tag>
@@ -897,4 +915,51 @@ Sandbox-related entities.
         </attribute>
     </tag>
 
+    <tag>
+        <name>subForm</name>
+        <tag-class>org.apache.myfaces.custom.subform.SubFormTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+
+        </description>
+
+
+    </tag>
+
+  <!--  <tag>
+        <name>messages</name>
+        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlMessagesTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Messages tag in order to display messages from all inputAjax components on the same place
+        </description>
+
+        &user_role_attributes;
+        &ext_forceId_attribute;
+        <attribute>
+            <name>summaryFormat</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If present, instead of rendering the message summary, a MessageFormat with this
+                attribute as pattern is created. The format method of this MessageFormat is
+                called with the message summary as the first argument and the label of the
+                associated component (if any) as the second argument.
+                Example: "{0}:"
+            </description>
+        </attribute>
+        <attribute>
+            <name>detailFormat</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If present, instead of rendering the message detail, a MessageFormat with this
+                attribute as pattern is created. The format method of this MessageFormat is
+                called with the message detail as the first argument and the label of the
+                associated component (if any) as the second argument.
+                Example: "The input in field {1} is wrong: {0}"
+            </description>
+        </attribute>
+    </tag>
+-->
 </taglib>

@@ -14,7 +14,7 @@ public class SubForm extends UIComponentBase
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.SubForm";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SubForm";
-    public static final String COMPONENT_FAMILY = "org.apache.myfaces.SubForm";
+    public static final String COMPONENT_FAMILY = "javax.faces.Form";
 
     public SubForm()
     {
