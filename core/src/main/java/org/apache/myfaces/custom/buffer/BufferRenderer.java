@@ -46,7 +46,7 @@ public class BufferRenderer extends Renderer {
         RendererUtils.checkParamValidity(facesContext, uiComponent, Buffer.class);
 
         initialWriter = facesContext.getResponseWriter();
-        bufferWriter = HtmlBufferResponseWriterWrapper.getInstance( initialWriter );
+        bufferWriter = HtmlBufferResponseWriterWrapper.getInstance(initialWriter );
         facesContext.setResponseWriter( bufferWriter );
     }
 

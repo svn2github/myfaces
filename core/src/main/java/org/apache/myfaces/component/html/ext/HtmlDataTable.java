@@ -33,6 +33,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.ExecuteOnCapable;
+import org.apache.myfaces.component.ExecuteOnCallback;
 import org.apache.myfaces.custom.crosstable.UIColumns;
 import org.apache.myfaces.renderkit.JSFAttr;
 
@@ -41,7 +43,7 @@ import org.apache.myfaces.renderkit.JSFAttr;
  * @author Manfred Geiler
  * @version $Revision$ $Date$
  */
-public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
+public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, ExecuteOnCapable
 {
     private static final Log log = LogFactory.getLog(HtmlDataTable.class);
 
@@ -99,6 +101,12 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         return parsedForcedClientId;
     }
+
+    public Object executeOn(FacesContext facesContext, String clientId, ExecuteOnCallback executeOnCallback)
+    {
+        return null;
+    }
+
 
     public void setRowIndex(int rowIndex)
     {
@@ -339,7 +347,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (_preservedDataModel != null)
         {
             //Rather get the currently restored DataModel attribute
-            return ((_SerializableDataModel) _preservedDataModel).getFirst();
+            return _preservedDataModel.getFirst();
         }
         else
         {
@@ -352,7 +360,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (_preservedDataModel != null)
         {
             //Also change the currently restored DataModel attribute
-            ((_SerializableDataModel) _preservedDataModel).setFirst(first);
+            _preservedDataModel.setFirst(first);
         }
         super.setFirst(first);
     }
@@ -362,7 +370,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (_preservedDataModel != null)
         {
             //Rather get the currently restored DataModel attribute
-            return ((_SerializableDataModel) _preservedDataModel).getRows();
+            return _preservedDataModel.getRows();
         }
         else
         {
@@ -375,7 +383,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         if (_preservedDataModel != null)
         {
             //Also change the currently restored DataModel attribute
-            ((_SerializableDataModel) _preservedDataModel).setRows(rows);
+            _preservedDataModel.setRows(rows);
         }
         super.setRows(rows);
     }
@@ -932,4 +940,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     }
 
     //------------------ GENERATED CODE END ---------------------------------------
+
+
 }
