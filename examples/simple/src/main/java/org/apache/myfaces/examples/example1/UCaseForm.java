@@ -24,7 +24,10 @@ import java.io.Serializable;
  */
 public class UCaseForm
         implements Serializable
-{
+{  /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private String text = "";
 
     public void uppercase()

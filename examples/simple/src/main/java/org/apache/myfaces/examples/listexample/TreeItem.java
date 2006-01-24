@@ -26,6 +26,11 @@ import java.io.Serializable;
  * */
 public class TreeItem implements Serializable
 {
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+
     private int id;
 
     private String name;

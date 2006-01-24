@@ -26,6 +26,10 @@ import java.math.BigDecimal;
 public class CalcForm
     implements Serializable
 {
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private BigDecimal number1 = new BigDecimal(0);
     private BigDecimal number2 = new BigDecimal(0);
     private BigDecimal result = new BigDecimal(0);

@@ -36,8 +36,12 @@ import java.io.Serializable;
  */
 public class TreeBacker implements Serializable
 {
-    private TreeModelBase _treeModel;
-    private HtmlTree _tree;
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+    private TreeModelBase     _treeModel;
+    private HtmlTree          _tree;
 
     public TreeNode getTreeData()
     {
@@ -167,9 +171,8 @@ public class TreeBacker implements Serializable
 
             if (_tree.getNode().isLeaf())
             {
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                           "Invalid node path (cannot expand a leaf): " + nodeId,
-                                           "Invalid node path (cannot expand a leaf): " + nodeId);
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid node path (cannot expand a leaf): "
+                        + nodeId, "Invalid node path (cannot expand a leaf): " + nodeId);
                 throw new ValidatorException(message);
             }
         }

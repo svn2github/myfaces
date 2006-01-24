@@ -35,7 +35,11 @@ import javax.faces.event.ActionEvent;
  */
 public class SimpleCountry implements Serializable
 {
-	private long _id;
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+    private long _id;
 	private String _name;
 	private String _isoCode;
 	private BigDecimal _size;

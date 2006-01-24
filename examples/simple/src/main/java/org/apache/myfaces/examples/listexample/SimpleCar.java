@@ -25,6 +25,10 @@ import java.io.Serializable;
 public class SimpleCar
         implements Serializable
 {
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private int _id;
     private String _type;
     private String _color;

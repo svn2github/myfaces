@@ -29,7 +29,12 @@ import org.apache.myfaces.custom.tree.model.DefaultTreeModel;
  */
 public class TreeTable implements Serializable
 {
-    private DefaultTreeModel treeModel;
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+    
+    private DefaultTreeModel  treeModel;
 
     /**
      * @param treeModel The treeModel.
@@ -68,7 +73,7 @@ public class TreeTable implements Serializable
         a.insert(node);
         node = new DefaultMutableTreeNode(new TreeItem(9, "x2", "9003", "x2 9003"));
         a.insert(node);
-        
+
         this.treeModel = new DefaultTreeModel(root);
     }
 

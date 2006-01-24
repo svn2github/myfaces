@@ -14,10 +14,22 @@ import java.util.Map;
  */
 public class DVOFace implements Serializable
 {
+
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+
     private boolean attribute = true;
     
     private Map map = new HashMap(){
-    	public Object get(Object key){
+
+        /**
+         * serial id for serialisation versioning
+         */
+        private static final long serialVersionUID = 1L;
+
+        public Object get(Object key){
     		Object held = super.get( key );
     		if( held != null )
     			return held;

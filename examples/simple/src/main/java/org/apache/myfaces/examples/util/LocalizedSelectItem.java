@@ -22,9 +22,13 @@ import javax.faces.model.SelectItem;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class LocalizedSelectItem
-    extends SelectItem
+public class LocalizedSelectItem extends SelectItem
 {
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+
     public LocalizedSelectItem(String key)
     {
         super(key);

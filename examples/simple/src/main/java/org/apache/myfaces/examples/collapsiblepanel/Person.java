@@ -16,6 +16,11 @@ import java.io.Serializable;
  */
 public class Person implements Serializable
 {
+
+    /**
+     * serial id for serialisation
+     */
+    private static final long serialVersionUID = 1L;
     private String _surName;
     private String _firstName;
     private boolean _collapsed;

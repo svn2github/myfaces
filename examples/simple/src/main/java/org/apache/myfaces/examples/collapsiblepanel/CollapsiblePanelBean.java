@@ -28,6 +28,12 @@ import java.io.Serializable;
  */
 public class CollapsiblePanelBean implements Serializable
 {
+
+    /**
+     * serial id for serialisation
+     */
+    private static final long serialVersionUID = 1L;
+
     private boolean _collapsed;
 
     private String _firstName="Hugo";

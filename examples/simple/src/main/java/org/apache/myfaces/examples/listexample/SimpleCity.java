@@ -22,8 +22,12 @@ import java.io.Serializable;
  *
  */
 public class SimpleCity implements Serializable
-{
-	private String mName;
+{  
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+    private String mName;
 
 	/**
 	 * 

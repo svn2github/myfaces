@@ -22,14 +22,18 @@ import java.io.Serializable;
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class TabbedPaneBean
-        implements Serializable
+public class TabbedPaneBean implements Serializable
 {
     //private static final Log log = LogFactory.getLog(TabbedPaneBean.class);
 
-    private boolean _tab1Visible = true;
-    private boolean _tab2Visible = true;
-    private boolean _tab3Visible = true;
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+    
+    private boolean           _tab1Visible     = true;
+    private boolean           _tab2Visible     = true;
+    private boolean           _tab3Visible     = true;
 
     public boolean isTab1Visible()
     {

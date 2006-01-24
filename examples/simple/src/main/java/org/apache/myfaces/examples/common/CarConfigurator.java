@@ -35,6 +35,11 @@ import java.util.List;
 public class CarConfigurator
         implements Serializable
 {
+
+    /**
+     * serial id for serialisation
+     */
+    private static final long serialVersionUID = 1L;
     private static List _cars;
     private static List _colors;
     private static List _extrasList;
