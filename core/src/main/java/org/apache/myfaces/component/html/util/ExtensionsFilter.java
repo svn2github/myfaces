@@ -15,20 +15,13 @@
  */
 package org.apache.myfaces.component.html.util;
 
-import java.io.IOException;
-
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * This filters is mandatory for the use of many components.
@@ -125,21 +118,33 @@ public class ExtensionsFilter implements Filter {
         }
         
         ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
-        
+
         // Standard request
         chain.doFilter(extendedRequest, extendedResponse);
         
         extendedResponse.finishResponse();
-        
+
+        // write the javascript stuff for myfaces and headerInfo, if needed
+        HttpServletResponse servletResponse = (HttpServletResponse)response;
+
+        addResource.parseResponse(extendedRequest, extendedResponse.toString(),
+            servletResponse);
+
+        addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
+            servletResponse);
+
         if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
-            response.getOutputStream().write( extendedResponse.getBytes());
+            // writes the response if no header info is needed
+            addResource.writeResponse(extendedRequest, servletResponse);
             return;
         }
+
         
         // Some headerInfo has to be added
-        addResource.writeWithFullHeader(extendedRequest, 
-            extendedResponse.toString(), 
-            (HttpServletResponse)response);
+        addResource.writeWithFullHeader(extendedRequest, servletResponse);
+
+        // writes the response
+        addResource.writeResponse(extendedRequest, servletResponse);
     }
     
     /**
