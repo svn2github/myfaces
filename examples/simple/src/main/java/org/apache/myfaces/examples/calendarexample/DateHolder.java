@@ -15,13 +15,8 @@
  */
 package org.apache.myfaces.examples.calendarexample;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * DOCUMENT ME!
@@ -30,6 +25,11 @@ import java.io.Serializable;
  */
 public class DateHolder implements Serializable
 {
+    /**
+     * added serial 
+     */
+    private static final long serialVersionUID = 1L;
+    
     private Date _date = null;
 
     public Date getDate()
