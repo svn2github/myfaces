@@ -17,7 +17,6 @@ package org.apache.myfaces.examples.picklist;
 
 import java.util.ArrayList;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 

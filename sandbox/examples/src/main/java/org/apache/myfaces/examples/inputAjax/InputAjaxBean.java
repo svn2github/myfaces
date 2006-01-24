@@ -15,15 +15,15 @@
  */
 package org.apache.myfaces.examples.inputAjax;
 
-import javax.faces.model.SelectItem;
-import javax.faces.context.FacesContext;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.application.FacesMessage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-import java.util.Calendar;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  * User: treeder
