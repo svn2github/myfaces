@@ -204,8 +204,9 @@ public class AddResourceTest extends TestCase
             "<html><head></head><body></body></html>";
 
         AddResource ar = AddResource.getInstance("/test");
-        ar.writeWithFullHeader(mockState._servletRequest,
-                originalResponse, mockState._servletResponse);
+        ar.parseResponse(mockState._servletRequest,originalResponse,mockState._servletResponse);
+        ar.writeWithFullHeader(mockState._servletRequest,mockState._servletResponse);
+        ar.writeResponse(mockState._servletRequest,mockState._servletResponse);
 
         mockState.verifyControls();
 
