@@ -15,13 +15,13 @@
  */
 package org.apache.myfaces.examples.calendarexample;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.io.Serializable;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Martin Marinschek
@@ -31,6 +31,11 @@ import java.io.Serializable;
  */
 public class CalendarBean implements Serializable
 {
+    /**
+     * serial id for serialisation
+     */
+    private static final long serialVersionUID = 1L;
+
     private static Log log = LogFactory.getLog(CalendarBean.class);
 
     private List _dates;
