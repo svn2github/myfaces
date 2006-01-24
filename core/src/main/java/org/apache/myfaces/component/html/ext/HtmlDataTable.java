@@ -43,7 +43,7 @@ import org.apache.myfaces.renderkit.JSFAttr;
  * @author Manfred Geiler
  * @version $Revision$ $Date$
  */
-public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, ExecuteOnCapable
+public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 {
     private static final Log log = LogFactory.getLog(HtmlDataTable.class);
 
@@ -102,9 +102,30 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, E
         return parsedForcedClientId;
     }
 
-    public Object executeOn(FacesContext facesContext, String clientId, ExecuteOnCallback executeOnCallback)
+    public UIComponent findComponent(String expr)
     {
-        return null;
+        if(expr.length()>0 && Character.isDigit(expr.charAt(0)))
+        {
+            int separatorIndex = expr.indexOf(NamingContainer.SEPARATOR_CHAR);
+
+            String rowIndexStr=expr;
+
+            if(separatorIndex!=-1)
+            {
+                rowIndexStr = expr.substring(0,separatorIndex);
+            }
+
+            int rowIndex = Integer.valueOf(rowIndexStr).intValue();
+
+            UIComponent comp = super.findComponent(expr);
+
+            UIComponentPerspective perspective = new UIComponentPerspective(this,comp,rowIndex);
+            return perspective;
+        }
+        else
+        {
+            return super.findComponent(expr);
+        }
     }
 
 
