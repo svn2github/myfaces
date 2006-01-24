@@ -27,6 +27,11 @@ import org.apache.myfaces.custom.isbnvalidator.ISBNValidator;
  */
 public class ValidateISBNTag extends ValidatorTag{
 
+    /**
+     * serial version id for correct serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+
     public ValidateISBNTag(){}
 
 	protected Validator createValidator() throws JspException

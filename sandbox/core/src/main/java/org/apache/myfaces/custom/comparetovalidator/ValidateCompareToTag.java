@@ -28,7 +28,12 @@ import javax.servlet.jsp.JspException;
  */
 public class ValidateCompareToTag extends ValidatorTag {
     
-	private String _foreignComponentName = null;
+	/**
+     * serial version id for correct serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+    
+    private String _foreignComponentName = null;
 	protected String _operator = null;
 	protected String _comparator = null;
 	protected String _message = null;

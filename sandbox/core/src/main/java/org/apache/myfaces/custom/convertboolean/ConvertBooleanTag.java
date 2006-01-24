@@ -38,6 +38,13 @@ import javax.servlet.jsp.PageContext;
  * @author Ken Weiner
  */
 public class ConvertBooleanTag extends ConverterTag {
+    
+    
+    
+    /**
+     * serial version id for correct serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private String trueValue;
     private String falseValue;
 

@@ -28,6 +28,13 @@ import javax.servlet.jsp.PageContext;
  */
 public class ConvertDateTimeTag extends org.apache.myfaces.taglib.core.ConvertDateTimeTag
 {
+    
+    /**
+     * serial version id for correct serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
+
+
     public ConvertDateTimeTag()
     {
         setConverterId(org.apache.myfaces.custom.convertDateTime.DateTimeConverter.CONVERTER_ID);
