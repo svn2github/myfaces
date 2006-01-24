@@ -119,6 +119,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
             UIComponent comp = super.findComponent(expr);
 
+            if(comp == null)
+                return null;
+
             UIComponentPerspective perspective = new UIComponentPerspective(this,comp,rowIndex);
             return perspective;
         }
