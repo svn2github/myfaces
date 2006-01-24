@@ -41,6 +41,10 @@ public class PlannerEntity
 {
     //~ Instance fields --------------------------------------------------------
 
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private final String id;
     private final String name;
     private TreeSet entries;

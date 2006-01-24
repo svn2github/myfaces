@@ -42,6 +42,10 @@ public class ScheduleDay
 {
     //~ Instance fields --------------------------------------------------------
 
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private final TreeSet entries;
 
     //~ Constructors -----------------------------------------------------------

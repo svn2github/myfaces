@@ -39,6 +39,10 @@ public class PlannerModel
 {
     //~ Instance fields --------------------------------------------------------
 
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private HashMap entities;
     private TreeSet days;
 

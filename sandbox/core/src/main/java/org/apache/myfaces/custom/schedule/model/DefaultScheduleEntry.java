@@ -34,6 +34,10 @@ public class DefaultScheduleEntry
 {
     //~ Instance fields --------------------------------------------------------
 
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private Date endTime;
     private Date startTime;
     private String description;

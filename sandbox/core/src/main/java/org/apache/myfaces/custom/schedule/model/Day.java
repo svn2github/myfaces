@@ -39,6 +39,10 @@ public class Day
 {
     //~ Instance fields --------------------------------------------------------
 
+    /**
+     * serial id for serialisation versioning
+     */
+    private static final long serialVersionUID = 1L;
     private final Date date;
     private final Date dayEnd;
     private final Date dayStart;
