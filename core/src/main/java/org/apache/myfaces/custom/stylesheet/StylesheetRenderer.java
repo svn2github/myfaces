@@ -15,17 +15,13 @@
  */
 package org.apache.myfaces.custom.stylesheet;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 
 /**
@@ -35,8 +31,6 @@ import org.apache.myfaces.renderkit.html.HtmlRenderer;
 
 public class StylesheetRenderer extends HtmlRenderer {
 
-	 private static final Log LOG = LogFactory.getLog(StylesheetRenderer.class);
-      
 	 public void encodeEnd(FacesContext context, UIComponent component)
         throws IOException {
 
@@ -56,7 +50,7 @@ public class StylesheetRenderer extends HtmlRenderer {
             writer.writeAttribute("media", stylesheet.getMedia(), null);
           }          
           //writer.writeText("<!--\n", null);
-          Object text = loadFile(context.getExternalContext().getRequestContextPath(), stylesheet.getPath());
+          Object text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
           if (text != null)
           {
               writer.writeText(text, null);
@@ -83,46 +77,4 @@ public class StylesheetRenderer extends HtmlRenderer {
         
 
     }
-
-  private Object loadFile(String ctxPath, String file)
-  {
-    
-    String href = ctxPath+file;
-    LOG.debug("loadFile: " + href);
-    
-    File cssFile = new File(href);
-    String content;
-    
-
-
-    if (cssFile.canRead())
-    {
-      FileInputStream in;
-      try {
-        in = new FileInputStream(cssFile);
-        byte[] fileBuffer = new byte[(int) cssFile.length()];
-        in.read(fileBuffer);
-        in.close();
-        content = new String(fileBuffer);
-      }
-      catch (FileNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        content=null;
-      }
-      catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        content=null;
-      }
-
-    }
-    else
-    {
-      LOG.error("File not readable: " + href);
-      content=null;
-    }
-    
-    return content;
-  }
 }
