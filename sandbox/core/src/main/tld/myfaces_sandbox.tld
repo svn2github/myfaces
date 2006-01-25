@@ -117,6 +117,7 @@ Sandbox-related entities.
 <!ENTITY html_planner_attributes       SYSTEM "entities/html_planner_attributes.xml">
 <!ENTITY html_focus_attributes       SYSTEM "entities/html_focus_attributes.xml">
 <!ENTITY validator_compare_to_attributes       SYSTEM "entities/validator_compare_to_attributes.xml">
+<!ENTITY html_script_attributes       SYSTEM "entities/html_script_attributes.xml">
 ]>
 
 <taglib>
@@ -171,6 +172,19 @@ Sandbox-related entities.
        &ui_command_attributes;
        &ui_schedule_attributes;
        &html_schedule_attributes;
+    </tag>
+    
+    <!-- script -->
+     <tag>
+       <name>script</name>
+       <tag-class>org.apache.myfaces.custom.script.ScriptTag</tag-class>
+       <body-content>empty</body-content>
+       <display-name>Script component</display-name>
+       <description>
+          Adds (java)script to the browser
+       </description>
+       &ui_component_attributes;
+       &html_script_attributes;
     </tag>
 
     <!-- inputsuggestajax -->
