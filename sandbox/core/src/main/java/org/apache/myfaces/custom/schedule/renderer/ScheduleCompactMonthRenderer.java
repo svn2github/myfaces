@@ -85,6 +85,8 @@ public class ScheduleCompactMonthRenderer
         writer.startElement(HTML.TBODY_ELEM, schedule);
 
         Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(schedule.getModel().getSelectedDate());
+        int selectedMonth = cal.get(Calendar.MONTH);
 
         for (
             Iterator dayIterator = schedule.getModel().iterator();
@@ -95,60 +97,18 @@ public class ScheduleCompactMonthRenderer
 
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+            int currentMonth = cal.get(Calendar.MONTH);
             boolean isWeekend =
                 (dayOfWeek == Calendar.SATURDAY) ||
                 (dayOfWeek == Calendar.SUNDAY);
 
             cal.setTime(day.getDate());
 
-            if (dayOfMonth == 1) { //fill the cells of the previous month
-
-                TreeSet previousMonth = new TreeSet();
-
-                while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                    cal.add(Calendar.DATE, -1);
-                    previousMonth.add(new ScheduleDay(cal.getTime()));
-                }
-
-                for (
-                    Iterator prevMonthIterator = previousMonth.iterator();
-                        prevMonthIterator.hasNext();
-                ) {
-                    ScheduleDay d = (ScheduleDay) prevMonthIterator.next();
-                    cal.setTime(d.getDate());
-
-                    int dow = cal.get(Calendar.DAY_OF_WEEK);
-                    int dom = cal.get(Calendar.DAY_OF_MONTH);
-                    boolean w =
-                        (dow == Calendar.SATURDAY) || (dow == Calendar.SUNDAY);
-                    writeDayCell(
-                        context, writer, schedule, d, dow, dom, w, false,
-                        w ? 1 : 2
-                    );
-                }
-            }
-
             writeDayCell(
                 context, writer, schedule, day, dayOfWeek, dayOfMonth, isWeekend,
-                true, isWeekend ? 1 : 2
+                currentMonth == selectedMonth, isWeekend ? 1 : 2
             );
 
-            if (!dayIterator.hasNext()) { //fill the empty cells of the next month
-
-                while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-                    cal.add(Calendar.DATE, 1);
-
-                    ScheduleDay d = new ScheduleDay(cal.getTime());
-                    int dow = cal.get(Calendar.DAY_OF_WEEK);
-                    int dom = cal.get(Calendar.DAY_OF_MONTH);
-                    boolean w =
-                        (dow == Calendar.SATURDAY) || (dow == Calendar.SUNDAY);
-                    writeDayCell(
-                        context, writer, schedule, d, dow, dom, w, false,
-                        w ? 1 : 2
-                    );
-                }
-            }
         }
 
         writer.endElement(HTML.TBODY_ELEM);

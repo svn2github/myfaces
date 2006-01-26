@@ -70,10 +70,10 @@ public class ScheduleExampleHandler implements Serializable
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(model.getSelectedDate());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
         DefaultScheduleEntry entry1 = new DefaultScheduleEntry();
         // every entry in a schedule must have a unique id
         entry1.setId(RandomStringUtils.randomNumeric(32));
-        calendar.add(Calendar.MINUTE, -5);
         entry1.setStartTime(calendar.getTime());
         calendar.add(Calendar.MINUTE, 45);
         entry1.setEndTime(calendar.getTime());
@@ -104,6 +104,26 @@ public class ScheduleExampleHandler implements Serializable
         entry3.setEndTime(calendar.getTime());
         entry3.setTitle("Thoroughly test schedule component");
         model.addEntry(entry3);
+        DefaultScheduleEntry entry4 = new DefaultScheduleEntry();
+        entry4.setId(RandomStringUtils.randomNumeric(32));
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        entry4.setStartTime(calendar.getTime());
+        calendar.set(Calendar.HOUR_OF_DAY, 14);
+        entry4.setEndTime(calendar.getTime());
+        entry4.setTitle("Long lunch");
+        model.addEntry(entry4);
+        DefaultScheduleEntry entry5 = new DefaultScheduleEntry();
+        entry5.setId(RandomStringUtils.randomNumeric(32));
+        calendar.add(Calendar.MONTH, 2);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 1);
+        entry5.setStartTime(calendar.getTime());
+        calendar.set(Calendar.HOUR_OF_DAY, 5);
+        entry5.setEndTime(calendar.getTime());
+        entry5.setTitle("Fishing trip");
+        model.addEntry(entry5);
         model.refresh();
     }
 }

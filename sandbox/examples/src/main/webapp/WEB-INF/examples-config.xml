@@ -507,22 +507,26 @@
 
 	<!-- navigational rules for the schedule examples -->
 	<navigation-rule>
-		<from-view-id>/schedule.jsp</from-view-id>
+		<from-view-id>*</from-view-id>
 		<navigation-case>
 			<from-outcome>schedule1</from-outcome>
 			<to-view-id>/schedule/example1.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>schedule2</from-outcome>
 			<to-view-id>/schedule/example2.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>schedule3</from-outcome>
 			<to-view-id>/schedule/example3.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>schedule4</from-outcome>
 			<to-view-id>/schedule/example4.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	
@@ -531,6 +535,7 @@
 		<navigation-case>
 			<from-outcome>add_entry</from-outcome>
 			<to-view-id>/schedule/addentry.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	
@@ -539,14 +544,17 @@
 		<navigation-case>
 			<from-outcome>success</from-outcome>
 			<to-view-id>/schedule/example2.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cancel</from-outcome>
 			<to-view-id>/schedule/example2.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>failure</from-outcome>
 			<to-view-id>/schedule/addentry.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	
@@ -555,6 +563,7 @@
 		<navigation-case>
 			<from-outcome>edit_settings</from-outcome>
 			<to-view-id>/schedule/editsettings.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
@@ -563,14 +572,17 @@
 		<navigation-case>
 			<from-outcome>success</from-outcome>
 			<to-view-id>/schedule/example3.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cancel</from-outcome>
 			<to-view-id>/schedule/example3.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>failure</from-outcome>
 			<to-view-id>/schedule/editsettings.jsp</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	

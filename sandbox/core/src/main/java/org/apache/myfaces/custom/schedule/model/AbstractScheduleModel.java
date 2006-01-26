@@ -243,12 +243,18 @@ public abstract class AbstractScheduleModel implements ScheduleModel
         // go back to the first day of the month;
         cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DAY_OF_MONTH));
 
-        int currentMonth = cal.get(Calendar.MONTH);
+        Date temp = cal.getTime();
+        cal.add(Calendar.MONTH, 1);
+        int nextMonth = cal.get(Calendar.MONTH);
+        cal.setTime(temp);
 
         ScheduleDay firstDay = null;
         ScheduleDay lastDay = null;
+        
+        // we want to show the whole first week, including the days from the previous month
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-        while (cal.get(Calendar.MONTH) == currentMonth)
+        while (true)
         {
             ScheduleDay addedDay = add(cal.getTime());
 
@@ -259,6 +265,12 @@ public abstract class AbstractScheduleModel implements ScheduleModel
 
             lastDay = addedDay;
             cal.add(Calendar.DATE, 1);
+            
+            //stop when we are at the last day of the last week
+            if (cal.get(Calendar.MONTH) == nextMonth && cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
+            {
+               	break;
+            }
         }
 
         load(firstDay.getDayStart(), lastDay.getDayEnd());

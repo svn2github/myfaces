@@ -164,6 +164,16 @@ div.schedule-compact-default td.inactive-day td.content {
   visibility: visible;
 }
 
+div.schedule-compact-default td.inactive-day td.content td {
+  background-color: rgb(205,214,198);
+  border-color: rgb(205,214,198);
+}
+
+div.schedule-compact-default td.inactive-day td.content td.selected {
+  background-color: rgb(153,204,51);
+  border-color: rgb(153,204,51);
+}
+
 div.schedule-compact-default td.inactive-day td.header {
   background-color: rgb(205,214,198);
   visibility: visible;
@@ -338,6 +348,16 @@ div.schedule-compact-evolution td.inactive-day td.content {
   visibility: visible;
 }
 
+div.schedule-compact-evolution td.inactive-day td.content td {
+  background-color: rgb(238,235,231);
+  border-color: rgb(238,235,231);
+}
+
+div.schedule-compact-evolution td.inactive-day td.content td.selected {
+  background-color: rgb(190,206,221);
+  border-color: rgb(190,206,221);
+}
+
 div.schedule-compact-evolution td.inactive-day td.header {
   background-color: rgb(238,235,231);
   visibility: visible;
@@ -509,6 +529,18 @@ div.schedule-compact-outlookxp td.inactive-day td.content {
   background-color: rgb(219,216,209);
   visibility: visible;
 }
+
+div.schedule-compact-outlookxp td.inactive-day td.content td {
+  background-color: rgb(219,216,209);
+  border-color: rgb(219,216,209);
+}
+
+div.schedule-compact-outlookxp td.inactive-day td.content td.selected {
+  background-color: rgb(1,2,217);
+  border-color: rgb(1,2,217);
+  color: rgb(255,255,255);
+}
+
 
 div.schedule-compact-outlookxp td.inactive-day td.header {
   background-color: rgb(219,216,209);
