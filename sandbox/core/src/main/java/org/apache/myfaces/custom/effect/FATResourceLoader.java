@@ -22,6 +22,7 @@ package org.apache.myfaces.custom.effect;
  * @author werpu
  * @version $Revision$ $Date$
  */
+
 public class FATResourceLoader
 {
     
