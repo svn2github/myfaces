@@ -41,6 +41,7 @@ import javax.faces.convert.DateTimeConverter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
+import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
@@ -302,13 +303,13 @@ public class HtmlCalendarRenderer
 
         if(javascriptLocation==null)
         {
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "pt.js");
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
         }
         else
         {
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/pt.js");
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/prototype.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/popcalendar.js");
         }
