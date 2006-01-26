@@ -74,7 +74,7 @@ public class EffectRenderer extends HtmlRenderer
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
                     "prototype.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "effects.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, EffectRenderer.class, "fat.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, FATResourceLoader.class, "fat.js");
         }
     }
 
