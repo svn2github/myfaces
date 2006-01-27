@@ -77,11 +77,12 @@ public class UIComponentPerspective extends UIInput
         this.rowIndex = rowIndex;
     }
 
-    public void executeOn(FacesContext context, ExecuteOnCallback callback)
+    public Object executeOn(FacesContext context, ExecuteOnCallback callback)
     {
         setupPerspective();
-        callback.execute(context, delegate);
+        Object retVal = callback.execute(context, delegate);
         teardownPerspective();
+        return retVal;
     }
 
     private UIComponent innerGetDelegate()
