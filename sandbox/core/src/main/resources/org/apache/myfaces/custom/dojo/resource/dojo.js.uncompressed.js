@@ -31,6 +31,10 @@
  * dj_global is an alias for the top-level global object in the host
  * environment (the "window" object in a browser).
  */
+var djConfig = {
+isDebug: false
+};
+ 
 var dj_global = this; //typeof window == 'undefined' ? this : window;
 
 function dj_undef(name, obj){
