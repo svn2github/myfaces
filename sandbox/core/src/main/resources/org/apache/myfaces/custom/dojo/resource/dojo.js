@@ -17,10 +17,6 @@
 	for documentation and information on getting the source.
 */
 
-var djConfig = {
-isDebug: false
-};
-
 var dj_global=this;
 function dj_undef(_1,_2){
 if(!_2){
