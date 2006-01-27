@@ -101,12 +101,21 @@ public class DojoUtils
         }
     }
 
+    /**
+     * preinitialisation code
+     * this code has to be prefixed mandatory
+     * in dojo otherwise the dojo system
+     * does not initialize properly
+     * 
+     * @param context
+     * @param addResource
+     */
     private static void dojoPreinitialization(FacesContext context, AddResource addResource)
     {
         StringBuffer inlineScript = new StringBuffer();
         
         inlineScript.append("var djConfig = { \n");
-        inlineScript.append("isDebug:");
+        inlineScript.append("   isDebug:");
         inlineScript.append(DOJO_DEBUG);
         inlineScript.append("\n");
         inlineScript.append("}; \n");
