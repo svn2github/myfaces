@@ -1,11 +1,11 @@
 package org.apache.myfaces.custom.subform;
 
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Gerald Muellan
@@ -41,15 +41,88 @@ public class SubForm extends UIComponentBase
 
         boolean tearDownRequired = setupPartialInfo(context);
 
-        for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
+        Boolean partialEnabled = (Boolean) context.getExternalContext().getRequestMap().get(PARTIAL_ENABLED);
+
+        //todo: boolean childSubmitted = checkUICommandChildren(this,context);
+
+        if(partialEnabled!=null && partialEnabled.booleanValue())
         {
-            UIComponent childOrFacet = (UIComponent)it.next();
-            childOrFacet.processValidators(context);
+            for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
+            {
+                UIComponent childOrFacet = (UIComponent)it.next();
+                childOrFacet.processValidators(context);
+            }
+        }
+        else
+        {
+            processSubFormValidators(this,context);
         }
 
         if(tearDownRequired)
         {
             tearDownPartialInfo(context);
+        }
+    }
+
+    public void processUpdates(FacesContext context)
+    {
+        if (context == null) throw new NullPointerException("context");
+        if (!isRendered()) return;
+
+        boolean tearDownRequired = setupPartialInfo(context);
+
+        Boolean partialEnabled = (Boolean) context.getExternalContext().getRequestMap().get(PARTIAL_ENABLED);
+
+        if(partialEnabled!=null && partialEnabled.booleanValue())
+        {
+            for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
+            {
+                UIComponent childOrFacet = (UIComponent)it.next();
+                childOrFacet.processUpdates(context);
+            }
+        }
+        else
+        {
+            processSubFormUpdates(this,context);
+        }
+
+        if(tearDownRequired)
+        {
+            tearDownPartialInfo(context);
+        }
+    }
+
+    private static void processSubFormUpdates(UIComponent comp, FacesContext context)
+    {
+        for (Iterator it = comp.getFacetsAndChildren(); it.hasNext(); )
+        {
+            UIComponent childOrFacet = (UIComponent)it.next();
+
+            if(childOrFacet instanceof SubForm)
+            {
+                childOrFacet.processUpdates(context);
+            }
+            else
+            {
+                processSubFormUpdates(childOrFacet, context);
+            }
+        }
+    }
+
+    private static void processSubFormValidators(UIComponent comp, FacesContext context)
+    {
+        for (Iterator it = comp.getFacetsAndChildren(); it.hasNext(); )
+        {
+            UIComponent childOrFacet = (UIComponent)it.next();
+
+            if(childOrFacet instanceof SubForm)
+            {
+                childOrFacet.processValidators(context);
+            }
+            else
+            {
+                processSubFormValidators(childOrFacet, context);
+            }
         }
     }
 
@@ -78,18 +151,9 @@ public class SubForm extends UIComponentBase
         List li = (List) context.getExternalContext().getRequestMap().get(
                 ACTION_FOR_LIST);
 
-        //check if the list is existing at all - if not, we want to validate in any case.
-        if(li==null || li.size()==0)
-        {
-            if(!context.getExternalContext().getRequestMap().containsKey(PARTIAL_ENABLED))
-            {
-                context.getExternalContext().getRequestMap().put(PARTIAL_ENABLED,Boolean.TRUE);
-                tearDownRequired = true;
-            }
-        }
         //if there is a list, check if the current client id
         //matches an entry of the list
-        else if(li.contains(getClientId(context)))
+        if(li != null && li.contains(getClientId(context)))
         {
             if(!context.getExternalContext().getRequestMap().containsKey(PARTIAL_ENABLED))
             {

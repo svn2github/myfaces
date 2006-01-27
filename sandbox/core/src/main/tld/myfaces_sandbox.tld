@@ -934,10 +934,15 @@ Sandbox-related entities.
         <tag-class>org.apache.myfaces.custom.subform.SubFormTag</tag-class>
         <body-content>JSP</body-content>
         <description>
+            A subform to an existing form. Inputs in this form will
+            only be validated and updated, if a t:commandButton or t:commandLink has been clicked
+            with an actionFor attribute which references the client-id of this subform.
 
+            Optionally, the validation will trigger if a commandButton or commandLink embedded in this
+            subform has been clicked, except if this command is a t:commandButton or t:commandLink with an
+            actionFor attribute which doesn't reference the client-id of this subform.
         </description>
-
-
+        &ui_form_attributes;
     </tag>
 
   <!--  <tag>

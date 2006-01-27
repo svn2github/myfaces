@@ -8,6 +8,13 @@
 
 <faces-config>
 
+    <!-- managed bean for subForm-->
+
+    <managed-bean>
+        <managed-bean-name>subFormBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.subform.SubFormBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
     <!-- managed bean for autoUpdateDataTable-->
 
@@ -20,7 +27,7 @@
 
     <!-- managed bean for ajaxInputSuggest-->
 
-     <managed-bean>
+    <managed-bean>
         <managed-bean-name>inputSuggestAjax</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
@@ -28,11 +35,11 @@
 
   <!-- Managed Beans for inputSuggest.jsp -->
 
-  <managed-bean>
-    <managed-bean-name>user</managed-bean-name>
-    <managed-bean-class>org.apache.myfaces.examples.inputsuggest.User</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
+    <managed-bean>
+        <managed-bean-name>user</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.inputsuggest.User</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
      <!-- managed bean for inputAjax components -->
     <managed-bean>
