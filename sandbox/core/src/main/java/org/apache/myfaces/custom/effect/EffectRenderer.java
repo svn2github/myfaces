@@ -22,15 +22,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.div.Div;
-import org.apache.myfaces.custom.dojo.DojoResourceLoader;
+import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 
 /**
  * Fade field only currently the renderer is implemented and the tag, because we
@@ -61,29 +61,27 @@ public class EffectRenderer extends HtmlRenderer
 
         // render javascript function for client-side toggle (it won't be used
         // if user has opted for server-side toggle)
-        String javascriptLocation = (String) component.getAttributes().get(
-                JSFAttr.JAVASCRIPT_LOCATION);
+        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         AddResource addResource = AddResource.getInstance(context);
-        if(javascriptLocation != null)
+        if (javascriptLocation != null)
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/dojodebug_off.js");
 
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
+            addResource
+                    .addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/effects.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/fat.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/dojo.js.uncompressed.js");
         }
         else
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, "dojodebug_off.js");
 
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
                     "prototype.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "effects.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
+                    "effects.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, FATResourceLoader.class, "fat.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, "dojo.js.uncompressed.js");
 
         }
+        DojoUtils.addMainInclude(context, javascriptLocation);
     }
 
     public boolean getRendersChildren()
@@ -106,8 +104,7 @@ public class EffectRenderer extends HtmlRenderer
      * severely
      *
      */
-    public void encodeBegin(FacesContext context, UIComponent component)
-            throws IOException
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
         if ((context == null) || (component == null))
         {
@@ -132,24 +129,20 @@ public class EffectRenderer extends HtmlRenderer
     private void prepareFade(UIComponent component)
     {
         Div theComponent = (Div) component;
-        Boolean fade = (Boolean) component.getAttributes().get(
-                EffectTag.TAG_PARAM_FADE);
+        Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
 
         String theStyleClass = theComponent.getStyleClass();
         if (theStyleClass == null)
             theStyleClass = "";
-        if (fade != null && fade.booleanValue()
-                && !(theStyleClass.indexOf("fade") != -1))
+        if (fade != null && fade.booleanValue() && !(theStyleClass.indexOf("fade") != -1))
         {
 
-            if (theStyleClass != null
-                    && !theStyleClass.trim().equalsIgnoreCase(""))
+            if (theStyleClass != null && !theStyleClass.trim().equalsIgnoreCase(""))
                 theStyleClass += ";fade";
             else
                 theStyleClass = "fade";
 
-            String fadeColor = (String) component.getAttributes().get(
-                    EffectTag.TAG_PARAM_FADECOLOR);
+            String fadeColor = (String) component.getAttributes().get(EffectTag.TAG_PARAM_FADECOLOR);
 
             fadeColor = (fadeColor != null) ? fadeColor : "";
             fadeColor = fadeColor.replaceAll("#", "");
@@ -161,22 +154,16 @@ public class EffectRenderer extends HtmlRenderer
         }
     }
 
-    public void renderEffectsBegin(FacesContext context, UIComponent component)
-            throws IOException
+    public void renderEffectsBegin(FacesContext context, UIComponent component) throws IOException
     {
 
         // dump all the parameters which affect us into we dont set a central
         // unchecked here to keep the warning level high
-        Boolean squish = (Boolean) component.getAttributes().get(
-                EffectTag.TAG_PARAM_SQUISH);
-        Boolean puff = (Boolean) component.getAttributes().get(
-                EffectTag.TAG_PARAM_PUFF);
-        Boolean scale = (Boolean) component.getAttributes().get(
-                EffectTag.TAG_PARAM_SCALE);
-        Boolean pulsate = (Boolean) component.getAttributes().get(
-                EffectTag.TAG_PARAM_PULSATE);
-        Integer scaleSize = (Integer) component.getAttributes().get(
-                EffectTag.TAG_PARAM_SCALE_SIZE);
+        Boolean squish      = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SQUISH);
+        Boolean puff        = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PUFF);
+        Boolean scale       = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE);
+        Boolean pulsate     = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PULSATE);
+        Integer scaleSize   = (Integer) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE_SIZE);
 
         Div div = (Div) component;
         ResponseWriter writer = context.getResponseWriter();
@@ -192,8 +179,7 @@ public class EffectRenderer extends HtmlRenderer
         String style = div.getStyle();
         if (null != styleClass && null != style)
         {
-            throw new IllegalStateException(
-                    "Only one of style or styleClass can be specified");
+            throw new IllegalStateException("Only one of style or styleClass can be specified");
         }
         if (null != styleClass)
         {
@@ -208,26 +194,21 @@ public class EffectRenderer extends HtmlRenderer
 
         if (puff != null && puff.booleanValue())
         {
-            writer.writeAttribute(HTML.ONCLICK_ATTR,
-                    "javascript:new Effect.Puff(this);", null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:new Effect.Puff(this);", null);
         }
         if (squish != null && squish.booleanValue())
         {
-            writer.writeAttribute(HTML.ONCLICK_ATTR,
-                    "javascript:new Effect.Squish(this);", null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:new Effect.Squish(this);", null);
         }
         if (pulsate != null && pulsate.booleanValue())
         {
-            writer.writeAttribute(HTML.ONCLICK_ATTR,
-                    "javascript:new Effect.Pulsate(this);", null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:new Effect.Pulsate(this);", null);
         }
         if (scale != null && scale.booleanValue())
         {
-            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR,
-                    "javascript:new Effect.Scale(this," + scaleSize.toString()
-                            + ");", null);
-            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR,
-                    "javascript:new Effect.Scale(this,100);", null);
+            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "javascript:new Effect.Scale(this," + scaleSize.toString()
+                    + ");", null);
+            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "javascript:new Effect.Scale(this,100);", null);
         }
 
     }
@@ -238,8 +219,7 @@ public class EffectRenderer extends HtmlRenderer
      * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext,
      *      javax.faces.component.UIComponent)
      */
-    public void encodeChildren(FacesContext facesContext,
-            UIComponent uiComponent) throws IOException
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
 
         RendererUtils.renderChildren(facesContext, uiComponent);
@@ -250,8 +230,7 @@ public class EffectRenderer extends HtmlRenderer
      * Standard encode end
      *
      */
-    public void encodeEnd(FacesContext facesContext, UIComponent component)
-            throws IOException
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.DIV_ELEM);

@@ -35,9 +35,9 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 public class DojoUtils
 {
     
-    private static final String DOJO_FILE_UNCOMPRESSED = "/dojo.js.uncompressed.js";
+    private static final String DOJO_FILE_UNCOMPRESSED = "dojo.js.uncompressed.js";
     //TODO chew this through the flag code
-    private static final String DOJO_FILE              = "/dojo.js";
+    private static final String DOJO_FILE              = "dojo.js";
 
     /**
      * dojo utils flag which can be altered for various states of the dojo lib
@@ -63,7 +63,8 @@ public class DojoUtils
 
         buf.append("dojo.require(\"");
         buf.append(dojoPackage);
-        buf.append(");");
+        buf.append("\");");
+        
         writer.write(buf.toString());
 
         writer.endElement(HTML.SCRIPT_ELEM);
@@ -80,17 +81,36 @@ public class DojoUtils
     public static final void addMainInclude(FacesContext context, String javascriptLocation)
     {
         AddResource addResource = AddResource.getInstance(context);
+        /*
+         * var djConfig = {
+            isDebug: false
+            };
 
+         */
+        dojoPreinitialization(context, addResource);
+        String dojofile = DOJO_COMPRESSED ? DOJO_FILE:DOJO_FILE_UNCOMPRESSED;
         if (javascriptLocation != null)
         {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation
-                    + DOJO_FILE_UNCOMPRESSED);
+                    + dojofile);
         }
         else
         {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class,
-                    DOJO_FILE_UNCOMPRESSED);
+                    dojofile);
         }
+    }
+
+    private static void dojoPreinitialization(FacesContext context, AddResource addResource)
+    {
+        StringBuffer inlineScript = new StringBuffer();
+        
+        inlineScript.append("var djConfig = { \n");
+        inlineScript.append("isDebug:");
+        inlineScript.append(DOJO_DEBUG);
+        inlineScript.append("\n");
+        inlineScript.append("}; \n");
+        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, inlineScript.toString());
     }
 
 }
