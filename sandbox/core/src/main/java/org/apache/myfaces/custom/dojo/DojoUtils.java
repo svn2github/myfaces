@@ -34,15 +34,13 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
  */
 public class DojoUtils
 {
-    
+
     private static final String DOJO_FILE_UNCOMPRESSED = "dojo.js.uncompressed.js";
-    //TODO chew this through the flag code
     private static final String DOJO_FILE              = "dojo.js";
 
     /**
      * dojo utils flag which can be altered for various states of the dojo lib
      */
-    //TODO make em actually usable, they are currently only debugging flags
     public static final boolean DOJO_COMPRESSED        = false;
     public static final boolean DOJO_DEBUG             = false;
 
@@ -64,7 +62,7 @@ public class DojoUtils
         buf.append("dojo.require(\"");
         buf.append(dojoPackage);
         buf.append("\");");
-        
+
         writer.write(buf.toString());
 
         writer.endElement(HTML.SCRIPT_ELEM);
@@ -83,21 +81,19 @@ public class DojoUtils
         AddResource addResource = AddResource.getInstance(context);
         /*
          * var djConfig = {
-            isDebug: false
-            };
+         isDebug: false
+         };
 
          */
         dojoPreinitialization(context, addResource);
-        String dojofile = DOJO_COMPRESSED ? DOJO_FILE:DOJO_FILE_UNCOMPRESSED;
+        String dojofile = DOJO_COMPRESSED ? DOJO_FILE : DOJO_FILE_UNCOMPRESSED;
         if (javascriptLocation != null)
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation
-                    + dojofile);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + dojofile);
         }
         else
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class,
-                    dojofile);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
         }
     }
 
@@ -113,7 +109,7 @@ public class DojoUtils
     private static void dojoPreinitialization(FacesContext context, AddResource addResource)
     {
         StringBuffer inlineScript = new StringBuffer();
-        
+
         inlineScript.append("var djConfig = { \n");
         inlineScript.append("   isDebug:");
         inlineScript.append(DOJO_DEBUG);
