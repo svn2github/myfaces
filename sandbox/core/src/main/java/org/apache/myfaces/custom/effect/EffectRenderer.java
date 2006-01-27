@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.div.Div;
+import org.apache.myfaces.custom.dojo.DojoResourceLoader;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -65,16 +66,23 @@ public class EffectRenderer extends HtmlRenderer
         AddResource addResource = AddResource.getInstance(context);
         if(javascriptLocation != null)
         {
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/dojodebug_off.js");
+
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/effects.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/fat.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/dojo.js.uncompressed.js");
         }
         else
         {
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, "dojodebug_off.js");
+
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
                     "prototype.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "effects.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, FATResourceLoader.class, "fat.js");
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, "dojo.js.uncompressed.js");
+
         }
     }
 
