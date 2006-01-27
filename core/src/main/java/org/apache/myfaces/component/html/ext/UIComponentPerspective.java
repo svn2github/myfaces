@@ -18,13 +18,17 @@ package org.apache.myfaces.component.html.ext;
 import org.apache.myfaces.component.ExecuteOnCallback;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIData;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+import javax.faces.event.ValueChangeListener;
+import javax.faces.validator.Validator;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -34,8 +38,10 @@ import java.util.Map;
  * @author Martin Marinschek (latest modification by $Author: mmarinschek $)
  * @version $Revision: 371487 $ $Date: 2006-01-23 09:16:20 +0100 (Mo, 23 Jän 2006) $
  */
-public class UIComponentPerspective extends UIComponentBase
+public class UIComponentPerspective extends UIInput
 {
+    private boolean enableSetupPerspective = false;
+
     private UIData uiData;
     private UIComponent delegate;
     private int rowIndex;
@@ -43,6 +49,9 @@ public class UIComponentPerspective extends UIComponentBase
 
     public UIComponentPerspective(UIData uiData, UIComponent delegate, int rowIndex)
     {
+        super();
+
+        this.enableSetupPerspective = true;
         this.uiData = uiData;
         this.rowIndex = rowIndex;
         this.delegate = delegate;
@@ -77,7 +86,17 @@ public class UIComponentPerspective extends UIComponentBase
 
     private UIComponent innerGetDelegate()
     {
+        if(delegate==null)
+        {
+            delegate = new UIInput();
+        }
+
         return delegate;
+    }
+
+    private UIInput innerGetDelegateInput()
+    {
+        return (UIInput) delegate;
     }
 
     public Map getAttributes()
@@ -90,13 +109,19 @@ public class UIComponentPerspective extends UIComponentBase
 
     protected void teardownPerspective()
     {
-        uiData.setRowIndex(oldRowIndex);
+        if(enableSetupPerspective)
+        {
+            uiData.setRowIndex(oldRowIndex);
+        }
     }
 
     protected void setupPerspective()
     {
-        oldRowIndex = uiData.getRowIndex();
-        uiData.setRowIndex(rowIndex);
+        if(enableSetupPerspective)
+        {
+            oldRowIndex = uiData.getRowIndex();
+            uiData.setRowIndex(rowIndex);
+        }
     }
 
     public ValueBinding getValueBinding(String name)
@@ -348,5 +373,217 @@ public class UIComponentPerspective extends UIComponentBase
         setupPerspective();
         innerGetDelegate().setTransient(newTransientValue);
         teardownPerspective();
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public Object getSubmittedValue()
+    {
+        setupPerspective();
+        Object retValue = innerGetDelegateInput().getSubmittedValue();
+        teardownPerspective();
+        return retValue;
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public void setSubmittedValue(Object submittedValue)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setSubmittedValue(submittedValue);
+        teardownPerspective();
+    }
+
+    public void setValue(Object value)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setValue(value);
+        teardownPerspective();
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public boolean isLocalValueSet()
+    {
+        setupPerspective();
+        boolean retVal = innerGetDelegateInput().isLocalValueSet();
+        teardownPerspective();
+        return retVal;
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public void setLocalValueSet(boolean localValueSet)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setLocalValueSet(localValueSet);
+        teardownPerspective();
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public boolean isValid()
+    {
+        setupPerspective();
+        boolean retValue=innerGetDelegateInput().isValid();
+        teardownPerspective();
+        return retValue;
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public void setValid(boolean valid)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setValid(valid);
+        teardownPerspective();
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public MethodBinding getValidator()
+    {
+        setupPerspective();
+        MethodBinding validator = innerGetDelegateInput().getValidator();
+        teardownPerspective();
+        return validator;
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public void setValidator(MethodBinding validator)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setValidator(validator);
+        teardownPerspective();
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public MethodBinding getValueChangeListener()
+    {
+        setupPerspective();
+        MethodBinding retValue = innerGetDelegateInput().getValueChangeListener();
+        teardownPerspective();
+        return retValue;
+    }
+
+    // use javadoc inherited from EditableValueHolder
+    public void setValueChangeListener(MethodBinding valueChangeListener)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setValueChangeListener(valueChangeListener);
+        teardownPerspective();
+    }
+
+    public void updateModel(FacesContext context)
+    {
+        setupPerspective();
+        innerGetDelegateInput().updateModel(context);
+        teardownPerspective();
+    }
+
+    public void validate(FacesContext context)
+    {
+        setupPerspective();
+        innerGetDelegateInput().validate(context);
+        teardownPerspective();
+    }
+
+
+    public void addValidator(Validator validator)
+    {
+        setupPerspective();
+        innerGetDelegateInput().addValidator(validator);
+        teardownPerspective();
+    }
+
+    public Validator[] getValidators()
+    {
+        setupPerspective();
+        Validator[] retValue = innerGetDelegateInput().getValidators();
+        teardownPerspective();
+        return retValue;
+    }
+
+    public void removeValidator(Validator validator)
+    {
+        setupPerspective();
+        innerGetDelegateInput().removeValidator(validator);
+        teardownPerspective();
+    }
+
+    public void addValueChangeListener(ValueChangeListener listener)
+    {
+        setupPerspective();
+        innerGetDelegateInput().addValueChangeListener(listener);
+        teardownPerspective();
+    }
+
+    public ValueChangeListener[] getValueChangeListeners()
+    {
+        setupPerspective();
+        ValueChangeListener[] listeners = innerGetDelegateInput().getValueChangeListeners();
+        teardownPerspective();
+        return listeners;
+    }
+
+    public void removeValueChangeListener(ValueChangeListener listener)
+    {
+        setupPerspective();
+        innerGetDelegateInput().removeValueChangeListener(listener);
+        teardownPerspective();
+    }
+
+    public void setImmediate(boolean immediate)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setImmediate(immediate);
+        teardownPerspective();
+    }
+
+    public boolean isImmediate()
+    {
+        setupPerspective();
+        boolean retValue = innerGetDelegateInput().isImmediate();
+        teardownPerspective();
+        return retValue;
+    }
+
+    public void setRequired(boolean required)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setRequired(required);
+        teardownPerspective();
+    }
+
+    public boolean isRequired()
+    {
+        setupPerspective();
+        boolean retValue = innerGetDelegateInput().isRequired();
+        teardownPerspective();
+        return retValue;
+    }
+
+    public Object getLocalValue()
+    {
+        setupPerspective();
+        Object retValue = innerGetDelegateInput().getLocalValue();
+        teardownPerspective();
+        return retValue;
+    }
+
+    public void setConverter(Converter converter)
+    {
+        setupPerspective();
+        innerGetDelegateInput().setConverter(converter);
+        teardownPerspective();
+    }
+
+    public Converter getConverter()
+    {
+        setupPerspective();
+        Converter retValue = innerGetDelegateInput().getConverter();
+        teardownPerspective();
+        return retValue;
+    }
+
+    public Object getValue()
+    {
+        setupPerspective();
+        Object retValue = innerGetDelegateInput().getValue();
+        teardownPerspective();
+        return retValue;
     }
 }

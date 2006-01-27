@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.apache.myfaces.mock;
+package org.apache.myfaces.mock.tomahawk;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIViewRoot;
@@ -33,7 +33,7 @@ public class MockFacesContext extends FacesContext
     private boolean _responseComplete;
     private boolean _renderResponse;
     private ExternalContext _externalContext;
-    
+
     public MockFacesContext()
     {
         super.setCurrentInstance(this);
@@ -46,6 +46,11 @@ public class MockFacesContext extends FacesContext
 
     public Application getApplication()
     {
+        if(_application==null)
+        {
+            _application = new MockApplication();
+        }
+
         return _application;
     }
 
@@ -53,7 +58,7 @@ public class MockFacesContext extends FacesContext
     {
         return null;
     }
-    
+
     public void setExternalContext(ExternalContext externalContext)
     {
         _externalContext = externalContext;
@@ -143,3 +148,4 @@ public class MockFacesContext extends FacesContext
         _responseComplete = true;
     }
 }
+

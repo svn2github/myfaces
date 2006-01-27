@@ -109,15 +109,24 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             int separatorIndex = expr.indexOf(NamingContainer.SEPARATOR_CHAR);
 
             String rowIndexStr=expr;
+            String remainingPart=null;
 
             if(separatorIndex!=-1)
             {
                 rowIndexStr = expr.substring(0,separatorIndex);
+                remainingPart = expr.substring(separatorIndex+1);
             }
 
             int rowIndex = Integer.valueOf(rowIndexStr).intValue();
 
-            UIComponent comp = super.findComponent(expr);
+            if(remainingPart == null)
+            {
+                log.error("Wrong syntax of expression : "+expr+
+                        " rowIndex was provided, but no component name.");
+                return null;
+            }
+
+            UIComponent comp = super.findComponent(remainingPart);
 
             if(comp == null)
                 return null;
