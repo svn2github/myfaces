@@ -1,14 +1,34 @@
 package org.apache.myfaces.custom.subform;
 
+import org.apache.myfaces.renderkit.RendererUtils;
+
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 import java.util.Iterator;
 import java.util.List;
 
-/**
+/**A SubForm which will allow for partial validation
+ * and model update.
+ *
+ * Components will be validated and updated only if
+ * either a child-component of this form caused
+ * the submit of the form, or an extended commandLink
+ * or commandButton with the actionFor attribute set
+ * to the client-id of this component was used.
+ *
+ * You can have several comma-separated entries in
+ * the actionFor-attribute - with this it's possible to
+ * validate and update more than one subForm at once.
+ *
+ *
+ *
  * @author Gerald Muellan
+ * @author Martin Marinschek
  *         Date: 19.01.2006
  *         Time: 13:58:18
  */
@@ -21,7 +41,7 @@ public class SubForm extends UIComponentBase
     public static final String COMPONENT_FAMILY = "javax.faces.Form";
 
     private static final String PARTIAL_ENABLED = "org.apache.myfaces.IsPartialPhaseExecutionEnabled";
-    private static final String ACTION_FOR_LIST = "org.apache.myfaces.ActionForList";
+    private boolean _submitted;
 
 
     public SubForm()
@@ -34,18 +54,24 @@ public class SubForm extends UIComponentBase
         return COMPONENT_FAMILY;
     }
 
+    public boolean isSubmitted()
+    {
+        return _submitted;
+    }
+
+    public void setSubmitted(boolean submitted)
+    {
+        _submitted = submitted;
+    }
+
     public void processValidators(FacesContext context)
     {
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        boolean tearDownRequired = setupPartialInfo(context);
+        boolean partialEnabled = isPartialEnabled(context, PhaseId.PROCESS_VALIDATIONS);
 
-        Boolean partialEnabled = (Boolean) context.getExternalContext().getRequestMap().get(PARTIAL_ENABLED);
-
-        //todo: boolean childSubmitted = checkUICommandChildren(this,context);
-
-        if(partialEnabled!=null && partialEnabled.booleanValue())
+        if(partialEnabled || _submitted)
         {
             for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
             {
@@ -57,11 +83,6 @@ public class SubForm extends UIComponentBase
         {
             processSubFormValidators(this,context);
         }
-
-        if(tearDownRequired)
-        {
-            tearDownPartialInfo(context);
-        }
     }
 
     public void processUpdates(FacesContext context)
@@ -69,11 +90,9 @@ public class SubForm extends UIComponentBase
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        boolean tearDownRequired = setupPartialInfo(context);
+        boolean partialEnabled = isPartialEnabled(context,PhaseId.UPDATE_MODEL_VALUES);
 
-        Boolean partialEnabled = (Boolean) context.getExternalContext().getRequestMap().get(PARTIAL_ENABLED);
-
-        if(partialEnabled!=null && partialEnabled.booleanValue())
+        if(partialEnabled || _submitted)
         {
             for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
             {
@@ -84,11 +103,6 @@ public class SubForm extends UIComponentBase
         else
         {
             processSubFormUpdates(this,context);
-        }
-
-        if(tearDownRequired)
-        {
-            tearDownPartialInfo(context);
         }
     }
 
@@ -126,30 +140,36 @@ public class SubForm extends UIComponentBase
         }
     }
 
+    public void queueEvent(FacesEvent event)
+    {
+        if(event instanceof ActionEvent)
+        {
+            _submitted = true;
+        }
+
+        super.queueEvent(event);
+    }
+
     /**Sets up information if this component is included in
      * the group of components which are associated with the current action.
      *
      * @param context
      * @return true if there has been a change by this setup which has to be undone after the phase finishes.
      */
-    private boolean setupPartialInfo(FacesContext context)
+    private boolean isPartialEnabled(FacesContext context, PhaseId phaseId)
     {
-        //the following section is not in the spec
-        //there is no place to put it into the actual implementation, though
         //we want to execute validation (and model update) only
         //if certain conditions are met
         //especially, we want to switch validation/update on/off depending on
         //the attribute "actionFor" of a MyFaces extended button or link
         //if you use commandButtons which don't set these
         //request parameters, this won't cause any adverse effects
-        //except the additional performance hit of getting the request-parameter
 
-        //is it necessary to remove the request-parameter again?
-        boolean tearDownRequired = false;
+        boolean partialEnabled = false;
 
-        //get the list of (parent) client-ids for which a validation should be performed
+        //get the list of (parent) client-ids for which a validation/model update should be performed
         List li = (List) context.getExternalContext().getRequestMap().get(
-                ACTION_FOR_LIST);
+                RendererUtils.ACTION_FOR_LIST);
 
         //if there is a list, check if the current client id
         //matches an entry of the list
@@ -157,23 +177,23 @@ public class SubForm extends UIComponentBase
         {
             if(!context.getExternalContext().getRequestMap().containsKey(PARTIAL_ENABLED))
             {
-                context.getExternalContext().getRequestMap().put(PARTIAL_ENABLED,Boolean.TRUE);
-                tearDownRequired = true;
+                partialEnabled=true;
             }
         }
 
-        return tearDownRequired;
-    }
+        if(partialEnabled)
+        {
+            //get the list of phases which should be executed
+            List phaseList = (List) context.getExternalContext().getRequestMap().get(
+                RendererUtils.ACTION_FOR_PHASE_LIST);
 
-    /**
-     * Remove the information about this component being included in the partial
-     * phase execution.
-     *
-     * @param context
-     */
-    private void tearDownPartialInfo(FacesContext context)
-    {
-        context.getExternalContext().getRequestMap().remove(PARTIAL_ENABLED);
+            if(phaseList != null && !phaseList.isEmpty() && !phaseList.contains(phaseId))
+            {
+                partialEnabled=false;
+            }
+        }
+
+        return partialEnabled;
     }
 
 

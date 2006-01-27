@@ -3,10 +3,26 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>Comma separated list of component-ids for which
+            <description>Comma separated list of subForm-ids for which
                 validation and model update should take place when
                 this command is executed.
-                You need to use component-containers, not actual
-                input components for this to work.
+                You need to wrap your input components in
+                org.apache.myfaces.custom.subform.SubForm instances
+                for this to work.
+            </description>
+        </attribute>
+        <attribute>
+            <name>actionForPhase</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Comma separated list of lifecycle-phases which should be
+                executed when this command is clicked. With this you can
+                effectively switch on/off validation and model upate
+                for a certain link/button.
+                Possible Values: PROCESS_VALIDATIONS, UPDATE_MODEL_VALUES
+                default-value: if no value is provided, both phases
+                will be executed.
             </description>
         </attribute>
