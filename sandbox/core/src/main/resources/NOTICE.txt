@@ -24,3 +24,6 @@ homepage at http://sarissa.sourceforge.net/ for more information.
 
 This product includes software developed by Guido Wesdorp (i18n.js, used by the KUPU html editor)
 (http://kupu.oscom.org/).
+
+This product includes software developed by The Dojo Toolkit project
+http://www.dojotoolkit.org/
