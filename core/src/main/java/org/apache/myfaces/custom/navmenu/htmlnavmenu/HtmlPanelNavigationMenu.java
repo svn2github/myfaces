@@ -42,7 +42,6 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
 
     static final String PREVIOUS_VIEW_ROOT = HtmlPanelNavigationMenu.class.getName() + ".PREVIOUS_VIEW_ROOT";
     private boolean _itemOpenActiveStatesRestored = false;
-    private transient Object[] _state;
 
     public void decode(FacesContext context)
     {
@@ -90,7 +89,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
                 }
                 else
                 {
-                    log.error("Navigation item " + child.getClientId(facesContext) + " not found in previous view.");
+                    log.debug("Navigation item " + child.getClientId(facesContext) + " not found in previous view.");
                 }
                 if (child.getChildCount() > 0)
                 {
@@ -257,13 +256,12 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         values[8] = _separatorStyle;
         values[9] = _layout;
         values[10] = _preprocessed;
-        return ((Object) (values));
+        return values;
     }
 
     public void restoreState(FacesContext context, Object state)
     {
         Object values[] = (Object[])state;
-        _state = values;
         super.restoreState(context, values[0]);
         _itemClass = (String)values[1];
         _openItemClass = (String)values[2];
