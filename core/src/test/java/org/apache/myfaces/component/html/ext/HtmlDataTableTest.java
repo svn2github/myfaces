@@ -30,11 +30,7 @@ import javax.faces.render.RenderKitFactory;
 
 import junit.framework.TestCase;
 
-import org.apache.myfaces.mock.tomahawk.MockApplicationFactory;
-import org.apache.myfaces.mock.tomahawk.MockRenderKitFactory;
-import org.apache.myfaces.mock.tomahawk.MockFacesContext;
-import org.apache.myfaces.mock.tomahawk.MockExternalContext;
-import org.apache.myfaces.mock.api.MockFacesContextHelper;
+import org.apache.myfaces.mock.tomahawk.*;
 import org.apache.myfaces.renderkit.RenderKitFactoryImpl;
 import org.apache.myfaces.renderkit.html.HtmlRenderKitImpl;
 
