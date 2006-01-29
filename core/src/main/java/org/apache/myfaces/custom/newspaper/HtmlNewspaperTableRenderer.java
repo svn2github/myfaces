@@ -123,7 +123,7 @@ public class HtmlNewspaperTableRenderer
                     if(!child.isRendered()) continue;
                     // draw the element's cell
                     writer.startElement(HTML.TD_ELEM, newspaperTable);
-                    if(styles.hasColumnStyle()) writer.writeAttribute(HTML.CLASS_ATTR, styles.getColumnStyle(j), null);
+                    if(styles.hasColumnStyle()) writer.writeAttribute(HTML.CLASS_ATTR, styles.getColumnStyle(nc * newspaperTable.getChildCount() + j), null);
                     RendererUtils.renderChild(facesContext, child);
                     writer.endElement(HTML.TD_ELEM);
                 }
