@@ -36,7 +36,6 @@
     <t:panelNavigation2 id="nav1" layout="list" itemClass="mypage" activeItemClass="selected" openItemClass="selected" >
 		<t:commandNavigation2 value="#{example_messages['panelnav_products']}" action="go_panelnavigation_1" >
             <t:commandNavigation2 action="#{navigationMenu.getAction1}" actionListener="#{navigationMenu.actionListener}">
-                <t:updateActionListener property="#{navigationMenu.updateAction}" value="#{navigationMenu.updateActionValue}"/>
                 <f:verbatim>&#8250; </f:verbatim>
                 <t:outputText value="#{example_messages['panelnav_serach1']}" />
             </t:commandNavigation2>

@@ -32,7 +32,6 @@
             <t:commandNavigation id="nav_2_4_10" value="#{example_messages['nav_tree']}" action="go_tree" />
             <t:commandNavigation id="nav_2_4_100" value="#{example_messages['nav_tree2']}" action="go_tree2" />
             <t:commandNavigation id="nav_2_4_11" value="#{example_messages['nav_treeTable']}" action="go_treeTable"/>
-            <t:commandNavigation id="nav_2_4_12" value="#{example_messages['nav_rssTicker']}" action="go_rssticker" />
             <t:commandNavigation id="nav_2_4_13" value="#{example_messages['nav_dataScroller']}" action="go_datascroller" />
             <t:commandNavigation id="nav_2_4_14" value="#{example_messages['nav_panelstack']}" action="go_panelstack" />
             <t:commandNavigation id="nav_2_4_15" value="#{example_messages['nav_css']}" action="go_css" />

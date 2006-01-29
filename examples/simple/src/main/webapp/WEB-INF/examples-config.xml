@@ -454,11 +454,6 @@
         </navigation-case>
 
         <navigation-case>
-            <from-outcome>go_rssticker</from-outcome>
-            <to-view-id>/rssTicker.jsp</to-view-id>
-        </navigation-case>
-
-        <navigation-case>
             <from-outcome>go_datascroller</from-outcome>
             <to-view-id>/dataScroller.jsp</to-view-id>
         </navigation-case>
