@@ -852,34 +852,6 @@ Sandbox-related entities.
             <description>Image to show instead of checkox when boolean value is false</description>
         </attribute>
     </tag>
-     <tag>
-        <name>selectBooleanCheckboxAjax</name>
-        <tag-class>org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjaxTag</tag-class>
-        <body-content>JSP</body-content>
-        <description>
-            Extends standard selectBooleanCheckbox by user role support.
-        </description>
-        &standard_select_boolean_checkbox_attributes;
-        &user_role_attributes;
-        &ext_forceId_attribute;
-        &display_value_only_attributes;
-        &ext_ajax_attributes;
-        <attribute>
-            <name>onImage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.String</type>
-            <description>Image to show instead of checkox when boolean value is true</description>
-        </attribute>
-        <attribute>
-            <name>offImage</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.String</type>
-            <description>Image to show instead of checkox when boolean value is false</description>
-        </attribute>
-    </tag>
-
 
     <!-- message, special for ajax stuff to enable client side message updates, could roll this into tomahawk at some point -->
     <tag>
