@@ -16,8 +16,6 @@
 
 package org.apache.myfaces.custom.convertDateTime;
 
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIComponent;
 import java.util.TimeZone;
 
 /**
@@ -33,22 +31,9 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter
 {
     public static final String CONVERTER_ID = org.apache.myfaces.custom.convertDateTime.DateTimeConverter.class.getName();
 
-    public TimeZone getTimeZone()
+    public DateTimeConverter()
     {
-        return _timeZone != null ? _timeZone : TimeZone.getDefault();
-    }
-
-    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object value)
-    {
-        String s = super.getAsString(facesContext, uiComponent, value);
-        return s;
-    }
-
-    // METHODS
-    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value)
-    {
-        Object ob = super.getAsObject(facesContext, uiComponent, value);
-        return ob;
+        setTimeZone(TimeZone.getDefault());
     }
 
 }
