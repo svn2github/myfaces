@@ -43,7 +43,6 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlFormRendererBase;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.util.DummyFormResponseWriter;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 
@@ -166,10 +165,10 @@ public class HtmlJSCookMenuRenderer
             String formName = getFormName(parentForm,context);
             List uiNavMenuItemList = component.getChildren();
             if( formName == null ) {
-                DummyFormResponseWriter dummyFormResponseWriter = DummyFormUtils.getDummyFormResponseWriter(context);
-                dummyFormResponseWriter.addDummyFormParameter(JSCOOK_ACTION_PARAM);
-                dummyFormResponseWriter.setWriteDummyForm(true);
-                formName = dummyFormResponseWriter.getDummyFormName();
+                DummyFormUtils.setWriteDummyForm(context,true);
+                DummyFormUtils.addDummyFormParameter(context,JSCOOK_ACTION_PARAM);
+
+                formName = DummyFormUtils.getDummyFormName();
             }
             else {
                 HtmlFormRendererBase.addHiddenCommandParameter(parentForm,JSCOOK_ACTION_PARAM);
@@ -196,8 +195,7 @@ public class HtmlJSCookMenuRenderer
 
     /**
      * Method getFormName.
-     * 
-     * @param sortColumnHeader SortColumnHeader
+     *
      * @param facesContext FacesContext
      * @return String
      */
