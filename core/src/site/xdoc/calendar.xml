@@ -79,20 +79,20 @@
         <section name="Usage">
             
             <source xml:space="preserve">
-&lt;t:calendar [ HTML universal attributes ]
+&lt;t:inputCalendar [ HTML universal attributes ]
                [ HTML event handler attributes ]
                [ UIInput standard attributes (i.e. valueChangeListener) ]
                [monthYearRowClass="month-and-year-header-row-css-class"]
                [weekRowClass="week-header-row-css-class"]
                [dayCellClass="empty-or-date-cell-css-class"]
                [currentDayCellClass="currently-selected-day-cell-css-class"]&gt;
-&lt;/t:calendar&gt;
+&lt;/t:inputCalendar&gt;
             </source>
         </section>
         <!-- Syntax -->
         <section name="Syntax">
             
-            <blockquote><h3>&lt;t:calendar/&gt;</h3>
+            <blockquote><h3>&lt;t:inputCalendar/&gt;</h3>
                 <code>
                     monthYearRowClass - CSS class to be used for the header-row showing
                                         month and year.
