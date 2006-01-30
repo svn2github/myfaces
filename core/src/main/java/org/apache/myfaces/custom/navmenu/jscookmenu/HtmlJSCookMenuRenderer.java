@@ -277,7 +277,7 @@ public class HtmlJSCookMenuRenderer
             }
             writer.append(", '");
             if( item.getLabel() != null ) {
-                writer.append(JavascriptUtils.encodeString(item.getLabel()));
+                writer.append(getString(context,item.getLabel()));
             }
             writer.append("', ");
             StringBuffer actionStr = new StringBuffer();
@@ -292,12 +292,12 @@ public class HtmlJSCookMenuRenderer
                     if (uiNavMenuItem != null && uiNavMenuItem.getItemValue() != null)
                     {
                         actionStr.append(';');
-                        actionStr.append(JavascriptUtils.encodeString(item.getValue()==null?null:item.getValue().toString()));
+                        actionStr.append(getString(context,uiNavMenuItem.getItemLabel()));
                     }
                     else if (item.getValue() != null)
                     {
                         actionStr.append(';');
-                        actionStr.append(JavascriptUtils.encodeString(item.getValue()==null?null:item.getValue().toString()));
+                        actionStr.append(getString(context,item.getLabel()));
                     }
                 }
                 if (item.getAction() != null)
@@ -340,8 +340,34 @@ public class HtmlJSCookMenuRenderer
         }
     }
 
+    private String getString(FacesContext facesContext, Object value)
+    {
+        String str = "";
+
+        if(value!=null)
+        {
+            str = value.toString();
+        }
+
+        if(UIComponentTag.isValueReference(str))
+        {
+            value = facesContext.getApplication().createValueBinding(str).getValue(facesContext);
+
+            if(value != null)
+            {
+                str = value.toString();
+            }
+            else
+            {
+                str = "";
+            }
+        }
+
+        return JavascriptUtils.encodeString(str);
+    }
+
     private void encodeValueBinding(StringBuffer writer, UINavigationMenuItem uiNavMenuItem,
-            NavigationMenuItem item)
+                                    NavigationMenuItem item)
     {
         ValueBinding vb = uiNavMenuItem.getValueBinding("NavMenuItemValue");
         if (vb == null) {
