@@ -1,5 +1,6 @@
 
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
 <html>
@@ -29,7 +30,8 @@
 	<f:loadBundle
 		basename="org.apache.myfaces.examples.resource.example_messages"
 		var="example_messages" />
-	<t:jscookMenu layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
+    <h:form>
+    <t:jscookMenu layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
 		<%/* Availaible jscookMenu themes: ThemeIE, ThemeMiniBlack, ThemeOffice, ThemePanel
              Availaible jscookMenu layout: hbr, hbl, hur, hul, vbr, vbl, vur, vul
              respect to Heng Yuan http://www.cs.ucla.edu/~heng/JSCookMenu
@@ -99,6 +101,8 @@
     <t:jscookMenu id="menu2" layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
         <t:navigationMenuItems id="navitems" value="#{navigationMenu.panelNavigationItems}" />
     </t:jscookMenu>
+
+    </h:form>
 
 </f:view>
 <%@include file="inc/page_footer.jsp"%>

@@ -292,12 +292,12 @@ public class HtmlJSCookMenuRenderer
                     if (uiNavMenuItem != null && uiNavMenuItem.getItemValue() != null)
                     {
                         actionStr.append(';');
-                        actionStr.append(item.getValue());
+                        actionStr.append(JavascriptUtils.encodeString(item.getValue()==null?null:item.getValue().toString()));
                     }
                     else if (item.getValue() != null)
                     {
                         actionStr.append(';');
-                        actionStr.append(item.getValue());
+                        actionStr.append(JavascriptUtils.encodeString(item.getValue()==null?null:item.getValue().toString()));
                     }
                 }
                 if (item.getAction() != null)
