@@ -97,6 +97,9 @@
         <t:navigationMenuItem id="nav_3"
             itemLabel="Apache MyFaces Home" action="http://myfaces.apache.org" />
 	</t:jscookMenu>
+
+    <h:outputText value="<p>Dynamic binding: </p>" escape="false"/>
+
     <t:jscookMenu id="menu2" layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
         <t:navigationMenuItems id="navitems" value="#{navigationMenu.panelNavigationItems}" />
     </t:jscookMenu>

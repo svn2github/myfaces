@@ -57,7 +57,6 @@ public class HtmlJSCookMenuRenderer
 
     private static final String JSCOOK_MENU_SCRIPT = "JSCookMenu.js";
     
-    //private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
     private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
 
     private static final String JSCOOK_ACTION_PARAM = "jscook_action";
