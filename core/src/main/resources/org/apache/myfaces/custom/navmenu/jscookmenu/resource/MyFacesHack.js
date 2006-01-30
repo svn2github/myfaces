@@ -17,11 +17,11 @@ function cmItemMouseUp (obj, index)
         // changes by Richard J. Barbalace
         if (link.match(/^\w*:\w*:\/\//) != null ) {
             // Link is a URL
-            link = link.replace(/^\w*:/, "");  // Remove JSF ID
+            link = link.replace(/^\w*:A/, "");  // Remove JSF ID
             window.open (link, target);
         } else if (link.match(/^\w*:\w*:/) != null ) {
             // Link is a script method
-            link = link.replace(/^\w*:/, "");  // Remove JSF ID
+            link = link.replace(/^\w*:A/, "");  // Remove JSF ID
             window.open (link, '_self');
         } else {
             // Link is a JSF action
