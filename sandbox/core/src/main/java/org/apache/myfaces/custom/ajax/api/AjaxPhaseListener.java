@@ -110,9 +110,11 @@ public class AjaxPhaseListener implements PhaseListener
                 log.error("Found component is no ajaxComponent : " + RendererUtils.getPathToComponent(ajaxComponent));
             }
 
-            if (!context.getApplication().getStateManager().isSavingStateInClient(context))
+
+            StateManager stateManager = context.getApplication().getStateManager();
+            if (!stateManager.isSavingStateInClient(context))
             {
-                ((JspStateManagerImpl) context.getApplication().getStateManager()).saveSerializedView(context);
+                stateManager.saveSerializedView(context);
             }
             context.responseComplete();
         }*/

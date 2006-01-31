@@ -19,11 +19,11 @@ package org.apache.myfaces.custom.ajax.api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.application.ComponentNotFoundException;
-import org.apache.myfaces.application.jsp.JspStateManagerImpl;
 import org.apache.myfaces.custom.util.ComponentUtils;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
 
+import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -31,8 +31,8 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.ServletResponse;
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -120,9 +120,10 @@ public class AjaxDecodePhaseListener
                log.error("Found component is no ajaxComponent : " + RendererUtils.getPathToComponent(ajaxComponent));
             }
 
-            if (!context.getApplication().getStateManager().isSavingStateInClient(context))
+            StateManager stateManager = context.getApplication().getStateManager();
+            if (!stateManager.isSavingStateInClient(context))
             {
-                ((JspStateManagerImpl) context.getApplication().getStateManager()).saveSerializedView(context);
+                stateManager.saveSerializedView(context);
             }
             context.responseComplete();
         }
