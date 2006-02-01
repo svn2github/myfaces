@@ -110,6 +110,10 @@
 	<component-class>org.apache.myfaces.custom.subform.SubForm</component-class>
   </component>
 
+  <component>
+	<component-type>org.apache.myfaces.SelectOneRow</component-type>
+	<component-class>org.apache.myfaces.custom.selectOneRow.SelectOneRow</component-class>
+  </component>
   <!-- sandbox converters -->
 
   <converter>
