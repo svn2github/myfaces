@@ -17,6 +17,8 @@ package org.apache.myfaces.component.html.util;
 
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.util.MyFacesJavascriptRendererUtil;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,13 +29,19 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.context.FacesContextFactory;
+import javax.faces.context.FacesContext;
+import javax.faces.component.UIViewRoot;
+import javax.faces.FactoryFinder;
 import java.io.IOException;
 
 /**
  * This filters is mandatory for the use of many components.
  * It handles the Multipart requests (for file upload)
  * It's used by the components that need javascript libraries
- * 
+ *
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -46,7 +54,7 @@ public class ExtensionsFilter implements Filter {
     private String _uploadRepositoryPath = null; //standard temp directory
 
     private ServletContext _servletContext;
-    
+
     private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
 
     /**
@@ -63,7 +71,7 @@ public class ExtensionsFilter implements Filter {
         _uploadThresholdSize = resolveSize(param, _uploadThresholdSize);
 
         _uploadRepositoryPath = filterConfig.getInitParameter("uploadRepositoryPath");
-        
+
         _servletContext = filterConfig.getServletContext();
     }
 
@@ -106,7 +114,7 @@ public class ExtensionsFilter implements Filter {
             return;
         }
 
-		HttpServletResponse httpResponse = (HttpServletResponse) response; 
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         // Serve resources
@@ -115,22 +123,25 @@ public class ExtensionsFilter implements Filter {
             addResource.serveResource(_servletContext, httpRequest, httpResponse);
             return;
         }
-        
+
         HttpServletRequest extendedRequest = httpRequest;
-        
+
         // For multipart/form-data requests
         if (FileUpload.isMultipartContent(httpRequest)) {
             extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
         }
-        
+
         ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
 
         // Standard request
         chain.doFilter(extendedRequest, extendedResponse);
-        
+
         extendedResponse.finishResponse();
 
         // write the javascript stuff for myfaces and headerInfo, if needed
+        FacesContext facesContext = getFacesContext(extendedRequest, extendedResponse);
+        MyFacesJavascriptRendererUtil.renderCodeBeforeBodyEnd(facesContext);
+
         HttpServletResponse servletResponse = (HttpServletResponse)response;
 
         addResource.parseResponse(extendedRequest, extendedResponse.toString(),
@@ -145,18 +156,36 @@ public class ExtensionsFilter implements Filter {
             return;
         }
 
-        
+
         // Some headerInfo has to be added
         addResource.writeWithFullHeader(extendedRequest, servletResponse);
 
         // writes the response
         addResource.writeResponse(extendedRequest, servletResponse);
     }
-    
+
     /**
      * Destroy method for this filter
      */
     public void destroy() {
 		// NoOp
+    }
+
+    private FacesContext getFacesContext(ServletRequest request, ServletResponse response) {
+      FacesContext facesContext = FacesContext.getCurrentInstance();
+      if (facesContext != null) return facesContext;
+
+      FacesContextFactory contextFactory = (FacesContextFactory)FactoryFinder.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
+      LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+      Lifecycle lifecycle = lifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
+
+      ServletContext servletContext = ((HttpServletRequest)request).getSession().getServletContext();
+
+      facesContext = contextFactory.getFacesContext(servletContext, request, response, lifecycle);
+
+      UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, JavascriptUtils.getOldViewId(facesContext.getExternalContext()));
+      facesContext.setViewRoot(view);
+
+      return facesContext;
     }
 }
