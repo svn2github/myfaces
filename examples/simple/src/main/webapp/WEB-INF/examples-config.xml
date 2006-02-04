@@ -72,6 +72,18 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>firstComponentBindingHolder</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.aliasexample.FirstComponentBindingHolder</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>secondComponentBindingHolder</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.aliasexample.SecondComponentBindingHolder</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
     <!-- Managed Beans for collapsiblePanel.jsp -->
     <managed-bean>
         <managed-bean-name>firstCollapsiblePanelBean</managed-bean-name>
