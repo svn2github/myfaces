@@ -153,6 +153,7 @@ public class ExtensionsFilter implements Filter {
         if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
             // writes the response if no header info is needed
             addResource.writeResponse(extendedRequest, servletResponse);
+            facesContext.release();
             return;
         }
 
@@ -162,6 +163,8 @@ public class ExtensionsFilter implements Filter {
 
         // writes the response
         addResource.writeResponse(extendedRequest, servletResponse);
+
+        facesContext.release();
     }
 
     /**
