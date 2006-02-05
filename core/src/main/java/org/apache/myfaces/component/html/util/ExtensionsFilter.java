@@ -17,9 +17,15 @@ package org.apache.myfaces.component.html.util;
 
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.util.MyFacesJavascriptRendererUtil;
 
+import javax.faces.FactoryFinder;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,12 +35,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.faces.lifecycle.LifecycleFactory;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.context.FacesContextFactory;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIViewRoot;
-import javax.faces.FactoryFinder;
 import java.io.IOException;
 
 /**
@@ -56,6 +56,8 @@ public class ExtensionsFilter implements Filter {
     private ServletContext _servletContext;
 
     private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
+
+    private static final String OLD_VIEW_ID = "org.apache.myfaces.renderkit.html.util.JavascriptUtils" + ".OLD_VIEW_ID";
 
     /**
      * Init method for this filter
@@ -186,9 +188,14 @@ public class ExtensionsFilter implements Filter {
 
       facesContext = contextFactory.getFacesContext(servletContext, request, response, lifecycle);
 
-      UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, JavascriptUtils.getOldViewId(facesContext.getExternalContext()));
+      UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, getOldViewId(facesContext.getExternalContext()));
       facesContext.setViewRoot(view);
 
       return facesContext;
+    }
+
+    private String getOldViewId(ExternalContext externalContext)
+    {
+        return (String)externalContext.getRequestMap().get(OLD_VIEW_ID);
     }
 }
