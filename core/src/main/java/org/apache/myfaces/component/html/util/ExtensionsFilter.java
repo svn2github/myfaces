@@ -17,13 +17,18 @@ package org.apache.myfaces.component.html.util;
 
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.util.MyFacesJavascriptRendererUtil;
+import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.config.MyfacesConfig;
 
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
+import javax.faces.context.ResponseWriter;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.Filter;
@@ -54,6 +59,8 @@ public class ExtensionsFilter implements Filter {
     private String _uploadRepositoryPath = null; //standard temp directory
 
     private ServletContext _servletContext;
+
+    private static final String ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT = "org.apache.myfaces.myFacesJavascript";
 
     private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
 
@@ -142,7 +149,7 @@ public class ExtensionsFilter implements Filter {
 
         // write the javascript stuff for myfaces and headerInfo, if needed
         FacesContext facesContext = getFacesContext(extendedRequest, extendedResponse);
-        MyFacesJavascriptRendererUtil.renderCodeBeforeBodyEnd(facesContext);
+        renderCodeBeforeBodyEnd(facesContext);
 
         HttpServletResponse servletResponse = (HttpServletResponse)response;
 
@@ -188,14 +195,58 @@ public class ExtensionsFilter implements Filter {
 
       facesContext = contextFactory.getFacesContext(servletContext, request, response, lifecycle);
 
-      UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, getOldViewId(facesContext.getExternalContext()));
+      UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, JavascriptUtils.getOldViewId(facesContext.getExternalContext()));
       facesContext.setViewRoot(view);
 
       return facesContext;
     }
 
-    private String getOldViewId(ExternalContext externalContext)
+    /**
+     * Renders stuff such as the dummy form and the autoscroll javascript, which goes before the closing &lt;/body&gt;
+     * @throws IOException
+     */
+    public static void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
     {
-        return (String)externalContext.getRequestMap().get(OLD_VIEW_ID);
+        Object myFacesJavascript = facesContext.getExternalContext().getRequestMap().get(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT);
+
+        if (myFacesJavascript != null)
+        {
+            return;
+        }
+
+        ResponseWriter responseWriter = facesContext.getResponseWriter();
+        HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper
+                    .getInstance(responseWriter);
+        facesContext.setResponseWriter(writerWrapper);
+
+        if (DummyFormUtils.isWriteDummyForm(facesContext))
+        {
+            DummyFormUtils.writeDummyForm(writerWrapper, DummyFormUtils.getDummyFormParameters(facesContext));
+        }
+
+        MyfacesConfig myfacesConfig = MyfacesConfig.getCurrentInstance(facesContext.getExternalContext());
+        if (myfacesConfig.isDetectJavascript())
+        {
+            if (! JavascriptUtils.isJavascriptDetected(facesContext.getExternalContext()))
+            {
+
+                writerWrapper.startElement("script",null);
+                writerWrapper.writeAttribute("attr", HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+                StringBuffer script = new StringBuffer();
+                script.append("document.location.replace('").
+                        append(facesContext.getApplication().getViewHandler().getResourceURL(facesContext, "/_javascriptDetector_")).append("?goto=").append(facesContext.getApplication().getViewHandler().getActionURL(facesContext, facesContext.getViewRoot().getViewId())).append("');");
+                writerWrapper.writeText(script.toString(),null);
+                writerWrapper.endElement(HTML.SCRIPT_ELEM);
+            }
+        }
+
+        if (myfacesConfig.isAutoScroll())
+        {
+            JavascriptUtils.renderAutoScrollFunction(facesContext, writerWrapper);
+        }
+
+        //facesContext.setResponseWriter(responseWriter);
+
+        facesContext.getExternalContext().getRequestMap().put(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n");
     }
 }
