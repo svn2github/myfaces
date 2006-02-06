@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.collapsiblepanel;
 
 import org.apache.myfaces.taglib.html.HtmlInputTagBase;
+import org.apache.myfaces.component.UserRoleAware;
 
 import javax.faces.component.UIComponent;
 import javax.servlet.jsp.tagext.BodyTag;
@@ -45,13 +46,16 @@ public class HtmlCollapsiblePanelTag
     private String _title;
     private String _var;
     private String _titleVar;
-    // User Role support --> already handled by HtmlPanelGroupTag
+    private String _enabledOnUserRole;
+    private String _visibleOnUserRole;
 
     public void release() {
         super.release();
         _title=null;
         _var=null;
         _titleVar=null;
+        _enabledOnUserRole=null;
+        _visibleOnUserRole=null;
         bodyContent = null;
     }
 
@@ -62,6 +66,9 @@ public class HtmlCollapsiblePanelTag
         setStringProperty(component, "title", _title);
         setStringProperty(component,"var",_var);
         setStringProperty(component,"titleVar",_titleVar);
+        setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
+        setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
+
     }
 
 
@@ -79,6 +86,17 @@ public class HtmlCollapsiblePanelTag
     {
         _titleVar = titleVar;
     }
+
+    public void setEnabledOnUserRole(String enabledOnUserRole)
+    {
+        _enabledOnUserRole = enabledOnUserRole;
+    }
+
+    public void setVisibleOnUserRole(String visibleOnUserRole)
+    {
+        _visibleOnUserRole = visibleOnUserRole;
+    }
+
 
     // API field
     protected BodyContent bodyContent;
