@@ -25,6 +25,7 @@ import javax.faces.convert.ConverterException;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
@@ -87,9 +88,9 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
         renderHelpTextAttributes(input, writer, facesContext);
 
         String value = RendererUtils.getStringValue(facesContext, input);
-        value = (value.equals("") || value == null) ? getHelpText(input) : value;
+        value = (value==null || value.length()==0) ? getHelpText(input) : value;
 
-        writer.writeAttribute(HTML.VALUE_ATTR, HTMLEncoder.encode(value,true,true), null);
+        writer.writeAttribute(HTML.VALUE_ATTR, value, JSFAttr.VALUE_ATTR);
 
         writer.endElement(HTML.INPUT_ELEM);
     }
