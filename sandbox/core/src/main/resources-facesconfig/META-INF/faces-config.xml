@@ -114,6 +114,14 @@
 	<component-type>org.apache.myfaces.SelectOneRow</component-type>
 	<component-class>org.apache.myfaces.custom.selectOneRow.SelectOneRow</component-class>
   </component>
+  
+  <component>
+	<component-type>org.apache.myfaces.DojoInitializer</component-type>
+	<component-class>org.apache.myfaces.custom.dojo.DojoInitializer</component-class>
+  </component>
+  
+  
+  
   <!-- sandbox converters -->
 
   <converter>
@@ -237,9 +245,16 @@
 
     <renderer>
 		<component-family>javax.faces.Output</component-family>
-		<renderer-type>script.aculo.us.renderer</renderer-type>
+		<renderer-type>org.apache.myfaces.effect.EffectRenderer</renderer-type>
 		<renderer-class>org.apache.myfaces.custom.effect.EffectRenderer</renderer-class>
 	</renderer>
+
+    <renderer>
+		<component-family>javax.faces.Output</component-family>
+		<renderer-type>org.apache.myfaces.DojoInitializerRenderer</renderer-type>
+		<renderer-class>org.apache.myfaces.custom.dojo.DojoInitializerRenderer</renderer-class>
+	</renderer>
+
 
     <renderer>
         <component-family>javax.faces.SelectMany</component-family>
