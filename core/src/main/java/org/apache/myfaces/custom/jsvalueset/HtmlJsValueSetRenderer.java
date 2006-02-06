@@ -46,7 +46,7 @@ extends HtmlRenderer
       {
          Object[] objs = (Object[]) value;
          
-         valueSb.append("new Array(");
+         valueSb.append("[");
          
          String comma = "";
          for (int i = 0; i < objs.length; i++) 
@@ -56,13 +56,13 @@ extends HtmlRenderer
             comma = ",";
          }
          
-         valueSb.append(")");
+         valueSb.append("]");
       }
       else if(value instanceof Collection)
       {
          Collection coll = (Collection) value;
          
-         valueSb.append("new Array(");
+         valueSb.append("[");
          
          String comma = "";
          int i = 0;
@@ -74,7 +74,7 @@ extends HtmlRenderer
             i++;
          }
          
-         valueSb.append(")");
+         valueSb.append("]");
       }
       else if(value instanceof Map)
       {
