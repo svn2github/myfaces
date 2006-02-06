@@ -20,7 +20,13 @@
 
             <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax</f:verbatim></h:outputLink>
             <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest</f:verbatim></h:outputLink>
-            <h:outputLink value="schedule.jsf" ><f:verbatim>Schedule</f:verbatim></h:outputLink>
+            <h:outputText value="Schedule"/>
+            <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="schedule/example1.jsf" ><f:verbatim>Schedule with sample entries</f:verbatim></h:outputLink>
+	            <h:outputLink value="schedule/example2.jsf" ><f:verbatim>Schedule with possibility for adding/removing entries</f:verbatim></h:outputLink>
+	            <h:outputLink value="schedule/example3.jsf" ><f:verbatim>Customizable schedule</f:verbatim></h:outputLink>
+	            <h:outputLink value="schedule/example4.jsf" ><f:verbatim>Schedule with custom styleClasses and custom EntryRenderer</f:verbatim></h:outputLink>
+            </h:panelGrid>
             <h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
             <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components</f:verbatim></h:outputLink>            
             <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>

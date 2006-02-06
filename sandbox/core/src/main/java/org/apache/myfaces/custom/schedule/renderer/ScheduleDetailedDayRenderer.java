@@ -677,6 +677,11 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             int top = (int) (((startMillis - visibleStartMillis) * rowHeightInPixels) / HALF_HOUR);
             int height = (int) (((endMillis - startMillis) * rowHeightInPixels) / HALF_HOUR);
             StringBuffer buffer = new StringBuffer();
+            
+            if (height <= 0)
+            {
+            	buffer.append("visibility: hidden; ");
+            }
             buffer.append("position: absolute; height: ");
             buffer.append(height);
             buffer.append("px; top: ");
@@ -687,7 +692,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             buffer.append(width);
             buffer
                     .append("%; padding: 0px; overflow: hidden; border-width: 1.0px; border-style:solid;");
-
+            
             return buffer.toString();
         }
 
