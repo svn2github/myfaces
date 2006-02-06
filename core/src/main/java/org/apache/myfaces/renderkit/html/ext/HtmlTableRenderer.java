@@ -42,7 +42,45 @@ import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
 public class HtmlTableRenderer extends HtmlTableRendererBase
 {
     //private static final Log log = LogFactory.getLog(HtmlTableRenderer.class);
+
+	/** DetailStamp facet name. */
+    public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
   
+    
+    protected void afterRow(FacesContext facesContext, UIData uiData) throws IOException {
+		super.afterRow(facesContext, uiData);
+		
+		renderDetailRow(facesContext, uiData);
+	}
+
+	/**
+	 *  
+	 * @param facesContext
+	 * @param uiData
+	 * @throws IOException
+	 */
+	private void renderDetailRow(FacesContext facesContext, UIData uiData) throws IOException {
+		UIComponent detailStampFacet = uiData.getFacet(DETAIL_STAMP_FACET_NAME);
+		
+		if(uiData instanceof HtmlDataTable ){
+			HtmlDataTable htmlDataTable = (HtmlDataTable)uiData;
+			
+			if(htmlDataTable.isCurrentDetailExpanded()){
+				ResponseWriter writer = facesContext.getResponseWriter();
+				writer.startElement(HTML.TR_ELEM,uiData);
+				writer.startElement(HTML.TD_ELEM,uiData);
+				writer.writeAttribute(HTML.COLSPAN_ATTR,new Integer(uiData.getChildren().size()) ,null);
+				
+				if(detailStampFacet!=null){
+					RendererUtils.renderChild(facesContext, detailStampFacet);
+				}
+				
+				writer.endElement(HTML.TD_ELEM);
+				writer.endElement(HTML.TR_ELEM);
+			}
+		}
+	}
+
     /**
      * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */

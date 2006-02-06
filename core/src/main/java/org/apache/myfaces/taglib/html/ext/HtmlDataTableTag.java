@@ -64,6 +64,7 @@ public class HtmlDataTableTag
     private String _rowOnKeyDown;
     private String _rowOnKeyUp;
     private String _rowId;
+    private String _varDetailToggler;
     
     private String _rowStyleClass;
     private String _rowStyle;
@@ -95,6 +96,7 @@ public class HtmlDataTableTag
         _rowOnKeyDown=null;
         _rowOnKeyUp=null;
         _rowId=null;
+        _varDetailToggler=null;
 
         _rowStyleClass = null;
         _rowStyle = null;
@@ -126,7 +128,8 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowOnKeyPress", _rowOnKeyPress);
         setStringProperty(component, "rowOnKeyDown", _rowOnKeyDown);
         setStringProperty(component, "rowOnKeyUp", _rowOnKeyUp);
-        setStringProperty(component, JSFAttr.ROW_ID, _rowId);
+        setStringProperty(component, JSFAttr.ROW_ID, _rowId);        
+        setStringProperty(component,"varDetailToggler",_varDetailToggler);
         
         setStringProperty(component, JSFAttr.ROW_STYLECLASS_ATTR, _rowStyleClass);
         setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
@@ -256,4 +259,13 @@ public class HtmlDataTableTag
     {
       _rowStyle = rowStyle;
     }
+
+		
+	public String getVarDetailToggler() {
+		return _varDetailToggler;
+	}
+
+	public void setVarDetailToggler(String varDetailToggler) {
+		_varDetailToggler = varDetailToggler;
+	}
 }
