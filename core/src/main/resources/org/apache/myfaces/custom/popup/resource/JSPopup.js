@@ -29,6 +29,12 @@ function orgApacheMyfacesPopupfixIE() {
 	    	iframe.style.height = popup.offsetHeight;
 	    	iframe.style.top 	= popup.style.top;
     		iframe.style.left 	= popup.style.left;
+    		
+    		iframe.style.marginTop 		= popup.style.marginTop;
+    		iframe.style.marginLeft 	= popup.style.marginLeft;
+    		iframe.style.marginRight 	= popup.style.marginRight;
+    		iframe.style.marginBottem 	= popup.style.marginBottom;
+    		
 			iframe.style.display = "block";
 			iframe.style.visibility = "visible"; /*we have to set an explicit visible otherwise it wont work*/
 
