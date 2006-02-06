@@ -44,39 +44,8 @@ public class DojoUtils
     public static final boolean DOJO_COMPRESSED        = false;
     public static final boolean DOJO_DEBUG             = false;
 
-    /**
-     * Write a dojo require include 
-     * 
-     * @param writer        the response write
-     * @param component     the component
-     * @param dojoPackage   the dojo package string (wildcards allowed
-     * @throws IOException  in case of an io error
-     */
-    public static final void require(ResponseWriter writer, UIComponent component, String dojoPackage)
-            throws IOException
-    {
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        StringBuffer buf = new StringBuffer(40);
 
-        buf.append("dojo.require(\"");
-        buf.append(dojoPackage);
-        buf.append("\");");
-
-        writer.write(buf.toString());
-
-        writer.endElement(HTML.SCRIPT_ELEM);
-    }
-
-    /**
-     * handles the central include of the dojo
-     * core, subsequent packages can be loaded 
-     * via require if needed
-     * 
-     * @param context
-     * @param javascriptLocation
-     */
-    public static final void addMainInclude(FacesContext context, String javascriptLocation)
+    public static final void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
     {
         AddResource addResource = AddResource.getInstance(context);
         /*
@@ -85,7 +54,7 @@ public class DojoUtils
          };
 
          */
-        dojoPreinitialization(context, addResource);
+        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, config.toString());
         String dojofile = DOJO_COMPRESSED ? DOJO_FILE : DOJO_FILE_UNCOMPRESSED;
         if (javascriptLocation != null)
         {
@@ -95,27 +64,24 @@ public class DojoUtils
         {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
         }
+
     }
 
     /**
-     * preinitialisation code
-     * this code has to be prefixed mandatory
-     * in dojo otherwise the dojo system
-     * does not initialize properly
+     * adds a dojo require include to our mix 
+     * of stuff used
      * 
      * @param context
-     * @param addResource
+     * @param required
      */
-    private static void dojoPreinitialization(FacesContext context, AddResource addResource)
+    public static final void addRequired(FacesContext context, String required)
     {
-        StringBuffer inlineScript = new StringBuffer();
+        AddResource addResource = AddResource.getInstance(context);
+        StringBuffer requiredBuilder = new StringBuffer(32);
+        requiredBuilder.append("dojo.require(\"");
+        requiredBuilder.append(required);
+        requiredBuilder.append("\");");
 
-        inlineScript.append("var djConfig = { \n");
-        inlineScript.append("   isDebug:");
-        inlineScript.append(DOJO_DEBUG);
-        inlineScript.append("\n");
-        inlineScript.append("}; \n");
-        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, inlineScript.toString());
+        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, requiredBuilder.toString());
     }
-
 }

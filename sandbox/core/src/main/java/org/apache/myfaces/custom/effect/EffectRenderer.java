@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.custom.div.Div;
+import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
@@ -44,7 +45,8 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
  */
 public class EffectRenderer extends HtmlRenderer
 {
-
+    public static final String RENDERER_TYPE = "org.apache.myfaces.effect.EffectRenderer";
+    
     /**
      * Encodes any stand-alone javascript functions that are needed. Uses either
      * the extension filter, or a user-supplied location for the javascript
@@ -81,7 +83,7 @@ public class EffectRenderer extends HtmlRenderer
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, FATResourceLoader.class, "fat.js");
 
         }
-        DojoUtils.addMainInclude(context, javascriptLocation);
+        DojoUtils.addMainInclude(context, javascriptLocation, new DojoConfig());
     }
 
     public boolean getRendersChildren()
@@ -89,7 +91,7 @@ public class EffectRenderer extends HtmlRenderer
         return true;
     }
 
-    public static final String RENDERER_TYPE = "script.aculo.us.renderer";
+    
 
     /**
      * We only need an encodeBeing method because the fade control, does not

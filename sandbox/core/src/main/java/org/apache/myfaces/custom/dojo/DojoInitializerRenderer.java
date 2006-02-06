@@ -1,0 +1,87 @@
+/**
+ * Copyright 2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.myfaces.custom.dojo;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+
+/**
+ * Dojointializerrenderer
+ * 
+ * @author Werner Punz (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
+public class DojoInitializerRenderer extends HtmlRenderer
+{
+    public static final String RENDERER_TYPE = "org.apache.myfaces.DojoInitializerRenderer";
+
+    /**
+     * Encodes any stand-alone javascript functions that are needed. Uses either
+     * the extension filter, or a user-supplied location for the javascript
+     * files.
+     *
+     * @param context
+     *            FacesContext
+     * @param component
+     *            UIComponent
+     */
+    private void encodeJavascript(FacesContext context, UIComponent component)
+    {
+        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        DojoUtils.addMainInclude(context, javascriptLocation, ((DojoInitializer) component).getDojoConfig());
+        String require = (String) component.getAttributes().get("require");
+
+        if (require != null)
+            DojoUtils.addRequired(context, require);
+    }
+
+    public boolean getRendersChildren()
+    {
+        return false;
+    }
+
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
+    {
+        if ((context == null) || (component == null))
+        {
+            throw new NullPointerException();
+        }
+
+        Boolean rendered = (Boolean) component.getAttributes().get("rendered");
+
+        if ((rendered != null) && (!rendered.booleanValue()))
+            return;
+        encodeJavascript(context, component);
+        super.encodeBegin(context, component);
+    }
+
+    /**
+     * Standard encode end
+     *
+     */
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
+    {
+        super.encodeEnd(facesContext, component);
+    }
+
+}
