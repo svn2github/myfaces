@@ -24,7 +24,7 @@
 		#outerbar {
 			padding: 10px;
 			color: white;
-			background-color: #666;
+			background-color: #667;
 			text-align: center;
 			position: relative;
 			left: 0px;
@@ -60,8 +60,6 @@
 			<h:panelGroup>
 				<f:verbatim>
 					<script language="JavaScript" type="text/javascript">
-						dojo.require("dojo.fx.*");
-						dojo.require("dojo.widget.Editor");
 				
 						var built = false;
 						function buildEditor(){
@@ -92,9 +90,12 @@
 
 
 
-				<s:effect id="effect1" fade="true">
-					<h:outputText value="Dojo import test by using the effects tag/Mixed Effects and dojo (dojo is in rawhtml)" />
-				</s:effect>
+				<s:dojoInitializer require="dojo.fx.*"/>	
+				<s:dojoInitializer require="dojo.widget.Editor"/>	
+
+				
+				<h:outputText value="Dojo import test by using the effects tag/Mixed Effects and dojo (dojo is in rawhtml)" />
+				
 
 				<f:verbatim>
 					<div id="outerbar">
