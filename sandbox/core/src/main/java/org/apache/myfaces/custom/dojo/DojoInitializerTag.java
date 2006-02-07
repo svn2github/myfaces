@@ -40,7 +40,8 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
     String _preventBackButtonFix = null;
 
     String _require              = null;
-
+    String _provide              = null;
+    
     public String getComponentType()
     {
         return DojoInitializer.COMPONENT_TYPE;
@@ -65,6 +66,7 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         _ignoreClassNames = null;
         _preventBackButtonFix = null;
         _require = null;
+        _provide = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -83,7 +85,7 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         super.setBooleanProperty(component, "preventBackButtonFix", _preventBackButtonFix);
 
         super.setStringProperty(component, "require", _require);
-
+        super.setStringProperty(component, "provide", _provide);
     }
 
     public void setAllowQueryConfig(String allowQueryConfig)
@@ -141,4 +143,7 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         this._require = require;
     }
 
+    public void setProvide(String provide) {
+        this._provide = provide;
+    }
 }

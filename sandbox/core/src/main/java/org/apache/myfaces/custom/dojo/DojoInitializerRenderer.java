@@ -49,9 +49,15 @@ public class DojoInitializerRenderer extends HtmlRenderer
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         DojoUtils.addMainInclude(context, javascriptLocation, ((DojoInitializer) component).getDojoConfig());
         String require = (String) component.getAttributes().get("require");
+        String provide = (String) component.getAttributes().get("provide");
         
+        
+        if (provide != null)
+            DojoUtils.addProvide(context, component, provide);
+ 
         if (require != null)
-            DojoUtils.addRequired(context, component, require);
+            DojoUtils.addRequire(context, component, require);
+        
     }
 
     public boolean getRendersChildren()

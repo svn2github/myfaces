@@ -29,7 +29,8 @@ public class DojoInitializer extends UIOutput
 {
     DojoConfig                 _dojoConfig           = new DojoConfig();
     String                     _require             = null;
-
+    String                     _provide             = null;
+    
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.DojoInitializer";
     public static final String DEFAULT_RENDERER_TYPE = DojoInitializerRenderer.RENDERER_TYPE;
     public static final String COMPONENT_FAMILY      = "javax.faces.Output";
@@ -74,12 +75,13 @@ public class DojoInitializer extends UIOutput
         _dojoConfig.setPreventBackButtonFix((Boolean) values[9]);
         _dojoConfig.setSearchIds((String) values[10]);
         _require = (String) values[11];
+        _provide = (String) values[12];
         
     }
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[12];
+        Object values[] = new Object[13];
         values[0] = super.saveState(context);
         values[1] = _dojoConfig.getAllowQueryConfig();
         values[2] = _dojoConfig.getBaseScriptUri();
@@ -92,6 +94,7 @@ public class DojoInitializer extends UIOutput
         values[9] = _dojoConfig.getPreventBackButtonFix();
         values[10] = _dojoConfig.getSearchIds();
         values[11] = _require;
+        values[12] = _provide;
         return values;
     }
 
@@ -208,6 +211,16 @@ public class DojoInitializer extends UIOutput
     public void setRequire(String required)
     {
         this._require = required;
+    }
+
+    public String getProvide()
+    {
+        return _provide;
+    }
+
+    public void setProvide(String provide)
+    {
+        this._provide = provide;
     }
 
 }

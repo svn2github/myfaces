@@ -81,7 +81,7 @@ public class DojoUtils
      * @param context
      * @param required
      */
-    public static final void addRequired(FacesContext context, String required) throws IOException
+    public static final void addRequire(FacesContext context, String required) throws IOException
     {
         if (isInlineScriptSet(context, "dojo.require:" + required))
             return;
@@ -138,7 +138,7 @@ public class DojoUtils
      * @param required
      * @throws IOException
      */
-    public static final void addRequired(FacesContext context, UIComponent component, String required)
+    public static final void addRequire(FacesContext context, UIComponent component, String required)
             throws IOException
     {
 
