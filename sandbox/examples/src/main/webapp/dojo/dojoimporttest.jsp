@@ -93,8 +93,9 @@
 				<s:dojoInitializer require="dojo.fx.*"/>	
 				<s:dojoInitializer require="dojo.widget.Editor"/>	
 
-				
-				<h:outputText value="Dojo import test by using the effects tag/Mixed Effects and dojo (dojo is in rawhtml)" />
+								
+				<h:outputText value="Dojo import tests, you now can setup dojo by using the s:dojoInitializer component." />
+				<h:outputText value="this component provides you with the DjConfig flags and also allows you to import via require" />
 				
 
 				<f:verbatim>
