@@ -44,19 +44,19 @@ components.
             
             <source xml:space="preserve">&lt;t:inputCalendar id="startDate"/&gt;
 &lt;t:inputCalendar id="endDate"&gt;
-    &lt;s:compareToValidator operator="gt" for="startDate" /&gt;
-    &lt;s:compareToValidator operator="gt" for="startDate" message="Start date must be before end date." /&gt;
-    &lt;s:compareToValidator operator="gt" for="startDate" message="{0} must be {2} {3}" /&gt;
-    &lt;s:compareToValidator operator="gt" for="startDate" alternateOperatorName="after" /&gt;
-    &lt;s:compareToValidator operator="gt" for="startDate" message="{0} must be {2} {3}" alternateOperatorName="after" /&gt;
-    &lt;s:compareToValidator operator="gt" for="startDate" comparator="#{dateComparator}" /&gt;
+    &lt;s:validateCompareTo operator="gt" for="startDate" /&gt;
+    &lt;s:validateCompareTo operator="gt" for="startDate" message="Start date must be before end date." /&gt;
+    &lt;s:validateCompareTo operator="gt" for="startDate" message="{0} must be {2} {3}" /&gt;
+    &lt;s:validateCompareTo operator="gt" for="startDate" alternateOperatorName="after" /&gt;
+    &lt;s:validateCompareTo operator="gt" for="startDate" message="{0} must be {2} {3}" alternateOperatorName="after" /&gt;
+    &lt;s:validateCompareTo operator="gt" for="startDate" comparator="#{dateComparator}" /&gt;
 &lt;t:inputCalendar&gt;</source>
         </section>
         
         <!-- Syntax -->
         <section name="Syntax">
             
-            <blockquote><h3>&lt;s:compareToValidator/&gt;</h3>
+            <blockquote><h3>&lt;s:validateCompareTo/&gt;</h3>
                 <code>for - Required reference to another component.</code><br/>
                 <code>operator - Required operator for comparison: </code><br/>
                 <code>....equals:                  eq, ==, =,</code><br/>
