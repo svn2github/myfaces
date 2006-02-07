@@ -23,8 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.custom.div.Div;
-import org.apache.myfaces.custom.dojo.DojoConfig;
-import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -83,7 +81,6 @@ public class EffectRenderer extends HtmlRenderer
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, FATResourceLoader.class, "fat.js");
 
         }
-        DojoUtils.addMainInclude(context, javascriptLocation, new DojoConfig());
     }
 
     public boolean getRendersChildren()
