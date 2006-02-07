@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
 
 /**
  * Dojointializerrenderer
@@ -45,14 +44,14 @@ public class DojoInitializerRenderer extends HtmlRenderer
      * @param component
      *            UIComponent
      */
-    private void encodeJavascript(FacesContext context, UIComponent component)
+    private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
     {
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         DojoUtils.addMainInclude(context, javascriptLocation, ((DojoInitializer) component).getDojoConfig());
         String require = (String) component.getAttributes().get("require");
-
+        
         if (require != null)
-            DojoUtils.addRequired(context, require);
+            DojoUtils.addRequired(context, component, require);
     }
 
     public boolean getRendersChildren()
@@ -71,8 +70,8 @@ public class DojoInitializerRenderer extends HtmlRenderer
 
         if ((rendered != null) && (!rendered.booleanValue()))
             return;
-        encodeJavascript(context, component);
         super.encodeBegin(context, component);
+
     }
 
     /**
@@ -82,6 +81,7 @@ public class DojoInitializerRenderer extends HtmlRenderer
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
         super.encodeEnd(facesContext, component);
+       encodeJavascript(facesContext, component);
     }
 
 }
