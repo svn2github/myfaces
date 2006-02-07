@@ -89,8 +89,8 @@ public class HtmlJSCookMenuRenderer
                 }
                 while (tokenizer.hasMoreTokens()) {
                     String action = tokenizer.nextToken();
-                    if (action.startsWith("A")) {
-                        action  = action.substring(1, action.length());
+                    if (action.startsWith("A]")) {
+                        action  = action.substring(2, action.length());
                         action = decodeValueBinding(action, context);
                         MethodBinding mb;
                         if (UIComponentTag.isValueReference(action)) {
@@ -101,8 +101,8 @@ public class HtmlJSCookMenuRenderer
                         }
                         ((HtmlCommandJSCookMenu)component).setAction(mb);
                     }
-                    else if (action.startsWith("L")) {
-                        action  = action.substring(1, action.length());
+                    else if (action.startsWith("L]")) {
+                        action  = action.substring(2, action.length());
                         String value = null;
                         int idx = action.indexOf(";");
                         if (idx > 0 && idx < action.length()-1) {
@@ -286,22 +286,22 @@ public class HtmlJSCookMenuRenderer
                 actionStr.append(menuId);
                 if (item.getActionListener() != null)
                 {
-                    actionStr.append(":L");
+                    actionStr.append(":L]");
                     actionStr.append(item.getActionListener());
                     if (uiNavMenuItem != null && uiNavMenuItem.getItemValue() != null)
                     {
                         actionStr.append(';');
-                        actionStr.append(getString(context,uiNavMenuItem.getItemLabel()));
+                        actionStr.append(getString(context,uiNavMenuItem.getItemValue()));
                     }
                     else if (item.getValue() != null)
                     {
                         actionStr.append(';');
-                        actionStr.append(getString(context,item.getLabel()));
+                        actionStr.append(getString(context,item.getValue()));
                     }
                 }
                 if (item.getAction() != null)
                 {
-                    actionStr.append(":A");
+                    actionStr.append(":A]");
                     actionStr.append(item.getAction());
                     if (uiNavMenuItem != null) {
                         encodeValueBinding(actionStr, uiNavMenuItem, item);
