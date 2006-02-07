@@ -70,7 +70,7 @@ components.
                         [ columnName="unique-column-name" ]
                         [ arrow="{true|false}" ] &gt;
         nested link text and/or image(s)
-&lt;/t:command_sortheader&gt;
+&lt;/t:commandSortHeader&gt;
             </source>
         </section>
 
