@@ -74,7 +74,7 @@ components.
         <!-- Syntax -->
         <section name="Syntax">
             
-            <blockquote><h3>&lt;x:autoUpdateDataTable&gt;</h3>
+            <blockquote><h3>&lt;s:autoUpdateDataTable&gt;</h3>
                 <code>all standard dataTable attributes allowed</code><br/>
                 <code>preserveDataModel="{true|false}"</code><br/>
                 <code>forceIdIndexFormula="value-binding"</code><br/>

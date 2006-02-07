@@ -51,7 +51,7 @@ components.
         </section>
                 <section name="Syntax">
             
-            <source xml:space="preserve">&lt;s:Ajaxsuggest id="id" binding="control binding"
+            <source xml:space="preserve">&lt;s:inputSuggestAjax id="id" binding="control binding"
                             suggestedItemsMethod="backend bean callback method" value="Bean"/&gt;
             </source>
         </section>
