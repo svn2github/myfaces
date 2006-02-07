@@ -30,6 +30,9 @@ package org.apache.myfaces.custom.dojo;
  */
 public class DojoConfig
 {
+    public static String ATTR_DOJO_TYPE = "dojoType";
+    
+    
     Boolean _ioSendTransport      = null;
     Boolean _debug                = null;
     String  _baseScriptUri        = null;
@@ -41,6 +44,8 @@ public class DojoConfig
     Boolean _ignoreClassNames     = null;
     Boolean _preventBackButtonFix = null;
     
+    //TODO add this to the initializer tag
+    Boolean _debugAtAllCosts      = null;
     
     private final void createConfigEntry(StringBuffer target, String name, Object toCheck) {
             if(toCheck == null) return;
@@ -69,7 +74,7 @@ public class DojoConfig
         createConfigEntry(configBuilder, "bindEncoding", _bindEncoding);
         createConfigEntry(configBuilder, "ignoreClassNames", _ignoreClassNames);
         createConfigEntry(configBuilder, "preventBackButtonFix", _preventBackButtonFix);
-
+        createConfigEntry(configBuilder, "debugAtAllCosts", _debugAtAllCosts);
         
         configBuilder.append("\n");
         configBuilder.append("}; \n");
@@ -157,5 +162,15 @@ public class DojoConfig
     public void setSearchIds(String searchIds)
     {
         this._searchIds = searchIds;
+    }
+
+    public Boolean getDebugAtAllCosts()
+    {
+        return _debugAtAllCosts;
+    }
+
+    public void setDebugAtAllCosts(Boolean debugAtAllCosts)
+    {
+        this._debugAtAllCosts = debugAtAllCosts;
     }
 }
