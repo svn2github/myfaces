@@ -212,6 +212,13 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                 throw e;
             }
         }
+        
+        ActionListener defaultActionListener
+                = context.getApplication().getActionListener();
+        if (defaultActionListener != null)
+        {
+            defaultActionListener.processAction((ActionEvent)event);
+        }
     }
 
     /**
