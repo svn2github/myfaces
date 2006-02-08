@@ -134,7 +134,8 @@ table {
   color: #003300;
 }
 #banner {
-	background-color: #284462;
+	background-color: #B5C8CF;
+	border-bottom: 1px solid #B5C8CF;
 }
 #navcolumn ul {
 	margin: 5px 0 15px -0em;
@@ -165,25 +166,29 @@ table {
   color: #333333;
 }
 
+
+dl {
+  padding: 0px 0px 5px 0px;
+  border: 0px;
+  background: url(../images/dl.jpg) left top no-repeat
+}
+
+dt {
+  padding: 0px 0px 0px 25px;
+  border: 0px;
+  background-color: #FFFFFF;
+}
+
 div#leftColumn {
-  background: #B2C4E0;
-  border-color: #999 #EEE #EEE #999;
+  background: #F0F0F0;
+  border-color: #999 #999 #999 #999;
   border-width: 1px;
   border-style: solid;
 }
 
-.section h2 {
-  background: #fff;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  padding-left: 0px;
-}
+
 
 #breadcrumbs{
-  background: #4C6C8F;
-}
-
-#banner {
-  border-bottom: 1px solid #4C6C8F;
+  background: #F0F0F0;
+  color: #000000; 
 }
