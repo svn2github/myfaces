@@ -21,12 +21,9 @@
       <item name="Tomahawk" href="../tomahawk/index.html"/>
       <item name="Sandbox" href="index.html"/>
     </links>
-  
-	  <menu name="MyFaces API">
-	    <item name="Overview" href="index.html"/>
-	  </menu>
-
+S
     <menu name="MyFaces Projects">
+      <item name="Overview" href="../index.html"/>    
       <item name="API" href="../api/index.html"/>
       <item name="Impl" href="../impl/index.html"/>
       <item name="Commons" href="../commons/index.html"/>

@@ -22,12 +22,8 @@
       <item name="Sandbox" href="../sandbox/index.html"/>
     </links>
   
-	  <menu name="Tomahawk">
-	    <item name="Overview" href="index.html"/>
-	    <item name="Extensions filter" href="extensionsFilter.html"/>  
-	  </menu>
-
     <menu name="MyFaces Projects">
+      <item name="Overview" href="../index.html"/>
       <item name="API" href="../api/index.html"/>
       <item name="Impl" href="../impl/index.html"/>
       <item name="Commons" href="../commons/index.html"/>
@@ -73,6 +69,7 @@
 	  </menu>    
 	  
 	  <menu name="Other Goodies">
+	    <item name="Extensions filter" href="extensionsFilter.html"/>  
 	    <item name="forceId" href="forceId.html"/>
 	    <item name="Tiles Support" href="tiles.html"/>  
 	  </menu>    
