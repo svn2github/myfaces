@@ -31,6 +31,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
@@ -95,7 +96,7 @@ public class AbstractScheduleRenderer extends Renderer
 
         //add needed CSS and Javascript files to the header 
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlSchedule.class, css);
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/alphaAPI.js");

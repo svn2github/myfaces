@@ -17,6 +17,7 @@ package org.apache.myfaces.component.html.util;
 
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
@@ -126,13 +127,6 @@ public class ExtensionsFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        // Serve resources
-        AddResource addResource = AddResource.getInstance(httpRequest);
-        if( addResource.isResourceUri( httpRequest ) ){
-            addResource.serveResource(_servletContext, httpRequest, httpResponse);
-            return;
-        }
-
         HttpServletRequest extendedRequest = httpRequest;
 
         // For multipart/form-data requests
@@ -142,13 +136,22 @@ public class ExtensionsFilter implements Filter {
 
         ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
 
+        FacesContext facesContext = getFacesContext(extendedRequest, extendedResponse);
+
+        // Serve resources
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+        if( addResource.isResourceUri( httpRequest ) ){
+            addResource.serveResource(_servletContext, httpRequest, httpResponse);
+            return;
+        }
+
+
         // Standard request
         chain.doFilter(extendedRequest, extendedResponse);
 
         extendedResponse.finishResponse();
 
         // write the javascript stuff for myfaces and headerInfo, if needed
-        FacesContext facesContext = getFacesContext(extendedRequest, extendedResponse);
         renderCodeBeforeBodyEnd(facesContext);
 
         HttpServletResponse servletResponse = (HttpServletResponse)response;

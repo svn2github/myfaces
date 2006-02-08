@@ -22,6 +22,7 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,7 +59,7 @@ public class HtmlSelectOneRadioAjaxRenderer extends HtmlRadioRenderer implements
 
         HtmlSelectOneRadioAjax selectManyCheckbox = (HtmlSelectOneRadioAjax) component;
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
 
         AjaxRendererUtils.addPrototypeScript(context, component, addResource);
 

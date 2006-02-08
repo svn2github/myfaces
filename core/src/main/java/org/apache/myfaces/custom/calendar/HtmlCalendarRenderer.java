@@ -47,6 +47,7 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
 import org.apache.myfaces.util.MessageUtils;
@@ -284,7 +285,7 @@ public class HtmlCalendarRenderer
         {
             return;
         }
-        AddResource addresource = AddResource.getInstance(facesContext);
+        AddResource addresource = AddResourceFactory.getInstance(facesContext);
         // Add the javascript and CSS pages
 
         String styleLocation = HtmlRendererUtils.getStyleLocation(component);
@@ -338,7 +339,7 @@ public class HtmlCalendarRenderer
             throw new IllegalStateException("Week may only start with sunday or monday.");
 
         StringBuffer script = new StringBuffer();
-        setStringVariable(script,popupCalendarVariable +".initData.imgDir",(JavascriptUtils.encodeString(AddResource.getInstance(facesContext)
+        setStringVariable(script,popupCalendarVariable +".initData.imgDir",(JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
                 .getResourceUri(facesContext, HtmlCalendarRenderer.class, "DB/"))));
         defineStringArray(script, popupCalendarVariable +".initData.monthName", mapMonths(symbols));
         defineStringArray(script, popupCalendarVariable +".initData.dayName", weekDays);
@@ -466,7 +467,7 @@ public class HtmlCalendarRenderer
         } else {
             // render the image
             writer.startElement(HTML.IMG_ELEM, uiComponent);
-            AddResource addResource = AddResource.getInstance(facesContext);
+            AddResource addResource = AddResourceFactory.getInstance(facesContext);
 
             String imgUrl = (String) uiComponent.getAttributes().get("popupButtonImageUrl");
 

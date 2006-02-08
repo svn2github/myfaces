@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.autoupdatedatatable;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
@@ -68,7 +69,7 @@ public class AutoUpdateDataTableRenderer extends HtmlTableRenderer implements Aj
         String javascriptLocation = (String) component.getAttributes().get(
                 JSFAttr.JAVASCRIPT_LOCATION);
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if(javascriptLocation != null)
         {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");

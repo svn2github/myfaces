@@ -43,6 +43,7 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlFormRendererBase;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 
@@ -433,7 +434,7 @@ public class HtmlJSCookMenuRenderer
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
         
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
 
         if(javascriptLocation != null)
         {
@@ -492,7 +493,7 @@ public class HtmlJSCookMenuRenderer
             log.debug("Unknown theme name '" + themeName + "' specified.");
         }
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
 
         if ((imageLocation != null) || (themeLocation != null))
         {

@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.inputsuggestajax;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.ajax.api.AjaxPhaseListener;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
@@ -65,7 +66,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if(javascriptLocation != null)
         {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");

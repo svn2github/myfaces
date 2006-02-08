@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.tree2;
 
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.JSFAttr;
@@ -594,7 +595,7 @@ public class HtmlTreeRenderer extends Renderer
     {
         // render javascript function for client-side toggle (it won't be used if user has opted for server-side toggle)
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if (javascriptLocation == null)
         {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/tree.js");
@@ -620,7 +621,7 @@ public class HtmlTreeRenderer extends Renderer
     private String getImageSrc(FacesContext context, UIComponent component, String imageName, boolean withContextPath)
     {
         String imageLocation = (String)component.getAttributes().get(JSFAttr.IMAGE_LOCATION);
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if (imageLocation == null)
         {
             return addResource.getResourceUri(context, HtmlTreeRenderer.class,

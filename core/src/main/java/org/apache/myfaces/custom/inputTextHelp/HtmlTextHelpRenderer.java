@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HTML;
@@ -171,7 +172,7 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
             return;
         }
 
-        AddResource.getInstance(facesContext).addJavaScriptAtPosition(
+        AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(
                 facesContext, AddResource.HEADER_BEGIN, HtmlTextHelpRenderer.class, "inputTextHelp.js");
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);

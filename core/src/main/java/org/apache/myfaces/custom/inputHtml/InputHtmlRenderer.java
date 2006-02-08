@@ -37,6 +37,7 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.HTMLEncoder;
 import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
 
@@ -236,7 +237,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
             formId = tmpComponent.getClientId(context);
         }
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupustyles.css");
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupudrawerstyles.css");
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "myFaces.css");

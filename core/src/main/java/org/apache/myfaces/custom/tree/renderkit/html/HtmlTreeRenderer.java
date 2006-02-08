@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.tree.renderkit.html;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.HtmlTreeColumn;
 import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
@@ -354,7 +355,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
 
     public String getDefaultImagePath(FacesContext context, String relativePathInResourceFolder)
     {
-        AddResource instance = AddResource.getInstance(context);
+        AddResource instance = AddResourceFactory.getInstance(context);
         return instance.getResourceUri(context, HtmlTree.class, relativePathInResourceFolder, false);
     }
 
@@ -567,7 +568,7 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
 
     protected String getImageUrl(FacesContext context, String userValue, String resourceValue)
     {
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if(userValue != null)
         {
             return addResource.getResourceUri(context, userValue, false);

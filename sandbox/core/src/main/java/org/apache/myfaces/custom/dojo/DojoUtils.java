@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Utils class for the dojo infrastructure
@@ -54,7 +55,7 @@ public class DojoUtils
 
     public static final void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
     {
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         /*
          * var djConfig = {
          isDebug: false

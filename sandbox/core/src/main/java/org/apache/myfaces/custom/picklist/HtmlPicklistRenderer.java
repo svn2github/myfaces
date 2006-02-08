@@ -33,6 +33,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
@@ -187,7 +188,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
             UIComponent uiComponent)
     {
         // AddResource takes care to add only one reference to the same script
-        AddResource addResource = AddResource.getInstance(facesContext);
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
         addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, 
                 HtmlPicklistRenderer.class, "picklist.js");
     }

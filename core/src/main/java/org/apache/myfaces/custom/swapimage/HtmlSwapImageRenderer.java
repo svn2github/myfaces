@@ -23,6 +23,7 @@ import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.navigation.HtmlCommandNavigation;
 
 import javax.faces.component.UIComponent;
@@ -47,7 +48,7 @@ public class HtmlSwapImageRenderer
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        AddResource.getInstance(facesContext).addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, 
+        AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, 
                 HtmlSwapImage.class, "swapimage.js");
 
         String url;

@@ -6,6 +6,7 @@ package org.apache.myfaces.custom.jslistener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 
@@ -38,7 +39,7 @@ public class JsValueChangeListenerRenderer
         String expressionValue = jsValueChangeListener.getExpressionValue();
         String property = jsValueChangeListener.getProperty();
 
-        AddResource.getInstance(facesContext).addJavaScriptAtPosition(
+        AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(
                 facesContext, AddResource.HEADER_BEGIN, JsValueChangeListenerRenderer.class,
                 "JSListener.js");
 
@@ -126,7 +127,7 @@ public class JsValueChangeListenerRenderer
 
         if (!propName.equals("onchange") && value != null)
         {
-            AddResource.getInstance(context).
+            AddResourceFactory.getInstance(context).
                     addJavaScriptToBodyTag(context,jsValueChangeListener.getBodyTagEvent(), value);
         }
         else if(value != null)

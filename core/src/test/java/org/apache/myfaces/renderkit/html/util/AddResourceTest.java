@@ -42,13 +42,13 @@ public class AddResourceTest extends TestCase
 {
     public void testGetInstance()
     {
-        AddResource instance1 = AddResource.getInstance("/test1");
+        AddResource instance1 = AddResourceFactory.getInstance("/test1", null);
         assertNotNull(instance1);
 
-        AddResource instance2 = AddResource.getInstance("/test2");
+        AddResource instance2 = AddResourceFactory.getInstance("/test2", null);
         assertNotSame(instance1, instance2);
 
-        AddResource instance1a = AddResource.getInstance("/test1");
+        AddResource instance1a = AddResourceFactory.getInstance("/test1", null);
         assertSame(instance1, instance1a);
     }
 
@@ -172,7 +172,7 @@ public class AddResourceTest extends TestCase
         mockState.setup();
 
         // now start the test
-        AddResource instance1 = AddResource.getInstance("/test");
+        AddResource instance1 = AddResourceFactory.getInstance("/test", null);
         instance1.addJavaScriptHere(mockState._facesContext, "/scripts/script1");
 
         // verify that our mock objects got the expected callbacks
@@ -203,7 +203,7 @@ public class AddResourceTest extends TestCase
         String originalResponse =
             "<html><head></head><body></body></html>";
 
-        AddResource ar = AddResource.getInstance("/test");
+        AddResource ar = AddResourceFactory.getInstance("/test", null);
         ar.parseResponse(mockState._servletRequest,originalResponse,mockState._servletResponse);
         ar.writeWithFullHeader(mockState._servletRequest,mockState._servletResponse);
         ar.writeResponse(mockState._servletRequest,mockState._servletResponse);

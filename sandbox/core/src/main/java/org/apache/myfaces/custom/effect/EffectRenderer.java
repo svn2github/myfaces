@@ -30,6 +30,7 @@ import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Fade field only currently the renderer is implemented and the tag, because we
@@ -62,7 +63,7 @@ public class EffectRenderer extends HtmlRenderer
         // render javascript function for client-side toggle (it won't be used
         // if user has opted for server-side toggle)
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if (javascriptLocation != null)
         {
 

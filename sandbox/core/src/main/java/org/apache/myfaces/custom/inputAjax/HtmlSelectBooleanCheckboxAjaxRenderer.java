@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -58,7 +59,7 @@ public class HtmlSelectBooleanCheckboxAjaxRenderer extends HtmlCheckboxRenderer 
         HtmlSelectBooleanCheckboxAjax selectBooleanCheckbox = (HtmlSelectBooleanCheckboxAjax) component;
 
         // Add prototype script to header
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         AjaxRendererUtils.addPrototypeScript(context, component, addResource);
 
         // write required javascript

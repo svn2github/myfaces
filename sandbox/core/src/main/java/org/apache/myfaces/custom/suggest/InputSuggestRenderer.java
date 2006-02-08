@@ -30,6 +30,7 @@ import javax.faces.render.Renderer;
 
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
@@ -274,7 +275,7 @@ public class InputSuggestRenderer
     {
         ResponseWriter out = context.getResponseWriter();
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         String styleLocation = (String) component.getAttributes().get(JSFAttr.
             STYLE_LOCATION);
         if (styleLocation == null)
@@ -300,7 +301,7 @@ public class InputSuggestRenderer
     {
         ResponseWriter out = context.getResponseWriter();
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         String javascriptLocation = (String) component.getAttributes().get(
             JSFAttr.JAVASCRIPT_LOCATION);
         if (javascriptLocation == null)

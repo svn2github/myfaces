@@ -30,6 +30,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
@@ -83,7 +84,7 @@ public class HtmlTabbedPaneRenderer
             tabbedPane.setBgcolor(DEFAULT_BG_COLOR);
         }
 
-        AddResource addResource = AddResource.getInstance(facesContext);
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
         
         addResource.addStyleSheet(facesContext,AddResource.HEADER_BEGIN, 
                 HtmlTabbedPaneRenderer.class, "defaultStyles.css");

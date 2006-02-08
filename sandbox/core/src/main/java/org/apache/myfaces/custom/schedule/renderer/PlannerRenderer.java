@@ -33,6 +33,7 @@ import javax.faces.el.ValueBinding;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.schedule.HtmlPlanner;
 import org.apache.myfaces.custom.schedule.model.Day;
 import org.apache.myfaces.custom.schedule.model.PlannerEntity;
@@ -83,7 +84,7 @@ public class PlannerRenderer extends Renderer
         
         //add needed CSS and Javascript files to the header 
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlPlanner.class, css);
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, 
                 HtmlPlanner.class, "javascript/alphaAPI.js");

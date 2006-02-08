@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.popup;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.renderkit.html.HTML;
@@ -113,7 +114,7 @@ public class HtmlPopupRenderer
                                     Integer displayAtDistanceX, Integer displayAtDistanceY, UIComponent uiComponent)
         throws IOException
     {
-        AddResource.getInstance(context).addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlPopupRenderer.class, "JSPopup.js");
+        AddResourceFactory.getInstance(context).addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlPopupRenderer.class, "JSPopup.js");
 
         String popupId = JavascriptUtils.getValidJavascriptName(clientId+"Popup",false);
 

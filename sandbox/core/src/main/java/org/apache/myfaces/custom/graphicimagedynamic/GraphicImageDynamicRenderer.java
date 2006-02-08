@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.component.html.util.ParameterResourceHandler;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -162,7 +163,7 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
         }
         params.put(RENDERER_PARAM, imageRendererClass.getName());
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         String url = addResource.getResourceUri(context, new ParameterResourceHandler(this
                 .getClass(), params));
         writer.writeAttribute(HTML.SRC_ATTR, url, null);

@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.accordion;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTab;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -238,7 +239,7 @@ public class HtmlAccordionPanelRenderer extends HtmlGroupRenderer
     {
         // AddResource takes care to add only one reference to the same script
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         if(javascriptLocation != null)
         {
             // add user defined javascripts
