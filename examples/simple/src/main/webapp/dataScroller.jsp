@@ -77,6 +77,7 @@
                     paginatorMaxPages="9"
                     paginatorTableClass="paginator"
                     paginatorActiveColumnStyle="font-weight:bold;"
+                    immediate="true"
                     actionListener="#{scrollerList.scrollerAction}"
                     >
                 <f:facet name="first" >
@@ -120,6 +121,7 @@
         </h:panelGrid>
 
     </h:panelGroup>
+    <t:commandLink value="test" immediate="true" />
         
 </f:view>
 
