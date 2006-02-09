@@ -36,7 +36,7 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  * filter due to the fact
  * that we can mix and match header and body scripts
  * as needed (we do not want to lose portal functionality do we?)
- * 
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -76,9 +76,9 @@ public class DojoUtils
     }
 
     /**
-     * adds a dojo require include to our mix 
+     * adds a dojo require include to our mix
      * of stuff used
-     * 
+     *
      * @param context
      * @param required
      */
@@ -87,7 +87,7 @@ public class DojoUtils
         if (isInlineScriptSet(context, "dojo.require:" + required))
             return;
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         String requiredBuilder = createDojoRequireString(required);
 
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, requiredBuilder);
@@ -167,7 +167,7 @@ public class DojoUtils
         if (isInlineScriptSet(context, "dojo.provide:" + provided))
             return;
 
-        AddResource addResource = AddResource.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
         String providedBuilder = createDojoProvideScript(provided);
 
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
