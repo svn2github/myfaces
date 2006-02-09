@@ -37,7 +37,7 @@
             </li>
         </ul>
         <ul>
-            <li>Tiles Support - MyFaces provides a custom solution to allow use to use Tiles together with JSF.
+            <li>Tiles Support - MyFaces provides a custom solution to allow the use of Tiles and JSF together.
             </li>
         </ul>
     </section>
@@ -61,7 +61,7 @@
         </ul>
         <ul>
             <li>
-                Add the following to your JSP page in order to use one of the MyFaces custom components: <br/><br/>
+                Add the following to your JSP page in order to use one of the MyFaces custom components: <br/>
                 <code>&lt;%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%&gt;</code>
             </li>
         </ul>
