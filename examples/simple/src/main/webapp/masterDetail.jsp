@@ -48,15 +48,16 @@
                 footerClass="standardTable_Header"
                 rowClasses="standardTable_Row1,standardTable_Row2"
                 columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
-                var="country"
+                var="currentCountry"
                 value="#{countryList.countries}"
-                preserveDataModel="true" >
+                preserveDataModel="true"
+                varDetailToggler="detailToggler" >
            <h:column>
                <f:facet name="header">
                   <h:outputText value="#{example_messages['label_country_name']}" />
                </f:facet>
                <t:commandLink action="go_country" immediate="true" >
-                    <h:outputText value="#{country.name}" />
+                    <h:outputText value="#{currentCountry.name}" />
                     <!-- for convenience: MyFaces extension. sets id of current row in countryForm -->
                     <!-- you don't have to implement a custom action! -->
                     <t:updateActionListener property="#{countryForm.id}" value="#{country.id}" />
@@ -67,24 +68,31 @@
                <f:facet name="header">
                   <h:outputText value="#{example_messages['label_country_iso']}" />
                </f:facet>
-               <h:outputText value="#{country.isoCode}" />
+               <h:outputText value="#{currentCountry.isoCode}" />
            </h:column>
 
            <h:column>
                <f:facet name="header">
                   <h:outputText value="#{example_messages['label_country_cities']}" />
                </f:facet>
-                <t:dataTable id="cities"
+               <h:commandLink rendered="#{detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
+                   <h:outputText value="Hide"/>
+               </h:commandLink>
+               <h:commandLink rendered="#{!detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
+                   <h:outputText value="Show"/>
+               </h:commandLink>  
+           </h:column>
+		   <f:facet name="detailStamp">
+               <t:dataTable id="cities"
                         styleClass="standardTable_Column"
                         var="city"
-                        value="#{country.cities}"
+                        value="#{currentCountry.cities}"
                         preserveDataModel="false">
                    <h:column>
                        <h:outputText value="#{city}" style="font-size: 11px" />
                    </h:column>
-                </t:dataTable>
-           </h:column>
-
+                </t:dataTable> 
+           </f:facet> 
         </t:dataTable>
 
         <f:verbatim><br></f:verbatim>

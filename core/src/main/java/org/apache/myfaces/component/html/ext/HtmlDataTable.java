@@ -439,7 +439,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     public Object saveState(FacesContext context)
     {
         boolean preserveSort = isPreserveSort();
-        Object values[] = new Object[24];
+        Object values[] = new Object[26];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -474,6 +474,10 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         values[22] = preserveSort ? getSortColumn() : null;
         values[23] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
+        
+        values[24] = _varDetailToggler;
+        values[25] = _expandedNodes;
+        
         return values;
     }
     
@@ -544,6 +548,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                 }
             }
         }
+        
+        _varDetailToggler = (String)values[24];
+        _expandedNodes = (Set)values[25];
     }
     
     public _SerializableDataModel getSerializableDataModel()
@@ -878,6 +885,12 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 	public void setVarDetailToggler(String varDetailToggler)
     {
 		_varDetailToggler = varDetailToggler;
+		
+    }
+	
+	public String getVarDetailToggler()
+    {
+		return _varDetailToggler;
 		
     }
 	
