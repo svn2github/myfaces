@@ -53,7 +53,7 @@ public class DojoUtils
     public static final boolean DOJO_COMPRESSED                  = false;
     public static final boolean DOJO_DEBUG                       = false;
 
-    public static final void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
+    public static void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
     {
         AddResource addResource = AddResourceFactory.getInstance(context);
         /*
@@ -82,7 +82,7 @@ public class DojoUtils
      * @param context
      * @param required
      */
-    public static final void addRequire(FacesContext context, String required) throws IOException
+    public static void addRequire(FacesContext context, String required)
     {
         if (isInlineScriptSet(context, "dojo.require:" + required))
             return;
@@ -96,7 +96,7 @@ public class DojoUtils
     /**
      * helper method for the proper dojo require script creation
      * @param required the creation package for the require functionality
-     * @return
+     * @return dojoRequire String
      */
     public static String createDojoRequireString(String required)
     {
@@ -139,7 +139,7 @@ public class DojoUtils
      * @param required
      * @throws IOException
      */
-    public static final void addRequire(FacesContext context, UIComponent component, String required)
+    public static void addRequire(FacesContext context, UIComponent component, String required)
             throws IOException
     {
 
@@ -160,9 +160,9 @@ public class DojoUtils
      * of definitions within the header
      * @param context the faces context for accessing the resources internally
      * @param provided the package with the class provided by this implementation
-     * @see http://dojotoolkit.org/docs/fast_widget_authoring.html for an example on this
+     * @see <a href="http://dojotoolkit.org/docs/fast_widget_authoring.html">Dojo-Widget-Authoring</a> for an example on this
      */
-    public static final void addProvide(FacesContext context, String provided) throws IOException
+    public static void addProvide(FacesContext context, String provided)
     {
         if (isInlineScriptSet(context, "dojo.provide:" + provided))
             return;
@@ -173,7 +173,7 @@ public class DojoUtils
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
     }
 
-    public static final void addProvide(FacesContext context, UIComponent component, String provided)
+    public static void addProvide(FacesContext context, UIComponent component, String provided)
             throws IOException
     {
         if (isInlineScriptSet(context, "dojo.provide:" + provided))
@@ -192,7 +192,7 @@ public class DojoUtils
     /**
      * helper method which does the proper dojo provide script creation
      * @param provided the provided class name
-     * @return
+     * @return dojoProvide String
      */
     public static String createDojoProvideScript(String provided)
     {
