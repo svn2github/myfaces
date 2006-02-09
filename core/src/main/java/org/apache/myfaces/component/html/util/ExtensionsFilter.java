@@ -18,27 +18,8 @@ package org.apache.myfaces.component.html.util;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.config.MyfacesConfig;
 
-import javax.faces.FactoryFinder;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextFactory;
-import javax.faces.context.ResponseWriter;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -136,15 +117,12 @@ public class ExtensionsFilter implements Filter {
 
         ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
 
-        FacesContext facesContext = getFacesContext(extendedRequest, extendedResponse);
-
         // Serve resources
-        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+        AddResource addResource = AddResourceFactory.getInstance(httpRequest);
         if( addResource.isResourceUri( httpRequest ) ){
             addResource.serveResource(_servletContext, httpRequest, httpResponse);
             return;
         }
-
 
         // Standard request
         chain.doFilter(extendedRequest, extendedResponse);
@@ -152,8 +130,6 @@ public class ExtensionsFilter implements Filter {
         extendedResponse.finishResponse();
 
         // write the javascript stuff for myfaces and headerInfo, if needed
-        renderCodeBeforeBodyEnd(facesContext);
-
         HttpServletResponse servletResponse = (HttpServletResponse)response;
 
         addResource.parseResponse(extendedRequest, extendedResponse.toString(),
@@ -165,18 +141,14 @@ public class ExtensionsFilter implements Filter {
         if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
             // writes the response if no header info is needed
             addResource.writeResponse(extendedRequest, servletResponse);
-            facesContext.release();
             return;
         }
-
 
         // Some headerInfo has to be added
         addResource.writeWithFullHeader(extendedRequest, servletResponse);
 
         // writes the response
         addResource.writeResponse(extendedRequest, servletResponse);
-
-        facesContext.release();
     }
 
     /**
@@ -186,70 +158,5 @@ public class ExtensionsFilter implements Filter {
 		// NoOp
     }
 
-    private FacesContext getFacesContext(ServletRequest request, ServletResponse response) {
-      FacesContext facesContext = FacesContext.getCurrentInstance();
-      if (facesContext != null) return facesContext;
 
-      FacesContextFactory contextFactory = (FacesContextFactory)FactoryFinder.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
-      LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-      Lifecycle lifecycle = lifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-
-      ServletContext servletContext = ((HttpServletRequest)request).getSession().getServletContext();
-
-      facesContext = contextFactory.getFacesContext(servletContext, request, response, lifecycle);
-
-      UIViewRoot view = facesContext.getApplication().getViewHandler().createView(facesContext, JavascriptUtils.getOldViewId(facesContext.getExternalContext()));
-      facesContext.setViewRoot(view);
-
-      return facesContext;
-    }
-
-    /**
-     * Renders stuff such as the dummy form and the autoscroll javascript, which goes before the closing &lt;/body&gt;
-     * @throws IOException
-     */
-    public static void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
-    {
-        Object myFacesJavascript = facesContext.getExternalContext().getRequestMap().get(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT);
-
-        if (myFacesJavascript != null)
-        {
-            return;
-        }
-
-        ResponseWriter responseWriter = facesContext.getResponseWriter();
-        HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper
-                    .getInstance(responseWriter);
-        facesContext.setResponseWriter(writerWrapper);
-
-        if (DummyFormUtils.isWriteDummyForm(facesContext))
-        {
-            DummyFormUtils.writeDummyForm(writerWrapper, DummyFormUtils.getDummyFormParameters(facesContext));
-        }
-
-        MyfacesConfig myfacesConfig = MyfacesConfig.getCurrentInstance(facesContext.getExternalContext());
-        if (myfacesConfig.isDetectJavascript())
-        {
-            if (! JavascriptUtils.isJavascriptDetected(facesContext.getExternalContext()))
-            {
-
-                writerWrapper.startElement("script",null);
-                writerWrapper.writeAttribute("attr", HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
-                StringBuffer script = new StringBuffer();
-                script.append("document.location.replace('").
-                        append(facesContext.getApplication().getViewHandler().getResourceURL(facesContext, "/_javascriptDetector_")).append("?goto=").append(facesContext.getApplication().getViewHandler().getActionURL(facesContext, facesContext.getViewRoot().getViewId())).append("');");
-                writerWrapper.writeText(script.toString(),null);
-                writerWrapper.endElement(HTML.SCRIPT_ELEM);
-            }
-        }
-
-        if (myfacesConfig.isAutoScroll())
-        {
-            JavascriptUtils.renderAutoScrollFunction(facesContext, writerWrapper);
-        }
-
-        //facesContext.setResponseWriter(responseWriter);
-
-        facesContext.getExternalContext().getRequestMap().put(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n");
-    }
 }

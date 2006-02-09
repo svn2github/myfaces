@@ -22,6 +22,9 @@
 
 <faces-config xmlns="http://java.sun.com/JSF/Configuration">
 
+  <lifecycle>
+      <phase-listener>org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener</phase-listener>
+  </lifecycle>
 
     <!-- MyFaces extended standard components (in alphabetical order) -->
 
