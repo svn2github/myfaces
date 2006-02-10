@@ -25,10 +25,7 @@ import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
-import javax.faces.component.UISelectItems;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionListener;
@@ -197,7 +194,11 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.UL_ELEM, panelNav);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
-
+            //iterate over the tree and set every item open if expandAll
+            if(panelNav.isExpandAll())
+            {
+                expandAll(panelNav);
+            }
             HtmlNavigationMenuRendererUtils.renderChildrenListLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
 
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
@@ -297,6 +298,11 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             newItem.setActive(uiNavMenuItem.isActive());
             newItem.setValue(uiNavMenuItem.getValue());
             newItem.setTransient(false);
+            newItem.setTarget(uiNavMenuItem.getTarget());
+            newItem.setDisabled(uiNavMenuItem.isDisabled());
+            newItem.setDisabledStyle(uiNavMenuItem.getDisabledStyle());
+            newItem.setDisabledStyleClass(uiNavMenuItem.getDisabledStyleClass());
+
             if (uiNavMenuItem.getNavigationMenuItems() != null && uiNavMenuItem.getNavigationMenuItems().length > 0)
             {
                 addUINavigationMenuItems(facesContext, newItem, newItem.getChildren(), 0,
@@ -341,36 +347,103 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         if (uiNavMenuItem.isOpen()) newItem.toggleOpen();
         newItem.setActive(uiNavMenuItem.isActive());
 
-        // Create and add UIOutput
-        UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
-        uiOutput.setId(parentId + "_txt" + id);
-        uiOutput.getClientId(facesContext); // create clientid
-        newItem.getChildren().add(uiOutput);
-        uiOutput.setParent(newItem);
-        if (uiNavMenuItem.getItemLabel() != null)
-        {
-            if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getItemLabel()))
+        if (!copyValueBinding(uiNavMenuItem, newItem, "target"))
+                    newItem.setTarget(uiNavMenuItem.getTarget());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "disabled"))
+                    newItem.setDisabled(uiNavMenuItem.isDisabled());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "disabledStyle"))
+                    newItem.setDisabledStyle(uiNavMenuItem.getDisabledStyle());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "disabledStyleClass"))
+                    newItem.setDisabledStyleClass(uiNavMenuItem.getDisabledStyleClass());
+        // If the parent-Element is disabled the child is disabled as well
+        if(parent instanceof HtmlPanelNavigationMenu){
+            if(newItem.getDisabledStyle()==null)
             {
-                uiOutput.setValueBinding("value",
-                                         facesContext.getApplication().createValueBinding(uiNavMenuItem.getItemLabel()));
+                newItem.setDisabledStyle(
+                        ((HtmlPanelNavigationMenu)parent).getDisabledStyle()
+                );
             }
-            else
+            if(newItem.getDisabledStyleClass()==null)
             {
-                uiOutput.setValue(uiNavMenuItem.getItemLabel());
+                newItem.setDisabledStyleClass(
+                        ((HtmlPanelNavigationMenu)parent).getDisabledStyleClass()
+                );
+            }
+            if(((HtmlPanelNavigationMenu)parent).isDisabled())
+            {
+                newItem.setDisabled(true);
             }
         }
+        if(parent instanceof HtmlCommandNavigationItem){
+            if(newItem.getDisabledStyle()==null)
+            {
+                newItem.setDisabledStyle(
+                        ((HtmlCommandNavigationItem)parent).getDisabledStyle()
+                );
+            }
+            if(newItem.getDisabledStyleClass()==null)
+            {
+                newItem.setDisabledStyleClass(
+                        ((HtmlCommandNavigationItem)parent).getDisabledStyleClass()
+                );
+            }
+            if(((HtmlCommandNavigationItem)parent).isDisabled())
+            {
+                newItem.setDisabled(true);
+            }
+        }
+
+        if (uiNavMenuItem.getIcon()!=null)
+        {
+            UIGraphic uiGraphic = (UIGraphic) facesContext.getApplication().createComponent(UIGraphic.COMPONENT_TYPE);
+            uiGraphic.setId(parentId + "_img" + id);
+            uiGraphic.getClientId(facesContext);
+            newItem.getChildren().add(uiGraphic);
+            uiGraphic.setParent(newItem);
+            if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getIcon()))
+                {
+                    uiGraphic.setValueBinding("value",
+                                             facesContext.getApplication().createValueBinding(uiNavMenuItem.getIcon()));
+                }
+                else
+                {
+                    uiGraphic.setValue(uiNavMenuItem.getIcon());
+                }
+        }
+        
         else
         {
-            Object value = uiNavMenuItem.getValue();
-            if (value != null &&
-                HtmlNavigationMenuRendererUtils.isValueReference(value.toString()))
+            // Create and add UIOutput
+            UIOutput uiOutput = (UIOutput) facesContext.getApplication().createComponent(UIOutput.COMPONENT_TYPE);
+            uiOutput.setId(parentId + "_txt" + id);
+            uiOutput.getClientId(facesContext); // create clientid
+            newItem.getChildren().add(uiOutput);
+            uiOutput.setParent(newItem);
+            if (uiNavMenuItem.getItemLabel() != null)
             {
-                uiOutput.setValueBinding("value",
-                                         facesContext.getApplication().createValueBinding(value.toString()));
+                if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getItemLabel()))
+                {
+                    uiOutput.setValueBinding("value",
+                                             facesContext.getApplication().createValueBinding(uiNavMenuItem.getItemLabel()));
+                }
+                else
+                {
+                    uiOutput.setValue(uiNavMenuItem.getItemLabel());
+                }
             }
             else
             {
-                uiOutput.setValue(uiNavMenuItem.getValue());
+                Object value = uiNavMenuItem.getValue();
+                if (value != null &&
+                    HtmlNavigationMenuRendererUtils.isValueReference(value.toString()))
+                {
+                    uiOutput.setValueBinding("value",
+                                             facesContext.getApplication().createValueBinding(value.toString()));
+                }
+                else
+                {
+                    uiOutput.setValue(uiNavMenuItem.getValue());
+                }
             }
         }
         // process next level
@@ -450,6 +523,23 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         {
             _id--;
         }
+    }
+
+    private void expandAll(UIComponent parent)
+    {   //Recurse over all Children setOpen if child is HtmlCommandNavigationItem
+        if(parent instanceof HtmlCommandNavigationItem)
+        {
+            HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) parent;
+            navItem.setOpen(true);
+        }
+        List children = parent.getChildren();
+        UIComponent child;
+        for (int i = 0; i < children.size(); i++)
+        {
+            child =  (UIComponent) children.get(i);
+            expandAll(child);
+        }
+
     }
 
 }

@@ -36,6 +36,10 @@ public class NavigationMenuItem extends SelectItem
     boolean _split;
     private boolean rendered = true;
     private List _navigationMenuItems = null;
+    private String _target;
+    private boolean _disabled;
+    private String _disabledStyle;
+    private String _disabledStyleClass;
 
     public NavigationMenuItem(String label, String action)
     {
@@ -80,6 +84,19 @@ public class NavigationMenuItem extends SelectItem
         this.rendered = rendered;
     }
 
+    public NavigationMenuItem(Object value,
+                              String label,
+                              String description,
+                              boolean disabled,
+                              boolean rendered,
+                              String action,
+                              String icon,
+                              boolean split,
+                              String target)
+    {
+        this(value, label, description, disabled, rendered, action, icon, split);
+        this.setTarget(target);
+    }
 
     public boolean isRendered()
     {
@@ -150,6 +167,46 @@ public class NavigationMenuItem extends SelectItem
     public void setActionListener(String actionListener)
     {
         _actionListener = actionListener;
+    }
+
+    public String getTarget()
+    {
+        return _target;
+    }
+
+    public void setTarget(String target)
+    {
+        _target = target;
+    }
+
+    public boolean isDisabled()
+    {
+        return _disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = disabled;
+    }
+
+    public String getDisabledStyle()
+    {
+        return _disabledStyle;
+    }
+
+    public void setDisabledStyle(String disabledStyle)
+    {
+        _disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledStyleClass()
+    {
+        return _disabledStyleClass;
+    }
+
+    public void setDisabledStyleClass(String disabledStyleClass)
+    {
+        _disabledStyleClass = disabledStyleClass;
     }
 
     /**

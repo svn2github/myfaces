@@ -42,6 +42,9 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
 
     static final String PREVIOUS_VIEW_ROOT = HtmlPanelNavigationMenu.class.getName() + ".PREVIOUS_VIEW_ROOT";
     private boolean _itemOpenActiveStatesRestored = false;
+    private Boolean _disabled;
+    private String _disabledStyle;
+    private String _disabledStyleClass;
 
     public void decode(FacesContext context)
     {
@@ -113,6 +116,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     private String _separatorStyle = null;
     private String _layout = null;
     private Boolean _preprocessed = Boolean.FALSE;
+    private Boolean _expandAll;
 
     public HtmlPanelNavigationMenu()
     {
@@ -242,9 +246,59 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         _preprocessed = preprocessed;
     }
 
+    public boolean isExpandAll()
+    {
+        if (_expandAll != null) return _expandAll.booleanValue();
+        ValueBinding vb = getValueBinding("expandAll");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setExpandAll(boolean expandAll)
+    {
+        _expandAll = expandAll ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    public boolean isDisabled()
+    {
+        if (_disabled != null) return _disabled.booleanValue();
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = disabled ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    public String getDisabledStyle()
+    {
+        if (_disabledStyle != null) return _disabledStyle;
+        ValueBinding vb = getValueBinding("disabledStyle");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabledStyle(String disabledStyle)
+    {
+        _disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledStyleClass()
+    {
+        if (_disabledStyleClass != null) return _disabledStyleClass;
+        ValueBinding vb = getValueBinding("disabledStyleClass");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabledStyleClass(String disabledStyleClass)
+    {
+        _disabledStyleClass = disabledStyleClass;
+    }
+
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[11];
+        Object values[] = new Object[15];
         values[0] = super.saveState(context);
         values[1] = _itemClass;
         values[2] = _openItemClass;
@@ -256,6 +310,10 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         values[8] = _separatorStyle;
         values[9] = _layout;
         values[10] = _preprocessed;
+        values[11] = _expandAll;
+        values[12] = _disabled;
+        values[13] = _disabledStyle;
+        values[14] = _disabledStyleClass;
         return values;
     }
 
@@ -273,5 +331,9 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         _separatorStyle = (String)values[8];
         _layout = (String)values[9];
         _preprocessed = (Boolean)values[10];
+        _expandAll = (Boolean)values[11];
+        _disabled = (Boolean) values[12];
+        _disabledStyle = (String) values[13];
+        _disabledStyleClass = (String) values[14];
     }
 }

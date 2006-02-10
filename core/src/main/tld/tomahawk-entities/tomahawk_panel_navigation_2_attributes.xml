@@ -70,3 +70,13 @@
                 Table or List Layout (default is Table)
             </description>
         </attribute>
+        <attribute>
+            <name>expandAll</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If set to true all Items are expanded from the beginning
+                and never closed.
+            </description>
+        </attribute>
+        &ext_disabled_attribute;

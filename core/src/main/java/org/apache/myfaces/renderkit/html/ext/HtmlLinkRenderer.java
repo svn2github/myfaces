@@ -16,7 +16,10 @@
 package org.apache.myfaces.renderkit.html.ext;
 
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.ext.HtmlCommandLink;
 import org.apache.myfaces.renderkit.html.HtmlLinkRendererBase;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
@@ -42,19 +45,35 @@ public class HtmlLinkRenderer
                                           String styleClass) throws IOException
     {
         //if link is disabled we render the nested components without the anchor
-        if (UserRoleUtils.isEnabledOnUserRole(component))
+        if (UserRoleUtils.isEnabledOnUserRole(component) &&
+                        !((HtmlCommandLink) component).isDisabled() )
         {
             super.renderCommandLinkStart(facesContext, component, clientId, value, style, styleClass);
         }
         else
         {
-            // render value as required by JSF 1.1 renderkitdocs
+            //For a disabled HtmlCommandLink we want to
+            //render a span-element instead of the Anchor
+
+            //set disabledStyle if available
+            if(((HtmlCommandLink) component).getDisabledStyle() != null)
+            {
+                style = ((HtmlCommandLink) component).getDisabledStyle();
+            }
+
+            if(((HtmlCommandLink) component).getDisabledStyleClass() != null)
+            {
+                styleClass = ((HtmlCommandLink) component).getDisabledStyleClass();
+            }
+
+            renderSpanStart(facesContext, component, clientId, value, style, styleClass);
+            /*// render value as required by JSF 1.1 renderkitdocs
             if(value != null)
             {
                 ResponseWriter writer = facesContext.getResponseWriter();
 
                 writer.writeText(value.toString(), JSFAttr.VALUE_ATTR);
-            }
+            }*/
         }
     }
 
@@ -70,10 +89,54 @@ public class HtmlLinkRenderer
     protected void renderLinkEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
         //if link is disabled we render the nested components without the anchor
-        if (UserRoleUtils.isEnabledOnUserRole(component))
+        if (UserRoleUtils.isEnabledOnUserRole(component) &&
+                        !((HtmlCommandLink) component).isDisabled() )
         {
             super.renderLinkEnd(facesContext, component);
         }
+        else
+        {
+            renderSpanEnd(facesContext, component);
+        }
     }
 
+    protected void renderSpanStart(FacesContext facesContext,
+                                          UIComponent component,
+                                          String clientId,
+                                          Object value,
+                                          String style,
+                                          String styleClass) throws IOException
+    {
+    ResponseWriter writer = facesContext.getResponseWriter();
+
+        String[] spanAttrsToRender;
+
+        writer.startElement(HTML.SPAN_ELEM, component);
+
+        spanAttrsToRender = HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE;
+
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ID_ATTR, HTML.ID_ATTR, clientId);
+
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        HtmlRendererUtils.renderHTMLAttributes(writer, component,
+                                               spanAttrsToRender);
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_ATTR, HTML.STYLE_ATTR,
+                                              style);
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_CLASS_ATTR, HTML.STYLE_CLASS_ATTR,
+                                              styleClass);
+
+        // render value as required by JSF 1.1 renderkitdocs
+        if(value != null)
+        {
+            writer.writeText(value.toString(), JSFAttr.VALUE_ATTR);
+        }
+    }
+
+    protected void renderSpanEnd(FacesContext facesContext, UIComponent component) throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        // force separate end tag
+        writer.writeText("", null);
+        writer.endElement(HTML.SPAN_ELEM);
+    }
 }

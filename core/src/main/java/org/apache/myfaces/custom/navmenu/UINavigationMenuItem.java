@@ -46,6 +46,10 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
     private MethodBinding _action = null;
     private MethodBinding _actionListener = null;
     private Boolean _immediate = null;
+    private String _target = null;
+    private Boolean _disabled = null;
+    private String _disabledStyle = null;
+    private String _disabledStyleClass = null;
 
     public UINavigationMenuItem()
     {
@@ -183,6 +187,55 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
+    public void setTarget(String target)
+    {
+        _target = target;
+    }
+
+    public String getTarget()
+    {
+        if (_target != null) return _target;
+        ValueBinding vb = getValueBinding("target");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = Boolean.valueOf(disabled);
+    }
+
+    public boolean isDisabled()
+    {
+        if (_disabled != null) return _disabled.booleanValue();
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public String getDisabledStyle()
+    {
+        if (_disabledStyle != null) return _disabledStyle;
+        ValueBinding vb = getValueBinding("disabledStyle");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabledStyle(String disabledStyle)
+    {
+        _disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledStyleClass()
+    {
+        if (_disabledStyleClass != null) return _disabledStyleClass;
+        ValueBinding vb = getValueBinding("disabledStyleClass");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabledStyleClass(String disabledStyleClass)
+    {
+        _disabledStyleClass = disabledStyleClass;
+    }
+
     public boolean isRendered()
     {
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
@@ -191,7 +244,7 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[10];
+        Object values[] = new Object[14];
         values[0] = super.saveState(context);
         values[1] = _icon;
         values[2] = _split;
@@ -202,6 +255,10 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
         values[7] = _active;
         values[8] = saveAttachedState(context, _actionListener);
         values[9] = _immediate;
+        values[10] = _target;
+        values[11] = _disabled;
+        values[12] = _disabledStyle;
+        values[13] = _disabledStyleClass;
         return ((Object) (values));
     }
 
@@ -218,5 +275,9 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
         _active = (Boolean)values[7];
         _actionListener = (MethodBinding)restoreAttachedState(context, values[8]);
         _immediate = (Boolean)values[9];
+        _target = (String)values[10];
+        _disabled = (Boolean) values[11];
+        _disabledStyle = (String) values[12];
+        _disabledStyleClass = (String) values[13];
     }
 }

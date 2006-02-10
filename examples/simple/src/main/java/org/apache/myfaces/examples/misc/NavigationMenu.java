@@ -71,6 +71,7 @@ public class NavigationMenu
         NavigationMenuItem item = getMenuNaviagtionItem("#{example_messages['panelnav_search_adv']}", "#{navigationMenu.getAction2}");
         item.setActive(true);
         item.setOpen(true);
+        item.setTarget("_blank");
         products.add(item);
         // Shop
         menu.add(getMenuNaviagtionItem("#{example_messages['panelnav_shop']}", "#{navigationMenu.getAction2}"));
@@ -79,6 +80,8 @@ public class NavigationMenu
         menu.add(corporateInfo);
         corporateInfo.add(getMenuNaviagtionItem("#{example_messages['panelnav_news']}", "#{navigationMenu.getAction2}"));
         item =  getMenuNaviagtionItem("#{example_messages['panelnav_investor']}", "#{navigationMenu.getAction3}");
+        //item.setIcon("images/arrow-first.gif");
+        item.setDisabled(true);
         corporateInfo.add(item);
         // Contact
         menu.add(getMenuNaviagtionItem("#{example_messages['panelnav_contact']}", "#{navigationMenu.getAction2}"));
@@ -128,4 +131,8 @@ public class NavigationMenu
     	return "go_home";
     }
 
+    public boolean getDisabled()
+    {
+        return true;
+    }
 }

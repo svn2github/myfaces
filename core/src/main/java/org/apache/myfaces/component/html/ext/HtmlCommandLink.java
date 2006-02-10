@@ -54,6 +54,9 @@ public class HtmlCommandLink
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private String _actionFor = null;
+    private Boolean _disabled;
+    private String _disabledStyle;
+    private String _disabledStyleClass;
 
     public HtmlCommandLink()
     {
@@ -109,6 +112,42 @@ public class HtmlCommandLink
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
+    public boolean isDisabled()
+    {
+        if (_disabled != null) return _disabled.booleanValue();
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = disabled ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    public String getDisabledStyle()
+    {
+        if (_disabledStyle != null) return _disabledStyle;
+        ValueBinding vb = getValueBinding("disabledStyle");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabledStyle(String disabledStyle)
+    {
+        _disabledStyle = disabledStyle;
+    }
+
+    public String getDisabledStyleClass()
+    {
+        if (_disabledStyleClass != null) return _disabledStyleClass;
+        ValueBinding vb = getValueBinding("disabledStyleClass");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setDisabledStyleClass(String disabledStyleClass)
+    {
+        _disabledStyleClass = disabledStyleClass;
+    }
 
     public boolean isRendered()
     {
@@ -118,12 +157,15 @@ public class HtmlCommandLink
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[5];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = _target;
         values[2] = _enabledOnUserRole;
         values[3] = _visibleOnUserRole;
         values[4] = _actionFor;
+        values[5] = _disabled;
+        values[6] = _disabledStyle;
+        values[7] = _disabledStyleClass;
         return values;
     }
 
@@ -135,6 +177,9 @@ public class HtmlCommandLink
         _enabledOnUserRole = (String)values[2];
         _visibleOnUserRole = (String)values[3];
         _actionFor = (String)values[4];
+        _disabled = (Boolean) values[5];
+        _disabledStyle = (String) values[6];
+        _disabledStyleClass = (String) values[7];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

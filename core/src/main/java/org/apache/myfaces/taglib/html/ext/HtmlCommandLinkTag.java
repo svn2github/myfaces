@@ -46,6 +46,9 @@ public class HtmlCommandLinkTag
     private String _visibleOnUserRole;
 
     private String _actionFor;
+    private String _disabled;
+    private String _disabledStyle;
+    private String _disabledStyleClass;
 
     public void release() {
         super.release();
@@ -61,7 +64,9 @@ public class HtmlCommandLinkTag
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
         setStringProperty(component, "actionFor", _actionFor);
-
+        setBooleanProperty(component, "disabled", _disabled);
+        setStringProperty(component, "disabledStyle",_disabledStyle);
+        setStringProperty(component, "disabledStyleClass",_disabledStyleClass);
     }
 
 
@@ -78,5 +83,20 @@ public class HtmlCommandLinkTag
     public void setActionFor(String actionFor)
     {
         _actionFor = actionFor;
+    }
+
+    public void setDisabled(String disabled)
+    {
+        _disabled = disabled;
+    }
+
+    public void setDisabledStyle(String disabledStyle)
+    {
+        _disabledStyle = disabledStyle;
+    }
+
+    public void setDisabledStyleClass(String disabledStyleClass)
+    {
+        _disabledStyleClass = disabledStyleClass;
     }
 }
