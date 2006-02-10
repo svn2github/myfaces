@@ -25,6 +25,16 @@
     <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk</url>
   </scm>  
 
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>apache-maven-snapshots</id>
+      <url>http://cvs.apache.org/maven-snapshot-repository</url>
+    </repository>
+  </repositories>
+
   <modules>
     <module>core</module>
     <module>examples</module>
