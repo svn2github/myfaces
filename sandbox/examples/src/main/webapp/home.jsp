@@ -40,6 +40,7 @@
             <h:outputLink value="focus.jsf"><f:verbatim>Focus - a component to set a target component as the focus on page load.</f:verbatim></h:outputLink>
             <h:outputLink value="subForm.jsf"><f:verbatim>SubForm - Partial validation and model update with SubForms</f:verbatim></h:outputLink>
             <h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
+            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
         </h:panelGrid>
     </f:view>
 
