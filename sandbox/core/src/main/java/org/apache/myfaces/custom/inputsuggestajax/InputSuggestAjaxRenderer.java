@@ -29,7 +29,6 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.UnicodeEncoder;
 import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
 
-import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -149,9 +148,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         out.endElement(HTML.DIV_ELEM);
 
         String clientId = component.getClientId(context);
-        String viewId = context.getViewRoot().getViewId();
-        ViewHandler viewHandler = context.getApplication().getViewHandler();
-        String actionURL = viewHandler.getActionURL(context, viewId);
+        String actionURL = getActionUrl(context);
 
         out.startElement(HTML.SCRIPT_ELEM, null);
         out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
