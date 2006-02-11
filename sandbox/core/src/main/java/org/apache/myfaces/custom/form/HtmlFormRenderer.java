@@ -33,7 +33,7 @@ public class HtmlFormRenderer extends HtmlFormRendererBase
      */
     protected String getActionUrl(FacesContext facesContext, UIForm form)
     {
-        String actionUrl = super.getActionUrl(facesContext, form);
+        String actionUrl = getActionUrl(facesContext);
         if (form instanceof HtmlForm)
         {
             HtmlForm htmlForm = (HtmlForm) form;
