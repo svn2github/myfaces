@@ -40,8 +40,13 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class DojoUtils
+public final class DojoUtils
 {
+	
+	private DojoUtils()
+	{
+		//nope
+	}
 
     private static final String BODY_SCRIPT_INFOS_ATTRIBUTE_NAME = "bodyScriptInfos";
     private static final String DOJO_FILE_UNCOMPRESSED           = "dojo.js.uncompressed.js";

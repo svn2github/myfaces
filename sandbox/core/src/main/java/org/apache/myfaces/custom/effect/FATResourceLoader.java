@@ -23,7 +23,7 @@ package org.apache.myfaces.custom.effect;
  * @version $Revision$ $Date$
  */
 
-public class FATResourceLoader
+public interface FATResourceLoader
 {
     
 }
