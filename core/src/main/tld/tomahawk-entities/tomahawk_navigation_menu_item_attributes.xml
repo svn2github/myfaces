@@ -22,9 +22,5 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
         </attribute>
-        <attribute><name>disabled</name>
-            <required>false</required>
-            <rtexprvalue>false</rtexprvalue>
-        </attribute>
         &ext_disabled_attribute;
 
