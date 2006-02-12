@@ -885,6 +885,8 @@ public class HtmlCalendarRenderer
                 dateFormat = createStandardDateFormat(facesContext);
             }
 
+            dateFormat.setLenient(false);
+
             try
             {
                 return dateFormat.parse(s);
@@ -933,6 +935,8 @@ public class HtmlCalendarRenderer
             {
                 dateFormat = createStandardDateFormat(facesContext);
             }
+
+            dateFormat.setLenient(false);
 
             return dateFormat.format(date);
         }
