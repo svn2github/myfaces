@@ -1,0 +1,24 @@
+<attribute>
+    <name>confirmationMessage</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <description>
+       Confirmation message to show if something in the form has changed
+    </description>
+</attribute>
+<attribute>
+     <name>disabled</name>
+     <required>false</required>
+     <rtexprvalue>false</rtexprvalue>
+     <description>
+       If disabled, the confirmation window will not be shown
+     </description>
+</attribute>
+<attribute>
+     <name>excludeCommandsWithClientIds</name>
+     <required>false</required>
+     <rtexprvalue>false</rtexprvalue>
+     <description>
+       Comma-separated list of cliend id of the commands which will be excluded from the confirmation message
+     </description>
+  </attribute>

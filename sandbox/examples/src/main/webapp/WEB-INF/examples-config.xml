@@ -520,7 +520,16 @@
 	</managed-bean>
 
 
-	<!-- navigational rules for the schedule examples -->
+    <!-- navigation rules -->
+    <navigation-rule>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/home.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+    <!-- navigational rules for the schedule examples -->
 	<navigation-rule>
 		<from-view-id>/schedule/example2.jsp</from-view-id>
 		<navigation-case>
