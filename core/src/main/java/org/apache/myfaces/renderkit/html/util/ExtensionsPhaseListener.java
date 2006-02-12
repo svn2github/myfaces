@@ -109,7 +109,10 @@ public class ExtensionsPhaseListener implements PhaseListener {
             JavascriptUtils.renderAutoScrollFunction(facesContext, writerWrapper);
         }
 
-        facesContext.setResponseWriter(responseWriter);
+        //todo: this is just a quick-fix - Sun RI screams if the old responsewriter is null
+        //but how to reset the old response-writer then?
+        if(responseWriter!=null)
+            facesContext.setResponseWriter(responseWriter);
 
         facesContext.getExternalContext().getRequestMap().put(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n");
     }
