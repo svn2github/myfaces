@@ -260,7 +260,6 @@ public final class DojoUtils
         writer.writeAttribute("layoutAlign","client",null);
                        
         writer.endElement(HTML.DIV_ELEM);
-        writer.startElement(HTML.SCRIPT_ELEM, component);
         
     }
 }
