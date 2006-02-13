@@ -20,16 +20,14 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -39,6 +37,8 @@ import javax.faces.convert.ConverterException;
 import javax.faces.convert.DateTimeConverter;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
@@ -59,6 +59,8 @@ import org.apache.myfaces.util.MessageUtils;
 public class HtmlCalendarRenderer
         extends HtmlRenderer
 {
+    private static final Log log = LogFactory.getLog(HtmlCalendarRenderer.class);
+
     private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.calendar.JAVASCRIPT_ENCODED";
 
     //private static Log log = LogFactory.getLog(HtmlCalendarRenderer.class);
@@ -831,7 +833,43 @@ public class HtmlCalendarRenderer
     {
         RendererUtils.checkParamValidity(facesContext, component, HtmlInputCalendar.class);
 
-        HtmlRendererUtils.decodeUIInput(facesContext, component);
+        String helperString = getHelperString(component);
+
+        if (!(component instanceof EditableValueHolder)) {
+            throw new IllegalArgumentException("Component "
+                    + component.getClientId(facesContext)
+                    + " is not an EditableValueHolder");
+        }
+        Map paramMap = facesContext.getExternalContext()
+                .getRequestParameterMap();
+        String clientId = component.getClientId(facesContext);
+
+        if(HtmlRendererUtils.isDisabledOrReadOnly(component))
+            return;
+
+        if(paramMap.containsKey(clientId))
+        {
+            String value = (String) paramMap
+                    .get(clientId);
+
+            if(!value.equalsIgnoreCase(helperString))
+            {
+                ((EditableValueHolder) component).setSubmittedValue(value);
+            }
+            else
+            {
+                ((EditableValueHolder) component).setSubmittedValue("");
+            }
+        }
+        else
+        {
+            log.warn(
+                "There should always be a submitted value for an input if it"
+                + " is rendered, its form is submitted, and it is not disabled"
+                + " or read-only. Component : "+
+                    RendererUtils.getPathToComponent(component));
+        }
+
     }
 
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException
