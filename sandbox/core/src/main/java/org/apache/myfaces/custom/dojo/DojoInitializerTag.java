@@ -38,9 +38,10 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
     String _bindEncoding         = null;
     String _ignoreClassNames     = null;
     String _preventBackButtonFix = null;
-
     String _require              = null;
     String _provide              = null;
+    String _debugConsole         = null;
+    String _debugAtAllCosts      = null;
     
     public String getComponentType()
     {
@@ -67,6 +68,8 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         _preventBackButtonFix = null;
         _require = null;
         _provide = null;
+        _debugConsole = null;
+        _debugAtAllCosts = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -86,6 +89,9 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
 
         super.setStringProperty(component, "require", _require);
         super.setStringProperty(component, "provide", _provide);
+        super.setBooleanProperty(component, "debugConsole", _debugConsole);
+        super.setBooleanProperty(component, "debugAtAllCosts", _debugAtAllCosts);
+            
     }
 
     public void setAllowQueryConfig(String allowQueryConfig)
@@ -145,5 +151,15 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
 
     public void setProvide(String provide) {
         this._provide = provide;
+    }
+
+    public void setDebugConsole(String debugConsole)
+    {
+        this._debugConsole = debugConsole;
+    }
+
+    public void setDebugAtAllCosts(String debugAtAllCosts)
+    {
+        this._debugAtAllCosts = debugAtAllCosts;
     }
 }

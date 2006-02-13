@@ -87,7 +87,11 @@ public class DojoInitializerRenderer extends HtmlRenderer
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
         super.encodeEnd(facesContext, component);
-       encodeJavascript(facesContext, component);
+        
+        encodeJavascript(facesContext, component);
+        if(((DojoInitializer)component).getDebugConsole() != null && ((DojoInitializer)component).getDebugConsole().booleanValue()) {
+            DojoUtils.addDebugConsole(facesContext, component);
+        }
     }
 
 }

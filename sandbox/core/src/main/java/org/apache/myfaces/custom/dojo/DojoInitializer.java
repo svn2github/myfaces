@@ -30,6 +30,7 @@ public class DojoInitializer extends UIOutput
     DojoConfig                 _dojoConfig           = new DojoConfig();
     String                     _require             = null;
     String                     _provide             = null;
+    Boolean                    _debugConsole        = null;
     
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.DojoInitializer";
     public static final String DEFAULT_RENDERER_TYPE = DojoInitializerRenderer.RENDERER_TYPE;
@@ -76,12 +77,13 @@ public class DojoInitializer extends UIOutput
         _dojoConfig.setSearchIds((String) values[10]);
         _require = (String) values[11];
         _provide = (String) values[12];
-        
+        _debugConsole = (Boolean)values[13];
+        _dojoConfig.setDebugAtAllCosts((Boolean)values[14]);
     }
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[13];
+        Object values[] = new Object[15];
         values[0] = super.saveState(context);
         values[1] = _dojoConfig.getAllowQueryConfig();
         values[2] = _dojoConfig.getBaseScriptUri();
@@ -95,6 +97,8 @@ public class DojoInitializer extends UIOutput
         values[10] = _dojoConfig.getSearchIds();
         values[11] = _require;
         values[12] = _provide;
+        values[13] = _debugConsole;
+        values[14] = _dojoConfig.getDebugAtAllCosts();
         return values;
     }
 
@@ -221,6 +225,16 @@ public class DojoInitializer extends UIOutput
     public void setProvide(String provide)
     {
         this._provide = provide;
+    }
+
+    public Boolean getDebugConsole()
+    {
+        return _debugConsole;
+    }
+
+    public void setDebugConsole(Boolean debugConsole)
+    {
+        this._debugConsole = debugConsole;
     }
 
 }

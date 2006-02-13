@@ -30,6 +30,12 @@ package org.apache.myfaces.custom.dojo;
  */
 public class DojoConfig
 {
+    private static final String CONFIG_FOOTER = "}; \n";
+
+
+    private static final String CONFIG_HEADER = "var djConfig = { \n";
+
+
     public static String ATTR_DOJO_TYPE = "dojoType";
     
     
@@ -49,7 +55,7 @@ public class DojoConfig
     
     private final void createConfigEntry(StringBuffer target, String name, Object toCheck) {
             if(toCheck == null) return;
-            if(!target.toString().trim().equals(""))
+            if(target.indexOf(":") != -1)
                 target.append(",\n");
             target.append(name);
             target.append(":");
@@ -62,10 +68,10 @@ public class DojoConfig
     public String toString() {
         
         StringBuffer configBuilder = new StringBuffer(128);
-        configBuilder.append("var djConfig = { \n");
+        configBuilder.append(CONFIG_HEADER);
 
         createConfigEntry(configBuilder, "ioSendTransport", _ioSendTransport);
-        createConfigEntry(configBuilder, "debug", _debug);
+        createConfigEntry(configBuilder, "isDebug", _debug);
         createConfigEntry(configBuilder, "baseScriptUri", _baseScriptUri);
         createConfigEntry(configBuilder, "allowQueryConfig", _allowQueryConfig);
         createConfigEntry(configBuilder, "debugContainerId", _debugContainerId);
@@ -77,7 +83,7 @@ public class DojoConfig
         createConfigEntry(configBuilder, "debugAtAllCosts", _debugAtAllCosts);
         
         configBuilder.append("\n");
-        configBuilder.append("}; \n");
+        configBuilder.append(CONFIG_FOOTER);
 
         return configBuilder.toString();
     }
@@ -173,4 +179,5 @@ public class DojoConfig
     {
         this._debugAtAllCosts = debugAtAllCosts;
     }
-}
+
+ }

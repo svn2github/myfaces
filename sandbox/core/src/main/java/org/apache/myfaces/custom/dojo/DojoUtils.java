@@ -60,14 +60,19 @@ public final class DojoUtils
 
     public static void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
     {
+        
         AddResource addResource = AddResourceFactory.getInstance(context);
         /*
          * var djConfig = {
          isDebug: false
          };
-
+         TODO add a saner handling of collecting all djconfig data
+         and then merging it
          */
-        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, config.toString());
+        if(!isInlineScriptSet(context, "/*djconfig init*/")) {
+            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "/*djconfig init*/");
+            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, config.toString());
+        }   
         String dojofile = DOJO_COMPRESSED ? DOJO_FILE : DOJO_FILE_UNCOMPRESSED;
         if (javascriptLocation != null)
         {
@@ -80,6 +85,8 @@ public final class DojoUtils
 
     }
 
+    
+    
     /**
      * adds a dojo require include to our mix
      * of stuff used
@@ -123,6 +130,8 @@ public final class DojoUtils
         return set;
     }
 
+  
+    
     static boolean isInlineScriptSet(FacesContext context, String inlineScript)
     {
 
@@ -209,4 +218,49 @@ public final class DojoUtils
         return providedBuilder.toString();
     }
 
+
+   
+
+    
+    /**
+     * adds a debug console to the output
+     * this is for helping to debug the dojo system
+     * a debug:true is required for this to work properly
+     * it will not be set by this method (due to the avoidance
+     * of unwanted automatisms causing sideefects)
+     * 
+     * @param context
+     * @param component
+     * @return
+     */
+    public static void addDebugConsole(FacesContext context, UIComponent component) throws IOException {
+        /*check whether we have a debugging flag already set*/
+        if (isInlineScriptSet(context, "/*DOJO DEBUGCONSOLE ON*/"))
+            return;
+        AddResource addResource = AddResourceFactory.getInstance(context);
+        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "/*DOJO DEBUGCONSOLE ON*/");
+        
+        
+        ResponseWriter writer = context.getResponseWriter();
+        //we for now have to break html until the dynamic creation
+        //isses are resolved, so hold on for this messy code now
+        //Since this is for debugging purposes only, we can live with it
+       
+        
+        writer.startElement(HTML.DIV_ELEM, component);
+        writer.writeAttribute(HTML.ID_ATTR, "myfaces_Dojo_Debugger", null);
+        writer.writeAttribute("dojoType","DebugConsole",null);
+        writer.writeAttribute("title","MyFaces Dojo Debug console",null);
+        writer.writeAttribute("iconSrc","images/flatScreen.gif",null);
+        writer.writeAttribute("constrainToContainer","1",null);
+        writer.writeAttribute(HTML.STYLE_ATTR,"width: 400px; height: 500px; left: 200px;",null);
+        writer.writeAttribute("hasShadow","true",null);
+        writer.writeAttribute("resizable","true",null);
+        writer.writeAttribute("displayCloseAction","true",null);
+        writer.writeAttribute("layoutAlign","client",null);
+                       
+        writer.endElement(HTML.DIV_ELEM);
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        
+    }
 }
