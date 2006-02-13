@@ -862,6 +862,20 @@ Sandbox-related entities.
 			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
+			<name>debugConsole</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		<attribute>
+			<name>debugAtAllCosts</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+		</attribute>
+		
+		
+		<attribute>
 			<name>baseScriptUri</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
