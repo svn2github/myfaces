@@ -44,7 +44,16 @@
       <groupId>org.apache.myfaces.tomahawk</groupId>
       <artifactId>tomahawk-sandbox</artifactId>
       <version>${version}</version>
-      <scope>compile</scope>
+    </dependency> 
+    <dependency>
+      <groupId>org.apache.myfaces.core</groupId>
+      <artifactId>myfaces-api</artifactId>
+      <version>1.1.3-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.myfaces.core</groupId>
+      <artifactId>myfaces-impl</artifactId>
+      <version>1.1.3-SNAPSHOT</version>
+    </dependency>        
   </dependencies>
 </project>
