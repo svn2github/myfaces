@@ -42,11 +42,15 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  */
 public final class DojoUtils
 {
-	
-	private DojoUtils()
-	{
-		//nope
-	}
+
+    private static final String DOJO_PROVIDE     = "dojo.provide:";
+    private static final String DOJO_REQUIRE     = "dojo.require:";
+    private static final String DJCONFIG_INITKEY = "/*djconfig init*/";
+
+    private DojoUtils()
+    {
+        //nope
+    }
 
     private static final String BODY_SCRIPT_INFOS_ATTRIBUTE_NAME = "bodyScriptInfos";
     private static final String DOJO_FILE_UNCOMPRESSED           = "dojo.js.uncompressed.js";
@@ -60,7 +64,7 @@ public final class DojoUtils
 
     public static void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
     {
-        
+
         AddResource addResource = AddResourceFactory.getInstance(context);
         /*
          * var djConfig = {
@@ -69,10 +73,11 @@ public final class DojoUtils
          TODO add a saner handling of collecting all djconfig data
          and then merging it
          */
-        if(!isInlineScriptSet(context, "/*djconfig init*/")) {
-            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "/*djconfig init*/");
+        if (!isInlineScriptSet(context, DJCONFIG_INITKEY))
+        {
+            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, DJCONFIG_INITKEY);
             addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, config.toString());
-        }   
+        }
         String dojofile = DOJO_COMPRESSED ? DOJO_FILE : DOJO_FILE_UNCOMPRESSED;
         if (javascriptLocation != null)
         {
@@ -85,8 +90,6 @@ public final class DojoUtils
 
     }
 
-    
-    
     /**
      * adds a dojo require include to our mix
      * of stuff used
@@ -96,7 +99,7 @@ public final class DojoUtils
      */
     public static void addRequire(FacesContext context, String required)
     {
-        if (isInlineScriptSet(context, "dojo.require:" + required))
+        if (isInlineScriptSet(context, DOJO_REQUIRE + required))
             return;
 
         AddResource addResource = AddResourceFactory.getInstance(context);
@@ -130,8 +133,6 @@ public final class DojoUtils
         return set;
     }
 
-  
-    
     static boolean isInlineScriptSet(FacesContext context, String inlineScript)
     {
 
@@ -153,11 +154,10 @@ public final class DojoUtils
      * @param required
      * @throws IOException
      */
-    public static void addRequire(FacesContext context, UIComponent component, String required)
-            throws IOException
+    public static void addRequire(FacesContext context, UIComponent component, String required) throws IOException
     {
 
-        if (isInlineScriptSet(context, "dojo.require:" + required))
+        if (isInlineScriptSet(context, DOJO_REQUIRE + required))
             return;
 
         String requiredBuilder = createDojoRequireString(required);
@@ -178,7 +178,7 @@ public final class DojoUtils
      */
     public static void addProvide(FacesContext context, String provided)
     {
-        if (isInlineScriptSet(context, "dojo.provide:" + provided))
+        if (isInlineScriptSet(context, DOJO_PROVIDE + provided))
             return;
 
         AddResource addResource = AddResourceFactory.getInstance(context);
@@ -187,10 +187,9 @@ public final class DojoUtils
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
     }
 
-    public static void addProvide(FacesContext context, UIComponent component, String provided)
-            throws IOException
+    public static void addProvide(FacesContext context, UIComponent component, String provided) throws IOException
     {
-        if (isInlineScriptSet(context, "dojo.provide:" + provided))
+        if (isInlineScriptSet(context, DOJO_PROVIDE + provided))
             return;
 
         String providedBuilder = createDojoProvideScript(provided);
@@ -218,10 +217,6 @@ public final class DojoUtils
         return providedBuilder.toString();
     }
 
-
-   
-
-    
     /**
      * adds a debug console to the output
      * this is for helping to debug the dojo system
@@ -233,33 +228,32 @@ public final class DojoUtils
      * @param component
      * @return
      */
-    public static void addDebugConsole(FacesContext context, UIComponent component) throws IOException {
+    public static void addDebugConsole(FacesContext context, UIComponent component) throws IOException
+    {
         /*check whether we have a debugging flag already set*/
         if (isInlineScriptSet(context, "/*DOJO DEBUGCONSOLE ON*/"))
             return;
         AddResource addResource = AddResourceFactory.getInstance(context);
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "/*DOJO DEBUGCONSOLE ON*/");
-        
-        
+
         ResponseWriter writer = context.getResponseWriter();
         //we for now have to break html until the dynamic creation
         //isses are resolved, so hold on for this messy code now
         //Since this is for debugging purposes only, we can live with it
-       
-        
+
         writer.startElement(HTML.DIV_ELEM, component);
         writer.writeAttribute(HTML.ID_ATTR, "myfaces_Dojo_Debugger", null);
-        writer.writeAttribute("dojoType","DebugConsole",null);
-        writer.writeAttribute("title","MyFaces Dojo Debug console",null);
-        writer.writeAttribute("iconSrc","images/flatScreen.gif",null);
-        writer.writeAttribute("constrainToContainer","1",null);
-        writer.writeAttribute(HTML.STYLE_ATTR,"width: 400px; height: 500px; left: 200px;",null);
-        writer.writeAttribute("hasShadow","true",null);
-        writer.writeAttribute("resizable","true",null);
-        writer.writeAttribute("displayCloseAction","true",null);
-        writer.writeAttribute("layoutAlign","client",null);
-                       
+        writer.writeAttribute("dojoType", "DebugConsole", null);
+        writer.writeAttribute("title", "MyFaces Dojo Debug console", null);
+        writer.writeAttribute("iconSrc", "images/flatScreen.gif", null);
+        writer.writeAttribute("constrainToContainer", "1", null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "width: 400px; height: 500px; left: 200px;", null);
+        writer.writeAttribute("hasShadow", "true", null);
+        writer.writeAttribute("resizable", "true", null);
+        writer.writeAttribute("displayCloseAction", "true", null);
+        writer.writeAttribute("layoutAlign", "client", null);
+
         writer.endElement(HTML.DIV_ELEM);
-        
+
     }
 }
