@@ -216,7 +216,9 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         }
 
         public Date parse() throws ParseException{
+        	Date retDate = null;
             Calendar tempCalendar=Calendar.getInstance();
+            tempCalendar.setLenient(Boolean.FALSE.booleanValue());
             if (timeZone != null)
                    tempCalendar.setTimeZone(timeZone);
             try{
@@ -237,10 +239,13 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 	            tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
 	            tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
 	            tempCalendar.set(Calendar.MILLISECOND, 0);
+	            retDate = tempCalendar.getTime();
             } catch (NumberFormatException e) {
             	throw new ParseException(e.getMessage(),0);
+            } catch (IllegalArgumentException e) {
+            	throw new ParseException(e.getMessage(),0);
             } 
-            return tempCalendar.getTime();
+            return retDate;
         }
 
         private String formatedInt(String toFormat){
