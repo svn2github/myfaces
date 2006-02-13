@@ -76,7 +76,7 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         sb.append("dojo.addOnLoad(window, '"+initFunctionName+"');\n");
         sb.append("function "+initFunctionName+ "() {\n");
         sb.append(replacedClientId+"Notifier = new org.apache.myfaces.StateChangedNotifier('"+formId+"','"+notifierClientId+"','"+notifier.getConfirmationMessage()+"');\n");
-        sb.append(replacedClientId+"Notifier.prepareNotifier();");
+        sb.append(replacedClientId+"Notifier.prepareNotifier();\n");
 
         String excludedCommandIds = notifier.getExcludeCommandsWithClientIds();
         if (excludedCommandIds != null)
