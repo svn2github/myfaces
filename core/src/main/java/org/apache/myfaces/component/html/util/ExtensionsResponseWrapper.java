@@ -36,6 +36,7 @@ import org.xml.sax.InputSource;
 public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
     private ByteArrayOutputStream stream = null;
     private PrintWriter printWriter = null;
+    private String contentType;
 
     public ExtensionsResponseWrapper(HttpServletResponse response){
         super( response );
@@ -86,6 +87,15 @@ public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
         // noop
     }
 
+    public void setContentType(String contentType) {
+    	super.setContentType(contentType);
+    	this.contentType = contentType;
+    }
+    
+    public String getContentType() {
+		return contentType;
+	}
+    
     public void flushBuffer() throws IOException{
     	stream.flush();
     }

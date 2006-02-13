@@ -42,11 +42,7 @@ public class ExtensionsFilter implements Filter {
 
     private ServletContext _servletContext;
 
-    private static final String ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT = "org.apache.myfaces.myFacesJavascript";
-
     private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
-
-    private static final String OLD_VIEW_ID = "org.apache.myfaces.renderkit.html.util.JavascriptUtils" + ".OLD_VIEW_ID";
 
     /**
      * Init method for this filter
@@ -132,23 +128,31 @@ public class ExtensionsFilter implements Filter {
         // write the javascript stuff for myfaces and headerInfo, if needed
         HttpServletResponse servletResponse = (HttpServletResponse)response;
 
-        addResource.parseResponse(extendedRequest, extendedResponse.toString(),
-            servletResponse);
-
-        addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
-            servletResponse);
-
-        if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
-            // writes the response if no header info is needed
-            addResource.writeResponse(extendedRequest, servletResponse);
-            return;
+        // only parse HTML responses
+        if (extendedResponse.getContentType() != null && extendedResponse.getContentType().startsWith("text/html"))
+        {
+        	addResource.parseResponse(extendedRequest, extendedResponse.toString(),
+        			servletResponse);
+        	
+        	addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
+        			servletResponse);
+        	
+        	if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
+        		// writes the response if no header info is needed
+        		addResource.writeResponse(extendedRequest, servletResponse);
+        		return;
+        	}
+        	
+        	// Some headerInfo has to be added
+        	addResource.writeWithFullHeader(extendedRequest, servletResponse);
+        
+        	// writes the response
+        	addResource.writeResponse(extendedRequest, servletResponse);
         }
-
-        // Some headerInfo has to be added
-        addResource.writeWithFullHeader(extendedRequest, servletResponse);
-
-        // writes the response
-        addResource.writeResponse(extendedRequest, servletResponse);
+        else
+        {
+        	servletResponse.getWriter().write(extendedResponse.toString());
+        }
     }
 
     /**
