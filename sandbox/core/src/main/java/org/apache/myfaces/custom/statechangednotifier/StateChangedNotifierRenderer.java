@@ -41,9 +41,10 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
 
         StateChangedNotifier notifier = (StateChangedNotifier) uiComponent;
 
-        if (notifier.getDisabled().booleanValue())
+        if (notifier.getDisabled() != null)
         {
-            return;
+            if (notifier.getDisabled().booleanValue())
+                return;
         }
 
         String javascriptLocation = (String) notifier.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
