@@ -39,6 +39,7 @@
 				<s:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
 				<s:dojoInitializer require="dojo.widget.DebugConsole" />	
 				<s:dojoInitializer require="dojo.widget.ResizeHandle" />	
+				<s:dojoInitializer debugConsole="true"/>
 					
 				<f:verbatim>
 					<script type="text/javascript" >
@@ -52,7 +53,6 @@
 				<h:form>	
 				<h:commandButton id="triggerdojo" onclick="javascript:generateSomeDebuggingInfo();return false;" value="[Press me for debug infos]"></h:commandButton>
 				</h:form>
-				<s:dojoInitializer debugConsole="true"/>
 			</h:panelGroup>
 		</f:view>
 		<%@include file="../inc/page_footer.jsp"%>
