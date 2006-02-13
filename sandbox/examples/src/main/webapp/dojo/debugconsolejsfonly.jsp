@@ -39,7 +39,7 @@
 				<s:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
 				<s:dojoInitializer require="dojo.widget.DebugConsole" />	
 				<s:dojoInitializer require="dojo.widget.ResizeHandle" />	
-				<s:dojoInitializer require="dojo.widget.Button" />	
+					
 				<f:verbatim>
 					<script type="text/javascript" >
 						function generateSomeDebuggingInfo() {
@@ -48,26 +48,12 @@
 							}
 						}
 					</script>
-					<p>Debugging Console.  This widget, once loaded, will have djConfig output all debugging information to its floating pane.  Some debugging information won't go to the debugConsole before it loads, but there isn't much that can be done about that.  If you set djConfig = {isDebug:true}  it will log to the bottom of the screen (or some div if you set that) until the debugConsole finishes loading.</p> 
-					<button id="go" class="dojo-button" onClick="generateSomeDebuggingInfo();">Generate Debugging info
-					</button>
-					
-					<div dojoType="DebugConsole"
-						title="Debug Console"
-						iconSrc="images/flatScreen.gif";
-						constrainToContainer="1"
-						style="width: 700px; height: 500px; left: 200px;"
-						hasShadow="true"
-						resizable="true"
-						displayCloseAction="true"
-						layoutAlign="client"
-					>
-					</div>
-					
-					
 				</f:verbatim>
+				<h:form>	
+				<h:commandButton id="triggerdojo" onclick="javascript:generateSomeDebuggingInfo();return false;" value="[Press me for debug infos]"></h:commandButton>
+				</h:form>
+				<s:dojoInitializer debugConsole="true"/>
 			</h:panelGroup>
-		
 		</f:view>
 		<%@include file="../inc/page_footer.jsp"%>
 	</body>
