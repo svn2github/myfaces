@@ -845,6 +845,8 @@ Sandbox-related entities.
 
 	<tag>
 		<name>dojoInitializer</name>
+		&ui_component_attributes;
+
 		<tag-class>org.apache.myfaces.custom.dojo.DojoInitializerTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Dojo initializer helper tag for debugging and communication flags. This tag encapsules the Dojo DjConfig meta configuration and also adds the needed dojo required functionality.</description>
