@@ -16,6 +16,8 @@
 
 package org.apache.myfaces.custom.dojo;
 
+import java.io.Serializable;
+
 /**
  * Dojo configuration holder helper
  * this is a helper class to generate
@@ -25,11 +27,26 @@ package org.apache.myfaces.custom.dojo;
  * 
  * the toString method generates a full djconfig
  * 
+ * Warning if you adjust the dojo config params
+ * do it before rendering
+ * because this stuff is shared in the request
+ * as a singleton value in normal circumstances!
+ * 
+ * (unless you want to influence the dojo config
+ * seriously afterwards please, follow this guideline
+ * use the decode phase or something similar if not available)
+ * 
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class DojoConfig
+public class DojoConfig implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+
     private static final String CONFIG_FOOTER = "}; \n";
 
 
@@ -49,8 +66,6 @@ public class DojoConfig
     Boolean _bindEncoding         = null;
     Boolean _ignoreClassNames     = null;
     Boolean _preventBackButtonFix = null;
-    
-    //TODO add this to the initializer tag
     Boolean _debugAtAllCosts      = null;
     
     private final void createConfigEntry(StringBuffer target, String name, Object toCheck) {
