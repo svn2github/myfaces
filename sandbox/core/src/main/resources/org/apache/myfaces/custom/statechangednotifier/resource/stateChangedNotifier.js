@@ -43,8 +43,12 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
         for (i = 0; i < commandIds.length; i++)
         {
             var command = document.getElementById(commandIds[i]);
-            clickedCommand = command;
-            command.onclick = submitWithoutConfirm;
+
+            if (command != null)
+            {
+                clickedCommand = command;
+                command.onclick = submitWithoutConfirm;
+            }
         }
 
     }
@@ -99,7 +103,9 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
 
         document.forms[formId].elements[formId+':_link_hidden_'].value= clickedCommand.id;
 
-        form.onsubmit = null;
+        var clearFunction = "clear_"+formId;
+
+        form.onsubmit = clearFunction;
         form.submit();
         return false;
     }
