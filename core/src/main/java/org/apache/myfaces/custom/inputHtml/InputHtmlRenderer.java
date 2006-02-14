@@ -1323,11 +1323,10 @@ public class InputHtmlRenderer extends HtmlRenderer {
 
 		Map paramMap = facesContext.getExternalContext().getRequestParameterMap();
 	    String clientId = uiComponent.getClientId(facesContext);
-System.out.println("Decoding +++++++++ "+clientId);
+
 	    if (paramMap.containsKey(clientId)) {
 	        //request parameter found, set submittedValue
 			String submitedText = (String)paramMap.get(clientId);
-System.out.println("Found !!!!!!!!!!!!\n"+submitedText+"\n!!!!!!!!!!!!!!!!!!!!!!!!");
 			String htmlText = useFallback(editor) ? HTMLEncoder.encode(submitedText, true, true) : submitedText;
 							
 	        editor.setSubmittedValue( htmlText );
