@@ -32,7 +32,14 @@ import org.apache.myfaces.renderkit.html.HtmlRenderer;
  */
 public class DojoInitializerRenderer extends HtmlRenderer
 {
+
     public static final String RENDERER_TYPE = "org.apache.myfaces.DojoInitializerRenderer";
+
+    public void decode(FacesContext context, UIComponent component)
+    {
+        super.decode(context, component);
+
+    }
 
     /**
      * Encodes any stand-alone javascript functions that are needed. Uses either
@@ -47,17 +54,16 @@ public class DojoInitializerRenderer extends HtmlRenderer
     private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
     {
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        DojoUtils.addMainInclude(context, javascriptLocation, ((DojoInitializer) component).getDojoConfig());
+        DojoUtils.addMainInclude(context, javascriptLocation, DojoUtils.getDjConfigInstance(context));
         String require = (String) component.getAttributes().get("require");
         String provide = (String) component.getAttributes().get("provide");
-        
-        
+
         if (provide != null)
             DojoUtils.addProvide(context, component, provide);
- 
+
         if (require != null)
             DojoUtils.addRequire(context, component, require);
-        
+
     }
 
     public boolean getRendersChildren()
@@ -76,6 +82,7 @@ public class DojoInitializerRenderer extends HtmlRenderer
 
         if ((rendered != null) && (!rendered.booleanValue()))
             return;
+
         super.encodeBegin(context, component);
 
     }
@@ -87,9 +94,11 @@ public class DojoInitializerRenderer extends HtmlRenderer
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
         super.encodeEnd(facesContext, component);
-        
+
         encodeJavascript(facesContext, component);
-        if(((DojoInitializer)component).getDebugConsole() != null && ((DojoInitializer)component).getDebugConsole().booleanValue()) {
+        if (((DojoInitializer) component).getDebugConsole() != null
+                && ((DojoInitializer) component).getDebugConsole().booleanValue())
+        {
             DojoUtils.addDebugConsole(facesContext, component);
         }
     }

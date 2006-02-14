@@ -28,16 +28,21 @@ import javax.faces.context.FacesContext;
 public class DojoInitializer extends UIOutput
 {
     DojoConfig                 _dojoConfig           = new DojoConfig();
-    String                     _require             = null;
-    String                     _provide             = null;
-    Boolean                    _debugConsole        = null;
-    
+    String                     _require              = null;
+    String                     _provide              = null;
+    Boolean                    _debugConsole         = null;
+
+    //we handle that specifically to speed things up (we do not want an NxN runtime complexity via enforced
+    //reflection in the utils
+    boolean                    dojoConfigParamSet    = false;
+
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.DojoInitializer";
     public static final String DEFAULT_RENDERER_TYPE = DojoInitializerRenderer.RENDERER_TYPE;
     public static final String COMPONENT_FAMILY      = "javax.faces.Output";
 
     public DojoInitializer()
     {
+        super();
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
@@ -77,8 +82,8 @@ public class DojoInitializer extends UIOutput
         _dojoConfig.setSearchIds((String) values[10]);
         _require = (String) values[11];
         _provide = (String) values[12];
-        _debugConsole = (Boolean)values[13];
-        _dojoConfig.setDebugAtAllCosts((Boolean)values[14]);
+        _debugConsole = (Boolean) values[13];
+        _dojoConfig.setDebugAtAllCosts((Boolean) values[14]);
     }
 
     public Object saveState(FacesContext context)
@@ -99,6 +104,7 @@ public class DojoInitializer extends UIOutput
         values[12] = _provide;
         values[13] = _debugConsole;
         values[14] = _dojoConfig.getDebugAtAllCosts();
+
         return values;
     }
 
@@ -154,51 +160,106 @@ public class DojoInitializer extends UIOutput
 
     public void setAllowQueryConfig(Boolean allowQueryConfig)
     {
+        if (allowQueryConfig != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setAllowQueryConfig(allowQueryConfig);
+        }
         _dojoConfig.setAllowQueryConfig(allowQueryConfig);
+       
     }
 
     public void setBaseScriptUri(String baseScriptUri)
     {
+        if (baseScriptUri != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setBaseScriptUri(baseScriptUri);
+        }
         _dojoConfig.setBaseScriptUri(baseScriptUri);
     }
 
     public void setBindEncoding(Boolean bindEncoding)
     {
+        if (bindEncoding != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setBindEncoding(bindEncoding);
+        }
+
         _dojoConfig.setBindEncoding(bindEncoding);
     }
 
     public void setDebug(Boolean debug)
     {
+        if (debug != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setDebug(debug);
+        }
         _dojoConfig.setDebug(debug);
+    
     }
 
     public void setDebugContainerId(String debugContainerId)
     {
+        if (debugContainerId != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setDebugContainerId(debugContainerId);
+        }
         _dojoConfig.setDebugContainerId(debugContainerId);
     }
 
     public void setIgnoreClassNames(Boolean ignoreClassNames)
     {
+        if (ignoreClassNames != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setIgnoreClassNames(ignoreClassNames);
+        }
         _dojoConfig.setIgnoreClassNames(ignoreClassNames);
     }
 
     public void setIoSendTransport(Boolean ioSendTransport)
     {
+        if (ioSendTransport != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setIoSendTransport(ioSendTransport);
+        }
         _dojoConfig.setIoSendTransport(ioSendTransport);
+      
     }
 
     public void setParseWidgets(Boolean parseWidgets)
     {
+        if (parseWidgets != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setParseWidgets(parseWidgets);
+        }
         _dojoConfig.setParseWidgets(parseWidgets);
     }
 
     public void setPreventBackButtonFix(Boolean preventBackButtonFix)
     {
+        if (preventBackButtonFix != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setPreventBackButtonFix(
+                    preventBackButtonFix);
+        }
         _dojoConfig.setPreventBackButtonFix(preventBackButtonFix);
     }
 
     public void setSearchIds(String searchIds)
     {
+        if (searchIds != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setSearchIds(searchIds);
+        }
         _dojoConfig.setSearchIds(searchIds);
     }
 
@@ -235,6 +296,30 @@ public class DojoInitializer extends UIOutput
     public void setDebugConsole(Boolean debugConsole)
     {
         this._debugConsole = debugConsole;
+    }
+
+    public boolean isDojoConfigParamSet()
+    {
+        return dojoConfigParamSet;
+    }
+
+    public void setDojoConfigParamSet(boolean dojoConfigParamSet)
+    {
+        this.dojoConfigParamSet = dojoConfigParamSet;
+    }
+
+    public Boolean getDebugAtAllCosts() {
+        return _dojoConfig.getDebugAtAllCosts();
+    }
+    
+    public void setDebugAtAllCosts(Boolean debugAtAllCosts)
+    {
+        if (debugAtAllCosts != null)
+        {
+            dojoConfigParamSet = true;
+            DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setDebugAtAllCosts(debugAtAllCosts);
+        }
+        _dojoConfig.setDebugAtAllCosts(debugAtAllCosts);
     }
 
 }

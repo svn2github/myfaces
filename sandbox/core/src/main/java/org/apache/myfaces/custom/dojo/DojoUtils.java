@@ -17,6 +17,9 @@
 package org.apache.myfaces.custom.dojo;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -25,6 +28,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
@@ -42,7 +48,7 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  */
 public final class DojoUtils
 {
-
+    private static final Log    log              = LogFactory.getLog(DojoUtils.class);
     private static final String DOJO_PROVIDE     = "dojo.provide:";
     private static final String DOJO_REQUIRE     = "dojo.require:";
     private static final String DJCONFIG_INITKEY = "/*djconfig init*/";
@@ -55,12 +61,98 @@ public final class DojoUtils
     private static final String BODY_SCRIPT_INFOS_ATTRIBUTE_NAME = "bodyScriptInfos";
     private static final String DOJO_FILE_UNCOMPRESSED           = "dojo.js.uncompressed.js";
     private static final String DOJO_FILE                        = "dojo.js";
+    private static final String DJCONFIG_REQ_KEY                 = "MYFACES_DJCONFIG";
 
     /**
      * dojo utils flag which can be altered for various states of the dojo lib
      */
     public static final boolean DOJO_COMPRESSED                  = false;
     public static final boolean DOJO_DEBUG                       = false;
+
+    /**
+     * Request singleton getter method for the djConfig object
+     * 
+     * @param context
+     * @return
+     */
+    public static DojoConfig getDjConfigInstance(FacesContext context)
+    {
+        //we wont have a need for a synchronized here, since 
+        //we are in a single request cycle anyway
+        //but take care if you use the djconfig in multiple threads!
+        DojoConfig djConfig = (DojoConfig) ((HttpServletRequest) context.getExternalContext().getRequest())
+                .getAttribute(DJCONFIG_REQ_KEY);
+        if (djConfig == null)
+        {
+            djConfig = new DojoConfig();
+            ((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(DJCONFIG_REQ_KEY, djConfig);
+        }
+        return djConfig;
+    }
+
+    /**
+     * helper to merge in an external dojo config instance
+     * the merge algorithm is that an existing entry is overwritten
+     * if a new config entry is set
+     * make sure that this is not called too often
+     * due to the fact that we do heavy reflection in here
+     * @param context
+     * @param config
+     */
+    public static void mergeExternalDjConfig(FacesContext context, DojoConfig config)
+    {
+        //we now do the same as beanutils, but for dependency reasons we code it
+            DojoConfig configSingleton = getDjConfigInstance(context);
+            Class dcConfigClass = DojoConfig.class;
+            Method[] djConfigFieldArr = dcConfigClass.getMethods();
+            for (int cnt = 0; cnt < djConfigFieldArr.length; cnt++)
+            {
+                
+                try
+                {
+                    Method configPropertyField = djConfigFieldArr[cnt];
+                    String methodCore = null;
+                    if(!configPropertyField.getName().startsWith("getClass") && configPropertyField.getName().startsWith("get") || configPropertyField.getName().startsWith("is"))
+                        methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName().substring(3) : configPropertyField.getName().substring(2);
+                        
+                    
+                    if (methodCore != null) {
+                        Object val = configPropertyField.invoke(config,null);
+                        if(val != null) {
+                            Class [] setterParams = new Class[1];
+                            setterParams[0] = val.getClass();
+                            Method setMethod = dcConfigClass.getMethod("set"+methodCore, setterParams);
+                            if(setMethod != null) {
+                                Object [] setterArgs = new Object[1];
+                                setterArgs[0] = val;
+                                setMethod.invoke(configSingleton, setterArgs);
+                            }    
+                        }
+                    }
+                }
+                catch (IllegalArgumentException e)
+                {
+                    log.error(e);
+                }
+                catch (SecurityException e)
+                {
+                    log.error(e);
+                }
+                catch (IllegalAccessException e)
+                {
+                    log.error(e);
+                }
+                catch (InvocationTargetException e)
+                {
+                    log.error(e);
+                }
+                catch (NoSuchMethodException e)
+                {
+                    log.error(e);
+                }    
+            }
+   
+    }
 
     public static void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
     {
