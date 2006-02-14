@@ -37,7 +37,7 @@
 		<f:view>
 			<h:panelGroup>
 				<s:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
-				<s:dojoInitializer require="dojo.widget.DebugConsole" />	
+				<s:dojoInitializer require="dojo.widget.DebugConsole" debugAtAllCosts="false"/>	
 				<s:dojoInitializer require="dojo.widget.ResizeHandle" />	
 				<s:dojoInitializer debugConsole="true"/>
 					
