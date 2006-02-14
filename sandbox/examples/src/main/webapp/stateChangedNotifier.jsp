@@ -39,7 +39,9 @@
     </p>
 
     <h:form id="form1">
-        <s:stateChangedNotifier confirmationMessage="Are you sure?" disabled="false" />
+        <s:stateChangedNotifier id="stateChangedId"
+                                confirmationMessage="Are you sure?"
+                                disabled="false" />
 
         <h:panelGrid columns="1">
             <h:inputText value=""/>

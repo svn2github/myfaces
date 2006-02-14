@@ -981,6 +981,7 @@ Sandbox-related entities.
 		<body-content>JSP</body-content>
 		<display-name>stateChangedNotifier component</display-name>
 		<description>A component that listens to changes in the components</description>
+        &ui_component_attributes;
         &ui_state_changed_notifier_attributes;
     </tag>
 
