@@ -239,9 +239,9 @@ public final class DojoUtils
 
     /**
      * writes a local require
-     * @param context
-     * @param component
-     * @param required
+     * @param context the local faces context
+     * @param component the component which the reuire is for
+     * @param required a require dojo style xx.xx.xx
      * @throws IOException
      */
     public static void addRequire(FacesContext context, UIComponent component, String required) throws IOException
