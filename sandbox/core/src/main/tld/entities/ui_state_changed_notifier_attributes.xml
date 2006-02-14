@@ -15,7 +15,7 @@
      </description>
 </attribute>
 <attribute>
-     <name>excludeCommandsWithClientIds</name>
+     <name>excludedIds</name>
      <required>false</required>
      <rtexprvalue>false</rtexprvalue>
      <description>

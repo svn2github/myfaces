@@ -65,7 +65,7 @@
     <h:form id="form2">
         <s:stateChangedNotifier confirmationMessage="Values have changed. Did you know it?"
                                 disabled="false"
-                                excludeCommandsWithClientIds="excludedLink1,form2:excludedLink2"/>
+                                excludedIds="excludedLink1,excludedLink2"/>
 
         <h:panelGrid columns="1">
             <h:inputText value=""/>

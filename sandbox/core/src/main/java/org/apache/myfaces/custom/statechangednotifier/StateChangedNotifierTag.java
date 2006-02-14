@@ -27,7 +27,7 @@ public class StateChangedNotifierTag extends HtmlInputHiddenTag
 {
     private String confirmationMessage;
     private String disabled;
-    private String excludeCommandsWithClientIds;
+    private String excludedIds;
 
     public String getComponentType()
     {
@@ -44,7 +44,7 @@ public class StateChangedNotifierTag extends HtmlInputHiddenTag
         super.release();
         confirmationMessage = null;
         disabled = null;
-        excludeCommandsWithClientIds = null;
+        excludedIds = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -54,7 +54,7 @@ public class StateChangedNotifierTag extends HtmlInputHiddenTag
 
         setStringProperty(component,"confirmationMessage",confirmationMessage);
         setBooleanProperty(component, "disabled", disabled);
-        setStringProperty(component, "excludeCommandsWithClientIds", excludeCommandsWithClientIds);
+        setStringProperty(component, "excludedIds", excludedIds);
 
     }
 
@@ -68,8 +68,8 @@ public class StateChangedNotifierTag extends HtmlInputHiddenTag
         this.disabled = disabled;
     }
 
-    public void setExcludeCommandsWithClientIds(String excludeCommandsWithClientIds)
+    public void setExcludedIds(String excludedIds)
     {
-        this.excludeCommandsWithClientIds = excludeCommandsWithClientIds;
+        this.excludedIds = excludedIds;
     }
 }

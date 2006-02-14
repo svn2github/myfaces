@@ -15,42 +15,31 @@
  */
 dojo.provide("org.apache.myfaces.StateChangedNotifier");
 
-org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, message)
+org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, message, excludeCommandIdList)
 {
 
     this.formId = formId;
     this.hiddenFieldId = hiddenFieldId;
     this.message = message;
+    this.excludeCommandIdList = excludeCommandIdList;
 
+    var arrCommandIds = null;
     var clickedCommand = null;
 
     this.prepareNotifier = function ()
     {
         var form = document.getElementById(formId);
 
+        if (excludeCommandIdList != null)
+        {
+            arrCommandIds = excludeCommandIdList.split(",");
+        }
+
         var parser = new dojo.xml.Parse();
         elementsInForm = parser.parseElement(form);
         traverseTree(elementsInForm, null);
 
         form.onsubmit = confirmSubmit;
-        //dojo.event.browser.addListener(form, "onsubmit", confirmSubmit);
-    }
-
-    this.excludeCommandIds = function (commandIdsToExclude)
-    {
-        var commandIds = commandIdsToExclude.split(",");
-
-        for (i = 0; i < commandIds.length; i++)
-        {
-            var command = document.getElementById(commandIds[i]);
-
-            if (command != null)
-            {
-                clickedCommand = command;
-                command.onclick = submitWithoutConfirm;
-            }
-        }
-
     }
 
     function traverseTree(x, type)
@@ -67,6 +56,18 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
                 if (type == "input" || type == "textarea" || type == "select")
                 {
                     processComponent(x[y]);
+                }
+                else
+                {
+                    if (arrCommandIds != null)
+                    {
+                        var elementId = x[y].id;
+
+                        if (elementId != null && elementId != '')
+                        {
+                             checkExclusion(elementId);
+                        }
+                    }
                 }
             }
         }
@@ -92,9 +93,39 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
         }
     }
 
-    function getHiddenElement()
+    function checkExclusion(elementId)
     {
-        return document.getElementById(hiddenFieldId);
+        for (i=0; i<arrCommandIds.length; i++)
+        {
+            var excludedId = arrCommandIds[i];
+            var idRegex = null;
+
+            if (elementId.indexOf(":") > -1)
+            {
+                idRegex = new RegExp(".*"+excludedId)
+            }
+            else
+            {
+                idRegex = new RegExp(excludedId)
+            }
+
+            if (elementId.match(idRegex))
+            {
+                excludeCommandWithId(elementId);
+            }
+        }
+    }
+
+
+    function excludeCommandWithId(commandId)
+    {
+        var command = document.getElementById(commandId);
+
+        if (command != null)
+        {
+            clickedCommand = command;
+            command.onclick = submitWithoutConfirm;
+        }
     }
 
     function submitWithoutConfirm()
@@ -108,5 +139,10 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
         form.onsubmit = clearFunction;
         form.submit();
         return false;
+    }
+
+    function getHiddenElement()
+    {
+        return document.getElementById(hiddenFieldId);
     }
 }

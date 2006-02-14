@@ -75,14 +75,19 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         sb.append("<!--\n");
         sb.append("dojo.addOnLoad(window, '"+initFunctionName+"');\n");
         sb.append("function "+initFunctionName+ "() {\n");
-        sb.append(replacedClientId+"Notifier = new org.apache.myfaces.StateChangedNotifier('"+formId+"','"+notifierClientId+"','"+notifier.getConfirmationMessage()+"');\n");
-        sb.append(replacedClientId+"Notifier.prepareNotifier();\n");
+        sb.append(replacedClientId+"Notifier = new org.apache.myfaces.StateChangedNotifier('"+formId+"','"+notifierClientId+"','"+notifier.getConfirmationMessage()+"',");
 
-        String excludedCommandIds = notifier.getExcludeCommandsWithClientIds();
+        String excludedCommandIds = notifier.getExcludedIds();
         if (excludedCommandIds != null)
         {
-            sb.append(replacedClientId+"Notifier.excludeCommandIds('"+excludedCommandIds+"');\n");
+            sb.append("'"+excludedCommandIds+"');\n");
         }
+        else
+        {
+            sb.append("'');\n");
+        }
+
+        sb.append(replacedClientId+"Notifier.prepareNotifier();\n");
 
         sb.append("}\n");
         sb.append("-->\n");
@@ -90,20 +95,6 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
         addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN,
                 sb.toString());
-        /*
-        dojo.event.connect(handlerNode, "onclick", function(evt){
-        // ...
-        });
-
-        function init()
-    {
-        notifier = new org.myfaces.StateChangedNotifier("formId", "hiddenNotifier", "Are you sure?");
-        notifier.prepareNotifier();
-
-        notifier2 = new org.myfaces.StateChangedNotifier("formId2", "hiddenNotifier2", "Ok?");
-        notifier2.prepareNotifier();
-    }
-        */
     }
 
     /**

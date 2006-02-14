@@ -35,7 +35,7 @@ public class StateChangedNotifier extends HtmlInputHidden
 
     private String confirmationMessage = DEFAULT_MESSAGE;
     private Boolean disabled;
-    private String excludeCommandsWithClientIds = null;
+    private String excludedIds = null;
 
     public StateChangedNotifier()
     {
@@ -49,7 +49,7 @@ public class StateChangedNotifier extends HtmlInputHidden
         values[0] = super.saveState(context);
         values[1] = confirmationMessage;
         values[2] = disabled;
-        values[3] = excludeCommandsWithClientIds;
+        values[3] = excludedIds;
 
         return values;
     }
@@ -60,7 +60,7 @@ public class StateChangedNotifier extends HtmlInputHidden
         super.restoreState(context, values[0]);
         this.confirmationMessage = (String) values[1];
         this.disabled = (Boolean) values[2];
-        this.excludeCommandsWithClientIds = (String) values[3];
+        this.excludedIds = (String) values[3];
     }
 
     public String getConfirmationMessage()
@@ -87,16 +87,16 @@ public class StateChangedNotifier extends HtmlInputHidden
         this.disabled = disabled;
     }
 
-    public String getExcludeCommandsWithClientIds()
+    public String getExcludedIds()
     {
-        if (excludeCommandsWithClientIds != null) return excludeCommandsWithClientIds;
-        ValueBinding vb = getValueBinding("excludeCommandsWithClientIds");
+        if (excludedIds != null) return excludedIds;
+        ValueBinding vb = getValueBinding("excludedIds");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setExcludeCommandsWithClientIds(String excludeCommandsWithClientIds)
+    public void setExcludedIds(String excludedIds)
     {
-        this.excludeCommandsWithClientIds = excludeCommandsWithClientIds;
+        this.excludedIds = excludedIds;
     }
 }
 
