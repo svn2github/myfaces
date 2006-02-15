@@ -57,16 +57,15 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
                 {
                     processComponent(x[y]);
                 }
-                else
-                {
-                    if (arrCommandIds != null)
-                    {
-                        var elementId = x[y].id;
 
-                        if (elementId != null && elementId != '')
-                        {
-                             checkExclusion(elementId);
-                        }
+                if (arrCommandIds != null)
+                {
+                    var elementId = x[y].id;
+                    var onclick = x[y].onclick;
+
+                    if (elementId != null && onclick != null && elementId != '')
+                    {
+                         checkExclusion(elementId);
                     }
                 }
             }
@@ -102,11 +101,11 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
 
             if (elementId.indexOf(":") > -1)
             {
-                idRegex = new RegExp(".*"+excludedId)
+                idRegex = new RegExp(".*"+excludedId+"([\\d+])?")
             }
             else
             {
-                idRegex = new RegExp(excludedId)
+                idRegex = new RegExp(excludedId+"([\\d+])?")
             }
 
             if (elementId.match(idRegex))
