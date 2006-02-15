@@ -34,7 +34,7 @@ public interface UploadedFile extends Serializable
      *
      * @return file contents
      */
-    public byte[] getBytes() throws IOException;
+    byte[] getBytes() throws IOException;
 
 
     /**
@@ -43,25 +43,25 @@ public interface UploadedFile extends Serializable
      * @throws IOException
      * @return InputStream
      */
-    public InputStream getInputStream() throws IOException;
+    InputStream getInputStream() throws IOException;
 
 
     /**
      * @return Returns the _contentType.
      */
-    public String getContentType();
+    String getContentType();
 
 
 
     /**
      * @return Returns the _name.
      */
-    public String getName();
+    String getName();
 
 
     /**
      * Answer the size of this file.
      * @return long
      */
-    public long getSize();
+    long getSize();
 }
