@@ -33,6 +33,10 @@ import org.apache.myfaces.taglib.html.ext.HtmlInputTextTag;
 
 public class InputSuggestAjaxTag extends HtmlInputTextTag
 {
+	private final static Class[] DEFAULT_SIGNATURE = new Class[]{String.class};
+	private final static Class[] SUGGEST_ITEM_SIGNATURE = new Class[]{String.class, Integer.class};
+	
+	
     private static Log log = LogFactory.getLog(InputSuggestAjaxTag.class);
 
     private String _suggestedItemsMethod;
@@ -107,10 +111,10 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
             if (isValueReference(suggestedItemsMethod))
             {
             	if (((InputSuggestAjax)component).getMaxSuggestedItems()!=null) {
-                    MethodBinding mb = context.getApplication().createMethodBinding(suggestedItemsMethod,new Class[]{String.class, Integer.class});
+                    MethodBinding mb = context.getApplication().createMethodBinding(suggestedItemsMethod, SUGGEST_ITEM_SIGNATURE);
                     ((InputSuggestAjax)component).setSuggestedItemsMethod(mb);
             	} else {
-                    MethodBinding mb = context.getApplication().createMethodBinding(suggestedItemsMethod,new Class[]{String.class});
+                    MethodBinding mb = context.getApplication().createMethodBinding(suggestedItemsMethod, DEFAULT_SIGNATURE);
                     ((InputSuggestAjax)component).setSuggestedItemsMethod(mb);
             	}
             	
