@@ -9,8 +9,10 @@ function treeNavClick(spanId, navImageId, image1, image2, nodeImgId, expandImg, 
         CookieLib.setCookieAttrib(cookieName, nodeId, "c");
     }
     navSpan.style.display = displayStyle;
-    var navImage = document.getElementById(navImageId);
-    if (navImage.src.indexOf(image1)>=0) navImage.src = image2; else navImage.src = image1;
+    if (navImageId != '') {
+        var navImage = document.getElementById(navImageId);
+        if (navImage.src.indexOf(image1)>=0) navImage.src = image2; else navImage.src = image1;
+    }
     if (nodeImgId != '') {
         var nodeImg = document.getElementById(nodeImgId);
         if (nodeImg.src.indexOf(expandImg) >=0)
