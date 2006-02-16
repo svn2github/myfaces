@@ -33,13 +33,14 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  */
 public class HtmlListRenderer
-    extends HtmlRenderer
+        extends HtmlRenderer
 {
     //private static final Log log = LogFactory.getLog(HtmlListRenderer.class);
 
     public static final String LAYOUT_SIMPLE = "simple";
     public static final String LAYOUT_UL = "unorderedList";
     public static final String LAYOUT_OL = "orderedList";
+    public static final String LAYOUT_GRID = "grid";
 
     public boolean getRendersChildren()
     {
@@ -58,35 +59,44 @@ public class HtmlListRenderer
             {
                 writer.startElement(HTML.UL_ELEM, uiComponent);
 
-                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext),null);
+                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), null);
 
                 HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
-                                                       HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                        HTML.COMMON_PASSTROUGH_ATTRIBUTES);
             }
             else if (layout.equals(LAYOUT_OL))
             {
                 writer.startElement(HTML.OL_ELEM, uiComponent);
 
-                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext),null);
-                
+                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), null);
+
                 HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
-                                                       HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                        HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+            }
+            else if (layout.equals(LAYOUT_GRID))
+            {
+                writer.startElement(HTML.TABLE_ELEM, uiComponent);
+
+                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), null);
+
+                HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
+                        HTML.COMMON_PASSTROUGH_ATTRIBUTES);
             }
             else
             {
-                if(uiComponent.getId()!=null && !uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
+                if (uiComponent.getId() != null && !uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
                 {
                     writer.startElement(HTML.SPAN_ELEM, uiComponent);
 
-                    writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext),null);
+                    writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), null);
 
                     HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
 
                 }
                 else
                 {
-                    HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer,uiComponent,
-                            HTML.SPAN_ELEM,HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                    HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer, uiComponent,
+                            HTML.SPAN_ELEM, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
                 }
             }
         }
@@ -96,7 +106,7 @@ public class HtmlListRenderer
     {
         RendererUtils.checkParamValidity(facesContext, component, UIData.class);
 
-        UIData uiData = (UIData)component;
+        UIData uiData = (UIData) component;
         String layout = getLayout(component);
         //Map requestMap = facesContext.getExternalContext().getRequestMap();
 
@@ -122,6 +132,10 @@ public class HtmlListRenderer
         }
         */
 
+        if (layout != null && layout.equals(LAYOUT_GRID)){
+            // output table row
+            writer.startElement(HTML.TR_ELEM, null);
+        }
         for (int i = first; i < last; i++)
         {
             uiData.setRowIndex(i);
@@ -135,17 +149,33 @@ public class HtmlListRenderer
                 */
 
                 HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-                if (layout != null && (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL))))
+                if (layout != null)
                 {
-                    writer.startElement(HTML.LI_ELEM, component);
-                    HtmlRendererUtils.renderHTMLAttribute(writer,component,"itemStyleClass",HTML.STYLE_CLASS_ATTR);
+                    if (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL)))
+                    {
+                        writer.startElement(HTML.LI_ELEM, component);
+                        HtmlRendererUtils.renderHTMLAttribute(writer, component, "itemStyleClass", HTML.STYLE_CLASS_ATTR);
+                    }
+                    else if (layout.equals(LAYOUT_GRID))
+                    {
+                        // output table cells
+                        writer.startElement(HTML.TD_ELEM, null);
+                    }
                 }
 
                 RendererUtils.renderChildren(facesContext, component);
 
-                if (layout != null && (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL))))
+                if (layout != null)
                 {
-                    writer.endElement(HTML.LI_ELEM);
+                    if (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL)))
+                    {
+                        writer.endElement(HTML.LI_ELEM);
+                    }
+                    else if (layout.equals(LAYOUT_GRID))
+                    {
+                        // output table cells
+                        writer.endElement(HTML.TD_ELEM);
+                    }
                 }
 
                 /*
@@ -156,7 +186,9 @@ public class HtmlListRenderer
                 */
             }
         }
-
+        if (layout != null && layout.equals(LAYOUT_GRID)){
+            writer.endElement(HTML.TR_ELEM);
+        }
         /*
         if (rowCountVar != null)
         {
@@ -182,18 +214,22 @@ public class HtmlListRenderer
             {
                 writer.endElement(HTML.OL_ELEM);
             }
+            else if (layout.equals(LAYOUT_GRID))
+            {
+                writer.endElement(HTML.TABLE_ELEM);
+            }
             else
             {
-                if(uiComponent.getId()!=null && !uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
+                if (uiComponent.getId() != null && !uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
                 {
                     writer.endElement(HTML.SPAN_ELEM);
                 }
                 else
                 {
                     HtmlRendererUtils.renderOptionalEndElement(writer,
-                                                           uiComponent,
-                                                           HTML.SPAN_ELEM,
-                                                           HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                            uiComponent,
+                            HTML.SPAN_ELEM,
+                            HTML.COMMON_PASSTROUGH_ATTRIBUTES);
                 }
             }
         }
@@ -204,11 +240,11 @@ public class HtmlListRenderer
     {
         if (component instanceof HtmlDataList)
         {
-            return ((HtmlDataList)component).getLayout();
+            return ((HtmlDataList) component).getLayout();
         }
         else
         {
-            return (String)component.getAttributes().get(JSFAttr.LAYOUT_ATTR);
+            return (String) component.getAttributes().get(JSFAttr.LAYOUT_ATTR);
         }
     }
 

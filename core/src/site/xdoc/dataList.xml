@@ -68,10 +68,11 @@
                 <code>rows - the row count.</code><br/>
                 <code>first - the first element of the list.</code><br/>
                 <code>
-                    layout - [simple|unorderedList|orderedList],
+                    layout - [simple|unorderedList|orderedList|grid],
                              simple = for each dataRow all children are simply rendered,
                              unorderedList = the list is rendered as HTML unordered list (= bullet list),
                              orderedList = the list is rendered as HTML ordered list,
+                             grid = the list is rendered in a horizontal grid (table)
                              Default: simple.
                 </code>
                 <br/>
