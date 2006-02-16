@@ -68,6 +68,19 @@
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
   </context-param>
+  
+      <!-- Tiles ViewHandler config file --> 	 
+  	 
+     <context-param> 	 
+         <param-name>tiles-definitions</param-name> 	 
+         <param-value>/WEB-INF/tiles.xml</param-value> 	 
+         <description> 	 
+         Tiles configuration 	 
+          definition files and a listener need to be defined. 	 
+          the listener will initialize JspTilesViewHandlerImpl with tiles definitions. 	 
+         </description> 	 
+     </context-param>
+  
   <filter>
     <filter-name>extensionsFilter</filter-name>
     <filter-class>org.apache.myfaces.component.html.util.ExtensionsFilter</filter-class>
