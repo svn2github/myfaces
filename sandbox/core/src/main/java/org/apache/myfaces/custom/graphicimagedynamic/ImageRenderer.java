@@ -16,9 +16,9 @@
 package org.apache.myfaces.custom.graphicimagedynamic;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseStream;
 
 /**
  * The ImageRenderer is used to render the binary data for a html img tag
@@ -29,23 +29,37 @@ import javax.faces.context.FacesContext;
  */
 public interface ImageRenderer
 {
+	/**
+	 * This method will be called first, to set the contexts.
+	 * 
+     * @param facesContext the faces context
+     * @param imageContext the image context width aditional image parameters
+	 */
+	void setContext(FacesContext facesContext, ImageContext imageContext) throws Exception;
+	
+    /**
+     * The content length of the image to render.
+     * Set to a negative value if you don't want to set the response content length.
+     * 
+     * @return the content length of the rendered image
+     */
+    int getContentLength();
+    
     /**
      * The MimeType of the image. This is usally a value of 
      * image/jpeg, image/gif, image/png or anything else which can be 
      * used as an image for html
-     *   
+     *  
      * @return the Mime-Type, not null
      */
     String getContentType();
 
     /**
-     * Called to render the image to the given outputstream
+     * Called to render the image to the given outputstream.
      * 
-     * @param facesContext the faces context
-     * @param imageContext the image context width aditional image parameters
      * @param out the outputstream which is used to write the binary data of the image
      *  
      * @throws IOException
      */
-    void renderImage(FacesContext facesContext, ImageContext imageContext, OutputStream out) throws IOException;
+    void renderImage(ResponseStream out) throws IOException;
 }

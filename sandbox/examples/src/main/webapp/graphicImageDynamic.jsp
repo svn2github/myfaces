@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="x"%>
+<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
 
 <!--
 /*
@@ -35,7 +35,7 @@
 
 			<br/>
 			Here it is :<br/>
-			<x:graphicImageDynamic
+			<s:graphicImageDynamic
         rendered="#{graphicImageDynamicBean.uploaded}"
 				id="imageDisplay"
         imageRendererClass="#{graphicImageDynamicBean.imageRenderer}"/>

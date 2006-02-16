@@ -16,26 +16,11 @@
 
 package org.apache.myfaces.custom.graphicimagedynamic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.component.html.util.ParameterResourceHandler;
-import org.apache.myfaces.renderkit.html.util.ResourceLoader;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
-import org.apache.myfaces.util.ClassUtils;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -52,6 +37,18 @@ import javax.faces.webapp.FacesServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.util.ParameterResourceHandler;
+import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.util.ClassUtils;
 
 /**
  * @author Sylvain Vieujot
@@ -197,6 +194,7 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
     }
 
     /**
+     * @throws IOException 
      * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
@@ -241,6 +239,11 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
                     throw new FacesException("could not instantiate image renderer class "
                             + rendererValue + " : " + e.getMessage(), e);
                 }
+                catch (Exception e)
+                {
+                    throw new FacesException("could not renderer image "
+                            + rendererValue + " : " + e.getMessage(), e);
+                }
             }
             catch (ClassNotFoundException e)
             {
@@ -255,31 +258,32 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
     }
 
     protected void renderImage(ImageRenderer imageRenderer, FacesContext facesContext)
-            throws IOException
+            throws Exception
     {
+    		ImageContext imageContext = createImageContext(facesContext);
+    		
+		imageRenderer.setContext(facesContext, imageContext);
+    		
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext()
                 .getResponse();
-        ImageContext imageContext = createImageContext(facesContext);
-        ByteArrayOutputStream baout = new ByteArrayOutputStream();
-        imageRenderer.renderImage(facesContext, imageContext, baout);
-        baout.flush();
-        response.setContentLength(baout.size());
+        
+        
+        int contentLength = imageRenderer.getContentLength();
+        if( contentLength >0 )
+        {
+            response.setContentLength(contentLength);
+        }
+        
         String contentType = imageRenderer.getContentType();
-        if (contentType != null)
+        if (contentType != null && contentType.length() > 0 )
         {
             response.setContentType(contentType);
         }
+        
         ResponseStream out = facesContext.getResponseStream();
         try
         {
-            InputStream is = new ByteArrayInputStream(baout.toByteArray());
-            byte[] buffer = new byte[1024];
-            int len = is.read(buffer);
-            while (len != -1)
-            {
-                out.write(buffer, 0, len);
-                len = is.read(buffer);
-            }
+        		imageRenderer.renderImage( out );
         }
         finally
         {

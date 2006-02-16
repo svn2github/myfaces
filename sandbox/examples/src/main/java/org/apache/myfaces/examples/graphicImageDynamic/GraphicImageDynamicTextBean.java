@@ -18,13 +18,14 @@ package org.apache.myfaces.examples.graphicImageDynamic;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseStream;
 
 import org.apache.myfaces.custom.graphicimagedynamic.ImageContext;
 import org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer;
-
-import javax.faces.context.FacesContext;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -35,16 +36,56 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  */
 public class GraphicImageDynamicTextBean implements ImageRenderer
 {
-    private String _text;
+	private String _text;
+	
+    private byte[] bytes = null;
+    
+    public String getText() {
+		return _text;
+	}
 
-    public String getText()
-    {
-        return _text;
-    }
+	public void setText(String text) {
+		this._text = text;
+	}
 
-    public void setText(String text)
+	public void setContext(FacesContext facesContext, ImageContext imageContext) throws IOException
     {
-        _text = text;
+	    Object text = imageContext.getParamters().get("text");
+	    if (text == null)
+	    {
+	        text = "";
+	    }
+	    int width = 300;
+	    int height = 30;
+	    Integer widthObj = imageContext.getWidth();
+	    if (widthObj != null)
+	    {
+	        width = widthObj.intValue();
+	    }
+	    Integer heightObj = imageContext.getHeight();
+	    if (heightObj != null)
+	    {
+	        height = heightObj.intValue();
+	    }
+	    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	    Graphics graphics = img.getGraphics();
+	    try
+	    {
+	        graphics.setColor(Color.WHITE);
+	        graphics.fillRect(0, 0, width, height);
+	        graphics.setColor(Color.BLUE);
+	        graphics.drawString(text.toString(), 10, 20);
+	        
+	        ByteArrayOutputStream baout = new ByteArrayOutputStream();
+	        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(baout);
+	        encoder.encode(img);
+	        baout.flush();
+	        bytes = baout.toByteArray();
+	    }
+	    finally
+	    {
+	        graphics.dispose();
+	    }	
     }
 
     public Class getImageRenderer()
@@ -59,45 +100,22 @@ public class GraphicImageDynamicTextBean implements ImageRenderer
     {
         return "image/jpeg";
     }
+    
+    /**
+     * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentLength()
+     */
+    public int getContentLength()
+    {
+        return -1;
+    }
 
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#renderImage(javax.faces.context.FacesContext, org.apache.myfaces.custom.graphicimagedynamic.ImageContext, java.io.OutputStream)
      */
-    public void renderImage(FacesContext facesContext, ImageContext imageContext, OutputStream out)
+    public void renderImage(ResponseStream out)
             throws IOException
     {
-        Object text = imageContext.getParamters().get("text");
-        if (text == null)
-        {
-            text = "";
-        }
-        int width = 300;
-        int height = 30;
-        Integer widthObj = imageContext.getWidth();
-        if (widthObj != null)
-        {
-            width = widthObj.intValue();
-        }
-        Integer heightObj = imageContext.getHeight();
-        if (heightObj != null)
-        {
-            height = heightObj.intValue();
-        }
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = img.getGraphics();
-        try
-        {
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, width, height);
-            graphics.setColor(Color.BLUE);
-            graphics.drawString(text.toString(), 10, 20);
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            encoder.encode(img);
-        }
-        finally
-        {
-            graphics.dispose();
-        }
+        out.write( bytes );
     }
 
 }

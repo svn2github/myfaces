@@ -17,13 +17,13 @@ package org.apache.myfaces.examples.graphicImageDynamic;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseStream;
+import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.custom.graphicimagedynamic.ImageContext;
 import org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer;
-
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * @author Mathias Broekelmann
@@ -31,20 +31,26 @@ import javax.faces.el.ValueBinding;
  */
 public class UploadedImageRenderer implements ImageRenderer
 {
-    private final GraphicImageDynamicBean _graphicImageDynamicBean;
+    private GraphicImageDynamicBean _graphicImageDynamicBean;
 
-    public UploadedImageRenderer()
+    public void setContext(FacesContext facesContext, ImageContext imageContext) throws IOException
     {
-        FacesContext currentInstance = FacesContext.getCurrentInstance();
-        ValueBinding vb = currentInstance.getApplication().createValueBinding(
+        ValueBinding vb = facesContext.getApplication().createValueBinding(
                 "#{graphicImageDynamicBean}");
-        GraphicImageDynamicBean value = (GraphicImageDynamicBean) vb.getValue(currentInstance);
+        GraphicImageDynamicBean value = (GraphicImageDynamicBean) vb.getValue(facesContext);
         if (value == null)
         {
             throw new IllegalStateException("managed bean graphicImageDynamicBean not found");
         }
         _graphicImageDynamicBean = value;
     }
+    
+    /**
+     * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentLength()
+     */
+    public int getContentLength() {
+		return _graphicImageDynamicBean.isUploaded() ? (int)_graphicImageDynamicBean.getUpImage().getSize() : -1;
+	}
 
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentType()
@@ -58,7 +64,7 @@ public class UploadedImageRenderer implements ImageRenderer
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#renderImage(javax.faces.context.FacesContext, org.apache.myfaces.custom.graphicimagedynamic.ImageContext, java.io.OutputStream)
      */
-    public void renderImage(FacesContext facesContext, ImageContext imageContext, OutputStream out)
+    public void renderImage(ResponseStream out)
             throws IOException
     {
         if (_graphicImageDynamicBean.isUploaded())
