@@ -38,7 +38,7 @@ public class HtmlSelectOneRadioTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Radio";
+        return HtmlSelectOneRadio.DEFAULT_RENDERER_TYPE;
     }
 
     private String _escape;

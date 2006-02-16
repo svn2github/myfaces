@@ -41,7 +41,7 @@
 
         <h:form id="calendarForm">
             <t:inputCalendar monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader"
-                currentDayCellClass="currentDayCell" value="#{calendarBean.firstDate}" />
+                currentDayCellClass="currentDayCell" value="#{calendarBean.firstDate}"/>
         </h:form>
 
         <f:verbatim><br/></f:verbatim>
@@ -57,7 +57,9 @@
             <t:outputLabel for="secondOne" value="Second calendar input"/>
             <t:inputCalendar id="secondOne" monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader" popupButtonStyleClass="standard_bold"
                 currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
-                popupTodayString="#{example_messages['popup_today_string']}" popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}" helpText="MM/DD/YYYY"/>
+                popupTodayString="#{example_messages['popup_today_string']}"
+                popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
+                helpText="MM/DD/YYYY" onchange="document.getElementById('calendarForm2').submit();"/>
             <h:inputText value="#{calendarBean.text}"/>
             <h:commandButton value="#{example_messages['js_submit']}" action="#{calendarBean.submitMethod}" />
         </h:form>

@@ -50,7 +50,7 @@
                    <h:outputText value="Select"/>
                </f:facet>
                <s:selectOneRow  groupName="selection" id="hugo" value="#{selectOneRowList.selectedRowIndex}"
-                       onchange="submit();" immediate="true" 
+                       onchange="submit();" immediate="true"
                        valueChangeListener="#{selectOneRowList.processRowSelection}"/>
            </h:column>
            <h:column>
@@ -127,6 +127,7 @@
                 </h:outputFormat>
             </t:dataScroller>
             <h:outputText value="#{selectOneRowList.selectionMessage}" />
+            <h:commandButton value="Select" />
         </h:panelGrid>
 
     </h:panelGroup>

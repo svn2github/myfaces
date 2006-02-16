@@ -191,6 +191,8 @@ public class HtmlSelectOneRadio
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectOneRadio";
+    public static final String DEFAULT_RENDERER_TYPE ="org.apache.myfaces.Radio";
+
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
     private String _enabledOnUserRole = null;
@@ -201,6 +203,7 @@ public class HtmlSelectOneRadio
 
     public HtmlSelectOneRadio()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

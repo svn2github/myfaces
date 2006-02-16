@@ -20,6 +20,13 @@ import javax.faces.validator.Validator;
 import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
 
+/**
+ *
+ * @author Fabian Frederick
+ *
+ * @version $Revision: $ $Date: $
+ */
+
 public class ValidateUrlTag extends ValidatorTag
 {
   private static final long serialVersionUID = 6041422002721046221L;
