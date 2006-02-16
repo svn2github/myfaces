@@ -70,15 +70,13 @@
   </context-param>
   
       <!-- Tiles ViewHandler config file --> 	 
-  	 
      <context-param> 	 
-         <param-name>tiles-definitions</param-name> 	 
-         <param-value>/WEB-INF/tiles.xml</param-value> 	 
-         <description> 	 
-         Tiles configuration 	 
+         <description>Tiles configuration 	 
           definition files and a listener need to be defined. 	 
           the listener will initialize JspTilesViewHandlerImpl with tiles definitions. 	 
-         </description> 	 
+         </description> 
+         param-name>tiles-definitions</param-name> 	 
+         <param-value>/WEB-INF/tiles.xml</param-value> 	 
      </context-param>
   
   <filter>
