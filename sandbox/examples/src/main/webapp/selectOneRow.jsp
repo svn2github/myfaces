@@ -49,7 +49,9 @@
                <f:facet name="header">
                    <h:outputText value="Select"/>
                </f:facet>
-               <s:selectOneRow  groupName="selection" id="hugo" value="#{selectOneRowList.selectedRowIndex}"/>
+               <s:selectOneRow  groupName="selection" id="hugo" value="#{selectOneRowList.selectedRowIndex}"
+                       onchange="submit();" immediate="true" 
+                       valueChangeListener="#{selectOneRowList.processRowSelection}"/>
            </h:column>
            <h:column>
                <f:facet name="header">
@@ -125,7 +127,6 @@
                 </h:outputFormat>
             </t:dataScroller>
             <h:outputText value="#{selectOneRowList.selectionMessage}" />
-            <h:commandButton value="Select" />
         </h:panelGrid>
 
     </h:panelGroup>

@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
 
@@ -32,14 +33,14 @@ public class SelectOneRowList
 {
     private List _list = new ArrayList();
 
-    private Integer _selectedRowIndex;
+    private Long _selectedRowIndex;
 
-    public Integer getSelectedRowIndex()
+    public Long getSelectedRowIndex()
     {
         return _selectedRowIndex;
     }
 
-    public void setSelectedRowIndex(Integer selectedRowIndex)
+    public void setSelectedRowIndex(Long selectedRowIndex)
     {
         _selectedRowIndex = selectedRowIndex;
     }
@@ -82,4 +83,10 @@ public class SelectOneRowList
                                         + ", pageindex: "
                                         + scrollerEvent.getPageIndex());
     }
+
+    public void processRowSelection(ValueChangeEvent event)
+    {
+        Long newVal = (Long) event.getNewValue();
+    }
+
 }

@@ -162,6 +162,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                             item.setActive(prevItem.isActive());
                         if (!copyValueBinding(prevItem, item, "open"))
                             item.setOpen(prevItem.isOpen());
+                        if(!panelNav.isExpandAll() || prevItem.isActive() )
                         item.toggleOpen();
                         if (prevItem.isOpen())
                             restoreOpenActiveStates(facesContext, panelNav, prevItem.getChildren());
@@ -311,9 +312,33 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
     }
 
+    private HtmlPanelNavigationMenu getParentPanelNavigation(UIComponent uiComponent)
+    {
+        if(uiComponent instanceof HtmlPanelNavigationMenu)
+        {
+            return (HtmlPanelNavigationMenu) uiComponent;
+        }
+        UIComponent parent = uiComponent.getParent();
+
+            // search HtmlPanelNavigation
+            UIComponent p = parent;
+            while (p != null && !(p instanceof HtmlPanelNavigationMenu))
+            {
+                p = p.getParent();
+            }
+            // p is now the HtmlPanelNavigation
+           if (!(p instanceof HtmlPanelNavigationMenu))
+                {
+                    log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
+                    return null;
+                }
+        return (HtmlPanelNavigationMenu) p;
+    }
+
     private void createHtmlCommandNavigationItem(FacesContext facesContext, UIComponent parent, int i,
                                                  UINavigationMenuItem uiNavMenuItem, UniqueId uniqueId)
     {
+        HtmlPanelNavigationMenu menu = getParentPanelNavigation(parent);
         // Create HtmlCommandNavigationItem
         HtmlCommandNavigationItem newItem = (HtmlCommandNavigationItem)
             facesContext.getApplication().createComponent(HtmlCommandNavigationItem.COMPONENT_TYPE);
@@ -344,7 +369,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         if (!copyValueBinding(uiNavMenuItem, newItem, "rendered"))
             newItem.setRendered(uiNavMenuItem.isRendered());
 
-        if (uiNavMenuItem.isOpen()) newItem.toggleOpen();
+        if (uiNavMenuItem.isOpen() && ! menu.isExpandAll()) newItem.toggleOpen();
         newItem.setActive(uiNavMenuItem.isActive());
 
         if (!copyValueBinding(uiNavMenuItem, newItem, "target"))

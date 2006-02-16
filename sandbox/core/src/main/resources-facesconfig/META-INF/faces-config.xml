@@ -185,6 +185,12 @@
     </renderer>
 
     <renderer>
+      <component-family>org.apache.myfaces.SelectOneRow</component-family>
+      <renderer-type>org.apache.myfaces.SelectOneRow</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.selectOneRow.SelectOneRowRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
       <component-family>javax.faces.Input</component-family>
       <renderer-type>org.apache.myfaces.InputTextAjax</renderer-type>
       <renderer-class>org.apache.myfaces.custom.inputAjax.HtmlInputTextAjaxRenderer</renderer-class>

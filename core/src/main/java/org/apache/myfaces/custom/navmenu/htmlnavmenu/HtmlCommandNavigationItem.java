@@ -111,10 +111,29 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         return true;
     }
 
+    private HtmlPanelNavigationMenu getParentPanelNavigation()
+    {
+        UIComponent parent = getParent();
+
+            // search HtmlPanelNavigation
+            UIComponent p = parent;
+            while (p != null && !(p instanceof HtmlPanelNavigationMenu))
+            {
+                p = p.getParent();
+            }
+            // p is now the HtmlPanelNavigation
+           if (!(p instanceof HtmlPanelNavigationMenu))
+                {
+                    log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
+                    return null;
+                }
+        return (HtmlPanelNavigationMenu) p;
+    }
 
     public void toggleOpen()
     {
-        if (isOpen())
+        HtmlPanelNavigationMenu menu = getParentPanelNavigation();
+        if (isOpen() && menu != null && ! menu.isExpandAll() )
         {
             if (getChildCount() > 0)
             {
@@ -140,27 +159,27 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
                 p = p.getParent();
             }
             // p is now the HtmlPanelNavigation
-
-            if (!hasCommandNavigationChildren())
-            {
-                //item is an end node --> deactivate all other nodes, and then...
-                if (!(p instanceof HtmlPanelNavigationMenu))
+           if (!(p instanceof HtmlPanelNavigationMenu))
                 {
                     log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
                 }
                 else
                 {
-                    //deactivate all other items
-                    deactivateAllChildren(p.getChildren().iterator());
+                    if (!hasCommandNavigationChildren() || ((HtmlPanelNavigationMenu) p).isExpandAll())
+                    {
+                        //item is an end node or Menu always expanded --> deactivate all other nodes, and then...
+
+                        //deactivate all other items
+                        deactivateAllChildren(p.getChildren().iterator());
+                        //...activate this item
+                        setActive(true);
+                    }
+                    else
+                    {
+                        //open item
+                        setOpen(true);
+                    }
                 }
-                //...activate this item
-                setActive(true);
-            }
-            else
-            {
-                //open item
-                setOpen(true);
-            }
         }
     }
 
