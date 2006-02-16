@@ -101,7 +101,7 @@ public class ExtensionsFilter implements Filter {
             return;
         }
 
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         HttpServletRequest extendedRequest = httpRequest;
@@ -129,37 +129,45 @@ public class ExtensionsFilter implements Filter {
         HttpServletResponse servletResponse = (HttpServletResponse)response;
 
         // only parse HTML responses
-        if (extendedResponse.getContentType() != null && extendedResponse.getContentType().startsWith("text/html"))
+        if (extendedResponse.getContentType() != null && isValidContentType(extendedResponse.getContentType()))
         {
-        	addResource.parseResponse(extendedRequest, extendedResponse.toString(),
-        			servletResponse);
-        	
-        	addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
-        			servletResponse);
-        	
-        	if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
-        		// writes the response if no header info is needed
-        		addResource.writeResponse(extendedRequest, servletResponse);
-        		return;
-        	}
-        	
-        	// Some headerInfo has to be added
-        	addResource.writeWithFullHeader(extendedRequest, servletResponse);
-        
-        	// writes the response
-        	addResource.writeResponse(extendedRequest, servletResponse);
+            addResource.parseResponse(extendedRequest, extendedResponse.toString(),
+                    servletResponse);
+
+            addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
+                    servletResponse);
+
+            if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
+                // writes the response if no header info is needed
+                addResource.writeResponse(extendedRequest, servletResponse);
+                return;
+            }
+
+            // Some headerInfo has to be added
+            addResource.writeWithFullHeader(extendedRequest, servletResponse);
+
+            // writes the response
+            addResource.writeResponse(extendedRequest, servletResponse);
         }
         else
         {
-        	servletResponse.getWriter().write(extendedResponse.toString());
+            servletResponse.getWriter().write(extendedResponse.toString());
         }
+    }
+
+    public boolean isValidContentType(String contentType)
+    {
+        return contentType.startsWith("text/html") ||
+                contentType.startsWith("text/xml") ||
+                contentType.startsWith("application/xhtml+xml") ||
+                contentType.startsWith("application/xml");
     }
 
     /**
      * Destroy method for this filter
      */
     public void destroy() {
-		// NoOp
+        // NoOp
     }
 
 
