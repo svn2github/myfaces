@@ -477,7 +477,7 @@ org_apache_myfaces_PopupCalendar.prototype._closeCalendar=function() {
         var onchange=this.ctlToPlaceValue.getAttribute("onchange");
         if(onchange)
         {
-            eval(onchange);
+            this.ctlToPlaceValue.onchange();
         }
     }
     else
