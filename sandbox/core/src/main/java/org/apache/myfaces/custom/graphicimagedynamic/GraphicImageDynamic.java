@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.graphicimagedynamic;
 
 import org.apache.myfaces.component.html.ext.HtmlGraphicImage;
+import org.apache.myfaces.util.ClassUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
@@ -95,8 +96,7 @@ public class GraphicImageDynamic extends HtmlGraphicImage
             {
                 try
                 {
-                    clazz = Thread.currentThread().getContextClassLoader().loadClass(
-                            value.toString());
+                    clazz = ClassUtils.classForName(value.toString());
                 }
                 catch (ClassNotFoundException e)
                 {

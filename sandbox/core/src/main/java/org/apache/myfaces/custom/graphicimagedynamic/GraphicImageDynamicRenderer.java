@@ -35,6 +35,7 @@ import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
+import org.apache.myfaces.util.ClassUtils;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -219,8 +220,7 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
             }
             try
             {
-                Class rendererClass = Thread.currentThread().getContextClassLoader().loadClass(
-                        rendererValue.toString());
+                Class rendererClass = ClassUtils.classForName(rendererValue.toString());
                 if (!ImageRenderer.class.isAssignableFrom(rendererClass))
                 {
                     throw new FacesException("Image renderer class [" + rendererValue
