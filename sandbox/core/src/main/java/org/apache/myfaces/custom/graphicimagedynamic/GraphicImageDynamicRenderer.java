@@ -148,7 +148,7 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
             params.put(WIDTH_PARAM, width);
         }
         String height = graphicImageDynamic.getHeight();
-        if (width != null)
+        if (height != null)
         {
             params.put(HEIGHT_PARAM, height);
         }
