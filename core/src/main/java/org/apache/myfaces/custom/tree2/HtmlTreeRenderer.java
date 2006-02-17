@@ -191,22 +191,35 @@ public class HtmlTreeRenderer extends Renderer
         TreeWalker walker = new TreeWalkerBase(tree);
         walker.setCheckState(!clientSideToggle); // walk all nodes in client mode
 
-        if (!showRootNode)
+        if (showRootNode)
         {
-            walker.next(); // basically skip the root node
-            String rootNodeId = tree.getNodeId();
+            // encode the tree (starting with the root node)
+            if (walker.next())
+            {
+                encodeTree(context, out, tree, walker);
+            }
+        }
+        else
+        {
+            // skip the root node
+            walker.next();
+            TreeNode rootNode = tree.getNode();
 
+            // now mark the root as expanded (so we don't stop there)
+            String rootNodeId = tree.getNodeId();
             if(!state.isNodeExpanded(rootNodeId))
             {
                 state.toggleExpanded(rootNodeId);
             }
-        }
 
-
-        // encode the tree (starting with the root node)
-        if (walker.next())
-        {
-            encodeTree(context, out, tree, walker);
+            // now encode each of the nodes in the level immediately below the root
+            for (int i=0; i < rootNode.getChildCount(); i++)
+            {
+                if (walker.next())
+                {
+                    encodeTree(context, out, tree, walker);
+                }
+            }
         }
 
         // reset the current node id once we're done encoding everything
@@ -224,9 +237,7 @@ public class HtmlTreeRenderer extends Renderer
      * @param context FacesContext
      * @param out ResponseWriter
      * @param tree HtmlTree
-     * @param parentId The parent's node id (where parent is the parent of the node we are about to render.)
-     * @param childCount If this node is a child of another node, the count indicates which child number it is
-     *  (used to construct the id of the next node to render.)
+     * @param walker TreeWalker
      * @throws IOException
      */
     protected void encodeTree(FacesContext context, ResponseWriter out, HtmlTree tree, TreeWalker walker)
@@ -259,7 +270,7 @@ public class HtmlTreeRenderer extends Renderer
         }
 
         TreeNode node = tree.getNode();
-        
+
         for (int i=0; i < node.getChildCount(); i++)
         {
             if (walker.next())
@@ -267,7 +278,7 @@ public class HtmlTreeRenderer extends Renderer
                 encodeTree(context, out, tree, walker);
             }
         }
-        
+
         if (clientSideToggle)
         {
             out.endElement(HTML.SPAN_ELEM);
