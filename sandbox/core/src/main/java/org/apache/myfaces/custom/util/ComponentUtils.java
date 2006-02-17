@@ -32,30 +32,6 @@ public class ComponentUtils
 {
     private static Log log = LogFactory.getLog(ComponentUtils.class);
 
-     /**
-     * TR- This was moved from AjaxPhaseListenere on checkin 344383
-     *
-     * @param context
-     * @param root
-     * @param clientId
-     * @return component referenced by clientId or null if not found
-     */
-    public static UIComponent findComponent(FacesContext context, UIComponent root, String clientId)
-    {
-        UIComponent component = null;
-        for(int i = 0; i < root.getChildCount() && component == null; i++)
-        {
-            UIComponent child = (UIComponent)root.getChildren().get(i);
-            component = findComponent(context, child, clientId);
-        }
-
-        if(component == null && root.getClientId(context).equals(clientId))
-        {
-            component = root;
-        }
-        return component;
-    }
-
     public static UIComponent findFirstMessagesComponent(FacesContext context, UIComponent root)
     {
         UIComponent component = null;
