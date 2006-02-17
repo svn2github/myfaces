@@ -16,18 +16,18 @@
 
 package org.apache.myfaces.custom.tree2;
 
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class TreeNodeBase implements TreeNode, Comparable
 {
     private static final long serialVersionUID = 278589014441538822L;
-    private ArrayList children = new ArrayList();
+    private List children = new ArrayList();
     private String type;
     private String description;
     private boolean leaf;
     private String identifier;
+    private TreeNode parent;
 
     public TreeNodeBase()
     {}

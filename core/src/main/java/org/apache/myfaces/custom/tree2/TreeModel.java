@@ -32,18 +32,8 @@ public interface TreeModel extends Serializable
      * Separator char to be used in node path generation.
      */
     public final static String SEPARATOR = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-    
-    /**
-     * Gets the current {@link TreeNode} or <code>null</code> if no node ID is selected.
-     * @return The current node
-     */
-    public TreeNode getNode();
 
-    /**
-     * Sets the current {@link TreeNode} to the specified node ID.
-     * @param nodeId The id of the node to set
-     */
-    public void setNodeId(String nodeId);
+
 
     /**
      * Gets an array of String containing the ID's of all of the {@link TreeNode}s in the path to
@@ -65,10 +55,12 @@ public interface TreeModel extends Serializable
      */
     public boolean isLastChild(String nodeId);
 
-    
+    public TreeNode getNodeById(String nodeId);
+    //public String getNodeId(TreeNode node);
+
     public void setTreeState(TreeState state);
     public TreeState getTreeState();
-    
-    
-    
+
+//    public TreeWalker getTreeWalker();
+
 }

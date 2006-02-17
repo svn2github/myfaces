@@ -15,14 +15,12 @@
  */
 package org.apache.myfaces.custom.tree2;
 
-import java.util.Map;
-
 import javax.faces.component.UICommand;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
-
+import java.util.Map;
 
 /**
  * Represents "tree data" in an HTML format.  Also provides a mechanism for maintaining expand/collapse
@@ -35,7 +33,7 @@ public class HtmlTree extends UITreeData
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlTree2";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlTree2";
-    private static final String NODE_STATE_KEY = "org.apache.myfaces.tree.NODE_STATE_KEY";
+//	private static final String NODE_STATE_KEY = "org.apache.myfaces.tree.NODE_STATE_KEY";
     private UICommand _expandControl;
     private String _varNodeToggler;
 //    private HashSet _expandedNodes = new HashSet();
@@ -56,7 +54,7 @@ public class HtmlTree extends UITreeData
     {
         Object values[] = new Object[3];
         values[0] = super.saveState(context);
-//        values[1] = _expandedNodes;
+//      values[1] = _expandedNodes;
         values[1] = _varNodeToggler;
         values[2] = _selectedNodeId;
 
@@ -68,7 +66,7 @@ public class HtmlTree extends UITreeData
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-//        _expandedNodes = (HashSet)values[1];
+//      _expandedNodes = (HashSet)values[1];
         setVarNodeToggler((String)values[1]);
         _selectedNodeId = (String)values[2];
     }
@@ -163,10 +161,6 @@ public class HtmlTree extends UITreeData
 //        return (_expandedNodes.contains(getNodeId()) && getNode().getChildCount() > 0);
 //    }
 
-    protected void processChildNodes(FacesContext context, TreeNode parentNode, int processAction)
-    {
-        super.processChildNodes(context, parentNode, processAction);
-    }
 
     /**
      * Implements the {@link javax.faces.event.ActionListener} interface.  Basically, this

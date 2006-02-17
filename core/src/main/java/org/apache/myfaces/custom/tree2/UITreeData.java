@@ -59,9 +59,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     private static final int PROCESS_UPDATES = 3;
 
     private TreeModel _model;
+    private String _nodeId;
+    private TreeNode _node;
+
     private Object _value;
     private String _var;
-    private String _nodeId;
     private Map _saved = new HashMap();
 
     private TreeState _restoredState = null;
@@ -103,20 +105,20 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     }
 
     public void encodeEnd(FacesContext context) throws IOException {
-    	super.encodeEnd(context);
-    	
-    	// prepare to save the tree state -- fix for MYFACES-618
-    	// should be done in saveState() but Sun RI does not call saveState() and restoreState()
-    	// with javax.faces.STATE_SAVING_METHOD = server
-    	TreeState state = getDataModel().getTreeState();
+        super.encodeEnd(context);
+        
+        // prepare to save the tree state -- fix for MYFACES-618
+        // should be done in saveState() but Sun RI does not call saveState() and restoreState()
+        // with javax.faces.STATE_SAVING_METHOD = server
+        TreeState state = getDataModel().getTreeState();
         if ( state == null)
         {
             // the model supplier has forgotten to return a valid state manager, but we need one
-        	state = new TreeStateBase();
+            state = new TreeStateBase();
         }
         // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state
         _restoredState = (state.isTransient()) ? null : state;
-    	
+        
     }
 
     public void queueEvent(FacesEvent event)
@@ -161,11 +163,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         _model = null;
         _saved = new HashMap();
-        
+
         setNodeId(null);
         decode(context);
 
-        processNodes(context, PROCESS_DECODES, null, 0);
+        processNodes(context, PROCESS_DECODES);
 
     }
 
@@ -175,7 +177,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        processNodes(context, PROCESS_VALIDATORS, null, 0);
+        processNodes(context, PROCESS_VALIDATORS);
 
         setNodeId(null);
     }
@@ -187,7 +189,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        processNodes(context, PROCESS_UPDATES, null, 0);
+        processNodes(context, PROCESS_UPDATES);
 
         setNodeId(null);
     }
@@ -294,14 +296,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     public TreeNode getNode()
     {
-        TreeModel model = getDataModel();
-
-        if (model == null)
-        {
-            return null;
-        }
-
-        return model.getNode();
+        return _node;
     }
 
 
@@ -325,8 +320,9 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         try
         {
-            model.setNodeId(nodeId);
+            _node = model.getNodeById(nodeId);
         }
+        //TODO: change to an own exception
         catch (IndexOutOfBoundsException aob)
         {
             /**
@@ -345,10 +341,10 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         restoreDescendantState();
 
-        Map requestMap = getFacesContext().getExternalContext().getRequestMap();
-
         if (_var != null)
         {
+            Map requestMap = getFacesContext().getExternalContext().getRequestMap();
+
             if (nodeId == null)
             {
                 requestMap.remove(_var);
@@ -408,7 +404,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             }
             else if (value instanceof TreeNode)
             {
-            	_model = new TreeModelBase((TreeNode) value);
+                _model = new TreeModelBase((TreeNode) value);
             } else
             {
                 throw new IllegalArgumentException("Value must be a TreeModel or TreeNode");
@@ -426,11 +422,17 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     public void expandAll()
     {
-        String currentNodeId = _nodeId;
-
-        int kidId = 0;
-        expandEverything(null, kidId++);
-        setNodeId(currentNodeId);
+        TreeWalker walker = new TreeWalkerBase(this);
+        TreeState state =  getDataModel().getTreeState();
+        walker.setCheckState(false);
+        while(walker.next())
+        {
+            String id = getNodeId();
+            if (!state.isNodeExpanded(id))
+            {
+                state.toggleExpanded(id);
+            }
+        }
     }
 
     /**
@@ -451,66 +453,41 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         getDataModel().getTreeState().collapsePath(nodePath);
     }
 
-    /**
-     * Private helper method that recursviely expands all of the nodes.
-     *
-     * @param parentId The id of the parent node (if applicable)
-     * @param childCount The child number of the node to expand (will be incremented as you recurse.)
-     */
-    private void expandEverything(String parentId, int childCount)
-    {
-        String nodeId = (parentId != null) ? parentId + TreeModel.SEPARATOR + childCount : "0";
-        setNodeId(nodeId);
 
-        TreeNode node = getDataModel().getNode();
-
-        if (!node.isLeaf() && !isNodeExpanded())
-        {
-            getDataModel().getTreeState().toggleExpanded(nodeId);
-        }
-
-        List children = getNode().getChildren();
-        for (int kount=0; kount < children.size(); kount++)
-        {
-            expandEverything(nodeId, kount);
-        }
-    }
-
-
-    private void processNodes(FacesContext context, int processAction, String parentId, int childLevel)
+    protected void processNodes(FacesContext context, int processAction)
     {
         UIComponent facet = null;
-        setNodeId(parentId != null ? parentId + NamingContainer.SEPARATOR_CHAR + childLevel : "0");
-        TreeNode node = getNode();
+        TreeWalker walker = new TreeWalkerBase(this);
 
-        facet = getFacet(node.getType());
-
-        if (facet == null)
+        while(walker.next())
         {
-            throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
+            TreeNode node = getNode();
+            facet = getFacet(node.getType());
+
+            if (facet == null)
+            {
+                throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
+            }
+
+            switch (processAction)
+            {
+                case PROCESS_DECODES:
+
+                    facet.processDecodes(context);
+                    break;
+
+                case PROCESS_VALIDATORS:
+
+                    facet.processValidators(context);
+                    break;
+
+                case PROCESS_UPDATES:
+
+                    facet.processUpdates(context);
+                    break;
+            }
         }
 
-        switch (processAction)
-        {
-            case PROCESS_DECODES:
-
-                facet.processDecodes(context);
-                break;
-
-            case PROCESS_VALIDATORS:
-
-                facet.processValidators(context);
-                break;
-
-            case PROCESS_UPDATES:
-
-                facet.processUpdates(context);
-                break;
-        }
-        if(isNodeExpanded())
-        {
-            processChildNodes(context, node, processAction);
-        }
     }
 
     /**
@@ -521,6 +498,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      * @param parentNode    The parent node whose children are to be processed
      * @param processAction An <code>int</code> representing the type of action to process
      */
+    /*
     protected void processChildNodes(FacesContext context, TreeNode parentNode, int processAction)
     {
         int kidId = 0;
@@ -533,6 +511,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
             processNodes(context, processAction, currId, kidId++);
         }
     }
+    */
 
     /**
      * To support using input components for the nodes (e.g., input fields, checkboxes, and selection
@@ -797,5 +776,4 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     {
         return getDataModel().getTreeState().isNodeExpanded(getNodeId());
     }
-
 }

@@ -23,6 +23,7 @@ import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.custom.tree2.TreeWalkerBase;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -36,12 +37,12 @@ import javax.faces.render.Renderer;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
 import java.net.URLDecoder;
 import javax.servlet.http.Cookie;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Sean Schofield
@@ -79,8 +80,8 @@ public class HtmlTreeRenderer extends Renderer
     private void restoreStateFromCookies(FacesContext context, UIComponent component) {
         String nodeId = null;
         HtmlTree tree = (HtmlTree)component;
-        String originalNodeId = tree.getNodeId();
-        
+        TreeState state = tree.getDataModel().getTreeState();
+
         Map cookieMap = context.getExternalContext().getRequestCookieMap();
         Cookie treeCookie = (Cookie)cookieMap.get(component.getId());
         if (treeCookie == null || treeCookie.getValue() == null)
@@ -98,25 +99,21 @@ public class HtmlTreeRenderer extends Renderer
 
             if (NODE_STATE_EXPANDED.equals(nodeState))
             {
-                tree.setNodeId(nodeId);
-                if (!tree.isNodeExpanded())
+                if (!state.isNodeExpanded(nodeId))
                 {
-                    tree.toggleExpanded();
+                    state.toggleExpanded(nodeId);
                 }
-                tree.setNodeId(originalNodeId);
             }
             else if (NODE_STATE_CLOSED.equals(nodeState))
             {
-                tree.setNodeId(nodeId);
-                if (tree.isNodeExpanded())
+                if (state.isNodeExpanded(nodeId))
                 {
-                    tree.toggleExpanded();
+                    state.toggleExpanded(nodeId);
                 }
-                tree.setNodeId(originalNodeId);
             }
         }
     }
-    
+
 
     public void decode(FacesContext context, UIComponent component)
     {
@@ -125,11 +122,10 @@ public class HtmlTreeRenderer extends Renderer
         // see if one of the nav nodes was clicked, if so, then toggle appropriate node
         String nodeId = null;
         HtmlTree tree = (HtmlTree)component;
-        String originalNodeId = tree.getNodeId();
 
         if (getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true))
         {
-        	restoreStateFromCookies(context, component);
+            restoreStateFromCookies(context, component);
         }
         else
         {
@@ -139,7 +135,7 @@ public class HtmlTreeRenderer extends Renderer
             {
                 return;
             }
-            
+
             component.queueEvent(new ToggleExpandedEvent(component, nodeId));
         }
     }
@@ -147,10 +143,10 @@ public class HtmlTreeRenderer extends Renderer
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
         HtmlTree tree = (HtmlTree)component;
-        // try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode 
+        // try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode
         if (!tree.getDataModel().getTreeState().isTransient() && getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true) && getBoolean(component, JSFAttr.PRESERVE_TOGGLE, true))
             restoreStateFromCookies(context, component);
-        
+
         // write javascript functions
         encodeJavascript(context, component);
     }
@@ -167,10 +163,8 @@ public class HtmlTreeRenderer extends Renderer
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException
     {
         HtmlTree tree = (HtmlTree)component;
-        boolean showRootNode = getBoolean(tree, JSFAttr.SHOW_ROOT_NODE, true);
 
         if (!component.isRendered()) return;
-
         if (tree.getValue() == null) return;
 
         ResponseWriter out = context.getResponseWriter();
@@ -190,28 +184,32 @@ public class HtmlTreeRenderer extends Renderer
             out.writeAttribute("id", clientId, "id");
         }
 
-        if (showRootNode)
-        {
-            // encode the tree (starting with the root node)
-            encodeTree(context, out, tree, null, 0);
-        }
-        else
-        {
-            tree.setNodeId("0");
-            if(!tree.isNodeExpanded())
-            {
-                tree.toggleExpanded();
-            }
-            TreeNode rootNode = tree.getNode();
-            List rootChildren = rootNode.getChildren();
-            int kidId = 0;
+        boolean clientSideToggle = getBoolean(tree, JSFAttr.CLIENT_SIDE_TOGGLE, true);
+        boolean showRootNode = getBoolean(tree, JSFAttr.SHOW_ROOT_NODE, true);
 
-            for (int i = 0; i < rootChildren.size(); i++)
+        TreeState state = tree.getDataModel().getTreeState();
+        TreeWalker walker = new TreeWalkerBase(tree);
+        walker.setCheckState(!clientSideToggle); // walk all nodes in client mode
+
+        if (!showRootNode)
+        {
+            walker.next(); // basically skip the root node
+            String rootNodeId = tree.getNodeId();
+
+            if(!state.isNodeExpanded(rootNodeId))
             {
-                encodeTree(context, out, tree, ROOT_NODE_ID, kidId++);
+                state.toggleExpanded(rootNodeId);
             }
         }
 
+
+        // encode the tree (starting with the root node)
+        if (walker.next())
+        {
+            encodeTree(context, out, tree, walker);
+        }
+
+        // reset the current node id once we're done encoding everything
         tree.setNodeId(null);
 
         if (isOuterSpanUsed)
@@ -231,16 +229,10 @@ public class HtmlTreeRenderer extends Renderer
      *  (used to construct the id of the next node to render.)
      * @throws IOException
      */
-    protected void encodeTree(FacesContext context, ResponseWriter out, HtmlTree tree, String parentId, int childCount)
+    protected void encodeTree(FacesContext context, ResponseWriter out, HtmlTree tree, TreeWalker walker)
         throws IOException
     {
         boolean clientSideToggle = getBoolean(tree, JSFAttr.CLIENT_SIDE_TOGGLE, true);
-
-        String nodeId = (parentId != null) ? parentId + NamingContainer.SEPARATOR_CHAR + childCount : ROOT_NODE_ID;
-        String spanId = TOGGLE_SPAN + ":" + tree.getId() + ":" + nodeId;
-
-        tree.setNodeId(nodeId);
-        TreeNode node = tree.getNode();
 
         // encode the current node
         HtmlRendererUtils.writePrettyLineSeparator(context);
@@ -248,38 +240,37 @@ public class HtmlTreeRenderer extends Renderer
         encodeCurrentNode(context, out, tree);
         afterNodeEncode(context, out);
 
-        // only encode the children if clientSideToggle is true or if this node is expanded (regardless of clientSideToggle)
-        if (clientSideToggle == true || tree.isNodeExpanded())
+        // if client side toggling is on, add a span to be used for displaying/hiding children
+        if (clientSideToggle)
         {
-            int kidId = 0;
-            String currId = tree.getNodeId();
-            List children = node.getChildren();
+            String spanId = TOGGLE_SPAN + ":" + tree.getId() + ":" + tree.getNodeId();
 
-            // if client side toggling is on, add a span to be used for displaying/hiding children
-            if (clientSideToggle)
+            out.startElement(HTML.SPAN_ELEM, tree);
+            out.writeAttribute(HTML.ID_ATTR, spanId, null);
+
+            if (tree.isNodeExpanded())
             {
-                out.startElement(HTML.SPAN_ELEM, tree);
-                out.writeAttribute(HTML.ID_ATTR, spanId, null);
-
-                if (tree.isNodeExpanded())
-                {
-                    out.writeAttribute(HTML.STYLE_ATTR, "display:block", null);
-                }
-                else
-                {
-                    out.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
-                }
+                out.writeAttribute(HTML.STYLE_ATTR, "display:block", null);
             }
-
-            for (int i = 0; i < children.size(); i++)
+            else
             {
-                encodeTree(context, out, tree, currId, kidId++);
+                out.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
             }
+        }
 
-            if (clientSideToggle)
+        TreeNode node = tree.getNode();
+        
+        for (int i=0; i < node.getChildCount(); i++)
+        {
+            if (walker.next())
             {
-                out.endElement(HTML.SPAN_ELEM);
+                encodeTree(context, out, tree, walker);
             }
+        }
+        
+        if (clientSideToggle)
+        {
+            out.endElement(HTML.SPAN_ELEM);
         }
     }
 
@@ -398,7 +389,7 @@ public class HtmlTreeRenderer extends Renderer
         int bitMask = NOTHING;
         bitMask += (node.isLeaf()) ? NOTHING : CHILDREN;
         if (bitMask == CHILDREN) // if there are no children, ignore expand state -> more flexible with dynamic tree-structures
-        	bitMask += (tree.isNodeExpanded()) ? EXPANDED : NOTHING;
+            bitMask += (tree.isNodeExpanded()) ? EXPANDED : NOTHING;
         bitMask += (tree.isLastChild(tree.getNodeId())) ? LAST : NOTHING;
         bitMask += (showLines) ? LINES : NOTHING;
 
@@ -455,14 +446,14 @@ public class HtmlTreeRenderer extends Renderer
                 break;
 
             // unacceptable bitmask combinations
-            
+
             case (EXPANDED + LINES):
             case (EXPANDED + LINES + LAST):
             case (EXPANDED):
             case (EXPANDED + LAST):
-                
+
                 throw new IllegalStateException("Encountered a node ["+ nodeId + "] + with an illogical state.  " +
-                                                "Node is expanded but it is also considered a leaf (a leaf cannot be considered expanded.");                                                
+                                                "Node is expanded but it is also considered a leaf (a leaf cannot be considered expanded.");
 
             default:
                 // catch all for any other combinations

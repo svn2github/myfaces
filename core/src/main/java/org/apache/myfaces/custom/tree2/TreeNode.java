@@ -74,5 +74,11 @@ public interface TreeNode extends Serializable
      * @return the number of children
      */
     public int getChildCount();
+    
+    /*
+    public TreeNode getParentNode();
+    
+    public void setParentNode(TreeNode parent);
+    */
 
 }

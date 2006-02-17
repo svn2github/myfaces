@@ -16,9 +16,11 @@
 package org.apache.myfaces.custom.tree2;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
 /**
@@ -33,13 +35,11 @@ public class TreeModelBase implements TreeModel
 {
 
     private static final long serialVersionUID = 3969414475396945742L;
-    private static final Log log = LogFactory.getLog(TreeModelBase.class);    
-   
+//  private static final Log log = LogFactory.getLog(TreeModelBase.class);
+
     private TreeNode root;
-    private TreeNode currentNode;
-    
     private TreeState treeState = new TreeStateBase();
- 
+
 
     /**
      * Constructor
@@ -50,44 +50,19 @@ public class TreeModelBase implements TreeModel
         this.root = root;
     }
 
-    // see interface    
-    public TreeState getTreeState() 
-    {    	
+    // see interface
+    public TreeState getTreeState()
+    {
         return treeState;
     }
 
-    // see interface    
-    public void setTreeState(TreeState treeState) 
+    // see interface
+    public void setTreeState(TreeState treeState)
     {
         this.treeState = treeState;
     }
 
-    /**
-     * Gets the current {@link TreeNode} or <code>null</code> if no node ID is selected.
-     * @return The current node
-     */
-    public TreeNode getNode()
-    {
-        return currentNode;
-    }
 
-    /**
-     * Sets the current {@link TreeNode} to the specified node ID, which is a colon-separated list
-     * of node indexes.  For instance, "0:0:1" means "the second child node of the first child node
-     * under the root node."
-     *
-     * @param nodeId The id of the node to set
-     */
-    public void setNodeId(String nodeId)
-    {
-        if (nodeId == null)
-        {
-            currentNode = null;
-            return;
-        }
-
-        currentNode = getNodeById(nodeId);
-    }
 
     /**
      * Gets an array of String containing the ID's of all of the {@link TreeNode}s in the path to
@@ -148,10 +123,12 @@ public class TreeModelBase implements TreeModel
         return  childId + 1== parentNode.getChildCount();
     }
 
-    private TreeNode getNodeById(String nodeId)
+    public TreeNode getNodeById(String nodeId)
     {
+    	if (nodeId == null)
+    		return null;
+
         TreeNode node = null;
-        
         StringTokenizer st = new StringTokenizer(nodeId, SEPARATOR);
 
         while (st.hasMoreTokens())
@@ -170,5 +147,29 @@ public class TreeModelBase implements TreeModel
 
         return node;
     }
-   
+
+    /*
+    public String getNodeId(TreeNode node) {
+    	List indexList = new ArrayList();
+    	TreeNode parent = node.getParentNode();
+    	while (parent != null) {
+    		int index = parent.getChildren().indexOf(node);
+    		if (index == -1)
+    			return null;
+    		indexList.add(new Integer(index));
+    		node = parent;
+    		parent = parent.getParentNode();
+    	}
+
+    	indexList.add(new Integer(0)); // root node
+
+    	StringBuffer sb = new StringBuffer();
+		for(int i = indexList.size()-1; i > 0; i--) {
+			sb.append(indexList.get(i));
+			if (i > 0)
+				sb.append(TreeModelBase.SEPARATOR);
+		}
+		return sb.toString();
+    }
+    */
 }
