@@ -317,6 +317,7 @@
   <lifecycle>
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxPhaseListener</phase-listener>
+  	  <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.scope.AfterScopePhaseListener</phase-listener>
   </lifecycle>
   
