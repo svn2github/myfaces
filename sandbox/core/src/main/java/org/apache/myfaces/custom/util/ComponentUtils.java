@@ -16,8 +16,7 @@
 
 package org.apache.myfaces.custom.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlMessages;
@@ -30,24 +29,30 @@ import javax.faces.context.FacesContext;
  */
 public class ComponentUtils
 {
-    private static Log log = LogFactory.getLog(ComponentUtils.class);
-
-    public static UIComponent findFirstMessagesComponent(FacesContext context, UIComponent root)
+    public static UIComponent findFirstMessagesComponent(FacesContext context, UIComponent base)
     {
-        UIComponent component = null;
-
-        for(int i = 0; i < root.getChildCount() && component == null; i++)
+    	if (base == null)
+    	{
+    		return null;
+    	}
+    	
+        if (base instanceof HtmlMessages)
         {
-            UIComponent child = (UIComponent)root.getChildren().get(i);
-
-            if (child != null && child instanceof HtmlMessages)
-            {
-                return child;
-            }
-
-            component = findFirstMessagesComponent(context, child);
+            return base;
         }
 
-        return component;
+        Iterator iterChildren = base.getFacetsAndChildren();
+        while (iterChildren.hasNext())
+        {
+        	UIComponent child = (UIComponent) iterChildren.next();
+            
+        	UIComponent found = findFirstMessagesComponent(context, child);
+        	if (found != null)
+        	{
+        		return found;
+        	}
+        }
+        
+        return null;
     }
 }
