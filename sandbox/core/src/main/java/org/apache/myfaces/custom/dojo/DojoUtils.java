@@ -113,7 +113,6 @@ public final class DojoUtils
                     if(!configPropertyField.getName().startsWith("getClass") && configPropertyField.getName().startsWith("get") || configPropertyField.getName().startsWith("is"))
                         methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName().substring(3) : configPropertyField.getName().substring(2);
 
-
                     if (methodCore != null) {
                         Object val = configPropertyField.invoke(config,null);
                         if(val != null) {
@@ -355,6 +354,21 @@ public final class DojoUtils
     public static String createDebugStatement(String stmnt)
     {
         return "dojo.debug(\"" + stmnt + "\");\n";
+    }
+    
+    /**
+     * helper to write out debug statements
+     * this is only a convenience method to reduce the
+     * code bloat
+     * 
+     * @param writer
+     * @param stmnt
+     * @return
+     * @throws IOException
+     */
+    public static void writeDebugStatement(ResponseWriter writer, String stmnt) throws IOException {
+        stmnt = createDebugStatement(stmnt);
+        writer.write(stmnt);
     }
 
 }
