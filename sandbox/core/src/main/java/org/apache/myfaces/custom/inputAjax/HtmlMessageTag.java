@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.inputAjax;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.ext.HtmlMessage;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,16 +56,17 @@ public class HtmlMessageTag extends org.apache.myfaces.taglib.html.ext.HtmlMessa
         /*if (id == null)
         {*/
             // default id so client side scripts can use this (ie: ajax), this will obviously break things if someone specifies an id, so please don't specify an id if using Ajax components!
-            id = "msgFor_" + getFor();
-            log.debug("Setting id on MessageTag: " + id);
-            setId(id);
-            setForceId("true");
-            /*if(comp != null){
-                log.debug("SETTING COMP ID");
-                comp.setId(id);
-            }*/
-        //}
 
+        id = "msgFor_" + getFor();
+        log.debug("Setting id on MessageTag: " + id);
+        setId(id);
+        setForceId("true");
+        /*if(comp != null){
+            log.debug("SETTING COMP ID");
+            comp.setId(id);
+        }*/
+    //}
+        
     }
 
     protected UIComponent findComponent(FacesContext context) throws JspException

@@ -54,47 +54,74 @@
 <h1>Ajax Form Components</h1>
 
 <p>The backend data model will update without having to click the submit button. To see error handling, put in some
-    random text into the Date field.</p>
+    random text into the Fields.<br/> It is possible to place one error message beneath each field or having one
+    central place for displaying  all messages. <br/> In this case it may be useful to mark with the
+    help of the errorStyleClass or errorStyle attribute of the ajax fields where the error have occured. </p> <br/>
 <f:view>
 
 <h:form>
-    <h:panelGrid columns="2" columnClasses="bold,normal">
-        <h:outputText value="Input Some Text"/>
-        <h:panelGrid columns="1">
-            <s:inputTextAjax value="#{inputAjaxBean.text1}"
-                             id="text1"
-                             forceId="true"></s:inputTextAjax>
+
+    <h:panelGrid>
+
+        <h:panelGrid>
+            <h:outputText styleClass="standard_bold" value="Input Some Text" />
+            <h:panelGrid columns="2">
+                <s:inputTextAjax value="#{inputAjaxBean.text1}" id="text1"
+                                 validator="#{inputAjaxBean.validateText1}"
+                                 errorStyle="border:1px solid red; color:red;"/>
+                 <t:message forceSpan="true" styleClass="errorMessage" for="text1"></t:message>
+            </h:panelGrid>
             <f:verbatim>This component demonstrates ajax updating ability when you change the
-                text.</f:verbatim>
+                text. <br/> An error message is displayed if the given String is greater than 5 characters.</f:verbatim>
         </h:panelGrid>
 
-        <h:outputText value="Input Some Text2"/>
-        <h:panelGrid columns="1">
-            <s:inputTextAjax value="#{inputAjaxBean.text2}"
-                             id="text2"
-                             forceId="true"
-                             showOkButton="true"
-                             showCancelButton="true"
-                             validator="#{inputAjaxBean.validateText2}">
-                <f:valueChangeListener type="org.apache.myfaces.custom.inputAjax.SampleValueChangeListener"/>
-            </s:inputTextAjax>
-            <s:message for="text2" styleClass="error"/>
-            <f:verbatim>This component demonstrates ajax updating ability, but you must click Ok for it to send.
+        <f:verbatim><br/></f:verbatim>
+
+        <h:panelGrid>
+            <h:outputText styleClass="standard_bold" value="Input Some Text"/>
+            <h:panelGrid columns="2">
+                <s:inputTextAjax value="#{inputAjaxBean.text2}"
+                                 id="text2"
+                                 showOkButton="true"
+                                 showCancelButton="true"
+                                 validator="#{inputAjaxBean.validateText2}">
+                    <f:valueChangeListener type="org.apache.myfaces.custom.inputAjax.SampleValueChangeListener"/>
+                </s:inputTextAjax>
+                <t:message forceSpan="true" for="text2" style="color:red; font-weight:bold;"/>
+            </h:panelGrid>
+            <f:verbatim>This component demonstrates ajax updating ability, but you must click Ok for it to send.<br/>
                 Cancel will clear the text and not send an update. Will show a validation error if the string is
                 less then 3 characters.</f:verbatim>
         </h:panelGrid>
 
-        <h:outputText value="Input a Date"/>
+         <f:verbatim><br/></f:verbatim>
+
         <h:panelGrid columns="1">
-            <s:inputTextAjax value="#{inputAjaxBean.date1}"
-                             id="date1"
-                             forceId="true">
-                <s:convertDateTime pattern="yyyy-MM-dd"/>
-            </s:inputTextAjax>
-            <s:message for="date1" styleClass="error"/>
+            <h:outputText styleClass="standard_bold" value="Input a Date"/>
+            <h:panelGrid columns="2">
+                <s:inputTextAjax value="#{inputAjaxBean.date1}"
+                                 id="date1"
+                                 errorStyleClass="errorField">
+                    <s:convertDateTime pattern="yyyy-MM-dd"/>
+                </s:inputTextAjax>
+                <t:message for="date1" forceSpan="true" styleClass="errorMessage"/>
+            </h:panelGrid>
             <f:verbatim>This component demonstrates error handling capabilities, enter an invalid string to see the
                 error returned from the server through ajax.</f:verbatim>
         </h:panelGrid>
+
+         <f:verbatim><br/></f:verbatim>
+
+        <h:panelGrid>
+            <h:panelGrid style="border:1px solid #71A5A5; background-color:rgb(236, 243, 225); width:450px;height:50px;">
+                <t:messages forceSpan="true" styleClass="errorMessage"> </t:messages>
+            </h:panelGrid>
+            <f:verbatim>This is the thomahawk messages component with forceRenderSpan set to true. <br/>
+                    All messages which are generated by the inputTextAjax fields are displayed here.
+            </f:verbatim>
+        </h:panelGrid>
+
+         <f:verbatim><br/><br/></f:verbatim>
 
 
         <h:outputText value="Select Some Boxes"/>

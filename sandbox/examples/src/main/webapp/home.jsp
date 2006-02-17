@@ -1,4 +1,4 @@
-﻿<%@ page session="false" contentType="text/html;charset=utf-8"%>
+﻿﻿﻿<%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
@@ -18,7 +18,7 @@
                 </f:verbatim>
             </h:panelGrid>
 
-            <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax</f:verbatim></h:outputLink>
+            <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax (with table suggest)</f:verbatim></h:outputLink>
             <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest</f:verbatim></h:outputLink>
             <h:outputText value="Schedule"/>
             <h:panelGrid style="padding-left:25px">
@@ -28,7 +28,7 @@
 	            <h:outputLink value="schedule/example4.jsf" ><f:verbatim>Schedule with custom styleClasses and custom EntryRenderer</f:verbatim></h:outputLink>
             </h:panelGrid>
             <h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
-            <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components</f:verbatim></h:outputLink>            
+            <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components</f:verbatim></h:outputLink>
             <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
             <h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
             <h:outputLink value="graphicImageDynamic.jsf" ><f:verbatim>GraphicImageDynamic - graphic image without a dedicated servlet</f:verbatim></h:outputLink>
@@ -45,5 +45,6 @@
             <h:outputLink value="stateChangedNotifier.jsf"><f:verbatim>stateChangedNotifier - Shows a confirmation message if some of the fields in the form have changed</f:verbatim></h:outputLink>
         </h:panelGrid>
     </f:view>
+   
 
 </html>

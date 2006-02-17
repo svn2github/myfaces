@@ -129,6 +129,11 @@
 	<component-type>org.apache.myfaces.StateChangedNotifier</component-type>
 	<component-class>org.apache.myfaces.custom.statechangednotifier.StateChangedNotifier</component-class>
   </component>
+
+  <component>
+	<component-type>org.apache.myfaces.HtmlOutputTextFor</component-type>
+	<component-class>org.apache.myfaces.custom.inputsuggestajax.HtmlOutputText</component-class>
+  </component>
   
   <!-- sandbox converters -->
 
@@ -308,7 +313,7 @@
 
   </render-kit>
 
-
+                                                    
   <lifecycle>
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxPhaseListener</phase-listener>

@@ -35,6 +35,8 @@ public class HtmlInputTextAjaxTag extends HtmlInputTextTag implements AjaxCallba
     private String okText;
     private String showCancelButton;
     private String cancelText;
+    private String errorStyleClass;
+    private String errorStyle;
 
     public String getComponentType() {
         return HtmlInputTextAjax.COMPONENT_TYPE;
@@ -58,6 +60,8 @@ public class HtmlInputTextAjaxTag extends HtmlInputTextTag implements AjaxCallba
         okText = null;
         showCancelButton = null;
         cancelText = null;
+        errorStyle = null;
+        errorStyleClass = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -71,7 +75,8 @@ public class HtmlInputTextAjaxTag extends HtmlInputTextTag implements AjaxCallba
         setStringProperty(component, "okText", okText);
         setBooleanProperty(component, "showCancelButton", showCancelButton);
         setStringProperty(component, "cancelText", cancelText);
-
+        setStringProperty(component, "errorStyle", errorStyle);
+        setStringProperty(component, "errorStyleClass", errorStyleClass);
     }
 
 
@@ -143,6 +148,16 @@ public class HtmlInputTextAjaxTag extends HtmlInputTextTag implements AjaxCallba
     public void setCancelText(String cancelText)
     {
         this.cancelText = cancelText;
+    }
+
+    public void setErrorStyleClass(String errorStyleClass)
+    {
+        this.errorStyleClass = errorStyleClass;
+    }
+
+    public void setErrorStyle(String errorStyle)
+    {
+        this.errorStyle = errorStyle;
     }
 
 

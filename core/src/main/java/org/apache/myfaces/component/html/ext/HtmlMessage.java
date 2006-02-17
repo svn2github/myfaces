@@ -50,6 +50,7 @@ public class HtmlMessage
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _replaceIdWithLabel = null;
+    private Boolean _forceSpan = null;
 
     public HtmlMessage()
     {
@@ -118,6 +119,18 @@ public class HtmlMessage
         return v != null ? v.booleanValue() : false;
     }
 
+    public void setForceSpan(boolean forceSpan)
+    {
+        _forceSpan = Boolean.valueOf(forceSpan);
+    }
+
+    public boolean getForceSpan()
+    {
+        if (_forceSpan != null) return _forceSpan.booleanValue();
+        ValueBinding vb = getValueBinding("forceRenderSpan");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
 
     public boolean isRendered()
     {

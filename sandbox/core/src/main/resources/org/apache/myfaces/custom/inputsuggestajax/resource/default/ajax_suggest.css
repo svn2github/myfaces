@@ -1,8 +1,9 @@
 .ajaxPopup { 
     position:absolute; width:250px; background-color:white;
     border:1px solid #888; margin:0px; padding:0px;
-    overflow: hidden;
+    overflow: hidden; 
  }
+
  .ajaxPopup li {
     white-space: nowrap;
     padding-left: 3px;
@@ -13,6 +14,26 @@
 }
 .ajaxPopup ul {
     list-style-type:none;margin:0px;padding:0px;
+}
+
+.ajaxTablePopup table{
+    font-family: Verdana, sans-serif;
+	font-size: 11px;
+	background-color: rgb(171, 202, 219);
+    color: rgb(0, 106, 164);
+    line-height: 16px;
+    border-collapse:collapse;
+    position:absolute;
+    z-index:10000;
+}
+
+.ajaxTablePopup table tbody tr:hover{
+background-color:#bcd5e2;
+    border-collapse:collapse;
+}
+
+.ajaxTablePopup table thead{
+text-align:center;
 }
 
 input.myFacesInputSuggestAjax{

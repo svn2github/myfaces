@@ -21,6 +21,7 @@ import org.apache.myfaces.component.html.ext.HtmlMessage;
 import org.apache.myfaces.component.html.ext.HtmlMessages;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlMessageRendererBase;
+import org.apache.myfaces.renderkit.html.HTML;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIColumn;
@@ -29,6 +30,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -51,7 +53,30 @@ public class HtmlMessageRenderer
             throws IOException
     {
         super.encodeEnd(facesContext, component);   //check for NP
-        renderMessage(facesContext, component); 
+        renderMessage(facesContext, component);
+
+        if (component instanceof HtmlMessage
+                && ((HtmlMessage)component).getForceSpan())
+        {
+            String forAttr = getFor(component);
+            HtmlMessage htmlMessage = (HtmlMessage) component;
+
+            UIComponent forComponent = component.findComponent(forAttr);
+
+            if (forComponent != null)
+            {
+                String forCompclientId = forComponent.getClientId(facesContext);
+
+                ResponseWriter writer = facesContext.getResponseWriter();
+                writer.startElement(HTML.SPAN_ELEM, null);
+                writer.writeAttribute(HTML.ID_ATTR, forCompclientId + "_msgFor", null);
+                if(htmlMessage.getStyleClass()!=null)
+                writer.writeAttribute(HTML.CLASS_ATTR,htmlMessage.getStyleClass(),null);
+                if(htmlMessage.getStyle()!=null)
+                writer.writeAttribute(HTML.STYLE_ATTR,htmlMessage.getStyle(),null);
+                writer.endElement(HTML.SPAN_ELEM);
+            }
+        }
     }
 
     protected String getSummary(FacesContext facesContext,

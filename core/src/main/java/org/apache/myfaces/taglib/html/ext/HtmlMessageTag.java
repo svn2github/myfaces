@@ -45,6 +45,7 @@ public class HtmlMessageTag
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
     private String _replaceIdWithLabel;
+    private String _forceSpan;
 
     public void release() {
         super.release();
@@ -54,6 +55,7 @@ public class HtmlMessageTag
         _enabledOnUserRole = null;
         _visibleOnUserRole = null;
         _replaceIdWithLabel = null;
+        _forceSpan = null;
     }
     protected void setProperties(UIComponent component)
     {
@@ -64,6 +66,7 @@ public class HtmlMessageTag
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
         setBooleanProperty(component, "replaceIdWithLabel",_replaceIdWithLabel==null?Boolean.TRUE.toString():_replaceIdWithLabel);
+        setBooleanProperty(component, "forceSpan",_forceSpan ==null?Boolean.FALSE.toString():_forceSpan);
     }
 
     public void setSummaryFormat(String summaryFormat)
@@ -89,5 +92,10 @@ public class HtmlMessageTag
     public void setReplaceIdWithLabel(String replaceIdWithLabel)
     {
         _replaceIdWithLabel = replaceIdWithLabel;
+    }
+
+    public void setForceSpan(String forceSpan)
+    {
+        _forceSpan = forceSpan;
     }
 }

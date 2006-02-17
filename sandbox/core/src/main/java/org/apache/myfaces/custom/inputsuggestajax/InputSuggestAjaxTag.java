@@ -23,6 +23,7 @@ import javax.faces.el.MethodBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.taglib.html.ext.HtmlInputTextTag;
+import org.apache.myfaces.renderkit.JSFAttr;
 
 
 /**
@@ -46,6 +47,9 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     private String _popupStyleClass;
     private String _popupStyle;
 
+    private String _columnHoverStyle;
+    private String _columnOutStyle;
+
     private String _listId;
     private String _listStyleClass;
     private String _listStyle;
@@ -54,6 +58,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     private String _listItemStyle;
 
     private String _layout;
+
+    private String _var;
 
     public String getComponentType() {
         return InputSuggestAjax.COMPONENT_TYPE;
@@ -78,12 +84,15 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
        _listItemStyleClass = null;
        _listItemStyle = null;
        _layout = null;
+       _var = null;
+       _columnHoverStyle = null;
+       _columnOutStyle = null;
 
     }
 
     protected void setProperties(UIComponent component) {
 
-        super.setProperties(component);        
+        super.setProperties(component);
 
         setIntegerProperty(component,"maxSuggestedItems", _maxSuggestedItems);
          setSuggestedItemsMethodProperty(getFacesContext(),component,_suggestedItemsMethod);
@@ -96,6 +105,10 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
         setStringProperty(component,"listItemStyleClass",_listItemStyleClass);
         setStringProperty(component,"listItemStyle",_listItemStyle);
         setStringProperty(component,"layout",_layout);
+        setStringProperty(component,"columnHoverStyle",_columnHoverStyle);
+        setStringProperty(component,"columnOutStyle",_columnOutStyle);
+
+        setStringProperty(component, JSFAttr.VAR_ATTR, _var);
     }
 
     public static void setSuggestedItemsMethodProperty(FacesContext context,
@@ -110,15 +123,15 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
             }
             if (isValueReference(suggestedItemsMethod))
             {
-            	if (((InputSuggestAjax)component).getMaxSuggestedItems()!=null) {
+                if (((InputSuggestAjax)component).getMaxSuggestedItems()!=null) {
                     MethodBinding mb = context.getApplication().createMethodBinding(suggestedItemsMethod, SUGGEST_ITEM_SIGNATURE);
                     ((InputSuggestAjax)component).setSuggestedItemsMethod(mb);
-            	} else {
+                } else {
                     MethodBinding mb = context.getApplication().createMethodBinding(suggestedItemsMethod, DEFAULT_SIGNATURE);
                     ((InputSuggestAjax)component).setSuggestedItemsMethod(mb);
-            	}
-            	
-            	
+                }
+
+
             }
             else
             {
@@ -126,7 +139,7 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
             }
         }
     }
-    
+
     // setter methodes to populate the components properites
 
     public void setLayout(String layout)
@@ -178,8 +191,23 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     {
         _listItemStyle = listItemStyle;
     }
-    
+
     public void setMaxSuggestedItems(String maxSuggestedItems) {
-    	_maxSuggestedItems = (maxSuggestedItems);
+        _maxSuggestedItems = (maxSuggestedItems);
+    }
+
+    public void setVar(String var)
+    {
+        _var = var;
+    }
+
+    public void setColumnHoverStyle(String columnHoverStyle)
+    {
+        _columnHoverStyle = columnHoverStyle;
+    }
+
+    public void setColumnOutStyle(String columnOutStyle)
+    {
+        _columnOutStyle = columnOutStyle;
     }
 }

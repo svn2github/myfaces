@@ -67,6 +67,21 @@ public class InputAjaxBean
         }
     }
 
+    public void validateText1(FacesContext context, UIComponent toValidate, Object value)
+    {
+        // make sure it's not in the past
+        if (value != null)
+        {                          
+            // lets say it must be smaller or equal than 100
+            String valStr = (String) value;
+            if (valStr.length() > 5)
+            {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Length must be smaller than 5 characters", null));
+            }
+        }
+    }
+
     public String submit()
     {
         return null;

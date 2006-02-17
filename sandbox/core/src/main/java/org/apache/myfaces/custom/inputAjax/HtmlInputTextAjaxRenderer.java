@@ -85,13 +85,7 @@ public class HtmlInputTextAjaxRenderer extends HtmlTextRendererBase implements A
         HtmlInputTextAjax comp = (HtmlInputTextAjax) component;
         if(!comp.getShowOkButton().booleanValue()){
             // then submit on change
-            // allow for user defined onchange as well
-            String onChange = comp.getOnchange();
-            if(onChange == null){
-                onChange = "";
-            }
-            onChange = submitFunctionStart + " " + onChange;
-            comp.setOnchange(onChange);
+            comp.setOnchange(submitFunctionStart);     
         }
         this.encodeJavascript(context, component);
         super.encodeEnd(context, component);

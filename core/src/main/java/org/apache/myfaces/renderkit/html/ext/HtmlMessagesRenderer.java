@@ -18,10 +18,12 @@ package org.apache.myfaces.renderkit.html.ext;
 import org.apache.myfaces.component.html.ext.HtmlMessage;
 import org.apache.myfaces.component.html.ext.HtmlMessages;
 import org.apache.myfaces.renderkit.html.HtmlMessagesRendererBase;
+import org.apache.myfaces.renderkit.html.HTML;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 
@@ -40,6 +42,22 @@ public class HtmlMessagesRenderer
     {
         super.encodeEnd(facesContext, component);   //check for NP
         renderMessages(facesContext, component);
+
+        if (component instanceof HtmlMessages
+                && ((HtmlMessages) component).getForceSpan())
+        {
+            ResponseWriter writer = facesContext.getResponseWriter();
+
+            HtmlMessages htmlMessages = (HtmlMessages) component;
+
+            writer.startElement(HTML.SPAN_ELEM, null);
+            writer.writeAttribute(HTML.ID_ATTR,component.getClientId(facesContext),null);
+            if(htmlMessages.getStyleClass()!=null)
+            writer.writeAttribute(HTML.CLASS_ATTR,htmlMessages.getStyleClass(),null);
+            if(htmlMessages.getStyle()!=null)
+            writer.writeAttribute(HTML.STYLE_ATTR,htmlMessages.getStyle(),null);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
     }
 
     protected String getSummary(FacesContext facesContext,

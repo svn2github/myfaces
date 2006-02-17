@@ -43,6 +43,9 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
     private String _popupStyleClass;
     private String _popupStyle;
 
+    private String _columnHoverStyle;
+    private String _columnOutStyle;
+
     private String _listId;
     private String _listStyleClass;
     private String _listStyle;
@@ -54,6 +57,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
 
     private Integer _maxSuggestedItems;
 
+    private String _var;
+
     public InputSuggestAjax()
     {
         super();
@@ -63,7 +68,7 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[12];
+        Object[] values = new Object[15];
         values[0] = super.saveState(context);
         values[1] = saveAttachedState(context, _suggestedItemsMethod);
         values[2] = _popupId;
@@ -76,6 +81,9 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         values[9] = _listItemStyle;
         values[10] = _layout;
         values[11] = _maxSuggestedItems;
+        values[12] = _var;
+        values[13] = _columnHoverStyle;
+        values[14] = _columnOutStyle;
 
         return values;
     }
@@ -95,6 +103,9 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         _listItemStyle = (String) values[9];
         _layout = (String) values[10];
         _maxSuggestedItems = (Integer) values[11];
+        _var = (String) values[12];
+        _columnHoverStyle = (String) values[13];
+        _columnOutStyle = (String) values[14];
     }
 
     public void encodeAjax(FacesContext context)
@@ -112,6 +123,19 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
     public void decodeAjax(FacesContext context)
     {
 
+    }
+
+    public boolean getRendersChildren()
+    {
+        if(getVar()!=null)
+            return true;
+        else
+            return super.getRendersChildren();
+    }
+
+    public void encodeChildren(FacesContext context) throws IOException
+    {
+        super.encodeChildren(context);
     }
 
     public String getLayout()
@@ -251,4 +275,36 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
 	public void setMaxSuggestedItems(Integer suggestedItems) {
 		_maxSuggestedItems = suggestedItems;
 	}
+
+    public void setVar(String var)
+    {
+        _var = var;
+    }
+
+    public String getVar()
+    {
+        if (_var != null) return _var;
+        ValueBinding vb = getValueBinding("var");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
+
+    public String getColumnHoverStyle()
+    {
+        return _columnHoverStyle;
+    }
+
+    public void setColumnHoverStyle(String columnHoverStyle)
+    {
+        _columnHoverStyle = columnHoverStyle;
+    }
+
+    public String getColumnOutStyle()
+    {
+        return _columnOutStyle;
+    }
+
+    public void setColumnOutStyle(String columnOutStyle)
+    {
+        _columnOutStyle = columnOutStyle;
+    }
 }

@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlMessages;
 import javax.faces.context.FacesContext;
 
 /**
@@ -52,6 +53,25 @@ public class ComponentUtils
         {
             component = root;
         }
+        return component;
+    }
+
+    public static UIComponent findFirstMessagesComponent(FacesContext context, UIComponent root)
+    {
+        UIComponent component = null;
+
+        for(int i = 0; i < root.getChildCount() && component == null; i++)
+        {
+            UIComponent child = (UIComponent)root.getChildren().get(i);
+
+            if (child != null && child instanceof HtmlMessages)
+            {
+                return child;
+            }
+
+            component = findFirstMessagesComponent(context, child);
+        }
+
         return component;
     }
 }

@@ -16,6 +16,8 @@
 
 package org.apache.myfaces.custom.inputAjax;
 
+import org.apache.myfaces.component.html.ext.HtmlMessage;
+
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import java.io.IOException;
@@ -36,8 +38,9 @@ public class HtmlMessageRenderer extends org.apache.myfaces.renderkit.html.ext.H
      */
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
-        //super.encodeEnd(facesContext, component);
+         //super.encodeEnd(facesContext, component);
         // Make sure a span is output
         renderMessage(facesContext, component, true);
+
     }
 }

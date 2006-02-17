@@ -19,9 +19,12 @@ package org.apache.myfaces.custom.ajax.api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.application.ComponentNotFoundException;
+import org.apache.myfaces.application.jsp.JspStateManagerImpl;
 import org.apache.myfaces.custom.util.ComponentUtils;
 import org.apache.myfaces.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.component.ExecuteOnCallback;
+import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 
 import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
@@ -70,7 +73,7 @@ public class AjaxDecodePhaseListener
             //DebugUtils.printView(root, System.out);
             String affectedAjaxComponent = (String) context.getExternalContext().getRequestParameterMap().get("affectedAjaxComponent");
 
-            UIComponent ajaxComponent = ComponentUtils.findComponent(context, root, affectedAjaxComponent);
+            UIComponent ajaxComponent = root.findComponent(affectedAjaxComponent);
             if (ajaxComponent == null)
             {
                 String msg = "Component with id [" + affectedAjaxComponent + "] not found in view tree.";
@@ -120,10 +123,9 @@ public class AjaxDecodePhaseListener
                log.error("Found component is no ajaxComponent : " + RendererUtils.getPathToComponent(ajaxComponent));
             }
 
-            StateManager stateManager = context.getApplication().getStateManager();
-            if (!stateManager.isSavingStateInClient(context))
+            if (!context.getApplication().getStateManager().isSavingStateInClient(context))
             {
-                stateManager.saveSerializedView(context);
+                ((JspStateManagerImpl) context.getApplication().getStateManager()).saveSerializedView(context);
             }
             context.responseComplete();
         }
@@ -144,7 +146,7 @@ public class AjaxDecodePhaseListener
             log.debug("affectedAjaxComponent: " + possibleClientId);
 
             UIViewRoot root = context.getViewRoot();
-            UIComponent ajaxComponent = ComponentUtils.findComponent(context, root, possibleClientId);
+            UIComponent ajaxComponent = root.findComponent(possibleClientId);
             if (ajaxComponent == component)
             {
                 return context.getExternalContext().getRequestParameterMap().get(possibleClientId);

@@ -54,6 +54,7 @@ public class HtmlMessages
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _replaceIdWithLabel = null;
+    private Boolean _forceSpan = null;
 
     public HtmlMessages()
     {
@@ -134,6 +135,19 @@ public class HtmlMessages
         return v != null ? v.booleanValue() : false;
     }
 
+    public void setForceSpan(boolean forceSpan)
+    {
+        _forceSpan = Boolean.valueOf(forceSpan);
+    }
+
+    public boolean getForceSpan()
+    {
+        if (_forceSpan != null) return _forceSpan.booleanValue();
+        ValueBinding vb = getValueBinding("forceRenderSpan");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
+
 
     public boolean isRendered()
     {
@@ -143,7 +157,7 @@ public class HtmlMessages
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[7];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = _summaryFormat;
         values[2] = _globalSummaryFormat;
@@ -151,6 +165,7 @@ public class HtmlMessages
         values[4] = _enabledOnUserRole;
         values[5] = _visibleOnUserRole;
         values[6] = _replaceIdWithLabel;
+        values[7] = _forceSpan;
         return ((Object) (values));
     }
 
@@ -164,6 +179,7 @@ public class HtmlMessages
         _enabledOnUserRole = (String)values[4];
         _visibleOnUserRole = (String)values[5];
         _replaceIdWithLabel = (Boolean)values[6];
+        _forceSpan = (Boolean)values[7];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

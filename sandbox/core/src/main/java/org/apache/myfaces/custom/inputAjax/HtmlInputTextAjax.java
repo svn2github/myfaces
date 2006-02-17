@@ -46,6 +46,8 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
     private String okText;
     private Boolean showCancelButton = new Boolean(true); // might want to just remove this and always show cancel button
     private String cancelText;
+    private String errorStyleClass;
+    private String errorStyle;
 
     public HtmlInputTextAjax()
     {
@@ -90,7 +92,7 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[8];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = onSuccess;
         values[2] = onFailure;
@@ -99,6 +101,8 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
         values[5] = okText;
         values[6] = showCancelButton;
         values[7] = cancelText;
+        values[8] = errorStyleClass;
+        values[9] = errorStyle;
         return ((Object) (values));
     }
 
@@ -113,6 +117,8 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
         okText = (String) values[5];
         showCancelButton = (Boolean) values[6];
         cancelText = (String) values[7];
+        errorStyleClass = (String) values[8];
+        errorStyle = (String) values[9];
     }
 
     public String getOnSuccess()
@@ -183,5 +189,25 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
     public void setCancelText(String cancelText)
     {
         this.cancelText = cancelText;
+    }
+
+    public String getErrorStyleClass()
+    {
+        return errorStyleClass;
+    }
+
+    public void setErrorStyleClass(String errorStyleClass)
+    {
+        this.errorStyleClass = errorStyleClass;
+    }
+
+    public String getErrorStyle()
+    {
+        return errorStyle;
+    }
+
+    public void setErrorStyle(String errorStyle)
+    {
+        this.errorStyle = errorStyle;
     }
 }

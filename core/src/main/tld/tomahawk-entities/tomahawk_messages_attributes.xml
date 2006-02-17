@@ -42,3 +42,13 @@
                 is rendered will be replaced by the label.
             </description>
         </attribute>
+        <attribute>
+            <name>forceSpan</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If set to true, an empty span element is rendered. Useful if there are
+                a few inputAjax fields on the same page and the corresponding error messages
+                should be shown on one central place.
+            </description>
+        </attribute>

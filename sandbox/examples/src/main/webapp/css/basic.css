@@ -1,4 +1,4 @@
-.* {
+. {
 	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -388,6 +388,16 @@ div.titlebar {
     font-size: 10px;
     font-family: Verdana, Geneva, sans-serif;
     text-decoration: none
+}
+
+.errorMessage{
+    color:red;
+}
+
+.errorField {
+    border:1px solid red;
+    color:red;
+    font-weight:bold;
 }
 
 /*

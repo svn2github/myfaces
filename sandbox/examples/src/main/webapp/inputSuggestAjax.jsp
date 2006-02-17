@@ -31,19 +31,59 @@
 <f:view>
 
    <h:form>
-       <style type="text/css">
-            .ajaxListItem {}
-            .ajaxList {}
-       </style>
-     <h:panelGrid columns="2">
-       <h:outputText value="default suggest"/>
-       <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"/>
 
-       <h:outputText value="suggest with limited suggested items"/>
-       <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" maxSuggestedItems="2" />
+       <s:dojoInitializer require="dojo.widget.Editor" debug="true"/>
+       <s:dojoInitializer require="dojo.widget.DebugConsole" />
+       <s:dojoInitializer require="dojo.widget.ResizeHandle" />
 
-      </h:panelGrid>
-   </h:form>
+     <h:outputText value="Street"/>
+     <t:inputText id="streetNameField" />
+     <h:outputText value="Number"/>
+     <t:inputText id="streetNumberField"/>
+     <h:outputText value="Zip"/>
+     <t:inputText id="zipField"/>
+     <f:verbatim><br/><br/></f:verbatim>
+
+     <h:panelGrid columns="6">
+         <h:outputText value="City Field"/>
+         <s:inputSuggestAjax var="address" id="cityField"  suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
+             <t:column>
+                 <f:facet name="header">
+                     <s:outputText value="city"/>
+                 </f:facet>
+                 <s:outputText for="cityField" value="#{address.city}"/>
+             </t:column>
+             <t:column>
+                 <f:facet name="header">
+                     <s:outputText value="street"/>
+                 </f:facet>
+                 <s:outputText for="streetNameField" value="#{address.streetName}"/>
+             </t:column>
+             <t:column>
+                 <f:facet name="header">
+                     <s:outputText value="number"/>
+                 </f:facet>
+                 <s:outputText for="streetNumberField" value="#{address.streetNumber}"/>
+             </t:column>
+             <t:column>
+                 <f:facet name="header">
+                     <s:outputText value="zip"/>
+                 </f:facet>
+                 <s:outputText for="zipField" value="#{address.zip}"/>
+             </t:column>
+         </s:inputSuggestAjax>
+
+         <h:outputText value="default suggest"/>
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"/>
+
+         <h:outputText value="suggest with limited suggested items"/>
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" maxSuggestedItems="2" />
+     </h:panelGrid>
+
+     <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
+     <s:dojoInitializer debugConsole="true"/>
+
+    </h:form>
 
 </f:view>
 

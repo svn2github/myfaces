@@ -57,7 +57,7 @@ public class AjaxPhaseListener implements PhaseListener
             UIViewRoot root = facesContext.getViewRoot();
 
             UIComponent ajaxComponent =
-                    ComponentUtils.findComponent(facesContext, root, possibleClientId);
+                    facesContext.getViewRoot().findComponent(possibleClientId);
 
             if (ajaxComponent == component)
             {

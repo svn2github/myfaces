@@ -123,11 +123,13 @@ Sandbox-related entities.
 
 <taglib>
 
-	<tlib-version>1.0.10</tlib-version>
-	<jsp-version>1.2</jsp-version>
-	<short-name>s</short-name>
-	<uri>http://myfaces.apache.org/sandbox</uri>
-	<description>Enhanced standard JSP actions and custom MyFaces actions.</description>
+    <tlib-version>1.0.10</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>s</short-name>
+    <uri>http://myfaces.apache.org/sandbox</uri>
+    <description>
+        Enhanced standard JSP actions and custom MyFaces actions.
+    </description>
 
 	<!-- inputSuggest -->
 	<tag>
@@ -231,7 +233,23 @@ Sandbox-related entities.
 			<description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
 		</attribute>
 
-		<attribute>
+        <attribute>
+			<name>columnHoverStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+		</attribute>
+
+        <attribute>
+			<name>columnOutStyle</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+		</attribute>
+
+        <attribute>
 			<name>popupId</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -279,9 +297,17 @@ Sandbox-related entities.
 			<description>Id for the pop up window</description>
 		</attribute>
 
-
-
-	</tag>
+        <attribute>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>Same principle as it is in dataTable. SuggestedItemsMethod returns
+                         a list of objects, where the variables can be accessed with the alias after the
+                         dot of the var.
+            </description>
+		</attribute>
+    </tag>
 
 	<!-- focus -->
 	<tag>
@@ -757,14 +783,18 @@ Sandbox-related entities.
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
-			<description>StyleClass for the input field where the error occures. Useful if there is only one messages area for a few inputTextAjax fields</description>
+			<description>StyleClass for the input field where the error occures.
+                Useful if there is only one messages area for a few inputTextAjax fields
+            </description>
 		</attribute>
 		<attribute>
 			<name>errorStyle</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
-			<description>Style for the input field where the error occures. Useful if there is only one messages area for a few inputTextAjax fields</description>
+			<description>Style for the input field where the error occures.
+                Useful if there is only one messages area for a few inputTextAjax fields
+            </description>
 		</attribute>
 	</tag>
 
@@ -961,42 +991,6 @@ Sandbox-related entities.
 		</attribute>
 
 	</tag>
-	<!--  <tag>
-		<name>messages</name>
-		<tag-class>org.apache.myfaces.custom.inputAjax.HtmlMessagesTag</tag-class>
-		<body-content>JSP</body-content>
-		<description>
-		Messages tag in order to display messages from all inputAjax components on the same place
-		</description>
-		
-		&user_role_attributes;
-		&ext_forceId_attribute;
-		<attribute>
-		<name>summaryFormat</name>
-		<required>false</required>
-		<rtexprvalue>false</rtexprvalue>
-		<description>
-		If present, instead of rendering the message summary, a MessageFormat with this
-		attribute as pattern is created. The format method of this MessageFormat is
-		called with the message summary as the first argument and the label of the
-		associated component (if any) as the second argument.
-		Example: "{0}:"
-		</description>
-		</attribute>
-		<attribute>
-		<name>detailFormat</name>
-		<required>false</required>
-		<rtexprvalue>false</rtexprvalue>
-		<description>
-		If present, instead of rendering the message detail, a MessageFormat with this
-		attribute as pattern is created. The format method of this MessageFormat is
-		called with the message detail as the first argument and the label of the
-		associated component (if any) as the second argument.
-		Example: "The input in field {1} is wrong: {0}"
-		</description>
-		</attribute>
-		</tag>
-	-->
 
     <!-- stateChangedNotifier -->
 	<tag>
@@ -1007,6 +1001,24 @@ Sandbox-related entities.
 		<description>A component that listens to changes in the components</description>
         &ui_component_attributes;
         &ui_state_changed_notifier_attributes;
+    </tag>
+
+    <tag>
+		<name>outputText</name>
+		<tag-class>org.apache.myfaces.custom.inputsuggestajax.HtmlOutputTextTag</tag-class>
+		<body-content>JSP</body-content>
+		<display-name>outputText component</display-name>
+		<description>Extending the outputText component in order to introduce the for attribute.
+                     Maybe useful for </description>
+        &standard_output_text_attributes;
+        &ui_output_attributes;
+        <attribute>
+			<name>for</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description></description>
+        </attribute>
     </tag>
 
 </taglib>

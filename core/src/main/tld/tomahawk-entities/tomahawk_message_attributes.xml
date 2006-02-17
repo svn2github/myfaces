@@ -31,3 +31,12 @@
                 is rendered will be replaced by the label. Default: true.
             </description>
         </attribute>
+        <attribute>
+            <name>forceSpan</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If set to true, an empty span element is rendered. Useful if there is
+                an inputAjax field and the corresponding error message is displayed there. 
+            </description>
+        </attribute>

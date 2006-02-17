@@ -31,4 +31,8 @@
         <name>replaceIdWithLabel</name>
         <type>boolean</type>
     </field>
+    <field>
+        <name>forceRenderSpan</name>
+        <type>boolean</type>
+    </field>
 </component>

@@ -69,13 +69,13 @@ public final class DojoUtils
 
     /**
      * Request singleton getter method for the djConfig object
-     * 
+     *
      * @param context
      * @return
      */
     public static DojoConfig getDjConfigInstance(FacesContext context)
     {
-        //we wont have a need for a synchronized here, since 
+        //we wont have a need for a synchronized here, since
         //we are in a single request cycle anyway
         //but take care if you use the djconfig in multiple threads!
         DojoConfig djConfig = (DojoConfig) ((HttpServletRequest) context.getExternalContext().getRequest())
@@ -105,15 +105,15 @@ public final class DojoUtils
             Method[] djConfigFieldArr = dcConfigClass.getMethods();
             for (int cnt = 0; cnt < djConfigFieldArr.length; cnt++)
             {
-                
+
                 try
                 {
                     Method configPropertyField = djConfigFieldArr[cnt];
                     String methodCore = null;
                     if(!configPropertyField.getName().startsWith("getClass") && configPropertyField.getName().startsWith("get") || configPropertyField.getName().startsWith("is"))
                         methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName().substring(3) : configPropertyField.getName().substring(2);
-                        
-                    
+
+
                     if (methodCore != null) {
                         Object val = configPropertyField.invoke(config,null);
                         if(val != null) {
@@ -124,7 +124,7 @@ public final class DojoUtils
                                 Object [] setterArgs = new Object[1];
                                 setterArgs[0] = val;
                                 setMethod.invoke(configSingleton, setterArgs);
-                            }    
+                            }
                         }
                     }
                 }
@@ -147,9 +147,9 @@ public final class DojoUtils
                 catch (NoSuchMethodException e)
                 {
                     log.error(e);
-                }    
+                }
             }
-   
+
     }
 
     public static void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
@@ -346,4 +346,15 @@ public final class DojoUtils
         writer.endElement(HTML.DIV_ELEM);
 
     }
+
+    /**
+     * creates a debug statement for the debug console
+     * @param stmnt the debug message displayed by the debug console
+     * @return javaScriptcode String
+     */
+    public static String createDebugStatement(String stmnt)
+    {
+        return "dojo.debug(\"" + stmnt + "\");\n";
+    }
+
 }

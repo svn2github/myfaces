@@ -26,6 +26,20 @@ import java.util.ArrayList;
  */
 public class InputSuggestAjaxBean
 {
+    public List getAddressList(String cityFragment)
+    {
+        List addressList = new ArrayList();
+
+        addressList.add(new Address(11,"noname",cityFragment+"nocity",1111));
+        addressList.add(new Address(12,"max",cityFragment+"muster",1112));
+        addressList.add(new Address(13,"phil",cityFragment+"philadelphia",1113));
+        addressList.add(new Address(14,"new",cityFragment+"new york",1114));
+        addressList.add(new Address(15,"san",cityFragment+"san francisco",1115));
+        addressList.add(new Address(16,"san",cityFragment+"san diego",1116));
+
+        return addressList;
+    }
+
     public List getItems(String prefix)
     {
         List li = new ArrayList();
@@ -37,7 +51,6 @@ public class InputSuggestAjaxBean
         li.add(prefix+6);
         return li;
     }
-
 
     public List getItems(String prefix, Integer maxSize) {
 
