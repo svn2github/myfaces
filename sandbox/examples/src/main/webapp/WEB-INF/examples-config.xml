@@ -415,18 +415,26 @@
   </managed-bean>
 
 
-<!-- managed bean for graphicImageAjax-->
+  <!-- managed bean for graphicImageDynamic -->
 
-	<managed-bean>
-		<managed-bean-name>graphicImageDynamicBean</managed-bean-name>
-		<managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicBean</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
-
+  <managed-bean>
+    <managed-bean-name>graphicImageDynamicBean</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  
   <managed-bean>
     <managed-bean-name>graphicImageDynamicTextBean</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicTextBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  
+  <!-- managed bean for outputLinkDynamic -->
+
+  <managed-bean>
+    <managed-bean-name>outputLinkDynamicBean</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.outputLinkDynamic.OutputLinkDynamicBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
   </managed-bean>
 
 	<!--  manage bean for the selectManyPicklist component -->

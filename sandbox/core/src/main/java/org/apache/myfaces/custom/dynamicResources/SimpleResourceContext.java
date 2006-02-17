@@ -13,33 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.myfaces.custom.graphicimagedynamic;
+package org.apache.myfaces.custom.dynamicResources;
 
-import org.apache.myfaces.custom.dynamicResources.ResourceContext;
+import java.util.Map;
 
 
 /**
- * The ImageContext class holds additional objects and values which can be used 
- * to determine which or how an image should be rendered. 
- * 
- * @author Mathias Broekelmann
+ * @author Sylvain Vieujot
  * @version $Revision$ $Date$
  *
  */
-public interface ImageContext extends ResourceContext
+public class SimpleResourceContext implements ResourceContext
 {
-    
-    /**
-     * Returns the desired width of the image
-     * 
-     * @return null if no width is defined
-     */
-    Integer getWidth();
+	
+    private final Map _params;
 
-    /**
-     * Returns the desired height of the image
-     * 
-     * @return null if no height is defined
-     */
-    Integer getHeight();
+    public SimpleResourceContext(Map params)
+    {
+        _params = params;
+    }
+
+    public Map getParamters()
+    {
+        return _params;
+    }
 }

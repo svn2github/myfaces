@@ -24,6 +24,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 
+import org.apache.myfaces.custom.dynamicResources.ResourceContext;
 import org.apache.myfaces.custom.graphicimagedynamic.ImageContext;
 import org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer;
 
@@ -48,8 +49,9 @@ public class GraphicImageDynamicTextBean implements ImageRenderer
 		this._text = text;
 	}
 
-	public void setContext(FacesContext facesContext, ImageContext imageContext) throws IOException
+	public void setContext(FacesContext facesContext, ResourceContext resourceContext) throws IOException
     {
+		ImageContext imageContext = (ImageContext) resourceContext;
 	    Object text = imageContext.getParamters().get("text");
 	    if (text == null)
 	    {
@@ -112,7 +114,7 @@ public class GraphicImageDynamicTextBean implements ImageRenderer
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#renderImage(javax.faces.context.FacesContext, org.apache.myfaces.custom.graphicimagedynamic.ImageContext, java.io.OutputStream)
      */
-    public void renderImage(ResponseStream out)
+    public void renderResource(ResponseStream out)
             throws IOException
     {
         out.write( bytes );

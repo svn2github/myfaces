@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.myfaces.examples.graphicImageDynamic;
+package org.apache.myfaces.examples.outputLinkDynamic;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,33 +23,33 @@ import javax.faces.context.ResponseStream;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.custom.dynamicResources.ResourceContext;
-import org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer;
+import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
 
 /**
- * @author Mathias Broekelmann
+ * @author Mathias Broekelmann, Sylvain Vieujot
  *
  */
-public class UploadedImageRenderer implements ImageRenderer
+public class UploadedFileRenderer implements ResourceRenderer
 {
-    private GraphicImageDynamicBean _graphicImageDynamicBean;
+    private OutputLinkDynamicBean _outputLinkDynamicBean;
 
-    public void setContext(FacesContext facesContext, ResourceContext imageContext) throws IOException
+    public void setContext(FacesContext facesContext, ResourceContext resourceContext)
     {
         ValueBinding vb = facesContext.getApplication().createValueBinding(
-                "#{graphicImageDynamicBean}");
-        GraphicImageDynamicBean value = (GraphicImageDynamicBean) vb.getValue(facesContext);
+                "#{outputLinkDynamicBean}");
+        OutputLinkDynamicBean value = (OutputLinkDynamicBean) vb.getValue(facesContext);
         if (value == null)
         {
-            throw new IllegalStateException("managed bean graphicImageDynamicBean not found");
+            throw new IllegalStateException("managed bean outputLinkDynamicBean not found");
         }
-        _graphicImageDynamicBean = value;
+        _outputLinkDynamicBean = value;
     }
     
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentLength()
      */
     public int getContentLength() {
-		return _graphicImageDynamicBean.isUploaded() ? (int)_graphicImageDynamicBean.getUpImage().getSize() : -1;
+		return _outputLinkDynamicBean.isUploaded() ? (int)_outputLinkDynamicBean.getUpFile().getSize() : -1;
 	}
 
     /**
@@ -57,7 +57,7 @@ public class UploadedImageRenderer implements ImageRenderer
      */
     public String getContentType()
     {
-        return _graphicImageDynamicBean.isUploaded() ? _graphicImageDynamicBean.getUpImage()
+        return _outputLinkDynamicBean.isUploaded() ? _outputLinkDynamicBean.getUpFile()
                 .getContentType() : null;
     }
 
@@ -67,9 +67,9 @@ public class UploadedImageRenderer implements ImageRenderer
     public void renderResource(ResponseStream out)
             throws IOException
     {
-        if (_graphicImageDynamicBean.isUploaded())
+        if (_outputLinkDynamicBean.isUploaded())
         {
-            InputStream is = _graphicImageDynamicBean.getUpImage().getInputStream();
+            InputStream is = _outputLinkDynamicBean.getUpFile().getInputStream();
             try
             {
                 byte[] buffer = new byte[1024];

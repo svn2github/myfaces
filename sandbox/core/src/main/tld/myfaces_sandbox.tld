@@ -561,7 +561,7 @@ Sandbox-related entities.
 		</attribute>
 	</tag>
 
-	<!-- graphicImage -->
+	<!-- graphicImageDynamic -->
 	<tag>
 		<name>graphicImageDynamic</name>
 		<tag-class>org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamicTag</tag-class>
@@ -582,7 +582,38 @@ Sandbox-related entities.
 			<type>java.lang.String</type>
 			<description>
 				The class which implements org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer. The image renderer is responsible for loading the image. The class must have a default constructor. Any request scoped attribute or managed bean is not
-				available when this image renderer is instantiated and used. The image renderer must render the binary data for the image by using the parameters passed by nested f:param elements and/or using session or application scoped beans
+				available when this image renderer is instantiated and used. The image renderer must render the binary data for the image by using the parameters passed by nested f:param elements and/or using session or application scoped beans.
+			</description>
+		</attribute>
+
+	</tag>
+	
+	<!-- outputLinkDynamic -->
+	<tag>
+		<name>outputLinkDynamic</name>
+		<tag-class>org.apache.myfaces.custom.outputlinkdynamic.OutputLinkDynamicTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Extends standard outputLink but links to a dynamically rendered resource (image, file, ...).</description>
+		&ui_output_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_anchor_attributes;
+    		&user_role_attributes;
+		&ext_forceId_attribute;
+
+		<attribute>
+			<name>resourceRendererClass</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				The class which implements org.apache.myfaces.custom.dynamicResources.ResourceRenderer.
+				The resource renderer is responsible for resource the image.
+				The class must have a default constructor.
+				Any request scoped attribute or managed bean is not	available when this resource renderer
+				is instantiated and used.
+				The resource renderer must render the binary data for the resource by using the parameters
+				passed by nested f:param elements and/or using session or application scoped beans.
 			</description>
 		</attribute>
 

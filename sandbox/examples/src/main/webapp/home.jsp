@@ -33,6 +33,7 @@
             <h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
             <h:outputLink value="graphicImageDynamic.jsf" ><f:verbatim>GraphicImageDynamic - graphic image without a dedicated servlet</f:verbatim></h:outputLink>
             <h:outputLink value="graphicImageDynamicText.jsf" ><f:verbatim>GraphicImageDynamic - text rendered as graphic image</f:verbatim></h:outputLink>
+            <h:outputLink value="outputLinkDynamic.jsf" ><f:verbatim>OutputLinkDynamic - resource serving from a link without a dedicated servlet</f:verbatim></h:outputLink>
             <h:outputLink value="effect.jsf" ><f:verbatim>Effect - FAT and script.aculo.us effects</f:verbatim></h:outputLink>
 			<h:commandLink action="go_scope_shop"><f:verbatim>Scope - saveState without serialisation</f:verbatim></h:commandLink>
 			<h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - a picklist</f:verbatim></h:outputLink>
