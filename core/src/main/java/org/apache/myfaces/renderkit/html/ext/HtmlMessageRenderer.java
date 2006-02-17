@@ -250,7 +250,7 @@ public class HtmlMessageRenderer
             text=RendererUtils.getStringValue(facesContext, component);
         }
 
-        if (text == null)
+        if (text == null || text.length() < 1)
         {
             StringBuffer buf = new StringBuffer();
             List li = component.getChildren();
