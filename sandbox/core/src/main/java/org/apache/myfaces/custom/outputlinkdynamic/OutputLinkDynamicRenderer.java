@@ -178,7 +178,7 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
             Object rendererValue = requestMap.get(RENDERER_PARAM);
             if (rendererValue == null)
             {
-                throw new FacesException("no image renderer defined.");
+                throw new FacesException("no resource renderer defined.");
             }
             try
             {
@@ -205,7 +205,7 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
                 }
                 catch (Exception e)
                 {
-                    throw new FacesException("could not renderer image "
+                    throw new FacesException("could not renderer resource "
                             + rendererValue + " : " + e.getMessage(), e);
                 }
             }
