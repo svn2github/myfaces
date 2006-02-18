@@ -77,7 +77,7 @@ function CookieLib_getCookie(cookieName)
 {
     var attribMap = new Array();
     var cookie = CookieLib.getRawCookie(cookieName);
-    if (cookie != undefined && cookie != null)
+    if (typeof( cookie ) != "undefined"  && cookie != null)
     {
         var attribArray = cookie.split(CookieLib.ATTRIB_DELIM);
         for (var i=0;i<attribArray.length;i++)
@@ -103,7 +103,8 @@ function CookieLib_setCookie(cookieName, attribMap)
     for (var name in attribMap)
     {
         var value = attribMap[name];
-        if (value != undefined && value != null && value != "" && typeof(value) != "function")
+
+        if (typeof( value ) != "undefined"  && value != null && value != "" && typeof(value) != "function")
         {
             if (name.indexOf(CookieLib.ATTRIB_KEYVAL) < 0 && value.indexOf(CookieLib.ATTRIB_KEYVAL) < 0 &&
                 name.indexOf(CookieLib.ATTRIB_DELIM) < 0 && value.indexOf(CookieLib.ATTRIB_DELIM) < 0)
