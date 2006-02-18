@@ -62,4 +62,16 @@ public interface TreeState extends Serializable
      */
     public void setTransient(boolean trans);
 
+    /**
+     * Sets the id of the currently selected node
+     * @param nodeId The id of the currently selected node
+     */
+    public void setSelected(String nodeId);
+
+    /**
+     * Indicates whether or not the specified node is selected.
+     * @param nodeId String
+     * @return boolean
+     */
+    public boolean isSelected(String nodeId);
 }

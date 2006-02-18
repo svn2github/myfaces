@@ -30,6 +30,7 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
@@ -106,7 +107,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
     public void encodeEnd(FacesContext context) throws IOException {
         super.encodeEnd(context);
-        
+
         // prepare to save the tree state -- fix for MYFACES-618
         // should be done in saveState() but Sun RI does not call saveState() and restoreState()
         // with javax.faces.STATE_SAVING_METHOD = server
@@ -118,7 +119,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         }
         // save the state with the component, unless it should explicitly not saved eg. session-scoped model and state
         _restoredState = (state.isTransient()) ? null : state;
-        
+
     }
 
     public void queueEvent(FacesEvent event)
@@ -491,29 +492,6 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     }
 
     /**
-     * Process the child nodes of the supplied parent {@link TreeNode}.  This method is protected so that
-     * it can be overriden by a subclass that may want to control how child nodes are processed.
-     *
-     * @param context       FacesContext
-     * @param parentNode    The parent node whose children are to be processed
-     * @param processAction An <code>int</code> representing the type of action to process
-     */
-    /*
-    protected void processChildNodes(FacesContext context, TreeNode parentNode, int processAction)
-    {
-        int kidId = 0;
-        String currId = getNodeId();
-
-        List children = parentNode.getChildren();
-
-        for (int i = 0; i < children.size(); i++)
-        {
-            processNodes(context, processAction, currId, kidId++);
-        }
-    }
-    */
-
-    /**
      * To support using input components for the nodes (e.g., input fields, checkboxes, and selection
      * lists) while still only using one set of components for all nodes, the state held by the components
      * for the current node must be saved for a new node is selected.
@@ -775,5 +753,26 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     public boolean isNodeExpanded()
     {
         return getDataModel().getTreeState().isNodeExpanded(getNodeId());
+    }
+
+    /**
+     * Implements the {@link javax.faces.event.ActionListener} interface.  Basically, this
+     * method is used to listen for node selection events (when a user has clicked on a
+     * leaf node.)
+     *
+     * @param event ActionEvent
+     */
+    public void setNodeSelected(ActionEvent event)
+    {
+        getDataModel().getTreeState().setSelected(getNodeId());
+    }
+
+    /**
+     * Indicates whether or not the current {@link TreeNode} is selected.
+     * @return boolean
+     */
+    public boolean isNodeSelected()
+    {
+        return (getNodeId() != null) ? getDataModel().getTreeState().isSelected(getNodeId()) : false;
     }
 }

@@ -23,6 +23,7 @@ public class TreeStateBase implements TreeState
     private static final long serialVersionUID = -6767283932185878071L;
     private HashSet _expandedNodes = new HashSet();
     private boolean _transient = false;
+    private String _selected;
 
     // see interface
     public boolean isNodeExpanded(String nodeId)
@@ -73,5 +74,15 @@ public class TreeStateBase implements TreeState
             String nodeId = nodePath[i];
             _expandedNodes.remove(nodeId);
         }
+    }
+
+    public void setSelected(String nodeId)
+    {
+        _selected = nodeId;
+    }
+
+    public boolean isSelected(String nodeId)
+    {
+        return nodeId.equals(_selected);
     }
 }

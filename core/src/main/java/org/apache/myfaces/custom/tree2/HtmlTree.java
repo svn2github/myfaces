@@ -19,7 +19,6 @@ import javax.faces.component.UICommand;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
-import javax.faces.event.ActionEvent;
 import java.util.Map;
 
 /**
@@ -33,11 +32,9 @@ public class HtmlTree extends UITreeData
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlTree2";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlTree2";
-//	private static final String NODE_STATE_KEY = "org.apache.myfaces.tree.NODE_STATE_KEY";
     private UICommand _expandControl;
     private String _varNodeToggler;
-//    private HashSet _expandedNodes = new HashSet();
-    private String _selectedNodeId;
+    //private String _selectedNodeId;
 
     /**
      * Constructor
@@ -52,11 +49,10 @@ public class HtmlTree extends UITreeData
     // see superclass for documentation
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[3];
+        Object values[] = new Object[2];
         values[0] = super.saveState(context);
-//      values[1] = _expandedNodes;
         values[1] = _varNodeToggler;
-        values[2] = _selectedNodeId;
+        //values[2] = _selectedNodeId;
 
         return ((Object) (values));
     }
@@ -66,9 +62,8 @@ public class HtmlTree extends UITreeData
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-//      _expandedNodes = (HashSet)values[1];
         setVarNodeToggler((String)values[1]);
-        _selectedNodeId = (String)values[2];
+        //_selectedNodeId = (String)values[2];
     }
 
     // see superclass for documentation
@@ -82,37 +77,6 @@ public class HtmlTree extends UITreeData
             requestMap.put(_varNodeToggler, this);
         }
     }
-
-//    public void processDecodes(FacesContext context)
-//    {
-//        super.processDecodes(context);
-//
-//        // store the expand/collapse state information in the session (long story)
-//        Map sessionMap = context.getExternalContext().getSessionMap();
-//        sessionMap.put(NODE_STATE_KEY + ":" + getId(), _expandedNodes);
-//    }
-
-//    public void encodeBegin(FacesContext context)
-//            throws IOException
-//    {
-//        /**
-//         * The expand/collapse state of the nodes is stored in the session in order to ensure that this information
-//         * is preserved across requests where the same tree is reused in a tile (server-side include.)  When using
-//         * the server-side toggle method without this step, the tree would not remember the expand/collapse state.
-//         * Since we didn't think it was appropriate to burden the end user with this information as part of a backing
-//         * bean, it just being stored in the session during encode and retrieved during decode.
-//         */
-//        // restore the expand/collapse state information from the session
-//        Map sessionMap = context.getExternalContext().getSessionMap();
-//        HashSet nodeState = (HashSet)sessionMap.get(NODE_STATE_KEY + ":" + getId());
-//
-//        if (nodeState != null)
-//        {
-//            _expandedNodes = nodeState;
-//        }
-//
-//        super.encodeBegin(context);
-//    }
 
     /**
      * Gets the expand/collapse control that can be used to handle expand/collapse nodes.  This is only used in server-side
@@ -136,50 +100,24 @@ public class HtmlTree extends UITreeData
         _expandControl.setAction(actionBinding);
     }
 
-//    public void toggleExpanded()
+//    /**
+//     * Implements the {@link javax.faces.event.ActionListener} interface.  Basically, this
+//     * method is used to listen for node selection events (when a user has clicked on a
+//     * leaf node.)
+//     *
+//     * @param event ActionEvent
+//     */
+//    public void setNodeSelected(ActionEvent event)
 //    {
-//        String nodeId = getNodeId();
-//
-//        if (_expandedNodes.contains(nodeId))
-//        {
-//            _expandedNodes.remove(nodeId);
-//        }
-//        else
-//        {
-//            _expandedNodes.add(nodeId);
-//        }
-//
-//        return null;
+//        _selectedNodeId = getNodeId();
 //    }
-
-    /*
-     * Indicates whether or not the current {@link TreeNode} is expanded.
-     * @return boolean
-     */
-//    public boolean isNodeExpanded()
+//
+//    /**
+//     * Indicates whether or not the current {@link TreeNode} is selected.
+//     * @return boolean
+//     */
+//    public boolean isNodeSelected()
 //    {
-//        return (_expandedNodes.contains(getNodeId()) && getNode().getChildCount() > 0);
+//        return (getNodeId() != null) ? getNodeId().equals(_selectedNodeId) : false;
 //    }
-
-
-    /**
-     * Implements the {@link javax.faces.event.ActionListener} interface.  Basically, this
-     * method is used to listen for node selection events (when a user has clicked on a
-     * leaf node.)
-     *
-     * @param event ActionEvent
-     */
-    public void setNodeSelected(ActionEvent event)
-    {
-        _selectedNodeId = getNodeId();
-    }
-
-    /**
-     * Indicates whether or not the current {@link TreeNode} is selected.
-     * @return boolean
-     */
-    public boolean isNodeSelected()
-    {
-        return (getNodeId() != null) ? getNodeId().equals(_selectedNodeId) : false;
-    }
 }
