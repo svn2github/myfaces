@@ -567,18 +567,25 @@ public class HtmlTreeRenderer extends Renderer
         }
         else
         {
-            // set up the expand control and remove whatever children (if any) this control had previously
-            UICommand expandControl = tree.getExpandControl();
-            expandControl.getChildren().clear();
-            expandControl.setId(TOGGLE_ID);
+            if (node.getChildCount() > 0)
+            {
+                // set up the expand control and remove whatever children (if any) this control had previously
+                UICommand expandControl = tree.getExpandControl();
+                expandControl.getChildren().clear();
+                expandControl.setId(TOGGLE_ID);
 
-            UIParameter param = new UIParameter();
-            param.setName(tree.getId() + NamingContainer.SEPARATOR_CHAR + NAV_COMMAND);
-            param.setValue(tree.getNodeId());
-            expandControl.getChildren().add(param);
-            expandControl.getChildren().add(image);
+                UIParameter param = new UIParameter();
+                param.setName(tree.getId() + NamingContainer.SEPARATOR_CHAR + NAV_COMMAND);
+                param.setValue(tree.getNodeId());
+                expandControl.getChildren().add(param);
+                expandControl.getChildren().add(image);
 
-            RendererUtils.renderChild(context, expandControl);
+                RendererUtils.renderChild(context, expandControl);
+            }
+            else
+            {
+                RendererUtils.renderChild(context, image);
+            }
         }
         out.endElement(HTML.TD_ELEM);
 
