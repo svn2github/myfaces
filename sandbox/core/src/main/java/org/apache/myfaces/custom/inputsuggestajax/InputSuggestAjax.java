@@ -43,8 +43,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
     private String _popupStyleClass;
     private String _popupStyle;
 
-    private String _columnHoverStyle;
-    private String _columnOutStyle;
+    private String _columnHoverClass;
+    private String _columnOutClass;
 
     private String _listId;
     private String _listStyleClass;
@@ -82,8 +82,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         values[10] = _layout;
         values[11] = _maxSuggestedItems;
         values[12] = _var;
-        values[13] = _columnHoverStyle;
-        values[14] = _columnOutStyle;
+        values[13] = _columnHoverClass;
+        values[14] = _columnOutClass;
 
         return values;
     }
@@ -104,8 +104,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         _layout = (String) values[10];
         _maxSuggestedItems = (Integer) values[11];
         _var = (String) values[12];
-        _columnHoverStyle = (String) values[13];
-        _columnOutStyle = (String) values[14];
+        _columnHoverClass = (String) values[13];
+        _columnOutClass = (String) values[14];
     }
 
     public void encodeAjax(FacesContext context)
@@ -288,23 +288,23 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         return vb != null ? vb.getValue(getFacesContext()).toString() : null;
     }
 
-    public String getColumnHoverStyle()
+    public String getColumnHoverClass()
     {
-        return _columnHoverStyle;
+        return _columnHoverClass;
     }
 
-    public void setColumnHoverStyle(String columnHoverStyle)
+    public void setColumnHoverClass(String columnHoverClass)
     {
-        _columnHoverStyle = columnHoverStyle;
+        _columnHoverClass = columnHoverClass;
     }
 
-    public String getColumnOutStyle()
+    public String getColumnOutClass()
     {
-        return _columnOutStyle;
+        return _columnOutClass;
     }
 
-    public void setColumnOutStyle(String columnOutStyle)
+    public void setColumnOutClass(String columnOutClass)
     {
-        _columnOutStyle = columnOutStyle;
+        _columnOutClass = columnOutClass;
     }
 }

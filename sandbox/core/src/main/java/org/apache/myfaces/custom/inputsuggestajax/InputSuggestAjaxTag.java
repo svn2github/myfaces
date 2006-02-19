@@ -47,8 +47,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     private String _popupStyleClass;
     private String _popupStyle;
 
-    private String _columnHoverStyle;
-    private String _columnOutStyle;
+    private String _columnHoverClass;
+    private String _columnOutClass;
 
     private String _listId;
     private String _listStyleClass;
@@ -85,8 +85,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
        _listItemStyle = null;
        _layout = null;
        _var = null;
-       _columnHoverStyle = null;
-       _columnOutStyle = null;
+       _columnHoverClass = null;
+       _columnOutClass = null;
 
     }
 
@@ -105,8 +105,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
         setStringProperty(component,"listItemStyleClass",_listItemStyleClass);
         setStringProperty(component,"listItemStyle",_listItemStyle);
         setStringProperty(component,"layout",_layout);
-        setStringProperty(component,"columnHoverStyle",_columnHoverStyle);
-        setStringProperty(component,"columnOutStyle",_columnOutStyle);
+        setStringProperty(component,"columnHoverClass",_columnHoverClass);
+        setStringProperty(component,"columnOutClass",_columnOutClass);
 
         setStringProperty(component, JSFAttr.VAR_ATTR, _var);
     }
@@ -201,13 +201,13 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
         _var = var;
     }
 
-    public void setColumnHoverStyle(String columnHoverStyle)
+    public void setColumnHoverClass(String columnHoverClass)
     {
-        _columnHoverStyle = columnHoverStyle;
+        _columnHoverClass = columnHoverClass;
     }
 
-    public void setColumnOutStyle(String columnOutStyle)
+    public void setColumnOutClass(String columnOutClass)
     {
-        _columnOutStyle = columnOutStyle;
+        _columnOutClass = columnOutClass;
     }
 }
