@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.calendar;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.taglib.html.HtmlInputTagBase;
+import org.apache.myfaces.taglib.html.ext.HtmlInputTextTag;
 import org.apache.myfaces.renderkit.html.HTML;
 
 import javax.faces.component.UIComponent;
@@ -26,7 +27,7 @@ import javax.faces.component.UIComponent;
  * @version $Revision$ $Date$
  */
 public class HtmlInputCalendarTag
-        extends HtmlInputTagBase
+        extends HtmlInputTextTag
 {
     private String _accesskey;
     private String _align;

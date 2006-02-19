@@ -180,18 +180,21 @@ public class HtmlCalendarRenderer
 	                    timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
                 writer.writeText(calendarVar+".init(document.getElementById('"+
                         inputCalendar.getClientId(facesContext)+"Span"+"'));\n",null);
-                writer.writeText(getScriptBtn(facesContext, inputCalendar,
-                        dateFormat,inputCalendar.getPopupButtonString(), new FunctionCallProvider(){
-                    public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
-                    {
-                        String clientId = uiComponent.getClientId(facesContext);
+                if(!inputCalendar.isDisplayValueOnly())
+                {
+                    writer.writeText(getScriptBtn(facesContext, inputCalendar,
+                            dateFormat,inputCalendar.getPopupButtonString(), new FunctionCallProvider(){
+                        public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
+                        {
+                            String clientId = uiComponent.getClientId(facesContext);
 
-                        String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
+                            String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
 
-                        return clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
-                    }
-                })+"\n",null);
-	            writer.endElement(HTML.SCRIPT_ELEM);
+                            return clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
+                        }
+                    })+"\n",null);
+                }
+                writer.endElement(HTML.SCRIPT_ELEM);
             }
         }
         else
