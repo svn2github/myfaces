@@ -39,6 +39,8 @@ the entities directory.
 <!ENTITY faces_id_required_attribute    SYSTEM "entities-share/faces_id_required_attribute.xml">
 <!ENTITY faces_rendered_attribute       SYSTEM "entities-share/faces_rendered_attribute.xml">
 
+<!ENTITY html_charset_attribute         SYSTEM "entities-share/html_attributes/charset.xml">
+<!ENTITY html_type_attribute            SYSTEM "entities-share/html_attributes/type.xml">
 <!ENTITY html_alt_attribute             SYSTEM "entities-share/html_attributes/alt.xml">
 <!ENTITY html_align_attribute           SYSTEM "entities-share/html_attributes/align.xml">
 <!ENTITY html_target_attribute          SYSTEM "entities-share/html_attributes/target.xml">
@@ -244,19 +246,19 @@ Sandbox-related entities.
 		</attribute>
 
         <attribute>
-			<name>columnHoverStyle</name>
+			<name>columnHoverClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
-			<description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+			<description>StyleClass for a onmouseover event of the suggested columns</description>
 		</attribute>
 
         <attribute>
-			<name>columnOutStyle</name>
+			<name>columnOutClass</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
-			<description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+			<description>StyleClass for a onmouseout event of the suggested columns</description>
 		</attribute>
 
         <attribute>
