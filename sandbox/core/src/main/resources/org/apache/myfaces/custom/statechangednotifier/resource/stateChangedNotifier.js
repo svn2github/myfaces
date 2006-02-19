@@ -15,66 +15,95 @@
  */
 dojo.provide("org.apache.myfaces.StateChangedNotifier");
 
-org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, message, excludeCommandIdList)
+org.apache.myfaces.StateChangedNotifier = function(notifierName, formId, hiddenFieldId, message, excludeCommandIdList)
 {
-
+    this.notifierName = notifierName;
     this.formId = formId;
     this.hiddenFieldId = hiddenFieldId;
     this.message = message;
     this.excludeCommandIdList = excludeCommandIdList;
 
     var arrCommandIds = null;
-    var clickedCommand = null;
+
+    var objectsToConfirmList = new Array();
+    var objectsToConfirmBeforeExclusion = new Array();
 
     this.prepareNotifier = function ()
     {
         var form = document.getElementById(formId);
 
+        addOnChangeListener("input");
+        addOnChangeListener("textarea");
+        addOnChangeListener("select");
+
         if (excludeCommandIdList != null)
         {
             arrCommandIds = excludeCommandIdList.split(",");
+            addObjectsToConfirmList("a");
+            addObjectsToConfirmList("input");
+            addObjectsToConfirmList("button");
+
+            putConfirmExcludingElements();
         }
-
-        var parser = new dojo.xml.Parse();
-        elementsInForm = parser.parseElement(form);
-        traverseTree(elementsInForm, null);
-
-        form.onsubmit = confirmSubmit;
     }
 
-    function traverseTree(x, type)
+    this.showMessage = function()
     {
-        for (var y in x)
+        var hiddenField = getHiddenElement();
+
+        if (hiddenField.value == "true")
         {
-            if (typeof x[y] == "object" && x[y] != x.nodeRef)
+            //if (!confirm(message)) return false;
+            return confirm(message);
+        }
+
+        return true;
+
+    }
+
+    function addOnChangeListener(tagName)
+    {
+        var arrElements = document.getElementsByTagName(tagName);
+
+        for (var i=0; i<arrElements.length; i++)
+        {
+            dojo.event.browser.addListener(arrElements[i], "onchange", changeHiddenValue);
+        }
+    }
+
+    function addObjectsToConfirmList(tagName)
+    {
+       var arrElements = document.getElementsByTagName(tagName);
+
+        for (var i=0; i<arrElements.length; i++)
+        {
+            var elementId = arrElements[i].id;
+            var onclick = arrElements[i].onclick;
+
+            if (elementId != null && onclick != null && elementId != '')
             {
-                traverseTree(x[y], y);
-            }
-
-            else
-            {
-                if (type == "input" || type == "textarea" || type == "select")
-                {
-                    processComponent(x[y]);
-                }
-
-                if (arrCommandIds != null)
-                {
-                    var elementId = x[y].id;
-                    var onclick = x[y].onclick;
-
-                    if (elementId != null && onclick != null && elementId != '')
-                    {
-                         checkExclusion(elementId);
-                    }
-                }
+                 objectsToConfirmBeforeExclusion.push(elementId);
             }
         }
     }
 
-    function processComponent(inputComponent)
+    function putConfirmExcludingElements()
     {
-        dojo.event.browser.addListener(inputComponent, "onchange", changeHiddenValue);
+        for (var i=0; i<objectsToConfirmBeforeExclusion.length; i++)
+        {
+            var elementId = objectsToConfirmBeforeExclusion[i];
+
+            if (!isElementExcluded(elementId))
+            {
+                objectsToConfirmList.push(elementId);
+            }
+        }
+
+        for (var i=0; i<objectsToConfirmList.length; i++)
+        {
+            var objectToConfirm = objectsToConfirmList[i];
+            putConfirmInElement(objectToConfirm);
+        }
     }
 
     function changeHiddenValue()
@@ -83,18 +112,9 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
         hiddenField.value = "true";
     }
 
-    function confirmSubmit()
+    function isElementExcluded(elementId)
     {
-        var hiddenField = getHiddenElement();
-        if (hiddenField.value == "true")
-        {
-            if (!confirm(message)) return false;
-        }
-    }
-
-    function checkExclusion(elementId)
-    {
-        for (i=0; i<arrCommandIds.length; i++)
+        for (var i=0; i<arrCommandIds.length; i++)
         {
             var excludedId = arrCommandIds[i];
             var idRegex = null;
@@ -108,36 +128,23 @@ org.apache.myfaces.StateChangedNotifier = function(formId, hiddenFieldId, messag
                 idRegex = new RegExp(excludedId+"([\\d+])?")
             }
 
-            if (elementId.match(idRegex))
+            if (elementId.match(idRegex) != null)
             {
-                excludeCommandWithId(elementId);
+                return true;
             }
         }
     }
 
 
-    function excludeCommandWithId(commandId)
+    function putConfirmInElement(commandId)
     {
         var command = document.getElementById(commandId);
 
         if (command != null)
         {
-            clickedCommand = command;
-            command.onclick = submitWithoutConfirm;
+            var onclick = command.getAttribute("onclick");
+            command.setAttribute("onclick", "if ("+notifierName+".showMessage()) { "+onclick+" }");
         }
-    }
-
-    function submitWithoutConfirm()
-    {
-        var form = document.getElementById(formId);
-
-        document.forms[formId].elements[formId+':_link_hidden_'].value= clickedCommand.id;
-
-        var clearFunction = "clear_"+formId;
-
-        form.onsubmit = clearFunction;
-        form.submit();
-        return false;
     }
 
     function getHiddenElement()

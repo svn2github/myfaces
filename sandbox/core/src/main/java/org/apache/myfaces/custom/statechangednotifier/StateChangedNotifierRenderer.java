@@ -50,7 +50,7 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         String javascriptLocation = (String) notifier.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         DojoUtils.addMainInclude(facesContext, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(facesContext, "dojo.event.*");
-        DojoUtils.addRequire(facesContext, "dojo.xml.Parse");
+        //DojoUtils.addRequire(facesContext, "dojo.xml.Parse");
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
         addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN,
@@ -71,11 +71,13 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         UIForm form = getParentForm(notifier);
         String formId = form.getClientId(facesContext);
 
+        String notifierVar = replacedClientId+"Notifier";
+
         StringBuffer sb = new StringBuffer();
         sb.append("<!--\n");
         sb.append("dojo.addOnLoad(window, '"+initFunctionName+"');\n");
         sb.append("function "+initFunctionName+ "() {\n");
-        sb.append(replacedClientId+"Notifier = new org.apache.myfaces.StateChangedNotifier('"+formId+"','"+notifierClientId+"','"+notifier.getConfirmationMessage()+"',");
+        sb.append(notifierVar+" = new org.apache.myfaces.StateChangedNotifier('"+notifierVar+"','"+formId+"','"+notifierClientId+"','"+notifier.getConfirmationMessage()+"',");
 
         String excludedCommandIds = notifier.getExcludedIds();
         if (excludedCommandIds != null)

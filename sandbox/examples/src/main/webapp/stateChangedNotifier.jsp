@@ -29,46 +29,15 @@
 
 <f:view>
 
-    <p>
-        There are two forms in this page. Each one has a stateChangedNotifier, so if one of the elements in the form changes
-        a confirmation window will be shown when clicking on a link within each form.
-    </p>
-
-    <p>
-        <b>FORM 1:</b>
-    </p>
-
     <h:form id="form1">
-        <s:stateChangedNotifier id="stateChangedId"
-                                confirmationMessage="Are you sure?"
-                                disabled="false" />
-
-        <h:panelGrid columns="1">
-            <h:inputText value=""/>
-            <h:selectManyCheckbox>
-                <f:selectItem itemValue="item1" itemLabel="Item 1"/>
-                <f:selectItem itemValue="item2" itemLabel="Item 2"/>
-                <f:selectItem itemValue="item3" itemLabel="Item 3"/>
-            </h:selectManyCheckbox>
-        </h:panelGrid>
-
-        <t:commandLink value="Submit Form 1 (goes to the home page)" action="home"/>
-    </h:form>
-
-    <f:verbatim>
-        <p>
-            <hr/>
-            <b>FORM 2:</b>
-        </p>
-    </f:verbatim>
-
-    <h:form id="form2">
         <s:stateChangedNotifier confirmationMessage="Values have changed. Did you know it?"
                                 disabled="false"
                                 excludedIds="excludedLink1,excludedLink2"/>
 
         <h:panelGrid columns="1">
-            <h:inputText value=""/>
+            <h:inputText id="input1" value="" required="true"/>
+            <h:message for="input1"/>
+
             <h:inputTextarea value=""/>
             <h:selectOneMenu value="item2">
                 <f:selectItem itemValue="item1" itemLabel="Item 1"/>
@@ -76,11 +45,30 @@
                 <f:selectItem itemValue="item3" itemLabel="Item 3"/>
             </h:selectOneMenu>
 
-            <t:commandLink immediate="true" value="Submit Form 2 (goes to the home page)" action="home"/>
+            <t:commandLink value="Submit Form (goes to the home page)" action="home"/>
             <t:commandLink id="excludedLink1" forceId="true"
-                       value="Excluded link (goes to the home page withouth warning)" action="home"/>
-            <t:commandLink id="excludedLink2" immediate="true"
-                       value="Another excluded link (goes to the home page withouth warning)" action="home"/>
+                       value="Excluded link (goes to the home page without warning)" action="home"/>
+            <t:commandButton
+                       value="Submit Form (goes to the home page)" action="home"/>
+            <t:commandButton id="excludedLink2"
+                       value="Excluded button (goes to the home page without warning)" action="home"/>
+        </h:panelGrid>
+
+
+    </h:form>
+
+    <h:form id="form2">
+        <s:stateChangedNotifier confirmationMessage="Everything ok?" excluded="link3"/>
+
+        <h:panelGrid columns="1">
+            <h:inputText id="input1" value="" />
+            <h:message for="input1"/>
+
+            <h:inputTextarea value=""/>
+
+            <t:commandLink value="Submit Form (goes to the home page)" action="home"/>
+            <t:commandButton id="link3"
+                       value="Excluded button (goes to the home page without warning)" action="home"/>
         </h:panelGrid>
 
 
