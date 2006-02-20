@@ -48,7 +48,7 @@ public class TreeWalkerBaseTest extends TestCase
     private static final String DEFAULT_NODE_TYPE = "default";
 
     UITreeData treeData = new UITreeData();
-    TreeWalkerBase treeWalker;
+    TreeWalker treeWalker;
 
     protected void setUp() throws Exception
     {
@@ -83,7 +83,8 @@ public class TreeWalkerBaseTest extends TestCase
         treeState.toggleExpanded("0:0");
 
         // setup the tree walker
-        treeWalker = new TreeWalkerBase(treeData);
+        treeWalker = treeData.getDataModel().getTreeWalker();
+        treeWalker.setTree(treeData);
     }
 
     public void testGetRootNodeId() throws Exception

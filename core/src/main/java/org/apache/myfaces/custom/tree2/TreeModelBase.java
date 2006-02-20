@@ -15,14 +15,9 @@
  */
 package org.apache.myfaces.custom.tree2;
 
-
-import org.apache.commons.lang.StringUtils;
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
-
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
+
 /**
  * Model class for the tree component.  It provides random access to nodes in a tree
  * made up of instances of the {@link TreeNode} class.
@@ -148,28 +143,9 @@ public class TreeModelBase implements TreeModel
         return node;
     }
 
-    /*
-    public String getNodeId(TreeNode node) {
-    	List indexList = new ArrayList();
-    	TreeNode parent = node.getParentNode();
-    	while (parent != null) {
-    		int index = parent.getChildren().indexOf(node);
-    		if (index == -1)
-    			return null;
-    		indexList.add(new Integer(index));
-    		node = parent;
-    		parent = parent.getParentNode();
-    	}
-
-    	indexList.add(new Integer(0)); // root node
-
-    	StringBuffer sb = new StringBuffer();
-		for(int i = indexList.size()-1; i > 0; i--) {
-			sb.append(indexList.get(i));
-			if (i > 0)
-				sb.append(TreeModelBase.SEPARATOR);
-		}
-		return sb.toString();
+    // see interface
+    public TreeWalker getTreeWalker()
+    {
+        return new TreeWalkerBase();
     }
-    */
 }

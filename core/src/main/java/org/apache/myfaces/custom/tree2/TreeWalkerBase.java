@@ -35,22 +35,25 @@ public class TreeWalkerBase implements TreeWalker
     private boolean checkState = true;
     private boolean startedWalking = false;
 
-    public TreeWalkerBase(UITreeData tree)
+    // see interface
+    public void setTree(UITreeData tree)
     {
         this.tree = tree;
-
     }
 
+    // see interface
     public boolean isCheckState()
     {
         return checkState;
     }
 
+    // see interface
     public void setCheckState(boolean checkState)
     {
         this.checkState = checkState;
     }
 
+    // see interface
     public boolean next()
     {
         if (!startedWalking)
@@ -139,6 +142,7 @@ public class TreeWalkerBase implements TreeWalker
         }
     }
 
+    // see interface
     public String getRootNodeId()
     {
         return ROOT_NODE_ID;

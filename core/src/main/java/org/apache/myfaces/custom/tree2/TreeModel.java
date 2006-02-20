@@ -61,6 +61,12 @@ public interface TreeModel extends Serializable
     public void setTreeState(TreeState state);
     public TreeState getTreeState();
 
-//    public TreeWalker getTreeWalker();
+    /**
+     * Gets the TreeWalker associated with the model.  Allows the user to customize the manner in which nodes
+     * are walked by the renderer.
+     *
+     * @return TreeWalker
+     */
+    public TreeWalker getTreeWalker();
 
 }

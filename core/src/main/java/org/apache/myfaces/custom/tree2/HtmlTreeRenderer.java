@@ -188,7 +188,9 @@ public class HtmlTreeRenderer extends Renderer
         boolean showRootNode = getBoolean(tree, JSFAttr.SHOW_ROOT_NODE, true);
 
         TreeState state = tree.getDataModel().getTreeState();
-        TreeWalker walker = new TreeWalkerBase(tree);
+        TreeWalker walker = tree.getDataModel().getTreeWalker();
+        walker.setTree(tree);
+
         walker.setCheckState(!clientSideToggle); // walk all nodes in client mode
 
         if (showRootNode)
