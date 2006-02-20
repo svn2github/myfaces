@@ -27,9 +27,12 @@
     z-index:10000;
 }
 
-.ajaxTablePopup table tbody tr:hover{
-background-color:#bcd5e2;
-    border-collapse:collapse;
+.tableSuggestHover{
+    background-color:#bcd5e2;
+}
+
+.tableSuggestOut{
+  background-color:rgb(171, 202, 219);
 }
 
 .ajaxTablePopup table thead{

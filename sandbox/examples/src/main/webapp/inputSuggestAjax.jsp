@@ -4,7 +4,7 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
 
-<html>             
+<html>
 
 <%@include file="inc/head.inc" %>
 
@@ -30,22 +30,29 @@
 
 <f:view>
 
-   <h:form>
-
-       <s:dojoInitializer require="dojo.widget.Editor" debug="true"/>
+      <s:dojoInitializer require="dojo.widget.Editor" debug="true"/>
        <s:dojoInitializer require="dojo.widget.DebugConsole" />
        <s:dojoInitializer require="dojo.widget.ResizeHandle" />
+    
+   <h:form>
 
      <h:outputText value="Street"/>
      <t:inputText id="streetNameField" />
      <h:outputText value="Number"/>
-     <t:inputText id="streetNumberField"/>
+     <t:selectOneMenu id="streetNumberField">
+          <f:selectItem value="" itemLabel="11" itemValue="11"/>
+          <f:selectItem value="" itemLabel="12" itemValue="12"/>
+          <f:selectItem value="" itemLabel="13" itemValue="13"/>
+          <f:selectItem value="" itemLabel="14" itemValue="14"/>
+          <f:selectItem value="" itemLabel="15" itemValue="15"/>
+     </t:selectOneMenu>
      <h:outputText value="Zip"/>
      <t:inputText id="zipField"/>
+
      <f:verbatim><br/><br/></f:verbatim>
 
      <h:panelGrid columns="6">
-         <h:outputText value="City Field"/>
+         <h:outputText value="City Field TableSuggest"/>
          <s:inputSuggestAjax var="address" id="cityField"  suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
              <t:column>
                  <f:facet name="header">

@@ -113,7 +113,19 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                 && !getChildren(inputSuggestAjax).isEmpty())
         {
             //suggestTable stuff
+            out.startElement(HTML.TABLE_ELEM, null);
+            out.writeAttribute(HTML.STYLE_ATTR,"border-collapse:collapse;",null);
+            out.writeAttribute(HTML.CELLPADDING_ATTR,"0",null);
+            out.startElement(HTML.TR_ELEM, null);
+            out.startElement(HTML.TD_ELEM, null);
+
             super.encodeEnd(context, inputSuggestAjax);
+
+            out.endElement(HTML.TR_ELEM);
+            out.endElement(HTML.TD_ELEM);
+
+            out.startElement(HTML.TR_ELEM, null);
+            out.startElement(HTML.TD_ELEM, null);
 
             out.startElement(HTML.DIV_ELEM, null);
             if(inputSuggestAjax.getLayout().equals("default"))
@@ -137,19 +149,26 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             {
                 out.writeAttribute(HTML.STYLE_ATTR, inputSuggestAjax.getPopupStyle(), null);
             }
+            else
+            {
+                out.writeAttribute(HTML.STYLE_ATTR,"display:inline;", null);
+            }
             out.endElement(HTML.DIV_ELEM);
+
+            out.endElement(HTML.TR_ELEM);
+            out.endElement(HTML.TD_ELEM);
+            out.endElement(HTML.TABLE_ELEM);
 
             out.startElement(HTML.SCRIPT_ELEM, null);
             out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             out.write(getAJAXHandlingCode(urlWithValue, clientId).toString());
             out.endElement(HTML.SCRIPT_ELEM);
-
         }
         else
         {
             //simple suggest stuff
             out.write("<input dojoType=\"combobox\" "
-                + "value=\"\" style=\"width:150px;\" "
+                + "value=\"\" width=\"50px;\" "
                 + "dataUrl=\""+ urlWithValue + "%{searchString}\"\n"
                 + "mode=\"remote\">");
         }
@@ -190,8 +209,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                     + DojoUtils.createDebugStatement("after response")
                     + "        if(type == \"load\"){\n"
                     + "            var popUp = document.getElementById(\"" + clientId+"_auto_complete"+"\");\n"
-                    + "             if(handlerNode.value == \"\") popUp.innerHTML = \"\";\n"
-                    + "             else popUp.innerHTML = data;\n"
+                    + "            popUp.innerHTML = data;\n"
                     + "        }else if(type == \"error\"){\n"
                     + "            // here, \"data\" is our error object\n"
                     + "            // respond to the error here\n"
@@ -206,11 +224,9 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         //if setting the focus outside the input field, popup should not be displayed
         buf.append("dojo.event.connect(document, \"onclick\", function(evt)\n"
                     + "{\n"
-                    + "   var popUp = document.getElementById(\"" + clientId+"_auto_complete"+"\");\n"
-                    + "   popUp.innerHTML = \"\";\n"
+                    + "     var popUp = document.getElementById(\"" + clientId+"_auto_complete"+"\");\n"
+                    + "     popUp.innerHTML = \"\";\n"
                     + "});\n");
-
-
 
         //puting the values from the choosen row into the fields
         buf.append("function putValueToField(trElem)\n"
@@ -311,10 +327,20 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         {
             Object addressEntryObject = suggestedEntry.next();
 
-            bodyContent.append("<tr onmouseover=\"this.style.cssText='background-color:#bcd5e2'\" "
-                                                     + "onmouseout=\"this.style.cssText='background-color:rgb(171, 202, 219)'\"  "
-                                                     + "onclick=\"putValueToField(this)\">");
+           bodyContent.append("<tr onmouseover=");
+            if(inputSuggestAjax.getColumnHoverClass()!=null)
+                bodyContent.append("\"this.className='")
+                        .append(inputSuggestAjax.getColumnHoverClass()).append("'\" ");
+            else
+                bodyContent.append("\"this.className='tableSuggestHover'\" ");
 
+            if(inputSuggestAjax.getColumnOutClass()!=null)
+                bodyContent.append("onmouseout=\"this.className='")
+                        .append(inputSuggestAjax.getColumnOutClass()).append("'\" ");
+            else
+                bodyContent.append("onmouseout=\"this.className='tableSuggestOut'\"");
+
+            bodyContent.append("onclick=\"putValueToField(this)\">");
 
             context.getExternalContext().getRequestMap()
                     .put(inputSuggestAjax.getVar(),addressEntryObject);

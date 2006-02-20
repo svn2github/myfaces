@@ -355,7 +355,7 @@ public final class DojoUtils
     {
         return "dojo.debug(\"" + stmnt + "\");\n";
     }
-    
+                          
     /**
      * helper to write out debug statements
      * this is only a convenience method to reduce the
