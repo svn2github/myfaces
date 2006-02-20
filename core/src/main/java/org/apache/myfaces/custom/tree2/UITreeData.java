@@ -423,7 +423,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     public void expandAll()
     {
-        TreeWalker walker = new TreeWalkerBase(this);
+        TreeWalker walker = getDataModel().getTreeWalker();
         TreeState state =  getDataModel().getTreeState();
         walker.setCheckState(false);
         while(walker.next())
@@ -458,7 +458,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     protected void processNodes(FacesContext context, int processAction)
     {
         UIComponent facet = null;
-        TreeWalker walker = new TreeWalkerBase(this);
+        TreeWalker walker = getDataModel().getTreeWalker();
 
         while(walker.next())
         {
