@@ -424,8 +424,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     public void expandAll()
     {
         TreeWalker walker = getDataModel().getTreeWalker();
+        walker.reset();
+
         TreeState state =  getDataModel().getTreeState();
         walker.setCheckState(false);
+
         while(walker.next())
         {
             String id = getNodeId();
@@ -459,6 +462,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     {
         UIComponent facet = null;
         TreeWalker walker = getDataModel().getTreeWalker();
+        walker.reset();
 
         while(walker.next())
         {

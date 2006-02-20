@@ -147,4 +147,12 @@ public class TreeWalkerBase implements TreeWalker
     {
         return ROOT_NODE_ID;
     }
+
+    // see interface
+    public void reset()
+    {
+        nodeStack.empty();
+        idStack.empty();
+        startedWalking = false;
+    }
 }

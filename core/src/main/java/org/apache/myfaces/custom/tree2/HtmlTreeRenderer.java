@@ -189,6 +189,7 @@ public class HtmlTreeRenderer extends Renderer
 
         TreeState state = tree.getDataModel().getTreeState();
         TreeWalker walker = tree.getDataModel().getTreeWalker();
+        walker.reset();
         walker.setTree(tree);
 
         walker.setCheckState(!clientSideToggle); // walk all nodes in client mode

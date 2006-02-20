@@ -53,4 +53,9 @@ interface TreeWalker
      * @param treeData UITreeData
      */
     public void setTree(UITreeData treeData);
+
+    /**
+     * Reset the walker so the tree can be walked again starting from the root.
+     */
+    public void reset();
 }
