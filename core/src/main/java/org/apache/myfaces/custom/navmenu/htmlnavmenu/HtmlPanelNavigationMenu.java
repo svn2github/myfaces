@@ -63,7 +63,10 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
             UIViewRoot previousRoot = (UIViewRoot)context.getExternalContext().getRequestMap().get(PREVIOUS_VIEW_ROOT);
             if (previousRoot != null)
             {
-                restoreOpenActiveStates(context, previousRoot, getChildren());
+                if(previousRoot.findComponent(getClientId(context)) instanceof HtmlPanelNavigationMenu)
+                {
+                    restoreOpenActiveStates(context, previousRoot, getChildren());
+                }
             }
             else
             {
