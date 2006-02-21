@@ -144,13 +144,16 @@ org.apache.myfaces.StateChangedNotifier = function(notifierName, formId, hiddenF
         if (command != null)
         {
             var onclick = command.getAttribute("onclick");
-          	var onclickstr = "if ("+notifierName+".showMessage()) { "+onclick+" }";
+            var onclickstr = onclick+"";
+          	
 			
 			if(dojo.render.html.ie) { 
-				onclickstr = onclickstr.replace("function anonymous\\(\\)","");        
+				onclickstr = onclickstr.replace(/function anonymous\(\)/,"");  
+				onclickstr = "if ("+notifierName+".showMessage()) { "+onclickstr+" }"; 
+				alert(onclickstr);     
 		        command.setAttribute("onclick", new Function("",onclickstr));
     		} else {
-    	        command.setAttribute("onclick", onclickstr);
+    	        command.setAttribute("onclick", "if ("+notifierName+".showMessage()) { "+onclick+" }");
     		}
         }
     }
