@@ -117,7 +117,7 @@ public class TreeWalkerBase implements TreeWalker
                 tree.setNodeId(parentNodeId);
                 TreeNode parentNode = tree.getNode();
 
-                int siblingCount = Integer.parseInt(currentNodeId.substring(currentNodeId.length() - 1));
+                int siblingCount = Integer.parseInt(currentNodeId.substring(parentNodeId.length()+1));
                 siblingCount++;
 
                 if (siblingCount == parentNode.getChildCount())
