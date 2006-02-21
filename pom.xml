@@ -25,6 +25,11 @@
     <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk</url>
   </scm>  
 
+  <issueManagement>
+    <system>jira</system>
+    <url>http://issues.apache.org/jira/browse/TOMAHAWK</url>
+  </issueManagement>
+
   <repositories>
     <repository>
       <snapshots>
