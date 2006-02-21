@@ -71,7 +71,7 @@ public class SubForm extends UIComponentBase
 
         boolean partialEnabled = isPartialEnabled(context, PhaseId.PROCESS_VALIDATIONS);
 
-        if(partialEnabled || _submitted)
+        if(partialEnabled || (_submitted && isEmptyList(context)))
         {
             for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
             {
@@ -159,13 +159,22 @@ public class SubForm extends UIComponentBase
         super.queueEvent(event);
     }
 
+    protected boolean isEmptyList(FacesContext context)
+    {
+        //get the list of (parent) client-ids for which a validation/model update should be performed
+        List li = (List) context.getExternalContext().getRequestMap().get(
+                RendererUtils.ACTION_FOR_LIST);
+
+        return li==null || li.size()==0;
+    }
+
     /**Sets up information if this component is included in
      * the group of components which are associated with the current action.
      *
      * @param context
      * @return true if there has been a change by this setup which has to be undone after the phase finishes.
      */
-    private boolean isPartialEnabled(FacesContext context, PhaseId phaseId)
+    protected boolean isPartialEnabled(FacesContext context, PhaseId phaseId)
     {
         //we want to execute validation (and model update) only
         //if certain conditions are met
