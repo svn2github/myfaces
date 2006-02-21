@@ -147,6 +147,15 @@ public class SubForm extends UIComponentBase
             _submitted = true;
         }
 
+        // This idea is taken from ADF faces - my approach didn't go as far
+        // as necessary - I still believe this to be a hack as well.
+        // If the event is being queued for anything *after* APPLY_REQUEST_VALUES,
+        // then this subform is active.
+        if (PhaseId.APPLY_REQUEST_VALUES.compareTo(event.getPhaseId()) < 0)
+        {
+            setSubmitted(true);
+        }
+
         super.queueEvent(event);
     }
 
