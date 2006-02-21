@@ -63,12 +63,14 @@ org.apache.myfaces.StateChangedNotifier = function(notifierName, formId, hiddenF
 
     function addOnChangeListener(tagName)
     {
+    	
         var arrElements = document.getElementsByTagName(tagName);
-
+		
         for (var i=0; i<arrElements.length; i++)
         {
             dojo.event.browser.addListener(arrElements[i], "onchange", changeHiddenValue);
         }
+        
     }
 
     function addObjectsToConfirmList(tagName)
@@ -139,11 +141,17 @@ org.apache.myfaces.StateChangedNotifier = function(notifierName, formId, hiddenF
     function putConfirmInElement(commandId)
     {
         var command = document.getElementById(commandId);
-
         if (command != null)
         {
             var onclick = command.getAttribute("onclick");
-            command.setAttribute("onclick", "if ("+notifierName+".showMessage()) { "+onclick+" }");
+          	var onclickstr = "if ("+notifierName+".showMessage()) { "+onclick+" }";
+			
+			if(dojo.render.html.ie) { 
+				onclickstr = onclickstr.replace("function anonymous\\(\\)","");        
+		        command.setAttribute("onclick", new Function("",onclickstr));
+    		} else {
+    	        command.setAttribute("onclick", onclickstr);
+    		}
         }
     }
 
