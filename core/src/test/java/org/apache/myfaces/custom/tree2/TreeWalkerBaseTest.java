@@ -207,5 +207,22 @@ public class TreeWalkerBaseTest extends TestCase
         assertFalse("unxpected return value", treeWalker.next());
     }
 
-
+    /**
+     * Walk through the tree.  Then call reset.  Make sure the tree is walked through again
+     * from the beginning.  This can be tested by running some of the other tests twice with
+     * a call to reset in between.
+     */
+    public void testReset()
+    {
+        try
+        {
+            testNextCheckState();
+            treeWalker.reset();
+            testNextCheckState();
+        }
+        catch (Exception e)
+        {
+            fail("Unable to successfuly check the next method twice with a reset");
+        }
+    }
 }
