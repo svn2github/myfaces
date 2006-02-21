@@ -150,7 +150,7 @@ org.apache.myfaces.StateChangedNotifier = function(notifierName, formId, hiddenF
 			if(dojo.render.html.ie) { 
 				onclickstr = onclickstr.replace(/function anonymous\(\)/,"");  
 				onclickstr = "if ("+notifierName+".showMessage()) { "+onclickstr+" }"; 
-				alert(onclickstr);     
+				  
 		        command.setAttribute("onclick", new Function("",onclickstr));
     		} else {
     	        command.setAttribute("onclick", "if ("+notifierName+".showMessage()) { "+onclick+" }");
