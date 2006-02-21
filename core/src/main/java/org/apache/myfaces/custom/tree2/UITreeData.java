@@ -463,6 +463,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         UIComponent facet = null;
         TreeWalker walker = getDataModel().getTreeWalker();
         walker.reset();
+        walker.setTree(this);
 
         while(walker.next())
         {
