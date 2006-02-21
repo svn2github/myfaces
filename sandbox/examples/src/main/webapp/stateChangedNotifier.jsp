@@ -58,7 +58,7 @@
     </h:form>
 
     <h:form id="form2">
-        <s:stateChangedNotifier confirmationMessage="Everything ok?" excluded="link3"/>
+        <s:stateChangedNotifier confirmationMessage="Everything ok?" excludedIds="link3"/>
 
         <h:panelGrid columns="1">
             <h:inputText id="input1" value="" />
