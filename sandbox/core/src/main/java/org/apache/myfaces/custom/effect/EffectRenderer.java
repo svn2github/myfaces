@@ -23,6 +23,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.custom.div.Div;
+import org.apache.myfaces.custom.dojo.DojoConfig;
+import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.RendererUtils;
@@ -44,8 +46,9 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  */
 public class EffectRenderer extends HtmlRenderer
 {
-    public static final String RENDERER_TYPE = "org.apache.myfaces.effect.EffectRenderer";
-    
+    private static final String DEFAULT_FADE_COLOR = "red";
+    public static final String  RENDERER_TYPE      = "org.apache.myfaces.effect.EffectRenderer";
+
     /**
      * Encodes any stand-alone javascript functions that are needed. Uses either
      * the extension filter, or a user-supplied location for the javascript
@@ -62,15 +65,19 @@ public class EffectRenderer extends HtmlRenderer
 
         // render javascript function for client-side toggle (it won't be used
         // if user has opted for server-side toggle)
-        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        AddResource addResource = AddResourceFactory.getInstance(context);
+        String javascriptLocation   = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        AddResource addResource     = AddResourceFactory.getInstance(context);
+        Boolean fade                = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
+
         if (javascriptLocation != null)
         {
 
             addResource
                     .addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/effects.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/fat.js");
+
+            if (fade != null && fade.booleanValue())
+                DojoUtils.addMainInclude(context, javascriptLocation, new DojoConfig());
         }
         else
         {
@@ -79,7 +86,8 @@ public class EffectRenderer extends HtmlRenderer
                     "prototype.js");
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
                     "effects.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, FATResourceLoader.class, "fat.js");
+            if (fade != null && fade.booleanValue())
+                DojoUtils.addMainInclude(context, null, new DojoConfig());
 
         }
     }
@@ -88,8 +96,6 @@ public class EffectRenderer extends HtmlRenderer
     {
         return true;
     }
-
-    
 
     /**
      * We only need an encodeBeing method because the fade control, does not
@@ -117,7 +123,7 @@ public class EffectRenderer extends HtmlRenderer
             return;
         encodeJavascript(context, component);
         super.encodeBegin(context, component);
-        prepareFade(component);
+
         renderEffectsBegin(context, component);
     }
 
@@ -126,32 +132,20 @@ public class EffectRenderer extends HtmlRenderer
      *
      * @param component
      */
-    private void prepareFade(UIComponent component)
+    private String getFadeColor(UIComponent component)
     {
-        Div theComponent = (Div) component;
+       
         Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
 
-        String theStyleClass = theComponent.getStyleClass();
-        if (theStyleClass == null)
-            theStyleClass = "";
-        if (fade != null && fade.booleanValue() && !(theStyleClass.indexOf("fade") != -1))
+        if (fade != null && fade.booleanValue())
         {
 
-            if (theStyleClass != null && !theStyleClass.trim().equalsIgnoreCase(""))
-                theStyleClass += ";fade";
-            else
-                theStyleClass = "fade";
-
             String fadeColor = (String) component.getAttributes().get(EffectTag.TAG_PARAM_FADECOLOR);
-
-            fadeColor = (fadeColor != null) ? fadeColor : "";
-            fadeColor = fadeColor.replaceAll("#", "");
-            if (fadeColor.length() != 0)
-                fadeColor = "-" + fadeColor;
-
-            theStyleClass += fadeColor;
-            theComponent.setStyleClass(theStyleClass);
+            fadeColor = (fadeColor != null) ? fadeColor : DEFAULT_FADE_COLOR;
+            fadeColor = fadeColor.equals("") ? DEFAULT_FADE_COLOR : fadeColor;
+            return fadeColor;
         }
+        return null;
     }
 
     public void renderEffectsBegin(FacesContext context, UIComponent component) throws IOException
@@ -159,11 +153,11 @@ public class EffectRenderer extends HtmlRenderer
 
         // dump all the parameters which affect us into we dont set a central
         // unchecked here to keep the warning level high
-        Boolean squish      = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SQUISH);
-        Boolean puff        = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PUFF);
-        Boolean scale       = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE);
-        Boolean pulsate     = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PULSATE);
-        Integer scaleSize   = (Integer) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE_SIZE);
+        Boolean squish = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SQUISH);
+        Boolean puff = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PUFF);
+        Boolean scale = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE);
+        Boolean pulsate = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PULSATE);
+        Integer scaleSize = (Integer) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE_SIZE);
 
         Div div = (Div) component;
         ResponseWriter writer = context.getResponseWriter();
@@ -236,6 +230,22 @@ public class EffectRenderer extends HtmlRenderer
         writer.endElement(HTML.DIV_ELEM);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         super.encodeEnd(facesContext, component);
+        Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
+        if (fade != null && fade.booleanValue())
+        {
+            writer.startElement(HTML.SCRIPT_ELEM, component);
+            writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+            writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, HTML.SCRIPT_LANGUAGE_JAVASCRIPT, null);
+            StringBuffer commandBuffer = new StringBuffer(128);
+            commandBuffer.append("dojo.fx.html.colorFadeIn(dojo.byId('");
+            commandBuffer.append(component.getClientId(facesContext));
+            commandBuffer.append("'),'");
+            commandBuffer.append(getFadeColor(component));
+            commandBuffer.append("',800);"); //TODO Add the animationtime as extra param
+            writer.write(commandBuffer.toString());
+            writer.endElement(HTML.SCRIPT_ELEM);
+
+        }
     }
 
 }
