@@ -33,7 +33,7 @@
 	<h:form>
 		<s:effect id="effect1" fade="true">
 			<h:outputText
-				value="Hello We hope you enjoy Apache MyFaces and the effects by DOJO, FAT and script.aculo.us" />
+				value="Hello We hope you enjoy Apache MyFaces and the effects by DOJO and script.aculo.us" />
 		</s:effect>
 
 		<s:effect id="booga" puff="true">
