@@ -67,43 +67,6 @@ public abstract class AbstractCompactScheduleRenderer extends
     }
 
     /**
-     * @return The default height, in pixels, of one row in the schedule grid
-     */
-    protected abstract int getDefaultRowHeight();
-
-    /**
-     * @return The name of the property that determines the row height
-     */
-    protected abstract String getRowHeightProperty();
-
-    /**
-     * @param attributes
-     *            The attributes
-     * 
-     * @return The row height, in pixels
-     */
-    protected int getRowHeight(Map attributes)
-    {
-        int rowHeight = 0;
-
-        try
-        {
-            rowHeight = Integer.valueOf(
-                    (String) attributes.get(getRowHeightProperty())).intValue();
-        } catch (Exception e)
-        {
-            rowHeight = 0;
-        }
-
-        if (rowHeight == 0)
-        {
-            rowHeight = getDefaultRowHeight();
-        }
-
-        return rowHeight;
-    }
-
-    /**
      * <p>
      * Draw one day in the schedule
      * </p>

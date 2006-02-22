@@ -38,7 +38,8 @@
 				tooltip="#{scheduleSettings2.tooltip}"
 				headerDateFormat="#{scheduleSettings2.headerDateFormat}"
 				compactWeekRowHeight="#{scheduleSettings2.compactWeekRowHeight}"
-				compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}" />
+				compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"
+				detailedRowHeight="#{scheduleSettings2.detailedRowHeight}"/>
 		</t:div>
 		<!--  The column on the left, containing the calendar and other controls -->
 		<t:div style="position: absolute; left: 5px; top: 5px; width: 210px;">

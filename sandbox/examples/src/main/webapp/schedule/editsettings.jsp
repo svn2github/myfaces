@@ -93,6 +93,13 @@
 				<f:validateLongRange minimum="50" maximum="150" />
 			</h:inputText>
 			<h:message for="compactMonthRowHeight" />
+			<h:outputLabel for="detailedRowHeight"
+				value="Row height in detailed mode:" />
+			<h:inputText id="detailedRowHeight"
+				value="#{scheduleSettings2.detailedRowHeight}" required="true">
+				<f:validateLongRange minimum="22" maximum="50" />
+			</h:inputText>
+			<h:message for="detailedRowHeight" />
 		</h:panelGrid>
 		<h:panelGrid columns="2">
 			<h:commandButton action="#{scheduleSettings2.save}" value="save" />

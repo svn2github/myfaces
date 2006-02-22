@@ -21,15 +21,17 @@ import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 
 public class ScheduleSettings implements Serializable
 {
-    private ScheduleModel model;
-    
     private static final long serialVersionUID = -8547428935814382762L;
 
     private int compactMonthRowHeight;
 
     private int compactWeekRowHeight;
 
+    private int detailedRowHeight;
+
     private String headerDateFormat;
+
+    private ScheduleModel model;
 
     private boolean readonly;
 
@@ -55,9 +57,19 @@ public class ScheduleSettings implements Serializable
         return compactWeekRowHeight;
     }
 
+    public int getDetailedRowHeight()
+    {
+        return detailedRowHeight;
+    }
+
     public String getHeaderDateFormat()
     {
         return headerDateFormat;
+    }
+
+    public ScheduleModel getModel()
+    {
+        return model;
     }
 
     public String getTheme()
@@ -111,9 +123,19 @@ public class ScheduleSettings implements Serializable
         this.compactWeekRowHeight = compactWeekRowHeight;
     }
 
+    public void setDetailedRowHeight(int detailedRowHeight)
+    {
+        this.detailedRowHeight = detailedRowHeight;
+    }
+
     public void setHeaderDateFormat(String headerDateFormat)
     {
         this.headerDateFormat = headerDateFormat;
+    }
+
+    public void setModel(ScheduleModel model)
+    {
+        this.model = model;
     }
 
     public void setReadonly(boolean readonly)
@@ -149,15 +171,5 @@ public class ScheduleSettings implements Serializable
     public void setWorkingStartHour(int workingStartHour)
     {
         this.workingStartHour = workingStartHour;
-    }
-
-    public ScheduleModel getModel()
-    {
-        return model;
-    }
-
-    public void setModel(ScheduleModel model)
-    {
-        this.model = model;
     }
 }

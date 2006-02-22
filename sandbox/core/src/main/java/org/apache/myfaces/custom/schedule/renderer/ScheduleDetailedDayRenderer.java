@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
@@ -45,7 +46,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 {
     //~ Instance fields --------------------------------------------------------
 
-    private final int rowHeightInPixels = 22;
+    private final int defaultRowHeightInPixels = 22;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -65,6 +66,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
+        int rowHeight = getRowHeight(schedule.getAttributes());
 
         //the number of rows in the grid is the number of half hours between
         //visible start hour and visible end hour, plus 1 for the header
@@ -73,11 +75,12 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         //the grid height = 22 pixels times the number of rows + 3, for the
         //table border and the cellpadding
-        int gridHeight = (numberOfRows * 22) + 3 + 10;
+        int gridHeight = (numberOfRows * rowHeight) + 3 + 10;
 
         //container div for the schedule grid
         writer.startElement(HTML.DIV_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, "schedule-detailed-" + getTheme(schedule), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "schedule-detailed-"
+                + getTheme(schedule), null);
         writer.writeAttribute(HTML.STYLE_ATTR, "height: "
                 + String.valueOf(gridHeight) + "px; overflow: hidden;", null);
         writeBackground(context, schedule, writer);
@@ -104,10 +107,12 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
             writer.startElement(HTML.TD_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "column"), null);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                    "column"), null);
             writer.writeAttribute(HTML.STYLE_ATTR, "height: 100%;", null);
             writer.startElement(HTML.DIV_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "column"), null);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                    "column"), null);
             writer
                     .writeAttribute(
                             HTML.STYLE_ATTR,
@@ -225,8 +230,11 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     private void writeBackground(FacesContext context, HtmlSchedule schedule,
             ResponseWriter writer) throws IOException
     {
+        final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
+        final int headerHeight = rowHeight + 10;
         writer.startElement(HTML.DIV_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "background"), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                "background"), null);
         writer
                 .writeAttribute(
                         HTML.STYLE_ATTR,
@@ -235,7 +243,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         //background table for the schedule grid
         writer.startElement(HTML.TABLE_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "background"), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                "background"), null);
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%",
@@ -245,11 +254,14 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         //header row, containing the column names
         writer.startElement(HTML.TR_ELEM, schedule);
         writer.startElement(HTML.TD_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "gutter"), null);
+        writer.writeAttribute(HTML.CLASS_ATTR,
+                getStyleClass(schedule, "gutter"), null);
         writer
                 .writeAttribute(
                         HTML.STYLE_ATTR,
-                        "height: 21px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
+                        "height: "
+                                + rowHeight
+                                + "px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
                         null);
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer
@@ -266,11 +278,12 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
             writer.startElement(HTML.TD_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "header"), null);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                    "header"), null);
             writer
                     .writeAttribute(
                             HTML.STYLE_ATTR,
-                            "height: 31px; border-style: none; border-width: 0px; overflow: hidden;",
+                            "height: " + headerHeight + "px; border-style: none; border-width: 0px; overflow: hidden;",
                             null);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
                     + "%", null);
@@ -283,7 +296,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
             //write the date
             writer.startElement(HTML.SPAN_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "date"), null);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                    "date"), null);
             writer
                     .writeAttribute(
                             HTML.STYLE_ATTR,
@@ -298,7 +312,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                     && (day.getSpecialDayName().length() > 0))
             {
                 writer.startElement(HTML.SPAN_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "holiday"), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                        "holiday"), null);
                 writer
                         .writeAttribute(
                                 HTML.STYLE_ATTR,
@@ -326,15 +341,19 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             if ((row % 2) == 0)
             {
                 writer.startElement(HTML.TD_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "gutter"), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                        "gutter"), null);
                 writer
                         .writeAttribute(
                                 HTML.STYLE_ATTR,
-                                "height: 21px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
+                                "height: "
+                                        + rowHeight
+                                        + "px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
                                 null);
                 writer.writeAttribute("rowspan", "2", null);
                 writer.startElement(HTML.SPAN_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "hours"), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                        "hours"), null);
                 writer.writeAttribute(HTML.STYLE_ATTR,
                         "vertical-align: top; height: 100%; padding: 0px;",
                         null);
@@ -342,7 +361,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                         + (row / 2)), null);
                 writer.endElement(HTML.SPAN_ELEM);
                 writer.startElement(HTML.SPAN_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "minutes"), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                        "minutes"), null);
                 writer.writeAttribute(HTML.STYLE_ATTR,
                         "vertical-align: top; height: 100%; padding: 0px;",
                         null);
@@ -358,7 +378,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 writer.writeAttribute(HTML.CLASS_ATTR, getCellClass(schedule,
                         column, row), null);
                 writer.writeAttribute(HTML.STYLE_ATTR,
-                        "overflow: hidden; height: 21px;", null);
+                        "overflow: hidden; height: " + rowHeight + "px;", null);
                 writer.writeAttribute(HTML.WIDTH_ATTR, String
                         .valueOf(columnWidth)
                         + "%", null);
@@ -420,8 +440,10 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             //compose the CSS style for the entry box
             StringBuffer entryStyle = new StringBuffer();
             entryStyle.append(wrapper.getBounds(schedule, columnWidth));
-            String entryBorderColor = getEntryRenderer(schedule).getColor(context, schedule, wrapper.entry, selected); 
-            if (entryBorderColor != null) {
+            String entryBorderColor = getEntryRenderer(schedule).getColor(
+                    context, schedule, wrapper.entry, selected);
+            if (entryBorderColor != null)
+            {
                 entryStyle.append(" border-color: ");
                 entryStyle.append(entryBorderColor);
                 entryStyle.append(";");
@@ -430,17 +452,21 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             if (selected)
             {
                 writer.startElement(HTML.DIV_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "entry-selected"), null);
-                writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                        "entry-selected"), null);
+                writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(),
+                        null);
 
                 //draw the tooltip
                 if (showTooltip(schedule))
                 {
-                    getEntryRenderer(schedule).renderToolTip(context, writer, schedule, wrapper.entry, selected);
+                    getEntryRenderer(schedule).renderToolTip(context, writer,
+                            schedule, wrapper.entry, selected);
                 }
 
                 //draw the content
-                getEntryRenderer(schedule).renderContent(context, writer, schedule, day, wrapper.entry, false, selected);
+                getEntryRenderer(schedule).renderContent(context, writer,
+                        schedule, day, wrapper.entry, false, selected);
                 writer.endElement(HTML.DIV_ELEM);
             }
             else
@@ -453,7 +479,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 //draw the tooltip
                 if (showTooltip(schedule))
                 {
-                    getEntryRenderer(schedule).renderToolTip(context, writer, schedule, wrapper.entry, selected);
+                    getEntryRenderer(schedule).renderToolTip(context, writer,
+                            schedule, wrapper.entry, selected);
                 }
 
                 if (!schedule.isReadonly())
@@ -475,12 +502,15 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                             null);
                 }
 
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "entry"), null);
-                writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                        "entry"), null);
+                writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(),
+                        null);
 
                 //draw the content
-                getEntryRenderer(schedule).renderContent(context, writer, schedule, day, wrapper.entry, false, selected);
-                
+                getEntryRenderer(schedule).renderContent(context, writer,
+                        schedule, day, wrapper.entry, false, selected);
+
                 writer.endElement(schedule.isReadonly() ? HTML.DIV_ELEM : "a");
             }
         }
@@ -497,8 +527,11 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     private void writeForegroundStart(FacesContext context,
             HtmlSchedule schedule, ResponseWriter writer) throws IOException
     {
+        final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
+        final int headerHeight = rowHeight + 10;
         writer.startElement(HTML.DIV_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "foreground"), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                "foreground"), null);
         writer
                 .writeAttribute(
                         HTML.STYLE_ATTR,
@@ -506,7 +539,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                         null);
 
         writer.startElement(HTML.TABLE_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "foreground"), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                "foreground"), null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%",
@@ -528,11 +562,12 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
             writer.startElement(HTML.TD_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "header"), null);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                    "header"), null);
             writer
                     .writeAttribute(
                             HTML.STYLE_ATTR,
-                            "height: 31px; border-style: none; border-width: 0px; overflow: hidden;",
+                            "height: " + headerHeight + "px; border-style: none; border-width: 0px; overflow: hidden;",
                             null);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
                     + "%", null);
@@ -553,6 +588,16 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     }
 
     //~ Inner Classes ----------------------------------------------------------
+
+    protected String getRowHeightProperty()
+    {
+        return "detailedRowHeight";
+    }
+
+    protected int getDefaultRowHeight()
+    {
+        return defaultRowHeightInPixels;
+    }
 
     private class EntryWrapper implements Comparable
     {
@@ -640,6 +685,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
          */
         String getBounds(HtmlSchedule schedule, float columnWidth)
         {
+            int rowHeight = getRowHeight(schedule.getAttributes());
             float width = (columnWidth * colspan) - 0.5f;
             float left = column * columnWidth;
             Calendar cal = GregorianCalendar.getInstance();
@@ -674,13 +720,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             endMillis = day.equalsDate(entry.getEndTime()) ? Math.min(
                     endMillis, visibleEndMillis) : visibleEndMillis;
 
-            int top = (int) (((startMillis - visibleStartMillis) * rowHeightInPixels) / HALF_HOUR);
-            int height = (int) (((endMillis - startMillis) * rowHeightInPixels) / HALF_HOUR);
+            int top = (int) (((startMillis - visibleStartMillis) * rowHeight) / HALF_HOUR);
+            int height = (int) (((endMillis - startMillis) * rowHeight) / HALF_HOUR);
             StringBuffer buffer = new StringBuffer();
-            
+
             if (height <= 0)
             {
-            	buffer.append("visibility: hidden; ");
+                buffer.append("visibility: hidden; ");
             }
             buffer.append("position: absolute; height: ");
             buffer.append(height);
@@ -692,7 +738,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             buffer.append(width);
             buffer
                     .append("%; padding: 0px; overflow: hidden; border-width: 1.0px; border-style:solid;");
-            
+
             return buffer.toString();
         }
 

@@ -405,6 +405,10 @@
   			<property-name>compactMonthRowHeight</property-name>
   			<value>100</value>
   		</managed-property>
+  		<managed-property>
+  			<property-name>detailedRowHeight</property-name>
+  			<value>22</value>
+  		</managed-property>
   </managed-bean>
 
   <managed-bean>

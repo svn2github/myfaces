@@ -39,6 +39,7 @@ public class ScheduleTag extends UIComponentTag
     private String actionListener;
     private String compactMonthRowHeight;
     private String compactWeekRowHeight;
+    private String detailedRowHeight;
     private String headerDateFormat;
     private String immediate;
     private String readonly;
@@ -177,6 +178,26 @@ public class ScheduleTag extends UIComponentTag
         return compactWeekRowHeight;
     }
 
+    /**
+     * The height in pixels of a cell in the detailed day view
+     * 
+     * @return the detailedRowHeight
+     */
+    public String getDetailedRowHeight()
+    {
+        return detailedRowHeight;
+    }
+
+    /**
+     * The height in pixels of a cell in the detailed day view
+     * 
+     * @param detailedRowHeight the detailedRowHeight
+     */
+    public void setDetailedRowHeight(String detailedRowHeight)
+    {
+        this.detailedRowHeight = detailedRowHeight;
+    }
+    
     /**
      * @see javax.faces.webapp.UIComponentTag#getComponentType()
      */
@@ -720,6 +741,9 @@ public class ScheduleTag extends UIComponentTag
         theme = null;
         tooltip = null;
         rendered = null;
+        compactMonthRowHeight = null;
+        compactWeekRowHeight = null;
+        detailedRowHeight = null;
         
         columnClass = null;
         backgroundClass = null;
@@ -903,6 +927,8 @@ public class ScheduleTag extends UIComponentTag
                 compactWeekRowHeight);
         addAttribute(app, schedule, "compactMonthRowHeight",
                 compactMonthRowHeight);
+        addAttribute(app, schedule, "detailedRowHeight",
+                detailedRowHeight);
         addAttribute(app, schedule, "column", columnClass);
         addAttribute(app, schedule, "background", backgroundClass);
         addAttribute(app, schedule, "free", freeClass);
@@ -947,5 +973,6 @@ public class ScheduleTag extends UIComponentTag
             }
         }
     }
+
 }
 //The End

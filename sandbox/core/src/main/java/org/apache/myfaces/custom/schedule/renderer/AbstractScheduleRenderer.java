@@ -46,7 +46,7 @@ import org.apache.myfaces.renderkit.html.HTML;
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision$
  */
-public class AbstractScheduleRenderer extends Renderer
+public abstract class AbstractScheduleRenderer extends Renderer
 {
     //~ Static fields/initializers ---------------------------------------------
 
@@ -97,14 +97,15 @@ public class AbstractScheduleRenderer extends Renderer
         //add needed CSS and Javascript files to the header 
 
         AddResource addResource = AddResourceFactory.getInstance(context);
-        addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlSchedule.class, css);
+        addResource.addStyleSheet(context, AddResource.HEADER_BEGIN,
+                HtmlSchedule.class, css);
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/alphaAPI.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/domLib.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/domTT.js");
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, 
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/fadomatic.js");
 
         //hidden input field containing the id of the selected entry
@@ -184,7 +185,7 @@ public class AbstractScheduleRenderer extends Renderer
             theme = "default";
         return theme;
     }
-    
+
     /**
      * <p>
      * Allow the developer to specify custom CSS classnames for the schedule
@@ -196,22 +197,23 @@ public class AbstractScheduleRenderer extends Renderer
      */
     protected String getStyleClass(UIComponent component, String className)
     {
-    	//first check if the styleClass property is a value binding expression
-    	ValueBinding binding = component.getValueBinding(className);
-    	if (binding != null)
-    	{
-    		String value = (String) binding.getValue(FacesContext.getCurrentInstance());
-    		
-    		if (value != null)
-    		{
-    			return value;
-    		}
-    	}
-    	//it's not a value binding expression, so check for the string value
-    	//in the attributes
-    	Map attributes = component.getAttributes();
-    	String returnValue = (String) attributes.get(className); 
-    	return returnValue == null ? className : returnValue;
+        //first check if the styleClass property is a value binding expression
+        ValueBinding binding = component.getValueBinding(className);
+        if (binding != null)
+        {
+            String value = (String) binding.getValue(FacesContext
+                    .getCurrentInstance());
+
+            if (value != null)
+            {
+                return value;
+            }
+        }
+        //it's not a value binding expression, so check for the string value
+        //in the attributes
+        Map attributes = component.getAttributes();
+        String returnValue = (String) attributes.get(className);
+        return returnValue == null ? className : returnValue;
     }
 
     /**
@@ -298,27 +300,71 @@ public class AbstractScheduleRenderer extends Renderer
         return Boolean.valueOf((String) attributes.get("tooltip"))
                 .booleanValue();
     }
-    
-    protected ScheduleEntryRenderer getEntryRenderer(UIComponent component){
-        if (entryRenderer != null) return entryRenderer;
+
+    protected ScheduleEntryRenderer getEntryRenderer(UIComponent component)
+    {
+        if (entryRenderer != null)
+            return entryRenderer;
         String className = null;
         ValueBinding binding = component.getValueBinding("entryRenderer");
         if (binding != null)
         {
-            className = (String)binding.getValue(FacesContext.getCurrentInstance());
+            className = (String) binding.getValue(FacesContext
+                    .getCurrentInstance());
         }
-        if (className == null) {
+        if (className == null)
+        {
             Map attributes = component.getAttributes();
             className = (String) attributes.get("entryRenderer");
         }
         try
         {
-            entryRenderer = (ScheduleEntryRenderer)Class.forName(className).newInstance();
-        } catch (Exception e)
+            entryRenderer = (ScheduleEntryRenderer) Class.forName(className)
+                    .newInstance();
+        }
+        catch (Exception e)
         {
             entryRenderer = new DefaultScheduleEntryRenderer();
         }
         return entryRenderer;
+    }
+
+    /**
+     * @return The default height, in pixels, of one row in the schedule grid
+     */
+    protected abstract int getDefaultRowHeight();
+
+    /**
+     * @return The name of the property that determines the row height
+     */
+    protected abstract String getRowHeightProperty();
+
+    /**
+     * @param attributes
+     *            The attributes
+     * 
+     * @return The row height, in pixels
+     */
+    protected int getRowHeight(Map attributes)
+    {
+        int rowHeight = 0;
+
+        try
+        {
+            Integer rowHeightObject = (Integer)attributes.get(getRowHeightProperty());
+            rowHeight = rowHeightObject.intValue();
+        }
+        catch (Exception e)
+        {
+            rowHeight = 0;
+        }
+
+        if (rowHeight == 0)
+        {
+            rowHeight = getDefaultRowHeight();
+        }
+
+        return rowHeight;
     }
 }
 //The End
