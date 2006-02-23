@@ -30,6 +30,12 @@
 <f:view>
 
     <h:form id="form1">
+    		<s:effect id="effect1" fade="true">
+			<h:outputText style="width: 400px; text-align: center;"
+				value="state change notifier, triggers a popup if something has changed in the forms" />
+		</s:effect>
+    
+    
         <s:stateChangedNotifier confirmationMessage="Values have changed. Did you know it?"
                                 disabled="false"
                                 excludedIds="excludedLink1,excludedLink2"/>
