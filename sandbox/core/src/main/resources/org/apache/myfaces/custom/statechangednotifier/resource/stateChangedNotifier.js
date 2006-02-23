@@ -16,10 +16,11 @@
  */
 dojo.require("dojo.debug");
 dojo.require("dojo.html");
-var  myfaces_stateChange_globalExclusionList = new Array();
-
-
-
+/*global exclusion list singleton which keeps track of all exclusions over all entire forms.
+		we cannot allow that some predefined exclusions
+		are rendered invalid by another tag
+*/
+var myfaces_stateChange_globalExclusionList = new Array();
 /**
 * central function definition for the state change notifier
 */
@@ -32,14 +33,7 @@ function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId,
     this.arrCommandIds = new Array();
     this.objectsToConfirmList = new Array();
     this.objectsToConfirmBeforeExclusion = new Array();
-    /*global exclusion list singleton which keeps track of all exclusions over all entire forms.
-		we cannot allow that some predefined exclusions
-		are rendered invalid by another tag
-	*/
 }
-
-
-
 /**
 * prepares the notifier entry fields
 * and trigger filters
@@ -63,9 +57,10 @@ org_apache_myfaces_StateChangedNotifier.prototype.prepareNotifier = function () 
             myfaces_stateChange_globalExclusionList.push(newIds[cnt - globalExclLen]);
             this.arrCommandIds.push(newIds[cnt - globalExclLen]);
         }
-        this.addObjectsToConfirmList("a");
-        this.addObjectsToConfirmList("input");
-        this.addObjectsToConfirmList("button");
+        this.addObjectsToConfirmList("a", null);
+        this.addObjectsToConfirmList("input", "button");
+        this.addObjectsToConfirmList("input", "submit");
+        this.addObjectsToConfirmList("button", null);
         this.putConfirmExcludingElements();
     }
 };
@@ -79,13 +74,15 @@ org_apache_myfaces_StateChangedNotifier.prototype.addOnChangeListener = function
         dojo.event.connect(arrElements[i], "onchange", this, "changeHiddenValue");
     }
 };
-org_apache_myfaces_StateChangedNotifier.prototype.addObjectsToConfirmList = function (tagName) {
+org_apache_myfaces_StateChangedNotifier.prototype.addObjectsToConfirmList = function (tagName, tagType) {
     var arrElements = document.getElementsByTagName(tagName);
     for (var i = 0; i < arrElements.length; i += 1) {
         var elementId = arrElements[i].id;
         var onclick = arrElements[i].onclick;
-        if (elementId !== null && onclick !== null && elementId !== "") {
-            this.objectsToConfirmBeforeExclusion.push(elementId);
+        if (tagType === null || (tagType !== null && arrElements[i].type === tagType)) {
+            if (elementId !== null && onclick !== null && elementId !== "") {
+                this.objectsToConfirmBeforeExclusion.push(elementId);
+            }
         }
     }
 };
@@ -95,7 +92,7 @@ org_apache_myfaces_StateChangedNotifier.prototype.putConfirmExcludingElements = 
         if (!this.isElementExcluded(elementId)) {
             this.objectsToConfirmList.push(elementId);
         } else {
-        	this.removeConfirmInElement(elementId); //remove old includes from the list if we get one 
+            this.removeConfirmInElement(elementId); //remove old includes from the list if we get one 
         }
     }
     for (var cnt2 = 0; cnt2 < this.objectsToConfirmList.length; cnt2 += 1) {
@@ -134,12 +131,11 @@ org_apache_myfaces_StateChangedNotifier.prototype.showMessage = function () {
 };
 org_apache_myfaces_StateChangedNotifier.prototype.removeConfirmInElement = function (commandId) {
     var command = dojo.byId(commandId);
-	var oldOnClick = command.getAttribute("old_onclick");
-	
-	if(oldOnClick !== null) {
-		command.setAttribute("onclick",oldOnClick);
-	}	
-}
+    var oldOnClick = command.getAttribute("old_onclick");
+    if (oldOnClick !== null) {
+        command.setAttribute("onclick", oldOnClick);
+    }
+};
 org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function (commandId) {
     var command = dojo.byId(commandId);
     if (command !== null) {
@@ -150,7 +146,6 @@ org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function
             onclickstr = onclickstr.replace(/function anonymous\(\)/, "");
             onclickstr = "if (" + this.notifierName + ".showMessage()) { " + onclickstr + " }";
             command.setAttribute("onclick", new Function("", onclickstr));
-            
         } else {
             command.setAttribute("onclick", "if (" + this.notifierName + ".showMessage()) { " + onclick + " }");
         }
