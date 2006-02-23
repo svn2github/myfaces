@@ -73,7 +73,6 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         String notifierVar = replacedClientId + "Notifier";
 
         StringBuffer sb = new StringBuffer();
-        sb.append("<!--\n");
         sb.append("var " + notifierVar + " = null;\n");
 
         sb.append("function " + initFunctionName + "() {\n");
@@ -94,8 +93,7 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
 
         sb.append("}\n");
         sb.append("dojo.addOnLoad(window, '" + initFunctionName + "');\n");
-        sb.append("-->\n");
-
+      
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
         addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, sb.toString());
     }
