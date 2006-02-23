@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
@@ -42,13 +44,17 @@ public class AddResourceTest extends TestCase
 {
     public void testGetInstance()
     {
-        AddResource instance1 = AddResourceFactory.getInstance("/test1", null);
+    	Map cacheMap = new LinkedHashMap();
+    	
+        AddResource instance1 = AddResourceFactory.getInstance(cacheMap, "/test1", null);
         assertNotNull(instance1);
 
-        AddResource instance2 = AddResourceFactory.getInstance("/test2", null);
+        /* no longer true
+        AddResource instance2 = AddResourceFactory.getInstance(null, "/test2", null);
         assertNotSame(instance1, instance2);
+        */
 
-        AddResource instance1a = AddResourceFactory.getInstance("/test1", null);
+        AddResource instance1a = AddResourceFactory.getInstance(cacheMap, "/test1", null);
         assertSame(instance1, instance1a);
     }
 
@@ -172,7 +178,7 @@ public class AddResourceTest extends TestCase
         mockState.setup();
 
         // now start the test
-        AddResource instance1 = AddResourceFactory.getInstance("/test", null);
+        AddResource instance1 = AddResourceFactory.getInstance(null, "/test", null);
         instance1.addJavaScriptHere(mockState._facesContext, "/scripts/script1");
 
         // verify that our mock objects got the expected callbacks
@@ -203,7 +209,7 @@ public class AddResourceTest extends TestCase
         String originalResponse =
             "<html><head></head><body></body></html>";
 
-        AddResource ar = AddResourceFactory.getInstance("/test", null);
+        AddResource ar = AddResourceFactory.getInstance(null, "/test", null);
         ar.parseResponse(mockState._servletRequest,originalResponse,mockState._servletResponse);
         ar.writeWithFullHeader(mockState._servletRequest,mockState._servletResponse);
         ar.writeResponse(mockState._servletRequest,mockState._servletResponse);
