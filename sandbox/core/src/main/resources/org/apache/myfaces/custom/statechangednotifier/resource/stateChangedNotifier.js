@@ -16,11 +16,10 @@
  */
 dojo.require("dojo.debug");
 dojo.require("dojo.html");
-/*global exclusion list singleton which keeps track of all exclusions over all entire forms.
-we cannot allow that some predefined exclusions
-are rendered invalid by another tag
-*/
-var org_apache_myfaces_GlobalExclusionList = new Array();
+var  myfaces_stateChange_globalExclusionList = new Array();
+
+
+
 /**
 * central function definition for the state change notifier
 */
@@ -30,10 +29,17 @@ function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId,
     this.hiddenFieldId = paramhiddenFieldId;
     this.message = parammessage;
     this.excludeCommandIdList = paramexcludeCommandIdList;
-    this.arrCommandIds = null;
+    this.arrCommandIds = new Array();
     this.objectsToConfirmList = new Array();
     this.objectsToConfirmBeforeExclusion = new Array();
+    /*global exclusion list singleton which keeps track of all exclusions over all entire forms.
+		we cannot allow that some predefined exclusions
+		are rendered invalid by another tag
+	*/
 }
+
+
+
 /**
 * prepares the notifier entry fields
 * and trigger filters
@@ -43,17 +49,19 @@ org_apache_myfaces_StateChangedNotifier.prototype.prepareNotifier = function () 
     this.addOnChangeListener("input");
     this.addOnChangeListener("textarea");
     this.addOnChangeListener("select");
-    for (var cnt = 0; cnt < org_apache_myfaces_GlobalExclusionList.lengh; cnt += 1) {
-        this.arrCommandIds[cnt] = org_apache_myfaces_GlobalExclusionList[cnt];
+    var globalExclLen = myfaces_stateChange_globalExclusionList.length;
+    for (var cnt = 0; cnt < globalExclLen; cnt += 1) {
+        this.arrCommandIds.push(myfaces_stateChange_globalExclusionList[cnt]);
     }
     if (this.excludeCommandIdList !== null) {
         var newIds = this.excludeCommandIdList.split(",");
-        var globalExclLen = org_apache_myfaces_GlobalExclusionList.length;
+        
 		//we do not filter double entries for now
 		//since the number of exclusion tags will be kept small
 		//anyway
         for (var cnt = globalExclLen; cnt < (globalExclLen + newIds.length); cnt += 1) {
-            this.arrCommandIds[cnt] = org_apache_myfaces_GlobalExclusionList.length[cnt] = newIds[cnt - globalExclLen];
+            myfaces_stateChange_globalExclusionList.push(newIds[cnt - globalExclLen]);
+            this.arrCommandIds.push(newIds[cnt - globalExclLen]);
         }
         this.addObjectsToConfirmList("a");
         this.addObjectsToConfirmList("input");
@@ -86,6 +94,8 @@ org_apache_myfaces_StateChangedNotifier.prototype.putConfirmExcludingElements = 
         var elementId = this.objectsToConfirmBeforeExclusion[cnt];
         if (!this.isElementExcluded(elementId)) {
             this.objectsToConfirmList.push(elementId);
+        } else {
+        	this.removeConfirmInElement(elementId); //remove old includes from the list if we get one 
         }
     }
     for (var cnt2 = 0; cnt2 < this.objectsToConfirmList.length; cnt2 += 1) {
@@ -122,15 +132,25 @@ org_apache_myfaces_StateChangedNotifier.prototype.showMessage = function () {
     }
     return false;
 };
+org_apache_myfaces_StateChangedNotifier.prototype.removeConfirmInElement = function (commandId) {
+    var command = dojo.byId(commandId);
+	var oldOnClick = command.getAttribute("old_onclick");
+	
+	if(oldOnClick !== null) {
+		command.setAttribute("onclick",oldOnClick);
+	}	
+}
 org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function (commandId) {
     var command = dojo.byId(commandId);
     if (command !== null) {
         var onclick = command.getAttribute("onclick");
         var onclickstr = onclick + "";
+        command.setAttribute("old_onclick", onclickstr);
         if (dojo.render.html.ie) {
             onclickstr = onclickstr.replace(/function anonymous\(\)/, "");
             onclickstr = "if (" + this.notifierName + ".showMessage()) { " + onclickstr + " }";
             command.setAttribute("onclick", new Function("", onclickstr));
+            
         } else {
             command.setAttribute("onclick", "if (" + this.notifierName + ".showMessage()) { " + onclick + " }");
         }
