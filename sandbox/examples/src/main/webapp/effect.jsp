@@ -35,6 +35,10 @@
 			<h:outputText
 				value="Hello We hope you enjoy Apache MyFaces and the effects by DOJO and script.aculo.us" />
 		</s:effect>
+		<s:effect id="effect2" fade="true" duration="2000" fadeColor="green">
+			<h:outputText
+				value="Same effect different color, different duration" />
+		</s:effect>
 
 		<s:effect id="booga" puff="true">
 			<t:outputText value="[Puff me by Clicking]" />

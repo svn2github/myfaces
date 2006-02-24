@@ -65,9 +65,9 @@ public class EffectRenderer extends HtmlRenderer
 
         // render javascript function for client-side toggle (it won't be used
         // if user has opted for server-side toggle)
-        String javascriptLocation   = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        AddResource addResource     = AddResourceFactory.getInstance(context);
-        Boolean fade                = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
+        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        AddResource addResource = AddResourceFactory.getInstance(context);
+        Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
 
         if (javascriptLocation != null)
         {
@@ -134,7 +134,7 @@ public class EffectRenderer extends HtmlRenderer
      */
     private String getFadeColor(UIComponent component)
     {
-       
+
         Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
 
         if (fade != null && fade.booleanValue())
@@ -236,6 +236,8 @@ public class EffectRenderer extends HtmlRenderer
             return;
 
         Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
+        Integer duration = (Integer) component.getAttributes().get(EffectTag.TAG_PARAM_DURATION);
+
         if (fade != null && fade.booleanValue())
         {
             writer.startElement(HTML.SCRIPT_ELEM, component);
@@ -246,7 +248,7 @@ public class EffectRenderer extends HtmlRenderer
             commandBuffer.append(component.getClientId(facesContext));
             commandBuffer.append("'),'");
             commandBuffer.append(getFadeColor(component));
-            commandBuffer.append("',800);"); //TODO Add the animationtime as extra param
+            commandBuffer.append("'," + duration.toString() + ");");
             writer.write(commandBuffer.toString());
             writer.endElement(HTML.SCRIPT_ELEM);
 

@@ -39,6 +39,8 @@ public class EffectTag extends DivTag {
 
     public static final String	TAG_PARAM_FADE			= "fade";
 
+    public static final String  TAG_PARAM_DURATION      = "duration";
+    
     public static final String	TAG_PARAM_SQUISH		= "squish";
 
     public static final String	TAG_PARAM_SCALE			= "scale";
@@ -58,6 +60,8 @@ public class EffectTag extends DivTag {
 
     String						_fadeColor				= "";
 
+    String                      _duration               = "500";
+    
     String						_fade					= "false";
 
     String						_puff					= "false";
@@ -81,6 +85,8 @@ public class EffectTag extends DivTag {
         super.setBooleanProperty(component, TAG_PARAM_SCALE, _scale);
         super.setBooleanProperty(component, TAG_PARAM_SQUISH, _squish);
         super.setBooleanProperty(component, TAG_PARAM_PULSATE, _pulsate);
+    
+        super.setIntegerProperty(component, TAG_PARAM_DURATION, _duration);
     }
 
     /**
@@ -95,6 +101,7 @@ public class EffectTag extends DivTag {
         _squish = null;
         _scaleSize = null;
         _pulsate = null;
+        _duration = null;
     }
 
     public String getComponentType() {
@@ -161,5 +168,10 @@ public class EffectTag extends DivTag {
 
     public void setPulsate(String pulsate) {
         _pulsate = pulsate;
+    }
+
+    public void setDuration(String effectDuration)
+    {
+       _duration = effectDuration;
     }
 }

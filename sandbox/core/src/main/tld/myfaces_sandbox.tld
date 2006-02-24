@@ -708,6 +708,12 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.Integer</type>
 		</attribute>
+		<attribute>
+			<name>duration</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
 
 		<attribute>
 			<name>pulsate</name>
