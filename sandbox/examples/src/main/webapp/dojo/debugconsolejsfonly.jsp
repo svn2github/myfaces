@@ -39,14 +39,18 @@
 				<s:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
 				<s:dojoInitializer require="dojo.widget.DebugConsole" debugAtAllCosts="false"/>	
 				<s:dojoInitializer require="dojo.widget.ResizeHandle" />	
-				<s:dojoInitializer debugConsole="true"/>
+				<s:dojoInitializer debugConsole="true" expanded="true"/>
 					
 				<f:verbatim>
 					<script type="text/javascript" >
 						function generateSomeDebuggingInfo() {
 							for (var x=0; x<10; x++) {
 								dojo.debug(x + ": Here is some debugging info, should be 10 new lines");
+							
 							}
+							dojo.debug("also note the usage of the expanded attribute");
+							dojo.debug("this attribute set to true loads the expanded version");
+							dojo.debug("otherwise the non expanded version is loaded");
 						}
 					</script>
 				</f:verbatim>

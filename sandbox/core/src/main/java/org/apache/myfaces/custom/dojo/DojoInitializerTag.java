@@ -42,6 +42,9 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
     String _provide              = null;
     String _debugConsole         = null;
     String _debugAtAllCosts      = null;
+    String _development          = null;
+    String _expanded             = null;
+    
     
     public String getComponentType()
     {
@@ -70,6 +73,8 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         _provide = null;
         _debugConsole = null;
         _debugAtAllCosts = null;
+        _development = null;
+        _expanded = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -92,6 +97,9 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         super.setBooleanProperty(component, "debugConsole", _debugConsole);
         super.setBooleanProperty(component, "debugAtAllCosts", _debugAtAllCosts);
             
+        super.setBooleanProperty(component,"development", _development);
+    
+        super.setBooleanProperty(component, "expanded", _expanded);
     }
 
     public void setAllowQueryConfig(String allowQueryConfig)
@@ -161,5 +169,13 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
     public void setDebugAtAllCosts(String debugAtAllCosts)
     {
         this._debugAtAllCosts = debugAtAllCosts;
+    }
+
+    public void setDevelopment(String development) {
+        this._development = development;    
+    }
+    
+    public void setExpanded(String expanded) {
+        this._expanded = expanded;
     }
 }

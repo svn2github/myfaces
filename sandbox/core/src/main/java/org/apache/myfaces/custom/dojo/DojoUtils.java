@@ -62,12 +62,6 @@ public final class DojoUtils
     private static final String DJCONFIG_REQ_KEY                 = "MYFACES_DJCONFIG";
 
     /**
-     * dojo utils flag which can be altered for various states of the dojo lib
-     */
-    public static final boolean DOJO_COMPRESSED                  = false;
-    public static final boolean DOJO_DEBUG                       = false;
-
-    /**
      * Request singleton getter method for the djConfig object
      *
      * @param context
@@ -100,61 +94,67 @@ public final class DojoUtils
     public static void mergeExternalDjConfig(FacesContext context, DojoConfig config)
     {
         //we now do the same as beanutils, but for dependency reasons we code it
-            DojoConfig configSingleton = getDjConfigInstance(context);
-            Class dcConfigClass = DojoConfig.class;
-            Method[] djConfigFieldArr = dcConfigClass.getMethods();
-            for (int cnt = 0; cnt < djConfigFieldArr.length; cnt++)
+        DojoConfig configSingleton = getDjConfigInstance(context);
+        Class dcConfigClass = DojoConfig.class;
+        Method[] djConfigFieldArr = dcConfigClass.getMethods();
+        for (int cnt = 0; cnt < djConfigFieldArr.length; cnt++)
+        {
+
+            try
             {
+                Method configPropertyField = djConfigFieldArr[cnt];
+                String methodCore = null;
+                if (!configPropertyField.getName().startsWith("getClass")
+                        && configPropertyField.getName().startsWith("get")
+                        || configPropertyField.getName().startsWith("is"))
+                    methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName()
+                            .substring(3) : configPropertyField.getName().substring(2);
 
-                try
+                if (methodCore != null)
                 {
-                    Method configPropertyField = djConfigFieldArr[cnt];
-                    String methodCore = null;
-                    if(!configPropertyField.getName().startsWith("getClass") && configPropertyField.getName().startsWith("get") || configPropertyField.getName().startsWith("is"))
-                        methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName().substring(3) : configPropertyField.getName().substring(2);
-
-                    if (methodCore != null) {
-                        Object val = configPropertyField.invoke(config,null);
-                        if(val != null) {
-                            Class [] setterParams = new Class[1];
-                            setterParams[0] = val.getClass();
-                            Method setMethod = dcConfigClass.getMethod("set"+methodCore, setterParams);
-                            if(setMethod != null) {
-                                Object [] setterArgs = new Object[1];
-                                setterArgs[0] = val;
-                                setMethod.invoke(configSingleton, setterArgs);
-                            }
+                    Object val = configPropertyField.invoke(config, null);
+                    if (val != null)
+                    {
+                        Class[] setterParams = new Class[1];
+                        setterParams[0] = val.getClass();
+                        Method setMethod = dcConfigClass.getMethod("set" + methodCore, setterParams);
+                        if (setMethod != null)
+                        {
+                            Object[] setterArgs = new Object[1];
+                            setterArgs[0] = val;
+                            setMethod.invoke(configSingleton, setterArgs);
                         }
                     }
                 }
-                catch (IllegalArgumentException e)
-                {
-                    log.error(e);
-                }
-                catch (SecurityException e)
-                {
-                    log.error(e);
-                }
-                catch (IllegalAccessException e)
-                {
-                    log.error(e);
-                }
-                catch (InvocationTargetException e)
-                {
-                    log.error(e);
-                }
-                catch (NoSuchMethodException e)
-                {
-                    log.error(e);
-                }
             }
+            catch (IllegalArgumentException e)
+            {
+                log.error(e);
+            }
+            catch (SecurityException e)
+            {
+                log.error(e);
+            }
+            catch (IllegalAccessException e)
+            {
+                log.error(e);
+            }
+            catch (InvocationTargetException e)
+            {
+                log.error(e);
+            }
+            catch (NoSuchMethodException e)
+            {
+                log.error(e);
+            }
+        }
 
     }
 
-    public static void addMainInclude(FacesContext context, String javascriptLocation, DojoConfig config)
+    public static void addMainInclude(FacesContext facesContext, String javascriptLocation, DojoConfig config)
     {
 
-        AddResource addResource = AddResourceFactory.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
         /*
          * var djConfig = {
          isDebug: false
@@ -162,19 +162,21 @@ public final class DojoUtils
          TODO add a saner handling of collecting all djconfig data
          and then merging it
          */
-        if (!isInlineScriptSet(context, DJCONFIG_INITKEY))
+        if (!isInlineScriptSet(facesContext, DJCONFIG_INITKEY))
         {
-            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, DJCONFIG_INITKEY);
-            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, config.toString());
+            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DJCONFIG_INITKEY);
+            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, config.toString());
         }
-        String dojofile = DOJO_COMPRESSED ? DOJO_FILE : DOJO_FILE_UNCOMPRESSED;
+
+        String dojofile = (getExpanded(facesContext) != null && getExpanded(facesContext).booleanValue())  ? DOJO_FILE_UNCOMPRESSED : DOJO_FILE;
         if (javascriptLocation != null)
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + dojofile);
+            addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation + dojofile);
         }
         else
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
+            addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class,
+                    dojofile);
         }
 
     }
@@ -183,18 +185,18 @@ public final class DojoUtils
      * adds a dojo require include to our mix
      * of stuff used
      *
-     * @param context
+     * @param facesContext
      * @param required
      */
-    public static void addRequire(FacesContext context, String required)
+    public static void addRequire(FacesContext facesContext, String required)
     {
-        if (isInlineScriptSet(context, DOJO_REQUIRE + required))
+        if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
             return;
 
-        AddResource addResource = AddResourceFactory.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
         String requiredBuilder = createDojoRequireString(required);
 
-        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, requiredBuilder);
+        addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, requiredBuilder);
     }
 
     /**
@@ -238,20 +240,20 @@ public final class DojoUtils
 
     /**
      * writes a local require
-     * @param context the local faces context
+     * @param facesContext the local faces context
      * @param component the component which the reuire is for
      * @param required a require dojo style xx.xx.xx
      * @throws IOException
      */
-    public static void addRequire(FacesContext context, UIComponent component, String required) throws IOException
+    public static void addRequire(FacesContext facesContext, UIComponent component, String required) throws IOException
     {
 
-        if (isInlineScriptSet(context, DOJO_REQUIRE + required))
+        if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
             return;
 
         String requiredBuilder = createDojoRequireString(required);
 
-        ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         writer.write(requiredBuilder);
@@ -276,14 +278,14 @@ public final class DojoUtils
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
     }
 
-    public static void addProvide(FacesContext context, UIComponent component, String provided) throws IOException
+    public static void addProvide(FacesContext facesContext, UIComponent component, String provided) throws IOException
     {
-        if (isInlineScriptSet(context, DOJO_PROVIDE + provided))
+        if (isInlineScriptSet(facesContext, DOJO_PROVIDE + provided))
             return;
 
         String providedBuilder = createDojoProvideScript(provided);
 
-        ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         writer.write(providedBuilder);
@@ -313,19 +315,19 @@ public final class DojoUtils
      * it will not be set by this method (due to the avoidance
      * of unwanted automatisms causing sideefects)
      * 
-     * @param context
+     * @param facesContext
      * @param component
      * @return
      */
-    public static void addDebugConsole(FacesContext context, UIComponent component) throws IOException
+    public static void addDebugConsole(FacesContext facesContext, UIComponent component) throws IOException
     {
         /*check whether we have a debugging flag already set*/
-        if (isInlineScriptSet(context, "/*DOJO DEBUGCONSOLE ON*/"))
+        if (isInlineScriptSet(facesContext, "/*DOJO DEBUGCONSOLE ON*/"))
             return;
-        AddResource addResource = AddResourceFactory.getInstance(context);
-        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "/*DOJO DEBUGCONSOLE ON*/");
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+        addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, "/*DOJO DEBUGCONSOLE ON*/");
 
-        ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = facesContext.getResponseWriter();
         //we for now have to break html until the dynamic creation
         //isses are resolved, so hold on for this messy code now
         //Since this is for debugging purposes only, we can live with it
@@ -355,7 +357,7 @@ public final class DojoUtils
     {
         return "dojo.debug(\"" + stmnt + "\");\n";
     }
-                          
+
     /**
      * helper to write out debug statements
      * this is only a convenience method to reduce the
@@ -366,9 +368,37 @@ public final class DojoUtils
      * @return
      * @throws IOException
      */
-    public static void writeDebugStatement(ResponseWriter writer, String stmnt) throws IOException {
+    public static void writeDebugStatement(ResponseWriter writer, String stmnt) throws IOException
+    {
         stmnt = createDebugStatement(stmnt);
         writer.write(stmnt);
+    }
+
+    /**
+     * if this flag is set to true somewhere before
+     * the rendering, the expanded version is loaded
+     * otherwise the nonexpanded version is loaded
+     * 
+     * @param facesContext context because we again have a full request singleton here
+     * @param expanded if set to true the expanded version of the dojo scripts are loaded
+     * otherwise the non expanded ones are loaded
+     */
+    public static void setExpanded(FacesContext facesContext, Boolean expanded)
+    {
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        request.setAttribute("DOJO_DEVELOPMENT_INCLUDE", expanded);
+    }
+
+    /**
+     * getter for the expanded flat
+     * @param facesContext
+     * @return
+     */
+    public static Boolean getExpanded(FacesContext facesContext)
+    {
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        Boolean devStatus = (Boolean) request.getAttribute("DOJO_DEVELOPMENT_INCLUDE");
+        return devStatus;
     }
 
 }

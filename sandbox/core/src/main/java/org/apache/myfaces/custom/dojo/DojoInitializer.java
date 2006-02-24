@@ -31,7 +31,8 @@ public class DojoInitializer extends UIOutput
     String                     _require              = null;
     String                     _provide              = null;
     Boolean                    _debugConsole         = null;
-
+    Boolean                    _expanded             = null;
+    
     //we handle that specifically to speed things up (we do not want an NxN runtime complexity via enforced
     //reflection in the utils
     boolean                    dojoConfigParamSet    = false;
@@ -84,11 +85,12 @@ public class DojoInitializer extends UIOutput
         _provide = (String) values[12];
         _debugConsole = (Boolean) values[13];
         _dojoConfig.setDebugAtAllCosts((Boolean) values[14]);
+        _expanded = (Boolean)values[15];
     }
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[15];
+        Object values[] = new Object[16];
         values[0] = super.saveState(context);
         values[1] = _dojoConfig.getAllowQueryConfig();
         values[2] = _dojoConfig.getBaseScriptUri();
@@ -104,7 +106,7 @@ public class DojoInitializer extends UIOutput
         values[12] = _provide;
         values[13] = _debugConsole;
         values[14] = _dojoConfig.getDebugAtAllCosts();
-
+        values[15] = _expanded;
         return values;
     }
 
@@ -322,4 +324,18 @@ public class DojoInitializer extends UIOutput
         _dojoConfig.setDebugAtAllCosts(debugAtAllCosts);
     }
 
+    public Boolean getExpanded() {
+        return _expanded;
+    }
+    
+    public void setExpanded(Boolean expanded) {
+        
+        //we have a logical or over all expanded tags
+        if(expanded != null) {
+            dojoConfigParamSet = true;
+            DojoUtils.setExpanded(FacesContext.getCurrentInstance(), expanded);
+        }
+        _expanded = expanded;
+    }
+    
 }
