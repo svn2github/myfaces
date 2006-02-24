@@ -28,6 +28,7 @@
                 <h:outputLink value="validate.jsf" ><f:verbatim>Validations</f:verbatim></h:outputLink>
                 <h:outputLink value="aliasBean.jsf" ><f:verbatim>Alias Bean</f:verbatim></h:outputLink>
                 <h:outputLink value="buffer.jsf" ><f:verbatim>Buffer</f:verbatim></h:outputLink>
+                <h:outputLink value="div.jsf" ><f:verbatim>Div</f:verbatim></h:outputLink>
                 <h:outputText value="Data Table"/>
                 <h:panelGrid style="padding-left:25px">
                     <h:outputLink value="masterDetail.jsf" ><f:verbatim>Master-Detail</f:verbatim></h:outputLink>
