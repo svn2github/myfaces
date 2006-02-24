@@ -42,6 +42,18 @@
 						
 					</h:inputTextarea>
 					<h:commandLink action="submitted" id="submitted" value="[Submit]"/>
+					
+					<%/* Alternate way to do it */%>
+					<h:inputTextarea id="myInputTextarea" value="Customized Toolbars"/>
+					<f:verbatim>
+					<script type="text/javascript"><!--
+						var editorArgs = {
+			    			items: ["textGroup", "blockGroup", "justifyGroup", "colorGroup", "listGroup", "indentGroup", "linkGroup"]
+						};
+						var editor = dojo.widget.fromScript("Editor", editorArgs,
+			                                    dojo.byId("myForm:myInputTextarea"));
+//--></script>
+					</f:verbatim>
 				</h:form>
 			</h:panelGroup>
 		
