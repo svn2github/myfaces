@@ -24,43 +24,46 @@ import java.io.Serializable;
 import javax.faces.FactoryFinder;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.ListDataModel;
-import javax.faces.component.*;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.render.RenderKitFactory;
 
-import junit.framework.TestCase;
+import junit.framework.Test;
 
-import org.apache.myfaces.mock.tomahawk.*;
-import org.apache.myfaces.renderkit.RenderKitFactoryImpl;
-import org.apache.myfaces.renderkit.html.HtmlRenderKitImpl;
+import org.apache.shale.test.base.AbstractJsfTestCase;
 
 /**
  * @author Mathias Brökelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlDataTableTest extends TestCase
+public class HtmlDataTableTest extends AbstractJsfTestCase
 {
-    private FacesContext _ctx;
+    
     private HtmlDataTable _dataTable;
 
-    protected void setUp() throws Exception
+    public HtmlDataTableTest(String name) {
+		super(name);
+	}
+
+	public static Test suite() {
+		return null; // keep this method or maven won't run it
+	}
+    
+    public void setUp()
     {
-        MockFacesContext mock = new MockFacesContext();
-        mock.setViewRoot(new UIViewRoot());
-        mock.setExternalContext(new MockExternalContext());
+        super.setUp();
+    	// once shale-test is updated in maven, this will not be necessary
+    	FactoryFinder.releaseFactories();
         _dataTable = new HtmlDataTable();
-        FactoryFinder.setFactory(FactoryFinder.RENDER_KIT_FACTORY,
-                RenderKitFactoryImpl.class.getName());
-        RenderKitFactory rkf = (RenderKitFactory) FactoryFinder
-                .getFactory(FactoryFinder.RENDER_KIT_FACTORY);
-        rkf.addRenderKit(RenderKitFactory.HTML_BASIC_RENDER_KIT,
-                new HtmlRenderKitImpl());
-        _ctx = mock;
     }
 
-    protected void tearDown() throws Exception
+    public void tearDown()
     {
-        _ctx = null;
+    	super.tearDown();
+    	// once shale-test is updated in maven, this will not be necessary
+    	FactoryFinder.releaseFactories();
         _dataTable = null;
     }
 
@@ -71,19 +74,18 @@ public class HtmlDataTableTest extends TestCase
     public void testGetClientIdFacesContext()
     {
         assertEquals(-1, _dataTable.getRowIndex());
-        String baseClientId = _dataTable.getClientId(_ctx);
+        String baseClientId = _dataTable.getClientId(facesContext);
         assertNotNull(baseClientId);
         Collection rowClientIds = new HashSet();
         for (int i = 0; i < 10; i++)
         {
             _dataTable.setRowIndex(i);
             assertTrue("Duplicate client id while iterating rows",
-                    rowClientIds.add(_dataTable.getClientId(_ctx)));
+                    rowClientIds.add(_dataTable.getClientId(facesContext)));
         }
         _dataTable.setRowIndex(-1);
-        assertEquals(baseClientId, _dataTable.getClientId(_ctx));
+        assertEquals(baseClientId, _dataTable.getClientId(facesContext));
     }
-
 
     /*
     * Test method for
@@ -91,7 +93,7 @@ public class HtmlDataTableTest extends TestCase
     */
     public void testFindComponent()
     {
-        UIInput input = createInputInTree(_ctx);
+        UIInput input = createInputInTree(facesContext);
 
         UIData data = (UIData) input.getParent().getParent();
 
@@ -107,8 +109,6 @@ public class HtmlDataTableTest extends TestCase
 
     private UIInput createInputInTree(FacesContext context)
     {
-        UIViewRoot viewRoot = new UIViewRoot();
-        viewRoot.setId("root");
 
         UIData uiData = new HtmlDataTable();
         uiData.setId("data");
@@ -131,23 +131,14 @@ public class HtmlDataTableTest extends TestCase
 
         column.getChildren().add(input);
 
-        viewRoot.getChildren().add(uiData);
+        facesContext.getViewRoot().getChildren().add(uiData);
 
-        FactoryFinder.setFactory(FactoryFinder.APPLICATION_FACTORY,
-          MockApplicationFactory.class.getName());
-
-        FactoryFinder.setFactory(FactoryFinder.RENDER_KIT_FACTORY,
-          MockRenderKitFactory.class.getName());
-
-        context.setViewRoot(viewRoot);
-
-        MockFacesContextHelper.setCurrentInstance(context);
         return input;
     }
 
     private ValueBinding createValueBinding(String expr)
     {
-        return _ctx.getApplication().createValueBinding(expr);
+        return facesContext.getApplication().createValueBinding(expr);
     }
 
     public static class TestData implements Serializable
