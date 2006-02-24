@@ -230,6 +230,11 @@ public class EffectRenderer extends HtmlRenderer
         writer.endElement(HTML.DIV_ELEM);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         super.encodeEnd(facesContext, component);
+        Boolean rendered = (Boolean) component.getAttributes().get("rendered");
+
+        if ((rendered != null) && (!rendered.booleanValue()))
+            return;
+
         Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
         if (fade != null && fade.booleanValue())
         {
