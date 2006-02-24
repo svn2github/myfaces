@@ -37,7 +37,7 @@
 		<f:view>
 			<h:panelGroup>
 				<s:dojoInitializer require="dojo.widget.Editor"/>	
-				<h:form>
+				<h:form id="myForm">
 					<h:inputTextarea id="editarea2" styleClass="dojo-Editor" value="hello world">
 						
 					</h:inputTextarea>
