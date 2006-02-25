@@ -57,6 +57,29 @@ public class HtmlDataList
         setRowIndex(-1);
     }
 
+    public void processUpdates(FacesContext context)
+    {
+        if (context == null)
+            throw new NullPointerException("context");
+        if (!isRendered())
+            return;
+
+        setRowIndex(-1);
+        processChildren(context, PROCESS_UPDATES);
+        setRowIndex(-1);
+    }
+
+    public void processValidators(FacesContext context)
+    {
+        if (context == null)
+            throw new NullPointerException("context");
+        if (!isRendered())
+            return;
+
+        setRowIndex(-1);
+        processChildren(context, PROCESS_VALIDATORS);
+        setRowIndex(-1);    }
+
     /**
      * Iterates over all children, processes each according to the specified 
      * process action if the child is rendered.
@@ -434,7 +457,7 @@ public class HtmlDataList
         values[14] = _style;
         values[15] = _styleClass;
         values[16] = _title;
-        return ((Object) (values));
+        return values;
     }
 
     public void restoreState(FacesContext context, Object state)
