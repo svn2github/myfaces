@@ -46,6 +46,7 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  */
 public final class DojoUtils
 {
+    private static final String INCL_TYPE_REQ_KEY = "DOJO_DEVELOPMENT_INCLUDE";
     private static final Log    log              = LogFactory.getLog(DojoUtils.class);
     private static final String DOJO_PROVIDE     = "dojo.provide:";
     private static final String DOJO_REQUIRE     = "dojo.require:";
@@ -386,7 +387,7 @@ public final class DojoUtils
     public static void setExpanded(FacesContext facesContext, Boolean expanded)
     {
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        request.setAttribute("DOJO_DEVELOPMENT_INCLUDE", expanded);
+        request.setAttribute(INCL_TYPE_REQ_KEY, expanded);
     }
 
     /**
@@ -397,7 +398,7 @@ public final class DojoUtils
     public static Boolean getExpanded(FacesContext facesContext)
     {
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        Boolean devStatus = (Boolean) request.getAttribute("DOJO_DEVELOPMENT_INCLUDE");
+        Boolean devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
         return devStatus;
     }
 
