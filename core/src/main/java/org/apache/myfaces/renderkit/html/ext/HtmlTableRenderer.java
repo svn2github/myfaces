@@ -479,4 +479,39 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
         return result;
     }
+
+    /**
+     * Renders header or footer.
+     * Rendering will be supressed if all of the facet will have rendered="false"   
+     */
+	protected void renderFacet(FacesContext facesContext, ResponseWriter writer, UIComponent component, boolean header) throws IOException
+	{
+        if (determineRenderFacet(component, header))
+        {
+        	super.renderFacet(facesContext, writer, component, header);
+        }
+	}
+
+	/**
+	 * determine if the header or footer should be rendered.
+	 */
+	protected boolean determineRenderFacet(UIComponent component, boolean header)
+	{
+		for (Iterator it = getChildren(component).iterator(); it.hasNext();)
+        {
+            UIComponent uiComponent = (UIComponent) it.next();
+            if(uiComponent.isRendered() && determineChildColSpan(uiComponent) > 0)
+            {
+                UIComponent facet = header ? (UIComponent) uiComponent.getFacets().get(HEADER_FACET_NAME)
+                        : (UIComponent) uiComponent.getFacets().get(FOOTER_FACET_NAME);
+                
+                if (facet != null && facet.isRendered())
+                {
+               		return true;
+                }
+            }
+        }
+		
+		return false;
+	}
 }

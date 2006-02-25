@@ -26,6 +26,9 @@ import javax.faces.context.FacesContext;
  */
 public class SimpleCountryForm
 {
+	private boolean renderHeader = true;
+	private boolean renderFooter = true;
+	
     private long _id;
     private String _name;
     private String _isoCode;
@@ -75,7 +78,27 @@ public class SimpleCountryForm
         return new SimpleCountry(_id, _name, _isoCode, null, null);
     }
 
-    public String save()
+    public boolean isRenderFooter()
+	{
+		return renderFooter;
+	}
+
+	public void setRenderFooter(boolean renderFooter)
+	{
+		this.renderFooter = renderFooter;
+	}
+
+	public boolean isRenderHeader()
+	{
+		return renderHeader;
+	}
+
+	public void setRenderHeader(boolean renderHeader)
+	{
+		this.renderHeader = renderHeader;
+	}
+
+	public String save()
     {
         getList().saveSimpleCountry(getSimpleCountry());
         return "ok_next";
