@@ -35,7 +35,7 @@
   background-color:rgb(171, 202, 219);
 }
 
-.ajaxTablePopup table thead{
+.ajaxTablePopup table thead tr th{
 text-align:center;
 }
 

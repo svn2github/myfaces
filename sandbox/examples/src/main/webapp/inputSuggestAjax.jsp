@@ -36,25 +36,21 @@
     
    <h:form>
 
-     <h:outputText value="Street"/>
-     <t:inputText id="streetNameField" />
-     <h:outputText value="Number"/>
-     <t:selectOneMenu id="streetNumberField">
-          <f:selectItem value="" itemLabel="11" itemValue="11"/>
-          <f:selectItem value="" itemLabel="12" itemValue="12"/>
-          <f:selectItem value="" itemLabel="13" itemValue="13"/>
-          <f:selectItem value="" itemLabel="14" itemValue="14"/>
-          <f:selectItem value="" itemLabel="15" itemValue="15"/>
-     </t:selectOneMenu>
-     <h:outputText value="Zip"/>
-     <t:inputText id="zipField"/>
-
      <f:verbatim><br/><br/></f:verbatim>
 
+     <h:panelGrid columns="4">
+         <h:outputText value="default suggest"/>
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"/>
+
+         <h:outputText value="suggest with limited suggested items"/>
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" maxSuggestedItems="2" />
+     </h:panelGrid>
+     <f:verbatim><br/><br/><br/></f:verbatim>
      <h:panelGrid columns="6">
          <h:outputText value="City Field TableSuggest"/>
-         <s:inputSuggestAjax var="address" id="cityField"  suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
-             <t:column>
+         <s:inputSuggestAjax var="address" id="cityField" startRequest="2" delay="200" 
+                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
+            <t:column>
                  <f:facet name="header">
                      <s:outputText value="city"/>
                  </f:facet>
@@ -68,30 +64,48 @@
              </t:column>
              <t:column>
                  <f:facet name="header">
-                     <s:outputText value="number"/>
+                     <s:outputText value="state"/>
                  </f:facet>
-                 <s:outputText for="streetNumberField" value="#{address.streetNumber}"/>
+                 <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
+             </t:column>
+         </s:inputSuggestAjax>
+         <s:inputSuggestAjax var="address" id="cityField1" startRequest="2"
+                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
+            <t:column>
+                 <f:facet name="header">
+                     <s:outputText value="city"/>
+                 </f:facet>
+                 <s:outputText for="cityField1" value="#{address.city}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
-                     <s:outputText value="zip"/>
+                     <s:outputText value="street"/>
                  </f:facet>
-                 <s:outputText for="zipField" value="#{address.zip}"/>
+                 <s:outputText for="streetNameField" value="#{address.streetName}"/>
+             </t:column>
+             <t:column>
+                 <f:facet name="header">
+                     <s:outputText value="state"/>
+                 </f:facet>
+                 <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
              </t:column>
          </s:inputSuggestAjax>
-
-         <h:outputText value="default suggest"/>
-         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"/>
-
-         <h:outputText value="suggest with limited suggested items"/>
-         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" maxSuggestedItems="2" />
+         <h:outputText value="Street"/>
+         <t:inputText id="streetNameField" />
+         <h:outputText value="State"/>
+         <t:selectOneMenu id="stateField">
+              <f:selectItem value="" itemLabel="NY" itemValue="11"/>
+              <f:selectItem value="" itemLabel="IL" itemValue="12"/>
+              <f:selectItem value="" itemLabel="NW" itemValue="13"/>
+              <f:selectItem value="" itemLabel="SJ" itemValue="14"/>
+              <f:selectItem value="" itemLabel="KL" itemValue="15"/>
+              <f:selectItem value="" itemLabel="MH" itemValue="16"/>
+         </t:selectOneMenu>
      </h:panelGrid>
-
-     <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
+     <f:verbatim><br/><br/><br/><br/><br/></f:verbatim>
      <s:dojoInitializer debugConsole="true"/>
-
     </h:form>
-
+    
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

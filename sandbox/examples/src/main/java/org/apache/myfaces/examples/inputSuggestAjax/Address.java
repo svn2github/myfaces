@@ -1,5 +1,7 @@
 package org.apache.myfaces.examples.inputSuggestAjax;
 
+import javax.faces.model.SelectItem;
+
 /**
  * @author Gerald Muellan
  *         Date: 12.02.2006
@@ -10,16 +12,19 @@ public class Address
     private int _streetNumber;
     private String _streetName;
     private String _city;
-    private int _zip;
+    private String _state;
+    private long _zip;
+
 
     public Address(int streetNumber,
                    String streetName,
                    String city,
-                   int zip)
+                   long zip,String state)
     {
         _streetNumber = streetNumber;
         _streetName = streetName;
         _city = city;
+        _state = state;
         _zip = zip;
     }
 
@@ -53,12 +58,22 @@ public class Address
         _city = city;
     }
 
-    public int getZip()
+    public String  getState()
+    {
+        return _state;
+    }
+
+    public void setState(String  state)
+    {
+        _state = state;
+    }
+
+    public long getZip()
     {
         return _zip;
     }
 
-    public void setZip(int zip)
+    public void setZip(long zip)
     {
         _zip = zip;
     }

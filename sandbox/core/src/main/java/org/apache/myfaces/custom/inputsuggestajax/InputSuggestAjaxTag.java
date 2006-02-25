@@ -58,6 +58,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     private String _listItemStyle;
 
     private String _layout;
+    private String _delay;
+    private String _startRequest;
 
     private String _var;
 
@@ -87,6 +89,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
        _var = null;
        _columnHoverClass = null;
        _columnOutClass = null;
+       _delay = null;
+       _startRequest = null;
 
     }
 
@@ -95,7 +99,10 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
         super.setProperties(component);
 
         setIntegerProperty(component,"maxSuggestedItems", _maxSuggestedItems);
-         setSuggestedItemsMethodProperty(getFacesContext(),component,_suggestedItemsMethod);
+        setIntegerProperty(component,"delay",_delay);
+        setIntegerProperty(component,"startRequest", _startRequest);
+
+        setSuggestedItemsMethodProperty(getFacesContext(),component,_suggestedItemsMethod);
         setStringProperty(component,"popupId",_popupId);
         setStringProperty(component,"popupStyleClass",_popupStyleClass);
         setStringProperty(component,"popupStyle",_popupStyle);
@@ -141,6 +148,16 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     }
 
     // setter methodes to populate the components properites
+
+    public void setDelay(String delay)
+    {
+        _delay = delay;
+    }
+
+    public void setStartRequest(String startRequest)
+    {
+        _startRequest = startRequest;
+    }
 
     public void setLayout(String layout)
     {

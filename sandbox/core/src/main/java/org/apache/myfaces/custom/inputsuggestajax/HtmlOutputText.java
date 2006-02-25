@@ -14,6 +14,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlOutputTextFor";
 
     private String _for;
+    private String _label;
 
     public HtmlOutputText()
     {
@@ -21,9 +22,10 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText
 
      public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
         values[0] = super.saveState(context);
         values[1] = _for;
+        values[2] = _label;
 
         return ((Object) (values));
     }
@@ -33,6 +35,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         _for = (String) values[1];
+        _label = (String) values[2];
     }
 
     public String getFor()
@@ -46,5 +49,18 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText
     public void setFor(String aFor)
     {
         _for = aFor;
+    }
+
+    public String getLabel()
+    {
+        if (_label != null)
+            return _label;
+        ValueBinding vb = getValueBinding("label");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
+
+    public void setLabel(String label)
+    {
+        _label = label;
     }
 }

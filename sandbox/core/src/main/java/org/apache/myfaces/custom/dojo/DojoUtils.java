@@ -315,7 +315,7 @@ public final class DojoUtils
      * a debug:true is required for this to work properly
      * it will not be set by this method (due to the avoidance
      * of unwanted automatisms causing sideefects)
-     * 
+     *
      * @param facesContext
      * @param component
      * @return
@@ -357,6 +357,16 @@ public final class DojoUtils
     public static String createDebugStatement(String stmnt)
     {
         return "dojo.debug(\"" + stmnt + "\");\n";
+    }
+
+    /**
+     * creates a debug statement and a corresponding value for the debug console
+     * @param stmnt the debug message displayed and given value by the debug console
+     * @return javaScriptcode String
+     */
+    public static String createDebugStatement(String stmnt, String value)
+    {
+        return "dojo.debug(\"" + stmnt + ":\");dojo.debug("+value+");\n";
     }
 
     /**

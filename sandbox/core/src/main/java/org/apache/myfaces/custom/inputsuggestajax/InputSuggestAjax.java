@@ -56,6 +56,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
     private String _layout;
 
     private Integer _maxSuggestedItems;
+    private Integer _delay;
+    private Integer _startRequest;
 
     private String _var;
 
@@ -68,7 +70,7 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[15];
+        Object[] values = new Object[17];
         values[0] = super.saveState(context);
         values[1] = saveAttachedState(context, _suggestedItemsMethod);
         values[2] = _popupId;
@@ -84,6 +86,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         values[12] = _var;
         values[13] = _columnHoverClass;
         values[14] = _columnOutClass;
+        values[15] = _delay;
+        values[16] = _startRequest;
 
         return values;
     }
@@ -106,6 +110,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         _var = (String) values[12];
         _columnHoverClass = (String) values[13];
         _columnOutClass = (String) values[14];
+        _delay = (Integer) values[15];
+        _startRequest = (Integer) values[16];
     }
 
     public void encodeAjax(FacesContext context)
@@ -275,6 +281,32 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
 	public void setMaxSuggestedItems(Integer suggestedItems) {
 		_maxSuggestedItems = suggestedItems;
 	}
+
+    public Integer getDelay()
+    {
+        if (_delay != null)
+            return _delay;
+        ValueBinding vb = getValueBinding("delay");
+        return vb != null ? (Integer) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setDelay(Integer delay)
+    {
+        _delay = delay;
+    }
+
+    public Integer getStartRequest()
+    {
+        if (_startRequest != null)
+            return _startRequest;
+        ValueBinding vb = getValueBinding("startRequest");
+        return vb != null ? (Integer) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setStartRequest(Integer startRequest)
+    {
+        _startRequest = startRequest;
+    }
 
     public void setVar(String var)
     {

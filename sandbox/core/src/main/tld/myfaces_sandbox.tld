@@ -15,7 +15,6 @@
 	* See the License for the specific language governing permissions and
 	* limitations under the License.
 -->
-
 <!DOCTYPE taglib
   PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
   "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd" [
@@ -221,7 +220,25 @@ Sandbox-related entities.
 			<description>optional attribute to identify the max size of suggested Values</description>
 		</attribute>
 
-		<attribute>
+        <attribute>
+			<name>delay</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>The AJAX Request is triggered after a given delay. In milliseconds.</description>
+		</attribute>
+
+        <attribute>
+			<name>startRequest</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>The AJAX Request is only triggered if the number of chars typed in is
+                         equal or greater than this given value.
+            </description>
+		</attribute>
+
+        <attribute>
 			<name>layout</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -1042,6 +1059,15 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
             <description></description>
+        </attribute>
+        <attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description>To provide a second value in form of a label. Usage like SelectItem.
+                         Label is brought to client in a hidden span element near the value.            
+            </description>
         </attribute>
     </tag>
 
