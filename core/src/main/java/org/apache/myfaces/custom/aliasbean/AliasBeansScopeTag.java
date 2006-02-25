@@ -16,19 +16,65 @@
 package org.apache.myfaces.custom.aliasbean;
 
 import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.jsp.JspException;
+import javax.faces.component.UIComponent;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class AliasBeansScopeTag extends UIComponentTagBase {
-    
-    public String getComponentType() {
+public class AliasBeansScopeTag extends UIComponentTagBase
+{
+    private Log log = LogFactory.getLog(AliasBeansScopeTag.class);
+
+    public String getComponentType()
+    {
         return AliasBeansScope.COMPONENT_TYPE;
     }
 
-    public String getRendererType() {
+    public String getRendererType()
+    {
         return null;
     }
-    
+
+
+    public int doStartTag() throws JspException
+    {
+        int retVal = super.doStartTag();
+
+        UIComponent comp = getComponentInstance();
+
+        if(comp instanceof AliasBeansScope)
+        {
+            ((AliasBeansScope) comp).makeAliases(getFacesContext());
+        }
+        else
+        {
+            log.warn("associated component is no aliasBeansScope");
+        }
+
+        return retVal;
+    }
+
+    public int doEndTag() throws JspException
+    {
+        int retVal =  super.doEndTag();
+
+        UIComponent comp = getComponentInstance();
+
+        if(comp instanceof AliasBeansScope)
+        {
+            ((AliasBeansScope) comp).removeAliases(getFacesContext());
+        }
+        else
+        {
+            log.warn("associated component is no aliasBeansScope");
+        }
+
+        return retVal;
+    }
+
 }

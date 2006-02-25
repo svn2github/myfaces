@@ -16,8 +16,11 @@
 package org.apache.myfaces.custom.aliasbean;
 
 import javax.faces.component.UIComponent;
+import javax.servlet.jsp.JspException;
 
 import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -25,9 +28,11 @@ import org.apache.myfaces.taglib.UIComponentTagBase;
  */
 public class AliasBeanTag extends UIComponentTagBase {
 
+    private Log log = LogFactory.getLog(AliasBeanTag.class);
+
     private String _alias;
     private String _valueExpression;
-    
+
     public void release() {
         super.release();
 
@@ -35,14 +40,14 @@ public class AliasBeanTag extends UIComponentTagBase {
         _valueExpression=null;
 
     }
-    
+
     protected void setProperties(UIComponent component) {
         super.setProperties(component);
 
         setStringProperty(component, "alias", _alias);
         setStringProperty(component, "value", _valueExpression);
     }
-    
+
     public String getComponentType() {
         return AliasBean.COMPONENT_TYPE;
     }
@@ -50,12 +55,48 @@ public class AliasBeanTag extends UIComponentTagBase {
     public String getRendererType() {
         return null;
     }
-    
+
     public void setAlias(String alias){
         _alias = alias;
     }
-    
+
     public void setValue(String valueExpression){
         _valueExpression = valueExpression;
+    }
+
+    public int doStartTag() throws JspException
+    {
+        int retVal= super.doStartTag();
+
+        UIComponent comp = getComponentInstance();
+
+        if(comp instanceof AliasBean)
+        {
+            ((AliasBean) comp).makeAlias(getFacesContext());
+        }
+        else
+        {
+            log.warn("associated component is no aliasBean");
+        }
+
+        return retVal;
+    }
+
+    public int doEndTag() throws JspException
+    {
+        int retVal = super.doEndTag();
+
+        UIComponent comp = getComponentInstance();
+
+        if(comp instanceof AliasBean)
+        {
+            ((AliasBean) comp).removeAlias(getFacesContext());
+        }
+        else
+        {
+            log.warn("associated component is no aliasBean");
+        }
+
+        return retVal;
     }
 }

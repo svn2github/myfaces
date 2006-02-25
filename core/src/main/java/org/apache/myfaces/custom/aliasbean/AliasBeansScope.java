@@ -29,86 +29,101 @@ import javax.faces.event.FacesEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.util.RestoreStateUtils;
+import org.apache.myfaces.component.BindingAware;
 
 /**
  * Holds several aliases that are configured by aliasBean tags.
- * 
+ *
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class AliasBeansScope extends UIComponentBase {
+public class AliasBeansScope extends UIComponentBase implements BindingAware
+{
     static final Log log = LogFactory.getLog(AliasBeansScope.class);
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.AliasBeansScope";
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.AliasBeansScope";
 
-	private ArrayList _aliases = new ArrayList();
+    private ArrayList _aliases = new ArrayList();
     transient FacesContext _context = null;
 
-    public AliasBeansScope() {
+    public AliasBeansScope()
+    {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
-	
-	void addAlias(Alias alias){
-		_aliases.add( alias );
-	}
 
-    public String getFamily() {
+    void addAlias(Alias alias)
+    {
+        _aliases.add(alias);
+    }
+
+    public String getFamily()
+    {
         return COMPONENT_FAMILY;
     }
 
-    public Object saveState(FacesContext context) {
+    public Object saveState(FacesContext context)
+    {
         log.debug("saveState");
         _context = context;
 
         return super.saveState(context);
     }
 
-    public void restoreState(FacesContext context, Object state) {
+    public void restoreState(FacesContext context, Object state)
+    {
         log.debug("restoreState");
         _context = context;
 
         super.restoreState(context, state);
     }
 
-    public Object processSaveState(FacesContext context) {
+    public Object processSaveState(FacesContext context)
+    {
         if (context == null)
             throw new NullPointerException("context");
         if (isTransient())
             return null;
 
-		makeAliases(context);
-		
+        makeAliases(context);
+
         Map facetMap = null;
-        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext();) {
+        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext();)
+        {
             Map.Entry entry = (Map.Entry) it.next();
             if (facetMap == null)
                 facetMap = new HashMap();
             UIComponent component = (UIComponent) entry.getValue();
-            if (!component.isTransient()) {
+            if (!component.isTransient())
+            {
                 facetMap.put(entry.getKey(), component.processSaveState(context));
             }
         }
-		
+
         List childrenList = null;
-        if (getChildCount() > 0) {
-            for (Iterator it = getChildren().iterator(); it.hasNext();) {
+        if (getChildCount() > 0)
+        {
+            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            {
                 UIComponent child = (UIComponent) it.next();
-                if (!child.isTransient()) {
+                if (!child.isTransient())
+                {
                     if (childrenList == null)
                         childrenList = new ArrayList(getChildCount());
                     childrenList.add(child.processSaveState(context));
                 }
             }
         }
-		
-		removeAliases(context);
-		
-        return new Object[] { saveState(context), facetMap, childrenList };
+
+        removeAliases(context);
+
+        return new Object[]{saveState(context), facetMap, childrenList};
     }
 
-    public void processRestoreState(FacesContext context, Object state) {
+    public void processRestoreState(FacesContext context, Object state)
+    {
         if (context == null)
             throw new NullPointerException("context");
         Object myState = ((Object[]) state)[0];
@@ -118,26 +133,35 @@ public class AliasBeansScope extends UIComponentBase {
         makeAliases(context);
 
         Map facetMap = (Map) ((Object[]) state)[1];
-        
-        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext();) {
+
+        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext();)
+        {
             Map.Entry entry = (Map.Entry) it.next();
             Object facetState = facetMap.get(entry.getKey());
-            if (facetState != null) {
+            if (facetState != null)
+            {
                 ((UIComponent) entry.getValue()).processRestoreState(context, facetState);
-            } else {
+            }
+            else
+            {
                 context.getExternalContext().log("No state found to restore facet " + entry.getKey());
             }
         }
-		
-		List childrenList = (List) ((Object[]) state)[2];
-        if (getChildCount() > 0) {
+
+        List childrenList = (List) ((Object[]) state)[2];
+        if (getChildCount() > 0)
+        {
             int idx = 0;
-            for (Iterator it = getChildren().iterator(); it.hasNext();) {
+            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            {
                 UIComponent child = (UIComponent) it.next();
                 Object childState = childrenList.get(idx++);
-                if (childState != null) {
+                if (childState != null)
+                {
                     child.processRestoreState(context, childState);
-                } else {
+                }
+                else
+                {
                     context.getExternalContext().log("No state found to restore child of component " + getId());
                 }
             }
@@ -146,61 +170,82 @@ public class AliasBeansScope extends UIComponentBase {
         removeAliases(context);
     }
 
-    public void processValidators(FacesContext context) {
+    public void processValidators(FacesContext context)
+    {
         log.debug("processValidators");
         makeAliases(context);
         super.processValidators(context);
         removeAliases(context);
     }
 
-	public void processDecodes(FacesContext context) {
-		log.debug("processDecodes");
-		makeAliases(context);
-		super.processDecodes(context);
-		removeAliases(context);
-	}
-	
-    public void processUpdates(FacesContext context) {
+    public void processDecodes(FacesContext context)
+    {
+        log.debug("processDecodes");
+        makeAliases(context);
+        super.processDecodes(context);
+        removeAliases(context);
+    }
+
+    public void processUpdates(FacesContext context)
+    {
         log.debug("processUpdates");
         makeAliases(context);
         super.processUpdates(context);
         removeAliases(context);
     }
 
-    public void queueEvent(FacesEvent event) {
-		super.queueEvent(new FacesEventWrapper(event, this));
+    public void queueEvent(FacesEvent event)
+    {
+        super.queueEvent(new FacesEventWrapper(event, this));
     }
 
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+    public void broadcast(FacesEvent event) throws AbortProcessingException
+    {
         makeAliases();
 
-        if (event instanceof FacesEventWrapper) {
+        if (event instanceof FacesEventWrapper)
+        {
             FacesEvent originalEvent = ((FacesEventWrapper) event).getWrappedFacesEvent();
             originalEvent.getComponent().broadcast(originalEvent);
-        } else {
+        }
+        else
+        {
             super.broadcast(event);
         }
 
         removeAliases();
-	}
-	
-    void makeAliases(FacesContext context) {
+    }
+
+    void makeAliases(FacesContext context)
+    {
         _context = context;
-		makeAliases();
+        makeAliases();
     }
 
-    private void makeAliases() {
-		for(Iterator i = _aliases.iterator() ; i.hasNext() ;)
-			((Alias)i.next()).make( _context );
+    private void makeAliases()
+    {
+        for (Iterator i = _aliases.iterator(); i.hasNext();)
+            ((Alias) i.next()).make(_context);
     }
 
-    void removeAliases(FacesContext context) {
+    void removeAliases(FacesContext context)
+    {
         _context = context;
         removeAliases();
     }
 
-    private void removeAliases() {
-		for(Iterator i = _aliases.iterator() ; i.hasNext() ;)
-			((Alias)i.next()).remove( _context );
+    private void removeAliases()
+    {
+        for (Iterator i = _aliases.iterator(); i.hasNext();)
+            ((Alias) i.next()).remove(_context);
+    }
+
+    public void handleBindings()
+    {
+        makeAliases(getFacesContext());
+
+        RestoreStateUtils.recursivelyHandleComponentReferencesAndSetValid(getFacesContext(), this, true);
+
+        removeAliases(getFacesContext());
     }
 }
