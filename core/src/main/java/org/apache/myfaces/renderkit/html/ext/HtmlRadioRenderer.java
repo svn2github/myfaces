@@ -118,17 +118,15 @@ public class HtmlRadioRenderer
         }
 
         Object currentValue = RendererUtils.getObjectValue(uiSelectOne);
+        currentValue
+            = RendererUtils.getConvertedStringValue(facesContext, uiSelectOne,
+                                                    converter, currentValue);
         SelectItem selectItem = (SelectItem)selectItemList.get(index);
-        Object itemValue = selectItem.getValue();
-        String itemStrValue;
-        if (converter == null)
-        {
-            itemStrValue = itemValue.toString();
-        }
-        else
-        {
-            itemStrValue = converter.getAsString(facesContext, uiSelectOne, itemValue);
-        }
+        String itemStrValue
+            = RendererUtils.getConvertedStringValue(facesContext, uiSelectOne,
+                                                    converter,
+                                                    selectItem.getValue());
+
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement(HTML.LABEL_ELEM, uiSelectOne);
@@ -138,8 +136,7 @@ public class HtmlRadioRenderer
                     itemStrValue,
                     selectItem.getLabel(),
                     selectItem.isDisabled(),
-                    currentValue == null && itemValue == null ||
-                    currentValue != null && currentValue.equals(itemValue), false);
+                    itemStrValue.equals(currentValue), false);
         writer.endElement(HTML.LABEL_ELEM);
     }
 
