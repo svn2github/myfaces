@@ -416,7 +416,7 @@ org_apache_myfaces_PopupCalendar.prototype._appendNavToCaption = function(direct
 {
     var imgLeft = document.createElement("img");
     imgLeft.setAttribute("src", this.initData.imgDir + direction + "1.gif");
-    imgLeft.setAttriubute("width","10px");
+    imgLeft.setAttribute("width","10px");
     imgLeft.setAttribute("height","11px");
     imgLeft.setAttribute("style", "border:0px;")
 
