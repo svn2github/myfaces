@@ -89,16 +89,19 @@
         <t:aliasBean alias="#{holder}" value="#{firstComponentBindingHolder}" >
             <f:subview id="simulatedIncludedSubform3">
                 <%-- The next tags could be inserted by an %@ include or jsp:include --%>
-                <h:panelGroup binding="#{firstComponentBindingHolder.panelGroup}"/>
+                <h:panelGroup binding="#{holder.panelGroup}"/>
             </f:subview>
         </t:aliasBean>
 
-        <t:aliasBean alias="#{holder}" value="#{firstComponentBindingHolder}" >
+        <t:aliasBean alias="#{holder}" value="#{secondComponentBindingHolder}" >
             <f:subview id="simulatedIncludedSubform3">
                 <%-- The next tags could be inserted by an %@ include or jsp:include --%>
-                <h:panelGroup binding="#{secondComponentBindingHolder.panelGroup}"/>
+                <h:panelGroup binding="#{holder.panelGroup}"/>
             </f:subview>
         </t:aliasBean>
+        
+		<h:commandButton value="postback" />
+		<f:verbatim>on every postback the text 'first' and 'second' will be added</f:verbatim>
 
         <br/><br/>
 

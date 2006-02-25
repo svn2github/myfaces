@@ -61,8 +61,6 @@ public class AliasBeansScopeTag extends UIComponentTagBase
 
     public int doEndTag() throws JspException
     {
-        int retVal =  super.doEndTag();
-
         UIComponent comp = getComponentInstance();
 
         if(comp instanceof AliasBeansScope)
@@ -74,7 +72,7 @@ public class AliasBeansScopeTag extends UIComponentTagBase
             log.warn("associated component is no aliasBeansScope");
         }
 
-        return retVal;
+        return super.doEndTag();
     }
 
 }

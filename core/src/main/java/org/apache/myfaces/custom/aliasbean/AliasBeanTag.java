@@ -84,8 +84,6 @@ public class AliasBeanTag extends UIComponentTagBase {
 
     public int doEndTag() throws JspException
     {
-        int retVal = super.doEndTag();
-
         UIComponent comp = getComponentInstance();
 
         if(comp instanceof AliasBean)
@@ -97,6 +95,6 @@ public class AliasBeanTag extends UIComponentTagBase {
             log.warn("associated component is no aliasBean");
         }
 
-        return retVal;
+        return super.doEndTag();
     }
 }
