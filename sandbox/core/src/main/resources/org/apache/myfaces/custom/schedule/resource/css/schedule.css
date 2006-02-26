@@ -7,7 +7,7 @@
 div.schedule-detailed-default {
  	border-style: solid;
 	border-width: 1px;
-	border-color: rgb(163,177,140);
+	border-color: rgb(153,153,153);
 	position: relative;
 	width: 100%;
 	left: 0px;
@@ -19,8 +19,8 @@ div.schedule-detailed-default table.background {
 }
 
 div.schedule-detailed-default td.gutter {
-    background-color: rgb(205,214,198);
-    color: rgb(0,0,0);
+    background-color: rgb(181,200,207);
+    color: rgb(0);
     text-align: right;
     vertical-align: top;
 }
@@ -34,7 +34,7 @@ div.schedule-detailed-default table.background td.header, div.schedule-detailed-
 }
 
 div.schedule-detailed-default table.background td.header {
-    background-color: rgb(205,214,198);
+    background-color: rgb(181,200,207);
 }
 
 div.schedule-detailed-default td.header span.date, div.schedule-detailed-default td.header span.holiday {
@@ -64,18 +64,18 @@ div.schedule-detailed-default table.background td.free {
 }
 
 div.schedule-detailed-default table.background td.uneven {
-    background-color: rgb(240,244,233);
-    color: rgb(240,244,233);
+    background-color: rgb(240,240,240);
+    color: rgb(240,240,240);
 }
 
 div.schedule-detailed-default table.background td.even {
-    background-color: rgb(235,239,228);
-    color: rgb(235,239,228);
+    background-color: rgb(235,235,235);
+    color: rgb(235,235,235);
 }
 
 div.schedule-detailed-default table.background td.free {
-	background-color: rgb(215,219,208);
-	color: rgb(215,219,208);
+	background-color: rgb(221,221,221);
+	color: rgb(221,221,221);
 }
 
 div.schedule-detailed-default .entry, div.schedule-detailed-default div.entry-selected {
@@ -84,17 +84,17 @@ div.schedule-detailed-default .entry, div.schedule-detailed-default div.entry-se
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 11px;
   vertical-align: middle;
-  border-color: rgb(0,0,0);
+  border-color: rgb(153,153,153);
   text-decoration: none;
 }
 
 div.schedule-detailed-default a.entry:hover,
 div.schedule-detailed-default div.entry-selected {
-  border-color: rgb(153,204,51);
+  border-color: rgb(153,0,0);
 }
 
 div.schedule-detailed-default div.entry-selected div.text {
-  border-left: solid rgb(153,204,51) 5.0px;
+  border-left: solid rgb(153,0,0) 5.0px;
 }
 
 div.schedule-detailed-default .entry span.subtitle,
@@ -115,7 +115,7 @@ div.schedule-compact-default {
 	position: relative;
 	width: 100%;
 	left: 0px;
-	background-color: rgb(163,177,140);
+	background-color: rgb(153,153,153);
 }
 
 div.schedule-compact-default table.day {
@@ -123,7 +123,7 @@ div.schedule-compact-default table.day {
 }
 
 div.schedule-compact-default table.day td.header {
-  background-color: rgb(205,214,198);
+  background-color: rgb(181,200,207);
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
   color: rgb(0,0,0);
@@ -155,27 +155,29 @@ div.schedule-compact-default a {
 }
 
 div.schedule-compact-default td.content td.selected {
-  background-color: rgb(153,204,51);
-  border-color: rgb(153,204,51);
+  background-color: rgb(153,0,0);
+  border-color: rgb(153,0,0);
+  color: rgb(255,255,255);
 }
 
 div.schedule-compact-default td.inactive-day td.content {
-  background-color: rgb(205,214,198);
+  background-color: rgb(221,221,221);
   visibility: visible;
 }
 
 div.schedule-compact-default td.inactive-day td.content td {
-  background-color: rgb(205,214,198);
-  border-color: rgb(205,214,198);
+  background-color: rgb(221,221,221);
+  border-color: rgb(221,221,221);
 }
 
 div.schedule-compact-default td.inactive-day td.content td.selected {
-  background-color: rgb(153,204,51);
-  border-color: rgb(153,204,51);
+  background-color: rgb(153,0,0);
+  border-color: rgb(153,0,0);
+  color: rgb(255,255,255);
 }
 
 div.schedule-compact-default td.inactive-day td.header {
-  background-color: rgb(205,214,198);
+  background-color: rgb(221,221,221);
   visibility: visible;
 }
 
