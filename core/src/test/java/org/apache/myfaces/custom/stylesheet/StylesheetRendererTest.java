@@ -17,111 +17,74 @@
 package org.apache.myfaces.custom.stylesheet;
 
 import java.io.IOException;
+import java.io.StringWriter;
 
-import javax.faces.FactoryFinder;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.render.RenderKit;
-import javax.faces.render.RenderKitFactory;
+import junit.framework.Test;
+import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.mock.MockResponseWriter;
 
-import junit.framework.TestCase;
+public class StylesheetRendererTest extends AbstractJsfTestCase
+{
 
-import org.apache.myfaces.renderkit.html.HtmlRenderKitImpl;
-import org.easymock.MockControl;
-import org.easymock.classextension.MockClassControl;
-
-
-public class StylesheetRendererTest extends TestCase {
-
-  FacesContext context;
-  MockResponseWriter writer = new MockResponseWriter();
-  
-  /*
-   * Test method for 'org.apache.myfaces.custom.stylesheet.StylesheetRenderer.encodeEnd(FacesContext, UIComponent)'
-   */
-  public void testInline() throws IOException {
-
-    Stylesheet stylesheet = new Stylesheet();
-    stylesheet.setPath("test.css");
-    stylesheet.setInline(true);
-    stylesheet.setMedia("printer");
-    stylesheet.encodeEnd(this.context);
-    this.context.renderResponse();
+    private MockResponseWriter writer ;
+    private Stylesheet stylesheet ;
     
-    System.out.println(this.writer.getContent());
-  }
+    public StylesheetRendererTest(String name)
+    {
+        super(name);
+    }
+    
+    public void setUp()
+    {
+        super.setUp();
+        stylesheet = new Stylesheet();
+        stylesheet.setPath("test.css");
+        stylesheet.setMedia("printer");
+        writer = new MockResponseWriter(new StringWriter(), null, null);
+        facesContext.setResponseWriter(writer);
+        facesContext.getRenderKit().addRenderer(
+                stylesheet.getFamily(), 
+                stylesheet.getRendererType(), 
+                new StylesheetRenderer());
+    }
 
-  public void testLink() throws IOException {
+    public void tearDown()
+    {
+        super.tearDown();
+        writer = null;
+        stylesheet = null;
+    }
 
-    Stylesheet stylesheet = new Stylesheet();
-    stylesheet.setPath("test.css");
-    stylesheet.setMedia("printer");
-    stylesheet.encodeEnd(this.context);
-    this.context.renderResponse();
-    
-    System.out.println(this.writer.getContent());
-  }
-  private FacesContext getMockFacesContext(ResponseWriter writer) {
+    public static Test suite()
+    {
+        return null; // keep this method or maven won't run it
+    }
 
-    FactoryFinder.setFactory(FactoryFinder.RENDER_KIT_FACTORY,
-        "org.apache.myfaces.renderkit.RenderKitFactoryImpl");
-    
-    MockControl ctxControl = MockClassControl.createControl(FacesContext.class);
-    FacesContext mockFacesCtx = (FacesContext) ctxControl.getMock();
-    
-    MockControl extCtxControl = MockClassControl.createControl(ExternalContext.class);
-    ExternalContext mockExtCtx = (ExternalContext)extCtxControl.getMock();
-    mockFacesCtx.getExternalContext();
-    ctxControl.setReturnValue(mockExtCtx);
-    
-    mockFacesCtx.renderResponse();
-    ctxControl.setVoidCallable();
-    
-    mockExtCtx.getRequestContextPath();
-    extCtxControl.setReturnValue("");
-    
-    MockControl rendererKitControl = MockClassControl.createControl(HtmlRenderKitImpl.class);
-    RenderKit rKit = (RenderKit) rendererKitControl.getMock();
-    rKit.getRenderer(Stylesheet.COMPONENT_FAMILY, Stylesheet.COMPONENT_TYPE);
-    rendererKitControl.setReturnValue(new StylesheetRenderer());
-   
-    
-    
-    mockFacesCtx.getResponseWriter();
-    ctxControl.setReturnValue(writer);
-    
-    mockFacesCtx.getRenderKit();
-    ctxControl.setReturnValue(rKit);
+    /*
+     * Test method for 'org.apache.myfaces.custom.stylesheet.StylesheetRenderer.encodeEnd(FacesContext, UIComponent)'
+     */
+    public void testInline() throws IOException
+    {
 
+        stylesheet.setInline(true);
+        stylesheet.encodeEnd(facesContext);
+        facesContext.renderResponse();
 
-    MockControl viewRootControl = MockClassControl.createControl(UIViewRoot.class);
-    UIViewRoot uiViewRoot = (UIViewRoot) viewRootControl.getMock();
-    uiViewRoot.getRenderKitId();
-    viewRootControl.setReturnValue(RenderKitFactory.HTML_BASIC_RENDER_KIT);
-    
-    mockFacesCtx.getViewRoot();//(uiViewRoot);
-    ctxControl.setReturnValue(uiViewRoot);
-    
+        String output = writer.getWriter().toString();
+        
+        assertTrue("looking for a <style>", output.trim().startsWith("<style"));
+        
+    }
 
-    ((RenderKitFactory)FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY)).addRenderKit(
-        RenderKitFactory.HTML_BASIC_RENDER_KIT, rKit);    
-    
-    ctxControl.replay();
-    extCtxControl.replay();
-    viewRootControl.replay();
-    rendererKitControl.replay();
-    
-    return mockFacesCtx;
-  }
+    public void testLink() throws IOException
+    {
 
-  protected void setUp() throws Exception {
+        stylesheet.encodeEnd(facesContext);
+        facesContext.renderResponse();
 
-    this.context = getMockFacesContext(this.writer); 
-  }
-
-  protected void tearDown() throws Exception {
-  }
+        String output = writer.getWriter().toString();
+        
+        assertTrue("looking for a <link>", output.trim().startsWith("<link"));
+    }
 
 }
