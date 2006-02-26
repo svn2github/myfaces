@@ -132,7 +132,10 @@ org_apache_myfaces_StateChangedNotifier.prototype.showMessage = function () {
     var hiddenField = dojo.byId(this.hiddenFieldId);
     if (hiddenField.value == "true") {
             //if (!confirm(message)) return false;
-        return confirm(this.message);
+        var confirmit = confirm(this.message);
+        if(confirmit ) 
+        	hiddenField.value == "false";
+        return confirmit;
     }
     return true;
 };
