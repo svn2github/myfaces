@@ -133,8 +133,9 @@ org_apache_myfaces_StateChangedNotifier.prototype.showMessage = function () {
     if (hiddenField.value == "true") {
             //if (!confirm(message)) return false;
         var confirmit = confirm(this.message);
-        if(confirmit ) 
+        if(confirmit) 
         	hiddenField.value == "false";
+        
         return confirmit;
     }
     return true;
