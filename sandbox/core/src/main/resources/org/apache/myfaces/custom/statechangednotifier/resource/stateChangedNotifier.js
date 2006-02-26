@@ -148,6 +148,8 @@ org_apache_myfaces_StateChangedNotifier.prototype.removeConfirmInElement = funct
 		command.setAttribute("onclick",oldOnClick);
 	}	
 }
+
+
 org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function (commandId) {
     var command = dojo.byId(commandId);
     if (command !== null) {
