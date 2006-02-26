@@ -100,6 +100,7 @@ org_apache_myfaces_StateChangedNotifier.prototype.putConfirmExcludingElements = 
             this.objectsToConfirmList.push(elementId);
         } else {
         	this.removeConfirmInElement(elementId); //remove old includes from the list if we get one 
+        	//putNoConfirmInElement(elementId); // we need a special resetter list which reset the control if triggered
         }
     }
     for (var cnt2 = 0; cnt2 < this.objectsToConfirmList.length; cnt2 += 1) {
@@ -124,6 +125,13 @@ org_apache_myfaces_StateChangedNotifier.prototype.isElementExcluded = function (
         }
     }
 };
+
+org_apache_myfaces_StateChangedNotifier.prototype.resetHiddenField = function() {
+    var hiddenField = dojo.byId(this.hiddenFieldId);
+	if(hiddenField !== null)
+    	hiddenField.value = "false";
+};
+
 /**
 * builds up a show message function
 * dependend on the correct browser
@@ -148,6 +156,25 @@ org_apache_myfaces_StateChangedNotifier.prototype.removeConfirmInElement = funct
 		command.setAttribute("onclick",oldOnClick);
 	}	
 }
+
+
+
+org_apache_myfaces_StateChangedNotifier.prototype.putNoConfirmInElement = function (commandId) {
+    var command = dojo.byId(commandId);
+    if (command !== null) {
+        var onclick = command.getAttribute("onclick");
+        var onclickstr = onclick + "";
+        command.setAttribute("old_onclick", onclickstr);
+        if (dojo.render.html.ie) {
+            onclickstr = onclickstr.replace(/function anonymous\(\)/, "");
+            onclickstr = "" + this.notifierName + ".resetHiddenField(); " + onclickstr + " ;";
+            command.setAttribute("onclick", new Function("", onclickstr));
+            
+        } else {
+            command.setAttribute("onclick", "" + this.notifierName + ".resetHiddenField();" + onclick + " ;");
+        }
+    }
+};
 
 
 org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function (commandId) {
