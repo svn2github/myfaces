@@ -21,7 +21,7 @@
      <description>
        Comma-separated list of cliend id of the commands which will be excluded from the confirmation message
      </description>
-  </attribute>
+ </attribute>
 <attribute>
     <name>value</name>
     <required>false</required>
