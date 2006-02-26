@@ -98,5 +98,21 @@ public class StateChangedNotifier extends HtmlInputHidden
     {
         this.excludedIds = excludedIds;
     }
+    
+    /**
+     * a helper reset to reset the notifier
+     * to a non state changed state
+     */
+    public void reset() {
+        super.setValue("false");
+    }
+    /**
+     * enable the state changed notification for this cycle
+     *
+     */
+    public void enableStateChanged() {
+        super.setValue("true");
+    }
+    
 }
 
