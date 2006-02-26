@@ -712,7 +712,7 @@ org_apache_myfaces_PopupCalendar.prototype._incYear = function()
 
 org_apache_myfaces_PopupCalendar.prototype._createAndAddYear = function(newYear, i)
 {
-    var parentNode = document.getElementById("y" + i);
+    var parentNode = document.getElementById(this.containerCtl.getAttribute("id")+"y" + i);
 
     this._removeAllChildren(parentNode);
 
@@ -841,7 +841,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
             selectYearTableBody.appendChild(yearRow);
 
             var yearCell = document.createElement("td");
-            yearCell.setAttribute("id", "y" + j);
+            yearCell.setAttribute("id", this.containerCtl.getAttribute("id")+"y" + j);
             yearRow.appendChild(yearCell);
 
             Event.observe(yearCell, "mouseover", function(event)
@@ -1369,12 +1369,10 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     this.calendarDiv.style.visibility = (this.dom || this.ie)? "visible" : "show";
     this.bCalendarHidden = false;
 
-
-    //make sure hideElement really hides the element on first startup of the server
     setTimeout((function()
     {
         this._hideElement(this.calendarDiv);
-    }).bind(this), 100);
+    }).bind(this), 200);
 
     this._hideElement(this.calendarDiv);
 

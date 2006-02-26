@@ -59,7 +59,14 @@
                 currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
                 popupTodayString="#{example_messages['popup_today_string']}"
                 popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
-                helpText="MM/DD/YYYY" onchange="document.getElementById('calendarForm2').submit();"/>
+                helpText="MM/DD/YYYY"/>
+
+            <t:inputCalendar id="thirdOne" monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader" popupButtonStyleClass="standard_bold"
+                currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
+                popupTodayString="#{example_messages['popup_today_string']}"
+                popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
+                helpText="MM/DD/YYYY"/>
+
             <h:inputText value="#{calendarBean.text}"/>
             <h:commandButton value="#{example_messages['js_submit']}" action="#{calendarBean.submitMethod}" />
         </h:form>
