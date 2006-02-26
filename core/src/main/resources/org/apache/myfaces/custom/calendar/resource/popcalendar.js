@@ -409,6 +409,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
         this._appendNbsp(this.captionSpan);
 
         this.bPageLoaded = true;
+
     }
 }
 
@@ -1367,6 +1368,13 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
 
     this.calendarDiv.style.visibility = (this.dom || this.ie)? "visible" : "show";
     this.bCalendarHidden = false;
+
+
+    //make sure hideElement really hides the element on first startup of the server
+    setTimeout((function()
+    {
+        this._hideElement(this.calendarDiv);
+    }).bind(this), 100);
 
     this._hideElement(this.calendarDiv);
 
