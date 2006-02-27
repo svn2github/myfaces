@@ -51,7 +51,6 @@ public abstract class AbstractScheduleRenderer extends Renderer
     //~ Static fields/initializers ---------------------------------------------
 
     protected static final ScheduleEntryComparator comparator = new ScheduleEntryComparator();
-    private ScheduleEntryRenderer entryRenderer = null;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -301,30 +300,52 @@ public abstract class AbstractScheduleRenderer extends Renderer
                 .booleanValue();
     }
 
+    /**
+     * The user of the Schedule component can customize the look and feel
+     * by specifying a custom implementation of the ScheduleEntryRenderer.
+     * This method gets an instance of the specified class, or if none
+     * was specified, takes the default.
+     * 
+     * @param component the Schedule component
+     * @return a ScheduleEntryRenderer instance
+     */
     protected ScheduleEntryRenderer getEntryRenderer(UIComponent component)
     {
-        if (entryRenderer != null)
-            return entryRenderer;
-        String className = null;
-        ValueBinding binding = component.getValueBinding("entryRenderer");
-        if (binding != null)
+        ScheduleEntryRenderer entryRenderer = null;
+        Map attributes = component.getAttributes();
+        //First check if there an entryRenderer has already been instantiated
+        Object rendererObject = attributes.get("entryRendererInstance");
+        if (rendererObject instanceof ScheduleEntryRenderer)
         {
-            className = (String) binding.getValue(FacesContext
-                    .getCurrentInstance());
+            entryRenderer = (ScheduleEntryRenderer) rendererObject;
         }
-        if (className == null)
+        else
         {
-            Map attributes = component.getAttributes();
-            className = (String) attributes.get("entryRenderer");
-        }
-        try
-        {
-            entryRenderer = (ScheduleEntryRenderer) Class.forName(className)
-                    .newInstance();
-        }
-        catch (Exception e)
-        {
-            entryRenderer = new DefaultScheduleEntryRenderer();
+            //No entryRenderer was instantiated, do that here
+            String className = null;
+            //Was the classname specified as attribute of the component?
+            ValueBinding binding = component.getValueBinding("entryRenderer");
+            if (binding != null)
+            {
+                className = (String) binding.getValue(FacesContext
+                        .getCurrentInstance());
+            }
+            if (className == null)
+            {
+                className = (String) attributes.get("entryRenderer");
+            }
+            try
+            { //try to instantiate a renderer of the specified class
+                entryRenderer = (ScheduleEntryRenderer) Class
+                        .forName(className).newInstance();
+            }
+            catch (Exception e)
+            {
+                //something went wrong, let's take the default
+                entryRenderer = new DefaultScheduleEntryRenderer();
+            }
+            //Store the instance in the component attributes for later use
+            attributes.put("entryRendererInstance", entryRenderer);
         }
         return entryRenderer;
     }
@@ -351,7 +372,8 @@ public abstract class AbstractScheduleRenderer extends Renderer
 
         try
         {
-            Integer rowHeightObject = (Integer)attributes.get(getRowHeightProperty());
+            Integer rowHeightObject = (Integer) attributes
+                    .get(getRowHeightProperty());
             rowHeight = rowHeightObject.intValue();
         }
         catch (Exception e)

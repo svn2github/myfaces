@@ -1,6 +1,7 @@
 package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -28,7 +29,7 @@ import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$
  */
-public interface ScheduleEntryRenderer
+public interface ScheduleEntryRenderer extends Serializable
 {
     /**
      * Render the content of an entry.

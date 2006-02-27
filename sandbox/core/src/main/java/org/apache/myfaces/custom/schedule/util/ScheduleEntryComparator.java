@@ -16,6 +16,7 @@
 
 package org.apache.myfaces.custom.schedule.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
@@ -30,8 +31,10 @@ import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision$
  */
-public class ScheduleEntryComparator implements Comparator
+public class ScheduleEntryComparator implements Comparator, Serializable
 {
+    private static final long serialVersionUID = 6863061256811196989L;
+
     //~ Methods ----------------------------------------------------------------
 
     /**
