@@ -16,41 +16,47 @@ public class SelectOneRow extends UIInput
 {
     private String groupName;
 
- public static final String COMPONENT_TYPE = "org.apache.myfaces.SelectOneRow";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.SelectOneRow";
 
- public static final String COMPONENT_FAMILY = "org.apache.myfaces.SelectOneRow";
+    public static final String COMPONENT_FAMILY = "org.apache.myfaces.SelectOneRow";
 
- private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SelectOneRow";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SelectOneRow";
 
- public SelectOneRow() {
-  setRendererType(DEFAULT_RENDERER_TYPE);
- }
+    public SelectOneRow()
+    {
+        setRendererType(DEFAULT_RENDERER_TYPE);
+    }
 
- public String getFamily() {
-  return COMPONENT_FAMILY;
- }
+    public String getFamily()
+    {
+        return COMPONENT_FAMILY;
+    }
 
- public String getGroupName() {
-  return groupName;
- }
+    public String getGroupName()
+    {
+        return groupName;
+    }
 
- public void setGroupName(String groupName) {
-  this.groupName = groupName;
- }
+    public void setGroupName(String groupName)
+    {
+        this.groupName = groupName;
+    }
 
- public void restoreState(FacesContext context, Object state) {
+    public void restoreState(FacesContext context, Object state)
+    {
 
-  Object[] values = (Object[]) state;
-  super.restoreState(context, values[0]);
-  groupName = (String) values[1];
+        Object[] values = (Object[]) state;
+        super.restoreState(context, values[0]);
+        groupName = (String) values[1];
 
- }
+    }
 
- public Object saveState(FacesContext context) {
-  Object[] values = new Object[2];
-  values[0] = super.saveState(context);
-  values[1] = groupName;
-  return values;
- }
- 
+    public Object saveState(FacesContext context)
+    {
+        Object[] values = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = groupName;
+        return values;
+    }
+
 }

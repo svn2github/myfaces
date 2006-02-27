@@ -21,7 +21,6 @@ import java.util.Map;
  */
 public class SelectOneRowRenderer extends HtmlRenderer
 {
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SelectOneRow";
 
     public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException
     {
@@ -30,86 +29,94 @@ public class SelectOneRowRenderer extends HtmlRenderer
             SelectOneRow row = (SelectOneRow) component;
             String clientId = row.getClientId(facesContext);
 
-        ResponseWriter writer = facesContext.getResponseWriter();
+            ResponseWriter writer = facesContext.getResponseWriter();
 
-        writer.startElement(HTML.INPUT_ELEM, row);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO, null);
-        writer.writeAttribute(HTML.NAME_ATTR, row.getGroupName(), null);
+            writer.startElement(HTML.INPUT_ELEM, row);
+            writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO, null);
+            writer.writeAttribute(HTML.NAME_ATTR, row.getGroupName(), null);
 
-        if (false) { // todo: disabled Attribute
-            writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
-        }
+            // todo: disabled Attribute
+            //writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
 
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
-        if (isRowSelected(row))
-        {
-            writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
-        }
+            if (isRowSelected(row))
+            {
+                writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
+            }
 
             writer.writeAttribute(HTML.VALUE_ATTR, clientId, null);
 
-        HtmlRendererUtils.renderHTMLAttributes(writer, row, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+            HtmlRendererUtils.renderHTMLAttributes(writer, row, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
 
-        writer.endElement(HTML.INPUT_ELEM);
+            HtmlRendererUtils.renderHTMLAttributes(writer, row, new String[]{HTML.ONCLICK_ATTR});
+
+            writer.endElement(HTML.INPUT_ELEM);
         }
     }
 
- private boolean isRowSelected(UIComponent component) {
-  UIInput input = (UIInput) component;
-  Object value = input.getValue();
+    private boolean isRowSelected(UIComponent component)
+    {
+        UIInput input = (UIInput) component;
+        Object value = input.getValue();
 
-  int currentRowIndex = getCurrentRowIndex(component);
+        int currentRowIndex = getCurrentRowIndex(component);
 
-  return (value != null)
-    && (currentRowIndex == ((Long) value).intValue());
+        return (value != null)
+                && (currentRowIndex == ((Long) value).intValue());
 
- }
+    }
 
- private int getCurrentRowIndex(UIComponent component) {
-  UIData uidata = findUIData(component);
-  if (uidata == null)
-   return -1;
-  else
-   return uidata.getRowIndex();
- }
+    private int getCurrentRowIndex(UIComponent component)
+    {
+        UIData uidata = findUIData(component);
+        if (uidata == null)
+            return -1;
+        else
+            return uidata.getRowIndex();
+    }
 
- protected UIData findUIData(UIComponent uicomponent) {
-  if (uicomponent == null)
-   return null;
-  if (uicomponent instanceof UIData)
-   return (UIData) uicomponent;
-  else
-   return findUIData(uicomponent.getParent());
- }
+    protected UIData findUIData(UIComponent uicomponent)
+    {
+        if (uicomponent == null)
+            return null;
+        if (uicomponent instanceof UIData)
+            return (UIData) uicomponent;
+        else
+            return findUIData(uicomponent.getParent());
+    }
 
- public void decode(FacesContext context, UIComponent uiComponent) {
-  if(! (uiComponent instanceof SelectOneRow) )
-  {
-      return;
-  }
+    public void decode(FacesContext context, UIComponent uiComponent)
+    {
+        if (! (uiComponent instanceof SelectOneRow))
+        {
+            return;
+        }
 
-  if (!uiComponent.isRendered()) {
-   return;
-  }
-  SelectOneRow row = (SelectOneRow) uiComponent;
+        if (!uiComponent.isRendered())
+        {
+            return;
+        }
+        SelectOneRow row = (SelectOneRow) uiComponent;
 
-  Map requestMap = context.getExternalContext().getRequestParameterMap();
-  String postedValue;
+        Map requestMap = context.getExternalContext().getRequestParameterMap();
+        String postedValue;
 
-  if (requestMap.containsKey(row.getGroupName())) {
-   postedValue = (String) requestMap.get(row.getGroupName());
-   String clientId = row.getClientId(context);
-   if (clientId.equals(postedValue)) {
+        if (requestMap.containsKey(row.getGroupName()))
+        {
+            postedValue = (String) requestMap.get(row.getGroupName());
+            String clientId = row.getClientId(context);
+            if (clientId.equals(postedValue))
+            {
 
-    String[] postedValueArray = postedValue.split(":");
-    String rowIndex = postedValueArray[postedValueArray.length - 2];
+                String[] postedValueArray = postedValue.split(":");
+                String rowIndex = postedValueArray[postedValueArray.length - 2];
 
-    Long newValue = Long.valueOf(rowIndex);
-    //the value to go in conversion&validation
-    row.setSubmittedValue(newValue);
-    row.setValid(true);
-   }
-  }
- }
+                Long newValue = Long.valueOf(rowIndex);
+                //the value to go in conversion&validation
+                row.setSubmittedValue(newValue);
+                row.setValid(true);
+            }
+        }
+    }
 }

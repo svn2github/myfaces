@@ -61,6 +61,7 @@ the entities directory.
 <!ENTITY html_input_radio_attributes    SYSTEM "entities-share/html_input_radio_attributes.xml">
 <!ENTITY html_label_attributes          SYSTEM "entities-share/html_label_attributes.xml">
 <!ENTITY html_onchange_attribute        SYSTEM "entities-share/html_attributes/onchange.xml">
+<!ENTITY html_onclick_attribute         SYSTEM "entities-share/html_attributes/onclick.xml">
 <!ENTITY html_onselect_attribute        SYSTEM "entities-share/html_attributes/onselect.xml">
 <!ENTITY html_readonly_attribute        SYSTEM "entities-share/html_attributes/readonly.xml">
 <!ENTITY html_tabindex_attribute        SYSTEM "entities-share/html_attributes/tabindex.xml">
@@ -925,6 +926,7 @@ Sandbox-related entities.
         &html_disabled_attribute;
         &html_focus_blur_attributes;
         &html_onchange_attribute;
+        &html_onclick_attribute;
         &html_onselect_attribute;
         &html_readonly_attribute;
         &ui_input_attributes;

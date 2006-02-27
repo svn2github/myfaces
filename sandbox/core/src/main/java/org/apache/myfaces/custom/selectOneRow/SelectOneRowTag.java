@@ -4,6 +4,7 @@ import org.apache.myfaces.taglib.html.HtmlInputTagBase;
 
 import org.apache.myfaces.renderkit.JSFAttr;
 import org.apache.myfaces.renderkit.html.HTML;
+
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -19,7 +20,16 @@ import javax.faces.el.ValueBinding;
  */
 public class SelectOneRowTag extends HtmlInputTagBase
 {
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SelectOneRow";
+    public String getComponentType()
+    {
+        return SelectOneRow.COMPONENT_TYPE;
+    }
+
+    public String getRendererType()
+    {
+        return SelectOneRow.DEFAULT_RENDERER_TYPE;
+    }
+
 // UIComponent attributes --> already implemented in UIComponentTagBase
 
     // user role attributes --> already implemented in UIComponentTagBase
@@ -39,6 +49,7 @@ public class SelectOneRowTag extends HtmlInputTagBase
     private String _maxlength;
     private String _onblur;
     private String _onchange;
+    private String _onclick;
     private String _onfocus;
     private String _onselect;
     private String _readonly;
@@ -54,23 +65,25 @@ public class SelectOneRowTag extends HtmlInputTagBase
     // HTMLInputSecret attributes
     private String _groupName;
 
-    public void release() {
+    public void release()
+    {
         super.release();
-        _accesskey=null;
-        _align=null;
-        _alt=null;
-        _datafld=null;
-        _datasrc=null;
-        _dataformatas=null;
-        _disabled=null;
-        _maxlength=null;
-        _onblur=null;
-        _onchange=null;
-        _onfocus=null;
-        _onselect=null;
-        _readonly=null;
-        _size=null;
-        _tabindex=null;
+        _accesskey = null;
+        _align = null;
+        _alt = null;
+        _datafld = null;
+        _datasrc = null;
+        _dataformatas = null;
+        _disabled = null;
+        _maxlength = null;
+        _onblur = null;
+        _onchange = null;
+        _onclick = null;
+        _onfocus = null;
+        _onselect = null;
+        _readonly = null;
+        _size = null;
+        _tabindex = null;
         _groupName = null;
     }
 
@@ -88,27 +101,30 @@ public class SelectOneRowTag extends HtmlInputTagBase
         setIntegerProperty(component, HTML.MAXLENGTH_ATTR, _maxlength);
         setStringProperty(component, HTML.ONBLUR_ATTR, _onblur);
         setStringProperty(component, HTML.ONCHANGE_ATTR, _onchange);
+        setStringProperty(component, HTML.ONCLICK_ATTR, _onclick);
         setStringProperty(component, HTML.ONFOCUS_ATTR, _onfocus);
         setStringProperty(component, HTML.ONSELECT_ATTR, _onselect);
         setBooleanProperty(component, HTML.READONLY_ATTR, _readonly);
         setIntegerProperty(component, HTML.SIZE_ATTR, _size);
         setStringProperty(component, HTML.TABINDEX_ATTR, _tabindex);
 
-            UIInput singleInputRowSelect = (UIInput) component;
-          singleInputRowSelect.getAttributes().put("groupName", _groupName);
+        UIInput singleInputRowSelect = (UIInput) component;
+        singleInputRowSelect.getAttributes().put("groupName", _groupName);
 
-          if (getValue() != null) {
+        if (getValue() != null)
+        {
 
-           if (isValueReference(getValue())) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            Application app = context.getApplication();
-            ValueBinding binding = app.createValueBinding(getValue());
-            singleInputRowSelect.setValueBinding("value",binding);
+            if (isValueReference(getValue()))
+            {
+                FacesContext context = FacesContext.getCurrentInstance();
+                Application app = context.getApplication();
+                ValueBinding binding = app.createValueBinding(getValue());
+                singleInputRowSelect.setValueBinding("value", binding);
 
-           }
+            }
 
-          }
-   }
+        }
+    }
 
     public void setAccesskey(String accesskey)
     {
@@ -160,6 +176,11 @@ public class SelectOneRowTag extends HtmlInputTagBase
         _onchange = onchange;
     }
 
+    public void setOnclick(String onclick)
+    {
+        _onclick = onclick;
+    }
+
     public void setOnfocus(String onfocus)
     {
         _onfocus = onfocus;
@@ -186,33 +207,22 @@ public class SelectOneRowTag extends HtmlInputTagBase
     }
 
 
+    public String getValue()
+    {
+        return value;
+    }
 
- public String getValue() {
-  return value;
- }
+    public void setValue(String value)
+    {
+        this.value = value;
+    }
 
- public void setValue(String value) {
-  this.value = value;
- }
+    private String value;
 
- private String value;
-
- public String getComponentType() {
-
-  return SelectOneRow.COMPONENT_TYPE;
- }
-
- public String getRendererType() {
-  return DEFAULT_RENDERER_TYPE;
- }
-
- public String getGroupName() {
-  return _groupName;
- }
-
- public void setGroupName(String groupName) {
-  this._groupName = groupName;
- }
+    public void setGroupName(String groupName)
+    {
+        this._groupName = groupName;
+    }
 
 
 }
