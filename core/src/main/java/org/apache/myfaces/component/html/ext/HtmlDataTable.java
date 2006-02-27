@@ -79,8 +79,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private boolean _isValidChildren = true;
 
     private Set _expandedNodes = new HashSet();
-
-	private UIColumn detailColumn;
     
     public String getClientId(FacesContext context)
     {
@@ -861,21 +859,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     protected void setPreservedDataModel(_SerializableDataModel preservedDataModel) {
         _preservedDataModel = preservedDataModel;
     }
-    public String getDetailHeader() {
-    	if(detailColumn!=null){
-    		return (String) ((UIOutput)detailColumn.getHeader()).getValue();
-    	} else {
-    		return null;
-    	}
-	}
-
-	public void setDetailHeader(String header) {
-		if(detailColumn!=null){
-			((UIOutput)detailColumn.getHeader()).setValue(header);
-		}	
-	}
     
-	
+   /**
+    *
+    * @return  true if the current detail row is expanded.
+    */
 	public boolean isCurrentDetailExpanded(){
 		return _expandedNodes.contains(new Integer(getRowIndex()));
 	}
@@ -914,16 +902,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 		}		
 	}
 	
-	/**
-	 * Return true if the current detail row is expanded.
-	 * 
-	 * @return
-	 */
-	public boolean isDetailExpanded(){
-		Integer rowIndex = new Integer(getRowIndex());
-		
-		return _expandedNodes.contains(rowIndex);
-	}
 	
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 

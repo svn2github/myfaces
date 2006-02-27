@@ -229,7 +229,7 @@
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
          <description>
-              This variable has the boolean property "detailExpanded" which is true if the current detail row is expanded and the action method 
+              This variable has the boolean property "currentdetailExpanded" which is true if the current detail row is expanded and the action method
               "toggleDetail" which expand/collapse the current detail row.
          </description>
       </attribute>
