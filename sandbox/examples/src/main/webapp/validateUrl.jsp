@@ -46,41 +46,41 @@ managed beans used:
             <h:inputText id="email" value="#{validateForm.email}" required="true">
                 <f:validator validatorId="org.apache.myfaces.validator.Email"/>
             </h:inputText>
-                                <x:message id="emailError" for="email" styleClass="error" />
+                                <t:message id="emailError" for="email" styleClass="error" />
 
                                 <h:outputLabel for="email2" value="#{example_messages['validate_email']}2" />
             <h:inputText id="email2" value="#{validateForm.email2}" required="true">
-                <x:validateEmail />
+                <t:validateEmail />
             </h:inputText>
-                                <x:message id="emailError2" for="email2" styleClass="error" />
+                                <t:message id="emailError2" for="email2" styleClass="error" />
 
                                 <h:outputLabel for="creditCardNumber" value="#{example_messages['validate_credit']}" />
             <h:inputText id="creditCardNumber" value="#{validateForm.creditCardNumber}" required="true">
-                <x:validateCreditCard />
+                <t:validateCreditCard />
             </h:inputText>
-                                <x:message id="creditCardNumberError" for="creditCardNumber" styleClass="error" />
+                                <t:message id="creditCardNumberError" for="creditCardNumber" styleClass="error" />
 
                                <h:outputLabel for="url" value="#{example_messages['validate_url']}" />
             <h:inputText id="url" value="#{validateForm.url}" required="true">
                 <s:validateUrl />
             </h:inputText>
-                                <x:message id="urlError" for="url" styleClass="error" />
+                                <t:message id="urlError" for="url" styleClass="error" />
 
                  <h:outputLabel for="regExprValue" value="#{example_messages['validate_regexp']}" />
             <h:inputText id="regExprValue" value="#{validateForm.regExpr}" required="true">
-                <x:validateRegExpr pattern='\d{5}' />
+                <t:validateRegExpr pattern='\d{5}' />
             </h:inputText>
-                 <x:message id="regExprValueError" for="regExprValue" styleClass="error" />
+                 <t:message id="regExprValueError" for="regExprValue" styleClass="error" />
 
                                 <h:outputLabel for="equal" value="#{example_messages['validate_equal']}" />
             <h:inputText id="equal" value="#{validateForm.equal}" required="true"/>
-                                <x:message id="equalError" for="equal" styleClass="error" />
+                                <t:message id="equalError" for="equal" styleClass="error" />
 
                                 <h:outputLabel for="equal2" value="#{example_messages['validate_equal']}2" />
             <h:inputText id="equal2" value="#{validateForm.equal2}" required="true">
-                <x:validateEqual for="equal" />
+                <t:validateEqual for="equal" />
             </h:inputText>
-                                <x:message id="equal2Error" for="equal2" styleClass="error" />
+                                <t:message id="equal2Error" for="equal2" styleClass="error" />
 
             <h:panelGroup/>
                             <h:commandButton id="validateButton" value="#{example_messages['button_submit']}" action="#{validateForm.submit}"/>
