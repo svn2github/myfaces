@@ -18,11 +18,41 @@
                 </f:verbatim>
             </h:panelGrid>
 
-            <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax (with tableSuggest feature)</f:verbatim></h:outputLink>
-            <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components - server side validation through ajax </f:verbatim></h:outputLink>
-            <h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
-            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
-            <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest</f:verbatim></h:outputLink>
+            <h:outputText value="Resource Serving"/>
+            <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="graphicImageDynamic.jsf" ><f:verbatim>GraphicImageDynamic - graphic image without a dedicated servlet</f:verbatim></h:outputLink>
+	            <h:outputLink value="graphicImageDynamicText.jsf" ><f:verbatim>GraphicImageDynamic - text rendered as graphic image</f:verbatim></h:outputLink>
+	            <h:outputLink value="outputLinkDynamic.jsf" ><f:verbatim>OutputLinkDynamic - resource serving from a link without a dedicated servlet</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
+            <h:outputText value="Input Handling"/>
+            <h:panelGrid style="padding-left:25px">
+            	<h:outputLink value="focus.jsf"><f:verbatim>Focus - a component to set a target component as the focus on page load.</f:verbatim></h:outputLink>
+            	<h:outputLink value="stateChangedNotifier.jsf"><f:verbatim>stateChangedNotifier - Shows a confirmation message if some of the fields in the form have changed</f:verbatim></h:outputLink>
+	            <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>DateTimeConverter - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
+	            <h:outputLink value="valueChangeNotifier.jsf"><f:verbatim>valueChangeNotifier - Calls a custom valueChangeEvent method during MODEL_UPDATE Phase of the Faces Lifecycle</f:verbatim></h:outputLink>
+	            
+	            <h:outputText value="Validation"/>
+	            <h:panelGrid style="padding-left:25px">
+	            	<h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
+	            	<h:outputLink value="validateCompareTo.jsf" ><f:verbatim>validateCompareTo - Compare values on two different components</f:verbatim></h:outputLink>
+	            	<h:outputLink value="subForm.jsf"><f:verbatim>SubForm - Partial validation and model update with SubForms</f:verbatim></h:outputLink>
+	            </h:panelGrid>
+
+            </h:panelGrid>
+
+            <h:outputText value="Layout"/>
+            <h:panelGrid style="padding-left:25px">
+            	<h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
+            <h:outputText value="Input Suggest"/>
+            <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax (with tableSuggest feature)</f:verbatim></h:outputLink>
+	            <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components - server side validation through ajax </f:verbatim></h:outputLink>
+	            <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest</f:verbatim></h:outputLink>
+            </h:panelGrid>
+            
             <h:outputText value="Schedule"/>
             <h:panelGrid style="padding-left:25px">
 	            <h:outputLink value="schedule/example1.jsf" ><f:verbatim>Schedule with sample entries</f:verbatim></h:outputLink>
@@ -30,20 +60,21 @@
 	            <h:outputLink value="schedule/example3.jsf" ><f:verbatim>Customizable schedule</f:verbatim></h:outputLink>
 	            <h:outputLink value="schedule/example4.jsf" ><f:verbatim>Schedule with custom styleClasses and custom EntryRenderer</f:verbatim></h:outputLink>
             </h:panelGrid>
-            <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
-            <h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
-            <h:outputLink value="graphicImageDynamic.jsf" ><f:verbatim>GraphicImageDynamic - graphic image without a dedicated servlet</f:verbatim></h:outputLink>
-            <h:outputLink value="graphicImageDynamicText.jsf" ><f:verbatim>GraphicImageDynamic - text rendered as graphic image</f:verbatim></h:outputLink>
-            <h:outputLink value="outputLinkDynamic.jsf" ><f:verbatim>OutputLinkDynamic - resource serving from a link without a dedicated servlet</f:verbatim></h:outputLink>
-            <h:outputLink value="effect.jsf" ><f:verbatim>Effect - FAT and script.aculo.us effects</f:verbatim></h:outputLink>
-			<h:commandLink action="go_scope_shop"><f:verbatim>Scope - saveState without serialisation</f:verbatim></h:commandLink>
-			<h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - a picklist</f:verbatim></h:outputLink>
-            <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>DateTimeConverter - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
-            <h:outputLink value="focus.jsf"><f:verbatim>Focus - a component to set a target component as the focus on page load.</f:verbatim></h:outputLink>
-            <h:outputLink value="subForm.jsf"><f:verbatim>SubForm - Partial validation and model update with SubForms</f:verbatim></h:outputLink>
-            <h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
-            <h:outputLink value="stateChangedNotifier.jsf"><f:verbatim>stateChangedNotifier - Shows a confirmation message if some of the fields in the form have changed</f:verbatim></h:outputLink>
-            <h:outputLink value="valueChangeNotifier.jsf"><f:verbatim>valueChangeNotifier - Calls a custom valueChangeEvent method during MODEL_UPDATE Phase of the Faces Lifecycle</f:verbatim></h:outputLink>
+                        
+            <h:outputText value="Data Tables"/>
+            <h:panelGrid style="padding-left:25px">
+            	<h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
+            	<h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
+            <h:outputText value="Miscellaneous"/>
+            <h:panelGrid style="padding-left:25px">
+				<h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - a picklist</f:verbatim></h:outputLink>
+	 			<h:commandLink action="go_scope_shop"><f:verbatim>Scope - saveState without serialisation</f:verbatim></h:commandLink>
+           		<h:outputLink value="effect.jsf" ><f:verbatim>Effect - FAT and script.aculo.us effects</f:verbatim></h:outputLink>
+	            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
         </h:panelGrid>
     </f:view>
    
