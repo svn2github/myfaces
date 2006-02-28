@@ -22,10 +22,9 @@ import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -207,17 +206,17 @@ public class CompareToValidator implements Validator, StateHolder {
     protected String nameForOperator(String operator)
     {
         if (OPERATOR_EQUALS == operator)
-            return "equal";
+            return "equal to";
         else if (OPERATOR_NOT_EQUALS == operator)
-            return "not equal";
+            return "inequal to";
         else if (OPERATOR_GREATER_THAN == operator)
             return "greater than";
         else if (OPERATOR_LESS_THAN == operator)
             return "less than";
         else if (OPERATOR_GREATER_THAN_OR_EQUALS == operator)
-            return "greater than or equal";
+            return "greater than or equal to";
         else if (OPERATOR_LESS_THAN_OR_EQUALS == operator)
-            return "less than or equal";
+            return "less than or equal to";
         
         throw new IllegalStateException("Operator has unknown value of '" + operator + "'");
     }
@@ -257,18 +256,19 @@ public class CompareToValidator implements Validator, StateHolder {
 
 		String foreignComponentName = getFor();
 		
-		UIInput foreignComponent = (UIInput) uiComponent.getParent().findComponent(foreignComponentName);
+		UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
+		EditableValueHolder foreignEditableValueHolder = (EditableValueHolder)foreignComponent;
         if(foreignComponent == null)
             throw new FacesException("Unable to find component '" + foreignComponentName + "' (calling findComponent on component '" + uiComponent.getId() + "')");
 
-        if (foreignComponent.isRequired() && foreignComponent.getValue()== null ) {
+        if (foreignEditableValueHolder.isRequired() && foreignEditableValueHolder.getValue()== null ) {
             return;
         }
 
         Object foreignValue;
-        if (foreignComponent.isValid())
+        if (foreignEditableValueHolder.isValid())
         {
-            foreignValue = foreignComponent.getValue();
+            foreignValue = foreignEditableValueHolder.getValue();
         }
         else
         {
@@ -474,9 +474,9 @@ public class CompareToValidator implements Validator, StateHolder {
         return renderer;
     }
 
-    protected Converter findUIOutputConverter(FacesContext facesContext, UIOutput component)
+    protected Converter findUIOutputConverter(FacesContext facesContext, UIComponent component)
     {
-        Converter converter = component.getConverter();
+        Converter converter = ((EditableValueHolder)component).getConverter();
         if (converter != null) return converter;
 
         //Try to find out by value binding
@@ -537,10 +537,10 @@ public class CompareToValidator implements Validator, StateHolder {
     
 	// --------------------- borrowed and modified from UIInput ------------
 
-	protected Object getConvertedValueNonValid(FacesContext facesContext, UIInput component)
+	protected Object getConvertedValueNonValid(FacesContext facesContext, UIComponent component)
     {
         Object componentValueObject;
-        Object submittedValue = component.getSubmittedValue();
+        Object submittedValue = ((EditableValueHolder)component).getSubmittedValue();
         if (submittedValue == null)
         {
             componentValueObject = null;
