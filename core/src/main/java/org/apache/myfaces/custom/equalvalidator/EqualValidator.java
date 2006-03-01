@@ -17,9 +17,9 @@ package org.apache.myfaces.custom.equalvalidator;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
@@ -69,17 +69,20 @@ public class EqualValidator implements Validator, StateHolder {
 		    return;
 		}
 
-		UIInput foreignComp = (UIInput) uiComponent.getParent().findComponent(_for);
+        UIComponent foreignComp = uiComponent.getParent().findComponent(_for);
         if(foreignComp==null)
             throw new FacesException("Unable to find component '" + _for + "' (calling findComponent on component '" + uiComponent.getId() + "')");
+        if(false == foreignComp instanceof EditableValueHolder)
+            throw new FacesException("Component '" + foreignComp.getId() + "' does not implement EditableValueHolder");
+        EditableValueHolder foreignEditableValueHolder = (EditableValueHolder) foreignComp;
 
-        if (foreignComp.isRequired() && foreignComp.getValue()== null ) {
+        if (foreignEditableValueHolder.isRequired() && foreignEditableValueHolder.getValue()== null ) {
             return;
         }
 
-		Object[] args = {value.toString(),(foreignComp.getValue()==null) ? foreignComp.getId():foreignComp.getValue().toString()};
+		Object[] args = {value.toString(),(foreignEditableValueHolder.getValue()==null) ? foreignComp.getId():foreignEditableValueHolder.getValue().toString()};
 
-		if(foreignComp.getValue()==null || !foreignComp.getValue().toString().equals(value.toString())  )
+		if(foreignEditableValueHolder.getValue()==null || !foreignEditableValueHolder.getValue().toString().equals(value.toString())  )
 			throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,EQUAL_MESSAGE_ID, args));
 
 	}
