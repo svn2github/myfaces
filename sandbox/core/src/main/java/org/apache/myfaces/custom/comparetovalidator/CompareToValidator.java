@@ -169,8 +169,6 @@ public class CompareToValidator implements Validator, StateHolder {
 
     protected String getOperatorForString(String operatorSpecified)
     {
-        String operatorFound = null;
-
         if (OPERATOR_EQUALS.equalsIgnoreCase(operatorSpecified))
             return OPERATOR_EQUALS;
         else if (OPERATOR_NOT_EQUALS.equalsIgnoreCase(operatorSpecified))
@@ -535,6 +533,8 @@ public class CompareToValidator implements Validator, StateHolder {
         return FacesContext.getCurrentInstance();
     }
 
+
+    // --------------------- borrowed and modified from UIInput ------------
 
     protected Object getConvertedValueNonValid(FacesContext facesContext, UIComponent component)
     {
