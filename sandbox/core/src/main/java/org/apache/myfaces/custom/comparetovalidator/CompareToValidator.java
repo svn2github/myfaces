@@ -252,13 +252,15 @@ public class CompareToValidator implements Validator, StateHolder {
             return;
         }
 
-				String foreignComponentName = getFor();
-		
-				UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
-				EditableValueHolder foreignEditableValueHolder = (EditableValueHolder)foreignComponent;
+		String foreignComponentName = getFor();
 
+		UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
         if(foreignComponent == null)
             throw new FacesException("Unable to find component '" + foreignComponentName + "' (calling findComponent on component '" + uiComponent.getId() + "')");
+
+        if(false == foreignComponent instanceof EditableValueHolder)
+            throw new FacesException("Component '" + foreignComponent.getId() + "' does not implement EditableValueHolder");
+        EditableValueHolder foreignEditableValueHolder = (EditableValueHolder)foreignComponent;
 
         if (foreignEditableValueHolder.isRequired() && foreignEditableValueHolder.getValue()== null ) {
             return;
