@@ -1,6 +1,6 @@
 package org.apache.myfaces.custom.subform;
 
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * @author Gerald Muellan
@@ -9,5 +9,5 @@ import org.apache.myfaces.renderkit.html.HtmlRenderer;
  */
 public class SubFormRenderer extends HtmlRenderer
 {
-    
+
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

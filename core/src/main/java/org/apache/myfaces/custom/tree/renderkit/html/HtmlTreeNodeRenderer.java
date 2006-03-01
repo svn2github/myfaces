@@ -16,8 +16,8 @@
 package org.apache.myfaces.custom.tree.renderkit.html;
 
 import org.apache.myfaces.custom.tree.HtmlTreeNode;
-import org.apache.myfaces.renderkit.html.HtmlLinkRendererBase;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlLinkRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

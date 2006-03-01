@@ -17,13 +17,13 @@ package org.apache.myfaces.custom.focus;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 /**
  * @author Rogerio Pereira Araujo (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFocusTag extends UIComponentTagBase 
+public class HtmlFocusTag extends UIComponentTagBase
 {
     private static final String FOR_ATTR                = "for";
 
@@ -35,7 +35,7 @@ public class HtmlFocusTag extends UIComponentTagBase
         _for = null;
 
     }
-     
+
     public String getComponentType() {
 
         return HtmlFocus.COMPONENT_TYPE;
@@ -54,7 +54,7 @@ public class HtmlFocusTag extends UIComponentTagBase
 
         setStringProperty(component, FOR_ATTR, _for);
     }
-   
+
     public void setFor(String aFor)
     {
         _for = aFor;

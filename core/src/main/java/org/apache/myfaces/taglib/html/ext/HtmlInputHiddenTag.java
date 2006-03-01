@@ -16,7 +16,7 @@
 package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
-import org.apache.myfaces.taglib.html.HtmlInputHiddenTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputHiddenTagBase;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)

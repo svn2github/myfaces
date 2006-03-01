@@ -17,9 +17,9 @@ package org.apache.myfaces.custom.crosstable;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -88,7 +88,7 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase
     {
         _var = var;
     }
-    
+
     public void setWidth(String width)
     {
         _width = width;
@@ -133,14 +133,14 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase
         setStringProperty(component, "footeronkeydown", _footeronkeydown);
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
     }
-    
+
     /**
-     * @see org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase#release()
+     * @see org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase#release()
      */
     public void release()
     {
         super.release();
-        
+
         _var = null;
         _width = null;
 

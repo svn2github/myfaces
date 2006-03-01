@@ -22,8 +22,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * @author Rogerio Pereira Araujo (latest modification by $Author$)
@@ -36,23 +36,23 @@ public class HtmlFocusRenderer extends Renderer
             throws IOException
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent,
-                HtmlFocus.class);
+                                         HtmlFocus.class);
 
         HtmlFocus focus = (HtmlFocus) uiComponent;
-        
+
         UIComponent targetComponent = focus.findUIComponent();
 
-        if(targetComponent != null) 
+        if(targetComponent != null)
         {
-	        String clientId = targetComponent.getClientId(facesContext);
-	        
-	        ResponseWriter writer = facesContext.getResponseWriter();
-	
-	        writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
-	        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-	        writer.writeText("document.getElementById('" + clientId + "').focus()", null);
-	        writer.endElement(HTML.SCRIPT_ELEM);
-        }   
+            String clientId = targetComponent.getClientId(facesContext);
+
+            ResponseWriter writer = facesContext.getResponseWriter();
+
+            writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
+            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+            writer.writeText("document.getElementById('" + clientId + "').focus()", null);
+            writer.endElement(HTML.SCRIPT_ELEM);
+        }
     }
 
 }

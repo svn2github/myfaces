@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.aliasbean;
 import javax.faces.component.UIComponent;
 import javax.servlet.jsp.JspException;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

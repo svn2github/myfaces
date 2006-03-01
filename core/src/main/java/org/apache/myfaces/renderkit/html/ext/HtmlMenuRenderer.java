@@ -21,8 +21,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.renderkit.html.HtmlMenuRendererBase;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlMenuRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 
 /**

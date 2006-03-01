@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.radio;
 
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;

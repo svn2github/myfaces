@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.panelstack;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 import javax.faces.component.UIComponent;
 import javax.servlet.jsp.JspException;

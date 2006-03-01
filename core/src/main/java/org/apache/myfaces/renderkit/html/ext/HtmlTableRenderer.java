@@ -27,11 +27,11 @@ import javax.faces.context.ResponseWriter;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.crosstable.UIColumns;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
 
 /**
  * Renderer for the Tomahawk extended HtmlDataTable component.
@@ -82,7 +82,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 	}
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
@@ -101,7 +101,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException
     {
@@ -120,7 +120,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
@@ -160,7 +160,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
     
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderRowStyle(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, java.util.Iterator)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderRowStyle(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, java.util.Iterator)
      */
     protected void renderRowStyle(FacesContext facesContext, ResponseWriter writer, UIData uiData, Iterator rowStyleIterator) throws IOException
     {
@@ -231,7 +231,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * attribute on the UIColumns object, then they end up rendering content
      * that is extracted from the current column object.  
      * 
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
      */
     protected void encodeColumnChild(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData,
@@ -254,7 +254,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnBody(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnBody(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
      */
     protected void renderColumnBody(FacesContext facesContext,
                     ResponseWriter writer, UIData uiData,
@@ -312,7 +312,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * attribute on the UIColumns object, then it ends up rendering content
      * that is extracted from the current column object.
      *   
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnChildHeaderOrFooterRow(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, java.lang.String, boolean)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnChildHeaderOrFooterRow(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, java.lang.String, boolean)
      */
     protected void renderColumnChildHeaderOrFooterRow(
                     FacesContext facesContext, ResponseWriter writer,
@@ -343,7 +343,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnHeaderCell(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, javax.faces.component.UIComponent, java.lang.String, int)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnHeaderCell(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, javax.faces.component.UIComponent, java.lang.String, int)
      */
     protected void renderColumnHeaderCell(FacesContext facesContext,
                     ResponseWriter writer, UIComponent uiComponent,
@@ -383,7 +383,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#renderColumnFooterCell(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, javax.faces.component.UIComponent, java.lang.String, int)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnFooterCell(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, javax.faces.component.UIComponent, java.lang.String, int)
      */
     protected void renderColumnFooterCell(FacesContext facesContext,
                     ResponseWriter writer, UIComponent uiComponent,
@@ -448,7 +448,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * For UIColumns children, return the number of dynamic columns rendered
      * by that child.
      * 
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase
      *   #determineChildColSpan(javax.faces.component.UIComponent)
      */
     protected int determineChildColSpan(UIComponent uiComponent)
@@ -465,7 +465,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * Return true if the specified component has a facet that needs to be
      * rendered in a THEAD or TFOOT section.
      * 
-     * @see org.apache.myfaces.renderkit.html.HtmlTableRendererBase#hasFacet(boolean, javax.faces.component.UIComponent)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#hasFacet(boolean, javax.faces.component.UIComponent)
      */
     protected boolean hasFacet(boolean header, UIComponent uiComponent)
     {

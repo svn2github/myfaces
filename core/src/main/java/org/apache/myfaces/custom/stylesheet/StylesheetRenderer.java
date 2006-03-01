@@ -21,8 +21,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
@@ -31,7 +31,7 @@ import org.apache.myfaces.renderkit.html.HtmlRenderer;
 
 public class StylesheetRenderer extends HtmlRenderer {
 
-	 public void encodeEnd(FacesContext context, UIComponent component)
+     public void encodeEnd(FacesContext context, UIComponent component)
         throws IOException {
 
         if ((context == null) || (component == null)) {
@@ -39,7 +39,7 @@ public class StylesheetRenderer extends HtmlRenderer {
         }
         Stylesheet stylesheet = (Stylesheet) component;
         ResponseWriter writer = context.getResponseWriter();
-        
+
         if(stylesheet.isInline())
         {
           //include as inline css
@@ -48,7 +48,7 @@ public class StylesheetRenderer extends HtmlRenderer {
           if(stylesheet.getMedia() != null)
           {
             writer.writeAttribute("media", stylesheet.getMedia(), null);
-          }          
+          }
           //writer.writeText("<!--\n", null);
           Object text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
           if (text != null)
@@ -56,7 +56,7 @@ public class StylesheetRenderer extends HtmlRenderer {
               writer.writeText(text, null);
           }
           //writer.writeText("\n-->", null);
-          writer.endElement("style");  
+          writer.endElement("style");
         }
         else
         {
@@ -71,10 +71,10 @@ public class StylesheetRenderer extends HtmlRenderer {
           writer.writeURIAttribute
               ("href",
                context.getExternalContext().getRequestContextPath()+stylesheet.getPath(),
-             "path");
-          writer.endElement("link");          
+               "path");
+          writer.endElement("link");
         }
-        
+
 
     }
 }

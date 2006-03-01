@@ -17,10 +17,10 @@ package org.apache.myfaces.taglib.html.ext;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlGraphicImageTagBase;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlGraphicImage;
-import org.apache.myfaces.taglib.html.HtmlGraphicImageTagBase;
 
 /**
  * @author Bruno Aranda
@@ -39,22 +39,22 @@ public class HtmlGraphicImageTag
         return "org.apache.myfaces.Image";
     }
 
-    private String _align;  
+    private String _align;
     private String _border;
     private String _enabledOnUserRole;
     private String _hspace;
     private String _visibleOnUserRole;
-    private String _vspace;    
+    private String _vspace;
 
     public void release() {
         super.release();
 
         _align=null;
-        _border=null;        
+        _border=null;
         _enabledOnUserRole=null;
-        _hspace=null;        
+        _hspace=null;
         _visibleOnUserRole=null;
-        _vspace=null;        
+        _vspace=null;
    }
 
     protected void setProperties(UIComponent component)
@@ -64,7 +64,7 @@ public class HtmlGraphicImageTag
         setStringProperty(component, HTML.ALIGN_ATTR, _align);
         setStringProperty(component, HTML.BORDER_ATTR, _border);
         setStringProperty(component, HTML.HSPACE_ATTR, _hspace);
-        setStringProperty(component, HTML.VSPACE_ATTR, _vspace);        
+        setStringProperty(component, HTML.VSPACE_ATTR, _vspace);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
     }

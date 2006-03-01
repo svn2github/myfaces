@@ -16,7 +16,7 @@
 package org.apache.myfaces.renderkit.html.ext;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.renderkit.html.HtmlButtonRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlButtonRendererBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

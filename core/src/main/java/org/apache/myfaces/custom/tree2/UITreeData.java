@@ -35,7 +35,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
 
-import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
  * TreeData is a {@link UIComponent} that supports binding data stored in a tree represented

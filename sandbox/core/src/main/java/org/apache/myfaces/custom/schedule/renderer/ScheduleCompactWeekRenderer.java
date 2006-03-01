@@ -19,7 +19,7 @@ package org.apache.myfaces.custom.schedule.renderer;
 
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

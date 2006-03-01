@@ -15,11 +15,11 @@
  */
 package org.apache.myfaces.custom.datalist;
 
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;

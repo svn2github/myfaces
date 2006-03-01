@@ -33,8 +33,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.webapp.webxml.ServletMapping;
-import org.apache.myfaces.webapp.webxml.WebXml;
+import org.apache.myfaces.shared_tomahawk.webapp.webxml.ServletMapping;
+import org.apache.myfaces.shared_tomahawk.webapp.webxml.WebXml;
 import org.apache.struts.tiles.ComponentContext;
 import org.apache.struts.tiles.ComponentDefinition;
 import org.apache.struts.tiles.Controller;

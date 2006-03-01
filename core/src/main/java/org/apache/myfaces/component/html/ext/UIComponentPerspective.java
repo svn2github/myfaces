@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.myfaces.component.ExecuteOnCallback;
+import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;

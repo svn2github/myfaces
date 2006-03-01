@@ -17,8 +17,8 @@ package org.apache.myfaces.renderkit.html.ext;
 
 import org.apache.myfaces.component.html.ext.HtmlMessage;
 import org.apache.myfaces.component.html.ext.HtmlMessages;
-import org.apache.myfaces.renderkit.html.HtmlMessagesRendererBase;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlMessagesRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;

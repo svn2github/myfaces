@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.tree.taglib;
 import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.custom.tree.HtmlTreeCheckbox;
-import org.apache.myfaces.taglib.core.SelectItemTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.core.SelectItemTagBase;
 
 /**
  * @author <a href="dlestrat@apache.org">David Le Strat</a>

@@ -16,8 +16,8 @@
 package org.apache.myfaces.custom.navmenu;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.taglib.core.SelectItemTagBase;
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.taglib.core.SelectItemTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 

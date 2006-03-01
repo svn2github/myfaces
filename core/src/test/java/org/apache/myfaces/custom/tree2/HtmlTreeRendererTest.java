@@ -16,14 +16,11 @@
 
 package org.apache.myfaces.custom.tree2;
 
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
 import java.util.Stack;
 
 /**

@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 
 /**
@@ -32,7 +32,7 @@ import org.apache.myfaces.util._ComponentUtils;
 public class HtmlSchedule
     extends UISchedule implements UserRoleAware
 {
-   
+
 //  ------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Schedule";
@@ -95,6 +95,6 @@ public class HtmlSchedule
         _visibleOnUserRole = (String)values[2];
     }
 //  ------------------ GENERATED CODE END ---------------------------------------
-	
+
 }
 //The End

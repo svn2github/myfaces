@@ -42,14 +42,14 @@ import org.apache.myfaces.component.html.util.ParameterResourceHandler;
 import org.apache.myfaces.custom.dynamicResources.ResourceContext;
 import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
 import org.apache.myfaces.custom.dynamicResources.SimpleResourceContext;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.ResourceLoader;
-import org.apache.myfaces.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
  * @author Sylvain Vieujot
@@ -57,8 +57,8 @@ import org.apache.myfaces.util.ClassUtils;
  */
 public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements ResourceLoader
 {
-	public static final String RENDERER_TYPE = "org.apache.myfaces.OutputLinkDynamicRenderer";
-	
+    public static final String RENDERER_TYPE = "org.apache.myfaces.OutputLinkDynamicRenderer";
+
     private static final class ResourceResponseStream extends ResponseStream
     {
         private final OutputStream _out;
@@ -107,7 +107,7 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
         writer.startElement(HTML.ANCHOR_ELEM, outputLinkDynamic);
         HtmlRendererUtils.writeIdIfNecessary(writer, outputLinkDynamic, context);
         HtmlRendererUtils.renderHTMLAttributes(writer, outputLinkDynamic,
-                HTML.ANCHOR_PASSTHROUGH_ATTRIBUTES);
+                                               HTML.ANCHOR_PASSTHROUGH_ATTRIBUTES);
 
         Map params = getParameterMap(context, component);
 
@@ -115,7 +115,7 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
         if (resourceRendererClass == null)
         {
             throw new FacesException("No resourceRendererClass defined for component "
-                    + component.getId());
+                                     + component.getId());
         }
         params.put(RENDERER_PARAM, resourceRendererClass.getName());
 
@@ -124,10 +124,10 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
                 .getClass(), params));
         writer.writeAttribute(HTML.HREF_ATTR, url, null);
     }
-    
+
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
-    	    ResponseWriter writer = facesContext.getResponseWriter();
+            ResponseWriter writer = facesContext.getResponseWriter();
         // force separate end tag
         writer.writeText("", null);
         writer.endElement(HTML.ANCHOR_ELEM);
@@ -158,11 +158,11 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
     }
 
     /**
-     * @throws IOException 
-     * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
+     * @throws IOException
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
-            HttpServletResponse response, String resourceUri) throws IOException
+                              HttpServletResponse response, String resourceUri) throws IOException
     {
         FacesContextFactory facesContextFactory = (FacesContextFactory) FactoryFinder
                 .getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
@@ -170,7 +170,7 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
                 .getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         Lifecycle lifecycle = lifecycleFactory.getLifecycle(getLifecycleId(context));
         FacesContext facesContext = facesContextFactory.getFacesContext(context, request, response,
-                lifecycle);
+                                                                        lifecycle);
         facesContext.setResponseStream(new ResourceResponseStream(response.getOutputStream()));
         try
         {
@@ -186,27 +186,27 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
                 if (!ResourceRenderer.class.isAssignableFrom(rendererClass))
                 {
                     throw new FacesException("Resource renderer class [" + rendererValue
-                            + "] does not implement " + ResourceRenderer.class.getName());
+                                             + "] does not implement " + ResourceRenderer.class.getName());
                 }
                 try
                 {
-                	ResourceRenderer resourceRenderer = (ResourceRenderer) rendererClass.newInstance();
+                    ResourceRenderer resourceRenderer = (ResourceRenderer) rendererClass.newInstance();
                     renderResource(resourceRenderer, facesContext);
                 }
                 catch (InstantiationException e)
                 {
                     throw new FacesException("could not instantiate resource renderer class "
-                            + rendererValue + " : " + e.getMessage(), e);
+                                             + rendererValue + " : " + e.getMessage(), e);
                 }
                 catch (IllegalAccessException e)
                 {
                     throw new FacesException("could not instantiate resource renderer class "
-                            + rendererValue + " : " + e.getMessage(), e);
+                                             + rendererValue + " : " + e.getMessage(), e);
                 }
                 catch (Exception e)
                 {
                     throw new FacesException("could not renderer resource "
-                            + rendererValue + " : " + e.getMessage(), e);
+                                             + rendererValue + " : " + e.getMessage(), e);
                 }
             }
             catch (ClassNotFoundException e)
@@ -224,30 +224,30 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
     protected void renderResource(ResourceRenderer resourceRenderer, FacesContext facesContext)
             throws Exception
     {
-    		ResourceContext resourceContext = createResourceContext(facesContext);
-    		
-    		resourceRenderer.setContext(facesContext, resourceContext);
-    		
+            ResourceContext resourceContext = createResourceContext(facesContext);
+
+            resourceRenderer.setContext(facesContext, resourceContext);
+
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext()
                 .getResponse();
-        
-        
+
+
         int contentLength = resourceRenderer.getContentLength();
         if( contentLength >0 )
         {
             response.setContentLength(contentLength);
         }
-        
+
         String contentType = resourceRenderer.getContentType();
         if (contentType != null && contentType.length() > 0 )
         {
             response.setContentType(contentType);
         }
-        
+
         ResponseStream out = facesContext.getResponseStream();
         try
         {
-        		resourceRenderer.renderResource( out );
+                resourceRenderer.renderResource( out );
         }
         finally
         {

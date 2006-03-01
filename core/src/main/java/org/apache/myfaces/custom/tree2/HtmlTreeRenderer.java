@@ -17,13 +17,12 @@
 package org.apache.myfaces.custom.tree2;
 
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.custom.tree2.TreeWalkerBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -42,7 +41,6 @@ import java.util.Iterator;
 import java.net.URLDecoder;
 import javax.servlet.http.Cookie;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Sean Schofield
@@ -637,7 +635,7 @@ public class HtmlTreeRenderer extends Renderer
         if (imageLocation == null)
         {
             return addResource.getResourceUri(context, HtmlTreeRenderer.class,
-                "images/" + imageName, withContextPath);
+                                              "images/" + imageName, withContextPath);
         }
         else
         {

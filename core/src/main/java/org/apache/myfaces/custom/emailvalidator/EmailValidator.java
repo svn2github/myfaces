@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.emailvalidator;
 
-import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 import org.apache.commons.validator.GenericValidator;
 

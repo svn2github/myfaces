@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.date;
 import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.taglib.html.HtmlInputTextTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputTextTagBase;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)

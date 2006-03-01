@@ -25,8 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 import org.apache.myfaces.custom.tree.HtmlTreeCheckbox;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlCheckboxRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlCheckboxRendererBase;
 
 /**
  * @author <a href="mailto:dlestrat@apache.org">David Le Strat </a>
@@ -52,7 +52,7 @@ public class HtmlTreeCheckboxRenderer extends HtmlCheckboxRendererBase
         if (uiComponent == null)
         {
             throw new IllegalStateException("Could not find component '" + forAttr
-                    + "' (calling findComponent on component '" + checkbox.getClientId(context) + "')");
+                                            + "' (calling findComponent on component '" + checkbox.getClientId(context) + "')");
         }
         if (!(uiComponent instanceof UISelectMany))
         {
@@ -70,7 +70,7 @@ public class HtmlTreeCheckboxRenderer extends HtmlCheckboxRendererBase
         {
             converter = null;
         }
-        
+
         Set lookupSet = RendererUtils.getSelectedValuesAsSet(context, component, converter, uiSelectMany);
 
         Object itemValue = checkbox.getItemValue();
@@ -88,16 +88,16 @@ public class HtmlTreeCheckboxRenderer extends HtmlCheckboxRendererBase
         }
 
         renderCheckbox(context,
-        		uiSelectMany,
-        		itemStrValue,
-        		checkbox.getItemLabel(),
-        		isDisabled(context,uiSelectMany),
-        		lookupSet.contains(itemStrValue),
-                true);
+                       uiSelectMany,
+                       itemStrValue,
+                       checkbox.getItemLabel(),
+                       isDisabled(context,uiSelectMany),
+                       lookupSet.contains(itemStrValue),
+                       true);
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlCheckboxRendererBase#isDisabled(javax.faces.context.FacesContext,
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlCheckboxRendererBase#isDisabled(javax.faces.context.FacesContext,
      *      javax.faces.component.UIComponent)
      */
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)

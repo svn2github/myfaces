@@ -23,9 +23,9 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.util._ComponentUtils;
-import org.apache.myfaces.util.RestoreStateUtils;
-import org.apache.myfaces.component.BindingAware;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
+import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;

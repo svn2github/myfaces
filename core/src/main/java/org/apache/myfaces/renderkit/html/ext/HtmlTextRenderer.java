@@ -22,8 +22,8 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlTextRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase;
 
 
 /**
@@ -63,7 +63,7 @@ public class HtmlTextRenderer
         throws IOException
     {
             HtmlRendererUtils.renderDisplayValueOnly(facesContext,
-                    (UIInput) component);
+                                                     (UIInput) component);
     }
 
     protected void renderNormal(FacesContext facesContext, UIComponent component)

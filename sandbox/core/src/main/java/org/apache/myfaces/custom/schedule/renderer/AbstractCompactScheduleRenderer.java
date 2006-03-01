@@ -29,7 +29,7 @@ import javax.faces.context.ResponseWriter;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ import org.apache.myfaces.renderkit.html.HTML;
  * @version $Revision$
  */
 public abstract class AbstractCompactScheduleRenderer extends
-        AbstractScheduleRenderer
+                                                      AbstractScheduleRenderer
 {
     // ~ Methods
     // ----------------------------------------------------------------
@@ -64,6 +64,43 @@ public abstract class AbstractCompactScheduleRenderer extends
             throws IOException
     {
         // all rendering is done in the begin phase
+    }
+
+    /**
+     * @return The default height, in pixels, of one row in the schedule grid
+     */
+    protected abstract int getDefaultRowHeight();
+
+    /**
+     * @return The name of the property that determines the row height
+     */
+    protected abstract String getRowHeightProperty();
+
+    /**
+     * @param attributes
+     *            The attributes
+     * 
+     * @return The row height, in pixels
+     */
+    protected int getRowHeight(Map attributes)
+    {
+        int rowHeight = 0;
+
+        try
+        {
+            rowHeight = Integer.valueOf(
+                    (String) attributes.get(getRowHeightProperty())).intValue();
+        } catch (Exception e)
+        {
+            rowHeight = 0;
+        }
+
+        if (rowHeight == 0)
+        {
+            rowHeight = getDefaultRowHeight();
+        }
+
+        return rowHeight;
     }
 
     /**
@@ -96,9 +133,9 @@ public abstract class AbstractCompactScheduleRenderer extends
      *             when the cell could not be drawn
      */
     protected void writeDayCell(FacesContext context, ResponseWriter writer,
-            HtmlSchedule schedule, ScheduleDay day, float cellWidth,
-            int dayOfWeek, int dayOfMonth, boolean isWeekend,
-            boolean isCurrentMonth, int rowspan) throws IOException
+                                HtmlSchedule schedule, ScheduleDay day, float cellWidth,
+                                int dayOfWeek, int dayOfMonth, boolean isWeekend,
+                                boolean isCurrentMonth, int rowspan) throws IOException
     {
         Map attributes = schedule.getAttributes();
         writer.startElement(HTML.TD_ELEM, schedule);
@@ -106,7 +143,7 @@ public abstract class AbstractCompactScheduleRenderer extends
         writer.writeAttribute("rowspan", String.valueOf(rowspan), null);
 
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                isCurrentMonth ? "day" : "inactive-day"), null);
+                                                             isCurrentMonth ? "day" : "inactive-day"), null);
 
         // determine the height of the day in pixels
         StringBuffer styleBuffer = new StringBuffer();
@@ -116,36 +153,36 @@ public abstract class AbstractCompactScheduleRenderer extends
         String myRowHeight = "height: ";
         String myContentHeight = "height: ";
 
-    	if (rowHeight > 0) 
-    	{
-    		if (isWeekend)
-    		{
-        		myRowHeight += (rowHeight / 2) + "px;";
-        		myContentHeight += ((rowHeight / 2) - 19) + "px;";
-    		}
-    		else
-    		{
-        		myRowHeight += (rowHeight + 1) + "px;"; //need to add 1 to get the weekends right
-        		myContentHeight += ((rowHeight + 1) - 18) + "px;"; //18 instead of 19, to get the weekends right
-        	}
+        if (rowHeight > 0)
+        {
+            if (isWeekend)
+            {
+                myRowHeight += (rowHeight / 2) + "px;";
+                myContentHeight += ((rowHeight / 2) - 19) + "px;";
+            }
+            else
+            {
+                myRowHeight += (rowHeight + 1) + "px;"; //need to add 1 to get the weekends right
+                myContentHeight += ((rowHeight + 1) - 18) + "px;"; //18 instead of 19, to get the weekends right
+            }
          }
-    	else
-    	{
+        else
+        {
             myRowHeight += "100%;";
-            myContentHeight += "100%;";    		
-    	}        
+            myContentHeight += "100%;";
+        }
 
         styleBuffer.append(myRowHeight);
 
         writer.writeAttribute(HTML.STYLE_ATTR, styleBuffer.toString()
-                + " width: " + cellWidth + "%;", null);
+                                               + " width: " + cellWidth + "%;", null);
 
         writer.startElement(HTML.TABLE_ELEM, schedule);
 
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "day"),
-                null);
+                              null);
         writer.writeAttribute(HTML.STYLE_ATTR, styleBuffer.toString()
-                + " width: 100%;", null);
+                                               + " width: 100%;", null);
 
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
@@ -154,9 +191,9 @@ public abstract class AbstractCompactScheduleRenderer extends
         writer.startElement(HTML.TR_ELEM, schedule);
         writer.startElement(HTML.TD_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR,
-                getStyleClass(schedule, "header"), null);
+                              getStyleClass(schedule, "header"), null);
         writer.writeAttribute(HTML.STYLE_ATTR,
-                "height: 18px; width: 100%; overflow: hidden", null);
+                              "height: 18px; width: 100%; overflow: hidden", null);
         writer.writeText(getDateString(context, schedule, day.getDate()), null);
         writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);
@@ -166,14 +203,14 @@ public abstract class AbstractCompactScheduleRenderer extends
         writer.startElement(HTML.TD_ELEM, schedule);
 
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                "content"), null);
+                                                             "content"), null);
 
         // determine the height of the day content in pixels
         StringBuffer contentStyleBuffer = new StringBuffer();
         contentStyleBuffer.append(myContentHeight);
         contentStyleBuffer.append(" width: 100%;");
         writer.writeAttribute(HTML.STYLE_ATTR, contentStyleBuffer.toString(),
-                null);
+                              null);
 
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer
@@ -212,7 +249,7 @@ public abstract class AbstractCompactScheduleRenderer extends
      *             when the entries could not be drawn
      */
     protected void writeEntries(FacesContext context, HtmlSchedule schedule,
-            ScheduleDay day, ResponseWriter writer) throws IOException
+                                ScheduleDay day, ResponseWriter writer) throws IOException
     {
         UIForm parentForm = getParentForm(schedule);
         TreeSet entrySet = new TreeSet(comparator);
@@ -233,13 +270,13 @@ public abstract class AbstractCompactScheduleRenderer extends
             if (isSelected(schedule, entry))
             {
                 writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "selected"), null);
+                                                                     "selected"), null);
             }
 
             //compose the CSS style for the entry box
             StringBuffer entryStyle = new StringBuffer();
             entryStyle.append("width: 100%;");
-            String entryColor = getEntryRenderer(schedule).getColor(context, schedule, entry, isSelected(schedule, entry)); 
+            String entryColor = getEntryRenderer(schedule).getColor(context, schedule, entry, isSelected(schedule, entry));
             if (isSelected(schedule, entry) && entryColor != null) {
                 entryStyle.append(" background-color: ");
                 entryStyle.append(entryColor);
@@ -248,14 +285,14 @@ public abstract class AbstractCompactScheduleRenderer extends
                 entryStyle.append(entryColor);
                 entryStyle.append(";");
             }
-            
+
             writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(), null);
 
             // draw the tooltip
             if (showTooltip(schedule))
             {
                 getEntryRenderer(schedule).renderToolTip(context, writer,
-                        schedule, entry, isSelected(schedule, entry));
+                                                         schedule, entry, isSelected(schedule, entry));
             }
 
             if (!isSelected(schedule, entry) && !schedule.isReadonly())
@@ -276,12 +313,12 @@ public abstract class AbstractCompactScheduleRenderer extends
                 mousedown.append("'].submit()");
                 writer
                         .writeAttribute("onmousedown", mousedown.toString(),
-                                null);
+                                        null);
             }
 
             // draw the content
             getEntryRenderer(schedule).renderContent(context, writer, schedule,
-                    day, entry, true, isSelected(schedule, entry));
+                                                     day, entry, true, isSelected(schedule, entry));
 
             if (!isSelected(schedule, entry) && !schedule.isReadonly())
             {

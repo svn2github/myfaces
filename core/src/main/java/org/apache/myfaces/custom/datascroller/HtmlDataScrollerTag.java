@@ -16,8 +16,8 @@
 package org.apache.myfaces.custom.datascroller;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 import javax.faces.component.UIComponent;
 

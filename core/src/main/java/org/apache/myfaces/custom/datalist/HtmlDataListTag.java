@@ -18,8 +18,8 @@ package org.apache.myfaces.custom.datalist;
 import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -61,7 +61,7 @@ public class HtmlDataListTag
     // User Role support
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
-    
+
     //CSS class for List Items
     private String _itemStyleClass;
 
@@ -92,7 +92,7 @@ public class HtmlDataListTag
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
-    
+
         setStringProperty(component, "itemStyleClass", _itemStyleClass);
     }
 
@@ -135,13 +135,13 @@ public class HtmlDataListTag
     {
         _visibleOnUserRole = visibleOnUserRole;
     }
-    
+
     public void setItemStyleClass(String itemStyleClass) {
-    	_itemStyleClass = itemStyleClass;
+        _itemStyleClass = itemStyleClass;
     }
-    
+
     public String getItemStyleClass() {
-    	return _itemStyleClass;
+        return _itemStyleClass;
     }
-    
+
 }

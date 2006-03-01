@@ -15,11 +15,11 @@
  */
 package org.apache.myfaces.custom.navmenu.htmlnavmenu;
 
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
-import org.apache.myfaces.el.SimpleActionMethodBinding;
+import org.apache.myfaces.shared_tomahawk.el.SimpleActionMethodBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

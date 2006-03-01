@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
  * @author mwessendorf (latest modification by $Author$)

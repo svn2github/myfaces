@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
-import org.apache.myfaces.taglib.html.HtmlInputTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputTagBase;
 import org.apache.myfaces.component.UserRoleAware;
 
 import javax.faces.component.UIComponent;

@@ -29,11 +29,11 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * Basic HTML Renderer for the inputSuggest component.
@@ -77,7 +77,7 @@ public class InputSuggestRenderer
     }
 
     public void encodeBegin(FacesContext context, UIComponent component) throws
-        IOException
+                                                                         IOException
     {
 
         if (!component.isRendered())
@@ -120,7 +120,7 @@ public class InputSuggestRenderer
 
     private void renderInputField(ResponseWriter out, String text,
                                   String clientId, UIComponent component) throws
-        IOException
+                                                                          IOException
     {
 
         out.startElement("input", component);
@@ -139,7 +139,7 @@ public class InputSuggestRenderer
         component.getAttributes().put("autocomplete","off");
 
         HtmlRendererUtils.renderHTMLAttributes(out,
-                component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+                                               component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
 
         if((component instanceof HtmlInputText) && ((HtmlInputText) component).isDisabled())
         {
@@ -271,7 +271,7 @@ public class InputSuggestRenderer
      * @throws IOException
      */
     private void encodeStyles(UIComponent component, FacesContext context) throws
-        IOException
+                                                                           IOException
     {
         ResponseWriter out = context.getResponseWriter();
 
@@ -297,7 +297,7 @@ public class InputSuggestRenderer
      * @throws IOException
      */
     private void encodeJavascript(UIComponent component, FacesContext context) throws
-        IOException
+                                                                               IOException
     {
         ResponseWriter out = context.getResponseWriter();
 

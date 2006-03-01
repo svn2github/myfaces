@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.creditcardvalidator;
 
-import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.StateHolder;

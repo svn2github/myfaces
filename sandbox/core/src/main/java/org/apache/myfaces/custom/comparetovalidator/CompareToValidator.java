@@ -35,8 +35,8 @@ import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.myfaces.util.MessageUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * @author Mike Kienenberger (latest modification by $Author$)
@@ -125,31 +125,31 @@ import org.apache.myfaces.util._ComponentUtils;
  * 
  */
 public class CompareToValidator implements Validator, StateHolder {
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.CompareTo";
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.CompareTo";
 
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the comparison check fails.</p>
-	 */
-	// public static final String COMPARE_TO_MESSAGE_ID = "org.apache.myfaces.CompareTo.INVALID";
-	public static final String COMPARE_TO_MESSAGE_ID = "{0} value <{1}> must be {2} {3} value <{4}>";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the comparison check fails.</p>
+     */
+    // public static final String COMPARE_TO_MESSAGE_ID = "org.apache.myfaces.CompareTo.INVALID";
+    public static final String COMPARE_TO_MESSAGE_ID = "{0} value <{1}> must be {2} {3} value <{4}>";
 
-	public CompareToValidator(){
-	    super();
-	}
+    public CompareToValidator(){
+        super();
+    }
 
-	//the foreign component_id on which the validation is based.
-	protected String _foreignComponentName = null;
-	protected String _operator = null;
-	protected Object _comparator = null;
-	protected String _message = null;
-	protected String _alternateOperatorName = null;
+    //the foreign component_id on which the validation is based.
+    protected String _foreignComponentName = null;
+    protected String _operator = null;
+    protected Object _comparator = null;
+    protected String _message = null;
+    protected String _alternateOperatorName = null;
 
-	//JSF-Field for StateHolder-IF
-	protected boolean _transient = false;
+    //JSF-Field for StateHolder-IF
+    protected boolean _transient = false;
 
     public static final String OPERATOR_EQUALS = "eq";
     public static final String OPERATOR_NOT_EQUALS = "ne";
@@ -170,7 +170,7 @@ public class CompareToValidator implements Validator, StateHolder {
     protected String getOperatorForString(String operatorSpecified)
     {
         String operatorFound = null;
-        
+
         if (OPERATOR_EQUALS.equalsIgnoreCase(operatorSpecified))
             return OPERATOR_EQUALS;
         else if (OPERATOR_NOT_EQUALS.equalsIgnoreCase(operatorSpecified))
@@ -183,7 +183,7 @@ public class CompareToValidator implements Validator, StateHolder {
             return OPERATOR_GREATER_THAN_OR_EQUALS;
         else if (OPERATOR_LESS_THAN_OR_EQUALS.equalsIgnoreCase(operatorSpecified))
             return OPERATOR_LESS_THAN_OR_EQUALS;
-        
+
         else if (OPERATOR_EQUALS_ALT.equalsIgnoreCase(operatorSpecified))
             return OPERATOR_EQUALS;
         else if (OPERATOR_NOT_EQUALS_ALT.equalsIgnoreCase(operatorSpecified))
@@ -196,10 +196,10 @@ public class CompareToValidator implements Validator, StateHolder {
             return OPERATOR_GREATER_THAN_OR_EQUALS;
         else if (OPERATOR_LESS_THAN_OR_EQUALS_ALT.equalsIgnoreCase(operatorSpecified))
             return OPERATOR_LESS_THAN_OR_EQUALS;
-        
+
         else if (OPERATOR_EQUALS_ALT2.equalsIgnoreCase(operatorSpecified))
             return OPERATOR_EQUALS;
-        
+
         throw new IllegalStateException("Operator has unknown value of '" + operatorSpecified + "'");
     }
 
@@ -217,10 +217,10 @@ public class CompareToValidator implements Validator, StateHolder {
             return "greater than or equal to";
         else if (OPERATOR_LESS_THAN_OR_EQUALS == operator)
             return "less than or equal to";
-        
+
         throw new IllegalStateException("Operator has unknown value of '" + operator + "'");
     }
-    
+
     protected boolean validateOperatorOnComparisonResult(String operator, int result)
     {
         if (OPERATOR_EQUALS == operator)
@@ -235,29 +235,30 @@ public class CompareToValidator implements Validator, StateHolder {
             return result >= 0;
         else if (OPERATOR_LESS_THAN_OR_EQUALS == operator)
             return result <= 0;
-        
+
         throw new IllegalStateException("Operator has unknown value of '" + operator + "'");
     }
-    
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
 
-	    if (facesContext == null) throw new NullPointerException("facesContext");
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
+
+        if (facesContext == null) throw new NullPointerException("facesContext");
         if (uiComponent == null) throw new NullPointerException("uiComponent");
 
         // Don't perform validation if the value is null
-		if (value == null)
-		{
-		    return;
-		}
+        if (value == null)
+        {
+            return;
+        }
 
-		String foreignComponentName = getFor();
+				String foreignComponentName = getFor();
 		
-		UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
-		EditableValueHolder foreignEditableValueHolder = (EditableValueHolder)foreignComponent;
+				UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
+				EditableValueHolder foreignEditableValueHolder = (EditableValueHolder)foreignComponent;
+
         if(foreignComponent == null)
             throw new FacesException("Unable to find component '" + foreignComponentName + "' (calling findComponent on component '" + uiComponent.getId() + "')");
 
@@ -278,11 +279,11 @@ public class CompareToValidator implements Validator, StateHolder {
         // Don't perform validation if the foreign value is null
         if (null == foreignValue)
         {
-        	return;
+            return;
         }
 
         String operator = getOperatorForString(getOperator());
-        
+
         String alternateOperatorName = getAlternateOperatorName();
         Object[] args = {
                 uiComponent.getId(),
@@ -294,14 +295,14 @@ public class CompareToValidator implements Validator, StateHolder {
 
         String message = getMessage();
         if (null == message)  message = COMPARE_TO_MESSAGE_ID;
-        
+
         Comparator comparator = createComparator();
 
         if (null != comparator)
         {
             if (false == validateOperatorOnComparisonResult(operator, comparator.compare(value, foreignValue)))
             {
-            	throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+                throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
             }
         }
         else if ( (value instanceof Comparable) && (foreignValue instanceof Comparable) )
@@ -310,7 +311,7 @@ public class CompareToValidator implements Validator, StateHolder {
             {
                 if (false == validateOperatorOnComparisonResult(operator, ((Comparable)value).compareTo(foreignValue)))
                 {
-                	throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+                    throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
                 }
             }
             catch (RuntimeException exception)
@@ -321,7 +322,7 @@ public class CompareToValidator implements Validator, StateHolder {
                 }
                 else
                 {
-                	throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message + ": " + exception.getLocalizedMessage(), args));
+                    throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message + ": " + exception.getLocalizedMessage(), args));
                 }
             }
         }
@@ -333,46 +334,46 @@ public class CompareToValidator implements Validator, StateHolder {
         {
             throw new ClassCastException(getClassCastExceptionMessage("foreignValue", Comparable.class, foreignValue));
         }
-	}
+    }
 
-	protected String getClassCastExceptionMessage(String name, Class clazz, Object object)
-	{
-	    if (null == object)
-	        return name + " must be type " + clazz + " but is null" + object.getClass();
-	    else return name + " must be type " + clazz + " but is type " + object.getClass();
-	}
-	
-	protected Comparator createComparator()
+    protected String getClassCastExceptionMessage(String name, Class clazz, Object object)
+    {
+        if (null == object)
+            return name + " must be type " + clazz + " but is null" + object.getClass();
+        else return name + " must be type " + clazz + " but is type " + object.getClass();
+    }
+
+    protected Comparator createComparator()
     {
         Object comparator = getComparator();
-        
+
         if (null == comparator)  return null;
-        
+
         if (false == comparator instanceof Comparator)
         {
             throw new ClassCastException(getClassCastExceptionMessage("comparator", Comparator.class, comparator));
         }
-        
+
         return (Comparator)comparator;
     }
 
-	// -------------------------------------------------------- GETTER & SETTER
+    // -------------------------------------------------------- GETTER & SETTER
 
     /**
-	 * @return the foreign component_id, on which a value should be validated
-	 */
-	public String getFor() {
+     * @return the foreign component_id, on which a value should be validated
+     */
+    public String getFor() {
         if (_foreignComponentName != null) return _foreignComponentName;
         ValueBinding vb = getValueBinding("for");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-	}
+    }
 
-	/**
-	 * @param string the foreign component_id, on which a value should be validated
-	 */
-	public void setFor(String string) {
-		_foreignComponentName = string;
-	}
+    /**
+     * @param string the foreign component_id, on which a value should be validated
+     */
+    public void setFor(String string) {
+        _foreignComponentName = string;
+    }
 
     public String getOperator()
     {
@@ -380,7 +381,7 @@ public class CompareToValidator implements Validator, StateHolder {
         ValueBinding vb = getValueBinding("operator");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
-    
+
     public void setOperator(String operator)
     {
         this._operator = operator;
@@ -392,7 +393,7 @@ public class CompareToValidator implements Validator, StateHolder {
         ValueBinding vb = getValueBinding("comparator");
         return vb != null ? (Comparator)vb.getValue(getFacesContext()) : null;
     }
-    
+
     public void setComparator(Object comparator)
     {
         this._comparator = comparator;
@@ -404,7 +405,7 @@ public class CompareToValidator implements Validator, StateHolder {
         ValueBinding vb = getValueBinding("message");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
-    
+
     public void setMessage(String message)
     {
         this._message = message;
@@ -416,48 +417,48 @@ public class CompareToValidator implements Validator, StateHolder {
         ValueBinding vb = getValueBinding("alternateOperatorName");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
-    
+
     public void setAlternateOperatorName(String alternateOperatorName)
     {
         this._alternateOperatorName = alternateOperatorName;
     }
 
-	// -------------------------------------------------------- StateholderIF
+    // -------------------------------------------------------- StateholderIF
 
-	public Object saveState(FacesContext context) {
-	    if (_transient)  return null;
-	    
-	    Object value[] = new Object[5];
-		value[0] = _foreignComponentName;
-		value[1] = _operator;
-		value[2] = _comparator;
-		value[3] = _message;
-		value[4] = _alternateOperatorName;
-		return value;
-	}
+    public Object saveState(FacesContext context) {
+        if (_transient)  return null;
 
-	public void restoreState(FacesContext context, Object state) {
-	    if (_transient)  return;
-	    
-	    Object value[] = (Object[])state;
-		_foreignComponentName = (String) value[0];
-		_operator = (String) value[1];
-		_comparator = value[2];
-		_message = (String) value[3];
-		_alternateOperatorName = (String) value[4];
-	}
+        Object value[] = new Object[5];
+        value[0] = _foreignComponentName;
+        value[1] = _operator;
+        value[2] = _comparator;
+        value[3] = _message;
+        value[4] = _alternateOperatorName;
+        return value;
+    }
 
-	public boolean isTransient() {
-		return _transient;
-	}
+    public void restoreState(FacesContext context, Object state) {
+        if (_transient)  return;
 
-	public void setTransient(boolean newTransientValue) {
-		_transient = newTransientValue;
-	}
+        Object value[] = (Object[])state;
+        _foreignComponentName = (String) value[0];
+        _operator = (String) value[1];
+        _comparator = value[2];
+        _message = (String) value[3];
+        _alternateOperatorName = (String) value[4];
+    }
 
-	
-	// ---------------- Borrowed to convert foreign submitted values
-	
+    public boolean isTransient() {
+        return _transient;
+    }
+
+    public void setTransient(boolean newTransientValue) {
+        _transient = newTransientValue;
+    }
+
+
+    // ---------------- Borrowed to convert foreign submitted values
+
     protected Renderer getRenderer(FacesContext context, UIComponent foreignComponent)
     {
         if (context == null) throw new NullPointerException("context");
@@ -500,9 +501,9 @@ public class CompareToValidator implements Validator, StateHolder {
         }
     }
 
-    
-	// --------------------- borrowed from UIComponentBase ------------
-	
+
+    // --------------------- borrowed from UIComponentBase ------------
+
     private Map _valueBindingMap = null;
 
     public ValueBinding getValueBinding(String name)
@@ -534,10 +535,8 @@ public class CompareToValidator implements Validator, StateHolder {
         return FacesContext.getCurrentInstance();
     }
 
-    
-	// --------------------- borrowed and modified from UIInput ------------
 
-	protected Object getConvertedValueNonValid(FacesContext facesContext, UIComponent component)
+    protected Object getConvertedValueNonValid(FacesContext facesContext, UIInput component)
     {
         Object componentValueObject;
         Object submittedValue = ((EditableValueHolder)component).getSubmittedValue();

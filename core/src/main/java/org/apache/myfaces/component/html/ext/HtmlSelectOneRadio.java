@@ -26,14 +26,14 @@ import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.util.MessageUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

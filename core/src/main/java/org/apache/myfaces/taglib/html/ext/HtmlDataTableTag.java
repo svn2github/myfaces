@@ -17,8 +17,8 @@ package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
-import org.apache.myfaces.taglib.html.HtmlDataTableTagBase;
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlDataTableTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 

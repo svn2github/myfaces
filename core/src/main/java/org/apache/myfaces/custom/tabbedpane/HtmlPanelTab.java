@@ -16,7 +16,7 @@
 package org.apache.myfaces.custom.tabbedpane;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;

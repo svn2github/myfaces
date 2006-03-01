@@ -25,7 +25,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.event.TreeSelectionListener;
-import org.apache.myfaces.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 
 /**

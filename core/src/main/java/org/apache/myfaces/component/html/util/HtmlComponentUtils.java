@@ -21,7 +21,7 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

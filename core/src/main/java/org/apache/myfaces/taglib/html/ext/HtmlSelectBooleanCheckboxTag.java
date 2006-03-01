@@ -15,10 +15,10 @@
  */
 package org.apache.myfaces.taglib.html.ext;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlSelectBooleanCheckboxTagBase;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlSelectBooleanCheckbox;
-import org.apache.myfaces.taglib.html.HtmlSelectBooleanCheckboxTagBase;
 
 import javax.faces.component.UIComponent;
 

@@ -119,7 +119,7 @@
   </servlet>
   <servlet>
     <servlet-name>SourceCodeServlet</servlet-name>
-    <servlet-class>org.apache.myfaces.util.servlet.SourceCodeServlet</servlet-class>
+    <servlet-class>org.apache.myfaces.shared_tomahawk.util.servlet.SourceCodeServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>

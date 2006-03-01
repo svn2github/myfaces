@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.htmlTag;
 import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputTextTagBase;
 /**
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date: 2005-05-11 11:47:12 -0400 (Wed, 11 May 2005) $

@@ -16,8 +16,8 @@
 package org.apache.myfaces.component.html.util;
 
 import org.apache.commons.fileupload.FileUpload;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -137,7 +137,7 @@ public class ExtensionsFilter implements Filter {
             addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
                     servletResponse);
 
-            if( ! addResource.hasHeaderBeginInfos() ){
+            if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
                 // writes the response if no header info is needed
                 addResource.writeResponse(extendedRequest, servletResponse);
                 return;

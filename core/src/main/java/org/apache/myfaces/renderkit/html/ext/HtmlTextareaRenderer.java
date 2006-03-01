@@ -22,9 +22,9 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlTextareaRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextareaRendererBase;
 
 
 /**

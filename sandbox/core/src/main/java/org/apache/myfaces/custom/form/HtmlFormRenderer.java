@@ -19,7 +19,7 @@ import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.myfaces.renderkit.html.HtmlFormRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -29,7 +29,7 @@ import org.apache.myfaces.renderkit.html.HtmlFormRendererBase;
 public class HtmlFormRenderer extends HtmlFormRendererBase
 {
     /**
-     * @see org.apache.myfaces.renderkit.html.HtmlFormRendererBase#getActionUrl(javax.faces.context.FacesContext, javax.faces.component.UIForm)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase#getActionUrl(javax.faces.context.FacesContext, javax.faces.component.UIForm)
      */
     protected String getActionUrl(FacesContext facesContext, UIForm form)
     {

@@ -17,7 +17,7 @@ package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlOutputLabel;
-import org.apache.myfaces.taglib.html.HtmlOutputLabelTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputLabelTagBase;
 
 import javax.faces.component.UIComponent;
 

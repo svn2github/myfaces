@@ -19,7 +19,7 @@ import org.apache.myfaces.custom.tree.model.DefaultTreeModel;
 import org.apache.myfaces.custom.tree.model.TreeModel;
 import org.apache.myfaces.custom.tree.model.TreePath;
 import org.apache.myfaces.custom.tree.HtmlTree;
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

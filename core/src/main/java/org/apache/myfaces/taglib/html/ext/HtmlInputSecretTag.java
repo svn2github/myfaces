@@ -17,11 +17,11 @@ package org.apache.myfaces.taglib.html.ext;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlInputSecret;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.taglib.html.HtmlInputSecretTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputSecretTagBase;
 
 /**
  * @author Bruno Aranda 
@@ -47,8 +47,8 @@ public class HtmlInputSecretTag
     private String _dataformatas;
 
     private String _displayValueOnly;
-	private String _displayValueOnlyStyle;
-	private String _displayValueOnlyStyleClass;
+    private String _displayValueOnlyStyle;
+    private String _displayValueOnlyStyleClass;
 
     public void release() {
         super.release();
@@ -100,7 +100,7 @@ public class HtmlInputSecretTag
     {
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
-    
+
     public void setDatafld(String datafld)
     {
         _datafld = datafld;

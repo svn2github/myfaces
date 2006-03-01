@@ -29,8 +29,8 @@ import javax.faces.event.FacesEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.util.RestoreStateUtils;
-import org.apache.myfaces.component.BindingAware;
+import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
+import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 
 /**
  * Holds several aliases that are configured by aliasBean tags.

@@ -16,9 +16,8 @@
 package org.apache.myfaces.custom.calendar;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.taglib.html.HtmlInputTagBase;
 import org.apache.myfaces.taglib.html.ext.HtmlInputTextTag;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 import javax.faces.component.UIComponent;
 

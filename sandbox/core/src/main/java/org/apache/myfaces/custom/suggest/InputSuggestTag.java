@@ -17,7 +17,7 @@ package org.apache.myfaces.custom.suggest;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.html.HtmlInputTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputTagBase;
 
 /**
  * @author Sean Schofield

@@ -15,13 +15,13 @@
  */
 package org.apache.myfaces.custom.accordion;
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTab;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlGroupRenderer;
 
 import javax.faces.component.UIComponent;
@@ -63,7 +63,7 @@ public class HtmlAccordionPanelRenderer extends HtmlGroupRenderer
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement(HTML.DIV_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR,component.getClientId(context),JSFAttr.ID_ATTR);
+        writer.writeAttribute(HTML.ID_ATTR,component.getClientId(context), JSFAttr.ID_ATTR);
         HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
 
         List childExpanded = panel.getChildExpanded();

@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.savestate;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)

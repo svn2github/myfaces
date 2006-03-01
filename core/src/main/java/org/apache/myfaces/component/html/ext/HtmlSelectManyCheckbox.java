@@ -15,13 +15,13 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
-import org.apache.myfaces.component.EscapeCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.custom.ExtendedComponentBase;
-import org.apache.myfaces.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;

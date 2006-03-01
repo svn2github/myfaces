@@ -32,13 +32,13 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.HtmlListboxRenderer;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
 
 /**
  * @author Bruno Aranda (latest modification by $Author$)
@@ -61,12 +61,12 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
         if (!(uiComponent instanceof EditableValueHolder))
         {
             throw new IllegalArgumentException("Component "
-                    + uiComponent.getClientId(facesContext)
-                    + " is not an EditableValueHolder");
+                                               + uiComponent.getClientId(facesContext)
+                                               + " is not an EditableValueHolder");
         }
 
         String hiddenClientId = uiComponent.getClientId(facesContext)
-                + HIDDEN_SUFFIX;
+                                + HIDDEN_SUFFIX;
 
         Map paramValuesMap = facesContext.getExternalContext()
                 .getRequestParameterValuesMap();
@@ -78,7 +78,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
         {
             String[] valuesInline = (String[]) paramValuesMap
                     .get(hiddenClientId);
-            
+
             if (valuesInline[0].trim().equals(""))
             {
                 ((EditableValueHolder) uiComponent)
@@ -108,18 +108,18 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
             throws IOException
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent,
-                HtmlSelectManyPicklist.class);
+                                         HtmlSelectManyPicklist.class);
 
         HtmlSelectManyPicklist picklist = (HtmlSelectManyPicklist) uiComponent;
 
         encodeJavascript(facesContext, uiComponent);
 
         String availableListClientId = uiComponent.getClientId(facesContext)
-                + AVAILABLE_SUFFIX;
+                                       + AVAILABLE_SUFFIX;
         String selectedListClientId = uiComponent.getClientId(facesContext)
-                + SELECTED_SUFFIX;
+                                      + SELECTED_SUFFIX;
         String hiddenFieldCliendId = uiComponent.getClientId(facesContext)
-                + HIDDEN_SUFFIX;
+                                     + HIDDEN_SUFFIX;
 
         List selectItemList = RendererUtils
                 .getSelectItemList((UISelectMany) uiComponent);
@@ -143,7 +143,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
 
         encodeSelect(facesContext, picklist, availableListClientId, isDisabled(
                 facesContext, uiComponent), picklist.getSize(),
-                selectItemsForAvailableList, converter);
+                                            selectItemsForAvailableList, converter);
 
         writer.endElement(HTML.TD_ELEM);
 
@@ -151,20 +151,20 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
         writer.startElement(HTML.TD_ELEM, uiComponent);
 
         String javascriptAddToSelected = FUNCTION_ADD_TO_SELECTED + "('"
-                + availableListClientId + "','" + selectedListClientId + "','"
-                + hiddenFieldCliendId + "')";
+                                         + availableListClientId + "','" + selectedListClientId + "','"
+                                         + hiddenFieldCliendId + "')";
         String javascriptRemoveFromSelected = FUNCTION_REMOVE_FROM_SELECTED
-                + "('" + availableListClientId + "','" + selectedListClientId
-                + "','" + hiddenFieldCliendId + "')";
+                                              + "('" + availableListClientId + "','" + selectedListClientId
+                                              + "','" + hiddenFieldCliendId + "')";
 
         encodeSwapButton(facesContext, uiComponent, javascriptAddToSelected,
-                ">");
+                         ">");
 
         writer.startElement(HTML.BR_ELEM, uiComponent);
         writer.endElement(HTML.BR_ELEM);
 
         encodeSwapButton(facesContext, uiComponent,
-                javascriptRemoveFromSelected, "<");
+                         javascriptRemoveFromSelected, "<");
 
         writer.endElement(HTML.TD_ELEM);
 
@@ -173,11 +173,11 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
 
         encodeSelect(facesContext, picklist, selectedListClientId, isDisabled(
                 facesContext, uiComponent), picklist.getSize(),
-                selectItemsForSelectedValues, converter);
+                                            selectItemsForSelectedValues, converter);
 
         // hidden field with the selected values
         encodeHiddenField(facesContext, uiComponent, hiddenFieldCliendId,
-                lookupSet);
+                          lookupSet);
 
         writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);
@@ -185,31 +185,31 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
     }
 
     private void encodeJavascript(FacesContext facesContext,
-            UIComponent uiComponent)
+                                  UIComponent uiComponent)
     {
         // AddResource takes care to add only one reference to the same script
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
-        addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, 
-                HtmlPicklistRenderer.class, "picklist.js");
+        addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN,
+                                            HtmlPicklistRenderer.class, "picklist.js");
     }
 
     private void encodeSwapButton(FacesContext facesContext,
-            UIComponent uiComponent, String javaScriptFunction, String text)
+                                  UIComponent uiComponent, String javaScriptFunction, String text)
             throws IOException
     {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON,
-                JSFAttr.TYPE_ATTR);
+                              JSFAttr.TYPE_ATTR);
         writer.writeAttribute(HTML.ONCLICK_ATTR, javaScriptFunction, null);
         writer.writeAttribute(HTML.VALUE_ATTR, text, null);
         writer.endElement(HTML.INPUT_ELEM);
     }
 
     private void encodeSelect(FacesContext facesContext,
-            UIComponent uiComponent, String clientId, boolean disabled,
-            int size, List selectItemsToDisplay, Converter converter)
+                              UIComponent uiComponent, String clientId, boolean disabled,
+                              int size, List selectItemsToDisplay, Converter converter)
             throws IOException
     {
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -231,14 +231,14 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
             writer.writeAttribute(HTML.SIZE_ATTR, Integer.toString(size), null);
         }
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
-                HTML.SELECT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+                                               HTML.SELECT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
         if (disabled)
         {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
         }
 
         HtmlRendererUtils.renderSelectOptions(facesContext, uiComponent,
-                converter, Collections.EMPTY_SET, selectItemsToDisplay);
+                                              converter, Collections.EMPTY_SET, selectItemsToDisplay);
 
         // bug #970747: force separate end tag
         writer.writeText("", null);
@@ -246,16 +246,16 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
     }
 
     private void encodeHiddenField(FacesContext facesContext,
-            UIComponent uiComponent, String hiddenFieldCliendId, Set lookupSet)
+                                   UIComponent uiComponent, String hiddenFieldCliendId, Set lookupSet)
             throws IOException
     {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN,
-                JSFAttr.TYPE_ATTR);
+                              JSFAttr.TYPE_ATTR);
         writer.writeAttribute(HTML.ID_ATTR, hiddenFieldCliendId,
-                JSFAttr.ID_ATTR);
+                              JSFAttr.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, hiddenFieldCliendId, null);
         writer.endElement(HTML.INPUT_ELEM);
 
@@ -275,8 +275,8 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
     }
 
     private List selectItemsForSelectedList(FacesContext facesContext,
-            UIComponent uiComponent, List selectItemList, Converter converter,
-            Set lookupSet)
+                                            UIComponent uiComponent, List selectItemList, Converter converter,
+                                            Set lookupSet)
     {
         List selectItemForSelectedValues = new ArrayList(lookupSet.size());
 
@@ -299,12 +299,12 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
     }
 
     private List selectItemsForAvailableList(FacesContext facesContext,
-            UIComponent uiComponent, List selectItemList,
-            List selectItemsForSelectedList, Converter converter)
+                                             UIComponent uiComponent, List selectItemList,
+                                             List selectItemsForSelectedList, Converter converter)
     {
 
         return new ArrayList(CollectionUtils.subtract(selectItemList,
-                selectItemsForSelectedList));
+                                                      selectItemsForSelectedList));
     }
 
 }

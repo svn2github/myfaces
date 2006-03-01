@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
-import org.apache.myfaces.renderkit.html.HtmlGridRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGridRendererBase;
 
 /**
  * X-CHECKED: tlddoc h:panelGrid 1.0 final

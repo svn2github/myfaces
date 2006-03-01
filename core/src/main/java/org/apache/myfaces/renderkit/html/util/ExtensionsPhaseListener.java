@@ -17,8 +17,11 @@ package org.apache.myfaces.renderkit.html.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.config.MyfacesConfig;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.HtmlBufferResponseWriterWrapper;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;

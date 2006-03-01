@@ -15,20 +15,20 @@
  */
 package org.apache.myfaces.custom.tree.renderkit.html;
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.HtmlTreeColumn;
 import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
 import org.apache.myfaces.custom.tree.HtmlTreeNode;
 import org.apache.myfaces.custom.tree.IconProvider;
 import org.apache.myfaces.custom.tree.TreeNode;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlTableRendererBase;
-import org.apache.myfaces.util.ArrayUtils;
-import org.apache.myfaces.util.StringUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
+import org.apache.myfaces.shared_tomahawk.util.ArrayUtils;
+import org.apache.myfaces.shared_tomahawk.util.StringUtils;
 
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;

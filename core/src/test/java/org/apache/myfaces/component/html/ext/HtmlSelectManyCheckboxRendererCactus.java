@@ -35,7 +35,7 @@ import javax.faces.model.SelectItem;
 import org.apache.cactus.ServletTestCase;
 import org.apache.cactus.WebRequest;
 import org.apache.cactus.WebResponse;
-import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.renderkit.html.ext.HtmlCheckboxRenderer;
 
 /**
@@ -103,28 +103,28 @@ public class HtmlSelectManyCheckboxRendererCactus extends ServletTestCase
     {
         // Check the markup produced by the component
         String htmlMarkup = response.getText();
-        String expected = 
-            "<table id=\"test\">" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" + 
-                            "&#160;Label-0" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" + 
-                            "&#160;Label-1" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" + 
-                            "&#160;Label-2" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" +
+        String expected =
+            "<table id=\"test\">" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" +
+            "&#160;Label-0" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" +
+            "&#160;Label-1" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" +
+            "&#160;Label-2" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
             "</table>";
         assertEquals(expected, htmlMarkup);
     }
@@ -156,32 +156,32 @@ public class HtmlSelectManyCheckboxRendererCactus extends ServletTestCase
     {
         // Check the markup produced by the component
         String htmlMarkup = response.getText();
-        String expected = 
-            "<table id=\"test\">" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" + 
-                            "&#160;Label-0" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" + 
-                            "&#160;Label-1" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" + 
-                            "&#160;Label-2" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" +
+        String expected =
+            "<table id=\"test\">" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" +
+            "&#160;Label-0" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" +
+            "&#160;Label-1" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" +
+            "&#160;Label-2" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
             "</table>";
         assertEquals(expected, htmlMarkup);
     }
@@ -214,45 +214,45 @@ public class HtmlSelectManyCheckboxRendererCactus extends ServletTestCase
     {
         // Check the markup produced by the component
         String htmlMarkup = response.getText();
-        String expected = 
-            "<table id=\"test\">" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" + 
-                            "&#160;Label-0" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" + 
-                            "&#160;Label-2" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-4\" />" + 
-                            "&#160;Label-4" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" + 
-                            "&#160;Label-1" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-3\" />" + 
-                            "&#160;Label-3" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        // empty cell
-                    "</td>" +
-                "</tr>" +
+        String expected =
+            "<table id=\"test\">" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" +
+            "&#160;Label-0" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" +
+            "&#160;Label-2" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-4\" />" +
+            "&#160;Label-4" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" +
+            "&#160;Label-1" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-3\" />" +
+            "&#160;Label-3" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            // empty cell
+            "</td>" +
+            "</tr>" +
             "</table>";
         assertEquals(expected, htmlMarkup);
     }
@@ -285,47 +285,47 @@ public class HtmlSelectManyCheckboxRendererCactus extends ServletTestCase
     {
         // Check the markup produced by the component
         String htmlMarkup = response.getText();
-        String expected = 
-            "<table id=\"test\">" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" + 
-                            "&#160;Label-0" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" + 
-                            "&#160;Label-1" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" + 
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" + 
-                            "&#160;Label-2" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-3\" />" + 
-                            "&#160;Label-3" +
-                        "</label>" + 
-                    "</td>" +
-                "</tr>" +
-                "<tr>" + 
-                    "<td>" +
-                        "<label>" +
-                            "<input type=\"checkbox\" name=\"test\" value=\"Value-4\" />" + 
-                            "&#160;Label-4" +
-                        "</label>" + 
-                    "</td>" +
-                    "<td>" +
-                        // empty cell
-                    "</td>" +
-                "</tr>" +
+        String expected =
+            "<table id=\"test\">" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-0\" />" +
+            "&#160;Label-0" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" checked=\"checked\" value=\"Value-1\" />" +
+            "&#160;Label-1" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-2\" />" +
+            "&#160;Label-2" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-3\" />" +
+            "&#160;Label-3" +
+            "</label>" +
+            "</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td>" +
+            "<label>" +
+            "<input type=\"checkbox\" name=\"test\" value=\"Value-4\" />" +
+            "&#160;Label-4" +
+            "</label>" +
+            "</td>" +
+            "<td>" +
+            // empty cell
+            "</td>" +
+            "</tr>" +
             "</table>";
         assertEquals(expected, htmlMarkup);
     }

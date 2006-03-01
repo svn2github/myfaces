@@ -19,9 +19,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlMessage;
 import org.apache.myfaces.component.html.ext.HtmlMessages;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlMessageRendererBase;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlMessageRendererBase;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIColumn;
@@ -247,7 +247,7 @@ public class HtmlMessageRenderer
 
         if(component instanceof ValueHolder)
         {
-            text=RendererUtils.getStringValue(facesContext, component);
+            text= RendererUtils.getStringValue(facesContext, component);
         }
 
         if (text == null || text.length() < 1)

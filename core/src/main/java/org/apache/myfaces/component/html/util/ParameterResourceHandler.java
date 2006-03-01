@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.myfaces.renderkit.html.util.ResourceHandler;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceHandler;
 
 /**
  * @author Mathias Broekelmann
@@ -46,7 +46,7 @@ public class ParameterResourceHandler implements ResourceHandler
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.util.ResourceHandler#getResourceLoaderClass()
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceHandler#getResourceLoaderClass()
      */
     public Class getResourceLoaderClass()
     {
@@ -54,7 +54,7 @@ public class ParameterResourceHandler implements ResourceHandler
     }
 
     /**
-     * @see org.apache.myfaces.renderkit.html.util.ResourceHandler#getResourceUri(javax.faces.context.FacesContext)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceHandler#getResourceUri(javax.faces.context.FacesContext)
      */
     public String getResourceUri(FacesContext context)
     {

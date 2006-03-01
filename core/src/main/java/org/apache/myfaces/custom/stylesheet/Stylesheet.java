@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 
 /**
@@ -30,9 +30,9 @@ import org.apache.myfaces.util._ComponentUtils;
 
 public class Stylesheet extends UIOutput {
 
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.Stylesheet";
-	public static final String COMPONENT_FAMILY = "javax.faces.Output";
-	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Stylesheet";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.Stylesheet";
+    public static final String COMPONENT_FAMILY = "javax.faces.Output";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Stylesheet";
 
     private String _path = null;
     private Boolean _inline = null;
@@ -59,15 +59,15 @@ public class Stylesheet extends UIOutput {
 
     public String getPath() {
 
-		if (_path != null) return _path;
-		ValueBinding vb = getValueBinding("path");
-		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        if (_path != null) return _path;
+        ValueBinding vb = getValueBinding("path");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setPath(String path) {
         this._path = path;
     }
-    
+
     /**
      * @return true if the styles are inlined to the jsp file
      */
@@ -76,7 +76,7 @@ public class Stylesheet extends UIOutput {
           return this._inline.booleanValue();
             ValueBinding vb = getValueBinding("inline");
             return ((vb != null) ? (Boolean) vb.getValue(getFacesContext())
-                : Boolean.FALSE).booleanValue();
+                    : Boolean.FALSE).booleanValue();
       }
 
     /**
@@ -85,19 +85,19 @@ public class Stylesheet extends UIOutput {
     public void setInline(boolean inline) {
         this._inline = Boolean.valueOf(inline);
     }
-    
+
 
     public String getMedia() {
-    	if (this._media != null)
-    		return this._media;
-    	ValueBinding vb = getValueBinding("media");
-    		return ((vb != null) ? (String) vb.getValue(getFacesContext()) : null);
-    	}
-    
+        if (this._media != null)
+            return this._media;
+        ValueBinding vb = getValueBinding("media");
+            return ((vb != null) ? (String) vb.getValue(getFacesContext()) : null);
+        }
+
     public void setMedia(String media) {
-    	this._media = media;  
+        this._media = media;
     }
-    
+
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
         _enabledOnUserRole = enabledOnUserRole;
@@ -128,7 +128,7 @@ public class Stylesheet extends UIOutput {
         return super.isRendered();
     }
 
-    
+
     public void restoreState(FacesContext context, Object state) {
 
         Object values[] = (Object[]) state;

@@ -17,7 +17,7 @@ package org.apache.myfaces.custom.buffer;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.html.HtmlComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentTagBase;
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$

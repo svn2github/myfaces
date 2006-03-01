@@ -18,8 +18,8 @@ package org.apache.myfaces.custom.inputHtml;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;

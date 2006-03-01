@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.stylesheet;
 import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputTextTagBase;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
@@ -30,10 +30,10 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
     private String _path = null;
     private String _media = null;
     private boolean _inline = false;
-    
-	// User Role support
-	private String _enabledOnUserRole;
-	private String _visibleOnUserRole;
+
+    // User Role support
+    private String _enabledOnUserRole;
+    private String _visibleOnUserRole;
 
     public String getComponentType() {
 
@@ -53,15 +53,15 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
         super.release();
         _path=null;
         _media=null;
-    	_enabledOnUserRole=null;
-    	_visibleOnUserRole=null;
+        _enabledOnUserRole=null;
+        _visibleOnUserRole=null;
 
 
     }
 
      /**
- 	 * overrides setProperties() form UIComponentTag.
- 	 */
+      * overrides setProperties() form UIComponentTag.
+      */
     protected void setProperties(UIComponent component) {
 
         super.setProperties(component);
@@ -81,21 +81,21 @@ public class StylesheetTag extends HtmlOutputTextTagBase {
     public void setMedia(String media) {
         this._media = media;
     }
-	public void setEnabledOnUserRole(String string) {
-		_enabledOnUserRole = string;
-	}
+    public void setEnabledOnUserRole(String string) {
+        _enabledOnUserRole = string;
+    }
 
-	public void setVisibleOnUserRole(String string) {
-		_visibleOnUserRole = string;
-	}
+    public void setVisibleOnUserRole(String string) {
+        _visibleOnUserRole = string;
+    }
 
-  
+
   public boolean isInline()
   {
     return _inline;
   }
 
-  
+
   public void setInline(boolean inline)
   {
     this._inline = inline;

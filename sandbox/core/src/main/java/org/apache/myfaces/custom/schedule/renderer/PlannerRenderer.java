@@ -32,14 +32,14 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
 import javax.faces.render.Renderer;
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.custom.schedule.HtmlPlanner;
 import org.apache.myfaces.custom.schedule.model.Day;
 import org.apache.myfaces.custom.schedule.model.PlannerEntity;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
-import org.apache.myfaces.renderkit.html.HTML;
 
 /**
  * <p>
@@ -76,24 +76,24 @@ public class PlannerRenderer extends Renderer
 
         HtmlPlanner planner = (HtmlPlanner) component;
         ResponseWriter writer = context.getResponseWriter();
-        
+
         //determine the CSS file for the chosen theme
         String theme = getTheme(planner);
         if (theme == null || theme.length() < 1) theme = "default";
         String css = "css/" + theme + ".css";
-        
+
         //add needed CSS and Javascript files to the header 
 
         AddResource addResource = AddResourceFactory.getInstance(context);
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlPlanner.class, css);
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, 
-                HtmlPlanner.class, "javascript/alphaAPI.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlPlanner.class, "javascript/domLib.js");
+                                            HtmlPlanner.class, "javascript/alphaAPI.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlPlanner.class, "javascript/domTT.js");
+                                            HtmlPlanner.class, "javascript/domLib.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlPlanner.class, "javascript/fadomatic.js");
+                                            HtmlPlanner.class, "javascript/domTT.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
+                                            HtmlPlanner.class, "javascript/fadomatic.js");
 
 
         int numberOfRows = planner.getModel().numberOfEntities();
@@ -103,7 +103,7 @@ public class PlannerRenderer extends Renderer
         writer.startElement(HTML.DIV_ELEM, planner);
         writer.writeAttribute(HTML.CLASS_ATTR, "planner", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "height: "
-                + String.valueOf(gridHeight) + "px; overflow: hidden;", null);
+                                               + String.valueOf(gridHeight) + "px; overflow: hidden;", null);
         writeBackground(context, planner, writer);
         writeForegroundStart(context, planner, writer);
     }
@@ -132,14 +132,14 @@ public class PlannerRenderer extends Renderer
             writer.writeAttribute(HTML.CLASS_ATTR, "gutter", null);
             writer.startElement(HTML.DIV_ELEM, planner);
             writer.writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: "
-                    + String.valueOf(getGutterWidth(planner))
-                    + "px", null);
+                                                   + String.valueOf(getGutterWidth(planner))
+                                                   + "px", null);
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.TD_ELEM);
 
             int numberOfDays = planner.getModel().numberOfDays();
             float columnWidth = (numberOfDays == 0) ? 100f
-                    : (100 / numberOfDays);
+                                : (100 / numberOfDays);
 
             for (Iterator dayIterator = planner.getModel().dayIterator(); dayIterator
                     .hasNext();)
@@ -149,7 +149,7 @@ public class PlannerRenderer extends Renderer
                 writer.writeAttribute(HTML.CLASS_ATTR, "row", null);
                 writer.writeAttribute(HTML.WIDTH_ATTR, String
                         .valueOf(columnWidth)
-                        + "%", null);
+                                                       + "%", null);
                 writer
                         .writeAttribute(
                                 HTML.STYLE_ATTR,
@@ -343,7 +343,7 @@ public class PlannerRenderer extends Renderer
         Map attributes = component.getAttributes();
         return (String)attributes.get("theme");
     }
-    
+
     /**
      * <p>
      * Should the tooltip be rendered?
@@ -381,7 +381,7 @@ public class PlannerRenderer extends Renderer
         }
 
         if ((hour >= planner.getWorkingStartHour())
-                && (hour < planner.getWorkingEndHour()))
+            && (hour < planner.getWorkingEndHour()))
         {
             return ((hour % 2) == 0) ? "even" : "uneven";
         }
@@ -449,7 +449,7 @@ public class PlannerRenderer extends Renderer
     }
 
     private boolean containsEntry(HtmlPlanner planner, Day day,
-            ScheduleEntry entry)
+                                  ScheduleEntry entry)
     {
         if ((day == null) || (entry == null))
         {
@@ -469,7 +469,7 @@ public class PlannerRenderer extends Renderer
         Date dayEnd = cal.getTime();
 
         return entry.getEndTime().after(dayStart)
-                && entry.getStartTime().before(dayEnd);
+               && entry.getStartTime().before(dayEnd);
     }
 
     private String escape(String text)
@@ -495,7 +495,7 @@ public class PlannerRenderer extends Renderer
      * @throws NullPointerException
      */
     private void writeBackground(FacesContext context, HtmlPlanner planner,
-            ResponseWriter writer) throws IOException
+                                 ResponseWriter writer) throws IOException
     {
         //a planner component should always be inside a UIForm
         UIForm parentForm = getParentForm(planner);
@@ -519,7 +519,7 @@ public class PlannerRenderer extends Renderer
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%;",
-                null);
+                              null);
         writer.startElement(HTML.TBODY_ELEM, planner);
 
         //header row, containing the day names
@@ -534,8 +534,8 @@ public class PlannerRenderer extends Renderer
                         null);
         writer.startElement(HTML.DIV_ELEM, planner);
         writer.writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: "
-                + String.valueOf(getGutterWidth(planner))
-                + "px", null);
+                                               + String.valueOf(getGutterWidth(planner))
+                                               + "px", null);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.TD_ELEM);
 
@@ -549,9 +549,9 @@ public class PlannerRenderer extends Renderer
             writer.startElement(HTML.TD_ELEM, planner);
             writer.writeAttribute(HTML.CLASS_ATTR, "header", null);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
-                    + "%", null);
+                                                   + "%", null);
             writer.writeAttribute(HTML.STYLE_ATTR,
-                    "overflow: hidden; height: 31px;", null);
+                                  "overflow: hidden; height: 31px;", null);
             writer.startElement(HTML.DIV_ELEM, planner);
             writer.writeAttribute(HTML.CLASS_ATTR, "header", null);
             writer
@@ -567,12 +567,12 @@ public class PlannerRenderer extends Renderer
                             "position: absolute; left: 0px; top: 0px; width: 100%; height: 15px; overflow: hidden; white-space: nowrap;",
                             null);
             writer.writeText(getDateString(context, planner,
-                    day.getDate()), null);
+                                           day.getDate()), null);
             writer.endElement(HTML.SPAN_ELEM);
 
             //write the name of the holiday, if there is one
             if ((day.getSpecialDayName() != null)
-                    && (day.getSpecialDayName().length() > 0))
+                && (day.getSpecialDayName().length() > 0))
             {
                 writer.startElement(HTML.SPAN_ELEM, planner);
                 writer.writeAttribute(HTML.CLASS_ATTR, "holiday", null);
@@ -595,7 +595,7 @@ public class PlannerRenderer extends Renderer
         writer.startElement(HTML.TR_ELEM, planner);
 
         int numberOfHours = planner.getVisibleEndHour()
-                - planner.getVisibleStartHour();
+                            - planner.getVisibleStartHour();
         float hourWidth = (numberOfHours <= 0) ? 100f : (100 / numberOfHours);
 
         for (Iterator dayIterator = planner.getModel().dayIterator(); dayIterator
@@ -604,10 +604,10 @@ public class PlannerRenderer extends Renderer
             Day day = (Day) dayIterator.next();
             writer.startElement(HTML.TD_ELEM, planner);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
-                    + "%", null);
+                                                   + "%", null);
             writer.startElement(HTML.TABLE_ELEM, planner);
             writer.writeAttribute(HTML.STYLE_ATTR, "height: 100%; width: 100%",
-                    null);
+                                  null);
             writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
             writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
             writer.writeAttribute("border", "0", null);
@@ -620,7 +620,7 @@ public class PlannerRenderer extends Renderer
                 writer.writeAttribute(HTML.CLASS_ATTR, "hours", null);
                 writer.writeAttribute(HTML.WIDTH_ATTR, String
                         .valueOf(hourWidth)
-                        + "%", null);
+                                                       + "%", null);
                 writer
                         .writeAttribute(
                                 HTML.STYLE_ATTR,
@@ -680,10 +680,10 @@ public class PlannerRenderer extends Renderer
                 writer.startElement(HTML.TD_ELEM, planner);
                 writer.writeAttribute(HTML.WIDTH_ATTR, String
                         .valueOf(columnWidth)
-                        + "%", null);
+                                                       + "%", null);
                 writer.startElement(HTML.TABLE_ELEM, planner);
                 writer.writeAttribute(HTML.STYLE_ATTR,
-                        "height: 100%; width: 100%", null);
+                                      "height: 100%; width: 100%", null);
                 writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
                 writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
                 writer.writeAttribute("border", "0", null);
@@ -697,7 +697,7 @@ public class PlannerRenderer extends Renderer
                             planner, day, hcol), null);
                     writer.writeAttribute(HTML.WIDTH_ATTR, String
                             .valueOf(hourWidth)
-                            + "%", null);
+                                                           + "%", null);
                     writer
                             .writeAttribute(
                                     HTML.STYLE_ATTR,
@@ -734,7 +734,7 @@ public class PlannerRenderer extends Renderer
      * @throws IOException when the entries cannot be drawn
      */
     private void writeEntries(FacesContext context, HtmlPlanner planner,
-            PlannerEntity entity, Day day, ResponseWriter writer)
+                              PlannerEntity entity, Day day, ResponseWriter writer)
             throws IOException
     {
         for (Iterator entryIterator = entity.iterator(); entryIterator
@@ -763,7 +763,7 @@ public class PlannerRenderer extends Renderer
     }
 
     private void writeForegroundEnd(FacesContext context, HtmlPlanner planner,
-            ResponseWriter writer) throws IOException
+                                    ResponseWriter writer) throws IOException
     {
         writer.endElement(HTML.TBODY_ELEM);
         writer.endElement(HTML.TABLE_ELEM);
@@ -771,7 +771,7 @@ public class PlannerRenderer extends Renderer
     }
 
     private void writeForegroundStart(FacesContext context,
-            HtmlPlanner planner, ResponseWriter writer) throws IOException
+                                      HtmlPlanner planner, ResponseWriter writer) throws IOException
     {
         writer.startElement(HTML.DIV_ELEM, planner);
         writer.writeAttribute(HTML.CLASS_ATTR, "foreground", null);
@@ -787,7 +787,7 @@ public class PlannerRenderer extends Renderer
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%;",
-                null);
+                              null);
         writer.startElement(HTML.TBODY_ELEM, planner);
 
         //header row containing the day names
@@ -802,8 +802,8 @@ public class PlannerRenderer extends Renderer
                         null);
         writer.startElement(HTML.DIV_ELEM, planner);
         writer.writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: "
-                + String.valueOf(getGutterWidth(planner))
-                + "px", null);
+                                               + String.valueOf(getGutterWidth(planner))
+                                               + "px", null);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.TD_ELEM);
 
@@ -817,9 +817,9 @@ public class PlannerRenderer extends Renderer
             writer.startElement(HTML.TD_ELEM, planner);
             writer.writeAttribute(HTML.CLASS_ATTR, "header", null);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
-                    + "%", null);
+                                                   + "%", null);
             writer.writeAttribute(HTML.STYLE_ATTR,
-                    "overflow: hidden; height: 31px;", null);
+                                  "overflow: hidden; height: 31px;", null);
             writer.endElement(HTML.TD_ELEM);
         }
 
@@ -835,7 +835,7 @@ public class PlannerRenderer extends Renderer
             writer.startElement(HTML.TD_ELEM, planner);
             writer.writeAttribute(HTML.CLASS_ATTR, "hours", null);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
-                    + "%", null);
+                                                   + "%", null);
             writer
                     .writeAttribute(
                             HTML.STYLE_ATTR,
@@ -894,9 +894,9 @@ public class PlannerRenderer extends Renderer
 
                 boolean returnboolean = (entry.getStartTime()
                         .equals(other.entry.getStartTime()))
-                        && (entry.getEndTime().equals(other.entry.getEndTime()))
-                        && (entry.getId().equals(other.entry.getId()))
-                        && (day.equals(other.day));
+                                        && (entry.getEndTime().equals(other.entry.getEndTime()))
+                                        && (entry.getId().equals(other.entry.getId()))
+                                        && (day.equals(other.day));
                 /*
                  new EqualsBuilder().append(
                  entry.getStartTime(), other.entry.getStartTime()
@@ -917,7 +917,7 @@ public class PlannerRenderer extends Renderer
         public int hashCode()
         {
             int returnint = entry.getStartTime().hashCode()
-                    ^ entry.getEndTime().hashCode() ^ entry.getId().hashCode();
+                            ^ entry.getEndTime().hashCode() ^ entry.getId().hashCode();
 
             return returnint;
         }
@@ -966,9 +966,9 @@ public class PlannerRenderer extends Renderer
                     endMillis, visibleEndMillis) : visibleEndMillis;
 
             float left = (float) ((startMillis - visibleStartMillis) * 100)
-                    / (float) (visibleEndMillis - visibleStartMillis);
+                         / (float) (visibleEndMillis - visibleStartMillis);
             float width = (float) ((endMillis - startMillis) * 100)
-                    / (float) (visibleEndMillis - visibleStartMillis);
+                          / (float) (visibleEndMillis - visibleStartMillis);
             StringBuffer buffer = new StringBuffer();
             buffer
                     .append("position: absolute; padding: 0px; top: 0px; height: 21px; left: ");

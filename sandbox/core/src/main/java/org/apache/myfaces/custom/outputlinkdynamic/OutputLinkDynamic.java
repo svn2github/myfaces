@@ -21,7 +21,7 @@ import javax.faces.el.EvaluationException;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
-import org.apache.myfaces.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)

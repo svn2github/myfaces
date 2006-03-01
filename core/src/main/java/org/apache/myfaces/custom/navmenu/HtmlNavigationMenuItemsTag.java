@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.navmenu;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)

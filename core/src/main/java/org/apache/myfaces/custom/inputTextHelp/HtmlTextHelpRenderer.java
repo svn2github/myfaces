@@ -23,14 +23,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
-import org.apache.myfaces.renderkit.html.util.HTMLEncoder;
 
 /**
  * @author Thomas Obereder
@@ -97,8 +96,8 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
     }
 
     private void renderHelpTextAttributes(UIComponent component,
-                                                ResponseWriter writer,
-                                                FacesContext facesContext)
+                                          ResponseWriter writer,
+                                          FacesContext facesContext)
             throws IOException
     {
         if(!(component instanceof HtmlInputTextHelp))
@@ -111,13 +110,13 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
             if(isSelectText(component))
             {
                 HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                        HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
+                                                       HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
                 writer.writeAttribute(HTML.ONFOCUS_ATTR,
-                        HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT + "('" +
-                            getHelpText(component) + "', '" + id +"')", null);
+                                      HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT + "('" +
+                                      getHelpText(component) + "', '" + id +"')", null);
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
-                        HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT + "('" +
-                            getHelpText(component) + "', '" + id +"')", null);
+                                      HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT + "('" +
+                                      getHelpText(component) + "', '" + id +"')", null);
 
             }
             else
@@ -125,18 +124,18 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
                 if(getHelpText(component) != null)
                 {
                     HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                            HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
+                                                           HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
                     writer.writeAttribute(HTML.ONFOCUS_ATTR,
-                            HtmlInputTextHelp.JS_FUNCTION_RESET_HELP + "('" +
-                            getHelpText(component) + "', '" + id +"')", null);
+                                          HtmlInputTextHelp.JS_FUNCTION_RESET_HELP + "('" +
+                                          getHelpText(component) + "', '" + id +"')", null);
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
-                        HtmlInputTextHelp.JS_FUNCTION_RESET_HELP + "('" +
-                            getHelpText(component) + "', '" + id +"')", null);
+                                      HtmlInputTextHelp.JS_FUNCTION_RESET_HELP + "('" +
+                                      getHelpText(component) + "', '" + id +"')", null);
                 }
                 else
                 {
                     HtmlRendererUtils.renderHTMLAttributes(writer,
-                            component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+                                                           component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
                 }
             }
         }
@@ -155,8 +154,8 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
     public Object getConvertedValue(FacesContext facesContext, UIComponent component, Object submittedValue) throws ConverterException
     {
         if(submittedValue!=null && component instanceof HtmlInputTextHelp &&
-                ((HtmlInputTextHelp) component).getHelpText()!=null &&
-            submittedValue.equals(((HtmlInputTextHelp) component).getHelpText()))
+           ((HtmlInputTextHelp) component).getHelpText()!=null &&
+           submittedValue.equals(((HtmlInputTextHelp) component).getHelpText()))
         {
             submittedValue = "";
         }

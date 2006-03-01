@@ -15,11 +15,11 @@
  */
 package org.apache.myfaces.taglib.html.ext;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlSelectListboxTagBase;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlSelectOneListbox;
-import org.apache.myfaces.taglib.html.HtmlSelectListboxTagBase;
-import org.apache.myfaces.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 

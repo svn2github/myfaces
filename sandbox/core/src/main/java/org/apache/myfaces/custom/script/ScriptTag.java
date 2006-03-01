@@ -17,8 +17,8 @@ package org.apache.myfaces.custom.script;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputTextTagBase;
 
 /**
  * @author Matthias Wessendorf (changed by $Author$)

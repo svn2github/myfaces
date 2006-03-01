@@ -29,8 +29,8 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * Renderer for the HtmlDataScroller component.
@@ -210,11 +210,11 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
         if (!scroller.isRenderFacetsIfSinglePage() && scroller.getPageCount() <= 1)
             return;
-        
+
         if (scroller.getFirst() == null && scroller.getFastRewind() == null
-                && scroller.getPrevious() == null && !scroller.isPaginator()
-                && scroller.getNext() == null && scroller.getFastForward() == null
-                && scroller.getLast() == null)
+            && scroller.getPrevious() == null && !scroller.isPaginator()
+            && scroller.getNext() == null && scroller.getFastForward() == null
+            && scroller.getLast() == null)
             return;
 
         writer.startElement("table", scroller);
@@ -284,7 +284,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     }
 
     protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
-                    UIComponent facetComp, String facetName) throws IOException
+                               UIComponent facetComp, String facetName) throws IOException
     {
         UIComponent link = getLink(facesContext, scroller, facetName);
         link.encodeBegin(facesContext);
@@ -387,7 +387,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlDataScroller scroller,
-                    String text, int pageIndex)
+                                      String text, int pageIndex)
     {
         String id = HtmlDataScrollerRenderer.PAGE_NAVIGATION + Integer.toString(pageIndex);
         Application application = facesContext.getApplication();
@@ -417,7 +417,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlDataScroller scroller,
-                    String facetName)
+                                      String facetName)
     {
         Application application = facesContext.getApplication();
 

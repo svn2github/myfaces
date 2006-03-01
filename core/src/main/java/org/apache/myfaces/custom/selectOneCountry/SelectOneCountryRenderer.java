@@ -25,9 +25,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
 
 /**
@@ -35,33 +35,33 @@ import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
  * @version $Revision$ $Date$
  */
 public class SelectOneCountryRenderer extends HtmlMenuRenderer {
-	
-	public void encodeEnd(FacesContext facesContext, UIComponent component)
+
+    public void encodeEnd(FacesContext facesContext, UIComponent component)
     throws IOException
-	{
-		RendererUtils.checkParamValidity(facesContext, component, null);
-		
-		SelectOneCountry selectOneCountry = (SelectOneCountry) component;
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		if(HtmlRendererUtils.isDisplayValueOnly(component))
-		{
-		    //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
-			writer.startElement(HTML.SPAN_ELEM, selectOneCountry);
-	        HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
-	    
-	        String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
+    {
+        RendererUtils.checkParamValidity(facesContext, component, null);
+
+        SelectOneCountry selectOneCountry = (SelectOneCountry) component;
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        if(HtmlRendererUtils.isDisplayValueOnly(component))
+        {
+            //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
+            writer.startElement(HTML.SPAN_ELEM, selectOneCountry);
+            HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
+
+            String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
             HtmlRendererUtils.renderHTMLAttributes(writer, selectOneCountry, supportedAttributes);
-	        
-	        String countryCode = selectOneCountry.getValue().toString();
-	        String countryName = new Locale(countryCode, countryCode).getDisplayCountry( facesContext.getViewRoot().getLocale() );
-	        
-	        writer.write( countryName );
-	        
-	        writer.endElement(HTML.SPAN_ELEM);
-		    return;
-		}
-		
+
+            String countryCode = selectOneCountry.getValue().toString();
+            String countryName = new Locale(countryCode, countryCode).getDisplayCountry( facesContext.getViewRoot().getLocale() );
+
+            writer.write( countryName );
+
+            writer.endElement(HTML.SPAN_ELEM);
+            return;
+        }
+
         writer.startElement(HTML.SELECT_ELEM, selectOneCountry);
         HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
         writer.writeAttribute(HTML.NAME_ATTR, component.getClientId(facesContext), null);
@@ -82,5 +82,5 @@ public class SelectOneCountryRenderer extends HtmlMenuRenderer {
         // bug #970747: force separate end tag
         writer.writeText("", null);
         writer.endElement(HTML.SELECT_ELEM);
-	}
+    }
 }

@@ -16,7 +16,7 @@
 package org.apache.myfaces.custom.graphicimagedynamic;
 
 import org.apache.myfaces.component.html.ext.HtmlGraphicImage;
-import org.apache.myfaces.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;

@@ -21,9 +21,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * @author bdudney (latest modification by $Author$)
@@ -44,19 +44,19 @@ public class HtmlTagRenderer extends HtmlRenderer
 
         if (htmlTag.isRendered())
         {
-        	String tag = htmlTag.getValue().toString();
-        	if( tag.trim().length() == 0 ) // Don't render the tag, but renders the childs.
-        		return;
-        	
+            String tag = htmlTag.getValue().toString();
+            if( tag.trim().length() == 0 ) // Don't render the tag, but renders the childs.
+                return;
+
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement(tag, htmlTag);
             HtmlRendererUtils.writeIdIfNecessary(writer, htmlTag, context);
-            
+
             // TODO : Use HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
             String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
             HtmlRendererUtils.renderHTMLAttributes(writer, htmlTag, supportedAttributes);
-        }  
+        }
     }
 
     public void encodeEnd(FacesContext context, UIComponent component)
@@ -70,10 +70,10 @@ public class HtmlTagRenderer extends HtmlRenderer
 
         if (htmlTag.isRendered())
         {
-        	String tag = htmlTag.getValue().toString();
-        	if( tag.trim().length() == 0 )
-        		return;
-        	
+            String tag = htmlTag.getValue().toString();
+            if( tag.trim().length() == 0 )
+                return;
+
             ResponseWriter writer = context.getResponseWriter();
             writer.endElement( tag );
         }

@@ -15,10 +15,10 @@
  */
 package org.apache.myfaces.taglib.html.ext;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
-import org.apache.myfaces.taglib.html.HtmlPanelGroupTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
 
 import javax.faces.component.UIComponent;
 

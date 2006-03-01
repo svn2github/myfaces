@@ -17,7 +17,7 @@ package org.apache.myfaces.custom.calendar;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;

@@ -17,7 +17,7 @@ package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlMessage;
-import org.apache.myfaces.taglib.html.HtmlMessageTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlMessageTagBase;
 
 import javax.faces.component.UIComponent;
 

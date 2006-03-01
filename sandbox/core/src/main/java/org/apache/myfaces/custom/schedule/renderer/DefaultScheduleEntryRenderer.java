@@ -13,7 +13,7 @@ import javax.faces.el.ValueBinding;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * The default implementation of the ScheduleEntryRenderer
@@ -27,8 +27,8 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer
      * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#renderContent(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleDay, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean, boolean)
      */
     public void renderContent(FacesContext context, ResponseWriter writer,
-            HtmlSchedule schedule, ScheduleDay day, ScheduleEntry entry,
-            boolean compact, boolean selected) throws IOException
+                              HtmlSchedule schedule, ScheduleDay day, ScheduleEntry entry,
+                              boolean compact, boolean selected) throws IOException
     {
         if (compact)
         {
@@ -72,7 +72,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer
                 // draw the contents of the selected entry
                 writer.startElement(HTML.DIV_ELEM, null);
                 writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "text"), null);
+                                                                     "text"), null);
                 writer.writeAttribute(HTML.STYLE_ATTR,entryStyle.toString(), null);
                 // write the title of the entry
                 if (entry.getTitle() != null)
@@ -126,7 +126,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer
      * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#getColor(javax.faces.context.FacesContext, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
      */
     public String getColor(FacesContext context, HtmlSchedule schedule,
-            ScheduleEntry entry, boolean selected)
+                           ScheduleEntry entry, boolean selected)
     {
         return null;
     }
@@ -135,7 +135,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer
      * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#renderToolTip(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
      */
     public void renderToolTip(FacesContext context, ResponseWriter writer,
-            HtmlSchedule schedule, ScheduleEntry entry, boolean selected)
+                              HtmlSchedule schedule, ScheduleEntry entry, boolean selected)
             throws IOException
     {
         StringBuffer buffer = new StringBuffer();

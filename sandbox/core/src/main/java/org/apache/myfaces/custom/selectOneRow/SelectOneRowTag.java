@@ -1,9 +1,9 @@
 package org.apache.myfaces.custom.selectOneRow;
 
-import org.apache.myfaces.taglib.html.HtmlInputTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputTagBase;
 
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;

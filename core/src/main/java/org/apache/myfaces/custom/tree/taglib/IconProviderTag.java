@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.tree.taglib;
 
-import org.apache.myfaces.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.IconProvider;
 

@@ -33,13 +33,13 @@ import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
 import org.apache.myfaces.custom.calendar.FunctionCallProvider;
 import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer.CalendarDateTimeConverter;
 import org.apache.myfaces.custom.date.HtmlInputDate.UserData;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
-import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)

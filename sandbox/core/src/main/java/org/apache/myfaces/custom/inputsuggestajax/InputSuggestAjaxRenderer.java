@@ -21,13 +21,15 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoResourceLoader;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
+
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+
 import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.UnicodeEncoder;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.commons.lang.StringUtils;
 
 import javax.faces.component.UIColumn;

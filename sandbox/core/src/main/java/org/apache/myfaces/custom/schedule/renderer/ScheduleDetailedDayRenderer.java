@@ -31,7 +31,7 @@ import javax.faces.context.ResponseWriter;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * <p>

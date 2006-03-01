@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 
 /**

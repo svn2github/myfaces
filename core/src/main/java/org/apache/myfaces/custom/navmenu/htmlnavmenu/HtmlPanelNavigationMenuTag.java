@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.navmenu.htmlnavmenu;
 
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.taglib.html.ext.HtmlPanelGroupTag;
 
 import javax.faces.component.UIComponent;

@@ -16,7 +16,7 @@
 package org.apache.myfaces.custom.tree.taglib;
 
 import org.apache.myfaces.custom.tree.HtmlTreeColumn;
-import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase;
 
 
 /**
@@ -28,7 +28,7 @@ import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
  */
 public class TreeColumnTag extends HtmlComponentBodyTagBase
 {
-  
+
     /**
      * @see javax.faces.webapp.UIComponentTag#getComponentType()
      */

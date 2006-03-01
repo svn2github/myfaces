@@ -23,7 +23,7 @@ import javax.faces.el.MethodBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.taglib.html.ext.HtmlInputTextTag;
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 
 /**

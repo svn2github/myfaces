@@ -1,6 +1,6 @@
 package org.apache.myfaces.custom.subform;
 
-import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;

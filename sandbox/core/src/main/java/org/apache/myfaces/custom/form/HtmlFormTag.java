@@ -17,7 +17,7 @@ package org.apache.myfaces.custom.form;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.html.HtmlFormTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlFormTagBase;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -41,7 +41,7 @@ public class HtmlFormTag extends HtmlFormTagBase
     }
 
     /**
-     * @see org.apache.myfaces.taglib.html.HtmlFormTagBase#setProperties(javax.faces.component.UIComponent)
+     * @see org.apache.myfaces.shared_tomahawk.taglib.html.HtmlFormTagBase#setProperties(javax.faces.component.UIComponent)
      */
     protected void setProperties(UIComponent component)
     {
@@ -52,7 +52,7 @@ public class HtmlFormTag extends HtmlFormTagBase
     }
 
     /**
-     * @see org.apache.myfaces.taglib.html.HtmlFormTagBase#release()
+     * @see org.apache.myfaces.shared_tomahawk.taglib.html.HtmlFormTagBase#release()
      */
     public void release()
     {

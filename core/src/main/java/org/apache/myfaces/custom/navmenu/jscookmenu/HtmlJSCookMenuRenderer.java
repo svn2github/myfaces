@@ -33,19 +33,19 @@ import javax.faces.webapp.UIComponentTag;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
 import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
-import org.apache.myfaces.el.SimpleActionMethodBinding;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlFormRendererBase;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.el.SimpleActionMethodBinding;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 
 /**
  * @author Thomas Spiegl
@@ -57,7 +57,7 @@ public class HtmlJSCookMenuRenderer
     private static final String MYFACES_HACK_SCRIPT = "MyFacesHack.js";
 
     private static final String JSCOOK_MENU_SCRIPT = "JSCookMenu.js";
-    
+
     private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
 
     private static final String JSCOOK_ACTION_PARAM = "jscook_action";
@@ -70,7 +70,7 @@ public class HtmlJSCookMenuRenderer
         builtInThemes.put("ThemeIE", "ThemeIE/");
         builtInThemes.put("ThemePanel", "ThemePanel/");
     }
-    
+
     public void decode(FacesContext context, UIComponent component)
     {
         RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
@@ -78,7 +78,7 @@ public class HtmlJSCookMenuRenderer
         Map parameter = context.getExternalContext().getRequestParameterMap();
         String actionParam = (String)parameter.get(JSCOOK_ACTION_PARAM);
         if (actionParam != null && !actionParam.trim().equals("") &&
-                !actionParam.trim().equals("null"))
+            !actionParam.trim().equals("null"))
         {
             String compId = getMenuId(context,component);
             StringTokenizer tokenizer = new StringTokenizer(actionParam, ":");
@@ -200,14 +200,14 @@ public class HtmlJSCookMenuRenderer
      * @return String
      */
     private String getFormName(UIForm parentForm,
-            FacesContext facesContext) {
+                               FacesContext facesContext) {
         // See if we are in a form
         if (parentForm != null) { return parentForm.getClientId(facesContext); }
 
         // Not in a form. Return the child form's name
         return null;
     }
-    
+
     /**
      * Get the parent UIForm. If no parent is a UIForm then returns null.
      * 
@@ -222,7 +222,7 @@ public class HtmlJSCookMenuRenderer
         }
         return (UIForm) parent;
     }
-    
+
     private void encodeNavigationMenuItems(FacesContext context,
                                            StringBuffer writer,
                                            NavigationMenuItem[] items,
@@ -256,7 +256,7 @@ public class HtmlJSCookMenuRenderer
             if (item.isSplit())
             {
                 writer.append("_cmSplit,");
-                
+
                 if (item.getLabel().equals("0"))
                 {
                     continue;
@@ -319,7 +319,7 @@ public class HtmlJSCookMenuRenderer
             // Change here to allow the use of non dummy form.
             writer.append(formName);
             writer.append("', null");
-            
+
             if (item.isRendered() && ! item.isDisabled()) {
                 // render children only if parent is visible/enabled
                 NavigationMenuItem[] menuItems = item.getNavigationMenuItems();
@@ -329,10 +329,10 @@ public class HtmlJSCookMenuRenderer
                     if (uiNavMenuItem != null)
                     {
                         encodeNavigationMenuItems(context, writer, menuItems,
-                                uiNavMenuItem.getChildren(), menuId, formName);
+                                                  uiNavMenuItem.getChildren(), menuId, formName);
                     } else {
                         encodeNavigationMenuItems(context, writer, menuItems,
-                                new ArrayList(1), menuId, formName);
+                                                  new ArrayList(1), menuId, formName);
                     }
                 }
             }
@@ -433,7 +433,7 @@ public class HtmlJSCookMenuRenderer
         String javascriptLocation = (String) menu.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
-        
+
         AddResource addResource = AddResourceFactory.getInstance(context);
 
         if(javascriptLocation != null)
@@ -484,8 +484,8 @@ public class HtmlJSCookMenuRenderer
      * 
      * @param context is the current faces context.
      */
-    private void addThemeSpecificResources(String themeName, String styleLocation, 
-            String javascriptLocation, String imageLocation, FacesContext context)
+    private void addThemeSpecificResources(String themeName, String styleLocation,
+                                           String javascriptLocation, String imageLocation, FacesContext context)
     {
         String themeLocation = (String) builtInThemes.get(themeName);
         if(themeLocation == null)
@@ -511,12 +511,12 @@ public class HtmlJSCookMenuRenderer
             if (imageLocation != null)
             {
                 buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
-                        imageLocation + "/" + themeName)));
+                                                                                        imageLocation + "/" + themeName)));
             }
             else
             {
                 buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
-                        HtmlJSCookMenuRenderer.class, themeLocation)));
+                                                                                        HtmlJSCookMenuRenderer.class, themeLocation)));
             }
             buf.append("';");
             addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
@@ -535,13 +535,13 @@ public class HtmlJSCookMenuRenderer
                 // version of the jscookMenu.js file then the theme.js file can be found
                 // in the same location.
                 addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + themeName
-                        + "/theme.js");
+                                                                                       + "/theme.js");
             }
             else
             {
                 // Using a built-in theme, so we know where the theme.js file is.
                 addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
-                        + "/theme.js");
+                                                                                                                     + "/theme.js");
             }
         }
 
@@ -558,7 +558,7 @@ public class HtmlJSCookMenuRenderer
             else
             {
                 addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
-                        + "/theme.css");
+                                                                                                           + "/theme.css");
             }
         }
     }

@@ -24,7 +24,7 @@ import java.util.TimeZone;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;

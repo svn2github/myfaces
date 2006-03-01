@@ -23,7 +23,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
-import org.apache.myfaces.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
 /**

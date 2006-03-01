@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.tabbedpane;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;

@@ -21,26 +21,26 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * @author Matthias Wessendorf (changed by $Author$)
  * @version $Revision$ $Date$
  */
 public class ScriptRenderer extends HtmlRenderer {
-	
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-	    if ((context == null) || (component == null)) {
-	        throw new NullPointerException();
-	    }
-	    Script script = (Script) component;
-	    ResponseWriter writer = context.getResponseWriter();
-	    
+
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        if ((context == null) || (component == null)) {
+            throw new NullPointerException();
+        }
+        Script script = (Script) component;
+        ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.SRC_ATTR, context.getExternalContext().getRequestContextPath()+script.getSrc(), null);
         writer.writeAttribute(HTML.TYPE_ATTR, script.getType(), null);
         writer.writeText("",null);
-        writer.endElement(HTML.SCRIPT_ELEM);          
-	}
+        writer.endElement(HTML.SCRIPT_ELEM);
+    }
 }

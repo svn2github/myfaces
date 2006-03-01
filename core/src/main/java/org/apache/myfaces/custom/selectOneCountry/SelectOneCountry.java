@@ -30,8 +30,8 @@ import javax.faces.el.ValueBinding;
 import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.html.ext.HtmlSelectOneMenu;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -47,14 +47,14 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-	public Integer getMaxLength() {
-		if (_maxLength != null) return _maxLength;
-		ValueBinding vb = getValueBinding("maxLength");
-		return vb != null ? (Integer)vb.getValue(getFacesContext()) : null;
-	}
-	public void setMaxLength(Integer maxLength) {
-		_maxLength = maxLength;
-	}
+    public Integer getMaxLength() {
+        if (_maxLength != null) return _maxLength;
+        ValueBinding vb = getValueBinding("maxLength");
+        return vb != null ? (Integer)vb.getValue(getFacesContext()) : null;
+    }
+    public void setMaxLength(Integer maxLength) {
+        _maxLength = maxLength;
+    }
 
     public Object saveState(FacesContext context) {
         Object values[] = new Object[2];
@@ -68,22 +68,22 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
         super.restoreState(context, values[0]);
         _maxLength = (Integer)values[1];
     }
-    
+
     private Set getFilterSet(){
         List selectItems = RendererUtils.getSelectItemList( this );
-        Set set = new HashSet( selectItems.size() );        
-        
+        Set set = new HashSet( selectItems.size() );
+
         for (Iterator i = selectItems.iterator(); i.hasNext(); )
-        	set.add( ((SelectItem)i.next()).getValue().toString().toUpperCase() );
+            set.add( ((SelectItem)i.next()).getValue().toString().toUpperCase() );
 
         return set;
     }
-    
-	protected List getCountriesChoicesAsSelectItemList(){
-		//return RendererUtils.getSelectItemList(component);
 
-		Set filterSet = getFilterSet();
-    	
+    protected List getCountriesChoicesAsSelectItemList(){
+        //return RendererUtils.getSelectItemList(component);
+
+        Set filterSet = getFilterSet();
+
         String[] availableCountries = Locale.getISOCountries();
 
         Locale currentLocale;
@@ -102,7 +102,7 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
         for(int i=0; i<availableCountries.length; i++){
             String countryCode = availableCountries[i];
             if( ! filterSet.isEmpty() && ! filterSet.contains(countryCode))
-            	continue;
+                continue;
             Locale tmp = new Locale(countryCode, countryCode);
             map.put(tmp.getDisplayCountry(currentLocale), countryCode);
         }
@@ -128,19 +128,19 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
 
         return countriesSelectItems;
     }
-    
+
     protected void validateValue(FacesContext context, Object value) {
         if( !isValid() || value == null )
             return;
 
         // selected value must match to one of the available options
         for(Iterator i = getCountriesChoicesAsSelectItemList().iterator(); i.hasNext() ; ){
-        	if( value.equals( ((SelectItem)i.next()).getValue() ) )
-        		return;
+            if( value.equals( ((SelectItem)i.next()).getValue() ) )
+                return;
         }
 
         MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, INVALID_MESSAGE_ID,  new Object[] {getId()}, context);
-        
+
         setValid(false);
     }
 }

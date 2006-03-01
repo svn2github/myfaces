@@ -4,7 +4,7 @@
 package org.apache.myfaces.custom.popup;
 
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.taglib.html.HtmlComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentTagBase;
 
 import javax.faces.component.UIComponent;
 

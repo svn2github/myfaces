@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,7 +28,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
-import org.apache.myfaces.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 
 /**
@@ -90,7 +89,7 @@ public class ScheduleCompactMonthRenderer
 
         for (
             Iterator dayIterator = schedule.getModel().iterator();
-                dayIterator.hasNext();
+            dayIterator.hasNext();
         ) {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
             cal.setTime(day.getDate());

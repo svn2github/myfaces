@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.scope;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 /**
  * A class very similar to savestate it allows to defined scopes for variables

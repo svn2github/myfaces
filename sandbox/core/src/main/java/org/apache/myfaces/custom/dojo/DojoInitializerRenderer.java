@@ -21,8 +21,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * Dojointializerrenderer
@@ -97,7 +97,7 @@ public class DojoInitializerRenderer extends HtmlRenderer
 
         encodeJavascript(facesContext, component);
         if (((DojoInitializer) component).getDebugConsole() != null
-                && ((DojoInitializer) component).getDebugConsole().booleanValue())
+            && ((DojoInitializer) component).getDebugConsole().booleanValue())
         {
             DojoUtils.addDebugConsole(facesContext, component);
         }

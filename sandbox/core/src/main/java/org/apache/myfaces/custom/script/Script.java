@@ -19,8 +19,8 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * @author Matthias Wessendorf (changed by $Author$)
@@ -28,12 +28,12 @@ import org.apache.myfaces.util._ComponentUtils;
  */
 public class Script extends UIOutput {
 
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.Script";
-	public static final String COMPONENT_FAMILY = "javax.faces.Output";
-	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Script";
-	
-	private String src = null;
-	private String type = HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT;
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.Script";
+    public static final String COMPONENT_FAMILY = "javax.faces.Output";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Script";
+
+    private String src = null;
+    private String type = HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT;
 
     // ------------------------------------------------------------ Constructor
     public Script() {
@@ -50,28 +50,28 @@ public class Script extends UIOutput {
     }
 
     //  ------------------------------------------------------------ getter/setter
-	public String getSrc() {
+    public String getSrc() {
         if (src != null) return src;
         ValueBinding vb = getValueBinding("src");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-	}
+    }
 
 
-	public void setSrc(String src) {
-		this.src = src;
-	}
+    public void setSrc(String src) {
+        this.src = src;
+    }
 
 
-	public String getType() {
+    public String getType() {
         if (type != null) return type;
         ValueBinding vb = getValueBinding("type");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-	}
+    }
 
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
     //  ------------------------------------------------------------ StateHolder
     public void restoreState(FacesContext context, Object state) {
@@ -93,5 +93,5 @@ public class Script extends UIOutput {
 
     }
 
-	
+
 }

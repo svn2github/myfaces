@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.dojo;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.html.HtmlOutputTextTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputTextTagBase;
 
 /**
  * Tag for the dojo intializer code
@@ -44,7 +44,6 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
     String _debugAtAllCosts      = null;
     String _development          = null;
     String _expanded             = null;
-    
     
     public String getComponentType()
     {
@@ -96,7 +95,7 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase
         super.setStringProperty(component, "provide", _provide);
         super.setBooleanProperty(component, "debugConsole", _debugConsole);
         super.setBooleanProperty(component, "debugAtAllCosts", _debugAtAllCosts);
-            
+
         super.setBooleanProperty(component,"development", _development);
     
         super.setBooleanProperty(component, "expanded", _expanded);

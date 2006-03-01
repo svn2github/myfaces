@@ -17,11 +17,11 @@ package org.apache.myfaces.taglib.html.ext;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlInputTextarea;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.taglib.html.HtmlInputTextareaTagBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputTextareaTagBase;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -32,7 +32,7 @@ public class HtmlInputTextareaTag
 {
     private static final String TEXTAREA_RENDERER = "org.apache.myfaces.Textarea";
 
-	public String getComponentType()
+    public String getComponentType()
     {
         return HtmlInputTextarea.COMPONENT_TYPE;
     }
@@ -46,11 +46,11 @@ public class HtmlInputTextareaTag
     private String _visibleOnUserRole;
 
     private String _displayValueOnly;
-	private String _displayValueOnlyStyle;
-	private String _displayValueOnlyStyleClass;
+    private String _displayValueOnlyStyle;
+    private String _displayValueOnlyStyleClass;
 
     private String _wrap;
-	
+
     public void release() {
         super.release();
 
@@ -60,7 +60,7 @@ public class HtmlInputTextareaTag
         _displayValueOnly=null;
         _displayValueOnlyStyle=null;
         _displayValueOnlyStyleClass=null;
-        
+
         _wrap = null;
     }
 
@@ -69,13 +69,13 @@ public class HtmlInputTextareaTag
         super.setProperties(component);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
-        
+
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
-        
+
         setStringProperty(component, HTML.WRAP_ATTR, _wrap);
-        
+
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)

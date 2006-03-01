@@ -16,7 +16,7 @@
 package org.apache.myfaces.custom.newspaper;
 
 import javax.faces.component.UIComponent;
-import org.apache.myfaces.taglib.html.HtmlDataTableTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlDataTableTagBase;
 
 /**
  * Tag for a table in multiple balanced columns.

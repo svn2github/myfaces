@@ -15,9 +15,9 @@
  */
 package org.apache.myfaces.custom.jsvalueset;
 
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import javax.faces.application.Application;

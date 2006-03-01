@@ -17,19 +17,13 @@
 package org.apache.myfaces.custom.tree2;
 
 
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.config.MyfacesConfig;
-import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import javax.faces.event.ActionEvent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.Stack;
 
 /**
  * Test case for {@link UITreeData}.

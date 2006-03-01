@@ -13,28 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.myfaces.renderkit.html.util;
+package org.apache.myfaces.shared_tomahawk.renderkit.html.util;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import junit.framework.TestCase;
+import org.apache.myfaces.application.ApplicationFactoryImpl;
+import org.apache.myfaces.context.servlet.ServletFacesContextImpl;
+import org.apache.myfaces.renderkit.RenderKitFactoryImpl;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
+import org.easymock.MockControl;
 
 import javax.faces.FactoryFinder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import junit.framework.TestCase;
-
-import org.apache.myfaces.application.ApplicationFactoryImpl;
-import org.apache.myfaces.context.servlet.ServletFacesContextImpl;
-import org.apache.myfaces.renderkit.RenderKitFactoryImpl;
-import org.apache.myfaces.renderkit.html.HtmlResponseWriterImpl;
-import org.easymock.MockControl;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * Unit test for the AddResource class which can output script, style and inline
@@ -44,17 +40,13 @@ public class AddResourceTest extends TestCase
 {
     public void testGetInstance()
     {
-    	Map cacheMap = new LinkedHashMap();
-    	
-        AddResource instance1 = AddResourceFactory.getInstance(cacheMap, "/test1", null);
+        AddResource instance1 = AddResourceFactory.getInstance("/test1", null);
         assertNotNull(instance1);
 
-        /* no longer true
-        AddResource instance2 = AddResourceFactory.getInstance(null, "/test2", null);
+        AddResource instance2 = AddResourceFactory.getInstance("/test2", null);
         assertNotSame(instance1, instance2);
-        */
 
-        AddResource instance1a = AddResourceFactory.getInstance(cacheMap, "/test1", null);
+        AddResource instance1a = AddResourceFactory.getInstance("/test1", null);
         assertSame(instance1, instance1a);
     }
 
@@ -178,7 +170,7 @@ public class AddResourceTest extends TestCase
         mockState.setup();
 
         // now start the test
-        AddResource instance1 = AddResourceFactory.getInstance(null, "/test", null);
+        AddResource instance1 = AddResourceFactory.getInstance("/test", null);
         instance1.addJavaScriptHere(mockState._facesContext, "/scripts/script1");
 
         // verify that our mock objects got the expected callbacks
@@ -209,7 +201,7 @@ public class AddResourceTest extends TestCase
         String originalResponse =
             "<html><head></head><body></body></html>";
 
-        AddResource ar = AddResourceFactory.getInstance(null, "/test", null);
+        AddResource ar = AddResourceFactory.getInstance("/test", null);
         ar.parseResponse(mockState._servletRequest,originalResponse,mockState._servletResponse);
         ar.writeWithFullHeader(mockState._servletRequest,mockState._servletResponse);
         ar.writeResponse(mockState._servletRequest,mockState._servletResponse);

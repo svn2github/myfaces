@@ -18,7 +18,7 @@ package org.apache.myfaces.custom.tree2;
 
 import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.mock.MockResponseWriter;
-import org.apache.myfaces.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 
 import java.io.BufferedWriter;
 import java.io.CharArrayWriter;

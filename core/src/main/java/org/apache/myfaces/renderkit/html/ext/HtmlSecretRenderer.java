@@ -23,10 +23,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlSecretRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlSecretRendererBase;
 
 
 /**
@@ -48,35 +48,35 @@ public class HtmlSecretRenderer
             return super.isDisabled(facesContext, uiComponent);
         }
     }
-    
+
     public void encodeEnd(FacesContext facesContext, UIComponent component)
     throws IOException
-	{
-	    if(HtmlRendererUtils.isDisplayValueOnly(component))
-	    {
-	    	renderInputValueOnly(facesContext,
-	                (UIInput) component);
-	    }
-	    else
-	    {
-	        super.encodeEnd(facesContext, component);
-	    }
-	}
-	
-	protected void renderInputValueOnly(FacesContext facesContext, UIInput uiInput)
-	    throws IOException
-	{
-	    ResponseWriter writer = facesContext.getResponseWriter();
-	
-	    writer.startElement(HTML.SPAN_ELEM, uiInput);
-	
-	    HtmlRendererUtils.writeIdIfNecessary(writer, uiInput, facesContext);
-	
-	    HtmlRendererUtils.renderDisplayValueOnlyAttributes(uiInput, writer);
-	
-	    // renders five asterisks instead of the component value
-	    writer.writeText("*****", JSFAttr.VALUE_ATTR);
-	
-	    writer.endElement(HTML.SPAN_ELEM);
-	}
+    {
+        if(HtmlRendererUtils.isDisplayValueOnly(component))
+        {
+            renderInputValueOnly(facesContext,
+                                 (UIInput) component);
+        }
+        else
+        {
+            super.encodeEnd(facesContext, component);
+        }
+    }
+
+    protected void renderInputValueOnly(FacesContext facesContext, UIInput uiInput)
+        throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement(HTML.SPAN_ELEM, uiInput);
+
+        HtmlRendererUtils.writeIdIfNecessary(writer, uiInput, facesContext);
+
+        HtmlRendererUtils.renderDisplayValueOnlyAttributes(uiInput, writer);
+
+        // renders five asterisks instead of the component value
+        writer.writeText("*****", JSFAttr.VALUE_ATTR);
+
+        writer.endElement(HTML.SPAN_ELEM);
+    }
 }

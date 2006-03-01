@@ -17,7 +17,7 @@ package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlCommandButton;
-import org.apache.myfaces.taglib.html.HtmlCommandButtonTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlCommandButtonTagBase;
 
 import javax.faces.component.UIComponent;
 

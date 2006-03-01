@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.aliasbean;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

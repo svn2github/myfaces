@@ -17,10 +17,10 @@ package org.apache.myfaces.renderkit.html.ext;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
-import org.apache.myfaces.renderkit.html.HtmlLinkRendererBase;
-import org.apache.myfaces.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlLinkRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;

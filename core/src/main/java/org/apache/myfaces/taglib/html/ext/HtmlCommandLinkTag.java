@@ -17,7 +17,7 @@ package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
-import org.apache.myfaces.taglib.html.HtmlCommandLinkTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlCommandLinkTagBase;
 
 import javax.faces.component.UIComponent;
 

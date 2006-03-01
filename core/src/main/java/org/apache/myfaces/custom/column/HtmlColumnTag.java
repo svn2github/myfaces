@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.custom.column;
 
-import org.apache.myfaces.taglib.html.HtmlComponentBodyTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase;
 
 import javax.faces.component.UIComponent;
 

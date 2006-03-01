@@ -15,7 +15,7 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
-import org.apache.myfaces.renderkit.html.HtmlGroupRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
 
 
 /**

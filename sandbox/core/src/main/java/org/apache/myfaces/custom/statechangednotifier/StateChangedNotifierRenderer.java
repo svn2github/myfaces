@@ -16,10 +16,10 @@
 package org.apache.myfaces.custom.statechangednotifier;
 
 import org.apache.myfaces.renderkit.html.HtmlHiddenRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.RendererUtils;
-import org.apache.myfaces.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 
@@ -36,7 +36,8 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
 {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
-        RendererUtils.checkParamValidity(facesContext, uiComponent, StateChangedNotifier.class);
+        RendererUtils.checkParamValidity(facesContext, uiComponent,
+                StateChangedNotifier.class);
 
         StateChangedNotifier notifier = (StateChangedNotifier) uiComponent;
 
@@ -52,8 +53,8 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         //DojoUtils.addRequire(facesContext, "dojo.xml.Parse");
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
-        addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, StateChangedNotifierRenderer.class,
-                "stateChangedNotifier.js");
+        addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN,
+                StateChangedNotifierRenderer.class, "stateChangedNotifier.js");
 
         encodeJavascript(facesContext, notifier);
 
@@ -65,37 +66,35 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         String notifierClientId = notifier.getClientId(facesContext);
 
         String replacedClientId = notifierClientId.replaceAll(":", "_");
-        String initFunctionName = "init_" + replacedClientId;
+        String initFunctionName = "init_"+replacedClientId;
 
         UIForm form = getParentForm(notifier);
         String formId = form.getClientId(facesContext);
 
-        String notifierVar = replacedClientId + "Notifier";
+        String notifierVar = replacedClientId+"Notifier";
 
         StringBuffer sb = new StringBuffer();
-        sb.append("var " + notifierVar + " = null;\n");
-
-        sb.append("function " + initFunctionName + "() {\n");
-        sb.append(notifierVar + " = new org_apache_myfaces_StateChangedNotifier('" + notifierVar + "','" + formId
-                + "','" + notifierClientId + "','" + notifier.getConfirmationMessage() + "',");
+        sb.append("dojo.addOnLoad(window, '"+initFunctionName+"');\n");
+        sb.append("function "+initFunctionName+ "() {\n");
+        sb.append(notifierVar+" = new org.apache.myfaces.StateChangedNotifier('"+notifierVar+"','"+formId+"','"+notifierClientId+"','"+notifier.getConfirmationMessage()+"',");
 
         String excludedCommandIds = notifier.getExcludedIds();
         if (excludedCommandIds != null)
         {
-            sb.append("'" + excludedCommandIds + "');\n");
+            sb.append("'"+excludedCommandIds+"');\n");
         }
         else
         {
             sb.append("'');\n");
         }
 
-        sb.append(replacedClientId + "Notifier.prepareNotifier();\n");
+        sb.append(replacedClientId+"Notifier.prepareNotifier();\n");
 
         sb.append("}\n");
-        sb.append("dojo.addOnLoad(window, '" + initFunctionName + "');\n");
       
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
-        addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, sb.toString());
+        addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN,
+                sb.toString());
     }
 
     /**
@@ -104,12 +103,10 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
      * @param component
      * @return UIForm
      */
-    private UIForm getParentForm(UIComponent component)
-    {
+    private UIForm getParentForm(UIComponent component) {
         // See if we are in a form
         UIComponent parent = component.getParent();
-        while (parent != null && !(parent instanceof UIForm))
-        {
+        while (parent != null && !(parent instanceof UIForm)) {
             parent = parent.getParent();
         }
         return (UIForm) parent;

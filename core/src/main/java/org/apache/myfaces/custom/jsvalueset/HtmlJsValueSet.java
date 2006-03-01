@@ -4,7 +4,7 @@
 package org.apache.myfaces.custom.jsvalueset;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;

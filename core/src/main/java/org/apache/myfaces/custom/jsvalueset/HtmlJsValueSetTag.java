@@ -3,7 +3,7 @@
  */
 package org.apache.myfaces.custom.jsvalueset;
 
-import org.apache.myfaces.taglib.UIComponentTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 import javax.faces.component.UIComponent;
 
