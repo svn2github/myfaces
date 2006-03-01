@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.datascroller;
 
+import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -240,6 +241,11 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
     {
         UIData uiData = getUIData();
         int rows = uiData.getRows();
+        if (0 == rows)
+        {
+            throw new FacesException("Missing 'rows' attribute on component '" + uiData.getId() + "'" );
+        }
+
         int pageIndex;
         if (rows > 0)
         {
