@@ -536,10 +536,10 @@ public class CompareToValidator implements Validator, StateHolder {
     }
 
 
-    protected Object getConvertedValueNonValid(FacesContext facesContext, UIInput component)
+    protected Object getConvertedValueNonValid(FacesContext facesContext, UIComponent component)
     {
         Object componentValueObject;
-        Object submittedValue = ((EditableValueHolder)component).getSubmittedValue();
+        Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
         if (submittedValue == null)
         {
             componentValueObject = null;
