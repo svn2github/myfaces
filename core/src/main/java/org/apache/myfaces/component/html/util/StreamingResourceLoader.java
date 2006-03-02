@@ -18,26 +18,32 @@ public class StreamingResourceLoader implements ResourceLoader
 	public void serveResource(ServletContext context, HttpServletRequest request, HttpServletResponse response, String resourceUri) throws IOException
 	{
 		int pos = resourceUri.indexOf("/");
-		long requestId = Long.parseLong(resourceUri.substring(0, pos), 10);
+		Long requestId = new Long(Long.parseLong(resourceUri.substring(0, pos), 10));
 		String resourceType = resourceUri.substring(pos+1);
 		
 		StreamingAddResource.HeaderInfoEntry headerInfoEntry = StreamingAddResource.getHeaderInfo(requestId);
-
-		PrintWriter pw = response.getWriter();
-		
-		StreamingAddResource.StreamablePositionedInfo positionedInfo;
 		try
 		{
-			while ((positionedInfo = headerInfoEntry.fetchInfo()) != null)
+			PrintWriter pw = response.getWriter();
+			
+			StreamingAddResource.StreamablePositionedInfo positionedInfo;
+			try
 			{
-				positionedInfo.writePositionedInfo(response, pw);
-				pw.flush();
+				while ((positionedInfo = headerInfoEntry.fetchInfo()) != null)
+				{
+					positionedInfo.writePositionedInfo(response, pw);
+					pw.flush();
+				}
+				pw.close();
 			}
-			pw.close();
+			catch (InterruptedException e)
+			{
+				throw (IOException) new IOException().initCause(e);
+			}
 		}
-		catch (InterruptedException e)
+		finally
 		{
-			throw (IOException) new IOException().initCause(e);
+			StreamingAddResource.removeHeaderInfo(requestId);
 		}
 	}
 

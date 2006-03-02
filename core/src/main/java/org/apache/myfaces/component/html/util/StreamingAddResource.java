@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,26 +43,9 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourcePosition;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
- * TODO
- * writeMyFacesJavascriptBeforeBodyEnd
- * remove headerInfoEntry from map after some amount of time
- * 
- * 
- * 
  * This is a utility class to render link to resources used by custom components.
  * Mostly used to avoid having to include [script src="..."][/script]
  * in the head of the pages before using a component.
- * <p>
- * When used together with the ExtensionsFilter, this class can allow components
- * in the body of a page to emit script and stylesheet references into the page
- * head section. The relevant methods on this object simply queue the changes,
- * and when the page is complete the ExtensionsFilter calls back into this 
- * class to allow it to insert the commands into the buffered response.
- * <p>
- * This class also works with the ExtensionsFilter to allow components to
- * emit references to javascript/css/etc which are bundled in the component's
- * jar file. Special URLs are generated which the ExtensionsFilter will later
- * handle by retrieving the specified resource from the classpath.
  * <p>
  * The special URL format is:
  * <pre>
@@ -81,15 +65,47 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  *  own ResourceLoader implementations.
  * </ul>
  * 
- * @author Sylvain Vieujot (latest modification by $Author$)
+ * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class StreamingAddResource implements AddResource
 {
+	/**
+	 * central place where all request store their "to be added" stylesheets 
+	 */
 	private final static Map headerInfos = new HashMap();
+
+	/**
+	 * request counter 
+	 */
 	private static long REQUEST_ID_COUNTER = 0;
+
+	/**
+	 * own request 
+	 */
 	private final Long requestId;
+
+	/**
+	 * own header infos - e.g holds the "to be added" stylesheets and a destroy time
+	 */
 	private final HeaderInfoEntry headerInfoEntry;
+
+	/**
+	 * the thread responsible to remove all old headerInfos.
+	 * In fact it is only required if the browser never requested the resource,
+	 * else it will be removed automatically 
+	 */
+	private final Thread cleanupThread;
+
+    private static final String PATH_SEPARATOR = "/";
+
+    protected static final Log log = LogFactory.getLog(StreamingAddResource.class);
+
+    private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
+
+    private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
+
+    protected final String _contextPath;
 
 	public static class HeaderInfoEntry
 	{
@@ -139,16 +155,57 @@ public class StreamingAddResource implements AddResource
 		}
 	}
 	
-    private static final String PATH_SEPARATOR = "/";
-
-    protected static final Log log = LogFactory.getLog(StreamingAddResource.class);
-
-    private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
-
-    private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
-
-    protected final String _contextPath;
-
+    private class CleanupThread implements Runnable
+    {
+    	// how many entries should be removed per run
+    	private final static int CHECKS_PER_RUN = 10;
+    	
+    	// but never reach this maximum
+    	private final static int CACHE_LIMIT = 1000;
+    	
+		public void run()
+		{
+			while (!Thread.interrupted())
+			{
+				checkMap();
+				
+				try
+				{
+					Thread.sleep(1000 * 30); // check every 30 sek
+				}
+				catch (InterruptedException e)
+				{
+					// ignore
+				}
+			}
+		}
+		
+		private void checkMap()
+		{
+			synchronized (headerInfos)
+			{
+				long now = System.currentTimeMillis();
+				
+				int checkNo = 0;
+				Iterator iterEntries = headerInfos.entrySet().iterator();
+				while (iterEntries.hasNext() && !Thread.currentThread().isInterrupted())
+				{
+					checkNo++;
+					if (headerInfos.size() < CACHE_LIMIT && checkNo > CHECKS_PER_RUN)
+					{
+						return;
+					}
+					Map.Entry entry = (Map.Entry) iterEntries.next();
+					HeaderInfoEntry headerInfoEntry = (HeaderInfoEntry) entry.getValue();
+					if (headerInfoEntry.isDestroyable(now))
+					{
+						iterEntries.remove();
+					}
+				}
+			}
+		}
+    }
+    
     public StreamingAddResource(String contextPath)
     {
         _contextPath = contextPath;
@@ -163,16 +220,28 @@ public class StreamingAddResource implements AddResource
 		{
         	headerInfos.put(requestId, headerInfoEntry);
 		}
+        
+        cleanupThread = new Thread(new CleanupThread(), "StreamingAddResource.CleanupThread");
+        cleanupThread.setDaemon(true);
+        cleanupThread.start();
     }
     
-    public final static HeaderInfoEntry getHeaderInfo(long requestId)
+    public final static HeaderInfoEntry getHeaderInfo(Long requestId)
     {
         synchronized (headerInfos)
 		{
-        	return (HeaderInfoEntry) headerInfos.get(new Long(requestId));
+        	return (HeaderInfoEntry) headerInfos.get(requestId);
 		}
     }
 
+	public static void removeHeaderInfo(Long requestId)
+	{
+        synchronized (headerInfos)
+		{
+        	headerInfos.remove(requestId);
+		}
+	}
+	
     // Methods to add resources
 
     /**
