@@ -157,6 +157,21 @@
     </component>
 
     <component>
+        <component-type>org.apache.myfaces.Document</component-type>
+        <component-class>org.apache.myfaces.custom.document.Document</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.apache.myfaces.DocumentHead</component-type>
+        <component-class>org.apache.myfaces.custom.document.DocumentHead</component-class>
+    </component>
+    
+    <component>
+        <component-type>org.apache.myfaces.DocumentBody</component-type>
+        <component-class>org.apache.myfaces.custom.document.DocumentBody</component-class>
+    </component>
+    
+    <component>
         <component-type>org.apache.myfaces.Div</component-type>
         <component-class>org.apache.myfaces.custom.div.Div</component-class>
     </component>
@@ -536,6 +551,24 @@
             <renderer-class>org.apache.myfaces.custom.buffer.BufferRenderer</renderer-class>
         </renderer>
 
+        <renderer>
+            <component-family>javax.faces.Data</component-family>
+            <renderer-type>org.apache.myfaces.Document</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.document.DocumentRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>javax.faces.Data</component-family>
+            <renderer-type>org.apache.myfaces.DocumentHead</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.document.DocumentHeadRenderer</renderer-class>
+        </renderer>
+        
+        <renderer>
+            <component-family>javax.faces.Data</component-family>
+            <renderer-type>org.apache.myfaces.DocumentBody</renderer-type>
+            <renderer-class>org.apache.myfaces.custom.document.DocumentBodyRenderer</renderer-class>
+        </renderer>
+        
         <renderer>
             <component-family>org.apache.myfaces.Checkbox</component-family>
             <renderer-type>org.apache.myfaces.Checkbox</renderer-type>

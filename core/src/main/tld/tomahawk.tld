@@ -180,6 +180,12 @@
       SYSTEM "tomahawk-entities/tomahawk_alias_bean_attributes.xml">
 <!ENTITY tomahawk_buffer_attributes
       SYSTEM "tomahawk-entities/tomahawk_buffer_attributes.xml">
+<!ENTITY tomahawk_document_attributes
+      SYSTEM "tomahawk-entities/tomahawk_document_attributes.xml">
+<!ENTITY tomahawk_document_head_attributes
+      SYSTEM "tomahawk-entities/tomahawk_document_head_attributes.xml">
+<!ENTITY tomahawk_document_body_attributes
+      SYSTEM "tomahawk-entities/tomahawk_document_body_attributes.xml">
 <!ENTITY tomahawk_save_state_attributes
       SYSTEM "tomahawk-entities/tomahawk_save_state_attributes.xml">
 <!ENTITY tomahawk_update_action_listener_attributes
@@ -1297,6 +1303,39 @@
         &tomahawk_buffer_attributes;
     </tag>
 
+    <!-- document -->
+    <tag>
+        <name>document</name>
+        <tag-class>org.apache.myfaces.custom.document.DocumentTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+        	Encapsulates the whole document. Equivalent to htmls &lt;html&gt; tag
+        </description>
+        &tomahawk_document_attributes;
+    </tag>
+    
+    <!-- document head -->
+    <tag>
+        <name>documentHead</name>
+        <tag-class>org.apache.myfaces.custom.document.DocumentHeadTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+        	Encapsulates the head of your document. Equivalent to htmls &lt;head&gt; tag
+        </description>
+        &tomahawk_document_head_attributes;
+    </tag>
+    
+    <!-- document body -->
+    <tag>
+        <name>documentBody</name>
+        <tag-class>org.apache.myfaces.custom.document.DocumentBodyTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+        	Encapsulates the body of your document. Equivalent to htmls &lt;body&gt; tag
+        </description>
+        &tomahawk_document_body_attributes;
+    </tag>
+    
     <!-- saveState -->
     <tag>
         <name>saveState</name>
