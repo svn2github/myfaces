@@ -481,14 +481,26 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     /**
-     * Renders header or footer.
-     * Rendering will be supressed if all of the facet will have rendered="false"   
+     * Renders the column footer.
+     * Rendering will be supressed if all of the facets have rendered="false"   
      */
-	protected void renderFacet(FacesContext facesContext, ResponseWriter writer, UIComponent component, boolean header) throws IOException
+	protected void renderColumnFooterRow(FacesContext facesContext, ResponseWriter writer, UIComponent component, String footerStyleClass) throws IOException
 	{
-        if (determineRenderFacet(component, header))
+        if (determineRenderFacet(component, false))
         {
-        	super.renderFacet(facesContext, writer, component, header);
+        	super.renderColumnFooterRow(facesContext, writer, component, footerStyleClass);
+        }
+	}
+
+    /**
+     * Renders the column header.
+     * Rendering will be supressed if all of the facets have rendered="false"   
+     */
+	protected void renderColumnHeaderRow(FacesContext facesContext, ResponseWriter writer, UIComponent component, String headerStyleClass) throws IOException
+	{
+        if (determineRenderFacet(component, true))
+        {
+        	super.renderColumnHeaderRow(facesContext, writer, component, headerStyleClass);
         }
 	}
 
