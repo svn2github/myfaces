@@ -69,10 +69,14 @@
 			var="currentCountry"
 			value="#{countryList.countries}"
 			preserveDataModel="true">
+			<f:facet name="header">
+				<h:outputText value="The Table Header" />
+			</f:facet>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText
 							value="#{example_messages['label_country_name']}"
+							rendered="#{countryForm.renderHeader}"
 							/>
 				</f:facet>
 				<f:facet name="footer">
@@ -98,6 +102,9 @@
 				<h:outputText value="#{currentCountry.isoCode}" />
 			</h:column>
 
+			<f:facet name="footer">
+				<h:outputText value="tHE tABLE fOOTER" />
+			</f:facet>
 		</t:dataTable>
 
 		<f:verbatim>
