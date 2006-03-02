@@ -111,8 +111,6 @@ public class ExtensionsFilter implements Filter {
             extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
         }
 
-        ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
-
         // Serve resources
         AddResource addResource = AddResourceFactory.getInstance(httpRequest);
         if( addResource.isResourceUri( httpRequest ) ){
@@ -120,38 +118,54 @@ public class ExtensionsFilter implements Filter {
             return;
         }
 
-        // Standard request
-        chain.doFilter(extendedRequest, extendedResponse);
-
-        extendedResponse.finishResponse();
-
-        // write the javascript stuff for myfaces and headerInfo, if needed
-        HttpServletResponse servletResponse = (HttpServletResponse)response;
-
-        // only parse HTML responses
-        if (extendedResponse.getContentType() != null && isValidContentType(extendedResponse.getContentType()))
+        try
         {
-            addResource.parseResponse(extendedRequest, extendedResponse.toString(),
-                    servletResponse);
-
-            addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
-                    servletResponse);
-
-            if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
-                // writes the response if no header info is needed
-                addResource.writeResponse(extendedRequest, servletResponse);
-                return;
-            }
-
-            // Some headerInfo has to be added
-            addResource.writeWithFullHeader(extendedRequest, servletResponse);
-
-            // writes the response
-            addResource.writeResponse(extendedRequest, servletResponse);
+	        if (addResource.requiresBuffer())
+	        {
+		        ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
+		
+		        // Standard request
+		        chain.doFilter(extendedRequest, extendedResponse);
+		
+		        extendedResponse.finishResponse();
+		
+		        // write the javascript stuff for myfaces and headerInfo, if needed
+		        HttpServletResponse servletResponse = (HttpServletResponse)response;
+		
+		        // only parse HTML responses
+		        if (extendedResponse.getContentType() != null && isValidContentType(extendedResponse.getContentType()))
+		        {
+		            addResource.parseResponse(extendedRequest, extendedResponse.toString(),
+		                    servletResponse);
+		
+		            addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
+		                    servletResponse);
+		
+		            if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
+		                // writes the response if no header info is needed
+		                addResource.writeResponse(extendedRequest, servletResponse);
+		                return;
+		            }
+		
+		            // Some headerInfo has to be added
+		            addResource.writeWithFullHeader(extendedRequest, servletResponse);
+		
+		            // writes the response
+		            addResource.writeResponse(extendedRequest, servletResponse);
+		        }
+		        else
+		        {
+		            servletResponse.getWriter().write(extendedResponse.toString());
+		        }
+	        }
+	        else
+	        {
+		        chain.doFilter(extendedRequest, response);
+	        }
         }
-        else
+        finally
         {
-            servletResponse.getWriter().write(extendedResponse.toString());
+        	addResource.responseFinished();        	
         }
     }
 
