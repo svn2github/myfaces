@@ -29,38 +29,58 @@ import javax.servlet.jsp.JspException;
 public class ValidateRegExprTag extends ValidatorTag {
   private static final long serialVersionUID = -449945949876262076L;
   //the pattern, needed by Commons-Validator.
-	private String _pattern = null;
+    private String _pattern = null;
+    private String _message = null;
 
 	public ValidateRegExprTag(){
 	}
 
-	public void setPattern(String string) {
-		_pattern = string;
-	}
+    public void setPattern(String string) {
+        _pattern = string;
+    }
+
+    public void setMessage(String string) {
+        _message = string;
+    }
 
 	protected Validator createValidator() throws JspException {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		setValidatorId(RegExprValidator.VALIDATOR_ID);
 		RegExprValidator validator = (RegExprValidator)super.createValidator();
-		if (_pattern != null)
-		{
-			if (UIComponentTag.isValueReference(_pattern))
-			{
-				ValueBinding vb = facesContext.getApplication().createValueBinding(_pattern);
-				validator.setPattern(new String(vb.getValue(facesContext).toString()));
-			}
-			else
-			{
-				validator.setPattern(_pattern);
-			}
-		}
+        if (_pattern != null)
+        {
+            if (UIComponentTag.isValueReference(_pattern))
+            {
+                ValueBinding vb = facesContext.getApplication().createValueBinding(_pattern);
+                validator.setPattern(new String(vb.getValue(facesContext).toString()));
+            }
+            else
+            {
+                validator.setPattern(_pattern);
+            }
+        }
+
+        if (_message != null)
+        {
+            if (UIComponentTag.isValueReference(_message))
+            {
+                ValueBinding vb = facesContext.getApplication().createValueBinding(_message);
+                validator.setMessage(new String(vb.getValue(facesContext).toString()));
+            }
+            else
+            {
+                validator.setMessage(_message);
+            }
+        }
+
 		return validator;
 	}
     public void release()
     {
         super.release();
-       _pattern= null;
+        _pattern= null;
+        _message= null;
     }
 
 }

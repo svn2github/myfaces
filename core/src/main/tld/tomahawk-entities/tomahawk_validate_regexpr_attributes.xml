@@ -1,4 +1,12 @@
         <attribute>
+            <name>message</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                alternate validation error message format string
+            </description>
+        </attribute>
+        <attribute>
             <name>pattern</name>
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>

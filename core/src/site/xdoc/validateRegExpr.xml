@@ -59,6 +59,7 @@ components.
             
             <blockquote><h3>&lt;t:validateRegExpr/&gt;</h3>
                 <code>pattern (required)</code><br/>
+                <code>message - Optional alternate validation error message format string where</code><br/>
             </blockquote>
         </section>
         <!-- Instructions -->
