@@ -72,7 +72,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
      * Renders stuff such as the dummy form and the autoscroll javascript, which goes before the closing &lt;/body&gt;
      * @throws IOException
      */
-    public static void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+    public void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
     {
         Object myFacesJavascript = facesContext.getExternalContext().getRequestMap().get(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT);
 
@@ -81,14 +81,33 @@ public class ExtensionsPhaseListener implements PhaseListener {
             return;
         }
 
+        facesContext.getExternalContext().getRequestMap().put(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, getCodeBeforeBodyEnd(facesContext));
+    }
+    
+    public static String getCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+    {
         ResponseWriter responseWriter = facesContext.getResponseWriter();
         HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper
                     .getInstance(responseWriter);
         facesContext.setResponseWriter(writerWrapper);
 
-        if (DummyFormUtils.isWriteDummyForm(facesContext))
+        writeCodeBeforeBodyEnd(facesContext);
+
+        //todo: this is just a quick-fix - Sun RI screams if the old responsewriter is null
+        //but how to reset the old response-writer then?
+        if(responseWriter!=null)
+            facesContext.setResponseWriter(responseWriter);
+
+        return "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n";
+    }
+
+	public static void writeCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+	{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		if (DummyFormUtils.isWriteDummyForm(facesContext))
         {
-            DummyFormUtils.writeDummyForm(writerWrapper, DummyFormUtils.getDummyFormParameters(facesContext));
+            DummyFormUtils.writeDummyForm(writer, DummyFormUtils.getDummyFormParameters(facesContext));
         }
 
         MyfacesConfig myfacesConfig = MyfacesConfig.getCurrentInstance(facesContext.getExternalContext());
@@ -97,28 +116,19 @@ public class ExtensionsPhaseListener implements PhaseListener {
             if (! JavascriptUtils.isJavascriptDetected(facesContext.getExternalContext()))
             {
 
-                writerWrapper.startElement("script",null);
-                writerWrapper.writeAttribute("attr", HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+                writer.startElement("script",null);
+                writer.writeAttribute("attr", HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
                 StringBuffer script = new StringBuffer();
                 script.append("document.location.replace('").
                         append(facesContext.getApplication().getViewHandler().getResourceURL(facesContext, "/_javascriptDetector_")).append("?goto=").append(facesContext.getApplication().getViewHandler().getActionURL(facesContext, facesContext.getViewRoot().getViewId())).append("');");
-                writerWrapper.writeText(script.toString(),null);
-                writerWrapper.endElement(HTML.SCRIPT_ELEM);
+                writer.writeText(script.toString(),null);
+                writer.endElement(HTML.SCRIPT_ELEM);
             }
         }
 
         if (myfacesConfig.isAutoScroll())
         {
-            JavascriptUtils.renderAutoScrollFunction(facesContext, writerWrapper);
+            JavascriptUtils.renderAutoScrollFunction(facesContext, writer);
         }
-
-        //todo: this is just a quick-fix - Sun RI screams if the old responsewriter is null
-        //but how to reset the old response-writer then?
-        if(responseWriter!=null)
-            facesContext.setResponseWriter(responseWriter);
-
-        facesContext.getExternalContext().getRequestMap().put(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n");
-    }
-
-
+	}
 }
