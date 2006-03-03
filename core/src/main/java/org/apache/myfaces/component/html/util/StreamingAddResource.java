@@ -106,7 +106,7 @@ public class StreamingAddResource implements AddResource
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
 
     protected String _contextPath;
-
+    
 	public static class HeaderInfoEntry
 	{
 		private final long destroyTime = System.currentTimeMillis() + (1000 * 60); // one minute;
@@ -480,10 +480,30 @@ public class StreamingAddResource implements AddResource
      */
     public void addStyleSheet(FacesContext context, ResourcePosition position, String uri)
     {
+		uri = getAbsoluteUri(context, uri);
+		
         addStyleSheet(context, getStyleInstance(context, uri));
     }
 
-    private void addStyleSheet(FacesContext context, StreamablePositionedInfo styleInstance)
+    protected String getAbsoluteUri(FacesContext context, String uri)
+	{
+    	if (uri.startsWith("/"))
+    	{
+    		return uri;
+    	}
+    	
+    	StringBuffer sb = new StringBuffer(80);
+    	if (context.getExternalContext().getRequestPathInfo() != null)
+    	{
+    		sb.append(context.getExternalContext().getRequestPathInfo());
+    	}
+    	sb.append("/");
+    	sb.append(uri);
+    	
+    	return sb.toString();
+	}
+
+	private void addStyleSheet(FacesContext context, StreamablePositionedInfo styleInstance)
 	{
     	headerInfoEntry.addInfo(styleInstance);
 	}

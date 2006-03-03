@@ -7,10 +7,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceLoader;
 
 public class StreamingResourceLoader implements ResourceLoader
 {
+	private final static Log log = LogFactory.getLog(StreamingResourceLoader.class);
+	
 	public StreamingResourceLoader()
 	{
 	}
@@ -22,6 +26,12 @@ public class StreamingResourceLoader implements ResourceLoader
 		String resourceType = resourceUri.substring(pos+1);
 		
 		StreamingAddResource.HeaderInfoEntry headerInfoEntry = StreamingAddResource.getHeaderInfo(requestId);
+		if (headerInfoEntry == null)
+		{
+			log.warn("No streamable resources found for request: " + requestId + " resourceUri: " + resourceUri);
+			return;
+		}
+		
 		try
 		{
 			PrintWriter pw = response.getWriter();
