@@ -30,16 +30,19 @@ org_apache_myfaces_TableSuggest = function()
             var idToPutValue = trElem.childNodes[j].id.substr(11);
             var elemToPutValue = document.getElementById(idToPutValue);
 
-            if(trElem.childNodes[j].childNodes[1] == null)
-                elemToPutValue.value = trElem.childNodes[j].childNodes[0].innerHTML;
-            else
-            {   //quick fix to put the value in a selectOneMenu; todo: more generic and embedding in dojo
-                for(i=0;i<elemToPutValue.options.length;i++)
-                {
-                    if(elemToPutValue.options[i].value == trElem.childNodes[j].childNodes[1].innerHTML)
-                        elemToPutValue.options[i].selected = true;
+            if (elemToPutValue && idToPutValue)
+            {
+                if (trElem.childNodes[j].childNodes[1] == null)
+                    elemToPutValue.value = trElem.childNodes[j].childNodes[0].innerHTML;
+                else
+                {   //quick fix to put the value in a selectOneMenu; todo: more generic and embedding in dojo
+                    for (i = 0; i < elemToPutValue.options.length; i++)
+                    {
+                        if (elemToPutValue.options[i].value == trElem.childNodes[j].childNodes[1].innerHTML)
+                            elemToPutValue.options[i].selected = true;
+                    }
                 }
-           }
+            }
         }
     };
 
