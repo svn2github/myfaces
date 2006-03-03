@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
+
 <html>
 
 <%@include file="inc/head.inc" %>
@@ -39,10 +40,13 @@
                     <h:inputText id="firstName" value="#{subFormBean.firstName}" required="true"/>
                     <h:outputLabel for="lastName" value="Last name:"/>
                     <h:inputText id="lastName" value="#{subFormBean.lastName}" required="true"/>
+                    <h:outputText value="Partial condition"/>
+                    <h:selectBooleanCheckbox value="false"                                              
+                                             onchange="personForm_submit();"/>                   
                 </h:panelGrid>
                 <h:commandButton value="Show current values of Person"/>
             </s:subForm>
-
+            
             <s:subForm id="vehicleForm">
                 <h:outputText value="Vehicle" style="font-weight:bold;"/>
                 <h:panelGrid columns="2">
@@ -50,10 +54,13 @@
                     <h:inputText id="firstName" value="#{subFormBean.type}" required="true"/>
                     <h:outputLabel for="lastName" value="Make:"/>
                     <h:inputText id="lastName" value="#{subFormBean.make}" required="true"/>
+                    <h:outputText value="Partial condition"/>
+                    <h:selectBooleanCheckbox value="false"                                              
+                                             onchange="vehicleForm_submit();"/>  
                 </h:panelGrid>
                 <h:commandButton value="Show current values of Vehicle"/>
             </s:subForm>
-
+                       
             <t:commandButton value="Show current values of Person" actionFor="personForm"/>
             <t:commandButton value="Show current values of Vehicle" actionFor="vehicleForm"/>
             <t:commandButton value="Show current values of Person and Vehicle (actionFor for both forms set)" actionFor="personForm,vehicleForm"/>
