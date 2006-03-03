@@ -105,7 +105,7 @@ public class StreamingAddResource implements AddResource
 
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
 
-    protected final String _contextPath;
+    protected String _contextPath;
 
 	public static class HeaderInfoEntry
 	{
@@ -206,10 +206,8 @@ public class StreamingAddResource implements AddResource
 		}
     }
     
-    public StreamingAddResource(String contextPath)
+    public StreamingAddResource()
     {
-        _contextPath = contextPath;
-
         synchronized(StreamingAddResource.class)
         {
         	REQUEST_ID_COUNTER++;
@@ -244,6 +242,11 @@ public class StreamingAddResource implements AddResource
 	
     // Methods to add resources
 
+    public void setContextPath(String contextPath)
+    {
+        _contextPath = contextPath;
+    }
+
     /**
      * Insert a [script src="url"] entry at the current location in the response.
      * The resource is expected to be in the classpath, at the same location as the
@@ -254,7 +257,7 @@ public class StreamingAddResource implements AddResource
      * "example/Widget/resource/script.js" in the classpath.
      */
     public void addJavaScriptHere(FacesContext context, Class myfacesCustomComponent,
-            String resourceName) throws IOException
+                                  String resourceName) throws IOException
     {
         addJavaScriptHere(context, new MyFacesResourceHandler(myfacesCustomComponent, resourceName));
     }
@@ -1019,17 +1022,22 @@ public class StreamingAddResource implements AddResource
 		headerInfoEntry.setRequestDone();
 	}
 
-	public void addStyleLoaderHere(FacesContext context, Class myfacesCustomComponent) throws IOException
-	{
-		ResponseWriter writer = context.getResponseWriter();
-		
+    public boolean hasHeaderBeginInfos()
+    {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void addStyleLoaderHere(FacesContext context, Class myfacesCustomComponent) throws IOException
+    {
+        ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement(HTML.LINK_ELEM, null);
         writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.REL_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.STYLESHEET_VALUE, null);
         writer.writeAttribute(HTML.HREF_ATTR,
-        		getResourceUri(context,
-        				new StreamingResourceHandler(requestId + "/header.css"),
-        				true), null);
+                getResourceUri(context,
+                        new StreamingResourceHandler(requestId + "/header.css"),
+                        true), null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.STYLE_TYPE_TEXT_CSS, null);
         writer.endElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.LINK_ELEM);
-	}
+    }
 }
