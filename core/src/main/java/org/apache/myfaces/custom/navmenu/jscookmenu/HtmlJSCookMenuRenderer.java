@@ -388,18 +388,24 @@ public class HtmlJSCookMenuRenderer
         writer.append(tempObj.toString());
     }
 
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
-        RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
         HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
-
         String theme = menu.getTheme();
         if (theme == null) {
                 // should never happen; theme is a required attribute in the jsp tag definition
             throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
         }
+        
+    	addResourcesToHeader(theme,menu,context);
+    }
 
-        addResourcesToHeader(theme,menu,context);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    {
+        RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
+        HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
+        String theme = menu.getTheme();
+
 
         ResponseWriter writer = context.getResponseWriter();
 
