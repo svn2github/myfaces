@@ -141,7 +141,7 @@ public class ExtensionsFilter implements Filter {
 		            addResource.writeMyFacesJavascriptBeforeBodyEnd(extendedRequest,
 		                    servletResponse);
 		
-		            if( ! addResource.hasHeaderBeginInfos(extendedRequest) ){
+		            if( ! addResource.hasHeaderBeginInfos() ){
 		                // writes the response if no header info is needed
 		                addResource.writeResponse(extendedRequest, servletResponse);
 		                return;
