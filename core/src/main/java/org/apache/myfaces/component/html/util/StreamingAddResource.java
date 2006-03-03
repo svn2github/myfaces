@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -96,6 +98,11 @@ public class StreamingAddResource implements AddResource
 	 * else it will be removed automatically 
 	 */
 	private final Thread cleanupThread;
+
+	/**
+	 * helper to determines if the resource has already been added
+	 */
+	private Set alreadySeenResources = new TreeSet();
 
     private static final String PATH_SEPARATOR = "/";
 
@@ -426,6 +433,10 @@ public class StreamingAddResource implements AddResource
             boolean defer)
     {
     	WritablePositionedInfo info = (WritablePositionedInfo) getScriptInstance(context, uri, defer);
+    	if (checkAlreadyAdded(info))
+    	{
+    		return;
+    	}
     	HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
     	try
 		{
@@ -452,6 +463,10 @@ public class StreamingAddResource implements AddResource
     {
         validateResourceHandler(resourceHandler);
     	WritablePositionedInfo info = (WritablePositionedInfo) getScriptInstance(context, resourceHandler, defer);
+    	if (checkAlreadyAdded(info))
+    	{
+    		return;
+    	}
     	HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
     	try
 		{
@@ -463,7 +478,19 @@ public class StreamingAddResource implements AddResource
 		}
     }
 
-    /**
+    private boolean checkAlreadyAdded(PositionedInfo info)
+	{
+    	Long key = new Long(info.hashCode());
+    	if (alreadySeenResources.contains(key))
+    	{
+    		return true;
+    	}
+    	
+    	alreadySeenResources.add(key);
+		return false;
+	}
+
+	/**
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
@@ -505,6 +532,10 @@ public class StreamingAddResource implements AddResource
 
 	private void addStyleSheet(FacesContext context, StreamablePositionedInfo styleInstance)
 	{
+    	if (checkAlreadyAdded(styleInstance))
+    	{
+    		return;
+    	}
     	headerInfoEntry.addInfo(styleInstance);
 	}
 
@@ -534,6 +565,10 @@ public class StreamingAddResource implements AddResource
             String inlineScript)
     {
     	WritablePositionedInfo info = (WritablePositionedInfo) getInlineScriptInstance(inlineScript);
+    	if (checkAlreadyAdded(info))
+    	{
+    		return;
+    	}
     	HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
     	try
 		{
