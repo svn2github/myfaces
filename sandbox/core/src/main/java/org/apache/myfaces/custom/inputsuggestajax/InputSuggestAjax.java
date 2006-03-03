@@ -43,6 +43,9 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
     private String _popupStyleClass;
     private String _popupStyle;
 
+    private String _tableStyleClass;
+    private String _nextPageFieldClass;
+
     private String _columnHoverClass;
     private String _columnOutClass;
 
@@ -70,7 +73,7 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[17];
+        Object[] values = new Object[19];
         values[0] = super.saveState(context);
         values[1] = saveAttachedState(context, _suggestedItemsMethod);
         values[2] = _popupId;
@@ -88,6 +91,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         values[14] = _columnOutClass;
         values[15] = _delay;
         values[16] = _startRequest;
+        values[17] = _tableStyleClass;
+        values[18] = _nextPageFieldClass;
 
         return values;
     }
@@ -112,6 +117,8 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
         _columnOutClass = (String) values[14];
         _delay = (Integer) values[15];
         _startRequest = (Integer) values[16];
+        _tableStyleClass = (String) values[17];
+        _nextPageFieldClass = (String) values[18];
     }
 
     public void encodeAjax(FacesContext context)
@@ -338,5 +345,25 @@ public class InputSuggestAjax extends HtmlInputText implements AjaxComponent
     public void setColumnOutClass(String columnOutClass)
     {
         _columnOutClass = columnOutClass;
+    }
+
+    public String getTableStyleClass()
+    {
+        return _tableStyleClass;
+    }
+
+    public void setTableStyleClass(String tableStyleClass)
+    {
+        _tableStyleClass = tableStyleClass;
+    }
+
+    public String getNextPageFieldClass()
+    {
+        return _nextPageFieldClass;
+    }
+
+    public void setNextPageFieldClass(String nextPageFieldClass)
+    {
+        _nextPageFieldClass = nextPageFieldClass;
     }
 }

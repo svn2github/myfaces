@@ -122,6 +122,7 @@ Sandbox-related entities.
 <!ENTITY value_change_notifier_attributes       SYSTEM "entities/value_change_notifier_attributes.xml">
 <!ENTITY html_script_attributes       SYSTEM "entities/html_script_attributes.xml">
 <!ENTITY ui_state_changed_notifier_attributes       SYSTEM "entities/ui_state_changed_notifier_attributes.xml">
+<!ENTITY input_suggest_ajax_attributes       SYSTEM "entities/input_suggest_ajax_attributes.xml">
 ]>
 
 <taglib>
@@ -204,139 +205,7 @@ Sandbox-related entities.
 		&html_input_suggest_attributes;
 		&display_value_only_attributes;
 		&user_role_attributes;
-
-		<attribute>
-			<name>suggestedItemsMethod</name>
-			<required>true</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Reference to the method which returns the suggested items</description>
-		</attribute>
-
-		<attribute>
-			<name>maxSuggestedItems</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>optional attribute to identify the max size of suggested Values</description>
-		</attribute>
-
-        <attribute>
-			<name>delay</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>The AJAX Request is triggered after a given delay. In milliseconds.</description>
-		</attribute>
-
-        <attribute>
-			<name>startRequest</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>The AJAX Request is only triggered if the number of chars typed in is
-                         equal or greater than this given value.
-            </description>
-		</attribute>
-
-        <attribute>
-			<name>layout</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description></description>
-		</attribute>
-
-		<attribute>
-			<name>popupStyle</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Style for the window with a suggested list of items;pop up for each incoming Ajax response</description>
-		</attribute>
-
-		<attribute>
-			<name>popupStyleClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
-		</attribute>
-
-        <attribute>
-			<name>columnHoverClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>StyleClass for a onmouseover event of the suggested columns</description>
-		</attribute>
-
-        <attribute>
-			<name>columnOutClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>StyleClass for a onmouseout event of the suggested columns</description>
-		</attribute>
-
-        <attribute>
-			<name>popupId</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Id for the pop up window</description>
-		</attribute>
-
-		<attribute>
-			<name>listId</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Id for the unordered list included in the pop up window</description>
-		</attribute>
-
-		<attribute>
-			<name>listStyle</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Style for the unordered list included in the pop up window</description>
-		</attribute>
-
-		<attribute>
-			<name>listStyleClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>StyleClass for the unordered list included in the pop up window</description>
-		</attribute>
-
-		<attribute>
-			<name>listItemStyle</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Id for the pop up window</description>
-		</attribute>
-
-		<attribute>
-			<name>listItemStyleClass</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Id for the pop up window</description>
-		</attribute>
-
-        <attribute>
-			<name>var</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.String</type>
-			<description>Same principle as it is in dataTable. SuggestedItemsMethod returns
-                         a list of objects, where the variables can be accessed with the alias after the
-                         dot of the var.
-            </description>
-		</attribute>
+        &input_suggest_ajax_attributes;
     </tag>
 
 	<!-- focus -->
@@ -643,7 +512,7 @@ Sandbox-related entities.
 		</attribute>
 
 	</tag>
-	
+
 	<!-- outputLinkDynamic -->
 	<tag>
 		<name>outputLinkDynamic</name>
@@ -1051,8 +920,7 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.inputsuggestajax.HtmlOutputTextTag</tag-class>
 		<body-content>JSP</body-content>
 		<display-name>outputText component</display-name>
-		<description>Extending the outputText component in order to introduce the for attribute.
-                     Maybe useful for </description>
+		<description>Extending the outputText component in order to introduce the for attribute.</description>
         &standard_output_text_attributes;
         &ui_output_attributes;
         <attribute>

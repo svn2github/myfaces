@@ -47,6 +47,9 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     private String _popupStyleClass;
     private String _popupStyle;
 
+    private String _tableStyleClass;
+    private String _nextPageFieldClass;
+
     private String _columnHoverClass;
     private String _columnOutClass;
 
@@ -91,6 +94,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
        _columnOutClass = null;
        _delay = null;
        _startRequest = null;
+       _tableStyleClass = null;
+       _nextPageFieldClass = null;
 
     }
 
@@ -114,6 +119,8 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
         setStringProperty(component,"layout",_layout);
         setStringProperty(component,"columnHoverClass",_columnHoverClass);
         setStringProperty(component,"columnOutClass",_columnOutClass);
+        setStringProperty(component,"tableStyleClass",_tableStyleClass);
+        setStringProperty(component,"nextPageFieldClass",_nextPageFieldClass);
 
         setStringProperty(component, JSFAttr.VAR_ATTR, _var);
     }
@@ -148,6 +155,11 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     }
 
     // setter methodes to populate the components properites
+
+    public void setTableStyleClass(String tableStyleClass)
+    {
+        _tableStyleClass = tableStyleClass;
+    }
 
     public void setDelay(String delay)
     {
@@ -226,5 +238,10 @@ public class InputSuggestAjaxTag extends HtmlInputTextTag
     public void setColumnOutClass(String columnOutClass)
     {
         _columnOutClass = columnOutClass;
+    }
+
+    public void setNextPageFieldClass(String nextPageFieldClass)
+    {
+        _nextPageFieldClass = nextPageFieldClass;
     }
 }

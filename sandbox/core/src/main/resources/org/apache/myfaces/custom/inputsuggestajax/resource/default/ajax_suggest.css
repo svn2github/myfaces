@@ -16,15 +16,28 @@
     list-style-type:none;margin:0px;padding:0px;
 }
 
-.ajaxTablePopup table{
+.ajaxTable{
     font-family: Verdana, sans-serif;
 	font-size: 11px;
 	background-color: rgb(171, 202, 219);
     color: rgb(0, 106, 164);
     line-height: 16px;
     border-collapse:collapse;
-    position:absolute;
-    z-index:10000;
+    table-layout:auto;
+}
+
+.ajaxTablePopup{
+  position:absolute;
+  z-index:10000;
+  display:block;
+}
+
+
+.ajaxNextTablePageField{
+    background-color:#bcd5e2;
+    font-weight:bold;
+    text-align:center;
+    color: rgb(0, 106, 164);
 }
 
 .tableSuggestHover{
@@ -35,7 +48,7 @@
   background-color:rgb(171, 202, 219);
 }
 
-.ajaxTablePopup table thead tr th{
+.ajaxTable thead tr th{
 text-align:center;
 }
 

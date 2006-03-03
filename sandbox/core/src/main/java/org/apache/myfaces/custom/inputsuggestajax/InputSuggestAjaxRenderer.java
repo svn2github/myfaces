@@ -20,7 +20,6 @@ import org.apache.myfaces.custom.ajax.api.AjaxPhaseListener;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
-import org.apache.myfaces.custom.dojo.DojoResourceLoader;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
@@ -72,10 +71,13 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         DojoUtils.addRequire(context, "dojo.widget.*");
         DojoUtils.addRequire(context, "dojo.widget.ComboBox");
         DojoUtils.addRequire(context, "dojo.widget.html.ComboBox");
+        DojoUtils.addRequire(context, "dojo.widget.Wizard");
         DojoUtils.addRequire(context, "dojo.event.*");
         DojoUtils.addRequire(context, "dojo.string");
         DojoUtils.addRequire(context, "dojo.fx.html");
         DojoUtils.addRequire(context, "dojo.lang");
+        DojoUtils.addRequire(context, "dojo.html");
+        DojoUtils.addRequire(context, "dojo.collections.ArrayList");
 
         AddResource addResource = AddResourceFactory.getInstance(context);
 
@@ -175,6 +177,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             {
                 out.writeAttribute(HTML.STYLE_ATTR,"display:inline;", null);
             }
+
             out.endElement(HTML.DIV_ELEM);
 
             out.endElement(HTML.TR_ELEM);
@@ -186,7 +189,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             out.write(getAJAXHandlingCode(urlWithValue, clientId, inputSuggestAjax).toString());
             out.endElement(HTML.SCRIPT_ELEM);
 
-          /*  out.write("<script type=\"text/javascript\">\n                    "
+          /* out.write("<script type=\"text/javascript\">\n                    "
                     + "\tdojo.widget.SubComboBox = function(){\n"
                     + "\t\tdojo.widget.html.ComboBox.call(this);\n"
                     + "\t\tthis.widgetType = \"SubComboBox\";\n"
@@ -259,12 +262,18 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
     private StringBuffer getAJAXHandlingCode(String urlWithValue, String clientId, InputSuggestAjax inputSuggestAjax)
     {
         StringBuffer buf = new StringBuffer();
+        String tableSuggestVar = "tableSuggest"+clientId.substring(1).replace(':','_');
 
         //doing ajax request and handling the response
-        buf.append(   "dojo.event.connect(document.getElementById(\"" + clientId + "\"), \"onkeyup\", function(evt)\n"
+        buf.append(   "var "+tableSuggestVar+" = new org_apache_myfaces_TableSuggest();\n"
+                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt)\n"
                     + "{\n"
-                    + "   var handlerNode = document.getElementById(\"" + clientId + "\");\n"
-                    + "   var popUp = document.getElementById(\"" + clientId+"_auto_complete"+"\");\n"
+                    + "   if(evt.keyCode == 13)\n"
+                    + "   {  document.onclick();\n"
+                    + "      return;"
+                    + "   }"
+                    + "   var handlerNode = dojo.byId(\"" + clientId + "\");\n"
+                    + "   var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
                     + "   var inputValue = handlerNode.value;\n"
                     + "   var url = \""+ urlWithValue +"\"+inputValue;\n"
                     +     DojoUtils.createDebugStatement("onkeyup event occured, length is","inputValue.length")
@@ -274,17 +283,19 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                         buf.append("&& inputValue.length >= "+inputSuggestAjax.getStartRequest()+")\n");
                     else buf.append(")");
                     if(inputSuggestAjax.getDelay()!=null)
-                        buf.append("window.setTimeout(handleRequestResponse(url, handlerNode, popUp),"+inputSuggestAjax.getDelay()+");\n");
+                        buf.append("dojo.lang.setTimeout("+tableSuggestVar+".handleRequestResponse, "+inputSuggestAjax.getDelay()+", [url, popUp, "+ tableSuggestVar +"]);\n");
                     else
-                        buf.append("handleRequestResponse(url, handlerNode, popUp);\n");
+                        buf.append(""+tableSuggestVar+".handleRequestResponse(url, popUp, "+ tableSuggestVar +",evt.keyCode);\n");
        buf.append("   else document.onclick();\n"
                     + "});\n");
 
         //if setting the focus outside the input field, popup should not be displayed
         buf.append("dojo.event.connect(document, \"onclick\", function(evt)\n"
                     + "{\n"
-                    + "     var popUp = document.getElementById(\"" + clientId+"_auto_complete"+"\");\n"
-                    + "     popUp.innerHTML = \"\";\n"
+                    + "     var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
+                    + "     dojo.dom.removeChildren(popUp);\n"
+                    + "     "+tableSuggestVar+".firstHighlightedElem = null;\n"
+                    + "     "+tableSuggestVar+".actualHighlightedElem = null;\n"
                     + "});\n");
 
         return buf;
@@ -331,7 +342,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         if (getChildren(inputSuggestAjax)!=null
                 && !getChildren(inputSuggestAjax).isEmpty())
         {
-            /*if (inputSuggestAjax.getMaxSuggestedItems() != null)
+            if (inputSuggestAjax.getMaxSuggestedItems() != null)
             {
                 List oneSuggestedTable = new ArrayList();
                 List wholeList = new ArrayList();
@@ -339,20 +350,26 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
 
                 int j = 0;
 
-                while (j < wholeList.size())
+                while (j < wholeList.size()-1)
                 {
                     for (int i = 0; i < inputSuggestAjax.getMaxSuggestedItems().intValue(); i++)
                     {
                         Object entry = wholeList.get(j);
                         oneSuggestedTable.add(entry);
                         j++;
+
+                        if(j == wholeList.size())
+                            break;
                     }
 
-                    writeOneSuggestList(buf, inputSuggestAjax, suggesteds, context);
+                    writeOneSuggestList(buf, inputSuggestAjax, oneSuggestedTable, context);
+                    oneSuggestedTable.clear();
                 }
-            }*/
-
-            writeSuggestList(buf, inputSuggestAjax, suggesteds, context);
+            }
+            else
+            {
+                writeSuggestList(buf, inputSuggestAjax, suggesteds, context);
+            }
         }
         else
         {
@@ -390,19 +407,24 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                                      Collection suggesteds,
                                      FacesContext context)
     {
-        buf.append("<table>");
+        buf.append("<table");
+        if(inputSuggestAjax.getTableStyleClass()!=null)
+            buf.append(" class=\""+inputSuggestAjax.getTableStyleClass()+"\">");
+        else
+            buf.append(">");
 
         buf.append(renderTableHeader(inputSuggestAjax.getChildren()));
-        buf.append(renderTableBody(inputSuggestAjax.getChildren(), suggesteds,context, inputSuggestAjax));
-        //todo:render footer as well
+        buf.append(renderTableBody(inputSuggestAjax, suggesteds,context));
 
         buf.append("</table>");
+
+        if (inputSuggestAjax.getMaxSuggestedItems() != null)
+            buf.append(renderNextPageField(inputSuggestAjax,context));
     }
 
-    private StringBuffer renderTableBody(List columns,
+    private StringBuffer renderTableBody(InputSuggestAjax inputSuggestAjax,
                                          Collection suggesteds,
-                                         FacesContext context,
-                                         InputSuggestAjax inputSuggestAjax)
+                                         FacesContext context)
     {
         StringBuffer bodyContent = new StringBuffer();
         bodyContent.append("<tbody>");
@@ -415,21 +437,17 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             if(inputSuggestAjax.getColumnHoverClass()!=null)
                 bodyContent.append("\"this.className='")
                         .append(inputSuggestAjax.getColumnHoverClass()).append("'\" ");
-            else
-                bodyContent.append("\"this.className='tableSuggestHover'\" ");
 
             if(inputSuggestAjax.getColumnOutClass()!=null)
                 bodyContent.append("onmouseout=\"this.className='")
                         .append(inputSuggestAjax.getColumnOutClass()).append("'\" ");
-            else
-                bodyContent.append("onmouseout=\"this.className='tableSuggestOut'\"");
 
-            bodyContent.append("onclick=\"putValueToField(this)\">");
+            bodyContent.append("onclick=\"tableSuggest"+inputSuggestAjax.getClientId(context).substring(1).replace(':','_')+".putValueToField(this)\">");
 
             context.getExternalContext().getRequestMap()
                     .put(inputSuggestAjax.getVar(),addressEntryObject);
 
-            for (Iterator iterColumns = columns.iterator(); iterColumns.hasNext();)
+            for (Iterator iterColumns = inputSuggestAjax.getChildren().iterator(); iterColumns.hasNext();)
             {
                 UIComponent column = (UIComponent)iterColumns.next();
 
@@ -495,5 +513,21 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
 
         headerContent.append("</tr></thead>");
         return headerContent;
+    }
+
+    private StringBuffer renderNextPageField(InputSuggestAjax inputSuggestAjax,
+                                             FacesContext context)
+    {
+        StringBuffer content = new StringBuffer();
+
+        content.append("<div onclick=\"tableSuggest"+inputSuggestAjax.getClientId(context).substring(1).replace(':','_')+".nextPage(this)\"");
+        if(inputSuggestAjax.getNextPageFieldClass()!=null)
+            content.append(" class=\""+ inputSuggestAjax.getNextPageFieldClass() +"\">");
+        else
+            content.append(">");
+
+        content.append(". . . </div>");
+
+        return content;
     }
 }

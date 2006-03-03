@@ -22,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Backing bean for the input-suggest-ajax component
  *
- * @author Gerald Mullan (latest modification by $Author$)
+ * @author Gerald Müllan (latest modification by $Author$)
  * @version $Revision$
  */
 public class InputSuggestAjaxBean
@@ -37,6 +37,38 @@ public class InputSuggestAjaxBean
         addressList.add(new Address(14,"new",cityFragment+"new york",12,"IL"));
         addressList.add(new Address(15,"san",cityFragment+"san francisco",11,"NY"));
         addressList.add(new Address(16,"san",cityFragment+"san diego",16,"MH"));
+
+        return addressList;
+    }
+
+    public List getAddressList(String cityFragment, Integer maxSize)
+    {
+        List addressList = new ArrayList();
+
+        addressList.add(new Address(11,"noname",cityFragment+"nocity",15,"KL"));
+        addressList.add(new Address(12,"max",cityFragment+"muster",14,"SJ"));
+        addressList.add(new Address(13,"phil",cityFragment+"philadelphia",13,"NW"));
+        addressList.add(new Address(14,"new",cityFragment+"new york",12,"IL"));
+        addressList.add(new Address(15,"san",cityFragment+"san francisco",11,"NY"));
+        addressList.add(new Address(16,"san",cityFragment+"san diego",16,"MH"));
+        addressList.add(new Address(11,"noname",cityFragment+"nocity",17,"KL"));
+        addressList.add(new Address(12,"max",cityFragment+"muster",19,"SJ"));
+        addressList.add(new Address(13,"phil",cityFragment+"philadelphia",12,"NW"));
+        addressList.add(new Address(14,"new",cityFragment+"new york",1123,"IL"));
+        addressList.add(new Address(15,"san",cityFragment+"san francisco",12341,"NY"));
+        addressList.add(new Address(16,"san",cityFragment+"san diego",12346,"MH"));
+        addressList.add(new Address(11,"noname",cityFragment+"nocity",1234235,"KL"));
+        addressList.add(new Address(12,"max",cityFragment+"muster",3514,"SJ"));
+        addressList.add(new Address(13,"phil",cityFragment+"philadelphia",13453,"NW"));
+        addressList.add(new Address(14,"new",cityFragment+"new york",45612,"IL"));
+        addressList.add(new Address(15,"san",cityFragment+"san francisco",14561,"NY"));
+        addressList.add(new Address(16,"san",cityFragment+"san diego",1645,"MH"));
+        addressList.add(new Address(11,"noname",cityFragment+"nocity",14565,"KL"));
+        addressList.add(new Address(12,"max",cityFragment+"muster",16574,"SJ"));
+        addressList.add(new Address(13,"phil",cityFragment+"philadelphia",66813,"NW"));
+        addressList.add(new Address(14,"new",cityFragment+"new york",12678,"IL"));
+        addressList.add(new Address(15,"san",cityFragment+"san francisco",11678,"NY"));
+        addressList.add(new Address(16,"san",cityFragment+"san diego",676,"MH"));
 
         return addressList;
     }

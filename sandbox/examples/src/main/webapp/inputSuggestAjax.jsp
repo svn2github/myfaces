@@ -46,10 +46,14 @@
          <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" maxSuggestedItems="2" />
      </h:panelGrid>
      <f:verbatim><br/><br/><br/></f:verbatim>
-     <h:panelGrid columns="6">
-         <h:outputText value="City Field TableSuggest"/>
-         <s:inputSuggestAjax var="address" id="cityField" startRequest="2" delay="200" 
-                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
+     <h:panelGrid columns="2">
+        <h:panelGrid columns="6">
+         <f:verbatim> City Field TableSuggest <br/> (Paginator) </f:verbatim>
+         <s:inputSuggestAjax var="address" id="cityField" startRequest="2"
+                             nextPageFieldClass="ajaxNextTablePageField"
+                             columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
+                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}"
+                             maxSuggestedItems="10" tableStyleClass="ajaxTable">
             <t:column>
                  <f:facet name="header">
                      <s:outputText value="city"/>
@@ -69,7 +73,24 @@
                  <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
              </t:column>
          </s:inputSuggestAjax>
-         <s:inputSuggestAjax var="address" id="cityField1" startRequest="2"
+         <f:verbatim> City Field TableSuggest <br/> (Scrolling) </f:verbatim>
+         <s:inputSuggestAjax var="address" id="cityField2" tableStyleClass="ajaxTable"
+                             columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
+                             maxSuggestedItems="50" popupStyle="overflow:auto;display:block;height:200px;"
+                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
+            <t:column>
+                 <s:outputText for="cityField2" value="#{address.city}"/>
+             </t:column>
+             <t:column>
+                 <s:outputText for="streetNameField" value="#{address.streetName}"/>
+             </t:column>
+             <t:column>
+                 <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
+             </t:column>
+         </s:inputSuggestAjax>
+         <f:verbatim> City Field TableSuggest <br/> (Default) </f:verbatim>
+         <s:inputSuggestAjax var="address" id="cityField1" tableStyleClass="ajaxTable"
+                             columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
                              suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
             <t:column>
                  <f:facet name="header">
@@ -90,6 +111,8 @@
                  <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
              </t:column>
          </s:inputSuggestAjax>
+     </h:panelGrid>
+        <h:panelGrid>
          <h:outputText value="Street"/>
          <t:inputText id="streetNameField" />
          <h:outputText value="State"/>
@@ -101,6 +124,7 @@
               <f:selectItem value="" itemLabel="KL" itemValue="15"/>
               <f:selectItem value="" itemLabel="MH" itemValue="16"/>
          </t:selectOneMenu>
+     </h:panelGrid>
      </h:panelGrid>
      <f:verbatim><br/><br/><br/><br/><br/></f:verbatim>
      <s:dojoInitializer debugConsole="true"/>
