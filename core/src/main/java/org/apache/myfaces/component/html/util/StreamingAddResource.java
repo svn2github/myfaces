@@ -1024,7 +1024,7 @@ public class StreamingAddResource implements AddResource
 
     public boolean hasHeaderBeginInfos()
     {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public void addStyleLoaderHere(FacesContext context, Class myfacesCustomComponent) throws IOException
