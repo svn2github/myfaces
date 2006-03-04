@@ -57,7 +57,7 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * Where:
  * <ul>
  * <li> {contextPath} is the context path of the current webapp
- * <li> {resourceLoaderName} is the fully-qualified name of a class which 
+ * <li> {resourceLoaderName} is the fully-qualified name of a class which
  *  implements the ResourceLoader interface. When a browser app sends a request
  *  for the specified resource, an instance of the specified ResourceLoader class
  *  will be created and passed the resourceURI part of the URL for resolving to the
@@ -66,24 +66,24 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  *  org/apache/myfaces/custom in the classpath but non-myfaces code can provide their
  *  own ResourceLoader implementations.
  * </ul>
- * 
+ *
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class StreamingAddResource implements AddResource
 {
 	/**
-	 * central place where all request store their "to be added" stylesheets 
+	 * central place where all request store their "to be added" stylesheets
 	 */
 	private final static Map headerInfos = new HashMap();
 
 	/**
-	 * request counter 
+	 * request counter
 	 */
 	private static long REQUEST_ID_COUNTER = 0;
 
 	/**
-	 * own request 
+	 * own request
 	 */
 	private final Long requestId;
 
@@ -92,17 +92,10 @@ public class StreamingAddResource implements AddResource
 	 */
 	private final HeaderInfoEntry headerInfoEntry;
 
-	/**
-	 * the thread responsible to remove all old headerInfos.
-	 * In fact it is only required if the browser never requested the resource,
-	 * else it will be removed automatically 
-	 */
-	private final Thread cleanupThread;
-
-	/**
-	 * helper to determines if the resource has already been added
-	 */
-	private Set alreadySeenResources = new TreeSet();
+    /**
+     * helper to determines if the resource has already been added
+     */
+    private Set alreadySeenResources = new TreeSet();
 
     private static final String PATH_SEPARATOR = "/";
 
@@ -113,13 +106,13 @@ public class StreamingAddResource implements AddResource
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
 
     protected String _contextPath;
-    
+
 	public static class HeaderInfoEntry
 	{
 		private final long destroyTime = System.currentTimeMillis() + (1000 * 60); // one minute;
 		private final List addedInfos = new ArrayList(10);
 		private volatile boolean requestDone = false;
-		
+
 		protected HeaderInfoEntry()
 		{
 		}
@@ -128,7 +121,7 @@ public class StreamingAddResource implements AddResource
 		{
 			return destroyTime < now;
 		}
-		
+
 		protected void addInfo(StreamablePositionedInfo positionedInfo)
 		{
 			synchronized (addedInfos)
@@ -137,7 +130,7 @@ public class StreamingAddResource implements AddResource
 				addedInfos.notifyAll();
 			}
 		}
-		
+
 		protected StreamablePositionedInfo fetchInfo() throws InterruptedException
 		{
 			synchronized (addedInfos)
@@ -151,31 +144,31 @@ public class StreamingAddResource implements AddResource
 					// request done
 					return null;
 				}
-				
+
 				return (StreamablePositionedInfo) addedInfos.remove(0);
 			}
 		}
-		
+
 		protected void setRequestDone()
 		{
 			requestDone = true;
 		}
 	}
-	
+
     private class CleanupThread implements Runnable
     {
     	// how many entries should be removed per run
     	private final static int CHECKS_PER_RUN = 10;
-    	
+
     	// but never reach this maximum
     	private final static int CACHE_LIMIT = 1000;
-    	
+
 		public void run()
 		{
 			while (!Thread.interrupted())
 			{
 				checkMap();
-				
+
 				try
 				{
 					Thread.sleep(1000 * 30); // check every 30 sek
@@ -186,13 +179,13 @@ public class StreamingAddResource implements AddResource
 				}
 			}
 		}
-		
+
 		private void checkMap()
 		{
 			synchronized (headerInfos)
 			{
 				long now = System.currentTimeMillis();
-				
+
 				int checkNo = 0;
 				Iterator iterEntries = headerInfos.entrySet().iterator();
 				while (iterEntries.hasNext() && !Thread.currentThread().isInterrupted())
@@ -225,13 +218,13 @@ public class StreamingAddResource implements AddResource
 		{
         	headerInfos.put(requestId, headerInfoEntry);
 		}
-        
-        cleanupThread = new Thread(new CleanupThread(), "StreamingAddResource.CleanupThread");
+
+        Thread cleanupThread = new Thread(new CleanupThread(), "StreamingAddResource.CleanupThread");
         cleanupThread.setDaemon(true);
         cleanupThread.start();
     }
-    
-    public final static HeaderInfoEntry getHeaderInfo(Long requestId)
+
+    public static HeaderInfoEntry getHeaderInfo(Long requestId)
     {
         synchronized (headerInfos)
 		{
@@ -246,7 +239,7 @@ public class StreamingAddResource implements AddResource
         	headerInfos.remove(requestId);
 		}
 	}
-	
+
     // Methods to add resources
 
     public void setContextPath(String contextPath)
@@ -259,8 +252,8 @@ public class StreamingAddResource implements AddResource
      * The resource is expected to be in the classpath, at the same location as the
      * specified component + "/resource".
      * <p>
-     * Example: when customComponent is class example.Widget, and 
-     * resourceName is script.js, the resource will be retrieved from 
+     * Example: when customComponent is class example.Widget, and
+     * resourceName is script.js, the resource will be retrieved from
      * "example/Widget/resource/script.js" in the classpath.
      */
     public void addJavaScriptHere(FacesContext context, Class myfacesCustomComponent,
@@ -271,9 +264,9 @@ public class StreamingAddResource implements AddResource
 
     /**
      * Insert a [script src="url"] entry at the current location in the response.
-     * 
+     *
      * @param uri is the location of the desired resource, relative to the base
-     * directory of the webapp (ie its contextPath). 
+     * directory of the webapp (ie its contextPath).
      */
     public void addJavaScriptHere(FacesContext context, String uri) throws IOException
     {
@@ -288,13 +281,13 @@ public class StreamingAddResource implements AddResource
 
     /**
      * Insert a [script src="url"] entry at the current location in the response.
-     * 
+     *
      * @param context
-     * 
+     *
      * @param resourceHandler is an object which specifies exactly how to build the url
      * that is emitted into the script tag. Code which needs to generate URLs in ways
      * that this class does not support by default can implement a custom ResourceHandler.
-     * 
+     *
      * @throws IOException
      */
     public void addJavaScriptHere(FacesContext context, ResourceHandler resourceHandler)
@@ -327,7 +320,7 @@ public class StreamingAddResource implements AddResource
      * valid, and the getResourceLoaderClass method must return a
      * Class object whose instances implements the ResourceLoader
      * interface.
-     * 
+     *
      * @param resourceHandler
      */
     protected void validateResourceHandler(ResourceHandler resourceHandler)
@@ -340,9 +333,9 @@ public class StreamingAddResource implements AddResource
     }
 
     /**
-     * Given a Class object, verify that the instances of that class 
+     * Given a Class object, verify that the instances of that class
      * implement the ResourceLoader interface.
-     * 
+     *
      * @param resourceloader
      */
     protected void validateResourceLoader(Class resourceloader)
@@ -359,7 +352,7 @@ public class StreamingAddResource implements AddResource
      * document positioy by supplying a resourcehandler instance.
      * <p>
      * Use this method to have full control about building the reference url
-     * to identify the resource and to customize how the resource is 
+     * to identify the resource and to customize how the resource is
      * written to the response. In most cases, however, one of the convenience
      * methods on this class can be used without requiring a custom ResourceHandler
      * to be provided.
@@ -380,12 +373,12 @@ public class StreamingAddResource implements AddResource
      * Insert a [script src="url"] entry into the document header at the
      * specified document position. If the script has already been
      * referenced, it's added only once.
-     * <p> 
+     * <p>
      * The resource is expected to be in the classpath, at the same location as the
      * specified component + "/resource".
      * <p>
-     * Example: when customComponent is class example.Widget, and 
-     * resourceName is script.js, the resource will be retrieved from 
+     * Example: when customComponent is class example.Widget, and
+     * resourceName is script.js, the resource will be retrieved from
      * "example/Widget/resource/script.js" in the classpath.
      */
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
@@ -399,7 +392,7 @@ public class StreamingAddResource implements AddResource
      * Insert a [script src="url"] entry into the document header at the
      * specified document position. If the script has already been
      * referenced, it's added only once.
-     * 
+     *
      * @param defer specifies whether the html attribute "defer" is set on the
      * generated script tag. If this is true then the browser will continue
      * processing the html page without waiting for the specified script to
@@ -416,9 +409,9 @@ public class StreamingAddResource implements AddResource
      * Insert a [script src="url"] entry into the document header at the
      * specified document position. If the script has already been
      * referenced, it's added only once.
-     * 
+     *
      * @param uri is the location of the desired resource, relative to the base
-     * directory of the webapp (ie its contextPath). 
+     * directory of the webapp (ie its contextPath).
      */
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position, String uri)
     {
@@ -485,7 +478,7 @@ public class StreamingAddResource implements AddResource
     	{
     		return true;
     	}
-    	
+
     	alreadySeenResources.add(key);
 		return false;
 	}
@@ -508,8 +501,8 @@ public class StreamingAddResource implements AddResource
     public void addStyleSheet(FacesContext context, ResourcePosition position, String uri)
     {
 		uri = getAbsoluteUri(context, uri);
-		
-        addStyleSheet(context, getStyleInstance(context, uri));
+
+        addStyleSheet(getStyleInstance(context, uri));
     }
 
     protected String getAbsoluteUri(FacesContext context, String uri)
@@ -518,7 +511,7 @@ public class StreamingAddResource implements AddResource
     	{
     		return uri;
     	}
-    	
+
     	StringBuffer sb = new StringBuffer(80);
     	if (context.getExternalContext().getRequestPathInfo() != null)
     	{
@@ -526,11 +519,11 @@ public class StreamingAddResource implements AddResource
     	}
     	sb.append("/");
     	sb.append(uri);
-    	
+
     	return sb.toString();
 	}
 
-	private void addStyleSheet(FacesContext context, StreamablePositionedInfo styleInstance)
+	private void addStyleSheet(StreamablePositionedInfo styleInstance)
 	{
     	if (checkAlreadyAdded(styleInstance))
     	{
@@ -547,7 +540,7 @@ public class StreamingAddResource implements AddResource
             ResourceHandler resourceHandler)
     {
         validateResourceHandler(resourceHandler);
-        addStyleSheet(context, getStyleInstance(context, resourceHandler));
+        addStyleSheet(getStyleInstance(context, resourceHandler));
     }
 
     /**
@@ -555,7 +548,7 @@ public class StreamingAddResource implements AddResource
      */
     public void addInlineStyleAtPosition(FacesContext context, ResourcePosition position, String inlineStyle)
     {
-        addStyleSheet(context, getInlineStyleInstance(inlineStyle));
+        addStyleSheet(getInlineStyleInstance(inlineStyle));
     }
 
     /**
