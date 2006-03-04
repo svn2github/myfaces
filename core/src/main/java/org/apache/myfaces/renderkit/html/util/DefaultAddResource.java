@@ -1107,6 +1107,10 @@ public class DefaultAddResource implements AddResource
         return true;
     }
 
+	public void responseStarted()
+	{
+	}
+	
     public void responseFinished()
     {
     }

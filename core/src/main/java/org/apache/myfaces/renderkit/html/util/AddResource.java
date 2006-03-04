@@ -253,6 +253,11 @@ public interface AddResource
 	public boolean requiresBuffer();
 
 	/**
+	 * called when the response start
+	 */
+	public void responseStarted();
+	
+	/**
 	 * called when the response has finished
 	 */
 	public void responseFinished();

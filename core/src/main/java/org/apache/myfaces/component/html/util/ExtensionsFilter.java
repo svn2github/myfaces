@@ -120,6 +120,8 @@ public class ExtensionsFilter implements Filter {
 
         try
         {
+        	addResource.responseStarted();
+        	
 	        if (addResource.requiresBuffer())
 	        {
 		        ExtensionsResponseWrapper extendedResponse = new ExtensionsResponseWrapper((HttpServletResponse) response);
