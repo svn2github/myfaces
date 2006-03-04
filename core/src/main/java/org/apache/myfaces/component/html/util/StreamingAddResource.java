@@ -85,12 +85,12 @@ public class StreamingAddResource implements AddResource
 	/**
 	 * own request
 	 */
-	private final Long requestId;
+	private Long requestId;
 
 	/**
 	 * own header infos - e.g holds the "to be added" stylesheets and a destroy time
 	 */
-	private final HeaderInfoEntry headerInfoEntry;
+	private HeaderInfoEntry headerInfoEntry;
 
     /**
      * helper to determines if the resource has already been added
@@ -208,17 +208,6 @@ public class StreamingAddResource implements AddResource
     
     public StreamingAddResource()
     {
-        synchronized(StreamingAddResource.class)
-        {
-        	REQUEST_ID_COUNTER++;
-        	requestId = new Long(REQUEST_ID_COUNTER);
-        }
-        headerInfoEntry = new HeaderInfoEntry();
-        synchronized (headerInfos)
-		{
-        	headerInfos.put(requestId, headerInfoEntry);
-		}
-
         Thread cleanupThread = new Thread(new CleanupThread(), "StreamingAddResource.CleanupThread");
         cleanupThread.setDaemon(true);
         cleanupThread.start();
@@ -529,7 +518,7 @@ public class StreamingAddResource implements AddResource
     	{
     		return;
     	}
-    	headerInfoEntry.addInfo(styleInstance);
+    	getHeaderInfoEntry().addInfo(styleInstance);
 	}
 
 	/**
@@ -1065,12 +1054,36 @@ public class StreamingAddResource implements AddResource
 		return false;
 	}
 	
+    protected HeaderInfoEntry getHeaderInfoEntry()
+	{
+    	if (headerInfoEntry == null)
+    	{
+    		throw new IllegalStateException("responseStarted() needs to be called first");
+    	}
+    	
+    	return headerInfoEntry;
+	}
+    
+	public void responseStarted()
+	{
+        synchronized(StreamingAddResource.class)
+        {
+        	REQUEST_ID_COUNTER++;
+        	requestId = new Long(REQUEST_ID_COUNTER);
+        }
+        headerInfoEntry = new HeaderInfoEntry();
+        synchronized (headerInfos)
+		{
+        	headerInfos.put(requestId, headerInfoEntry);
+		}
+	}
+	
 	public void responseFinished()
 	{
-		headerInfoEntry.setRequestDone();
+		getHeaderInfoEntry().setRequestDone();
 	}
 
-    public boolean hasHeaderBeginInfos()
+	public boolean hasHeaderBeginInfos()
     {
         return false;
     }
