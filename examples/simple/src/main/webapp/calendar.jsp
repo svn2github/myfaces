@@ -20,19 +20,13 @@
  * limitations under the License.
  */
 //-->
+<html>
 
-<%--
 <%@include file="inc/head.inc" %>
---%>
+
+<body>
 
 <f:view>
-<t:document>
-<t:documentHead>
-  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8" />
-  <title>MyFaces - the free JSF Implementation</title>
-  <link rel="stylesheet" type="text/css" href="css/basic.css" />
-</t:documentHead>
-<t:documentBody>
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
     <t:saveState value="#{calendarBean}"/>
@@ -131,12 +125,11 @@
 
         </h:form>
     </h:panelGroup--%>
-
-<%@include file="inc/page_footer.jsp" %>
-</t:documentBody>
-</t:document>
-
 </f:view>
 
+<%@include file="inc/page_footer.jsp" %>
 
+</body>
+
+</html>
 

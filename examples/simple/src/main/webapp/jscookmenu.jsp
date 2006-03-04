@@ -21,10 +21,13 @@
  */
 //-->
 
-<f:view>
-<t:document>
+<html>
+
 <%@include file="inc/head.inc"%>
-<t:documentBody>
+
+<body>
+
+<f:view>
 	<f:loadBundle
 		basename="org.apache.myfaces.examples.resource.example_messages"
 		var="example_messages" />
@@ -102,10 +105,9 @@
         <t:navigationMenuItems id="navitems" value="#{navigationMenu.panelNavigationItems}" />
     </t:jscookMenu>
 
-<%@include file="inc/page_footer.jsp"%>
-</t:documentBody>
-</t:document>
 </f:view>
+
+<%@include file="inc/page_footer.jsp"%>
 
 </body>
 
