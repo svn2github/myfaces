@@ -31,6 +31,13 @@ public class StreamingResourceLoader implements ResourceLoader
 			log.warn("No streamable resources found for request: " + requestId + " resourceUri: " + resourceUri);
 			return;
 		}
+
+		/*
+		 * Even if we have a request id in our url, 
+		 * ensure the browser didnt cache this response.
+		 */
+        response.setHeader("pragma", "no-cache");
+        response.setHeader("Cache-control", "no-cache, must-revalidate");
 		
 		try
 		{
