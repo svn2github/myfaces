@@ -68,6 +68,8 @@
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
   </context-param>
+
+<!--
   <context-param>
     <description>A class implementing the
 		    org.apache.myfaces.shared.renderkit.html.util.AddResource
@@ -77,6 +79,7 @@
     <param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
     <param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value>
   </context-param>
+-->
   
   <filter>
     <filter-name>extensionsFilter</filter-name>
