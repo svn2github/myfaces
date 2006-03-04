@@ -16,10 +16,10 @@
 package org.apache.myfaces.custom.fileupload;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.html.util.MultipartRequestWrapper;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.webapp.filter.MultipartRequestWrapper;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
