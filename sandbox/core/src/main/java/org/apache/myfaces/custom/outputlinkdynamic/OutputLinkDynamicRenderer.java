@@ -43,12 +43,12 @@ import org.apache.myfaces.custom.dynamicResources.ResourceContext;
 import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
 import org.apache.myfaces.custom.dynamicResources.SimpleResourceContext;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
@@ -159,7 +159,7 @@ public class OutputLinkDynamicRenderer extends HtmlLinkRenderer implements Resou
 
     /**
      * @throws IOException
-     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
+     * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
                               HttpServletResponse response, String resourceUri) throws IOException

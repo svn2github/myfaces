@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.HtmlBufferResponseWriterWrapper;
+import org.apache.myfaces.renderkit.html.util.HtmlBufferResponseWriterWrapper;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)

@@ -3,10 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
-<html>
-
-<%@include file="inc/head.inc"%>
-
 <!--
 /*
  * Copyright 2004 The Apache Software Foundation.
@@ -25,8 +21,10 @@
  */
 //-->
 
-<body>
 <f:view>
+<t:document>
+<%@include file="inc/head.inc"%>
+<t:documentBody>
 	<f:loadBundle
 		basename="org.apache.myfaces.examples.resource.example_messages"
 		var="example_messages" />
@@ -104,8 +102,10 @@
         <t:navigationMenuItems id="navitems" value="#{navigationMenu.panelNavigationItems}" />
     </t:jscookMenu>
 
-</f:view>
 <%@include file="inc/page_footer.jsp"%>
+</t:documentBody>
+</t:document>
+</f:view>
 
 </body>
 

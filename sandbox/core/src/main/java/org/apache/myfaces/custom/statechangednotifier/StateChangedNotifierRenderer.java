@@ -16,8 +16,8 @@
 package org.apache.myfaces.custom.statechangednotifier;
 
 import org.apache.myfaces.renderkit.html.HtmlHiddenRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.custom.dojo.DojoUtils;

@@ -68,6 +68,16 @@
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
   </context-param>
+  <context-param>
+    <description>A class implementing the
+		    org.apache.myfaces.shared.renderkit.html.util.AddResource
+		    interface. It is responsible to
+   			place scripts and css on the right position in your HTML document.
+            Default: "org.apache.myfaces.shared.renderkit.html.util.DefaultAddResource"</description>
+    <param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
+    <param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value>
+  </context-param>
+  
   <filter>
     <filter-name>extensionsFilter</filter-name>
     <filter-class>org.apache.myfaces.component.html.util.ExtensionsFilter</filter-class>

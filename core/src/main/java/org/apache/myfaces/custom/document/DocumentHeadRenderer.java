@@ -20,8 +20,8 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.component.html.util.StreamingAddResource;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Document to enclose the document head. If not otherwise possible you can use

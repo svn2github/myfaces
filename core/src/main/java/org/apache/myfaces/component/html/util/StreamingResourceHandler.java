@@ -17,7 +17,7 @@ package org.apache.myfaces.component.html.util;
 
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceHandler;
+import org.apache.myfaces.renderkit.html.util.ResourceHandler;
 
 /**
  * Class whose instances represent a virtual resource which will be collected by

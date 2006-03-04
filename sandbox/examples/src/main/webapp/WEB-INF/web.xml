@@ -45,7 +45,8 @@
             Default: "false"</description>
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
-  </context-param>
+  </context-param> 
+  
   <filter>
     <filter-name>extensionsFilter</filter-name>
     <filter-class>org.apache.myfaces.component.html.util.ExtensionsFilter</filter-class>

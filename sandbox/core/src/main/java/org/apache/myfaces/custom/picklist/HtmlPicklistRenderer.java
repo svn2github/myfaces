@@ -32,8 +32,8 @@ import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;

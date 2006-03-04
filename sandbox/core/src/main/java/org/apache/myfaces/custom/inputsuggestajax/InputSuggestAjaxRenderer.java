@@ -23,10 +23,10 @@ import org.apache.myfaces.custom.dojo.DojoConfig;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 
 import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.commons.lang.StringUtils;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * @author Gerald Müllan
+ * @author Gerald Mï¿½llan
  * @author Martin Marinschek
  * @version $Revision: 177984 $ $Date: 2005-05-23 19:39:37 +0200 (Mon, 23 May 2005) $
  */

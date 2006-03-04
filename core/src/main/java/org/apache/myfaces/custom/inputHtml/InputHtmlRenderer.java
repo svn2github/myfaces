@@ -29,7 +29,7 @@ import javax.faces.convert.ConverterException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTab;
 import org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -37,7 +37,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.HTMLEncoder;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 
