@@ -155,7 +155,7 @@ public class StreamingAddResource implements AddResource
 		}
 	}
 
-    private class CleanupThread implements Runnable
+    private static class CleanupThread implements Runnable
     {
     	// how many entries should be removed per run
     	private final static int CHECKS_PER_RUN = 10;
@@ -205,12 +205,16 @@ public class StreamingAddResource implements AddResource
 			}
 		}
     }
-    
-    public StreamingAddResource()
+
+    static
     {
         Thread cleanupThread = new Thread(new CleanupThread(), "StreamingAddResource.CleanupThread");
         cleanupThread.setDaemon(true);
         cleanupThread.start();
+    }
+    
+    public StreamingAddResource()
+    {
     }
 
     public static HeaderInfoEntry getHeaderInfo(Long requestId)
