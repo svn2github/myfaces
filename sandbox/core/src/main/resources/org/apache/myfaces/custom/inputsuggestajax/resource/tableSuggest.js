@@ -1,15 +1,7 @@
 /**
+ * Copyright 2006 The Apache Software Foundation.
  *
-C
-    pyright 2006 The Apache Software
-     Foundation.
- *
- * Licensed under the Apache Lic
-    ense, Version 2.0 (t
-h
- "Li
-e
-se");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
