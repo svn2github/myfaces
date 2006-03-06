@@ -127,8 +127,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
 
-        String urlWithValue = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId
-                              + "&" + clientId+"=");
+        String urlWithValue = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId);
 
         ResponseWriter out = context.getResponseWriter();
 
@@ -268,14 +267,14 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         buf.append(   "var "+tableSuggestVar+" = new org_apache_myfaces_TableSuggest();\n"
                     + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt)\n"
                     + "{\n"
-                    + "   if(evt.keyCode == 13)\n"
-                    + "   {  document.onclick();\n"
-                    + "      return;"
-                    + "   }"
+                    + "   if( (evt.keyCode == 13) || (evt.keyCode == 9) || (evt.keyCode == 8) ){\n"  //enter,tab, backspace
+                    + "      document.onclick();\n"
+                    + "      return;\n"
+                    + "   }\n"
                     + "   var handlerNode = dojo.byId(\"" + clientId + "\");\n"
                     + "   var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
                     + "   var inputValue = handlerNode.value;\n"
-                    + "   var url = \""+ urlWithValue +"\"+inputValue;\n"
+                    + "   var url = \""+ urlWithValue +"&" + clientId+"=\"+inputValue;\n"
                     +     DojoUtils.createDebugStatement("onkeyup event occured, length is","inputValue.length")
                     +     DojoUtils.createDebugStatement("value is","inputValue")
                     + "   if(inputValue != \"\" ");

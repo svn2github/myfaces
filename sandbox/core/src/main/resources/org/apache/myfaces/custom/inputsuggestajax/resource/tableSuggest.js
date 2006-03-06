@@ -1,7 +1,15 @@
 /**
- * Copyright 2006 The Apache Software Foundation.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+C
+    pyright 2006 The Apache Software
+     Foundation.
+ *
+ * Licensed under the Apache Lic
+    ense, Version 2.0 (t
+h
+ "Li
+e
+se");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -14,13 +22,14 @@
  * limitations under the License.
  */
 
-//puting the values from the choosen row into the fields
+
 org_apache_myfaces_TableSuggest = function()
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
     this.firstHighlightedElem = null;
     this.actualHighlightedElem = null;
 
+    //puting the values from the choosen row into the fields
     org_apache_myfaces_TableSuggest.prototype.putValueToField = function(trElem)
     {
         var j = 0;
@@ -53,11 +62,9 @@ org_apache_myfaces_TableSuggest = function()
             if(!this.firstHighlightedElem)
             {
                 var firstOptionElem = this.getFirstRowElem(popUp);
-                dojo.html.removeClass(firstOptionElem,"tableSuggestOut");
-                dojo.html.addClass(firstOptionElem,"tableSuggestHover");
+                this.addHoverClass(firstOptionElem);
                 this.firstHighlightedElem = firstOptionElem;
                 this.actualHighlightedElem = firstOptionElem;
-                this.actualHighlightedElem.focus();
 
                 this.putValueToField(firstOptionElem);
             }
@@ -69,10 +76,8 @@ org_apache_myfaces_TableSuggest = function()
                 {
                     if(dojo.dom.getTagName(nextElem) == "tr")
                     {
-                        dojo.html.removeClass(this.actualHighlightedElem,"tableSuggestHover");
-                        dojo.html.addClass(this.actualHighlightedElem,"tableSuggestOut");
-                        dojo.html.removeClass(nextElem,"tableSuggestOut");
-                        dojo.html.addClass(nextElem,"tableSuggestHover");
+                        this.addOutClass(this.actualHighlightedElem);
+                        this.addHoverClass(nextElem);
                         this.actualHighlightedElem = nextElem
 
                         this.putValueToField(nextElem);
@@ -88,8 +93,10 @@ org_apache_myfaces_TableSuggest = function()
                         if(dojo.dom.getTagName(pageField) == "div")
                         {
                             this.nextPage(pageField);
-                            var firstOptionElem = this.getFirstRowElem(popUp);
-                            this.actualHighlightedElem = firstOptionElem;
+                            this.firstHighlightedElem = this.getFirstRowElem(popUp);
+                            this.addOutClass(this.actualHighlightedElem);
+                            this.addHoverClass(this.firstHighlightedElem);
+                            this.actualHighlightedElem = this.firstHighlightedElem;
                         }
                     }
                     else
@@ -105,10 +112,8 @@ org_apache_myfaces_TableSuggest = function()
             {
                 if(dojo.dom.getTagName(prevElem) == "tr")
                 {
-                    dojo.html.removeClass(this.actualHighlightedElem,"tableSuggestHover");
-                    dojo.html.addClass(this.actualHighlightedElem,"tableSuggestOut");
-                    dojo.html.removeClass(prevElem,"tableSuggestOut");
-                    dojo.html.addClass(prevElem,"tableSuggestHover");
+                    this.addOutClass(this.actualHighlightedElem);
+                    this.addHoverClass(prevElem);
                     this.actualHighlightedElem = prevElem;
 
                     this.putValueToField(prevElem);
@@ -121,8 +126,9 @@ org_apache_myfaces_TableSuggest = function()
                 if(table)
                 {
                     this.previousPage(table);
-                    var lastOptionElem = this.getLastRowElem(popUp);
-                    this.actualHighlightedElem = lastOptionElem;
+                    this.addOutClass(this.actualHighlightedElem);
+                    this.actualHighlightedElem = this.getLastRowElem(popUp);
+                    this.addHoverClass(this.actualHighlightedElem);
                 }
                 else
                     dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
@@ -130,6 +136,9 @@ org_apache_myfaces_TableSuggest = function()
         }
         else
         {
+            this.firstHighlightedElem = null;
+            this.actualHighlightedElem = null;
+
             dojo.io.bind
             ({
                url:  url,
@@ -175,7 +184,7 @@ org_apache_myfaces_TableSuggest = function()
                               collection.add(firstPage);
                               collection.add(firstPageField);
 
-                            }
+                            }     
                             else if(type == "error")
                             {
                               dojo.debug("error during response");
@@ -193,8 +202,8 @@ org_apache_myfaces_TableSuggest = function()
         var nextPage = this.tablePagesCollection.item(0);
         var nextPageField = this.tablePagesCollection.item(1);
 
-        this.tablePagesCollection.remove(0);
-        this.tablePagesCollection.remove(1);
+        this.tablePagesCollection.removeAt(0);
+        this.tablePagesCollection.removeAt(0);
 
         var thisPage = dojo.dom.prevElement(thisPageField);
 
@@ -209,40 +218,58 @@ org_apache_myfaces_TableSuggest = function()
         this.tablePagesCollection.add(thisPageField);
     };
 
-    org_apache_myfaces_TableSuggest.prototype.previousPage = function(thisTable)
+    org_apache_myfaces_TableSuggest.prototype.previousPage = function(thisPage)
     {
-        var prevPage = this.tablePagesCollection.item(this.tablePagesCollection.count+1);
-        var prevPageField = this.tablePagesCollection.item(this.tablePagesCollection.count);
+        var collLength = this.tablePagesCollection.count;
+        var prevPageField = this.tablePagesCollection.item(collLength-1);
+        var prevPage = this.tablePagesCollection.item(collLength-2);
 
-        this.tablePagesCollection.remove(this.tablePagesCollection.count+1);
-        this.tablePagesCollection.remove(this.tablePagesCollection.count);
+        this.tablePagesCollection.removeAt(collLength-1);
+        this.tablePagesCollection.removeAt(collLength-2);
 
-        var popUp = dojo.dom.getFirstAncestorByTag(thisTable, "div");
+        var popUp = dojo.dom.getFirstAncestorByTag(thisPage, "div");
 
         dojo.dom.removeChildren(popUp);
 
         dojo.dom.insertAtPosition(prevPage, popUp, "first");
         dojo.dom.insertAtPosition(prevPageField, popUp, "last");
 
-        this.tablePagesCollection.insert(this.tablePagesCollection.count,thisTable);
-        this.tablePagesCollection.insert(this.tablePagesCollection.count,dojo.dom.nextElement(thisTable));
+        var table = dojo.dom.firstElement(thisPage);
+        var thisPageField = dojo.dom.nextElement(table);
+        this.tablePagesCollection.insert(0,thisPageField);
+        this.tablePagesCollection.insert(0,thisPage);
+
     };
 
     org_apache_myfaces_TableSuggest.prototype.getFirstRowElem = function(popUp)
     {
         var table = dojo.dom.firstElement(popUp);
-        var tbody = table.childNodes[1];
-        var firstRowElem = dojo.dom.firstElement(tbody);
-
-        return firstRowElem;
+        if (table) {
+            var tbody = table.childNodes[1];
+            var firstRowElem = dojo.dom.firstElement(tbody);
+            return firstRowElem;
+        } else return null;
     };
 
     org_apache_myfaces_TableSuggest.prototype.getLastRowElem = function(popUp)
     {
         var table = dojo.dom.firstElement(popUp);
-        var tbody = table.childNodes[1];
-        var lastRowElem = dojo.dom.lastElement(tbody);
+        if(table) {
+            var tbody = table.childNodes[1];
+            var lastRowElem = dojo.dom.lastElement(tbody);
+            return lastRowElem;
+        }else return null;
+    };
 
-        return lastRowElem;
+    org_apache_myfaces_TableSuggest.prototype.addHoverClass = function(elem)
+    {
+        dojo.html.removeClass(elem,"tableSuggestOut");
+        dojo.html.addClass(elem,"tableSuggestHover");
+    };
+
+    org_apache_myfaces_TableSuggest.prototype.addOutClass = function(elem)
+    {
+        dojo.html.removeClass(elem,"tableSuggestHover");
+        dojo.html.addClass(elem,"tableSuggestOut");
     };
 }
