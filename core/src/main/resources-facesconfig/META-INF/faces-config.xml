@@ -24,6 +24,8 @@
 
   <lifecycle>
       <phase-listener>org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener</phase-listener>
+      <!-- This PhaseListener is only necessary if the autoscroll feature is used -->
+      <phase-listener>org.apache.myfaces.renderkit.html.util.AutoScrollPhaseListener</phase-listener>
   </lifecycle>
 
     <!-- MyFaces extended standard components (in alphabetical order) -->
