@@ -928,7 +928,17 @@ Sandbox-related entities.
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
-            <description></description>
+            <description>Specify the id of the dom element where the label should be put in</description>
+        </attribute>
+        <attribute>
+			<name>forValue</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description>Specify the id of the dom element where the value should be put in.
+                         This value is also included in the suggested table, but only in a hidden
+                         span element following the span for the label in one row. 
+            </description>
         </attribute>
         <attribute>
 			<name>label</name>

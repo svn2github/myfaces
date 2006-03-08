@@ -20,6 +20,7 @@ org_apache_myfaces_TableSuggest = function()
     this.tablePagesCollection = new dojo.collections.ArrayList();
     this.firstHighlightedElem = null;
     this.actualHighlightedElem = null;
+    this.iframe = null;
 
     //puting the values from the choosen row into the fields
     org_apache_myfaces_TableSuggest.prototype.putValueToField = function(trElem)
@@ -28,19 +29,29 @@ org_apache_myfaces_TableSuggest = function()
 
         for(;j<trElem.childNodes.length;j++)
         {
-            var idToPutValue = trElem.childNodes[j].id.substr(11);
-            var elemToPutValue = document.getElementById(idToPutValue);
+            var tdElem = trElem.childNodes[j];
 
-            if (elemToPutValue && idToPutValue)
+            for(a=0;a<tdElem.childNodes.length;a++)
             {
-                if (trElem.childNodes[j].childNodes[1] == null)
-                    elemToPutValue.value = trElem.childNodes[j].childNodes[0].innerHTML;
-                else
-                {   //quick fix to put the value in a selectOneMenu; todo: more generic and embedding in dojo
-                    for (i = 0; i < elemToPutValue.options.length; i++)
+                var spanElem = tdElem.childNodes[a];
+
+                if(spanElem.id)
+                {
+                    var idToPutValue = spanElem.id.substr(11);
+                    var elemToPutValue = dojo.byId(idToPutValue);
+
+                    if (elemToPutValue)
                     {
-                        if (elemToPutValue.options[i].value == trElem.childNodes[j].childNodes[1].innerHTML)
-                            elemToPutValue.options[i].selected = true;
+                        if(dojo.dom.getTagName(elemToPutValue) == "input")
+                            elemToPutValue.value = spanElem.innerHTML;
+                        else if (dojo.dom.getTagName(elemToPutValue) == "select")
+                        {
+                            for (i = 0; i < elemToPutValue.options.length; i++)
+                            {
+                                if (elemToPutValue.options[i].value == spanElem.innerHTML)
+                                    elemToPutValue.options[i].selected = true;
+                            }
+                        }
                     }
                 }
             }
@@ -147,6 +158,22 @@ org_apache_myfaces_TableSuggest = function()
 
                               var firstPage = null;
                               var firstPageField = null;
+                              var iframe = null;
+
+                              if(dojo.render.html.ie)
+                              {
+                                  if(!tableSuggest.iframe) {
+                                    tableSuggest.iframe = document.createElement("<iframe>");
+                                    tableSuggest.iframe.frameborder='0';
+                                    tableSuggest.iframe.src='about:blank';
+                                    var s = tableSuggest.iframe.style;
+                                    s.position = "absolute";
+                                    s.display = "inline";
+                                    s.zIndex = 2;
+                                    var popUpParent = popUp.parentNode;
+                                    dojo.dom.insertAtPosition(tableSuggest.iframe, popUpParent, "first");
+                                  }
+                               }
 
                               dojo.dom.removeChildren(popUp);
                               collection.clear();
@@ -161,11 +188,12 @@ org_apache_myfaces_TableSuggest = function()
                                       dojo.dom.insertAtPosition(firstPageField, popUp, "last");
                                       k++;
 
-                                      var table = dojo.dom.firstElement(popUp);
-                                      var tbody = table.childNodes[1];
-                                      var rowElem = tbody.firstChild;
+                                      if(firstPage.rows) {
+                                        if(firstPage.rows.length == 2) {
+                                            var row = firstPage.rows[1];
+                                            tableSuggest.putValueToField(row); }
+                                      }
 
-                                      tableSuggest.putValueToField(rowElem);
                                   }
                                   else
                                   {
@@ -173,10 +201,12 @@ org_apache_myfaces_TableSuggest = function()
                                   }
                               }
 
-                              collection.add(firstPage);
-                              collection.add(firstPageField);
+                               if(dojo.render.html.ie) {
+                                  tableSuggest.iframe.style.width = dojo.style.getBorderBoxWidth(popUp);
+                                  tableSuggest.iframe.style.height = dojo.style.getBorderBoxHeight(popUp);
+                               }
 
-                            }     
+                            }
                             else if(type == "error")
                             {
                               dojo.debug("error during response");
@@ -264,4 +294,18 @@ org_apache_myfaces_TableSuggest = function()
         dojo.html.removeClass(elem,"tableSuggestHover");
         dojo.html.addClass(elem,"tableSuggestOut");
     };
+
+    org_apache_myfaces_TableSuggest.prototype.resetSettings = function(popUpId)
+    {
+        var popUp = dojo.byId(popUpId);
+        dojo.dom.removeChildren(popUp);
+
+        if(this.iframe)
+            this.iframe.style.display = "none";
+
+        this.firstHighlightedElem = null;
+        this.actualHighlightedElem = null;
+        this.iframe = null;
+    };
+
 }

@@ -58,19 +58,19 @@
                  <f:facet name="header">
                      <s:outputText value="city"/>
                  </f:facet>
-                 <s:outputText for="cityField" value="#{address.city}"/>
+                 <s:outputText for="cityField" label="#{address.city}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
                      <s:outputText value="street"/>
                  </f:facet>
-                 <s:outputText for="streetNameField" value="#{address.streetName}"/>
+                 <s:outputText for="streetNameField" label="#{address.streetName}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
                      <s:outputText value="state"/>
                  </f:facet>
-                 <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
+                 <s:outputText forValue="stateField" label="#{address.state}" value="#{address.zip}"/>
              </t:column>
          </s:inputSuggestAjax>
          <f:verbatim> City Field TableSuggest <br/> (Scrolling) </f:verbatim>
@@ -79,13 +79,13 @@
                              maxSuggestedItems="50" popupStyle="overflow:auto;display:block;height:200px;"
                              suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
             <t:column>
-                 <s:outputText for="cityField2" value="#{address.city}"/>
+                 <s:outputText for="cityField2" label="#{address.city}"/>
              </t:column>
              <t:column>
-                 <s:outputText for="streetNameField" value="#{address.streetName}"/>
+                 <s:outputText for="streetNameField" label="#{address.streetName}"/>
              </t:column>
              <t:column>
-                 <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
+                 <s:outputText forValue="stateField" label="#{address.state}" value="#{address.zip}"/>
              </t:column>
          </s:inputSuggestAjax>
          <f:verbatim> City Field TableSuggest <br/> (Default) </f:verbatim>
@@ -96,19 +96,19 @@
                  <f:facet name="header">
                      <s:outputText value="city"/>
                  </f:facet>
-                 <s:outputText for="cityField1" value="#{address.city}"/>
+                 <s:outputText for="cityField1" label="#{address.city}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
                      <s:outputText value="street"/>
                  </f:facet>
-                 <s:outputText for="streetNameField" value="#{address.streetName}"/>
+                 <s:outputText for="streetNameField" label="#{address.streetName}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
                      <s:outputText value="state"/>
                  </f:facet>
-                 <s:outputText for="stateField" value="#{address.state}" label="#{address.zip}"/>
+                 <s:outputText forValue="stateField" label="#{address.state}" value="#{address.zip}"/>
              </t:column>
          </s:inputSuggestAjax>
      </h:panelGrid>

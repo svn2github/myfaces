@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * @author Gerald M�llan
+ * @author Gerald Müllan
  * @author Martin Marinschek
  * @version $Revision: 177984 $ $Date: 2005-05-23 19:39:37 +0200 (Mon, 23 May 2005) $
  */
@@ -77,6 +77,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         DojoUtils.addRequire(context, "dojo.fx.html");
         DojoUtils.addRequire(context, "dojo.lang");
         DojoUtils.addRequire(context, "dojo.html");
+        DojoUtils.addRequire(context, "dojo.style");
         DojoUtils.addRequire(context, "dojo.collections.ArrayList");
 
         AddResource addResource = AddResourceFactory.getInstance(context);
@@ -232,7 +233,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             //simple suggest stuff
             out.write("<input dojoType=\"combobox\" "
                 + "value=\"\" style=\"width:150px;\" "
-                + "dataUrl=\""+ urlWithValue + "%{searchString}\"\n"
+                + "dataUrl=\""+ urlWithValue + "&" + clientId+"=%{searchString}\"\n"
                 + "mode=\"remote\">");
         }
 
@@ -267,7 +268,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         buf.append(   "var "+tableSuggestVar+" = new org_apache_myfaces_TableSuggest();\n"
                     + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt)\n"
                     + "{\n"
-                    + "   if( (evt.keyCode == 13) || (evt.keyCode == 9) || (evt.keyCode == 8) ){\n"  //enter,tab, backspace
+                    + "   if( (evt.keyCode == 13) || (evt.keyCode == 9) ){\n"  //enter,tab
                     + "      document.onclick();\n"
                     + "      return;\n"
                     + "   }\n"
@@ -282,7 +283,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                         buf.append("&& inputValue.length >= "+inputSuggestAjax.getStartRequest()+")\n");
                     else buf.append(")");
                     if(inputSuggestAjax.getDelay()!=null)
-                        buf.append("dojo.lang.setTimeout("+tableSuggestVar+".handleRequestResponse, "+inputSuggestAjax.getDelay()+", [url, popUp, "+ tableSuggestVar +"]);\n");
+                        buf.append("dojo.lang.setTimeout("+tableSuggestVar+".handleRequestResponse, "+inputSuggestAjax.getDelay()+", [url, popUp, "+ tableSuggestVar +",evt.keyCode]);\n");
                     else
                         buf.append(""+tableSuggestVar+".handleRequestResponse(url, popUp, "+ tableSuggestVar +",evt.keyCode);\n");
        buf.append("   else document.onclick();\n"
@@ -291,10 +292,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         //if setting the focus outside the input field, popup should not be displayed
         buf.append("dojo.event.connect(document, \"onclick\", function(evt)\n"
                     + "{\n"
-                    + "     var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
-                    + "     dojo.dom.removeChildren(popUp);\n"
-                    + "     "+tableSuggestVar+".firstHighlightedElem = null;\n"
-                    + "     "+tableSuggestVar+".actualHighlightedElem = null;\n"
+                    + "     "+tableSuggestVar+".resetSettings(\"" + clientId+"_auto_complete\");\n"
                     + "});\n");
 
         return buf;
@@ -349,7 +347,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
 
                 int j = 0;
 
-                while (j < wholeList.size()-1)
+                while (j <= wholeList.size()-1)
                 {
                     for (int i = 0; i < inputSuggestAjax.getMaxSuggestedItems().intValue(); i++)
                     {
@@ -458,19 +456,22 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                     {
                         HtmlOutputText htmlOutputText = (HtmlOutputText) comp;
 
-                        if (htmlOutputText.getValue()!=null)
+                        if (htmlOutputText.getLabel()!=null)
                         {
-                            bodyContent.append("<td id=\"putValueTo_")
-                                       .append(RendererUtils.getClientId(context, inputSuggestAjax, htmlOutputText.getFor()) + "\">");
+                            bodyContent.append("<td> <span ");
+                            if(htmlOutputText.getFor()!=null)
+                                bodyContent.append("id=\"putValueTo_"+RendererUtils.getClientId(context, inputSuggestAjax, htmlOutputText.getFor()) + "\"");
+                            bodyContent.append(">"+ htmlOutputText.getLabel() + "</span>");
 
-                            if (htmlOutputText.getLabel()!=null)
+                            if (htmlOutputText.getValue()!=null)
                             {
-                                bodyContent.append("<span>" + htmlOutputText.getValue() + "</span>")
-                                           .append("<span style=\"display:none;\">" + htmlOutputText.getLabel() + "</span>").append("</td>");
+                                bodyContent.append("<span id=\"putValueTo_")
+                                        .append(RendererUtils.getClientId(context, inputSuggestAjax, htmlOutputText.getForValue()) + "\"")
+                                        .append(" style=\"display:none;\">" + htmlOutputText.getValue() + "</span>").append("</td>");
                             }
                             else
                             {
-                                bodyContent.append("<span>" + htmlOutputText.getValue() + "</span>").append("</td>");
+                                bodyContent.append("</td>");
                                 break;
                             }
                         }

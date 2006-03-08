@@ -11,6 +11,7 @@ import javax.faces.component.UIComponent;
 public class HtmlOutputTextTag extends org.apache.myfaces.taglib.html.HtmlOutputTextTag
 {
     private String _for;
+    private String _forValue;
     private String _label;
 
     public String getComponentType() {
@@ -23,6 +24,7 @@ public class HtmlOutputTextTag extends org.apache.myfaces.taglib.html.HtmlOutput
 
         _for = null;
         _label = null;
+        _forValue = null;
     }
 
     protected void setProperties(UIComponent component) {
@@ -31,6 +33,7 @@ public class HtmlOutputTextTag extends org.apache.myfaces.taglib.html.HtmlOutput
 
         setStringProperty(component, JSFAttr.FOR_ATTR, _for);
         setStringProperty(component, "label", _label);
+        setStringProperty(component, "forValue", _forValue);
     }
 
     public void setFor(String aFor)
@@ -41,5 +44,11 @@ public class HtmlOutputTextTag extends org.apache.myfaces.taglib.html.HtmlOutput
     public void setLabel(String label)
     {
         _label = label;
+    }
+
+
+    public void setForValue(String forValue)
+    {
+        _forValue = forValue;
     }
 }
