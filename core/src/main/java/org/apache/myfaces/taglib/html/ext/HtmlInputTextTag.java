@@ -45,10 +45,11 @@ public class HtmlInputTextTag
     private String _datafld;
     private String _datasrc;
     private String _dataformatas;
+    private String _disabledOnClientSide;
 
     private String _displayValueOnly;
-	private String _displayValueOnlyStyle;
-	private String _displayValueOnlyStyleClass;
+    private String _displayValueOnlyStyle;
+    private String _displayValueOnlyStyleClass;
 
     public void release() {
         super.release();
@@ -58,6 +59,7 @@ public class HtmlInputTextTag
         _datafld=null;
         _datasrc=null;
         _dataformatas=null;
+        _disabledOnClientSide=null;
         _displayValueOnly=null;
         _displayValueOnlyStyle=null;
         _displayValueOnlyStyleClass=null;
@@ -71,6 +73,7 @@ public class HtmlInputTextTag
         setStringProperty(component, HTML.DATAFLD_ATTR, _datafld);
         setStringProperty(component, HTML.DATASRC_ATTR, _datasrc);
         setStringProperty(component, HTML.DATAFORMATAS_ATTR, _dataformatas);
+        setBooleanProperty(component, "disabledOnClientSide", _disabledOnClientSide);
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
@@ -114,5 +117,10 @@ public class HtmlInputTextTag
     public void setDataformatas(String dataformatas)
     {
         _dataformatas = dataformatas;
+    }
+    
+    public void setDisabledOnClientSide(String disabledOnClientSide)
+    {
+        _disabledOnClientSide = disabledOnClientSide;
     }
 }

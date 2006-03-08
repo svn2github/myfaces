@@ -52,15 +52,16 @@ public class HtmlInputText
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     
-	private Boolean _displayValueOnly = null;
-	private String _displayValueOnlyStyle = null;
-	private String _displayValueOnlyStyleClass = null;
+    private Boolean _displayValueOnly = null;
+    private String _displayValueOnlyStyle = null;
+    private String _displayValueOnlyStyleClass = null;
+    
+    private Boolean _disabledOnClientSide = null;
 
     public HtmlInputText()
     {
         super();
     }
-
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
@@ -114,7 +115,7 @@ public class HtmlInputText
 
     public void setDisplayValueOnlyStyle(String displayValueOnlyStyle)
     {
-		_displayValueOnlyStyle = displayValueOnlyStyle;
+        _displayValueOnlyStyle = displayValueOnlyStyle;
     }
 
     public String getDisplayValueOnlyStyle()
@@ -126,7 +127,7 @@ public class HtmlInputText
 	
     public void setDisplayValueOnlyStyleClass(String displayValueOnlyStyleClass)
     {
-		_displayValueOnlyStyleClass = displayValueOnlyStyleClass;
+        _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
 
     public String getDisplayValueOnlyStyleClass()
@@ -135,16 +136,30 @@ public class HtmlInputText
         ValueBinding vb = getValueBinding("displayValueOnlyStyleClass");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
+    
+    public void setDisabledOnClientSide(boolean disabledOnClientSide)
+    {
+        _disabledOnClientSide = Boolean.valueOf(disabledOnClientSide);
+    }
+
+    public boolean isDisabledOnClientSide()
+    {
+        if (_disabledOnClientSide != null) return _disabledOnClientSide.booleanValue();
+        ValueBinding vb = getValueBinding("disabledOnClientSide");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
-		values[3] = _displayValueOnly;
-		values[4] = _displayValueOnlyStyle;
-		values[5] = _displayValueOnlyStyleClass;
+        values[3] = _displayValueOnly;
+        values[4] = _displayValueOnlyStyle;
+        values[5] = _displayValueOnlyStyleClass;
+        values[6] = _disabledOnClientSide;
         return values;
     }
 
@@ -154,9 +169,10 @@ public class HtmlInputText
         super.restoreState(context, values[0]);
         _enabledOnUserRole = (String)values[1];
         _visibleOnUserRole = (String)values[2];
-		_displayValueOnly = (Boolean)values[3];
-		_displayValueOnlyStyle = (String)values[4];
-		_displayValueOnlyStyleClass = (String)values[5];
+        _displayValueOnly = (Boolean)values[3];
+        _displayValueOnlyStyle = (String)values[4];
+        _displayValueOnlyStyleClass = (String)values[5];
+        _disabledOnClientSide = (Boolean)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }
