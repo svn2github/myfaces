@@ -37,7 +37,7 @@ public class HtmlInputTextTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Text";
+        return HtmlInputText.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

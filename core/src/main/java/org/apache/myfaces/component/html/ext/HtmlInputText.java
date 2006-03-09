@@ -47,6 +47,8 @@ public class HtmlInputText
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputText";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Text";
+
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
     private String _enabledOnUserRole = null;
@@ -61,6 +63,8 @@ public class HtmlInputText
     public HtmlInputText()
     {
         super();
+
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
