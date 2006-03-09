@@ -44,7 +44,10 @@ org_apache_myfaces_TableSuggest = function()
                     {
                         if(dojo.dom.getTagName(elemToPutValue) == "input") {
                             elemToPutValue.value = spanElem.innerHTML;
-                            elemToPutValue.onchange();
+                            if(elemtoPutValue.onchange)
+                            {
+                                elemToPutValue.onchange();
+                            }
                         }
                         else if (dojo.dom.getTagName(elemToPutValue) == "select")
                         {
