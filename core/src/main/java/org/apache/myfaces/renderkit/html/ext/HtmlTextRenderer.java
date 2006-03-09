@@ -15,6 +15,14 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
+import java.io.IOException;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -22,13 +30,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Map;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 
 
 /**
@@ -39,6 +41,7 @@ public class HtmlTextRenderer
         extends HtmlTextRendererBase
 {
     private static final String ONCHANGE_PREFIX = "onChange_";
+    private static final String HIDDEN_SUFFIX   = "_hidden";
      
     //private static final Log log = LogFactory.getLog(HtmlTextRenderer.class);
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
@@ -80,7 +83,7 @@ public class HtmlTextRenderer
     
     protected void renderInput(FacesContext facesContext, UIComponent component) throws IOException 
     {
-        if (!isDisabledOnClientSide(facesContext, component))
+        if (!isDisabledOnClientSide(facesContext, component) || isDisabled(facesContext, component))
         {
             super.renderInput(facesContext, component);
             return;
@@ -104,8 +107,8 @@ public class HtmlTextRenderer
         HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
         //render as disabled on the client side
         writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
-        //render the JS function that will change the hidden input field's value when his changes
-        writer.writeAttribute(HTML.ONCHANGE_ATTR, getOnChangeFunctionName(component.getId())+"();", null);
+        //render the JS function that will change the hidden input field's value when his changes        
+        writer.writeAttribute(HTML.ONCHANGE_ATTR, getOnChangeFunctionName(clientId)+"();", null);
         
         writer.endElement(HTML.INPUT_ELEM);
         
@@ -119,18 +122,20 @@ public class HtmlTextRenderer
     {
         ResponseWriter writer = facesContext.getResponseWriter();
         
+        String disabledInputClientId = component.getClientId(facesContext);
+        
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);                        
-        writer.writeText(createOnChangeListenerJS(component.getId(), component.getClientId(facesContext)), null);        
+        writer.writeText(createOnChangeListenerJS(disabledInputClientId), null);        
         writer.endElement(HTML.SCRIPT_ELEM);
         
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);  
         
         writer.startElement(HTML.INPUT_ELEM, null);
-        writer.writeAttribute(HTML.ID_ATTR, component.getId(), null);
-        writer.writeAttribute(HTML.NAME_ATTR, component.getId(), null);
+        writer.writeAttribute(HTML.ID_ATTR, disabledInputClientId + HIDDEN_SUFFIX, null);
+        writer.writeAttribute(HTML.NAME_ATTR, disabledInputClientId + HIDDEN_SUFFIX, null);
         writer.writeAttribute(HTML.VALUE_ATTR, RendererUtils.getStringValue(facesContext, component), null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);        
         writer.endElement(HTML.INPUT_ELEM);
@@ -154,24 +159,24 @@ public class HtmlTextRenderer
     /**
      *
      */ 
-    protected String getOnChangeFunctionName(String inputDisabledId)
+    protected String getOnChangeFunctionName(String inputDisabledClientId)
     {
         StringBuffer buf = new StringBuffer();
         buf.append(ONCHANGE_PREFIX);
-        buf.append(inputDisabledId);
+        buf.append(JavascriptUtils.getValidJavascriptName(inputDisabledClientId, true));
         
         return buf.toString();
     }     
     /**
      *
      */
-    protected String createOnChangeListenerJS(String inputDisabledId, String inputDisabledClientId)
+    protected String createOnChangeListenerJS(String inputDisabledClientId)
     {
         StringBuffer script = new StringBuffer();
         script.append("function ");
-        script.append(getOnChangeFunctionName(inputDisabledId));            
+        script.append(getOnChangeFunctionName(inputDisabledClientId));            
         script.append("() {\n");                
-        script.append("var hiddenInput = document.getElementById(\"").append(inputDisabledId).append("\");\n");
+        script.append("var hiddenInput = document.getElementById(\"").append(inputDisabledClientId + HIDDEN_SUFFIX).append("\");\n");
         script.append("var disabledInput = document.getElementById(\"").append(inputDisabledClientId).append("\");\n");
         script.append("hiddenInput.value=disabledInput.value;\n");        
         script.append("}\n");        
@@ -181,12 +186,12 @@ public class HtmlTextRenderer
 
     public void decode(FacesContext facesContext, UIComponent component) 
     {        
-        if (isDisabledOnClientSide(facesContext, component))
+        if (isDisabledOnClientSide(facesContext, component) && !isDisabled(facesContext, component))
         {            
             //in this case we don't need to check the request parameters validity, 
             //the submitted value comes from the hidden input field
             Map paramValuesMap = facesContext.getExternalContext().getRequestParameterMap();            
-            Object reqValue = paramValuesMap.get(component.getId());  
+            Object reqValue = paramValuesMap.get(component.getClientId(facesContext) + HIDDEN_SUFFIX);  
                        
             ((UIInput)component).setSubmittedValue(reqValue); 
             return;
