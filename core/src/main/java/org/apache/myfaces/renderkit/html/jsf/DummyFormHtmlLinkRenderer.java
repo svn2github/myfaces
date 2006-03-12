@@ -13,38 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.myfaces.renderkit.html.ext;
+package org.apache.myfaces.renderkit.html.jsf;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlButtonRenderer;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlLinkRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
-
 /**
- * @author Manfred Geiler (latest modification by $Author$)
+ * Add dummyForm functionality
+ * 
+ * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlButtonRenderer
-    extends DummyFormHtmlButtonRenderer
+public class DummyFormHtmlLinkRenderer
+        extends HtmlLinkRendererBase
 {
-    protected void addHiddenCommandParameter(FacesContext facesContext, UIForm nestingForm, String hiddenFieldName)
+	protected void addHiddenCommandParameter(FacesContext facesContext, UIForm nestingForm, String hiddenFieldName)
 	{
 		if (nestingForm != null)
-        {
+	    {
 			super.addHiddenCommandParameter(facesContext, nestingForm, hiddenFieldName);
-        }
+	    }
 		else
 		{
-            DummyFormUtils.addDummyFormParameter(facesContext, hiddenFieldName);
+	        DummyFormUtils.addDummyFormParameter(facesContext, hiddenFieldName);
 		}
 	}
-    
-    protected FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
-    {
+	
+	protected FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
+	{
     	return DummyFormUtils.findNestingForm(uiComponent, facesContext);
-    }
+	}
 }

@@ -410,6 +410,20 @@
     <render-kit>
         <render-kit-id>HTML_BASIC</render-kit-id>
 
+        <!-- overrides to make the dummyForm stuff work with jsf h: components too -->
+        
+        <renderer>
+            <component-family>javax.faces.Command</component-family>
+            <renderer-type>javax.faces.Button</renderer-type>
+            <renderer-class>org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlButtonRenderer</renderer-class>
+        </renderer>
+
+        <renderer>
+            <component-family>javax.faces.Command</component-family>
+            <renderer-type>javax.faces.Link</renderer-type>
+            <renderer-class>org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlLinkRenderer</renderer-class>
+        </renderer>
+        
         <!-- extended standard renderers -->
 
         <renderer>

@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
@@ -147,7 +148,9 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 
         Map reqParams = facesContext.getExternalContext().getRequestParameterMap();
 
-        String togglingIndicated = (String) reqParams.get(HtmlRendererUtils.getHiddenCommandLinkFieldName(HtmlRendererUtils.getFormName(collapsiblePanel, facesContext)));
+        String togglingIndicated = (String) reqParams.get(HtmlRendererUtils
+        		.getHiddenCommandLinkFieldName(
+        				DummyFormUtils.findNestingForm(collapsiblePanel, facesContext).getFormName()));
         String reqValue = (String) reqParams.get(
                 collapsiblePanel.getClientId(facesContext)+COLLAPSED_STATE_ID);
 

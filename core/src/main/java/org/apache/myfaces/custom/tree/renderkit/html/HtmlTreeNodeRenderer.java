@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.tree.renderkit.html;
 
 import org.apache.myfaces.custom.tree.HtmlTreeNode;
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlLinkRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
@@ -35,7 +36,12 @@ public class HtmlTreeNodeRenderer
     {
         super.decode(facesContext, component);
         String clientId = component.getClientId(facesContext);
-        String reqValue = (String)facesContext.getExternalContext().getRequestParameterMap().get(HtmlRendererUtils.getHiddenCommandLinkFieldName(HtmlRendererUtils.getFormName(component, facesContext)));
+        String reqValue = (String)facesContext
+        .getExternalContext()
+        .getRequestParameterMap()
+        .get(HtmlRendererUtils
+        		.getHiddenCommandLinkFieldName(DummyFormUtils
+        				.findNestingForm(component, facesContext).getFormName()));
         if (reqValue != null && reqValue.equals(clientId))
         {
             HtmlTreeNode node = (HtmlTreeNode)component;
