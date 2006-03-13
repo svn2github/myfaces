@@ -150,6 +150,17 @@ public class DefaultAddResource implements AddResource
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
+	public void addJavaScriptHerePlain(FacesContext context, String uri) throws IOException
+	{
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_ELEM, null);
+        writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        String src = getResourceUri(context, uri);
+        writer.writeURIAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SRC_ATTR, src, null);
+        writer.endElement(HTML.SCRIPT_ELEM);
+	}
+	
     /**
      * Insert a [script src="url"] entry at the current location in the response.
      *
@@ -256,6 +267,14 @@ public class DefaultAddResource implements AddResource
         addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(
                 myfacesCustomComponent, resourceName));
     }
+    
+	public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position, Class myfacesCustomComponent, String resourceName)
+	{
+        addJavaScriptAtPosition(context, position,
+        		new MyFacesResourceHandler(myfacesCustomComponent, resourceName),
+        		false, false);
+	}
+	
 
     /**
      * Insert a [script src="url"] entry into the document header at the
@@ -318,6 +337,13 @@ public class DefaultAddResource implements AddResource
         addPositionedInfo(position, getScriptInstance(context, resourceHandler, defer));
     }
 
+    private void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
+            ResourceHandler resourceHandler, boolean defer, boolean encodeUrl)
+	{
+		validateResourceHandler(resourceHandler);
+		addPositionedInfo(position, getScriptInstance(context, resourceHandler, defer, encodeUrl));
+	}
+    
     /**
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
@@ -795,6 +821,12 @@ public class DefaultAddResource implements AddResource
         return new ScriptPositionedInfo(getResourceUri(context, resourceHandler), defer);
     }
 
+    private PositionedInfo getScriptInstance(FacesContext context, ResourceHandler resourceHandler,
+            boolean defer, boolean encodeURL)
+    {
+   		return new ScriptPositionedInfo(getResourceUri(context, resourceHandler), defer, encodeURL);
+    }
+    
     private PositionedInfo getStyleInstance(FacesContext context, String uri)
     {
         return new StylePositionedInfo(getResourceUri(context, uri));
@@ -911,11 +943,18 @@ public class DefaultAddResource implements AddResource
             WritablePositionedInfo
     {
         protected final boolean _defer;
+        protected final boolean _encode;
 
         public ScriptPositionedInfo(String resourceUri, boolean defer)
         {
+            this(resourceUri, defer, true);
+        }
+        
+        public ScriptPositionedInfo(String resourceUri, boolean defer, boolean encodeUrl)
+        {
             super(resourceUri);
             _defer = defer;
+            _encode = encodeUrl;
         }
 
         public int hashCode()
@@ -930,7 +969,10 @@ public class DefaultAddResource implements AddResource
                 if (obj instanceof ScriptPositionedInfo)
                 {
                     ScriptPositionedInfo other = (ScriptPositionedInfo) obj;
-                    return new EqualsBuilder().append(_defer, other._defer).isEquals();
+                    return new EqualsBuilder()
+	                    .append(_defer, other._defer)
+	                    .append(_encode, other._encode)
+	                    .isEquals();
                 }
             }
             return false;
@@ -941,7 +983,14 @@ public class DefaultAddResource implements AddResource
         {
             writer.startElement(HTML.SCRIPT_ELEM, null);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-            writer.writeAttribute(HTML.SRC_ATTR, response.encodeURL(this.getResourceUri()), null);
+            if (_encode)
+            {
+            	writer.writeAttribute(HTML.SRC_ATTR, response.encodeURL(this.getResourceUri()), null);
+            }
+            else
+            {
+            	writer.writeAttribute(HTML.SRC_ATTR, this.getResourceUri(), null);
+            }
 
             if (_defer)
             {

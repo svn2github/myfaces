@@ -66,6 +66,17 @@ public interface AddResource
     public void addJavaScriptHere(FacesContext context, String uri) throws IOException;
 
     /**
+     * Insert a [script src="url"] entry at the current location in the response.<br />
+     * In constrast to the other methods this will not encode the url. So
+     * ,depending on the use case, it wont work in cookie-only environments.
+     *
+     * @param uri is the location of the desired resource, relative to the base
+     * directory of the webapp (ie its contextPath).
+     * @deprecated just to help to workaround a dojo bug
+     */
+    public void addJavaScriptHerePlain(FacesContext context, String uri) throws IOException;
+    
+    /**
      * Insert a [script src="url"] entry at the current location in the response.
      *
      * @param context
@@ -156,6 +167,17 @@ public interface AddResource
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
             ResourceHandler resourceHandler, boolean defer);
 
+    /**
+     * Adds the given Javascript resource at the specified document position.
+     * If the script has already been referenced, it's added only once.<br />
+     * In constrast to the other methods this will not encode the url. So
+     * ,depending on the use case, it wont work in cookie-only environments.
+     * 
+     * @deprecated just to help to workaround a dojo bug
+     */
+    public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position,
+    		Class myfacesCustomComponent, String resourceName);
+    
     /**
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
