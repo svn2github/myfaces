@@ -959,7 +959,11 @@ public class DefaultAddResource implements AddResource
 
         public int hashCode()
         {
-            return new HashCodeBuilder().append(this.getResourceUri()).append(_defer).toHashCode();
+            return new HashCodeBuilder()
+            	.append(this.getResourceUri())
+            	.append(_defer)
+            	.append(_encode)
+            	.toHashCode();
         }
 
         public boolean equals(Object obj)
