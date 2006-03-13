@@ -53,7 +53,7 @@ org_apache_myfaces_TableSuggest = function()
                         {
                             for (i = 0; i < elemToPutValue.options.length; i++)
                             {
-                                if (elemToPutValue.options[i].value == spanElem.innerHTML)
+                                if (elemToPutValue.options[i].value == tdElem.childNodes[a+1].innerHTML)
                                     elemToPutValue.options[i].selected = true;
                             }
                         }
