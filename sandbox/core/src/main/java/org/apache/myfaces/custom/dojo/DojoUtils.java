@@ -153,7 +153,7 @@ public final class DojoUtils
 
     }
 
-    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, 
+    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation,
             DojoConfig config) throws IOException
     {
 
@@ -181,16 +181,16 @@ public final class DojoUtils
             {
                /*ResponseWriter writer = facesContext.getResponseWriter();
                writer.startElement(HTML.SCRIPT_ELEM,component);
-               
+
                MyFacesResourceHandler handler =  new MyFacesResourceHandler(DojoResourceLoader.class, dojofile);
                String uri = handler.getResourceUri(facesContext);
                uri = uri.replaceAll("dojo\\.js\\;jsessionid(.)*\\\"","dojo.js");
                writer.writeAttribute(HTML.SRC_ATTR, uri, null);
-               
+
                writer.endElement(HTML.SCRIPT_ELEM);
                addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
                */
-               
+
                addResource.addJavaScriptAtPositionPlain(facesContext,  AddResource.HEADER_BEGIN,DojoResourceLoader.class,
                         dojofile);
             }
@@ -243,7 +243,7 @@ public final class DojoUtils
         return set;
     }
 
-    static boolean isInlineScriptSet(FacesContext context, String inlineScript)
+    public static boolean isInlineScriptSet(FacesContext context, String inlineScript)
     {
 
         //TODO move this non neutral code into the resource handler
@@ -369,7 +369,7 @@ public final class DojoUtils
      * helper to write out debug statements
      * this is only a convenience method to reduce the
      * code bloat
-     * 
+     *
      * @param writer
      * @param stmnt
      * @return
@@ -385,7 +385,7 @@ public final class DojoUtils
      * if this flag is set to true somewhere before
      * the rendering, the expanded version is loaded
      * otherwise the nonexpanded version is loaded
-     * 
+     *
      * @param facesContext context because we again have a full request singleton here
      * @param expanded if set to true the expanded version of the dojo scripts are loaded
      * otherwise the non expanded ones are loaded

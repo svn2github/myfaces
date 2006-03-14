@@ -54,13 +54,14 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(facesContext, uiComponent, "dojo.widget.Dialog");
         DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
-        
+
         //DojoUtils.addRequire(facesContext, "dojo.xml.Parse");
 
         writeDialog(facesContext, uiComponent);
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
-        addResource.addJavaScriptHere(facesContext, StateChangedNotifierRenderer.class, "stateChangedNotifier.js");
+        if(!DojoUtils.isInlineScriptSet(facesContext, "stateChangedNotifier.js"))
+        	addResource.addJavaScriptHere(facesContext, StateChangedNotifierRenderer.class, "stateChangedNotifier.js");
 
         String styleLocation = (String) uiComponent.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
@@ -83,7 +84,7 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
     /**
      * dialog definition
      * this one is needed for the dojoized dialog
-     * 
+     *
      * @param facesContext
      * @param uiComponent
      * @throws IOException
@@ -125,7 +126,7 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Yes", null);
         writer.writeAttribute(HTML.VALUE_ATTR, yesText, null);
         writer.endElement(HTML.INPUT_ELEM);
-        
+
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR,"button",null);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_No", null);
