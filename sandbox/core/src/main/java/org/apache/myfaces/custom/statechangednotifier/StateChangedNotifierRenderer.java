@@ -120,19 +120,20 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Content", null);
         writer.endElement(HTML.DIV_ELEM);
-
+        writer.write("&nbsp;");
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR,"button",null);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Yes", null);
         writer.writeAttribute(HTML.VALUE_ATTR, yesText, null);
         writer.endElement(HTML.INPUT_ELEM);
-
+        writer.write("&nbsp;");
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR,"button",null);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_No", null);
         writer.writeAttribute(HTML.VALUE_ATTR, noText, null);
         writer.endElement(HTML.INPUT_ELEM);
         writer.endElement(HTML.DIV_ELEM);
+        writer.write("&nbsp;");
     }
 
     private void encodeJavascript(FacesContext facesContext, StateChangedNotifier notifier)
