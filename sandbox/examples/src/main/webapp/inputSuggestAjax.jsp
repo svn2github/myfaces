@@ -76,7 +76,7 @@
          <f:verbatim> City Field TableSuggest <br/> (Scrolling) </f:verbatim>
          <s:inputSuggestAjax var="address" id="cityField2" tableStyleClass="ajaxTable"
                              columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
-                             maxSuggestedItems="50" popupStyle="overflow:auto;display:block;height:200px;"
+                             maxSuggestedItems="50" popupStyle="overflow:auto;height:200px;"
                              suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
             <t:column>
                  <s:outputText for="cityField2" label="#{address.city}"/>

@@ -272,21 +272,24 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                     + "      document.onclick();\n"
                     + "      return;\n"
                     + "   }\n"
-                    + "   var handlerNode = dojo.byId(\"" + clientId + "\");\n"
-                    + "   var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
-                    + "   var inputValue = handlerNode.value;\n"
-                    + "   var url = \""+ urlWithValue +"&" + clientId+"=\"+inputValue;\n"
-                    +     DojoUtils.createDebugStatement("onkeyup event occured, length is","inputValue.length")
-                    +     DojoUtils.createDebugStatement("value is","inputValue")
-                    + "   if(inputValue != \"\" ");
+                    + "   if( !"+tableSuggestVar+".requestLocker && ("+tableSuggestVar+".requestBetweenKeyUpEvents(150) || "+tableSuggestVar+".lastKeyUpEvent()) )\n"
+                    + "   {\n"
+                    +       DojoUtils.createDebugStatement("locking the request")
+                    + "     "+tableSuggestVar+".requestLocker = true;\n"
+                    + "     var handlerNode = dojo.byId(\"" + clientId + "\");\n"
+                    + "     var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
+                    + "     var inputValue = handlerNode.value;\n"
+                    + "     var url = \""+ urlWithValue +"&" + clientId+"=\"+inputValue;\n"
+                    +       DojoUtils.createDebugStatement("value is","inputValue")
+                    + "     if(inputValue != \"\" ");
                     if(inputSuggestAjax.getStartRequest()!=null)
-                        buf.append("&& inputValue.length >= "+inputSuggestAjax.getStartRequest()+")\n");
-                    else buf.append(")");
+                            buf.append("&& inputValue.length >= "+inputSuggestAjax.getStartRequest()+"){\n");
+                    else buf.append("){\n");
                     if(inputSuggestAjax.getDelay()!=null)
-                        buf.append("dojo.lang.setTimeout("+tableSuggestVar+".handleRequestResponse, "+inputSuggestAjax.getDelay()+", [url, popUp, "+ tableSuggestVar +",evt.keyCode]);\n");
-                    else
-                        buf.append(""+tableSuggestVar+".handleRequestResponse(url, popUp, "+ tableSuggestVar +",evt.keyCode);\n");
-       buf.append("   else document.onclick();\n"
+                            buf.append("dojo.lang.setTimeout(\"\","+inputSuggestAjax.getDelay()+")");
+                            buf.append(""+tableSuggestVar+".handleRequestResponse(url, popUp, "+ tableSuggestVar +",evt.keyCode);\n");
+       buf.append("         } else document.onclick();\n"
+                    + "   }\n"
                     + "});\n");
 
         //if setting the focus outside the input field, popup should not be displayed

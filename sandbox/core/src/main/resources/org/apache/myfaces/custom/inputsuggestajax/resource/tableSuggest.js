@@ -18,16 +18,19 @@
 org_apache_myfaces_TableSuggest = function()
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
+
     this.firstHighlightedElem = null;
     this.actualHighlightedElem = null;
+
     this.iframe = null;
+    this.requestLocker = false;
+
+    this.lastKeyPressTime = new Date();
 
     //puting the values from the choosen row into the fields
     org_apache_myfaces_TableSuggest.prototype.putValueToField = function(trElem)
     {
-        var j = 0;
-
-        for(;j<trElem.childNodes.length;j++)
+        for(j=0;j<trElem.childNodes.length;j++)
         {
             var tdElem = trElem.childNodes[j];
 
@@ -53,7 +56,9 @@ org_apache_myfaces_TableSuggest = function()
                         {
                             for (i = 0; i < elemToPutValue.options.length; i++)
                             {
-                                if (elemToPutValue.options[i].value == tdElem.childNodes[a+1].innerHTML)
+                                var optionValue = spanElem.innerHTML;
+
+                                if (elemToPutValue.options[i].value == optionValue)
                                     elemToPutValue.options[i].selected = true;
                             }
                         }
@@ -67,6 +72,8 @@ org_apache_myfaces_TableSuggest = function()
     {
         if(keyCode == 40)  //down key
         {
+            tableSuggest.requestLocker = false;
+
             if(!this.firstHighlightedElem)
             {
                 var firstOptionElem = this.getFirstRowElem(popUp);
@@ -105,6 +112,8 @@ org_apache_myfaces_TableSuggest = function()
                             this.addOutClass(this.actualHighlightedElem);
                             this.addHoverClass(this.firstHighlightedElem);
                             this.actualHighlightedElem = this.firstHighlightedElem;
+
+                            this.putValueToField(this.firstHighlightedElem);
                         }
                     }
                     else
@@ -115,6 +124,7 @@ org_apache_myfaces_TableSuggest = function()
         else if(keyCode == 38)  //up key
         {
             var prevElem = dojo.dom.prevElement(this.actualHighlightedElem);
+            tableSuggest.requestLocker = false;
 
             if(prevElem)
             {
@@ -137,6 +147,8 @@ org_apache_myfaces_TableSuggest = function()
                     this.addOutClass(this.actualHighlightedElem);
                     this.actualHighlightedElem = this.getLastRowElem(popUp);
                     this.addHoverClass(this.actualHighlightedElem);
+
+                    this.putValueToField(this.actualHighlightedElem);
                 }
                 else
                     dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
@@ -210,7 +222,8 @@ org_apache_myfaces_TableSuggest = function()
                                   tableSuggest.iframe.style.width = dojo.style.getBorderBoxWidth(popUp);
                                   tableSuggest.iframe.style.height = dojo.style.getBorderBoxHeight(popUp);
                                }
-
+                               dojo.debug("releasing request lock");
+                               tableSuggest.requestLocker = false;
                             }
                             else if(type == "error")
                             {
@@ -285,7 +298,7 @@ org_apache_myfaces_TableSuggest = function()
             var tbody = table.childNodes[1];
             var lastRowElem = dojo.dom.lastElement(tbody);
             return lastRowElem;
-        }else return null;
+        } else return null;
     };
 
     org_apache_myfaces_TableSuggest.prototype.addHoverClass = function(elem)
@@ -300,6 +313,38 @@ org_apache_myfaces_TableSuggest = function()
         dojo.html.addClass(elem,"tableSuggestOut");
     };
 
+    org_apache_myfaces_TableSuggest.prototype.requestBetweenKeyUpEvents = function(millisBetweenKeyPress)
+    {
+        var currentTime = new Date();
+
+        if( (currentTime - this.lastKeyPressTime) > millisBetweenKeyPress)
+        {
+            dojo.debug(currentTime - this.lastKeyPressTime);
+            this.lastKeyPressTime = currentTime;
+            return true;
+        }
+        else
+        {
+            dojo.debug(currentTime - this.lastKeyPressTime);
+            this.lastKeyPressTime = currentTime;
+            return false;
+        }
+    };
+
+    org_apache_myfaces_TableSuggest.prototype.lastKeyUpEvent = function()
+    {
+        //dojo.lang.setTimeout('',4000);
+        var currentTime = new Date();
+        dojo.debug("last keyUpEvent?");
+        dojo.debug(currentTime - this.lastKeyPressTime);
+        if( (currentTime - this.lastKeyPressTime) > 250)
+        {
+            dojo.debug("was last keyUpEvent");
+            return true;
+        }
+        else return false;
+    };
+
     org_apache_myfaces_TableSuggest.prototype.resetSettings = function(popUpId)
     {
         var popUp = dojo.byId(popUpId);
@@ -311,6 +356,7 @@ org_apache_myfaces_TableSuggest = function()
         this.firstHighlightedElem = null;
         this.actualHighlightedElem = null;
         this.iframe = null;
+        this.requestLocker = false;
     };
 
 }
