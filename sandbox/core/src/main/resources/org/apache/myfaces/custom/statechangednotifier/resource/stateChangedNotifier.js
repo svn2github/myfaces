@@ -84,7 +84,7 @@ org_apache_myfaces_StateChangedNotifier.prototype.prepareNotifier = function () 
     }
     if (this.excludeCommandIdList !== null) {
         var newIds = this.excludeCommandIdList.split(",");
-        
+
 		//we do not filter double entries for now
 		//since the number of exclusion tags will be kept small
 		//anyway
@@ -127,7 +127,7 @@ org_apache_myfaces_StateChangedNotifier.prototype.putConfirmExcludingElements = 
         if (!this.isElementExcluded(elementId)) {
             this.objectsToConfirmList.push(elementId);
         } else {
-            this.removeConfirmInElement(elementId); //remove old includes from the list if we get one 
+            this.removeConfirmInElement(elementId); //remove old includes from the list if we get one
         	//putNoConfirmInElement(elementId); // we need a special resetter list which reset the control if triggered
         }
     }
@@ -182,24 +182,24 @@ org_apache_myfaces_StateChangedNotifier.prototype.showDojoDlgMsg = function () {
     var oldonclickstr = dojo.byId(commandid);
     if (dojo.render.html.ie) {
             oldonclickstr = oldonclickstr.replace(/function anonymous()/, "");
-    }        
+    }
     if (hiddenField.value == "true") {
-    	
+
     	var dlg = this.getDialog();
     	var content = this.getContent();
     	var yesButton = this.getYesButton();
-    
-    	
+
+
         if (dojo.render.html.ie) {
             oldonclickstr = "" + this.notifierName + ".resetHiddenField(); " + oldonclickstr + " ;";
             yesButton("onclick", new Function("", onclickstr));
-            
+
         } else {
             yesButton("onclick", "" + this.notifierName + ".resetHiddenField();" + oldonclickstr + " ;");
         }
         dlg.show();
     } else {
-    	eval(oldonclickstr);	
+    	eval(oldonclickstr);
     }   */
 };
 org_apache_myfaces_StateChangedNotifier.prototype.removeConfirmInElement = function (commandId) {
@@ -241,20 +241,21 @@ org_apache_myfaces_StateChangedNotifier.prototype.showconfirm = function (comman
         var noButton 	= this.getNoButton();
 
 		content.innerHTML = this.message;
-		    
+
         if (dojo.render.html.ie) {
             oldonclickstr = this.notifierName + ".getDialog().hide();" + this.notifierName + ".resetHiddenField(); /*myfacesnotifyinjected*/;" + oldonclickstr + " ;";
             yesButton.setAttribute("onclick", new Function("", oldonclickstr));
-        	noButton.setAttribute("onclick", new Function("",this.notifierName + ".getDialog().hide();")); 
+        	noButton.setAttribute("onclick", new Function("",this.notifierName + ".getDialog().hide();"));
         } else {
             yesButton.setAttribute("onclick", this.notifierName + ".getDialog().hide();" + this.notifierName + ".resetHiddenField();/*myfacesnotifyinjected*/;" + oldonclickstr + " ;");
-        	noButton.setAttribute("onclick", this.notifierName + ".getDialog().hide();"); 
+        	noButton.setAttribute("onclick", this.notifierName + ".getDialog().hide();");
         }
-    
+
         var dlg = this.getDialog();
         dlg.show();
     } else {
-        eval(oldonclickstr);
+   		var oldClick = new Function("oldClick",oldonclickstr);
+   		oldClick();
     }
 };
 org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function (commandId) {
@@ -271,7 +272,7 @@ org_apache_myfaces_StateChangedNotifier.prototype.putConfirmInElement = function
             command.setAttribute("onclick", new Function("", onclickstr));
             */
             command.setAttribute("onclick", new Function("", "/*myfacesnotifyinjected*/;" + this.notifierName + ".showconfirm('" + commandId + "')"));
-            
+
            // dojo.io.bind(command, "onclick",this,"showDojoDlgMsg");
         } else {
             command.setAttribute("onclick", "/*myfacesnotifyinjected*/;" + this.notifierName + ".showconfirm('" + commandId + "')");
