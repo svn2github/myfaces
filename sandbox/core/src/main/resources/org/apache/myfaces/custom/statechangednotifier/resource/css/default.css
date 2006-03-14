@@ -1,6 +1,6 @@
 .dojoDialog {
-	background : #eee;
+	background :  rgb(204, 204, 255);
 	border : 1px solid #999;
-	-moz-border-radius : 5px;
-	padding : 4px;
+	-moz-border-radius : 6px;
+	padding : 6px;
 }
