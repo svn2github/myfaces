@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.MyFacesResourceHandler;
 
 /**
  * Utils class for the dojo infrastructure
@@ -47,10 +48,10 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 public final class DojoUtils
 {
     private static final String INCL_TYPE_REQ_KEY = "DOJO_DEVELOPMENT_INCLUDE";
-    private static final Log    log              = LogFactory.getLog(DojoUtils.class);
-    private static final String DOJO_PROVIDE     = "dojo.provide:";
-    private static final String DOJO_REQUIRE     = "dojo.require:";
-    private static final String DJCONFIG_INITKEY = "/*djconfig init*/";
+    private static final Log    log               = LogFactory.getLog(DojoUtils.class);
+    private static final String DOJO_PROVIDE      = "dojo.provide:";
+    private static final String DOJO_REQUIRE      = "dojo.require:";
+    private static final String DJCONFIG_INITKEY  = "/*djconfig init*/";
 
     private DojoUtils()
     {
@@ -152,7 +153,8 @@ public final class DojoUtils
 
     }
 
-    public static void addMainInclude(FacesContext facesContext, String javascriptLocation, DojoConfig config)
+    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, 
+            DojoConfig config) throws IOException
     {
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
@@ -167,17 +169,31 @@ public final class DojoUtils
         {
             addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DJCONFIG_INITKEY);
             addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, config.toString());
-        }
 
-        String dojofile = (getExpanded(facesContext) != null && getExpanded(facesContext).booleanValue())  ? DOJO_FILE_UNCOMPRESSED : DOJO_FILE;
-        if (javascriptLocation != null)
-        {
-            addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation + dojofile);
-        }
-        else
-        {
-            addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class,
-                    dojofile);
+            String dojofile = (getExpanded(facesContext) != null && getExpanded(facesContext).booleanValue()) ? DOJO_FILE_UNCOMPRESSED
+                    : DOJO_FILE;
+            if (javascriptLocation != null)
+            {
+                addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation
+                        + dojofile);
+            }
+            else
+            {
+               /*ResponseWriter writer = facesContext.getResponseWriter();
+               writer.startElement(HTML.SCRIPT_ELEM,component);
+               
+               MyFacesResourceHandler handler =  new MyFacesResourceHandler(DojoResourceLoader.class, dojofile);
+               String uri = handler.getResourceUri(facesContext);
+               uri = uri.replaceAll("dojo\\.js\\;jsessionid(.)*\\\"","dojo.js");
+               writer.writeAttribute(HTML.SRC_ATTR, uri, null);
+               
+               writer.endElement(HTML.SCRIPT_ELEM);
+               addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
+               */
+               
+               addResource.addJavaScriptAtPositionPlain(facesContext,  AddResource.HEADER_BEGIN,DojoResourceLoader.class,
+                        dojofile);
+            }
         }
 
     }
@@ -189,15 +205,17 @@ public final class DojoUtils
      * @param facesContext
      * @param required
      */
-    public static void addRequire(FacesContext facesContext, String required)
+    public static void addRequire(FacesContext facesContext, UIComponent component, String required) throws IOException
     {
         if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
             return;
 
-        AddResource addResource = AddResourceFactory.getInstance(facesContext);
-        String requiredBuilder = createDojoRequireString(required);
-
-        addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, requiredBuilder);
+        String requireAsScript = createDojoRequireString(required);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        writer.write(requireAsScript);
+        writer.endElement(HTML.SCRIPT_ELEM);
     }
 
     /**
@@ -237,28 +255,6 @@ public final class DojoUtils
             return false;
         }
         return true;
-    }
-
-    /**
-     * writes a local require
-     * @param facesContext the local faces context
-     * @param component the component which the reuire is for
-     * @param required a require dojo style xx.xx.xx
-     * @throws IOException
-     */
-    public static void addRequire(FacesContext facesContext, UIComponent component, String required) throws IOException
-    {
-
-        if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
-            return;
-
-        String requiredBuilder = createDojoRequireString(required);
-
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.write(requiredBuilder);
-        writer.endElement(HTML.SCRIPT_ELEM);
     }
 
     /**
@@ -366,7 +362,7 @@ public final class DojoUtils
      */
     public static String createDebugStatement(String stmnt, String value)
     {
-        return "dojo.debug(\"" + stmnt + ":\");dojo.debug("+value+");\n";
+        return "dojo.debug(\"" + stmnt + ":\");dojo.debug(" + value + ");\n";
     }
 
     /**

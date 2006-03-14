@@ -54,7 +54,7 @@ public class DojoInitializerRenderer extends HtmlRenderer
     private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
     {
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        DojoUtils.addMainInclude(context, javascriptLocation, DojoUtils.getDjConfigInstance(context));
+        DojoUtils.addMainInclude(context, component, javascriptLocation, DojoUtils.getDjConfigInstance(context));
         String require = (String) component.getAttributes().get("require");
         String provide = (String) component.getAttributes().get("provide");
 

@@ -67,28 +67,28 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
-        DojoUtils.addMainInclude(context, javascriptLocation, new DojoConfig());
-        DojoUtils.addRequire(context, "dojo.widget.*");
-        DojoUtils.addRequire(context, "dojo.widget.ComboBox");
-        DojoUtils.addRequire(context, "dojo.widget.html.ComboBox");
-        DojoUtils.addRequire(context, "dojo.widget.Wizard");
-        DojoUtils.addRequire(context, "dojo.event.*");
-        DojoUtils.addRequire(context, "dojo.string");
-        DojoUtils.addRequire(context, "dojo.fx.html");
-        DojoUtils.addRequire(context, "dojo.lang");
-        DojoUtils.addRequire(context, "dojo.html");
-        DojoUtils.addRequire(context, "dojo.style");
-        DojoUtils.addRequire(context, "dojo.collections.ArrayList");
+        DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+        DojoUtils.addRequire(context, component, "dojo.widget.*");
+        DojoUtils.addRequire(context, component, "dojo.widget.ComboBox");
+        DojoUtils.addRequire(context, component, "dojo.widget.html.ComboBox");
+        DojoUtils.addRequire(context, component, "dojo.widget.Wizard");
+        DojoUtils.addRequire(context, component, "dojo.event.*");
+        DojoUtils.addRequire(context, component, "dojo.string");
+        DojoUtils.addRequire(context, component, "dojo.fx.html");
+        DojoUtils.addRequire(context, component, "dojo.lang");
+        DojoUtils.addRequire(context, component, "dojo.html");
+        DojoUtils.addRequire(context, component, "dojo.style");
+        DojoUtils.addRequire(context, component, "dojo.collections.ArrayList");
 
         AddResource addResource = AddResourceFactory.getInstance(context);
 
         if(javascriptLocation != null)
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/tableSuggest.js");
+            addResource.addJavaScriptHere(context,  javascriptLocation + "/tableSuggest.js");
         }
         else
         {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputSuggestAjaxRenderer.class, "tableSuggest.js");
+            addResource.addJavaScriptHere(context,  InputSuggestAjaxRenderer.class, "tableSuggest.js");
         }
 
         InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) component;

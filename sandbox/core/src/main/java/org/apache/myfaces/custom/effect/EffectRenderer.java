@@ -69,26 +69,34 @@ public class EffectRenderer extends HtmlRenderer
         AddResource addResource = AddResourceFactory.getInstance(context);
         Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
 
-        if (javascriptLocation != null)
+        try
         {
+            if (javascriptLocation != null)
+            {
 
-            addResource
-                    .addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/effects.js");
+                addResource
+                        .addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
+                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/effects.js");
 
-            if (fade != null && fade.booleanValue())
-                DojoUtils.addMainInclude(context, javascriptLocation, new DojoConfig());
+                if (fade != null && fade.booleanValue())
+                    DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+            }
+            else
+            {
+
+                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
+                        "prototype.js");
+                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
+                        "effects.js");
+                if (fade != null && fade.booleanValue())
+                    DojoUtils.addMainInclude(context, component, null, new DojoConfig());
+
+            }
         }
-        else
+        catch (IOException e)
         {
-
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
-                    "prototype.js");
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class,
-                    "effects.js");
-            if (fade != null && fade.booleanValue())
-                DojoUtils.addMainInclude(context, null, new DojoConfig());
-
+         
+            e.printStackTrace();
         }
     }
 
