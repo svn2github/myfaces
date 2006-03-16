@@ -69,6 +69,7 @@ public class HtmlInputCalendarTag
     private String _dayCellClass;
     private String _currentDayCellClass;
     private String _renderAsPopup;
+    private String _popupLeft;
     private String _addResources;
     private String _popupDateFormat;
     private String _popupButtonString;
@@ -99,6 +100,7 @@ public class HtmlInputCalendarTag
         _dayCellClass = null;
         _currentDayCellClass = null;
         _renderAsPopup = null;
+        _popupLeft = null;
         _addResources = null;
         _popupDateFormat = null;
         _popupButtonString = null;
@@ -143,6 +145,7 @@ public class HtmlInputCalendarTag
         setStringProperty(component, "dayCellClass", _dayCellClass);
         setStringProperty(component, "currentDayCellClass", _currentDayCellClass);
         setBooleanProperty(component,"renderAsPopup",_renderAsPopup);
+        setBooleanProperty(component,"popupLeft",_popupLeft);
         setBooleanProperty(component,"addResources",_addResources);
         setStringProperty(component,"popupDateFormat",_popupDateFormat);
         setStringProperty(component,"popupButtonString",_popupButtonString);
@@ -188,6 +191,11 @@ public class HtmlInputCalendarTag
     public void setRenderAsPopup(String renderAsPopup)
     {
         _renderAsPopup = renderAsPopup;
+    }
+
+    public void setPopupLeft(String popupLeft)
+    {
+        _popupLeft = popupLeft;
     }
 
     public void setAddResources(String addResources)

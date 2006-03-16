@@ -387,10 +387,19 @@ public class HtmlCalendarRenderer
                 setStringVariable(script, popupCalendarVariable+".initData.selectYearMessage",inputCalendar.getPopupSelectYearMessage());
             if(inputCalendar.getPopupSelectDateMessage()!=null)
                 setStringVariable(script, popupCalendarVariable+".initData.selectDateMessage",inputCalendar.getPopupSelectDateMessage());
+            setBooleanVariable(script, popupCalendarVariable +".initData.popupLeft",inputCalendar.isPopupLeft());
 
         }
 
         return script.toString();
+    }
+
+    private static void setBooleanVariable(StringBuffer script, String name, boolean value)
+    {
+        script.append(name);
+        script.append(" = ");
+        script.append(value);
+        script.append(";\n");
     }
 
     private static void setIntegerVariable(StringBuffer script, String name, int value)

@@ -31,6 +31,8 @@ org_apache_myfaces_CalendarInitData = function()
     this.selectYearMessage = "Click to select a year."
     this.selectDateMessage = "Select [date] as date." // do not replace [date], it will be replaced by date.
 
+    this.popupLeft=false;
+
     this.monthName = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
     this.dayName = this.startAt == 0 ? new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat") : new Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
 
@@ -1344,6 +1346,11 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     var cal = this.calendarDiv;
     var top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight + 2;
     var left = ctl.offsetLeft + leftpos - leftScrollOffset;
+
+    if(this.initData.popupLeft)
+    {
+        left-=cal.offsetWidth;
+    }
 
     if (left + cal.offsetWidth > bodyRect.right)
     {

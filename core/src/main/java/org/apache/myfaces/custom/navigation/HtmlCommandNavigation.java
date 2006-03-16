@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.navigation;
 
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,6 +27,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.el.ValueBinding;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,8 +42,8 @@ public class HtmlCommandNavigation
 {
     private static final Log log = LogFactory.getLog(HtmlCommandNavigation.class);
 
-    private boolean _open = false;
-    private boolean _active = false;
+    private Boolean _open = null;
+    private Boolean _active = null;
 
     public boolean isImmediate()
     {
@@ -56,22 +58,28 @@ public class HtmlCommandNavigation
 
     public boolean isOpen()
     {
-        return _open;
+        if (_open != null) return _open.booleanValue();
+        ValueBinding vb = getValueBinding("open");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
     }
 
     public void setOpen(boolean open)
     {
-        _open = open;
+        _open = Boolean.valueOf(open);
     }
 
     public boolean isActive()
     {
-        return _active;
+        if (_active != null) return _active.booleanValue();
+        ValueBinding vb = getValueBinding("active");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
     }
 
     public void setActive(boolean active)
     {
-        _active = active;
+        _active = Boolean.valueOf(active);
     }
 
     /**
@@ -230,8 +238,8 @@ public class HtmlCommandNavigation
     {
         Object values[] = new Object[3];
         values[0] = super.saveState(context);
-        values[1] = Boolean.valueOf(_open);
-        values[2] = Boolean.valueOf(_active);
+        values[1] = _open;
+        values[2] = _active;
         return ((Object) (values));
     }
 
@@ -239,8 +247,8 @@ public class HtmlCommandNavigation
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        _open = ((Boolean)values[1]).booleanValue();
-        _active = ((Boolean)values[2]).booleanValue();
+        _open = (Boolean)values[1];
+        _active = (Boolean)values[2];
     }
 
 

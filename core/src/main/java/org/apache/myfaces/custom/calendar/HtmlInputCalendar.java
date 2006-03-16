@@ -41,6 +41,7 @@ public class HtmlInputCalendar
     private String _dayCellClass = null;
     private String _currentDayCellClass = null;
     private Boolean _renderAsPopup = null;
+    private Boolean _popupLeft = null;
     private Boolean _addResources = null;
     private String _popupButtonString = null;
     private String _popupButtonStyle = null;
@@ -112,6 +113,19 @@ public class HtmlInputCalendar
         if (_currentDayCellClass != null) return _currentDayCellClass;
         ValueBinding vb = getValueBinding("currentDayCellClass");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setPopupLeft(boolean popupLeft)
+    {
+        _popupLeft = Boolean.valueOf(popupLeft);
+    }
+
+    public boolean isPopupLeft()
+    {
+        if (_popupLeft != null) return _popupLeft.booleanValue();
+        ValueBinding vb = getValueBinding("popupLeft");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
     }
 
     public void setRenderAsPopup(boolean renderAsPopup)
@@ -371,7 +385,7 @@ public class HtmlInputCalendar
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[25];
+        Object values[] = new Object[26];
         values[0] = super.saveState(context);
         values[1] = _monthYearRowClass;
         values[2] = _weekRowClass;
@@ -397,6 +411,7 @@ public class HtmlInputCalendar
         values[22] = _popupTheme;
         values[23] = _popupButtonImageUrl;
         values[24] = _helpText;
+        values[25] = _popupLeft;
         return ((Object) (values));
     }
 
@@ -428,6 +443,7 @@ public class HtmlInputCalendar
         _popupTheme = (String)values[22];
         _popupButtonImageUrl = (String)values[23];
         _helpText = (String)values[24];
+        _popupLeft = (Boolean)values[25];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

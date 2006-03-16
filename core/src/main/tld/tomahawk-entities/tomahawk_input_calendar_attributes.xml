@@ -40,6 +40,12 @@
             <description>Render the input-calendar as a java-script popup on client.</description>
         </attribute>
         <attribute>
+            <name>popupLeft</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Render the input-calendar left of the button, not right like normally done.</description>
+        </attribute>
+        <attribute>
             <name>addResources</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
