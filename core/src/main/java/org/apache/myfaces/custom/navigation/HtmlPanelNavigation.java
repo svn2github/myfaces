@@ -85,8 +85,25 @@ public class HtmlPanelNavigation
                 HtmlCommandNavigation previousItem = (HtmlCommandNavigation)previousRoot.findComponent(child.getClientId(facesContext));
                 if (previousItem != null)
                 {
-                    ((HtmlCommandNavigation)child).setOpen(previousItem.isOpen());
-                    ((HtmlCommandNavigation)child).setActive(previousItem.isActive());
+
+                    HtmlCommandNavigation childItem = (HtmlCommandNavigation)child;
+                    if(previousItem.getOpenDirectly()!=null)
+                    {
+                        childItem.setOpen(previousItem.isOpen());
+                    }
+                    else if(previousItem.getValueBinding("open")!=null)
+                    {
+                        childItem.setValueBinding("open",previousItem.getValueBinding("open"));
+                    }
+
+                    if(previousItem.getActiveDirectly()!=null)
+                    {
+                        childItem.setActive(previousItem.isActive());
+                    }
+                    else if(previousItem.getValueBinding("active")!=null)
+                    {
+                        childItem.setValueBinding("active",previousItem.getValueBinding("active"));
+                    }
                 }
                 else
                 {

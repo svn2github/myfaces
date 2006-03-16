@@ -39,8 +39,8 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
 {
     private static final Log log = LogFactory.getLog(HtmlCommandNavigationItem.class);
 
-    private Boolean _open = Boolean.FALSE;
-    private Boolean _active = Boolean.FALSE;
+    private Boolean _open = null;
+    private Boolean _active = null;
 
     public boolean isImmediate()
     {
@@ -61,6 +61,11 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         return v != null && v.booleanValue();
     }
 
+    public Boolean getOpenDirectly()
+    {
+        return _open;
+    }
+
     public void setOpen(boolean open)
     {
         _open = open ? Boolean.TRUE : Boolean.FALSE;
@@ -72,6 +77,11 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         ValueBinding vb = getValueBinding("active");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null && v.booleanValue();
+    }
+
+    public Boolean getActiveDirectly()
+    {
+        return _active;
     }
 
     public void setActive(boolean active)

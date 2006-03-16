@@ -56,6 +56,11 @@ public class HtmlCommandNavigation
         if (log.isWarnEnabled()) log.warn("Immediate property of HtmlCommandNavigation cannot be set --> ignored.");
     }
 
+    public Boolean getOpenDirectly()
+    {
+        return _open;
+    }
+
     public boolean isOpen()
     {
         if (_open != null) return _open.booleanValue();
@@ -75,6 +80,11 @@ public class HtmlCommandNavigation
         ValueBinding vb = getValueBinding("active");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null && v.booleanValue();
+    }
+
+    public Boolean getActiveDirectly()
+    {
+        return _active;
     }
 
     public void setActive(boolean active)

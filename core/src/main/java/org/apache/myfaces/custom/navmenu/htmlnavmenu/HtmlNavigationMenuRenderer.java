@@ -158,10 +158,24 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                     HtmlCommandNavigationItem item = (HtmlCommandNavigationItem) panelNav.findComponent(uiComponent.getClientId(facesContext));
                     if (item != null)
                     {
-                        if (!copyValueBinding(prevItem, item, "active"))
+                        if(item.getActiveDirectly()!=null)
+                        {
                             item.setActive(prevItem.isActive());
-                        if (!copyValueBinding(prevItem, item, "open"))
+                        }
+                        else
+                        {
+                            copyValueBinding(prevItem, item, "active");
+                        }
+
+                        if(item.getOpenDirectly()!=null)
+                        {
                             item.setOpen(prevItem.isOpen());
+                        }
+                        else
+                        {
+                            copyValueBinding(prevItem, item, "open");
+                        }
+
                         if(!panelNav.isExpandAll() || prevItem.isActive() )
                         item.toggleOpen();
                         if (prevItem.isOpen())
@@ -327,11 +341,11 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                 p = p.getParent();
             }
             // p is now the HtmlPanelNavigation
-           if (!(p instanceof HtmlPanelNavigationMenu))
-                {
+           if (p == null)
+           {
                     log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
                     return null;
-                }
+           }
         return (HtmlPanelNavigationMenu) p;
     }
 
@@ -370,7 +384,15 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             newItem.setRendered(uiNavMenuItem.isRendered());
 
         if (uiNavMenuItem.isOpen() && ! menu.isExpandAll()) newItem.toggleOpen();
-        newItem.setActive(uiNavMenuItem.isActive());
+
+        if(uiNavMenuItem.getActiveDirectly()!=null)
+        {
+            newItem.setActive(uiNavMenuItem.isActive());
+        }
+        else
+        {
+            newItem.setValueBinding("active",uiNavMenuItem.getValueBinding("active"));
+        }
 
         if (!copyValueBinding(uiNavMenuItem, newItem, "target"))
                     newItem.setTarget(uiNavMenuItem.getTarget());

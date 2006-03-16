@@ -280,4 +280,9 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
         _disabledStyle = (String) values[12];
         _disabledStyleClass = (String) values[13];
     }
+
+    public Boolean getActiveDirectly()
+    {
+        return _active;
+    }
 }
