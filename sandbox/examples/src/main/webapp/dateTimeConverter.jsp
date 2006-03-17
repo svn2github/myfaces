@@ -32,6 +32,8 @@
 
     <h1>Sandbox DateTimeConverter</h1>
     <h:form>
+		<t:messages styleClass="error" />
+
         <h:panelGrid columns="3">
             <h:outputText value="Sandbox DateTimeConverter:"/>
             <h:inputText value="#{dateTimeConverterBean.date1}">
