@@ -642,6 +642,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
                 sNameNode = document.createElement("span");
                 sNameNode.setAttribute("style", "font-weight:bold;");
                 sNameNode.appendChild(document.createTextNode(sName));
+                sNameNode.setAttribute("userData",i);
             }
             else
             {
@@ -652,7 +653,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
             selectMonthTableBody.appendChild(monthRow);
 
             var monthCell = document.createElement("td");
-            monthCell.setAttribute("id", "m" + i);
+            monthCell.setAttribute("userData",i);
             monthRow.appendChild(monthCell);
 
             Event.observe(monthCell, "mouseover", function(event)
@@ -668,8 +669,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
             Event.observe(monthCell, "click", function(event)
             {
                 this.monthConstructed = false;
-                //todo: proper solution for passing the current index into the event handler
-                this.selectedDate.month = parseInt(Event.element(event).getAttribute("id").substring(1));
+                this.selectedDate.month = parseInt(Event.element(event).getAttribute("userData"),10);
                 this._constructCalendar();
                 this._popDownMonth();
                 Event.stop(event);
@@ -835,6 +835,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
                 sNameNode = document.createElement("span");
                 sNameNode.setAttribute("style", "font-weight:bold;");
                 sNameNode.appendChild(document.createTextNode(sName));
+                sNameNode.setAttribute("userData", sName);
             }
             else
             {
@@ -845,7 +846,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
             selectYearTableBody.appendChild(yearRow);
 
             var yearCell = document.createElement("td");
-            yearCell.setAttribute("id", this.containerCtl.getAttribute("id")+"y" + j);
+            yearCell.setAttribute("userData",sName);
             yearRow.appendChild(yearCell);
 
             Event.observe(yearCell, "mouseover", function(event)
@@ -860,10 +861,9 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
 
             Event.observe(yearCell, "click", function(event)
             {
-                //todo: proper solution for passing the current index into the event handler
                 var elem = Event.element(event);
-                var sYear = elem.childNodes[1].nodeValue;
-                this.selectedDate.year = parseInt(this._formatInt(sYear, 10));
+                var sYear = null;
+                this.selectedDate.year = parseInt(this._formatInt(elem.getAttribute("userData"),10));
                 this.yearConstructed = false;
                 this._popDownYear();
                 this._constructCalendar();
