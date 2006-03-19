@@ -100,6 +100,12 @@
             <description>Set the string for "Today is"</description>
         </attribute>
         <attribute>
+            <name>popupTodayDateFormat</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Defines the date format used by the java-script popup on client for the today-is string.</description>
+        </attribute>
+        <attribute>
             <name>popupWeekString</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>

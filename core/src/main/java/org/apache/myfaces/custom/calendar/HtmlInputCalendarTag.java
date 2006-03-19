@@ -78,6 +78,7 @@ public class HtmlInputCalendarTag
     private String _renderPopupButtonAsImage;
     private String _popupGotoString = null;
     private String _popupTodayString = null;
+    private String _popupTodayDateFormat = null;
     private String _popupWeekString = null;
     private String _popupScrollLeftMessage = null;
     private String _popupScrollRightMessage = null;
@@ -109,6 +110,7 @@ public class HtmlInputCalendarTag
         _renderPopupButtonAsImage = null;
         _popupGotoString = null;
         _popupTodayString = null;
+        _popupTodayDateFormat = null;
         _popupWeekString = null;
         _popupScrollLeftMessage = null;
         _popupScrollRightMessage = null;
@@ -154,6 +156,7 @@ public class HtmlInputCalendarTag
         setBooleanProperty(component,"renderPopupButtonAsImage",_renderPopupButtonAsImage);
         setStringProperty(component,"popupGotoString",_popupGotoString);
         setStringProperty(component,"popupTodayString",_popupTodayString);
+        setStringProperty(component,"popupTodayDateFormat",_popupTodayDateFormat);
         setStringProperty(component,"popupWeekString",_popupWeekString);
         setStringProperty(component,"popupScrollLeftMessage",_popupScrollLeftMessage);
         setStringProperty(component,"popupScrollRightMessage",_popupScrollRightMessage);
@@ -272,6 +275,11 @@ public class HtmlInputCalendarTag
     public void setPopupTodayString(String popupTodayString)
     {
         _popupTodayString = popupTodayString;
+    }
+
+    public void setPopupTodayDateFormat(String popupTodayDateFormat)
+    {
+        _popupTodayDateFormat = popupTodayDateFormat;
     }
 
     public void setPopupWeekString(String popupWeekString)

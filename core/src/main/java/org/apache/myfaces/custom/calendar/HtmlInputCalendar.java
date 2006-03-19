@@ -52,6 +52,7 @@ public class HtmlInputCalendar
     private String _visibleOnUserRole = null;
     private String _popupGotoString = null;
     private String _popupTodayString = null;
+    private String _popupTodayDateFormat = null;
     private String _popupWeekString = null;
     private String _popupScrollLeftMessage = null;
     private String _popupScrollRightMessage = null;
@@ -265,6 +266,18 @@ public class HtmlInputCalendar
     {
         if (_popupTodayString != null) return _popupTodayString;
         ValueBinding vb = getValueBinding("popupTodayString");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setPopupTodayDateFormat(String popupTodayDateFormat)
+    {
+        _popupTodayDateFormat = popupTodayDateFormat;
+    }
+
+    public String getPopupTodayDateFormat()
+    {
+        if (_popupTodayDateFormat != null) return _popupTodayDateFormat;
+        ValueBinding vb = getValueBinding("popupTodayDateFormat");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 

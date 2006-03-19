@@ -375,6 +375,10 @@ public class HtmlCalendarRenderer
                 setStringVariable(script, popupCalendarVariable+".initData.gotoString", inputCalendar.getPopupGotoString());
             if(inputCalendar.getPopupTodayString()!=null)
                 setStringVariable(script, popupCalendarVariable+".initData.todayString",inputCalendar.getPopupTodayString());
+            if(inputCalendar.getPopupTodayDateFormat()!=null)
+                setStringVariable(script, popupCalendarVariable+".initData.todayDateFormat",inputCalendar.getPopupTodayDateFormat());
+            else if(inputCalendar.getPopupDateFormat() != null)
+                setStringVariable(script, popupCalendarVariable+".initData.todayDateFormat",inputCalendar.getPopupDateFormat());                
             if(inputCalendar.getPopupWeekString()!=null)
                 setStringVariable(script, popupCalendarVariable+".initData.weekString",inputCalendar.getPopupWeekString());
             if(inputCalendar.getPopupScrollLeftMessage()!=null)
