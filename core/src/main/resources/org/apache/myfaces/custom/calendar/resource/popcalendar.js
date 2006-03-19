@@ -24,6 +24,7 @@ org_apache_myfaces_CalendarInitData = function()
 
     this.gotoString = "Go To Current Month";
     this.todayString = "Today is";
+    this.todayDateFormat = null;
     this.weekString = "Wk";
     this.scrollLeftMessage = "Click to scroll to previous month. Hold mouse button to scroll automatically.";
     this.scrollRightMessage = "Click to scroll to next month. Hold mouse button to scroll automatically."
@@ -72,7 +73,7 @@ org_apache_myfaces_PopupCalendar = function()
     this.ctlToPlaceValue;
     this.ctlNow;
     this.containerCtl;
-    this.dateFormat;
+    this.dateFormat="MM/dd/yyyy";
     this.nStartingYear;
     this.bPageLoaded = false;
     this.ie = document.all;
@@ -81,7 +82,6 @@ org_apache_myfaces_PopupCalendar = function()
     this.dateFormatSymbols = new org_apache_myfaces_DateFormatSymbols();
     this.initData = new org_apache_myfaces_CalendarInitData();
     this.today = new Date();
-    this.todayDateFormat = "dd.MM.yyyy";
     this.dateNow = this.today.getDate();
     this.monthNow = this.today.getMonth();
     this.yearNow = this.today.getYear();
@@ -499,7 +499,9 @@ org_apache_myfaces_PopupCalendar.prototype._appendNbsp = function(element)
 }
 org_apache_myfaces_PopupCalendar.prototype._todayIsDate = function()
 {
-    var format = new org_apache_myfaces_SimpleDateFormat(this.todayDateFormat, this.dateFormatSymbols);
+    var format = new org_apache_myfaces_SimpleDateFormat(this.initData.todayDateFormat?
+                                                         this.initData.todayDateFormat:this.dateFormat,
+                                                         this.dateFormatSymbols);
     return format.format(this.today);
 }
 
@@ -528,7 +530,7 @@ org_apache_myfaces_PopupCalendar.prototype._padZero = function(num)
 
 org_apache_myfaces_PopupCalendar.prototype._constructDate = function(d, m, y)
 {
-    var format = new org_apache_myfaces_SimpleDateFormat(this.todayDateFormat, this.dateFormatSymbols);
+    var format = new org_apache_myfaces_SimpleDateFormat(this.dateFormat, this.dateFormatSymbols);
     return format.format(new Date(y, m, d, this.selectedDate.hour, this.selectedDate.min, this.selectedDate.sec));
 }
 
@@ -1244,9 +1246,9 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar = function(ctl, ctl2, 
         if (this.calendarDiv.style.visibility == "hidden")
         {
             this.ctlToPlaceValue = ctl2;
-            this.todayDateFormat = format;
+            this.dateFormat = format;
 
-            var simpleDateFormat = new org_apache_myfaces_SimpleDateFormat(this.todayDateFormat, this.dateFormatSymbols);
+            var simpleDateFormat = new org_apache_myfaces_SimpleDateFormat(this.dateFormat, this.dateFormatSymbols);
             var dateSelected = simpleDateFormat.parse(ctl2.value);
 
             if (dateSelected)
@@ -1291,7 +1293,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function
     {
         this.myFacesCtlType = "x:inputDate";
         this.myFacesInputDateClientId = clientId;
-        this.todayDateFormat = format;
+        this.dateFormat = format;
 
         this.selectedDate.date = parseInt(this._formatInt(document.getElementById(clientId + ".day").value), 10);
         this.selectedDate.month = parseInt(this._formatInt(document.getElementById(clientId + ".month").value), 10) - 1;
