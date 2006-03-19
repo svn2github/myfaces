@@ -377,9 +377,10 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
             window.status = "";
         }.bindAsEventListener(this), false);
 
-        Event.observe(this.monthSpan, "click", function()
+        Event.observe(this.monthSpan, "click", function(event)
         {
             this._popUpMonth();
+            Event.stop(event);
         }.bind(this), false);
 
         this.captionSpan.appendChild(this.monthSpan);
@@ -402,9 +403,10 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
             window.status = "";
         }.bindAsEventListener(this), false);
 
-        Event.observe(this.yearSpan, "click", function()
+        Event.observe(this.yearSpan, "click", function(event)
         {
             this._popUpYear();
+            Event.stop(event);
         }.bind(this), false);
 
         this.captionSpan.appendChild(this.yearSpan);
@@ -1168,6 +1170,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
             var elem = Event.element(event);
             this.selectedDate.date = elem.datePointer;
             this._closeCalendar();
+            Event.stop(event);
         }.bindAsEventListener(this), false);
         Event.observe(dateLink, "mouseover", function(event)
         {
