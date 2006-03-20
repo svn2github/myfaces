@@ -726,6 +726,7 @@ org_apache_myfaces_PopupCalendar.prototype._createAndAddYear = function(newYear,
     {
         this._appendNbsp(parentNode);
         var newYearSpan = document.createElement("span");
+        newYearSpan.setAttribute("userData",newYear);
         newYearSpan.appendChild(document.createTextNode(newYear));
         parentNode.appendChild(newYearSpan);
         this._appendNbsp(parentNode);
@@ -736,6 +737,8 @@ org_apache_myfaces_PopupCalendar.prototype._createAndAddYear = function(newYear,
         parentNode.appendChild(document.createTextNode(newYear));
         this._appendNbsp(parentNode);
     }
+
+    parentNode.getParentNode().setAttribute("userData",newYear);
 }
 
 
@@ -849,6 +852,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
 
             var yearCell = document.createElement("td");
             yearCell.setAttribute("userData",sName);
+            yearCell.setAttribute("id",this.containerCtl.getAttribute("id")+"y" + j);
             yearRow.appendChild(yearCell);
 
             Event.observe(yearCell, "mouseover", function(event)
