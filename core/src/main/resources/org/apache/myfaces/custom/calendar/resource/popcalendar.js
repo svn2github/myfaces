@@ -738,7 +738,7 @@ org_apache_myfaces_PopupCalendar.prototype._createAndAddYear = function(newYear,
         this._appendNbsp(parentNode);
     }
 
-    parentNode.parentNode.setAttribute("userData",newYear);
+    parentNode.setAttribute("userData",newYear);
 }
 
 
