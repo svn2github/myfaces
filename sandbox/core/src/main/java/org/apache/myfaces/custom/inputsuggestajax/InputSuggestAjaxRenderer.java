@@ -30,6 +30,8 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
@@ -50,6 +52,8 @@ import java.util.ArrayList;
  */
 public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRenderer
 {
+    private static final Log log = LogFactory.getLog(InputSuggestAjaxRenderer.class);
+
     private static final int DEFAULT_MAX_SUGGESTED_ITEMS = 200;
 
    /**
@@ -63,7 +67,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
      */
     private void encodeJavascript(FacesContext context, UIComponent component)
                                                                         throws IOException
-    {
+    {                            
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
@@ -143,7 +147,6 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             out.startElement(HTML.TD_ELEM, null);
 
             super.encodeEnd(context, inputSuggestAjax);
-            //out.write("<input dojoType=\"subcombobox\" value=\"\" style=\"width:150px;\">");
 
             out.endElement(HTML.TR_ELEM);
             out.endElement(HTML.TD_ELEM);
@@ -188,45 +191,6 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             out.write(getAJAXHandlingCode(urlWithValue, clientId, inputSuggestAjax).toString());
             out.endElement(HTML.SCRIPT_ELEM);
-
-          /* out.write("<script type=\"text/javascript\">\n                    "
-                    + "\tdojo.widget.SubComboBox = function(){\n"
-                    + "\t\tdojo.widget.html.ComboBox.call(this);\n"
-                    + "\t\tthis.widgetType = \"SubComboBox\";\n"
-                    + "\t}\n"
-                    + "\n"
-                    + "\tdojo.inherits(dojo.widget.SubComboBox, dojo.widget.html.ComboBox);\n"
-                    + "\n"
-                    + "\tdojo.lang.extend(dojo.widget.SubComboBox, {\n"
-                    + "\t\tfillInTemplate: function(args, frag){\n"
-                    + "\t\t\tthis.dataProvider = {\n"
-                    + "\t\t\t\tstartSearch: function(searchStr, type, ignoreLimit){\n"
-                    +DojoUtils.createDebugStatement("starting request")
-                     + "       dojo.io.bind ({\n"
-                    + "             url: \""+ urlWithValue +"\"+searchStr,\n"
-                    + "             handle: function(type, data, evt)"
-                    + "             {\n"
-                    +                   DojoUtils.createDebugStatement("after response")
-                    + "                 if(type == \"load\")\n"
-                    + "                 {\n"
-                    +                       DojoUtils.createDebugStatement("response successful")
-                    +" var popUp = document.getElementById(\"" + clientId+"_auto_complete"+"\");\n"
-                    + "                     popUp.innerHTML = data;\n"
-                    + "                 }\n"
-                    + "                 else if(type == \"error\")\n"
-                    + "                 {\n"
-                    +                       DojoUtils.createDebugStatement("error during response")
-                    + "                     // here, \"data\" is our error object\n"
-                    + "                 }\n"
-                    + "             },\n"
-                    + "             mimetype: \"text/plain\"\n"
-                    + "       });\n"
-                    + "\t\t\t\t}\n"
-                    + "\t\t\t};\n"
-                    + "\t\t}\n"
-                    + "\t});\n"
-                    + "dojo.widget.tags.addParseTreeHandler(\"dojo:subcombobox\");\n"
-                    + "</script>");*/
         }
         else
         {
@@ -234,7 +198,7 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
             out.write("<input dojoType=\"combobox\" "
                 + "value=\"\" style=\"width:150px;\" "
                 + "dataUrl=\""+ urlWithValue + "&" + clientId+"=%{searchString}\"\n"
-                + "mode=\"remote\">");
+                + "mode=\"remote\" id=\""+component.getClientId(context)+"\">");
         }
 
         //todo:client-side state saving as well
@@ -263,6 +227,8 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
     {
         StringBuffer buf = new StringBuffer();
         String tableSuggestVar = "tableSuggest"+clientId.substring(1).replace(':','_');
+        UIComponent input = (UIComponent)inputSuggestAjax.getParent().getChildren().get(0);
+        String inputId = input.getClientId(FacesContext.getCurrentInstance());
 
         //doing ajax request and handling the response
         buf.append(   "var "+tableSuggestVar+" = new org_apache_myfaces_TableSuggest();\n"
@@ -274,13 +240,11 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                     + "   }\n"
                     + "   if( !"+tableSuggestVar+".requestLocker && ("+tableSuggestVar+".requestBetweenKeyUpEvents(150) || "+tableSuggestVar+".lastKeyUpEvent()) )\n"
                     + "   {\n"
-                    +       DojoUtils.createDebugStatement("locking the request")
                     + "     "+tableSuggestVar+".requestLocker = true;\n"
                     + "     var handlerNode = dojo.byId(\"" + clientId + "\");\n"
                     + "     var popUp = dojo.byId(\"" + clientId+"_auto_complete"+"\");\n"
                     + "     var inputValue = handlerNode.value;\n"
                     + "     var url = \""+ urlWithValue +"&" + clientId+"=\"+inputValue;\n"
-                    +       DojoUtils.createDebugStatement("value is","inputValue")
                     + "     if(inputValue != \"\" ");
                     if(inputSuggestAjax.getStartRequest()!=null)
                             buf.append("&& inputValue.length >= "+inputSuggestAjax.getStartRequest()+"){\n");
@@ -429,11 +393,13 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
         StringBuffer bodyContent = new StringBuffer();
         bodyContent.append("<tbody>");
 
+        int i = 0;
+
         for (Iterator suggestedEntry = suggesteds.iterator(); suggestedEntry.hasNext();)
         {
            Object addressEntryObject = suggestedEntry.next();
 
-           bodyContent.append("<tr onmouseover=");
+           bodyContent.append("<tr id=\"#row"+ (i+1) + inputSuggestAjax.getClientId(context) +"\" onmouseover=");
             if(inputSuggestAjax.getColumnHoverClass()!=null)
                 bodyContent.append("\"this.className='")
                         .append(inputSuggestAjax.getColumnHoverClass()).append("'\" ");
@@ -443,6 +409,9 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                         .append(inputSuggestAjax.getColumnOutClass()).append("'\" ");
 
             bodyContent.append("onclick=\"tableSuggest"+inputSuggestAjax.getClientId(context).substring(1).replace(':','_')+".putValueToField(this)\">");
+
+            /*bodyContent.append("<a onclick=\"window.location.href='#row"+ (i+1) +"' \"href=\"#row"+ (i+1) +"\" name=\"row"+i+"\"></a>");
+            i++;*/
 
             context.getExternalContext().getRequestMap()
                     .put(inputSuggestAjax.getVar(),addressEntryObject);
@@ -464,8 +433,8 @@ public class InputSuggestAjaxRenderer extends HtmlTextRenderer implements AjaxRe
                             bodyContent.append("<td> <span ");
                             if(htmlOutputText.getFor()!=null)
                                 bodyContent.append("id=\"putValueTo_"+RendererUtils.getClientId(context, inputSuggestAjax, htmlOutputText.getFor()) + "\"");
-                            bodyContent.append(">"+ htmlOutputText.getLabel() + "</span>");
 
+                            bodyContent.append(">" + htmlOutputText.getLabel() + "</span>");
                             if (htmlOutputText.getValue()!=null)
                             {
                                 bodyContent.append("<span id=\"putValueTo_")
