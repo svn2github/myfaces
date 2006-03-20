@@ -33,6 +33,8 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
@@ -54,7 +56,6 @@ public class UISchedule
     implements ValueHolder, Serializable, ActionSource
 {
     //~ Static fields/initializers ---------------------------------------------
-
     public static final String COMPONENT_TYPE =
         "org.apache.myfaces.Schedule";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
@@ -70,7 +71,7 @@ public class UISchedule
     private Integer visibleStartHour;
     private Integer workingEndHour;
     private Integer workingStartHour;
-    private MethodBinding action;
+    private MethodBinding actionBinding;
     private MethodBinding actionListenerBinding;
     private Object value;
     private ScheduleActionListener scheduleListener;
@@ -96,7 +97,7 @@ public class UISchedule
      */
     public void setAction(MethodBinding action)
     {
-        this.action = action;
+        this.actionBinding = action;
     }
 
     /**
@@ -104,7 +105,7 @@ public class UISchedule
      */
     public MethodBinding getAction()
     {
-        return action;
+        return actionBinding;
     }
 
     /**
@@ -399,11 +400,12 @@ public class UISchedule
     {
         super.broadcast(event);
 
-        MethodBinding binding = getActionListener();
+        FacesContext context = getFacesContext();
+        MethodBinding actionListenerBinding = getActionListener();
 
-        if (binding != null) {
-            FacesContext context = getFacesContext();
-            binding.invoke(context, new Object[] { event });
+        if (actionListenerBinding != null)
+        {
+            actionListenerBinding.invoke(context, new Object[] { event });
         }
     }
 
@@ -494,6 +496,8 @@ public class UISchedule
         value = values[7];
         actionListenerBinding =
             (MethodBinding) restoreAttachedState(context, values[8]);
+        actionBinding =
+            (MethodBinding) restoreAttachedState(context, values[9]);
         addActionListener(scheduleListener);
     }
 
@@ -504,7 +508,7 @@ public class UISchedule
     {
         removeActionListener(scheduleListener);
 
-        Object[] values = new Object[9];
+        Object[] values = new Object[10];
         values[0] = super.saveState(context);
         values[1] = visibleStartHour;
         values[2] = visibleEndHour;
@@ -514,6 +518,7 @@ public class UISchedule
         values[6] = readonly;
         values[7] = value;
         values[8] = saveAttachedState(context, actionListenerBinding);
+        values[9] = saveAttachedState(context, actionBinding);
 
         return values;
     }

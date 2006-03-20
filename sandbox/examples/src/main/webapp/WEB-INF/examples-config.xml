@@ -358,6 +358,17 @@
   </managed-bean>
   
   <managed-bean>
+    <managed-bean-name>bindingScheduleHandler</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.schedule.BindingScheduleExampleHandler</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+  </managed-bean>
+  
+  
+  <managed-bean>
   	<managed-bean-name>scheduleSettings2</managed-bean-name>
   	<managed-bean-class>org.apache.myfaces.examples.schedule.ScheduleSettings</managed-bean-class>
   	<managed-bean-scope>session</managed-bean-scope>

@@ -1,4 +1,16 @@
       <attribute>
+         <name>submitOnClick</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+         <type>java.lang.Boolean</type>
+      </attribute>
+      <attribute>
+         <name>mouseListener</name>
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+         <type>java.lang.String</type>
+      </attribute>
+      <attribute>
          <name>compactMonthRowHeight</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>

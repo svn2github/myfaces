@@ -59,6 +59,7 @@
 	            <h:outputLink value="schedule/example2.jsf" ><f:verbatim>Schedule with possibility for adding/removing entries</f:verbatim></h:outputLink>
 	            <h:outputLink value="schedule/example3.jsf" ><f:verbatim>Customizable schedule</f:verbatim></h:outputLink>
 	            <h:outputLink value="schedule/example4.jsf" ><f:verbatim>Schedule with custom styleClasses and custom EntryRenderer</f:verbatim></h:outputLink>
+	            <h:outputLink value="schedule/example5.jsf" ><f:verbatim>Example demonstrating the submitOnClick and mouseListener properties</f:verbatim></h:outputLink>
             </h:panelGrid>
                         
             <h:outputText value="Data Tables"/>

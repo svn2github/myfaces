@@ -23,6 +23,9 @@ import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.webapp.UIComponentTag;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * <p>
  * JSP tag for the schedule component
@@ -37,6 +40,7 @@ public class ScheduleTag extends UIComponentTag
 
     private String action;
     private String actionListener;
+    private String mouseListener;
     private String compactMonthRowHeight;
     private String compactWeekRowHeight;
     private String detailedRowHeight;
@@ -44,6 +48,7 @@ public class ScheduleTag extends UIComponentTag
     private String immediate;
     private String readonly;
     private String rendered;
+    private String submitOnClick;
     private String theme;
     private String tooltip;
     private String value;
@@ -308,6 +313,34 @@ public class ScheduleTag extends UIComponentTag
     public String getRendererType()
     {
         return UISchedule.DEFAULT_RENDERER_TYPE;
+    }
+
+    /**
+     * <p>
+     * Should the parent form of this schedule be submitted when the user
+     * clicks on a day? Note that this will only work when the readonly
+     * property is set to false.
+     * </p>
+     *
+     * @param submitOnClick submit the form on mouse click
+     */
+    public void setSubmitOnClick(String submitOnClick)
+    {
+        this.submitOnClick = submitOnClick;
+    }
+
+    /**
+     * <p>
+     * Should the parent form of this schedule be submitted when the user
+     * clicks on a day? Note that this will only work when the readonly
+     * property is set to false.
+     * </p>
+     *
+     * @return submit the form on mouse click
+     */
+    public String getSubmitOnClick()
+    {
+        return submitOnClick;
     }
 
     /**
@@ -642,6 +675,16 @@ public class ScheduleTag extends UIComponentTag
         this.monthClass = monthClass;
     }
 
+    public String getMouseListener()
+    {
+        return mouseListener;
+    }
+
+    public void setMouseListener(String mouseListener)
+    {
+        this.mouseListener = mouseListener;
+    }
+
     public String getSelectedClass()
     {
         return selectedClass;
@@ -738,6 +781,8 @@ public class ScheduleTag extends UIComponentTag
         actionListener = null;
         action = null;
         readonly = null;
+        submitOnClick = null;
+        mouseListener = null;
         theme = null;
         tooltip = null;
         rendered = null;
@@ -879,6 +924,35 @@ public class ScheduleTag extends UIComponentTag
                 schedule.setReadonly(Boolean.valueOf(readonly).booleanValue());
             }
         }
+        
+        if (submitOnClick != null)
+        {
+            if (isValueReference(submitOnClick))
+            {
+                schedule.setValueBinding("submitOnClick", app
+                        .createValueBinding(submitOnClick));
+            }
+            else
+            {
+                schedule.setSubmitOnClick(Boolean.valueOf(submitOnClick)
+                        .booleanValue());
+            }
+        }
+        
+        if (mouseListener != null)
+        {
+            if (isValueReference(mouseListener))
+            {
+                MethodBinding mouseListenerBinding = app.createMethodBinding(
+                        mouseListener, new Class[] { ScheduleMouseEvent.class });
+                schedule.setMouseListener(mouseListenerBinding);
+            }
+            else
+            {
+                throw new IllegalArgumentException(
+                        "mouseListener property must be a method-binding expression.");
+            }
+        }
 
         if (actionListener != null)
         {
@@ -899,8 +973,7 @@ public class ScheduleTag extends UIComponentTag
         {
             if (isValueReference(action))
             {
-                MethodBinding actionBinding = app.createMethodBinding(action,
-                        new Class[] { ActionEvent.class });
+                MethodBinding actionBinding = app.createMethodBinding(action, null);
                 schedule.setAction(actionBinding);
             }
             else
@@ -973,6 +1046,5 @@ public class ScheduleTag extends UIComponentTag
             }
         }
     }
-
 }
 //The End

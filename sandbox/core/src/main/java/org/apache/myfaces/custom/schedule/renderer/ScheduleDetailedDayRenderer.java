@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,9 +29,12 @@ import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
+import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
@@ -44,6 +48,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  */
 public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 {
+    private static final Log log = LogFactory.getLog(ScheduleDetailedDayRenderer.class);
+
     //~ Instance fields --------------------------------------------------------
 
     private final int defaultRowHeightInPixels = 22;
@@ -101,16 +107,21 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = schedule.getClientId(context);
+        UIForm parentForm = getParentForm(schedule);
+        String formId = parentForm == null ? null : parentForm.getClientId(context);
 
         for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator
                 .hasNext();)
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
+            String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate());
             writer.startElement(HTML.TD_ELEM, schedule);
             writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                     "column"), null);
             writer.writeAttribute(HTML.STYLE_ATTR, "height: 100%;", null);
             writer.startElement(HTML.DIV_ELEM, schedule);
+            writer.writeAttribute(HTML.ID_ATTR, dayBodyId, null);
             writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                     "column"), null);
             writer
@@ -118,6 +129,17 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                             HTML.STYLE_ATTR,
                             "position: relative; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 0;",
                             null);
+            //register an onclick event listener to a column which will capture
+            //the y coordinate of the mouse, to determine the hour of day
+            if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
+                writer.writeAttribute(
+                        HTML.ONMOUSEUP_ATTR,
+                        "fireScheduleTimeClicked(this, event, '"
+                        + formId + "', '"
+                        + clientId
+                        + "');",
+                        null);
+            }
             writeEntries(context, schedule, day, writer);
             writer.endElement(HTML.DIV_ELEM);
             writer.endElement(HTML.TD_ELEM);
@@ -397,6 +419,10 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     private void writeEntries(FacesContext context, HtmlSchedule schedule,
             ScheduleDay day, ResponseWriter writer) throws IOException
     {
+        final UIForm parentForm = getParentForm(schedule);
+        final String clientId = schedule.getClientId(context);
+        final String formId = parentForm == null ? null : parentForm.getClientId(context);
+
         TreeSet entrySet = new TreeSet();
 
         for (Iterator entryIterator = day.iterator(); entryIterator.hasNext();)
@@ -428,8 +454,6 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         //now determine the width in percent of 1 column
         float columnWidth = 100 / numberOfColumns;
-
-        UIForm parentForm = getParentForm(schedule);
 
         //and now draw the entries in the columns
         for (Iterator entryIterator = entrySet.iterator(); entryIterator
@@ -474,7 +498,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 //if the schedule is read-only, the entries should not be
                 //hyperlinks
                 writer.startElement(
-                        schedule.isReadonly() ? HTML.DIV_ELEM : "a", schedule);
+                        schedule.isReadonly() ? HTML.DIV_ELEM : HTML.ANCHOR_ELEM, schedule);
 
                 //draw the tooltip
                 if (showTooltip(schedule))
@@ -487,18 +511,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 {
                     writer.writeAttribute("href", "#", null);
 
-                    String clientId = schedule.getClientId(context);
-                    StringBuffer mousedown = new StringBuffer();
-                    mousedown.append("document.forms['");
-                    mousedown.append(parentForm.getClientId(context));
-                    mousedown.append("']['");
-                    mousedown.append(clientId);
-                    mousedown.append("'].value='");
-                    mousedown.append(wrapper.entry.getId());
-                    mousedown.append("'; document.forms['");
-                    mousedown.append(parentForm.getClientId(context));
-                    mousedown.append("'].submit()");
-                    writer.writeAttribute("onmousedown", mousedown.toString(),
+                    writer.writeAttribute(
+                            HTML.ONMOUSEUP_ATTR,
+                            "fireEntrySelected('"
+                            + formId + "', '"
+                            + clientId + "', '"
+                            + wrapper.entry.getId()
+                            + "');",
                             null);
                 }
 
@@ -529,6 +548,10 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     {
         final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
         final int headerHeight = rowHeight + 10;
+        final String clientId = schedule.getClientId(context);
+        final UIForm parentForm = getParentForm(schedule);
+        final String formId = parentForm == null ? null : parentForm.getClientId(context);
+
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                 "foreground"), null);
@@ -561,7 +584,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 .hasNext();)
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
+            final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate());
             writer.startElement(HTML.TD_ELEM, schedule);
+            writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
             writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                     "header"), null);
             writer
@@ -571,6 +596,17 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                             null);
             writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
                     + "%", null);
+            //register an onclick event listener to a column header which will
+            //be used to determine the date
+            if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
+                writer.writeAttribute(
+                        HTML.ONMOUSEUP_ATTR,
+                        "fireScheduleDateClicked(this, event, '"
+                        + formId + "', '"
+                        + clientId
+                        + "');",
+                        null);
+            }
 
             writer.endElement(HTML.TD_ELEM);
         }
@@ -599,6 +635,31 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         return defaultRowHeightInPixels;
     }
 
+    /**
+     * In the detailed day renderer, we take the y coordinate of the mouse
+     * into account when determining the last clicked date.
+     */
+    protected Date determineLastClickedDate(HtmlSchedule schedule, String dateId, String yPos) {
+        Calendar cal = GregorianCalendar.getInstance();
+        //the dateId is the schedule client id + "_" + yyyyMMdd 
+        String day = dateId.substring(dateId.lastIndexOf("_") + 1);
+        Date date = ScheduleUtil.getDateFromId(day);
+        
+        if (date != null) cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleStartHour());
+        //OK, we have the date, let's determine the time
+        try {
+            int y = Integer.parseInt(yPos);
+            int halfHourHeight = getRowHeight(schedule.getAttributes());
+            int minutes = y * 30 / halfHourHeight;
+            cal.add(Calendar.MINUTE, minutes);
+        } catch (NumberFormatException nfe) {
+            log.debug("y position is not a number");
+        }
+        log.debug("last clicked datetime: " + cal.getTime());
+        return cal.getTime();
+    }
+    
     private class EntryWrapper implements Comparable
     {
         //~ Static fields/initializers -----------------------------------------

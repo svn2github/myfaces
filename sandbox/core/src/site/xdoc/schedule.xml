@@ -72,6 +72,8 @@
                [workingStartHour="9"]
                [workingEndHour="17"]
                [readonly={true|false}]
+               [submitOnClick={true|false}]
+               [mouseListener="#{backingBean.scheduleClicked}"]
                [tooltip={true|false}]
                [theme={default|outlookxp|evolution}]
                [headerDateFormat="dd-MM-yyyy"]
@@ -107,6 +109,13 @@
                 <br/>
                 <code>
                     readonly - When a schedule is read-only, no entries can be selected
+                </code>
+                <br/>
+                <code>
+                	submitOnClick - When this is true AND the readonly property is set to false, then clicking anywhere on the schedule, but outside an entry box, will submit the form, posting the date and the time of day that was clicked.
+                </code>
+                <code>
+                	mouseListener - a Method Binding with parameter of type ScheduleMouseEvent. This allows a backing bean to listen for mouse click events on the schedule.
                 </code>
                 <br/>
                 <code>

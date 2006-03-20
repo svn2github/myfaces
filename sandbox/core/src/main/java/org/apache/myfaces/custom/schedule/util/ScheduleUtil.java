@@ -16,6 +16,8 @@
 
 package org.apache.myfaces.custom.schedule.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,6 +39,9 @@ import javax.faces.el.ValueBinding;
  */
 public class ScheduleUtil
 {
+    //~ Class Variables --------------------------------------------------------
+    private final static SimpleDateFormat DATE_ID_FORMATTER = new SimpleDateFormat("yyyyMMdd");
+    
     //~ Methods ----------------------------------------------------------------
 
     /**
@@ -385,6 +390,35 @@ public class ScheduleUtil
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
+    }
+    
+    /**
+     * get a String identifying this date
+     * 
+     * @param date the date
+     * @return the identifier for this date
+     */
+    public static String getDateId(Date date) {
+        if (date == null) return "NULL";
+        return DATE_ID_FORMATTER.format(date);
+    }
+    
+    /**
+     * get a date from the given date ID
+     * 
+     * @param id the date ID
+     * @return the date
+     */
+    public static Date getDateFromId(String id) {
+        if (id == null || id.length() == 0 || "null".equals(id)) return null;
+        try
+        {
+            return DATE_ID_FORMATTER.parse(id);
+        }
+        catch (ParseException e)
+        {
+            return null;
+        }
     }
 }
 //The End

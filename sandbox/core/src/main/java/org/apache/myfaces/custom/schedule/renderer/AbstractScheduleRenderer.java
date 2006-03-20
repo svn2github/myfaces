@@ -19,8 +19,11 @@ package org.apache.myfaces.custom.schedule.renderer;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -32,7 +35,10 @@ import javax.faces.render.Renderer;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.application.ActionListenerImpl;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
+import org.apache.myfaces.custom.schedule.ScheduleMouseEvent;
+import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -49,8 +55,9 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 public abstract class AbstractScheduleRenderer extends Renderer
 {
     //~ Static fields/initializers ---------------------------------------------
-
     protected static final ScheduleEntryComparator comparator = new ScheduleEntryComparator();
+    protected static final String LAST_CLICKED_DATE = "_last_clicked_date";
+    protected static final String LAST_CLICKED_Y = "_last_clicked_y";
 
     //~ Methods ----------------------------------------------------------------
 
@@ -60,19 +67,52 @@ public abstract class AbstractScheduleRenderer extends Renderer
      */
     public void decode(FacesContext context, UIComponent component)
     {
+        HtmlSchedule schedule = (HtmlSchedule) component;
+        boolean queueAction = false;
         if (ScheduleUtil.canModifyValue(component))
         {
-            HtmlSchedule schedule = (HtmlSchedule) component;
             Map parameters = context.getExternalContext()
                     .getRequestParameterMap();
             String selectedEntryId = (String) parameters.get((String) schedule
                     .getClientId(context));
+            String lastClickedDateId = (String) parameters.get((String) schedule.getClientId(context) + LAST_CLICKED_DATE);
+            String lastClickedY = (String) parameters.get((String) schedule.getClientId(context) + LAST_CLICKED_Y);
+            
+            ScheduleMouseEvent mouseEvent = null;
 
             if ((selectedEntryId != null) && (selectedEntryId.length() > 0))
             {
-                schedule.setSubmittedEntry(schedule.findEntry(selectedEntryId));
-                schedule.queueEvent(new ActionEvent(schedule));
+                ScheduleEntry entry = schedule.findEntry(selectedEntryId);
+                schedule.setSubmittedEntry(entry);
+                mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_ENTRY_CLICKED);
+                queueAction = true;
             }
+
+            if (schedule.isSubmitOnClick())
+            {
+                schedule.resetMouseEvents();
+                if ((lastClickedY != null) && (lastClickedY.length() > 0))
+                {
+                    //the body of the schedule was clicked
+                    schedule.setLastClickedDateAndTime(determineLastClickedDate(schedule, lastClickedDateId, lastClickedY));
+                    mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_BODY_CLICKED);
+                    queueAction = true;
+                } else if ((lastClickedDateId != null) && (lastClickedDateId.length() > 0)){
+                    //the header of the schedule was clicked
+                    schedule.setLastClickedDateAndTime(determineLastClickedDate(schedule, lastClickedDateId, "0"));
+                    mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_HEADER_CLICKED);
+                    queueAction = true;
+                } else if (mouseEvent == null){
+                    //the form was posted without mouse events on the schedule
+                    mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_NOTHING_CLICKED);
+                }
+            }
+
+            if (mouseEvent != null) schedule.queueEvent(mouseEvent);
+        }
+        if (queueAction)
+        {
+            schedule.queueEvent(new ActionEvent(schedule));
         }
     }
 
@@ -99,6 +139,8 @@ public abstract class AbstractScheduleRenderer extends Renderer
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, css);
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
+                HtmlSchedule.class, "javascript/schedule.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/alphaAPI.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/domLib.js");
@@ -112,6 +154,20 @@ public abstract class AbstractScheduleRenderer extends Renderer
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
         writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context),
                 "clientId");
+        writer.endElement(HTML.INPUT_ELEM);
+        //hidden input field containing the id of the last clicked date
+        writer.startElement(HTML.INPUT_ELEM, schedule);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context) + "_last_clicked_date",
+                "clicked_date");
+        writer.endElement(HTML.INPUT_ELEM);
+        //hidden input field containing the y coordinate of the mouse when
+        //the schedule was clicked. This will be used to determine the hour
+        //of day.
+        writer.startElement(HTML.INPUT_ELEM, schedule);
+        writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
+        writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context) + "_last_clicked_y",
+                "clicked_y");
         writer.endElement(HTML.INPUT_ELEM);
     }
 
@@ -381,12 +437,21 @@ public abstract class AbstractScheduleRenderer extends Renderer
             rowHeight = 0;
         }
 
-        if (rowHeight == 0)
+        if (rowHeight <= 0)
         {
             rowHeight = getDefaultRowHeight();
         }
 
         return rowHeight;
     }
+    
+    /**
+     * Determine the last clicked date
+     * @param schedule the schedule component
+     * @param dateId the string identifying the date
+     * @param yPos the y coordinate of the mouse
+     * @return the clicked date
+     */
+    protected abstract Date determineLastClickedDate(HtmlSchedule schedule, String dateId, String yPos);
 }
 //The End
