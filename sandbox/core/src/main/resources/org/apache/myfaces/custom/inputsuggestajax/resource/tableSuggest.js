@@ -30,36 +30,49 @@ org_apache_myfaces_TableSuggest = function()
     //puting the values from the choosen row into the fields
     org_apache_myfaces_TableSuggest.prototype.putValueToField = function(trElem)
     {
-        for(j=0;j<trElem.childNodes.length;j++)
+        if (trElem)
         {
-            var tdElem = trElem.childNodes[j];
+           /* var currentYPos = dojo.html.getScrollTop();
+            var currentXPos = dojo.html.getScrollLeft();
+            //window.location.href = dojo.dom.nextElement(trElem).name;
+            var nextElem = dojo.dom.nextElement(trElem);
+            nextElem.childNodes[0].onclick();
+            window.scrollTo(currentXPos,currentYPos);
+            var inputField = dojo.byId("_idJsp3:cityField2");
+            inputField.focus();*/
 
-            for(a=0;a<tdElem.childNodes.length;a++)
+            for (j = 0; j < trElem.childNodes.length; j++)
             {
-                var spanElem = tdElem.childNodes[a];
+                var tdElem = trElem.childNodes[j];
 
-                if(spanElem.id)
+                for (a = 0; a < tdElem.childNodes.length; a++)
                 {
-                    var idToPutValue = spanElem.id.substr(11);
-                    var elemToPutValue = dojo.byId(idToPutValue);
+                    var spanElem = tdElem.childNodes[a];
 
-                    if (elemToPutValue)
+                    if (spanElem.id)
                     {
-                        if(dojo.dom.getTagName(elemToPutValue) == "input") {
-                            elemToPutValue.value = spanElem.innerHTML;
-                            if(elemToPutValue.onchange)
-                            {
-                                elemToPutValue.onchange();
-                            }
-                        }
-                        else if (dojo.dom.getTagName(elemToPutValue) == "select")
-                        {
-                            for (i = 0; i < elemToPutValue.options.length; i++)
-                            {
-                                var optionValue = spanElem.innerHTML;
+                        var idToPutValue = spanElem.id.substr(11);
+                        var elemToPutValue = dojo.byId(idToPutValue);
 
-                                if (elemToPutValue.options[i].value == optionValue)
-                                    elemToPutValue.options[i].selected = true;
+                        if (elemToPutValue)
+                        {
+                            if (dojo.dom.getTagName(elemToPutValue) == "input")
+                            {
+                                elemToPutValue.value = spanElem.innerHTML;
+                                if (elemToPutValue.onchange)
+                                {
+                                    elemToPutValue.onchange();
+                                }
+                            }
+                            else if (dojo.dom.getTagName(elemToPutValue) == "select")
+                            {
+                                for (i = 0; i < elemToPutValue.options.length; i++)
+                                {
+                                    var optionValue = spanElem.innerHTML;
+
+                                    if (elemToPutValue.options[i].value == optionValue)
+                                        elemToPutValue.options[i].selected = true;
+                                }
                             }
                         }
                     }
@@ -175,24 +188,9 @@ org_apache_myfaces_TableSuggest = function()
 
                               var firstPage = null;
                               var firstPageField = null;
-                              var iframe = null;
-
-                              if(dojo.render.html.ie)
-                              {
-                                  if(!tableSuggest.iframe) {
-                                    tableSuggest.iframe = document.createElement("<iframe>");
-                                    tableSuggest.iframe.frameborder='0';
-                                    tableSuggest.iframe.src='about:blank';
-                                    var s = tableSuggest.iframe.style;
-                                    s.position = "absolute";
-                                    s.display = "inline";
-                                    s.zIndex = 2;
-                                    var popUpParent = popUp.parentNode;
-                                    dojo.dom.insertAtPosition(tableSuggest.iframe, popUpParent, "first");
-                                  }
-                               }
 
                               dojo.dom.removeChildren(popUp);
+
                               collection.clear();
 
                               for(k=0;k<tablePagesArray.length;k++)
@@ -205,12 +203,10 @@ org_apache_myfaces_TableSuggest = function()
                                       dojo.dom.insertAtPosition(firstPageField, popUp, "last");
                                       k++;
 
-                                      if(firstPage.rows) {
-                                        if(firstPage.rows.length == 2) {
-                                            var row = firstPage.rows[1];
-                                            tableSuggest.putValueToField(row); }
+                                      if(firstPage.rows && firstPage.rows.length == 2) {
+                                         var row = firstPage.rows[1];
+                                         tableSuggest.putValueToField(row);
                                       }
-
                                   }
                                   else
                                   {
@@ -218,12 +214,9 @@ org_apache_myfaces_TableSuggest = function()
                                   }
                               }
 
-                               if(dojo.render.html.ie) {
-                                  tableSuggest.iframe.style.width = dojo.style.getBorderBoxWidth(popUp);
-                                  tableSuggest.iframe.style.height = dojo.style.getBorderBoxHeight(popUp);
-                               }
-                               dojo.debug("releasing request lock");
-                               tableSuggest.requestLocker = false;
+                              tableSuggest.handleIFrame(popUp);
+
+                              tableSuggest.requestLocker = false;
                             }
                             else if(type == "error")
                             {
@@ -239,46 +232,51 @@ org_apache_myfaces_TableSuggest = function()
 
     org_apache_myfaces_TableSuggest.prototype.nextPage = function(thisPageField)
     {
-        var nextPage = this.tablePagesCollection.item(0);
-        var nextPageField = this.tablePagesCollection.item(1);
+        var collLength = this.tablePagesCollection.count;
 
-        this.tablePagesCollection.removeAt(0);
-        this.tablePagesCollection.removeAt(0);
+        if (collLength && collLength > 0)
+        {
+            var nextPage = this.tablePagesCollection.item(0);
+            var nextPageField = this.tablePagesCollection.item(1);
 
-        var thisPage = dojo.dom.prevElement(thisPageField);
+            this.tablePagesCollection.removeAt(0);
+            this.tablePagesCollection.removeAt(0);
 
-        var popUp = dojo.dom.getFirstAncestorByTag(thisPage, "div");
+            var thisPage = dojo.dom.prevElement(thisPageField);
 
-        dojo.dom.removeChildren(popUp);
+            var popUp = dojo.dom.getFirstAncestorByTag(thisPage, "div");
 
-        dojo.dom.insertAtPosition(nextPage, popUp, "first");
-        dojo.dom.insertAtPosition(nextPageField, popUp, "last");
+            dojo.dom.removeChildren(popUp);
 
-        this.tablePagesCollection.add(thisPage);
-        this.tablePagesCollection.add(thisPageField);
+            dojo.dom.insertAtPosition(nextPage, popUp, "first");
+            dojo.dom.insertAtPosition(nextPageField, popUp, "last");
+
+            this.tablePagesCollection.add(thisPage);
+            this.tablePagesCollection.add(thisPageField);
+        }
     };
 
     org_apache_myfaces_TableSuggest.prototype.previousPage = function(thisPage)
     {
         var collLength = this.tablePagesCollection.count;
-        var prevPageField = this.tablePagesCollection.item(collLength-1);
-        var prevPage = this.tablePagesCollection.item(collLength-2);
 
-        this.tablePagesCollection.removeAt(collLength-1);
-        this.tablePagesCollection.removeAt(collLength-2);
+        if (collLength && collLength > 0)
+        {
+            var prevPageField = this.tablePagesCollection.item(collLength - 1);
+            var prevPage = this.tablePagesCollection.item(collLength - 2);
+            var popUp = dojo.dom.getFirstAncestorByTag(thisPage, "div");
 
-        var popUp = dojo.dom.getFirstAncestorByTag(thisPage, "div");
+            this.tablePagesCollection.removeAt(collLength - 1);
+            this.tablePagesCollection.removeAt(collLength - 2);
 
-        dojo.dom.removeChildren(popUp);
+            var thisPageField = dojo.dom.nextElement(thisPage);
+            this.tablePagesCollection.insert(0, thisPageField);
+            this.tablePagesCollection.insert(0, thisPage);
 
-        dojo.dom.insertAtPosition(prevPage, popUp, "first");
-        dojo.dom.insertAtPosition(prevPageField, popUp, "last");
-
-        var table = dojo.dom.firstElement(thisPage);
-        var thisPageField = dojo.dom.nextElement(table);
-        this.tablePagesCollection.insert(0,thisPageField);
-        this.tablePagesCollection.insert(0,thisPage);
-
+            dojo.dom.removeChildren(popUp);
+            dojo.dom.insertAtPosition(prevPage, popUp, "first");
+            dojo.dom.insertAtPosition(prevPageField, popUp, "last");
+        }
     };
 
     org_apache_myfaces_TableSuggest.prototype.getFirstRowElem = function(popUp)
@@ -331,6 +329,36 @@ org_apache_myfaces_TableSuggest = function()
         }
     };
 
+    org_apache_myfaces_TableSuggest.prototype.handleIFrame = function(popUp)
+    {
+        if (dojo.render.html.ie)
+        {
+            if (!this.iframe)
+            {
+                this.iframe = document.createElement("<iframe>");
+                this.iframe.frameborder = '0';
+                this.iframe.src = 'about:blank';
+                var s = this.iframe.style;
+                s.position = "absolute";
+                s.zIndex = 2;
+                var popUpParent = popUp.parentNode;
+                dojo.dom.insertAtPosition(this.iframe, popUpParent, "first");
+            }
+
+            var popUpStyleHeight = popUp.style.height;
+            var popUpHeight = dojo.style.getOuterHeight(popUp);
+            var popUpContentHeight = dojo.style.getOuterHeight(popUp.childNodes[0]);
+            var popUpContentWidth = dojo.style.getOuterWidth(popUp.childNodes[0]);
+
+            if(popUpStyleHeight == "" || popUpHeight < popUpContentHeight)
+                this.iframe.style.height = popUpHeight;
+            else
+                this.iframe.style.height = popUpContentHeight;
+
+            this.iframe.style.width = popUpContentWidth;
+        }
+    };
+
     org_apache_myfaces_TableSuggest.prototype.lastKeyUpEvent = function()
     {
         //dojo.lang.setTimeout('',4000);
@@ -350,8 +378,8 @@ org_apache_myfaces_TableSuggest = function()
         var popUp = dojo.byId(popUpId);
         dojo.dom.removeChildren(popUp);
 
-        if(this.iframe)
-            this.iframe.style.display = "none";
+        if(this.iframe && popUp)
+            popUp.parentNode.removeChild(popUp.parentNode.childNodes[0])
 
         this.firstHighlightedElem = null;
         this.actualHighlightedElem = null;
