@@ -6,7 +6,7 @@
             (e.g. /WEB-INF/my-config.xml)
             See JSF 1.0 PRD2, 10.3.2</description>
     <param-name>javax.faces.CONFIG_FILES</param-name>
-    <param-value>/WEB-INF/examples-config.xml,/WEB-INF/sandbox/faces-config.xml</param-value>
+    <param-value>/WEB-INF/examples-config.xml</param-value>
   </context-param>
   <context-param>
     <description>State saving method: "client" or "server" (= default)
