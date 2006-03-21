@@ -4,7 +4,9 @@
   <context-param>
     <description>Comma separated list of URIs of (additional) faces config files.
             (e.g. /WEB-INF/my-config.xml)
-            See JSF 1.0 PRD2, 10.3.2</description>
+            See JSF 1.0 PRD2, 10.3.2
+            You do not have to put /WEB-INF/faces-config.xml in here.
+    </description>
     <param-name>javax.faces.CONFIG_FILES</param-name>
     <param-value>/WEB-INF/examples-config.xml</param-value>
   </context-param>
@@ -69,13 +71,22 @@
     <param-value>true</param-value>
   </context-param>
   
+    <context-param>
+    	<description> Used for encrypting view state.  Only relevant for client side
+    		state saving.  See MyFaces wiki/web site documentation for instructions
+    		on how to configure an application for diffenent encryption strengths.
+    	</description>
+        <param-name>org.apache.myfaces.secret</param-name>
+        <param-value>NzY1NDMyMTA=</param-value>
+    </context-param>
+  
       <!-- Tiles ViewHandler config file --> 	 
      <context-param> 	 
          <description>Tiles configuration 	 
           definition files and a listener need to be defined. 	 
           the listener will initialize JspTilesViewHandlerImpl with tiles definitions. 	 
          </description> 
-         param-name>tiles-definitions</param-name> 	 
+         <param-name>tiles-definitions</param-name> 	 
          <param-value>/WEB-INF/tiles.xml</param-value> 	 
      </context-param>
   
