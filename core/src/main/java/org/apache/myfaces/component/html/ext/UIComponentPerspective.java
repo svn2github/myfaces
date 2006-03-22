@@ -80,7 +80,17 @@ public class UIComponentPerspective extends UIInput
     public Object executeOn(FacesContext context, ExecuteOnCallback callback)
     {
         setupPerspective();
-        Object retVal = callback.execute(context, delegate);
+
+        Object retVal;
+
+        if(delegate instanceof UIComponentPerspective)
+        {
+            retVal = ((UIComponentPerspective) delegate).executeOn(context, callback);
+        }
+        else
+        {
+            retVal = callback.execute(context, delegate);
+        }
         teardownPerspective();
         return retVal;
     }
