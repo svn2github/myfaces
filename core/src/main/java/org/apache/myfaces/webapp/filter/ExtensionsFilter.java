@@ -157,7 +157,9 @@ public class ExtensionsFilter implements Filter {
 		        }
 		        else
 		        {
-		            servletResponse.getWriter().write(extendedResponse.toString());
+		        	// When not filtering due to not valid content-type, deliver the byte-array instead of a charset-converted string.
+		        	// Otherwise a binary stream get corrupted.
+		            servletResponse.getOutputStream().write(extendedResponse.getBytes());
 		        }
 	        }
 	        else
