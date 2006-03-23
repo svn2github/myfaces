@@ -138,10 +138,9 @@ public class HtmlPanelTabbedPane
      * Write out information about the toggling mode - the component might
      * be toggled server side or client side.
      */
-    public boolean isClientSide(){
-        Boolean serverSideTabSwitch = (Boolean)getAttributes().get("serverSideTabSwitch");
-
-        return serverSideTabSwitch != null ? !serverSideTabSwitch.booleanValue() : true;
+    public boolean isClientSide()
+    {
+        return !getServerSideTabSwitch(); 
     }
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
@@ -150,6 +149,7 @@ public class HtmlPanelTabbedPane
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.TabbedPane";
     private static final int DEFAULT_SELECTEDINDEX = 0;
+    private static final boolean DEFAULT_SERVER_SIDE_TAB_SWITCH = false;
 
     private Integer _selectedIndex = null;
     private String _bgcolor = null;
@@ -159,6 +159,7 @@ public class HtmlPanelTabbedPane
     private String _activeSubStyleClass = null;
     private String _inactiveSubStyleClass = null;
     private String _tabContentStyleClass = null;
+    private Boolean _serverSideTabSwitch = null;
 
     public HtmlPanelTabbedPane()
     {
@@ -267,10 +268,22 @@ public class HtmlPanelTabbedPane
         this._disabledTabStyleClass = disabledTabStyleClass;
     }
 
+    public boolean getServerSideTabSwitch() 
+    { 
+        if (_serverSideTabSwitch != null) return _serverSideTabSwitch.booleanValue(); 
+        ValueBinding vb = getValueBinding("serverSideTabSwitch"); 
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null; 
+        return v != null ? v.booleanValue() : DEFAULT_SERVER_SIDE_TAB_SWITCH; 
+    } 
+
+    public void setServerSideTabSwitch( boolean serverSideTabSwitch )
+    {
+        _serverSideTabSwitch = new Boolean( serverSideTabSwitch );
+    }
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[10];
+        Object values[] = new Object[11];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex;
         values[2] = _bgcolor;
@@ -281,6 +294,7 @@ public class HtmlPanelTabbedPane
         values[7] = _inactiveSubStyleClass;
         values[8] = _tabContentStyleClass;
         values[9] = _disabledTabStyleClass;
+        values[10] = _serverSideTabSwitch;
         return ((Object) (values));
     }
 
@@ -297,6 +311,7 @@ public class HtmlPanelTabbedPane
         _inactiveSubStyleClass = (String)values[7];
         _tabContentStyleClass = (String)values[8];
         _disabledTabStyleClass = (String)values[9];
+        _serverSideTabSwitch = (Boolean) values[10];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }
