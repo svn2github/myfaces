@@ -49,9 +49,9 @@ public final class AjaxRendererUtils
 {
     /**
      * util class.
-     *
      */
-    private AjaxRendererUtils(){
+    private AjaxRendererUtils()
+    {
         //util clazz
     }
 
@@ -117,7 +117,7 @@ public final class AjaxRendererUtils
             UIComponent ajaxMessages = (UIComponent) ComponentUtils
                     .findFirstMessagesComponent(context, context.getViewRoot());
 
-            if (ajaxMessages != null && ((HtmlMessages)ajaxMessages).getForceSpan())
+            if (ajaxMessages != null && ((HtmlMessages) ajaxMessages).getForceSpan())
             {
                 ajaxMessagesId = ajaxMessages.getClientId(context);
             }
@@ -173,10 +173,10 @@ public final class AjaxRendererUtils
         buff.append(jsNameSpace).append("displayError(errorClientId, errorSeverity, errorSummary, errorDetail, styleClass, style);\n");
 
         //also after displaying the error message, onSuccessFunction() should be called
-          if (component.getOnSuccess() != null)
+        if (component.getOnSuccess() != null)
             buff.append(jsNameSpace).append("onSuccessFunction(elname, elvalue, originalRequest);\n");
 
-            buff.append("    }\n")
+        buff.append("    }\n")
                 .append("    var myObElementArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"elementUpdated\");\n")
                 .append("    if(myObElementArray && myObElementArray.length > 0){")
                 .append("       var myObElement = myObElementArray[0];\n")
@@ -188,45 +188,46 @@ public final class AjaxRendererUtils
         {
             buff.append("        ").append(jsNameSpace).append("onSuccessFunction(elname, elvalue, originalRequest);\n");
         }
-            buff.append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, myObElementArray);\n");
-            buff.append("        ").append(jsNameSpace).append("clearError(elname);\n");
+        buff.append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, myObElementArray);\n");
+        buff.append("        ").append(jsNameSpace).append("clearError(elname);\n");
         buff.append("    }\n");
         if (component.getOnFailure() != null)
         {
             buff.append("        else\n")
-                .append("        {\n")
-                .append("        ").append(jsNameSpace).append("onFailureFunction(elname, elvalue, originalRequest);}\n");
+                    .append("        {\n")
+                    .append("        ").append(jsNameSpace).append("onFailureFunction(elname, elvalue, originalRequest);}\n");
         }
-            buff.append("     }\n").append("}\n");
+        buff.append("     }\n").append("}\n");
 
         // displayError function shows any errors sent back
-            buff.append("function ").append(jsNameSpace).append("displayError(elname, severity, summary, detail, styleClass, style){\n")
-                    .append("        var summaryAndDetail = summary;\n")
-                    .append("        if(detail) summaryAndDetail += \": \" + detail;\n");
+        buff.append("function ").append(jsNameSpace).append("displayError(elname, severity, summary, detail, styleClass, style){\n")
+                .append("        var summaryAndDetail = summary;\n")
+                .append("        if(detail) summaryAndDetail += \": \" + detail;\n");
         if (ajaxMessagesId != null)
         {
             buff.append("        var ajaxMessagesSpan = document.getElementById( \"" + ajaxMessagesId + "\");\n")
-                .append("            if(ajaxMessagesSpan){\n")
-                .append("                 ajaxMessagesSpan.innerHTML = summaryAndDetail;\n")
-                .append("            }");
+                    .append("            if(ajaxMessagesSpan){\n")
+                    .append("                 ajaxMessagesSpan.innerHTML = summaryAndDetail;\n")
+                    .append("            }");
         }
-            buff.append("        var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
+        buff.append("        var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
                 .append("            if(msgSpan) msgSpan.innerHTML = summaryAndDetail;\n")
                 .append("            if(styleClass) msgSpan.className = styleClass;\n");
-                        //.append("        if(style) msgSpan.style = style;") // guess you can't swap out the entire style like this
+        //.append("        if(style) msgSpan.style = style;") // guess you can't swap out the entire style like this
 
         if (htmlInputTextAjax != null)
         {
             //styling of the ajax fields
             buff.append("var errorStyleElem = document.getElementById(elname);\n")
-                .append("if(errorStyleElem){\n");
-            if (htmlInputTextAjax.getErrorStyleClass()!=null)
+                    .append("if(errorStyleElem){\n");
+            if (htmlInputTextAjax.getErrorStyleClass() != null)
                 buff.append("errorStyleElem.className =\"").append(htmlInputTextAjax.getErrorStyleClass()).append("\";\n");
-            if (htmlInputTextAjax.getErrorStyle()!=null)
+            if (htmlInputTextAjax.getErrorStyle() != null)
                 buff.append("errorStyleElem.style.cssText =\"").append(htmlInputTextAjax.getErrorStyle()).append("\";\n");
+            buff.append("}\n");
         }
 
-        buff.append("}}\n");
+        buff.append("}\n");
         // clearError function to remove error display if there was one previously
         buff.append("function ").append(jsNameSpace).append("clearError(elname){\n")
                 .append("    var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
@@ -234,40 +235,41 @@ public final class AjaxRendererUtils
                 .append("        msgSpan.innerHTML = \"\";\n")
                 .append("    }\n")
                 .append("}\n");
-           //clearError function; same as above, but also for the htmlInputTextAjax field if using the messages comp
-                buff.append("function ").append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, possibleUpdateTag){\n")
-            .append("try\n")
-            .append("    {\n")
-            .append("        if(possibleUpdateTag[0].tagName == \"elementUpdated\")\n")
-            .append("        {\n");
-        if (ajaxMessagesId!=null)
+        //clearError function; same as above, but also for the htmlInputTextAjax field if using the messages comp
+        buff.append("function ").append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, possibleUpdateTag){\n")
+                .append("try\n")
+                .append("    {\n")
+                .append("        if(possibleUpdateTag[0].tagName == \"elementUpdated\")\n")
+                .append("        {\n");
+        if (ajaxMessagesId != null)
         {
-        buff.append("            var errorMessageSpan = document.getElementById(\"" + ajaxMessagesId + "\");\n")
-            .append("            errorMessageSpan.innerHTML = \"\";\n");
+            buff.append("            var errorMessageSpan = document.getElementById(\"" + ajaxMessagesId + "\");\n")
+                    .append("            errorMessageSpan.innerHTML = \"\";\n");
         }
-            //set ajaxinputField to default style or styleclass
+        //set ajaxinputField to default style or styleclass
         buff.append("            var errorField = document.getElementById(elname);\n");
-            if(htmlInputTextAjax!=null)
+        if (htmlInputTextAjax != null)
+        {
+            if (htmlInputTextAjax.getStyleClass() != null)
+                buff.append("errorField.className = \"" + htmlInputTextAjax.getStyleClass() + "\";\n");
+            else if (htmlInputTextAjax.getStyle() != null)
             {
-                if(htmlInputTextAjax.getStyleClass()!=null)
-                    buff.append("errorField.className = \""+htmlInputTextAjax.getStyleClass()+"\";\n");
-                else if (htmlInputTextAjax.getStyle() != null)
-                {
-                    buff.append("errorField.style.cssText = \"" + htmlInputTextAjax.getStyle() + "\";\n");
-                }
-                else
-                {
-                    buff.append("errorField.style.cssText = \"\";\n")
+                buff.append("errorField.style.cssText = \"" + htmlInputTextAjax.getStyle() + "\";\n");
+            }
+            else
+            {
+                buff.append("errorField.style.cssText = \"\";\n")
                         .append("errorField.className = \"\";\n");
-                }
+            }
 
-        buff.append("        }\n")
-            .append("    }catch(e)\n")
-            .append("    {\n")
-            .append("        this.dispatchException(e);\n")
-            .append("    }\n")
-            .append("    }\n");
+
         }
+        buff.append("        }\n")
+                .append("    }catch(e)\n")
+                .append("    {\n")
+                .append("        this.dispatchException(e);\n")
+                .append("    }\n")
+                .append("    }\n");
 
         buff.append("function ").append(jsNameSpace)
                 .append("notifyElementFailure(originalRequest){\n")
@@ -320,8 +322,8 @@ public final class AjaxRendererUtils
         buff.append(", onFailure: ").append(jsNameSpace).append("notifyElementFailure");
         buff.append(
                 "} \n" +
-                "            );\n" +
-                "}"
+                        "            );\n" +
+                        "}"
         );
 
         out.writeText(buff.toString(), null);

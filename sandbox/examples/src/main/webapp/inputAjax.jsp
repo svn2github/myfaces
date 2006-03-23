@@ -57,6 +57,7 @@
     random text into the Fields.<br/> It is possible to place one error message beneath each field or having one
     central place for displaying  all messages. <br/> In this case it may be useful to mark with the
     help of the errorStyleClass or errorStyle attribute of the ajax fields where the error have occured. </p> <br/>
+
 <f:view>
 
 <t:panelLayout
@@ -131,7 +132,6 @@
 	        <h:panelGrid columns="1">
 	            <s:selectManyCheckboxAjax
 	                    id="smcb"
-	                    forceId="true"
 	                    value="#{inputAjaxBean.chosenValues}">
 	                <f:selectItems
 	                        value="#{inputAjaxBean.checkboxItems}"/>
@@ -143,7 +143,6 @@
 	        <h:panelGrid columns="1">
 	            <s:selectOneRadioAjax
 	                    id="radio1"
-	                    forceId="true"
 	                    value="#{inputAjaxBean.radioValue}">
 	                <f:valueChangeListener type="org.apache.myfaces.custom.inputAjax.SampleValueChangeListener"/>
 	                <f:selectItems
@@ -157,11 +156,10 @@
 	            <h:panelGroup>
 	                <s:selectBooleanCheckboxAjax
 	                        id="toggle1"
-	                        forceId="true"
 	                        value="#{inputAjaxBean.toggle1}"/>
 	                <h:outputText value="Got Milk?"/>
 	            </h:panelGroup>
-	            <s:message for="toggle1" styleClass="error"/>
+                <t:message for="toggle1" forceSpan="true" styleClass="errorMessage"/>
 	            <f:verbatim>This component demonstrates ajax updating ability based on a toggle switch.</f:verbatim>
 	        </h:panelGrid>
 	
@@ -170,7 +168,6 @@
 	            <h:panelGroup>
 	                <s:selectBooleanCheckboxAjax
 	                        id="toggle2"
-	                        forceId="true"
 	                        value="#{inputAjaxBean.toggle2}"
 	                        onImage="images/nav-plus.gif"
 	                        offImage="images/nav-minus.gif">
@@ -178,13 +175,13 @@
 	                        </s:selectBooleanCheckboxAjax>
 	                <h:outputText value="Got Juice?"/>
 	            </h:panelGroup>
-	            <s:message for="toggle2" styleClass="error"/>
+                <t:message for="toggle2" forceSpan="true" styleClass="errorMessage"/>
 	            <f:verbatim>This component demonstrates ajax updating ability based on a toggle switch.</f:verbatim>
 	        </h:panelGrid>
 	
 	
 	    </h:panelGrid>
-	    <t:div id="statusDiv" forceId="true"></t:div>
+	    <t:div id="statusDiv" ></t:div>
 	    <h:commandButton action="#{inputAjaxBean.submit}" value="Submit"/>
 	</h:form>
 </f:facet>
