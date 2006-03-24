@@ -16,16 +16,15 @@
 package org.apache.myfaces.custom.isbnvalidator;
 
 import javax.faces.validator.Validator;
-import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
 
-import org.apache.myfaces.custom.isbnvalidator.ISBNValidator;
+import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author <a href="mailto:matzew@apache.org">Matthias We&szlig;endorf</a> (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class ValidateISBNTag extends ValidatorTag{
+public class ValidateISBNTag extends ValidatorBaseTag {
 
     /**
      * serial version id for correct serialisation versioning

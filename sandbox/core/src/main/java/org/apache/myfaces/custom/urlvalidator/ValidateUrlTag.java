@@ -17,8 +17,9 @@
 package org.apache.myfaces.custom.urlvalidator;
 
 import javax.faces.validator.Validator;
-import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
+
+import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  *
@@ -27,7 +28,7 @@ import javax.servlet.jsp.JspException;
  * @version $Revision: $ $Date: $
  */
 
-public class ValidateUrlTag extends ValidatorTag
+public class ValidateUrlTag extends ValidatorBaseTag
 {
   private static final long serialVersionUID = 6041422002721046221L;
 

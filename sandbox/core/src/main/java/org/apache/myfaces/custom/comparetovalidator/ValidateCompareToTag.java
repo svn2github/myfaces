@@ -19,14 +19,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.webapp.UIComponentTag;
-import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
+
+import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author Mike Kienenberger (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class ValidateCompareToTag extends ValidatorTag {
+public class ValidateCompareToTag extends ValidatorBaseTag {
     
 	/**
      * serial version id for correct serialisation versioning
@@ -36,7 +37,6 @@ public class ValidateCompareToTag extends ValidatorTag {
     private String _foreignComponentName = null;
 	protected String _operator = null;
 	protected String _comparator = null;
-	protected String _message = null;
 	protected String _alternateOperatorName = null;
 
 	public ValidateCompareToTag(){
@@ -54,11 +54,6 @@ public class ValidateCompareToTag extends ValidatorTag {
     public void setComparator(String comparator)
     {
         this._comparator = comparator;
-    }
-
-    public void setMessage(String message)
-    {
-        this._message = message;
     }
 
     public void setOperator(String operator)
@@ -105,19 +100,6 @@ public class ValidateCompareToTag extends ValidatorTag {
 			}
 		}
 
-        if (_message != null)
-		{
-			if (UIComponentTag.isValueReference(_message))
-			{
-				ValueBinding vb = facesContext.getApplication().createValueBinding(_message);
-				validator.setMessage(new String(vb.getValue(facesContext).toString()));
-			}
-			else
-			{
-				validator.setMessage(_message);
-			}
-		}
-
         if (_alternateOperatorName != null)
 		{
 			if (UIComponentTag.isValueReference(_alternateOperatorName))
@@ -139,7 +121,6 @@ public class ValidateCompareToTag extends ValidatorTag {
         _foreignComponentName = null;
         _operator = null;
         _comparator = null;
-        _message = null;
         _alternateOperatorName = null;
     }
 }

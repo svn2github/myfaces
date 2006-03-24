@@ -16,15 +16,14 @@
 
 package org.apache.myfaces.custom.urlvalidator;
 
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-
-import org.apache.commons.validator.GenericValidator;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+
+import org.apache.commons.validator.GenericValidator;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.validator.ValidatorBase;
 
 /**
  *
@@ -32,7 +31,7 @@ import javax.faces.validator.ValidatorException;
  *
  * @version $Revision: $ $Date: $
  */
-public class UrlValidator implements Validator {
+public class UrlValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -67,8 +66,10 @@ public class UrlValidator implements Validator {
 			}
 			if (!GenericValidator.isUrl(value.toString())) {
 				Object[] args = {value.toString()};
-				throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,URL_MESSAGE_ID, args));
+                String message = getMessage();
+                if (null == message)  message = URL_MESSAGE_ID;
 
+                throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
 			}
 
 	}

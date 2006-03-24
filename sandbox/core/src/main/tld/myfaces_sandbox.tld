@@ -32,6 +32,7 @@ the entities directory.
 <!ENTITY display_value_only_attributes  SYSTEM "entities-share/display_value_only_attributes.xml">
 <!ENTITY ext_forceId_attribute          SYSTEM "entities-share/ext_forceId_attribute.xml">
 <!ENTITY ext_ajax_attributes            SYSTEM "entities-share/ext_ajax_attributes.xml">
+<!ENTITY ext_validator_base_attributes  SYSTEM "entities-share/ext_validator_base_attributes.xml">
 
 <!ENTITY faces_binding_attribute        SYSTEM "entities-share/faces_binding_attribute.xml">
 <!ENTITY faces_id_optional_attribute    SYSTEM "entities-share/faces_id_optional_attribute.xml">
@@ -254,6 +255,7 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.urlvalidator.ValidateUrlTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>A custom validator for url format, based upons Jakarta Commons.</description>
+        &ext_validator_base_attributes;
 	</tag>
 
 	<!-- Validator for isbn codes -->
@@ -262,6 +264,7 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.isbnvalidator.ValidateISBNTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>A custom validator for isbn codes, based upons Jakarta Commons.</description>
+        &ext_validator_base_attributes;
 	</tag>
 
 	<!-- Validator for comparing two component values -->
@@ -270,6 +273,7 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.comparetovalidator.ValidateCompareToTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Validation by comparing the value of this component with another component.</description>
+        &ext_validator_base_attributes;
 		&validator_compare_to_attributes;
 	</tag>
 

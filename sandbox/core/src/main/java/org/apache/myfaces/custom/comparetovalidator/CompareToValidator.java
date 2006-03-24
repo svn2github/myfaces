@@ -16,14 +16,11 @@
 package org.apache.myfaces.custom.comparetovalidator;
 
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -32,11 +29,11 @@ import javax.faces.el.ValueBinding;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import javax.faces.render.Renderer;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import org.apache.myfaces.validator.ValidatorBase;
 
 /**
  * @author Mike Kienenberger (latest modification by $Author$)
@@ -124,7 +121,7 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
  *   - Perhaps an exception should be thrown if the two values are not Comparable and no Comparator is specified.
  * 
  */
-public class CompareToValidator implements Validator, StateHolder {
+public class CompareToValidator extends ValidatorBase {
     /**
      * <p>The standard converter id for this converter.</p>
      */
@@ -145,11 +142,7 @@ public class CompareToValidator implements Validator, StateHolder {
     protected String _foreignComponentName = null;
     protected String _operator = null;
     protected Object _comparator = null;
-    protected String _message = null;
     protected String _alternateOperatorName = null;
-
-    //JSF-Field for StateHolder-IF
-    protected boolean _transient = false;
 
     public static final String OPERATOR_EQUALS = "eq";
     public static final String OPERATOR_NOT_EQUALS = "ne";
@@ -399,18 +392,6 @@ public class CompareToValidator implements Validator, StateHolder {
         this._comparator = comparator;
     }
 
-    public String getMessage()
-    {
-        if (_message != null) return _message;
-        ValueBinding vb = getValueBinding("message");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
-
-    public void setMessage(String message)
-    {
-        this._message = message;
-    }
-
     public String getAlternateOperatorName()
     {
         if (_alternateOperatorName != null) return _alternateOperatorName;
@@ -426,36 +407,23 @@ public class CompareToValidator implements Validator, StateHolder {
     // -------------------------------------------------------- StateholderIF
 
     public Object saveState(FacesContext context) {
-        if (_transient)  return null;
-
-        Object value[] = new Object[5];
-        value[0] = _foreignComponentName;
-        value[1] = _operator;
-        value[2] = _comparator;
-        value[3] = _message;
-        value[4] = _alternateOperatorName;
-        return value;
+        Object values[] = new Object[5];
+        values[0] = super.saveState(context);
+        values[1] = _foreignComponentName;
+        values[2] = _operator;
+        values[3] = _comparator;
+        values[4] = _alternateOperatorName;
+        return values;
     }
 
     public void restoreState(FacesContext context, Object state) {
-        if (_transient)  return;
-
-        Object value[] = (Object[])state;
-        _foreignComponentName = (String) value[0];
-        _operator = (String) value[1];
-        _comparator = value[2];
-        _message = (String) value[3];
-        _alternateOperatorName = (String) value[4];
+        Object values[] = (Object[])state;
+        super.restoreState(context, values[0]);
+        _foreignComponentName = (String) values[1];
+        _operator = (String) values[2];
+        _comparator = values[3];
+        _alternateOperatorName = (String) values[4];
     }
-
-    public boolean isTransient() {
-        return _transient;
-    }
-
-    public void setTransient(boolean newTransientValue) {
-        _transient = newTransientValue;
-    }
-
 
     // ---------------- Borrowed to convert foreign submitted values
 
@@ -499,40 +467,6 @@ public class CompareToValidator implements Validator, StateHolder {
             getFacesContext().getExternalContext().log("No Converter for type " + valueType.getName() + " found", e);
             return null;
         }
-    }
-
-
-    // --------------------- borrowed from UIComponentBase ------------
-
-    private Map _valueBindingMap = null;
-
-    public ValueBinding getValueBinding(String name)
-    {
-        if (name == null) throw new NullPointerException("name");
-        if (_valueBindingMap == null)
-        {
-            return null;
-        }
-        else
-        {
-            return (ValueBinding)_valueBindingMap.get(name);
-        }
-    }
-
-    public void setValueBinding(String name,
-                                ValueBinding binding)
-    {
-        if (name == null) throw new NullPointerException("name");
-        if (_valueBindingMap == null)
-        {
-            _valueBindingMap = new HashMap();
-        }
-        _valueBindingMap.put(name, binding);
-    }
-
-    protected FacesContext getFacesContext()
-    {
-        return FacesContext.getCurrentInstance();
     }
 
 

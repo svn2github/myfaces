@@ -36,12 +36,4 @@
          custom operator name in error message (ie "after" instead of "greater than" for dates)
          </description>
       </attribute>
-      <attribute>
-         <name>message</name>
-         <required>false</required>
-         <rtexprvalue>false</rtexprvalue>
-         <description>
-         alternate validation error message format string
-         </description>
-      </attribute>
       
