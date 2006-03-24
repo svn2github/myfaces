@@ -23,6 +23,10 @@ import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
 
 /**
+ * ValidatorBaseTag provides support for ValidatorBase subclasses.
+ * ValidatorBaseTag subclass tld entries should include the following to pick up attribute defintions.
+ *         &ext_validator_base_attributes;
+ * 
  * @author mkienenb (latest modification by $Author$)
  * @version $Revision$
  */

@@ -26,6 +26,14 @@ import javax.faces.validator.Validator;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
+ * ValidatorBase provides common attributes and behavior common to all Tomahawk and sandbox validators.
+ * Currently this includes:
+ *   - getValueBinding(), setValueBinding(), and getFacesContext() methods available in UIComponentBase. 
+ *   - a message attribute which can be used to override the message key on a per-validator instance.
+ * 
+ * A validator subclass should call getMessage(), and, if not null, use this message key instead.
+ * A validator subclass must call super.saveState() and super.restoreState() so that the common attributes are persisted.
+ * 
  * @author mkienenb (latest modification by $Author$)
  * @version $Revision$
  */
