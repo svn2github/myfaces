@@ -93,7 +93,7 @@ components.
 				component's value if this has not already occurred.  This process may not
 				be identical to the standard JSF conversion and validation process.
             </p>
-            <p>See "examples/sandbox/validateUrl.jsp" for an example!</p>
+            <p>See "myfaces-example-sandbox/validateCompareTo.jsp" for an example.</p>
         </section>
 
         <!-- Additional Information -->
