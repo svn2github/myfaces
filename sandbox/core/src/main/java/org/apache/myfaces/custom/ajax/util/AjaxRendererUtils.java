@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -90,7 +91,7 @@ public final class AjaxRendererUtils
     public static void writeAjaxScript(FacesContext context, ResponseWriter out, AjaxCallbacks component, String extraParams) throws IOException
     {
         UIComponent uiComponent = (UIComponent) component;
-        //String clientId = uiComponent.getClientId(context);
+        String clientId = uiComponent.getClientId(context);
         String viewId = context.getViewRoot().getViewId();
         ViewHandler viewHandler = context.getApplication().getViewHandler();
         String ajaxURL = viewHandler.getActionURL(context, viewId);
@@ -123,16 +124,22 @@ public final class AjaxRendererUtils
             }
         }
 
-        String jsNameSpace = uiComponent.getId() + JS_MYFACES_NAMESPACE;
-
-        out.startElement(HTML.SCRIPT_ELEM, null);
-        out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+        String jsNameSpace = //uiComponent.getId() +
+                JS_MYFACES_NAMESPACE;
+        String AJAX_RESPONSE_MAP = JS_MYFACES_NAMESPACE + "ajaxResponseMap";
 
         // todo: only namespace the things that are specific to the component and only output those a second time, use comment below to limit
         // // check to see if javascript has already been written
 
         if (!context.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
         {
+            out.startElement(HTML.SCRIPT_ELEM, null);
+            out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+
+            // for component specific mappings
+
+            out.writeText("var " + AJAX_RESPONSE_MAP + " = new Object();\n", null);
+
             // output global functions
             // utility functions todo: these should be part of a standard js include
             // clear a field
@@ -142,196 +149,228 @@ public final class AjaxRendererUtils
                     .append("    el.value = \"\";\n")
                     .append("}\n");
             out.writeText(buff.toString(), null);
-        }
 
-        out.writeText("var " + jsNameSpace + "ajaxUrl = '" + ajaxURL + "';\n", null);
-        if (component.getOnSuccess() != null)
-            out.writeText("var " + jsNameSpace + "onSuccessFunction = " + component.getOnSuccess() + ";\n", null);
-        if (component.getOnFailure() != null)
-            out.writeText("var " + jsNameSpace + "onFailureFunction = " + component.getOnFailure() + ";\n", null);
-        if (component.getOnStart() != null)
-            out.writeText("var " + jsNameSpace + "onStartFunction = " + component.getOnStart() + ";\n", null);
+            buff = new StringBuffer();
+            buff.append("\n")
+                    .append("function ").append(jsNameSpace).append("notifyElement(originalRequest, successful)\n")
+                    .append("{\n")
+                    .append("    //alert(\"originalRequest: \" + originalRequest + \" - \" + successful + \"\\ntext: \" + originalRequest.responseText);\n")
+                    .append("    var errorArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"error\");\n")
+                    .append("    if(errorArray && errorArray.length > 0){\n")
+                    .append("      for(ierr = 0; ierr < errorArray.length; i++){\n")
+                    .append("        var myObError = errorArray[ierr];\n")
+                    .append("        var errorClientId = myObError.getAttribute(\"elname\");\n")
+                    .append("        var errorSeverity = myObError.getAttribute(\"severity\");\n")
+                    .append("        var errorSummary = myObError.getAttribute(\"summary\");\n")
+                    .append("        var errorDetail = null;\n")
+                    .append("        var errorDetailElements = myObError.getElementsByTagName(\"detail\");\n")
+                    .append("        if(errorDetailElements) errorDetail = errorDetailElements[0].text;\n")
+                    .append("        var style = myObError.getAttribute(\"style\");\n")
+                    .append("        var styleClass = myObError.getAttribute(\"styleClass\");\n")
+                    .append("        ")
+                    .append(jsNameSpace).append("displayError(errorClientId, errorSeverity, errorSummary, errorDetail, styleClass, style);\n")
+                    .append("      }\n"); // end error loop
 
-        StringBuffer buff = new StringBuffer();
-        buff.append("\n")
-                .append("function ").append(jsNameSpace).append("notifyElement(originalRequest, successful)\n")
-                .append("{\n")
-                .append("    //alert(\"originalRequest: \" + originalRequest + \" - \" + successful + \"\\ntext: \" + originalRequest.responseText);\n")
-                .append("    var errorArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"error\");\n")
-                .append("    if(errorArray && errorArray.length > 0){\n")
-                        // could easily loop this and handle more than one error at a time
-                .append("        var myObError = errorArray[0];\n")
-                .append("        var errorClientId = myObError.getAttribute(\"elname\");\n")
-                .append("        var errorSeverity = myObError.getAttribute(\"severity\");\n")
-                .append("        var errorSummary = myObError.getAttribute(\"summary\");\n")
-                .append("        var errorDetail = null;")
-                .append("        var errorDetailElements = myObError.getElementsByTagName(\"detail\");\n")
-                .append("        if(errorDetailElements) errorDetail = errorDetailElements[0].text;")
-                .append("        var style = myObError.getAttribute(\"style\");\n")
-                .append("        var styleClass = myObError.getAttribute(\"styleClass\");\n")
-                .append("        ");
-        buff.append(jsNameSpace).append("displayError(errorClientId, errorSeverity, errorSummary, errorDetail, styleClass, style);\n");
+            //also after displaying the error message, onSuccessFunction() should be called
+            // TR - Why would success be called on error?
+           /* if (component.getOnSuccess() != null)
+                buff.append(AJAX_RESPONSE_MAP).append("['elname']""onSuccessFunction(elname, elvalue, originalRequest);\n");*/
 
-        //also after displaying the error message, onSuccessFunction() should be called
-        if (component.getOnSuccess() != null)
-            buff.append(jsNameSpace).append("onSuccessFunction(elname, elvalue, originalRequest);\n");
+            buff.append("    }\n")
+                    .append("    var myObElementArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"elementUpdated\");\n")
+                    .append("    if(myObElementArray && myObElementArray.length > 0){\n")
+                    .append("      for(iob = 0; iob < myObElementArray.length; i++){\n")
+                    .append("       var myObElement = myObElementArray[iob];\n")
+                    .append("       var elname = myObElement.getAttribute(\"elname\");\n")
+                    .append("       var elvalue = myObElement.getAttribute(\"elvalue\");\n")
+                    .append("       if (successful)\n")
+                    .append("       {\n");
+            if (component.getOnSuccess() != null)
+            {
+                buff.append("        ").append(AJAX_RESPONSE_MAP).append("['elname']['onSuccessFunction'](elname, elvalue, originalRequest);\n");
+            }
+            buff.append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, myObElementArray);\n");
+            buff.append("        ").append(jsNameSpace).append("clearError(elname);\n");
+            buff.append("    }\n");
+            if (component.getOnFailure() != null)
+            {
+                buff.append("        else\n")
+                        .append("        {\n")
+                        .append("        ").append(AJAX_RESPONSE_MAP).append("['elname']['onFailureFunction'](elname, elvalue, originalRequest);}\n");
+            }
+            buff.append("     }\n")
+                    .append("    }\n")//// end returned successful object loop
+                    .append("}\n");
 
-        buff.append("    }\n")
-                .append("    var myObElementArray = originalRequest.responseXML.getElementsByTagName(\"response\")[0].getElementsByTagName(\"elementUpdated\");\n")
-                .append("    if(myObElementArray && myObElementArray.length > 0){")
-                .append("       var myObElement = myObElementArray[0];\n")
-                .append("       var elname = myObElement.getAttribute(\"elname\");\n")
-                .append("       var elvalue = myObElement.getAttribute(\"elvalue\");\n")
-                .append("       if (successful)\n")
-                .append("       {\n");
-        if (component.getOnSuccess() != null)
-        {
-            buff.append("        ").append(jsNameSpace).append("onSuccessFunction(elname, elvalue, originalRequest);\n");
-        }
-        buff.append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, myObElementArray);\n");
-        buff.append("        ").append(jsNameSpace).append("clearError(elname);\n");
-        buff.append("    }\n");
-        if (component.getOnFailure() != null)
-        {
-            buff.append("        else\n")
-                    .append("        {\n")
-                    .append("        ").append(jsNameSpace).append("onFailureFunction(elname, elvalue, originalRequest);}\n");
-        }
-        buff.append("     }\n").append("}\n");
+            // displayError function shows any errors sent back
+            buff.append("function ").append(jsNameSpace).append("displayError(elname, severity, summary, detail, styleClass, style){\n")
+                    .append("        var summaryAndDetail = summary;\n")
+                    .append("        if(detail) summaryAndDetail += \": \" + detail;\n");
+            if (ajaxMessagesId != null)
+            {
+                buff.append("        var ajaxMessagesSpan = document.getElementById( \"" + ajaxMessagesId + "\");\n")
+                        .append("            if(ajaxMessagesSpan){\n")
+                        .append("                 ajaxMessagesSpan.innerHTML += summaryAndDetail + '<br/>';\n")
+                        .append("            }");
+            }
+            buff.append("        var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
+                    .append("            if(msgSpan) msgSpan.innerHTML = summaryAndDetail;\n")
+                    .append("            if(styleClass) msgSpan.className = styleClass;\n");
+            //.append("        if(style) msgSpan.style = style;") // guess you can't swap out the entire style like this
 
-        // displayError function shows any errors sent back
-        buff.append("function ").append(jsNameSpace).append("displayError(elname, severity, summary, detail, styleClass, style){\n")
-                .append("        var summaryAndDetail = summary;\n")
-                .append("        if(detail) summaryAndDetail += \": \" + detail;\n");
-        if (ajaxMessagesId != null)
-        {
-            buff.append("        var ajaxMessagesSpan = document.getElementById( \"" + ajaxMessagesId + "\");\n")
-                    .append("            if(ajaxMessagesSpan){\n")
-                    .append("                 ajaxMessagesSpan.innerHTML = summaryAndDetail;\n")
-                    .append("            }");
-        }
-        buff.append("        var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
-                .append("            if(msgSpan) msgSpan.innerHTML = summaryAndDetail;\n")
-                .append("            if(styleClass) msgSpan.className = styleClass;\n");
-        //.append("        if(style) msgSpan.style = style;") // guess you can't swap out the entire style like this
+            if (htmlInputTextAjax != null)
+            {
+                //styling of the ajax fields
+                buff.append("var errorStyleElem = document.getElementById(elname);\n")
+                        .append("if(errorStyleElem){\n");
+                if (htmlInputTextAjax.getErrorStyleClass() != null)
+                    buff.append("errorStyleElem.className =\"").append(htmlInputTextAjax.getErrorStyleClass()).append("\";\n");
+                if (htmlInputTextAjax.getErrorStyle() != null)
+                    buff.append("errorStyleElem.style.cssText =\"").append(htmlInputTextAjax.getErrorStyle()).append("\";\n");
+                buff.append("}\n");
+            }
 
-        if (htmlInputTextAjax != null)
-        {
-            //styling of the ajax fields
-            buff.append("var errorStyleElem = document.getElementById(elname);\n")
-                    .append("if(errorStyleElem){\n");
-            if (htmlInputTextAjax.getErrorStyleClass() != null)
-                buff.append("errorStyleElem.className =\"").append(htmlInputTextAjax.getErrorStyleClass()).append("\";\n");
-            if (htmlInputTextAjax.getErrorStyle() != null)
-                buff.append("errorStyleElem.style.cssText =\"").append(htmlInputTextAjax.getErrorStyle()).append("\";\n");
             buff.append("}\n");
-        }
-
-        buff.append("}\n");
-        // clearError function to remove error display if there was one previously
-        buff.append("function ").append(jsNameSpace).append("clearError(elname){\n")
-                .append("    var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
-                .append("    if(msgSpan){\n")
-                .append("        msgSpan.innerHTML = \"\";\n")
-                .append("    }\n")
-                .append("}\n");
-        //clearError function; same as above, but also for the htmlInputTextAjax field if using the messages comp
-        buff.append("function ").append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, possibleUpdateTag){\n")
-                .append("try\n")
-                .append("    {\n")
-                .append("        if(possibleUpdateTag[0].tagName == \"elementUpdated\")\n")
-                .append("        {\n");
-        if (ajaxMessagesId != null)
-        {
-            buff.append("            var errorMessageSpan = document.getElementById(\"" + ajaxMessagesId + "\");\n")
-                    .append("            errorMessageSpan.innerHTML = \"\";\n");
-        }
-        //set ajaxinputField to default style or styleclass
-        buff.append("            var errorField = document.getElementById(elname);\n");
-        if (htmlInputTextAjax != null)
-        {
-            if (htmlInputTextAjax.getStyleClass() != null)
-                buff.append("errorField.className = \"" + htmlInputTextAjax.getStyleClass() + "\";\n");
-            else if (htmlInputTextAjax.getStyle() != null)
+            // clearError function to remove error display if there was one previously
+            buff.append("function ").append(jsNameSpace).append("clearError(elname){\n")
+                    .append("    var msgSpan = document.getElementById(elname+\"_msgFor\");\n")
+                    .append("    if(msgSpan){\n")
+                    .append("        msgSpan.innerHTML = \"\";\n")
+                    .append("    }\n")
+                    .append("}\n");
+            //clearError function; same as above, but also for the htmlInputTextAjax field if using the messages comp
+            buff.append("function ").append(jsNameSpace).append("clearErrorMessageAndFieldStyles(elname, possibleUpdateTag){\n")
+                    .append("try\n")
+                    .append("    {\n")
+                    .append("        if(possibleUpdateTag[0].tagName == \"elementUpdated\")\n")
+                    .append("        {\n");
+            if (ajaxMessagesId != null)
             {
-                buff.append("errorField.style.cssText = \"" + htmlInputTextAjax.getStyle() + "\";\n");
+                buff.append("            var errorMessageSpan = document.getElementById(\"" + ajaxMessagesId + "\");\n")
+                        .append("            errorMessageSpan.innerHTML = \"\";\n");
             }
-            else
+            //set ajaxinputField to default style or styleclass
+            buff.append("            var errorField = document.getElementById(elname);\n");
+            if (htmlInputTextAjax != null)
             {
-                buff.append("errorField.style.cssText = \"\";\n")
-                        .append("errorField.className = \"\";\n");
+                if (htmlInputTextAjax.getStyleClass() != null)
+                    buff.append("errorField.className = \"" + htmlInputTextAjax.getStyleClass() + "\";\n");
+                else if (htmlInputTextAjax.getStyle() != null)
+                {
+                    buff.append("errorField.style.cssText = \"" + htmlInputTextAjax.getStyle() + "\";\n");
+                }
+                else
+                {
+                    buff.append("errorField.style.cssText = \"\";\n")
+                            .append("errorField.className = \"\";\n");
+                }
+
+
             }
+            buff.append("        }\n")
+                    .append("    }catch(e)\n")
+                    .append("    {\n")
+                    .append("        this.dispatchException(e);\n")
+                    .append("    }\n")
+                    .append("    }\n");
+
+            buff.append("function ").append(jsNameSpace)
+                    .append("notifyElementFailure(originalRequest){\n")
+                    .append("    ").append(jsNameSpace)
+                    .append("notifyElement(originalRequest, false);\n" + "}\n");
+
+            buff.append("function ").append(jsNameSpace)
+                    .append("notifyElementSuccess(originalRequest){\n")
+                    .append("    ").append(jsNameSpace)
+                    .append("notifyElement(originalRequest, true);\n");
+            buff.append("}\n")
+                    .append("function ").append(jsNameSpace)
+                    .append("complete(originalRequest){\n")
+                            // todo: allow for an onComplete attribute
+                    .append("}\n");
+            // a function that takes an element id
+            buff.append("function ").append(jsNameSpace).append("ajaxSubmit1(elname){\n")
+                    .append("    var el = document.getElementById(elname);\n")
+                    .append("    var elvalue = el.value;\n")
+                    .append("    ")
+                    .append(jsNameSpace)
+                    .append("ajaxSubmit(elname, elvalue, el);\n")
+                    .append("}\n");
+            // a function that can take the actual element for things like HtmlSelectMany
+            buff.append("function ").append(jsNameSpace).append("ajaxSubmit2(el, elname){\n")
+                    .append("    var checked = el.checked;\n")
+                    .append("    var elvalue = el.value;\n")
+                    .append("    var extraParams = '&checked=' + checked;\n")
+                    .append("    ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, el, extraParams);\n")
+                    .append("}\n");
+
+/*todo: For forms, the affectedAjaxComponent can be the commandButton, then in AjaxDecodePhaseListener, it can check if it's
+        a command button, and if so, find the form (naming container), then update the form and then finally
+        call the action method on the button*/
+            // function for submitting an entire form
+            buff.append("function ").append(jsNameSpace).append("ajaxSubmit3(elname){\n")
+                    .append("    var el = document.getElementById(elname);\n")
+                    .append("    var formEl = el.form;\n")
+                    .append("    var elvalue = 'submit';")
+                    .append("    ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, formEl);\n")
+                    .append("}\n");
+
+            // and now the actual function that will send the request
+            buff.append("function ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, el, extraParams){\n");
+            if (component.getOnStart() != null)
+                buff.append("    ").append(AJAX_RESPONSE_MAP).append("[elname]").append("['onStartFunction'](elname, elvalue);\n");
+            buff.append("    var pars = \"affectedAjaxComponent=\" + elname + \"&elname=\" + elname + \"&elvalue=\" + elvalue + \"");
+            buff.append("&\" + elname + \"=\" + elvalue + \"");
+            if (context.getApplication().getStateManager().isSavingStateInClient(context))
+            {
+                buff.append("&jsf_tree_64=\"+encodeURIComponent(document.getElementById(\"jsf_tree_64\").value)+\"&jsf_state_64=\"+encodeURIComponent(document.getElementById(\"jsf_state_64\").value)+\"&jsf_viewid=\"+encodeURIComponent(document.getElementById(\"jsf_viewid\").value)+\"");
+            }
+            buff.append("\";\n"); // end pars
+            buff.append("    if(extraParams) pars += extraParams;\n");
+            buff.append("    pars += '&' + Form.serialize(el);\n");
+            //buff.append(" alert(pars);"); // can be used for debugging
+            buff.append("    var " + "_ajaxRequest = new Ajax.Request(\n")
+                    .append("    ").append(AJAX_RESPONSE_MAP).append("[elname]['ajaxUrl'],\n")
+                    .append("    {method: 'post'" + ", parameters: pars");
+            buff.append(", onComplete: ").append(jsNameSpace).append("complete");
+            buff.append(", onSuccess: ").append(jsNameSpace).append("notifyElementSuccess");
+            buff.append(", onFailure: ").append(jsNameSpace).append("notifyElementFailure");
+            buff.append(
+                    "} \n" +
+                            "            );\n" +
+                            "}\n"
+            );
+
+            out.writeText(buff.toString(), null);
 
 
+            out.endElement(HTML.SCRIPT_ELEM);
+
+            context.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
         }
-        buff.append("        }\n")
-                .append("    }catch(e)\n")
-                .append("    {\n")
-                .append("        this.dispatchException(e);\n")
-                .append("    }\n")
-                .append("    }\n");
 
-        buff.append("function ").append(jsNameSpace)
-                .append("notifyElementFailure(originalRequest){\n")
-                .append("    ").append(jsNameSpace)
-                .append("notifyElement(originalRequest, false);\n" + "}\n");
-
-        buff.append("function ").append(jsNameSpace)
-                .append("notifyElementSuccess(originalRequest){\n")
-                .append("    ").append(jsNameSpace)
-                .append("notifyElement(originalRequest, true);\n");
-        buff.append("}\n")
-                .append("function ").append(jsNameSpace)
-                .append("complete(originalRequest){\n")
-                        // todo: allow for an onComplete attribute
-                .append("}\n");
-        // a function that takes an element id
-        buff.append("function ").append(jsNameSpace).append("ajaxSubmit1(elname){\n")
-                .append("    var el = document.getElementById(elname);\n")
-                .append("    var elvalue = el.value;\n")
-                .append("    ")
-                .append(jsNameSpace)
-                .append("ajaxSubmit(elname, elvalue, el);\n")
-                .append("}\n");
-        // a function that can take the actual element for things like HtmlSelectMany
-        buff.append("function ").append(jsNameSpace).append("ajaxSubmit2(el, elname){\n")
-                .append("    var elvalue = el.value;\n")
-                .append("    ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, el);\n")
-                .append("}\n");
-
-        // and now the actual function that will send the request
-        buff.append("function ").append(jsNameSpace).append("ajaxSubmit(elname, elvalue, el){\n");
+        // component specific mappings, one per component
+        out.startElement(HTML.SCRIPT_ELEM, null);
+        out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
+        out.writeText(AJAX_RESPONSE_MAP + "['" + clientId + "'] = new Object();\n", null);
+        out.writeText(AJAX_RESPONSE_MAP + "['" + clientId + "']['ajaxUrl'] = '" + ajaxURL + "';\n", null);
+        if (component.getOnSuccess() != null)
+            out.writeText(AJAX_RESPONSE_MAP + "['" + clientId + "']['onSuccessFunction'] = " + component.getOnSuccess() + ";\n", null);
+        if (component.getOnFailure() != null)
+            out.writeText(AJAX_RESPONSE_MAP + "['" + clientId + "']['onFailureFunction'] = " + component.getOnFailure() + ";\n", null);
         if (component.getOnStart() != null)
-            buff.append("    ").append(jsNameSpace).append("onStartFunction(elname, elvalue);\n");
-        buff.append("    var pars = \"affectedAjaxComponent=\" + elname + \"&elname=\" + elname + \"&elvalue=\" + elvalue + \"");
-        buff.append("&\" + elname + \"=\" + elvalue + \"");
-        if (extraParams != null)
-        {
-            buff.append(extraParams);
-        }
-        if (context.getApplication().getStateManager().isSavingStateInClient(context))
-        {
-            buff.append("&jsf_tree_64=\"+encodeURIComponent(document.getElementById(\"jsf_tree_64\").value)+\"&jsf_state_64=\"+encodeURIComponent(document.getElementById(\"jsf_state_64\").value)+\"&jsf_viewid=\"+encodeURIComponent(document.getElementById(\"jsf_viewid\").value)+\"");
-        }
-        buff.append("\";\n");
-        buff.append("    var " + "_ajaxRequest = new Ajax.Request(\n")
-                .append("    ").append(jsNameSpace).append("ajaxUrl,\n")
-                .append("    {method: 'post'" + ", parameters: pars");
-        buff.append(", onComplete: ").append(jsNameSpace).append("complete");
-        buff.append(", onSuccess: ").append(jsNameSpace).append("notifyElementSuccess");
-        buff.append(", onFailure: ").append(jsNameSpace).append("notifyElementFailure");
-        buff.append(
-                "} \n" +
-                        "            );\n" +
-                        "}"
-        );
-
-        out.writeText(buff.toString(), null);
-
+            out.writeText(AJAX_RESPONSE_MAP + "['" + clientId + "']['onStartFunction'] = " + component.getOnStart() + ";\n", null);
         out.endElement(HTML.SCRIPT_ELEM);
+        /*
+                new Ajax.Request(form.action, {
+        method: form.method,
+        parameters: Form.serialize(form),
+        onSuccess: updateFunction
+        });
+        */
 
 
-        context.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
+
     }
 
 
@@ -358,22 +397,14 @@ public final class AjaxRendererUtils
         if (responseOb instanceof HttpServletResponse)
         {
             HttpServletResponse response = (HttpServletResponse) responseOb;
-            //response.setContentType("application/xml");
-            response.reset();
-            //response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/xml");
-
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
             StringBuffer buff = new StringBuffer();
-            buff.append("<?xml version=\"1.0\"?>");
-            buff.append("<response>");
+
             // send error messages
             boolean hasErrorMessages = false;
             Iterator iter = context.getMessages(clientId);
             while (iter.hasNext())
             {
-
                 FacesMessage msg = (FacesMessage) iter.next();
                 String style = "";
                 String styleClass = "";
@@ -381,6 +412,7 @@ public final class AjaxRendererUtils
                 String msgForId = clientId + "_msgFor";
                 System.out.println("Looking for component: " + msgForId);
                 UIComponent msgComponent = context.getViewRoot().findComponent(msgForId);
+                String msgId = null;
 
                 if (msgComponent != null)
                 {
@@ -390,18 +422,21 @@ public final class AjaxRendererUtils
                     String[] styleAndClass = HtmlMessageRendererBase.getStyleAndStyleClass(msgComponent, msg.getSeverity());
                     style = styleAndClass[0];
                     styleClass = styleAndClass[1];
+                    msgId = msgComponent.getClientId(context);
                     System.out.println("style: " + style);
                 }
                 else
                 {
                     // send to update global messages, maybe this could happen on the client side though ?
                 }
-                buff.append("<error elname=\"").append(request.getParameter("elname"))
+                buff.append("<error elname=\"").append(clientId)
                         .append("\" severity=\"").append(msg.getSeverity().toString());
                 if (styleClass != null) buff.append("\" styleClass=\"").append(styleClass);
                 if (style != null) buff.append("\" style=\"").append(style);
                 buff.append("\" summary=\"").append(msg.getSummary())
-                        .append("\" >\n");
+                        .append("\" ");
+                        if(msgId != null) buff.append(" msgId=\"").append(msgId).append("\"");
+                        buff.append(">\n");
                 String detail = msg.getDetail();
                 if (detail != null)
                 {
@@ -415,8 +450,13 @@ public final class AjaxRendererUtils
             if (!hasErrorMessages)
             {
                 // send elementUpdated messages
-                buff.append("<elementUpdated elname=\"").append(request.getParameter("elname"));
-                buff.append("\" elvalue=\"").append(request.getParameter("elvalue")).append("\"");
+                buff.append("<elementUpdated elname=\"").append(clientId).append("\"");
+                if(component instanceof UIInput){
+                    UIInput uiInput = (UIInput) component;
+                    // todo: might have to make sure this value can be serialized like this
+                    // todo: and should probably be in text block, rather than an attribute
+                        buff.append(" elvalue=\"").append(uiInput.getValue()).append("\"");
+                }
                 if (extraReturnAttributes != null)
                 {
                     Iterator iter2 = extraReturnAttributes.keySet().iterator();
@@ -429,12 +469,11 @@ public final class AjaxRendererUtils
                 buff.append(" />");
                 buff.append("\n");
             }
-            buff.append("</response>");
+
             String output = buff.toString();
             log.debug(output);
             PrintWriter out = response.getWriter();
             out.print(output);
-            out.flush();
 
         }
     }

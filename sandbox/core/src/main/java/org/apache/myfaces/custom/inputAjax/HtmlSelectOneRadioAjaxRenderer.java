@@ -91,7 +91,7 @@ public class HtmlSelectOneRadioAjaxRenderer extends HtmlRadioRenderer implements
         if(onClick == null){
             onClick = "";
         }
-        onClick = component.getId() + "_MyFaces_inputAjax_ajaxSubmit2(this, '" + clientId + "'); " + onClick;
+        onClick = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit2(this, '" + clientId + "'); " + onClick;
         selectOneRadio.setOnclick(onClick);
 
         this.encodeJavascript(context, component);

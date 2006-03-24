@@ -61,7 +61,7 @@ public class HtmlSelectOneRadioAjax extends HtmlSelectOneRadio implements AjaxCo
         processDecodes(context);
         processValidators(context);
         processUpdates(context);
-        context.getViewRoot().processApplication(context);
+        //context.getViewRoot().processApplication(context);
         if (log.isDebugEnabled())
         {
             Object valOb = this.getValue();

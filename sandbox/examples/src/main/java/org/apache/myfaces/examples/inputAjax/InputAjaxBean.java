@@ -44,6 +44,9 @@ public class InputAjaxBean
     private boolean toggle1 = false;
     private boolean toggle2 = false;
 
+    private String formText1;
+    private String formText2;
+
     /**
      * Simple validator to show error handling messages in examples, returns an error if value string is
      * less then 3 characters
@@ -54,7 +57,6 @@ public class InputAjaxBean
      */
     public void validateText2(FacesContext context, UIComponent toValidate, Object value)
     {
-        // make sure it's not in the past
         if (value != null)
         {
             // lets say it must be more than 2 characters
@@ -69,10 +71,9 @@ public class InputAjaxBean
 
     public void validateText1(FacesContext context, UIComponent toValidate, Object value)
     {
-        // make sure it's not in the past
         if (value != null)
-        {                          
-            // lets say it must be smaller or equal than 100
+        {
+            // lets say it must be less than 5 characters
             String valStr = (String) value;
             if (valStr.length() > 5)
             {
@@ -82,8 +83,46 @@ public class InputAjaxBean
         }
     }
 
+    public void validateFormText1(FacesContext context, UIComponent toValidate, Object value)
+    {
+        if (value != null)
+        {
+            // lets say it must be at least 5 characters
+            String valStr = (String) value;
+            if (valStr.length() < 5)
+            {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Length must be longer than 5 characters", null));
+            }
+        }
+    }
+     public void validateFormText2(FacesContext context, UIComponent toValidate, Object value)
+    {
+        if (value != null)
+        {
+            // lets say it cannot contain a space
+            String valStr = (String) value;
+            if (valStr.indexOf(" ") != -1)
+            {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot contain a space", null));
+            }
+        }
+    }
+
     public String submit()
     {
+        return null;
+    }
+
+    /**
+     * This one is what should get called through the ajax form
+     *
+     * @return view
+     */
+    public String ajaxFormSubmit()
+    {
+        System.out.println("AJAX FORM SUBMIT CALLED!");
         return null;
     }
 
@@ -194,6 +233,28 @@ public class InputAjaxBean
     public void setToggle2(boolean toggle2)
     {
         this.toggle2 = toggle2;
+    }
+
+    public String getFormText2()
+    {
+        return formText2;
+    }
+
+    public void setFormText2(String formText2)
+    {
+        System.out.println("setting formtext2");
+        this.formText2 = formText2;
+    }
+
+    public String getFormText1()
+    {
+        return formText1;
+    }
+
+    public void setFormText1(String formText1)
+    {
+        System.out.println("setting formtext1");
+        this.formText1 = formText1;
     }
 
 }

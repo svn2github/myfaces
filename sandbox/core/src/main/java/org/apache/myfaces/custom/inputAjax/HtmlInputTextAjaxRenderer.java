@@ -81,7 +81,7 @@ public class HtmlInputTextAjaxRenderer extends HtmlTextRendererBase implements A
         }
 
         String clientId = component.getClientId(context);
-        String submitFunctionStart = component.getId() + "_MyFaces_inputAjax_ajaxSubmit1('" + clientId + "');";
+        String submitFunctionStart = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit1('" + clientId + "');";
         HtmlInputTextAjax comp = (HtmlInputTextAjax) component;
         if(!comp.getShowOkButton().booleanValue()){
             // then submit on change

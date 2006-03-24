@@ -78,9 +78,9 @@ public class HtmlSelectManyCheckboxAjaxRenderer extends HtmlCheckboxRenderer imp
         if(onClick == null){
             onClick = "";
         }
-        onClick = component.getId() + "_MyFaces_inputAjax_ajaxSubmit2(this, '" + clientId + "'); " + onClick;
+        // todo: this was doublling up, so took out the + onclick below, need a way for user onclicks to work still
+        onClick = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit2(this, '" + clientId + "'); ";
         selectManyCheckbox.setOnclick(onClick);
-
 
         this.encodeJavascript(context, component);
 

@@ -80,7 +80,7 @@ public class HtmlSelectBooleanCheckboxAjax extends HtmlSelectBooleanCheckbox imp
         //System.out.println("SUBMITTED VALUE: " + ((EditableValueHolder) this).getSubmittedValue());
         processValidators(context);
         processUpdates(context);
-        context.getViewRoot().processApplication(context);
+        //context.getViewRoot().processApplication(context);
 
         //String elname = (String) requestParams.get("elname");
         //String elvalue = (String) requestParams.get("elvalue");
@@ -88,7 +88,6 @@ public class HtmlSelectBooleanCheckboxAjax extends HtmlSelectBooleanCheckbox imp
         if (log.isDebugEnabled())
         {
             Object valOb = this.getValue();
-            valOb = this.getValue();
             log.debug("value object after decodeAjax: " + valOb);
         }
 

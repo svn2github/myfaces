@@ -67,7 +67,7 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
         processDecodes(context);
         processValidators(context);
         processUpdates(context);
-        context.getViewRoot().processApplication(context);
+        //context.getViewRoot().processApplication(context);
         if (log.isDebugEnabled())
         {
             Object valOb = this.getValue();

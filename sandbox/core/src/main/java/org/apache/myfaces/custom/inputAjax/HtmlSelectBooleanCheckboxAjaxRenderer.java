@@ -116,7 +116,7 @@ public class HtmlSelectBooleanCheckboxAjaxRenderer extends HtmlCheckboxRenderer 
         {
             onClick = "";
         }
-        onClick = component.getId() + "_MyFaces_inputAjax_ajaxSubmit1('" + clientId + "'); " + onClick;
+        onClick = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit1('" + clientId + "'); " + onClick;
         selectBooleanCheckbox.setOnclick(onClick);
 
         this.encodeJavascript(context, component);
