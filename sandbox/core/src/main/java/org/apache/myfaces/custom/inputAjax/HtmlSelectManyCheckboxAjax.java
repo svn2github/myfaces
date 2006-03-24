@@ -60,7 +60,6 @@ public class HtmlSelectManyCheckboxAjax extends HtmlSelectManyCheckbox implement
      */
     public void decodeAjax(FacesContext context)
     {
-        System.out.println("entiner selectmany decodeajax");
         log.debug("entering HtmlSelectManyCheckboxAjax.decodeAjax");
 
         // this requires special handling
@@ -70,15 +69,15 @@ public class HtmlSelectManyCheckboxAjax extends HtmlSelectManyCheckbox implement
         String elname = (String) requestParams.get("elname");
         String elvalue = (String) requestParams.get("elvalue");
         String checkedStr = (String) requestParams.get("checked");
-        System.out.println("checkedStr: " + checkedStr);
+        //System.out.println("checkedStr: " + checkedStr);
         boolean checked = Boolean.valueOf(checkedStr).booleanValue();
-        System.out.println("checked: " + checked);
+        //System.out.println("checked: " + checked);
         // now apply this to the
         Object valOb = this.getValue();
-        System.out.println("valOb: " + valOb);
+        //System.out.println("valOb: " + valOb);
         if(valOb instanceof Collection){
             // then all good
-            System.out.println("valob is collection");
+            //System.out.println("valob is collection");
             log.debug("valOb is collection");
             Collection c = (Collection) valOb;
             updateChosenValue(c, elname, elvalue, checked);

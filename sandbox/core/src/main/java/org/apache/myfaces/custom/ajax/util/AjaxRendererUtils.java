@@ -410,20 +410,20 @@ public final class AjaxRendererUtils
                 String styleClass = "";
 
                 String msgForId = clientId + "_msgFor";
-                System.out.println("Looking for component: " + msgForId);
+                //System.out.println("Looking for component: " + msgForId);
                 UIComponent msgComponent = context.getViewRoot().findComponent(msgForId);
                 String msgId = null;
 
                 if (msgComponent != null)
                 {
-                    System.out.println("Component found");
+                    //System.out.println("Component found");
                     // then send to update single component
                     // get styleclass
                     String[] styleAndClass = HtmlMessageRendererBase.getStyleAndStyleClass(msgComponent, msg.getSeverity());
                     style = styleAndClass[0];
                     styleClass = styleAndClass[1];
                     msgId = msgComponent.getClientId(context);
-                    System.out.println("style: " + style);
+                    //System.out.println("style: " + style);
                 }
                 else
                 {

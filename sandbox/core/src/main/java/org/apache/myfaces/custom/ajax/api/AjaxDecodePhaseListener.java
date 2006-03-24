@@ -80,7 +80,7 @@ public class AjaxDecodePhaseListener
             UIViewRoot root = context.getViewRoot();
             //DebugUtils.printView(root, System.out);
             Map requestMap = context.getExternalContext().getRequestParameterMap();
-            System.out.println("REQUEST MAP: " + mapToString(requestMap));
+            //System.out.println("REQUEST MAP: " + mapToString(requestMap));
             String affectedAjaxComponent = (String) requestMap.get("affectedAjaxComponent");
 
             UIComponent ajaxComponent = root.findComponent(affectedAjaxComponent);
@@ -98,13 +98,13 @@ public class AjaxDecodePhaseListener
                 //String elname = (String) requestMap.get("elname");
                 FormInfo fi = _ComponentUtils.findNestingForm(ajaxComponent, context);
                 UIComponent form = fi.getForm();
-                System.out.println("FOUND FORM: " + form);
+                //System.out.println("FOUND FORM: " + form);
                 if (form != null)
                 {
                     form.processDecodes(context);
                     form.processValidators(context);
                     form.processUpdates(context);
-                    System.out.println("DONE!");
+                    //System.out.println("DONE!");
                 }
 
             }
@@ -162,7 +162,7 @@ public class AjaxDecodePhaseListener
                         //String elname = (String) requestMap.get("elname");
                         FormInfo fi = _ComponentUtils.findNestingForm(ajaxComponent, context);
                         UIComponent form = fi.getForm();
-                        System.out.println("FOUND FORM: " + form);
+                        //System.out.println("FOUND FORM: " + form);
                         if (form != null)
                         {
                             // special case, add responses from all components in form
@@ -206,11 +206,11 @@ public class AjaxDecodePhaseListener
         for (int i = 0; i < formChildren.size(); i++)
         {
             UIComponent uiComponent = (UIComponent) formChildren.get(i);
-            System.out.println("component id: " + uiComponent.getClientId(context));
+            //System.out.println("component id: " + uiComponent.getClientId(context));
             // only if it has a matching id in the request list
             if (requestMap.containsKey(uiComponent.getClientId(context)))
             {
-                System.out.println("FOUND COMPONENT SO ENCODING AJAX");
+                //System.out.println("FOUND COMPONENT SO ENCODING AJAX");
                 AjaxRendererUtils.encodeAjax(context, uiComponent);
             }
             // recurse
