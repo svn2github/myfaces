@@ -16,20 +16,20 @@
 package org.apache.myfaces.custom.emailvalidator;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.validator.ValidatorBase;
 
 import org.apache.commons.validator.GenericValidator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class EmailValidator implements Validator {
+public class EmailValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -64,8 +64,10 @@ public class EmailValidator implements Validator {
 			}
 			if (!GenericValidator.isEmail(value.toString())) {
 				Object[] args = {value.toString()};
-				throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,EMAIL_MESSAGE_ID, args));
+                String message = getMessage();
+                if (null == message)  message = EMAIL_MESSAGE_ID;
 
+                throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
 			}
 
 	}

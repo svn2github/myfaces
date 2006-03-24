@@ -15,20 +15,19 @@
  */
 package org.apache.myfaces.custom.creditcardvalidator;
 
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-
 import javax.faces.application.FacesMessage;
-import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.validator.ValidatorBase;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class CreditCardValidator implements Validator,StateHolder {
+public class CreditCardValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -59,9 +58,6 @@ public class CreditCardValidator implements Validator,StateHolder {
 	private Boolean _visa = null;
 	private Boolean _none = null;
 
-	//JSF-Field for StateHolder-IF
-	private boolean _transient = false;
-
 	//Field, to init the desired Validator
 	private int _initSum = 0;
 
@@ -86,7 +82,10 @@ public class CreditCardValidator implements Validator,StateHolder {
 		initValidator();
 		if (!this.creditCardValidator.isValid(value.toString())){
 			Object[] args = {value.toString()};
-			throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,CREDITCARD_MESSAGE_ID, args));
+            String message = getMessage();
+            if (null == message)  message = CREDITCARD_MESSAGE_ID;
+
+            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
 		}
 	}
 
@@ -180,11 +179,12 @@ public class CreditCardValidator implements Validator,StateHolder {
 	 */
 	public Object saveState(FacesContext context) {
 		Object values[] = new Object[6];
-		values[0] = _amex;
-		values[1] = _discover;
-		values[2] = _mastercard;
-		values[3] = _visa;
-		values[4] = _none;
+        values[0] = super.saveState(context);
+		values[1] = _amex;
+		values[2] = _discover;
+		values[3] = _mastercard;
+		values[4] = _visa;
+		values[5] = _none;
 		return values;
 	}
 
@@ -193,24 +193,11 @@ public class CreditCardValidator implements Validator,StateHolder {
 	 */
 	public void restoreState(FacesContext context, Object state) {
 		Object values[] = (Object[])state;
-		_amex = ((Boolean) values[0]);
-		_discover = ((Boolean) values[1]);
-		_mastercard = ((Boolean) values[2]);
-		_visa = ((Boolean) values[3]);
-		_none = ((Boolean) values[4]);
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.faces.component.StateHolder#isTransient()
-	 */
-	public boolean isTransient() {
-		return _transient;
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.faces.component.StateHolder#setTransient(boolean)
-	 */
-	public void setTransient(boolean newTransientValue) {
-		this._transient = newTransientValue;
+        super.restoreState(context, values[0]);
+		_amex = ((Boolean) values[1]);
+		_discover = ((Boolean) values[2]);
+		_mastercard = ((Boolean) values[3]);
+		_visa = ((Boolean) values[4]);
+		_none = ((Boolean) values[5]);
 	}
 }

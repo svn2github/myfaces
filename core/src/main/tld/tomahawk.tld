@@ -24,7 +24,8 @@
 <!ENTITY ext_textarea_attribute         SYSTEM "entities/ext_textarea_attribute.xml">
 <!ENTITY ext_actionfor_attribute        SYSTEM "entities/ext_actionfor_attribute.xml">
 <!ENTITY ext_escape_attribute           SYSTEM "entities/ext_escape_attribute.xml">
-<!ENTITY ext_disabled_attribute        SYSTEM "entities/ext_disabled_attribute.xml">        
+<!ENTITY ext_disabled_attribute         SYSTEM "entities/ext_disabled_attribute.xml">        
+<!ENTITY ext_validator_base_attributes  SYSTEM "entities/ext_validator_base_attributes.xml">
 <!ENTITY faces_binding_attribute        SYSTEM "entities/faces_binding_attribute.xml">
 <!ENTITY faces_id_optional_attribute    SYSTEM "entities/faces_id_optional_attribute.xml">
 <!ENTITY faces_id_required_attribute    SYSTEM "entities/faces_id_required_attribute.xml">
@@ -1389,6 +1390,7 @@
 
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+        &ext_validator_base_attributes;
         &tomahawk_validate_credit_card_attributes;
     </tag>
 
@@ -1401,6 +1403,7 @@
 
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+        &ext_validator_base_attributes;
     </tag>
 
     <!-- Validator for ISBN -->
@@ -1423,6 +1426,7 @@
 
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+        &ext_validator_base_attributes;
         &tomahawk_validate_regexpr_attributes;
     </tag>
 
@@ -1435,6 +1439,7 @@
 
         Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+        &ext_validator_base_attributes;
         &tomahawk_validate_equal_attributes;
     </tag>
 

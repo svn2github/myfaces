@@ -18,19 +18,18 @@ package org.apache.myfaces.custom.equalvalidator;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.validator.ValidatorBase;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class EqualValidator implements Validator, StateHolder {
+public class EqualValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -48,11 +47,6 @@ public class EqualValidator implements Validator, StateHolder {
 
 	//the foreign component_id on which the validation is based.
 	private String _for= null;
-
-
-	//JSF-Field for StateHolder-IF
-	private boolean _transient = false;
-
 
 	// -------------------------------------------------------- ValidatorIF
 	public void validate(
@@ -83,27 +77,28 @@ public class EqualValidator implements Validator, StateHolder {
 		Object[] args = {value.toString(),(foreignEditableValueHolder.getValue()==null) ? foreignComp.getId():foreignEditableValueHolder.getValue().toString()};
 
 		if(foreignEditableValueHolder.getValue()==null || !foreignEditableValueHolder.getValue().toString().equals(value.toString())  )
-			throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,EQUAL_MESSAGE_ID, args));
+        {
+            String message = getMessage();
+            if (null == message)  message = EQUAL_MESSAGE_ID;
+
+            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+        }
 
 	}
 	// -------------------------------------------------------- StateholderIF
 
-	public Object saveState(FacesContext context) {
-		Object state = _for;
-		return state;
-	}
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[6];
+        values[0] = super.saveState(context);
+        values[1] = _for;
+        return values;
+    }
 
-	public void restoreState(FacesContext context, Object state) {
-		_for = (String) state;
-	}
-
-	public boolean isTransient() {
-		return _transient;
-	}
-
-	public void setTransient(boolean newTransientValue) {
-		_transient = newTransientValue;
-	}
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[])state;
+        super.restoreState(context, values[0]);
+        _for = (String)values[1];
+    }
 	// -------------------------------------------------------- GETTER & SETTER
 
 	/**

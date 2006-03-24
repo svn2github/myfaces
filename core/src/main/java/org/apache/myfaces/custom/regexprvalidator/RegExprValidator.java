@@ -15,27 +15,22 @@
  */
 package org.apache.myfaces.custom.regexprvalidator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.faces.application.FacesMessage;
-import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import org.apache.commons.validator.GenericValidator;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
-import org.apache.commons.validator.GenericValidator;
+import org.apache.myfaces.validator.ValidatorBase;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class RegExprValidator implements Validator, StateHolder {
+public class RegExprValidator extends ValidatorBase {
 	/**
 	 * <p>The standard converter id for this converter.</p>
 	 */
@@ -52,14 +47,6 @@ public class RegExprValidator implements Validator, StateHolder {
 
 	//the pattern on which the validation is based.
     protected String _pattern= null;
-
-    // the message to display when validation fails.
-    protected String _message;
-
-	//JSF-Field for StateHolder-IF
-    protected boolean _transient = false;
-
-
 
 	public void validate(
 		FacesContext facesContext,
@@ -90,25 +77,18 @@ public class RegExprValidator implements Validator, StateHolder {
 	// -------------------------------------------------------- StateholderIF
 
 	public Object saveState(FacesContext context) {
-		Object value[] = new Object[2];
-        value[0] = _pattern;
-        value[1] = _message;
-		return value;
+		Object values[] = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = _pattern;
+		return values;
 	}
 
 	public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
-        _message = (String) values[1];
-        _pattern = (String) values[0];
+        super.restoreState(context, values[0]);
+        _pattern = (String) values[1];
 	}
 
-	public boolean isTransient() {
-		return _transient;
-	}
-
-	public void setTransient(boolean newTransientValue) {
-		_transient = newTransientValue;
-	}
 	// -------------------------------------------------------- GETTER & SETTER
 
 	/**
@@ -127,50 +107,5 @@ public class RegExprValidator implements Validator, StateHolder {
 	public void setPattern(String string) {
 		_pattern = string;
 	}
-
-    public String getMessage()
-    {
-        if (_message != null) return _message;
-        ValueBinding vb = getValueBinding("message");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
-
-    public void setMessage(String message)
-    {
-        this._message = message;
-    }
-
-    // --------------------- borrowed from UIComponentBase ------------
-
-    private Map _valueBindingMap = null;
-
-    public ValueBinding getValueBinding(String name)
-    {
-        if (name == null) throw new NullPointerException("name");
-        if (_valueBindingMap == null)
-        {
-            return null;
-        }
-        else
-        {
-            return (ValueBinding)_valueBindingMap.get(name);
-        }
-    }
-
-    public void setValueBinding(String name,
-                                ValueBinding binding)
-    {
-        if (name == null) throw new NullPointerException("name");
-        if (_valueBindingMap == null)
-        {
-            _valueBindingMap = new HashMap();
-        }
-        _valueBindingMap.put(name, binding);
-    }
-
-    protected FacesContext getFacesContext()
-    {
-        return FacesContext.getCurrentInstance();
-    }
 
 }

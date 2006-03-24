@@ -19,28 +19,24 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.webapp.UIComponentTag;
-import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
+
+import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class ValidateRegExprTag extends ValidatorTag {
+public class ValidateRegExprTag extends ValidatorBaseTag {
   private static final long serialVersionUID = -449945949876262076L;
   //the pattern, needed by Commons-Validator.
     private String _pattern = null;
-    private String _message = null;
 
 	public ValidateRegExprTag(){
 	}
 
     public void setPattern(String string) {
         _pattern = string;
-    }
-
-    public void setMessage(String string) {
-        _message = string;
     }
 
 	protected Validator createValidator() throws JspException {
@@ -61,26 +57,13 @@ public class ValidateRegExprTag extends ValidatorTag {
             }
         }
 
-        if (_message != null)
-        {
-            if (UIComponentTag.isValueReference(_message))
-            {
-                ValueBinding vb = facesContext.getApplication().createValueBinding(_message);
-                validator.setMessage(new String(vb.getValue(facesContext).toString()));
-            }
-            else
-            {
-                validator.setMessage(_message);
-            }
-        }
-
 		return validator;
 	}
+    
     public void release()
     {
         super.release();
         _pattern= null;
-        _message= null;
     }
 
 }

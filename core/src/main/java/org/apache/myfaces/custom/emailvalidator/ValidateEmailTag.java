@@ -16,14 +16,15 @@
 package org.apache.myfaces.custom.emailvalidator;
 
 import javax.faces.validator.Validator;
-import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
+
+import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class ValidateEmailTag extends ValidatorTag
+public class ValidateEmailTag extends ValidatorBaseTag
 {
   private static final long serialVersionUID = 6041422002721046221L;
 

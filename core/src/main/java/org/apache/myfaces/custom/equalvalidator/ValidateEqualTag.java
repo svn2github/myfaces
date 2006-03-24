@@ -19,14 +19,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.webapp.UIComponentTag;
-import javax.faces.webapp.ValidatorTag;
 import javax.servlet.jsp.JspException;
+
+import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class ValidateEqualTag extends ValidatorTag {
+public class ValidateEqualTag extends ValidatorBaseTag {
   private static final long serialVersionUID = -3249115551944863108L;
   //the foreign component_id on which the validation is based.
 	private String _for = null;
