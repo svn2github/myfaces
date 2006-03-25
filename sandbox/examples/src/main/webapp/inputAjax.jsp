@@ -223,7 +223,8 @@
         <s:commandButtonAjax action="#{inputAjaxBean.ajaxFormSubmit}" value="Submit"/>
         <h:outputText value="&nbsp;" escape="false"/>
     </h:panelGrid>
-    <f:verbatim>This component demonstrates submitting a form through ajax.</f:verbatim>
+    <f:verbatim>This component demonstrates submitting a form through ajax.  To see validation errors, put less than five
+    characters in first box, and a string with a space in it in the second box.</f:verbatim>
 </h:panelGrid>
 
 </h:form>
