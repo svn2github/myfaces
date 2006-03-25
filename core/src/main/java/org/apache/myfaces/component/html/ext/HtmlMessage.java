@@ -140,13 +140,14 @@ public class HtmlMessage
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = _summaryFormat;
         values[2] = _detailFormat;
         values[3] = _enabledOnUserRole;
         values[4] = _visibleOnUserRole;
         values[5] = _replaceIdWithLabel;
+        values[6] = _forceSpan;
         return ((Object) (values));
     }
 
@@ -159,6 +160,7 @@ public class HtmlMessage
         _enabledOnUserRole = (String) values[3];
         _visibleOnUserRole = (String) values[4];
         _replaceIdWithLabel = (Boolean) values[5];
+        _forceSpan = (Boolean) values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }
