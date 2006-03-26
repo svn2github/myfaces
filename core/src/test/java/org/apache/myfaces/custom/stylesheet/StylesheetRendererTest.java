@@ -21,6 +21,7 @@ import java.io.StringWriter;
 
 import junit.framework.Test;
 import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.mock.MockRenderKitFactory;
 import org.apache.shale.test.mock.MockResponseWriter;
 
 public class StylesheetRendererTest extends AbstractJsfTestCase
@@ -42,6 +43,8 @@ public class StylesheetRendererTest extends AbstractJsfTestCase
         stylesheet.setMedia("printer");
         writer = new MockResponseWriter(new StringWriter(), null, null);
         facesContext.setResponseWriter(writer);
+        // TODO remove these two lines once shale-test goes alpha, see MYFACES-1155
+        facesContext.getViewRoot().setRenderKitId(MockRenderKitFactory.HTML_BASIC_RENDER_KIT);
         facesContext.getRenderKit().addRenderer(
                 stylesheet.getFamily(), 
                 stylesheet.getRendererType(), 

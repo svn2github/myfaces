@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import junit.framework.Test;
 
 import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.mock.MockRenderKitFactory;
 
 /**
  * @author Mathias Brökelmann (latest modification by $Author$)
@@ -54,8 +55,9 @@ public class HtmlDataTableTest extends AbstractJsfTestCase
     public void setUp()
     {
         super.setUp();
-    	// once shale-test is updated in maven, this will not be necessary
+        // TODO remove these two lines once shale-test goes alpha, see MYFACES-1155
     	FactoryFinder.releaseFactories();
+        facesContext.getViewRoot().setRenderKitId(MockRenderKitFactory.HTML_BASIC_RENDER_KIT);
         _dataTable = new HtmlDataTable();
     }
 

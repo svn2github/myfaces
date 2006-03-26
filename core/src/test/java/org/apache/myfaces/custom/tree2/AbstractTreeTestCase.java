@@ -17,6 +17,7 @@
 package org.apache.myfaces.custom.tree2;
 
 import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.mock.MockRenderKitFactory;
 import org.apache.shale.test.mock.MockResponseWriter;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 
@@ -86,6 +87,9 @@ public class AbstractTreeTestCase extends AbstractJsfTestCase
         facesContext.getExternalContext().getApplicationMap().put(MyfacesConfig.class.getName(), new MyfacesConfig());
         facesContext.setResponseWriter(new MockResponseWriter(new BufferedWriter(new CharArrayWriter()), null, null));
 
+        // TODO remove these two lines once shale-test goes alpha, see MYFACES-1155
+        facesContext.getViewRoot().setRenderKitId(MockRenderKitFactory.HTML_BASIC_RENDER_KIT);
+        
         // set up the test tree with the standard data
         rootNode = new TreeNodeBase(DEFAULT_NODE_TYPE, "Root", "Root", false);
 
