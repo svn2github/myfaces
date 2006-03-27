@@ -286,7 +286,7 @@ public abstract class HtmlDataTableHack extends
         }
     }
 
-    private void restoreDescendantComponentStates(Iterator childIterator,
+    protected void restoreDescendantComponentStates(Iterator childIterator,
             Object state, boolean restoreChildFacets)
     {
         Iterator descendantStateIterator = null;
@@ -330,7 +330,7 @@ public abstract class HtmlDataTableHack extends
         }
     }
 
-    private Object saveDescendantComponentStates(Iterator childIterator,
+    protected Object saveDescendantComponentStates(Iterator childIterator,
             boolean saveChildFacets)
     {
         Collection childStates = null;
@@ -570,4 +570,5 @@ public abstract class HtmlDataTableHack extends
 
         return defaultValue;
     }
+
 }

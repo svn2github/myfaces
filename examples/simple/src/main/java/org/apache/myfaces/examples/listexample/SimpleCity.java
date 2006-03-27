@@ -29,6 +29,21 @@ public class SimpleCity implements Serializable
     private static final long serialVersionUID = 1L;
     private String mName;
 
+    private boolean selected;
+    
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
+	public void unselect(){
+		setSelected(false);
+	}
+	
+
 	/**
 	 * 
 	 */

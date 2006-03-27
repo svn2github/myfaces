@@ -15,30 +15,22 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.model.DataModel;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+import javax.faces.model.DataModel;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.util.*;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -79,7 +71,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private boolean _isValidChildren = true;
 
     private Set _expandedNodes = new HashSet();
-    private UIColumn detailColumn;
+
+    private Map _detailRowStates = new HashMap();
 
     public String getClientId(FacesContext context)
     {
@@ -104,8 +97,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             return standardClientId+NamingContainer.SEPARATOR_CHAR+forcedIdIndex;
         }
 
+        //noinspection UnnecessaryLocalVariable
         String parsedForcedClientId = standardClientId.substring(0, indexLast_+1)+forcedIdIndex;
-
         return parsedForcedClientId;
     }
 
@@ -138,6 +131,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             if(comp == null)
                 return null;
 
+            //noinspection UnnecessaryLocalVariable
             UIComponentPerspective perspective = new UIComponentPerspective(this,comp,rowIndex);
             return perspective;
         }
@@ -150,9 +144,20 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
     public void setRowIndex(int rowIndex)
     {
+    	FacesContext facesContext = FacesContext.getCurrentInstance();
+
         if(rowIndex < -1)
         {
             throw new IllegalArgumentException("rowIndex is less than -1");
+        }
+
+        UIComponent facet = getFacet(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        /*Just for obtaining an iterator which must be passed to saveDescendantComponentStates()*/
+        Set set = new HashSet();
+        set.add(facet);
+        if(rowIndex!=-1 && facet!=null){
+
+            _detailRowStates.put(getClientId(facesContext),saveDescendantComponentStates(set.iterator(),false));
         }
 
         String rowIndexVar = getRowIndexVar();
@@ -176,7 +181,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                 }
             }
 
+
+
             super.setRowIndex(rowIndex);
+
+
 
             if (rowIndex >= 0)
             {
@@ -215,6 +224,15 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             // no extended var attributes defined, no special treatment
             super.setRowIndex(rowIndex);
         }
+
+        if(rowIndex!=-1 && facet!=null){
+        	Object rowState = _detailRowStates.get(getClientId(facesContext));
+
+            restoreDescendantComponentStates(set.iterator(),
+                                rowState, false);
+
+        }
+
         if (_varDetailToggler != null)
         {
             Map requestMap = getFacesContext().getExternalContext().getRequestMap();
@@ -232,6 +250,45 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         setRowIndex(-1);
         processColumns(context, PROCESS_DECODES);
         setRowIndex(-1);
+        processDetails(context,PROCESS_DECODES);
+        setRowIndex(-1);
+    }
+
+    /**
+     *
+     * @param context
+     * @param processAction
+     */
+    private void processDetails(FacesContext context, int processAction){
+    	UIComponent facet = getFacet(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+
+    	if(facet!=null){
+	    	int first = getFirst();
+	        int rows = getRows();
+	        int last;
+	        if (rows == 0)
+	        {
+	            last = getRowCount();
+	        }
+	        else
+	        {
+	            last = first + rows;
+	        }
+	        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
+	        {
+	            setRowIndex(rowIndex);
+
+	            if(!isCurrentDetailExpanded()){
+	            	continue;
+	            }
+
+	            //scrolled past the last row
+	            if (!isRowAvailable())
+	                break;
+
+	            process(context,facet,processAction);
+	        }
+    	}
     }
 
     /**
@@ -275,6 +332,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         super.processValidators(context);
         processColumns(context, PROCESS_VALIDATORS);
         setRowIndex(-1);
+        processDetails(context,PROCESS_VALIDATORS);
+        setRowIndex(-1);
 
         if (context.getRenderResponse())
         {
@@ -290,6 +349,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         }
         super.processUpdates(context);
         processColumns(context, PROCESS_UPDATES);
+        setRowIndex(-1);
+        processDetails(context,PROCESS_UPDATES);
         setRowIndex(-1);
 
         if (isPreserveDataModel())
@@ -860,20 +921,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     protected void setPreservedDataModel(_SerializableDataModel preservedDataModel) {
         _preservedDataModel = preservedDataModel;
     }
-    
-    public String getDetailHeader() {
-        if(detailColumn!=null){
-            return (String) ((UIOutput)detailColumn.getHeader()).getValue();
-        } else {
-            return null;
-        }
-    }
 
-    public void setDetailHeader(String header) {
-        if(detailColumn!=null){
-            ((UIOutput)detailColumn.getHeader()).setValue(header);
-        }
-    }
 
     public boolean isCurrentDetailExpanded(){
         return _expandedNodes.contains(new Integer(getRowIndex()));
@@ -915,7 +963,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     /**
      * Return true if the current detail row is expanded.
      *
-     * @return
+     * @return true if the current detail row is expanded.
      */
     public boolean isDetailExpanded(){
         Integer rowIndex = new Integer(getRowIndex());
