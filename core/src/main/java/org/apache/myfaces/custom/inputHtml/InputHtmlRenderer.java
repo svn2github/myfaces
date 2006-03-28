@@ -383,7 +383,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                             writer.startElement(HTML.BUTTON_ELEM,editor);
                             writer.writeAttribute(HTML.TYPE_ATTR, "button",null);
                             writer.writeAttribute(HTML.CLASS_ATTR, "kupu-logo",null);
-                            writer.writeAttribute(HTML.TITLE_ATTR, "Kupu 1.3",null);
+                            writer.writeAttribute(HTML.TITLE_ATTR, "Kupu 1.3.5",null);
                             writer.writeAttribute("i18n:attributes", "title", null);
                             writer.writeAttribute(HTML.ACCESSKEY_ATTR, "k",null);
                             writer.writeAttribute(HTML.ONCLICK_ATTR, "window.open('http://kupu.oscom.org');",null);
@@ -565,7 +565,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                     if( ! editor.isAllowEditSource() ){
                         writer.writeAttribute(HTML.STYLE_ATTR, "display: none", null);
                     }
-                        writeButton(writer, "kupu-source", "edit HTML code", null, editor);
+                        writeButton(writer, "kupu-source", "edit HTML code", "h", editor);
                      writer.endElement(HTML.SPAN_ELEM);
 
                 writer.endElement(HTML.SPAN_ELEM); // kupu-tb-buttons
