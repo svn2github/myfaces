@@ -257,7 +257,6 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
         writer.writeAttribute(HTML.ID_ATTR, hiddenFieldCliendId,
                               JSFAttr.ID_ATTR);
         writer.writeAttribute(HTML.NAME_ATTR, hiddenFieldCliendId, null);
-        writer.endElement(HTML.INPUT_ELEM);
 
         StringBuffer sb = new StringBuffer();
         int n = 0;
@@ -271,6 +270,9 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
             sb.append(value);
             n++;
         }
+
+        writer.writeAttribute(HTML.VALUE_ATTR, sb.toString(), null);
+        writer.endElement(HTML.INPUT_ELEM);
 
     }
 
