@@ -68,9 +68,13 @@
             	<h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
             </h:panelGrid>
 
+            <h:outputText value="Selection Lists"/>
+            <h:panelGrid style="padding-left:25px">
+               <h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - A picklist, where you select components from a list and the selected items are displayed in another list</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
             <h:outputText value="Miscellaneous"/>
             <h:panelGrid style="padding-left:25px">
-				<h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - a picklist</f:verbatim></h:outputLink>
 	 			<h:commandLink action="go_scope_shop"><f:verbatim>Scope - saveState without serialisation</f:verbatim></h:commandLink>
            		<h:outputLink value="effect.jsf" ><f:verbatim>Effect - FAT and script.aculo.us effects</f:verbatim></h:outputLink>
 	            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
