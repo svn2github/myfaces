@@ -16,33 +16,30 @@
 
 package org.apache.myfaces.custom.ajax.api;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
-import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
-import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-import org.apache.myfaces.shared_tomahawk.util.HashMapUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.Writer;
-import java.io.PrintWriter;
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
+import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * This short circuits the life cycle and applies updates to affected components only
