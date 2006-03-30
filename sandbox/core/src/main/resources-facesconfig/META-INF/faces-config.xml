@@ -139,6 +139,12 @@
 	<component-type>org.apache.myfaces.HtmlOutputTextFor</component-type>
 	<component-class>org.apache.myfaces.custom.inputsuggestajax.HtmlOutputText</component-class>
   </component>
+
+  <component>
+    <component-type>org.apache.myfaces.IfMessage</component-type>
+    <component-class>org.apache.myfaces.custom.ifmessage.IfMessage</component-class>
+  </component>
+
   
   <!-- sandbox converters -->
 
@@ -314,6 +320,12 @@
         <component-family>javax.faces.Input</component-family>
         <renderer-type>org.apache.myfaces.StateChangedNotifierRenderer</renderer-type>
         <renderer-class>org.apache.myfaces.custom.statechangednotifier.StateChangedNotifierRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+        <component-family>javax.faces.Panel</component-family>
+        <renderer-type>org.apache.myfaces.IfMessageRenderer</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.ifmessage.IfMessageRenderer</renderer-class>
     </renderer>
 
    <!-- <renderer>

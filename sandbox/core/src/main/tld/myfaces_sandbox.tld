@@ -966,5 +966,19 @@ Sandbox-related entities.
             </description>
         </attribute>
     </tag>
-
+    <tag>
+		<name>ifMessage</name>
+		<tag-class>org.apache.myfaces.custom.ifmessage.IfMessageTag</tag-class>
+		<body-content>JSP</body-content>
+		<display-name>ifMessage component</display-name>
+		<description>Provide a component that will optionally render its children if the specified 
+			component(s) specified has a message.</description>
+        <attribute>
+			<name>for</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description></description>
+        </attribute>
+    </tag>
 </taglib>

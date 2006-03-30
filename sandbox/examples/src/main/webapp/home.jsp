@@ -73,6 +73,11 @@
                <h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - A picklist, where you select components from a list and the selected items are displayed in another list</f:verbatim></h:outputLink>
             </h:panelGrid>
 
+            <h:outputText value="Messages"/>
+            <h:panelGrid style="padding-left:25px">
+               <h:outputLink value="ifMessage.jsf"><f:verbatim>ifMessage - renders its children only if there is a message in the FacesContext for the specified component(s)</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
             <h:outputText value="Miscellaneous"/>
             <h:panelGrid style="padding-left:25px">
 	 			<h:commandLink action="go_scope_shop"><f:verbatim>Scope - saveState without serialisation</f:verbatim></h:commandLink>
