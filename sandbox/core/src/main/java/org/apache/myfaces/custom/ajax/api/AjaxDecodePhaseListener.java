@@ -19,7 +19,6 @@ package org.apache.myfaces.custom.ajax.api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.application.ComponentNotFoundException;
-import org.apache.myfaces.application.jsp.JspStateManagerImpl;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
