@@ -284,13 +284,15 @@ public class HtmlPicklistRenderer extends HtmlListboxRenderer
 
         for (Iterator i = selectItemList.iterator(); i.hasNext();)
         {
-            //set.add( RendererUtils.getConvertedStringValue(facesContext, uiComponent, converter, i.next()) );
             SelectItem selectItem = (SelectItem) i.next();
+            String itemStrValue = RendererUtils.getConvertedStringValue(facesContext, uiComponent,
+                    converter, selectItem);
+
 
             for (Iterator i2 = lookupSet.iterator(); i2.hasNext();)
             {
                 Object value = i2.next();
-                if (value.equals(selectItem.getValue()))
+                if (value.equals(itemStrValue))
                 {
                     selectItemForSelectedValues.add(selectItem);
                 }
