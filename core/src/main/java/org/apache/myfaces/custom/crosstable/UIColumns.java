@@ -345,6 +345,10 @@ public class UIColumns extends UIData
         {
             return new ListDataModel((List) value);
         }
+        else if (value instanceof Collection)
+        {
+            return new ListDataModel(new ArrayList((Collection) value));
+        }
         else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
         {
             return new ArrayDataModel((Object[]) value);
