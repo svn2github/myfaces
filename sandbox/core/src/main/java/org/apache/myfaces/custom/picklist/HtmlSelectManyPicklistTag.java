@@ -15,13 +15,13 @@
  */
 package org.apache.myfaces.custom.picklist;
 
-import org.apache.myfaces.taglib.html.HtmlSelectManyListboxTag;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlSelectListboxTagBase;
 
 /**
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlSelectManyPicklistTag extends HtmlSelectManyListboxTag
+public class HtmlSelectManyPicklistTag extends HtmlSelectListboxTagBase
 {
 
     public String getComponentType()

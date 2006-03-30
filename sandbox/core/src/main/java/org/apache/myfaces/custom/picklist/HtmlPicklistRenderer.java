@@ -38,13 +38,13 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.HtmlListboxRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlListboxRendererBase;
 
 /**
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlPicklistRenderer extends HtmlListboxRenderer
+public class HtmlPicklistRenderer extends HtmlListboxRendererBase
 {
 
     private static final String FUNCTION_ADD_TO_SELECTED = "myfaces_picklist_addToSelected";
