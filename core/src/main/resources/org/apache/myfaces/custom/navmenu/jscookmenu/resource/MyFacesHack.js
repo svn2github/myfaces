@@ -15,14 +15,15 @@ function cmItemMouseUp (obj, index)
     if (link != null)
     {
         // changes by Richard J. Barbalace
-        if (link.match(/^\w*:\w*:\/\//) != null ) {
+        if (link.match(/^\w*:A\]\w*:\/\//) != null ) {
             // Link is a URL
-            link = link.replace(/^\w*:A/, "");  // Remove JSF ID
+            link = link.replace(/^\w*:A\]/, "");  // Remove JSF ID
             window.open (link, target);
-        } else if (link.match(/^\w*:\w*:/) != null ) {
+        } else if (link.match(/^\w*:A\]/) != null ) {
             // Link is a script method
-            link = link.replace(/^\w*:A/, "");  // Remove JSF ID
-            window.open (link, '_self');
+            link = link.replace(/^\w*:A\]/, "");  // Remove JSF ID
+            eval(link);
+            // window.open (link, '_self');
         } else {
             // Link is a JSF action
             var dummyForm = document.forms[target];
