@@ -24,9 +24,9 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
-import org.apache.myfaces.shared_impl.util._ComponentUtils;
-import org.apache.myfaces.shared_impl.util.HashMapUtils;
-import org.apache.myfaces.shared_impl.renderkit.html.util.FormInfo;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.util.HashMapUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
