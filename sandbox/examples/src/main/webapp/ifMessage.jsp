@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
-
+<html>
 <!--
 /*
  * Copyright 2006 The Apache Software Foundation.
@@ -20,26 +20,43 @@
  * limitations under the License.
  */
 //-->
+<%@include file="inc/head.inc" %>
 
+<body>
 <f:view>
 	<h:form>
-		<s:ifMessage for="item,item2">
+
+        <s:ifMessage for="item,item2">
 			<h:outputText value="Error!!!!"/>
 		</s:ifMessage>
+
+        <br/>
 		<br/>
-		<br/>
-		<h:message for="item"/>
+
+        <h:message for="item"/>
 		<h:inputText id="item" required="true"/>
+
+        <br/>
 		<br/>
-		<br/>
-		<h:message for="item2"/>
+
+        <h:message for="item2"/>
 		<h:inputText id="item2" required="true"/>
+
+        <br/>
 		<br/>
-		<br/>
-		<h:message for="item3"/>
+
+        <h:message for="item3"/>
 		<h:inputText id="item3" required="true"/>
+
+        <br/>
 		<br/>
-		<br/>
-		<h:commandButton value="Submit Me"/>
+
+        <h:commandButton value="Submit Me"/>
 	</h:form>
 </f:view>
+
+<%@include file="inc/page_footer.jsp" %>
+
+</body>
+
+</html>
