@@ -1,0 +1,17 @@
+.ajaxPopup { 
+    position:absolute; width:250px; background-color:white;
+    border:1px solid #888; margin:0px; padding:0px;
+    overflow: hidden; 
+ }
+
+ .ajaxPopup li {
+    white-space: nowrap;
+    padding-left: 3px;
+    padding-right: 3px;
+ }
+.ajaxPopup li.selected {
+    background-color: #ffb;
+}
+.ajaxPopup ul {
+    list-style-type:none;margin:0px;padding:0px;
+}

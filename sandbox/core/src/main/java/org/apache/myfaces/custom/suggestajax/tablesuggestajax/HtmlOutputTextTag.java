@@ -1,4 +1,4 @@
-package org.apache.myfaces.custom.inputsuggestajax;
+package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import javax.faces.component.UIComponent;

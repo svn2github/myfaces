@@ -48,9 +48,10 @@
 
             <h:outputText value="Input Suggest"/>
             <h:panelGrid style="padding-left:25px">
-	            <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax (with tableSuggest feature)</f:verbatim></h:outputLink>
-	            <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components - server side validation through ajax </f:verbatim></h:outputLink>
-	            <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest</f:verbatim></h:outputLink>
+	            <h:outputLink value="inputSuggestAjax.jsf" ><f:verbatim>InputSuggestAjax - Suggested items list through Ajax</f:verbatim></h:outputLink>
+                <h:outputLink value="tableSuggestAjax.jsf" ><f:verbatim>TableSuggestAjax - Suggested table through Ajax (choosing a row puts column values to specific dom nodes) </f:verbatim></h:outputLink>
+                <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components - server side validation through ajax </f:verbatim></h:outputLink>
+	            <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest - Suggest without Ajax</f:verbatim></h:outputLink>
             </h:panelGrid>
             
             <h:outputText value="Schedule"/>

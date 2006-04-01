@@ -1,0 +1,62 @@
+<attribute>
+    <name>betweenKeyUp</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>If the time between two keyup events is lower than this given value,
+        the ajax request will not be fired. In milliseconds. Prevents stressing the server with too much user inputs
+    </description>
+</attribute>
+
+<attribute>
+    <name>startRequest</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>The AJAX Request is only triggered if the number of chars typed in is
+                 equal or greater than this given value.
+    </description>
+</attribute>
+
+<attribute>
+    <name>tableStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for the suggested table.</description>
+</attribute>
+
+<attribute>
+    <name>nextPageFieldClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for the div field which steps to next page</description>
+</attribute>
+
+<attribute>
+    <name>columnHoverClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for a onmouseover event of the suggested columns</description>
+</attribute>
+
+<attribute>
+    <name>columnOutClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for a onmouseout event of the suggested columns</description>
+</attribute>
+
+<attribute>
+    <name>var</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>Same principle as it can be found in dataTable. SuggestedItemsMethod returns
+                 a list of objects, where the class variables can be accessed with the alias after the
+                 dot of the var.
+    </description>
+</attribute>

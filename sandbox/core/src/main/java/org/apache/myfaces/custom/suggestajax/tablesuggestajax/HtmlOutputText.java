@@ -1,4 +1,4 @@
-package org.apache.myfaces.custom.inputsuggestajax;
+package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
 
 import javax.faces.context.FacesContext;

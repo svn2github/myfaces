@@ -21,12 +21,14 @@ public class Address
                    String city,
                    long zip,String state)
     {
-        _streetNumber = streetNumber;
+        _streetNumber = streetNumber;      
         _streetName = streetName;
         _city = city;
         _state = state;
         _zip = zip;
     }
+
+
 
     public int getStreetNumber()
     {
