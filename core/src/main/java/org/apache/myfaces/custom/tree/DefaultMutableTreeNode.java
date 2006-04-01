@@ -194,7 +194,8 @@ public class DefaultMutableTreeNode implements MutableTreeNode
      */
     public Iterator children()
     {
-        return Collections.unmodifiableCollection(children).iterator();
+        return children == null ? 
+                null : Collections.unmodifiableCollection(children).iterator();
     }
 
     /**
