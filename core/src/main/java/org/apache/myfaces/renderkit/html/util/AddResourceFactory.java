@@ -16,17 +16,29 @@
 
 package org.apache.myfaces.renderkit.html.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
-
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import org.apache.myfaces.webapp.filter.ExtensionsFilter;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * This class provides the ability to instantiate AddResource objects.
@@ -144,6 +156,7 @@ public class AddResourceFactory
     protected static final Log log = LogFactory.getLog(AddResourceFactory.class);
 
     private final static String CACHE_MAP_KEY = "org.apache.myfaces.AddResourceFactory.CACHE_MAP_KEY";
+    private final static String ENV_CHECKED_KEY = "org.apache.myfaces.AddResourceFactory.ENV_CHECKED_KEY";
 
 
     /**
@@ -242,21 +255,128 @@ public class AddResourceFactory
             (FacesContext
                     context)
     {
-        return getInstance(
+    	AddResource addResource = getInstance(
                 context.getExternalContext().getRequestMap(),
                 context.getExternalContext().getRequestContextPath(),
                 MyfacesConfig.getCurrentInstance(context.getExternalContext()).getAddResourceClass());
+    	checkEnvironment(context, addResource);
+    	return addResource;
     }
 
-    public static AddResource getInstance
+	public static AddResource getInstance
             (HttpServletRequest
                     request)
     {
         ServletContext servletContext = request.getSession().getServletContext();
-        return getInstance(
-                new RequestMapWrapper(request),
+        Map requestMap = new RequestMapWrapper(request);
+        AddResource addResource = getInstance(
+        		requestMap,
                 request.getContextPath(),
                 MyfacesConfig.getAddResourceClassFromServletContext(servletContext));
+        //
+        // this will be called by the ExtensionsFilter itself, so no need to check the environment
+        //
+    	return addResource;
     }
 
+	/**
+	 * check if the extensionsFilter has been correctly setup.
+	 */
+    private static void checkEnvironment(FacesContext context, AddResource addResource)
+	{
+    	ExternalContext extctx = context.getExternalContext();
+    	
+    	if (extctx.getApplicationMap().containsKey(ENV_CHECKED_KEY))
+    	{
+    		// already checked
+    		return;
+    	}
+    	
+    	if (!MyfacesConfig.getCurrentInstance(extctx).isCheckExtensionsFilter())
+    	{
+    		// checks disabled by user request
+	    	extctx.getApplicationMap().put(ENV_CHECKED_KEY, Boolean.TRUE);
+	    	return;
+    	}
+    	
+    	synchronized (extctx.getApplicationMap())
+		{
+	    	if (addResource.requiresBuffer())
+	    	{
+	    		if (!extctx.getRequestMap().containsKey(ExtensionsFilter.DOFILTER_CALLED))
+	    		{
+	    			throwExtensionsFilterMissing();
+	    		}
+	    	}
+	    	
+	    	InputStream webXmlStream = null;
+	    	try
+			{
+				URL url = extctx.getResource("/WEB-INF/web.xml");
+				webXmlStream = url.openStream();
+
+				SAXParser parser = createSAXParser();
+				WebXmlFilterHandler webXmlFilterHandler = new WebXmlFilterHandler();
+				parser.parse(new InputSource(webXmlStream), webXmlFilterHandler);
+				
+				if (!webXmlFilterHandler.isValidEnvironment())
+				{
+					throwExtensionsFilterMissing();
+				}
+			}
+			catch (MalformedURLException e)
+			{
+				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
+			}
+			catch (IOException e)
+			{
+				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
+			}
+			catch (ParserConfigurationException e)
+			{
+				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
+			}
+			catch (SAXException e)
+			{
+				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
+			}
+			finally
+			{
+				if (webXmlStream != null)
+				{
+					try
+					{
+						webXmlStream.close();
+					}
+					catch (IOException e)
+					{
+						log.error("cant close /WEB-INF/web.xml", e);
+					}
+				}
+			}
+	    	
+	    	extctx.getApplicationMap().put(ENV_CHECKED_KEY, Boolean.TRUE);
+		}
+	}
+
+	protected static SAXParser createSAXParser() throws ParserConfigurationException, SAXException
+	{
+		SAXParserFactory saxParserFactory = createSAXParserFactory();
+		SAXParser parser = saxParserFactory.newSAXParser();
+		return parser;
+	}
+
+	protected static SAXParserFactory createSAXParserFactory()
+	{
+		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+		saxParserFactory.setValidating(false);
+		saxParserFactory.setXIncludeAware(true);
+		saxParserFactory.setNamespaceAware(true);
+		return saxParserFactory;
+	}
+
+	private static void throwExtensionsFilterMissing()
+	{
+		throw new IllegalStateException("ExtensionsFilter not correctly configured. Please see: http://wiki.apache.org/myfaces/MyFacesExtensionsFilter");
+	}
 }

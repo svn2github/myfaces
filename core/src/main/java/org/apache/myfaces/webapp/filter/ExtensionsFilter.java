@@ -42,7 +42,7 @@ public class ExtensionsFilter implements Filter {
 
     private ServletContext _servletContext;
 
-    private static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
+    public static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
 
     /**
      * Init method for this filter
