@@ -370,7 +370,7 @@ public class AddResourceFactory
 	{
 		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
 		saxParserFactory.setValidating(false);
-		saxParserFactory.setXIncludeAware(true);
+		//saxParserFactory.setXIncludeAware(true);
 		saxParserFactory.setNamespaceAware(true);
 		return saxParserFactory;
 	}
