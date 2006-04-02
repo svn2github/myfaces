@@ -80,6 +80,14 @@
         <param-value>NzY1NDMyMTA=</param-value>
     </context-param>
   
+    <context-param>
+  		<description>
+  			Validate managed beans and navigation rules.
+  		</description>
+       	<param-name>org.apache.myfaces.validate</param-name>
+       	<param-value>true</param-value>
+    </context-param>  
+  
       <!-- Tiles ViewHandler config file --> 	 
      <context-param> 	 
          <description>Tiles configuration 	 
