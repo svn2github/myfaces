@@ -448,7 +448,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             content.append(" class=\""+ tableSuggestAjax.getNextPageFieldClass() +"\" ");
 
             String popUpStyle = tableSuggestAjax.getPopupStyle();
-            if(popUpStyle!=null && popUpStyle.contains("overflow:auto"))
+            if(popUpStyle!=null && popUpStyle.indexOf("overflow:auto") > -1)
                 content.append("style=\"display:none;\"");
 
         content.append(">. . . </div>");
