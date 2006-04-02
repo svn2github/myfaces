@@ -21,30 +21,82 @@ import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+
 /**
  * Shows a confirmation window if some of the input fields of the form have changed its value
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class StateChangedNotifier extends HtmlInputHidden
-{
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.StateChangedNotifier";
+public class StateChangedNotifier extends HtmlInputHidden {
+    public static final String COMPONENT_TYPE        = "org.apache.myfaces.StateChangedNotifier";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.StateChangedNotifierRenderer";
 
     private static final String DEFAULT_MESSAGE = "Are you sure?";
 
-    private String confirmationMessage = DEFAULT_MESSAGE;
+    private String  confirmationMessage = DEFAULT_MESSAGE;
     private Boolean disabled;
-    private String excludedIds = null;
+    private String  excludedIds         = null;
 
-    public StateChangedNotifier()
-    {
+    public StateChangedNotifier() {
         super();
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-    public Object saveState(FacesContext context)
-    {
+    /**
+     * enable the state changed notification for this cycle
+     *
+     */
+    public void enableStateChanged() {
+        super.setValue("true");
+    }
+
+    public String getConfirmationMessage() {
+
+        if (confirmationMessage != null)
+            return confirmationMessage;
+
+        ValueBinding vb = getValueBinding("confirmationMessage");
+
+        return (vb != null) ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public Boolean getDisabled() {
+
+        if (disabled != null)
+            return disabled;
+
+        ValueBinding vb = getValueBinding("disabled");
+
+        return (vb != null) ? (Boolean) vb.getValue(getFacesContext()) : null;
+    }
+
+    public String getExcludedIds() {
+
+        if (excludedIds != null)
+            return excludedIds;
+
+        ValueBinding vb = getValueBinding("excludedIds");
+
+        return (vb != null) ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    /**
+     * a helper reset to reset the notifier
+     * to a non state changed state
+     */
+    public void reset() {
+        super.setValue("false");
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        Object[] values = (Object[]) state;
+        super.restoreState(context, values[0]);
+        this.confirmationMessage = (String) values[1];
+        this.disabled            = (Boolean) values[2];
+        this.excludedIds         = (String) values[3];
+    }
+
+    public Object saveState(FacesContext context) {
         Object[] values = new Object[4];
         values[0] = super.saveState(context);
         values[1] = confirmationMessage;
@@ -54,65 +106,16 @@ public class StateChangedNotifier extends HtmlInputHidden
         return values;
     }
 
-    public void restoreState(FacesContext context, Object state)
-    {
-        Object values[] = (Object[])state;
-        super.restoreState(context, values[0]);
-        this.confirmationMessage = (String) values[1];
-        this.disabled = (Boolean) values[2];
-        this.excludedIds = (String) values[3];
-    }
-
-    public String getConfirmationMessage()
-    {
-         if (confirmationMessage != null) return confirmationMessage;
-        ValueBinding vb = getValueBinding("confirmationMessage");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
-
-    public void setConfirmationMessage(String confirmationMessage)
-    {
+    public void setConfirmationMessage(String confirmationMessage) {
         this.confirmationMessage = confirmationMessage;
     }
 
-    public Boolean getDisabled()
-    {
-        if (disabled != null) return disabled;
-        ValueBinding vb = getValueBinding("disabled");
-        return vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setDisabled(Boolean disabled)
-    {
+    public void setDisabled(Boolean disabled) {
         this.disabled = disabled;
     }
 
-    public String getExcludedIds()
-    {
-        if (excludedIds != null) return excludedIds;
-        ValueBinding vb = getValueBinding("excludedIds");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
-
-    public void setExcludedIds(String excludedIds)
-    {
+    public void setExcludedIds(String excludedIds) {
         this.excludedIds = excludedIds;
     }
-    
-    /**
-     * a helper reset to reset the notifier
-     * to a non state changed state
-     */
-    public void reset() {
-        super.setValue("false");
-    }
-    /**
-     * enable the state changed notification for this cycle
-     *
-     */
-    public void enableStateChanged() {
-        super.setValue("true");
-    }
-    
-}
 
+}

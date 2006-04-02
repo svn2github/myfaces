@@ -19,57 +19,50 @@ import org.apache.myfaces.taglib.html.HtmlInputHiddenTag;
 
 import javax.faces.component.UIComponent;
 
+
 /**
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class StateChangedNotifierTag extends HtmlInputHiddenTag
-{
+public class StateChangedNotifierTag extends HtmlInputHiddenTag {
     private String confirmationMessage;
     private String disabled;
     private String excludedIds;
 
-    public String getComponentType()
-    {
+    public String getComponentType() {
         return StateChangedNotifier.COMPONENT_TYPE;
     }
 
-    public String getRendererType()
-    {
+    public String getRendererType() {
         return StateChangedNotifier.DEFAULT_RENDERER_TYPE;
     }
 
-    public void release()
-    {
+    public void release() {
         super.release();
         confirmationMessage = null;
-        disabled = null;
-        excludedIds = null;
+        disabled            = null;
+        excludedIds         = null;
     }
 
-    protected void setProperties(UIComponent component)
-    {
-
-        super.setProperties(component);
-
-        setStringProperty(component,"confirmationMessage",confirmationMessage);
-        setBooleanProperty(component, "disabled", disabled);
-        setStringProperty(component, "excludedIds", excludedIds);
-
-    }
-
-    public void setConfirmationMessage(String confirmationMessage)
-    {
+    public void setConfirmationMessage(String confirmationMessage) {
         this.confirmationMessage = confirmationMessage;
     }
 
-    public void setDisabled(String disabled)
-    {
+    public void setDisabled(String disabled) {
         this.disabled = disabled;
     }
 
-    public void setExcludedIds(String excludedIds)
-    {
+    public void setExcludedIds(String excludedIds) {
         this.excludedIds = excludedIds;
+    }
+
+    protected void setProperties(UIComponent component) {
+
+        super.setProperties(component);
+
+        setStringProperty(component, "confirmationMessage", confirmationMessage);
+        setBooleanProperty(component, "disabled", disabled);
+        setStringProperty(component, "excludedIds", excludedIds);
+
     }
 }
