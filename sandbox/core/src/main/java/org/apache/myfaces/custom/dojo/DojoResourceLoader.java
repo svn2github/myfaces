@@ -19,11 +19,10 @@ package org.apache.myfaces.custom.dojo;
 
 /**
  * Resource loader for the dojo lib javascripts
- * 
+ *
  * @author werpu (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public interface DojoResourceLoader
-{
+public interface DojoResourceLoader {
 
 }

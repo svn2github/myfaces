@@ -16,65 +16,33 @@
 
 package org.apache.myfaces.custom.dojo;
 
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * Dojointializerrenderer
- * 
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class DojoInitializerRenderer extends HtmlRenderer
-{
+public class DojoInitializerRenderer extends HtmlRenderer {
 
     public static final String RENDERER_TYPE = "org.apache.myfaces.DojoInitializerRenderer";
 
-    public void decode(FacesContext context, UIComponent component)
-    {
+    public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
 
     }
 
-    /**
-     * Encodes any stand-alone javascript functions that are needed. Uses either
-     * the extension filter, or a user-supplied location for the javascript
-     * files.
-     *
-     * @param context
-     *            FacesContext
-     * @param component
-     *            UIComponent
-     */
-    private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
-    {
-        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        DojoUtils.addMainInclude(context, component, javascriptLocation, DojoUtils.getDjConfigInstance(context));
-        String require = (String) component.getAttributes().get("require");
-        String provide = (String) component.getAttributes().get("provide");
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 
-        if (provide != null)
-            DojoUtils.addProvide(context, component, provide);
-
-        if (require != null)
-            DojoUtils.addRequire(context, component, require);
-
-    }
-
-    public boolean getRendersChildren()
-    {
-        return false;
-    }
-
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
-    {
-        if ((context == null) || (component == null))
-        {
+        if ((context == null) || (component == null)) {
             throw new NullPointerException();
         }
 
@@ -91,16 +59,43 @@ public class DojoInitializerRenderer extends HtmlRenderer
      * Standard encode end
      *
      */
-    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
-    {
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         super.encodeEnd(facesContext, component);
 
         encodeJavascript(facesContext, component);
-        if (((DojoInitializer) component).getDebugConsole() != null
-            && ((DojoInitializer) component).getDebugConsole().booleanValue())
-        {
+
+        if ((((DojoInitializer) component).getDebugConsole() != null) && ((DojoInitializer) component).getDebugConsole().booleanValue()) {
             DojoUtils.addDebugConsole(facesContext, component);
         }
+    }
+
+    public boolean getRendersChildren() {
+        return false;
+    }
+
+    /**
+     * Encodes any stand-alone javascript functions that are needed. Uses either
+     * the extension filter, or a user-supplied location for the javascript
+     * files.
+     *
+     * @param context
+     *            FacesContext
+     * @param component
+     *            UIComponent
+     */
+    private void encodeJavascript(FacesContext context, UIComponent component) throws IOException {
+        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        DojoUtils.addMainInclude(context, component, javascriptLocation, DojoUtils.getDjConfigInstance(context));
+
+        String require = (String) component.getAttributes().get("require");
+        String provide = (String) component.getAttributes().get("provide");
+
+        if (provide != null)
+            DojoUtils.addProvide(context, component, provide);
+
+        if (require != null)
+            DojoUtils.addRequire(context, component, require);
+
     }
 
 }

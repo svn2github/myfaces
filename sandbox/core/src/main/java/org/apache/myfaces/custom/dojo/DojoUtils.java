@@ -16,23 +16,27 @@
 
 package org.apache.myfaces.custom.dojo;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+
 import java.io.IOException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.MyFacesResourceHandler;
 
 /**
  * Utils class for the dojo infrastructure
@@ -45,264 +49,19 @@ import org.apache.myfaces.renderkit.html.util.MyFacesResourceHandler;
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public final class DojoUtils
-{
-    private static final String INCL_TYPE_REQ_KEY = "DOJO_DEVELOPMENT_INCLUDE";
-    private static final Log    log               = LogFactory.getLog(DojoUtils.class);
-    private static final String DOJO_PROVIDE      = "dojo.provide:";
-    private static final String DOJO_REQUIRE      = "dojo.require:";
-    private static final String DJCONFIG_INITKEY  = "/*djconfig init*/";
-
-    private DojoUtils()
-    {
-        //nope
-    }
-
+public final class DojoUtils {
+    private static final String INCL_TYPE_REQ_KEY                = "DOJO_DEVELOPMENT_INCLUDE";
+    private static final Log    log                              = LogFactory.getLog(DojoUtils.class);
+    private static final String DOJO_PROVIDE                     = "dojo.provide:";
+    private static final String DOJO_REQUIRE                     = "dojo.require:";
+    private static final String DJCONFIG_INITKEY                 = "/*djconfig init*/";
     private static final String BODY_SCRIPT_INFOS_ATTRIBUTE_NAME = "bodyScriptInfos";
     private static final String DOJO_FILE_UNCOMPRESSED           = "dojo.js.uncompressed.js";
     private static final String DOJO_FILE                        = "dojo.js";
     private static final String DJCONFIG_REQ_KEY                 = "MYFACES_DJCONFIG";
 
-    /**
-     * Request singleton getter method for the djConfig object
-     *
-     * @param context
-     * @return
-     */
-    public static DojoConfig getDjConfigInstance(FacesContext context)
-    {
-        //we wont have a need for a synchronized here, since
-        //we are in a single request cycle anyway
-        //but take care if you use the djconfig in multiple threads!
-        DojoConfig djConfig = (DojoConfig) ((HttpServletRequest) context.getExternalContext().getRequest())
-                .getAttribute(DJCONFIG_REQ_KEY);
-        if (djConfig == null)
-        {
-            djConfig = new DojoConfig();
-            ((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(DJCONFIG_REQ_KEY, djConfig);
-        }
-        return djConfig;
-    }
-
-    /**
-     * helper to merge in an external dojo config instance
-     * the merge algorithm is that an existing entry is overwritten
-     * if a new config entry is set
-     * make sure that this is not called too often
-     * due to the fact that we do heavy reflection in here
-     * @param context
-     * @param config
-     */
-    public static void mergeExternalDjConfig(FacesContext context, DojoConfig config)
-    {
-        //we now do the same as beanutils, but for dependency reasons we code it
-        DojoConfig configSingleton = getDjConfigInstance(context);
-        Class dcConfigClass = DojoConfig.class;
-        Method[] djConfigFieldArr = dcConfigClass.getMethods();
-        for (int cnt = 0; cnt < djConfigFieldArr.length; cnt++)
-        {
-
-            try
-            {
-                Method configPropertyField = djConfigFieldArr[cnt];
-                String methodCore = null;
-                if (!configPropertyField.getName().startsWith("getClass")
-                        && configPropertyField.getName().startsWith("get")
-                        || configPropertyField.getName().startsWith("is"))
-                    methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName()
-                            .substring(3) : configPropertyField.getName().substring(2);
-
-                if (methodCore != null)
-                {
-                    Object val = configPropertyField.invoke(config, null);
-                    if (val != null)
-                    {
-                        Class[] setterParams = new Class[1];
-                        setterParams[0] = val.getClass();
-                        Method setMethod = dcConfigClass.getMethod("set" + methodCore, setterParams);
-                        if (setMethod != null)
-                        {
-                            Object[] setterArgs = new Object[1];
-                            setterArgs[0] = val;
-                            setMethod.invoke(configSingleton, setterArgs);
-                        }
-                    }
-                }
-            }
-            catch (IllegalArgumentException e)
-            {
-                log.error(e);
-            }
-            catch (SecurityException e)
-            {
-                log.error(e);
-            }
-            catch (IllegalAccessException e)
-            {
-                log.error(e);
-            }
-            catch (InvocationTargetException e)
-            {
-                log.error(e);
-            }
-            catch (NoSuchMethodException e)
-            {
-                log.error(e);
-            }
-        }
-
-    }
-
-    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation,
-            DojoConfig config) throws IOException
-    {
-
-        AddResource addResource = AddResourceFactory.getInstance(facesContext);
-        /*
-         * var djConfig = {
-         isDebug: false
-         };
-         TODO add a saner handling of collecting all djconfig data
-         and then merging it
-         */
-        if (!isInlineScriptSet(facesContext, DJCONFIG_INITKEY))
-        {
-            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DJCONFIG_INITKEY);
-            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, config.toString());
-
-            String dojofile = (getExpanded(facesContext) != null && getExpanded(facesContext).booleanValue()) ? DOJO_FILE_UNCOMPRESSED
-                    : DOJO_FILE;
-            if (javascriptLocation != null)
-            {
-                addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation
-                        + dojofile);
-            }
-            else
-            {
-               /*ResponseWriter writer = facesContext.getResponseWriter();
-               writer.startElement(HTML.SCRIPT_ELEM,component);
-
-               MyFacesResourceHandler handler =  new MyFacesResourceHandler(DojoResourceLoader.class, dojofile);
-               String uri = handler.getResourceUri(facesContext);
-               uri = uri.replaceAll("dojo\\.js\\;jsessionid(.)*\\\"","dojo.js");
-               writer.writeAttribute(HTML.SRC_ATTR, uri, null);
-
-               writer.endElement(HTML.SCRIPT_ELEM);
-               addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
-               */
-
-               addResource.addJavaScriptAtPositionPlain(facesContext,  AddResource.HEADER_BEGIN,DojoResourceLoader.class,
-                        dojofile);
-            }
-        }
-
-    }
-
-    /**
-     * adds a dojo require include to our mix
-     * of stuff used
-     *
-     * @param facesContext
-     * @param required
-     */
-    public static void addRequire(FacesContext facesContext, UIComponent component, String required) throws IOException
-    {
-        if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
-            return;
-
-        String requireAsScript = createDojoRequireString(required);
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.write(requireAsScript);
-        writer.endElement(HTML.SCRIPT_ELEM);
-    }
-
-    /**
-     * helper method for the proper dojo require script creation
-     * @param required the creation package for the require functionality
-     * @return dojoRequire String
-     */
-    public static String createDojoRequireString(String required)
-    {
-        StringBuffer requiredBuilder = new StringBuffer(32);
-        requiredBuilder.append("dojo.require('");
-        requiredBuilder.append(required);
-        requiredBuilder.append("');");
-        return requiredBuilder.toString();
-    }
-
-    private static Set getBodyScriptInfos(HttpServletRequest request)
-    {
-        Set set = (Set) request.getAttribute(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME);
-        if (set == null)
-        {
-            set = new TreeSet();
-            request.setAttribute(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME, set);
-        }
-        return set;
-    }
-
-    public static boolean isInlineScriptSet(FacesContext context, String inlineScript)
-    {
-
-        //TODO move this non neutral code into the resource handler
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        Set set = getBodyScriptInfos(request);
-        if (!set.contains(inlineScript))
-        {
-            set.add(inlineScript);
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * adds a dojo provide to the current list
-     * of definitions within the header
-     * @param context the faces context for accessing the resources internally
-     * @param provided the package with the class provided by this implementation
-     * @see <a href="http://dojotoolkit.org/docs/fast_widget_authoring.html">Dojo-Widget-Authoring</a> for an example on this
-     */
-    public static void addProvide(FacesContext context, String provided)
-    {
-        if (isInlineScriptSet(context, DOJO_PROVIDE + provided))
-            return;
-
-        AddResource addResource = AddResourceFactory.getInstance(context);
-        String providedBuilder = createDojoProvideScript(provided);
-
-        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
-    }
-
-    public static void addProvide(FacesContext facesContext, UIComponent component, String provided) throws IOException
-    {
-        if (isInlineScriptSet(facesContext, DOJO_PROVIDE + provided))
-            return;
-
-        String providedBuilder = createDojoProvideScript(provided);
-
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.write(providedBuilder);
-        writer.endElement(HTML.SCRIPT_ELEM);
-
-    }
-
-    /**
-     * helper method which does the proper dojo provide script creation
-     * @param provided the provided class name
-     * @return dojoProvide String
-     */
-    public static String createDojoProvideScript(String provided)
-    {
-
-        StringBuffer providedBuilder = new StringBuffer(32);
-        providedBuilder.append("dojo.provide('");
-        providedBuilder.append(provided);
-        providedBuilder.append("');");
-        return providedBuilder.toString();
+    private DojoUtils() {
+        //nope
     }
 
     /**
@@ -316,11 +75,12 @@ public final class DojoUtils
      * @param component
      * @return
      */
-    public static void addDebugConsole(FacesContext facesContext, UIComponent component) throws IOException
-    {
+    public static void addDebugConsole(FacesContext facesContext, UIComponent component) throws IOException {
+
         /*check whether we have a debugging flag already set*/
         if (isInlineScriptSet(facesContext, "/*DOJO DEBUGCONSOLE ON*/"))
             return;
+
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
         addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, "/*DOJO DEBUGCONSOLE ON*/");
 
@@ -345,13 +105,104 @@ public final class DojoUtils
 
     }
 
+    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, DojoConfig config)
+        throws IOException {
+
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+
+        /*
+         * var djConfig = {
+         isDebug: false
+         };
+         TODO add a saner handling of collecting all djconfig data
+         and then merging it
+         */
+        if (!isInlineScriptSet(facesContext, DJCONFIG_INITKEY)) {
+            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DJCONFIG_INITKEY);
+            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, config.toString());
+
+            String dojofile = ((getExpanded(facesContext) != null) && getExpanded(facesContext).booleanValue()) ? DOJO_FILE_UNCOMPRESSED : DOJO_FILE;
+
+            if (javascriptLocation != null) {
+                addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation + dojofile);
+            } else {
+                /*ResponseWriter writer = facesContext.getResponseWriter();
+                writer.startElement(HTML.SCRIPT_ELEM,component);
+
+                MyFacesResourceHandler handler =  new MyFacesResourceHandler(DojoResourceLoader.class, dojofile);
+                String uri = handler.getResourceUri(facesContext);
+                uri = uri.replaceAll("dojo\\.js\\;jsessionid(.)*\\\"","dojo.js");
+                writer.writeAttribute(HTML.SRC_ATTR, uri, null);
+
+                writer.endElement(HTML.SCRIPT_ELEM);
+                addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
+                */
+
+                addResource.addJavaScriptAtPositionPlain(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
+            }
+        }
+
+    }
+
+    /**
+     * adds a dojo provide to the current list
+     * of definitions within the header
+     * @param context the faces context for accessing the resources internally
+     * @param provided the package with the class provided by this implementation
+     * @see <a href="http://dojotoolkit.org/docs/fast_widget_authoring.html">Dojo-Widget-Authoring</a> for an example on this
+     */
+    public static void addProvide(FacesContext context, String provided) {
+
+        if (isInlineScriptSet(context, DOJO_PROVIDE + provided))
+            return;
+
+        AddResource addResource     = AddResourceFactory.getInstance(context);
+        String      providedBuilder = createDojoProvideScript(provided);
+
+        addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
+    }
+
+    public static void addProvide(FacesContext facesContext, UIComponent component, String provided) throws IOException {
+
+        if (isInlineScriptSet(facesContext, DOJO_PROVIDE + provided))
+            return;
+
+        String providedBuilder = createDojoProvideScript(provided);
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        writer.write(providedBuilder);
+        writer.endElement(HTML.SCRIPT_ELEM);
+
+    }
+
+    /**
+     * adds a dojo require include to our mix
+     * of stuff used
+     *
+     * @param facesContext
+     * @param required
+     */
+    public static void addRequire(FacesContext facesContext, UIComponent component, String required) throws IOException {
+
+        if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
+            return;
+
+        String         requireAsScript = createDojoRequireString(required);
+        ResponseWriter writer          = facesContext.getResponseWriter();
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        writer.write(requireAsScript);
+        writer.endElement(HTML.SCRIPT_ELEM);
+    }
+
     /**
      * creates a debug statement for the debug console
      * @param stmnt the debug message displayed by the debug console
      * @return javaScriptcode String
      */
-    public static String createDebugStatement(String stmnt)
-    {
+    public static String createDebugStatement(String stmnt) {
         return "dojo.debug(\"" + stmnt + "\");\n";
     }
 
@@ -360,9 +211,155 @@ public final class DojoUtils
      * @param stmnt the debug message displayed and given value by the debug console
      * @return javaScriptcode String
      */
-    public static String createDebugStatement(String stmnt, String value)
-    {
+    public static String createDebugStatement(String stmnt, String value) {
         return "dojo.debug(\"" + stmnt + ":\");dojo.debug(" + value + ");\n";
+    }
+
+    /**
+     * helper method which does the proper dojo provide script creation
+     * @param provided the provided class name
+     * @return dojoProvide String
+     */
+    public static String createDojoProvideScript(String provided) {
+
+        StringBuffer providedBuilder = new StringBuffer(32);
+        providedBuilder.append("dojo.provide('");
+        providedBuilder.append(provided.trim());
+        providedBuilder.append("');");
+
+        return providedBuilder.toString();
+    }
+
+    /**
+     * helper method for the proper dojo require script creation
+     * @param required the creation package for the require functionality
+     * @return dojoRequire String
+     */
+    public static String createDojoRequireString(String required) {
+        StringBuffer requiredBuilder = new StringBuffer(32);
+        requiredBuilder.append("dojo.require('");
+        requiredBuilder.append(required.trim());
+        requiredBuilder.append("');");
+
+        return requiredBuilder.toString();
+    }
+
+    /**
+     * Request singleton getter method for the djConfig object
+     *
+     * @param context
+     * @return
+     */
+    public static DojoConfig getDjConfigInstance(FacesContext context) {
+
+        //we wont have a need for a synchronized here, since
+        //we are in a single request cycle anyway
+        //but take care if you use the djconfig in multiple threads!
+        DojoConfig djConfig = (DojoConfig) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(DJCONFIG_REQ_KEY);
+
+        if (djConfig == null) {
+            djConfig = new DojoConfig();
+            ((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(DJCONFIG_REQ_KEY, djConfig);
+        }
+
+        return djConfig;
+    }
+
+    /**
+     * getter for the expanded flat
+     * @param facesContext
+     * @return
+     */
+    public static Boolean getExpanded(FacesContext facesContext) {
+        HttpServletRequest request   = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        Boolean            devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
+
+        return devStatus;
+    }
+
+    public static boolean isInlineScriptSet(FacesContext context, String inlineScript) {
+
+        //TODO move this non neutral code into the resource handler
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        Set                set     = getBodyScriptInfos(request);
+
+        if (!set.contains(inlineScript)) {
+            set.add(inlineScript);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * helper to merge in an external dojo config instance
+     * the merge algorithm is that an existing entry is overwritten
+     * if a new config entry is set
+     * make sure that this is not called too often
+     * due to the fact that we do heavy reflection in here
+     * @param context
+     * @param config
+     */
+    public static void mergeExternalDjConfig(FacesContext context, DojoConfig config) {
+
+        //we now do the same as beanutils, but for dependency reasons we code it
+        DojoConfig configSingleton  = getDjConfigInstance(context);
+        Class      dcConfigClass    = DojoConfig.class;
+        Method[]   djConfigFieldArr = dcConfigClass.getMethods();
+
+        for (int cnt = 0; cnt < djConfigFieldArr.length; cnt++) {
+
+            try {
+                Method configPropertyField = djConfigFieldArr[cnt];
+                String methodCore          = null;
+
+                if ((!configPropertyField.getName().startsWith("getClass") && configPropertyField.getName().startsWith("get")) || configPropertyField.getName().startsWith("is"))
+                    methodCore = (configPropertyField.getName().startsWith("get")) ? configPropertyField.getName().substring(3) : configPropertyField.getName().substring(2);
+
+                if (methodCore != null) {
+                    Object val = configPropertyField.invoke(config, null);
+
+                    if (val != null) {
+                        Class[] setterParams = new Class[1];
+                        setterParams[0] = val.getClass();
+
+                        Method setMethod = dcConfigClass.getMethod("set" + methodCore, setterParams);
+
+                        if (setMethod != null) {
+                            Object[] setterArgs = new Object[1];
+                            setterArgs[0] = val;
+                            setMethod.invoke(configSingleton, setterArgs);
+                        }
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                log.error(e);
+            } catch (SecurityException e) {
+                log.error(e);
+            } catch (IllegalAccessException e) {
+                log.error(e);
+            } catch (InvocationTargetException e) {
+                log.error(e);
+            } catch (NoSuchMethodException e) {
+                log.error(e);
+            }
+        }
+
+    }
+
+    /**
+     * if this flag is set to true somewhere before
+     * the rendering, the expanded version is loaded
+     * otherwise the nonexpanded version is loaded
+     *
+     * @param facesContext context because we again have a full request singleton here
+     * @param expanded if set to true the expanded version of the dojo scripts are loaded
+     * otherwise the non expanded ones are loaded
+     */
+    public static void setExpanded(FacesContext facesContext, Boolean expanded) {
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        request.setAttribute(INCL_TYPE_REQ_KEY, expanded);
     }
 
     /**
@@ -375,37 +372,20 @@ public final class DojoUtils
      * @return
      * @throws IOException
      */
-    public static void writeDebugStatement(ResponseWriter writer, String stmnt) throws IOException
-    {
+    public static void writeDebugStatement(ResponseWriter writer, String stmnt) throws IOException {
         stmnt = createDebugStatement(stmnt);
         writer.write(stmnt);
     }
 
-    /**
-     * if this flag is set to true somewhere before
-     * the rendering, the expanded version is loaded
-     * otherwise the nonexpanded version is loaded
-     *
-     * @param facesContext context because we again have a full request singleton here
-     * @param expanded if set to true the expanded version of the dojo scripts are loaded
-     * otherwise the non expanded ones are loaded
-     */
-    public static void setExpanded(FacesContext facesContext, Boolean expanded)
-    {
-        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        request.setAttribute(INCL_TYPE_REQ_KEY, expanded);
-    }
+    private static Set getBodyScriptInfos(HttpServletRequest request) {
+        Set set = (Set) request.getAttribute(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME);
 
-    /**
-     * getter for the expanded flat
-     * @param facesContext
-     * @return
-     */
-    public static Boolean getExpanded(FacesContext facesContext)
-    {
-        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        Boolean devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
-        return devStatus;
+        if (set == null) {
+            set = new TreeSet();
+            request.setAttribute(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME, set);
+        }
+
+        return set;
     }
 
 }
