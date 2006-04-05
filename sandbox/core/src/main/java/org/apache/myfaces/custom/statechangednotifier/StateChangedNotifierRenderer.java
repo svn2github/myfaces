@@ -15,30 +15,44 @@
  */
 package org.apache.myfaces.custom.statechangednotifier;
 
-import org.apache.commons.lang.StringUtils;
-
-import org.apache.myfaces.custom.dojo.DojoConfig;
-import org.apache.myfaces.custom.dojo.DojoUtils;
-import org.apache.myfaces.renderkit.html.HtmlHiddenRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.myfaces.custom.dojo.DojoConfig;
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_impl.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 
 /**
  * @author Bruno Aranda (latest modification by $Author$)
- * @version $Revision$ $Date$
+ * @version $Revision$ $Date: 2006-04-02 22:03:33 +0200 (So, 02 Apr
+ *          2006) $
  */
-public class StateChangedNotifierRenderer extends HtmlHiddenRenderer {
+public class StateChangedNotifierRenderer extends HtmlRenderer {
+
+    public void decode(FacesContext facesContext, UIComponent component) {
+        RendererUtils.checkParamValidity(facesContext, component, null);
+
+        if (component instanceof UIInput) {
+            HtmlRendererUtils.decodeUIInput(facesContext, component);
+        } else {
+            throw new IllegalArgumentException("Unsupported component class " + component.getClass().getName());
+        }
+    }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         RendererUtils.checkParamValidity(facesContext, uiComponent, StateChangedNotifier.class);
@@ -51,32 +65,18 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer {
                 return;
         }
 
-        String javascriptLocation = (String) notifier.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
-        DojoUtils.addRequire(facesContext, uiComponent, "dojo.widget.Dialog");
-        DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
-
-        //DojoUtils.addRequire(facesContext, "dojo.xml.Parse");
-
-        writeDialog(facesContext, uiComponent);
-
-        AddResource addResource = AddResourceFactory.getInstance(facesContext);
-
-        if (!DojoUtils.isInlineScriptSet(facesContext, "stateChangedNotifier.js"))
-            addResource.addJavaScriptHere(facesContext, StateChangedNotifierRenderer.class, "stateChangedNotifier.js");
-
-        String styleLocation = (String) uiComponent.getAttributes().get(JSFAttr.STYLE_LOCATION);
-
-        //we need a style def for the dialog system
-        if (StringUtils.isNotBlank(styleLocation)) {
-            addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, styleLocation + "/default.css");
-        } else {
-            addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, StateChangedNotifierRenderer.class, "css/default.css");
-        }
+        renderInitialization(facesContext, uiComponent, notifier);
 
         encodeJavascript(facesContext, notifier);
+        //We have to render on our own to avoid dependencies into myfaces-impl
+        renderInputHidden(facesContext, uiComponent);
 
-        super.encodeEnd(facesContext, uiComponent);
+    }
+
+    public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException {
+        RendererUtils.checkParamValidity(facesContext, uiComponent, UIOutput.class);
+
+        return RendererUtils.getConvertedUIOutputValue(facesContext, (UIOutput) uiComponent, submittedValue);
     }
 
     private void encodeJavascript(FacesContext facesContext, StateChangedNotifier notifier) {
@@ -103,7 +103,7 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer {
             sb.append("'');\n");
         }
 
-        sb.append("setTimeout('"+replacedClientId +"Notifier.prepareNotifier()',2000);\n");
+        sb.append("setTimeout('" + replacedClientId + "Notifier.prepareNotifier()',2000);\n");
 
         sb.append("}\n");
 
@@ -129,9 +129,55 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer {
         return (UIForm) parent;
     }
 
+    private void renderInitialization(FacesContext facesContext, UIComponent uiComponent, StateChangedNotifier notifier)
+        throws IOException {
+        String javascriptLocation = (String) notifier.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
+        DojoUtils.addRequire(facesContext, uiComponent, "dojo.widget.Dialog");
+        DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
+
+        // DojoUtils.addRequire(facesContext, "dojo.xml.Parse");
+
+        writeDialog(facesContext, uiComponent);
+
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+
+        if (!DojoUtils.isInlineScriptSet(facesContext, "stateChangedNotifier.js"))
+            addResource.addJavaScriptHere(facesContext, StateChangedNotifierRenderer.class, "stateChangedNotifier.js");
+
+        String styleLocation = (String) uiComponent.getAttributes().get(JSFAttr.STYLE_LOCATION);
+
+        // we need a style def for the dialog system
+        if (StringUtils.isNotBlank(styleLocation)) {
+            addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, styleLocation + "/default.css");
+        } else {
+            addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, StateChangedNotifierRenderer.class, "css/default.css");
+        }
+    }
+
+    private void renderInputHidden(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+        RendererUtils.checkParamValidity(facesContext, uiComponent, UIInput.class);
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
+
+        String clientId = uiComponent.getClientId(facesContext);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+
+        String value = RendererUtils.getStringValue(facesContext, uiComponent);
+
+        if (value != null) {
+            writer.writeAttribute(HTML.VALUE_ATTR, value, JSFAttr.VALUE_ATTR);
+        }
+
+        writer.endElement(HTML.INPUT_ELEM);
+    }
+
     /**
-     * dialog definition
-     * this one is needed for the dojoized dialog
+     * dialog definition this one is needed for the dojoized dialog
      *
      * @param facesContext
      * @param uiComponent
@@ -139,15 +185,12 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer {
      */
     private void writeDialog(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         /*
-         * <div id="form1__idJsp1Notifier_Dialog" style="position:absolute; visibility: hidden;">
-         <div id="form1__idJsp1Notifier_Dialog_Content">
-         values have changed do you really want to
-         <br>
-         submit the values
-         </div>
-         <input type="button" id="form1__idJsp1Notifier_Dialog_Yes" value="yes" />
-         <input type="button" id="form1__idJsp1Notifier_Dialog_No" value="no" />
-         * </div>
+         * <div id="form1__idJsp1Notifier_Dialog" style="position:absolute;
+         * visibility: hidden;"> <div id="form1__idJsp1Notifier_Dialog_Content">
+         * values have changed do you really want to <br> submit the values
+         * </div> <input type="button" id="form1__idJsp1Notifier_Dialog_Yes"
+         * value="yes" /> <input type="button"
+         * id="form1__idJsp1Notifier_Dialog_No" value="no" /> </div>
          */
 
         String notifierClientId = uiComponent.getClientId(facesContext);
@@ -166,19 +209,19 @@ public class StateChangedNotifierRenderer extends HtmlHiddenRenderer {
         writer.startElement(HTML.DIV_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Content", null);
         writer.endElement(HTML.DIV_ELEM);
-        writer.write("&nbsp;");
+        writer.write(HTML.NBSP_ENTITY);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.BUTTON_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Yes", null);
         writer.writeAttribute(HTML.VALUE_ATTR, yesText, null);
         writer.endElement(HTML.INPUT_ELEM);
-        writer.write("&nbsp;");
+        writer.write(HTML.NBSP_ENTITY);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, "button", null);
         writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_No", null);
         writer.writeAttribute(HTML.VALUE_ATTR, noText, null);
         writer.endElement(HTML.INPUT_ELEM);
         writer.endElement(HTML.DIV_ELEM);
-        writer.write("&nbsp;");
+        writer.write(HTML.NBSP_ENTITY);
     }
 }

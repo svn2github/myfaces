@@ -15,11 +15,10 @@
  */
 package org.apache.myfaces.custom.statechangednotifier;
 
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
-import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 
 /**
@@ -27,7 +26,7 @@ import javax.faces.el.ValueBinding;
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class StateChangedNotifier extends HtmlInputHidden {
+public class StateChangedNotifier extends javax.faces.component.html.HtmlInputHidden {
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.StateChangedNotifier";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.StateChangedNotifierRenderer";
 

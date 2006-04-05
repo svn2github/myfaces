@@ -15,16 +15,16 @@
  */
 package org.apache.myfaces.custom.statechangednotifier;
 
-import org.apache.myfaces.taglib.html.HtmlInputHiddenTag;
-
 import javax.faces.component.UIComponent;
+
+import org.apache.myfaces.shared_impl.taglib.html.HtmlInputHiddenTagBase;
 
 
 /**
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class StateChangedNotifierTag extends HtmlInputHiddenTag {
+public class StateChangedNotifierTag extends HtmlInputHiddenTagBase {
     private String confirmationMessage;
     private String disabled;
     private String excludedIds;
