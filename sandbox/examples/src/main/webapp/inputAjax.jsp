@@ -207,7 +207,7 @@
 </f:facet>
 </t:panelLayout>
 
-
+<h:panelGrid columns="2">
 <h:form>
     <h:outputText styleClass="standard_bold" value="Form Submit via AJAX"/>
     <h:panelGrid columns="2">
@@ -226,8 +226,19 @@
     <f:verbatim>This component demonstrates submitting a form through ajax.  To see validation errors, put less than five
     characters in first box, and a string with a space in it in the second box.</f:verbatim>
 </h:panelGrid>
-
 </h:form>
+     <%-- Auto updating piece --%>
+    <h:panelGrid columns="1">
+    <h:outputText styleClass="standard_bold" value="Listener on the first textfield to the left"/>
+    <s:outputText value="#{inputAjaxBean.waitingText1}">
+        <s:listener on="formText1"/>
+    </s:outputText>
+    <h:outputText styleClass="standard_bold" value="Listener on the second textfield to the left"/>
+    <s:outputText value="#{inputAjaxBean.waitingText2}">
+        <s:listener on="formText2"/>
+    </s:outputText>
+    </h:panelGrid>
+</h:panelGrid>
 
 <h:outputLink value="inputAjax.jsf"><h:outputText value="Refresh"></h:outputText></h:outputLink>
 

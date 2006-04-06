@@ -66,31 +66,24 @@ public class AjaxDecodePhaseListener
     public PhaseId getPhaseId()
     {
         return PhaseId.APPLY_REQUEST_VALUES;
-
     }
 
     public void beforePhase(PhaseEvent event)
     {
         log.debug("In AjaxDecodePhaseListener beforePhase");
-
         FacesContext context = event.getFacesContext();
-
         Map externalRequestMap = context.getExternalContext().getRequestParameterMap();
 
         if (externalRequestMap.containsKey("affectedAjaxComponent"))
         {
             UIViewRoot root = context.getViewRoot();
-
             String affectedAjaxComponent = (String) context.getExternalContext()
                                                         .getRequestParameterMap().get("affectedAjaxComponent");
-
             UIComponent ajaxComponent = root.findComponent(affectedAjaxComponent);
-
             //checking if ajaxComp is inside a dataTable;
             if (ajaxComponent instanceof UIComponentPerspective)
             {
                 UIComponentPerspective componentPerspective = (UIComponentPerspective) ajaxComponent;
-
                 ajaxComponent = (UIComponent) componentPerspective.executeOn(context, new ExecuteOnCallback()
                 {
                     public Object execute(FacesContext facesContext, UIComponent ajaxComponent)
@@ -107,12 +100,10 @@ public class AjaxDecodePhaseListener
             }
 
             StateManager stateManager = context.getApplication().getStateManager();
-
             if (!stateManager.isSavingStateInClient(context))
             {
                 stateManager.saveSerializedView(context);
             }
-
             context.responseComplete();
         }
     }
@@ -120,18 +111,21 @@ public class AjaxDecodePhaseListener
 
     private void handleAjaxRequest(UIComponent ajaxComponent, FacesContext facesContext)
     {
-        decodeAjax(ajaxComponent, facesContext);
-
-        facesContext.getViewRoot().processApplication(facesContext);
-
+        String updateOnly = (String) facesContext.getExternalContext().getRequestParameterMap().get("updateOnly");
+        if(updateOnly == null) {
+            // then decode
+            decodeAjax(ajaxComponent, facesContext);
+            facesContext.getViewRoot().processApplication(facesContext);
+        }
+        // else only update
         encodeAjax(ajaxComponent, facesContext);
     }
 
     private void decodeAjax(UIComponent ajaxComponent, FacesContext context)
     {
+
         String affectedAjaxComponent = (String) context.getExternalContext()
                                                     .getRequestParameterMap().get("affectedAjaxComponent");
-
         if (ajaxComponent == null)
         {
             String msg = "Component with id [" + affectedAjaxComponent + "] not found in view tree.";
@@ -150,11 +144,14 @@ public class AjaxDecodePhaseListener
             if (form != null)
             {
                 form.processDecodes(context);
-                form.processValidators(context);
-                form.processUpdates(context);
+                //if(context.getRenderResponse())
+                    form.processValidators(context);
+                //else log.debug("Decode failed on Ajax Decode");
+                //if(context.getRenderResponse())
+                    form.processUpdates(context);
+                //else log.debug("Validation failed on Ajax Decode");
                 //System.out.println("DONE!");
             }
-
         }
         else if (ajaxComponent instanceof AjaxComponent)
         {
@@ -175,14 +172,11 @@ public class AjaxDecodePhaseListener
     }
 
 
-    private void encodeAjax(UIComponent ajaxComponent, FacesContext context)
+    private void encodeAjax(UIComponent component, FacesContext context)
     {
         Map requestMap = context.getExternalContext().getRequestParameterMap();
 
-        // NOW TRYING TO DO THE ENCODE THAT WAS IN AJAXPHASELISTENER RIGHT HERE, THEN ENDING RESPONSE
-        if (ajaxComponent instanceof AjaxComponent)
-        {
-            if (ajaxComponent instanceof SuggestAjax)
+            if (component instanceof SuggestAjax)
             {
                 try
                 {
@@ -193,7 +187,7 @@ public class AjaxDecodePhaseListener
                         PrintWriter htmlResponseWriter = response.getWriter();
                         context.setResponseWriter(new HtmlResponseWriterImpl(htmlResponseWriter, "text/html", "UTF-8"));
                     }
-                    ((AjaxComponent) ajaxComponent).encodeAjax(context);
+                    ((AjaxComponent) component).encodeAjax(context);
                 }
                 catch (IOException e)
                 {
@@ -227,12 +221,12 @@ public class AjaxDecodePhaseListener
                     PrintWriter out = response.getWriter();
                     out.print(buff);
 
-                    if (ajaxComponent instanceof HtmlCommandButtonAjax)
+                    if (component instanceof HtmlCommandButtonAjax)
                     {
                         // special treatment for this one, it will try to update the entire form
                         // 1. get surrounding form
                         //String elname = (String) requestMap.get("elname");
-                        FormInfo fi = _ComponentUtils.findNestingForm(ajaxComponent, context);
+                        FormInfo fi = _ComponentUtils.findNestingForm(component, context);
                         UIComponent form = fi.getForm();
                         //System.out.println("FOUND FORM: " + form);
                         if (form != null)
@@ -241,11 +235,14 @@ public class AjaxDecodePhaseListener
                             encodeChildren(form, context, requestMap);
                         }
                     }
-                    else
+                    else if (component instanceof AjaxComponent)
                     {
                         // let component render xml response
                         // NOTE: probably don't need an encodeAjax in each component, but leaving it in until that's for sure
-                        ((AjaxComponent) ajaxComponent).encodeAjax(context);
+                        ((AjaxComponent) component).encodeAjax(context);
+                    } else {
+                        // just get latest value
+                        AjaxRendererUtils.encodeAjax(context, component);
                     }
 
                     // end response
@@ -257,11 +254,11 @@ public class AjaxDecodePhaseListener
                     log.error("Exception while rendering ajax-response", e);
                 }
             }
-        }
+       /* }
         else
         {
-            log.error("Found component is no ajaxComponent : " + RendererUtils.getPathToComponent(ajaxComponent));
-        }
+            log.error("Found component is no AjaxComponent : " + RendererUtils.getPathToComponent(component));
+        }*/
     }
 
 
@@ -315,11 +312,8 @@ public class AjaxDecodePhaseListener
                                             .getRequestParameterMap().get("affectedAjaxComponent");
 
             log.debug("affectedAjaxComponent: " + possibleClientId);
-
             UIViewRoot root = context.getViewRoot();
-
             UIComponent ajaxComponent = root.findComponent(possibleClientId);
-
             if (ajaxComponent instanceof UIComponentPerspective)
             {
                 UIComponentPerspective componentPerspective = (UIComponentPerspective) ajaxComponent;

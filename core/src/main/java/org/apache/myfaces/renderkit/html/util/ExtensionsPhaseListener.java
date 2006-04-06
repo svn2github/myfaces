@@ -16,6 +16,8 @@
 package org.apache.myfaces.renderkit.html.util;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -44,6 +46,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
 
 
     private static final String ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT = "org.apache.myfaces.myFacesJavascript";
+    public static final String LISTENERS_MAP = "_MyFaces_inputAjax_listenersMap";
 
     public PhaseId getPhaseId()
     {
@@ -129,5 +132,40 @@ public class ExtensionsPhaseListener implements PhaseListener {
         {
             JavascriptUtils.renderAutoScrollFunction(facesContext, writer);
         }
-	}
+
+        // also write out listeners
+        // todo: change the get entry below to use the static field in Listener if/when the listeners move to Tomahawk from sandbox
+        try
+        {
+            List listeners = (List) facesContext.getExternalContext().getRequestMap().get("org.apache.myfaces.Listener");
+            //System.out.println("listeners: " + listeners);
+            if(listeners != null && listeners.size() > 0){
+                writer.startElement(HTML.SCRIPT_ELEM,null);
+                writer.writeAttribute("attr", HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+                StringBuffer buff = new StringBuffer();
+                String mapName = LISTENERS_MAP;
+                buff.append("var ").append(mapName).append(" = new Object();\n");
+                for (int i = 0; i < listeners.size(); i++)
+                {
+                    Map listenerItem = (Map) listeners.get(i);
+                    String listenerId = (String) listenerItem.get("listenerId");
+                    String listenOn = (String) listenerItem.get("listenOn");
+                    // todo: Should use Listener object for more flexibility, but only when it moves to tomahawk
+                    buff.append("var _MyFaces_listenerItem = ").append(mapName).append("['").append(listenOn).append("'];\n");
+                    buff.append("if(!_MyFaces_listenerItem) {\n");
+                    buff.append("    _MyFaces_listenerItem = new Array();\n");
+                    buff.append("    ").append(mapName).append("['").append(listenOn).append("'] = _MyFaces_listenerItem;\n");
+                    buff.append("}\n");
+                    buff.append("_MyFaces_listenerItem[_MyFaces_listenerItem.length] = '").append(listenerId).append("';\n");
+                }
+                writer.write(buff.toString());
+                writer.endElement(HTML.SCRIPT_ELEM);
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println("CAUGHT");
+            e.printStackTrace();
+        }
+    }
 }

@@ -82,7 +82,6 @@ public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, A
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
         Renderer renderer = getRenderer(context);
-
         if (renderer != null && renderer instanceof AjaxRenderer)
         {
             ((AjaxRenderer) renderer).encodeAjax(context, this);

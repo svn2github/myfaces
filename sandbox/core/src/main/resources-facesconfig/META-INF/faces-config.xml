@@ -65,6 +65,11 @@
   </component>
 
   <component>
+    <component-type>org.apache.myfaces.Listener</component-type>
+    <component-class>org.apache.myfaces.custom.inputAjax.Listener</component-class>
+  </component>
+
+  <component>
     <component-type>org.apache.myfaces.Planner</component-type>
     <component-class>org.apache.myfaces.custom.schedule.HtmlPlanner</component-class>
   </component>

@@ -46,6 +46,10 @@ public class InputAjaxBean
 
     private String formText1;
     private String formText2;
+    private String waitingText1 = "I'm waaaaaiiiiiting...";
+    private String waitingText2 = new String(waitingText1);
+    private int counter1 = 0;
+    private int counter2 = 0;
 
     /**
      * Simple validator to show error handling messages in examples, returns an error if value string is
@@ -256,5 +260,33 @@ public class InputAjaxBean
         System.out.println("setting formtext1");
         this.formText1 = formText1;
     }
+
+    public String getWaitingText1()
+    {
+        if(counter1 > 0){
+            waitingText1 = "I was listening " + counter1 + " times!";
+        }
+        counter1++;
+        return waitingText1;
+    }
+
+    public void setWaitingText1(String waitingText)
+    {
+        this.waitingText1 = waitingText;
+    }
+    public String getWaitingText2()
+    {
+        if(counter2 > 0){
+            waitingText2 = "I was listening " + counter2 + " times!";
+        }
+        counter2++;
+        return waitingText2;
+    }
+
+    public void setWaitingText2(String waitingText)
+    {
+        this.waitingText2 = waitingText;
+    }
+
 
 }
