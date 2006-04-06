@@ -148,6 +148,11 @@
     <component-type>org.apache.myfaces.IfMessage</component-type>
     <component-class>org.apache.myfaces.custom.ifmessage.IfMessage</component-class>
   </component>
+  
+  <component>
+  	<component-type>org.apache.myfaces.FishEyeList</component-type>
+  	<component-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeList</component-class>
+  </component>
 
   
   <!-- sandbox converters -->
@@ -335,6 +340,12 @@
         <renderer-type>org.apache.myfaces.IfMessageRenderer</renderer-type>
         <renderer-class>org.apache.myfaces.custom.ifmessage.IfMessageRenderer</renderer-class>
     </renderer>
+
+    <renderer>
+		<component-family>javax.faces.Output</component-family>
+		<renderer-type>org.apache.myfaces.FishEyeList</renderer-type>
+		<renderer-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeListRenderer</renderer-class>
+	</renderer>
 
    <!-- <renderer>
         <component-family>javax.faces.Messages</component-family>

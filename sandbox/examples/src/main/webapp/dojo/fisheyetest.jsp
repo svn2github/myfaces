@@ -25,12 +25,10 @@
 <%@include file="../inc/head.inc"%>
 <body>
 <f:view>
-	<s:dojoInitializer require="dojo.widget.FisheyeList" />
-	<div class="dojo-FisheyeList" dojo:itemWidth="50" dojo:itemHeight="50"
-		dojo:itemMaxWidth="200" dojo:itemMaxHeight="200"
-		dojo:orientation="horizontal" dojo:effectUnits="2"
-		dojo:itemPadding="10" dojo:attachEdge="top" dojo:labelEdge="bottom"
-		dojo:enableCrappySvgSupport="false">
+	<s:fishEyeList itemWidth="50" itemHeight="50"
+		itemMaxWidth="200" itemMaxHeight="200"
+		orientation="horizontal" effectUnits="2"
+		itemPadding="10" attachEdge="top" labelEdge="bottom">
 
 	<div class="dojo-FisheyeListItem" onClick="load_app(1);"
 		dojo:iconsrc="images/icon_browser.png" caption="Web Browser"></div>
@@ -49,7 +47,7 @@
 
 	<div class="dojo-FisheyeListItem" onClick="load_app(6);"
 		dojo:iconsrc="images/icon_users.png" dojo:caption="Users"></div>
-	</div>
+	</s:fishEyeList>
 
 
 	<%@include file="../inc/page_footer.jsp"%>

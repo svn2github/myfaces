@@ -18,16 +18,17 @@ package org.apache.myfaces.custom.fisheye;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.custom.div.Div;
 
 /**
  * A Mac OSX-style toolbar, using the DOJO toolkit.
  * 
  * @see <a href="http://dojotoolkit.org/">http://dojotoolkit.org/</a>
  * 
- * @author jlust
+ * @author Jurgen Lust (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class HtmlFishEyeList extends HtmlPanelGroup
+public class HtmlFishEyeList extends Div
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.FishEyeList";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FishEyeList";
@@ -146,6 +147,11 @@ public class HtmlFishEyeList extends HtmlPanelGroup
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
+    public boolean getRendersChildren()
+    {
+        return false;
+    }
+
     /**
      * @see javax.faces.component.StateHolder#restoreState(javax.faces.context.FacesContext, java.lang.Object)
      */
@@ -227,5 +233,4 @@ public class HtmlFishEyeList extends HtmlPanelGroup
     {
         this._orientation = orientation;
     }
-
 }

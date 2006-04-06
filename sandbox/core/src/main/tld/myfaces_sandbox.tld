@@ -126,6 +126,7 @@ Sandbox-related entities.
 <!ENTITY input_suggest_ajax_attributes       SYSTEM "entities/input_suggest_ajax_attributes.xml">
 <!ENTITY table_suggest_ajax_attributes       SYSTEM "entities/table_suggest_ajax_attributes.xml">
 <!ENTITY suggest_ajax_attributes       SYSTEM "entities/suggest_ajax_attributes.xml">
+<!ENTITY html_fisheye_list_attributes	SYSTEM "entities/html_fisheyelist_attributes.xml">
 ]>
 
 <taglib>
@@ -828,11 +829,10 @@ Sandbox-related entities.
 
 	<tag>
 		<name>dojoInitializer</name>
-		&ui_component_attributes;
-
 		<tag-class>org.apache.myfaces.custom.dojo.DojoInitializerTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Dojo initializer helper tag for debugging and communication flags. This tag encapsules the Dojo DjConfig meta configuration and also adds the needed dojo required functionality.</description>
+		&ui_component_attributes;
 		<attribute>
 			<name>ioSendTransport</name>
 			<required>false</required>
@@ -990,4 +990,17 @@ Sandbox-related entities.
             <description></description>
         </attribute>
     </tag>
+    
+	<!--  fishEyeList -->
+	<tag>
+		<name>fishEyeList</name>
+		<tag-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeListTag</tag-class>
+		<body-content>JSP</body-content>
+		<display-name>fishEye List component</display-name>
+		<description>Provide a FishEye toolbar component from the DOJO toolkit</description>
+		&faces_id_required_attribute;
+		&faces_rendered_attribute;
+
+		&html_fisheye_list_attributes;
+	</tag>    
 </taglib>
