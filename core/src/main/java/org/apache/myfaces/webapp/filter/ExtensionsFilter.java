@@ -16,6 +16,8 @@
 package org.apache.myfaces.webapp.filter;
 
 import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
@@ -33,6 +35,8 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  */
 public class ExtensionsFilter implements Filter {
+
+    private Log log = LogFactory.getLog(ExtensionsFilter.class);
 
     private int _uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
 
@@ -112,10 +116,20 @@ public class ExtensionsFilter implements Filter {
         }
 
         // Serve resources
-        AddResource addResource = AddResourceFactory.getInstance(httpRequest);
-        if( addResource.isResourceUri( httpRequest ) ){
-            addResource.serveResource(_servletContext, httpRequest, httpResponse);
-            return;
+        AddResource addResource = null;
+
+        try
+        {
+            addResource=AddResourceFactory.getInstance(httpRequest);
+            if( addResource.isResourceUri( httpRequest ) ){
+                addResource.serveResource(_servletContext, httpRequest, httpResponse);
+                return;
+            }
+        }
+        catch(Throwable th)
+        {
+            log.error("Exception wile retrieving addResource",th);
+            throw new ServletException(th);
         }
 
         try
