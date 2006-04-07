@@ -27,7 +27,7 @@ import org.apache.myfaces.custom.div.DivTag;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFishEyeListTag extends DivTag
+public class HtmlFishEyeNavigationMenuTag extends DivTag
 {
     private String _attachEdge;
     private String _effectUnits;
@@ -46,7 +46,7 @@ public class HtmlFishEyeListTag extends DivTag
 
     public String getComponentType()
     {
-        return HtmlFishEyeList.COMPONENT_TYPE;
+        return HtmlFishEyeNavigationMenu.COMPONENT_TYPE;
     }
 
     public String getEffectUnits()
@@ -91,7 +91,7 @@ public class HtmlFishEyeListTag extends DivTag
 
     public String getRendererType()
     {
-        return HtmlFishEyeListRenderer.RENDERER_TYPE;
+        return HtmlFishEyeNavigationMenuRenderer.RENDERER_TYPE;
     }
 
     public void release()
@@ -156,7 +156,7 @@ public class HtmlFishEyeListTag extends DivTag
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
-        HtmlFishEyeList fisheye = (HtmlFishEyeList) component;
+        HtmlFishEyeNavigationMenu fisheye = (HtmlFishEyeNavigationMenu) component;
         FacesContext context = FacesContext.getCurrentInstance();
         Application app = context.getApplication();
         if (_attachEdge != null)

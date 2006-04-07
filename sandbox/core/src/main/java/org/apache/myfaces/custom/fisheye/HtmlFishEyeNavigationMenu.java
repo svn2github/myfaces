@@ -28,7 +28,7 @@ import org.apache.myfaces.custom.div.Div;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFishEyeList extends Div
+public class HtmlFishEyeNavigationMenu extends Div
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.FishEyeList";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FishEyeList";
@@ -51,7 +51,7 @@ public class HtmlFishEyeList extends Div
     private String _labelEdge;
     private String _orientation;
 
-    public HtmlFishEyeList()
+    public HtmlFishEyeNavigationMenu()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
@@ -149,7 +149,7 @@ public class HtmlFishEyeList extends Div
 
     public boolean getRendersChildren()
     {
-        return false;
+        return true;
     }
 
     /**

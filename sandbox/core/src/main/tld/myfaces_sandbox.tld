@@ -1021,12 +1021,12 @@ Sandbox-related entities.
     
 	<!--  fishEyeList -->
 	<tag>
-		<name>fishEyeList</name>
-		<tag-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeListTag</tag-class>
+		<name>fishEyeNavigationMenu</name>
+		<tag-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenuTag</tag-class>
 		<body-content>JSP</body-content>
 		<display-name>fishEye List component</display-name>
 		<description>Provide a FishEye toolbar component from the DOJO toolkit</description>
-		&faces_id_required_attribute;
+		&faces_id_optional_attribute;
 		&faces_rendered_attribute;
 
 		&html_fisheye_list_attributes;

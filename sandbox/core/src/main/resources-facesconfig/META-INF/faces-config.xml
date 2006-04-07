@@ -156,7 +156,7 @@
   
   <component>
   	<component-type>org.apache.myfaces.FishEyeList</component-type>
-  	<component-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeList</component-class>
+  	<component-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenu</component-class>
   </component>
 
   
@@ -349,7 +349,7 @@
     <renderer>
 		<component-family>javax.faces.Output</component-family>
 		<renderer-type>org.apache.myfaces.FishEyeList</renderer-type>
-		<renderer-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeListRenderer</renderer-class>
+		<renderer-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenuRenderer</renderer-class>
 	</renderer>
 
    <!-- <renderer>
