@@ -22,15 +22,20 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.faces.event.FacesEvent;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class UINavigationMenuItem extends UISelectItem implements UserRoleAware, ActionSource
+public class UINavigationMenuItem extends UISelectItem implements
+        UserRoleAware, ActionSource
 {
     private static final boolean DEFAULT_IMMEDIATE = true;
 
@@ -68,9 +73,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public String getIcon()
     {
-        if (_icon != null) return _icon;
+        if (_icon != null)
+            return _icon;
         ValueBinding vb = getValueBinding("icon");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
     }
 
     public void setSplit(boolean split)
@@ -80,9 +87,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public boolean isSplit()
     {
-        if (_split != null) return _split.booleanValue();
+        if (_split != null)
+            return _split.booleanValue();
         ValueBinding vb = getValueBinding("split");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
         return v != null && v.booleanValue();
     }
 
@@ -93,9 +102,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public boolean isOpen()
     {
-        if (_open != null) return _open.booleanValue();
+        if (_open != null)
+            return _open.booleanValue();
         ValueBinding vb = getValueBinding("open");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
         return v != null && v.booleanValue();
     }
 
@@ -106,9 +117,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public boolean isActive()
     {
-        if (_active != null) return _active.booleanValue();
+        if (_active != null)
+            return _active.booleanValue();
         ValueBinding vb = getValueBinding("active");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
         return v != null && v.booleanValue();
     }
 
@@ -119,9 +132,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public boolean isImmediate()
     {
-        if (_immediate != null) return _immediate.booleanValue();
+        if (_immediate != null)
+            return _immediate.booleanValue();
         ValueBinding vb = getValueBinding("immediate");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
         return v != null ? v.booleanValue() : DEFAULT_IMMEDIATE;
     }
 
@@ -154,13 +169,14 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public ActionListener[] getActionListeners()
     {
-        return (ActionListener[])getFacesListeners(ActionListener.class);
+        return (ActionListener[]) getFacesListeners(ActionListener.class);
     }
 
     public void removeActionListener(ActionListener listener)
     {
         removeFacesListener(listener);
     }
+
     // Action Source
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -170,9 +186,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public String getEnabledOnUserRole()
     {
-        if (_enabledOnUserRole != null) return _enabledOnUserRole;
+        if (_enabledOnUserRole != null)
+            return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
     }
 
     public void setVisibleOnUserRole(String visibleOnUserRole)
@@ -182,9 +200,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public String getVisibleOnUserRole()
     {
-        if (_visibleOnUserRole != null) return _visibleOnUserRole;
+        if (_visibleOnUserRole != null)
+            return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
     }
 
     public void setTarget(String target)
@@ -194,9 +214,11 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public String getTarget()
     {
-        if (_target != null) return _target;
+        if (_target != null)
+            return _target;
         ValueBinding vb = getValueBinding("target");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
     }
 
     public void setDisabled(boolean disabled)
@@ -206,17 +228,21 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public boolean isDisabled()
     {
-        if (_disabled != null) return _disabled.booleanValue();
+        if (_disabled != null)
+            return _disabled.booleanValue();
         ValueBinding vb = getValueBinding("disabled");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
         return v != null && v.booleanValue();
     }
 
     public String getDisabledStyle()
     {
-        if (_disabledStyle != null) return _disabledStyle;
+        if (_disabledStyle != null)
+            return _disabledStyle;
         ValueBinding vb = getValueBinding("disabledStyle");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
     }
 
     public void setDisabledStyle(String disabledStyle)
@@ -224,11 +250,56 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
         _disabledStyle = disabledStyle;
     }
 
+    /**
+     * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
+     */
+    public void broadcast(FacesEvent event) throws AbortProcessingException
+    {
+        super.broadcast(event);
+
+        if (event instanceof ActionEvent)
+        {
+            FacesContext context = getFacesContext();
+
+            MethodBinding actionListenerBinding = getActionListener();
+            if (actionListenerBinding != null)
+            {
+                try
+                {
+                    actionListenerBinding.invoke(context,
+                            new Object[] { event });
+                }
+                catch (EvaluationException e)
+                {
+                    Throwable cause = e.getCause();
+                    if (cause != null
+                            && cause instanceof AbortProcessingException)
+                    {
+                        throw (AbortProcessingException) cause;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
+            }
+
+            ActionListener defaultActionListener = context.getApplication()
+                    .getActionListener();
+            if (defaultActionListener != null)
+            {
+                defaultActionListener.processAction((ActionEvent) event);
+            }
+        }
+    }
+
     public String getDisabledStyleClass()
     {
-        if (_disabledStyleClass != null) return _disabledStyleClass;
+        if (_disabledStyleClass != null)
+            return _disabledStyleClass;
         ValueBinding vb = getValueBinding("disabledStyleClass");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
     }
 
     public void setDisabledStyleClass(String disabledStyleClass)
@@ -238,7 +309,8 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public boolean isRendered()
     {
-        if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
+        if (!UserRoleUtils.isVisibleOnUserRole(this))
+            return false;
         return super.isRendered();
     }
 
@@ -264,18 +336,19 @@ public class UINavigationMenuItem extends UISelectItem implements UserRoleAware,
 
     public void restoreState(FacesContext context, Object state)
     {
-        Object values[] = (Object[])state;
+        Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _icon = (String)values[1];
-        _split = (Boolean)values[2];
-        _action = (MethodBinding)restoreAttachedState(context, values[3]);
-        _enabledOnUserRole = (String)values[4];
-        _visibleOnUserRole = (String)values[5];
-        _open = (Boolean)values[6];
-        _active = (Boolean)values[7];
-        _actionListener = (MethodBinding)restoreAttachedState(context, values[8]);
-        _immediate = (Boolean)values[9];
-        _target = (String)values[10];
+        _icon = (String) values[1];
+        _split = (Boolean) values[2];
+        _action = (MethodBinding) restoreAttachedState(context, values[3]);
+        _enabledOnUserRole = (String) values[4];
+        _visibleOnUserRole = (String) values[5];
+        _open = (Boolean) values[6];
+        _active = (Boolean) values[7];
+        _actionListener = (MethodBinding) restoreAttachedState(context,
+                values[8]);
+        _immediate = (Boolean) values[9];
+        _target = (String) values[10];
         _disabled = (Boolean) values[11];
         _disabledStyle = (String) values[12];
         _disabledStyleClass = (String) values[13];
