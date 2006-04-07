@@ -154,7 +154,7 @@ class WebXmlFilterHandler extends DefaultHandler
 
 	protected void addUrlPattern()
 	{
-		String filterName = currentFilterName.toString();
+		String filterName = currentFilterName.toString().trim();
 		
 		FilterEntry filter = (FilterEntry) foundFilters.get(filterName);
 		if (filter == null)
@@ -163,12 +163,12 @@ class WebXmlFilterHandler extends DefaultHandler
 			return;
 		}
 		
-		filter.urlPatterns.add(currentUrlPattern.toString());
+		filter.urlPatterns.add(currentUrlPattern.toString().trim());
 	}
 
 	protected void registerFilter()
 	{
-		String filterClass = currentFilterClass.toString();
+		String filterClass = currentFilterClass.toString().trim();
 		if (!org.apache.myfaces.component.html.util.ExtensionsFilter.class.getName().equals(filterClass) &&
 			!org.apache.myfaces.webapp.filter.ExtensionsFilter.class.getName().equals(filterClass))
 		{
@@ -176,7 +176,7 @@ class WebXmlFilterHandler extends DefaultHandler
 			return;
 		}
 		
-		String filterName = currentFilterName.toString();
+		String filterName = currentFilterName.toString().trim();
 		
 		foundFilters.put(filterName, new FilterEntry(filterName, filterClass));
 	}
