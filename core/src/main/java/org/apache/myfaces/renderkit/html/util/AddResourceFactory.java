@@ -377,6 +377,6 @@ public class AddResourceFactory
 
 	private static void throwExtensionsFilterMissing()
 	{
-		throw new IllegalStateException("ExtensionsFilter not correctly configured. Please see: http://wiki.apache.org/myfaces/MyFacesExtensionsFilter");
+		throw new IllegalStateException("ExtensionsFilter not correctly configured. Please see: http://myfaces.apache.org/tomahawk/extensionsFilter.html");
 	}
 }
