@@ -17,7 +17,9 @@ package org.apache.myfaces.custom.statechangednotifier;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.shared_impl.taglib.html.HtmlInputHiddenTagBase;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputHiddenTagBase;
+
+
 
 
 /**
