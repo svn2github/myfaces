@@ -56,6 +56,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
     public static final String ITEM_WIDTH_ATTR = "dojo:itemWidth";
     public static final String LABEL_EDGE_ATTR = "dojo:labelEdge";
     public static final String ORIENTATION_ATTR = "dojo:orientation";
+    public static final String CONSERVATIVE_TRIGGER_ATTR = "dojo:conservativeTrigger";
     public static final String RENDERER_TYPE = "org.apache.myfaces.FishEyeList";
 
     /**
@@ -114,6 +115,8 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
                     .getAttachEdge());
             writeAttribute(writer, fisheye, LABEL_EDGE_ATTR, fisheye
                     .getLabelEdge());
+            writeAttribute(writer, fisheye, CONSERVATIVE_TRIGGER_ATTR, fisheye
+                    .getConservativeTrigger());
         }
     }
 

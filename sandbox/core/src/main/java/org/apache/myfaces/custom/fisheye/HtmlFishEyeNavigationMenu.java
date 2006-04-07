@@ -42,6 +42,7 @@ public class HtmlFishEyeNavigationMenu extends Div
     public static final String VERTICAL_ORIENTATION = "vertical";
 
     private String _attachEdge;
+    private Boolean _conservativeTrigger;
     private Integer _effectUnits;
     private Integer _itemHeight;
     private Integer _itemMaxHeight;
@@ -65,6 +66,16 @@ public class HtmlFishEyeNavigationMenu extends Div
         ValueBinding vb = getValueBinding("attachEdge");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 
+    }
+
+    public Boolean getConservativeTrigger()
+    {
+        if (_conservativeTrigger != null)
+        {
+            return _conservativeTrigger;
+        }
+        ValueBinding vb = getValueBinding("conservativeTrigger");
+        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
     }
 
     public Integer getEffectUnits()
@@ -168,6 +179,7 @@ public class HtmlFishEyeNavigationMenu extends Div
         _itemPadding = (Integer) values[7];
         _attachEdge = (String) values[8];
         _labelEdge = (String) values[9];
+        _conservativeTrigger = (Boolean) values[10];
     }
 
     /**
@@ -175,7 +187,7 @@ public class HtmlFishEyeNavigationMenu extends Div
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[12];
+        Object[] values = new Object[11];
         values[0] = super.saveState(context);
         values[1] = _itemWidth;
         values[2] = _itemHeight;
@@ -186,12 +198,18 @@ public class HtmlFishEyeNavigationMenu extends Div
         values[7] = _itemPadding;
         values[8] = _attachEdge;
         values[9] = _labelEdge;
+        values[10] = _conservativeTrigger;
         return values;
     }
 
     public void setAttachEdge(String attachEdge)
     {
         this._attachEdge = attachEdge;
+    }
+
+    public void setConservativeTrigger(Boolean conservativeTrigger)
+    {
+        this._conservativeTrigger = conservativeTrigger;
     }
 
     public void setEffectUnits(Integer effectUnits)

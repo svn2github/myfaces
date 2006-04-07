@@ -30,6 +30,7 @@ import org.apache.myfaces.custom.div.DivTag;
 public class HtmlFishEyeNavigationMenuTag extends DivTag
 {
     private String _attachEdge;
+    private String _conservativeTrigger;
     private String _effectUnits;
     private String _itemHeight;
     private String _itemMaxHeight;
@@ -47,6 +48,11 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
     public String getComponentType()
     {
         return HtmlFishEyeNavigationMenu.COMPONENT_TYPE;
+    }
+
+    public String getConservativeTrigger()
+    {
+        return _conservativeTrigger;
     }
 
     public String getEffectUnits()
@@ -111,6 +117,11 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
     public void setAttachEdge(String attachEdge)
     {
         this._attachEdge = attachEdge;
+    }
+
+    public void setConservativeTrigger(String conservativeTrigger)
+    {
+        this._conservativeTrigger = conservativeTrigger;
     }
 
     public void setEffectUnits(String effectUnits)
@@ -265,6 +276,19 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
             else
             {
                 fisheye.setOrientation(_orientation);
+            }
+        }
+        if (_conservativeTrigger != null)
+        {
+            if (isValueReference(_conservativeTrigger))
+            {
+                fisheye.setValueBinding("conservativeTrigger", app
+                        .createValueBinding(_conservativeTrigger));
+            }
+            else
+            {
+                fisheye.setConservativeTrigger(Boolean
+                        .valueOf(_conservativeTrigger));
             }
         }
     }
