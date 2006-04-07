@@ -23,6 +23,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
 
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
@@ -56,6 +57,24 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
     public static final String LABEL_EDGE_ATTR = "dojo:labelEdge";
     public static final String ORIENTATION_ATTR = "dojo:orientation";
     public static final String RENDERER_TYPE = "org.apache.myfaces.FishEyeList";
+
+    /**
+     * @see javax.faces.render.Renderer#decode(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void decode(FacesContext context, UIComponent component)
+    {
+        String reqValue = (String) context.getExternalContext()
+                .getRequestParameterMap().get(
+                        HtmlRendererUtils
+                                .getHiddenCommandLinkFieldName(findNestingForm(
+                                        component, context).getFormName()));
+        UIComponent source = context.getViewRoot().findComponent(reqValue);
+        if (source instanceof UINavigationMenuItem)
+        {
+            UINavigationMenuItem item = (UINavigationMenuItem) source;
+            item.queueEvent(new ActionEvent(item));
+        }
+    }
 
     /**
      * @see javax.faces.render.Renderer#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
@@ -203,6 +222,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
         writer.writeAttribute(HTML.ONCLICK_ATTR, onClick.toString(), null);
         writer.writeAttribute(CAPTION_ATTR, item.getItemLabel(), null);
         writer.writeAttribute(ICON_SRC_ATTR, item.getIcon(), null);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         writer.endElement(HTML.DIV_ELEM);
     }
 
