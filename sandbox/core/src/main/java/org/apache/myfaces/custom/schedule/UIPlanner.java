@@ -16,9 +16,7 @@
 
 package org.apache.myfaces.custom.schedule;
 
-
 import java.io.Serializable;
-
 import java.util.Iterator;
 
 import javax.faces.component.UIComponentBase;
@@ -31,7 +29,6 @@ import org.apache.myfaces.custom.schedule.model.PlannerModel;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
-
 /**
  * <p>
  * A meeting planner component, similar to the ones found in Outlook or
@@ -42,27 +39,25 @@ import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision$
  */
-public class UIPlanner
-    extends UIComponentBase
-    implements ValueHolder, Serializable
+public class UIPlanner extends UIComponentBase implements ValueHolder,
+        Serializable
 {
     //~ Static fields/initializers ---------------------------------------------
 
-    /** Logger for this class */
-    public static final String COMPONENT_TYPE =
-        "org.apache.myfaces.Planner";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
-    public static final String DEFAULT_RENDERER_TYPE =
-        "org.apache.myfaces.Planner";
+    /** Logger for this class */
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.Planner";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Planner";
+    private static final long serialVersionUID = 4396986521172225477L;
 
     //~ Instance fields --------------------------------------------------------
 
     private Converter _converter;
+    private Object _value;
     private Integer _visibleEndHour;
     private Integer _visibleStartHour;
     private Integer _workingEndHour;
     private Integer _workingStartHour;
-    private Object _value;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -78,11 +73,38 @@ public class UIPlanner
     //~ Methods ----------------------------------------------------------------
 
     /**
-     * @see javax.faces.component.ValueHolder#setConverter(javax.faces.convert.Converter)
+     * <p>
+     * Find the entry with the given id
+     * </p>
+     *
+     * @param id the id
+     *
+     * @return the entry
      */
-    public void setConverter(Converter converter)
+    public ScheduleEntry findEntry(String id)
     {
-        this._converter = converter;
+        if (id == null)
+        {
+            return null;
+        }
+
+        for (Iterator entityIterator = getModel().entityIterator(); entityIterator
+                .hasNext();)
+        {
+            PlannerEntity entity = (PlannerEntity) entityIterator.next();
+
+            for (Iterator iter = entity.iterator(); iter.hasNext();)
+            {
+                ScheduleEntry entry = (ScheduleEntry) iter.next();
+
+                if (id.equals(entry.getId()))
+                {
+                    return entry;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -114,25 +136,16 @@ public class UIPlanner
      * The underlying planner model
      * </p>
      *
-     * @param model the model
-     */
-    public void setModel(PlannerModel model)
-    {
-        setValue(model);
-    }
-
-    /**
-     * <p>
-     * The underlying planner model
-     * </p>
-     *
      * @return the model
      */
     public PlannerModel getModel()
     {
-        if (getValue() instanceof PlannerModel) {
+        if (getValue() instanceof PlannerModel)
+        {
             return (PlannerModel) getValue();
-        } else {
+        }
+        else
+        {
             return new PlannerModel();
         }
     }
@@ -146,31 +159,11 @@ public class UIPlanner
     }
 
     /**
-     * @see javax.faces.component.ValueHolder#setValue(java.lang.Object)
-     */
-    public void setValue(Object value)
-    {
-        this._value = value;
-    }
-
-    /**
      * @see javax.faces.component.ValueHolder#getValue()
      */
     public Object getValue()
     {
         return ScheduleUtil.getObjectProperty(this, _value, "value", _value);
-    }
-
-    /**
-     * <p>
-     * the last hour of the day that is visible in the planner
-     * </p>
-     *
-     * @param visibleEndHour The visibleEndHour to set.
-     */
-    public void setVisibleEndHour(int visibleEndHour)
-    {
-        this._visibleEndHour = new Integer(visibleEndHour);
     }
 
     /**
@@ -182,21 +175,8 @@ public class UIPlanner
      */
     public int getVisibleEndHour()
     {
-        return ScheduleUtil.getIntegerProperty(
-            this, _visibleEndHour, "visibleEndHour", 22
-        );
-    }
-
-    /**
-     * <p>
-     * the first hour of the day that is visible in the planner
-     * </p>
-     *
-     * @param visibleStartHour The visibleStartHour to set.
-     */
-    public void setVisibleStartHour(int visibleStartHour)
-    {
-        this._visibleStartHour = new Integer(visibleStartHour);
+        return ScheduleUtil.getIntegerProperty(this, _visibleEndHour,
+                "visibleEndHour", 22);
     }
 
     /**
@@ -208,21 +188,8 @@ public class UIPlanner
      */
     public int getVisibleStartHour()
     {
-        return ScheduleUtil.getIntegerProperty(
-            this, _visibleStartHour, "visibleStartHour", 8
-        );
-    }
-
-    /**
-     * <p>
-     * the last hour of the working day
-     * </p>
-     *
-     * @param workingEndHour The workingEndHour to set.
-     */
-    public void setWorkingEndHour(int workingEndHour)
-    {
-        this._workingEndHour = new Integer(workingEndHour);
+        return ScheduleUtil.getIntegerProperty(this, _visibleStartHour,
+                "visibleStartHour", 8);
     }
 
     /**
@@ -234,21 +201,8 @@ public class UIPlanner
      */
     public int getWorkingEndHour()
     {
-        return ScheduleUtil.getIntegerProperty(
-            this, _workingEndHour, "workingEndHour", 17
-        );
-    }
-
-    /**
-     * <p>
-     * The first hour of the working day
-     * </p>
-     *
-     * @param workingStartHour The workingStartHour to set.
-     */
-    public void setWorkingStartHour(int workingStartHour)
-    {
-        this._workingStartHour = new Integer(workingStartHour);
+        return ScheduleUtil.getIntegerProperty(this, _workingEndHour,
+                "workingEndHour", 17);
     }
 
     /**
@@ -260,52 +214,15 @@ public class UIPlanner
      */
     public int getWorkingStartHour()
     {
-        return ScheduleUtil.getIntegerProperty(
-            this, _workingStartHour, "workingStartHour", 9
-        );
-    }
-
-    /**
-     * <p>
-     * Find the entry with the given id
-     * </p>
-     *
-     * @param id the id
-     *
-     * @return the entry
-     */
-    public ScheduleEntry findEntry(String id)
-    {
-        if (id == null) {
-            return null;
-        }
-
-        for (
-            Iterator entityIterator = getModel().entityIterator();
-                entityIterator.hasNext();
-        ) {
-            PlannerEntity entity = (PlannerEntity) entityIterator.next();
-
-            for (Iterator iter = entity.iterator(); iter.hasNext();) {
-                ScheduleEntry entry = (ScheduleEntry) iter.next();
-
-                if (id.equals(entry.getId())) {
-                    return entry;
-                }
-            }
-        }
-
-        return null;
+        return ScheduleUtil.getIntegerProperty(this, _workingStartHour,
+                "workingStartHour", 9);
     }
 
     /**
      * @see javax.faces.component.StateHolder#restoreState(javax.faces.context.FacesContext,
      *      java.lang.Object)
      */
-    public void restoreState(
-        FacesContext context,
-        Object state
-    )
+    public void restoreState(FacesContext context, Object state)
     {
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
@@ -330,6 +247,82 @@ public class UIPlanner
         values[5] = _value;
 
         return values;
+    }
+
+    /**
+     * @see javax.faces.component.ValueHolder#setConverter(javax.faces.convert.Converter)
+     */
+    public void setConverter(Converter converter)
+    {
+        this._converter = converter;
+    }
+
+    /**
+     * <p>
+     * The underlying planner model
+     * </p>
+     *
+     * @param model the model
+     */
+    public void setModel(PlannerModel model)
+    {
+        setValue(model);
+    }
+
+    /**
+     * @see javax.faces.component.ValueHolder#setValue(java.lang.Object)
+     */
+    public void setValue(Object value)
+    {
+        this._value = value;
+    }
+
+    /**
+     * <p>
+     * the last hour of the day that is visible in the planner
+     * </p>
+     *
+     * @param visibleEndHour The visibleEndHour to set.
+     */
+    public void setVisibleEndHour(int visibleEndHour)
+    {
+        this._visibleEndHour = new Integer(visibleEndHour);
+    }
+
+    /**
+     * <p>
+     * the first hour of the day that is visible in the planner
+     * </p>
+     *
+     * @param visibleStartHour The visibleStartHour to set.
+     */
+    public void setVisibleStartHour(int visibleStartHour)
+    {
+        this._visibleStartHour = new Integer(visibleStartHour);
+    }
+
+    /**
+     * <p>
+     * the last hour of the working day
+     * </p>
+     *
+     * @param workingEndHour The workingEndHour to set.
+     */
+    public void setWorkingEndHour(int workingEndHour)
+    {
+        this._workingEndHour = new Integer(workingEndHour);
+    }
+
+    /**
+     * <p>
+     * The first hour of the working day
+     * </p>
+     *
+     * @param workingStartHour The workingStartHour to set.
+     */
+    public void setWorkingStartHour(int workingStartHour)
+    {
+        this._workingStartHour = new Integer(workingStartHour);
     }
 }
 //The End

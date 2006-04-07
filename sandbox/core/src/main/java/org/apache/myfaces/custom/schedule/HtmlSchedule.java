@@ -16,7 +16,6 @@
 
 package org.apache.myfaces.custom.schedule;
 
-
 import java.util.Date;
 
 import javax.faces.context.FacesContext;
@@ -26,13 +25,9 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
 
 /**
  *
@@ -40,54 +35,205 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
  * @author Jurgen Lust
  * @version $Revision$
  */
-public class HtmlSchedule
-    extends UISchedule implements UserRoleAware
+public class HtmlSchedule extends UISchedule implements UserRoleAware
 {
 
-//  ------------------ GENERATED CODE BEGIN (do not modify!) --------------------
+    public static final String COMPONENT_FAMILY = "javax.faces.Panel";
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Schedule";
-    public static final String COMPONENT_FAMILY = "javax.faces.Panel";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Schedule";
+    private static final long serialVersionUID = 5859593107442371656L;
+    //  ------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     private String _enabledOnUserRole = null;
-    private String _visibleOnUserRole = null;
-    private Boolean _submitOnClick = null;
     private Date _lastClickedDateAndTime = null;
     private MethodBinding _mouseListener = null;
+    private Boolean _submitOnClick = null;
+    private String _visibleOnUserRole = null;
 
     public HtmlSchedule()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
+    /**
+     * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
+     */
+    public void broadcast(FacesEvent event) throws AbortProcessingException
+    {
+        // First invoke the mouse listener, before any other listener
+        if (event instanceof ScheduleMouseEvent)
+        {
+            FacesContext context = getFacesContext();
+            ScheduleMouseEvent mouseEvent = (ScheduleMouseEvent) event;
+            MethodBinding mouseListenerBinding = getMouseListener();
+
+            if (mouseListenerBinding != null)
+            {
+                mouseListenerBinding.invoke(context,
+                        new Object[] { mouseEvent });
+            }
+        }
+        //now invoke the other listeners
+        super.broadcast(event);
+    }
+
+    /**
+     * @see org.apache.myfaces.component.UserRoleAware#getEnabledOnUserRole()
+     */
+    public String getEnabledOnUserRole()
+    {
+        if (_enabledOnUserRole != null)
+            return _enabledOnUserRole;
+        ValueBinding vb = getValueBinding("enabledOnUserRole");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
+    }
+
+    /**
+     * @see javax.faces.component.UIComponent#getFamily()
+     */
     public String getFamily()
     {
         return COMPONENT_FAMILY;
     }
 
+    /**
+     * <p>
+     * The last date and time of day that was clicked. This is set when
+     * submitOnClick is true, and the schedule is clicked by the user.
+     * </p>
+     * 
+     * @return the last clicked date and time
+     */
+    public Date getLastClickedDateAndTime()
+    {
+        return _lastClickedDateAndTime;
+    }
+
+    /**
+     * @return the method binding to the mouse listener method
+     */
+    public MethodBinding getMouseListener()
+    {
+        return _mouseListener;
+    }
+
+    /**
+     * @see org.apache.myfaces.component.UserRoleAware#getVisibleOnUserRole()
+     */
+    public String getVisibleOnUserRole()
+    {
+        if (_visibleOnUserRole != null)
+            return _visibleOnUserRole;
+        ValueBinding vb = getValueBinding("visibleOnUserRole");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                vb) : null;
+    }
+
+    /**
+     * <p>
+     * Should the parent form of this schedule be submitted when the user
+     * clicks on a day? Note that this will only work when the readonly
+     * property is set to false.
+     * </p>
+     *
+     * @return submit the form on mouse click
+     */
+    public boolean isSubmitOnClick()
+    {
+        return ScheduleUtil.getBooleanProperty(this, _submitOnClick,
+                "submitOnClick", false);
+    }
+
+    /**
+     * @see javax.faces.component.UIComponent#queueEvent(javax.faces.event.FacesEvent)
+     */
+    public void queueEvent(FacesEvent event)
+    {
+        if (event instanceof ScheduleMouseEvent)
+        {
+            if (isImmediate())
+            {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else
+            {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+        }
+        super.queueEvent(event);
+    }
+
+    /**
+     * This method is invoked at the beginning of the restore view phase,
+     * resetting all mouse event variables that were left from the previous
+     * request
+     */
+    public void resetMouseEvents()
+    {
+        this._lastClickedDateAndTime = null;
+    }
+
+    /**
+     * @see javax.faces.component.StateHolder#restoreState(javax.faces.context.FacesContext, java.lang.Object)
+     */
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        _enabledOnUserRole = (String) values[1];
+        _visibleOnUserRole = (String) values[2];
+        _submitOnClick = (Boolean) values[3];
+        _lastClickedDateAndTime = (Date) values[4];
+        _mouseListener = (MethodBinding) restoreAttachedState(context,
+                values[5]);
+    }
+
+    //  ------------------ GENERATED CODE END ---------------------------------------
+
+    /**
+     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
+     */
+    public Object saveState(FacesContext context)
+    {
+        Object values[] = new Object[6];
+        values[0] = super.saveState(context);
+        values[1] = _enabledOnUserRole;
+        values[2] = _visibleOnUserRole;
+        values[3] = _submitOnClick;
+        values[4] = _lastClickedDateAndTime;
+        values[5] = saveAttachedState(context, _mouseListener);
+        return ((Object) (values));
+    }
+
+    /**
+     * @see org.apache.myfaces.component.UserRoleAware#setEnabledOnUserRole(java.lang.String)
+     */
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
         _enabledOnUserRole = enabledOnUserRole;
     }
 
-    public String getEnabledOnUserRole()
+    /**
+     * <p>
+     * The last date and time of day that was clicked. This is set when
+     * submitOnClick is true, and the schedule is clicked by the user.
+     * </p>
+     * 
+     * @return the last clicked date and time
+     */
+    public void setLastClickedDateAndTime(Date lastClickedDateAndTime)
     {
-        if (_enabledOnUserRole != null) return _enabledOnUserRole;
-        ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        this._lastClickedDateAndTime = lastClickedDateAndTime;
     }
 
-    public void setVisibleOnUserRole(String visibleOnUserRole)
+    /**
+     * @param listener the method binding to the mouse listener method
+     */
+    public void setMouseListener(MethodBinding listener)
     {
-        _visibleOnUserRole = visibleOnUserRole;
-    }
-
-    public String getVisibleOnUserRole()
-    {
-        if (_visibleOnUserRole != null) return _visibleOnUserRole;
-        ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+        _mouseListener = listener;
     }
 
     /**
@@ -105,126 +251,10 @@ public class HtmlSchedule
         this._submitOnClick = Boolean.valueOf(submitOnClick);
     }
 
-    /**
-     * <p>
-     * Should the parent form of this schedule be submitted when the user
-     * clicks on a day? Note that this will only work when the readonly
-     * property is set to false.
-     * </p>
-     *
-     * @return submit the form on mouse click
-     */
-    public boolean isSubmitOnClick()
+    public void setVisibleOnUserRole(String visibleOnUserRole)
     {
-        return ScheduleUtil.getBooleanProperty(this, _submitOnClick, "submitOnClick", false);
+        _visibleOnUserRole = visibleOnUserRole;
     }
-
-    /**
-     * @return the method binding to the mouse listener method
-     */
-    public MethodBinding getMouseListener()
-    {
-        return _mouseListener;
-    }
-
-    /**
-     * @param listener the method binding to the mouse listener method
-     */
-    public void setMouseListener(MethodBinding listener)
-    {
-        _mouseListener = listener;
-    }
-
-    
-    /**
-     * <p>
-     * The last date and time of day that was clicked. This is set when
-     * submitOnClick is true, and the schedule is clicked by the user.
-     * </p>
-     * 
-     * @return the last clicked date and time
-     */
-    public Date getLastClickedDateAndTime()
-    {
-        return _lastClickedDateAndTime;
-    }
-    
-    /**
-     * <p>
-     * The last date and time of day that was clicked. This is set when
-     * submitOnClick is true, and the schedule is clicked by the user.
-     * </p>
-     * 
-     * @return the last clicked date and time
-     */
-    public void setLastClickedDateAndTime(Date lastClickedDateAndTime)
-    {
-        this._lastClickedDateAndTime = lastClickedDateAndTime;
-    }
-    
-    public void broadcast(FacesEvent event) throws AbortProcessingException
-    {
-        // First invoke the mouse listener, before any other listener
-        if (event instanceof ScheduleMouseEvent)
-        {
-            FacesContext context = getFacesContext();
-            ScheduleMouseEvent mouseEvent = (ScheduleMouseEvent) event;
-            MethodBinding mouseListenerBinding = getMouseListener();
-
-            if (mouseListenerBinding != null)
-            {
-                mouseListenerBinding.invoke(context, new Object[] { mouseEvent });
-            }
-        }
-        //now invoke the other listeners
-        super.broadcast(event);
-    }
-
-    public void queueEvent(FacesEvent event)
-    {
-        if (event instanceof ScheduleMouseEvent)
-        {
-            if (isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            } else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-        }
-        super.queueEvent(event);
-    }
-
-    /**
-     * This method is invoked at the beginning of the restore view phase,
-     * resetting all mouse event variables that were left from the previous
-     * request
-     */
-    public void resetMouseEvents() {
-        this._lastClickedDateAndTime = null;
-    }
-    
-    public Object saveState(FacesContext context)
-    {
-        Object values[] = new Object[6];
-        values[0] = super.saveState(context);
-        values[1] = _enabledOnUserRole;
-        values[2] = _visibleOnUserRole;
-        values[3] = _submitOnClick;
-        values[4] = _lastClickedDateAndTime;
-        values[5] = saveAttachedState(context, _mouseListener);
-        return ((Object) (values));
-    }
-
-    public void restoreState(FacesContext context, Object state)
-    {
-        Object values[] = (Object[])state;
-        super.restoreState(context, values[0]);
-        _enabledOnUserRole = (String)values[1];
-        _visibleOnUserRole = (String)values[2];
-        _submitOnClick = (Boolean)values[3];
-        _lastClickedDateAndTime = (Date)values[4];
-        _mouseListener = (MethodBinding)restoreAttachedState(context, values[5]);
-    }
-//  ------------------ GENERATED CODE END ---------------------------------------
 
 }
 //The End

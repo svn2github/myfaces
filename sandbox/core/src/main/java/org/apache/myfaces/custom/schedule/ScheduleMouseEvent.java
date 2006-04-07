@@ -18,12 +18,8 @@ package org.apache.myfaces.custom.schedule;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
-import javax.faces.event.PhaseId;
-
-import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 
 /**
  * An event that is fired when the schedule is clicked, and the submitOnClick
@@ -38,43 +34,53 @@ public class ScheduleMouseEvent extends FacesEvent implements Serializable
     public static final int SCHEDULE_BODY_CLICKED = 1;
     public static final int SCHEDULE_HEADER_CLICKED = 2;
     public static final int SCHEDULE_ENTRY_CLICKED = 3;
-    
+
     private static final long serialVersionUID = -2810582008938303475L;
-    
+
     private final int eventType;
 
-    public ScheduleMouseEvent(final HtmlSchedule source, final int eventType) {
+    public ScheduleMouseEvent(final HtmlSchedule source, final int eventType)
+    {
         super(source);
         //the FacesEvent throws an IllegalArgumentException when source == null
         //so don't bother here
         this.eventType = eventType;
     }
-    
+
+    public Date getClickedDate()
+    {
+        return getSchedule().getLastClickedDateAndTime();
+    }
+
+    public Date getClickedTime()
+    {
+        return getSchedule().getLastClickedDateAndTime();
+    }
+
+    public int getEventType()
+    {
+        return eventType;
+    }
+
     /**
      * @return The schedule component where the mouse event originated
      */
     public HtmlSchedule getSchedule()
     {
-        return (HtmlSchedule)getSource();
+        return (HtmlSchedule) getSource();
     }
 
-    public Date getClickedTime() {
-        return getSchedule().getLastClickedDateAndTime();
-    }
-    
-    public Date getClickedDate() {
-        return getSchedule().getLastClickedDateAndTime();
-    }
-    
-    public int getEventType() {
-        return eventType;
-    }
-    
+    /**
+     * @see javax.faces.event.FacesEvent#isAppropriateListener(javax.faces.event.FacesListener)
+     */
     public boolean isAppropriateListener(FacesListener listener)
     {
         return (listener instanceof ScheduleMouseListener);
     }
 
+    /**
+     * @see javax.faces.event.FacesEvent#processListener(javax.faces.event.FacesListener)
+     */
     public void processListener(FacesListener listener)
     {
         if (listener instanceof ScheduleMouseListener)
