@@ -1,0 +1,6 @@
+.dojoTimedNotifierDialog {
+	background :  rgb(173,213,254);
+	border : 2px solid rgb(0,0,0);
+	-moz-border-radius : 6px;
+	padding : 6px;
+}

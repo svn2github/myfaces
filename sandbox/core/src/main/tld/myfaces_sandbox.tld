@@ -127,6 +127,7 @@ Sandbox-related entities.
 <!ENTITY table_suggest_ajax_attributes       SYSTEM "entities/table_suggest_ajax_attributes.xml">
 <!ENTITY suggest_ajax_attributes       SYSTEM "entities/suggest_ajax_attributes.xml">
 <!ENTITY html_fisheye_list_attributes	SYSTEM "entities/html_fisheyelist_attributes.xml">
+<!ENTITY html_timed_notifier_attributes	SYSTEM "entities/html_timed_notifier_attributes.xml">
 ]>
 
 <taglib>
@@ -1031,4 +1032,15 @@ Sandbox-related entities.
 
 		&html_fisheye_list_attributes;
 	</tag>    
+	
+	<!-- timed notifier -->
+	<tag>
+		<name>timedNotifier</name>
+		<tag-class>org.apache.myfaces.custom.timednotifier.TimedNotifierTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Displays a timed notifier tag</description>
+
+		&ui_component_attributes;
+		&html_timed_notifier_attributes;
+	</tag>
 </taglib>
