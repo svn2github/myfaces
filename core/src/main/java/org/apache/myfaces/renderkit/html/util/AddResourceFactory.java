@@ -20,9 +20,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -35,254 +40,274 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.webapp.webxml.FilterMapping;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.webapp.webxml.WebXml;
 import org.apache.myfaces.webapp.filter.ExtensionsFilter;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * This class provides the ability to instantiate AddResource objects.
- * By default, this class will instantiate instances of
- * org.apache.myfaces.component.html.util.DefaultAddResource.
- * However, the context parameter org.apache.myfaces.ADD_RESOURCE_CLASS
- * can specify an alternative implementation of the AddResource
- * interface. The class must have a constructor with a single String
- * argument, representing the context path.
- * <p/>
- * Mostly used to avoid having to include [script src="..."][/script]
- * in the head of the pages before using a component.
- *
+ * This class provides the ability to instantiate AddResource objects. By
+ * default, this class will instantiate instances of
+ * org.apache.myfaces.component.html.util.DefaultAddResource. However, the
+ * context parameter org.apache.myfaces.ADD_RESOURCE_CLASS can specify an
+ * alternative implementation of the AddResource interface. The class must have
+ * a constructor with a single String argument, representing the context path.
+ * <p/> Mostly used to avoid having to include [script src="..."][/script] in
+ * the head of the pages before using a component.
+ * 
  * @author Peter Mahoney
  * @author Sylvain Vieujot (latest modification by $Author: mmarinschek $)
- * @version $Revision: 358042 $ $Date: 2005-12-20 17:12:56 +0000 (Tue, 20 Dec 2005) $
+ * @version $Revision: 358042 $ $Date: 2005-12-20 17:12:56 +0000 (Tue, 20 Dec
+ *          2005) $
  */
 public class AddResourceFactory
 {
+	private final static Set VALID_EXTFLT_PATH = Collections
+		.unmodifiableSet(new TreeSet(Arrays.asList(new String[]
+		{
+				"/faces/*", "/faces/myFacesExtensionResource/*"
+		})));
 
+	public static class RequestMapWrapper implements Map
+	{
+		private final HttpServletRequest request;
 
-    public static class RequestMapWrapper implements Map
-    {
-        private final HttpServletRequest request;
+		public RequestMapWrapper(final HttpServletRequest request)
+		{
+			this.request = request;
+		}
 
-        public RequestMapWrapper(final HttpServletRequest request)
-        {
-            this.request = request;
-        }
+		public int size()
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public int size()
-        {
-            throw new UnsupportedOperationException();
-        }
+		public boolean isEmpty()
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public boolean isEmpty()
-        {
-            throw new UnsupportedOperationException();
-        }
+		public boolean containsKey(Object key)
+		{
+			if (key == null)
+			{
+				throw new UnsupportedOperationException(
+					"'null' key not supported");
+			}
+			return request.getAttribute(key.toString()) != null;
+		}
 
-        public boolean containsKey(Object key)
-        {
-            if (key == null)
-            {
-                throw new UnsupportedOperationException("'null' key not supported");
-            }
-            return request.getAttribute(key.toString()) != null;
-        }
+		public boolean containsValue(Object value)
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public boolean containsValue(Object value)
-        {
-            throw new UnsupportedOperationException();
-        }
+		public Object get(Object key)
+		{
+			if (key == null)
+			{
+				throw new UnsupportedOperationException(
+					"'null' key not supported");
+			}
+			return request.getAttribute(key.toString());
+		}
 
-        public Object get(Object key)
-        {
-            if (key == null)
-            {
-                throw new UnsupportedOperationException("'null' key not supported");
-            }
-            return request.getAttribute(key.toString());
-        }
+		public Object put(Object key, Object value)
+		{
+			if (key == null)
+			{
+				throw new UnsupportedOperationException(
+					"'null' key not supported");
+			}
 
-        public Object put(Object key, Object value)
-        {
-            if (key == null)
-            {
-                throw new UnsupportedOperationException("'null' key not supported");
-            }
+			Object old = request.getAttribute(key.toString());
+			request.setAttribute(key.toString(), value);
+			return old;
+		}
 
-            Object old = request.getAttribute(key.toString());
-            request.setAttribute(key.toString(), value);
-            return old;
-        }
+		public Object remove(Object key)
+		{
+			if (key == null)
+			{
+				throw new UnsupportedOperationException(
+					"'null' key not supported");
+			}
 
-        public Object remove(Object key)
-        {
-            if (key == null)
-            {
-                throw new UnsupportedOperationException("'null' key not supported");
-            }
+			Object old = request.getAttribute(key.toString());
+			request.removeAttribute(key.toString());
+			return old;
+		}
 
-            Object old = request.getAttribute(key.toString());
-            request.removeAttribute(key.toString());
-            return old;
-        }
+		public void putAll(Map arg)
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public void putAll(Map arg)
-        {
-            throw new UnsupportedOperationException();
-        }
+		public void clear()
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public void clear()
-        {
-            throw new UnsupportedOperationException();
-        }
+		public Set keySet()
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public Set keySet()
-        {
-            throw new UnsupportedOperationException();
-        }
+		public Collection values()
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public Collection values()
-        {
-            throw new UnsupportedOperationException();
-        }
+		public Set entrySet()
+		{
+			throw new UnsupportedOperationException();
+		}
 
-        public Set entrySet()
-        {
-            throw new UnsupportedOperationException();
-        }
+	}
 
-    }
+	protected static final Log log = LogFactory
+		.getLog(AddResourceFactory.class);
 
-    protected static final Log log = LogFactory.getLog(AddResourceFactory.class);
+	private final static String CACHE_MAP_KEY = "org.apache.myfaces.AddResourceFactory.CACHE_MAP_KEY";
+	private final static String ENV_CHECKED_KEY = "org.apache.myfaces.AddResourceFactory.ENV_CHECKED_KEY";
 
-    private final static String CACHE_MAP_KEY = "org.apache.myfaces.AddResourceFactory.CACHE_MAP_KEY";
-    private final static String ENV_CHECKED_KEY = "org.apache.myfaces.AddResourceFactory.ENV_CHECKED_KEY";
+	/**
+	 * Internal factory method. <p/> Return an instance of AddResource keyed by
+	 * context path, or create one if no such instance already exists. The
+	 * instance will be cached using the given Map, most likely this will the
+	 * the request map of your servlet request. Therefore every request uses its
+	 * own AddResource instance.
+	 * </p>
+	 * <p/> Note that this method is package-scope for the purposes of
+	 * unit-testing only. This method should be treated as private by non-test
+	 * code.
+	 * </p>
+	 * 
+	 * @param cacheMap
+	 *            the map used for caching of the instance. if null, a new
+	 *            instance will be created all the time (for tests)
+	 * @param contextPath
+	 *            context path of your web-app
+	 * @param addResourceClassName
+	 *            class name of a class implementing the
+	 * @link AddResource interface
+	 */
+	static AddResource getInstance(Map cacheMap, String contextPath,
+			String addResourceClassName)
+	{
+		AddResource instance = null;
 
+		if (cacheMap != null)
+		{
+			instance = (AddResource) cacheMap.get(CACHE_MAP_KEY);
+		}
 
-    /**
-     * Internal factory method.
-     * <p/>
-     * Return an instance of AddResource keyed by context path, or create one
-     * if no such instance already exists. The instance will be cached using the
-     * given Map, most likely this will the the request map of your servlet request.
-     * Therefore every request uses its own AddResource instance.
-     * </p>
-     * <p/>
-     * Note that this method is package-scope for the purposes of unit-testing only.
-     * This method should be treated as private by non-test code.
-     * </p>
-     *
-     * @param cacheMap             the map used for caching of the instance. if null, a new instance will be created all the time (for tests)
-     * @param contextPath          context path of your web-app
-     * @param addResourceClassName class name of a class implementing the @link AddResource interface
-     */
-    static AddResource getInstance(Map cacheMap, String contextPath, String addResourceClassName)
-    {
-        AddResource instance = null;
+		if (instance == null)
+		{
+			if (addResourceClassName == null)
+			{
+				// For efficiency don't use reflection unless it is necessary
+				instance = new DefaultAddResource();
+				instance.setContextPath(contextPath);
+			}
+			else
+			{
+				try
+				{
+					Class addResourceClass = ClassUtils
+						.classForName(addResourceClassName);
 
-        if (cacheMap != null)
-        {
-            instance = (AddResource) cacheMap.get(CACHE_MAP_KEY);
-        }
+					if (AddResource.class.isAssignableFrom(addResourceClass))
+					{
+						AddResource tmpInstance = (AddResource) addResourceClass
+							.newInstance();
+						tmpInstance.setContextPath(contextPath);
 
-        if (instance == null)
-        {
-            if (addResourceClassName == null)
-            {
-                // For efficiency don't use reflection unless it is necessary
-                instance = new DefaultAddResource();
-                instance.setContextPath(contextPath);
-            }
-            else
-            {
-                try
-                {
-                    Class addResourceClass = ClassUtils.classForName(addResourceClassName);
+						// only use a fully initialized instance
+						instance = tmpInstance;
+					}
+					else
+					{
+						log
+							.error("Invalid AddResource class ("
+									+ addResourceClass.getName()
+									+ "). Must implement the AddResource interface.");
+					}
+				}
+				catch (ClassNotFoundException e)
+				{
+					log
+						.error(
+							"AddResource class not found. Using default class instead",
+							e);
+				}
+				catch (IllegalArgumentException e)
+				{
+					// This should not happen as the constructor has been
+					// checked
+					log.error(e);
+				}
+				catch (InstantiationException e)
+				{
+					log.error(
+						"Invalid AddResource class. Must be non-abstract", e);
+				}
+				catch (IllegalAccessException e)
+				{
+					log.error("Could not access AddResource class", e);
+				}
+				finally
+				{
+					// Ensure there is always an AddResource object available
+					if (instance == null)
+					{
+						instance = new DefaultAddResource();
+						instance.setContextPath(contextPath);
+					}
+				}
+			}
 
-                    if (AddResource.class.isAssignableFrom(addResourceClass))
-                    {
-                        AddResource tmpInstance = (AddResource) addResourceClass.newInstance();
-                        tmpInstance.setContextPath(contextPath);
+			if (cacheMap != null)
+			{
+				cacheMap.put(CACHE_MAP_KEY, instance);
+			}
+		}
 
-                        // only use a fully initialized instance
-                        instance = tmpInstance;
-                    }
-                    else
-                    {
-                        log.error("Invalid AddResource class (" + addResourceClass.getName()
-                                + "). Must implement the AddResource interface.");
-                    }
-                }
-                catch (ClassNotFoundException e)
-                {
-                    log.error("AddResource class not found. Using default class instead", e);
-                }
-                catch (IllegalArgumentException e)
-                {
-                    // This should not happen as the constructor has been checked
-                    log.error(e);
-                }
-                catch (InstantiationException e)
-                {
-                    log.error("Invalid AddResource class. Must be non-abstract", e);
-                }
-                catch (IllegalAccessException e)
-                {
-                    log.error("Could not access AddResource class", e);
-                }
-                finally
-                {
-                    // Ensure there is always an AddResource object available
-                    if (instance == null)
-                    {
-                        instance = new DefaultAddResource();
-                        instance.setContextPath(contextPath);
-                    }
-                }
-            }
+		return instance;
+	}
 
-            if (cacheMap != null)
-            {
-                cacheMap.put(CACHE_MAP_KEY, instance);
-            }
-        }
+	public static AddResource getInstance(FacesContext context)
+	{
+		AddResource addResource = getInstance(context
+			.getExternalContext().getRequestMap(), context
+			.getExternalContext().getRequestContextPath(), MyfacesConfig
+			.getCurrentInstance(context.getExternalContext())
+			.getAddResourceClass());
+		checkEnvironment(context, addResource);
+		return addResource;
+	}
 
-        return instance;
-    }
-
-
-    public static AddResource getInstance
-            (FacesContext
-                    context)
-    {
-    	AddResource addResource = getInstance(
-                context.getExternalContext().getRequestMap(),
-                context.getExternalContext().getRequestContextPath(),
-                MyfacesConfig.getCurrentInstance(context.getExternalContext()).getAddResourceClass());
-    	checkEnvironment(context, addResource);
-    	return addResource;
-    }
-
-	public static AddResource getInstance
-            (HttpServletRequest
-                    request)
-    {
-        ServletContext servletContext = request.getSession().getServletContext();
-        Map requestMap = new RequestMapWrapper(request);
-        AddResource addResource = getInstance(
-        		requestMap,
-                request.getContextPath(),
-                MyfacesConfig.getAddResourceClassFromServletContext(servletContext));
-        //
-        // this will be called by the ExtensionsFilter itself, so no need to check the environment
-        //
-    	return addResource;
-    }
+	public static AddResource getInstance(HttpServletRequest request)
+	{
+		ServletContext servletContext = request
+			.getSession().getServletContext();
+		Map requestMap = new RequestMapWrapper(request);
+		AddResource addResource = getInstance(requestMap, request
+			.getContextPath(), MyfacesConfig
+			.getAddResourceClassFromServletContext(servletContext));
+		//
+		// this will be called by the ExtensionsFilter itself, so no need to
+		// check the environment
+		//
+		return addResource;
+	}
 
 	/**
 	 * check if the extensionsFilter has been correctly setup.
 	 */
-    private static void checkEnvironment(FacesContext context, AddResource addResource)
+	private static void checkEnvironment(FacesContext context, AddResource addResource)
 	{
     	ExternalContext extctx = context.getExternalContext();
     	
@@ -305,78 +330,45 @@ public class AddResourceFactory
 	    	{
 	    		if (!extctx.getRequestMap().containsKey(ExtensionsFilter.DOFILTER_CALLED))
 	    		{
-	    			throwExtensionsFilterMissing();
+	    			throwExtensionsFilterMissing("JSF mapping missing. JSF pages not covered.");
+	    		}
+	    	}
+
+	    	boolean foundMapping = false;
+	    	
+	    	List facesServletMappings = WebXml.getWebXml(extctx).getFacesExtensionsFilterMappings();
+	    	for (Iterator iterServletMappings = facesServletMappings.iterator(); iterServletMappings.hasNext();)
+	    	{
+	    		FilterMapping filterMapping = (FilterMapping) iterServletMappings.next();
+	    		if (checkFilterPattern(filterMapping))
+	    		{
+	    			foundMapping = true;
+	    			break;
 	    		}
 	    	}
 	    	
-	    	InputStream webXmlStream = null;
-	    	try
-			{
-				URL url = extctx.getResource("/WEB-INF/web.xml");
-				webXmlStream = url.openStream();
-
-				SAXParser parser = createSAXParser();
-				WebXmlFilterHandler webXmlFilterHandler = new WebXmlFilterHandler();
-				parser.parse(new InputSource(webXmlStream), webXmlFilterHandler);
-				
-				if (!webXmlFilterHandler.isValidEnvironment())
-				{
-					throwExtensionsFilterMissing();
-				}
-			}
-			catch (MalformedURLException e)
-			{
-				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
-			}
-			catch (IOException e)
-			{
-				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
-			}
-			catch (ParserConfigurationException e)
-			{
-				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
-			}
-			catch (SAXException e)
-			{
-				log.error("Cant check extensions filter as I can not read /WEB-INF/web.xml", e);
-			}
-			finally
-			{
-				if (webXmlStream != null)
-				{
-					try
-					{
-						webXmlStream.close();
-					}
-					catch (IOException e)
-					{
-						log.error("cant close /WEB-INF/web.xml", e);
-					}
-				}
-			}
+	    	if (!foundMapping)
+	    	{
+	    		throwExtensionsFilterMissing("Resource mapping missing. Resources cant be delivered.");
+	    	}
 	    	
 	    	extctx.getApplicationMap().put(ENV_CHECKED_KEY, Boolean.TRUE);
 		}
 	}
 
-	protected static SAXParser createSAXParser() throws ParserConfigurationException, SAXException
+	protected static boolean checkFilterPattern(FilterMapping filterMapping)
 	{
-		SAXParserFactory saxParserFactory = createSAXParserFactory();
-		SAXParser parser = saxParserFactory.newSAXParser();
-		return parser;
+		if (VALID_EXTFLT_PATH.contains(filterMapping.getUrlPattern()))
+		{
+			return true;
+		}
+		
+		return false;
 	}
 
-	protected static SAXParserFactory createSAXParserFactory()
+	private static void throwExtensionsFilterMissing(String detailReason)
 	{
-		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-		saxParserFactory.setValidating(false);
-		//saxParserFactory.setXIncludeAware(true);
-		saxParserFactory.setNamespaceAware(true);
-		return saxParserFactory;
-	}
-
-	private static void throwExtensionsFilterMissing()
-	{
-		throw new IllegalStateException("ExtensionsFilter not correctly configured. Please see: http://myfaces.apache.org/tomahawk/extensionsFilter.html");
+		throw new IllegalStateException(
+			"ExtensionsFilter not correctly configured. " + detailReason + " Please see: http://myfaces.apache.org/tomahawk/extensionsFilter.html");
 	}
 }
