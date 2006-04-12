@@ -35,7 +35,7 @@ components.
                     <td colspan="1" rowspan="1">
                         On all MyFaces extended and custom components (all components
                         in the extended taglib, usually prefixed with an 't')
-                        the forceId attribute can be set to the desired id-value.
+                        the forceId attribute can be set to true to force the desired id-value.
                     </td>
                 </tr>
             </table>
@@ -44,7 +44,7 @@ components.
         <section name="Usage">
             
             <source xml:space="preserve">
-&lt;(anyCustomComponent) forceId="yourIdValue"/&gt;
+&lt;(anyCustomComponent) forceId="true" id="yourIdValue"/&gt;
             </source>
         </section>
         <!-- Instructions -->
