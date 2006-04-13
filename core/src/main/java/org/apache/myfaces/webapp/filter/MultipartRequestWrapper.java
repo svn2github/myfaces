@@ -43,6 +43,7 @@ public class MultipartRequestWrapper
 {
     private static Log log = LogFactory.getLog(MultipartRequestWrapper.class);
     public static final String UPLOADED_FILES_ATTRIBUTE = "org.apache.myfaces.uploadedFiles";
+    public static final String WWW_FORM_URLENCODED_TYPE = "application/x-www-form-urlencoded";
 
     HttpServletRequest request = null;
     HashMap parametersMap = null;
@@ -205,6 +206,6 @@ public class MultipartRequestWrapper
     
     public String getContentType()
     {
-      return "application/x-www-form-urlencoded";
+      return WWW_FORM_URLENCODED_TYPE;
     }     
 }
