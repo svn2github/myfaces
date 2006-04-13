@@ -202,4 +202,9 @@ public class MultipartRequestWrapper
         }
         return super.getAttribute(string);
     }
+    
+    public String getContentType()
+    {
+      return "application/x-www-form-urlencoded";
+    }     
 }
