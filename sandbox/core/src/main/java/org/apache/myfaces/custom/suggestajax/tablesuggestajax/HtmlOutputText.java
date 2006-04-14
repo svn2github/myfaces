@@ -1,22 +1,21 @@
 package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
 
-import org.apache.myfaces.custom.inputAjax.Listener;
-import org.apache.myfaces.custom.util.ComponentUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_impl.renderkit.html.HTML;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+
+import org.apache.myfaces.custom.inputAjax.Listener;
+import org.apache.myfaces.custom.util.ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * @author Gerald M�llan
