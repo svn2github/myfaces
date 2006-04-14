@@ -358,7 +358,7 @@ public class AddResourceFactory
 
 	protected static boolean checkFilterPattern(FilterMapping filterMapping)
 	{
-		if (VALID_EXTFLT_PATH.contains(filterMapping.getUrlPattern()))
+		if (filterMapping.getUrlPattern() != null && VALID_EXTFLT_PATH.contains(filterMapping.getUrlPattern()))
 		{
 			return true;
 		}
