@@ -47,7 +47,9 @@ Rico.Accordion.Custom.prototype = {
              panelHeight         : 200,
              onHideTab           : null,
              onShowTab           : null
-        }.extend(options || {});
+        };
+	
+	Object.extend(options, {});
    },
 
    showTabByIndex: function( anIndex, animate )
@@ -237,8 +239,10 @@ Rico.Toggler.Custom.prototype = {
 
                 if (this.accordionTabs[i].closedContent)
                 {
-                    this.accordionTabs[i].closedContent.style.display = 'hidden';
-                    this.accordionTabs[i].closedContent.style.height = "1px";
+                	if(this.accordionTabs[i].closedContent.style.display)
+                    	this.accordionTabs[i].closedContent.style.display = 'hidden';
+                    if(this.accordionTabs[i].closedContent.style.height)
+                    	this.accordionTabs[i].closedContent.style.height = "1px";
                 }
 
             }
@@ -248,8 +252,10 @@ Rico.Toggler.Custom.prototype = {
                 this.accordionTabs[i].content.style.display = 'none';
                 if (this.accordionTabs[i].closedContent)
                 {
-                    this.accordionTabs[i].closedContent.style.display = 'visible';
-                    this.accordionTabs[i].closedContent.style.height = this.options.closedPanelHeight + "px";
+                	if(this.accordionTabs[i].closedContent.style.display)
+                    	this.accordionTabs[i].closedContent.style.display = 'visible';
+                    if(this.accordionTabs[i].closedContent.style.height)
+                    	this.accordionTabs[i].closedContent.style.height = this.options.closedPanelHeight + "px";
                 }
             }
         }
@@ -273,7 +279,9 @@ Rico.Toggler.Custom.prototype = {
             useRealHeight       : true,
             onHideTab           : null,
             onShowTab           : null
-        }.extend(options || {});
+        };
+	
+	Object.extend(options, {});
     },
 
     showTabByIndex: function(anIndex, animate)
