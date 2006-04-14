@@ -216,8 +216,8 @@ public class AjaxDecodePhaseListener
                     HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
                     StringBuffer buff = new StringBuffer();
-                    buff.append("<?xml version=\"1.0\"?>");
-                    buff.append("<response>");
+                    buff.append("<?xml version=\"1.0\"?>\n");
+                    buff.append("<response>\n");
                     PrintWriter out = response.getWriter();
                     out.print(buff);
 

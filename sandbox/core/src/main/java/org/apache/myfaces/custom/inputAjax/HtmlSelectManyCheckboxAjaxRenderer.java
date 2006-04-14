@@ -85,6 +85,7 @@ public class HtmlSelectManyCheckboxAjaxRenderer extends HtmlCheckboxRenderer imp
         this.encodeJavascript(context, component);
 
         super.encodeEnd(context, component);
+        AjaxRendererUtils.writeLoadingImage(context, component);
 
     }
 
@@ -95,6 +96,7 @@ public class HtmlSelectManyCheckboxAjaxRenderer extends HtmlCheckboxRenderer imp
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         Map extraReturnAttributes = new HashMap();
         extraReturnAttributes.put("checked", request.getParameter("checked"));
+        extraReturnAttributes.put("eltype", "checkbox");
         AjaxRendererUtils.encodeAjax(context, component, extraReturnAttributes);
 
 

@@ -7,7 +7,6 @@ import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,15 +63,22 @@ public class HtmlCommandButtonAjaxRenderer extends HtmlButtonRenderer implements
             return;
         }
 
+
+
+
         String clientId = component.getClientId(context);
         String submitFunctionStart = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit3('" + clientId + "');";
         HtmlCommandButtonAjax comp = (HtmlCommandButtonAjax) component;
-            // then submit on click
-            comp.setOnclick(submitFunctionStart);
+        //comp.setOnclick(comp.getOnclick() == null ? submitFunctionStart : comp.getOnclick() + ";" + submitFunctionStart);
+        comp.setOnclick(submitFunctionStart);
+        String loadingStyleClass = AjaxRendererUtils.STYLECLASS_LOADER;
+        //comp.setStyleClass(comp.getStyleClass() == null ? loadingStyleClass : comp.getStyleClass() + ";" + loadingStyleClass);
+        //comp.setStyleClass(loadingStyleClass);
 
         this.encodeJavascript(context, component);
         super.encodeEnd(context, component);
-
+        // now write loading image
+        AjaxRendererUtils.writeLoadingImage(context, comp);
     }
 
     public void encodeAjax(FacesContext context, UIComponent component) throws IOException

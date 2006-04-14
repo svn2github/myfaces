@@ -98,6 +98,7 @@ public class HtmlSelectOneRadioAjaxRenderer extends HtmlRadioRenderer implements
 
         super.encodeEnd(context, component);
 
+        AjaxRendererUtils.writeLoadingImage(context, component);
     }
 
     public void encodeAjax(FacesContext context, UIComponent component) throws IOException
@@ -107,6 +108,7 @@ public class HtmlSelectOneRadioAjaxRenderer extends HtmlRadioRenderer implements
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         Map extraReturnAttributes = new HashMap();
         extraReturnAttributes.put("checked", request.getParameter("checked"));
+        extraReturnAttributes.put("eltype", "radio");
         AjaxRendererUtils.encodeAjax(context, component, extraReturnAttributes);
 
     }

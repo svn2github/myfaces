@@ -133,7 +133,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
             JavascriptUtils.renderAutoScrollFunction(facesContext, writer);
         }
 
-        // also write out listeners
+        // now write out listeners
         // todo: change the get entry below to use the static field in Listener if/when the listeners move to Tomahawk from sandbox
         try
         {
@@ -150,13 +150,19 @@ public class ExtensionsPhaseListener implements PhaseListener {
                     Map listenerItem = (Map) listeners.get(i);
                     String listenerId = (String) listenerItem.get("listenerId");
                     String listenOn = (String) listenerItem.get("listenOn");
+                    String action = (String) listenerItem.get("action");
+                    String eventType = (String) listenerItem.get("eventType");
                     // todo: Should use Listener object for more flexibility, but only when it moves to tomahawk
                     buff.append("var _MyFaces_listenerItem = ").append(mapName).append("['").append(listenOn).append("'];\n");
                     buff.append("if(!_MyFaces_listenerItem) {\n");
                     buff.append("    _MyFaces_listenerItem = new Array();\n");
                     buff.append("    ").append(mapName).append("['").append(listenOn).append("'] = _MyFaces_listenerItem;\n");
                     buff.append("}\n");
-                    buff.append("_MyFaces_listenerItem[_MyFaces_listenerItem.length] = '").append(listenerId).append("';\n");
+                    buff.append("var _MyFaces_listener = new Object();\n");
+                    buff.append("_MyFaces_listener['id'] = '").append(listenerId).append("';\n");
+                    buff.append("_MyFaces_listener['action'] = '").append(action).append("';\n");
+                    buff.append("_MyFaces_listener['eventType'] = '").append(eventType).append("';\n");
+                    buff.append("_MyFaces_listenerItem[_MyFaces_listenerItem.length] = _MyFaces_listener;\n");
                 }
                 writer.write(buff.toString());
                 writer.endElement(HTML.SCRIPT_ELEM);

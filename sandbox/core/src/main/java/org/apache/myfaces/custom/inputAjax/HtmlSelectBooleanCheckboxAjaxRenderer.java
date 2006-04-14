@@ -17,6 +17,8 @@
 package org.apache.myfaces.custom.inputAjax;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -161,6 +163,7 @@ public class HtmlSelectBooleanCheckboxAjaxRenderer extends HtmlCheckboxRenderer 
         {
             super.encodeEnd(context, component);
         }
+        AjaxRendererUtils.writeLoadingImage(context, component);
     }
 
     public void encodeAjax(FacesContext context, UIComponent component) throws IOException
@@ -168,8 +171,10 @@ public class HtmlSelectBooleanCheckboxAjaxRenderer extends HtmlCheckboxRenderer 
         log.debug("entering HtmlSelectBooleanCheckboxAjaxRenderer.encodeAjax");
 // check for request type (portlet support)
         /*HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        */
         Map extraReturnAttributes = new HashMap();
-        extraReturnAttributes.put("checked", request.getParameter("checked"));*/
+        //extraReturnAttributes.put("checked", request.getParameter("checked"));
+        extraReturnAttributes.put("eltype", "checkbox");
         AjaxRendererUtils.encodeAjax(context, component, null);
     }
 }

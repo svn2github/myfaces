@@ -1,0 +1,20 @@
+.myFacesInputSuggestAjax{
+	background: url('throbber.gif') no-repeat 100% 2px;
+    background-color: white;
+}
+
+.myFacesInputSuggestAjaxThrobbing{
+	background-position: 100% -18px;
+}
+span.myFacesInputSuggestAjax{
+    width:15px;
+    height:15px;
+    margin-left:10px;
+    margin-right:5px;
+    margin-top:10px;
+    margin-bottom:5px;
+}
+.myFaces_error{
+    border:1px solid red;
+    color:red;
+}

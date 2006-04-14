@@ -44,7 +44,7 @@ public class HtmlOutputText extends org.apache.myfaces.component.html.ext.HtmlOu
     {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.SPAN_ELEM, null);
-        writer.writeAttribute("id", this.getClientId(facesContext) + "_span", null);
+        writer.writeAttribute("id", this.getClientId(facesContext), null);
         super.encodeEnd(facesContext);
         writer.endElement(HTML.SPAN_ELEM);
     }
@@ -86,7 +86,8 @@ public class HtmlOutputText extends org.apache.myfaces.component.html.ext.HtmlOu
                         Map listenerItem = new HashMap();
                         listenerItem.put("listenOn", ajaxComponent.getClientId(context));
                         listenerItem.put("listenerId", component.getClientId(context));
-                        listenerItem.put("action", "update");
+                        listenerItem.put("action", listener.getAction());
+                        listenerItem.put("eventType", listener.getEventType());
                         listeners.add(listenerItem);
                     }
                 }

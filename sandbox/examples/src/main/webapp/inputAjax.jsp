@@ -39,6 +39,10 @@
         var statusDiv = document.getElementById("statusDiv");
         statusDiv.innerHTML = "DOH!";
     }
+    function startPulse(el){
+
+        new Effect.Pulsate(el);
+    }
 </script>
 <style type="text/css">
     .bold {
@@ -208,40 +212,45 @@
 </t:panelLayout>
 
 <h:panelGrid columns="2">
-<h:form>
-    <h:outputText styleClass="standard_bold" value="Form Submit via AJAX"/>
-    <h:panelGrid columns="2">
-    <h:panelGrid columns="2">
-        <t:inputText id="formText1" value="#{inputAjaxBean.formText1}"
-                validator="#{inputAjaxBean.validateFormText1}"></t:inputText>
-        <t:message for="formText1" forceSpan="true" styleClass="errorMessage"/>
+    <h:form>
+        <h:panelGrid columns="1">
+            <h:outputText styleClass="standard_bold" value="Form Submit via AJAX"/>
+            <f:verbatim>This component demonstrates submitting a form through ajax. To see validation errors, put less
+            than five characters in first box, and a string with a space in it in the second box.</f:verbatim>
+            <h:panelGrid columns="2">
+                <t:inputText id="formText1" value="#{inputAjaxBean.formText1}"
+                             validator="#{inputAjaxBean.validateFormText1}"></t:inputText>
+                <t:message for="formText1" forceSpan="true" styleClass="errorMessage"/>
 
-        <t:inputText id="formText2" value="#{inputAjaxBean.formText2}"
-                validator="#{inputAjaxBean.validateFormText2}"></t:inputText>
-        <t:message for="formText2" forceSpan="true" styleClass="errorMessage"/>
+                <t:inputText id="formText2" value="#{inputAjaxBean.formText2}"
+                             validator="#{inputAjaxBean.validateFormText2}"></t:inputText>
+                <t:message for="formText2" forceSpan="true" styleClass="errorMessage"/>
 
-        <s:commandButtonAjax action="#{inputAjaxBean.ajaxFormSubmit}" value="Submit"/>
-        <h:outputText value="&nbsp;" escape="false"/>
-    </h:panelGrid>
-    <f:verbatim>This component demonstrates submitting a form through ajax.  To see validation errors, put less than five
-    characters in first box, and a string with a space in it in the second box.</f:verbatim>
-</h:panelGrid>
-</h:form>
-     <%-- Auto updating piece --%>
+                <s:commandButtonAjax action="#{inputAjaxBean.ajaxFormSubmit}" value="Submit"/>
+                <h:outputText value="&nbsp;" escape="false"/>
+            </h:panelGrid>
+        </h:panelGrid>
+    </h:form>
+    <%-- Auto updating piece --%>
     <h:panelGrid columns="1">
-    <h:outputText styleClass="standard_bold" value="Listener on the first textfield to the left"/>
-    <s:outputText value="#{inputAjaxBean.waitingText1}">
-        <s:listener on="formText1"/>
-    </s:outputText>
-    <h:outputText styleClass="standard_bold" value="Listener on the second textfield to the left"/>
-    <s:outputText value="#{inputAjaxBean.waitingText2}">
-        <s:listener on="formText2"/>
-    </s:outputText>
+        <h:outputText styleClass="standard_bold" value="Listening on the first textfield to the left"/>
+        <s:outputText value="#{inputAjaxBean.waitingText1}">
+            <s:listener on="formText1"/>
+        </s:outputText>
+        <h:outputText styleClass="standard_bold" value="Listening on the second textfield to the left with multiple listeners"/>
+            <s:outputText value="#{inputAjaxBean.waitingText2}">
+                <s:listener on="formText2"/>
+                <s:listener on="formText2" action="javascript:startPulse(this);"/>
+            </s:outputText>
+
     </h:panelGrid>
 </h:panelGrid>
 
 <h:outputLink value="inputAjax.jsf"><h:outputText value="Refresh"></h:outputText></h:outputLink>
 
+<t:div id="logDiv" forceId="true">
+    <b>Log:</b><br/>
+</t:div>
 
 </f:view>
 

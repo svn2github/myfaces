@@ -21,8 +21,8 @@ public class Listener extends UIComponentBase
     public static final String LISTENER_MAP_ENTRY = "org.apache.myfaces.Listener";
 
     private String _on;
-    private String _eventType;
-    private String _action;
+    private String _eventType = "onChange";
+    private String _action = "update";
 
     public Listener()
     {
