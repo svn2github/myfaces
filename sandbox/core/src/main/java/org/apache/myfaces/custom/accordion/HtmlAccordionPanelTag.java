@@ -17,7 +17,7 @@ package org.apache.myfaces.custom.accordion;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.html.HtmlPanelGroupTag;
+import org.apache.myfaces.taglib.html.ext.HtmlPanelGroupTag;
 
 
 /**

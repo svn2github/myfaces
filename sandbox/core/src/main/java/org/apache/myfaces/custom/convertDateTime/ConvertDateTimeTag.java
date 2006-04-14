@@ -17,6 +17,8 @@
 package org.apache.myfaces.custom.convertDateTime;
 
 import javax.servlet.jsp.PageContext;
+import org.apache.myfaces.shared_tomahawk.taglib.core.ConvertDateTimeTagBase;
+
 
 /**
  * Simple tag that overrides the spec ConvertDateTimeTag and uses TimeZone.getDefault() as the
@@ -26,7 +28,7 @@ import javax.servlet.jsp.PageContext;
  * Date: Oct 28, 2005
  * Time: 7:10:38 PM
  */
-public class ConvertDateTimeTag extends org.apache.myfaces.taglib.core.ConvertDateTimeTag
+public class ConvertDateTimeTag extends ConvertDateTimeTagBase
 {
     
     /**
@@ -46,6 +48,4 @@ public class ConvertDateTimeTag extends org.apache.myfaces.taglib.core.ConvertDa
         super.setPageContext(context);
         setConverterId(DateTimeConverter.CONVERTER_ID);
     }
-
-
 }

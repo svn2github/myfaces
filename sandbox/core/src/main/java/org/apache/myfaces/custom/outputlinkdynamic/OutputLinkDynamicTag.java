@@ -17,14 +17,14 @@ package org.apache.myfaces.custom.outputlinkdynamic;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.taglib.html.HtmlOutputLinkTag;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputLinkTagBase;
 
 /**
  * @author Sylvain Vieujot, Mathias Br&ouml;kelmann
  * @version $Revision$ $Date$
  */
 
-public class OutputLinkDynamicTag extends HtmlOutputLinkTag
+public class OutputLinkDynamicTag extends HtmlOutputLinkTagBase
 {
     private String _resourceRendererClass;
 

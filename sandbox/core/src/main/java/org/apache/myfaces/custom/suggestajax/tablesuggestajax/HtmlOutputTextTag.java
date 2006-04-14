@@ -1,14 +1,15 @@
 package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import javax.faces.component.UIComponent;
 
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+
 /**
- * @author Gerald Müllan
+ * @author Gerald Mï¿½llan
  *         Date: 15.02.2006
  *         Time: 13:40:43
  */
-public class HtmlOutputTextTag extends org.apache.myfaces.taglib.html.HtmlOutputTextTag
+public class HtmlOutputTextTag extends org.apache.myfaces.taglib.html.ext.HtmlOutputTextTag
 {
     private String _for;
     private String _forValue;

@@ -1,12 +1,9 @@
 package org.apache.myfaces.custom.inputAjax;
 
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_impl.taglib.UIComponentTagUtils;
-
-import javax.servlet.jsp.tagext.Tag;
-import javax.faces.webapp.UIComponentTag;
 import javax.faces.component.UIComponent;
+import javax.faces.webapp.UIComponentTag;
+
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagUtils;
 
 /**
  * User: Travis Reeder
