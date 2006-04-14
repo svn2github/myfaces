@@ -31,18 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.component.html.ext.HtmlMessages;
 import org.apache.myfaces.custom.ajax.AjaxCallbacks;
-import org.apache.myfaces.custom.ajax.api.AjaxComponent;
+import org.apache.myfaces.custom.inputAjax.HtmlInputTextAjax;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.custom.util.ComponentUtils;
-import org.apache.myfaces.custom.inputAjax.HtmlInputTextAjax;
-import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlMessageRendererBase;
-import org.apache.myfaces.component.html.ext.HtmlMessages;
 
 /**
  * @author Travis Reeder (latest modification by $Author: mmarinschek $)
