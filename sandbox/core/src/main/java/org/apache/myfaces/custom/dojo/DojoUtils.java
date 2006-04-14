@@ -54,6 +54,7 @@ public final class DojoUtils {
     private static final Log    log                              = LogFactory.getLog(DojoUtils.class);
     private static final String DOJO_PROVIDE                     = "dojo.provide:";
     private static final String DOJO_REQUIRE                     = "dojo.require:";
+    private static final String DOJO_NAMESPACE                   = "dojo.namespace:";
     private static final String DJCONFIG_INITKEY                 = "/*djconfig init*/";
     private static final String BODY_SCRIPT_INFOS_ATTRIBUTE_NAME = "bodyScriptInfos";
     private static final String DOJO_FILE_UNCOMPRESSED           = "dojo.js.uncompressed.js";
@@ -144,6 +145,27 @@ public final class DojoUtils {
 
     }
 
+
+    /**
+     * adds a new namespace location
+     * to the mix
+     * @param facesContext the faces context which is used internally
+     * @param component the affected component
+     * @param namespace the namespace which has to be applied
+     * @param location the script location
+     * @throws IOException
+     * @see http://blog.dojotoolkit.org/2006/01/11/putting-your-code-outside-of-the-dojo-source-tree
+     */
+    public static void addNamespace(FacesContext facesContext, UIComponent component, String namespace, String location)
+        throws IOException {
+
+        if (isInlineScriptSet(facesContext, DOJO_NAMESPACE + namespace))
+            return;
+
+        String namespaceStr = createNamespaceScript(namespace, location);
+        writeInlineScript(facesContext, component, namespaceStr);
+    }
+
     /**
      * adds a dojo provide to the current list
      * of definitions within the header
@@ -162,6 +184,13 @@ public final class DojoUtils {
         addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, providedBuilder);
     }
 
+    /**
+     * adds a dojo provide
+     * @param facesContext
+     * @param component
+     * @param provided
+     * @throws IOException
+     */
     public static void addProvide(FacesContext facesContext, UIComponent component, String provided) throws IOException {
 
         if (isInlineScriptSet(facesContext, DOJO_PROVIDE + provided))
@@ -169,11 +198,7 @@ public final class DojoUtils {
 
         String providedBuilder = createDojoProvideScript(provided);
 
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.write(providedBuilder);
-        writer.endElement(HTML.SCRIPT_ELEM);
+        writeInlineScript(facesContext, component, providedBuilder);
 
     }
 
@@ -189,12 +214,8 @@ public final class DojoUtils {
         if (isInlineScriptSet(facesContext, DOJO_REQUIRE + required))
             return;
 
-        String         requireAsScript = createDojoRequireString(required);
-        ResponseWriter writer          = facesContext.getResponseWriter();
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        writer.write(requireAsScript);
-        writer.endElement(HTML.SCRIPT_ELEM);
+        String requireAsScript = createDojoRequireString(required);
+        writeInlineScript(facesContext, component, requireAsScript);
     }
 
     /**
@@ -276,6 +297,7 @@ public final class DojoUtils {
 
         return devStatus;
     }
+
 
     public static boolean isInlineScriptSet(FacesContext context, String inlineScript) {
 
@@ -377,6 +399,31 @@ public final class DojoUtils {
         writer.write(stmnt);
     }
 
+    /**
+     * dojo namespace definition method
+     * allows the definition of a new namespace
+     * within the parameters of the dojo
+     * namespacing system
+     *
+     * @param namespace the dojo namespace
+     * @param location the exaclt script location (can be a relative location)
+     *
+     * @return the namespace script which has to be printed / executed
+     */
+    private static String createNamespaceScript(String namespace, String location) {
+        StringBuffer namespaceBuilder = new StringBuffer(32);
+        namespaceBuilder.append("dojo.hostenv.setModulePrefix('");
+        namespaceBuilder.append(namespace);
+        namespaceBuilder.append("','");
+        namespaceBuilder.append(location);
+        namespaceBuilder.append("');");
+
+        String namespaceStr = namespaceBuilder.toString();
+
+        return namespaceStr;
+    }
+
+
     private static Set getBodyScriptInfos(HttpServletRequest request) {
         Set set = (Set) request.getAttribute(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME);
 
@@ -386,6 +433,22 @@ public final class DojoUtils {
         }
 
         return set;
+    }
+
+    /**
+     * helper to write an inline javascript at the
+     * exact resource location of the call
+     * @param facesContext
+     * @param component
+     * @param script
+     * @throws IOException
+     */
+    private static void writeInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        writer.write(script);
+        writer.endElement(HTML.SCRIPT_ELEM);
     }
 
 }
