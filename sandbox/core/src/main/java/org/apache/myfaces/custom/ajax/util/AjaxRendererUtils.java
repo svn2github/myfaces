@@ -289,14 +289,14 @@ public final class AjaxRendererUtils
     {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement(org.apache.myfaces.shared_impl.renderkit.html.HTML.SPAN_ELEM, null);
+        writer.startElement(HTML.SPAN_ELEM, null);
         writer.writeAttribute(HTML.ID_ATTR, comp.getClientId(context) + "_loaderImg", null);
         writer.writeAttribute(HTML.CLASS_ATTR, AjaxRendererUtils.STYLECLASS_LOADER, null);
         // could alternatively use a
         // spacer.gif to stretch the span, but didn't want to have another resource dependency.  It would be nice to
         // have a "common" resource repository with spacer.gif and other common things
         writer.write("<spacer type=\"block\" width=\"15\" height=\"15\"/>");
-        writer.endElement(org.apache.myfaces.shared_impl.renderkit.html.HTML.SPAN_ELEM);
+        writer.endElement(HTML.SPAN_ELEM);
 
     }
 }
