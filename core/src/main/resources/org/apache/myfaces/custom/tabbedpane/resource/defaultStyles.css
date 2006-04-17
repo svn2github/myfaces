@@ -45,7 +45,7 @@ table.myFaces_panelTabbedPane{
 }
 .myFaces_panelTabbedPane_activeHeaderCell input:hover,
 .myFaces_panelTabbedPane_inactiveHeaderCell input:hover{
-	border-top: orange solid 2px;
+	/* border-top: orange solid 2px; */
 }
 
 .myFaces_panelTabbedPane_subHeaderCell{
