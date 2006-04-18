@@ -14,12 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+function traceTime(message) {
+	var now = new Date();
+	dojo.debug(message + " " + now.getTime());
+} 
 var myfaces_stateChange_globalExclusionList = new Array();
 /**
 * central function definition for the state change notifier
 */
 function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId, paramhiddenFieldId, parammessage, paramexcludeCommandIdList) {
+    traceTime("begin init");
     this.notifierName = paramnotifierName;
     /*affected notifier controls*/
     this.notifierDialogName = paramnotifierName + "_Dialog";
@@ -33,6 +37,35 @@ function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId,
     this.arrCommandIds = new Array();
     this.objectsToConfirmList = new Array();
     this.objectsToConfirmBeforeExclusion = new Array();
+    
+    /*we store the array of notifier hidden fields in the documents for components
+    which want to reference it themselves for state change notification
+    every form there is should have the list of notifier components
+    stored
+    */
+    //TODO only mark the parent form of the hidden field 
+    var formArr = dojo.widget.manager.getWidgetById("form");
+    for(var theform in formArr) {
+    	var notifierArray = theform.getAttribute("myfaces_notifierFields");
+	    if(notifierArray == null) {
+	    	notifierArray = new Array();
+	    	notifierArray.push(paramhiddenFieldId);
+	    	theform.setAttribute("myfaces_notifierFields", notifierArray.push);
+	    } else {
+	    	var found = false;
+	    	for (var notifyId in notifierArray) {
+	    		if(notifyId == paramhiddenFieldId)  {
+	    			found = true; 
+	    			break;
+	    		};
+	    	};
+	    	if(!found) 
+	    		notifierArray.push(paramhiddenFieldId);
+	    }
+    }
+    
+    
+    
     /*global exclusion list singleton which keeps track of all exclusions over all entire forms
 		we cannot allow that some predefined exclusions
 		are rendered invalid by another tag
@@ -46,6 +79,7 @@ function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId,
     var noButton = dojo.byId(paramnotifierName + "_Dialog_No");
     dojo.debug("system initialized" + yesButton);
     var dlg = dojo.widget.createWidget("Dialog", {id:(paramnotifierName + "_Dialog_dojo"), bgColor:"white", bgOpacity:0.5, toggle:"fade", toggleDuration:250}, dojo.byId(this.notifierDialogName));
+	traceTime("end init");
 }
 org_apache_myfaces_StateChangedNotifier.prototype.getDialog = function () {
     return dojo.widget.manager.getWidgetById(this.notifierDialogName + "_dojo");
@@ -75,27 +109,33 @@ org_apache_myfaces_StateChangedNotifier.prototype.showDialog = function (text, y
 * for the entire mechanism
 */
 org_apache_myfaces_StateChangedNotifier.prototype.prepareNotifier = function () {
+    traceTime("prepareNotifier onchangeadd");
     this.addOnChangeListener("input");
     this.addOnChangeListener("textarea");
     this.addOnChangeListener("select");
+    traceTime("prepareNotifier onchangeadd end");
     var globalExclLen = myfaces_stateChange_globalExclusionList.length;
     for (var cnt = 0; cnt < globalExclLen; cnt += 1) {
         this.arrCommandIds.push(myfaces_stateChange_globalExclusionList[cnt]);
     }
+    traceTime("prepareNotifier onchangeadd push done");
     if (this.excludeCommandIdList !== null) {
         var newIds = this.excludeCommandIdList.split(",");
 
 		//we do not filter double entries for now
 		//since the number of exclusion tags will be kept small
 		//anyway
+        traceTime("prepareNotifier command id push");
         for (var cnt = globalExclLen; cnt < (globalExclLen + newIds.length); cnt += 1) {
             myfaces_stateChange_globalExclusionList.push(newIds[cnt - globalExclLen]);
             this.arrCommandIds.push(newIds[cnt - globalExclLen]);
         }
+        traceTime("prepareNotifier onchangeadd push done");
         this.addObjectsToConfirmList("a", null);
         this.addObjectsToConfirmList("input", "button");
         this.addObjectsToConfirmList("input", "submit");
         this.addObjectsToConfirmList("button", null);
+        traceTime("prepareNotifier confirm list push done");
         this.putConfirmExcludingElements();
     }
 };
