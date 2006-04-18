@@ -68,7 +68,9 @@ public class HtmlDataTableTag
     
     private String _rowStyleClass;
     private String _rowStyle;
-    
+    private String _rowGroupStyle;
+    private String _rowGroupStyleClass;
+
     public void release() 
     {
         super.release();
@@ -100,6 +102,8 @@ public class HtmlDataTableTag
 
         _rowStyleClass = null;
         _rowStyle = null;
+        _rowGroupStyle = null;
+        _rowGroupStyleClass = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -133,6 +137,8 @@ public class HtmlDataTableTag
         
         setStringProperty(component, JSFAttr.ROW_STYLECLASS_ATTR, _rowStyleClass);
         setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
+        setStringProperty(component, "rowGroupStyle", _rowGroupStyle);
+        setStringProperty(component, "rowGroupStyleClasses", _rowGroupStyleClass);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -260,8 +266,17 @@ public class HtmlDataTableTag
       _rowStyle = rowStyle;
     }
 
-		
-	public String getVarDetailToggler() {
+    public void setRowGroupStyle(String rowGroupStyle)
+    {
+        _rowGroupStyle = rowGroupStyle;
+    }
+
+    public void setRowGroupStyleClass(String rowGroupStyleClass)
+    {
+        _rowGroupStyleClass = rowGroupStyleClass;
+    }
+
+    public String getVarDetailToggler() {
 		return _varDetailToggler;
 	}
 

@@ -38,7 +38,7 @@
                     <h:outputLink value="openDataTable.jsf" ><f:verbatim>Paged and Sortable (dynamic number of columns; mouseover)</f:verbatim></h:outputLink>
                     <h:outputLink value="crossDataTable.jsf" ><f:verbatim>Dynamic number of columns, add a column</f:verbatim></h:outputLink>
                     <h:outputLink value="optDataTable.jsf" ><f:verbatim>Optional Header/Footer</f:verbatim></h:outputLink>
-                    <h:outputLink value="simpleGroupBy.jsf" ><f:verbatim>Group by columes</f:verbatim></h:outputLink>
+                    <h:outputLink value="simpleGroupBy.jsf" ><f:verbatim>Group by columns</f:verbatim></h:outputLink>
                 </h:panelGrid>
                 <h:outputLink value="selectbox.jsf" ><f:verbatim>Select boxes</f:verbatim></h:outputLink>
                 <h:outputLink value="fileupload.jsf" ><f:verbatim>File upload</f:verbatim></h:outputLink>

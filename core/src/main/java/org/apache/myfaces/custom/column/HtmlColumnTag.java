@@ -64,6 +64,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
     private String _footeronmouseup;
 
     private String _width;
+    private String _groupBy;
 
     public String getComponentType()
     {
@@ -111,6 +112,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
         _footeronmouseup = null;
 
         _width = null;
+        _groupBy = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -149,6 +151,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
 
         setStringProperty(component, "width", _width);
+        setBooleanProperty(component,"groupBy",_groupBy);
     }
 
     public void setFooterdir(String footerdir)
@@ -304,5 +307,10 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
     public void setWidth(String width)
     {
         _width = width;
+    }
+
+    public void setGroupBy(String groupBy)
+    {
+        _groupBy = groupBy;
     }
 }

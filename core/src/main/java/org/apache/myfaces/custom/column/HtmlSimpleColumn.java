@@ -83,13 +83,14 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     private String _onmouseup;
     
     private String _width;
+    private Boolean _groupBy;
     
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlColumn";
 
     /**
      * @param localValue
      * @param valueBindingName
-     * @return
+     * @return the value
      */
     private Object getLocalOrValueBindingValue(Object localValue,
                     String valueBindingName)
@@ -858,12 +859,25 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _width = width;
     }
 
+    public boolean isGroupBy()
+    {
+        if (_groupBy != null) return _groupBy.booleanValue();
+        ValueBinding vb = getValueBinding("groupBy");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setGroupBy(boolean groupBy)
+    {
+        _groupBy = groupBy ? Boolean.TRUE : Boolean.FALSE;
+    }
+
     /**
      * @see javax.faces.component.UIComponentBase#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[47];
+        Object[] values = new Object[48];
         values[0] = super.saveState(context);
 
         values[1] = _headerdir;
@@ -915,6 +929,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         values[45] = _onmouseup;
         
         values[46] = _width;
+        values[47] = _groupBy;
 
         return values;
     }
@@ -976,5 +991,6 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _onmouseup = (String) values[45];
         
         _width = (String) values[46];
+        _groupBy = (Boolean) values[47];
     }
 }

@@ -21,6 +21,7 @@ import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.crosstable.UIColumns;
 import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
+import org.apache.myfaces.renderkit.html.util.TableContext;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 import javax.faces.component.NamingContainer;
@@ -66,6 +67,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private String _rowOnKeyUp = null;
     private String _rowStyleClass = null;
     private String _rowStyle = null;
+    private String _rowGroupStyle = null;
+    private String _rowGroupStyleClass = null;
     private String _varDetailToggler = null;
 
     private boolean _isValidChildren = true;
@@ -73,6 +76,17 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private Set _expandedNodes = new HashSet();
 
     private Map _detailRowStates = new HashMap();
+
+    private TableContext _tableContext = null;
+
+    public TableContext getTableContext()
+    {
+        if ( _tableContext == null )
+        {
+            _tableContext = new TableContext();
+        }
+        return _tableContext;
+    }
 
     public String getClientId(FacesContext context)
     {
@@ -497,7 +511,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     public Object saveState(FacesContext context)
     {
         boolean preserveSort = isPreserveSort();
-        Object values[] = new Object[26];
+        Object values[] = new Object[28];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -535,6 +549,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         values[24] = _varDetailToggler;
         values[25] = _expandedNodes;
+        values[26] = _rowGroupStyle;
+        values[27] = _rowGroupStyleClass;
 
         return values;
     }
@@ -609,6 +625,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
         _varDetailToggler = (String)values[24];
         _expandedNodes = (Set)values[25];
+        _rowGroupStyle = (String)values[26];
+        _rowGroupStyleClass = (String)values[27];
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -939,6 +957,29 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
 
     }
 
+    public String getRowGroupStyle()
+    {
+        if (_rowGroupStyle != null)
+      return _rowGroupStyle;
+    ValueBinding vb = getValueBinding("rowGroupStyle");
+    return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setRowGroupStyle(String rowGroupStyle)
+    {
+        _rowGroupStyle = rowGroupStyle;
+    }
+
+    public String getRowGroupStyleClass()
+    {
+        return _rowGroupStyleClass;
+    }
+
+    public void setRowGroupStyleClass(String rowGroupStyleClass)
+    {
+        _rowGroupStyleClass = rowGroupStyleClass;
+    }
+
     public HtmlDataTable()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -1097,6 +1138,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         ValueBinding vb = getValueBinding("previousRowDataVar");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+
+
 
     //------------------ GENERATED CODE END ---------------------------------------
 

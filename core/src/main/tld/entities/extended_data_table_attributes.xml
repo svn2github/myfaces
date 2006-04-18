@@ -223,7 +223,19 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>Corresponds to the HTML style attribute for the row tr tag.</description>
-        </attribute>        
+        </attribute>
+        <attribute>
+            <name>rowGroupStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML style attribute for grouped rows.</description>
+        </attribute>
+        <attribute>
+            <name>rowGroupStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>StyleClass for grouped rows.</description>
+        </attribute>
         <attribute>
          <name>varDetailToggler</name>
          <required>false</required>
