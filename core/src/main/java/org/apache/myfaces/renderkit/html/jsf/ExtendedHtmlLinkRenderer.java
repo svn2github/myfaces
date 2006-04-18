@@ -29,7 +29,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class DummyFormHtmlLinkRenderer
+public class ExtendedHtmlLinkRenderer
         extends HtmlLinkRendererBase
 {
 	protected void addHiddenCommandParameter(FacesContext facesContext, UIForm nestingForm, String hiddenFieldName)

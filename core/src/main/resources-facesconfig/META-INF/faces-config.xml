@@ -415,13 +415,13 @@
         <renderer>
             <component-family>javax.faces.Command</component-family>
             <renderer-type>javax.faces.Button</renderer-type>
-            <renderer-class>org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlButtonRenderer</renderer-class>
+            <renderer-class>org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlButtonRenderer</renderer-class>
         </renderer>
 
         <renderer>
             <component-family>javax.faces.Command</component-family>
             <renderer-type>javax.faces.Link</renderer-type>
-            <renderer-class>org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlLinkRenderer</renderer-class>
+            <renderer-class>org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlLinkRenderer</renderer-class>
         </renderer>
         
         <!-- extended standard renderers -->

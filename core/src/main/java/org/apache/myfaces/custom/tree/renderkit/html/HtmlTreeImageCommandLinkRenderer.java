@@ -15,17 +15,18 @@
  */
 package org.apache.myfaces.custom.tree.renderkit.html;
 
-import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
-import org.apache.myfaces.custom.tree.HtmlTreeNode;
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlLinkRendererBase;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
+
+import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
+import org.apache.myfaces.custom.tree.HtmlTreeNode;
+import org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlLinkRenderer;
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 
 /**
@@ -33,7 +34,7 @@ import java.io.IOException;
  * @version $Revision$ $Date$
  */
 public class HtmlTreeImageCommandLinkRenderer
-        extends HtmlLinkRendererBase
+        extends ExtendedHtmlLinkRenderer
 {
 
     private static final Integer ZERO = new Integer(0);

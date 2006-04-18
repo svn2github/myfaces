@@ -15,22 +15,21 @@
  */
 package org.apache.myfaces.custom.tree.renderkit.html;
 
-import org.apache.myfaces.custom.tree.HtmlTreeNode;
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlLinkRendererBase;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.custom.tree.HtmlTreeNode;
+import org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlLinkRenderer;
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$
  */
 public class HtmlTreeNodeRenderer
-        extends HtmlLinkRendererBase
+        extends ExtendedHtmlLinkRenderer
 {
-
 
     public void decode(FacesContext facesContext, UIComponent component)
     {

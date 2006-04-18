@@ -24,7 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
-import org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlLinkRenderer;
+import org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlLinkRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
@@ -34,7 +34,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
  * @version $Revision$ $Date$
  */
 public class HtmlLinkRenderer
-        extends DummyFormHtmlLinkRenderer
+        extends ExtendedHtmlLinkRenderer
 {
     //private static final Log log = LogFactory.getLog(HtmlLinkRenderer.class);
 

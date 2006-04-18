@@ -30,7 +30,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class DummyFormHtmlButtonRenderer
+public class ExtendedHtmlButtonRenderer
     extends HtmlButtonRendererBase
 {
     protected void addHiddenCommandParameter(FacesContext facesContext, UIForm nestingForm, String hiddenFieldName)

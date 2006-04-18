@@ -19,7 +19,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.renderkit.html.jsf.DummyFormHtmlButtonRenderer;
+import org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlButtonRenderer;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
@@ -29,7 +29,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @version $Revision$ $Date$
  */
 public class HtmlButtonRenderer
-    extends DummyFormHtmlButtonRenderer
+    extends ExtendedHtmlButtonRenderer
 {
     protected void addHiddenCommandParameter(FacesContext facesContext, UIForm nestingForm, String hiddenFieldName)
 	{
