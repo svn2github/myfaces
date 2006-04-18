@@ -104,7 +104,7 @@ public class StateChangedNotifierRenderer extends HtmlRenderer {
             sb.append("'');\n");
         }
 
-        sb.append("setTimeout('" + replacedClientId + "Notifier.prepareNotifier()',2000);\n");
+        sb.append("setTimeout('" + replacedClientId + "Notifier.prepareNotifier()',500);\n");
 
         sb.append("}\n");
 
