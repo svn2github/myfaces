@@ -38,6 +38,7 @@
                     <h:outputLink value="openDataTable.jsf" ><f:verbatim>Paged and Sortable (dynamic number of columns; mouseover)</f:verbatim></h:outputLink>
                     <h:outputLink value="crossDataTable.jsf" ><f:verbatim>Dynamic number of columns, add a column</f:verbatim></h:outputLink>
                     <h:outputLink value="optDataTable.jsf" ><f:verbatim>Optional Header/Footer</f:verbatim></h:outputLink>
+                    <h:outputLink value="simpleGroupBy.jsf" ><f:verbatim>Group by columes</f:verbatim></h:outputLink>
                 </h:panelGrid>
                 <h:outputLink value="selectbox.jsf" ><f:verbatim>Select boxes</f:verbatim></h:outputLink>
                 <h:outputLink value="fileupload.jsf" ><f:verbatim>File upload</f:verbatim></h:outputLink>
@@ -49,6 +50,7 @@
                     <h:outputLink value="jscookmenu.jsf" ><f:verbatim>JSCookMenu</f:verbatim></h:outputLink>
                     <h:outputLink value="panelnavigation_1.jsf" ><f:verbatim>PanelNavigation Classic (Static JSP)</f:verbatim></h:outputLink>
                     <h:outputLink value="panelnavigation_2.jsf" ><f:verbatim>PanelNavigation with NavigationMenuItems (Dynamic)</f:verbatim></h:outputLink>
+                    <h:outputLink value="panelnavigation_4.jsf" ><f:verbatim>Horizontal PanelNavigation</f:verbatim></h:outputLink>
                 </h:panelGrid>
                 <h:outputLink value="jslistener.jsf" ><f:verbatim>Javascript Listener</f:verbatim></h:outputLink>
                 <h:outputLink value="date.jsf" ><f:verbatim>Date</f:verbatim></h:outputLink>

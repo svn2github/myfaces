@@ -97,6 +97,11 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         if (! super.isRendered()) {
             return false;
         }
+                
+        HtmlPanelNavigationMenu parentPanelNavMenu = getParentPanelNavigation();
+        if (parentPanelNavMenu != null && parentPanelNavMenu.isRenderAll())
+            return true;
+        
         UIComponent parent = getParent();
         while (parent != null)
         {
@@ -125,25 +130,26 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
     {
         UIComponent parent = getParent();
 
-            // search HtmlPanelNavigation
-            UIComponent p = parent;
-            while (p != null && !(p instanceof HtmlPanelNavigationMenu))
-            {
-                p = p.getParent();
-            }
-            // p is now the HtmlPanelNavigation
-           if (!(p instanceof HtmlPanelNavigationMenu))
-                {
-                    log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
-                    return null;
-                }
+        // search HtmlPanelNavigation
+        UIComponent p = parent;
+        while (p != null && !(p instanceof HtmlPanelNavigationMenu))
+        {
+            p = p.getParent();
+        }
+        // p is now the HtmlPanelNavigation
+        if (!(p instanceof HtmlPanelNavigationMenu))
+        {
+            log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
+            return null;
+        }
+        
         return (HtmlPanelNavigationMenu) p;
     }
 
     public void toggleOpen()
     {
         HtmlPanelNavigationMenu menu = getParentPanelNavigation();
-        if (isOpen() && menu != null && ! menu.isExpandAll() )
+        if (isOpen() && menu != null && !menu.isExpandAll() )
         {
             if (getChildCount() > 0)
             {
@@ -169,27 +175,27 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
                 p = p.getParent();
             }
             // p is now the HtmlPanelNavigation
-           if (!(p instanceof HtmlPanelNavigationMenu))
+            if (!(p instanceof HtmlPanelNavigationMenu))
+            {
+                log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
+            }
+            else
+            {
+                if (!hasCommandNavigationChildren() || ((HtmlPanelNavigationMenu) p).isExpandAll())
                 {
-                    log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
+                    //item is an end node or Menu always expanded --> deactivate all other nodes, and then...
+
+                    //deactivate all other items
+                    deactivateAllChildren(p.getChildren().iterator());
+                    //...activate this item
+                    setActive(true);
                 }
                 else
                 {
-                    if (!hasCommandNavigationChildren() || ((HtmlPanelNavigationMenu) p).isExpandAll())
-                    {
-                        //item is an end node or Menu always expanded --> deactivate all other nodes, and then...
-
-                        //deactivate all other items
-                        deactivateAllChildren(p.getChildren().iterator());
-                        //...activate this item
-                        setActive(true);
-                    }
-                    else
-                    {
-                        //open item
-                        setOpen(true);
-                    }
+                    //open item
+                    setOpen(true);
                 }
+            }
         }
     }
 

@@ -55,7 +55,7 @@ class HtmlNavigationMenuRendererUtils
     {
         for (Iterator it = children.iterator(); it.hasNext(); )
         {
-            UIComponent child = (UIComponent)it.next();
+            UIComponent child = (UIComponent)it.next();            
             if (!child.isRendered()) continue;
             if (child instanceof UINavigationMenuItem)
             {
@@ -65,11 +65,12 @@ class HtmlNavigationMenuRendererUtils
             {
                 //navigation item
                 HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-
+                
                 HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) child;
+                
                 String style = HtmlNavigationMenuRendererUtils.getNavigationItemStyle(panelNav, navItem);
                 String styleClass = HtmlNavigationMenuRendererUtils.getNavigationItemClass(panelNav, navItem);
-
+                                
                 writer.startElement(HTML.LI_ELEM, panelNav);
                 HtmlNavigationMenuRendererUtils.writeStyleAttributes(writer, style, styleClass);
 
@@ -82,7 +83,11 @@ class HtmlNavigationMenuRendererUtils
 
                 if (hasCommandNavigationItemChildren(navItem))
                 {
-                    writer.startElement(HTML.UL_ELEM, panelNav);
+                    writer.startElement(HTML.UL_ELEM, panelNav);   
+                    
+                    if (panelNav.isRenderAll())
+                        HtmlNavigationMenuRendererUtils.writeStyleAttributes(writer, navItem.getStyle(), navItem.getStyleClass());
+                    
                     //HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
                     renderChildrenListLayout(facesContext, writer, panelNav, child.getChildren(), level + 1);
                     writer.endElement(HTML.UL_ELEM);
@@ -188,9 +193,7 @@ class HtmlNavigationMenuRendererUtils
         }
         writer.write(buf.toString());
     }
-
-
-
+    
     public static String getNavigationItemStyle(HtmlPanelNavigationMenu navPanel, HtmlCommandNavigationItem navItem)
     {
         if (navItem.isActive())
@@ -211,14 +214,13 @@ class HtmlNavigationMenuRendererUtils
                                                 HtmlCommandNavigationItem navItem)
     {
         // MYFACES-117, if a styleClass is supplied for a HtmlCommandNavigationItem,
-        // panelNavigation active/open/normal styles for items will be overriden
+        // panelNavigation active/open/normal styles for items will be overriden                       
         if (navItem.getStyleClass() != null)
         {
             return navItem.getStyleClass();
         }
-
         if (navItem.isActive())
-        {
+        {            
             return navPanel.getActiveItemClass();
         }
         else if (navItem.isOpen())

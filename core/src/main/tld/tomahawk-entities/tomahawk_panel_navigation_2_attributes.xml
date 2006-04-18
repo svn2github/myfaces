@@ -79,4 +79,13 @@
                 and never closed.
             </description>
         </attribute>
+        <attribute>
+            <name>renderAll</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                If set to true all Items are rendered and other methods, like CSS
+                should be used to hide them as necesary
+            </description>
+        </attribute>
         &ext_disabled_attribute;

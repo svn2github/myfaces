@@ -417,6 +417,95 @@ margin: 0px;
 padding: 0px 0px 15px 0px;
 }
 
+/*
+   --------------------------------------------------------------
+    Horizontal Panelnavigation
+   --------------------------------------------------------------
+*/
+#hNav_outer {
+    margin: 0;
+    padding: 0;   
+    height: 60px;
+    width: 800px;
+}
+#hNav_outer ul {    
+    padding: 0;
+    margin: 0;    
+}
+#hNav_outer ul li ul {
+    margin: 0;
+    padding: 0;
+}
+#hNav_outer ul a {
+    text-decoration: none;
+}
+#hNav_outer ul li { /*float the main list items*/
+    margin: 0;
+    float: left;
+    display: block;
+    padding: 5px;
+}
+#hNav_outer ul li ul {
+    display: none;
+}
+#hNav_outer ul li.off ul, #hNav_outer ul li.on ul { /*put the subnav below*/
+    position: absolute;
+    top: 36px;
+    *top: 44px;/*reposition for IE*/    
+    background: #224d6f;    
+    left: 13px;
+    *left: 15px;
+    width: 740px;    
+}
+#hNav_outer ul li.on ul {    
+    display: block;
+    background: #f90;
+}
+#hNav_outer ul li.on:hover ul, #hNav_outer ul li.over ul { /*for ie*/
+    background: #224d6f;
+}
+#hNav_outer ul li a {
+    color: #224d6f;
+    font-weight: bold;
+    display: block;
+    padding: 5;
+}
+#hNav_outer ul li.on a {   
+    color: #fff;
+    background: #f90;
+}
+#hNav_outer ul li.on ul a, #hNav_outer ul li.off ul a {
+    float: left; /*ie doesn't inherit the float*/
+    border: 0;
+    color: #f90;
+    width: auto;    
+}
+#hNav_outer ul li.on:hover ul a, #hNav_outer ul li.over ul li a { /*for ie - the specificity is necessary*/
+    background: #224d6f;
+}
+#hNav_outer ul li.off:hover ul, #hNav_outer ul li.over ul {
+    display: block;
+    z-index: 6000;
+}		
+#hNav_outer ul li.off a:hover, #hNav_outer ul li:hover a, #hNav_outer ul li.over a {
+    background: #29497b;
+    color: #f90;
+}
+#hNav_outer ul li.off a:hover, #hNav_outer ul li.on a:hover { 
+    color: #f90;
+}		
+/*subnav formatting*/
+#hNav_outer ul li.off ul a {
+    display: block;
+    background: #224d6f;
+    color: #fff;    
+}		
+#hNav_outer ul li.on ul a {       
+    display: block;
+    background: #f90;
+    color: #fff;    
+}
+
 /**************************************************
  * css layers and classes for list navigation list
  **************************************************/

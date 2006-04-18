@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
@@ -48,7 +50,9 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
     public static final String RENDERER_TYPE = "org.apache.myfaces.NavigationMenu";
 
     private static final Integer ZERO_INTEGER = new Integer(0);
-
+    
+    private static final String HORIZ_MENU_SCRIPT = "HMenuIEHover.js";
+    
     public boolean getRendersChildren()
     {
         return true;
@@ -66,7 +70,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
     public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException
     {
         if (component instanceof HtmlCommandNavigationItem)
-        {
+        {             
             //HtmlCommandNavigationItem
             super.encodeBegin(facesContext, component);
         }
@@ -82,7 +86,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException
-    {
+    {        
         if (component instanceof HtmlCommandNavigationItem)
         {
             //HtmlCommandNavigationItem
@@ -91,6 +95,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
         RendererUtils.checkParamValidity(facesContext, component, HtmlPanelNavigationMenu.class);
         HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu)component;
+        
         if (HtmlNavigationMenuRendererUtils.isListLayout(panelNav))
         {
             boolean preprocess = true;
@@ -158,7 +163,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                     HtmlCommandNavigationItem item = (HtmlCommandNavigationItem) panelNav.findComponent(uiComponent.getClientId(facesContext));
                     if (item != null)
                     {
-                        if(item.getActiveDirectly()!=null)
+                        if (item.getActiveDirectly() != null)
                         {
                             item.setActive(prevItem.isActive());
                         }
@@ -167,7 +172,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                             copyValueBinding(prevItem, item, "active");
                         }
 
-                        if(item.getOpenDirectly()!=null)
+                        if (item.getOpenDirectly() != null)
                         {
                             item.setOpen(prevItem.isOpen());
                         }
@@ -176,8 +181,9 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                             copyValueBinding(prevItem, item, "open");
                         }
 
-                        if(!panelNav.isExpandAll() || prevItem.isActive() )
-                        item.toggleOpen();
+                        if (!panelNav.isExpandAll() || prevItem.isActive())
+                            item.toggleOpen();
+                        
                         if (prevItem.isOpen())
                             restoreOpenActiveStates(facesContext, panelNav, prevItem.getChildren());
                     }
@@ -203,17 +209,23 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
 
     protected void renderListLayout(FacesContext facesContext, HtmlPanelNavigationMenu panelNav) throws IOException
     {
+        if (panelNav.isRenderAll())
+            addResourcesToHeader(facesContext);
+         
         ResponseWriter writer = facesContext.getResponseWriter();
         if (panelNav.getChildCount() > 0)
         {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.UL_ELEM, panelNav);
+            
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
+            
             //iterate over the tree and set every item open if expandAll
-            if(panelNav.isExpandAll())
+            if (panelNav.isExpandAll())
             {
                 expandAll(panelNav);
             }
+            
             HtmlNavigationMenuRendererUtils.renderChildrenListLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
 
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
@@ -248,6 +260,12 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         {
             if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
         }
+    }          
+    
+    private void addResourcesToHeader(FacesContext context)
+    {
+         AddResource addResource = AddResourceFactory.getInstance(context);
+         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlPanelNavigationMenu.class, HORIZ_MENU_SCRIPT);
     }
 
     /**
@@ -573,7 +591,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
     }
 
     private void expandAll(UIComponent parent)
-    {   //Recurse over all Children setOpen if child is HtmlCommandNavigationItem
+    {   
+        //Recurse over all Children setOpen if child is HtmlCommandNavigationItem
         if(parent instanceof HtmlCommandNavigationItem)
         {
             HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) parent;
@@ -586,7 +605,5 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             child =  (UIComponent) children.get(i);
             expandAll(child);
         }
-
     }
-
 }

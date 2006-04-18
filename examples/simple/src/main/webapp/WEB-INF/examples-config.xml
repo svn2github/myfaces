@@ -135,7 +135,16 @@
         <managed-bean-class>org.apache.myfaces.examples.listexample.SimpleCountryList</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    
+
+    <!-- Managed Beans for simpleGroupBy.jsp -->
+
+    <managed-bean>
+        <managed-bean-name>simpleGroupBy</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.listexample.SimpleGroupByList</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+
     <!-- Managed Beans for tree.jsp -->
 
     <managed-bean>
@@ -514,6 +523,8 @@
             <from-outcome>go_panelnavigation_3</from-outcome>
             <to-view-id>/panelnavigation_3.jsp</to-view-id>
         </navigation-case>
+
+
 
     </navigation-rule>
 

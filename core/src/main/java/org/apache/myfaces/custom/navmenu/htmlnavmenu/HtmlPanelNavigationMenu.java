@@ -119,7 +119,8 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     private String _separatorStyle = null;
     private String _layout = null;
     private Boolean _preprocessed = Boolean.FALSE;
-    private Boolean _expandAll;
+    private Boolean _expandAll = null;
+    private Boolean _renderAll = null;
 
     public HtmlPanelNavigationMenu()
     {
@@ -261,6 +262,19 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
     {
         _expandAll = expandAll ? Boolean.TRUE : Boolean.FALSE;
     }
+    
+    public boolean isRenderAll()
+    {
+        if (_renderAll != null) return _renderAll.booleanValue();
+        ValueBinding vb = getValueBinding("renderAll");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setRenderAll(boolean renderAll)
+    {
+        _renderAll = renderAll ? Boolean.TRUE : Boolean.FALSE;
+    }
 
     public boolean isDisabled()
     {
@@ -301,7 +315,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[15];
+        Object values[] = new Object[16];
         values[0] = super.saveState(context);
         values[1] = _itemClass;
         values[2] = _openItemClass;
@@ -317,6 +331,7 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         values[12] = _disabled;
         values[13] = _disabledStyle;
         values[14] = _disabledStyleClass;
+        values[15] = _renderAll;
         return values;
     }
 
@@ -338,5 +353,6 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         _disabled = (Boolean) values[12];
         _disabledStyle = (String) values[13];
         _disabledStyleClass = (String) values[14];
+        _renderAll = (Boolean) values[15];
     }
 }

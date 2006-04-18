@@ -48,4 +48,10 @@
             <rtexprvalue>false</rtexprvalue>
             <description>This attribute can be used to set the width of the &lt;TD> elements</description>
         </attribute>
+        <attribute>
+            <name>groupBy</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute tells the datatable to group by data in this column</description>
+        </attribute>
 

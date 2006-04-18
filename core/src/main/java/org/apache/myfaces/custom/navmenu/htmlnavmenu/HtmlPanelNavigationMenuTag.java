@@ -55,6 +55,7 @@ public class HtmlPanelNavigationMenuTag extends HtmlPanelGroupTag
     private String _separatorStyle;
     private String _layout;
     private String _expandAll;
+    private String _renderAll;
     private String _disabled;
     private String _disabledStyle;
     private String _disabledStyleClass;
@@ -98,6 +99,7 @@ public class HtmlPanelNavigationMenuTag extends HtmlPanelGroupTag
         _width=null;
         _layout = null;
         _expandAll = null;
+        _renderAll = null;
     }
 
     // User Role support --> already handled by HtmlPanelGroupTag
@@ -117,6 +119,7 @@ public class HtmlPanelNavigationMenuTag extends HtmlPanelGroupTag
         setStringProperty(component, "separatorStyle", _separatorStyle);
         setStringProperty(component, "layout", _layout);
         setBooleanProperty(component, "expandAll", _expandAll);
+        setBooleanProperty(component, "renderAll", _renderAll);
         setBooleanProperty(component, "disabled", _disabled);
         setStringProperty(component, "disabledStyle", _disabledStyle);
         setStringProperty(component, "disabledStyleClass", _disabledStyleClass);
@@ -248,6 +251,11 @@ public class HtmlPanelNavigationMenuTag extends HtmlPanelGroupTag
     public void setExpandAll(String expandAll)
     {
         _expandAll = expandAll;
+    }
+    
+    public void setRenderAll(String renderAll)
+    {
+        _renderAll = renderAll;
     }
 
     public void setDisabled(String disabled)
