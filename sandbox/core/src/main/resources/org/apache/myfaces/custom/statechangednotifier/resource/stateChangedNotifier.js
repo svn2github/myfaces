@@ -1,4 +1,4 @@
-
+I 
 /**
  * Copyright 2006 The Apache Software Foundation.
  *
@@ -19,6 +19,7 @@ function traceTime(message) {
 	dojo.debug(message + " " + now.getTime());
 } 
 var myfaces_stateChange_globalExclusionList = new Array();
+var myfaces_stateChange_notificationFields = new Array();
 /**
 * central function definition for the state change notifier
 */
@@ -44,27 +45,17 @@ function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId,
     stored
     */
     //TODO only mark the parent form of the hidden field 
-    var formArr = dojo.widget.manager.getWidgetById("form");
-    for(var theform in formArr) {
-    	var notifierArray = theform.getAttribute("myfaces_notifierFields");
-	    if(notifierArray == null) {
-	    	notifierArray = new Array();
-	    	notifierArray.push(paramhiddenFieldId);
-	    	theform.setAttribute("myfaces_notifierFields", notifierArray.push);
-	    } else {
-	    	var found = false;
-	    	for (var notifyId in notifierArray) {
-	    		if(notifyId == paramhiddenFieldId)  {
-	    			found = true; 
-	    			break;
-	    		};
-	    	};
-	    	if(!found) 
-	    		notifierArray.push(paramhiddenFieldId);
-	    }
-    }
-    
-    
+    var formArr = document.getElementsByTagName("form");
+	var found = false;
+	for (var notifyId in myfaces_stateChange_notificationFields) {
+		if(myfaces_stateChange_notificationFields[notifyId] == paramhiddenFieldId)  {
+			found = true; 
+			break;
+		}
+	}
+	if(!found)  {
+		myfaces_stateChange_notificationFields.push(paramhiddenFieldId);
+	}    
     
     /*global exclusion list singleton which keeps track of all exclusions over all entire forms
 		we cannot allow that some predefined exclusions
@@ -80,7 +71,7 @@ function org_apache_myfaces_StateChangedNotifier(paramnotifierName, paramformId,
     dojo.debug("system initialized" + yesButton);
     var dlg = dojo.widget.createWidget("Dialog", {id:(paramnotifierName + "_Dialog_dojo"), bgColor:"white", bgOpacity:0.5, toggle:"fade", toggleDuration:250}, dojo.byId(this.notifierDialogName));
 	traceTime("end init");
-}
+};
 org_apache_myfaces_StateChangedNotifier.prototype.getDialog = function () {
     return dojo.widget.manager.getWidgetById(this.notifierDialogName + "_dojo");
 };
