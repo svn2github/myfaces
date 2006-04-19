@@ -10,7 +10,7 @@
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
     <artifactId>tomahawk-project</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.1.3-SNAPSHOT</version>
   </parent>
   
   <scm>
@@ -33,9 +33,10 @@
       <version>${version}</version>
     </dependency> 
     <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
+      <groupId>myfaces</groupId>
       <artifactId>myfaces-api</artifactId>
-      <version>1.1.3-SNAPSHOT</version>
+      <version>1.1.1</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
@@ -46,7 +47,7 @@
            any compile dependency on impl so that is is always possible to use
            other JSF implementations. -->
       <scope>runtime</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.apache.myfaces.shared</groupId>
       <artifactId>myfaces-shared-tomahawk</artifactId>
