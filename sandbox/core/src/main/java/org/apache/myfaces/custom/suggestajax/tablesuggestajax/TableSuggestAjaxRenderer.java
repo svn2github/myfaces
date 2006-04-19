@@ -1,33 +1,48 @@
+/*
+ * Copyright 2004-2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.ext.UIComponentPerspective;
+import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
+import org.apache.myfaces.custom.dojo.DojoConfig;
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
-import org.apache.myfaces.custom.dojo.DojoUtils;
-import org.apache.myfaces.custom.dojo.DojoConfig;
-import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
+import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
-import org.apache.myfaces.component.html.ext.UIComponentPerspective;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.UIColumn;
-import javax.servlet.ServletResponse;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
- * @author Gerald Müllan
+ * @author Gerald Muellan
  *         Date: 25.03.2006
  *         Time: 17:05:38
  */

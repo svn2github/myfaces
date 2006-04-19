@@ -27,8 +27,12 @@ import javax.faces.context.FacesContext;
  * Date: Nov 21, 2005
  * Time: 9:20:14 PM
  */
-public class ComponentUtils
+public final class ComponentUtils
 {
+	
+	private ComponentUtils(){
+		
+	}
 
     /**
      * TR- This was moved from AjaxPhaseListenere on checkin 344383

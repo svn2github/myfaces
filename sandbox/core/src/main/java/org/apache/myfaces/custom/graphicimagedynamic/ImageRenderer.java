@@ -15,11 +15,6 @@
  */
 package org.apache.myfaces.custom.graphicimagedynamic;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseStream;
-
 import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
 
 /**

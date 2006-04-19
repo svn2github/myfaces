@@ -16,11 +16,9 @@
 package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.suggestajax.SuggestAjaxTag;
-
 import javax.faces.component.UIComponent;
+
+import org.apache.myfaces.custom.suggestajax.SuggestAjaxTag;
 
 
 /**
