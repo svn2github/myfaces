@@ -36,11 +36,11 @@
                 headerClass="standardTable_Header"
                 footerClass="standardTable_Header"
                 rowClasses="standardTable_Row1,standardTable_Row2"
-
                 var="demo"
                 value="#{simpleGroupBy.demoList}"
                 preserveDataModel="true"
-                rowGroupStyle="border-bottom:blue;border-bottom-style:solid;border-bottom-width:2px;vertical-align:top">
+                rowGroupStyle="border-bottom:blue;border-bottom-style:solid;border-bottom-width:2px;vertical-align:top"
+                rowGroupStyleClass="testclass">
            <t:column groupBy="true">
                <f:facet name="header">
                   <h:outputText value="Groups" />

@@ -138,7 +138,7 @@ public class HtmlDataTableTag
         setStringProperty(component, JSFAttr.ROW_STYLECLASS_ATTR, _rowStyleClass);
         setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
         setStringProperty(component, "rowGroupStyle", _rowGroupStyle);
-        setStringProperty(component, "rowGroupStyleClasses", _rowGroupStyleClass);
+        setStringProperty(component, "rowGroupStyleClass", _rowGroupStyleClass);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
