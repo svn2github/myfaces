@@ -38,6 +38,7 @@ S
       <item name="Form" href="form.html"/>  
       <item name="Picklist" href="selectManyPicklist.html"/>
       <item name="Dynamic Image" href="graphicImageDynamic.html"/>  
+      <item name="FishEye Navigation Menu" href="fisheye.html"/> 
     </menu>    
     
     <menu name="Validators">

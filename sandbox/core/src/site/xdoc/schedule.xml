@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "document-v12.dtd">
+      
+        <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN" "http://maven.apache.org/dtd/maven-xdoc.dtd">
 
 <document>
-    <!-- component name -->
-    <header>
-        <title>Schedule</title>
-        <subtitle>&lt;s:schedule/&gt;</subtitle>
-    </header>
     <body>
         <!-- Description -->
-        <section>
-            <title>Description</title>
+        <section name="Description">
             <p>
                 Renders a schedule component, showing appointments and events
                 in a day, workweek, week or month view, similar to the schedule
@@ -24,14 +19,13 @@
             </p>
         </section>
         <!-- screen shot -->
-        <section>
-            <title>Screen Shot</title>
-            <figure src="images/schedule.png" alt="schedule"/>
-            <figure src="images/schedule.jpg" alt="schedule"/>            
+        <section name="Screen Shot">
+            
+            <div><img src="images/schedule.png" alt="schedule"/></div>
+            <div><img src="images/schedule.jpg" alt="schedule"/></div>
         </section>
         <!-- API -->
-        <section>
-            <title>API</title>
+        <section name="API">
             <table>
                 <tr>
                     <td>author</td>
@@ -61,9 +55,8 @@
         </section>
 
         <!-- Usage -->
-        <section>
-            <title>Usage</title>
-            <source>
+        <section name="Usage">
+            <source xml:space="preserve">
 &lt;s:schedule [ UI component attributes ]
                [ UI command attributes ]
                [value="#{backingBean.scheduleModel}"]
@@ -84,8 +77,8 @@
         </section>
         
         <!-- Syntax -->
-        <section>
-            <title>Syntax</title>
+        <section name="Syntax">
+            
             <note label="&lt;x:schedule/&gt;">
                 <code>
                     value - This must be a value binding expression that points to an instance of ScheduleModel.
@@ -237,10 +230,9 @@
             </note>
         </section>
         
-        <!-- Instructions -->
-        <section>
-            <title>Instructions</title>
-            <p>see examples/schedule.jsp for an example.</p>
+        <!-- Additional Information -->
+        <section name="Additional Information">
+            <p>see the Sandbox examples.</p>
         </section>        
 
     </body>
