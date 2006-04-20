@@ -65,6 +65,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+        DojoUtils.addRequire(context, component, "extensions.FacesIO");
         DojoUtils.addRequire(context, component, "dojo.widget.ComboBox");
         DojoUtils.addRequire(context, component, "dojo.widget.html.ComboBox");
         DojoUtils.addRequire(context, component, "dojo.widget.Wizard");

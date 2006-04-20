@@ -60,6 +60,7 @@ public final class DojoUtils {
     private static final String DOJO_FILE_UNCOMPRESSED           = "dojo.js.uncompressed.js";
     private static final String DOJO_FILE                        = "dojo.js";
     private static final String DJCONFIG_REQ_KEY                 = "MYFACES_DJCONFIG";
+    private static final String DOJOEXTENSIONS_NAMESPACE  = "dojo.hostenv.setModulePrefix('extensions', '../dojoextensions.ResourceLoader');";
 
     private DojoUtils() {
         //nope
@@ -141,8 +142,8 @@ public final class DojoUtils {
 
                 addResource.addJavaScriptAtPositionPlain(facesContext, AddResource.HEADER_BEGIN, DojoResourceLoader.class, dojofile);
             }
+            addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, DOJOEXTENSIONS_NAMESPACE);
         }
-
     }
 
 
