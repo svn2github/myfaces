@@ -22,7 +22,7 @@ import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author <a href="mailto:matzew@apache.org">Matthias We&szlig;endorf</a> (latest modification by $author$)
- * @version $revision$ $date$
+ * @version $Rev$ $Date$
  */
 public class ValidateISBNTag extends ValidatorBaseTag {
 
