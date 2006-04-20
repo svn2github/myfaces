@@ -54,4 +54,13 @@
             <rtexprvalue>false</rtexprvalue>
             <description>This attribute tells the datatable to group by data in this column</description>
         </attribute>
+        <attribute>
+            <name>defaultSorted</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                This attribute tells the datatable to make this column the default sorted, when 
+                sortable=true
+            </description>
+        </attribute>
 

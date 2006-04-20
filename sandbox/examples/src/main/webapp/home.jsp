@@ -46,6 +46,7 @@
             <h:outputText value="Layout"/>
             <h:panelGrid style="padding-left:25px">
             	<h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
+                <h:outputLink value="hmenu.jsf" ><f:verbatim>Horizontal Menu</f:verbatim></h:outputLink>
             </h:panelGrid>
 
             <h:outputText value="Input Suggest"/>

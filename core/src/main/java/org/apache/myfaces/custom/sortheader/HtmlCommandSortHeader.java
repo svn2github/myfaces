@@ -57,23 +57,29 @@ public class HtmlCommandSortHeader
             }
             else
             {
-                String colName = getColumnName();
-                String currentSortColumn = dataTable.getSortColumn();
+                String colName = getColumnName();                                
+                String currentSortColumn = dataTable.getSortColumn();                                
+                
                 boolean currentAscending = dataTable.isSortAscending();
+                
                 if (colName.equals(currentSortColumn))
                 {
-                    dataTable.setSortColumn(getColumnName());
+                    String propName = getPropertyName();                       
+                    if (propName != null)
+                        dataTable.setSortProperty(getPropertyName());                        
+                    
+                    dataTable.setSortColumn(getColumnName()); 
                     dataTable.setSortAscending(!currentAscending);
                 }
                 else
                 {
+                    dataTable.setSortProperty(getPropertyName());
                     dataTable.setSortColumn(getColumnName());
                     dataTable.setSortAscending(true);
                 }
             }
         }
     }
-
 
     public HtmlDataTable findParentDataTable()
     {
@@ -89,13 +95,14 @@ public class HtmlCommandSortHeader
         return null;
     }
 
-
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = _columnName;
         values[2] = _arrow;
+        values[3] = _propertyName;
+        
         return ((Object) (values));
     }
 
@@ -105,6 +112,7 @@ public class HtmlCommandSortHeader
         super.restoreState(context, values[0]);
         _columnName = (String)values[1];
         _arrow      = (Boolean)values[2];
+        _propertyName = (String)values[3];
     }
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
@@ -114,6 +122,7 @@ public class HtmlCommandSortHeader
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SortHeader";
 
     private String _columnName = null;
+    private String _propertyName = null;
     private Boolean _arrow = null;
 
     public HtmlCommandSortHeader()
@@ -137,6 +146,18 @@ public class HtmlCommandSortHeader
         ValueBinding vb = getValueBinding("columnName");
         return vb != null ? vb.getValue(getFacesContext()).toString() : null;
     }
+    
+    public void setPropertyName(String propertyName)
+    {
+        _propertyName = propertyName;
+    }
+
+    public String getPropertyName()
+    {
+        if (_propertyName != null) return _propertyName;
+        ValueBinding vb = getValueBinding("propertyName");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
 
     public void setArrow(boolean arrow)
     {
@@ -150,7 +171,6 @@ public class HtmlCommandSortHeader
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null ? v.booleanValue() : false;
     }
-
 
     //------------------ GENERATED CODE END ---------------------------------------
 }

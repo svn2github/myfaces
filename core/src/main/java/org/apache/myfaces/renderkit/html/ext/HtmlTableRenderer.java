@@ -53,7 +53,6 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     /** DetailStamp facet name. */
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
 
-
     protected void afterRow(FacesContext facesContext, UIData uiData) throws IOException {
         super.afterRow(facesContext, uiData);
 
@@ -125,9 +124,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             super.encodeChildren(facesContext, component);
         }
     }
-
-
-
+    
     private boolean isGroupedTable(UIData uiData)
     {
         if(uiData instanceof HtmlDataTable)
@@ -149,7 +146,6 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     protected void beforeBody(FacesContext facesContext, UIData uiData) throws IOException
     {
-
         if(isGroupedTable(uiData))
         {
             createColumnInfos((HtmlDataTable) uiData, facesContext);
@@ -332,7 +328,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
             if (htmlDataTable.isRenderedIfEmpty() || htmlDataTable.getRowCount() > 0)
             {
-                super.encodeEnd(facesContext, uiComponent);
+                super.encodeEnd(facesContext, uiComponent);                               
             }
         }
         else

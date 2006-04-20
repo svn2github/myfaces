@@ -41,6 +41,7 @@ public class HtmlCommandSortHeaderTag
 
     private String _columnName;
     private String _arrow;
+    private String _propertyName;
     private boolean _immediateSet;
 
     public void release() {
@@ -48,6 +49,7 @@ public class HtmlCommandSortHeaderTag
 
         _columnName=null;
         _arrow=null;
+        _propertyName=null;
         _immediateSet=true;
 
     }
@@ -61,6 +63,7 @@ public class HtmlCommandSortHeaderTag
 
         setStringProperty(component, "columnName", _columnName);
         setBooleanProperty(component, "arrow", _arrow);
+        setStringProperty(component, "propertyName", _propertyName);
 
         if (!_immediateSet)
         {
@@ -72,6 +75,11 @@ public class HtmlCommandSortHeaderTag
     public void setColumnName(String columnName)
     {
         _columnName = columnName;
+    }
+    
+    public void setPropertyName(String propertyName)
+    {
+        _propertyName = propertyName;
     }
 
     public void setArrow(String arrow)

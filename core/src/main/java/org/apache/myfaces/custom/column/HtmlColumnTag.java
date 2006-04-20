@@ -65,6 +65,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
 
     private String _width;
     private String _groupBy;
+    private String _defaultSorted;
 
     public String getComponentType()
     {
@@ -113,6 +114,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
 
         _width = null;
         _groupBy = null;
+        _defaultSorted=null;
     }
 
     protected void setProperties(UIComponent component)
@@ -152,6 +154,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
 
         setStringProperty(component, "width", _width);
         setBooleanProperty(component,"groupBy",_groupBy);
+        setBooleanProperty(component,"defaultSorted",_defaultSorted);
     }
 
     public void setFooterdir(String footerdir)
@@ -312,5 +315,10 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase
     public void setGroupBy(String groupBy)
     {
         _groupBy = groupBy;
+    }
+    
+    public void setDefaultSorted(String defaultSorted)
+    {
+        _defaultSorted = defaultSorted;
     }
 }

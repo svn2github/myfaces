@@ -84,6 +84,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     
     private String _width;
     private Boolean _groupBy;
+    private Boolean _defaultSorted;
     
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlColumn";
 
@@ -871,13 +872,26 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     {
         _groupBy = groupBy ? Boolean.TRUE : Boolean.FALSE;
     }
+    
+     public boolean isDefaultSorted()
+    {
+        if (_defaultSorted != null) return _defaultSorted.booleanValue();
+        ValueBinding vb = getValueBinding("defaultSorted");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();
+    }
+
+    public void setDefaultSorted(boolean defaultSorted)
+    {
+        _defaultSorted = defaultSorted ? Boolean.TRUE : Boolean.FALSE;
+    }
 
     /**
      * @see javax.faces.component.UIComponentBase#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[48];
+        Object[] values = new Object[49];
         values[0] = super.saveState(context);
 
         values[1] = _headerdir;
@@ -930,6 +944,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         
         values[46] = _width;
         values[47] = _groupBy;
+        values[48] = _defaultSorted;
 
         return values;
     }
@@ -992,5 +1007,6 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         
         _width = (String) values[46];
         _groupBy = (Boolean) values[47];
+        _defaultSorted = (Boolean) values[48];
     }
 }

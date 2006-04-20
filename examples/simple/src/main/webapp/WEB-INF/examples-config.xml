@@ -176,6 +176,14 @@
         <managed-bean-class>org.apache.myfaces.examples.listexample.SimpleSortableCarList</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    
+    <!-- Managed Beans for simpleAutoSortList.jsp -->
+
+    <managed-bean>
+        <managed-bean-name>autosortlist</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.listexample.SimpleAutoSortableCarList</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
     <!-- Managed Beans for calendar.jsp -->
 

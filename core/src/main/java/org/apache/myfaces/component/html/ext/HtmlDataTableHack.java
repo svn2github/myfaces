@@ -161,7 +161,7 @@ public abstract class HtmlDataTableHack extends
         {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
-            if(!isPreserveRowStates())
+            if (!isPreserveRowStates())
             {
             	_rowStates.clear();
             }
@@ -400,7 +400,8 @@ public abstract class HtmlDataTableHack extends
         String clientID = "";
         
         UIComponent parent = getParent();
-        if (parent != null) {
+        if (parent != null) 
+        {
             clientID = parent.getClientId(getFacesContext());
         }
         dataModel = (DataModel) _dataModelMap.get(clientID);
@@ -408,7 +409,8 @@ public abstract class HtmlDataTableHack extends
         {
             dataModel = createDataModel();
             _dataModelMap.put(clientID, dataModel);
-        }
+        }               
+        
         return dataModel;
     }
 

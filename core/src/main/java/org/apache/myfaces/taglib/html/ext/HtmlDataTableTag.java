@@ -45,7 +45,8 @@ public class HtmlDataTableTag
     private String _preserveRowStates;
     private String _forceIdIndexFormula;
     private String _sortColumn;
-    private String _sortAscending;
+    private String _sortAscending;    
+    private String _sortable;
     private String _preserveSort;
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
@@ -79,7 +80,8 @@ public class HtmlDataTableTag
         _preserveRowStates = null;
         _forceIdIndexFormula=null;
         _sortColumn=null;
-        _sortAscending=null;
+        _sortAscending=null;        
+        _sortable=null;
         _preserveSort=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
@@ -115,6 +117,7 @@ public class HtmlDataTableTag
         setValueBinding(component, "forceIdIndexFormula", _forceIdIndexFormula);
         setValueBinding(component, "sortColumn", _sortColumn);
         setValueBinding(component, "sortAscending", _sortAscending);
+        setBooleanProperty(component, "sortable", _sortable);
         setBooleanProperty(component, "preserveSort", _preserveSort);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
@@ -164,6 +167,11 @@ public class HtmlDataTableTag
     public void setSortAscending(String sortAscending)
     {
         _sortAscending = sortAscending;
+    }
+      
+    public void setSortable(String sortable)
+    {
+        _sortable = sortable;
     }
 
     public void setPreserveSort(String preserveSort)

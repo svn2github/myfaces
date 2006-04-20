@@ -270,7 +270,7 @@
             sortColumn, sortAscending and preserveSort.
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
-        </description>
+        </description>        
         &standard_data_table_attributes;
         <!-- MyFaces extensions -->
         &extended_data_table_attributes;

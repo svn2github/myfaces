@@ -25,8 +25,7 @@ import java.util.List;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class SimpleSortableCarList
-    extends SortableList
+public class SimpleSortableCarList extends SortableList
 {
     private List _cars;
 

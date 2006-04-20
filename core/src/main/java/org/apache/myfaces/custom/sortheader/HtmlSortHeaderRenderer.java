@@ -61,6 +61,7 @@ public class HtmlSortHeaderRenderer
         {
             HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader)component;
             HtmlDataTable dataTable = sortHeader.findParentDataTable();
+            
             if (sortHeader.getColumnName().equals(dataTable.getSortColumn()))
             {
                 UIComponent img = (dataTable.isSortAscending())
