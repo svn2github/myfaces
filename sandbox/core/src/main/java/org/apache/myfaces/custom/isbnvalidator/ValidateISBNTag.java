@@ -21,8 +21,8 @@ import javax.servlet.jsp.JspException;
 import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
- * @author <a href="mailto:matzew@apache.org">Matthias We&szlig;endorf</a> (latest modification by $Author$)
- * @version $Revision$ $Date$
+ * @author <a href="mailto:matzew@apache.org">Matthias We&szlig;endorf</a> (latest modification by $author$)
+ * @version $revision$ $date$
  */
 public class ValidateISBNTag extends ValidatorBaseTag {
 
