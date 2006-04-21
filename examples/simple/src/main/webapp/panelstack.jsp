@@ -67,21 +67,25 @@
 
         <t:panelStack id="stack" selectedPanel="#{stackState.selected}">
         <h:panelGroup id="treePanel">
-            <t:tree id="tree" value="#{treeModel}"
+            <h:form>
+                <t:tree id="tree" value="#{treeModel}"
                     styleClass="tree"
                     nodeClass="treenode"
                     selectedNodeClass="treenodeSelected"
                     expandRoot="true">
-            </t:tree>
+                </t:tree>
+             </h:form>   
             <f:verbatim><br></f:verbatim>
         </h:panelGroup>
         <h:panelGroup id="treePanel">
+            <h:form>
             <t:tree id="tree" value="#{treeModel}"
                     styleClass="tree"
                     nodeClass="treenode"
                     selectedNodeClass="treenodeSelected"
                     expandRoot="true">
             </t:tree>
+            </h:form>
             <f:verbatim><br></f:verbatim>
         </h:panelGroup>
 

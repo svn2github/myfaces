@@ -57,12 +57,14 @@
 
 <f:view>
 
-    <t:tree id="tree" value="#{treeModel}"
-        styleClass="tree"
-        nodeClass="treenode"
-        selectedNodeClass="treenodeSelected"
-        expandRoot="true">
-    </t:tree>
+    <h:form>
+        <t:tree id="tree" value="#{treeModel}"
+            styleClass="tree"
+            nodeClass="treenode"
+            selectedNodeClass="treenodeSelected"
+            expandRoot="true">
+        </t:tree>
+    </h:form>    
 
 </f:view>
 

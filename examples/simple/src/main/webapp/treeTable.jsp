@@ -28,7 +28,8 @@
 
 <f:view>
 
-    <t:tree id="tree" value="#{treeTable.treeModel}"
+<h:form>
+        <t:tree id="tree" value="#{treeTable.treeModel}"
                     var="treeItem"
                     styleClass="tree"
                 nodeClass="treenode"
@@ -60,7 +61,7 @@
             <h:outputText value="Footer" />
         </f:facet>
     </t:tree>
-
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>
