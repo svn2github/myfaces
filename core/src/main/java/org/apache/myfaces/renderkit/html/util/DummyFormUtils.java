@@ -148,11 +148,14 @@ public class DummyFormUtils
 
         StateManager stateManager = facesContext.getApplication().getStateManager();
         org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+
+        //TODO: Optimize saveSerializedView call, because serialized view is built twice!
+        StateManager.SerializedView serializedView = stateManager.saveSerializedView(facesContext);
+        // Adam Winer - TOMAHAWK-253: Ideally, this code should be refactored so that the server-side code is also calling StateManager.writeState() too
+        //    it's a significant problem that DummyFormUtils has hardcoded knowledge of how the StateManager works.
         if (stateManager.isSavingStateInClient(facesContext))
         {
             //render state parameters
-            //TODO: Optimize saveSerializedView call, because serialized view is built twice!
-            StateManager.SerializedView serializedView = stateManager.saveSerializedView(facesContext);
             stateManager.writeState(facesContext, serializedView);
         }
         else
