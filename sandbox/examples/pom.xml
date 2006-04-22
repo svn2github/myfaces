@@ -54,7 +54,7 @@
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-impl</artifactId>
-      <version>1.1.3-SNAPSHOT</version>
+      <version>1.1.4-SNAPSHOT</version>
       <!-- Sandbox examples must only have runtime dependency to myfaces-impl
            so that it will be automatically added to war. But there must not be
            any compile dependency on impl so that is is always possible to use
