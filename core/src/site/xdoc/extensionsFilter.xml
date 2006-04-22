@@ -52,7 +52,7 @@
 	<source xml:space="preserve">
 &lt;filter&gt;
 	&lt;filter-name&gt;MyFacesExtensionsFilter&lt;/filter-name&gt;
-	&lt;filter-class&gt;org.apache.myfaces.component.html.util.ExtensionsFilter&lt;/filter-class&gt;
+	&lt;filter-class&gt;org.apache.myfaces.webapp.filter.ExtensionsFilter&lt;/filter-class&gt;
     &lt;init-param&gt;
         &lt;param-name&gt;maxFileSize&lt;/param-name&gt;
         &lt;param-value&gt;20m&lt;/param-value&gt;

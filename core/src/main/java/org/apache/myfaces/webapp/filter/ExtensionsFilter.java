@@ -116,7 +116,7 @@ public class ExtensionsFilter implements Filter {
         }
 
         // Serve resources
-        AddResource addResource = null;
+        AddResource addResource;
 
         try
         {
