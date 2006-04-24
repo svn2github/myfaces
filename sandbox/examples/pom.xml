@@ -49,7 +49,9 @@
       <groupId>myfaces</groupId>
       <artifactId>myfaces-api</artifactId>
       <version>1.1.1</version>
-      <scope>provided</scope>
+      <!-- Sandbox examples must only have runtime dependency to myfaces-api
+           so that it will be automatically added to war. -->
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
