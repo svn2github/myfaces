@@ -29,6 +29,11 @@ public class HtmlBufferResponseWriterWrapper extends org.apache.myfaces.shared_t
 
     private ByteArrayOutputStream stream;
     private PrintWriter writer;
+    private ResponseWriter initialWriter;
+
+    public ResponseWriter getInitialWriter() {
+        return initialWriter;
+    }
 
     static public HtmlBufferResponseWriterWrapper getInstance(ResponseWriter initialWriter){
         ByteArrayOutputStream instanceStream = new ByteArrayOutputStream();
@@ -41,6 +46,7 @@ public class HtmlBufferResponseWriterWrapper extends org.apache.myfaces.shared_t
         super(writer, initialWriter==null?null:initialWriter.getContentType(), initialWriter==null?null:initialWriter.getCharacterEncoding());
         this.stream = stream;
         this.writer = writer;
+        this.initialWriter = initialWriter;
     }
 
     public String toString(){

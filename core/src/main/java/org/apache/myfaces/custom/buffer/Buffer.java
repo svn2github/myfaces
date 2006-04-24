@@ -18,6 +18,8 @@ package org.apache.myfaces.custom.buffer;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.render.Renderer;
+import java.io.IOException;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -42,7 +44,7 @@ public class Buffer extends UIComponentBase{
     public void setInto(String intoExpression){
         _intoExpression = intoExpression;
     }
-    
+
     protected String getInto() {
         return _intoExpression;
     }

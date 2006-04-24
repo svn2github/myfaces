@@ -38,15 +38,13 @@ public class BufferRenderer extends Renderer {
 
     public static final String RENDERER_TYPE = "org.apache.myfaces.Buffer";
 
-    private ResponseWriter initialWriter;
-    private HtmlBufferResponseWriterWrapper bufferWriter;
+    private HtmlBufferResponseWriterWrapper getResponseWriter(FacesContext context) {
+        return HtmlBufferResponseWriterWrapper.getInstance(context.getResponseWriter());
+    }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) {
         RendererUtils.checkParamValidity(facesContext, uiComponent, Buffer.class);
-
-        initialWriter = facesContext.getResponseWriter();
-        bufferWriter = HtmlBufferResponseWriterWrapper.getInstance(initialWriter );
-        facesContext.setResponseWriter( bufferWriter );
+        facesContext.setResponseWriter( getResponseWriter(facesContext) );
     }
 
     public void encodeChildren(FacesContext facesContext, UIComponent component) throws IOException{
@@ -56,9 +54,10 @@ public class BufferRenderer extends Renderer {
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) {
         Buffer buffer = (Buffer)uiComponent;
-        buffer.fill(bufferWriter.toString(), facesContext);
+        HtmlBufferResponseWriterWrapper writer = (HtmlBufferResponseWriterWrapper) facesContext.getResponseWriter();
+        buffer.fill(writer.toString(), facesContext);
 
-        facesContext.setResponseWriter( initialWriter );
+        facesContext.setResponseWriter( writer.getInitialWriter() );
 
         if( DummyFormUtils.getDummyFormParameters(facesContext) != null ){
             try{ // Attempt to add the dummy form params (will not work with Sun RI)
