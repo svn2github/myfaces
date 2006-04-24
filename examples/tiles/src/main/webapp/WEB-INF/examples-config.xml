@@ -10,7 +10,7 @@
 
 <faces-config>
     <application>
-        <view-handler>org.apache.myfaces.application.jsp.JspTilesViewHandlerImpl</view-handler>
+        <view-handler>org.apache.myfaces.tomahawk.application.jsp.JspTilesViewHandlerImpl</view-handler>
     </application>
 
 	    <managed-bean>

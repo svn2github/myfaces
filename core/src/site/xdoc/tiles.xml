@@ -43,7 +43,7 @@ components.
                     Configure the JspTilesViewHandler in your faces-config:
                     <source xml:space="preserve">
 &lt;application&gt;
-    &lt;view-handler&gt;org.apache.myfaces.application.jsp.JspTilesViewHandlerImpl&lt;/view-handler&gt;
+    &lt;view-handler&gt;org.apache.myfaces.tomahawk.application.jsp.JspTilesViewHandlerImpl&lt;/view-handler&gt;
 &lt;/application&gt;
                     </source>
                 </li>

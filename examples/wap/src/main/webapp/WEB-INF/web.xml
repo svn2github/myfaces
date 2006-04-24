@@ -32,6 +32,7 @@
             Comma separated list of URIs of (additional) faces config files.
             (e.g. /WEB-INF/my-config.xml)
             See JSF 1.0 PRD2, 10.3.2
+            Attention: You do not need to put /WEB-INF/faces-config.xml in here.            
         </description>
     </context-param>
 
