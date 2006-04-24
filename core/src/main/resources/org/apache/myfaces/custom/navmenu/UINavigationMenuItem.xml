@@ -20,6 +20,10 @@
         <type>boolean</type>
     </field>
     <field>
+        <name>activeOnViewIds</name>
+        <type>java.lang.String</type>
+    </field>
+    <field>
         <name>split</name>
         <type>boolean</type>
     </field>

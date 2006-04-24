@@ -59,6 +59,7 @@ class HtmlNavigationMenuRendererUtils
             if (!child.isRendered()) continue;
             if (child instanceof UINavigationMenuItem)
             {
+                UINavigationMenuItem navItem = (UINavigationMenuItem) child;
                 renderChildrenListLayout(facesContext, writer, panelNav, child.getChildren(), level);
             }
             if (child instanceof HtmlCommandNavigationItem)
@@ -67,7 +68,7 @@ class HtmlNavigationMenuRendererUtils
                 HtmlRendererUtils.writePrettyLineSeparator(facesContext);
                 
                 HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) child;
-                
+
                 String style = HtmlNavigationMenuRendererUtils.getNavigationItemStyle(panelNav, navItem);
                 String styleClass = HtmlNavigationMenuRendererUtils.getNavigationItemClass(panelNav, navItem);
                                 
@@ -88,7 +89,7 @@ class HtmlNavigationMenuRendererUtils
                     if (panelNav.isRenderAll())
                         HtmlNavigationMenuRendererUtils.writeStyleAttributes(writer, navItem.getStyle(), navItem.getStyleClass());
                     
-                    //HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
+                    HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
                     renderChildrenListLayout(facesContext, writer, panelNav, child.getChildren(), level + 1);
                     writer.endElement(HTML.UL_ELEM);
                 }

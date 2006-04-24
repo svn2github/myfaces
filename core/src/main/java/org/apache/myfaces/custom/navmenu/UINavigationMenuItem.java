@@ -17,9 +17,12 @@ package org.apache.myfaces.custom.navmenu;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItem;
+import org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.ActionSource;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
@@ -29,6 +32,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -55,6 +60,7 @@ public class UINavigationMenuItem extends UISelectItem implements
     private Boolean _disabled = null;
     private String _disabledStyle = null;
     private String _disabledStyleClass = null;
+    private String _activeOnViewIds = null;
 
     public UINavigationMenuItem()
     {
@@ -307,6 +313,23 @@ public class UINavigationMenuItem extends UISelectItem implements
         _disabledStyleClass = disabledStyleClass;
     }
 
+    public String getActiveOnViewIds()
+    {
+        if (_activeOnViewIds != null) return _activeOnViewIds;
+        ValueBinding vb = getValueBinding("activeOnViewIds");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public String getActiveOnViewIdsDirectly()
+    {
+        return _activeOnViewIds;
+    }
+
+    public void setActiveOnViewIds(String activeOnViewIds)
+    {
+        this._activeOnViewIds = activeOnViewIds;
+    }
+
     public boolean isRendered()
     {
         if (!UserRoleUtils.isVisibleOnUserRole(this))
@@ -316,7 +339,7 @@ public class UINavigationMenuItem extends UISelectItem implements
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[14];
+        Object values[] = new Object[15];
         values[0] = super.saveState(context);
         values[1] = _icon;
         values[2] = _split;
@@ -331,6 +354,7 @@ public class UINavigationMenuItem extends UISelectItem implements
         values[11] = _disabled;
         values[12] = _disabledStyle;
         values[13] = _disabledStyleClass;
+        values[14] = _activeOnViewIds;
         return ((Object) (values));
     }
 
@@ -352,6 +376,94 @@ public class UINavigationMenuItem extends UISelectItem implements
         _disabled = (Boolean) values[11];
         _disabledStyle = (String) values[12];
         _disabledStyleClass = (String) values[13];
+        _activeOnViewIds = (String) values[14];
+    }
+
+    public void toggleActive(FacesContext context)
+    {
+        StringTokenizer tokenizer = new StringTokenizer(this.getActiveOnViewIdsDirectly(), ";");
+        while (tokenizer.hasMoreTokens())
+        {
+            String token =  tokenizer.nextToken();
+            if(token.trim().equals(context.getViewRoot().getViewId()))
+            {
+                this.deactivateAll();
+                this.setActive(true);
+                openParents();
+            }
+            else
+            {
+                this.setActive(false);
+            }
+        }
+    }
+
+    private void openParents()
+    {
+        UIComponent comp = this;
+
+        while((comp = comp.getParent()) instanceof UINavigationMenuItem)
+        {
+            UINavigationMenuItem parent = (UINavigationMenuItem) comp;
+            if(!parent.isOpen())
+                parent.setOpen(true);
+            else
+                return;
+        }
+    }
+
+    public void deactivateAll()
+    {
+        UIComponent parent = this.getParent();
+        while(!(parent instanceof HtmlPanelNavigationMenu) && parent != null)
+        {
+            parent = parent.getParent();
+        }
+        if(parent == null)
+        {
+            throw new IllegalStateException("no PanelNavigationMenu!");
+        }
+
+        HtmlPanelNavigationMenu root = (HtmlPanelNavigationMenu) parent;
+        for(Iterator it = root.getChildren().iterator(); it.hasNext();)
+        {
+            Object o = it.next();
+            if(o instanceof UINavigationMenuItem)
+            {
+                UINavigationMenuItem navItem = (UINavigationMenuItem) o;
+                navItem.setActive(false);
+                if(navItem.getChildCount() > 0)
+                {
+                    navItem.deactivateChildren();
+                }
+            }
+            if(o instanceof HtmlCommandNavigationItem)
+            {
+                HtmlCommandNavigationItem current = (HtmlCommandNavigationItem) o;
+                current.setActive(false);
+                if(current.getChildCount() > 0)
+                {
+                    current.deactivateChildren();
+                }
+            }
+        }
+    }
+
+    public void deactivateChildren()
+    {
+        for(Iterator it = this.getChildren().iterator(); it.hasNext();)
+        {
+            Object o = it.next();
+            if(o instanceof UINavigationMenuItem)
+            {
+                UINavigationMenuItem current = (UINavigationMenuItem) o;
+                current.setActive(false);
+                if(current.getChildCount() > 0)
+                {
+                    current.deactivateChildren();
+                }
+            }
+        }
     }
 
     public Boolean getActiveDirectly()

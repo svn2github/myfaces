@@ -52,6 +52,7 @@
                     <h:outputLink value="panelnavigation_1.jsf" ><f:verbatim>PanelNavigation Classic (Static JSP)</f:verbatim></h:outputLink>
                     <h:outputLink value="panelnavigation_2.jsf" ><f:verbatim>PanelNavigation with NavigationMenuItems (Dynamic)</f:verbatim></h:outputLink>
                     <h:outputLink value="panelnavigation_4.jsf" ><f:verbatim>Horizontal PanelNavigation</f:verbatim></h:outputLink>
+                    <h:outputLink value="panelnavigation_5.jsf" ><f:verbatim>PanelNavigation Item toggles activ/open depending on ViewId</f:verbatim></h:outputLink>
                 </h:panelGrid>
                 <h:outputLink value="jslistener.jsf" ><f:verbatim>Javascript Listener</f:verbatim></h:outputLink>
                 <h:outputLink value="date.jsf" ><f:verbatim>Date</f:verbatim></h:outputLink>

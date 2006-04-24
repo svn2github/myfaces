@@ -180,10 +180,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                         {
                             copyValueBinding(prevItem, item, "open");
                         }
-
-                        if (!panelNav.isExpandAll() || prevItem.isActive())
+                        if(!panelNav.isExpandAll() || prevItem.isActive() )
                             item.toggleOpen();
-                        
                         if (prevItem.isOpen())
                             restoreOpenActiveStates(facesContext, panelNav, prevItem.getChildren());
                     }
@@ -219,13 +217,15 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             writer.startElement(HTML.UL_ELEM, panelNav);
             
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
-            
+
+            //iterate over the tree and toggleOpen if viewId in item.getActiveOnVieIds()
+            activeOnViewId(panelNav, facesContext.getViewRoot().getViewId());
             //iterate over the tree and set every item open if expandAll
             if (panelNav.isExpandAll())
             {
                 expandAll(panelNav);
             }
-            
+
             HtmlNavigationMenuRendererUtils.renderChildrenListLayout(facesContext, writer, panelNav, panelNav.getChildren(), 0);
 
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
@@ -233,7 +233,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
         else
         {
-            if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
+            if (log.isWarnEnabled()) log.warn("PanelNavaigationMenu without children.");
         }
     }
 
@@ -258,7 +258,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         }
         else
         {
-            if (log.isWarnEnabled()) log.warn("PangelNavaigationMenu without children.");
+            if (log.isWarnEnabled()) log.warn("PanelNavaigationMenu without children.");
         }
     }          
     
@@ -401,7 +401,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         if (!copyValueBinding(uiNavMenuItem, newItem, "rendered"))
             newItem.setRendered(uiNavMenuItem.isRendered());
 
-        if (uiNavMenuItem.isOpen() && ! menu.isExpandAll()) newItem.toggleOpen();
+        if (uiNavMenuItem.isOpen() && ! menu.isExpandAll())
+            newItem.toggleOpen();
 
         if(uiNavMenuItem.getActiveDirectly()!=null)
         {
@@ -420,6 +421,12 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
                     newItem.setDisabledStyle(uiNavMenuItem.getDisabledStyle());
         if (!copyValueBinding(uiNavMenuItem, newItem, "disabledStyleClass"))
                     newItem.setDisabledStyleClass(uiNavMenuItem.getDisabledStyleClass());
+
+        if(uiNavMenuItem.getActiveOnViewIdsDirectly() != null)
+        {
+            newItem.setActiveOnViewIds(uiNavMenuItem.getActiveOnViewIdsDirectly());
+        }
+
         // If the parent-Element is disabled the child is disabled as well
         if(parent instanceof HtmlPanelNavigationMenu){
             if(newItem.getDisabledStyle()==null)
@@ -604,6 +611,30 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         {
             child =  (UIComponent) children.get(i);
             expandAll(child);
+        }
+    }
+
+    private void activeOnViewId( UIComponent parent, String viewId)
+    {
+        //Recurse over all Children setOpen if child is HtmlCommandNavigationItem
+        if(parent instanceof HtmlCommandNavigationItem)
+        {
+            HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) parent;
+            String[] viewIds = navItem.getActiveOnVieIds();
+            for (int i = 0; i < viewIds.length; i++) {
+                if (viewId.equals(viewIds[i])) {
+                    navItem.toggleOpen();
+                    navItem.setActive(true);
+                    return;
+                }
+            };
+        }
+        List children = parent.getChildren();
+        UIComponent child;
+        for (int i = 0; i < children.size(); i++)
+        {
+            child =  (UIComponent) children.get(i);
+            activeOnViewId(child, viewId);
         }
     }
 }

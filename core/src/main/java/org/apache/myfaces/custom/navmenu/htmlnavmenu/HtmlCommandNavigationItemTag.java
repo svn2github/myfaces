@@ -27,9 +27,11 @@ public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
 {
     private static final String OPEN_ATTR   = "open".intern();
     private static final String ACTIVE_ATTR = "active".intern();
+    private static final String ACTIVE_ON_VIEW_IDS_ATTR = "activeOnViewIds".intern();
 
     private String _open;
     private String _active;
+    private String _activeOnViewIds;
 
     public String getComponentType()
     {
@@ -47,6 +49,7 @@ public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
 
         setBooleanProperty(component, OPEN_ATTR, _open);
         setBooleanProperty(component, ACTIVE_ATTR, _active);
+        setStringProperty(component, ACTIVE_ON_VIEW_IDS_ATTR, _activeOnViewIds);
     }
 
     public void setOpen(String open)
@@ -57,5 +60,10 @@ public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
     public void setActive(String active)
     {
         _active = active;
+    }
+
+    public void setActiveOnViewIds(String activeOnViewIds)
+    {
+        _activeOnViewIds = activeOnViewIds;
     }
 }

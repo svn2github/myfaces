@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.navmenu.htmlnavmenu;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -26,8 +27,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.el.ValueBinding;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet 
@@ -41,6 +41,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
 
     private Boolean _open = null;
     private Boolean _active = null;
+    private String _activeOnViewIds = null;
 
     public boolean isImmediate()
     {
@@ -89,6 +90,18 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         _active = active ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    public String getActiveOnViewIds()
+    {
+        if (_activeOnViewIds != null) return _activeOnViewIds;
+        ValueBinding vb = getValueBinding("activeOnViewIds");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setActiveOnViewIds(String activeOnViewIds)
+    {
+        this._activeOnViewIds = activeOnViewIds;
+    }
+
     /**
      * @return false, if this item is child of another HtmlCommandNavigation, which is closed
      */
@@ -97,11 +110,11 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         if (! super.isRendered()) {
             return false;
         }
-                
+
         HtmlPanelNavigationMenu parentPanelNavMenu = getParentPanelNavigation();
         if (parentPanelNavMenu != null && parentPanelNavMenu.isRenderAll())
             return true;
-        
+
         UIComponent parent = getParent();
         while (parent != null)
         {
@@ -142,7 +155,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
             return null;
         }
-        
+
         return (HtmlPanelNavigationMenu) p;
     }
 
@@ -249,6 +262,76 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         }
     }
 
+    public String[] getActiveOnVieIds()
+    {
+        String value = getActiveOnViewIds();
+        if (value == null)
+            return new String[] {};
+        return value.split(",");
+    }
+
+    private void openParents()
+    {
+        UIComponent comp = this;
+
+        while((comp = comp.getParent()) instanceof HtmlCommandNavigationItem)
+        {
+            HtmlCommandNavigationItem parent = (HtmlCommandNavigationItem) comp;
+            if(!parent.isOpen())
+            {
+                parent.setOpen(true);
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    public void deactivateAll()
+    {
+        UIComponent parent = this.getParent();
+        while(!(parent instanceof HtmlPanelNavigationMenu) && parent != null)
+        {
+            parent = parent.getParent();
+        }
+        if(parent == null)
+        {
+            throw new IllegalStateException("no PanelNavigationMenu!");
+        }
+
+        HtmlPanelNavigationMenu root = (HtmlPanelNavigationMenu) parent;
+        for(Iterator it = root.getChildren().iterator(); it.hasNext();)
+        {
+            Object o = it.next();
+            if(o instanceof HtmlCommandNavigationItem)
+            {
+                HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) o;
+                navItem.setActive(false);
+                if(navItem.getChildCount() > 0)
+                {
+                    navItem.deactivateChildren();
+                }
+            }
+        }
+    }
+
+    public void deactivateChildren()
+    {
+        for(Iterator it = this.getChildren().iterator(); it.hasNext();)
+        {
+            Object o = it.next();
+            if(o instanceof HtmlCommandNavigationItem)
+            {
+                HtmlCommandNavigationItem current = (HtmlCommandNavigationItem) o;
+                current.setActive(false);
+                if(current.getChildCount() > 0)
+                {
+                    current.deactivateChildren();
+                }
+            }
+        }
+    }
 
     public void broadcast(FacesEvent event) throws AbortProcessingException
     {
@@ -268,10 +351,11 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = _open;
         values[2] = _active;
+        values[3] = _activeOnViewIds;
         return ((Object) (values));
     }
 
@@ -281,6 +365,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         super.restoreState(context, values[0]);
         _open = ((Boolean)values[1]);
         _active = ((Boolean)values[2]);
+        _activeOnViewIds = ((String)values[3]);
     }
 
 

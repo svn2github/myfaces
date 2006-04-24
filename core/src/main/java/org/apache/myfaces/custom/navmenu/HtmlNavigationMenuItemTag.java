@@ -37,6 +37,7 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
     private static final String DISABLED_ATTR = "disabled";
     private static final String DISABLED_STYLE_ATTR = "disabledStyle";
     private static final String DISABLED_STYLE_CLASS_ATTR = "disabledStyleClass";
+    private static final String ACTIVE_ON_VIEW_IDS_ATTR = "activeOnViewIds";
 
     private String _icon;
     private String _action;
@@ -49,6 +50,7 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
     private String _disabled;
     private String _disabledStyle;
     private String _disabledStyleClass;
+    private String _activeOnViewIds;
 
     // User Role support
     private String _enabledOnUserRole;
@@ -62,7 +64,7 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
         _split= null;
         _enabledOnUserRole= null;
         _visibleOnUserRole= null;
-
+        _activeOnViewIds = null;
     }
 
     public String getComponentType()
@@ -93,6 +95,7 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
         setBooleanProperty(component,DISABLED_ATTR,_disabled);
         setStringProperty(component,DISABLED_STYLE_ATTR,_disabledStyle);
         setStringProperty(component,DISABLED_STYLE_CLASS_ATTR,_disabledStyleClass);
+        setStringProperty(component,ACTIVE_ON_VIEW_IDS_ATTR,_activeOnViewIds);
     }
 
     public void setAction(String action)
@@ -148,5 +151,10 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
     public void setDisabledStyleClass(String disabledStyleClass)
     {
         _disabledStyleClass = disabledStyleClass;
+    }
+
+    public void setActiveOnViewIds(String activeOnViewIds)
+    {
+        _activeOnViewIds = activeOnViewIds;
     }
 }
