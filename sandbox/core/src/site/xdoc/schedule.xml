@@ -21,8 +21,8 @@
         <!-- screen shot -->
         <section name="Screen Shot">
             
-            <div><img src="images/schedule.png" alt="schedule"/></div>
-            <div><img src="images/schedule.jpg" alt="schedule"/></div>
+            <div><img src="images/schedule1.png" alt="schedule month mode"/></div>
+            <div><img src="images/schedule2.png" alt="schedule workweek mode"/></div>
         </section>
         <!-- API -->
         <section name="API">
