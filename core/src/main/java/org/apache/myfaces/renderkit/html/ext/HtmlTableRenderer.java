@@ -16,29 +16,27 @@
 
 package org.apache.myfaces.renderkit.html.ext;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Hashtable;
-import java.util.Enumeration;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.renderkit.html.util.ColumnInfo;
+import org.apache.myfaces.renderkit.html.util.RowInfo;
+import org.apache.myfaces.renderkit.html.util.TableContext;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
-import org.apache.myfaces.renderkit.html.util.TableContext;
-import org.apache.myfaces.renderkit.html.util.RowInfo;
-import org.apache.myfaces.renderkit.html.util.ColumnInfo;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.ValueHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Renderer for the Tomahawk extended HtmlDataTable component.
@@ -154,168 +152,177 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     private void createColumnInfos(HtmlDataTable htmlDataTable, FacesContext facesContext)
-                throws IOException
+        throws IOException
+    {
+        int first = htmlDataTable.getFirst();
+        int rows = htmlDataTable.getRows();
+        int last;
+        int currentRowSpan=-1;
+        int currentRowInfoIndex=-1;
+
+        TableContext tableContext=htmlDataTable.getTableContext();
+        RowInfo rowInfo=null;
+        ColumnInfo columnInfo=null;
+        HtmlSimpleColumn currentColumn=null;
+        Map groupHashTable = new HashMap();
+
+        if (rows <= 0)
         {
-            int first = htmlDataTable.getFirst();
-            int rows = htmlDataTable.getRows();
-            int last;
-            int currentRowSpan=-1;
-            int currentRowInfoIndex=-1;
-
-            TableContext tableContext=htmlDataTable.getTableContext();
-            RowInfo rowInfo=null;
-            ColumnInfo columnInfo=null;
-            HtmlSimpleColumn currentColumn=null;
-            Hashtable groupHashTable = new Hashtable();
-            String currentColumnContent = null;
-
-            if (rows <= 0)
-            {
-               last = htmlDataTable.getRowCount();
-            }
-            else
-            {
-               last = first + rows;
-            }
-
-
-            //Loop over the Children Columns to find the Columns with groupBy Attribute true
-            List children = getChildren(htmlDataTable);
-            int nChildren = getChildCount(htmlDataTable);
-
-            for (int j = 0, size = nChildren; j < size; j++)
-            {
-                UIComponent child = (UIComponent) children.get(j);
-                if(child instanceof HtmlSimpleColumn)
-                {
-                    currentColumn = (HtmlSimpleColumn) child;
-                    if(currentColumn.isGroupBy())
-                    {
-                        groupHashTable.put(new Integer(j),"");
-                    }
-                }
-            }
-
-            boolean groupEndReached = false;
-
-            for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
-            {
-               htmlDataTable.setRowIndex(rowIndex);
-               rowInfo = new RowInfo();
-               //scrolled past the last row
-               if (!htmlDataTable.isRowAvailable())
-                   break;
-
-               Enumeration groupIndexList = groupHashTable.keys();
-               while(groupIndexList.hasMoreElements())
-               {
-                   currentColumnContent = "";
-                   Integer currentIndex=(Integer) groupIndexList.nextElement();
-                   currentColumn = (HtmlSimpleColumn) children.get(currentIndex.intValue());
-                   List currentColumnChildren = currentColumn.getChildren();
-                   for (int j = 0, size = currentColumnChildren.size(); j < size; j++)
-                    {
-                        UIComponent currentColumnChild = (UIComponent) currentColumnChildren.get(j);
-                        if(currentColumnChild.isRendered())
-                        {
-                            currentColumnContent += currentColumnChild.getValueBinding("value").getValue(facesContext);
-                        }
-                    }
-                    if(currentColumnContent.compareTo((String)groupHashTable.get(currentIndex))!=0 && currentRowInfoIndex > -1)
-                    {
-                        groupEndReached = true;
-                        groupHashTable.put(currentIndex,currentColumnContent);
-                    }
-                   else if(currentRowInfoIndex == -1)
-                    {
-                        groupHashTable.put(currentIndex,currentColumnContent);   
-                    }
-               }
-               currentRowSpan++;
-
-
-               for (int j = 0, size = nChildren; j < size; j++)
-                    {
-                        columnInfo = new ColumnInfo();
-                        if(groupHashTable.containsKey(new Integer(j)))  // Column is groupBy
-                        {
-                            if(currentRowSpan > 0)
-                            {
-                                if(groupEndReached)
-                                {
-                                    ((ColumnInfo)
-                                    ((RowInfo)
-                                        tableContext.getRowInfos().get(currentRowInfoIndex-currentRowSpan+1)).
-                                        getColumnInfos().get(j)).
-                                        setRowSpan(currentRowSpan);
-                                        columnInfo.setStyle(htmlDataTable.getRowGroupStyle());
-                                        columnInfo.setStyleClass(htmlDataTable.getRowGroupStyleClass());
-                                }
-                                else
-                                {
-                                    columnInfo.setRendered(false);
-                                }
-                            }
-                            else
-                            {
-                                columnInfo.setStyle(htmlDataTable.getRowGroupStyle());
-                                columnInfo.setStyleClass(htmlDataTable.getRowGroupStyleClass());
-                            }
-
-                        }
-                        else    // Column  is not group by
-                        {
-                            if(groupEndReached)
-                            {
-                                ((ColumnInfo)
-                                    ((RowInfo)
-                                        tableContext.getRowInfos().get(currentRowInfoIndex)).
-                                        getColumnInfos().get(j)).
-                                        setStyle(htmlDataTable.getRowGroupStyle());
-                                ((ColumnInfo)
-                                    ((RowInfo)
-                                        tableContext.getRowInfos().get(currentRowInfoIndex)).
-                                        getColumnInfos().get(j)).
-                                        setStyleClass(htmlDataTable.getRowGroupStyleClass());
-                            }
-                        }
-                        rowInfo.getColumnInfos().add(columnInfo);
-                    }
-                if(groupEndReached)
-                {
-                    currentRowSpan=0;
-                    groupEndReached = false;
-                }
-                tableContext.getRowInfos().add(rowInfo);
-                currentRowInfoIndex++;
-            }
-            for (int j = 0, size = nChildren; j < size; j++)
-                    {
-                        if(groupHashTable.containsKey(new Integer(j)))  // Column is groupBy
-                        {
-                                    ((ColumnInfo)
-                                    ((RowInfo)
-                                        tableContext.getRowInfos().get(currentRowInfoIndex-currentRowSpan)).
-                                        getColumnInfos().get(j)).
-                                        setRowSpan(currentRowSpan+1);
-                        }
-                        else    // Column  is not group by
-                        {
-                                ((ColumnInfo)
-                                    ((RowInfo)
-                                        tableContext.getRowInfos().get(currentRowInfoIndex)).
-                                        getColumnInfos().get(j)).
-                                        setStyle(htmlDataTable.getRowGroupStyle());
-                                ((ColumnInfo)
-                                    ((RowInfo)
-                                        tableContext.getRowInfos().get(currentRowInfoIndex)).
-                                        getColumnInfos().get(j)).
-                                        setStyleClass(htmlDataTable.getRowGroupStyleClass());
-                        }
-                    }
-
-            htmlDataTable.setRowIndex(-1);
+            last = htmlDataTable.getRowCount();
         }
+        else
+        {
+            last = first + rows;
+        }
+
+
+        //Loop over the Children Columns to find the Columns with groupBy Attribute true
+        List children = getChildren(htmlDataTable);
+        int nChildren = getChildCount(htmlDataTable);
+
+        for (int j = 0, size = nChildren; j < size; j++)
+        {
+            UIComponent child = (UIComponent) children.get(j);
+            if(child instanceof HtmlSimpleColumn)
+            {
+                currentColumn = (HtmlSimpleColumn) child;
+                if(currentColumn.isGroupBy())
+                {
+                    groupHashTable.put(new Integer(j),"");
+                }
+            }
+        }
+
+        boolean groupEndReached = false;
+
+        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
+        {
+            htmlDataTable.setRowIndex(rowIndex);
+            rowInfo = new RowInfo();
+            //scrolled past the last row
+            if (!htmlDataTable.isRowAvailable())
+                break;
+
+            Set groupIndexList = groupHashTable.keySet();
+            StringBuffer currentColumnContent = null;
+            for(Iterator it = groupIndexList.iterator(); it.hasNext(); )
+            {
+                currentColumnContent = new StringBuffer();
+                Integer currentIndex=(Integer) it.next();
+                currentColumn = (HtmlSimpleColumn) children.get(currentIndex.intValue());
+                List currentColumnChildren = currentColumn.getChildren();
+                for (int j = 0, size = currentColumnChildren.size(); j < size; j++)
+                {
+                    UIComponent currentColumnChild = (UIComponent) currentColumnChildren.get(j);
+                    if (currentColumnChild.isRendered() && currentColumnChild instanceof ValueHolder)
+                    {
+                        Object value = ((ValueHolder) currentColumnChild).getValue();
+                        if (value != null) {
+                            Converter converter =
+                                HtmlRendererUtils.findUIOutputConverterFailSafe(facesContext, currentColumnChild);
+                            currentColumnContent.append(
+                                RendererUtils.getConvertedStringValue(facesContext, currentColumnChild,
+                                                                      converter, value)); // TODO converter
+                        }
+                    }
+                }
+                if (currentColumnContent.toString().compareTo(
+                    (groupHashTable.get(currentIndex)).toString())!=0 &&
+                    currentRowInfoIndex > -1)
+                {
+                    groupEndReached = true;
+                    groupHashTable.put(currentIndex,currentColumnContent);
+                }
+                else if(currentRowInfoIndex == -1)
+                {
+                    groupHashTable.put(currentIndex,currentColumnContent);
+                }
+            }
+            currentRowSpan++;
+
+
+            for (int j = 0, size = nChildren; j < size; j++)
+            {
+                columnInfo = new ColumnInfo();
+                if(groupHashTable.containsKey(new Integer(j)))  // Column is groupBy
+                {
+                    if(currentRowSpan > 0)
+                    {
+                        if(groupEndReached)
+                        {
+                            ((ColumnInfo)
+                                ((RowInfo)
+                                    tableContext.getRowInfos().get(currentRowInfoIndex-currentRowSpan+1)).
+                                    getColumnInfos().get(j)).
+                                setRowSpan(currentRowSpan);
+                            columnInfo.setStyle(htmlDataTable.getRowGroupStyle());
+                            columnInfo.setStyleClass(htmlDataTable.getRowGroupStyleClass());
+                        }
+                        else
+                        {
+                            columnInfo.setRendered(false);
+                        }
+                    }
+                    else
+                    {
+                        columnInfo.setStyle(htmlDataTable.getRowGroupStyle());
+                        columnInfo.setStyleClass(htmlDataTable.getRowGroupStyleClass());
+                    }
+
+                }
+                else    // Column  is not group by
+                {
+                    if(groupEndReached)
+                    {
+                        ((ColumnInfo)
+                            ((RowInfo)
+                                tableContext.getRowInfos().get(currentRowInfoIndex)).
+                                getColumnInfos().get(j)).
+                            setStyle(htmlDataTable.getRowGroupStyle());
+                        ((ColumnInfo)
+                            ((RowInfo)
+                                tableContext.getRowInfos().get(currentRowInfoIndex)).
+                                getColumnInfos().get(j)).
+                            setStyleClass(htmlDataTable.getRowGroupStyleClass());
+                    }
+                }
+                rowInfo.getColumnInfos().add(columnInfo);
+            }
+            if(groupEndReached)
+            {
+                currentRowSpan=0;
+                groupEndReached = false;
+            }
+            tableContext.getRowInfos().add(rowInfo);
+            currentRowInfoIndex++;
+        }
+        for (int j = 0, size = nChildren; j < size; j++)
+        {
+            if(groupHashTable.containsKey(new Integer(j)))  // Column is groupBy
+            {
+                ((ColumnInfo)
+                    ((RowInfo)
+                        tableContext.getRowInfos().get(currentRowInfoIndex-currentRowSpan)).
+                        getColumnInfos().get(j)).
+                    setRowSpan(currentRowSpan+1);
+            }
+            else    // Column  is not group by
+            {
+                ((ColumnInfo)
+                    ((RowInfo)
+                        tableContext.getRowInfos().get(currentRowInfoIndex)).
+                        getColumnInfos().get(j)).
+                    setStyle(htmlDataTable.getRowGroupStyle());
+                ((ColumnInfo)
+                    ((RowInfo)
+                        tableContext.getRowInfos().get(currentRowInfoIndex)).
+                        getColumnInfos().get(j)).
+                    setStyleClass(htmlDataTable.getRowGroupStyleClass());
+            }
+        }
+
+        htmlDataTable.setRowIndex(-1);
+    }
 
 
     /**
@@ -339,7 +346,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     protected void renderRowStart(FacesContext facesContext,
                                   ResponseWriter writer, UIData uiData, Iterator rowStyleClassIterator)
-                    throws IOException
+        throws IOException
     {
         super.renderRowStart(facesContext, writer, uiData, rowStyleClassIterator);
 
@@ -363,36 +370,36 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      */
     protected void renderRowStyle(FacesContext facesContext, ResponseWriter writer, UIData uiData, Iterator rowStyleIterator) throws IOException
     {
-      String rowStyleClass;
-      String rowStyle;
-      if (uiData instanceof HtmlDataTable)
-      {
-        HtmlDataTable datatable = (HtmlDataTable) uiData;
-        rowStyleClass = datatable.getRowStyleClass();
-        rowStyle = datatable.getRowStyle();
-      }
-      else
-      {
-        rowStyleClass = (String) uiData.getAttributes().get(JSFAttr.ROW_STYLECLASS_ATTR);
-        rowStyle = (String) uiData.getAttributes().get(JSFAttr.ROW_STYLE_ATTR);
-      }
-      if(rowStyleClass == null)
-      {
-        super.renderRowStyle(facesContext, writer, uiData, rowStyleIterator);
-      }
-      else
-      {
-        if(rowStyleIterator.hasNext())
+        String rowStyleClass;
+        String rowStyle;
+        if (uiData instanceof HtmlDataTable)
         {
-          // skip next row style
-          rowStyleIterator.next();
+            HtmlDataTable datatable = (HtmlDataTable) uiData;
+            rowStyleClass = datatable.getRowStyleClass();
+            rowStyle = datatable.getRowStyle();
         }
-        writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass, null);
-      }
-      if(rowStyle != null)
-      {
-        writer.writeAttribute(HTML.STYLE_ATTR, rowStyle, null);
-      }
+        else
+        {
+            rowStyleClass = (String) uiData.getAttributes().get(JSFAttr.ROW_STYLECLASS_ATTR);
+            rowStyle = (String) uiData.getAttributes().get(JSFAttr.ROW_STYLE_ATTR);
+        }
+        if(rowStyleClass == null)
+        {
+            super.renderRowStyle(facesContext, writer, uiData, rowStyleIterator);
+        }
+        else
+        {
+            if(rowStyleIterator.hasNext())
+            {
+                // skip next row style
+                rowStyleIterator.next();
+            }
+            writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass, null);
+        }
+        if(rowStyle != null)
+        {
+            writer.writeAttribute(HTML.STYLE_ATTR, rowStyle, null);
+        }
     }
 
     protected void renderRowAttribute(ResponseWriter writer,
@@ -435,10 +442,10 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     protected void encodeColumnChild(FacesContext facesContext,
                                      ResponseWriter writer, UIData uiData,
                                      UIComponent component, Iterator columnStyleIterator)
-                    throws IOException
+        throws IOException
     {
         super.encodeColumnChild(facesContext, writer, uiData, component,
-                columnStyleIterator);
+                                columnStyleIterator);
         if (component instanceof UIColumns)
         {
             UIColumns columns = (UIColumns) component;
@@ -446,7 +453,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             {
                 columns.setRowIndex(k);
                 renderColumnBody(facesContext, writer, uiData, component,
-                        columnStyleIterator);
+                                 columnStyleIterator);
             }
             columns.setRowIndex(-1);
         }
@@ -458,7 +465,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     protected void renderColumnBody(FacesContext facesContext,
                                     ResponseWriter writer, UIData uiData,
                                     UIComponent component, Iterator columnStyleIterator)
-                    throws IOException
+        throws IOException
     {
         if (isGroupedTable(uiData)){
 
@@ -483,15 +490,15 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
             if(columnStyleIterator.hasNext())
             {
-              if (styleClass == null)
-              {
-                  styleClass = (String) columnStyleIterator.next();
-              }
-              else
-              {
-                // skip the column style class
-                columnStyleIterator.next();
-              }
+                if (styleClass == null)
+                {
+                    styleClass = (String) columnStyleIterator.next();
+                }
+                else
+                {
+                    // skip the column style class
+                    columnStyleIterator.next();
+                }
             }
             if (styleClass != null)
             {
@@ -523,15 +530,15 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             String styleClass = ((HtmlColumn) component).getStyleClass();
             if(columnStyleIterator.hasNext())
             {
-              if (styleClass == null)
-              {
-                  styleClass = (String) columnStyleIterator.next();
-              }
-              else
-              {
-                // skip the column style class
-                columnStyleIterator.next();
-              }
+                if (styleClass == null)
+                {
+                    styleClass = (String) columnStyleIterator.next();
+                }
+                else
+                {
+                    // skip the column style class
+                    columnStyleIterator.next();
+                }
             }
             if (styleClass != null)
             {
@@ -545,7 +552,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         else
         {
             super.renderColumnBody(facesContext, writer, uiData, component,
-                    columnStyleIterator);
+                                   columnStyleIterator);
         }
     }
 
@@ -571,12 +578,12 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnChildHeaderOrFooterRow(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, java.lang.String, boolean)
      */
     protected void renderColumnChildHeaderOrFooterRow(
-                    FacesContext facesContext, ResponseWriter writer,
-                    UIComponent uiComponent, String styleClass, boolean header)
-                    throws IOException
+        FacesContext facesContext, ResponseWriter writer,
+        UIComponent uiComponent, String styleClass, boolean header)
+        throws IOException
     {
         super.renderColumnChildHeaderOrFooterRow(facesContext, writer,
-                        uiComponent, styleClass, header);
+                                                 uiComponent, styleClass, header);
         if (uiComponent instanceof UIColumns)
         {
             UIColumns columns = (UIColumns) uiComponent;
@@ -586,12 +593,12 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                 if (header)
                 {
                     renderColumnHeaderCell(facesContext, writer, columns,
-                                    columns.getHeader(), styleClass, 0);
+                                           columns.getHeader(), styleClass, 0);
                 }
                 else
                 {
                     renderColumnFooterCell(facesContext, writer, columns,
-                                    columns.getFooter(), styleClass, 0);
+                                           columns.getFooter(), styleClass, 0);
                 }
             }
             columns.setRowIndex(-1);
@@ -604,7 +611,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     protected void renderColumnHeaderCell(FacesContext facesContext,
                                           ResponseWriter writer, UIComponent uiComponent,
                                           UIComponent facet, String headerStyleClass, int colspan)
-                    throws IOException
+        throws IOException
     {
         if (uiComponent instanceof HtmlColumn)
         {
@@ -612,10 +619,10 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             if (colspan > 1)
             {
                 writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(colspan),
-                                null);
+                                      null);
             }
             String styleClass = ((HtmlColumn) uiComponent)
-                            .getHeaderstyleClass();
+                .getHeaderstyleClass();
             if (styleClass == null)
             {
                 styleClass = headerStyleClass;
@@ -634,7 +641,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         else
         {
             super.renderColumnHeaderCell(facesContext, writer, uiComponent,
-                            facet, headerStyleClass, colspan);
+                                         facet, headerStyleClass, colspan);
         }
     }
 
@@ -644,7 +651,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     protected void renderColumnFooterCell(FacesContext facesContext,
                                           ResponseWriter writer, UIComponent uiComponent,
                                           UIComponent facet, String footerStyleClass, int colspan)
-                    throws IOException
+        throws IOException
     {
         if (uiComponent instanceof HtmlColumn)
         {
@@ -652,10 +659,10 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             if (colspan > 1)
             {
                 writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(colspan),
-                                null);
+                                      null);
             }
             String styleClass = ((HtmlColumn) uiComponent)
-                            .getFooterstyleClass();
+                .getFooterstyleClass();
             if (styleClass == null)
             {
                 styleClass = footerStyleClass;
@@ -674,7 +681,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         else
         {
             super.renderColumnFooterCell(facesContext, writer, uiComponent,
-                            facet, footerStyleClass, colspan);
+                                         facet, footerStyleClass, colspan);
         }
     }
 
@@ -687,14 +694,14 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             String attributeName = attrs[i];
             String compAttrName = prefix != null ? prefix + attributeName : attributeName;
             HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
-                            compAttrName, attributeName);
+                                                  compAttrName, attributeName);
         }
         String compAttrName = prefix != null ? prefix + HTML.STYLE_ATTR : HTML.STYLE_ATTR;
         HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
-                        compAttrName, HTML.STYLE_ATTR);
+                                              compAttrName, HTML.STYLE_ATTR);
 
         HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
-                HTML.WIDTH_ATTR, HTML.WIDTH_ATTR);
+                                              HTML.WIDTH_ATTR, HTML.WIDTH_ATTR);
     }
 
     /**
@@ -771,11 +778,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             if(uiComponent.isRendered() && determineChildColSpan(uiComponent) > 0)
             {
                 UIComponent facet = header ? (UIComponent) uiComponent.getFacets().get(HEADER_FACET_NAME)
-                        : (UIComponent) uiComponent.getFacets().get(FOOTER_FACET_NAME);
+                    : (UIComponent) uiComponent.getFacets().get(FOOTER_FACET_NAME);
 
                 if (facet != null && facet.isRendered())
                 {
-                       return true;
+                    return true;
                 }
             }
         }
