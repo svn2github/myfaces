@@ -20,8 +20,9 @@
         </section>
         <!-- screen shot -->
         <section name="Screen Shot">
-            
+            <p>Month mode</p>
             <div><img src="images/schedule1.png" alt="schedule month mode"/></div>
+            <p>Workweek mode</p>
             <div><img src="images/schedule2.png" alt="schedule workweek mode"/></div>
         </section>
         <!-- API -->
