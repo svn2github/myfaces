@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.sortheader;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -78,7 +79,7 @@ public class HtmlSortHeaderRenderer
                     ResponseWriter writer = facesContext.getResponseWriter();
                     writer.write((dataTable.isSortAscending()) ? "&#x2191;" : "&#x2193;");
                 }
-            }
+            }            
         }
         super.encodeEnd(facesContext, component);
     }

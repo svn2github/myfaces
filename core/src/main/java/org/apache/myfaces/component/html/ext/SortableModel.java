@@ -16,6 +16,8 @@
 
 package org.apache.myfaces.component.html.ext;
 
+import java.io.StringReader;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,23 +25,33 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.faces.context.FacesContext;
-import javax.faces.el.PropertyResolver;
+import javax.faces.el.ReferenceSyntaxException;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.ResultDataModel;
 import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
+import javax.servlet.jsp.el.ELException;
+import javax.servlet.jsp.el.FunctionMapper;
+import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.jstl.sql.Result;
+import org.apache.commons.el.Expression;
+import org.apache.commons.el.ExpressionString;
+import org.apache.commons.el.Logger;
+import org.apache.commons.el.parser.ELParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
  *
  */
-public final class SortableModel extends DataModel
+public final class SortableModel extends DataModel implements VariableResolver
 {    
     private static final Log log = LogFactory.getLog(SortableModel.class);
+    public static final Logger LOGGER = new Logger(System.out);
+    
+    private static final String ROW_OBJECT_NAME = "rowObjectGet";
     
     private SortCriterion _sortCriterion = null;
     
@@ -50,6 +62,16 @@ public final class SortableModel extends DataModel
                     _baseIndicesList = null;    // from sortedIndex to baseIndex
     
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+    
+    protected static FunctionMapper s_functionMapper = new FunctionMapper()
+    {
+        public Method resolveFunction(String prefix, String localName)
+        {
+            throw new ReferenceSyntaxException(
+                "Functions not supported in expressions. Function: "
+                + prefix + ":" + localName);
+        }
+    };
     
     /**
      * Create a new SortableModel from the given instance.
@@ -87,7 +109,8 @@ public final class SortableModel extends DataModel
      * @param data This Object will be converted into a
      * {@link DataModel}.
      */
-    public void setWrappedData(Object data) {
+    public void setWrappedData(Object data) 
+    {
         _baseIndicesList = null;
         _model = toDataModel(data);
         _sortCriterion = null;
@@ -163,12 +186,9 @@ public final class SortableModel extends DataModel
             if (!_model.isRowAvailable())
                 return false; // if there is no data in the table then nothing is sortable
             
-            Object data = _model.getRowData();
             try 
-            {
-                FacesContext context = FacesContext.getCurrentInstance();
-                PropertyResolver resolver = context.getApplication().getPropertyResolver();
-                Object propertyValue = resolver.getValue(data, property);
+            {   
+                Object propertyValue = getPropertyValue(property);
                 
                 // when the value is null, we don't know if we can sort it.
                 // by default let's support sorting of null values, and let the user
@@ -248,9 +268,9 @@ public final class SortableModel extends DataModel
         _model.setRowIndex(0);
         // Make sure the model has that row 0! (It could be empty.)
         if (_model.isRowAvailable()) 
-        {
-            FacesContext context = FacesContext.getCurrentInstance();
-            Comparator comp = new Comp(context. getApplication().getPropertyResolver(), property);
+        {            
+            Comparator comp = new Comp(property);                       
+            
             if (!isAscending)
                 comp = new Inverter(comp);
             
@@ -292,7 +312,40 @@ public final class SortableModel extends DataModel
         }
         return index;
     }       
+    
+    protected Object getPropertyValue(String property)
+    {
+        String expressionString = "${"+ROW_OBJECT_NAME+"."+property+"}";
         
+        ELParser parser = new ELParser(new StringReader(expressionString));
+        try
+        {
+            Object expression = parser.ExpressionString();
+            if (!(expression instanceof Expression) && !(expression instanceof ExpressionString))
+                return null;
+
+            Object value = expression instanceof Expression
+                                ? ((Expression) expression).evaluate(this, s_functionMapper, LOGGER)
+                                : ((ExpressionString) expression).evaluate(this, s_functionMapper, LOGGER);
+            return value;
+        }
+        catch (Exception exc)
+        {            
+            log.error("Evaluate:", exc);
+        }
+        
+        return null;
+    }
+    
+    public Object resolveVariable(String pName) throws ELException
+    {
+        if (ROW_OBJECT_NAME.equals(pName))
+            return _model.getRowData();
+
+        FacesContext context = FacesContext.getCurrentInstance();        
+        return context.getApplication().getVariableResolver().resolveVariable(context, pName);
+    }       
+    
     private static final class IntList extends ArrayList implements Cloneable 
     {
         public IntList(int size) 
@@ -310,12 +363,10 @@ public final class SortableModel extends DataModel
     
     private final class Comp implements Comparator 
     {
-        private final PropertyResolver _resolver;
         private final String _prop;
         
-        public Comp(PropertyResolver resolver, String property) 
-        {
-            _resolver = resolver;
+        public Comp(String property) 
+        {            
             _prop = property;
         }
         
@@ -325,12 +376,10 @@ public final class SortableModel extends DataModel
             int index2 = ((Integer) o2).intValue();
             
             _model.setRowIndex(index1);
-            Object instance1 = _model.getRowData();
-            Object value1 = _resolver.getValue(instance1, _prop);
+            Object value1 = getPropertyValue(_prop);
             
             _model.setRowIndex(index2);
-            Object instance2 = _model.getRowData();
-            Object value2 = _resolver.getValue(instance2, _prop);
+            Object value2 = getPropertyValue(_prop);
             
             if (value1 == null)
                 return (value2 == null) ? 0 : -1;
@@ -414,5 +463,5 @@ public final class SortableModel extends DataModel
             throw new UnsupportedOperationException(this.getClass().getName()
                             + " UnsupportedOperationException");
         }
-    };
+    };               
 }

@@ -16,6 +16,18 @@
 
 package org.apache.myfaces.renderkit.html.ext;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Hashtable;
+import java.util.Enumeration;
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
@@ -409,7 +421,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         {
             writer.writeAttribute(htmlAttribute, value, null);
         }
-    }
+    }       
 
     /**
      * Render the specified column object using the current row data.
@@ -456,7 +468,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                                  columnStyleIterator);
             }
             columns.setRowIndex(-1);
-        }
+        }               
     }
 
     /**
@@ -788,5 +800,43 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
 
         return false;
+    }
+    
+    protected void beforeColumn(FacesContext facesContext, UIData uiData, int columnIndex) throws IOException
+    {        
+        super.beforeColumn(facesContext, uiData, columnIndex);
+        
+        if (uiData instanceof HtmlDataTable)
+        {
+            HtmlDataTable dataTable = (HtmlDataTable)uiData;
+            
+            putSortedReqScopeParam(facesContext, dataTable, columnIndex);
+        }
+    }
+    
+    protected void beforeColumnHeaderOrFooter(FacesContext facesContext, UIData uiData, boolean header, int columnIndex) throws IOException
+    {        
+        super.beforeColumnHeaderOrFooter(facesContext, uiData, header, columnIndex);
+        
+        if (header && uiData instanceof HtmlDataTable)
+        {
+            HtmlDataTable dataTable = (HtmlDataTable)uiData;
+            
+            putSortedReqScopeParam(facesContext, dataTable, columnIndex);
+        }
+    }
+    
+    protected void putSortedReqScopeParam(FacesContext facesContext, HtmlDataTable dataTable, int columnIndex)
+    {
+        String sortedColumnVar = dataTable.getSortedColumnVar();
+        Map requestMap = facesContext.getExternalContext().getRequestMap();
+
+        if (columnIndex == dataTable.getSortColumnIndex())
+        {                
+            if (sortedColumnVar != null)
+                requestMap.put(sortedColumnVar, Boolean.TRUE);
+        }
+        else if (sortedColumnVar != null)
+            requestMap.remove(sortedColumnVar);
     }
 }

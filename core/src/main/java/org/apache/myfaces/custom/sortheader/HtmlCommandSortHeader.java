@@ -79,7 +79,7 @@ public class HtmlCommandSortHeader
                 }
             }
         }
-    }
+    }       
 
     public HtmlDataTable findParentDataTable()
     {

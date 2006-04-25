@@ -131,12 +131,12 @@
             </description>
         </attribute>
         <attribute>
-            <name>currentColumnVar</name>
+            <name>sortedColumnVar</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
                 A parameter name, under which the a boolean is set in request scope
-                similar to the var parameter. TRUE for the column that is currently sorted.
+                similar to the var parameter. TRUE for the column that is currently sorted, FALSE otherwise.
             </description>
         </attribute>
         <attribute>

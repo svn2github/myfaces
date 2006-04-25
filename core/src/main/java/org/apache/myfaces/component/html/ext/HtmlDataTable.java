@@ -77,7 +77,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private String _rowGroupStyle = null;
     private String _rowGroupStyleClass = null;
     private String _varDetailToggler = null;
-
+    
+    private int _sortColumnIndex = -1;
+    
     private boolean _isValidChildren = true;
 
     private Set _expandedNodes = new HashSet();
@@ -255,7 +257,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             Map requestMap = getFacesContext().getExternalContext().getRequestMap();
             requestMap.put(_varDetailToggler, this);
         }
-    }
+    }       
 
     public void processDecodes(FacesContext context)
     {
@@ -515,7 +517,10 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
      *
      */
     protected String getSortPropertyFromEL(UIComponent component)
-    {
+    {        
+        if (getVar() == null)
+            return null;
+        
         for (Iterator iter = component.getChildren().iterator(); iter.hasNext();)
         {
             UIComponent aChild = (UIComponent) iter.next();
@@ -528,8 +533,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                 {
                     String expressionString = vb.getExpressionString();
                     
-                    String temp = expressionString.substring(expressionString.indexOf(".") + 1);        
-                    return temp.substring(0, temp.indexOf("}"));                    
+                    int varIndex = expressionString.indexOf(getVar()+".");
+                    if (varIndex != -1)
+                    {
+                        int varEndIndex = varIndex + getVar().length();
+                        String tempProp = expressionString.substring(varEndIndex + 1, expressionString.length()); 
+                        
+                        StringTokenizer tokenizer = new StringTokenizer(tempProp, " +[]{}-/*|?:&<>!=()%");
+                        if (tokenizer.hasMoreTokens())
+                            return tokenizer.nextToken();
+                    }
                 }
             }
             else getSortPropertyFromEL(aChild);
@@ -537,7 +550,32 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         
         return null;
     }
-
+    /**
+     * @return the index coresponding to the given column name.
+     */
+    protected int columnNameToIndex(String columnName)
+    {        
+        int index = 0;
+        for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+        {
+            UIComponent aChild = (UIComponent)iter.next();              
+            if (aChild instanceof UIColumn)
+            {
+                UIComponent headerFacet = ((UIColumn)aChild).getHeader();
+                if (headerFacet != null && headerFacet instanceof HtmlCommandSortHeader)
+                {
+                    HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader)headerFacet;                    
+                    if (columnName != null && columnName.equals(sortHeader.getColumnName()))
+                        return index;
+                }                 
+            }
+            
+            index += 1;
+        }
+        
+        return -1;
+    }
+    
     /**
      * @see javax.faces.component.UIData#encodeEnd(javax.faces.context.FacesContext)
      */
@@ -605,7 +643,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         boolean preserveSort = isPreserveSort();
         boolean sortable     = isSortable();
         
-        Object values[] = new Object[30];
+        Object values[] = new Object[32];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -647,6 +685,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         values[27] = _expandedNodes;
         values[28] = _rowGroupStyle;
         values[29] = _rowGroupStyleClass;
+        values[30] = _sortedColumnVar;
+        values[31] = new Integer(_sortColumnIndex);        
 
         return values;
     }
@@ -750,6 +790,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         _expandedNodes = (Set)values[27];
         _rowGroupStyle = (String)values[28];
         _rowGroupStyleClass = (String)values[29];
+        _sortedColumnVar = (String)values[30];
+        _sortColumnIndex = values[31] != null ? ((Integer)values[31]).intValue() : -1;
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -847,7 +889,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
      * but it works.
      */
     public void setSortColumn(String sortColumn)
-    {
+    {        
         _sortColumn = sortColumn;
         // update model is necessary here, because processUpdates is never called
         // reason: HtmlCommandSortHeader.isImmediate() == true
@@ -856,13 +898,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         {
             vb.setValue(getFacesContext(), _sortColumn);
             _sortColumn = null;
-        }
+        }       
+        
+        setSortColumnIndex(columnNameToIndex(sortColumn));
     }
 
     public String getSortColumn()
     {
-        if (_sortColumn != null)
-            return _sortColumn;
+        if (_sortColumn != null) return _sortColumn;        
         ValueBinding vb = getValueBinding("sortColumn");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
@@ -1158,6 +1201,19 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         return _expandedNodes.contains(rowIndex);
     }
 
+    public int getSortColumnIndex()
+    {
+        if (_sortColumnIndex == -1)
+            _sortColumnIndex = columnNameToIndex(getSortColumn());
+        
+        return _sortColumnIndex;
+    }
+    
+    public void setSortColumnIndex(int sortColumnIndex)
+    {        
+        _sortColumnIndex = sortColumnIndex;               
+    }       
+    
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataTable";
@@ -1174,7 +1230,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private Boolean _renderedIfEmpty = null;
     private String _rowIndexVar = null;
     private String _rowCountVar = null;
-    private String _currentColumnVar = null;
+    private String _sortedColumnVar = null;
     private String _previousRowDataVar = null;
 
     public void setPreserveDataModel(boolean preserveDataModel)
@@ -1282,18 +1338,17 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
             return _previousRowDataVar;
         ValueBinding vb = getValueBinding("previousRowDataVar");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
+    }      
     
-    public void setCurrentColumnVar(String currentColumnVar)
+    public void setSortedColumnVar(String sortedColumnVar)
     {
-        _currentColumnVar = currentColumnVar;
+        _sortedColumnVar = sortedColumnVar;
     }
 
-    public String getCurrentColumnVar()
+    public String getSortedColumnVar()
     {
-        if (_currentColumnVar != null)
-            return _currentColumnVar;
-        ValueBinding vb = getValueBinding("currentColumnVar");
+        if (_sortedColumnVar != null) return _sortedColumnVar;
+        ValueBinding vb = getValueBinding("sortedColumnVar");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 

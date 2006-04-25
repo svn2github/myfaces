@@ -54,6 +54,7 @@ public class HtmlDataTableTag
     private String _rowIndexVar;
     private String _rowCountVar;
     private String _previousRowDataVar;
+    private String _sortedColumnVar;
     private String _rowOnClick;
     private String _rowOnDblClick;
     private String _rowOnMouseDown;
@@ -89,6 +90,7 @@ public class HtmlDataTableTag
         _rowIndexVar=null;
         _rowCountVar=null;
         _previousRowDataVar=null;
+        _sortedColumnVar=null;
         _rowOnClick=null;
         _rowOnDblClick=null;
         _rowOnMouseDown=null;
@@ -125,6 +127,7 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowIndexVar", _rowIndexVar);
         setStringProperty(component, "rowCountVar", _rowCountVar);
         setStringProperty(component, "previousRowDataVar", _previousRowDataVar);
+        setStringProperty(component, "sortedColumnVar", _sortedColumnVar);
         setStringProperty(component, "rowOnClick", _rowOnClick);
         setStringProperty(component, "rowOnDblClick", _rowOnDblClick);
         setStringProperty(component, "rowOnMouseDown", _rowOnMouseDown);
@@ -207,6 +210,11 @@ public class HtmlDataTableTag
     public void setPreviousRowDataVar(String previousRowDataVar)
     {
         _previousRowDataVar = previousRowDataVar;
+    }
+    
+    public void setSortedColumnVar(String sortedColumnVar)
+    {
+        _sortedColumnVar = sortedColumnVar;
     }
 
     public void setRowOnMouseOver(String rowOnMouseOver)
