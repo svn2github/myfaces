@@ -125,6 +125,19 @@
   </component>
 
   <component>
+	<component-type>org.apache.myfaces.StartConversation</component-type>
+	<component-class>org.apache.myfaces.custom.conversation.UIStartConversation</component-class>
+  </component>
+  <component>
+	<component-type>org.apache.myfaces.EndConversation</component-type>
+	<component-class>org.apache.myfaces.custom.conversation.UIEndConversation</component-class>
+  </component>
+  <component>
+	<component-type>org.apache.myfaces.Conversation</component-type>
+	<component-class>org.apache.myfaces.custom.conversation.UIConversation</component-class>
+  </component>
+  
+  <component>
 	<component-type>org.apache.myfaces.HtmlSelectManyPicklist</component-type>
 	<component-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist</component-class>
   </component>
@@ -375,6 +388,7 @@
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.scope.AfterScopePhaseListener</phase-listener>
+  	  <phase-listener>org.apache.myfaces.custom.conversation.ConversationPhaseListener</phase-listener>
   </lifecycle>
   
   <!--custom validators -->

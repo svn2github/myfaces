@@ -95,6 +95,11 @@
                 <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
             </h:panelGrid>
 
+            <h:outputText value="Conversation"/>
+            <h:panelGrid style="padding-left:25px">
+           		<h:outputLink value="pageConversation.jsf" ><f:verbatim>Single page conversation</f:verbatim></h:outputLink>
+            </h:panelGrid>
+            
         </h:panelGrid>
     </f:view>
    

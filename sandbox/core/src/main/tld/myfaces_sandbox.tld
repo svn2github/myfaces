@@ -128,6 +128,8 @@ Sandbox-related entities.
 <!ENTITY suggest_ajax_attributes       SYSTEM "entities/suggest_ajax_attributes.xml">
 <!ENTITY html_fisheye_list_attributes	SYSTEM "entities/html_fisheyelist_attributes.xml">
 <!ENTITY html_timed_notifier_attributes	SYSTEM "entities/html_timed_notifier_attributes.xml">
+<!ENTITY standard_conversation_attributes	SYSTEM "entities/standard_conversation_attributes.xml">
+<!ENTITY conversation_attributes	SYSTEM "entities/conversation_attributes.xml">
 ]>
 
 <taglib>
@@ -1042,5 +1044,32 @@ Sandbox-related entities.
 
 		&ui_component_attributes;
 		&html_timed_notifier_attributes;
+	</tag>
+
+	<!-- conversation -->
+	<tag>
+		<name>startConversation</name>
+		<tag-class>org.apache.myfaces.custom.conversation.StartConversationTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Starts a new conversation</description>
+
+		&standard_conversation_attributes;
+	</tag>
+	<tag>
+		<name>endConversation</name>
+		<tag-class>org.apache.myfaces.custom.conversation.EndConversationTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Ends a conversation</description>
+
+		&standard_conversation_attributes;
+	</tag>
+	<tag>
+		<name>conversation</name>
+		<tag-class>org.apache.myfaces.custom.conversation.ConversationTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>puts a bean into the conversation context</description>
+
+		&standard_conversation_attributes;
+		&conversation_attributes;
 	</tag>
 </taglib>
