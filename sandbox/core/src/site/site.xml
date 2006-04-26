@@ -37,6 +37,7 @@ S
       <item name="Schedule" href="schedule.html"/>
       <item name="Focus" href="focus.html"/>  
       <item name="Form" href="form.html"/>  
+      <item name="SubForm" href="subForm.html"/> 	
       <item name="Picklist" href="selectManyPicklist.html"/>
       <item name="Dynamic Image" href="graphicImageDynamic.html"/>  
       <item name="FishEye Navigation Menu" href="fisheye.html"/> 
