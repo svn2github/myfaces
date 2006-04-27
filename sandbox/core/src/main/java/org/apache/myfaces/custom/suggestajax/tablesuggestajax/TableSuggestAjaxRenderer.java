@@ -15,18 +15,6 @@
  */
 package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.UIComponentPerspective;
@@ -40,6 +28,17 @@ import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Gerald Muellan
@@ -69,6 +68,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+        DojoUtils.addRequire(context, component, "extensions.FacesIO");
         DojoUtils.addRequire(context, component, "dojo.event.*");
         DojoUtils.addRequire(context, component, "dojo.string");
         DojoUtils.addRequire(context, component, "dojo.fx.html");
@@ -125,7 +125,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
 
-        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId + "&" + clientId+"=");
+        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId);
 
         ResponseWriter out = context.getResponseWriter();
 
@@ -183,24 +183,13 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             out.startElement(HTML.SCRIPT_ELEM, null);
             out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-            out.write(getAJAXHandlingCode(ajaxUrl, clientId, tableSuggestAjax).toString());
+            out.write(getEventHandlingCode(ajaxUrl, clientId, tableSuggestAjax).toString());
 
             out.endElement(HTML.SCRIPT_ELEM);
         }
-
-        //todo:client-side state saving as well
-      /*  if (context.getApplication().getStateManager().isSavingStateInClient(context))
-        {
-            out.writeText("', {\n" +
-                          "      method:       'post',\n" +
-                          "      asynchronous: true,\n" +
-                          "      parameters: '',\n"+
-                          "      callback: function(element,entry) {return entry+'&jsf_tree_64='+encodeURIComponent(document.getElementById('jsf_tree_64').value)+'&jsf_state_64='+encodeURIComponent(document.getElementById('jsf_state_64').value)+'&jsf_viewid='+encodeURIComponent(document.getElementById('jsf_viewid').value)}" +
-                          "    })",null);
-        }*/
     }
 
-    private StringBuffer getAJAXHandlingCode(String ajaxUrl, String clientId, TableSuggestAjax tableSuggestAjax)
+    private StringBuffer getEventHandlingCode(String ajaxUrl, String clientId, TableSuggestAjax tableSuggestAjax)
     {
         int betweenKeyUp = 0;
         int startRequest = 0;
@@ -225,7 +214,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                     + "   if( (evt.keyCode == 13) || (evt.keyCode == 9) )\n"  //enter,tab
                     + "      document.onclick();\n"
                     + "   else\n"
-                    + tableSuggestVar+".decideRequest(\""+ clientId +"\", "+ tableSuggestVar +", \""+ ajaxUrl +"\", "+ betweenKeyUp +","+ startRequest +", evt);\n"
+                    + tableSuggestVar+".decideRequest(\""+ clientId +"\", \""+ ajaxUrl +"\", "+ betweenKeyUp +","+ startRequest +", evt);\n"
                     +"  });\n");
 
         //if setting the focus outside the input field, popup should not be displayed

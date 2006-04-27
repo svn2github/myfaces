@@ -4,7 +4,9 @@
     <rtexprvalue>false</rtexprvalue>
     <type>java.lang.String</type>
     <description>If the time between two keyup events is lower than this given value,
-        the ajax request will not be fired. In milliseconds. Prevents stressing the server with too much user inputs
+        the ajax request will not be fired. In milliseconds. Prevents stressing the server with too much user inputs.
+        In driven tests the component seems to be more stable if this value is set. A recommended value in which case
+        the component works very well is about 300ms.  
     </description>
 </attribute>
 

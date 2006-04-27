@@ -20,7 +20,9 @@ org_apache_myfaces_TableSuggest = function()
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
     this.inputField = null;
+
     this.popUp = null;
+    this.popUpStyle = null;
 
     this.firstHighlightedElem = null;
     this.actualHighlightedElem = null;
@@ -120,6 +122,10 @@ org_apache_myfaces_TableSuggest = function()
 
     org_apache_myfaces_TableSuggest.prototype.handleRequestResponse = function(url, tableSuggest, keyCode)
     {
+        if(!this.popUpStyle)
+            this.popUpStyle = this.popUp.style.cssText;
+        else
+            this.popUp.style.cssText = this.popUpStyle;
 
         if(keyCode == 40)  //down key
         {
@@ -408,7 +414,10 @@ org_apache_myfaces_TableSuggest = function()
     org_apache_myfaces_TableSuggest.prototype.resetSettings = function()
     {
         if(this.popUp)
+        {
             dojo.dom.removeChildren(this.popUp);
+            this.popUp.style.cssText = "";
+        }
 
         if(this.iframe && this.popUp)
             this.popUp.parentNode.removeChild(this.popUp.parentNode.childNodes[0])
@@ -420,7 +429,7 @@ org_apache_myfaces_TableSuggest = function()
         this.scrollingRow = 0;
     };
 
-    org_apache_myfaces_TableSuggest.prototype.decideRequest = function(clientId, tableSuggest, ajaxUrl,
+    org_apache_myfaces_TableSuggest.prototype.decideRequest = function(clientId, ajaxUrl,
                                                                       millisBetweenKeyUps, startChars, event)
     {
         if( !this.requestLocker && (this.requestBetweenKeyUpEvents(millisBetweenKeyUps) || this.lastKeyUpEvent()) )
@@ -430,15 +439,15 @@ org_apache_myfaces_TableSuggest = function()
             this.inputField = dojo.byId(clientId);
             this.popUp = dojo.byId(clientId+"_auto_complete");
             var inputValue = this.inputField.value;
-            var url = ajaxUrl + inputValue;
+            var url = ajaxUrl + "&" + clientId + "=" + inputValue;
 
             if(startChars)
             {
                 if(inputValue.length >= startChars)
-                    this.handleRequestResponse(url, tableSuggest, event.keyCode);
+                    this.handleRequestResponse(url, this, event.keyCode);
             }
             else if(inputValue != "" )
-                this.handleRequestResponse(url, tableSuggest, event.keyCode);
+                this.handleRequestResponse(url, this, event.keyCode);
 
             if(inputValue == "" )
                 this.resetSettings();

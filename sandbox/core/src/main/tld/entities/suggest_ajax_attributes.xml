@@ -18,7 +18,9 @@
     <required>false</required>
     <rtexprvalue>false</rtexprvalue>
     <type>java.lang.String</type>
-    <description>optional attribute to identify the max size of suggested Values</description>
+    <description>optional attribute to identify the max size of suggested Values.
+                 If specified in tableSuggestAjax, paginator functionality is used.
+    </description>
 </attribute>
 
 <attribute>
