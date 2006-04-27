@@ -30,7 +30,8 @@ public class Conversation
 {
 	private final String name;
 	
-	private final Map beans = new TreeMap(new ValueBindingKey());
+	// private final Map beans = new TreeMap(new ValueBindingKey());
+	private final Map beans = new TreeMap();
 	
 	protected Conversation(String name)
 	{
@@ -43,7 +44,17 @@ public class Conversation
 	 */
 	public void putBean(FacesContext context, ValueBinding vb)
 	{
-		beans.put(vb, vb.getValue(context));
+		String name = ConversationUtils.extractBeanName(vb);
+		if (name.indexOf('.') > -1)
+		{
+			throw new IllegalArgumentException("you cant put a property under conversation control. name: " + name);
+		}
+		if (beans.containsKey(name))
+		{
+			// already there
+			return;
+		}
+		beans.put(name, vb.getValue(context));
 	}
 
 	/**
@@ -79,9 +90,19 @@ public class Conversation
 	 * Iterate all beans associated to this context
 	 * 
 	 * @return Iterator of {@link Map.Entry} elements
-	 */
 	public Iterator iterateBeanEntries()
 	{
 		return beans.entrySet().iterator();
+	}
+	 */
+
+	public boolean hasBean(String name)
+	{
+		return beans.containsKey(name);
+	}
+
+	public Object getBean(String name)
+	{
+		return beans.get(name);
 	}
 }

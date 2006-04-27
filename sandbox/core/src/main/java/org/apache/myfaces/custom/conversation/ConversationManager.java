@@ -214,7 +214,6 @@ public class ConversationManager
 	/**
 	 * Inject all beans of the current conversation
 	 * @see ConversationContext#injectConversationBeans(FacesContext) 
-	 */
 	protected void injectConversationBeans(FacesContext context)
 	{
 		ConversationContext conversationContext = getConversationContext();
@@ -225,6 +224,7 @@ public class ConversationManager
 		
 		conversationContext.injectConversationBeans(context);
 	}
+	 */
 
 	/**
 	 * check if we have a conversation context

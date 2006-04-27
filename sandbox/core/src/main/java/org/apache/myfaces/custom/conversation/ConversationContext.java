@@ -140,7 +140,6 @@ public class ConversationContext
 
 	/**
 	 * inject all beans from the conversation context to their configured scope 
-	 */
 	protected void injectConversationBeans(FacesContext context)
 	{
 		Set alreadyAdded = new TreeSet(new ValueBindingKey());
@@ -158,5 +157,20 @@ public class ConversationContext
 				}
 			}
 		}
+	}
+	 */
+
+	public Object findBean(String name)
+	{
+		for (int i = conversationStack.size(); i>0; i--)
+		{
+			Conversation conversation = (Conversation) conversationStack.get(i-1);
+			if (conversation.hasBean(name))
+			{
+				return conversation.getBean(name);
+			}
+		}
+		
+		return null;
 	}
 }

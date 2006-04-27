@@ -29,9 +29,11 @@
 </head>
 <body>
 <f:view>
-<h:form>
+
 <s:startConversation name="page" />
-<s:conversation name="page" value="#{convData.input}" />
+<s:conversation name="page" value="#{convData}" />
+
+<h:form>
 <h:panelGrid columns="2">
     <h:outputText value="Enter something into this field: " />
     <h:inputText value="#{convData.input}" />

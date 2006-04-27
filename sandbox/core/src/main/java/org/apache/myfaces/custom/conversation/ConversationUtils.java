@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.el.ValueBinding;
 
 public class ConversationUtils
 {
@@ -75,5 +76,11 @@ public class ConversationUtils
 		}
 		
 		return null;
+	}
+	
+	public static String extractBeanName(ValueBinding vb)
+	{
+		String valueBinding = vb.getExpressionString();
+		return valueBinding.substring(2, valueBinding.length()-1);
 	}
 }

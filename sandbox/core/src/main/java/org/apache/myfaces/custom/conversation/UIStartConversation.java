@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
+import javax.faces.el.VariableResolver;
 
 /**
  * start a conversation
@@ -73,8 +74,11 @@ public class UIStartConversation extends AbstractConversationComponent
 			return;
 		}
 		
-		ViewHandler original = context.getApplication().getViewHandler();
-		context.getApplication().setViewHandler(new ConversationViewHandler(original));
+		ViewHandler originalVH = context.getApplication().getViewHandler();
+		context.getApplication().setViewHandler(new ConversationViewHandler(originalVH));
+
+		VariableResolver originalVR = context.getApplication().getVariableResolver();
+		context.getApplication().setVariableResolver(new ConversationVariableResolver(originalVR));
 		
 		context.getExternalContext().getApplicationMap().put(CONVERSATION_SYSTEM_SETUP, Boolean.TRUE);
 	}

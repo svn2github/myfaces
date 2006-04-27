@@ -46,5 +46,11 @@ public class UIConversation extends AbstractConversationComponent
 
 		ValueBinding vb = getValueBinding("value");
 		conversation.putBean(context, vb);
+		
+		String name = ConversationUtils.extractBeanName(vb);
+		
+		// remove it from the other contexts
+		context.getExternalContext().getRequestMap().remove(name);
+		context.getExternalContext().getSessionMap().remove(name);
 	}
 }

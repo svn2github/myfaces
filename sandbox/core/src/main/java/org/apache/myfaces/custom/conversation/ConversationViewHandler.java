@@ -55,7 +55,7 @@ public class ConversationViewHandler extends ViewHandler
 
 	public UIViewRoot createView(FacesContext context, String viewId)
 	{
-		injectConversationBeans(context);
+		// injectConversationBeans(context);
 		
 		return original.createView(context, viewId);
 	}
@@ -109,7 +109,7 @@ public class ConversationViewHandler extends ViewHandler
 
 	public UIViewRoot restoreView(FacesContext context, String viewId)
 	{
-		injectConversationBeans(context);
+		// injectConversationBeans(context);
 		
 		return original.restoreView(context, viewId);
 	}
@@ -158,10 +158,10 @@ public class ConversationViewHandler extends ViewHandler
 	 * <ul>
 	 * <li>{@link #renderView(FacesContext, UIViewRoot)}</li>
 	 * </ul>
-	 */
 	protected void injectConversationBeans(FacesContext context)
 	{
 		ConversationManager conversationManager = ConversationManager.getInstance(context);
 		conversationManager.injectConversationBeans(context);
 	}
+	 */
 }
