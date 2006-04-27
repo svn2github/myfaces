@@ -18,24 +18,20 @@ package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.el.MethodBinding;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -67,7 +63,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
         DojoUtils.addRequire(context, component, "dojo.widget.ComboBox");
-        DojoUtils.addRequire(context, component, "dojo.widget.html.ComboBox");
+        DojoUtils.addRequire(context, component, "extensions.ComboBox");
         DojoUtils.addRequire(context, component, "dojo.widget.Wizard");
         DojoUtils.addRequire(context, component, "dojo.event.*");
 
@@ -110,7 +106,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
 
-        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId + "&" + clientId+"=");
+        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId + "&"+clientId+"=%{searchString}");
 
         ResponseWriter out = context.getResponseWriter();
 
@@ -121,7 +117,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         out.writeAttribute(HTML.NAME_ATTR, clientId, null);
         out.writeAttribute(HTML.SIZE_ATTR, "100px", null);
         out.writeAttribute("dojoType", "combobox", null);
-        out.writeAttribute("dataUrl", ajaxUrl+"%{searchString}", null);
+        out.writeAttribute("dataUrl", ajaxUrl, null);
         out.writeAttribute("mode", "remote", null);
         if (value != null)
         {
@@ -140,29 +136,15 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         out.write("dojo.event.connect(window, \"onload\", function(evt) {\n"
                     + "var comboWidget = dojo.widget.byId(\""+ clientId +"\");\n"
                     + "comboWidget.textInputNode.value = \""+ value +"\";\n"
-                    + "comboWidget.comboBoxValue.value = \""+ value +"\";\n"
-                 + "});\n");
+                    + "comboWidget.comboBoxValue.value = \""+ value +"\";\n");
+        out.write("});\n");
         out.endElement(HTML.SCRIPT_ELEM);
     }
-                                                
-        //todo:client-side state saving as well
-      /*  if (context.getApplication().getStateManager().isSavingStateInClient(context))
-        {
-            out.writeText("', {\n" +
-                          "      method:       'post',\n" +
-                          "      asynchronous: true,\n" +
-                          "      parameters: '',\n"+
-                          "      callback: function(element,entry) {return entry+'&jsf_tree_64='+encodeURIComponent(document.getElementById('jsf_tree_64').value)+'&jsf_state_64='+encodeURIComponent(document.getElementById('jsf_state_64').value)+'&jsf_viewid='+encodeURIComponent(document.getElementById('jsf_viewid').value)}" +
-                          "    })",null);
-        }*/
-
-
 
     public void encodeAjax(FacesContext context, UIComponent uiComponent)
                                                                     throws IOException
     {
         Collection suggesteds = getSuggestedItems(context, uiComponent);
-
 
         StringBuffer buf = new StringBuffer();
 
