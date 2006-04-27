@@ -50,11 +50,17 @@ public class AbstractConversationComponent extends UIComponentBase
 		};
 	}
 
+	/**
+	 * the conversation name
+	 */
 	public String getName()
 	{
 		return name;
 	}
 
+	/**
+	 * the conversation name
+	 */
 	public void setName(String name)
 	{
 		this.name = name;

@@ -29,8 +29,9 @@
 </head>
 <body>
 <f:view>
+<h:form>
 <s:startConversation name="page" />
-<s:conversation name="page" value="#{convData}" />
+<s:conversation name="page" value="#{convData.input}" />
 <h:panelGrid columns="2">
     <h:outputText value="Enter something into this field: " />
     <h:inputText value="#{convData.input}" />
@@ -44,6 +45,7 @@
     <h:outputText value="Press 'check value' to simulate a server action witout ending the conversation" />
     <h:outputText value="Press 'save value' to simulate a server action AND END the conversation" />
 </h:panelGrid>
+</h:form>
 </f:view>
 </body>
 </html>

@@ -16,9 +16,15 @@
 package org.apache.myfaces.custom.conversation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
+
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * The ConversationContext handles all conversations within the current context 
@@ -34,7 +40,12 @@ public class ConversationContext
 	protected ConversationContext()
 	{
 	}
-	
+
+	/**
+	 * Start a conversation if not already started.<br />
+	 * All nested conversations (if any) are closed if the conversation already existed.  
+	 * @param name
+	 */
 	public void startConversation(String name)
 	{
 		Conversation conversation = (Conversation) conversations.get(name);
@@ -46,12 +57,15 @@ public class ConversationContext
 		}
 		else
 		{
-			endDependingConversations(conversation);
+			endNestedConversations(conversation);
 		}
 		currentConversation = conversation;
 	}
 
-	protected void endDependingConversations(Conversation conversation)
+	/**
+	 * Ends all conversations nested under conversation 
+	 */
+	protected void endNestedConversations(Conversation conversation)
 	{
 		while (conversationStack.size()>0)
 		{
@@ -66,11 +80,18 @@ public class ConversationContext
 		}
 	}
 
+	/**
+	 * End the given conversation
+	 */
 	protected void endConversation(Conversation conversation)
 	{
 		conversation.endConversation();
 	}
 
+	/**
+	 * End the conversation with given name.<br />
+	 * This also automatically closes all nested conversations.
+	 */
 	public void endConversation(String name)
 	{
 		Conversation conversation = (Conversation) conversations.remove(name);
@@ -92,18 +113,50 @@ public class ConversationContext
 		}
 	}
 	
+	/**
+	 * Get the current conversation. The current conversation is the one last seen by the startConversation tag.
+	 * @return
+	 */
 	public Conversation getCurrentConversation()
 	{
 		return currentConversation;
 	}
 
+	/**
+	 * see if there is a conversation
+	 */
 	public boolean hasConversation()
 	{
 		return conversations.size() > 0;
 	}
 
+	/**
+	 * get a conversation by name 
+	 */
 	public Conversation getConversation(String name)
 	{
 		return (Conversation) conversations.get(name);
+	}
+
+	/**
+	 * inject all beans from the conversation context to their configured scope 
+	 */
+	protected void injectConversationBeans(FacesContext context)
+	{
+		Set alreadyAdded = new TreeSet(new ValueBindingKey());
+		
+		for (int i = conversationStack.size(); i>0; i--)
+		{
+			Conversation conversation = (Conversation) conversationStack.get(i-1);
+			Iterator iterBeans = conversation.iterateBeanEntries();
+			while (iterBeans.hasNext())
+			{
+				Map.Entry bean = (Map.Entry) iterBeans.next();
+				if (!alreadyAdded.contains(bean.getKey()))
+				{
+					((ValueBinding) bean.getKey()).setValue(context, bean.getValue());
+				}
+			}
+		}
 	}
 }

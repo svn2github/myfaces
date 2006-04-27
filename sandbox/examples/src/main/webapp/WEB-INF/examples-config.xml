@@ -561,6 +561,12 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 
+    <!-- conversation -->
+	<managed-bean>
+		<managed-bean-name>convData</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.conversation.ConvData</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 
     <!-- navigation rules -->
     <navigation-rule>

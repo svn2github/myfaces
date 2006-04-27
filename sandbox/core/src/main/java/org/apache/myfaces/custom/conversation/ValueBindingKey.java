@@ -15,42 +15,22 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import javax.faces.component.UIComponent;
+import java.util.Comparator;
 
-import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
+import javax.faces.el.ValueBinding;
 
 /**
- * base class for all conversation tags
- * @author im
+ * Compre the expression string of two {@link ValueBinding}s
+ * 
+ * @author imario@apache.org
  */
-public abstract class AbstractConversationTag extends UIComponentTagBase
+public class ValueBindingKey implements Comparator
 {
-	private String name;
-	
-	public String getRendererType()
+	public int compare(Object o1, Object o2)
 	{
-		return null;
-	}
-
-    protected void setProperties(UIComponent component)
-    {
-        super.setProperties(component);
-        setStringProperty(component, "name", name);
-    }
-
-    /**
-     * the conversation name
-     */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * the conversation name
-	 */
-	public void setName(String alias)
-	{
-		this.name = alias;
+		ValueBinding vb1 = (ValueBinding) o1;
+		ValueBinding vb2 = (ValueBinding) o2;
+		
+		return vb1.getExpressionString().compareTo(vb2.getExpressionString());
 	}
 }

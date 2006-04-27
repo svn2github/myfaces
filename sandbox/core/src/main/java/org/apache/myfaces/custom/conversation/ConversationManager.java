@@ -31,7 +31,7 @@ import javax.faces.context.FacesContext;
 public class ConversationManager
 {
 	private final static String CONVERSATION_MANAGER_KEY = "org.apache.myfaces.ConversationManager";
-	private final static String CONVERSATION_CONTEXT_PARAM = "conversationContext";
+	public final static String CONVERSATION_CONTEXT_PARAM = "conversationContext";
 	private final static String CONVERSATION_CONTEXT_REQ = "org.apache.myfaces.ConversationManager.conversationContext";
 	
 	private static long NEXT_CONVERSATION_CONTEXT = 1;  
@@ -43,7 +43,10 @@ public class ConversationManager
 	protected ConversationManager()
 	{
 	}
-	
+
+	/**
+	 * Get the conversation manager
+	 */
 	public static ConversationManager getInstance()
 	{
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -54,6 +57,9 @@ public class ConversationManager
 		return getInstance(context);
 	}
 	
+	/**
+	 * Get the conversation manager
+	 */
 	public static ConversationManager getInstance(FacesContext context)
 	{
 		ConversationManager conversationManager = (ConversationManager) context.getExternalContext().getSessionMap().get(CONVERSATION_MANAGER_KEY);
@@ -66,6 +72,11 @@ public class ConversationManager
 		return conversationManager;
 	}
 
+	/**
+	 * Get the current, or create a new unique conversationContextId.<br />
+	 * The current conversationContextId will retrieved from the request parameters, if we cant find it there
+	 * a new one will be created. In either case the result will be stored within the request for faster lookup. 
+	 */
 	protected Long getConversationContextId()
 	{
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -93,11 +104,18 @@ public class ConversationManager
 		return conversationContextId;
 	}
 	
+	/**
+	 * Get the conversation context for the given id
+	 */
 	protected ConversationContext getConversationContext(Long conversationContextId)
 	{
 		return (ConversationContext) conversationContexts.get(conversationContextId);
 	}
 	
+	/**
+	 * Get the conversation context for the given id. <br />
+	 * If there is no conversation context a new one will be created
+	 */
 	protected ConversationContext getOrCreateConversationContext(Long conversationContextId)
 	{
 		ConversationContext conversationContext = (ConversationContext) conversationContexts.get(conversationContextId);
@@ -109,12 +127,19 @@ public class ConversationManager
 		
 		return conversationContext;
 	}
-	
+
+	/**
+	 * Destroy the given conversation context
+	 */
 	protected void destroyConversationContext(Long conversationContextId)
 	{
 		conversationContexts.remove(conversationContextId);
 	}
 	
+	/**
+	 * Start a conversation
+	 * @see ConversationContext#startConversation(String) 
+	 */
 	public void startConversation(String name)
 	{
 		Long conversationContextId = getConversationContextId();
@@ -122,6 +147,10 @@ public class ConversationManager
 		conversationContext.startConversation(name);
 	}
 	
+	/**
+	 * End a conversation
+	 * @see ConversationContext#endConversation(String) 
+	 */
 	public void endConversation(String name)
 	{
 		Long conversationContextId = getConversationContextId();
@@ -137,10 +166,14 @@ public class ConversationManager
 		}
 	}
 
+	/**
+	 * Get the conversation with the given name
+	 * 
+	 * @return null if no conversation context is active or if the conversation did not exist. 
+	 */
 	public Conversation getConversation(String name)
 	{
-		Long conversationContextId = getConversationContextId();
-		ConversationContext conversationContext = getConversationContext(conversationContextId);
+		ConversationContext conversationContext = getConversationContext();
 		if (conversationContext == null)
 		{
 			return null;
@@ -148,16 +181,59 @@ public class ConversationManager
 		return conversationContext.getConversation(name);
 	}
 
-	public void registerEndConversation(String conversationName)
+	/**
+	 * Get the current conversation context.
+	 * @return null if there is no context active
+	 */
+	protected ConversationContext getConversationContext()
+	{
+		Long conversationContextId = getConversationContextId();
+		ConversationContext conversationContext = getConversationContext(conversationContextId);
+		return conversationContext;
+	}
+
+	/**
+	 * Register the conversation to be ended after the cycle  
+	 */
+	protected void registerEndConversation(String conversationName)
 	{
 		synchronized (registeredEndConversations)
 		{
 			registeredEndConversations.add(conversationName);
 		}
 	}
-	
-	public List getRegisteredEndConversations()
+
+	/**
+	 * Get all registered conversations
+	 */
+	protected List getRegisteredEndConversations()
 	{
 		return registeredEndConversations;
+	}
+
+	/**
+	 * Inject all beans of the current conversation
+	 * @see ConversationContext#injectConversationBeans(FacesContext) 
+	 */
+	protected void injectConversationBeans(FacesContext context)
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext == null)
+		{
+			return;
+		}
+		
+		conversationContext.injectConversationBeans(context);
+	}
+
+	/**
+	 * check if we have a conversation context
+	 */
+	public boolean hasConversationContext()
+	{
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		return context.getExternalContext().getRequestMap().containsKey(CONVERSATION_CONTEXT_REQ) ||
+			context.getExternalContext().getRequestParameterMap().containsKey(CONVERSATION_CONTEXT_PARAM);
 	}
 }

@@ -25,7 +25,10 @@ public class ConversationUtils
 	private ConversationUtils()
 	{
 	}
-	
+
+	/**
+	 * Find the first parent which is a command
+	 */
 	public static UICommand findParentCommand(UIComponent base)
 	{
 		UIComponent parent = base;
@@ -42,6 +45,9 @@ public class ConversationUtils
 		return null;
 	}
 
+	/**
+	 * Find a child start or end conversation component for the given conversation name  
+	 */
 	public static AbstractConversationComponent findStartOrEndConversationComponent(UIComponent component, String conversationName)
 	{
 		Iterator iterComponents = component.getFacetsAndChildren();

@@ -383,12 +383,10 @@
 
   </render-kit>
 
-                                                    
   <lifecycle>
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.scope.AfterScopePhaseListener</phase-listener>
-  	  <phase-listener>org.apache.myfaces.custom.conversation.ConversationPhaseListener</phase-listener>
   </lifecycle>
   
   <!--custom validators -->

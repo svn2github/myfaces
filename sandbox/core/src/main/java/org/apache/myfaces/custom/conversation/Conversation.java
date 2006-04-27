@@ -19,6 +19,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+
 /**
  * handle conversation related stuff like beans
  * @author imario@apache.org 
@@ -27,23 +30,37 @@ public class Conversation
 {
 	private final String name;
 	
-	private final Map beans = new TreeMap();
+	private final Map beans = new TreeMap(new ValueBindingKey());
 	
 	protected Conversation(String name)
 	{
 		this.name = name;
 	}
-	
-	public void putBean(String name, Object bean)
+
+	/**
+	 * Add the given valueBinding to the context map. <br/>
+	 * This will also resolve the value of the binding. 
+	 */
+	public void putBean(FacesContext context, ValueBinding vb)
 	{
-		beans.put(name, bean);
+		beans.put(vb, vb.getValue(context));
 	}
 
+	/**
+	 * the conversation name
+	 */
 	public String getName()
 	{
 		return name;
 	}
 
+	/**
+	 * end this conversation <br />
+	 * <ul>
+	 * <li>inform all beans implementing the {@link ConversationListener} about the conversation end</li>
+	 * <li>free all beans</li>
+	 * </ul>
+	 */
 	public void endConversation()
 	{
 		Iterator iterBeans = beans.values().iterator();
@@ -56,5 +73,15 @@ public class Conversation
 			}
 		}
 		beans.clear();
+	}
+
+	/**
+	 * Iterate all beans associated to this context
+	 * 
+	 * @return Iterator of {@link Map.Entry} elements
+	 */
+	public Iterator iterateBeanEntries()
+	{
+		return beans.entrySet().iterator();
 	}
 }

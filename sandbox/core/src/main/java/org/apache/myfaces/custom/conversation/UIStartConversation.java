@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.conversation;
 
 import java.io.IOException;
 
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 
@@ -27,7 +28,8 @@ import javax.faces.context.FacesContext;
  */
 public class UIStartConversation extends AbstractConversationComponent
 {
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.StartConversation";
+    public final static String COMPONENT_TYPE = "org.apache.myfaces.StartConversation";
+    private final static String CONVERSATION_SYSTEM_SETUP = "org.apache.myfaces.ConversationSystemSetup"; 
 
     private boolean inited;
     
@@ -43,6 +45,8 @@ public class UIStartConversation extends AbstractConversationComponent
 	public void encodeBegin(FacesContext context) throws IOException
 	{
 		super.encodeBegin(context);
+		
+		setupConversationSystem(context);
 		
 		UICommand command = ConversationUtils.findParentCommand(this);
 		if (command != null)
@@ -62,6 +66,19 @@ public class UIStartConversation extends AbstractConversationComponent
 		}
 	}
 	
+	protected void setupConversationSystem(FacesContext context)
+	{
+		if (Boolean.TRUE.equals(context.getExternalContext().getApplicationMap().get(CONVERSATION_SYSTEM_SETUP)))
+		{
+			return;
+		}
+		
+		ViewHandler original = context.getApplication().getViewHandler();
+		context.getApplication().setViewHandler(new ConversationViewHandler(original));
+		
+		context.getExternalContext().getApplicationMap().put(CONVERSATION_SYSTEM_SETUP, Boolean.TRUE);
+	}
+
 	public void restoreState(FacesContext context, Object state)
 	{
 		Object[] states = (Object[]) state;

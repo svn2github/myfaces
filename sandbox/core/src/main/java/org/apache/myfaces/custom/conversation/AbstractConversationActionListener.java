@@ -33,12 +33,20 @@ public abstract class AbstractConversationActionListener implements ActionListen
 	public AbstractConversationActionListener()
 	{
 	}
-	
+
+	/**
+	 * @return the conversation name this listener is associated to
+	 */
 	public String getConversationName()
 	{
 		return conversationName;
 	}
 
+	/**
+	 * set the conversation name this listener should be associated to
+	 * 
+	 * @param conversationName
+	 */
 	public void setConversationName(String conversationName)
 	{
 		this.conversationName = conversationName;
@@ -51,5 +59,8 @@ public abstract class AbstractConversationActionListener implements ActionListen
 		doConversationAction(startOrEndconversation);
 	}
 	
+	/**
+	 * override this to do your conversation action
+	 */
 	public abstract void doConversationAction(AbstractConversationComponent abstractConversationComponent);
 }

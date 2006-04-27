@@ -45,6 +45,6 @@ public class UIConversation extends AbstractConversationComponent
 		}
 
 		ValueBinding vb = getValueBinding("value");
-		conversation.putBean(vb.getExpressionString(), vb.getValue(context));
+		conversation.putBean(context, vb);
 	}
 }
