@@ -63,4 +63,20 @@
                 sortable=true
             </description>
         </attribute>
+        <attribute>
+            <name>sortable</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                This attribute makes this column automaticaly sortable by a row object's property
+            </description>
+        </attribute>
+        <attribute>
+            <name>sortPropertyName</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                This attribute tells row object's property by which sorting will be performed on this column
+            </description>
+        </attribute>
 

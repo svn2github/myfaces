@@ -34,7 +34,8 @@
                     <h:outputLink value="masterDetail.jsf" ><f:verbatim>Master-Detail</f:verbatim></h:outputLink>
                     <h:outputLink value="dataScroller.jsf" ><f:verbatim>Data Scroller</f:verbatim></h:outputLink>
                     <h:outputLink value="sortTable.jsf" ><f:verbatim>Sortable</f:verbatim></h:outputLink>
-                    <h:outputLink value="sortAutoTable.jsf" ><f:verbatim>Automaticaly sortable</f:verbatim></h:outputLink>
+                    <h:outputLink value="sortAutoTable.jsf" ><f:verbatim>Automaticaly sortable by all columns</f:verbatim></h:outputLink>
+                    <h:outputLink value="sortAutoTable2.jsf" ><f:verbatim>Automaticaly sortable by choosen columns</f:verbatim></h:outputLink>
                     <h:outputLink value="pagedSortTable.jsf" ><f:verbatim>Paged and Sortable</f:verbatim></h:outputLink>
                     <h:outputLink value="openDataTable.jsf" ><f:verbatim>Paged and Sortable (dynamic number of columns; mouseover)</f:verbatim></h:outputLink>
                     <h:outputLink value="crossDataTable.jsf" ><f:verbatim>Dynamic number of columns, add a column</f:verbatim></h:outputLink>

@@ -446,48 +446,66 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
                 // into this object.
                 ((UIColumns) component).encodeTableBegin(context);
             }
-        }
-        
-        if (isSortable())
+        }                
+               
+        //replace facet header content component of the columns, with a new command sort header component
+        //if sortable=true, replace it for all, if not just for the columns marked as sortable
+        for (Iterator iter = getChildren().iterator(); iter.hasNext();)
         {
-            //replace facet header content component of the columns, with a new command sort header component
-            for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+            UIComponent component = (UIComponent) iter.next();
+            if (component instanceof UIColumn)
             {
-                UIComponent component = (UIComponent) iter.next();
-                if (component instanceof UIColumn)
+                UIColumn aColumn = (UIColumn)component;                                        
+                UIComponent headerFacet = aColumn.getHeader();                
+         
+                boolean replaceHeaderFacets = isSortable(); //if the table is sortable, all 
+                                                            //header facets can be changed if needed                        
+                String columnName = null;
+                String propertyName = null;
+                boolean defaultSorted = false;
+
+                if (aColumn instanceof HtmlSimpleColumn)
                 {
-                    UIColumn aColumn = (UIColumn)component;                                        
-                    UIComponent headerFacet = aColumn.getHeader();
+                    HtmlSimpleColumn asColumn = (HtmlSimpleColumn)aColumn;
+                    propertyName = asColumn.getSortPropertyName();
+                    defaultSorted = asColumn.isDefaultSorted();
                     
-                    String columnName = null;
+                    if (asColumn.isSortable())
+                        replaceHeaderFacets = true;
+                }
+                
+                //replace header facet with a sortable header component if needed
+                if (replaceHeaderFacets && isSortHeaderNeeded(aColumn, headerFacet))
+                {
+                    propertyName = propertyName != null ? propertyName : getSortPropertyFromEL(aColumn);
                     
-                    if (isSortHeaderNeeded(aColumn, headerFacet))
-                    {
-                        HtmlCommandSortHeader sortHeader = createSortHeaderComponent(aColumn, headerFacet, context);                        
-                        columnName = sortHeader.getColumnName();
-                        
-                        aColumn.setHeader(sortHeader);
-                    }
-                    else 
-                    {
-                        HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader)headerFacet;
-                        columnName = sortHeader.getColumnName();
-                    }
-                    //make the column marked as default sorted be the current sorted column
-                    if (aColumn instanceof HtmlSimpleColumn)
-                    {
-                        HtmlSimpleColumn tColumn = (HtmlSimpleColumn)aColumn;
-                        if (tColumn.isDefaultSorted() && getSortColumn() == null)
-                            setSortColumn(columnName);
-                    }
+                    HtmlCommandSortHeader sortHeader = createSortHeaderComponent(context, aColumn, headerFacet, propertyName);                        
+                    columnName = sortHeader.getColumnName();
+
+                    aColumn.setHeader(sortHeader);
+                    sortHeader.setParent(aColumn);                                                
+                }                                                                   
+                else if (headerFacet instanceof HtmlCommandSortHeader)
+                {                    
+                    HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader)headerFacet;
+                    columnName = sortHeader.getColumnName();
+                    propertyName = sortHeader.getPropertyName();
+                }
+                
+                //make the column marked as default sorted be the current sorted column
+                if (defaultSorted && getSortColumn() == null)
+                {
+                    setSortColumn(columnName);
+                    setSortProperty(propertyName);
                 }
             }
-        }
+        }        
 
         // Now invoke the superclass encodeBegin, which will eventually
         // execute the encodeBegin for the associated renderer.
         super.encodeBegin(context);
-    }
+    }           
+    
     /**
      *
      */
@@ -498,7 +516,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     /**
      *
      */
-    protected HtmlCommandSortHeader createSortHeaderComponent(UIColumn parentColumn, UIComponent initialHeaderFacet, FacesContext context)
+    protected HtmlCommandSortHeader createSortHeaderComponent(FacesContext context, UIColumn parentColumn, UIComponent initialHeaderFacet, String propertyName)
     {
         Application application = context.getApplication();
         
@@ -506,10 +524,11 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         String id = context.getViewRoot().createUniqueId();
         sortHeader.setId(id);
         sortHeader.setColumnName(id);
-        sortHeader.setPropertyName(getSortPropertyFromEL(parentColumn));
+        sortHeader.setPropertyName(propertyName);
         sortHeader.setArrow(true);          
         sortHeader.setImmediate(true); //needed to work when dataScroller is present
         sortHeader.getChildren().add(initialHeaderFacet);
+        initialHeaderFacet.setParent(sortHeader);
         
         return sortHeader;
     }
@@ -709,15 +728,36 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
      */
     protected DataModel createDataModel()
     {
-        DataModel dataModel = super.createDataModel();
+        DataModel dataModel = super.createDataModel();               
+                         
+        boolean isSortable = isSortable();
         
-        //if this table is sortable, replace the current model with a sortable one
-        if (!(dataModel instanceof SortableModel) && isSortable())
-        {         
-            dataModel = new SortableModel(dataModel);                            
+        if (!(dataModel instanceof SortableModel))
+        {                                
+            //if sortable=true make each column sortable
+            //if sortable=false, check to see if at least one column sortable                       
+            for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+            {
+                UIComponent component = (UIComponent) iter.next();
+                if (component instanceof HtmlSimpleColumn)
+                {
+                    HtmlSimpleColumn aColumn = (HtmlSimpleColumn)component;
+                    if (isSortable())
+                        aColumn.setSortable(true);
+                    
+                    if (aColumn.isSortable())
+                        isSortable = true;
+                    
+                    if (aColumn.isDefaultSorted() && getSortColumn() == null)
+                        setSortProperty(aColumn.getSortPropertyName());
+                }
+            }
+                    
+            if (isSortable)
+                dataModel = new SortableModel(dataModel);                            
         }
         
-        if (getSortProperty() != null && isSortable())
+        if (isSortable && getSortProperty() != null)
         {         
             SortCriterion criterion = new SortCriterion(getSortProperty(), isSortAscending());
             List criteria = new ArrayList();

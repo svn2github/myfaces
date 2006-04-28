@@ -16,8 +16,10 @@
 package org.apache.myfaces.custom.column;
 
 import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -84,10 +86,13 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     
     private String _width;
     private Boolean _groupBy;
-    private Boolean _defaultSorted;
     
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlColumn";
-
+    private Boolean _defaultSorted;
+    private Boolean _sortable;
+    private String _sortPropertyName;
+    
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlColumn";    
+    
     /**
      * @param localValue
      * @param valueBindingName
@@ -873,7 +878,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _groupBy = groupBy ? Boolean.TRUE : Boolean.FALSE;
     }
     
-     public boolean isDefaultSorted()
+    public boolean isDefaultSorted()
     {
         if (_defaultSorted != null) return _defaultSorted.booleanValue();
         ValueBinding vb = getValueBinding("defaultSorted");
@@ -885,13 +890,36 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     {
         _defaultSorted = defaultSorted ? Boolean.TRUE : Boolean.FALSE;
     }
+    
+    public boolean isSortable()
+    {
+        if (_sortable != null) return _sortable.booleanValue();
+        ValueBinding vb = getValueBinding("sortable");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null && v.booleanValue();        
+    }
+
+    public void setSortable(boolean sortable)
+    {
+        _sortable = sortable ? Boolean.TRUE : Boolean.FALSE;              
+    }
+    
+    public String getSortPropertyName()
+    {
+        return (String) getLocalOrValueBindingValue(_sortPropertyName, "sortPropertyName");
+    }
+   
+    public void setSortPropertyName(String sortPropertyName)
+    {
+        _sortPropertyName = sortPropertyName;
+    }
 
     /**
      * @see javax.faces.component.UIComponentBase#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[49];
+        Object[] values = new Object[51];
         values[0] = super.saveState(context);
 
         values[1] = _headerdir;
@@ -944,7 +972,10 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         
         values[46] = _width;
         values[47] = _groupBy;
+        
         values[48] = _defaultSorted;
+        values[49] = _sortable;
+        values[50] = _sortPropertyName;
 
         return values;
     }
@@ -1007,6 +1038,9 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         
         _width = (String) values[46];
         _groupBy = (Boolean) values[47];
+        
         _defaultSorted = (Boolean) values[48];
+        _sortable = (Boolean) values[49];
+        _sortPropertyName = (String) values[50];
     }
 }
