@@ -82,16 +82,6 @@
                <h:outputLink value="ifMessage.jsf"><f:verbatim>ifMessage - renders its children only if there is a message in the FacesContext for the specified component(s)</f:verbatim></h:outputLink>
             </h:panelGrid>
             
-            <h:outputText value="Collapsible Menu"/>
-            <h:panelGrid style="padding-left:25px">
-                <h:outputLink value="collapsiblemenu/mail.jsf" >
-                <f:verbatim>Static JSP version</f:verbatim>
-            </h:outputLink>
-            <h:outputLink value="collapsiblemenu/users.jsf">
-                <f:verbatim>Dynamic Version</f:verbatim>
-            </h:outputLink>
-            </h:panelGrid>
-
             <h:outputText value="FishEye Navigation"/>
             <h:panelGrid style="padding-left:25px">
                <h:outputLink value="fisheye.jsf"><f:verbatim>fishEyeNavigationMenu - the Dojo Toolkit FishEye widget</f:verbatim></h:outputLink>
