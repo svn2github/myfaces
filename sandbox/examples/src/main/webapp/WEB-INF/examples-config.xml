@@ -45,6 +45,13 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
+    <!-- managed bean for Collapsible Menu -->
+
+    <managed-bean>
+        <managed-bean-name>collapsibleMenuBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.collapsiblemenu.CollapsibleMenuBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
     <!-- managed bean for ajaxInputSuggest-->
 
@@ -681,4 +688,43 @@
 		</navigation-case>
 	</navigation-rule>
 	<!-- navigational rules for the wizard end -->
+
+        <!-- navigational rules for the collapsible menu -->
+        <navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>users</from-outcome>
+			<to-view-id>/collapsiblemenu/users.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>mail</from-outcome>
+			<to-view-id>/collapsiblemenu/mail.jsp</to-view-id>
+		</navigation-case>
+                <navigation-case>
+			<from-outcome>databases</from-outcome>
+			<to-view-id>/collapsiblemenu/databases.jsp</to-view-id>
+		</navigation-case>
+                <navigation-case>
+			<from-outcome>servers</from-outcome>
+			<to-view-id>/collapsiblemenu/servers.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>statistics</from-outcome>
+			<to-view-id>/collapsiblemenu/statistics.jsp</to-view-id>
+		</navigation-case>
+                <navigation-case>
+			<from-outcome>charts</from-outcome> 
+			<to-view-id>/collapsiblemenu/charts.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
 </faces-config>
+
+
+
+
+
+
+
+
+
