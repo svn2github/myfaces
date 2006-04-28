@@ -77,8 +77,15 @@ function myFacesKupuInit(){
 	}
 }
 
-function myFacesKupuReactivateDesignMode(iframe){
-	iframe.contentWindow.document.designMode='on';
+function myFacesKupuReactivateDesignMode(iframe) {
+    var isIE = document.all && window.ActiveXObject && navigator.userAgent.toLowerCase().indexOf("msie") > -1 && navigator.userAgent.toLowerCase().indexOf("opera") == -1;
+    if (isIE) {
+        var body = iframe.contentWindow.document.getElementsByTagName('body')[0];
+        body.setAttribute('contentEditable', 'true');
+    }
+    else {
+        iframe.contentWindow.document.designMode='on';
+    }
 }
 
 function myFacesKupuFormSubmit(){
