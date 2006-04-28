@@ -91,7 +91,7 @@
 	<p>
 	If you just use standard JSF component, but don't use any MyFaces' extended component (beginning with t:),
 	then you don't need the Extensions Filter.<br/>
-	However, if you use some of the MyFaces' extended components like t:inputFileUpload, t:inputHTtml, t:inputCalendar, ...
+	However, if you use some of the MyFaces' extended components like t:inputFileUpload, t:inputHtml, t:inputCalendar, ...
 	then you most likely need to have this filter configured in your webapp.
 </p>
 </section>
