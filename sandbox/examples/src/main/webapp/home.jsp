@@ -6,7 +6,7 @@
 <html>
 
     <%@include file="inc/head.inc" %>
-
+<body>
     <f:view>
 
         <h:panelGrid>
@@ -103,5 +103,5 @@
         </h:panelGrid>
     </f:view>
    
-
+</body>
 </html>
