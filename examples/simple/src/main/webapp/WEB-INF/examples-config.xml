@@ -440,11 +440,6 @@
         </navigation-case>
 
         <navigation-case>
-            <from-outcome>go_htmlEditor</from-outcome>
-            <to-view-id>/htmlEditor.jsp</to-view-id>
-        </navigation-case>
-
-        <navigation-case>
             <from-outcome>go_dataList</from-outcome>
             <to-view-id>/dataList.jsp</to-view-id>
         </navigation-case>
