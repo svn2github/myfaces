@@ -353,6 +353,13 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
+    <!-- test custom error page -->
+	<managed-bean>
+		<managed-bean-name>testException</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.testexception.TestException</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	
     <navigation-rule>
         <navigation-case>
             <from-outcome>go_home</from-outcome>

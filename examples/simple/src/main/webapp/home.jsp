@@ -78,6 +78,7 @@
                 <h:outputLink value="newspaperTable.jsf" ><f:verbatim>Newspaper Table</f:verbatim></h:outputLink>
                 <h:outputLink value="swapimage.jsf" ><f:verbatim>Swap Image</f:verbatim></h:outputLink>
                 <h:outputLink value="collapsiblePanel.jsf" ><f:verbatim>Collapsible Panel</f:verbatim></h:outputLink>
+                <h:outputLink value="testExceptions.jsf" ><f:verbatim>Test the custom error page - not really jsf stuff, but a demonstration how to print the real exception</f:verbatim></h:outputLink>
 
             </h:panelGrid>
 
