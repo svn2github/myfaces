@@ -15,36 +15,14 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import javax.faces.component.UIComponent;
-
 /**
- * Introduces a new conversation
- * 
+ * Implement and configure this factory to create your PersistenceManager if required.<br />
+ * The factory can be configured in your web.xml using the init parameter named
+ * <code>org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY</code>
+ *   
  * @author imario@apache.org
  */
-public class StartConversationTag extends AbstractConversationTag
+public interface PersistenceManagerFactory
 {
-	private String persistence; 
-	
-	public String getComponentType()
-	{
-		return UIStartConversation.COMPONENT_TYPE;
-	}
-
-    protected void setProperties(UIComponent component)
-    {
-        super.setProperties(component);
-        
-        setBooleanProperty(component, "persistence", persistence);
-    }
-
-	public String getPersistence()
-	{
-		return persistence;
-	}
-
-	public void setPersistence(String persistence)
-	{
-		this.persistence = persistence;
-	}
+	public PersistenceManager create();
 }

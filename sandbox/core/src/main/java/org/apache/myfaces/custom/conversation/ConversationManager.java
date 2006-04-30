@@ -20,7 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
  * The manager will deal with the various contexts in the current session.
@@ -30,12 +33,16 @@ import javax.faces.context.FacesContext;
  */
 public class ConversationManager
 {
-	private final static String CONVERSATION_MANAGER_KEY = "org.apache.myfaces.ConversationManager";
 	public final static String CONVERSATION_CONTEXT_PARAM = "conversationContext";
+	
+	private final static String INIT_PERSISTENCE_MANAGER_FACOTRY = "org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY";
+	private final static String CONVERSATION_MANAGER_KEY = "org.apache.myfaces.ConversationManager";
 	private final static String CONVERSATION_CONTEXT_REQ = "org.apache.myfaces.ConversationManager.conversationContext";
 	
 	private static long NEXT_CONVERSATION_CONTEXT = 1;  
 
+	private PersistenceManagerFactory persistenceManagerFactory;
+	
 	private final Map conversationContexts = new HashMap();
 	
 	private final List registeredEndConversations = new ArrayList(10);
@@ -140,11 +147,11 @@ public class ConversationManager
 	 * Start a conversation
 	 * @see ConversationContext#startConversation(String) 
 	 */
-	public void startConversation(String name)
+	public void startConversation(String name, boolean persistence)
 	{
 		Long conversationContextId = getConversationContextId();
 		ConversationContext conversationContext = getOrCreateConversationContext(conversationContextId);
-		conversationContext.startConversation(name);
+		conversationContext.startConversation(name, persistence);
 	}
 	
 	/**
@@ -235,5 +242,62 @@ public class ConversationManager
 		
 		return context.getExternalContext().getRequestMap().containsKey(CONVERSATION_CONTEXT_REQ) ||
 			context.getExternalContext().getRequestParameterMap().containsKey(CONVERSATION_CONTEXT_PARAM);
+	}
+
+	/**
+	 * get the persistence manager responsible for the current conversation
+	 */
+	public PersistenceManager getPersistenceManager()
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext == null)
+		{
+			return null;
+		}
+		
+		return conversationContext.getPersistenceManager();
+	}
+
+	/**
+	 * create a persistence manager
+	 */
+	protected PersistenceManager createPersistenceManager()
+	{
+		return getPersistenceManagerFactory().create();
+	}
+
+	/**
+	 * Get the persistenceManagerFactory.<br /> 
+	 * The factory can be configured in your web.xml using the init parameter named
+	 * <code>org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY</code>
+	 */
+	protected PersistenceManagerFactory getPersistenceManagerFactory()
+	{
+		if (persistenceManagerFactory == null)
+		{
+			String persistenceManagerFactoryName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("INIT_PERSISTENCE_MANAGER_FACOTRY");
+			if (persistenceManagerFactoryName == null)
+			{
+				throw new IllegalArgumentException("please configure '" + INIT_PERSISTENCE_MANAGER_FACOTRY + "' in your web.xml");
+			}
+			try
+			{
+				persistenceManagerFactory =  (PersistenceManagerFactory) ClassUtils.classForName(persistenceManagerFactoryName).newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				throw new FacesException("error creating persistenceManagerFactory named: " + persistenceManagerFactoryName, e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new FacesException("error creating persistenceManagerFactory named: " + persistenceManagerFactoryName, e);
+			}
+			catch (ClassNotFoundException e)
+			{
+				throw new FacesException("error creating persistenceManagerFactory named: " + persistenceManagerFactoryName, e);
+			}
+		}
+		
+		return persistenceManagerFactory;
 	}
 }

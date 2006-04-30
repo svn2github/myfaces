@@ -566,7 +566,7 @@
 		<managed-bean-class>org.apache.myfaces.examples.conversation.ConvData</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
-
+	
     <!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>

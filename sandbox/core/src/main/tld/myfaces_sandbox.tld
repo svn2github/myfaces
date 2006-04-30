@@ -1053,6 +1053,7 @@ Sandbox-related entities.
 		<body-content>JSP</body-content>
 		<description>Starts a new conversation</description>
 
+		&start_conversation_attributes;
 		&standard_conversation_attributes;
 	</tag>
 	<tag>

@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.el.VariableResolver;
 
 /**
@@ -33,13 +34,26 @@ public class UIStartConversation extends AbstractConversationComponent
     private final static String CONVERSATION_SYSTEM_SETUP = "org.apache.myfaces.ConversationSystemSetup"; 
 
     private boolean inited;
+    private Boolean persistence;
     
 	public static class ConversationStartAction extends AbstractConversationActionListener
 	{
+		private boolean persistence;
+	    
 		public void doConversationAction(AbstractConversationComponent abstractConversationComponent)
 		{
 			ConversationManager conversationManager = ConversationManager.getInstance();
-			conversationManager.startConversation(getConversationName());
+			conversationManager.startConversation(getConversationName(), isPersistence());
+		}
+
+		public boolean isPersistence()
+		{
+			return persistence;
+		}
+
+		public void setPersistence(boolean persistence)
+		{
+			this.persistence = persistence;
 		}
 	}
 	
@@ -56,6 +70,7 @@ public class UIStartConversation extends AbstractConversationComponent
 			{
 				ConversationStartAction actionListener = new ConversationStartAction();
 				actionListener.setConversationName(getName());
+				actionListener.setPersistence(toBoolean(getPersistence()));
 				command.addActionListener(actionListener);
 				inited = true;
 			}
@@ -63,10 +78,19 @@ public class UIStartConversation extends AbstractConversationComponent
 		else
 		{
 			ConversationManager conversationManager = ConversationManager.getInstance();
-			conversationManager.startConversation(getName());
+			conversationManager.startConversation(getName(), toBoolean(getPersistence()));
 		}
 	}
 	
+	protected boolean toBoolean(Boolean bool)
+	{
+		if (bool != null)
+		{
+			return bool.booleanValue();
+		}
+		return false;
+	}
+
 	protected void setupConversationSystem(FacesContext context)
 	{
 		if (Boolean.TRUE.equals(context.getExternalContext().getApplicationMap().get(CONVERSATION_SYSTEM_SETUP)))
@@ -88,6 +112,7 @@ public class UIStartConversation extends AbstractConversationComponent
 		Object[] states = (Object[]) state;
 		super.restoreState(context, states[0]);
 		inited = ((Boolean) states[1]).booleanValue();
+		persistence = (Boolean) states[2];
 	}
 
 	public Object saveState(FacesContext context)
@@ -95,7 +120,23 @@ public class UIStartConversation extends AbstractConversationComponent
 		return new Object[]
 		                  {
 				super.saveState(context),
-				inited?Boolean.TRUE:Boolean.FALSE
+				inited?Boolean.TRUE:Boolean.FALSE,
+				persistence
 		                  };
+	}
+
+	public Boolean getPersistence()
+	{
+        if (persistence != null)
+        {
+        		return persistence;
+        }
+        ValueBinding vb = getValueBinding("persistence");
+        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+	}
+
+	public void setPersistence(Boolean persistence)
+	{
+		this.persistence = persistence;
 	}
 }

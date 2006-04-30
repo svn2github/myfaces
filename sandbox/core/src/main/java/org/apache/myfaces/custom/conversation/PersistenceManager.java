@@ -15,36 +15,13 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import javax.faces.component.UIComponent;
-
 /**
- * Introduces a new conversation
+ * the interface to help the conversation framework to deal with your persistence manager (EntityManager) 
  * 
  * @author imario@apache.org
  */
-public class StartConversationTag extends AbstractConversationTag
+public interface PersistenceManager
 {
-	private String persistence; 
-	
-	public String getComponentType()
-	{
-		return UIStartConversation.COMPONENT_TYPE;
-	}
-
-    protected void setProperties(UIComponent component)
-    {
-        super.setProperties(component);
-        
-        setBooleanProperty(component, "persistence", persistence);
-    }
-
-	public String getPersistence()
-	{
-		return persistence;
-	}
-
-	public void setPersistence(String persistence)
-	{
-		this.persistence = persistence;
-	}
+	public void commit();
+	public void rollback();
 }

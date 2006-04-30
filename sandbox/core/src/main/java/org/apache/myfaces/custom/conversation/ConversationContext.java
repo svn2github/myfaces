@@ -16,15 +16,9 @@
 package org.apache.myfaces.custom.conversation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * The ConversationContext handles all conversations within the current context 
@@ -46,18 +40,18 @@ public class ConversationContext
 	 * All nested conversations (if any) are closed if the conversation already existed.  
 	 * @param name
 	 */
-	public void startConversation(String name)
+	public void startConversation(String name, boolean persistence)
 	{
 		Conversation conversation = (Conversation) conversations.get(name);
 		if (conversation == null)
 		{
-			conversation = new Conversation(name);
+			conversation = new Conversation(name, persistence);
 			conversations.put(name, conversation);
 			conversationStack.add(conversation);
 		}
 		else
 		{
-			endNestedConversations(conversation);
+			endNestedConversations(conversation, false);
 		}
 		currentConversation = conversation;
 	}
@@ -65,7 +59,7 @@ public class ConversationContext
 	/**
 	 * Ends all conversations nested under conversation 
 	 */
-	protected void endNestedConversations(Conversation conversation)
+	protected void endNestedConversations(Conversation conversation, boolean regularEnd)
 	{
 		while (conversationStack.size()>0)
 		{
@@ -76,16 +70,16 @@ public class ConversationContext
 				return;
 			}
 			
-			endConversation((Conversation) conversationStack.remove(index));			
+			endConversation((Conversation) conversationStack.remove(index), regularEnd);			
 		}
 	}
 
 	/**
 	 * End the given conversation
 	 */
-	protected void endConversation(Conversation conversation)
+	protected void endConversation(Conversation conversation, boolean regularEnd)
 	{
-		conversation.endConversation();
+		conversation.endConversation(regularEnd);
 	}
 
 	/**
@@ -100,7 +94,7 @@ public class ConversationContext
 			while (conversationStack.size()>0)
 			{
 				Conversation dependingConversation = (Conversation) conversationStack.remove(conversationStack.size()-1);
-				endConversation(dependingConversation);
+				endConversation(dependingConversation, false);
 				if (dependingConversation == conversation)
 				{
 					if (conversationStack.size() > 0)
@@ -110,6 +104,7 @@ public class ConversationContext
 					return;
 				}
 			}
+			endConversation(conversation, true);
 		}
 	}
 	
@@ -160,6 +155,9 @@ public class ConversationContext
 	}
 	 */
 
+	/**
+	 * find the bean named <code>name</code> in the conversation stack
+	 */
 	public Object findBean(String name)
 	{
 		for (int i = conversationStack.size(); i>0; i--)
@@ -168,6 +166,23 @@ public class ConversationContext
 			if (conversation.hasBean(name))
 			{
 				return conversation.getBean(name);
+			}
+		}
+		
+		return null;
+	}
+
+	/**
+	 * find the persistence manager in the conversation stack
+	 */
+	public PersistenceManager getPersistenceManager()
+	{
+		for (int i = conversationStack.size(); i>0; i--)
+		{
+			Conversation conversation = (Conversation) conversationStack.get(i-1);
+			if (conversation.isPersistence())
+			{
+				return conversation.getPersistenceManager();
 			}
 		}
 		

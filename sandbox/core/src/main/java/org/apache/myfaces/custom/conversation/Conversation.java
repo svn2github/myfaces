@@ -29,13 +29,17 @@ import javax.faces.el.ValueBinding;
 public class Conversation
 {
 	private final String name;
+	private final boolean persistence;
+
+	private PersistenceManager persistenceManager; 
 	
 	// private final Map beans = new TreeMap(new ValueBindingKey());
 	private final Map beans = new TreeMap();
 	
-	protected Conversation(String name)
+	protected Conversation(String name, boolean persistence)
 	{
 		this.name = name;
+		this.persistence = persistence;
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class Conversation
 	 * <li>free all beans</li>
 	 * </ul>
 	 */
-	public void endConversation()
+	public void endConversation(boolean regularEnd)
 	{
 		Iterator iterBeans = beans.values().iterator();
 		while (iterBeans.hasNext())
@@ -84,6 +88,18 @@ public class Conversation
 			}
 		}
 		beans.clear();
+
+		if (isPersistence())
+		{
+			if (regularEnd)
+			{
+				getPersistenceManager().commit();
+			}
+			else
+			{
+				getPersistenceManager().rollback();
+			}
+		}
 	}
 
 	/**
@@ -104,5 +120,23 @@ public class Conversation
 	public Object getBean(String name)
 	{
 		return beans.get(name);
+	}
+
+	/**
+	 * returns true if this conversation hold the persistence manager (aka EntityManager)
+	 */
+	public boolean isPersistence()
+	{
+		return persistence;
+	}
+
+	public PersistenceManager getPersistenceManager()
+	{
+		if (persistenceManager == null)
+		{
+			persistenceManager = ConversationManager.getInstance().createPersistenceManager();
+		}
+		
+		return persistenceManager;
 	}
 }
