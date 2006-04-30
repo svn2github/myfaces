@@ -160,7 +160,6 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         // determine the height of the day in pixels
         StringBuffer styleBuffer = new StringBuffer();
-        styleBuffer.append("height: ");
 
         int rowHeight = getRowHeight(attributes);
         String myRowHeight = "height: ";
