@@ -188,4 +188,34 @@ public class ConversationContext
 		
 		return null;
 	}
+
+	/**
+	 * detach all conversations from their underlaying persistence
+	 */
+	public void detachPersistence()
+	{
+		for (int i = conversationStack.size(); i>0; i--)
+		{
+			Conversation conversation = (Conversation) conversationStack.get(i-1);
+			if (conversation.isPersistence())
+			{
+				conversation.getPersistenceManager().detach();
+			}
+		}
+	}
+
+	/**
+	 * attach all conversations to their underlaying persistence
+	 */
+	public void attachPersistence()
+	{
+		for (int i = conversationStack.size(); i>0; i--)
+		{
+			Conversation conversation = (Conversation) conversationStack.get(i-1);
+			if (conversation.isPersistence())
+			{
+				conversation.getPersistenceManager().attach();
+			}
+		}
+	}
 }

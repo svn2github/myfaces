@@ -22,6 +22,23 @@ package org.apache.myfaces.custom.conversation;
  */
 public interface PersistenceManager
 {
+	/**
+	 * commit the transaction
+	 */
 	public void commit();
+	
+	/**
+	 * rollback the transaction
+	 */
 	public void rollback();
+	
+	/**
+	 * attach to your underlaying persistence
+	 */
+	public void attach();
+	
+	/**
+	 * detach from your underlaying persistence
+	 */
+	public void detach();
 }

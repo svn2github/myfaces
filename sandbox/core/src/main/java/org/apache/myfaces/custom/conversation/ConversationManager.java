@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
@@ -72,6 +73,10 @@ public class ConversationManager
 		ConversationManager conversationManager = (ConversationManager) context.getExternalContext().getSessionMap().get(CONVERSATION_MANAGER_KEY);
 		if (conversationManager == null)
 		{
+			if (!Boolean.TRUE.equals(context.getExternalContext().getRequestMap().get(ConversationServletFilter.CONVERSATION_FILTER_CALLED)))
+			{
+				throw new IllegalStateException("ConversationServletFilter not called. Please configure the filter org.apache.myfaces.custom.conversation.ConversationServletFilter in your web.xml to cover your faces requests.");
+			}
 			conversationManager = new ConversationManager();
 			context.getExternalContext().getSessionMap().put(CONVERSATION_MANAGER_KEY, conversationManager);
 		}
@@ -79,6 +84,18 @@ public class ConversationManager
 		return conversationManager;
 	}
 
+	/**
+	 * Get the conversation manager from the http session. This will <b>not</b> create a conversation manager if none exists.
+	 */
+	public static ConversationManager getInstance(HttpSession session)
+	{
+		if (session == null)
+		{
+			return null;
+		}
+		return (ConversationManager) session.getAttribute(CONVERSATION_MANAGER_KEY);
+	}
+	
 	/**
 	 * Get the current, or create a new unique conversationContextId.<br />
 	 * The current conversationContextId will retrieved from the request parameters, if we cant find it there
@@ -299,5 +316,23 @@ public class ConversationManager
 		}
 		
 		return persistenceManagerFactory;
+	}
+
+	protected void attachPersistence()
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext != null)
+		{
+			conversationContext.attachPersistence();
+		}
+	}
+	
+	protected void detachPersistence()
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext != null)
+		{
+			conversationContext.detachPersistence();
+		}
 	}
 }
