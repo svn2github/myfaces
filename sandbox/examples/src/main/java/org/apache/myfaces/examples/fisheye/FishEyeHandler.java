@@ -17,7 +17,10 @@ package org.apache.myfaces.examples.fisheye;
 
 import java.io.Serializable;
 
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+
+import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
 
 /**
  * Handler for the FishEye example
@@ -34,39 +37,15 @@ public class FishEyeHandler implements Serializable
         this._actionName = "please click on a menu item";
     }
 
-    public void calendarClicked(ActionEvent event)
-    {
-        this._actionName = "Calendar item was clicked";
-    }
-
-    public void emailClicked(ActionEvent event)
-    {
-        this._actionName = "Email item was clicked";
-    }
-
     public String getActionName()
     {
         return _actionName;
     }
 
-    public void textEditorClicked(ActionEvent event)
-    {
-        this._actionName = "Text Editor item was clicked";
-    }
-
-    public void updateClicked(ActionEvent event)
-    {
-        this._actionName = "Software Update item was clicked";
-    }
-
-    public void usersClicked(ActionEvent event)
-    {
-        this._actionName = "Users item was clicked";
-    }
-
-    public void webBrowserClicked(ActionEvent event)
-    {
-        System.out.println("Web Browser clicked");
-        this._actionName = "Web browser item was clicked";
+    public void processAction(ActionEvent event) throws AbortProcessingException
+    {   
+        UINavigationMenuItem comp = (UINavigationMenuItem) event.getComponent(); 
+        this._actionName = comp.getItemLabel() + " item was clicked";
+        
     }
 }

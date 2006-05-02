@@ -63,19 +63,20 @@ body {
 
 			<t:navigationMenuItem icon="images/icon_browser.png"
 				itemLabel="Web Browser"
-				actionListener="#{fisheye.webBrowserClicked}" />
+				actionListener="#{fisheye.processAction}" />
 			<t:navigationMenuItem icon="images/icon_calendar.png"
-				itemLabel="Calendar" actionListener="#{fisheye.calendarClicked}" />
+				itemLabel="Calendar"
+				actionListener="#{fisheye.processAction}" />
 			<t:navigationMenuItem icon="images/icon_email.png" itemLabel="Email"
-				actionListener="#{fisheye.emailClicked}" />
+				actionListener="#{fisheye.processAction}" />
 			<t:navigationMenuItem icon="images/icon_texteditor.png"
 				itemLabel="Text Editor"
-				actionListener="#{fisheye.textEditorClicked}" />
+				actionListener="#{fisheye.processAction}" />
 			<t:navigationMenuItem icon="images/icon_update.png"
 				itemLabel="Software Update"
-				actionListener="#{fisheye.updateClicked}" />
+				actionListener="#{fisheye.processAction}" />
 			<t:navigationMenuItem icon="images/icon_users.png" itemLabel="Users"
-				actionListener="#{fisheye.usersClicked}" />
+				actionListener="#{fisheye.processAction}" />
 
 		</s:fishEyeNavigationMenu>
 	</t:div>
