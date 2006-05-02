@@ -23,7 +23,7 @@
 
 		<t:div id="Content">
 			<h:form id="scopeForm">
-				<s:scope id="thescope" value="#{ScopeBean}" />
+				<t:saveState id="thescope" value="#{ScopeBean}" />
 
 				<h:panelGrid columns="1">
 					<h:outputFormat value="Frobozz Industrial Magic Order Form" />

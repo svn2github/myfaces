@@ -24,7 +24,7 @@
 
 		<t:div id="Content">
 			<h:form id="theselectForm">
-			<s:scope id="thescope"  value="#{ScopeBean}" />
+			<t:saveState id="thescope"  value="#{ScopeBean}" />
 			<h:panelGrid columns="1">
 				<h:outputFormat value="Frobozz Industrial Magic Order Form" />
 				<h:outputFormat value="Product order form"/>
