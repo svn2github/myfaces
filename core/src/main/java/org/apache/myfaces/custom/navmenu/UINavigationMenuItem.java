@@ -40,8 +40,7 @@ import java.util.StringTokenizer;
  * @version $Revision$ $Date$
  */
 public class UINavigationMenuItem extends UISelectItem implements
-        UserRoleAware, ActionSource
-{
+    UserRoleAware, ActionSource {
     private static final boolean DEFAULT_IMMEDIATE = true;
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.NavigationMenuItem";
@@ -61,285 +60,254 @@ public class UINavigationMenuItem extends UISelectItem implements
     private String _disabledStyle = null;
     private String _disabledStyleClass = null;
     private String _activeOnViewIds = null;
+    private String _externalLink = null;
 
-    public UINavigationMenuItem()
-    {
+    public UINavigationMenuItem() {
         super();
     }
 
-    public String getFamily()
-    {
+    public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public void setIcon(String icon)
-    {
+    public void setIcon(String icon) {
         _icon = icon;
     }
 
-    public String getIcon()
-    {
+    public String getIcon() {
         if (_icon != null)
             return _icon;
         ValueBinding vb = getValueBinding("icon");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
-                vb) : null;
+                                                           vb) : null;
     }
 
-    public void setSplit(boolean split)
-    {
+    public void setSplit(boolean split) {
         _split = Boolean.valueOf(split);
     }
 
-    public boolean isSplit()
-    {
+    public boolean isSplit() {
         if (_split != null)
             return _split.booleanValue();
         ValueBinding vb = getValueBinding("split");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
-                : null;
+            : null;
         return v != null && v.booleanValue();
     }
 
-    public void setOpen(boolean open)
-    {
+    public void setOpen(boolean open) {
         _open = Boolean.valueOf(open);
     }
 
-    public boolean isOpen()
-    {
+    public boolean isOpen() {
         if (_open != null)
             return _open.booleanValue();
         ValueBinding vb = getValueBinding("open");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
-                : null;
+            : null;
         return v != null && v.booleanValue();
     }
 
-    public void setActive(boolean active)
-    {
+    public void setActive(boolean active) {
         _active = Boolean.valueOf(active);
     }
 
-    public boolean isActive()
-    {
+    public boolean isActive() {
         if (_active != null)
             return _active.booleanValue();
         ValueBinding vb = getValueBinding("active");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
-                : null;
+            : null;
         return v != null && v.booleanValue();
     }
 
-    public void setImmediate(boolean immediate)
-    {
+    public void setImmediate(boolean immediate) {
         _immediate = Boolean.valueOf(immediate);
     }
 
-    public boolean isImmediate()
-    {
+    public boolean isImmediate() {
         if (_immediate != null)
             return _immediate.booleanValue();
         ValueBinding vb = getValueBinding("immediate");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
-                : null;
+            : null;
         return v != null ? v.booleanValue() : DEFAULT_IMMEDIATE;
+    }
+
+    public String getExternalLink() {
+        if (_externalLink != null)
+            return _externalLink;
+        ValueBinding vb = getValueBinding("externalLink");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
+                                                           vb) : null;
+    }
+
+    public void setExternalLink(String externalLink) {
+        _externalLink = externalLink;
     }
 
     // Action Source
 
-    public void setAction(MethodBinding action)
-    {
+    public void setAction(MethodBinding action) {
         _action = action;
     }
 
-    public MethodBinding getAction()
-    {
+    public MethodBinding getAction() {
         return _action;
     }
 
-    public void setActionListener(MethodBinding actionListener)
-    {
+    public void setActionListener(MethodBinding actionListener) {
         _actionListener = actionListener;
     }
 
-    public MethodBinding getActionListener()
-    {
+    public MethodBinding getActionListener() {
         return _actionListener;
     }
 
-    public void addActionListener(ActionListener listener)
-    {
+    public void addActionListener(ActionListener listener) {
         addFacesListener(listener);
     }
 
-    public ActionListener[] getActionListeners()
-    {
+    public ActionListener[] getActionListeners() {
         return (ActionListener[]) getFacesListeners(ActionListener.class);
     }
 
-    public void removeActionListener(ActionListener listener)
-    {
+    public void removeActionListener(ActionListener listener) {
         removeFacesListener(listener);
     }
 
     // Action Source
 
-    public void setEnabledOnUserRole(String enabledOnUserRole)
-    {
+    public void setEnabledOnUserRole(String enabledOnUserRole) {
         _enabledOnUserRole = enabledOnUserRole;
     }
 
-    public String getEnabledOnUserRole()
-    {
+    public String getEnabledOnUserRole() {
         if (_enabledOnUserRole != null)
             return _enabledOnUserRole;
         ValueBinding vb = getValueBinding("enabledOnUserRole");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
-                vb) : null;
+                                                           vb) : null;
     }
 
-    public void setVisibleOnUserRole(String visibleOnUserRole)
-    {
+    public void setVisibleOnUserRole(String visibleOnUserRole) {
         _visibleOnUserRole = visibleOnUserRole;
     }
 
-    public String getVisibleOnUserRole()
-    {
+    public String getVisibleOnUserRole() {
         if (_visibleOnUserRole != null)
             return _visibleOnUserRole;
         ValueBinding vb = getValueBinding("visibleOnUserRole");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
-                vb) : null;
+                                                           vb) : null;
     }
 
-    public void setTarget(String target)
-    {
+    public void setTarget(String target) {
         _target = target;
     }
 
-    public String getTarget()
-    {
+    public String getTarget() {
         if (_target != null)
             return _target;
         ValueBinding vb = getValueBinding("target");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
-                vb) : null;
+                                                           vb) : null;
     }
 
-    public void setDisabled(boolean disabled)
-    {
+    public void setDisabled(boolean disabled) {
         _disabled = Boolean.valueOf(disabled);
     }
 
-    public boolean isDisabled()
-    {
+    public boolean isDisabled() {
         if (_disabled != null)
             return _disabled.booleanValue();
         ValueBinding vb = getValueBinding("disabled");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext())
-                : null;
+            : null;
         return v != null && v.booleanValue();
     }
 
-    public String getDisabledStyle()
-    {
+    public String getDisabledStyle() {
         if (_disabledStyle != null)
             return _disabledStyle;
         ValueBinding vb = getValueBinding("disabledStyle");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
-                vb) : null;
+                                                           vb) : null;
     }
 
-    public void setDisabledStyle(String disabledStyle)
-    {
+    public void setDisabledStyle(String disabledStyle) {
         _disabledStyle = disabledStyle;
     }
 
     /**
      * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
      */
-    public void broadcast(FacesEvent event) throws AbortProcessingException
-    {
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
 
-        if (event instanceof ActionEvent)
-        {
+        if (event instanceof ActionEvent) {
             FacesContext context = getFacesContext();
 
             MethodBinding actionListenerBinding = getActionListener();
-            if (actionListenerBinding != null)
-            {
-                try
-                {
+            if (actionListenerBinding != null) {
+                try {
                     actionListenerBinding.invoke(context,
-                            new Object[] { event });
+                                                 new Object[]{event});
                 }
-                catch (EvaluationException e)
-                {
+                catch (EvaluationException e) {
                     Throwable cause = e.getCause();
                     if (cause != null
-                            && cause instanceof AbortProcessingException)
-                    {
+                        && cause instanceof AbortProcessingException) {
                         throw (AbortProcessingException) cause;
                     }
-                    else
-                    {
+                    else {
                         throw e;
                     }
                 }
             }
 
             ActionListener defaultActionListener = context.getApplication()
-                    .getActionListener();
-            if (defaultActionListener != null)
-            {
+                .getActionListener();
+            if (defaultActionListener != null) {
                 defaultActionListener.processAction((ActionEvent) event);
             }
         }
     }
 
-    public String getDisabledStyleClass()
-    {
+    public String getDisabledStyleClass() {
         if (_disabledStyleClass != null)
             return _disabledStyleClass;
         ValueBinding vb = getValueBinding("disabledStyleClass");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(),
-                vb) : null;
+                                                           vb) : null;
     }
 
-    public void setDisabledStyleClass(String disabledStyleClass)
-    {
+    public void setDisabledStyleClass(String disabledStyleClass) {
         _disabledStyleClass = disabledStyleClass;
     }
 
-    public String getActiveOnViewIds()
-    {
+    public String getActiveOnViewIds() {
         if (_activeOnViewIds != null) return _activeOnViewIds;
         ValueBinding vb = getValueBinding("activeOnViewIds");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public String getActiveOnViewIdsDirectly()
-    {
+    public String getActiveOnViewIdsDirectly() {
         return _activeOnViewIds;
     }
 
-    public void setActiveOnViewIds(String activeOnViewIds)
-    {
+    public void setActiveOnViewIds(String activeOnViewIds) {
         this._activeOnViewIds = activeOnViewIds;
     }
 
-    public boolean isRendered()
-    {
+    public boolean isRendered() {
         if (!UserRoleUtils.isVisibleOnUserRole(this))
             return false;
         return super.isRendered();
     }
 
-    public Object saveState(FacesContext context)
-    {
-        Object values[] = new Object[15];
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[16];
         values[0] = super.saveState(context);
         values[1] = _icon;
         values[2] = _split;
@@ -355,11 +323,11 @@ public class UINavigationMenuItem extends UISelectItem implements
         values[12] = _disabledStyle;
         values[13] = _disabledStyleClass;
         values[14] = _activeOnViewIds;
+        values[15] = _externalLink;
         return ((Object) (values));
     }
 
-    public void restoreState(FacesContext context, Object state)
-    {
+    public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         _icon = (String) values[1];
@@ -370,104 +338,86 @@ public class UINavigationMenuItem extends UISelectItem implements
         _open = (Boolean) values[6];
         _active = (Boolean) values[7];
         _actionListener = (MethodBinding) restoreAttachedState(context,
-                values[8]);
+                                                               values[8]);
         _immediate = (Boolean) values[9];
         _target = (String) values[10];
         _disabled = (Boolean) values[11];
         _disabledStyle = (String) values[12];
         _disabledStyleClass = (String) values[13];
         _activeOnViewIds = (String) values[14];
+        _externalLink = (String) values[15];
     }
 
-    public void toggleActive(FacesContext context)
-    {
+    public void toggleActive(FacesContext context) {
         StringTokenizer tokenizer = new StringTokenizer(this.getActiveOnViewIdsDirectly(), ";");
-        while (tokenizer.hasMoreTokens())
-        {
-            String token =  tokenizer.nextToken();
-            if(token.trim().equals(context.getViewRoot().getViewId()))
-            {
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            if (token.trim().equals(context.getViewRoot().getViewId())) {
                 this.deactivateAll();
                 this.setActive(true);
                 openParents();
             }
-            else
-            {
+            else {
                 this.setActive(false);
             }
         }
     }
 
-    private void openParents()
-    {
+    private void openParents() {
         UIComponent comp = this;
 
-        while((comp = comp.getParent()) instanceof UINavigationMenuItem)
-        {
+        while ((comp = comp.getParent()) instanceof UINavigationMenuItem) {
             UINavigationMenuItem parent = (UINavigationMenuItem) comp;
-            if(!parent.isOpen())
+            if (!parent.isOpen())
                 parent.setOpen(true);
             else
                 return;
         }
     }
 
-    public void deactivateAll()
-    {
+    public void deactivateAll() {
         UIComponent parent = this.getParent();
-        while(!(parent instanceof HtmlPanelNavigationMenu) && parent != null)
-        {
+        while (!(parent instanceof HtmlPanelNavigationMenu) && parent != null) {
             parent = parent.getParent();
         }
-        if(parent == null)
-        {
+        if (parent == null) {
             throw new IllegalStateException("no PanelNavigationMenu!");
         }
 
         HtmlPanelNavigationMenu root = (HtmlPanelNavigationMenu) parent;
-        for(Iterator it = root.getChildren().iterator(); it.hasNext();)
-        {
+        for (Iterator it = root.getChildren().iterator(); it.hasNext();) {
             Object o = it.next();
-            if(o instanceof UINavigationMenuItem)
-            {
+            if (o instanceof UINavigationMenuItem) {
                 UINavigationMenuItem navItem = (UINavigationMenuItem) o;
                 navItem.setActive(false);
-                if(navItem.getChildCount() > 0)
-                {
+                if (navItem.getChildCount() > 0) {
                     navItem.deactivateChildren();
                 }
             }
-            if(o instanceof HtmlCommandNavigationItem)
-            {
+            if (o instanceof HtmlCommandNavigationItem) {
                 HtmlCommandNavigationItem current = (HtmlCommandNavigationItem) o;
                 current.setActive(false);
-                if(current.getChildCount() > 0)
-                {
+                if (current.getChildCount() > 0) {
                     current.deactivateChildren();
                 }
             }
         }
     }
 
-    public void deactivateChildren()
-    {
-        for(Iterator it = this.getChildren().iterator(); it.hasNext();)
-        {
+    public void deactivateChildren() {
+        for (Iterator it = this.getChildren().iterator(); it.hasNext();) {
             Object o = it.next();
-            if(o instanceof UINavigationMenuItem)
-            {
+            if (o instanceof UINavigationMenuItem) {
                 UINavigationMenuItem current = (UINavigationMenuItem) o;
                 current.setActive(false);
-                if(current.getChildCount() > 0)
-                {
+                if (current.getChildCount() > 0) {
                     current.deactivateChildren();
                 }
             }
         }
     }
 
-    public Boolean getActiveDirectly()
-    {
+    public Boolean getActiveDirectly() {
         return _active;
     }
 }

@@ -30,14 +30,12 @@ import java.util.ArrayList;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class NavigationMenu
-{
+public class NavigationMenu {
     private static final Log log = LogFactory.getLog(NavigationMenu.class);
 
-    public NavigationMenuItem[] getInfoItems()
-    {
+    public NavigationMenuItem[] getInfoItems() {
         String label = GuiUtil.getMessageResource("nav_Info", null);
-        NavigationMenuItem[] menu= new NavigationMenuItem[1];
+        NavigationMenuItem[] menu = new NavigationMenuItem[1];
 
         menu[0] = new NavigationMenuItem(label, null, null, true);
 
@@ -53,15 +51,13 @@ public class NavigationMenu
         return menu;
     }
 
-    public List getJSCookMenuNavigationItems()
-    {
+    public List getJSCookMenuNavigationItems() {
         List menu = new ArrayList();
         menu.add(getMenuNaviagtionItem("Home", "go_home"));
         return menu;
     }
 
-    public List getPanelNavigationItems()
-    {
+    public List getPanelNavigationItems() {
         List menu = new ArrayList();
         // Products
         NavigationMenuItem products = getMenuNaviagtionItem("#{example_messages['panelnav_products']}", null);
@@ -79,60 +75,56 @@ public class NavigationMenu
         NavigationMenuItem corporateInfo = getMenuNaviagtionItem("#{example_messages['panelnav_corporate']}", null);
         menu.add(corporateInfo);
         corporateInfo.add(getMenuNaviagtionItem("#{example_messages['panelnav_news']}", "#{navigationMenu.getAction2}"));
-        item =  getMenuNaviagtionItem("#{example_messages['panelnav_investor']}", "#{navigationMenu.getAction3}");
+        item = getMenuNaviagtionItem("#{example_messages['panelnav_investor']}", "#{navigationMenu.getAction3}");
         //item.setIcon("images/arrow-first.gif");
         item.setDisabled(true);
         corporateInfo.add(item);
         // Contact
         menu.add(getMenuNaviagtionItem("#{example_messages['panelnav_contact']}", "#{navigationMenu.getAction2}"));
+        // External Link
+        item = getMenuNaviagtionItem("External Link", null);
+        item.setExternalLink("#{example_messages['external_link']}");
+        item.setTarget("_blank");
+        menu.add(item);
         return menu;
     }
 
-    private static NavigationMenuItem getMenuNaviagtionItem(String label, String action)
-    {
+    private static NavigationMenuItem getMenuNaviagtionItem(String label, String action) {
         NavigationMenuItem item = new NavigationMenuItem(label, action);
         item.setActionListener("#{navigationMenu.actionListener}");
         item.setValue(label);
         return item;
     }
 
-    public String getAction1()
-    {
+    public String getAction1() {
         return "go_panelnavigation_1";
     }
 
-    public String actionListener(ActionEvent event)
-    {
-        if (event.getComponent() instanceof HtmlCommandNavigationItem)
-        {
-            log.info("ActionListener: " + ((HtmlCommandNavigationItem)event.getComponent()).getValue());
+    public String actionListener(ActionEvent event) {
+        if (event.getComponent() instanceof HtmlCommandNavigationItem) {
+            log.info("ActionListener: " + ((HtmlCommandNavigationItem) event.getComponent()).getValue());
             return getAction1();
         }
-        else
-        {
-            String outcome = (String)((HtmlCommandJSCookMenu) event.getComponent()).getValue();
+        else {
+            String outcome = (String) ((HtmlCommandJSCookMenu) event.getComponent()).getValue();
             log.info("ActionListener: " + outcome);
             return outcome;
         }
     }
 
-    public String getAction2()
-    {
+    public String getAction2() {
         return "go_panelnavigation_2";
     }
 
-    public String getAction3()
-    {
+    public String getAction3() {
         return "go_panelnavigation_3";
     }
 
-    public String goHome()
-    {
-    	return "go_home";
+    public String goHome() {
+        return "go_home";
     }
 
-    public boolean getDisabled()
-    {
+    public boolean getDisabled() {
         return true;
     }
 }

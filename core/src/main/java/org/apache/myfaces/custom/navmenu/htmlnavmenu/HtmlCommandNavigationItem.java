@@ -30,83 +30,83 @@ import javax.faces.el.ValueBinding;
 import java.util.*;
 
 /**
- * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet 
+ * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
  * for helping to develop this component.
+ *
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */
-public class HtmlCommandNavigationItem extends HtmlCommandLink
-{
+public class HtmlCommandNavigationItem extends HtmlCommandLink {
     private static final Log log = LogFactory.getLog(HtmlCommandNavigationItem.class);
 
     private Boolean _open = null;
     private Boolean _active = null;
     private String _activeOnViewIds = null;
+    private String _externalLink = null;
 
-    public boolean isImmediate()
-    {
+    public boolean isImmediate() {
         //always immediate
         return true;
     }
 
-    public void setImmediate(Boolean immediate)
-    {
+    public void setImmediate(Boolean immediate) {
         if (log.isWarnEnabled()) log.warn("Immediate property of HtmlCommandNavigation cannot be set --> ignored.");
     }
 
-    public boolean isOpen()
-    {
+    public boolean isOpen() {
         if (_open != null) return _open.booleanValue();
         ValueBinding vb = getValueBinding("open");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return v != null && v.booleanValue();
     }
 
-    public Boolean getOpenDirectly()
-    {
+    public Boolean getOpenDirectly() {
         return _open;
     }
 
-    public void setOpen(boolean open)
-    {
+    public void setOpen(boolean open) {
         _open = open ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    public boolean isActive()
-    {
+    public boolean isActive() {
         if (_active != null) return _active.booleanValue();
         ValueBinding vb = getValueBinding("active");
-        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return v != null && v.booleanValue();
     }
 
-    public Boolean getActiveDirectly()
-    {
+    public Boolean getActiveDirectly() {
         return _active;
     }
 
-    public void setActive(boolean active)
-    {
+    public void setActive(boolean active) {
         _active = active ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    public String getActiveOnViewIds()
-    {
+    public String getActiveOnViewIds() {
         if (_activeOnViewIds != null) return _activeOnViewIds;
         ValueBinding vb = getValueBinding("activeOnViewIds");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setActiveOnViewIds(String activeOnViewIds)
-    {
+    public void setActiveOnViewIds(String activeOnViewIds) {
         this._activeOnViewIds = activeOnViewIds;
+    }
+
+    public String getExternalLink() {
+        if (_externalLink != null) return _externalLink;
+        ValueBinding vb = getValueBinding("externalLink");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setExternalLink(String externalLink) {
+        this._externalLink = externalLink;
     }
 
     /**
      * @return false, if this item is child of another HtmlCommandNavigation, which is closed
      */
-    public boolean isRendered()
-    {
+    public boolean isRendered() {
         if (! super.isRendered()) {
             return false;
         }
@@ -116,22 +116,17 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
             return true;
 
         UIComponent parent = getParent();
-        while (parent != null)
-        {
-            if (parent instanceof HtmlCommandNavigationItem)
-            {
-                if (!((HtmlCommandNavigationItem)parent).isOpen())
-                {
+        while (parent != null) {
+            if (parent instanceof HtmlCommandNavigationItem) {
+                if (!((HtmlCommandNavigationItem) parent).isOpen()) {
                     return false;
                 }
             }
 
-            if (parent instanceof HtmlPanelNavigationMenu)
-            {
+            if (parent instanceof HtmlPanelNavigationMenu) {
                 break;
             }
-            else
-            {
+            else {
                 parent = parent.getParent();
             }
         }
@@ -139,19 +134,16 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         return true;
     }
 
-    private HtmlPanelNavigationMenu getParentPanelNavigation()
-    {
+    private HtmlPanelNavigationMenu getParentPanelNavigation() {
         UIComponent parent = getParent();
 
         // search HtmlPanelNavigation
         UIComponent p = parent;
-        while (p != null && !(p instanceof HtmlPanelNavigationMenu))
-        {
+        while (p != null && !(p instanceof HtmlPanelNavigationMenu)) {
             p = p.getParent();
         }
         // p is now the HtmlPanelNavigation
-        if (!(p instanceof HtmlPanelNavigationMenu))
-        {
+        if (!(p instanceof HtmlPanelNavigationMenu)) {
             log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
             return null;
         }
@@ -159,19 +151,15 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         return (HtmlPanelNavigationMenu) p;
     }
 
-    public void toggleOpen()
-    {
+    public void toggleOpen() {
         HtmlPanelNavigationMenu menu = getParentPanelNavigation();
-        if (isOpen() && menu != null && !menu.isExpandAll() )
-        {
-            if (getChildCount() > 0)
-            {
+        if (isOpen() && menu != null && !menu.isExpandAll()) {
+            if (getChildCount() > 0) {
                 //item is a menu group --> close item
                 setOpen(false);
             }
         }
-        else
-        {
+        else {
             UIComponent parent = getParent();
 
             //close all siblings
@@ -179,23 +167,18 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
 
             //open all parents (to be sure) and search HtmlPanelNavigation
             UIComponent p = parent;
-            while (p != null && !(p instanceof HtmlPanelNavigationMenu))
-            {
-                if (p instanceof HtmlCommandNavigationItem)
-                {
-                    ((HtmlCommandNavigationItem)p).setOpen(true);
+            while (p != null && !(p instanceof HtmlPanelNavigationMenu)) {
+                if (p instanceof HtmlCommandNavigationItem) {
+                    ((HtmlCommandNavigationItem) p).setOpen(true);
                 }
                 p = p.getParent();
             }
             // p is now the HtmlPanelNavigation
-            if (!(p instanceof HtmlPanelNavigationMenu))
-            {
+            if (!(p instanceof HtmlPanelNavigationMenu)) {
                 log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
             }
-            else
-            {
-                if (!hasCommandNavigationChildren() || ((HtmlPanelNavigationMenu) p).isExpandAll())
-                {
+            else {
+                if (!hasCommandNavigationChildren() || ((HtmlPanelNavigationMenu) p).isExpandAll()) {
                     //item is an end node or Menu always expanded --> deactivate all other nodes, and then...
 
                     //deactivate all other items
@@ -203,8 +186,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
                     //...activate this item
                     setActive(true);
                 }
-                else
-                {
+                else {
                     //open item
                     setOpen(true);
                 }
@@ -212,17 +194,13 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
         }
     }
 
-    private boolean hasCommandNavigationChildren()
-    {
-        if (getChildCount() == 0)
-        {
+    private boolean hasCommandNavigationChildren() {
+        if (getChildCount() == 0) {
             return false;
         }
         List list = getChildren();
-        for (int i = 0, sizei = list.size(); i < sizei; i++)
-        {
-            if (list.get(i) instanceof HtmlCommandNavigationItem)
-            {
+        for (int i = 0, sizei = list.size(); i < sizei; i++) {
+            if (list.get(i) instanceof HtmlCommandNavigationItem) {
                 return true;
             }
         }
@@ -230,117 +208,91 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
     }
 
 
-    private static void deactivateAllChildren(Iterator children)
-    {
-        while (children.hasNext())
-        {
-            UIComponent ni = (UIComponent)children.next();
-            if (ni instanceof HtmlCommandNavigationItem)
-            {
-                ((HtmlCommandNavigationItem)ni).setActive(false);
-                if (ni.getChildCount() > 0)
-                {
+    private static void deactivateAllChildren(Iterator children) {
+        while (children.hasNext()) {
+            UIComponent ni = (UIComponent) children.next();
+            if (ni instanceof HtmlCommandNavigationItem) {
+                ((HtmlCommandNavigationItem) ni).setActive(false);
+                if (ni.getChildCount() > 0) {
                     deactivateAllChildren(ni.getChildren().iterator());
                 }
             }
         }
     }
 
-    private static void closeAllChildren(Iterator children)
-    {
-        while (children.hasNext())
-        {
-            UIComponent ni = (UIComponent)children.next();
-            if (ni instanceof HtmlCommandNavigationItem)
-            {
-                ((HtmlCommandNavigationItem)ni).setOpen(false);
-                if (ni.getChildCount() > 0)
-                {
+    private static void closeAllChildren(Iterator children) {
+        while (children.hasNext()) {
+            UIComponent ni = (UIComponent) children.next();
+            if (ni instanceof HtmlCommandNavigationItem) {
+                ((HtmlCommandNavigationItem) ni).setOpen(false);
+                if (ni.getChildCount() > 0) {
                     closeAllChildren(ni.getChildren().iterator());
                 }
             }
         }
     }
 
-    public String[] getActiveOnVieIds()
-    {
+    public String[] getActiveOnVieIds() {
         String value = getActiveOnViewIds();
         if (value == null)
-            return new String[] {};
+            return new String[]{};
         return value.split(",");
     }
 
-    private void openParents()
-    {
+    private void openParents() {
         UIComponent comp = this;
 
-        while((comp = comp.getParent()) instanceof HtmlCommandNavigationItem)
-        {
+        while ((comp = comp.getParent()) instanceof HtmlCommandNavigationItem) {
             HtmlCommandNavigationItem parent = (HtmlCommandNavigationItem) comp;
-            if(!parent.isOpen())
-            {
+            if (!parent.isOpen()) {
                 parent.setOpen(true);
             }
-            else
-            {
+            else {
                 return;
             }
         }
     }
 
-    public void deactivateAll()
-    {
+    public void deactivateAll() {
         UIComponent parent = this.getParent();
-        while(!(parent instanceof HtmlPanelNavigationMenu) && parent != null)
-        {
+        while (!(parent instanceof HtmlPanelNavigationMenu) && parent != null) {
             parent = parent.getParent();
         }
-        if(parent == null)
-        {
+        if (parent == null) {
             throw new IllegalStateException("no PanelNavigationMenu!");
         }
 
         HtmlPanelNavigationMenu root = (HtmlPanelNavigationMenu) parent;
-        for(Iterator it = root.getChildren().iterator(); it.hasNext();)
-        {
+        for (Iterator it = root.getChildren().iterator(); it.hasNext();) {
             Object o = it.next();
-            if(o instanceof HtmlCommandNavigationItem)
-            {
+            if (o instanceof HtmlCommandNavigationItem) {
                 HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) o;
                 navItem.setActive(false);
-                if(navItem.getChildCount() > 0)
-                {
+                if (navItem.getChildCount() > 0) {
                     navItem.deactivateChildren();
                 }
             }
         }
     }
 
-    public void deactivateChildren()
-    {
-        for(Iterator it = this.getChildren().iterator(); it.hasNext();)
-        {
+    public void deactivateChildren() {
+        for (Iterator it = this.getChildren().iterator(); it.hasNext();) {
             Object o = it.next();
-            if(o instanceof HtmlCommandNavigationItem)
-            {
+            if (o instanceof HtmlCommandNavigationItem) {
                 HtmlCommandNavigationItem current = (HtmlCommandNavigationItem) o;
                 current.setActive(false);
-                if(current.getChildCount() > 0)
-                {
+                if (current.getChildCount() > 0) {
                     current.deactivateChildren();
                 }
             }
         }
     }
 
-    public void broadcast(FacesEvent event) throws AbortProcessingException
-    {
-        if (event instanceof ActionEvent)
-        {
-            ActionEvent actionEvent = (ActionEvent)event;
-            if (actionEvent.getPhaseId() == PhaseId.APPLY_REQUEST_VALUES)
-            {
-                HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem)actionEvent.getComponent();
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        if (event instanceof ActionEvent) {
+            ActionEvent actionEvent = (ActionEvent) event;
+            if (actionEvent.getPhaseId() == PhaseId.APPLY_REQUEST_VALUES) {
+                HtmlCommandNavigationItem navItem = (HtmlCommandNavigationItem) actionEvent.getComponent();
                 navItem.toggleOpen();
                 FacesContext.getCurrentInstance().renderResponse();
             }
@@ -349,25 +301,24 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
     }
 
 
-    public Object saveState(FacesContext context)
-    {
-        Object values[] = new Object[4];
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[5];
         values[0] = super.saveState(context);
         values[1] = _open;
         values[2] = _active;
         values[3] = _activeOnViewIds;
+        values[4] = _externalLink;
         return ((Object) (values));
     }
 
-    public void restoreState(FacesContext context, Object state)
-    {
-        Object values[] = (Object[])state;
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _open = ((Boolean)values[1]);
-        _active = ((Boolean)values[2]);
-        _activeOnViewIds = ((String)values[3]);
+        _open = ((Boolean) values[1]);
+        _active = ((Boolean) values[2]);
+        _activeOnViewIds = ((String) values[3]);
+        _externalLink = ((String) values[4]);
     }
-
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
@@ -376,16 +327,13 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink
     private static final String DEFAULT_RENDERER_TYPE = "javax.faces.Link";
 
 
-    public HtmlCommandNavigationItem()
-    {
+    public HtmlCommandNavigationItem() {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-    public String getFamily()
-    {
+    public String getFamily() {
         return COMPONENT_FAMILY;
     }
-
 
     //------------------ GENERATED CODE END ---------------------------------------
 }

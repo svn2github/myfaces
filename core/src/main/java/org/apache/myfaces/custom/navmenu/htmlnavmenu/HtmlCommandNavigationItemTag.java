@@ -23,47 +23,47 @@ import javax.faces.component.UIComponent;
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */
-public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag
-{
-    private static final String OPEN_ATTR   = "open".intern();
+public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag {
+    private static final String OPEN_ATTR = "open".intern();
     private static final String ACTIVE_ATTR = "active".intern();
     private static final String ACTIVE_ON_VIEW_IDS_ATTR = "activeOnViewIds".intern();
+    private static final String EXTERNAL_LINK = "externalLink".intern();
 
     private String _open;
     private String _active;
     private String _activeOnViewIds;
+    private String _externalLink;
 
-    public String getComponentType()
-    {
+    public String getComponentType() {
         return HtmlCommandNavigationItem.COMPONENT_TYPE;
     }
 
-    public String getRendererType()
-    {
+    public String getRendererType() {
         return HtmlNavigationMenuRenderer.RENDERER_TYPE;
     }
 
-    protected void setProperties(UIComponent component)
-    {
+    protected void setProperties(UIComponent component) {
         super.setProperties(component);
 
         setBooleanProperty(component, OPEN_ATTR, _open);
         setBooleanProperty(component, ACTIVE_ATTR, _active);
         setStringProperty(component, ACTIVE_ON_VIEW_IDS_ATTR, _activeOnViewIds);
+        setStringProperty(component, EXTERNAL_LINK, _externalLink);
     }
 
-    public void setOpen(String open)
-    {
+    public void setOpen(String open) {
         _open = open;
     }
 
-    public void setActive(String active)
-    {
+    public void setActive(String active) {
         _active = active;
     }
 
-    public void setActiveOnViewIds(String activeOnViewIds)
-    {
+    public void setActiveOnViewIds(String activeOnViewIds) {
         _activeOnViewIds = activeOnViewIds;
+    }
+
+    public void setExternalLink(String externalLink) {
+        _externalLink = externalLink;
     }
 }
