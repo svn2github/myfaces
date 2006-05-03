@@ -1077,13 +1077,5 @@ Sandbox-related entities.
 	</tag>
 	
 	
-	<tag>
-		<name>pagelet</name>
-		<tag-class>org.apache.myfaces.custom.pagelet.PageletTag</tag-class>
-		<body-content>JSP</body-content>
-		<description>Extends standard outputLabel by user role support.</description>
-		&pagelet_attributes;
-	</tag>
-	
 	
 </taglib>
