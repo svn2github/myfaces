@@ -45,7 +45,6 @@ public class ConversationManager
 	private PersistenceManagerFactory persistenceManagerFactory;
 	
 	private final Map conversationContexts = new HashMap();
-	
 	private final List registeredEndConversations = new ArrayList(10);
 	
 	protected ConversationManager()
@@ -103,14 +102,35 @@ public class ConversationManager
 	 */
 	protected Long getConversationContextId()
 	{
-		FacesContext context = FacesContext.getCurrentInstance();
+		Map requestMap;
+		Map requestParameterMap;
 		
-		Long conversationContextId = (Long) context.getExternalContext().getRequestMap().get(CONVERSATION_CONTEXT_REQ);
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (context != null)
+		{
+			requestMap = context.getExternalContext().getRequestMap();
+			requestParameterMap = context.getExternalContext().getRequestParameterMap();
+		}
+		else
+		{
+			ConversationExternalContext ccontext = ConversationServletFilter.getConversationExternalContext();
+			if (ccontext != null)
+			{
+				requestMap = ccontext.getRequestMap();
+				requestParameterMap = ccontext.getRequestParameterMap();
+			}
+			else
+			{
+				throw new IllegalStateException("cant find a requestMap or requestParameterMap");
+			}
+		}
+		
+		Long conversationContextId = (Long) requestMap.get(CONVERSATION_CONTEXT_REQ);
 		if (conversationContextId == null)
 		{
-			if (context.getExternalContext().getRequestParameterMap().containsKey(CONVERSATION_CONTEXT_PARAM))
+			if (requestParameterMap.containsKey(CONVERSATION_CONTEXT_PARAM))
 			{
-				String urlConversationContextId = context.getExternalContext().getRequestParameterMap().get(CONVERSATION_CONTEXT_PARAM).toString();
+				String urlConversationContextId = requestParameterMap.get(CONVERSATION_CONTEXT_PARAM).toString();
 				conversationContextId = new Long(Long.parseLong(urlConversationContextId, Character.MAX_RADIX));
 			}
 			else
@@ -122,7 +142,7 @@ public class ConversationManager
 				}
 			}
 			
-			context.getExternalContext().getRequestMap().put(CONVERSATION_CONTEXT_REQ, conversationContextId);
+			requestMap.put(CONVERSATION_CONTEXT_REQ, conversationContextId);
 		}
 		
 		return conversationContextId;
@@ -234,21 +254,6 @@ public class ConversationManager
 	{
 		return registeredEndConversations;
 	}
-
-	/**
-	 * Inject all beans of the current conversation
-	 * @see ConversationContext#injectConversationBeans(FacesContext) 
-	protected void injectConversationBeans(FacesContext context)
-	{
-		ConversationContext conversationContext = getConversationContext();
-		if (conversationContext == null)
-		{
-			return;
-		}
-		
-		conversationContext.injectConversationBeans(context);
-	}
-	 */
 
 	/**
 	 * check if we have a conversation context

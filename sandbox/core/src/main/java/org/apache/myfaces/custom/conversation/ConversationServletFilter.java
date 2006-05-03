@@ -9,11 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class ConversationServletFilter implements Filter
 {
 	public final static String CONVERSATION_FILTER_CALLED = "org.apache.myfaces.conversation.ConversationServletFilter.CALLED";
-	
+
+	private final static ThreadLocal externalContext = new ThreadLocal();  
+
 	public void init(FilterConfig arg0) throws ServletException
 	{
 	}
@@ -26,10 +29,17 @@ public class ConversationServletFilter implements Filter
 		{
 			if (request instanceof HttpServletRequest)
 			{
-				conversationManager = ConversationManager.getInstance(((HttpServletRequest) request).getSession(false));
-				if (conversationManager != null)
+				HttpServletRequest httpRequest = (HttpServletRequest) request;
+				HttpSession httpSession = httpRequest.getSession(false);
+				if (request != null)
 				{
-					conversationManager.attachPersistence();
+					conversationManager = ConversationManager.getInstance(httpSession);
+					if (conversationManager != null)
+					{
+						externalContext.set(ConversationExternalContext.create(httpRequest));
+						
+						conversationManager.attachPersistence();
+					}
 				}
 			}
 			
@@ -42,14 +52,26 @@ public class ConversationServletFilter implements Filter
 		}
 		finally
 		{
-			if (conversationManager != null)
+			try
 			{
-				conversationManager.detachPersistence();
+				if (conversationManager != null)
+				{
+					conversationManager.detachPersistence();
+				}
+			}
+			finally
+			{
+				externalContext.set(null);
 			}
 		}
 	}
 
 	public void destroy()
 	{
+	}
+	
+	protected static ConversationExternalContext getConversationExternalContext()
+	{
+		return (ConversationExternalContext) externalContext.get();
 	}
 }
