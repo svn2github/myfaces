@@ -68,24 +68,7 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-	<!-- managed bean for the pagelet -->
-	 <managed-bean>
-       <managed-bean-name>pageletBean</managed-bean-name>
-       <managed-bean-class>org.apache.myfaces.examples.pagelet.PageletTestBean</managed-bean-class>
-       <managed-bean-scope>application</managed-bean-scope>
-   </managed-bean>
-   
-   <managed-bean>
-       <managed-bean-name>componentBean</managed-bean-name>
-       <managed-bean-class>org.apache.myfaces.examples.pagelet.ComponentBean</managed-bean-class>
-       <managed-bean-scope>request</managed-bean-scope>
-   </managed-bean>
-   
-    <managed-bean>
-       <managed-bean-name>dummySpellchecker</managed-bean-name>
-       <managed-bean-class>org.apache.myfaces.examples.pagelet.DummySpellchecker</managed-bean-class>
-       <managed-bean-scope>application</managed-bean-scope>
-   </managed-bean>
+
 
   <managed-bean>
     <managed-bean-name>userHandler</managed-bean-name>
