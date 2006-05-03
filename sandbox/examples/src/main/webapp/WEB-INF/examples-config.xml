@@ -68,6 +68,25 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
+	<!-- managed bean for the pagelet -->
+	 <managed-bean>
+       <managed-bean-name>pageletBean</managed-bean-name>
+       <managed-bean-class>org.apache.myfaces.examples.pagelet.PageletTestBean</managed-bean-class>
+       <managed-bean-scope>application</managed-bean-scope>
+   </managed-bean>
+   
+   <managed-bean>
+       <managed-bean-name>componentBean</managed-bean-name>
+       <managed-bean-class>org.apache.myfaces.examples.pagelet.ComponentBean</managed-bean-class>
+       <managed-bean-scope>request</managed-bean-scope>
+   </managed-bean>
+   
+    <managed-bean>
+       <managed-bean-name>dummySpellchecker</managed-bean-name>
+       <managed-bean-class>org.apache.myfaces.examples.pagelet.DummySpellchecker</managed-bean-class>
+       <managed-bean-scope>application</managed-bean-scope>
+   </managed-bean>
+
   <managed-bean>
     <managed-bean-name>userHandler</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.examples.inputsuggest.UserHandler</managed-bean-class>
@@ -680,14 +699,53 @@
 		</navigation-case>
 	</navigation-rule>
 	<!-- navigational rules for the wizard end -->
-
+    <!-- navigational rules for the conversational wizard -->
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_scope_shop_conversation</from-outcome>
+			<to-view-id>/scopeshopconversation/start.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshopconversation/page1.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>go_next</from-outcome>
+			<to-view-id>/scopeshopconversation/page2.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshopconversation/page2.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>go_next</from-outcome>
+			<to-view-id>/scopeshopconversation/page3.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>go_reset</from-outcome>
+			<to-view-id>/scopeshopconversation/resetscope.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshopconversation/page3.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>go_previous</from-outcome>
+			<to-view-id>/scopeshopconversation/page2.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/scopeshopconversation/*</from-view-id>
+		<navigation-case>
+			<from-outcome>go_first</from-outcome>
+			<to-view-id>/scopeshopconversation/page1.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>go_start</from-outcome>
+			<to-view-id>/scopeshopconversation/start.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>go_home</from-outcome>
+			<to-view-id>/home.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- navigational rules for the wizard end -->
 </faces-config>
-
-
-
-
-
-
-
-
-
