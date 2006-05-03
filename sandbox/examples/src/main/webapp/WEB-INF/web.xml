@@ -107,11 +107,7 @@
     <servlet-class>org.apache.myfaces.shared_tomahawk.util.servlet.SourceCodeServlet</servlet-class>
   </servlet>
   <!-- Spellchecker Servlet -->
-  <servlet>
-    <servlet-name>Spellchecker Servlet</servlet-name>
-    <servlet-class>org.apache.myfaces.custom.pagelet.AjaxSpellcheckerServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+  
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
