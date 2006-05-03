@@ -159,7 +159,6 @@
 
 				<h:commandLink value="submit" action="#{pageletBean.doaction}" />
 			</h:form>
-			<span style="text-align:right">&copy;&nbsp;2005&nbsp;<a href="http://www.irian.at/">IRIAN Solutions</a></span>
 		</f:view>
 	</body>
 </html>
