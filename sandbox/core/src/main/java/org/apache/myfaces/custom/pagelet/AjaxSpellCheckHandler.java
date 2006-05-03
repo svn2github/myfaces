@@ -72,7 +72,7 @@ public class AjaxSpellCheckHandler {
 
         if (params.length == 1) {
             PrintWriter writer = servletResponse.getWriter();
-            writer.write(HTMLDecoder.decode(removeSpan(params[0])));
+            writer.write(removeSpan(params[0]));
             servletResponse.flushBuffer();
         } else if (params.length > 2) {
             String        value   = params[0];
