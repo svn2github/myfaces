@@ -120,10 +120,6 @@
     <servlet-name>SourceCodeServlet</servlet-name>
     <url-pattern>*.source</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>Spellchecker Servlet</servlet-name>
-    <url-pattern>/org/apache/myfaces/ajax/spellchecker</url-pattern>
-  </servlet-mapping>
   <welcome-file-list>
   	<welcome-file>index.html</welcome-file>
   	<welcome-file>index.htm</welcome-file>
