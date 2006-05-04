@@ -130,6 +130,7 @@ Sandbox-related entities.
 <!ENTITY html_timed_notifier_attributes	SYSTEM "entities/html_timed_notifier_attributes.xml">
 <!ENTITY start_conversation_attributes	SYSTEM "entities/start_conversation_attributes.xml">
 <!ENTITY standard_conversation_attributes	SYSTEM "entities/standard_conversation_attributes.xml">
+<!ENTITY start_conversation_attributes	SYSTEM "entities/start_conversation_attributes.xml">
 <!ENTITY conversation_attributes	SYSTEM "entities/conversation_attributes.xml">
 ]>
 

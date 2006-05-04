@@ -94,6 +94,11 @@
 	            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
                 <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
             </h:panelGrid>
+            <h:panelGrid style="padding-left:25px">
+                <h:outputLink value="ajaxChildComboBox.jsf" >
+                    <f:verbatim>Ajax-enabled combo box - reloads its contents when the value of another combo box is changed</f:verbatim>
+                </h:outputLink>
+            </h:panelGrid>
 
             <h:outputText value="Conversation"/>
             <h:panelGrid style="padding-left:25px">

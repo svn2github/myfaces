@@ -24,6 +24,7 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.myfaces.custom.requestParameterProvider.RequestParameterProviderManager;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
@@ -76,7 +77,14 @@ public class ConversationManager
 			{
 				throw new IllegalStateException("ConversationServletFilter not called. Please configure the filter org.apache.myfaces.custom.conversation.ConversationServletFilter in your web.xml to cover your faces requests.");
 			}
+			
+			// create manager
 			conversationManager = new ConversationManager();
+			
+			// initialize environmental systems
+			RequestParameterProviderManager.getInstance(context).register(new ConversationRequestParameterProvider());
+
+			// set mark
 			context.getExternalContext().getSessionMap().put(CONVERSATION_MANAGER_KEY, conversationManager);
 		}
 		
@@ -262,8 +270,10 @@ public class ConversationManager
 	{
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		return context.getExternalContext().getRequestMap().containsKey(CONVERSATION_CONTEXT_REQ) ||
-			context.getExternalContext().getRequestParameterMap().containsKey(CONVERSATION_CONTEXT_PARAM);
+		return
+			(context.getExternalContext().getRequestMap().containsKey(CONVERSATION_CONTEXT_REQ) ||
+			context.getExternalContext().getRequestParameterMap().containsKey(CONVERSATION_CONTEXT_PARAM)) &&
+			getConversationContext() != null;
 	}
 
 	/**

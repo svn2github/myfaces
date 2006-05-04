@@ -67,6 +67,7 @@ public class ConversationViewHandler extends ViewHandler
 
 	public String getActionURL(FacesContext context, String viewId)
 	{
+/*		
 		ConversationManager conversationManager = ConversationManager.getInstance(context);
 		if (conversationManager.hasConversationContext())
 		{
@@ -86,8 +87,11 @@ public class ConversationViewHandler extends ViewHandler
 		}
 		else
 		{
+*/		
 			return original.getActionURL(context, viewId);
+/*			
 		}
+*/		
 	}
 
 	public String getResourceURL(FacesContext context, String path)
