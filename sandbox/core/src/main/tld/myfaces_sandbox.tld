@@ -212,6 +212,33 @@ Sandbox-related entities.
         &suggest_ajax_attributes;
     </tag>
 
+    <!-- Ajax child combobox  -->
+    <tag>
+        <name>ajaxChildComboBox</name>
+        <tag-class>org.apache.myfaces.custom.ajaxchildcombobox.AjaxChildComboBoxTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Refreshes contents through an ajax call when the parent combo box's value is changed 
+        </description>
+        &standard_select_one_listbox_attributes;
+        &ext_escape_attribute;
+        &user_role_attributes;
+        &ext_forceId_attribute;
+        &display_value_only_attributes;
+        <attribute>
+	    <name>ajaxSelectItemsMethod</name>
+	    <required>true</required>
+	    <rtexprvalue>false</rtexprvalue>
+	    <description>Method to call via ajax to reload the combo box</description>
+	</attribute>
+        <attribute>
+	    <name>parentComboBox</name>
+	    <required>false</required>
+	    <rtexprvalue>false</rtexprvalue>
+	    <description>id of the parent combo box</description>
+	</attribute>
+    </tag>
+
     <!-- tablesuggestajax -->
 	<tag>
 		<name>tableSuggestAjax</name>
@@ -1047,6 +1074,7 @@ Sandbox-related entities.
 		&html_timed_notifier_attributes;
 	</tag>
 
+
 	<!-- conversation -->
 	<tag>
 		<name>startConversation</name>
@@ -1074,7 +1102,4 @@ Sandbox-related entities.
 		&standard_conversation_attributes;
 		&conversation_attributes;
 	</tag>
-	
-	
-	
 </taglib>
