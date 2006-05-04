@@ -913,6 +913,8 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+        <!-- 
+        commenting this out for TOMAHAWK-405 - dennisbyrne
          <attribute>
             <name>renderAll</name>
             <required>false</required>
@@ -922,7 +924,7 @@
                 If set to true all Items are rendered and other methods, like CSS
                 should be used to hide them as necesary
             </description>
-        </attribute>
+        </attribute> -->
         &ui_panel_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
