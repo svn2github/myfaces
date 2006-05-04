@@ -68,8 +68,13 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-
-
+    <!-- managed bean for ajax child combo box component -->
+    <managed-bean>
+        <managed-bean-name>ajaxChildComboBoxBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.ajaxchildcombobox.AjaxChildComboBoxBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
   <managed-bean>
     <managed-bean-name>userHandler</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.examples.inputsuggest.UserHandler</managed-bean-class>
@@ -562,6 +567,7 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 
+
     <!-- conversation -->
 	<managed-bean>
 		<managed-bean-name>convData</managed-bean-name>
@@ -569,6 +575,7 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	
+
     <!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>
@@ -731,4 +738,12 @@
 		</navigation-case>
 	</navigation-rule>
 	<!-- navigational rules for the wizard end -->
+    <!--<application>-->
+        <!--<navigation-handler>-->
+            <!--org.apache.myfaces.sandbox.application.jsp.RequestParameterProviderNavigationHandler-->
+        <!--</navigation-handler>-->
+        <!--<view-handler>-->
+            <!--org.apache.myfaces.sandbox.application.jsp.RequestParameterProviderViewHandler-->
+        <!--</view-handler>-->
+    <!--</application>-->
 </faces-config>
