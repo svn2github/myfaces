@@ -97,7 +97,7 @@ function _MyFaces_inputAjax_displayError(elname, severity, summary, detail, styl
 {
     var summaryAndDetail = summary;
     if (detail) summaryAndDetail += ": " + detail;
-    var ajaxMessagesSpan = document.getElementById("_idJsp1:_idJsp23");
+    var ajaxMessagesSpan = document.getElementById("_id1:_id23");
     if (ajaxMessagesSpan)
     {
         ajaxMessagesSpan.innerHTML += summaryAndDetail + '<br/>';

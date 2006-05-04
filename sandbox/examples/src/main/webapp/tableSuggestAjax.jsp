@@ -30,16 +30,16 @@
 
 <f:view>
     
-   <h:form>
+   <h:form id="ajaxform">
 
      <f:verbatim><br/><br/><br/><br/></f:verbatim>
 
      <h:panelGrid columns="2">
         <h:panelGrid columns="4">
          <f:verbatim> City Field TableSuggest <br/>  (Paginator) <br/> Suggest starts with 2. char </f:verbatim>
-         <s:tableSuggestAjax var="address" id="cityField" startRequest="2"
+         <s:tableSuggestAjax var="address" id="suggest" startRequest="2"
                              nextPageFieldClass="ajaxNextTablePageField"
-                             value="#{inputSuggestAjax.suggestValue}"
+                             value="#{inputSuggestAjax.suggestValue}" betweenKeyUp="300"
                              columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
                              suggestedItemsMethod="#{inputSuggestAjax.getAddressList}"
                              maxSuggestedItems="10" tableStyleClass="ajaxTable">
@@ -63,10 +63,10 @@
              </t:column>
          </s:tableSuggestAjax>
          <f:verbatim> City Field TableSuggest <br/>  (Scrolling) <br/> If first chars are "as" scrolling list appears </f:verbatim>
-         <s:tableSuggestAjax var="address" id="cityField2" tableStyleClass="ajaxTable"
-                             nextPageFieldClass="ajaxNextTablePageField"
+         <s:tableSuggestAjax var="address" id="cityField2" tableStyleClass="ajaxTableWidth"
+                             nextPageFieldClass="ajaxNextTablePageField" betweenKeyUp="300"
                              columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
-                             maxSuggestedItems="50" popupStyle="position:absolute; z-index:100000; overflow:auto;height:200px;"
+                             maxSuggestedItems="50" popupStyle="position:absolute; z-index:100000; overflow:auto; height:200px;"
                              suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
             <t:column>
                  <s:outputText for="cityField2" label="#{address.city}"/>
@@ -79,23 +79,21 @@
              </t:column>
          </s:tableSuggestAjax>
      </h:panelGrid>
-     <h:panelGrid>
-         <h:commandButton/>
-         <h:outputText value="Street"/>
-         <t:inputText id="streetNameField" />
-         <h:outputText value="State"/>
-         <t:selectOneMenu id="stateField">
-              <f:selectItem value="" itemLabel="NY" itemValue="11"/>
-              <f:selectItem value="" itemLabel="IL" itemValue="12"/>
-              <f:selectItem value="" itemLabel="NW" itemValue="13"/>
-              <f:selectItem value="" itemLabel="SJ" itemValue="14"/>
-              <f:selectItem value="" itemLabel="KL" itemValue="15"/>
-              <f:selectItem value="" itemLabel="MH" itemValue="16"/>
-         </t:selectOneMenu>
-     </h:panelGrid>
+         <h:panelGrid>
+             <h:commandButton/>
+             <h:outputText value="Street"/>
+             <t:inputText id="streetNameField" />
+             <h:outputText value="State"/>
+             <t:selectOneMenu id="stateField">
+                  <f:selectItem value="" itemLabel="NY" itemValue="11"/>
+                  <f:selectItem value="" itemLabel="IL" itemValue="12"/>
+                  <f:selectItem value="" itemLabel="NW" itemValue="13"/>
+                  <f:selectItem value="" itemLabel="SJ" itemValue="14"/>
+                  <f:selectItem value="" itemLabel="KL" itemValue="15"/>
+                  <f:selectItem value="" itemLabel="MH" itemValue="16"/>
+             </t:selectOneMenu>
+         </h:panelGrid>
  </h:panelGrid>
-                  <f:verbatim><br/><br/><br/><br/><br/></f:verbatim>
-     <s:dojoInitializer debugConsole="true"/>
     </h:form>
     
 </f:view>

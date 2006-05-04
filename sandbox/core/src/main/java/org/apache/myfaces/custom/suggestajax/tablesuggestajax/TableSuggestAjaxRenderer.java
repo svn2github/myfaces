@@ -50,7 +50,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     private static final Log log = LogFactory.getLog(TableSuggestAjaxRenderer.class);
 
     public static final int DEFAULT_START_REQUEST = 0;
-    public static final int DEFAULT_BETWEEN_KEY_UP = 0;
+    public static final int DEFAULT_BETWEEN_KEY_UP = 200;
 
    /**
      * Encodes any stand-alone javascript functions that are needed.
@@ -115,12 +115,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         encodeJavascript(context,component);
 
        tableSuggestAjax.getAttributes().put("autocomplete","off");
-
-    /*     String oldStyleClass = tableSuggestAjax.getStyleClass();
-    tableSuggestAjax.setStyleClass(
-            (oldStyleClass!=null && oldStyleClass.length()>=0 ? oldStyleClass : "")+" myFacesTableSuggestAjax");
-
-    tableSuggestAjax.setStyleClass(oldStyleClass);*/
 
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
@@ -208,19 +202,12 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String tableSuggestVar = "tableSuggest"+clientId.replace(':','_');
 
         //doing ajax request and handling the response
-        buf.append(   "var "+tableSuggestVar+" = new org_apache_myfaces_TableSuggest();\n"
+        buf.append(   "var "+tableSuggestVar+" = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", "+ betweenKeyUp +", "+ startRequest +");\n"
 
-                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) {\n"
-                    + "   if( (evt.keyCode == 13) || (evt.keyCode == 9) )\n"  //enter,tab
-                    + "      document.onclick();\n"
-                    + "   else\n"
-                    + tableSuggestVar+".decideRequest(\""+ clientId +"\", \""+ ajaxUrl +"\", "+ betweenKeyUp +","+ startRequest +", evt);\n"
-                    +"  });\n");
+                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { "+ tableSuggestVar+".decideRequest(evt); });\n");
 
         //if setting the focus outside the input field, popup should not be displayed
-        buf.append("dojo.event.connect(document, \"onclick\", function(evt) {\n"
-                    + "     "+tableSuggestVar+".resetSettings(\"" + clientId+"_auto_complete\");\n"
-                    + "});\n");
+        buf.append("dojo.event.connect(document, \"onclick\", function(evt) { "+tableSuggestVar+".resetSettings(); });\n");
 
         return buf;
     }

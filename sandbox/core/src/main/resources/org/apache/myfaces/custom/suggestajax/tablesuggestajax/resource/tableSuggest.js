@@ -15,22 +15,28 @@
  */
 
 
-org_apache_myfaces_TableSuggest = function()
+org_apache_myfaces_TableSuggest = function(ajaxUrl,
+                                           millisBetweenKeyUps,
+                                           startChars)
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
     this.inputField = null;
-
     this.popUp = null;
-    this.popUpStyle = null;
+    this.url = ajaxUrl;
 
     this.firstHighlightedElem = null;
     this.actualHighlightedElem = null;
 
     this.iframe = null;
+
     this.requestLocker = false;
 
+    this.startChars = startChars;
+
     this.lastKeyPressTime = new Date();
+    this.millisBetweenKeyUps = millisBetweenKeyUps;
+
     this.scrollingRow = 0;
 
     //puting the values from the choosen row into the fields
@@ -120,14 +126,11 @@ org_apache_myfaces_TableSuggest = function()
         }
     };
 
-    org_apache_myfaces_TableSuggest.prototype.handleRequestResponse = function(url, tableSuggest, keyCode)
+    org_apache_myfaces_TableSuggest.prototype.handleRequestResponse = function(event)
     {
-        if(!this.popUpStyle)
-            this.popUpStyle = this.popUp.style.cssText;
-        else
-            this.popUp.style.cssText = this.popUpStyle;
+        var tableSuggest = this;
 
-        if(keyCode == 40)  //down key
+        if(event.keyCode == 40)  //down key
         {
             if(!this.firstHighlightedElem)
             {
@@ -173,7 +176,7 @@ org_apache_myfaces_TableSuggest = function()
                 }
             }
         }
-        else if(keyCode == 38)  //up key
+        else if(event.keyCode == 38)  //up key
         {
             var prevElem = dojo.dom.prevElement(this.actualHighlightedElem);
 
@@ -203,14 +206,19 @@ org_apache_myfaces_TableSuggest = function()
                     dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
             }
         }
-        else
+        else if( !this.requestLocker && this.requestBetweenKeyUpEvents() )
         {
+            this.requestLocker = true;
+            dojo.debug("taking lock, starting AJAX request");
+
+            var idValuePair = "&" + this.inputField.id + "=" + this.inputField.value;
+
             this.firstHighlightedElem = null;
             this.actualHighlightedElem = null;
 
             dojo.io.bind
             ({
-               url:  url,
+               url:  this.url + idValuePair,
                handle: function(type, data, evt)
                        {
                             dojo.debug("after response");
@@ -251,12 +259,16 @@ org_apache_myfaces_TableSuggest = function()
                               }
 
                               tableSuggest.handleIFrame();
+
+                              dojo.debug("releasing lock");
+                              tableSuggest.requestLocker = false;
                             }
                             else if(type == "error")
                             {
                               dojo.debug("error during response");
                               //dojo.debug(data);
                               // here, data is our error object
+                              tableSuggest.requestLocker = false;
                             }
                          },
                mimetype: "text/plain"
@@ -346,11 +358,11 @@ org_apache_myfaces_TableSuggest = function()
         dojo.html.addClass(elem,"tableSuggestOut");
     };
 
-    org_apache_myfaces_TableSuggest.prototype.requestBetweenKeyUpEvents = function(millisBetweenKeyPress)
+    org_apache_myfaces_TableSuggest.prototype.requestBetweenKeyUpEvents = function()
     {
         var currentTime = new Date();
 
-        if( (currentTime - this.lastKeyPressTime) > millisBetweenKeyPress)
+        if( (currentTime - this.lastKeyPressTime) > this.millisBetweenKeyUps)
         {
             dojo.debug(currentTime - this.lastKeyPressTime);
             this.lastKeyPressTime = currentTime;
@@ -397,27 +409,10 @@ org_apache_myfaces_TableSuggest = function()
         }
     };
 
-    org_apache_myfaces_TableSuggest.prototype.lastKeyUpEvent = function()
-    {
-        //dojo.lang.setTimeout('',4000);
-        var currentTime = new Date();
-        dojo.debug("last keyUpEvent?");
-        dojo.debug(currentTime - this.lastKeyPressTime);
-        if( (currentTime - this.lastKeyPressTime) > 250)
-        {
-            dojo.debug("was last keyUpEvent");
-            return true;
-        }
-        else return false;
-    };
-
     org_apache_myfaces_TableSuggest.prototype.resetSettings = function()
     {
         if(this.popUp)
-        {
             dojo.dom.removeChildren(this.popUp);
-            this.popUp.style.cssText = "";
-        }
 
         if(this.iframe && this.popUp)
             this.popUp.parentNode.removeChild(this.popUp.parentNode.childNodes[0])
@@ -429,31 +424,31 @@ org_apache_myfaces_TableSuggest = function()
         this.scrollingRow = 0;
     };
 
-    org_apache_myfaces_TableSuggest.prototype.decideRequest = function(clientId, ajaxUrl,
-                                                                      millisBetweenKeyUps, startChars, event)
+    org_apache_myfaces_TableSuggest.prototype.decideRequest = function(event)
     {
-        if( !this.requestLocker && (this.requestBetweenKeyUpEvents(millisBetweenKeyUps) || this.lastKeyUpEvent()) )
+        if( (event.keyCode == 13) || (event.keyCode == 9) ) //enter,tab
+             this.resetSettings();
+        else
         {
-            this.requestLocker = true;
+            this.inputField = dojo.byId(event.target.id);
+            this.popUp = dojo.byId(event.target.id+"_auto_complete");
 
-            this.inputField = dojo.byId(clientId);
-            this.popUp = dojo.byId(clientId+"_auto_complete");
-            var inputValue = this.inputField.value;
-            var url = ajaxUrl + "&" + clientId + "=" + inputValue;
+            var inputValue = event.target.value;
 
-            if(startChars)
+            if(this.startChars)
             {
-                if(inputValue.length >= startChars)
-                    this.handleRequestResponse(url, this, event.keyCode);
+                if(inputValue.length >= this.startChars)
+                    this.handleRequestResponse(event);
+                else
+                    this.resetSettings();
             }
             else if(inputValue != "" )
-                this.handleRequestResponse(url, this, event.keyCode);
+                this.handleRequestResponse(event);
 
             if(inputValue == "" )
                 this.resetSettings();
-
-            this.requestLocker = false;
         }
+        dojo.debug("leaving decide function");
     };
 
 }
