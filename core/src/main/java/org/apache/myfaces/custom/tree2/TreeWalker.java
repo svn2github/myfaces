@@ -16,7 +16,7 @@
 
 package org.apache.myfaces.custom.tree2;
 
-interface TreeWalker
+public interface TreeWalker
 {
     /**
      * Getter for the check state property.  Indicates whether or not the TreeWalker
