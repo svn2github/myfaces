@@ -222,16 +222,19 @@ public class HtmlMessageRenderer
             if (child instanceof HtmlOutputLabel)
             {
                 String forAttr = ((HtmlOutputLabel)child).getFor();
-                UIComponent input = child.findComponent(forAttr);
-                if (input == null)
+                if (forAttr != null)
                 {
-                    log.warn("Unable to find component '" + forAttr + "' (calling findComponent on component '" + child.getClientId(facesContext) + "')");
-                }
-                else
-                {
-                    map.put(input.getClientId(facesContext),
-                            new MessageLabelInfo(
-                                    input,getComponentText(facesContext, (HtmlOutputLabel)child)));
+                    UIComponent input = child.findComponent(forAttr);
+                    if (input == null)
+                    {
+                        log.warn("Unable to find component '" + forAttr + "' (calling findComponent on component '" + child.getClientId(facesContext) + "')");
+                    }
+                    else
+                    {
+                        map.put(input.getClientId(facesContext),
+                                new MessageLabelInfo(
+                                        input,getComponentText(facesContext, (HtmlOutputLabel)child)));
+                    }
                 }
             }
             else
