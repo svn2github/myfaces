@@ -64,17 +64,20 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
      */
     public void decode(FacesContext context, UIComponent component)
     {
-        String reqValue = (String) context.getExternalContext()
-                .getRequestParameterMap().get(
-                        HtmlRendererUtils
-                                .getHiddenCommandLinkFieldName(findNestingForm(
-                                        component, context).getFormName()));
-        UIComponent source = context.getViewRoot().findComponent(reqValue);
-        if (source instanceof UINavigationMenuItem)
+        FormInfo nestingForm = findNestingForm(component, context);
+        if (nestingForm != null)
         {
-            UINavigationMenuItem item = (UINavigationMenuItem) source;
-            item.queueEvent(new ActionEvent(item));
+            String fieldName = HtmlRendererUtils.getHiddenCommandLinkFieldName(nestingForm.getFormName());
+            String reqValue = (String) context.getExternalContext()
+            .getRequestParameterMap().get(fieldName);
+            UIComponent source = context.getViewRoot().findComponent(reqValue);
+            if (source instanceof UINavigationMenuItem)
+            {
+                UINavigationMenuItem item = (UINavigationMenuItem) source;
+                item.queueEvent(new ActionEvent(item));
+            }
         }
+        
     }
 
     /**
