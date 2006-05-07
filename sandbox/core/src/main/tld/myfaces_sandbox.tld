@@ -131,6 +131,7 @@ Sandbox-related entities.
 <!ENTITY start_conversation_attributes	SYSTEM "entities/start_conversation_attributes.xml">
 <!ENTITY standard_conversation_attributes	SYSTEM "entities/standard_conversation_attributes.xml">
 <!ENTITY conversation_attributes	SYSTEM "entities/conversation_attributes.xml">
+<!ENTITY ext_escape_attribute	SYSTEM "entities-share/ext_escape_attribute.xml">
 ]>
 
 <taglib>
