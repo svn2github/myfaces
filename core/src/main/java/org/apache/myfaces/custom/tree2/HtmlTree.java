@@ -19,6 +19,7 @@ import javax.faces.component.UICommand;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
 import java.util.Map;
 
 /**
@@ -26,7 +27,6 @@ import java.util.Map;
  * state of the nodes in the tree.
  *
  * @author Sean Schofield
- * @version $Revision$ $Date$
  */
 public class HtmlTree extends UITreeData
 {
@@ -34,7 +34,13 @@ public class HtmlTree extends UITreeData
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlTree2";
     private UICommand _expandControl;
     private String _varNodeToggler;
-    //private String _selectedNodeId;
+    private Boolean _showNav;
+    private Boolean _showLines;
+    private Boolean _clientSideToggle;
+    private Boolean _showRootNode;
+    private Boolean _preserveToggle;
+    private String _javascriptLocation;
+    private String _imageLocation;
 
     /**
      * Constructor
@@ -44,17 +50,28 @@ public class HtmlTree extends UITreeData
         setRendererType(DEFAULT_RENDERER_TYPE);
         _expandControl = new HtmlCommandLink();
         _expandControl.setParent(this);
+        _clientSideToggle = Boolean.TRUE;
+        _preserveToggle = Boolean.TRUE;
+        _showRootNode = Boolean.TRUE;
+        _showNav = Boolean.TRUE;
+        _showLines = Boolean.TRUE;
     }
 
     // see superclass for documentation
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[2];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = _varNodeToggler;
-        //values[2] = _selectedNodeId;
+        values[2] = _showLines;
+        values[3] = _showNav;
+        values[4] = _clientSideToggle;
+        values[5] = _showRootNode;
+        values[6] = _preserveToggle;
+        values[7] = _javascriptLocation;
+        values[8] = _imageLocation;
 
-        return ((Object) (values));
+        return (Object)values;
     }
 
     // see superclass for documentation
@@ -63,7 +80,13 @@ public class HtmlTree extends UITreeData
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         setVarNodeToggler((String)values[1]);
-        //_selectedNodeId = (String)values[2];
+        setShowLines(((Boolean)values[2]).booleanValue());
+        setShowNav(((Boolean)values[3]).booleanValue());
+        setClientSideToggle(((Boolean)values[4]).booleanValue());
+        setShowRootNode(((Boolean)values[5]).booleanValue());
+        setPreserveToggle(((Boolean)values[6]).booleanValue());
+        setJavascriptLocation((String)values[7]);
+        setImageLocation((String)values[8]);
     }
 
     // see superclass for documentation
@@ -100,24 +123,108 @@ public class HtmlTree extends UITreeData
         _expandControl.setAction(actionBinding);
     }
 
-//    /**
-//     * Implements the {@link javax.faces.event.ActionListener} interface.  Basically, this
-//     * method is used to listen for node selection events (when a user has clicked on a
-//     * leaf node.)
-//     *
-//     * @param event ActionEvent
-//     */
-//    public void setNodeSelected(ActionEvent event)
-//    {
-//        _selectedNodeId = getNodeId();
-//    }
-//
-//    /**
-//     * Indicates whether or not the current {@link TreeNode} is selected.
-//     * @return boolean
-//     */
-//    public boolean isNodeSelected()
-//    {
-//        return (getNodeId() != null) ? getNodeId().equals(_selectedNodeId) : false;
-//    }
+    public void setShowNav(boolean showNav)
+    {
+        _showNav = Boolean.valueOf(showNav);
+    }
+
+    public boolean isShowNav()
+    {
+        if (_showNav != null) return _showNav.booleanValue();
+        ValueBinding vb = getValueBinding("showNav");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v == null ||  v.booleanValue();
+    }
+
+    public void setShowLines(boolean showLines)
+    {
+        _showLines = Boolean.valueOf(showLines);
+    }
+
+    public boolean isShowLines()
+    {
+        if (_showLines != null) return _showLines.booleanValue();
+        ValueBinding vb = getValueBinding("showLines");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v == null || v.booleanValue();
+    }
+
+    public void setClientSideToggle(boolean clientSideToggle)
+    {
+        _clientSideToggle = Boolean.valueOf(clientSideToggle);
+    }
+
+    public boolean isClientSideToggle()
+    {
+        if (_clientSideToggle != null) return _clientSideToggle.booleanValue();
+        ValueBinding vb = getValueBinding("clientSideToggle");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v == null || v.booleanValue();
+    }
+
+    public void setShowRootNode(boolean showRootNode)
+    {
+        _showRootNode = Boolean.valueOf(showRootNode);
+    }
+
+    public boolean isShowRootNode()
+    {
+        if (_showRootNode != null) return _showRootNode.booleanValue();
+        ValueBinding vb = getValueBinding("showRootNode");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v == null || v.booleanValue();
+    }
+
+    public void setPreserveToggle(boolean preserveToggle)
+    {
+        _preserveToggle = Boolean.valueOf(preserveToggle);
+    }
+
+    public boolean isPreserveToggle()
+    {
+        if (_preserveToggle != null) return _preserveToggle.booleanValue();
+        ValueBinding vb = getValueBinding("preserveToggle");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v == null || v.booleanValue();
+    }
+
+    public void setJavascriptLocation(String javascriptLocation)
+    {
+        _javascriptLocation = javascriptLocation;
+    }
+
+    public String getJavascriptLocation()
+    {
+        if (_javascriptLocation != null) return _javascriptLocation;
+
+        ValueBinding vb = getValueBinding("javascriptLocation");
+        if (vb == null)
+        {
+            return null;
+        }
+        else
+        {
+            return (String)vb.getValue(getFacesContext());
+        }
+    }
+
+    public void setImageLocation(String imageLocation)
+    {
+        _imageLocation = imageLocation;
+    }
+
+    public String getImageLocation()
+    {
+        if (_imageLocation != null) return _imageLocation;
+
+        ValueBinding vb = getValueBinding("imageLocation");
+        if (vb == null)
+        {
+            return null;
+        }
+        else
+        {
+            return (String)vb.getValue(getFacesContext());
+        }
+    }
 }

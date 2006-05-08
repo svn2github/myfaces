@@ -20,7 +20,6 @@ import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 /**
  * @author Sean Schofield
@@ -37,6 +36,8 @@ public class TreeTag extends UIComponentTagBase //UIComponentBodyTagBase
     private String _clientSideToggle;
     private String _showRootNode;
     private String _preserveToggle;
+    private String _javascriptLocation;
+    private String _imageLocation;
 
     public void release()
     {
@@ -50,6 +51,8 @@ public class TreeTag extends UIComponentTagBase //UIComponentBodyTagBase
         _clientSideToggle = null;
         _showRootNode = null;
         _preserveToggle = null;
+        _javascriptLocation = null;
+        _imageLocation = null;
     }
 
     public String getComponentType()
@@ -105,6 +108,28 @@ public class TreeTag extends UIComponentTagBase //UIComponentBodyTagBase
         _preserveToggle = preserveToggle;
     }
 
+    /**
+     * Overrides the super class method since we cannot store these properties in the component's attribute
+     * map and still have things work with facelets.
+     *
+     * @param javascriptLocation
+     */
+    public void setJavascriptLocation(String javascriptLocation)
+    {
+        _javascriptLocation = javascriptLocation;
+    }
+
+    /**
+     * Overrides the super class method since we cannot store these properties in the component's attribute
+     * map and still have things work with facelets.
+     *
+     * @param imageLocation
+     */
+    public void setImageLocation(String imageLocation)
+    {
+        _imageLocation = imageLocation;
+    }
+
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
@@ -127,10 +152,39 @@ public class TreeTag extends UIComponentTagBase //UIComponentBodyTagBase
             ((HtmlTree)component).setVarNodeToggler(_varNodeToggler);
         }
 
-        setBooleanProperty(component, JSFAttr.SHOW_NAV, _showNav);
-        setBooleanProperty(component, JSFAttr.SHOW_LINES, _showLines);
-        setBooleanProperty(component, JSFAttr.CLIENT_SIDE_TOGGLE, _clientSideToggle);
-        setBooleanProperty(component, JSFAttr.SHOW_ROOT_NODE, _showRootNode);
-        setBooleanProperty(component, JSFAttr.PRESERVE_TOGGLE, _preserveToggle);
+        if (_showNav != null)
+        {
+            ((HtmlTree)component).setShowNav(Boolean.getBoolean(_showNav));
+        }
+
+        if (_showLines != null)
+        {
+            ((HtmlTree)component).setShowLines(Boolean.getBoolean(_showLines));
+        }
+
+        if (_clientSideToggle != null)
+        {
+            ((HtmlTree)component).setClientSideToggle(Boolean.getBoolean(_clientSideToggle));
+        }
+
+        if (_showRootNode != null)
+        {
+            ((HtmlTree)component).setShowRootNode(Boolean.getBoolean(_showRootNode));
+        }
+
+        if (_preserveToggle != null)
+        {
+            ((HtmlTree)component).setPreserveToggle(Boolean.getBoolean(_preserveToggle));
+        }
+
+        if (_javascriptLocation != null)
+        {
+            ((HtmlTree)component).setJavascriptLocation(_javascriptLocation);
+        }
+
+        if (_imageLocation != null)
+        {
+            ((HtmlTree)component).setImageLocation(_imageLocation);
+        }
     }
 }

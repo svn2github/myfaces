@@ -83,8 +83,8 @@ public class HtmlTreeRendererTest extends AbstractTreeTestCase
      */
     public void testHideRootNodeServer() throws Exception
     {
-        tree.getAttributes().put(JSFAttr.CLIENT_SIDE_TOGGLE, Boolean.FALSE);
-        tree.getAttributes().put(JSFAttr.SHOW_ROOT_NODE, Boolean.FALSE);
+        tree.setClientSideToggle(false);
+        tree.setShowRootNode(false);
 
         HtmlTreeRenderer treeRenderer = new HtmlTreeRenderer();
         treeRenderer.encodeChildren(facesContext, tree);
@@ -113,8 +113,8 @@ public class HtmlTreeRendererTest extends AbstractTreeTestCase
      */
     public void testHideRootNodeClient() throws Exception
     {
-        tree.getAttributes().put(JSFAttr.CLIENT_SIDE_TOGGLE, Boolean.TRUE);
-        tree.getAttributes().put(JSFAttr.SHOW_ROOT_NODE, Boolean.FALSE);
+        tree.setClientSideToggle(true);
+        tree.setShowRootNode(false);
 
         HtmlTreeRenderer treeRenderer = new HtmlTreeRenderer();
         treeRenderer.encodeChildren(facesContext, tree);

@@ -21,7 +21,6 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 import javax.faces.component.NamingContainer;
@@ -121,7 +120,7 @@ public class HtmlTreeRenderer extends Renderer
         String nodeId = null;
         HtmlTree tree = (HtmlTree)component;
 
-        if (getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true))
+        if (tree.isClientSideToggle())
         {
             restoreStateFromCookies(context, component);
         }
@@ -142,8 +141,12 @@ public class HtmlTreeRenderer extends Renderer
     {
         HtmlTree tree = (HtmlTree)component;
         // try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode
-        if (!tree.getDataModel().getTreeState().isTransient() && getBoolean(component, JSFAttr.CLIENT_SIDE_TOGGLE, true) && getBoolean(component, JSFAttr.PRESERVE_TOGGLE, true))
+        if (!tree.getDataModel().getTreeState().isTransient()
+                && tree.isClientSideToggle()
+                && tree.isPreserveToggle())
+        {
             restoreStateFromCookies(context, component);
+        }
 
         // write javascript functions
         encodeJavascript(context, component);
@@ -182,8 +185,8 @@ public class HtmlTreeRenderer extends Renderer
             out.writeAttribute("id", clientId, "id");
         }
 
-        boolean clientSideToggle = getBoolean(tree, JSFAttr.CLIENT_SIDE_TOGGLE, true);
-        boolean showRootNode = getBoolean(tree, JSFAttr.SHOW_ROOT_NODE, true);
+        boolean clientSideToggle = tree.isClientSideToggle();
+        boolean showRootNode = tree.isShowRootNode();
 
         TreeState state = tree.getDataModel().getTreeState();
         TreeWalker walker = tree.getDataModel().getTreeWalker();
@@ -244,7 +247,7 @@ public class HtmlTreeRenderer extends Renderer
     protected void encodeTree(FacesContext context, ResponseWriter out, HtmlTree tree, TreeWalker walker)
         throws IOException
     {
-        boolean clientSideToggle = getBoolean(tree, JSFAttr.CLIENT_SIDE_TOGGLE, true);
+        boolean clientSideToggle = tree.isClientSideToggle();
 
         // encode the current node
         HtmlRendererUtils.writePrettyLineSeparator(context);
@@ -301,10 +304,10 @@ public class HtmlTreeRenderer extends Renderer
         TreeNode node = tree.getNode();
 
         // set configurable values
-        boolean showRootNode = getBoolean(tree, JSFAttr.SHOW_ROOT_NODE, true);
-        boolean showNav = getBoolean(tree, JSFAttr.SHOW_NAV, true);
-        boolean showLines = getBoolean(tree, JSFAttr.SHOW_LINES, true);
-        boolean clientSideToggle = getBoolean(tree, JSFAttr.CLIENT_SIDE_TOGGLE, true);
+        boolean showRootNode = tree.isShowRootNode();
+        boolean showNav = tree.isShowNav();
+        boolean showLines = tree.isShowLines();
+        boolean clientSideToggle = tree.isClientSideToggle();
 
         if (clientSideToggle)
         {
@@ -391,8 +394,8 @@ public class HtmlTreeRenderer extends Renderer
         TreeNode node = tree.getNode();
         String nodeId = tree.getNodeId();
         String spanId = TOGGLE_SPAN + ":" + tree.getId() + ":" + nodeId;//TOGGLE_SPAN + nodeId;
-        boolean showLines = getBoolean(tree, JSFAttr.SHOW_LINES, true);
-        boolean clientSideToggle = getBoolean(tree, JSFAttr.CLIENT_SIDE_TOGGLE, true);
+        boolean showLines = tree.isShowLines();
+        boolean clientSideToggle = tree.isClientSideToggle();
         UIComponent nodeTypeFacet = tree.getFacet(node.getType());
         String navSrc = null;
         String altSrc = null;
@@ -604,7 +607,7 @@ public class HtmlTreeRenderer extends Renderer
     private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
     {
         // render javascript function for client-side toggle (it won't be used if user has opted for server-side toggle)
-        String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        String javascriptLocation = ((HtmlTree)component).getJavascriptLocation();
         AddResource addResource = AddResourceFactory.getInstance(context);
         if (javascriptLocation == null)
         {
@@ -622,7 +625,7 @@ public class HtmlTreeRenderer extends Renderer
      * Get the appropriate image src location.  Uses the extension filter mechanism for images if no image
      * location has been specified.
      *
-     * @param context The {@link FacesContex}.  NOTE: If <code>null</code> then context path information
+     * @param context The {@link FacesContext}.  NOTE: If <code>null</code> then context path information
      *    will not be used with extensions filter (assuming no imageLocation specified.)
      * @param component UIComponent
      * @param imageName The name of the image file to use.
@@ -630,7 +633,7 @@ public class HtmlTreeRenderer extends Renderer
      */
     private String getImageSrc(FacesContext context, UIComponent component, String imageName, boolean withContextPath)
     {
-        String imageLocation = (String)component.getAttributes().get(JSFAttr.IMAGE_LOCATION);
+        String imageLocation = ((HtmlTree)component).getImageLocation();
         AddResource addResource = AddResourceFactory.getInstance(context);
         if (imageLocation == null)
         {
