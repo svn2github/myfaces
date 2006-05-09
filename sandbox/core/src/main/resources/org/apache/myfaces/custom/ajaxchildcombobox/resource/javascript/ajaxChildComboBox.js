@@ -1,14 +1,16 @@
-function reloadChildComboBox(url, componentId, parentValue) {
+function reloadChildComboBox(componentId, parentValue) {
     	
+    var childCombo = document.getElementsByName(componentId)[0];
+    var formElement = dojo.dom.getAncestorsByTag(childCombo, "form", true);
+    
     dojo.io.bind({
-        url: url,
+	    formNode: formElement,
         content: {
-	    	affectedAjaxComponent: componentId,
-                parentValue: parentValue
+			affectedAjaxComponent: componentId,
+			parentValue: parentValue
 	    },
         load: function(type, data, evt){ 
             
-            var childCombo = document.getElementsByName(componentId)[0];
             childCombo.options.length = 0;
 	    var data = data.getElementsByTagName('option');
             for (i = 0; i < data.length; i++) {

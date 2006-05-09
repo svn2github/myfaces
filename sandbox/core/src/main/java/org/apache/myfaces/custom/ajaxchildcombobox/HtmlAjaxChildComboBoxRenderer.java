@@ -108,7 +108,7 @@ public class HtmlAjaxChildComboBoxRenderer extends HtmlMenuRenderer implements A
         writer.write("var targetElement = evt.target;");
         writer.write("var targetValue = targetElement.options[targetElement.selectedIndex].value;");
         HtmlRendererUtils.writePrettyLineSeparator(context);
-        writer.write("reloadChildComboBox('" + url + "','" + clientId + "', targetValue);");
+        writer.write("reloadChildComboBox('" + clientId + "', targetValue);");
         HtmlRendererUtils.writePrettyLineSeparator(context);
         writer.write("});");
         writer.endElement(HTML.SCRIPT_ELEM);
