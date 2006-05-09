@@ -57,7 +57,8 @@ public class UITreeDataTest extends AbstractTreeTestCase
      */
     public void testNodeSelected() throws Exception
     {
-        tree.getAttributes().put(JSFAttr.CLIENT_SIDE_TOGGLE, Boolean.FALSE);
+    	tree.setClientSideToggle(false);
+        // tree.getAttributes().put(JSFAttr.CLIENT_SIDE_TOGGLE, Boolean.FALSE);
 
         ActionEvent event = new ActionEvent(new HtmlCommandLink());
 
@@ -67,7 +68,8 @@ public class UITreeDataTest extends AbstractTreeTestCase
 
         assertTrue("Node 0:1:0 should be selected", tree.isNodeSelected());
 
-        tree.getAttributes().put(JSFAttr.CLIENT_SIDE_TOGGLE, Boolean.TRUE);
+    	tree.setClientSideToggle(true);
+        // tree.getAttributes().put(JSFAttr.CLIENT_SIDE_TOGGLE, Boolean.TRUE);
 
         // set the node to be selected
         tree.setNodeId("0:1:0");
