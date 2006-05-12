@@ -21,7 +21,7 @@ package org.apache.myfaces.examples.inputhtmlexample;
  */
 public class EditorFace {
     
-    private String text = "Default unformated text.";
+    private String text = "Default unformatted text.";
     
     // Options
     private boolean allowEditSource = true;
