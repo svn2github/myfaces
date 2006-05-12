@@ -74,6 +74,13 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.8</version>
+      <scope>compile</scope>
+    </dependency>
+
     <!-- provided dependencies -->
 
     <dependency>
