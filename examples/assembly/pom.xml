@@ -63,6 +63,42 @@
               <outputDirectory>${project.build.directory}/war</outputDirectory>
             </configuration>
           </execution>
+          <execution>
+            <id>copy-source</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.tomahawk</groupId>
+                  <artifactId>myfaces-example-blank</artifactId>
+                  <version>${version}</version>
+                  <type>sources</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.tomahawk</groupId>
+                  <artifactId>myfaces-example-simple</artifactId>
+                  <version>${version}</version>
+                  <type>sources</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.tomahawk</groupId>
+                  <artifactId>myfaces-example-tiles</artifactId>
+                  <version>${version}</version>
+                  <type>sources</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.tomahawk</groupId>
+                  <artifactId>myfaces-example-wap</artifactId>
+                  <version>${version}</version>
+                  <type>sources</type>
+                </artifactItem>
+               </artifactItems>
+               <outputDirectory>${project.build.directory}/src</outputDirectory>
+             </configuration>
+           </execution> 
         </executions>
       </plugin>
 
