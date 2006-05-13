@@ -18,7 +18,6 @@ package org.apache.myfaces.custom.conversation;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
 
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
@@ -39,7 +38,8 @@ public class UIEndConversation extends AbstractConversationComponent
     private String onOutcome;
     
     private boolean inited = false;
-    
+
+    /*
 	public static class ConversationEndAction extends AbstractConversationActionListener
 	{
 		public void doConversationAction(AbstractConversationComponent abstractConversationComponent)
@@ -47,6 +47,7 @@ public class UIEndConversation extends AbstractConversationComponent
 			ConversationManager.getInstance().registerEndConversation(getConversationName());
 		}
 	}
+	*/
 	
     public void encodeBegin(FacesContext context) throws IOException
 	{

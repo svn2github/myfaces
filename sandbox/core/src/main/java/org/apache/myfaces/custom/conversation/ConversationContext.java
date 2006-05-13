@@ -16,9 +16,13 @@
 package org.apache.myfaces.custom.conversation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The ConversationContext handles all conversations within the current context 
@@ -27,14 +31,49 @@ import java.util.TreeMap;
  */
 public class ConversationContext
 {
+	private final static Log log = LogFactory.getLog(ConversationContext.class);
+	
+	private final long id;
+	
+	private final Object mutex = new Object();
 	private final Map conversations = new TreeMap();
 	private final List conversationStack = new ArrayList(10);
 	private Conversation currentConversation;
 	
-	protected ConversationContext()
+	private long lastAccess;
+	
+	protected ConversationContext(long id)
 	{
+		this.id = id;
+		touch();
 	}
 
+	protected void touch()
+	{
+		lastAccess = System.currentTimeMillis();
+	}
+	
+	public long getLastAccess()
+	{
+		return lastAccess;
+	}
+
+	public void shutdownContext()
+	{
+		synchronized (mutex)
+		{
+			Iterator iterConversation = conversations.values().iterator();
+			while (iterConversation.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversation.next();
+				conversation.endConversation(false);
+			}
+			
+			conversations.clear();
+			conversationStack.clear();			
+		}
+	}
+	
 	/**
 	 * Start a conversation if not already started.<br />
 	 * All nested conversations (if any) are closed if the conversation already existed.  
@@ -42,18 +81,22 @@ public class ConversationContext
 	 */
 	public void startConversation(String name, boolean persistence)
 	{
-		Conversation conversation = (Conversation) conversations.get(name);
-		if (conversation == null)
+		synchronized (mutex)
 		{
-			conversation = new Conversation(name, persistence);
-			conversations.put(name, conversation);
-			conversationStack.add(conversation);
+			touch();
+			Conversation conversation = (Conversation) conversations.get(name);
+			if (conversation == null)
+			{
+				conversation = new Conversation(name, persistence);
+				conversations.put(name, conversation);
+				conversationStack.add(conversation);
+			}
+			else
+			{
+				endNestedConversations(conversation, false);
+			}
+			currentConversation = conversation;
 		}
-		else
-		{
-			endNestedConversations(conversation, false);
-		}
-		currentConversation = conversation;
 	}
 
 	/**
@@ -61,16 +104,20 @@ public class ConversationContext
 	 */
 	protected void endNestedConversations(Conversation conversation, boolean regularEnd)
 	{
-		while (conversationStack.size()>0)
+		synchronized (mutex)
 		{
-			int index = conversationStack.size()-1;
-			Conversation dependingConversation = (Conversation) conversationStack.get(index);
-			if (conversation == dependingConversation)
+			touch();
+			while (conversationStack.size()>0)
 			{
-				return;
+				int index = conversationStack.size()-1;
+				Conversation dependingConversation = (Conversation) conversationStack.get(index);
+				if (conversation == dependingConversation)
+				{
+					return;
+				}
+	
+				endConversation((Conversation) conversationStack.remove(index), regularEnd);
 			}
-			
-			endConversation((Conversation) conversationStack.remove(index), regularEnd);			
 		}
 	}
 
@@ -79,32 +126,41 @@ public class ConversationContext
 	 */
 	protected void endConversation(Conversation conversation, boolean regularEnd)
 	{
-		conversation.endConversation(regularEnd);
+		synchronized (mutex)
+		{
+			touch();
+			conversation.endConversation(regularEnd);
+			conversations.remove(conversation.getName());
+		}
 	}
-
+	
 	/**
 	 * End the conversation with given name.<br />
 	 * This also automatically closes all nested conversations.
 	 */
 	public void endConversation(String name)
 	{
-		Conversation conversation = (Conversation) conversations.remove(name);
-		if (conversation != null)
+		synchronized (mutex)
 		{
-			while (conversationStack.size()>0)
+			touch();
+			Conversation conversation = (Conversation) conversations.get(name);
+			if (conversation != null)
 			{
-				Conversation dependingConversation = (Conversation) conversationStack.remove(conversationStack.size()-1);
-				endConversation(dependingConversation, false);
-				if (dependingConversation == conversation)
+				while (conversationStack.size()>0)
 				{
-					if (conversationStack.size() > 0)
+					Conversation dependingConversation = (Conversation) conversationStack.get(conversationStack.size()-1);
+					endConversation(dependingConversation, false);
+					if (dependingConversation == conversation)
 					{
-						currentConversation = (Conversation) conversationStack.get(conversationStack.size()-1);
+						if (conversationStack.size() > 0)
+						{
+							currentConversation = (Conversation) conversationStack.get(conversationStack.size()-1);
+						}
+						return;
 					}
-					return;
 				}
+				endConversation(conversation, true);
 			}
-			endConversation(conversation, true);
 		}
 	}
 	
@@ -114,6 +170,7 @@ public class ConversationContext
 	 */
 	public Conversation getCurrentConversation()
 	{
+		touch();
 		return currentConversation;
 	}
 
@@ -122,7 +179,11 @@ public class ConversationContext
 	 */
 	public boolean hasConversation()
 	{
-		return conversations.size() > 0;
+		synchronized (mutex)
+		{
+			touch();
+			return conversations.size() > 0;
+		}
 	}
 
 	/**
@@ -130,7 +191,11 @@ public class ConversationContext
 	 */
 	public Conversation getConversation(String name)
 	{
-		return (Conversation) conversations.get(name);
+		synchronized (mutex)
+		{
+			touch();
+			return (Conversation) conversations.get(name);
+		}
 	}
 
 	/**
@@ -160,16 +225,20 @@ public class ConversationContext
 	 */
 	public Object findBean(String name)
 	{
-		for (int i = conversationStack.size(); i>0; i--)
+		synchronized (mutex)
 		{
-			Conversation conversation = (Conversation) conversationStack.get(i-1);
-			if (conversation.hasBean(name))
+			touch();
+			for (int i = conversationStack.size(); i>0; i--)
 			{
-				return conversation.getBean(name);
+				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.hasBean(name))
+				{
+					return conversation.getBean(name);
+				}
 			}
+			
+			return null;
 		}
-		
-		return null;
 	}
 
 	/**
@@ -177,16 +246,20 @@ public class ConversationContext
 	 */
 	public PersistenceManager getPersistenceManager()
 	{
-		for (int i = conversationStack.size(); i>0; i--)
+		synchronized (mutex)
 		{
-			Conversation conversation = (Conversation) conversationStack.get(i-1);
-			if (conversation.isPersistence())
+			touch();
+			for (int i = conversationStack.size(); i>0; i--)
 			{
-				return conversation.getPersistenceManager();
+				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					return conversation.getPersistenceManager();
+				}
 			}
+			
+			return null;
 		}
-		
-		return null;
 	}
 
 	/**
@@ -194,12 +267,16 @@ public class ConversationContext
 	 */
 	public void detachPersistence()
 	{
-		for (int i = conversationStack.size(); i>0; i--)
+		synchronized (mutex)
 		{
-			Conversation conversation = (Conversation) conversationStack.get(i-1);
-			if (conversation.isPersistence())
+			touch();
+			for (int i = conversationStack.size(); i>0; i--)
 			{
-				conversation.getPersistenceManager().detach();
+				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					conversation.getPersistenceManager().detach();
+				}
 			}
 		}
 	}
@@ -209,13 +286,22 @@ public class ConversationContext
 	 */
 	public void attachPersistence()
 	{
-		for (int i = conversationStack.size(); i>0; i--)
+		synchronized (mutex)
 		{
-			Conversation conversation = (Conversation) conversationStack.get(i-1);
-			if (conversation.isPersistence())
+			touch();
+			for (int i = conversationStack.size(); i>0; i--)
 			{
-				conversation.getPersistenceManager().attach();
+				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					conversation.getPersistenceManager().attach();
+				}
 			}
 		}
+	}
+
+	public long getId()
+	{
+		return id;
 	}
 }

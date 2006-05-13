@@ -15,15 +15,16 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.requestParameterProvider.RequestParameterProviderManager;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
@@ -35,6 +36,8 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  */
 public class ConversationManager
 {
+	private final static Log log = LogFactory.getLog(ConversationManager.class);
+	
 	public final static String CONVERSATION_CONTEXT_PARAM = "conversationContext";
 	
 	private final static String INIT_PERSISTENCE_MANAGER_FACOTRY = "org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY";
@@ -46,10 +49,39 @@ public class ConversationManager
 	private PersistenceManagerFactory persistenceManagerFactory;
 	
 	private final Map conversationContexts = new HashMap();
-	private final List registeredEndConversations = new ArrayList(10);
+	// private final List registeredEndConversations = new ArrayList(10);
+
+	private class ContextWiperThread extends Thread
+	{
+		private final static long CHECK_TIME = 5 * 60 * 1000; // every 5 min
+		public ContextWiperThread()
+		{
+			setDaemon(true);
+			setName("ConversationManager.ContextWiperThread");
+		}
+
+		public void run()
+		{
+			while (!isInterrupted())
+			{
+				checkContextTimeout();
+				
+				try
+				{
+					Thread.sleep(CHECK_TIME);
+				}
+				catch (InterruptedException e)
+				{
+					log.warn(e.getLocalizedMessage(), e);
+				}
+			}
+		}
+	}
+	private ContextWiperThread wiperThread = new ContextWiperThread(); 
 	
 	protected ConversationManager()
 	{
+		wiperThread.start();
 	}
 
 	/**
@@ -161,7 +193,10 @@ public class ConversationManager
 	 */
 	protected ConversationContext getConversationContext(Long conversationContextId)
 	{
-		return (ConversationContext) conversationContexts.get(conversationContextId);
+		synchronized (conversationContexts)
+		{
+			return (ConversationContext) conversationContexts.get(conversationContextId);
+		}
 	}
 	
 	/**
@@ -170,14 +205,17 @@ public class ConversationManager
 	 */
 	protected ConversationContext getOrCreateConversationContext(Long conversationContextId)
 	{
-		ConversationContext conversationContext = (ConversationContext) conversationContexts.get(conversationContextId);
-		if (conversationContext == null)
+		synchronized (conversationContexts)
 		{
-			conversationContext = new ConversationContext();			
-			conversationContexts.put(conversationContextId, conversationContext);
+			ConversationContext conversationContext = (ConversationContext) conversationContexts.get(conversationContextId);
+			if (conversationContext == null)
+			{
+				conversationContext = new ConversationContext(conversationContextId.longValue());			
+				conversationContexts.put(conversationContextId, conversationContext);
+			}
+			
+			return conversationContext;
 		}
-		
-		return conversationContext;
 	}
 
 	/**
@@ -185,7 +223,10 @@ public class ConversationManager
 	 */
 	protected void destroyConversationContext(Long conversationContextId)
 	{
-		conversationContexts.remove(conversationContextId);
+		synchronized (conversationContexts)
+		{
+			conversationContexts.remove(conversationContextId);
+		}
 	}
 	
 	/**
@@ -246,7 +287,6 @@ public class ConversationManager
 
 	/**
 	 * Register the conversation to be ended after the cycle  
-	 */
 	protected void registerEndConversation(String conversationName)
 	{
 		synchronized (registeredEndConversations)
@@ -254,14 +294,15 @@ public class ConversationManager
 			registeredEndConversations.add(conversationName);
 		}
 	}
+	 */
 
 	/**
 	 * Get all registered conversations
-	 */
 	protected List getRegisteredEndConversations()
 	{
 		return registeredEndConversations;
 	}
+	 */
 
 	/**
 	 * check if we have a conversation context
@@ -350,16 +391,28 @@ public class ConversationManager
 			conversationContext.detachPersistence();
 		}
 	}
-
-	public boolean equals(Object obj)
-	{
-		return obj != null && obj.getClass().equals(getClass());
-	}
-
-	public int hashCode()
-	{
-		return getClass().hashCode();
-	}
 	
-	
+	protected void checkContextTimeout()
+	{
+		synchronized (conversationContexts)
+		{
+			long timeToLive = 30 * 60 * 1000;
+			long checkTime = System.currentTimeMillis();
+			
+			Iterator iterContexts = conversationContexts.values().iterator();
+			while (iterContexts.hasNext())
+			{
+				ConversationContext conversationContext = (ConversationContext) iterContexts.next();
+				if (conversationContext.getLastAccess() + timeToLive < checkTime)
+				{
+					if (log.isDebugEnabled())
+					{
+						log.debug("end conversation context due to timeout: " + conversationContext.getId());
+					}
+					conversationContext.shutdownContext();
+					iterContexts.remove();
+				}
+			}
+		}
+	}
 }

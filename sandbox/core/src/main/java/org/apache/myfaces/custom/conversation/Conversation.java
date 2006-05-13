@@ -22,12 +22,17 @@ import java.util.TreeMap;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * handle conversation related stuff like beans
  * @author imario@apache.org 
  */
 public class Conversation
 {
+	private final static Log log = LogFactory.getLog(Conversation.class);
+	
 	private final String name;
 	private final boolean persistence;
 
@@ -40,6 +45,11 @@ public class Conversation
 	{
 		this.name = name;
 		this.persistence = persistence;
+		
+		if (log.isDebugEnabled())
+		{
+			log.debug("start conversation:" + name + "(persistence=" + persistence + ")");
+		}
 	}
 
 	/**
@@ -57,6 +67,10 @@ public class Conversation
 		{
 			// already there
 			return;
+		}
+		if (log.isDebugEnabled())
+		{
+			log.debug("put bean to conversation:" + name + "(bean=" + name + ")");
 		}
 		beans.put(name, vb.getValue(context));
 	}
@@ -78,6 +92,11 @@ public class Conversation
 	 */
 	public void endConversation(boolean regularEnd)
 	{
+		if (log.isDebugEnabled())
+		{
+			log.debug("end conversation:" + name);
+		}
+		
 		Iterator iterBeans = beans.values().iterator();
 		while (iterBeans.hasNext())
 		{
@@ -121,7 +140,7 @@ public class Conversation
 	{
 		return beans.get(name);
 	}
-
+	
 	/**
 	 * returns true if this conversation hold the persistence manager (aka EntityManager)
 	 */

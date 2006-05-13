@@ -16,8 +16,6 @@
 package org.apache.myfaces.custom.conversation;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import javax.faces.FacesException;
@@ -106,7 +104,7 @@ public class ConversationViewHandler extends ViewHandler
 
 	public void renderView(FacesContext context, UIViewRoot viewToRender) throws IOException, FacesException
 	{
-		endConversations(context);
+		// endConversations(context);
 		
 		original.renderView(context, viewToRender);
 	}
@@ -135,7 +133,6 @@ public class ConversationViewHandler extends ViewHandler
 	 * <li>{@link #createView(FacesContext, String)}</li>
 	 * <li>{@link #restoreView(FacesContext, String)}</li>
 	 * </ul> 
-	 */
 	protected void endConversations(FacesContext context)
 	{
 		ConversationManager conversationManager = ConversationManager.getInstance(context); 
@@ -155,6 +152,7 @@ public class ConversationViewHandler extends ViewHandler
 			}
 		}
 	}
+	 */
 	
 	/**
 	 * @see ConversationManager#injectConversationBeans(FacesContext)
