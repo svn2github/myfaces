@@ -574,6 +574,16 @@
 		<managed-bean-class>org.apache.myfaces.examples.conversation.ConvData</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>wizardData</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.conversation.WizardData</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>wizardController</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.conversation.WizardController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	
 
     <!-- navigation rules -->
@@ -652,6 +662,27 @@
 			<from-action>#{convData.save}</from-action>
 			<from-outcome>jo-o</from-outcome>
 			<to-view-id>/conversation/pageConversationEndAction.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{wizardController.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/conversation/wizardPage1.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>wizardPage1</from-outcome>
+			<to-view-id>/conversation/wizardPage1.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>wizardPage2</from-outcome>
+			<to-view-id>/conversation/wizardPage2.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>wizardPage3</from-outcome>
+			<to-view-id>/conversation/wizardPage3.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>wizardFinish</from-outcome>
+			<to-view-id>/conversation/wizardFinish.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
