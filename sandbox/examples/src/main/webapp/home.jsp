@@ -102,7 +102,7 @@
 
             <h:outputText value="Conversation"/>
             <h:panelGrid style="padding-left:25px">
-           		<h:outputLink value="pageConversation.jsf" ><f:verbatim>Single page conversation</f:verbatim></h:outputLink>
+           		<h:outputLink value="conversation/pageConversation.jsf" ><f:verbatim>Single page conversation</f:verbatim></h:outputLink>
             </h:panelGrid>
             
         </h:panelGrid>

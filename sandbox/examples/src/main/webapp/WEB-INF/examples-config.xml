@@ -641,9 +641,20 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+
+    <!-- conversation -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>saveMe</from-outcome>
+			<to-view-id>/conversation/pageConversationEndAction.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{convData.save}</from-action>
+			<from-outcome>jo-o</from-outcome>
+			<to-view-id>/conversation/pageConversationEndAction.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
-
-
     <!-- navigational rules for the wizard -->
 	<navigation-rule>
 		<from-view-id>/*</from-view-id>

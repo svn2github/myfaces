@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.conversation;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * base class for all the conversation components
@@ -55,7 +56,16 @@ public class AbstractConversationComponent extends UIComponentBase
 	 */
 	public String getName()
 	{
-		return name;
+		if (name!= null)
+		{
+			return name;
+		}
+		ValueBinding vb = getValueBinding("name");
+		if( vb == null )
+		{
+			return null;
+		}
+		return (String) vb.getValue(getFacesContext());
 	}
 
 	/**

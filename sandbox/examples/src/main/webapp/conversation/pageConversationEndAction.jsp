@@ -28,26 +28,6 @@
 <link rel="stylesheet" type="text/css" href="css/basic.css" />
 </head>
 <body>
-<f:view>
-
-<s:startConversation name="page" />
-<s:conversation name="page" value="#{convData}" />
-
-<h:form>
-<h:panelGrid columns="2">
-    <h:outputText value="Enter something into this field: " />
-    <h:inputText value="#{convData.input}" />
-    
-    <h:commandLink value="check value"/>
-    <h:commandLink value="save value">
-        <s:endConversation name="page" />
-    </h:commandLink>
-</h:panelGrid>
-<h:panelGrid columns="1">
-    <h:outputText value="Press 'check value' to simulate a server action witout ending the conversation" />
-    <h:outputText value="Press 'save value' to simulate a server action AND END the conversation" />
-</h:panelGrid>
-</h:form>
-</f:view>
+Your order will be processed, thanks!
 </body>
 </html>

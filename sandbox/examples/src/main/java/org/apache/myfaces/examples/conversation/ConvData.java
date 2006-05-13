@@ -28,4 +28,9 @@ public class ConvData
 	{
 		this.input = input;
 	}
+	
+	public String save()
+	{
+		return "jo-o";
+	}
 }

@@ -350,4 +350,16 @@ public class ConversationManager
 			conversationContext.detachPersistence();
 		}
 	}
+
+	public boolean equals(Object obj)
+	{
+		return obj != null && obj.getClass().equals(getClass());
+	}
+
+	public int hashCode()
+	{
+		return getClass().hashCode();
+	}
+	
+	
 }

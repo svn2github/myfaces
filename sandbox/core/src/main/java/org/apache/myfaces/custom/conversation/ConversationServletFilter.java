@@ -52,16 +52,16 @@ public class ConversationServletFilter implements Filter
 		}
 		finally
 		{
-			try
+			if (conversationManager != null)
 			{
-				if (conversationManager != null)
+				try
 				{
 					conversationManager.detachPersistence();
 				}
-			}
-			finally
-			{
-				externalContext.set(null);
+				finally
+				{
+					externalContext.set(null);
+				}
 			}
 		}
 	}

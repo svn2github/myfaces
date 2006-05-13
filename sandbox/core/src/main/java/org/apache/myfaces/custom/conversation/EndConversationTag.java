@@ -24,6 +24,8 @@ import javax.faces.component.UIComponent;
  */
 public class EndConversationTag extends AbstractConversationTag
 {
+	private String onOutcome;
+
 	public String getComponentType()
 	{
 		return UIEndConversation.COMPONENT_TYPE;
@@ -32,5 +34,16 @@ public class EndConversationTag extends AbstractConversationTag
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
+        setStringProperty(component, "onOutcome", getOnOutcome());
     }
+
+	public String getOnOutcome()
+	{
+		return onOutcome;
+	}
+
+	public void setOnOutcome(String onOutcome)
+	{
+		this.onOutcome = onOutcome;
+	}
 }

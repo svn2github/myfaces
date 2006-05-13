@@ -16,9 +16,16 @@
 package org.apache.myfaces.custom.conversation;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Set;
 
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.shared_tomahawk.util.StringUtils;
 
 /**
  * end a conversation
@@ -29,6 +36,8 @@ public class UIEndConversation extends AbstractConversationComponent
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.EndConversation";
 
+    private String onOutcome;
+    
     private boolean inited = false;
     
 	public static class ConversationEndAction extends AbstractConversationActionListener
@@ -48,9 +57,13 @@ public class UIEndConversation extends AbstractConversationComponent
 		{
 			if (!inited)
 			{
+				/*
 				ConversationEndAction actionListener = new ConversationEndAction();
 				actionListener.setConversationName(getName());
 				command.addActionListener(actionListener);
+				*/
+				MethodBinding original = command.getAction();
+				command.setAction(new EndConversationMethodBindingFacade(getName(), getOnOutcomes(), original));
 				inited = true;
 			}
 		}
@@ -61,11 +74,23 @@ public class UIEndConversation extends AbstractConversationComponent
 		}
 	}
 
+	private Collection getOnOutcomes()
+	{
+		String onOutcome = getOnOutcome();
+		if (onOutcome == null || onOutcome.trim().length() < 1)
+		{
+			return null;
+		}
+		
+		return Arrays.asList(StringUtils.trim(StringUtils.splitShortString(onOutcome, ',')));
+	}
+
 	public void restoreState(FacesContext context, Object state)
 	{
 		Object[] states = (Object[]) state;
 		super.restoreState(context, states[0]);
 		inited = ((Boolean) states[1]).booleanValue();
+		onOutcome = (String) states[2];
 	}
 
 	public Object saveState(FacesContext context)
@@ -73,7 +98,27 @@ public class UIEndConversation extends AbstractConversationComponent
 		return new Object[]
 		                  {
 				super.saveState(context),
-				inited?Boolean.TRUE:Boolean.FALSE
+				inited?Boolean.TRUE:Boolean.FALSE,
+				onOutcome
 		                  };
+	}
+
+	public String getOnOutcome()
+	{
+		if (onOutcome!= null)
+		{
+			return onOutcome;
+		}
+		ValueBinding vb = getValueBinding("onOutcome");
+		if( vb == null )
+		{
+			return null;
+		}
+		return (String) vb.getValue(getFacesContext());
+	}
+
+	public void setOnOutcome(String onOutcome)
+	{
+		this.onOutcome = onOutcome;
 	}
 }

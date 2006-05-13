@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.el.VariableResolver;
 
