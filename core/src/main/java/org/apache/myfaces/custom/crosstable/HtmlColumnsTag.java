@@ -25,8 +25,7 @@ import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase;
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlColumnsTag extends HtmlComponentBodyTagBase
-{
+public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
     private String _var;
     private String _width;
 
@@ -68,34 +67,35 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase
     private String _footeronmouseover;
     private String _footeronmouseup;
 
+    private String _groupBy;
+    //sort related attributes
+    private String _defaultSorted;
+    private String _sortable;
+    private String _sortPropertyName;
+
     /**
      * @see javax.faces.webapp.UIComponentTag#getComponentType()
      */
-    public String getComponentType()
-    {
+    public String getComponentType() {
         return HtmlColumns.COMPONENT_TYPE;
     }
 
     /**
      * @see javax.faces.webapp.UIComponentTag#getRendererType()
      */
-    public String getRendererType()
-    {
+    public String getRendererType() {
         return null;
     }
 
-    public void setVar(String var)
-    {
+    public void setVar(String var) {
         _var = var;
     }
 
-    public void setWidth(String width)
-    {
+    public void setWidth(String width) {
         _width = width;
     }
 
-    protected void setProperties(UIComponent component)
-    {
+    protected void setProperties(UIComponent component) {
         super.setProperties(component);
 
         setStringProperty(component, JSFAttr.VAR_ATTR, _var);
@@ -132,13 +132,18 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase
         setStringProperty(component, "footeronkeypress", _footeronkeypress);
         setStringProperty(component, "footeronkeydown", _footeronkeydown);
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
+
+        setBooleanProperty(component, "groupBy", _groupBy);
+
+        setBooleanProperty(component, "defaultSorted", _defaultSorted);
+        setBooleanProperty(component, "sortable", _sortable);
+        setStringProperty(component, "sortPropertyName", _sortPropertyName);
     }
 
     /**
      * @see org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase#release()
      */
-    public void release()
-    {
+    public void release() {
         super.release();
 
         _var = null;
@@ -176,155 +181,146 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase
         _footeronmouseout = null;
         _footeronmouseover = null;
         _footeronmouseup = null;
+        _groupBy = null;
+        _defaultSorted = null;
+        _sortable = null;
+        _sortPropertyName = null;
+
     }
 
-    public void setFooterdir(String footerdir)
-    {
+    public void setFooterdir(String footerdir) {
         _footerdir = footerdir;
     }
 
-    public void setFooterlang(String footerlang)
-    {
+    public void setFooterlang(String footerlang) {
         _footerlang = footerlang;
     }
 
-    public void setFooteronclick(String footeronclick)
-    {
+    public void setFooteronclick(String footeronclick) {
         _footeronclick = footeronclick;
     }
 
-    public void setFooterondblclick(String footerondblclick)
-    {
+    public void setFooterondblclick(String footerondblclick) {
         _footerondblclick = footerondblclick;
     }
 
-    public void setFooteronkeydown(String footeronkeydown)
-    {
+    public void setFooteronkeydown(String footeronkeydown) {
         _footeronkeydown = footeronkeydown;
     }
 
-    public void setFooteronkeypress(String footeronkeypress)
-    {
+    public void setFooteronkeypress(String footeronkeypress) {
         _footeronkeypress = footeronkeypress;
     }
 
-    public void setFooteronkeyup(String footeronkeyup)
-    {
+    public void setFooteronkeyup(String footeronkeyup) {
         _footeronkeyup = footeronkeyup;
     }
 
-    public void setFooteronmousedown(String footeronmousedown)
-    {
+    public void setFooteronmousedown(String footeronmousedown) {
         _footeronmousedown = footeronmousedown;
     }
 
-    public void setFooteronmousemove(String footeronmousemove)
-    {
+    public void setFooteronmousemove(String footeronmousemove) {
         _footeronmousemove = footeronmousemove;
     }
 
-    public void setFooteronmouseout(String footeronmouseout)
-    {
+    public void setFooteronmouseout(String footeronmouseout) {
         _footeronmouseout = footeronmouseout;
     }
 
-    public void setFooteronmouseover(String footeronmouseover)
-    {
+    public void setFooteronmouseover(String footeronmouseover) {
         _footeronmouseover = footeronmouseover;
     }
 
-    public void setFooteronmouseup(String footeronmouseup)
-    {
+    public void setFooteronmouseup(String footeronmouseup) {
         _footeronmouseup = footeronmouseup;
     }
 
-    public void setFooterstyle(String footerstyle)
-    {
+    public void setFooterstyle(String footerstyle) {
         _footerstyle = footerstyle;
     }
 
-    public void setFooterstyleclass(String footerstyleclass)
-    {
+    public void setFooterstyleclass(String footerstyleclass) {
         _footerstyleClass = footerstyleclass;
     }
 
-    public void setFootertitle(String footertitle)
-    {
+    public void setFootertitle(String footertitle) {
         _footertitle = footertitle;
     }
 
-    public void setHeaderdir(String headerdir)
-    {
+    public void setHeaderdir(String headerdir) {
         _headerdir = headerdir;
     }
 
-    public void setHeaderlang(String headerlang)
-    {
+    public void setHeaderlang(String headerlang) {
         _headerlang = headerlang;
     }
 
-    public void setHeaderonclick(String headeronclick)
-    {
+    public void setHeaderonclick(String headeronclick) {
         _headeronclick = headeronclick;
     }
 
-    public void setHeaderondblclick(String headerondblclick)
-    {
+    public void setHeaderondblclick(String headerondblclick) {
         _headerondblclick = headerondblclick;
     }
 
-    public void setHeaderonkeydown(String headeronkeydown)
-    {
+    public void setHeaderonkeydown(String headeronkeydown) {
         _headeronkeydown = headeronkeydown;
     }
 
-    public void setHeaderonkeypress(String headeronkeypress)
-    {
+    public void setHeaderonkeypress(String headeronkeypress) {
         _headeronkeypress = headeronkeypress;
     }
 
-    public void setHeaderonkeyup(String headeronkeyup)
-    {
+    public void setHeaderonkeyup(String headeronkeyup) {
         _headeronkeyup = headeronkeyup;
     }
 
-    public void setHeaderonmousedown(String headeronmousedown)
-    {
+    public void setHeaderonmousedown(String headeronmousedown) {
         _headeronmousedown = headeronmousedown;
     }
 
-    public void setHeaderonmousemove(String headeronmousemove)
-    {
+    public void setHeaderonmousemove(String headeronmousemove) {
         _headeronmousemove = headeronmousemove;
     }
 
-    public void setHeaderonmouseout(String headeronmouseout)
-    {
+    public void setHeaderonmouseout(String headeronmouseout) {
         _headeronmouseout = headeronmouseout;
     }
 
-    public void setHeaderonmouseover(String headeronmouseover)
-    {
+    public void setHeaderonmouseover(String headeronmouseover) {
         _headeronmouseover = headeronmouseover;
     }
 
-    public void setHeaderonmouseup(String headeronmouseup)
-    {
+    public void setHeaderonmouseup(String headeronmouseup) {
         _headeronmouseup = headeronmouseup;
     }
 
-    public void setHeaderstyle(String headerstyle)
-    {
+    public void setHeaderstyle(String headerstyle) {
         _headerstyle = headerstyle;
     }
 
-    public void setHeaderstyleclass(String headerstyleclass)
-    {
+    public void setHeaderstyleclass(String headerstyleclass) {
         _headerstyleClass = headerstyleclass;
     }
 
-    public void setHeadertitle(String headertitle)
-    {
+    public void setHeadertitle(String headertitle) {
         _headertitle = headertitle;
+    }
+
+    public void setGroupBy(String groupBy) {
+        _groupBy = groupBy;
+    }
+
+    public void setDefaultSorted(String defaultSorted) {
+        _defaultSorted = defaultSorted;
+    }
+
+    public void setSortable(String sortable) {
+        _sortable = sortable;
+    }
+
+    public void setSortPropertyName(String sortPropertyName) {
+        _sortPropertyName = sortPropertyName;
     }
 }
