@@ -428,6 +428,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         TreeState state =  getDataModel().getTreeState();
         walker.setCheckState(false);
+        walker.setTree(this);
 
         while(walker.next())
         {

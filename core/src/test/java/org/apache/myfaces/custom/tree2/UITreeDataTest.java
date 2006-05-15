@@ -84,9 +84,8 @@ public class UITreeDataTest extends AbstractTreeTestCase
      */
     public void testProgramaticSelection() throws Exception
     {
-        TreeModelBase treeModel = new TreeModelBase(rootNode);
-
-        TreeStateBase treeState = new TreeStateBase();
+        TreeModel treeModel = tree.getDataModel();
+        TreeState treeState = treeModel.getTreeState();
         treeState.setSelected("0:3");
 
         treeModel.setTreeState(treeState);
@@ -94,6 +93,51 @@ public class UITreeDataTest extends AbstractTreeTestCase
         tree.setValue(treeModel);
         tree.setNodeId("0:3");
         assertTrue("Node 0:3 should be selected", tree.isNodeSelected());
+    }
+
+    /**
+     * Tests the ability to expand all nodes at once.  (See TOMAHAWK-436)
+     * @throws Exception
+     */
+    public void testExpandAll() throws Exception
+    {
+        tree.expandAll();
+
+        tree.setNodeId("0");
+        assertTrue("Node O should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0");
+        assertTrue("Node O:0 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0:0");
+        assertTrue("Node O:0:0 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0:1");
+        assertTrue("Node O:0:1 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0:2");
+        assertTrue("Node O:0:2 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0:2:0");
+        assertTrue("Node O:0:2:0 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0:2:1");
+        assertTrue("Node O:0:2:1 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:1");
+        assertTrue("Node O:1 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:1:0");
+        assertTrue("Node O:1:0 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:1:1");
+        assertTrue("Node O:1:1 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:2");
+        assertTrue("Node O:2 should be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:3");
+        assertTrue("Node O:3 should be expanded", tree.isNodeExpanded());
     }
 
     public static Test suite()
