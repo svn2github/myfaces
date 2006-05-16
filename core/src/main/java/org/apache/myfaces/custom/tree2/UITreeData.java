@@ -423,6 +423,26 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     public void expandAll()
     {
+        toggleAll(true);
+    }
+
+    /**
+     * Collapse all nodes by default.
+     */
+    public void collapseAll()
+    {
+        toggleAll(false);
+    }
+
+    /**
+     * Toggles all of the nodes to either expanded or collapsed depending on the
+     * parameter supplied.
+     *
+     * @param expanded Expand all of the nodes (a value of false indicates collapse
+     * all nodes)
+     */
+    private void toggleAll(boolean expanded)
+    {
         TreeWalker walker = getDataModel().getTreeWalker();
         walker.reset();
 
@@ -433,7 +453,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         while(walker.next())
         {
             String id = getNodeId();
-            if (!state.isNodeExpanded(id))
+            if ((expanded && !state.isNodeExpanded(id)) || (!expanded && state.isNodeExpanded(id)))
             {
                 state.toggleExpanded(id);
             }

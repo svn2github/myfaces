@@ -140,6 +140,34 @@ public class UITreeDataTest extends AbstractTreeTestCase
         assertTrue("Node O:3 should be expanded", tree.isNodeExpanded());
     }
 
+    /**
+     * Tests the ability to collapse all nodes at once.  (See TOMAHAWK-27)
+     * @throws Exception
+     */
+    public void testCollapseAll() throws Exception
+    {
+        // expand a few nodes to start off with
+        tree.expandPath(new String[] {"0", "0:0", "0:0:1"});
+        tree.expandPath(new String[] {"0", "0:1", "0:1:0"});
+
+        tree.collapseAll();
+
+        tree.setNodeId("0");
+        assertFalse("Node O should not be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0");
+        assertFalse("Node O:0 should not be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:0:1");
+        assertFalse("Node O:0:1 should not be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:1");
+        assertFalse("Node O:1 should not be expanded", tree.isNodeExpanded());
+
+        tree.setNodeId("0:1:0");
+        assertFalse("Node O:1:0 should not be expanded", tree.isNodeExpanded());
+    }
+
     public static Test suite()
     {
         return new TestSuite(UITreeDataTest.class);
