@@ -35,34 +35,70 @@ managed beans used:
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
-    <t:newspaperTable id="data"
-            newspaperColumns="2"
-            styleClass="standardTable"
-            headerClass="standardTable_Header"
-            footerClass="standardTable_Header"
-            rowClasses="standardTable_Row1,standardTable_Row2"
-            columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
-            var="country"
-            value="#{countryList.countries}">
-           <f:facet name="spacer">
-             <f:verbatim> &nbsp; </f:verbatim>
-           </f:facet>
-       <h:column>
-           <f:facet name="header">
-              <h:outputText value="#{example_messages['label_country_name']}" />
-           </f:facet>
-            <h:outputText value="#{country.name}" />
-       </h:column>
+    <h:panelGrid columns="1">
+    
+		<h:outputText value="Implementation using obsolete t:newspaperTable" />
+	
+	    <t:newspaperTable id="dataOld"
+	            newspaperColumns="2"
+	            styleClass="standardTable"
+	            headerClass="standardTable_Header"
+	            footerClass="standardTable_Header"
+	            rowClasses="standardTable_Row1,standardTable_Row2"
+	            columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+	            var="country"
+	            value="#{countryList.countries}">
+	           <f:facet name="spacer">
+	             <f:verbatim> &nbsp; </f:verbatim>
+	           </f:facet>
+	       <h:column>
+	           <f:facet name="header">
+	              <h:outputText value="#{example_messages['label_country_name']}" />
+	           </f:facet>
+	            <h:outputText value="#{country.name}" />
+	       </h:column>
+	
+	       <h:column>
+	           <f:facet name="header">
+	              <h:outputText value="#{example_messages['label_country_iso']}" />
+	           </f:facet>
+	           <h:outputText value="#{country.isoCode}" />
+	       </h:column>
+	
+	    </t:newspaperTable>
+	
+		<h:outputText value="Implementation using t:dataTable" />
+	
+	    <t:dataTable id="dataNew"
+	            newspaperColumns="2"
+	            styleClass="standardTable"
+	            headerClass="standardTable_Header"
+	            footerClass="standardTable_Header"
+	            rowClasses="standardTable_Row1,standardTable_Row2"
+	            columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+	            var="country"
+	            value="#{countryList.countries}">
+	           <f:facet name="spacer">
+	             <f:verbatim> &nbsp; </f:verbatim>
+	           </f:facet>
+	       <h:column>
+	           <f:facet name="header">
+	              <h:outputText value="#{example_messages['label_country_name']}" />
+	           </f:facet>
+	            <h:outputText value="#{country.name}" />
+	       </h:column>
+	
+	       <h:column>
+	           <f:facet name="header">
+	              <h:outputText value="#{example_messages['label_country_iso']}" />
+	           </f:facet>
+	           <h:outputText value="#{country.isoCode}" />
+	       </h:column>
+	
+	    </t:dataTable>
 
-       <h:column>
-           <f:facet name="header">
-              <h:outputText value="#{example_messages['label_country_iso']}" />
-           </f:facet>
-           <h:outputText value="#{country.isoCode}" />
-       </h:column>
-
-    </t:newspaperTable>
-
+	</h:panelGrid>
+	
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

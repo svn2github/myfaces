@@ -41,6 +41,7 @@
                     <h:outputLink value="crossDataTable.jsf" ><f:verbatim>Dynamic number of columns, add a column</f:verbatim></h:outputLink>
                     <h:outputLink value="optDataTable.jsf" ><f:verbatim>Optional Header/Footer</f:verbatim></h:outputLink>
                     <h:outputLink value="simpleGroupBy.jsf" ><f:verbatim>Group by columns</f:verbatim></h:outputLink>
+                	<h:outputLink value="newspaperTable.jsf" ><f:verbatim>Newspaper Table</f:verbatim></h:outputLink>
                 </h:panelGrid>
                 <h:outputLink value="selectbox.jsf" ><f:verbatim>Select boxes</f:verbatim></h:outputLink>
                 <h:outputLink value="fileupload.jsf" ><f:verbatim>File upload</f:verbatim></h:outputLink>
@@ -75,7 +76,6 @@
                 </h:panelGrid>
                 <h:outputLink value="panelstack.jsf" ><f:verbatim>Panel Stack</f:verbatim></h:outputLink>
                 <h:outputLink value="css.jsf" ><f:verbatim>Style Sheet</f:verbatim></h:outputLink>
-                <h:outputLink value="newspaperTable.jsf" ><f:verbatim>Newspaper Table</f:verbatim></h:outputLink>
                 <h:outputLink value="swapimage.jsf" ><f:verbatim>Swap Image</f:verbatim></h:outputLink>
                 <h:outputLink value="collapsiblePanel.jsf" ><f:verbatim>Collapsible Panel</f:verbatim></h:outputLink>
                 <h:outputLink value="testExceptions.jsf" ><f:verbatim>Test the custom error page - not really jsf stuff, but a demonstration how to print the real exception</f:verbatim></h:outputLink>
