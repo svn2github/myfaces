@@ -17,6 +17,7 @@ package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
+import org.apache.myfaces.custom.newspaper.HtmlNewspaperTable;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlDataTableTagBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
@@ -73,6 +74,9 @@ public class HtmlDataTableTag
     private String _rowGroupStyle;
     private String _rowGroupStyleClass;
 
+    /** the number of newspaper columns */
+    private String _newspaperColumns = null;
+    
     public void release() 
     {
         super.release();
@@ -108,6 +112,8 @@ public class HtmlDataTableTag
         _rowStyle = null;
         _rowGroupStyle = null;
         _rowGroupStyleClass = null;
+        
+        _newspaperColumns = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -145,6 +151,8 @@ public class HtmlDataTableTag
         setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
         setStringProperty(component, "rowGroupStyle", _rowGroupStyle);
         setStringProperty(component, "rowGroupStyleClass", _rowGroupStyleClass);
+
+        setIntegerProperty(component, HtmlNewspaperTable.NEWSPAPER_COLUMNS_PROPERTY, _newspaperColumns);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -299,4 +307,9 @@ public class HtmlDataTableTag
 	public void setVarDetailToggler(String varDetailToggler) {
 		_varDetailToggler = varDetailToggler;
 	}
+    
+    public void setNewspaperColumns(String newspaperColumns) {
+        this._newspaperColumns = newspaperColumns;
+    }
+    
 }

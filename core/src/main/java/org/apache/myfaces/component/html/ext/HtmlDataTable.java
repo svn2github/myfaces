@@ -18,6 +18,7 @@ package org.apache.myfaces.component.html.ext;
 import javax.faces.component.UIOutput;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.NewspaperTable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.crosstable.UIColumns;
@@ -43,7 +44,7 @@ import org.apache.myfaces.custom.column.HtmlSimpleColumn;
  * @author Manfred Geiler
  * @version $Revision$ $Date$
  */
-public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
+public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, NewspaperTable
 {
     private static final Log log = LogFactory.getLog(HtmlDataTable.class);
 
@@ -54,6 +55,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
     private static final boolean DEFAULT_SORTASCENDING = true;
     private static final boolean DEFAULT_SORTABLE      = false;
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+
+    /** the property names */
+    public static final String NEWSPAPER_COLUMNS_PROPERTY = "newspaperColumns";
+    public static final String SPACER_FACET_NAME = "spacer";
+    
+    /** the value of the column count property */
+    private int _newspaperColumns = 1;
 
     private _SerializableDataModel _preservedDataModel;
 
@@ -662,7 +670,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         boolean preserveSort = isPreserveSort();
         boolean sortable     = isSortable();
         
-        Object values[] = new Object[32];
+        Object values[] = new Object[33];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         if (isPreserveDataModel())
@@ -706,6 +714,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         values[29] = _rowGroupStyleClass;
         values[30] = _sortedColumnVar;
         values[31] = new Integer(_sortColumnIndex);        
+
+        values[32] = new Integer(_newspaperColumns);
 
         return values;
     }
@@ -832,6 +842,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         _rowGroupStyleClass = (String)values[29];
         _sortedColumnVar = (String)values[30];
         _sortColumnIndex = values[31] != null ? ((Integer)values[31]).intValue() : -1;
+        _newspaperColumns = ((Integer)values[32]).intValue();
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -1254,6 +1265,26 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware
         _sortColumnIndex = sortColumnIndex;               
     }       
     
+    /**
+     * Set the number of columns the table will be divided over.
+     */
+    public int getNewspaperColumns() {
+        return _newspaperColumns;
+    }
+    public void setNewspaperColumns(int newspaperColumns) {
+        this._newspaperColumns = newspaperColumns;
+    }
+    
+    /**
+     * Gets the spacer facet, between each pair of newspaper columns.
+     */
+    public UIComponent getSpacer() {
+        return (UIComponent)getFacets().get(SPACER_FACET_NAME);
+    }
+    public void setSpacer(UIComponent spacer) {
+        getFacets().put(SPACER_FACET_NAME, spacer);
+    }
+
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataTable";

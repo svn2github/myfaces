@@ -29,12 +29,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
+import org.apache.myfaces.component.NewspaperTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import org.apache.myfaces.custom.crosstable.UIColumns;
 import org.apache.myfaces.renderkit.html.util.ColumnInfo;
 import org.apache.myfaces.renderkit.html.util.RowInfo;
 import org.apache.myfaces.renderkit.html.util.TableContext;
+//import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase.Styles;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -62,6 +64,46 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     /** DetailStamp facet name. */
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
+
+    /**
+     * @param component dataTable
+     * @return number of layout columns
+     */
+    protected int getNewspaperColumns(UIComponent component) {
+        if (component instanceof NewspaperTable)
+        {
+            // the number of slices to break the table up into */
+            NewspaperTable newspaperTable = (NewspaperTable)component;
+            return newspaperTable.getNewspaperColumns();
+        }
+        return super.getNewspaperColumns(component);
+    }
+
+    /**
+     * @param component dataTable
+     * @return component to display between layout columns
+     */
+    protected UIComponent getNewspaperTableSpacer(UIComponent component) {
+        if (component instanceof NewspaperTable)
+        {
+            // the number of slices to break the table up into */
+            NewspaperTable newspaperTable = (NewspaperTable)component;
+            return newspaperTable.getSpacer();
+        }
+        return super.getNewspaperTableSpacer(component);
+    }
+
+    /**
+     * @param component dataTable
+     * @return whether dataTable has component to display between layout columns
+     */
+    protected boolean hasNewspaperTableSpacer(UIComponent component) {
+        if (null != getNewspaperTableSpacer(component))
+        {
+            return true;
+        }
+        return super.hasNewspaperTableSpacer(component);
+    }
 
     protected void afterRow(FacesContext facesContext, UIData uiData) throws IOException {
         super.afterRow(facesContext, uiData);
@@ -357,10 +399,10 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     }
 
     protected void renderRowStart(FacesContext facesContext,
-                                  ResponseWriter writer, UIData uiData, Iterator rowStyleClassIterator)
+                                  ResponseWriter writer, UIData uiData, Styles styles, int rowStyleIndex)
         throws IOException
     {
-        super.renderRowStart(facesContext, writer, uiData, rowStyleClassIterator);
+        super.renderRowStart(facesContext, writer, uiData, styles, rowStyleIndex);
 
         // get event handlers from component
         HtmlDataTable table = (HtmlDataTable) uiData;
@@ -380,7 +422,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     /**
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderRowStyle(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, java.util.Iterator)
      */
-    protected void renderRowStyle(FacesContext facesContext, ResponseWriter writer, UIData uiData, Iterator rowStyleIterator) throws IOException
+    protected void renderRowStyle(FacesContext facesContext, ResponseWriter writer, UIData uiData, Styles styles, int rowStyleIndex) throws IOException
     {
         String rowStyleClass;
         String rowStyle;
@@ -397,16 +439,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
         if(rowStyleClass == null)
         {
-            super.renderRowStyle(facesContext, writer, uiData, rowStyleIterator);
+            super.renderRowStyle(facesContext, writer, uiData, styles, rowStyleIndex);
         }
         else
         {
-            if(rowStyleIterator.hasNext())
-            {
-                // skip next row style
-                rowStyleIterator.next();
-            }
-            writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, rowStyle, null);
         }
         if(rowStyle != null)
         {
@@ -453,11 +490,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      */
     protected void encodeColumnChild(FacesContext facesContext,
                                      ResponseWriter writer, UIData uiData,
-                                     UIComponent component, Iterator columnStyleIterator)
+                                     UIComponent component, Styles styles, int columnStyleIndex)
         throws IOException
     {
         super.encodeColumnChild(facesContext, writer, uiData, component,
-                                columnStyleIterator);
+                                styles, columnStyleIndex);
         if (component instanceof UIColumns)
         {
             UIColumns columns = (UIColumns) component;
@@ -465,7 +502,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             {
                 columns.setRowIndex(k);
                 renderColumnBody(facesContext, writer, uiData, component,
-                                 columnStyleIterator);
+                                styles, columnStyleIndex);
             }
             columns.setRowIndex(-1);
         }               
@@ -476,7 +513,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      */
     protected void renderColumnBody(FacesContext facesContext,
                                     ResponseWriter writer, UIData uiData,
-                                    UIComponent component, Iterator columnStyleIterator)
+                                    UIComponent component, Styles styles, int columnStyleIndex)
         throws IOException
     {
         if (isGroupedTable(uiData)){
@@ -500,16 +537,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                 styleClass = columnInfo.getStyleClass();
             }
 
-            if(columnStyleIterator.hasNext())
+            if(styles.hasColumnStyle())
             {
                 if (styleClass == null)
                 {
-                    styleClass = (String) columnStyleIterator.next();
-                }
-                else
-                {
-                    // skip the column style class
-                    columnStyleIterator.next();
+                    styleClass = styles.getColumnStyle(columnStyleIndex);
                 }
             }
             if (styleClass != null)
@@ -540,16 +572,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         {
             writer.startElement(HTML.TD_ELEM, uiData);
             String styleClass = ((HtmlColumn) component).getStyleClass();
-            if(columnStyleIterator.hasNext())
+            if(styles.hasColumnStyle())
             {
                 if (styleClass == null)
                 {
-                    styleClass = (String) columnStyleIterator.next();
-                }
-                else
-                {
-                    // skip the column style class
-                    columnStyleIterator.next();
+                    styleClass = styles.getColumnStyle(columnStyleIndex);
                 }
             }
             if (styleClass != null)
@@ -564,7 +591,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         else
         {
             super.renderColumnBody(facesContext, writer, uiData, component,
-                                   columnStyleIterator);
+                                    styles, columnStyleIndex);
         }
     }
 

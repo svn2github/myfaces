@@ -276,6 +276,7 @@
         &extended_data_table_attributes;
         &ext_forceId_attribute;
         &user_role_attributes;
+        &tomahawk_newspaper_table_attributes;
      </tag>
 
     <!-- inputHidden -->
