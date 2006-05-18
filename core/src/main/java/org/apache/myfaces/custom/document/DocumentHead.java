@@ -26,7 +26,7 @@ package org.apache.myfaces.custom.document;
 public class DocumentHead extends AbstractDocument
 {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.DocumentHead";
-	private static final String DEFAULT_RENDERER_TYPE = DocumentRenderer.RENDERER_TYPE;
+	private static final String DEFAULT_RENDERER_TYPE = DocumentHeadRenderer.RENDERER_TYPE;
 
 	public DocumentHead()
 	{
