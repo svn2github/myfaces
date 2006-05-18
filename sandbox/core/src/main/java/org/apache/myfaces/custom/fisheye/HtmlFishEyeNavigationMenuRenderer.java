@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
@@ -176,7 +175,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
             throw new IllegalArgumentException("Component " + clientId
                     + " must be embedded in an form");
         }
-        UIForm nestingForm = formInfo.getForm();
+        UIComponent nestingForm = formInfo.getForm();
         String formName = formInfo.getFormName();
 
         StringBuffer onClick = new StringBuffer();
