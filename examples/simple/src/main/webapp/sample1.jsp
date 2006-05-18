@@ -134,7 +134,9 @@
         </f:verbatim>
 
         <f:verbatim><br></f:verbatim>
-        <h:commandLink id="jump_home" action="#{ucaseForm.jumpHome}" ><f:verbatim>Go Home</f:verbatim></h:commandLink>
+        <h:form>
+	        <h:commandLink id="jump_home" action="#{ucaseForm.jumpHome}" ><f:verbatim>Go Home</f:verbatim></h:commandLink>
+        </h:form>
 
     </h:panelGroup>
 

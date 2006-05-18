@@ -28,6 +28,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <t:saveState id="ss1" value="#{tabbedPaneBean}" />
 
@@ -176,6 +177,7 @@
 	    </t:panelTabbedPane>
 	</f:subview>
 
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

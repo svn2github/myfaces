@@ -27,6 +27,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
      
@@ -153,6 +154,7 @@
     <h:outputText value="#{table}" escape="false"/>
     <h:outputText value="#{tableScroller}" escape="false"/>
 
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

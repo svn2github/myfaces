@@ -29,6 +29,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <h:panelGrid columns="2">
         <h:outputLabel for="text1" value="Text:"/>
@@ -58,6 +59,7 @@
         <h:inputText id="selone_menu_subcolors"/>
     </h:panelGrid>
 
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

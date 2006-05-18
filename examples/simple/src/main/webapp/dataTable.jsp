@@ -32,6 +32,7 @@ managed beans used:
 -->
 
 <f:view>
+<h:form>
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
@@ -121,6 +122,7 @@ managed beans used:
 
     </t:panelLayout>
 
+</h:form>
 </f:view>
 
 </body>

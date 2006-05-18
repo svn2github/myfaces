@@ -9,6 +9,7 @@
     <body>
 
         <f:view>
+        <h:form>
     
             <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
@@ -82,6 +83,7 @@
 
             </h:panelGrid>
 
+		</h:form>
         </f:view>
     </body>
 </html>

@@ -26,6 +26,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <span style="font-family:verdana">
         <b>Tree2 w/showRootNode=false</b><br/>
@@ -79,6 +80,7 @@
         </f:facet>
     </t:tree2>
 
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

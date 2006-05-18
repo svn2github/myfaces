@@ -27,6 +27,7 @@
 
 <f:view>
 
+	<h:form>
     <span style="font-family:verdana">
         <b>Tree2 w/expand all</b><br/>
     </span>
@@ -69,6 +70,7 @@
             </h:panelGroup>
         </f:facet>
     </t:tree2>
+    </h:form>
 
     <br/>
 

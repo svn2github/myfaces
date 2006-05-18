@@ -28,6 +28,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
@@ -123,6 +124,7 @@
     </h:panelGroup>
     <t:commandLink value="test" immediate="true" />
         
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

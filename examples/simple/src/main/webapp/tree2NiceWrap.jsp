@@ -26,6 +26,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <span style="font-family:verdana">
         <b>Tree2 w/nice wrap</b><br/>
@@ -73,6 +74,7 @@
         </t:tree2>
     </h:panelGrid>
     
+</h:form>    
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

@@ -26,6 +26,7 @@
 <body>
 
 <f:view>
+<h:form>
 
     <t:tree2 id="serverTree" value="#{treeBacker.treeData}" var="node" varNodeToggler="t" clientSideToggle="false" showNav="false">
         <f:facet name="person">
@@ -71,6 +72,7 @@
         </f:facet>
     </t:tree2>
 
+</h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>
