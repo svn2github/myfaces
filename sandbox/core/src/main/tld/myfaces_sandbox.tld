@@ -1097,6 +1097,12 @@ Sandbox-related entities.
 		&standard_conversation_attributes;
 	</tag>
 	<tag>
+		<name>separateConversationContext</name>
+		<tag-class>org.apache.myfaces.custom.conversation.SeparateConversationContextTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Separates the current context from the children. e.g. commandLinks will start a new conversation context</description>
+	</tag>
+	<tag>
 		<name>conversation</name>
 		<tag-class>org.apache.myfaces.custom.conversation.ConversationTag</tag-class>
 		<body-content>JSP</body-content>

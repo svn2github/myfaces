@@ -31,6 +31,11 @@ public class ConversationRequestParameterProvider implements RequestParameterPro
 	
 	public String getFieldValue(String field)
 	{
+		if (UISeparateConversationContext.isInSeparationMode())
+		{
+			return null;
+		}
+		
 		ConversationManager conversationManager = ConversationManager.getInstance();
 		if (conversationManager == null)
 		{
@@ -46,6 +51,11 @@ public class ConversationRequestParameterProvider implements RequestParameterPro
 
 	public String[] getFields()
 	{
+		if (UISeparateConversationContext.isInSeparationMode())
+		{
+			return null;
+		}
+
 		ConversationManager conversationManager = ConversationManager.getInstance();
 		if (conversationManager == null)
 		{

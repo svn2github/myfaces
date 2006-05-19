@@ -32,6 +32,11 @@
 
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
+<h:outputLink value="home.jsf"><h:outputText value="Menu" /></h:outputLink>
+<s:separateConversationContext>
+	<h:outputLink value="home.jsf"><h:outputText value="Menu (with new conversationContext)" /></h:outputLink>
+</s:separateConversationContext>
+
 <h:form>
 <h:outputText value="Whatever the page might tell you, no data will ever be saved ;-)." />
 <h:panelGrid columns="2">

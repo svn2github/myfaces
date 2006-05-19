@@ -33,6 +33,8 @@
 <s:startConversation name="page" />
 <s:conversation name="page" value="#{convData}" />
 
+<h:outputLink value="home.jsf"><h:outputText value="Menu" /></h:outputLink>
+
 <h:form>
 <h:panelGrid columns="2">
     <h:outputText value="Enter something into this field: " />

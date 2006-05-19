@@ -164,7 +164,7 @@ public class ConversationManager
 				throw new IllegalStateException("cant find a requestMap or requestParameterMap");
 			}
 		}
-		
+
 		Long conversationContextId = (Long) requestMap.get(CONVERSATION_CONTEXT_REQ);
 		if (conversationContextId == null)
 		{

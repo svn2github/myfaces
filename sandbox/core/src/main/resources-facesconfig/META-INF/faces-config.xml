@@ -138,6 +138,10 @@
 	<component-class>org.apache.myfaces.custom.conversation.UIEndConversation</component-class>
   </component>
   <component>
+	<component-type>org.apache.myfaces.SeparateConversationContext</component-type>
+	<component-class>org.apache.myfaces.custom.conversation.UISeparateConversationContext</component-class>
+  </component>
+  <component>
 	<component-type>org.apache.myfaces.Conversation</component-type>
 	<component-class>org.apache.myfaces.custom.conversation.UIConversation</component-class>
   </component>
