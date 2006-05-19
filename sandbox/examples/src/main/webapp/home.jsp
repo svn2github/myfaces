@@ -8,6 +8,7 @@
     <%@include file="inc/head.inc" %>
 <body>
     <f:view>
+    <h:form>
 
         <h:panelGrid>
             <h:panelGrid id="header_group1" columns="2" styleClass="pageHeader"  >
@@ -106,6 +107,7 @@
             </h:panelGrid>
             
         </h:panelGrid>
+    </h:form>
     </f:view>
    
 </body>

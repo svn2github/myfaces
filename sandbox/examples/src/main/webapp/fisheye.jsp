@@ -56,6 +56,7 @@ body {
 </head>
 <body>
 <f:view>
+	<h:form>
 	<t:div styleClass="outerbar">
 		<s:fishEyeNavigationMenu itemWidth="50" itemHeight="50" itemMaxWidth="200"
 			itemMaxHeight="200" orientation="horizontal" effectUnits="2"
@@ -85,6 +86,7 @@ body {
 		<t:outputText value="#{fisheye.actionName}" />
 		<%@include file="../inc/page_footer.jsp"%>
 	</t:div>
+	</h:form>
 </f:view>
 </body>
 </html>

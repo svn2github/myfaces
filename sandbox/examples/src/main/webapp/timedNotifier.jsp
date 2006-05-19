@@ -28,6 +28,7 @@
 
 	<body>
 		<f:view>
+		<h:form>
 			<h:outputText value="Timed notifier please wait a few seconds for the first dialog"></h:outputText>
 			<s:timedNotifier disabled="false" showDelay="5000" hideDelay="3000" confirmationMessage="5 minutes til timeout, press ok to click me away early" />
 			<s:timedNotifier showDelay="7000" hideDelay="2000">
@@ -43,7 +44,7 @@
 					</h:panelGrid>
 				</f:facet>
 			</s:timedNotifier>
-
+		</h:form>
 		</f:view>
 
 		<%@include file="inc/page_footer.jsp"%>
