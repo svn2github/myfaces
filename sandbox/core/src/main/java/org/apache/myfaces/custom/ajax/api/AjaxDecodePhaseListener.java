@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
@@ -174,18 +175,39 @@ public class AjaxDecodePhaseListener
 
     private void encodeAjax(UIComponent component, FacesContext context)
     {
+        ServletResponse response = 
+            (ServletResponse) context.getExternalContext().getResponse();
+        ServletRequest request = 
+            (ServletRequest) context.getExternalContext().getRequest();
+        UIViewRoot viewRoot = context.getViewRoot();
         Map requestMap = context.getExternalContext().getRequestParameterMap();
-
+        
+       /* Handle character encoding as of section 2.5.2.2 of JSF 1.1:
+        * At the beginning of the render-response phase, the ViewHandler must ensure 
+        * that the response Locale is set to that of the UIViewRoot, for exampe by 
+        * calling ServletResponse.setLocale() when running in the servlet environment. 
+        * Setting the response Locale may affect the response character encoding.
+        * 
+        * Since there is no 'Render Response' phase for AJAX requests, we have to handle 
+        * this manually in order to ensure that the 'Content-type' string is sent 
+        * to the browser. 
+        */
+        response.setLocale(viewRoot.getLocale());
+        
             if (component instanceof SuggestAjax)
             {
                 try
                 {
                     if (context.getResponseWriter() == null)
                     {
-                        ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
-                        //response.setContentType("text/html");
-                        PrintWriter htmlResponseWriter = response.getWriter();
-                        context.setResponseWriter(new HtmlResponseWriterImpl(htmlResponseWriter, "text/html", "UTF-8"));
+                        response.setContentType("text/html");
+                        PrintWriter writer = response.getWriter();
+                        /* I've tried to set up the Response Writer similar to the way it is set up in 
+                         * UIComponentTag.setupResponseWriter
+                         */
+                         context.setResponseWriter(new HtmlResponseWriterImpl(writer,
+                                                                              null,
+                                                                              request.getCharacterEncoding()));
                     }
                     ((AjaxComponent) component).encodeAjax(context);
                 }
@@ -198,7 +220,7 @@ public class AjaxDecodePhaseListener
             {
                 try
                 {
-                    ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
+                    
                     //context.getResponseWriter();
                     /*if (response == null)
                     {
@@ -209,12 +231,10 @@ public class AjaxDecodePhaseListener
                     }*/
                     //write wrapping output
                     //response.setContentType("application/xml");
-                    response.reset();
+                    //response.reset();
                     //response.setCharacterEncoding("UTF-8");
                     response.setContentType("text/xml");
-
-                    HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
+                    
                     StringBuffer buff = new StringBuffer();
                     buff.append("<?xml version=\"1.0\"?>\n");
                     buff.append("<response>\n");
