@@ -110,6 +110,9 @@ public class AutoUpdateDataTableRenderer extends HtmlTableRenderer implements Aj
         out.writeAttribute(HTML.TYPE_ATTR, "text/javascript", null);
 
         StringBuffer script = new StringBuffer();
+        script.append("function initAutoUpdateDataTable_");
+        script.append(component.getId());
+        script.append("()\n{");
         script.append("\n");
         script.append(component.getId()).append("_updater").append(" = new Ajax.PeriodicalUpdater('");
         script.append("div").append(component.getClientId(context)); //.append(":tbody_element");
@@ -123,8 +126,11 @@ public class AutoUpdateDataTableRenderer extends HtmlTableRenderer implements Aj
         if(onSuccess != null){
             script.append(" , onSuccess: ").append(onSuccess);
         }
-        script.append("    })");
-        script.append("\n");
+        script.append("    });");
+        script.append("\n}\n");
+        script.append("setTimeout(\"initAutoUpdateDataTable_");
+        script.append(component.getId());
+        script.append("()\", 0);\n");
 
         out.writeText(script.toString(),null);
 
