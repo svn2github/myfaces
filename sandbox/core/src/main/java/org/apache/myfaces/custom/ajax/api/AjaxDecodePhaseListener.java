@@ -240,6 +240,11 @@ public class AjaxDecodePhaseListener
                     buff.append("<response>\n");
                     PrintWriter out = response.getWriter();
                     out.print(buff);
+                    
+                    // imario@apache.org: setup response writer, otherwise the component will fail with an NPE. I dont know why this worked before.
+                    context.setResponseWriter(new HtmlResponseWriterImpl(out,
+                            null,
+                            request.getCharacterEncoding()));
 
                     if (component instanceof HtmlCommandButtonAjax)
                     {
