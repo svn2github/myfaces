@@ -197,6 +197,11 @@
   </converter>
 
   <converter>
+    <converter-id>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter</converter-id>
+    <converter-class>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter</converter-class>
+  </converter> 
+	
+  <converter>
      <converter-id>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-id>
      <converter-class>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-class>
   </converter>

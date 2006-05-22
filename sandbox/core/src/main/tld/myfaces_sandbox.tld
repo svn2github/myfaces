@@ -461,6 +461,39 @@ Sandbox-related entities.
 	</tag>
 
 	<tag>
+		<name>convertStringUtils</name>
+		<tag-class>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter</tag-class>
+		<display-name>StringUtils Converter</display-name>
+		<description>Converts the format of a string</description> 
+
+		<attribute>
+			<name>appendEllipsesDuringInput</name>
+			<required>false</required>
+			<description>Boolean value determining if data should be truncated with ellipses during input conversion. Default = false</description>
+		</attribute> 
+		<attribute>
+			<name>appendEllipsesDuringOutput</name>
+			<required>false</required>
+			<description>Boolean value determining if data should be truncated with ellipses during output conversion. Default = false</description>
+		</attribute> 
+		<attribute>
+			<name>format</name>
+			<required>false</required>
+			<description>Specifies the output case of the string. One of uppercase | lowercase | capitalize</description>
+		</attribute>
+		<attribute>
+			<name>maxLength</name>
+			<required>false</required>
+			<description>Integer value for the maximum length of the rendered string.  Strings longer than maxValue will be truncated at (maxValue - 3) and an ellipsis '...' will be appended.</description>
+		</attribute>
+		<attribute>
+			<name>trim</name>
+			<required>false</required>
+			<description>Boolean value determining is the string should be trimmed before any other formatting takes place. Default = false</description>
+		</attribute> 
+	</tag>
+
+	<tag>
 		<name>convertDateTime</name>
 		<tag-class>org.apache.myfaces.custom.convertDateTime.ConvertDateTimeTag</tag-class>
 		<display-name>DateTime Converter</display-name>
