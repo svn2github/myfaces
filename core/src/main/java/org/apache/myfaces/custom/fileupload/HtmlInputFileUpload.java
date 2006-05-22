@@ -112,22 +112,22 @@ public class HtmlInputFileUpload
         return super.isRendered();
     }
     
-    protected void validateValue(FacesContext context, Object convertedValue)
-    {
-        super.validateValue(context, convertedValue);
-        if (isValid() && getMaxlength() >= 0)
-        {
-            UploadedFile file = (UploadedFile) convertedValue;
-            if(file != null && file.getSize() > getMaxlength())
-            {
-                MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
-                        SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
-                                new Integer(getMaxlength()) },
-                        getClientId(context), context);
-                setValid(false);
-            }
-        }
-    }
+//    protected void validateValue(FacesContext context, Object convertedValue)
+//    {
+//        super.validateValue(context, convertedValue);
+//        if (isValid())
+//        {
+//            UploadedFile file = (UploadedFile) convertedValue;
+//            if(file != null && file.getSize() > getMaxlength())
+//            {
+//                MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+//                        SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
+//                                new Integer(getMaxlength()) },
+//                        getClientId(context), context);
+//                setValid(false);
+//            }
+//        }
+//    }
     
     public Object saveState(FacesContext context)
     {
