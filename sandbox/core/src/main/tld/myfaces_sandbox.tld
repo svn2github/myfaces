@@ -462,7 +462,7 @@ Sandbox-related entities.
 
 	<tag>
 		<name>convertStringUtils</name>
-		<tag-class>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter</tag-class>
+		<tag-class>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverterTag</tag-class>
 		<display-name>StringUtils Converter</display-name>
 		<description>Converts the format of a string</description> 
 
