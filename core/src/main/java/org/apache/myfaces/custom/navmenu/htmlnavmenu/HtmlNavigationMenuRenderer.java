@@ -141,14 +141,14 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
                 if (prevItem.isOpen() || prevItem.isActive()) {
                     HtmlCommandNavigationItem item = (HtmlCommandNavigationItem) panelNav.findComponent(uiComponent.getClientId(facesContext));
                     if (item != null) {
-                        if (item.getActiveDirectly() != null) {
+                        if (item.getActiveDirectly() != null && item.getActiveDirectly().booleanValue()) {
                             item.setActive(prevItem.isActive());
                         }
                         else {
                             copyValueBinding(prevItem, item, "active");
                         }
 
-                        if (item.getOpenDirectly() != null) {
+                        if (item.getOpenDirectly() != null && item.getOpenDirectly().booleanValue()) {
                             item.setOpen(prevItem.isOpen());
                         }
                         else {

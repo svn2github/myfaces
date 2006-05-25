@@ -163,7 +163,7 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink {
             UIComponent parent = getParent();
 
             //close all siblings
-            closeAllChildren(parent.getChildren().iterator());
+            closeAllChildren(parent.getChildren().iterator(), this, true);
 
             //open all parents (to be sure) and search HtmlPanelNavigation
             UIComponent p = parent;
@@ -220,13 +220,15 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink {
         }
     }
 
-    private static void closeAllChildren(Iterator children) {
+    private static void closeAllChildren(Iterator children, HtmlCommandNavigationItem current, boolean resetActive) {
         while (children.hasNext()) {
             UIComponent ni = (UIComponent) children.next();
             if (ni instanceof HtmlCommandNavigationItem) {
                 ((HtmlCommandNavigationItem) ni).setOpen(false);
+                if (resetActive)
+                    ((HtmlCommandNavigationItem) ni).setActive(false);
                 if (ni.getChildCount() > 0) {
-                    closeAllChildren(ni.getChildren().iterator());
+                    closeAllChildren(ni.getChildren().iterator(), current, current != ni);
                 }
             }
         }
