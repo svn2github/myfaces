@@ -1,7 +1,7 @@
 ﻿﻿﻿<%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
+
 
 <html>
 
@@ -12,7 +12,7 @@
 
         <h:panelGrid>
             <h:panelGrid id="header_group1" columns="2" styleClass="pageHeader"  >
-                <t:graphicImage id="header_logo" url="images/logo_mini.jpg" alt="" />
+                <h:graphicImage id="header_logo" url="images/logo_mini.jpg" alt="" />
                 <f:verbatim>
                     <h:outputText style="font-size:20px;color:#FFFFFF;" escape="false" value="MyFaces - The free JavaServer&#8482; Faces Implementation"/>
                     <h:outputText style="font-size:10px;color:#FFFFFF;"value="(Version 1.1.1)"/>
