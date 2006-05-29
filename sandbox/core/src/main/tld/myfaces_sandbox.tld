@@ -115,9 +115,6 @@ Sandbox-related entities.
 ===========================================================================
 -->
 <!ENTITY html_input_suggest_attributes       SYSTEM "entities/html_input_suggest_attributes.xml">
-<!ENTITY ui_schedule_attributes       SYSTEM "entities/ui_schedule_attributes.xml">
-<!ENTITY html_schedule_attributes       SYSTEM "entities/html_schedule_attributes.xml">
-<!ENTITY html_planner_attributes       SYSTEM "entities/html_planner_attributes.xml">
 <!ENTITY html_focus_attributes       SYSTEM "entities/html_focus_attributes.xml">
 <!ENTITY validator_compare_to_attributes       SYSTEM "entities/validator_compare_to_attributes.xml">
 <!ENTITY value_change_notifier_attributes       SYSTEM "entities/value_change_notifier_attributes.xml">
@@ -158,18 +155,6 @@ Sandbox-related entities.
 	</tag>
 
 
-	<!-- planner -->
-	<tag>
-		<name>planner</name>
-		<tag-class>org.apache.myfaces.custom.schedule.PlannerTag</tag-class>
-		<body-content>empty</body-content>
-		<display-name>Planner component</display-name>
-		<description>A meeting planner component, similar to the ones found in Outlook or Evolution.</description>
-		&ui_component_attributes;
-		&ui_schedule_attributes;
-		&html_planner_attributes;
-	</tag>
-
 	<!-- valueChangeNotifier -->
 	<tag>
         <name>valueChangeNotifier</name>
@@ -179,18 +164,6 @@ Sandbox-related entities.
 		&value_change_notifier_attributes;
 	</tag>
 
-
-	<!-- schedule -->
-	<tag>
-		<name>schedule</name>
-		<tag-class>org.apache.myfaces.custom.schedule.ScheduleTag</tag-class>
-		<body-content>empty</body-content>
-		<display-name>Schedule component</display-name>
-		<description>A schedule component similar to the ones found in Outlook or Evolution</description>
-		&ui_command_attributes;
-		&ui_schedule_attributes;
-		&html_schedule_attributes;
-	</tag>
 
 	<!-- script -->
 	<tag>

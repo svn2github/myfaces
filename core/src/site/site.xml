@@ -59,6 +59,7 @@
 	    <item name="UI Save State" href="uiSaveState.html"/> 
 	    <item name="Columns" href="columns.html"/> 
 	    <item name="Column" href="column.html"/>   
+        <item name="Schedule" href="schedule.html"/>
 	  </menu>    
 	  
 	  <menu name="Validators">

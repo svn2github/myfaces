@@ -359,6 +359,11 @@
         <component-class>org.apache.myfaces.custom.savestate.UISaveState</component-class>
     </component>
 
+	<component>
+		<component-type>org.apache.myfaces.Schedule</component-type>
+		<component-class>org.apache.myfaces.custom.schedule.HtmlSchedule</component-class>
+	</component>
+  
     <component>
         <component-type>org.apache.myfaces.SelectOneCountry</component-type>
         <component-class>org.apache.myfaces.custom.selectOneCountry.SelectOneCountry</component-class>
@@ -373,6 +378,7 @@
         <component-type>org.apache.myfaces.Stylesheet</component-type>
         <component-class>org.apache.myfaces.custom.stylesheet.Stylesheet</component-class>
     </component>
+    
 
     <!-- additional "by type" converters -->
 
@@ -779,6 +785,16 @@
             <renderer-type>org.apache.myfaces.SwapImage</renderer-type>
             <renderer-class>org.apache.myfaces.custom.swapimage.HtmlSwapImageRenderer</renderer-class>
         </renderer>
+
+        <renderer>
+        	<component-family>javax.faces.Panel</component-family>
+        	<renderer-type>org.apache.myfaces.Schedule</renderer-type>
+        	<renderer-class>
+        		org.apache.myfaces.custom.schedule.renderer.ScheduleDelegatingRenderer
+        	</renderer-class>
+        </renderer>
+
+
 
     </render-kit>
 

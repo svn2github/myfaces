@@ -359,6 +359,171 @@
 		<managed-bean-class>org.apache.myfaces.examples.testexception.TestException</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+
+
+    <!--  managed beans for schedule examples -->
+    <managed-bean>
+    	<managed-bean-name>today</managed-bean-name>
+    	<managed-bean-class>java.util.Date</managed-bean-class>
+    	<managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>scheduleModel1</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.custom.schedule.model.SimpleScheduleModel
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>mode</property-name>
+    		<value>1</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>selectedDate</property-name>
+    		<value>#{today}</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>scheduleHandler1</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.examples.schedule.ScheduleExampleHandler
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel1}</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>addEntryHandler</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.examples.schedule.AddEntryHandler
+    	</managed-bean-class>
+    	<managed-bean-scope>request</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel1}</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>scheduleModel2</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.custom.schedule.model.SimpleScheduleModel
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>mode</property-name>
+    		<value>1</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>selectedDate</property-name>
+    		<value>#{today}</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>scheduleHandler2</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.examples.schedule.ScheduleExampleHandler
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>bindingScheduleHandler</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.examples.schedule.BindingScheduleExampleHandler
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+    </managed-bean>
+
+
+    <managed-bean>
+    	<managed-bean-name>scheduleSettings2</managed-bean-name>
+    	<managed-bean-class>
+    		org.apache.myfaces.examples.schedule.ScheduleSettings
+    	</managed-bean-class>
+    	<managed-bean-scope>session</managed-bean-scope>
+    	<managed-property>
+    		<property-name>model</property-name>
+    		<value>#{scheduleModel2}</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>visibleStartHour</property-name>
+    		<value>8</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>visibleEndHour</property-name>
+    		<value>18</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>workingStartHour</property-name>
+    		<value>9</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>workingEndHour</property-name>
+    		<value>17</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>tooltip</property-name>
+    		<value>true</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>readonly</property-name>
+    		<value>false</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>theme</property-name>
+    		<value>default</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>headerDateFormat</property-name>
+    		<value>yyyy-MM-dd</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>compactWeekRowHeight</property-name>
+    		<value>200</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>compactMonthRowHeight</property-name>
+    		<value>100</value>
+    	</managed-property>
+    	<managed-property>
+    		<property-name>detailedRowHeight</property-name>
+    		<value>22</value>
+    	</managed-property>
+    </managed-bean>
+
+    <managed-bean>
+    	<managed-bean-name>scheduleThemeChoices</managed-bean-name>
+    	<managed-bean-class>java.util.TreeMap</managed-bean-class>
+    	<managed-bean-scope>application</managed-bean-scope>
+    	<map-entries>
+    		<map-entry>
+    			<key>default</key>
+    			<value>default</value>
+    		</map-entry>
+    		<map-entry>
+    			<key>evolution</key>
+    			<value>evolution</value>
+    		</map-entry>
+    		<map-entry>
+    			<key>outlookxp</key>
+    			<value>outlookxp</value>
+    		</map-entry>
+    	</map-entries>
+    </managed-bean>
 	
     <navigation-rule>
         <navigation-case>
@@ -588,5 +753,62 @@
             <to-view-id>/masterDetail.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
+
+    <!-- navigational rules for the schedule examples -->
+	<navigation-rule>
+		<from-view-id>/schedule2.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>add_entry</from-outcome>
+			<to-view-id>/schedule_addentry.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/schedule_addentry.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/schedule2.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/schedule2.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/schedule_addentry.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/schedule3.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>edit_settings</from-outcome>
+			<to-view-id>/schedule_editsettings.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/schedule_editsettings.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/schedule3.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/schedule3.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>failure</from-outcome>
+			<to-view-id>/schedule_editsettings.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

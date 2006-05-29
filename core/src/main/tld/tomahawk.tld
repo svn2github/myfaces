@@ -203,6 +203,10 @@
       SYSTEM "tomahawk-entities/tomahawk_columns_attributes.xml">
 <!ENTITY tomahawk_column_attributes
       SYSTEM "tomahawk-entities/tomahawk_column_attributes.xml">
+<!ENTITY tomahawk_ui_schedule_attributes
+	  SYSTEM "tomahawk-entities/tomahawk_ui_schedule_attributes.xml">
+<!ENTITY tomahawk_html_schedule_attributes
+      SYSTEM "tomahawk-entities/tomahawk_html_schedule_attributes.xml">
 ]>
 
 <taglib>
@@ -1498,5 +1502,18 @@
         &html_event_handler_attributes;
         &tomahawk_column_attributes;
      </tag>
+
+	<!-- schedule -->
+	<tag>
+		<name>schedule</name>
+		<tag-class>org.apache.myfaces.custom.schedule.ScheduleTag</tag-class>
+		<body-content>empty</body-content>
+		<display-name>Schedule component</display-name>
+		<description>A schedule component similar to the ones found in Outlook or Evolution</description>
+		&ui_command_attributes;
+		&tomahawk_ui_schedule_attributes;
+		&tomahawk_html_schedule_attributes;
+	</tag>
+
 
 </taglib>
