@@ -196,6 +196,10 @@
      <converter-class>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-class>
   </converter>
 
+  <converter>
+     <converter-id>org.apache.myfaces.custom.convertNumber.TypedNumberConverter</converter-id>
+     <converter-class>org.apache.myfaces.custom.convertNumber.TypedNumberConverter</converter-class>
+  </converter>
 
   <!-- sandbox managed beans -->
   <managed-bean>

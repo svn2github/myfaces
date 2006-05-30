@@ -434,7 +434,12 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	
-
+    <managed-bean>
+    	<managed-bean-name>numberHolder</managed-bean-name>
+    	<managed-bean-class>org.apache.myfaces.examples.NumberHolder</managed-bean-class>
+    	<managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
     <!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>
