@@ -217,12 +217,9 @@ public class HtmlTreeRenderer extends Renderer
             }
 
             // now encode each of the nodes in the level immediately below the root
-            for (int i=0; i < rootNode.getChildCount(); i++)
+            if (walker.next())
             {
-                if (walker.next())
-                {
-                	encodeTree(context, out, tree, walker);
-                }
+                encodeTree(context, out, tree, walker);
             }
         }
 
@@ -273,14 +270,9 @@ public class HtmlTreeRenderer extends Renderer
             }
         }
 
-        TreeNode node = tree.getNode();
-
-        for (int i=0; i < node.getChildCount(); i++)
+        if (walker.next())
         {
-            if (walker.next())
-            {
-            	encodeTree(context, out, tree, walker);
-            }
+            encodeTree(context, out, tree, walker);
         }
 
         if (clientSideToggle)
