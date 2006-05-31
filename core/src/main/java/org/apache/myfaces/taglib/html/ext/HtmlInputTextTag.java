@@ -40,6 +40,7 @@ public class HtmlInputTextTag
         return HtmlInputText.DEFAULT_RENDERER_TYPE;
     }
 
+    private String _autocomplete;
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
     private String _datafld;
@@ -54,6 +55,7 @@ public class HtmlInputTextTag
     public void release() {
         super.release();
 
+        _autocomplete = null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
         _datafld=null;
@@ -68,6 +70,7 @@ public class HtmlInputTextTag
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
+        setStringProperty(component, HTML.AUTOCOMPLETE_ATTR, _autocomplete);
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
         setStringProperty(component, HTML.DATAFLD_ATTR, _datafld);
@@ -77,6 +80,11 @@ public class HtmlInputTextTag
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
+    }
+
+    public void setAutocomplete(String autocomplete)
+    {
+        _autocomplete = autocomplete;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)

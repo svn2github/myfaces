@@ -51,6 +51,7 @@ public class HtmlInputText
 
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
+    private String _autocomplete = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     
@@ -65,6 +66,18 @@ public class HtmlInputText
         super();
 
         setRendererType(DEFAULT_RENDERER_TYPE);
+    }
+
+    public void setAutocomplete(String autocomplete)
+    {
+        _autocomplete = autocomplete;
+    }
+
+    public String getAutocomplete()
+    {
+        if (_autocomplete != null) return _autocomplete;
+        ValueBinding vb = getValueBinding("autocomplete");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
