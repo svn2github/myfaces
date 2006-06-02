@@ -39,17 +39,37 @@
 
   <dependencies>
     <dependency>
-       <groupId>struts</groupId>
-       <artifactId>struts</artifactId>
-       <version>1.2.8</version>
-       <scope>compile</scope>
-       <!--exclusions>
+      <groupId>struts</groupId>
+      <artifactId>struts</artifactId>
+      <version>1.2.8</version>
+      <scope>compile</scope>
+      <!--exclusions>
         <exclusion>
           <groupId>xalan</groupId>
           <artifactId>xalan</artifactId>
         </exclusion>
       </exclusions-->
-     </dependency>
-   </dependencies>
+    </dependency>
+  </dependencies>
+  <profiles>
+    <profile>
+      <id>generate-assembly</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-source</id>
+                <goals><goal>jar</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 
 </project>
