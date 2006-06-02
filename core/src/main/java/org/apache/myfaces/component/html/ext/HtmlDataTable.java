@@ -1230,6 +1230,51 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         Integer rowIndex = new Integer(getRowIndex());
 
+     * Expand all details
+     */
+    public void expandAllDetails()
+    {
+        int rowCount = getRowCount();
+        
+        _expandedNodes.clear();
+        for (int row = 0; row < rowCount; row++)
+        {
+         _expandedNodes.add(new Integer(row));
+        }
+    }
+    
+    /**
+     * Collapse all details
+     */
+    public void collapseAllDetails()
+    {
+        _expandedNodes.clear();
+    } 
+
+    /**
+     * @return true is any of the details is expanded
+     */
+    public boolean isExpandedEmpty() {
+        boolean expandedEmpty = true;
+        if (_expandedNodes != null) {
+            expandedEmpty = _expandedNodes.isEmpty();
+        }
+        return expandedEmpty;
+    }
+
+    /**
+     * Clears expanded nodes set if expandedEmpty is true
+     * @param expandedEmpty
+     */
+    public void setExpandedEmpty(boolean expandedEmpty) {
+        if (expandedEmpty) {
+            if (_expandedNodes != null) {
+              	_expandedNodes.clear();
+            }
+        }
+    } 
+    
+    /**
         if(_expandedNodes.contains(rowIndex))
         {
             _expandedNodes.remove(rowIndex);
