@@ -484,7 +484,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                 
                 //replace header facet with a sortable header component if needed
                 if (replaceHeaderFacets && isSortHeaderNeeded(aColumn, headerFacet))
-                {
+                {                    
                     propertyName = propertyName != null ? propertyName : getSortPropertyFromEL(aColumn);
                     
                     HtmlCommandSortHeader sortHeader = createSortHeaderComponent(context, aColumn, headerFacet, propertyName);                        
@@ -502,7 +502,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                 
                 //make the column marked as default sorted be the current sorted column
                 if (defaultSorted && getSortColumn() == null)
-                {
+                {                    
                     setSortColumn(columnName);
                     setSortProperty(propertyName);
                 }
@@ -546,16 +546,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     protected String getSortPropertyFromEL(UIComponent component)
     {        
         if (getVar() == null)
-            return null;
+            return null;               
         
         for (Iterator iter = component.getChildren().iterator(); iter.hasNext();)
         {
-            UIComponent aChild = (UIComponent) iter.next();
-            if (aChild instanceof UIOutput)
+            UIComponent aChild = (UIComponent) iter.next();            
+            if (aChild.isRendered() && aChild instanceof UIOutput)
             {
                 UIOutput output = (UIOutput)aChild;
                 
-                ValueBinding vb = output.getValueBinding("value"); 
+                ValueBinding vb = output.getValueBinding("value");                 
                 if (vb != null)
                 {
                     String expressionString = vb.getExpressionString();
@@ -567,12 +567,12 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                         String tempProp = expressionString.substring(varEndIndex + 1, expressionString.length()); 
                         
                         StringTokenizer tokenizer = new StringTokenizer(tempProp, " +[]{}-/*|?:&<>!=()%");
-                        if (tokenizer.hasMoreTokens())
-                            return tokenizer.nextToken();
+                        if (tokenizer.hasMoreTokens())                        
+                            return tokenizer.nextToken();                                                    
                     }
                 }
             }
-            else getSortPropertyFromEL(aChild);
+            else return getSortPropertyFromEL(aChild);
         }
         
         return null;
@@ -985,7 +985,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     
     public void setSortProperty(String sortProperty)
     {        
-        _sortProperty = sortProperty;                 
+        _sortProperty = sortProperty;           
     }
 
     public String getSortProperty()
