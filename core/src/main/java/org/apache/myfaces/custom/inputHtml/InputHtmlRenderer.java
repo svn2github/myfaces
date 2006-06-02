@@ -231,9 +231,13 @@ public class InputHtmlRenderer extends HtmlRenderer {
         String formId;
         {
             UIComponent tmpComponent = editor.getParent();
-            while(!(tmpComponent instanceof UIForm) ){
+            while((tmpComponent != null) && !(tmpComponent instanceof UIForm) ){
                 tmpComponent = tmpComponent.getParent();
             }
+            if (tmpComponent == null) {
+                log.warn("The inputHtml component must be within a form, giving up!");
+                return;
+            } 
             formId = tmpComponent.getClientId(context);
         }
 
