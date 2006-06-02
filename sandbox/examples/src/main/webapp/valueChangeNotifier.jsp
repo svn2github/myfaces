@@ -1,11 +1,21 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
+<%@ page
+	session="false"
+	contentType="text/html;charset=utf-8"%>
+<%@ taglib
+	uri="http://java.sun.com/jsf/html"
+	prefix="h"%>
+<%@ taglib
+	uri="http://java.sun.com/jsf/core"
+	prefix="f"%>
+<%@ taglib
+	uri="http://myfaces.apache.org/tomahawk"
+	prefix="t"%>
+<%@ taglib
+	uri="http://myfaces.apache.org/sandbox"
+	prefix="s"%>
 <html>
 
-<%@include file="inc/head.inc" %>
+<%@include file="inc/head.inc"%>
 
 <!--
 /*
@@ -28,17 +38,40 @@
 <body>
 
 <f:view>
-    <h:form>
-      <h:selectOneMenu value="#{notifierBean.selectedCategory}" onchange="submit()">
-      
-	      <s:valueChangeNotifier method="#{notifierBean.valueChange}" />
-	      <f:selectItems value="#{notifierBean.categories}" />
-	  
-	  </h:selectOneMenu>    
-    </h:form>
+	<h:form>
+		<h:selectOneMenu
+			value="#{notifierBean.selectedCategory}"
+			onchange="submit()">
+
+			<s:valueChangeNotifier method="#{notifierBean.valueChange}" />
+			<f:selectItems value="#{notifierBean.categories}" />
+
+		</h:selectOneMenu>
+
+		<h:dataTable
+			value="#{notifierBean.listData}"
+			var="item"
+			border="1">
+			<h:column>
+				<h:dataTable
+					value="#{item.listData}"
+					var="itemSub"
+					binding="#{notifierBean.listDataBinding}"
+					border="1">
+					<h:column>
+						<h:inputText value="#{itemSub.data}">
+							<s:valueChangeNotifier method="#{notifierBean.valueChange}" />
+						</h:inputText>
+					</h:column>
+				</h:dataTable>
+			</h:column>
+		</h:dataTable>
+
+		<h:commandButton />
+	</h:form>
 </f:view>
 
-<%@include file="inc/page_footer.jsp" %>
+<%@include file="inc/page_footer.jsp"%>
 
 </body>
 

@@ -46,12 +46,15 @@ public final class ValueChangeManager
 	{
 		private final String method;
 		private final ValueChangeEvent event;
+		private final List restoreStateCommands;
 
 		public Entry(String method,
-				ValueChangeEvent event)
+				ValueChangeEvent event,
+				List restoreStateCommands)
 		{
 			this.method = method;
 			this.event = event;
+			this.restoreStateCommands = restoreStateCommands;
 		}
 	}
 
@@ -63,9 +66,10 @@ public final class ValueChangeManager
 	 * add a new event 
 	 */
 	public void addEvent(String method,
-			ValueChangeEvent event)
+			ValueChangeEvent event,
+			List restoreStateCommands)
 	{
-		events.add(new Entry(method, event));
+		events.add(new Entry(method, event, restoreStateCommands));
 	}
 
 	/**
@@ -79,12 +83,15 @@ public final class ValueChangeManager
 			while (iterEvents.hasNext())
 			{
 				Entry entry = (Entry) iterEvents.next();
-	
+
+				saveCurrentStates(entry.restoreStateCommands);
+				
 				try
 				{
+					restoreEventStates(entry.restoreStateCommands);
+					
 					MethodBinding mb = context.getApplication().createMethodBinding(entry.method, SIGNATURE);
 					mb.invoke(context, new Object[] { entry.event });
-					
 				}
 				catch (MethodNotFoundException e)
 				{
@@ -95,11 +102,42 @@ public final class ValueChangeManager
 					// ignore any other value change event
 					return;
 				}
+				finally
+				{
+					restoreCurrentStates(entry.restoreStateCommands);
+				}
 			}
 		}
 		finally
 		{
 			events.clear();			
+		}
+	}
+
+	protected void saveCurrentStates(List restoreStateCommands)
+	{
+		for (int i = 0; i<restoreStateCommands.size(); i++)
+		{
+			RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
+			cmd.saveCurrentState();
+		}
+	}
+	
+	protected void restoreCurrentStates(List restoreStateCommands)
+	{
+		for (int i = restoreStateCommands.size()-1; i>=0; i--)
+		{
+			RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
+			cmd.restoreCurrentState();
+		}
+	}
+
+	protected void restoreEventStates(List restoreStateCommands)
+	{
+		for (int i = restoreStateCommands.size()-1; i>=0; i--)
+		{
+			RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
+			cmd.restoreEventState();
 		}
 	}
 

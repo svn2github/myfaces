@@ -15,7 +15,12 @@
  */
 package org.apache.myfaces.custom.valueChangeNotifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.component.StateHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
@@ -32,7 +37,7 @@ public class ValueChangeCollector implements ValueChangeListener,
 {
 	private String method = null;
 	private boolean isTransient = false;
-	
+
 	public ValueChangeCollector()
 	{
 	}
@@ -49,12 +54,52 @@ public class ValueChangeCollector implements ValueChangeListener,
 	public void processValueChange(ValueChangeEvent event)
 			throws AbortProcessingException
 	{
-		ValueChangeEvent clonedEvent = new ValueChangeEvent(event
-				.getComponent(), event.getOldValue(), event.getNewValue());
+		UIComponent valueChangeComponent = event.getComponent();
+		List restoreStateCommands = new ArrayList(); 
+		collectStates(restoreStateCommands, valueChangeComponent); 
+		
+		ValueChangeEvent clonedEvent = new ValueChangeEvent(
+			event.getComponent(),
+			event.getOldValue(),
+			event.getNewValue());
 
 		ValueChangeManager manager = ValueChangeManager.getManager(FacesContext
 				.getCurrentInstance());
-		manager.addEvent(method, clonedEvent);
+		manager.addEvent(method, clonedEvent, restoreStateCommands);
+	}
+
+	protected void collectStates(List restoreStateCommands, UIComponent component)
+	{
+		while (component != null)
+		{
+			if (component instanceof UIData)
+			{
+				final UIData data = (UIData) component;
+				final int rowIndex = data.getRowIndex();
+				
+				restoreStateCommands.add(new RestoreStateCommand()
+				{
+					int currentRowIndex;
+					
+					public void saveCurrentState()
+					{
+						currentRowIndex = data.getRowIndex();
+					}
+					
+					public void restoreCurrentState()
+					{
+						data.setRowIndex(currentRowIndex);
+					}
+
+					public void restoreEventState()
+					{
+						data.setRowIndex(rowIndex);
+					}
+				});
+			}
+			
+			component = component.getParent(); 
+		}
 	}
 
 	public Object saveState(FacesContext context)
