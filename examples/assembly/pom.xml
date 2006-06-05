@@ -71,7 +71,7 @@
 		    <descriptors>	
 	                <descriptor>src/main/assembly/dep.xml</descriptor>
  		    </descriptors>
-		    <finalName>tomahawk-examples</finalName>
+		    <finalName>tomahawk-examples-${version}</finalName>
                     <outputDirectory>${project.build.directory}/out</outputDirectory>
                     <workDirectory>${project.build.directory}/work</workDirectory>
                 </configuration>
