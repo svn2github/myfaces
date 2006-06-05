@@ -84,7 +84,7 @@
                 <configuration>
                     <id>myfaces-nightly-builds</id>
                     <url>scpexe://minotaur.apache.org/www/cvs.apache.org/builds/myfaces/nightly</url>
-                    <inputDirectory>${project.build.directory}/out/tomahawk-examples-bin.dir</inputDirectory>
+                    <inputDirectory>${project.build.directory}/out</inputDirectory>
                 </configuration>
             </plugin>
 
