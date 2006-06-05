@@ -17,61 +17,91 @@
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>tomahawk-sandbox-examples</artifactId>
-  <packaging>war</packaging>
-  <name>Sandbox Examples</name>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>tomahawk-sandbox-examples</artifactId>
+    <packaging>war</packaging>
+    <name>Sandbox Examples</name>
 
-  <parent>
-    <groupId>org.apache.myfaces.tomahawk</groupId>
-    <artifactId>sandbox-project</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
-  </parent>
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/examples</url>
-  </scm>
-
-  <build>
-    <finalName>myfaces-example-sandbox</finalName>
-  </build>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.myfaces.tomahawk</groupId>
-      <artifactId>tomahawk-sandbox</artifactId>
-      <version>${version}</version>
-    </dependency> 
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-api</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-impl</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
-      <!-- Sandbox examples must only have runtime dependency to myfaces-impl
-           so that it will be automatically added to war. But there must not be
-           any compile dependency on impl so that is is always possible to use
-           other JSF implementations. -->
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.1</version>
-      <scope>compile</scope>
-    </dependency>
+    <parent>
+        <groupId>org.apache.myfaces.tomahawk</groupId>
+        <artifactId>sandbox-project</artifactId>
+        <version>1.1.4-SNAPSHOT</version>
+    </parent>
     
-  </dependencies>
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/examples</url>
+    </scm>
+
+    <profiles>
+        <profile>
+            <id>generate-assembly</id>
+            <build>        
+                <plugins>	    
+                    <plugin>	
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>dependency-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack-source</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>  	   
+                                        <artifactItem>
+                                            <groupId>org.apache.myfaces.tomahawk</groupId>
+                                            <artifactId>${artifactId}</artifactId>
+                                            <version>${version}</version>
+                                            <classifier>sources</classifier>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/source</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>	           
+                </plugins>	
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.myfaces.tomahawk</groupId>
+            <artifactId>tomahawk-sandbox</artifactId>
+            <version>${version}</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
+            <version>1.1.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-impl</artifactId>
+            <version>1.1.4-SNAPSHOT</version>
+            <!-- Sandbox examples must only have runtime dependency to myfaces-impl
+            so that it will be automatically added to war. But there must not be
+            any compile dependency on impl so that is is always possible to use
+            other JSF implementations. -->
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.1</version>
+            <scope>compile</scope>
+        </dependency>  
+    </dependencies>
 </project>
