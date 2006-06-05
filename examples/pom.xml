@@ -1,73 +1,69 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <packaging>pom</packaging>
-  <name>Tomahawk Examples Project</name>
-  <groupId>org.apache.myfaces.tomahawk</groupId>
-  <artifactId>tomahawk-examples-project</artifactId>
-  
-  <parent>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <name>Tomahawk Examples Project</name>
     <groupId>org.apache.myfaces.tomahawk</groupId>
-    <artifactId>tomahawk-project</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
-  </parent>
+    <artifactId>tomahawk-examples-project</artifactId>
   
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples</developerConnection>
-    <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/examples</url>
-  </scm>   
-
-  <modules>
-    <module>blank</module>
-    <module>simple</module>
-    <module>tiles</module>
-    <module>wap</module>
-  </modules>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.myfaces.tomahawk</groupId>
-      <artifactId>tomahawk</artifactId>
-      <version>${version}</version>
-    </dependency> 
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-api</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-impl</artifactId>
-      <version>1.1.4-SNAPSHOT</version>
-      <!-- Tomahawk examples must only have runtime dependency to myfaces-impl
-           so that it will be automatically added to war. But there must not be
-           any compile dependency on impl so that is is always possible to use
-           other JSF implementations. -->
-      <scope>runtime</scope>
-    </dependency>
-    
-  </dependencies>
+    <parent>
+        <groupId>org.apache.myfaces.tomahawk</groupId>
+        <artifactId>tomahawk-project</artifactId>
+        <version>1.1.4-SNAPSHOT</version>
+    </parent>
   
-  <profiles>
-  <profile>
-      <id>generate-assembly</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-source</id>
-                <goals><goal>jar</goal></goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+    <scm>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/examples</url>
+    </scm>   
+
+    <modules>
+        <module>blank</module>
+        <module>simple</module>
+        <module>tiles</module>
+        <module>wap</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.myfaces.tomahawk</groupId>
+            <artifactId>tomahawk</artifactId>
+            <version>${version}</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
+            <version>1.1.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-impl</artifactId>
+            <version>1.1.4-SNAPSHOT</version>
+            <!-- Tomahawk examples must only have runtime dependency to myfaces-impl
+            so that it will be automatically added to war. But there must not be
+            any compile dependency on impl so that is is always possible to use
+            other JSF implementations. -->
+            <scope>runtime</scope>
+        </dependency>    
+    </dependencies>   
+
+     
+    <build>
+        <plugins>	
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-source</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+	</plugins>
+    </build>
+
 </project>
-
