@@ -60,7 +60,7 @@
                                             <classifier>sources</classifier>
                                         </artifactItem>
                                     </artifactItems>
-                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/source</outputDirectory>
+                                    <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/src</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
