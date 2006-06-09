@@ -4,7 +4,9 @@
 <f:view>
 <h:outputText value="plain JSF page..."/>
 <f:verbatim><br/></f:verbatim>
+<h:form>
 <h:commandLink action="back">
 <h:outputText value="back" />
 </h:commandLink>
+</h:form>
 </f:view>
