@@ -87,14 +87,14 @@
 
         <h2>aliasBean with component-binding - if everything works, you should see 'first' followed by 'second'</h2>
         <t:aliasBean alias="#{holder}" value="#{firstComponentBindingHolder}" >
-            <f:subview id="simulatedIncludedSubform3">
+            <f:subview id="simulatedIncludedSubform4">
                 <%-- The next tags could be inserted by an %@ include or jsp:include --%>
                 <h:panelGroup binding="#{holder.panelGroup}"/>
             </f:subview>
         </t:aliasBean>
 
         <t:aliasBean alias="#{holder}" value="#{secondComponentBindingHolder}" >
-            <f:subview id="simulatedIncludedSubform3">
+            <f:subview id="simulatedIncludedSubform5">
                 <%-- The next tags could be inserted by an %@ include or jsp:include --%>
                 <h:panelGroup binding="#{holder.panelGroup}"/>
             </f:subview>
