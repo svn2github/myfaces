@@ -70,7 +70,7 @@ public class StylesheetRenderer extends HtmlRenderer {
           }
           writer.writeURIAttribute
               ("href",
-               context.getExternalContext().getRequestContextPath()+stylesheet.getPath(),
+               context.getApplication().getViewHandler().getResourceURL(context, stylesheet.getPath()),
                "path");
           writer.endElement("link");
         }

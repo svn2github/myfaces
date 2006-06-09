@@ -38,7 +38,7 @@ public class ScriptRenderer extends HtmlRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.SRC_ATTR, context.getExternalContext().getRequestContextPath()+script.getSrc(), null);
+        writer.writeAttribute(HTML.SRC_ATTR, context.getApplication().getViewHandler().getResourceURL(context, script.getSrc()), null);
         writer.writeAttribute(HTML.TYPE_ATTR, script.getType(), null);
         writer.writeText("",null);
         writer.endElement(HTML.SCRIPT_ELEM);
