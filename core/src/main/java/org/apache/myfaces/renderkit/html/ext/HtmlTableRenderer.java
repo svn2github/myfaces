@@ -443,7 +443,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
         else
         {
-            writer.writeAttribute(HTML.CLASS_ATTR, rowStyle, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass, null);
         }
         if(rowStyle != null)
         {
