@@ -64,7 +64,7 @@ managed beans used:
                 <t:inputText id="username" value="#{user.username}" forceId="true"/>
                 <h:outputText value="Password"/>
                 <t:inputText id="passwd" value="#{user.password}" forceId="true"/>
-                <t:commandButton id="button" forceId="true" value="Update" action="#{user.update}"/>
+                <t:commandButton id="updateButton" forceId="true" value="Update" action="#{user.update}"/>
             </h:column>
         </h:dataTable>
 
