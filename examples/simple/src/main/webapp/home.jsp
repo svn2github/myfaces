@@ -82,27 +82,34 @@
                 <h:outputLink value="collapsiblePanel.jsf" ><f:verbatim>Collapsible Panel</f:verbatim></h:outputLink>
                 <h:outputLink value="testExceptions.jsf" ><f:verbatim>Test the custom error page - not really jsf stuff, but a demonstration how to print the real exception</f:verbatim></h:outputLink>
 
-			<h:outputText value="Schedule" />
-			<h:panelGrid style="padding-left:25px">
-				<h:outputLink value="schedule1.jsf">
-					<f:verbatim>Schedule with sample entries</f:verbatim>
-				</h:outputLink>
-				<h:outputLink value="schedule2.jsf">
-					<f:verbatim>Schedule with possibility for adding/removing entries</f:verbatim>
-				</h:outputLink>
-				<h:outputLink value="schedule3.jsf">
-					<f:verbatim>Customizable schedule</f:verbatim>
-				</h:outputLink>
-				<h:outputLink value="schedule4.jsf">
-					<f:verbatim>Schedule with custom styleClasses and custom EntryRenderer</f:verbatim>
-				</h:outputLink>
-				<h:outputLink value="schedule5.jsf">
-					<f:verbatim>Example demonstrating the submitOnClick and mouseListener properties</f:verbatim>
-				</h:outputLink>
-			</h:panelGrid>
+                <h:outputText value="Schedule" />
+                <h:panelGrid style="padding-left:25px">
+                    <h:outputLink value="schedule1.jsf">
+                        <f:verbatim>Schedule with sample entries</f:verbatim>
+                    </h:outputLink>
+                    <h:outputLink value="schedule2.jsf">
+                        <f:verbatim>Schedule with possibility for adding/removing entries</f:verbatim>
+                    </h:outputLink>
+                    <h:outputLink value="schedule3.jsf">
+                        <f:verbatim>Customizable schedule</f:verbatim>
+                    </h:outputLink>
+                    <h:outputLink value="schedule4.jsf">
+                        <f:verbatim>Schedule with custom styleClasses and custom EntryRenderer</f:verbatim>
+                    </h:outputLink>
+                    <h:outputLink value="schedule5.jsf">
+                        <f:verbatim>Example demonstrating the submitOnClick and mouseListener properties</f:verbatim>
+                    </h:outputLink>
+                </h:panelGrid>
+
+                <h:outputText value="Behaviours controlled by init params" />
+                <h:panelGrid style="padding-left:25px">
+                    <h:outputLink value="autoscroll.jsf">
+                        <f:verbatim>AutoScroll (org.apache.myfaces.AUTO_SCROLL)</f:verbatim>
+                    </h:outputLink>
+                </h:panelGrid>
 
 
-		</h:panelGrid>
+        </h:panelGrid>
 
 		</h:form>
         </f:view>

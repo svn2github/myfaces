@@ -192,6 +192,7 @@
         <managed-bean-class>org.apache.myfaces.examples.calendarexample.CalendarBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+
     <!-- Managed Beans for countryForm.jsp -->
 
     <managed-bean>
@@ -524,6 +525,17 @@
     		</map-entry>
     	</map-entries>
     </managed-bean>
+
+    <!-- Managed Beans for calendar.jsp -->
+
+    <managed-bean>
+        <managed-bean-name>autoScrollBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.misc.AutoScrollBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <!-- NAVIGATION RULES -->
 	
     <navigation-rule>
         <navigation-case>
