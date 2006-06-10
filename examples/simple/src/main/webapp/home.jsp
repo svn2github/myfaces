@@ -12,12 +12,13 @@
         <h:form>
     
             <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
+            <f:loadBundle basename="org.apache.myfaces.examples.resource.build" var="buildInfo"/>
 
             <h:panelGrid id="header_group1" columns="2" styleClass="pageHeader"  >
                 <t:graphicImage id="header_logo" url="images/logo_mini.jpg" alt="#{example_messages['alt_logo']}" />
                 <f:verbatim>
                     <h:outputText style="font-size:20px;color:#FFFFFF" escape="false" value="MyFaces - The free JavaServer&#8482; Faces Implementation"/>
-                    <h:outputText style="font-size:10px;color:#FFFFFF" value="(Tomahawk Version 1.1.4-SNAPSHOT)"/>
+                    <h:outputText style="font-size:10px;color:#FFFFFF" value=" (Tomahawk Version #{buildInfo['tomahawk_version']}, using #{buildInfo ['jsf_implementation']})"/>
                 </f:verbatim>
             </h:panelGrid>
 
