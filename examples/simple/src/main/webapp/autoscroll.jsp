@@ -45,6 +45,9 @@
             </h:column>
         </h:dataTable>
     </h:form>
+
+    <%@include file="inc/page_footer.jsp" %>
+    
 </f:view>
 
 </body>
