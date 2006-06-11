@@ -29,37 +29,40 @@
 <body>
 
 <f:view>
-<h:form>
 
-    <h:panelGrid columns="2">
-        <h:outputLabel for="text1" value="Text:"/>
-        <h:inputText id="text1">
-            <t:jsValueChangeListener for="text2" property="value" expressionValue="($srcElem.value=='yes')?'true':'false'" />
-            <t:jsValueChangeListener for="text3" property="value" expressionValue="$srcElem.value" />
-            <t:jsValueChangeListener for="text4" expressionValue="$destElem.innerHTML = $srcElem.value" />
-            <t:jsValueChangeListener for="text5" expressionValue="($srcElem.value=='hide')?$destElem.style.display='none':$destElem.style.display='inline'" />
-            <t:jsValueSet name="countryMap" value="#{countryList.countryMap}"/>
-            <t:jsValueChangeListener for="text6" expressionValue="$destElem.innerHTML = countryMap[$srcElem.value]" />
-        </h:inputText>
-        <h:inputText id="text2"/>
-        <h:inputText id="text3"/>
-        <h:panelGroup id="text4" />
-        <h:panelGroup id="text5" >
-            <h:outputText value="Hide me - enter hide in first input-field."/>
-        </h:panelGroup>
-        <h:panelGroup id="text6" >
-            <h:outputText value="Countryname - enter ISO Code in first input-field (e.g. AT)"/>
-        </h:panelGroup>
-        <h:panelGroup/>
-        <h:selectOneMenu id="selone_menu_colors" value="red" styleClass="selectOneMenu">
-            <f:selectItem itemValue="" itemLabel="#{example_messages['empty_selitem']}" />
-            <f:selectItems value="#{carconf.colors}" />
-            <t:jsValueChangeListener for="selone_menu_subcolors" expressionValue="($srcElem.options[$srcElem.selectedIndex].value=='color_black')?$destElem.style.display='inline':$destElem.style.display='none';"/>
-        </h:selectOneMenu>
-        <h:inputText id="selone_menu_subcolors"/>
-    </h:panelGrid>
+    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
-</h:form>
+    <h:form>
+
+        <h:panelGrid columns="2">
+            <h:outputLabel for="text1" value="Text:"/>
+            <h:inputText id="text1">
+                <t:jsValueChangeListener for="text2" property="value" expressionValue="($srcElem.value=='yes')?'true':'false'" />
+                <t:jsValueChangeListener for="text3" property="value" expressionValue="$srcElem.value" />
+                <t:jsValueChangeListener for="text4" expressionValue="$destElem.innerHTML = $srcElem.value" />
+                <t:jsValueChangeListener for="text5" expressionValue="($srcElem.value=='hide')?$destElem.style.display='none':$destElem.style.display='inline'" />
+                <t:jsValueSet name="countryMap" value="#{countryList.countryMap}"/>
+                <t:jsValueChangeListener for="text6" expressionValue="$destElem.innerHTML = countryMap[$srcElem.value]" />
+            </h:inputText>
+            <h:inputText id="text2"/>
+            <h:inputText id="text3"/>
+            <h:panelGroup id="text4" />
+            <h:panelGroup id="text5" >
+                <h:outputText value="Hide me - enter hide in first input-field."/>
+            </h:panelGroup>
+            <h:panelGroup id="text6" >
+                <h:outputText value="Countryname - enter ISO Code in first input-field (e.g. AT)"/>
+            </h:panelGroup>
+            <h:panelGroup/>
+            <h:selectOneMenu id="selone_menu_colors" value="red" styleClass="selectOneMenu">
+                <f:selectItem itemValue="" itemLabel="#{example_messages['empty_selitem']}" />
+                <f:selectItems value="#{carconf.colors}" />
+                <t:jsValueChangeListener for="selone_menu_subcolors" expressionValue="($srcElem.options[$srcElem.selectedIndex].value=='color_black')?$destElem.style.display='inline':$destElem.style.display='none';"/>
+            </h:selectOneMenu>
+            <h:inputText id="selone_menu_subcolors"/>
+        </h:panelGrid>
+
+    </h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>
