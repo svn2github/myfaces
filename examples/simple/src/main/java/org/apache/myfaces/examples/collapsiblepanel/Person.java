@@ -59,7 +59,7 @@ public class Person implements Serializable
 
     public String test()
     {
-     	log.info("test called for " + Person.class);
+     	log.info("test called for " + Person.class + " with name: "+getFirstName());
      	return null;
     }
 
