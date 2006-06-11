@@ -8,6 +8,9 @@
     <%@include file="inc/head.inc" %>
 <body>
     <f:view>
+
+        <f:loadBundle basename="org.apache.myfaces.examples.resource.build" var="buildInfo"/>
+
     <h:form>
 
         <h:panelGrid>
@@ -15,7 +18,7 @@
                 <h:graphicImage id="header_logo" url="images/logo_mini.jpg" alt="" />
                 <f:verbatim>
                     <h:outputText style="font-size:20px;color:#FFFFFF;" escape="false" value="MyFaces - The free JavaServer&#8482; Faces Implementation"/>
-                    <h:outputText style="font-size:10px;color:#FFFFFF;"value="(Version 1.1.1)"/>
+                    <h:outputText style="font-size:10px;color:#FFFFFF" value=" (Sandbox Version #{buildInfo['tomahawk_version']}, using #{buildInfo ['jsf_implementation']})"/>
                 </f:verbatim>
             </h:panelGrid>
 
