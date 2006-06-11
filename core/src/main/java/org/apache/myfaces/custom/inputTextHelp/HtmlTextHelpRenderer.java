@@ -90,7 +90,10 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
         String value = RendererUtils.getStringValue(facesContext, input);
         value = (value==null || value.length()==0) ? getHelpText(input) : value;
 
-        writer.writeAttribute(HTML.VALUE_ATTR, value, JSFAttr.VALUE_ATTR);
+        if (value != null)
+        {
+            writer.writeAttribute(HTML.VALUE_ATTR, value, JSFAttr.VALUE_ATTR);
+        }
 
         writer.endElement(HTML.INPUT_ELEM);
     }
