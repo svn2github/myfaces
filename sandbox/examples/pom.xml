@@ -73,7 +73,9 @@
         <profile>
             <id>myfaces</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>!jsf</name>
+                </property>
             </activation>
             <dependencies>
                 <dependency>
@@ -101,6 +103,12 @@
         <!-- To use the examples using the Sun's JSF Reference Implementation -->
         <profile>
             <id>jsfri</id>
+            <activation>
+                <property>
+                    <name>jsf</name>
+                    <value>ri</value>
+                </property>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>javax.faces</groupId>
