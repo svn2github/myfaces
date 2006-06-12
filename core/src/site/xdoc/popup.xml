@@ -53,7 +53,7 @@
             displayAtDistanceX="int"
             displayAtDistanceY="int"&gt;
     &lt;h:outputText value="String"/&gt;
-    &lt;f:facet name="String"&gt;
+    &lt;f:facet name="popup"&gt;
         &lt;h:panelGroup&gt;
             &lt;h:panelGrid columns="int"&gt;
                 &lt;h:outputText value="String"/&gt;
