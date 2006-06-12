@@ -10,7 +10,6 @@
     <f:view>
 
         <f:loadBundle basename="org.apache.myfaces.examples.resource.build" var="buildInfo"/>
-
     <h:form>
 
         <h:panelGrid>
@@ -101,7 +100,12 @@
             <h:panelGrid style="padding-left:25px">
            		<h:outputLink value="conversation/index.jsf" ><f:verbatim>Conversation Tag examples</f:verbatim></h:outputLink>
             </h:panelGrid>
-            
+
+            <h:outputText value="XML Template"/>
+            <h:panelGrid style="padding-left:25px">
+           		<h:outputLink value="template/index.jsf" ><f:verbatim>XML Template examples</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
         </h:panelGrid>
     </h:form>
     </f:view>

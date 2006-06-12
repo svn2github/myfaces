@@ -132,6 +132,7 @@ Sandbox-related entities.
 <!ENTITY ext_escape_attribute	SYSTEM "entities-share/ext_escape_attribute.xml">
 <!ENTITY convertNumber_attributes SYSTEM "entities/standard_convertNumber_attributes.xml">
 <!ENTITY ui_convertNumber_attributes SYSTEM "entities/ui_convertNumber_attributes.xml">
+<!ENTITY xml_template_attributes SYSTEM "entities/xml_template_attributes.xml">
 ]>
 
 <taglib>
@@ -144,7 +145,17 @@ Sandbox-related entities.
         Enhanced standard JSP actions and custom MyFaces actions.
     </description>
 
-	<!-- inputSuggest -->
+    <!-- xmlTemplate -->
+	<tag>
+		<name>xmlTemplate</name>
+		<tag-class>org.apache.myfaces.custom.template.XmlTemplateTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Transforms XML using and XSL stylesheet.</description>
+		&xml_template_attributes;
+        &faces_rendered_attribute;
+    </tag>
+
+    <!-- inputSuggest -->
 	<tag>
 		<name>inputSuggest</name>
 		<tag-class>org.apache.myfaces.custom.suggest.InputSuggestTag</tag-class>

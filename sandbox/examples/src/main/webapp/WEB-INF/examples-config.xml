@@ -439,7 +439,14 @@
     	<managed-bean-class>org.apache.myfaces.examples.NumberHolder</managed-bean-class>
     	<managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
+    <!-- XMLTemplate -->
+    <managed-bean>
+    	<managed-bean-name>templateBacker</managed-bean-name>
+    	<managed-bean-class>org.apache.myfaces.examples.template.TemplateBacker</managed-bean-class>
+    	<managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
     <!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>

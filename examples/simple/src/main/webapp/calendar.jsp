@@ -57,7 +57,8 @@
                 currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
                 popupTodayString="#{example_messages['popup_today_string']}"
                 popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
-                helpText="MM/DD/YYYY"/>
+                helpText="MM/DD/YYYY"
+                forceId="true"/>
 
             <t:inputCalendar id="thirdOne" monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader" popupButtonStyleClass="standard_bold"
                 currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
