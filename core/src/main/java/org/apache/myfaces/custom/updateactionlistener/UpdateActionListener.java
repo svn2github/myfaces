@@ -55,6 +55,8 @@ import javax.faces.event.ActionListener;
  * specified by attribute "action" on the ActionSource (because all
  * actionListeners are executed before the action attribute).
  * <p>
+ * JSF 1.2 introduces a "setPropertyActionListener" with the same functionality like this.
+ * <p>
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

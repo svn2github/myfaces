@@ -1404,6 +1404,8 @@
             specified value is evaluated, then written into the specified property.
 
         Unless otherwise specified, all attributes accept static values or EL expressions.
+        In JSF 1.2 there will be a setPropertyActionListener tag, which brings the same functionality on the
+        table.
         </description>
         &tomahawk_update_action_listener_attributes;
     </tag>

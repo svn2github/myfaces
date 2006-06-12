@@ -26,6 +26,8 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
+ * JSF 1.2 introduces a "setPropertyActionListener" with the same functionality like this. 
+ *
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
