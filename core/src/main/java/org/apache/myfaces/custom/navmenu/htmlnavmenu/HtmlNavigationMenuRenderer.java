@@ -20,23 +20,21 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
 import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
+import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
-import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.event.ActionListener;
 import javax.faces.el.ValueBinding;
+import javax.faces.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
@@ -266,8 +264,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
                 (UINavigationMenuItem) facesContext.getApplication().createComponent(UINavigationMenuItem.COMPONENT_TYPE);
             uiNavigationMenuItem.setId(clientId + "_uinavmitem" + (startIndex + j));
             uiNavigationMenuItem.getClientId(facesContext); // create clientid
-            uiNavigationMenuItem.setParent(parent);
             children.add(startIndex++, uiNavigationMenuItem);
+            uiNavigationMenuItem.setParent(parent);
             if (navigationMenuItem.getAction() != null) {
                 uiNavigationMenuItem.setAction(HtmlNavigationMenuRendererUtils.getMethodBinding(facesContext, navigationMenuItem.getAction(), false));
             }
