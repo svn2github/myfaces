@@ -15,15 +15,18 @@
  */
 package org.apache.myfaces.custom.navmenu;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -112,7 +115,14 @@ public class NavigationMenuUtils
 
     public static void addNavigationMenuItems(UISelectItems child, List list)
     {
-        Object value = ((UISelectItems)child).getValue();
+        Object value = child.getValue();
+
+        if (value == null)
+        {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            throw new NullPointerException("Value binding of UINavigationMenuItems with id " + child.getClientId(facesContext) + " is null");
+        }
+
         if (value instanceof NavigationMenuItem)
         {
             list.add(value);
