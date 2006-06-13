@@ -26,15 +26,21 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionListener;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
