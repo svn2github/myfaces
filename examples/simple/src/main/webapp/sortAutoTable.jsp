@@ -30,41 +30,43 @@
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
-    <t:dataTable id="data"
-            styleClass="standardTable"            
-            headerClass="standardTable_SortHeader"
-            footerClass="standardTable_Footer"
-            rowClasses="standardTable_Row1,standardTable_Row2"
-            var="car"                      
-            sortable="true"                       
-            value="#{autosortlist.cars}"                 
-            sortColumn="#{autosortlist.sortColumn}" 
-            sortAscending="#{autosortlist.sortAscending}"
-            preserveDataModel="true"
-            preserveSort="true">
-        
-        <t:column defaultSorted="true">
-            <f:facet name="header">  
-                <h:outputText value="ID" />                
-            </f:facet>
-            <h:outputText value="#{car.id}" />            
-        </t:column>
-        
-        <t:column>
-            <f:facet name="header">  
-                <h:outputText value="#{example_messages['sort_cartype']}" />                
-            </f:facet>
-            <h:outputText value="#{car.type}" />            
-        </t:column>
+    <h:form>    
+        <t:dataTable id="data"
+                styleClass="standardTable"            
+                headerClass="standardTable_SortHeader"
+                footerClass="standardTable_Footer"
+                rowClasses="standardTable_Row1,standardTable_Row2"
+                var="car"                      
+                sortable="true"                       
+                value="#{autosortlist.cars}"                 
+                sortColumn="#{autosortlist.sortColumn}" 
+                sortAscending="#{autosortlist.sortAscending}"
+                preserveDataModel="true"
+                preserveSort="true">
 
-        <t:column>
-            <f:facet name="header">
-                <h:outputText value="#{example_messages['sort_carcolor']}" />                
-            </f:facet>
-            <h:outputText value="#{car.color}" />            
-        </t:column>
+            <t:column defaultSorted="true">
+                <f:facet name="header">  
+                    <h:outputText value="ID" />                
+                </f:facet>
+                <h:outputText value="#{car.id}" />            
+            </t:column>
 
-    </t:dataTable>           
+            <t:column>
+                <f:facet name="header">  
+                    <h:outputText value="#{example_messages['sort_cartype']}" />                
+                </f:facet>
+                <h:outputText value="#{car.type}" />            
+            </t:column>
+
+            <t:column>
+                <f:facet name="header">
+                    <h:outputText value="#{example_messages['sort_carcolor']}" />                
+                </f:facet>
+                <h:outputText value="#{car.color}" />            
+            </t:column>
+
+        </t:dataTable>           
+    </h:form>     
     
 </f:view>
 

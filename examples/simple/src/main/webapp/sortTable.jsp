@@ -30,50 +30,51 @@
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
-    <t:dataTable styleClass="standardTable"
-            headerClass="standardTable_SortHeader"
-            footerClass="standardTable_Footer"
-            rowClasses="standardTable_Row1,standardTable_Row2"
-            var="car"
-            value="#{list.cars}"
-            sortColumn="#{list.sort}"
-            sortAscending="#{list.ascending}"
-            preserveDataModel="true"
-            preserveSort="true">
+    <h:form>
+        <t:dataTable styleClass="standardTable"
+                headerClass="standardTable_SortHeader"
+                footerClass="standardTable_Footer"
+                rowClasses="standardTable_Row1,standardTable_Row2"
+                var="car"
+                value="#{list.cars}"
+                sortColumn="#{list.sort}"
+                sortAscending="#{list.ascending}"
+                preserveDataModel="true"
+                preserveSort="true">
 
-        <f:facet name="header">
-            <h:outputText value="(header table)"  />
-        </f:facet>
-        <f:facet name="footer">
-            <h:outputText value="(footer table)"  />
-        </f:facet>
-
-        <h:column>
             <f:facet name="header">
-                <t:commandSortHeader columnName="type" arrow="true">
-                    <h:outputText value="#{example_messages['sort_cartype']}" />
-                </t:commandSortHeader>
+                <h:outputText value="(header table)"  />
             </f:facet>
-            <h:outputText value="#{car.type}" />
             <f:facet name="footer">
-                <h:outputText id="ftr1" value="(footer col1)"  />
+                <h:outputText value="(footer table)"  />
             </f:facet>
-        </h:column>
 
-        <h:column>
-            <f:facet name="header">
-                <t:commandSortHeader columnName="color" arrow="true">
-                    <h:outputText value="#{example_messages['sort_carcolor']}" />
-                </t:commandSortHeader>
-            </f:facet>
-            <h:outputText value="#{car.color}" />
-            <f:facet name="footer">
-                <h:outputText id="ftr2" value="(footer col2)"  />
-            </f:facet>
-        </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <t:commandSortHeader columnName="type" arrow="true">
+                        <h:outputText value="#{example_messages['sort_cartype']}" />
+                    </t:commandSortHeader>
+                </f:facet>
+                <h:outputText value="#{car.type}" />
+                <f:facet name="footer">
+                    <h:outputText id="ftr1" value="(footer col1)"  />
+                </f:facet>
+            </h:column>
 
-    </t:dataTable>
+            <h:column>
+                <f:facet name="header">
+                    <t:commandSortHeader columnName="color" arrow="true">
+                        <h:outputText value="#{example_messages['sort_carcolor']}" />
+                    </t:commandSortHeader>
+                </f:facet>
+                <h:outputText value="#{car.color}" />
+                <f:facet name="footer">
+                    <h:outputText id="ftr2" value="(footer col2)"  />
+                </f:facet>
+            </h:column>
 
+        </t:dataTable>
+    </h:form>
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

@@ -154,27 +154,27 @@ public class TreeTag extends UIComponentTagBase //UIComponentBodyTagBase
 
         if (_showNav != null)
         {
-            ((HtmlTree)component).setShowNav(Boolean.getBoolean(_showNav));
+        	setBooleanProperty(component, "showNav", _showNav);
         }
 
         if (_showLines != null)
         {
-            ((HtmlTree)component).setShowLines(Boolean.getBoolean(_showLines));
+        	setBooleanProperty(component, "showLines", _showLines);
         }
 
         if (_clientSideToggle != null)
         {
-            ((HtmlTree)component).setClientSideToggle(Boolean.getBoolean(_clientSideToggle));
+        	setBooleanProperty(component, "clientSideToggle", _clientSideToggle);
         }
 
         if (_showRootNode != null)
         {
-            ((HtmlTree)component).setShowRootNode(Boolean.getBoolean(_showRootNode));
+        	setBooleanProperty(component, "showRootNode", _showRootNode);
         }
 
         if (_preserveToggle != null)
         {
-            ((HtmlTree)component).setPreserveToggle(Boolean.getBoolean(_preserveToggle));
+        	setBooleanProperty(component, "preserveToggle", _preserveToggle);
         }
 
         if (_javascriptLocation != null)
