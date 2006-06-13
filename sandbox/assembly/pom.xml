@@ -103,24 +103,6 @@
                             <outputDirectory>${project.build.directory}/src</outputDirectory>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>copy-war</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.apache.myfaces.tomahawk</groupId>
-                                    <artifactId>tomahawk-sandbox-examples</artifactId>
-                                    <version>${version}</version>
-                                    <type>war</type>	
-                                </artifactItem>                                
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/assembly/out</outputDirectory>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
