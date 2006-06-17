@@ -72,6 +72,10 @@
 			<h:selectBooleanCheckbox id="renderZeroLength"
 				value="#{scheduleSettings2.renderZeroLength}" required="true" />
 			<h:message for="renderZeroLength" />
+			<h:outputLabel for="expandToFitEntries" value="Expand to fit entries" />
+			<h:selectBooleanCheckbox id="expandToFitEntries"
+				value="#{scheduleSettings2.expandToFitEntries}" required="true" />
+			<h:message for="expandToFitEntries" />
 			<h:outputLabel for="theme" value="Theme:" />
 			<h:selectOneRadio id="theme" value="#{scheduleSettings2.theme}"
 				required="true">

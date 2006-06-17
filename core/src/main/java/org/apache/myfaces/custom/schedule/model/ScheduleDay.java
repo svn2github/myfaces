@@ -152,5 +152,46 @@ public class ScheduleDay
     {
         return entries.size();
     }
+    
+    /**
+     * Get the non-inclusive hour by which all events on this day have completed.
+     * 
+     * @return From 0, where there are no events and 24 where events exist up to the last hour
+     */
+    public int getLastEventHour()
+    {
+    	Calendar endTime = GregorianCalendar.getInstance();
+
+    	if (entries.isEmpty()) {
+    		
+    		return 0;
+    	}
+    	endTime.setTime(((ScheduleEntry) entries.last()).getEndTime());
+    	
+    	if (endTime.get(Calendar.MINUTE) > 0){
+    		// Round up to next hour
+    		endTime.add(Calendar.HOUR_OF_DAY, 1);
+    	}
+
+    	return equalsDate(endTime.getTime()) ? endTime.get(Calendar.HOUR_OF_DAY) : 24;    	
+    }
+    
+    /**
+     * Get the inclusive hour in which the first event on this day starts.
+     * 
+     * @return From 0, where there is an event in the first hour to 24 where there are no events
+     */
+    public int getFirstEventHour()
+    {
+    	Calendar startTime = GregorianCalendar.getInstance();
+
+    	if (entries.isEmpty()) {
+    		
+    		return 24;
+    	}
+    	startTime.setTime(((ScheduleEntry) entries.first()).getStartTime());
+    	
+    	return equalsDate(startTime.getTime()) ? startTime.get(Calendar.HOUR_OF_DAY) : 0;
+    }
 }
 //The End

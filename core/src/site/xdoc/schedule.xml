@@ -121,6 +121,10 @@
                 </code>
                 <br/>
                 <code>
+                    expandToFitEntries - By default, if an appointment exists outside the visibleStartHour/visibleEndHour limits, it does not appear in the day or workweek modes. This setting checks for events outside the visible range and extends the visible range to display the events. If events only occur within the visible range, then no adjustment is made.
+                </code>
+                <br/>
+                <code>
                     theme - The name of the theme that should be used when rendering the schedule. Available themes are 'default', 'outlookxp' and 'evolution'
                 </code>
                 <br/>

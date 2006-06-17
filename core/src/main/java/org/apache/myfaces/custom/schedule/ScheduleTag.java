@@ -82,6 +82,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
     private String workingEndHour;
     private String workingStartHour;
     private String renderZeroLengthEntries;
+    private String expandToFitEntries;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -885,6 +886,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
         addAttribute(app, schedule, "week", weekClass);
         
         addAttribute(app, schedule, "renderZeroLengthEntries", renderZeroLengthEntries);
+        addAttribute(app, schedule, "expandToFitEntries", expandToFitEntries);
 
         addAttribute(app, schedule, "entryRenderer", entryRenderer);
     }
@@ -1072,6 +1074,38 @@ public class ScheduleTag extends UIComponentTag implements Serializable
     public void setRenderZeroLengthEntries(String render)
     {
         this.renderZeroLengthEntries = render;
+    }
+
+    /**
+     * <p>
+     * By default, if an appointment exists outside the
+     * visibleStartHour/visibleEndHour limits, it does not appear in the day
+     * or workweek modes. This setting checks for events outside
+     * the visible range and extends the visible range to display the events.
+     * If events only occur within the visible range, then no adjustment is made.
+     * </p>
+     * 
+     * @return Returns the expandToFitEntries.
+     */
+    public String getExpandToFitEntries()
+    {
+        return expandToFitEntries;
+    }
+
+    /**
+     * <p>
+     * By default, if an appointment exists outside the
+     * visibleStartHour/visibleEndHour limits, it does not appear in the day
+     * or workweek modes. This setting checks for events outside
+     * the visible range and extends the visible range to display the events.
+     * If events only occur within the visible range, then no adjustment is made.
+     * </p>
+     * 
+     * @param expandToFitEntries The expandToFitEntries to set.
+     */
+    public void setExpandToFitEntries(String expandToFitEntries)
+    {
+        this.expandToFitEntries = expandToFitEntries;
     }
 }
 //The End

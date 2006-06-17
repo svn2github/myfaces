@@ -22,12 +22,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -78,8 +80,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         //the number of rows in the grid is the number of half hours between
         //visible start hour and visible end hour, plus 1 for the header
-        int numberOfRows = ((schedule.getVisibleEndHour() - schedule
-                .getVisibleStartHour()) * 2) + 1;
+        int numberOfRows = ((getRenderedEndHour(schedule) - getRenderedStartHour(schedule)) * 2) + 1;
 
         //the grid height = 22 pixels times the number of rows + 3, for the
         //table border and the cellpadding
@@ -167,7 +168,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private String getCellClass(HtmlSchedule schedule, int column, int row)
+    private String getCellClass(HtmlSchedule schedule, int column, int row, int hour)
     {
         String cellClass = "free";
         ScheduleDay day = (ScheduleDay) schedule.getModel().get(column);
@@ -177,10 +178,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             return getStyleClass(schedule, cellClass);
         }
 
-        if (((schedule.getVisibleStartHour() + (row / 2)) >= schedule
-                .getWorkingStartHour())
-                && ((schedule.getVisibleStartHour() + (row / 2)) < schedule
-                        .getWorkingEndHour()))
+        if (hour >= schedule.getWorkingStartHour()
+                && hour < schedule.getWorkingEndHour())
         {
             cellClass = ((row % 2) == 0) ? "even" : "uneven";
         }
@@ -353,8 +352,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         writer.endElement(HTML.TR_ELEM);
 
-        int numberOfRows = (schedule.getVisibleEndHour() - schedule
-                .getVisibleStartHour()) * 2;
+        int startHour = getRenderedStartHour(schedule);
+        int endHour = getRenderedEndHour(schedule);
+        int numberOfRows = (endHour - startHour) * 2;
 
         for (int row = 0; row < numberOfRows; row++)
         {
@@ -381,8 +381,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 writer.writeAttribute(HTML.STYLE_ATTR,
                         "vertical-align: top; height: 100%; padding: 0px;",
                         null);
-                writer.writeText(String.valueOf(schedule.getVisibleStartHour()
-                        + (row / 2)), null);
+                writer.writeText(String.valueOf(startHour + (row / 2)), null);
                 writer.endElement(HTML.SPAN_ELEM);
                 writer.startElement(HTML.SPAN_ELEM, schedule);
                 writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
@@ -400,7 +399,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             {
                 writer.startElement(HTML.TD_ELEM, schedule);
                 writer.writeAttribute(HTML.CLASS_ATTR, getCellClass(schedule,
-                        column, row), null);
+                        column, row, startHour + (row / 2)), null);
                 writer.writeAttribute(HTML.STYLE_ATTR,
                         "overflow: hidden; height: " + rowHeight + "px;", null);
                 writer.writeAttribute(HTML.WIDTH_ATTR, String
@@ -418,6 +417,48 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer.endElement(HTML.DIV_ELEM);
     }
 
+    private int getRenderedStartHour(HtmlSchedule schedule)
+    {
+    	int startHour = schedule.getVisibleStartHour();
+        
+        //default behaviour: do not auto-expand the schedule to display all
+        //entries
+        if (!expandToFitEntries(schedule)) return startHour;
+    	
+    	for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();)
+    	{
+    		ScheduleDay day = (ScheduleDay) dayIterator.next();
+    		int dayStart = day.getFirstEventHour();
+    		
+    		if (dayStart < startHour) {
+    			startHour = dayStart;
+    		}
+    	}
+
+    	return startHour;
+    }
+
+    private int getRenderedEndHour(HtmlSchedule schedule)
+    {
+    	int endHour = schedule.getVisibleEndHour();
+    	
+        //default behaviour: do not auto-expand the schedule to display all
+        //entries
+        if (!expandToFitEntries(schedule)) return endHour;
+
+        for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();)
+    	{
+    		ScheduleDay day = (ScheduleDay) dayIterator.next();
+    		int dayEnd = day.getLastEventHour();
+    		
+    		if (dayEnd > endHour) {
+    			endHour = dayEnd;
+    		}
+    	}
+    	
+    	return endHour;
+    }
+    
     private void writeEntries(FacesContext context, HtmlSchedule schedule,
             ScheduleDay day, ResponseWriter writer) throws IOException
     {
@@ -648,7 +689,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         Date date = ScheduleUtil.getDateFromId(day);
         
         if (date != null) cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleStartHour());
+        cal.set(Calendar.HOUR_OF_DAY, getRenderedStartHour(schedule));
         //OK, we have the date, let's determine the time
         try {
             int y = Integer.parseInt(yPos);
@@ -661,6 +702,65 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         log.debug("last clicked datetime: " + cal.getTime());
         return cal.getTime();
     }
+    
+    /**
+     * <p>
+     * When the start- and endtime of an entry are the same, should the entry
+     * be rendered, fitting the entry box to the text? 
+     * </p>
+     * 
+     * @param component the component
+     * @return whether or not zero length entries should be rendered
+     */
+    protected boolean renderZeroLengthEntries(UIComponent component) {
+        //first check if the renderZeroLengthEntries property is a value binding expression
+        ValueBinding binding = component.getValueBinding("renderZeroLengthEntries");
+        if (binding != null)
+        {
+            Boolean value = (Boolean) binding.getValue(FacesContext
+                    .getCurrentInstance());
+
+            if (value != null)
+            {
+                return value.booleanValue();
+            }
+        }
+        //it's not a value binding expression, so check for the string value
+        //in the attributes
+        Map attributes = component.getAttributes();
+        return Boolean.valueOf((String) attributes.get("renderZeroLengthEntries"))
+                .booleanValue();
+    }
+
+    /**
+     * <p>
+     * When the start- and endtime of an entry are the same, should the entry
+     * be rendered, fitting the entry box to the text? 
+     * </p>
+     * 
+     * @param component the component
+     * @return whether or not zero length entries should be rendered
+     */
+    protected boolean expandToFitEntries(UIComponent component) {
+        //first check if the expandToFitEntries property is a value binding expression
+        ValueBinding binding = component.getValueBinding("expandToFitEntries");
+        if (binding != null)
+        {
+            Boolean value = (Boolean) binding.getValue(FacesContext
+                    .getCurrentInstance());
+
+            if (value != null)
+            {
+                return value.booleanValue();
+            }
+        }
+        //it's not a value binding expression, so check for the string value
+        //in the attributes
+        Map attributes = component.getAttributes();
+        return Boolean.valueOf((String) attributes.get("expandToFitEntries"))
+                .booleanValue();
+    }
+
     
     private class EntryWrapper implements Comparable
     {
@@ -762,7 +862,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             cal.set(curyear, curmonth, curday);
 
             long startMillis = cal.getTimeInMillis();
-            cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleStartHour());
+            cal.set(Calendar.HOUR_OF_DAY, getRenderedStartHour(schedule));
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             cal.set(Calendar.MILLISECOND, 0);
@@ -774,7 +874,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             cal.set(curyear, curmonth, curday);
 
             long endMillis = cal.getTimeInMillis();
-            cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleEndHour());
+            cal.set(Calendar.HOUR_OF_DAY, getRenderedEndHour(schedule));
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
             cal.set(Calendar.MILLISECOND, 0);

@@ -55,6 +55,8 @@ public class ScheduleSettings implements Serializable
     private int workingStartHour;
 
     private boolean renderZeroLength;
+    
+    private boolean expandToFitEntries;
 
     public int getCompactMonthRowHeight()
     {
@@ -196,5 +198,21 @@ public class ScheduleSettings implements Serializable
     public void setRenderZeroLength(boolean renderZeroLength)
     {
         this.renderZeroLength = renderZeroLength;
+    }
+
+    /**
+     * @return Returns the expandToFitEntries.
+     */
+    public boolean isExpandToFitEntries()
+    {
+        return expandToFitEntries;
+    }
+
+    /**
+     * @param expandToFitEntries The expandToFitEntries to set.
+     */
+    public void setExpandToFitEntries(boolean expandToFitEntries)
+    {
+        this.expandToFitEntries = expandToFitEntries;
     }
 }

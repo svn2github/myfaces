@@ -202,3 +202,10 @@
          <rtexprvalue>false</rtexprvalue>
          <type>java.lang.Boolean</type>
        </attribute>
+       <attribute>
+         <name>expandToFitEntries</name> 
+         <required>false</required>
+         <rtexprvalue>false</rtexprvalue>
+         <type>java.lang.Boolean</type>
+       </attribute>
+       
