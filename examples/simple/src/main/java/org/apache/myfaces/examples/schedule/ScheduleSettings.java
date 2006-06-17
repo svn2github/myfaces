@@ -19,6 +19,13 @@ import java.io.Serializable;
 
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 
+/**
+ * Handler class that contains the settings of the customizable schedule
+ * example.
+ * 
+ * @author Jurgen Lust (latest modification by $Author$)
+ * @version $Revision$
+ */
 public class ScheduleSettings implements Serializable
 {
     private static final long serialVersionUID = -8547428935814382762L;

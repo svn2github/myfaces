@@ -16,6 +16,8 @@
 
 package org.apache.myfaces.custom.schedule;
 
+import java.io.Serializable;
+
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,8 +33,10 @@ import javax.faces.webapp.UIComponentTag;
  * @author Jurgen Lust (latest modification by $Author: jlust $)
  * @version $Revision: 392301 $
  */
-public class ScheduleTag extends UIComponentTag
+public class ScheduleTag extends UIComponentTag implements Serializable
 {
+    private static final long serialVersionUID = -5226785969160327763L;
+    
     //~ Instance fields --------------------------------------------------------
 
     private String action;

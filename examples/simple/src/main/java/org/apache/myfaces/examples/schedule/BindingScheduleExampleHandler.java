@@ -16,16 +16,25 @@
 
 package org.apache.myfaces.examples.schedule;
 
-import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.ScheduleMouseEvent;
 
+/**
+ * Handler class for demonstrating the schedule mouse events.
+ * 
+ * @author Jurgen Lust (latest modification by $Author$)
+ * @version $Revision$
+ */
 public class BindingScheduleExampleHandler extends ScheduleExampleHandler
+        implements Serializable
 {
-    private static final Log log = LogFactory.getLog(BindingScheduleExampleHandler.class);
+    private static final long serialVersionUID = 763734566918182549L;
+    private static final Log log = LogFactory
+            .getLog(BindingScheduleExampleHandler.class);
     private HtmlSchedule schedule;
     private String mouseActionText;
 
@@ -44,15 +53,16 @@ public class BindingScheduleExampleHandler extends ScheduleExampleHandler
         this.schedule = schedule;
     }
 
-     public String getLastClickedDate()
+    public String getLastClickedDate()
     {
         if (getSchedule() == null
                 || getSchedule().getLastClickedDateAndTime() == null)
             return "no date/time clicked";
         return getSchedule().getLastClickedDateAndTime().toString();
     }
-    
-    public String scheduleAction() {
+
+    public String scheduleAction()
+    {
         log.debug("The schedule was clicked");
         return "success";
     }
@@ -60,16 +70,17 @@ public class BindingScheduleExampleHandler extends ScheduleExampleHandler
     public void scheduleClicked(ScheduleMouseEvent event)
     {
         StringBuffer buffer = new StringBuffer();
-        switch (event.getEventType()) {
-        case ScheduleMouseEvent.SCHEDULE_BODY_CLICKED :
+        switch (event.getEventType())
+        {
+        case ScheduleMouseEvent.SCHEDULE_BODY_CLICKED:
             buffer.append("schedule body was clicked: ");
             buffer.append(event.getClickedTime());
             break;
-        case ScheduleMouseEvent.SCHEDULE_HEADER_CLICKED :
+        case ScheduleMouseEvent.SCHEDULE_HEADER_CLICKED:
             buffer.append("schedule header was clicked: ");
             buffer.append(event.getClickedDate());
             break;
-        case ScheduleMouseEvent.SCHEDULE_ENTRY_CLICKED :
+        case ScheduleMouseEvent.SCHEDULE_ENTRY_CLICKED:
             buffer.append("schedule entry was clicked.");
             break;
         default:

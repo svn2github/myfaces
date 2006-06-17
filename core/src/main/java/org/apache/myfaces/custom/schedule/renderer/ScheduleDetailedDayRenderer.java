@@ -17,6 +17,7 @@
 package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -46,8 +47,10 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * @version $Revision: 392301 $
  */
 public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
+        implements Serializable
 {
     private static final Log log = LogFactory.getLog(ScheduleDetailedDayRenderer.class);
+    private static final long serialVersionUID = -5103791076091317355L;
 
     //~ Instance fields --------------------------------------------------------
 

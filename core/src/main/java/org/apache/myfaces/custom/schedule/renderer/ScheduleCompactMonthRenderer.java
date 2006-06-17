@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.schedule.renderer;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -42,7 +43,11 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  */
 public class ScheduleCompactMonthRenderer
     extends AbstractCompactScheduleRenderer
+    implements Serializable
 {
+
+    private static final long serialVersionUID = 2926607881214603314L;
+    
     //~ Methods ----------------------------------------------------------------
 
     /**

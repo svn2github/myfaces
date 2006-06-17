@@ -16,6 +16,7 @@
 
 package org.apache.myfaces.custom.schedule;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.faces.context.FacesContext;
@@ -35,7 +36,8 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
  * @author Jurgen Lust
  * @version $Revision: 392301 $
  */
-public class HtmlSchedule extends UISchedule implements UserRoleAware
+public class HtmlSchedule extends UISchedule implements UserRoleAware,
+        Serializable
 {
 
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";

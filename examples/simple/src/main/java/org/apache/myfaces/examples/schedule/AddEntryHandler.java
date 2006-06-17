@@ -25,6 +25,12 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 
+/**
+ * Handler class for manually adding an entry to the example schedule model.
+ * 
+ * @author Jurgen Lust (latest modification by $Author$)
+ * @version $Revision$
+ */
 public class AddEntryHandler implements Serializable
 {
     private static final long serialVersionUID = -4253400845605088699L;

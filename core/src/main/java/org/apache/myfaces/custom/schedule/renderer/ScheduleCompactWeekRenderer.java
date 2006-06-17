@@ -25,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -41,7 +42,10 @@ import java.util.Iterator;
  */
 public class ScheduleCompactWeekRenderer
     extends AbstractCompactScheduleRenderer
+    implements Serializable
 {
+    private static final long serialVersionUID = 5504081783797695487L;
+
     //~ Methods ----------------------------------------------------------------
 
     /**

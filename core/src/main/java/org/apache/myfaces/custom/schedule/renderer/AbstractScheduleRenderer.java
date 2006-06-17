@@ -17,6 +17,7 @@
 package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,7 +49,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 389938 $
  */
-public abstract class AbstractScheduleRenderer extends Renderer
+public abstract class AbstractScheduleRenderer extends Renderer implements
+        Serializable
 {
     //~ Static fields/initializers ---------------------------------------------
     protected static final ScheduleEntryComparator comparator = new ScheduleEntryComparator();

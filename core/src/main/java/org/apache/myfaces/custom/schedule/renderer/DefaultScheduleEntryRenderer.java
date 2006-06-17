@@ -17,6 +17,7 @@
 package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -37,7 +38,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$
  */
-public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer
+public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
+        Serializable
 {
     private static final long serialVersionUID = 4987926168243581739L;
 

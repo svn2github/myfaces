@@ -27,6 +27,12 @@ import org.apache.myfaces.custom.schedule.model.DefaultScheduleEntry;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 import org.apache.myfaces.custom.schedule.model.SimpleScheduleModel;
 
+/**
+ * Handler class for the schedule example 
+ * 
+ * @author Jurgen Lust (latest modification by $Author$)
+ * @version $Revision$
+ */
 public class ScheduleExampleHandler implements Serializable
 {
     private static final long serialVersionUID = -8815771399735333108L;

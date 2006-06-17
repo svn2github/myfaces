@@ -42,6 +42,14 @@ public class ScheduleUtil
     //~ Class Variables --------------------------------------------------------
     private final static SimpleDateFormat DATE_ID_FORMATTER = new SimpleDateFormat("yyyyMMdd");
     
+    //~ Constructors -----------------------------------------------------------
+    /**
+     * This class should not be instantiated, it only contains static methods
+     */
+    private ScheduleUtil() {
+        super();
+    }
+    
     //~ Methods ----------------------------------------------------------------
 
     /**

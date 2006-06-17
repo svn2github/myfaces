@@ -17,6 +17,7 @@
 package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,8 +36,10 @@ import org.apache.myfaces.custom.schedule.model.ScheduleModel;
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 367444 $
  */
-public class ScheduleDelegatingRenderer extends Renderer
+public class ScheduleDelegatingRenderer extends Renderer implements Serializable
 {
+    private static final long serialVersionUID = -837566590780480244L;
+    
     //~ Instance fields --------------------------------------------------------
 
     private final ScheduleCompactMonthRenderer monthDelegate = new ScheduleCompactMonthRenderer();

@@ -16,6 +16,7 @@
 
 package org.apache.myfaces.custom.schedule.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -31,7 +32,8 @@ import java.util.TreeSet;
  * @author Jurgen Lust (latest modification by $Author: baranda $)
  * @version $Revision: 372589 $
  */
-public abstract class AbstractScheduleModel implements ScheduleModel
+public abstract class AbstractScheduleModel implements ScheduleModel,
+        Serializable
 {
     // ~ Instance fields
     // --------------------------------------------------------

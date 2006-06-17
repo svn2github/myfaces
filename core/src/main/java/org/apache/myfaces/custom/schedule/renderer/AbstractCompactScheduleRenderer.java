@@ -17,6 +17,7 @@
 package org.apache.myfaces.custom.schedule.renderer;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -47,7 +48,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * @version $Revision: 398348 $
  */
 public abstract class AbstractCompactScheduleRenderer extends
-                                                      AbstractScheduleRenderer
+        AbstractScheduleRenderer implements Serializable
 {
     private static final Log log = LogFactory.getLog(AbstractCompactScheduleRenderer.class);
 

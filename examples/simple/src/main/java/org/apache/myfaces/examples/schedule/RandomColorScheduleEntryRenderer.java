@@ -35,11 +35,14 @@ import org.apache.myfaces.custom.schedule.renderer.DefaultScheduleEntryRenderer;
 public class RandomColorScheduleEntryRenderer extends
         DefaultScheduleEntryRenderer
 {
+    private static final long serialVersionUID = -4594648204963119057L;
     private HashMap colors = new HashMap();
 
-    public String getColor(FacesContext context, HtmlSchedule schedule, ScheduleEntry entry, boolean selected)
+    public String getColor(FacesContext context, HtmlSchedule schedule,
+            ScheduleEntry entry, boolean selected)
     {
-        if (colors.containsKey(entry.getId())) return (String)colors.get(entry.getId());
+        if (colors.containsKey(entry.getId()))
+            return (String) colors.get(entry.getId());
         StringBuffer color = new StringBuffer();
         Random random = new Random();
         color.append("rgb(");
