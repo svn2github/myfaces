@@ -193,7 +193,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
             return null;
         }
 
-        return text.replaceAll("'", "&quot;");
+        return text.replaceAll("'", "\\\\\'").replaceAll("\n", "\\\\n").replaceAll("\r", "\\\\r");
     }
 
     /**
