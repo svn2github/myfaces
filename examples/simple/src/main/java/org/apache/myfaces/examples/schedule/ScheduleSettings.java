@@ -54,6 +54,8 @@ public class ScheduleSettings implements Serializable
 
     private int workingStartHour;
 
+    private boolean renderZeroLength;
+
     public int getCompactMonthRowHeight()
     {
         return compactMonthRowHeight;
@@ -178,5 +180,21 @@ public class ScheduleSettings implements Serializable
     public void setWorkingStartHour(int workingStartHour)
     {
         this.workingStartHour = workingStartHour;
+    }
+
+    /**
+     * @return Returns the renderZeroLength.
+     */
+    public boolean isRenderZeroLength()
+    {
+        return renderZeroLength;
+    }
+
+    /**
+     * @param renderZeroLength The renderZeroLength to set.
+     */
+    public void setRenderZeroLength(boolean renderZeroLength)
+    {
+        this.renderZeroLength = renderZeroLength;
     }
 }

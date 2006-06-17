@@ -81,6 +81,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
     private String weekClass;
     private String workingEndHour;
     private String workingStartHour;
+    private String renderZeroLengthEntries;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -882,6 +883,8 @@ public class ScheduleTag extends UIComponentTag implements Serializable
         addAttribute(app, schedule, "selected", selectedClass);
         addAttribute(app, schedule, "month", monthClass);
         addAttribute(app, schedule, "week", weekClass);
+        
+        addAttribute(app, schedule, "renderZeroLengthEntries", renderZeroLengthEntries);
 
         addAttribute(app, schedule, "entryRenderer", entryRenderer);
     }
@@ -1043,6 +1046,32 @@ public class ScheduleTag extends UIComponentTag implements Serializable
     public void setWorkingStartHour(String workingStartHour)
     {
         this.workingStartHour = workingStartHour;
+    }
+
+    /**
+     * <p>
+     * When the start- and endtime of an entry are the same, should the entry
+     * be rendered, fitting the entry box to the text? 
+     * </p>
+     * 
+     * @return rendered or not
+     */
+    public String getRenderZeroLengthEntries()
+    {
+        return renderZeroLengthEntries;
+    }
+
+    /**
+     * <p>
+     * When the start- and endtime of an entry are the same, should the entry
+     * be rendered, fitting the entry box to the text? 
+     * </p>
+     * 
+     * @param render
+     */
+    public void setRenderZeroLengthEntries(String render)
+    {
+        this.renderZeroLengthEntries = render;
     }
 }
 //The End

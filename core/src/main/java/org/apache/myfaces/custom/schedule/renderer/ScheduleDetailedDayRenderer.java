@@ -787,13 +787,21 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             int height = (int) (((endMillis - startMillis) * rowHeight) / HALF_HOUR);
             StringBuffer buffer = new StringBuffer();
 
-            if (height <= 0)
+            boolean entryVisible = height > 0 || renderZeroLengthEntries(schedule);
+            
+            if (!entryVisible)
             {
                 buffer.append("visibility: hidden; ");
             }
             buffer.append("position: absolute; height: ");
-            buffer.append(height);
-            buffer.append("px; top: ");
+            if (height > 0) {
+                buffer.append(height + "px");
+            } else if (entryVisible) {
+                buffer.append("auto");
+            } else {
+                buffer.append("0px");
+            }
+            buffer.append("; top: ");
             buffer.append(top);
             buffer.append("px; left: ");
             buffer.append(left);

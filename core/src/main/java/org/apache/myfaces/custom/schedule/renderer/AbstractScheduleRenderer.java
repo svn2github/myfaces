@@ -353,6 +353,35 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         return Boolean.valueOf((String) attributes.get("tooltip"))
                 .booleanValue();
     }
+    
+    /**
+     * <p>
+     * When the start- and endtime of an entry are the same, should the entry
+     * be rendered, fitting the entry box to the text? 
+     * </p>
+     * 
+     * @param component the component
+     * @return whether or not zero length entries should be rendered
+     */
+    protected boolean renderZeroLengthEntries(UIComponent component) {
+        //first check if the renderZeroLengthEntries property is a value binding expression
+        ValueBinding binding = component.getValueBinding("renderZeroLengthEntries");
+        if (binding != null)
+        {
+            Boolean value = (Boolean) binding.getValue(FacesContext
+                    .getCurrentInstance());
+
+            if (value != null)
+            {
+                return value.booleanValue();
+            }
+        }
+        //it's not a value binding expression, so check for the string value
+        //in the attributes
+        Map attributes = component.getAttributes();
+        return Boolean.valueOf((String) attributes.get("renderZeroLengthEntries"))
+                .booleanValue();
+    }
 
     /**
      * The user of the Schedule component can customize the look and feel

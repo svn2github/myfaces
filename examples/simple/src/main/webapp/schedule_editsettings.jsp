@@ -26,7 +26,7 @@
 <f:view>
 	<h:form>
 		<t:htmlTag value="h3">Edit settings</t:htmlTag>
-		<h:messages tooltip="true" layout="table" globalOnly="true" />
+		<h:messages tooltip="true" layout="table" globalOnly="false" />
 		<h:panelGrid columns="3">
 			<h:outputLabel for="mode" value="Display mode:" />
 			<h:selectOneRadio id="mode" value="#{scheduleHandler2.model.mode}">
@@ -68,6 +68,10 @@
 			<h:selectBooleanCheckbox id="tooltip"
 				value="#{scheduleSettings2.tooltip}" required="true" />
 			<h:message for="tooltip" />
+			<h:outputLabel for="renderZeroLength" value="Render zero length entries" />
+			<h:selectBooleanCheckbox id="renderZeroLength"
+				value="#{scheduleSettings2.renderZeroLength}" required="true" />
+			<h:message for="renderZeroLength" />
 			<h:outputLabel for="theme" value="Theme:" />
 			<h:selectOneRadio id="theme" value="#{scheduleSettings2.theme}"
 				required="true">

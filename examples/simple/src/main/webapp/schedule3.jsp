@@ -35,6 +35,7 @@
 				readonly="#{scheduleSettings2.readonly}"
 				theme="#{scheduleSettings2.theme}"
 				tooltip="#{scheduleSettings2.tooltip}"
+				renderZeroLengthEntries="#{scheduleSettings2.renderZeroLength}"
 				headerDateFormat="#{scheduleSettings2.headerDateFormat}"
 				compactWeekRowHeight="#{scheduleSettings2.compactWeekRowHeight}"
 				compactMonthRowHeight="#{scheduleSettings2.compactMonthRowHeight}"

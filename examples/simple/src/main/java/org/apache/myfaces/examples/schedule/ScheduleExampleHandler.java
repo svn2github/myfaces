@@ -130,6 +130,17 @@ public class ScheduleExampleHandler implements Serializable
         entry5.setEndTime(calendar.getTime());
         entry5.setTitle("Fishing trip");
         model.addEntry(entry5);
+        //Let's add a zero length entry...
+        DefaultScheduleEntry entry6 = new DefaultScheduleEntry();
+        calendar.setTime(model.getSelectedDate());
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        entry6.setId(RandomStringUtils.randomNumeric(32));
+        entry6.setStartTime(calendar.getTime());
+        entry6.setEndTime(calendar.getTime());
+        entry6.setTitle("Zero length entry");
+        entry6.setDescription("Is only rendered when the 'renderZeroLengthEntries' attribute is 'true'");
+        model.addEntry(entry6);
         model.refresh();
     }
 }

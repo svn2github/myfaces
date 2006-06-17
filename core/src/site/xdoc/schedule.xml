@@ -117,6 +117,10 @@
                 </code>
                 <br/>
                 <code>
+                    renderZeroLengthEntries - Normally, when an entry has the same start- and endtime, it is not rendered in the detailed views. Setting this to 'true' forces such entries to be rendered. The size of the entry box is then adapted to fit the text in it.
+                </code>
+                <br/>
+                <code>
                     theme - The name of the theme that should be used when rendering the schedule. Available themes are 'default', 'outlookxp' and 'evolution'
                 </code>
                 <br/>
