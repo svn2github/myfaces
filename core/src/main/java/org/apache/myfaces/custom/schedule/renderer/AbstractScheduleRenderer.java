@@ -56,6 +56,10 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
     protected static final ScheduleEntryComparator comparator = new ScheduleEntryComparator();
     protected static final String LAST_CLICKED_DATE = "_last_clicked_date";
     protected static final String LAST_CLICKED_Y = "_last_clicked_y";
+    private static final String CSS_RESOURCE = "css/schedule.css";
+    public static final String DEFAULT_THEME = "default";
+    public static final String OUTLOOK_THEME = "outlookxp";
+    public static final String EVOLUTION_THEME = "evolution";
 
     //~ Methods ----------------------------------------------------------------
 
@@ -73,16 +77,21 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
                     .getRequestParameterMap();
             String selectedEntryId = (String) parameters.get((String) schedule
                     .getClientId(context));
-            String lastClickedDateId = (String) parameters.get((String) schedule.getClientId(context) + LAST_CLICKED_DATE);
-            String lastClickedY = (String) parameters.get((String) schedule.getClientId(context) + LAST_CLICKED_Y);
-            
+            String lastClickedDateId = (String) parameters
+                    .get((String) schedule.getClientId(context)
+                            + LAST_CLICKED_DATE);
+            String lastClickedY = (String) parameters.get((String) schedule
+                    .getClientId(context)
+                    + LAST_CLICKED_Y);
+
             ScheduleMouseEvent mouseEvent = null;
 
             if ((selectedEntryId != null) && (selectedEntryId.length() > 0))
             {
                 ScheduleEntry entry = schedule.findEntry(selectedEntryId);
                 schedule.setSubmittedEntry(entry);
-                mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_ENTRY_CLICKED);
+                mouseEvent = new ScheduleMouseEvent(schedule,
+                        ScheduleMouseEvent.SCHEDULE_ENTRY_CLICKED);
                 queueAction = true;
             }
 
@@ -92,21 +101,34 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
                 if ((lastClickedY != null) && (lastClickedY.length() > 0))
                 {
                     //the body of the schedule was clicked
-                    schedule.setLastClickedDateAndTime(determineLastClickedDate(schedule, lastClickedDateId, lastClickedY));
-                    mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_BODY_CLICKED);
+                    schedule
+                            .setLastClickedDateAndTime(determineLastClickedDate(
+                                    schedule, lastClickedDateId, lastClickedY));
+                    mouseEvent = new ScheduleMouseEvent(schedule,
+                            ScheduleMouseEvent.SCHEDULE_BODY_CLICKED);
                     queueAction = true;
-                } else if ((lastClickedDateId != null) && (lastClickedDateId.length() > 0)){
+                }
+                else if ((lastClickedDateId != null)
+                        && (lastClickedDateId.length() > 0))
+                {
                     //the header of the schedule was clicked
-                    schedule.setLastClickedDateAndTime(determineLastClickedDate(schedule, lastClickedDateId, "0"));
-                    mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_HEADER_CLICKED);
+                    schedule
+                            .setLastClickedDateAndTime(determineLastClickedDate(
+                                    schedule, lastClickedDateId, "0"));
+                    mouseEvent = new ScheduleMouseEvent(schedule,
+                            ScheduleMouseEvent.SCHEDULE_HEADER_CLICKED);
                     queueAction = true;
-                } else if (mouseEvent == null){
+                }
+                else if (mouseEvent == null)
+                {
                     //the form was posted without mouse events on the schedule
-                    mouseEvent = new ScheduleMouseEvent(schedule, ScheduleMouseEvent.SCHEDULE_NOTHING_CLICKED);
+                    mouseEvent = new ScheduleMouseEvent(schedule,
+                            ScheduleMouseEvent.SCHEDULE_NOTHING_CLICKED);
                 }
             }
 
-            if (mouseEvent != null) schedule.queueEvent(mouseEvent);
+            if (mouseEvent != null)
+                schedule.queueEvent(mouseEvent);
         }
         if (queueAction)
         {
@@ -129,13 +151,18 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        String css = "css/schedule.css";
-
         //add needed CSS and Javascript files to the header 
 
         AddResource addResource = AddResourceFactory.getInstance(context);
-        addResource.addStyleSheet(context, AddResource.HEADER_BEGIN,
-                HtmlSchedule.class, css);
+        String theme = getTheme(schedule);
+        //The default css file is only loaded if the theme is one of the provided
+        //themes.
+        if (DEFAULT_THEME.equals(theme) || OUTLOOK_THEME.equals(theme)
+                || EVOLUTION_THEME.equals(theme))
+        {
+            addResource.addStyleSheet(context, AddResource.HEADER_BEGIN,
+                    HtmlSchedule.class, CSS_RESOURCE);
+        }
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/schedule.js");
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
@@ -156,16 +183,16 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         //hidden input field containing the id of the last clicked date
         writer.startElement(HTML.INPUT_ELEM, schedule);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
-        writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context) + "_last_clicked_date",
-                "clicked_date");
+        writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context)
+                + "_last_clicked_date", "clicked_date");
         writer.endElement(HTML.INPUT_ELEM);
         //hidden input field containing the y coordinate of the mouse when
         //the schedule was clicked. This will be used to determine the hour
         //of day.
         writer.startElement(HTML.INPUT_ELEM, schedule);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
-        writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context) + "_last_clicked_y",
-                "clicked_y");
+        writer.writeAttribute(HTML.NAME_ATTR, schedule.getClientId(context)
+                + "_last_clicked_y", "clicked_y");
         writer.endElement(HTML.INPUT_ELEM);
     }
 
@@ -353,7 +380,7 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         return Boolean.valueOf((String) attributes.get("tooltip"))
                 .booleanValue();
     }
-    
+
     /**
      * The user of the Schedule component can customize the look and feel
      * by specifying a custom implementation of the ScheduleEntryRenderer.
@@ -442,7 +469,7 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
 
         return rowHeight;
     }
-    
+
     /**
      * Determine the last clicked date
      * @param schedule the schedule component
@@ -450,6 +477,7 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
      * @param yPos the y coordinate of the mouse
      * @return the clicked date
      */
-    protected abstract Date determineLastClickedDate(HtmlSchedule schedule, String dateId, String yPos);
+    protected abstract Date determineLastClickedDate(HtmlSchedule schedule,
+            String dateId, String yPos);
 }
 //The End
