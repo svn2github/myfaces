@@ -60,7 +60,7 @@ table.background td.freeReddish {
 				workingEndHour="17" workingStartHour="9" readonly="false"
 				theme="outlookxp" tooltip="true"
 				evenClass="evenReddish" unevenClass="unevenReddish" freeClass="freeReddish"
-				entryRenderer="org.apache.myfaces.examples.schedule.RandomColorScheduleEntryRenderer" />
+				entryRenderer="#{randomColorEntryRenderer}" />
 		</t:div>
 		<!--  The column on the left, containing the calendar and other controls -->
 		<t:div style="position: absolute; left: 5px; top: 5px; width: 210px;">

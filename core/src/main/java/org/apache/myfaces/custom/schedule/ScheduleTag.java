@@ -851,6 +851,15 @@ public class ScheduleTag extends UIComponentTag implements Serializable
             throw new IllegalArgumentException(
                     "The value property must be a value binding expression that points to a SimpleScheduleModel object.");
         }
+        
+        if (entryRenderer != null && isValueReference(entryRenderer))
+        {
+            schedule.setValueBinding("entryRenderer", app.createValueBinding(entryRenderer));
+        }
+        else if (entryRenderer != null)
+        {
+            throw new IllegalArgumentException("The entryRenderer property must be a value binding expression that point to a ScheduleEntryRenderer instance");
+        }
 
         addAttribute(app, schedule, "headerDateFormat", headerDateFormat);
         addAttribute(app, schedule, "theme", theme);
@@ -887,8 +896,6 @@ public class ScheduleTag extends UIComponentTag implements Serializable
         
         addAttribute(app, schedule, "renderZeroLengthEntries", renderZeroLengthEntries);
         addAttribute(app, schedule, "expandToFitEntries", expandToFitEntries);
-
-        addAttribute(app, schedule, "entryRenderer", entryRenderer);
     }
 
     /**

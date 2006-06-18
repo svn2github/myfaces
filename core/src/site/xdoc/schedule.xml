@@ -141,7 +141,7 @@
                 </code>
                 <br/>
                 <code>
-                    entryRenderer - The classname of the ScheduleEntryRenderer that is used to render entries on the schedule. (default org.apache.myfaces.custom.schedule.renderer.DefaultScheduleEntryRenderer)
+                    entryRenderer - value binding to an instance of ScheduleEntryRenderer that is used to render entries on the schedule. (default: DefaultScheduleEntryRenderer)
                 </code>
                 <br/>
                 <code>

@@ -392,43 +392,16 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
      */
     protected ScheduleEntryRenderer getEntryRenderer(UIComponent component)
     {
-        ScheduleEntryRenderer entryRenderer = null;
-        Map attributes = component.getAttributes();
-        //First check if there an entryRenderer has already been instantiated
-        Object rendererObject = attributes.get("entryRendererInstance");
-        if (rendererObject instanceof ScheduleEntryRenderer)
+        Object entryRendererObject = ScheduleUtil.getObjectProperty(component,
+                null, "entryRenderer", null);
+        if (entryRendererObject instanceof ScheduleEntryRenderer)
         {
-            entryRenderer = (ScheduleEntryRenderer) rendererObject;
+            return (ScheduleEntryRenderer) entryRendererObject;
         }
         else
         {
-            //No entryRenderer was instantiated, do that here
-            String className = null;
-            //Was the classname specified as attribute of the component?
-            ValueBinding binding = component.getValueBinding("entryRenderer");
-            if (binding != null)
-            {
-                className = (String) binding.getValue(FacesContext
-                        .getCurrentInstance());
-            }
-            if (className == null)
-            {
-                className = (String) attributes.get("entryRenderer");
-            }
-            try
-            { //try to instantiate a renderer of the specified class
-                entryRenderer = (ScheduleEntryRenderer) Class
-                        .forName(className).newInstance();
-            }
-            catch (Exception e)
-            {
-                //something went wrong, let's take the default
-                entryRenderer = new DefaultScheduleEntryRenderer();
-            }
-            //Store the instance in the component attributes for later use
-            attributes.put("entryRendererInstance", entryRenderer);
+            return new DefaultScheduleEntryRenderer();
         }
-        return entryRenderer;
     }
 
     /**

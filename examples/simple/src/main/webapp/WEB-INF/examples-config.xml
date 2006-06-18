@@ -525,6 +525,12 @@
     		</map-entry>
     	</map-entries>
     </managed-bean>
+    
+    <managed-bean>
+    	<managed-bean-name>randomColorEntryRenderer</managed-bean-name>
+    	<managed-bean-class>org.apache.myfaces.examples.schedule.RandomColorScheduleEntryRenderer</managed-bean-class>
+    	<managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
 
     <!-- Managed Beans for calendar.jsp -->
 

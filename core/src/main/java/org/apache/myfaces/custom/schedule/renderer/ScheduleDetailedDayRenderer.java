@@ -161,10 +161,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             return;
         }
 
-        HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        writeForegroundEnd(context, schedule, writer);
+        writeForegroundEnd(writer);
         writer.endElement(HTML.DIV_ELEM);
     }
 
@@ -578,8 +577,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         }
     }
 
-    private void writeForegroundEnd(FacesContext context,
-            HtmlSchedule schedule, ResponseWriter writer) throws IOException
+    private void writeForegroundEnd(ResponseWriter writer) throws IOException
     {
         writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.TABLE_ELEM);
