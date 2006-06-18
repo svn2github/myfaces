@@ -105,4 +105,12 @@ public class UpdateActionListenerTag
 
         return Tag.SKIP_BODY;
     }
+
+    public void release()
+    {
+    	_property = null;
+    	_converter = null;
+    	_value = null;
+    }
+
 }
