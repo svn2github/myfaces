@@ -28,5 +28,5 @@ public interface ScheduleMouseListener
      * 
      * @param event the mouse event
      */
-    public void processMouseEvent(ScheduleMouseEvent event);
+    void processMouseEvent(ScheduleMouseEvent event);
 }

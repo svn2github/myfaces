@@ -106,7 +106,7 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
         super();
         setRendererType(DEFAULT_RENDERER_TYPE);
         scheduleListener = new ScheduleActionListener();
-        addActionListener(scheduleListener);
+        addActionListener(scheduleListener); 
     }
 
     /**
@@ -506,7 +506,7 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
      */
     public void setVisibleEndHour(int visibleEndHour)
     {
-        this.visibleEndHour = new Integer(visibleEndHour);
+        this.visibleEndHour = Integer.valueOf(visibleEndHour);
     }
 
     /**

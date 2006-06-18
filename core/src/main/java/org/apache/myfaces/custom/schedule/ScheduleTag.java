@@ -33,7 +33,7 @@ import javax.faces.webapp.UIComponentTag;
  * @author Jurgen Lust (latest modification by $Author: jlust $)
  * @version $Revision: 392301 $
  */
-public class ScheduleTag extends UIComponentTag implements Serializable
+public class ScheduleTag extends UIComponentTag implements Serializable 
 {
     private static final long serialVersionUID = -5226785969160327763L;
     
@@ -86,8 +86,8 @@ public class ScheduleTag extends UIComponentTag implements Serializable
 
     //~ Methods ----------------------------------------------------------------
 
-    private void addAttribute(Application app, UIComponent component,
-            String key, String value)
+    private void addAttribute(final Application app, final UIComponent component,
+            final String key, final String value)
     {
         if ((key != null) && (value != null))
         {
@@ -456,11 +456,11 @@ public class ScheduleTag extends UIComponentTag implements Serializable
     public void release()
     {
         super.release();
-        visibleStartHour = null;
-        visibleEndHour = null;
-        workingStartHour = null;
-        workingEndHour = null;
-        headerDateFormat = null;
+        visibleStartHour = null; 
+        visibleEndHour = null; 
+        workingStartHour = null; 
+        workingEndHour = null; 
+        headerDateFormat = null; 
         value = null;
         immediate = null;
         actionListener = null;
@@ -708,7 +708,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
             }
             else
             {
-                schedule.setVisibleStartHour(new Integer(visibleStartHour)
+                schedule.setVisibleStartHour(Integer.valueOf(visibleStartHour)
                         .intValue());
             }
         }
@@ -722,7 +722,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
             }
             else
             {
-                schedule.setVisibleEndHour(new Integer(visibleEndHour)
+                schedule.setVisibleEndHour(Integer.valueOf(visibleEndHour)
                         .intValue());
             }
         }
@@ -736,7 +736,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
             }
             else
             {
-                schedule.setWorkingStartHour(new Integer(workingStartHour)
+                schedule.setWorkingStartHour(Integer.valueOf(workingStartHour)
                         .intValue());
             }
         }
@@ -750,7 +750,7 @@ public class ScheduleTag extends UIComponentTag implements Serializable
             }
             else
             {
-                schedule.setWorkingEndHour(new Integer(workingEndHour)
+                schedule.setWorkingEndHour(Integer.valueOf(workingEndHour)
                         .intValue());
             }
         }
@@ -1107,5 +1107,6 @@ public class ScheduleTag extends UIComponentTag implements Serializable
     {
         this.expandToFitEntries = expandToFitEntries;
     }
+
 }
 //The End
