@@ -18,7 +18,11 @@ package org.apache.myfaces.custom.schedule.model;
 
 import java.io.Serializable;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
 
 /**
@@ -44,6 +48,7 @@ public class DefaultScheduleEntry
     private String id;
     private String subtitle;
     private String title;
+    private boolean allDay;
 
     //~ Methods ----------------------------------------------------------------
 
@@ -76,6 +81,18 @@ public class DefaultScheduleEntry
      */
     public Date getEndTime()
     {
+    	if (endTime == null) endTime = new Date();
+    	if (isAllDay()) {
+    		Calendar cal = GregorianCalendar.getInstance();
+    		Date truncated = ScheduleUtil.truncate(endTime);
+    		cal.setTime(truncated);
+    		cal.add(Calendar.MILLISECOND, -1);
+    		truncated = cal.getTime();
+    		if (!truncated.equals(endTime)) {
+    			cal.add(Calendar.DATE, 1);
+    		}
+    		return cal.getTime();
+    	}
         return endTime;
     }
 
@@ -104,11 +121,16 @@ public class DefaultScheduleEntry
     }
 
     /**
-     * @return Returns the startTime.
+     * @return Returns the startTime. If the allDay property is true, the startTime is truncated to 00:00.
      */
     public Date getStartTime()
     {
-        return startTime;
+    	if (startTime == null) startTime = new Date();
+    	if (isAllDay()) {
+    		return ScheduleUtil.truncate(startTime);
+    	} else {
+            return startTime;
+    	}
     }
 
     /**
@@ -142,5 +164,21 @@ public class DefaultScheduleEntry
     {
         return title;
     }
+    
+    /**
+     * @return Returns true if the entry last all day.
+     */
+    public boolean isAllDay()
+    {
+    	return allDay;
+    }
+
+	/**
+	 * @param allDay does the entry last all day?
+	 */
+	public void setAllDay(boolean allDay) {
+		this.allDay = allDay;
+	}
+	
 }
 //The End

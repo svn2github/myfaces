@@ -155,6 +155,7 @@ public class ScheduleDay
     
     /**
      * Get the non-inclusive hour by which all events on this day have completed.
+     * All day events are not included, as their end time is implicit.
      * 
      * @return From 0, where there are no events and 24 where events exist up to the last hour
      */
@@ -162,11 +163,22 @@ public class ScheduleDay
     {
     	Calendar endTime = GregorianCalendar.getInstance();
 
-    	if (entries.isEmpty()) {
+    	// Check all events, as the last to finish may not be the last to begin
+    	Date lastEnd = null;
+    	
+    	for (Iterator it = entries.iterator(); it.hasNext(); ) {
+    		ScheduleEntry next = (ScheduleEntry) it.next();
+    		
+    		if (!next.isAllDay() && (lastEnd == null || lastEnd.before(next.getEndTime()))) {
+    			lastEnd = next.getEndTime();
+    		}
+    	}
+    	if (lastEnd == null) {
     		
     		return 0;
     	}
-    	endTime.setTime(((ScheduleEntry) entries.last()).getEndTime());
+    	
+    	endTime.setTime(lastEnd);
     	
     	if (endTime.get(Calendar.MINUTE) > 0){
     		// Round up to next hour
@@ -178,19 +190,29 @@ public class ScheduleDay
     
     /**
      * Get the inclusive hour in which the first event on this day starts.
+     * All day events are not included, as their start time is implicit.
      * 
      * @return From 0, where there is an event in the first hour to 24 where there are no events
      */
     public int getFirstEventHour()
     {
-    	Calendar startTime = GregorianCalendar.getInstance();
+    	Calendar startTime = null;
 
-    	if (entries.isEmpty()) {
+    	for (Iterator it = entries.iterator(); it.hasNext(); ) {
+    		ScheduleEntry next = (ScheduleEntry) it.next();
+    		
+    		if (!next.isAllDay()) {
+    			startTime = GregorianCalendar.getInstance();
+    			startTime.setTime(((ScheduleEntry) entries.first()).getStartTime());
+    			break;
+    		}
+    	}
+
+    	if (startTime == null) {
     		
     		return 24;
     	}
-    	startTime.setTime(((ScheduleEntry) entries.first()).getStartTime());
-    	
+
     	return equalsDate(startTime.getTime()) ? startTime.get(Calendar.HOUR_OF_DAY) : 0;
     }
 }

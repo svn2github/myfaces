@@ -67,11 +67,16 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
                 endTime = day.getDayEnd();
             }
 
-            DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
-            text.append(format.format(startTime));
-            text.append("-");
-            text.append(format.format(endTime));
-            text.append(": ");
+            if (!entry.isAllDay())
+            {
+            	DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
+            	text.append(format.format(startTime));
+            	if (!startTime.equals(endTime)) {
+            		text.append("-");
+            		text.append(format.format(endTime));
+            	}
+            	text.append(": ");
+            }
             text.append(entry.getTitle());
 
             writer.writeText(text.toString(), null);

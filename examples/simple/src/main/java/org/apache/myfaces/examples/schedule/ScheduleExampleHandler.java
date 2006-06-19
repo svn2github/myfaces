@@ -141,6 +141,13 @@ public class ScheduleExampleHandler implements Serializable
         entry6.setTitle("Zero length entry");
         entry6.setDescription("Is only rendered when the 'renderZeroLengthEntries' attribute is 'true'");
         model.addEntry(entry6);
+        //And also an allday event
+        DefaultScheduleEntry entry7 = new DefaultScheduleEntry();
+        entry7.setId(RandomStringUtils.randomNumeric(32));
+        entry7.setTitle("All day event");
+        entry7.setSubtitle("This event renders as an all-day event");
+        entry7.setAllDay(true);
+        model.addEntry(entry7);
         model.refresh();
     }
 }

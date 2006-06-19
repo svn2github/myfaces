@@ -60,5 +60,10 @@ public interface ScheduleEntry
      * @return Returns the title.
      */
     public abstract String getTitle();
+
+    /**
+     * @return Returns true if the entry last all day.
+     */
+    public abstract boolean isAllDay();
 }
 //The End
