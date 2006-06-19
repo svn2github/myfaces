@@ -506,7 +506,7 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
      */
     public void setVisibleEndHour(int visibleEndHour)
     {
-        this.visibleEndHour = Integer.valueOf(visibleEndHour);
+        this.visibleEndHour = new Integer(visibleEndHour);
     }
 
     /**
