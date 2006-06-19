@@ -120,7 +120,7 @@ public class HtmlTreeRenderer extends Renderer
         String nodeId = null;
         HtmlTree tree = (HtmlTree)component;
 
-        if (tree.isClientSideToggle())
+        if (tree.isClientSideToggle() && tree.isPreserveToggle())
         {
             restoreStateFromCookies(context, component);
         }
@@ -139,14 +139,14 @@ public class HtmlTreeRenderer extends Renderer
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
-        HtmlTree tree = (HtmlTree)component;
-        // try to restore the tree state from cookies if no session scoped TreeState is supplied and preserveToggle is true in client mode
-        if (!tree.getDataModel().getTreeState().isTransient()
-                && tree.isClientSideToggle()
-                && tree.isPreserveToggle())
-        {
-            restoreStateFromCookies(context, component);
-        }
+        // Fixes TOMAHAWK-437
+        //HtmlTree tree = (HtmlTree)component;
+        //if (!tree.getDataModel().getTreeState().isTransient()
+        //        && tree.isClientSideToggle()
+        //        && tree.isPreserveToggle())
+        //{
+        //    restoreStateFromCookies(context, component);
+        //}
 
         // write javascript functions
         encodeJavascript(context, component);
