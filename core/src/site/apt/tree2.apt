@@ -1,0 +1,43 @@
+ ------
+ Apache MyFaces - Tomahawk - Tree2
+ ------
+
+Description
+
+  A component that provides an HTML-based tree from data supplied by a backing
+  bean.  The tree is highly customizable and allows for fine-grained control
+  over the appearance of each of the nodes depending on their type.  Almost any
+  type of JSF component (text, image, checkbox, etc.) can be rendered inside the
+  nodes and there is an option for client-side or server-side toggling of the
+  expand/collapse state.
+
+Screen Shot
+            
+[images/tree2.jpeg] Tree2
+
+API
+
+*----------------+-------------------------------------------------+
+|component-family|org.apache.myfaces.HtmlTree                      |
+*----------------+-------------------------------------------------+
+|renderer-type   |org.apache.myfaces.Tree                          |
+*----------------+-------------------------------------------------+
+|component-class |org.apache.myfaces.custom.tree2.HtmlTree         |
+*----------------+-------------------------------------------------+
+|renderer-class  |org.apache.myfaces.custom.tree2.HtmlTreeRenderer |
+*----------------+-------------------------------------------------+
+|tag-class       |org.apache.myfaces.custom.tree2.TreeTag          |
+*----------------+-------------------------------------------------+
+
+Usage
+
+	See {{{http://people.apache.org/builds/myfaces/nightly/} Tomahawk Examples}}.
+
+Syntax
+
+  See {{{tagreference.html#tree2}Tag Reference}}.
+
+
+Additional Information
+
+  See the MyFaces {{{http://wiki.apache.org/myfaces/Tree2} Wiki}}.
