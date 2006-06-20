@@ -42,7 +42,7 @@ public class SuggestAjaxTag extends HtmlInputTextTag
     private String _popupId;
     private String _popupStyleClass;
     private String _popupStyle;
-
+    private String _charset;
     private String _layout;
 
     public String getComponentType() {
@@ -63,6 +63,8 @@ public class SuggestAjaxTag extends HtmlInputTextTag
        _popupStyleClass = null;
        _popupStyle = null;
        _layout = null;
+       _charset = null;
+       
     }
 
     protected void setProperties(UIComponent component) {
@@ -76,6 +78,7 @@ public class SuggestAjaxTag extends HtmlInputTextTag
         setStringProperty(component,"popupStyleClass",_popupStyleClass);
         setStringProperty(component,"popupStyle",_popupStyle);
         setStringProperty(component,"layout",_layout);
+        setStringProperty(component,"charset",_charset);
     }
 
     public static void setSuggestedItemsMethodProperty(FacesContext context,
@@ -133,6 +136,10 @@ public class SuggestAjaxTag extends HtmlInputTextTag
 
     public void setMaxSuggestedItems(String maxSuggestedItems) {
         _maxSuggestedItems = (maxSuggestedItems);
+    }
+    
+    public void setCharset(String charset) {
+        _charset = charset;
     }
 
 }

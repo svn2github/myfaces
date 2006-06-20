@@ -8,6 +8,17 @@
     table-layout:auto;
 }
 
+.ajaxTableWidth{
+    font-family: Verdana, sans-serif;
+	font-size: 11px;
+	background-color: rgb(171, 202, 219);
+    color: rgb(0, 106, 164);
+    line-height: 16px;
+    border-collapse:collapse;
+    table-layout:auto;
+    width:260px;
+}
+
 .ajaxTablePopup{
   position:absolute;
   z-index:10000;

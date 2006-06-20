@@ -27,7 +27,6 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -106,7 +105,10 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
 
-        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId + "&"+clientId+"=%{searchString}");
+        String charset = (inputSuggestAjax.getCharset() != null ? inputSuggestAjax.getCharset() : "");
+
+        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId +
+                "&charset=" + charset + "&" + clientId + "=%{searchString}");
 
         ResponseWriter out = context.getResponseWriter();
 
@@ -160,8 +162,8 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
             Object item = suggestedItem.next();
 
-            buf.append("[\"").append(UnicodeEncoder.encode(item.toString())).append("\",\"")
-                .append(UnicodeEncoder.encode(item.toString()).substring(0, 1).toUpperCase()).append("\"],");
+            buf.append("[\"").append(item.toString()).append("\",\"")
+                .append(item.toString().substring(0, 1).toUpperCase()).append("\"],");
         }
 
         buf.append("];");

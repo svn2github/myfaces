@@ -54,3 +54,13 @@
     <type>java.lang.String</type>
     <description>Id for the pop up window</description>
 </attribute>
+
+<attribute>
+    <name>charset</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>Force the charset of the Response</description>
+</attribute>
+
+

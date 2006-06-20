@@ -30,6 +30,11 @@
   </component>
 
   <component>
+    <component-type>org.apache.myfaces.TableSuggestAjax</component-type>
+    <component-class>org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjax</component-class>
+  </component>
+
+  <component>
     <component-type>org.apache.myfaces.AjaxChildComboBox</component-type>
     <component-class>org.apache.myfaces.custom.ajaxchildcombobox.AjaxChildComboBox</component-class>
   </component>

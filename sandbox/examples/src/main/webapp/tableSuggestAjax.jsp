@@ -34,15 +34,16 @@
 
      <f:verbatim><br/><br/><br/><br/></f:verbatim>
 
-     <h:panelGrid columns="2">
+     <h:panelGrid >
         <h:panelGrid columns="4">
-         <f:verbatim> City Field TableSuggest <br/>  (Paginator) <br/> Suggest starts with 2. char </f:verbatim>
+         <f:verbatim> City Field ppTableSuggest <br/>  (Paginator) <br/> Suggest starts with 2. char </f:verbatim>
          <s:tableSuggestAjax var="address" id="suggest" startRequest="2"
                              nextPageFieldClass="ajaxNextTablePageField"
                              value="#{inputSuggestAjax.suggestValue}" betweenKeyUp="300"
                              columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
                              suggestedItemsMethod="#{inputSuggestAjax.getAddressList}"
-                             maxSuggestedItems="10" tableStyleClass="ajaxTable">
+                             maxSuggestedItems="10" tableStyleClass="ajaxTable"
+                             charset="utf-8">
             <t:column>
                  <f:facet name="header">
                      <s:outputText value="city"/>
@@ -67,7 +68,7 @@
                              nextPageFieldClass="ajaxNextTablePageField" betweenKeyUp="300"
                              columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
                              maxSuggestedItems="50" popupStyle="position:absolute; z-index:100000; overflow:auto; height:200px;"
-                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}">
+                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}" charset="utf-8">
             <t:column>
                  <s:outputText for="cityField2" label="#{address.city}"/>
              </t:column>
@@ -79,6 +80,7 @@
              </t:column>
          </s:tableSuggestAjax>
      </h:panelGrid>
+         <f:verbatim><br/><br/><br/><br/><br/></f:verbatim>
          <h:panelGrid>
              <h:commandButton/>
              <h:outputText value="Street"/>

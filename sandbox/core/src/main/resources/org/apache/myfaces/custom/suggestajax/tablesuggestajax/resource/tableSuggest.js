@@ -17,14 +17,15 @@
 
 org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                            millisBetweenKeyUps,
-                                           startChars)
+                                           startChars,
+                                           charset)
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
     this.inputField = null;
     this.popUp = null;
     this.url = ajaxUrl;
-
+    this.charset = charset;
     this.firstHighlightedElem = null;
     this.actualHighlightedElem = null;
 
@@ -227,7 +228,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                             if(type == "load" && data)
                             {
                               dojo.debug("response successful");
-                              var tablePagesArray = dojo.html.createNodesFromText(data);
+			      var tablePagesArray = dojo.html.createNodesFromText(data);
                               var collection = tableSuggest.tablePagesCollection;
 
                               var firstPage = null;
@@ -271,7 +272,8 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                               tableSuggest.requestLocker = false;
                             }
                          },
-               mimetype: "text/plain"
+               mimetype: "text/plain",
+               content: { charset: this.charset }
             });
         }
     };

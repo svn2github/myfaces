@@ -40,7 +40,7 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
     private String _popupId;
     private String _popupStyleClass;
     private String _popupStyle;
-
+    private String _charset;
     private String _layout;
 
     private Integer _maxSuggestedItems;
@@ -54,7 +54,7 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[7];
+        Object[] values = new Object[8];
         values[0] = super.saveState(context);
         values[1] = saveAttachedState(context, _suggestedItemsMethod);
         values[2] = _popupId;
@@ -62,6 +62,7 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
         values[4] = _popupStyle;
         values[5] = _layout;
         values[6] = _maxSuggestedItems;
+        values[7] = _charset;
 
         return values;
     }
@@ -76,8 +77,9 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
         _popupStyle = (String) values[4];
         _layout = (String) values[5];
         _maxSuggestedItems = (Integer) values[6];
+        _charset = (String) values[7];
     }
-
+    
     public void encodeAjax(FacesContext context)
             throws IOException
     {
@@ -171,6 +173,14 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
 
     public void setMaxSuggestedItems(Integer suggestedItems) {
         _maxSuggestedItems = suggestedItems;
+    }
+    
+    public String getCharset() {
+        return _charset;
+    }
+    
+    public void setCharset(String charset) {
+        _charset = charset;
     }
 
 }

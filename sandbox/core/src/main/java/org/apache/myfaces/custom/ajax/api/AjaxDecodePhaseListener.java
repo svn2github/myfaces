@@ -16,12 +16,17 @@
 
 package org.apache.myfaces.custom.ajax.api;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.ext.UIComponentPerspective;
+import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
+import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
+import org.apache.myfaces.custom.suggestajax.SuggestAjax;
+import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
@@ -32,19 +37,12 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
-import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
-import org.apache.myfaces.custom.suggestajax.SuggestAjax;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
-import org.apache.myfaces.component.html.ext.UIComponentPerspective;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This short circuits the life cycle and applies updates to affected components only
@@ -182,114 +180,102 @@ public class AjaxDecodePhaseListener
         UIViewRoot viewRoot = context.getViewRoot();
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         
+        String charset = (String) requestMap.get("charset");
+
        /* Handle character encoding as of section 2.5.2.2 of JSF 1.1:
-        * At the beginning of the render-response phase, the ViewHandler must ensure 
-        * that the response Locale is set to that of the UIViewRoot, for exampe by 
-        * calling ServletResponse.setLocale() when running in the servlet environment. 
+        * At the beginning of the render-response phase, the ViewHandler must ensure
+        * that the response Locale is set to that of the UIViewRoot, for exampe by
+        * calling ServletResponse.setLocale() when running in the servlet environment.
         * Setting the response Locale may affect the response character encoding.
-        * 
-        * Since there is no 'Render Response' phase for AJAX requests, we have to handle 
-        * this manually in order to ensure that the 'Content-type' string is sent 
-        * to the browser. 
+        *
+        * Since there is no 'Render Response' phase for AJAX requests, we have to handle
+        * this manually.
         */
         response.setLocale(viewRoot.getLocale());
-        
-            if (component instanceof SuggestAjax)
-            {
-                try
-                {
-                    if (context.getResponseWriter() == null)
-                    {
-                        response.setContentType("text/html");
-                        PrintWriter writer = response.getWriter();
-                        /* I've tried to set up the Response Writer similar to the way it is set up in 
-                         * UIComponentTag.setupResponseWriter
-                         */
-                         context.setResponseWriter(new HtmlResponseWriterImpl(writer,
-                                                                              null,
-                                                                              request.getCharacterEncoding()));
-                    }
-                    ((AjaxComponent) component).encodeAjax(context);
-                }
-                catch (IOException e)
-                {
-                    log.error("Exception while rendering ajax-response", e);
-                }
-            }
-            else
-            {
-                try
-                {
-                    
-                    //context.getResponseWriter();
-                    /*if (response == null)
-                    {
-                        ServletResponse servletResponse = (ServletResponse) context.getExternalContext().getResponse();
-                        Writer htmlResponseWriter = servletResponse.getWriter();
-                        response = new HtmlResponseWriterImpl(htmlResponseWriter, "text/html", "UTF-8");
-                        context.setResponseWriter(response);
-                    }*/
-                    //write wrapping output
-                    //response.setContentType("application/xml");
-                    //response.reset();
-                    //response.setCharacterEncoding("UTF-8");
-                    response.setContentType("text/xml");
-                    
-                    StringBuffer buff = new StringBuffer();
-                    buff.append("<?xml version=\"1.0\"?>\n");
-                    buff.append("<response>\n");
-                    PrintWriter out = response.getWriter();
-                    out.print(buff);
-                    
-                    // imario@apache.org: setup response writer, otherwise the component will fail with an NPE. I dont know why this worked before.
-                    context.setResponseWriter(new HtmlResponseWriterImpl(out,
-                            null,
-                            request.getCharacterEncoding()));
 
-                    if (component instanceof HtmlCommandButtonAjax)
-                    {
-                        // special treatment for this one, it will try to update the entire form
-                        // 1. get surrounding form
-                        //String elname = (String) requestMap.get("elname");
-                        FormInfo fi = _ComponentUtils.findNestingForm(component, context);
-                        UIComponent form = fi.getForm();
-                        //System.out.println("FOUND FORM: " + form);
-                        if (form != null)
-                        {
-                            // special case, add responses from all components in form
-                            encodeChildren(form, context, requestMap);
-                        }
-                    }
-                    else if (component instanceof AjaxComponent)
-                    {
-                        // let component render xml response
-                        // NOTE: probably don't need an encodeAjax in each component, but leaving it in until that's for sure
-                        ((AjaxComponent) component).encodeAjax(context);
-                    } else {
-                        // just get latest value
-                        AjaxRendererUtils.encodeAjax(context, component);
-                    }
-
-                    // end response
-                    out.print("</response>");
-                    out.flush();
-                }
-                catch (IOException e)
+        if (component instanceof SuggestAjax)
+        {
+            try
+            {
+                if (context.getResponseWriter() == null)
                 {
-                    log.error("Exception while rendering ajax-response", e);
+                    response.setContentType(getContentType("text/html", charset));
+                    PrintWriter writer = response.getWriter();
+                    context.setResponseWriter(new HtmlResponseWriterImpl(writer,
+                                              null,
+                                              request.getCharacterEncoding()));
                 }
+
+                ((AjaxComponent) component).encodeAjax(context);
             }
-       /* }
+            catch (IOException e)
+            {
+                log.error("Exception while rendering ajax-response", e);
+            }
+        }
         else
         {
-            log.error("Found component is no AjaxComponent : " + RendererUtils.getPathToComponent(component));
-        }*/
+            try
+            {
+                response.setContentType(getContentType("text/xml", charset));
+
+                StringBuffer buff = new StringBuffer();
+                buff.append("<?xml version=\"1.0\"?>\n");
+                buff.append("<response>\n");
+
+                PrintWriter out = response.getWriter();
+                out.print(buff);
+
+                // imario@apache.org: setup response writer, otherwise the component will fail with an NPE. I dont know why this worked before.
+                context.setResponseWriter(new HtmlResponseWriterImpl(out,
+                                          null,
+                                          request.getCharacterEncoding()));
+
+                if (component instanceof HtmlCommandButtonAjax)
+                {
+                    // special treatment for this one, it will try to update the entire form
+                    // 1. get surrounding form
+                    //String elname = (String) requestMap.get("elname");
+                    FormInfo fi = _ComponentUtils.findNestingForm(component, context);
+                    UIComponent form = fi.getForm();
+                    //System.out.println("FOUND FORM: " + form);
+                    if (form != null)
+                    {
+                        // special case, add responses from all components in form
+                        encodeChildren(form, context, requestMap);
+                    }
+                }
+                else if (component instanceof AjaxComponent)
+                {
+                    // let component render xml response
+                    // NOTE: probably don't need an encodeAjax in each component, but leaving it in until that's for sure
+                    ((AjaxComponent) component).encodeAjax(context);
+                } else {
+                    // just get latest value
+                    AjaxRendererUtils.encodeAjax(context, component);
+                }
+                // end response
+                out.print("</response>");
+                out.flush();
+            }
+            catch (IOException e)
+            {
+                log.error("Exception while rendering ajax-response", e);
+            }
+        }
     }
 
+    private String getContentType(String contentType, String charset)
+    {
+        if (charset == null || charset.trim().length() == 0)
+            return contentType;
+        else
+            return contentType + ";charset=" + charset;
+    }
 
     private void encodeChildren(UIComponent form, FacesContext context, Map requestMap)
             throws IOException
-    {
+    {                                     
         List formChildren = form.getChildren();
         for (int i = 0; i < formChildren.size(); i++)
         {

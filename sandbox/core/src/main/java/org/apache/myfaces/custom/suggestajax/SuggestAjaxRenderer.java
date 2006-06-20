@@ -46,7 +46,7 @@ public class SuggestAjaxRenderer extends HtmlTextRenderer implements AjaxSuggest
         MethodBinding mb = suggestAjax.getSuggestedItemsMethod();
         Integer maxSuggestedCount = suggestAjax.getMaxSuggestedItems();
 
-        Collection suggesteds = null;
+        Collection suggesteds;
 
         if (maxSuggestedCount != null
                 && maxSuggestedCount.intValue() > 0)
@@ -85,5 +85,4 @@ public class SuggestAjaxRenderer extends HtmlTextRenderer implements AjaxSuggest
     {
         super.decode(facesContext, component);
     }
-
 }

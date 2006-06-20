@@ -36,7 +36,8 @@
 
      <h:panelGrid columns="5">
          <h:outputText value="default suggest"/>
-         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" value="#{inputSuggestAjax.suggestValue}"/>
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"
+                             value="#{inputSuggestAjax.suggestValue}" charset="utf-8"/>
 
          <h:outputText value="suggest with limited suggested items"/>
          <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" maxSuggestedItems="2" /> 

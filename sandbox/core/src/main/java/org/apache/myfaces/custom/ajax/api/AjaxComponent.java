@@ -27,6 +27,5 @@ public interface AjaxComponent
 {
     void encodeAjax(FacesContext context) throws IOException;
 
-    void decodeAjax(FacesContext context);
-    
+    void decodeAjax(FacesContext context);   
 }
