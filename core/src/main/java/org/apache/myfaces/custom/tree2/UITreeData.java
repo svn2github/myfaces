@@ -610,6 +610,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         {
             restoreDescendantState((UIComponent)kids.get(i), context);
         }
+        Map facets = component.getFacets();
+        for(Iterator i = facets.values().iterator(); i.hasNext();)
+        {
+            restoreDescendantState((UIComponent)i.next(), context);
+        }
     }
 
     /**
