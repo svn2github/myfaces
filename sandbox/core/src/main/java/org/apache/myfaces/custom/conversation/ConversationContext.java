@@ -166,7 +166,6 @@ public class ConversationContext
 	
 	/**
 	 * Get the current conversation. The current conversation is the one last seen by the startConversation tag.
-	 * @return
 	 */
 	public Conversation getCurrentConversation()
 	{
@@ -177,12 +176,24 @@ public class ConversationContext
 	/**
 	 * see if there is a conversation
 	 */
-	public boolean hasConversation()
+	public boolean hasConversations()
 	{
 		synchronized (mutex)
 		{
 			touch();
 			return conversations.size() > 0;
+		}
+	}
+
+	/**
+	 * check if the given conversation exists
+	 */
+	public boolean hasConversation(String name)
+	{
+		synchronized (mutex)
+		{
+			touch();
+			return conversations.get(name) != null;
 		}
 	}
 

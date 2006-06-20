@@ -18,44 +18,32 @@ package org.apache.myfaces.custom.conversation;
 import javax.faces.component.UIComponent;
 
 /**
- * Ends a conversation
+ * Checks if a conversation is active, else redirects to another view
  * 
  * @author imario@apache.org
  */
-public class EndConversationTag extends AbstractConversationTag
+public class EnsureConversationTag extends AbstractConversationTag
 {
-	private String onOutcome;
-	private String errorOutcome;
+	private String redirectTo;
 
 	public String getComponentType()
 	{
-		return UIEndConversation.COMPONENT_TYPE;
+		return UIEnsureConversation.COMPONENT_TYPE;
 	}
 	
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
-        setStringProperty(component, "onOutcome", getOnOutcome());
-		setStringProperty(component, "errorOutcome", getErrorOutcome());
+        setStringProperty(component, "redirectTo", getRedirectTo());
     }
 
-	public String getOnOutcome()
+	public String getRedirectTo()
 	{
-		return onOutcome;
+		return redirectTo;
 	}
 
-	public void setOnOutcome(String onOutcome)
+	public void setRedirectTo(String redirectTo)
 	{
-		this.onOutcome = onOutcome;
-	}
-
-	public String getErrorOutcome()
-	{
-		return errorOutcome;
-	}
-
-	public void setErrorOutcome(String errorOutcome)
-	{
-		this.errorOutcome = errorOutcome;
+		this.redirectTo = redirectTo;
 	}
 }

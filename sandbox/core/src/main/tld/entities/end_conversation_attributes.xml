@@ -6,3 +6,11 @@
        end the conversation only if the action outcome matches the given onOutcome. This can be a comma separated list.
     </description>
 </attribute>
+<attribute>
+    <name>errorOutcome</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <description>
+        on exception use the given outcome for further navigation
+    </description>
+</attribute>

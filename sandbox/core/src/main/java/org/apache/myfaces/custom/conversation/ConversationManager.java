@@ -41,14 +41,18 @@ public class ConversationManager
 	public final static String CONVERSATION_CONTEXT_PARAM = "conversationContext";
 	
 	private final static String INIT_PERSISTENCE_MANAGER_FACOTRY = "org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY";
+	private final static String INIT_MESSAGER = "org.apache.myfaces.conversation.MESSAGER";
+
 	private final static String CONVERSATION_MANAGER_KEY = "org.apache.myfaces.ConversationManager";
 	private final static String CONVERSATION_CONTEXT_REQ = "org.apache.myfaces.ConversationManager.conversationContext";
 	
 	private static long NEXT_CONVERSATION_CONTEXT = 1;  
 
 	private PersistenceManagerFactory persistenceManagerFactory;
+	private ConversationMessager conversationMessager;
 	
 	private final Map conversationContexts = new HashMap();
+
 	// private final List registeredEndConversations = new ArrayList(10);
 
 	private class ContextWiperThread extends Thread
@@ -109,10 +113,9 @@ public class ConversationManager
 			{
 				throw new IllegalStateException("ConversationServletFilter not called. Please configure the filter org.apache.myfaces.custom.conversation.ConversationServletFilter in your web.xml to cover your faces requests.");
 			}
-			
-			// create manager
-			conversationManager = new ConversationManager();
-			
+
+			conversationManager = createConversationManager();
+
 			// initialize environmental systems
 			RequestParameterProviderManager.getInstance(context).register(new ConversationRequestParameterProvider());
 
@@ -120,6 +123,19 @@ public class ConversationManager
 			context.getExternalContext().getSessionMap().put(CONVERSATION_MANAGER_KEY, conversationManager);
 		}
 		
+		return conversationManager;
+	}
+
+	protected static ConversationManager createConversationManager()
+	{
+		ConversationManager conversationManager;
+
+		// create manager
+		conversationManager = new ConversationManager();
+
+		// initialize the messager
+		conversationManager.createMessager();
+
 		return conversationManager;
 	}
 
@@ -231,7 +247,7 @@ public class ConversationManager
 	
 	/**
 	 * Start a conversation
-	 * @see ConversationContext#startConversation(String) 
+	 * @see ConversationContext#startConversation(String, boolean)
 	 */
 	public void startConversation(String name, boolean persistence)
 	{
@@ -252,7 +268,7 @@ public class ConversationManager
 		{
 			conversationContext.endConversation(name);
 			
-			if (!conversationContext.hasConversation())
+			if (!conversationContext.hasConversations())
 			{
 				destroyConversationContext(conversationContextId);
 			}
@@ -272,6 +288,19 @@ public class ConversationManager
 			return null;
 		}
 		return conversationContext.getConversation(name);
+	}
+
+	/**
+	 * check if the given conversation is active
+	 */
+	public boolean hasConversation(String name)
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext == null)
+		{
+			return false;
+		}
+		return conversationContext.hasConversation(name);
 	}
 
 	/**
@@ -340,6 +369,49 @@ public class ConversationManager
 	}
 
 	/**
+	 * Get the Messager used to inform the user about anomalies.<br />
+	 * The factory can be configured in your web.xml using the init parameter named
+	 * <code>org.apache.myfaces.conversation.MESSAGER</code>
+	 */
+	protected ConversationMessager getMessager()
+	{
+		return conversationMessager;
+	}
+
+	/**
+	 * Create the Messager used to inform the user about anomalies.<br />
+	 * The factory can be configured in your web.xml using the init parameter named
+	 * <code>org.apache.myfaces.conversation.MESSAGER</code>
+	 */
+	protected void createMessager()
+	{
+		String conversationMessagerName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(INIT_MESSAGER);
+		if (conversationMessagerName == null)
+		{
+			conversationMessager = new DefaultConversationMessager();
+		}
+		else
+		{
+			try
+			{
+				conversationMessager = (ConversationMessager) ClassUtils.classForName(conversationMessagerName).newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				throw new FacesException("error creating messager: " + conversationMessagerName, e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new FacesException("error creating messager: " + conversationMessagerName, e);
+			}
+			catch (ClassNotFoundException e)
+			{
+				throw new FacesException("error creating messager: " + conversationMessagerName, e);
+			}
+		}
+	}
+
+	/**
 	 * Get the persistenceManagerFactory.<br /> 
 	 * The factory can be configured in your web.xml using the init parameter named
 	 * <code>org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY</code>
@@ -348,7 +420,7 @@ public class ConversationManager
 	{
 		if (persistenceManagerFactory == null)
 		{
-			String persistenceManagerFactoryName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("INIT_PERSISTENCE_MANAGER_FACOTRY");
+			String persistenceManagerFactoryName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(INIT_PERSISTENCE_MANAGER_FACOTRY);
 			if (persistenceManagerFactoryName == null)
 			{
 				throw new IllegalArgumentException("please configure '" + INIT_PERSISTENCE_MANAGER_FACOTRY + "' in your web.xml");
@@ -370,7 +442,7 @@ public class ConversationManager
 				throw new FacesException("error creating persistenceManagerFactory named: " + persistenceManagerFactoryName, e);
 			}
 		}
-		
+
 		return persistenceManagerFactory;
 	}
 

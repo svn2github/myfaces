@@ -15,31 +15,31 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
+import org.apache.myfaces.shared_tomahawk.util.StringUtils;
 
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.shared_tomahawk.util.StringUtils;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * end a conversation
- * 
+ *
  * @author imario@apache.org
  */
 public class UIEndConversation extends AbstractConversationComponent
 {
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.EndConversation";
+	public static final String COMPONENT_TYPE = "org.apache.myfaces.EndConversation";
 
-    private String onOutcome;
-    
-    private boolean inited = false;
+	private String onOutcome;
+	private String errorOutcome;
 
-    /*
+	private boolean inited = false;
+
+	/*
 	public static class ConversationEndAction extends AbstractConversationActionListener
 	{
 		public void doConversationAction(AbstractConversationComponent abstractConversationComponent)
@@ -48,11 +48,11 @@ public class UIEndConversation extends AbstractConversationComponent
 		}
 	}
 	*/
-	
-    public void encodeBegin(FacesContext context) throws IOException
+
+	public void encodeBegin(FacesContext context) throws IOException
 	{
 		super.encodeBegin(context);
-		
+
 		UICommand command = ConversationUtils.findParentCommand(this);
 		if (command != null)
 		{
@@ -64,7 +64,7 @@ public class UIEndConversation extends AbstractConversationComponent
 				command.addActionListener(actionListener);
 				*/
 				MethodBinding original = command.getAction();
-				command.setAction(new EndConversationMethodBindingFacade(getName(), getOnOutcomes(), original));
+				command.setAction(new EndConversationMethodBindingFacade(getName(), getOnOutcomes(), original, getErrorOutcome()));
 				inited = true;
 			}
 		}
@@ -82,7 +82,7 @@ public class UIEndConversation extends AbstractConversationComponent
 		{
 			return null;
 		}
-		
+
 		return Arrays.asList(StringUtils.trim(StringUtils.splitShortString(onOutcome, ',')));
 	}
 
@@ -92,26 +92,28 @@ public class UIEndConversation extends AbstractConversationComponent
 		super.restoreState(context, states[0]);
 		inited = ((Boolean) states[1]).booleanValue();
 		onOutcome = (String) states[2];
+		errorOutcome = (String) states[2];
 	}
 
 	public Object saveState(FacesContext context)
 	{
 		return new Object[]
-		                  {
+			{
 				super.saveState(context),
-				inited?Boolean.TRUE:Boolean.FALSE,
-				onOutcome
-		                  };
+				inited ? Boolean.TRUE : Boolean.FALSE,
+				onOutcome,
+				errorOutcome
+			};
 	}
 
 	public String getOnOutcome()
 	{
-		if (onOutcome!= null)
+		if (onOutcome != null)
 		{
 			return onOutcome;
 		}
 		ValueBinding vb = getValueBinding("onOutcome");
-		if( vb == null )
+		if (vb == null)
 		{
 			return null;
 		}
@@ -121,5 +123,24 @@ public class UIEndConversation extends AbstractConversationComponent
 	public void setOnOutcome(String onOutcome)
 	{
 		this.onOutcome = onOutcome;
+	}
+
+	public String getErrorOutcome()
+	{
+		if (errorOutcome != null)
+		{
+			return errorOutcome;
+		}
+		ValueBinding vb = getValueBinding("errorOutcome");
+		if (vb == null)
+		{
+			return null;
+		}
+		return (String) vb.getValue(getFacesContext());
+	}
+
+	public void setErrorOutcome(String errorOutcome)
+	{
+		this.errorOutcome = errorOutcome;
 	}
 }

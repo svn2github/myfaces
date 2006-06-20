@@ -127,6 +127,7 @@ Sandbox-related entities.
 <!ENTITY html_timed_notifier_attributes	SYSTEM "entities/html_timed_notifier_attributes.xml">
 <!ENTITY start_conversation_attributes	SYSTEM "entities/start_conversation_attributes.xml">
 <!ENTITY end_conversation_attributes	SYSTEM "entities/end_conversation_attributes.xml">
+<!ENTITY ensure_conversation_attributes	SYSTEM "entities/ensure_conversation_attributes.xml">
 <!ENTITY standard_conversation_attributes	SYSTEM "entities/standard_conversation_attributes.xml">
 <!ENTITY conversation_attributes	SYSTEM "entities/conversation_attributes.xml">
 <!ENTITY ext_escape_attribute	SYSTEM "entities-share/ext_escape_attribute.xml">
@@ -1129,6 +1130,15 @@ Sandbox-related entities.
 
 		&standard_conversation_attributes;
 		&conversation_attributes;
+	</tag>
+	<tag>
+		<name>ensureConversation</name>
+		<tag-class>org.apache.myfaces.custom.conversation.EnsureConversationTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Ensures a named conversation is running</description>
+
+		&ensure_conversation_attributes;
+		&standard_conversation_attributes;
 	</tag>
 
 	<tag>

@@ -30,6 +30,8 @@
 <body>
 <f:view>
 
+<s:ensureConversation name="wizard" redirectTo="/conversation/wizardPage1.jsp" />
+
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
 <h:outputLink value="home.jsf"><h:outputText value="Menu" /></h:outputLink>

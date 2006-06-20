@@ -15,19 +15,18 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import java.util.Collection;
-import java.util.Set;
-
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.MethodNotFoundException;
+import javax.faces.FacesException;
+import java.util.Collection;
 
 /**
  * a facade for the original method binding to deal with end conversation conditions
- * 
+ *
  * @author imario@apache.org
  */
 public class EndConversationMethodBindingFacade extends MethodBinding implements StateHolder
@@ -35,20 +34,22 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 	private MethodBinding original;
 	private String conversationName;
 	private Collection onOutcomes;
-	
-    private boolean _transient = false;
+	private String errorOutcome;
 
-    public EndConversationMethodBindingFacade()
-    {
-    }
-    
-	public EndConversationMethodBindingFacade(String conversation, Collection onOutcomes, MethodBinding original)
+	private boolean _transient = false;
+
+	public EndConversationMethodBindingFacade()
+	{
+	}
+
+	public EndConversationMethodBindingFacade(String conversation, Collection onOutcomes, MethodBinding original, String errorOutcome)
 	{
 		this.original = original;
 		this.conversationName = conversation;
 		this.onOutcomes = onOutcomes;
+		this.errorOutcome = errorOutcome;
 	}
-	
+
 	public String getConversationName()
 	{
 		return conversationName;
@@ -84,6 +85,20 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 			}
 			ok = true;
 		}
+		catch (Throwable t)
+		{
+			if (errorOutcome != null)
+			{
+				ConversationManager conversationManager = ConversationManager.getInstance(context);
+				conversationManager.getMessager().setConversationException(context, t);
+
+				returnValue = errorOutcome;
+			}
+			else
+			{
+				throw new FacesException(t);
+			}
+		}
 		finally
 		{
 			boolean end = true;
@@ -94,13 +109,13 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 					end = onOutcomes.contains(returnValue);
 				}
 			}
-			
+
 			if (end)
 			{
 				ConversationManager conversationManager = ConversationManager.getInstance(context);
 				conversationManager.endConversation(getConversationName());
 			}
-		}		
+		}
 		return returnValue;
 	}
 
@@ -108,7 +123,7 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 	{
 		_transient = newTransientValue;
 	}
-	
+
 	public boolean isTransient()
 	{
 		return _transient;
@@ -117,19 +132,21 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 	public void restoreState(FacesContext context, Object states)
 	{
 		Object[] state = (Object[]) states;
-		
+
 		original = (MethodBinding) UIComponentBase.restoreAttachedState(context, state[0]);
 		conversationName = (String) state[1];
 		onOutcomes = (Collection) state[2];
+		errorOutcome = (String) state[3];
 	}
 
 	public Object saveState(FacesContext context)
 	{
 		return new Object[]
-		                  {
+			{
 				UIComponentBase.saveAttachedState(context, original),
 				conversationName,
-				onOutcomes
-		                  };
+				onOutcomes,
+				errorOutcome
+			};
 	}
 }

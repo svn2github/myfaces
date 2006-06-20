@@ -1,0 +1,8 @@
+<attribute>
+    <name>redirectTo</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <description>
+       redirect to the given view if the conversation is not running
+    </description>
+</attribute>

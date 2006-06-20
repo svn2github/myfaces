@@ -30,6 +30,8 @@
 <body>
 <f:view>
 
+<s:ensureConversation name="wizard" redirectTo="/conversation/wizardPage1.jsp" />
+
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
 <h:outputLink value="home.jsf"><h:outputText value="Menu" /></h:outputLink>
@@ -48,6 +50,11 @@
 			<h:commandButton value="Save" action="#{wizardController.save}">
 				<s:endConversation name="wizard" onOutcome="success"/>
 			</h:commandButton>
+
+			<h:commandButton value="End conversation and jump into the mid of a new one" action="wizardPage2">
+				<s:endConversation name="wizard" />
+			</h:commandButton>
+
 		</h:panelGroup>
 	</f:facet>
 	

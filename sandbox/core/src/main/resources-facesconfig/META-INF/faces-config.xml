@@ -135,7 +135,11 @@
 	<component-type>org.apache.myfaces.Conversation</component-type>
 	<component-class>org.apache.myfaces.custom.conversation.UIConversation</component-class>
   </component>
-  
+  <component>
+    <component-type>org.apache.myfaces.EnsureConversation</component-type>
+    <component-class>org.apache.myfaces.custom.conversation.UIEnsureConversation</component-class>
+  </component>
+
   <component>
 	<component-type>org.apache.myfaces.HtmlSelectManyPicklist</component-type>
 	<component-class>org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist</component-class>
