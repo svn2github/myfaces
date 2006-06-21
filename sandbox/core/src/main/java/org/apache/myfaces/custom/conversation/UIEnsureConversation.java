@@ -87,16 +87,13 @@ public class UIEnsureConversation extends AbstractConversationComponent
 		{
 			conversationManager.getMessager().setConversationNotActive(context, getName());
 
-			Object response = context.getExternalContext().getResponse();
-			if (response instanceof HttpServletResponse)
-			{
-				((HttpServletResponse) response).sendRedirect(getRedirectTo());
+			String actionUrl = context.getApplication().getViewHandler().getActionURL(
+						context, getRedirectTo());
 
-				context.responseComplete();
-				return;
-			}
+			context.getExternalContext().redirect(
+				context.getExternalContext().encodeActionURL(actionUrl));
 
-			log.error("conversation " + getName() + " not active, but we cant redirect as " + response + " is not a HttpServletResponse");
+			return;
 		}
 	}
 
