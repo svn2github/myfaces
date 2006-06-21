@@ -357,7 +357,7 @@
     </renderer>
 
     <renderer>
-        <component-family>javax.faces.Form</component-family>
+        <component-family>org.apache.myfaces.SubForm</component-family>
         <renderer-type>org.apache.myfaces.SubForm</renderer-type>
         <renderer-class>org.apache.myfaces.custom.subform.SubFormRenderer</renderer-class>
     </renderer>
