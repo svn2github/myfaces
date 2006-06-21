@@ -85,7 +85,6 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException
     {
-        System.out.println("rendering fisheye");
         if (component.isRendered())
         {
             HtmlFishEyeNavigationMenu fisheye = (HtmlFishEyeNavigationMenu) component;
