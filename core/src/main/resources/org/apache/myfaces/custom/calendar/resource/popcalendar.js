@@ -121,7 +121,8 @@ org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
 
         if (iframe == null)
         {
-            iframe = document.createElement("<iframe id='" + overDiv.id + "_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
+            // the source attirbute is to avoid a IE error message about non secure content on https connections
+            iframe = document.createElement("<iframe src='javascript:false;' id='" + overDiv.id + "_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
             this.containerCtl.appendChild(iframe);
         }
 

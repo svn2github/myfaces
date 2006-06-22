@@ -103,7 +103,7 @@ public final class HtmlComponentUtils
         }
     }
 
-    private static boolean getBooleanValue(String attribute, Object value, boolean defaultValue)
+    public static boolean getBooleanValue(String attribute, Object value, boolean defaultValue)
     {
         if(value instanceof Boolean)
         {

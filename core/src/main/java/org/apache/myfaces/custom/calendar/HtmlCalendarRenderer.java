@@ -55,6 +55,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)
@@ -281,6 +282,15 @@ public class HtmlCalendarRenderer
         if(inputText == null)
         {
             inputText = (HtmlInputTextHelp) application.createComponent(HtmlInputTextHelp.COMPONENT_TYPE);
+
+            boolean forceId = HtmlComponentUtils.getBooleanValue(
+                    JSFAttr.FORCE_ID_ATTR,
+                    inputCalendar.getAttributes().get(JSFAttr.FORCE_ID_ATTR),
+                    false);
+            if (forceId)
+            {
+                inputText.getAttributes().put(JSFAttr.FORCE_ID_ATTR, Boolean.TRUE);
+            }
         }
         return inputText;
     }
