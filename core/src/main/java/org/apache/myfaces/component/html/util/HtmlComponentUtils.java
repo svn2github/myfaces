@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -59,7 +60,7 @@ public final class HtmlComponentUtils
     {
 
         //forceId enabled?
-        boolean forceId = getBooleanValue(JSFAttr.FORCE_ID_ATTR,
+        boolean forceId = RendererUtils.getBooleanValue(JSFAttr.FORCE_ID_ATTR,
                 component.getAttributes().get(JSFAttr.FORCE_ID_ATTR),false);
 
         if (forceId && component.getId() != null)
@@ -75,7 +76,7 @@ public final class HtmlComponentUtils
                 if (parentContainer instanceof UIData)
                 {
                     // see if the originally supplied id should be used
-                    boolean forceIdIndex = getBooleanValue(JSFAttr.FORCE_ID_ATTR,
+                    boolean forceIdIndex = RendererUtils.getBooleanValue(JSFAttr.FORCE_ID_ATTR,
                             component.getAttributes().get(JSFAttr.FORCE_ID_INDEX_ATTR),true);
 
                     // note: user may have specifically requested that we do not add the special forceId [index] suffix
@@ -101,27 +102,6 @@ public final class HtmlComponentUtils
         {
             return null;
         }
-    }
-
-    public static boolean getBooleanValue(String attribute, Object value, boolean defaultValue)
-    {
-        if(value instanceof Boolean)
-        {
-            return ((Boolean) value).booleanValue();
-        }
-        else if(value instanceof String)
-        {
-            return Boolean.valueOf((String) value).booleanValue();
-        }
-        else if(value != null)
-        {
-            log.error("value for attribute "+attribute+
-                    " must be instanceof 'Boolean' or 'String', is of type : "+value.getClass());
-
-            return defaultValue;
-        }
-
-        return defaultValue;
     }
 
     /**

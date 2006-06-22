@@ -282,15 +282,6 @@ public class HtmlCalendarRenderer
         if(inputText == null)
         {
             inputText = (HtmlInputTextHelp) application.createComponent(HtmlInputTextHelp.COMPONENT_TYPE);
-
-            boolean forceId = HtmlComponentUtils.getBooleanValue(
-                    JSFAttr.FORCE_ID_ATTR,
-                    inputCalendar.getAttributes().get(JSFAttr.FORCE_ID_ATTR),
-                    false);
-            if (forceId)
-            {
-                inputText.getAttributes().put(JSFAttr.FORCE_ID_ATTR, Boolean.TRUE);
-            }
         }
         return inputText;
     }
