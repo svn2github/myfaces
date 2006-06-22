@@ -74,7 +74,7 @@
         <managed-bean-class>org.apache.myfaces.examples.ajaxchildcombobox.AjaxChildComboBoxBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    
+
   <managed-bean>
     <managed-bean-name>userHandler</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.examples.inputsuggest.UserHandler</managed-bean-class>
@@ -305,13 +305,13 @@
     <managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicBean</managed-bean-class>
     <managed-bean-scope>application</managed-bean-scope>
   </managed-bean>
-  
+
   <managed-bean>
     <managed-bean-name>graphicImageDynamicTextBean</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.examples.graphicImageDynamic.GraphicImageDynamicTextBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
-  
+
   <!-- managed bean for outputLinkDynamic -->
 
   <managed-bean>
@@ -409,7 +409,7 @@
 		<managed-bean-class>org.apache.myfaces.examples.dateTimeConverter.DateTimeConverterBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-	
+
 	<managed-bean>
 		<managed-bean-name>fisheye</managed-bean-name>
 		<managed-bean-class>org.apache.myfaces.examples.fisheye.FishEyeHandler</managed-bean-class>
@@ -433,7 +433,7 @@
 		<managed-bean-class>org.apache.myfaces.examples.conversation.WizardController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
-	
+
     <managed-bean>
     	<managed-bean-name>numberHolder</managed-bean-name>
     	<managed-bean-class>org.apache.myfaces.examples.NumberHolder</managed-bean-class>
@@ -447,7 +447,14 @@
     	<managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- navigation rules -->
+	<!-- redirect tracker -->
+	<managed-bean>
+		<managed-bean-name>requestTrackerRedirectBean</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.RequestTrackerRedirectBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>
 			<from-outcome>home</from-outcome>
@@ -456,7 +463,16 @@
 		</navigation-case>
 	</navigation-rule>
 
-    <!-- conversation -->
+	<!-- redirect tracker -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>requestTrackerRedirect</from-outcome>
+			<to-view-id>/redirectTracker/requestTrackerRedirect.jsp</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- conversation -->
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>saveMe</from-outcome>
@@ -494,7 +510,7 @@
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
-	
+
     <!-- navigational rules for the wizard -->
 	<navigation-rule>
 		<from-view-id>/*</from-view-id>

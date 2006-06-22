@@ -78,7 +78,7 @@
      <component-type>org.apache.myfaces.Script</component-type>
      <component-class>org.apache.myfaces.custom.script.Script</component-class>
   </component>
-  
+
   <component>
     <component-type>org.apache.myfaces.AutoUpdateDataTable</component-type>
     <component-class>org.apache.myfaces.custom.autoupdatedatatable.AutoUpdateDataTable</component-class>
@@ -108,7 +108,7 @@
     <component-type>org.apache.myfaces.GraphicImageDynamic</component-type>
     <component-class>org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamic</component-class>
   </component>
-  
+
   <component>
     <component-type>org.apache.myfaces.OutputLinkDynamic</component-type>
     <component-class>org.apache.myfaces.custom.outputlinkdynamic.OutputLinkDynamic</component-class>
@@ -154,12 +154,12 @@
 	<component-type>org.apache.myfaces.SelectOneRow</component-type>
 	<component-class>org.apache.myfaces.custom.selectOneRow.SelectOneRow</component-class>
   </component>
-  
+
   <component>
 	<component-type>org.apache.myfaces.DojoInitializer</component-type>
 	<component-class>org.apache.myfaces.custom.dojo.DojoInitializer</component-class>
   </component>
-  
+
   <component>
 	<component-type>org.apache.myfaces.StateChangedNotifier</component-type>
 	<component-class>org.apache.myfaces.custom.statechangednotifier.StateChangedNotifier</component-class>
@@ -169,7 +169,7 @@
     <component-type>org.apache.myfaces.IfMessage</component-type>
     <component-class>org.apache.myfaces.custom.ifmessage.IfMessage</component-class>
   </component>
-  
+
   <component>
   	<component-type>org.apache.myfaces.FishEyeList</component-type>
   	<component-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenu</component-class>
@@ -195,8 +195,8 @@
   <converter>
     <converter-id>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter</converter-id>
     <converter-class>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter</converter-class>
-  </converter> 
-	
+  </converter>
+
   <converter>
      <converter-id>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-id>
      <converter-class>org.apache.myfaces.custom.convertDateTime.DateTimeConverter</converter-class>
@@ -324,7 +324,7 @@
        <renderer-type>org.apache.myfaces.GraphicImageDynamicRenderer</renderer-type>
        <renderer-class>org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamicRenderer</renderer-class>
     </renderer>
-    
+
     <renderer>
        <component-family>javax.faces.Output</component-family>
        <renderer-type>org.apache.myfaces.OutputLinkDynamicRenderer</renderer-type>
@@ -368,7 +368,7 @@
         <renderer-class>org.apache.myfaces.custom.statechangednotifier.StateChangedNotifierRenderer</renderer-class>
     </renderer>
 
-    
+
 
     <renderer>
         <component-family>javax.faces.Panel</component-family>
@@ -398,8 +398,13 @@
   <lifecycle>
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
+	  <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
   </lifecycle>
-  
+
+  <factory>
+    <faces-context-factory>org.apache.myfaces.custom.redirectTracker.RedirectTrackerFacesContextFactory</faces-context-factory>
+  </factory>
+
   <!--custom validators -->
   <validator>
       <validator-id>org.apache.myfaces.validator.Url</validator-id>
@@ -414,5 +419,5 @@
       <validator-id>org.apache.myfaces.validator.CompareTo</validator-id>
       <validator-class>org.apache.myfaces.custom.comparetovalidator.CompareToValidator</validator-class>
   </validator>
-	
+
 </faces-config>

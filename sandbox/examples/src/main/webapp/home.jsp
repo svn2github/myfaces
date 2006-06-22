@@ -36,7 +36,7 @@
 
 	            <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>DateTimeConverter - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
 	            <h:outputLink value="valueChangeNotifier.jsf"><f:verbatim>valueChangeNotifier - Calls a custom valueChangeEvent method during MODEL_UPDATE Phase of the Faces Lifecycle</f:verbatim></h:outputLink>
-	            
+
 	            <h:outputText value="Validation"/>
 	            <h:panelGrid style="padding-left:25px">
 	            	<h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
@@ -59,7 +59,7 @@
                 <h:outputLink value="inputAjax.jsf" ><f:verbatim>AJAX Form Components - server side validation through ajax </f:verbatim></h:outputLink>
 	            <h:outputLink value="inputSuggest.jsf" ><f:verbatim>Input Suggest - Suggest without Ajax</f:verbatim></h:outputLink>
             </h:panelGrid>
-            
+
             <h:outputText value="Data Tables"/>
             <h:panelGrid style="padding-left:25px">
             	<h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
@@ -75,7 +75,7 @@
             <h:panelGrid style="padding-left:25px">
                <h:outputLink value="ifMessage.jsf"><f:verbatim>ifMessage - renders its children only if there is a message in the FacesContext for the specified component(s)</f:verbatim></h:outputLink>
             </h:panelGrid>
-            
+
             <h:outputText value="FishEye Navigation"/>
             <h:panelGrid style="padding-left:25px">
                <h:outputLink value="fisheye.jsf"><f:verbatim>fishEyeNavigationMenu - the Dojo Toolkit FishEye widget</f:verbatim></h:outputLink>
@@ -88,7 +88,7 @@
 	            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
                 <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
                 <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>automatically convert the number to the correct type</f:verbatim></h:outputLink>
-                
+
             </h:panelGrid>
             <h:panelGrid style="padding-left:25px">
                 <h:outputLink value="ajaxChildComboBox.jsf" >
@@ -101,7 +101,12 @@
            		<h:outputLink value="conversation/index.jsf" ><f:verbatim>Conversation Tag examples</f:verbatim></h:outputLink>
             </h:panelGrid>
 
-            <h:outputText value="XML Template"/>
+			<h:outputText value="Redirect Tracker"/>
+			<h:panelGrid style="padding-left:25px">
+				   <h:outputLink value="redirectTracker/index.jsf" ><f:verbatim>Redirect Tracker - tries to capture the current request state and reset it after a redirect</f:verbatim></h:outputLink>
+			</h:panelGrid>
+
+			<h:outputText value="XML Template"/>
             <h:panelGrid style="padding-left:25px">
            		<h:outputLink value="template/index.jsf" ><f:verbatim>XML Template examples</f:verbatim></h:outputLink>
             </h:panelGrid>
@@ -109,6 +114,6 @@
         </h:panelGrid>
     </h:form>
     </f:view>
-   
+
 </body>
 </html>
