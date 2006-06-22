@@ -36,6 +36,8 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
     private String _betweenKeyUp;
     private String _startRequest;
 
+    private String _acceptValueToField;
+
     private String _var;
 
     public String getComponentType() {
@@ -57,7 +59,7 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
        _startRequest = null;
        _tableStyleClass = null;
        _nextPageFieldClass = null;
-
+       _acceptValueToField = null;
     }
 
     protected void setProperties(UIComponent component) {
@@ -71,6 +73,7 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
         setStringProperty(component,"columnOutClass",_columnOutClass);
         setStringProperty(component,"tableStyleClass",_tableStyleClass);
         setStringProperty(component,"nextPageFieldClass",_nextPageFieldClass);
+        setBooleanProperty(component,"acceptValueToField",_acceptValueToField);
 
         setStringProperty(component, JSFAttr.VAR_ATTR, _var);
     }
@@ -109,5 +112,10 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
     public void setNextPageFieldClass(String nextPageFieldClass)
     {
         _nextPageFieldClass = nextPageFieldClass;
+    }
+
+    public void setAcceptValueToField(String acceptValueToField)
+    {
+        _acceptValueToField = acceptValueToField;
     }
 }

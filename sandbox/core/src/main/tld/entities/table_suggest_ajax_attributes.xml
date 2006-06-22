@@ -11,6 +11,16 @@
 </attribute>
 
 <attribute>
+    <name>acceptValueToField</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>If set to true and if there is only one suggested column, values are put mandatory to
+                 the corresponding dom nodes.
+    </description>
+</attribute>
+
+<attribute>
     <name>startRequest</name>
     <required>false</required>
     <rtexprvalue>false</rtexprvalue>

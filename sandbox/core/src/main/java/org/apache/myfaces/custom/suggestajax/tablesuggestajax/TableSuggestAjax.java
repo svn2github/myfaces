@@ -40,6 +40,8 @@ public class TableSuggestAjax extends SuggestAjax
     private Integer _betweenKeyUp;
     private Integer _startRequest;
 
+    private Boolean _acceptValueToField = new Boolean(false);
+
     private String _var;
 
     public TableSuggestAjax()
@@ -51,7 +53,7 @@ public class TableSuggestAjax extends SuggestAjax
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[8];
+        Object[] values = new Object[9];
         values[0] = super.saveState(context);
         values[1] = _var;
         values[2] = _columnHoverClass;
@@ -60,6 +62,7 @@ public class TableSuggestAjax extends SuggestAjax
         values[5] = _startRequest;
         values[6] = _tableStyleClass;
         values[7] = _nextPageFieldClass;
+        values[8] = _acceptValueToField;
 
         return values;
     }
@@ -75,14 +78,19 @@ public class TableSuggestAjax extends SuggestAjax
         _startRequest = (Integer) values[5];
         _tableStyleClass = (String) values[6];
         _nextPageFieldClass = (String) values[7];
+        _acceptValueToField = (Boolean) values[8];
     }
 
     public boolean getRendersChildren()
     {
-        if(getVar()!=null)
+        if (getVar() != null)
+        {
             return true;
+        }
         else
+        {
             return super.getRendersChildren();
+        }
     }
 
     public void encodeChildren(FacesContext context) throws IOException
@@ -93,7 +101,9 @@ public class TableSuggestAjax extends SuggestAjax
     public Integer getBetweenKeyUp()
     {
         if (_betweenKeyUp != null)
+        {
             return _betweenKeyUp;
+        }
         ValueBinding vb = getValueBinding("delay");
         return vb != null ? (Integer) vb.getValue(getFacesContext()) : null;
     }
@@ -106,7 +116,9 @@ public class TableSuggestAjax extends SuggestAjax
     public Integer getStartRequest()
     {
         if (_startRequest != null)
+        {
             return _startRequest;
+        }
         ValueBinding vb = getValueBinding("startRequest");
         return vb != null ? (Integer) vb.getValue(getFacesContext()) : null;
     }
@@ -166,5 +178,15 @@ public class TableSuggestAjax extends SuggestAjax
     public void setNextPageFieldClass(String nextPageFieldClass)
     {
         _nextPageFieldClass = nextPageFieldClass;
+    }
+
+    public Boolean getAcceptValueToField()
+    {
+        return _acceptValueToField;
+    }
+
+    public void setAcceptValueToField(Boolean acceptValueToField)
+    {
+        _acceptValueToField = acceptValueToField;
     }
 }

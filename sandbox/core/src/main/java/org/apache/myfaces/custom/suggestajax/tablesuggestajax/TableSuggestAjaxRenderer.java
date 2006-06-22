@@ -188,7 +188,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         int betweenKeyUp = 0;
         int startRequest = 0;
         String charset = null;
-        
+
         if (tableSuggestAjax.getBetweenKeyUp()!=null)
             betweenKeyUp = tableSuggestAjax.getBetweenKeyUp().intValue();
         else
@@ -202,14 +202,14 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         if (tableSuggestAjax.getCharset() != null)
             charset = tableSuggestAjax.getCharset();
         else
-            charset = ""; 
+            charset = "";
         
         StringBuffer buf = new StringBuffer();
         String tableSuggestVar = "tableSuggest"+clientId.replace(':','_');
 
         //doing ajax request and handling the response
         buf.append(   "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " +  
-                      betweenKeyUp +", " + startRequest + ", \"" + charset + "\");\n" + 
+                      betweenKeyUp +", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() + ");\n" +
                       "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { "+ tableSuggestVar+".decideRequest(evt); });\n");
         
         //if setting the focus outside the input field, popup should not be displayed

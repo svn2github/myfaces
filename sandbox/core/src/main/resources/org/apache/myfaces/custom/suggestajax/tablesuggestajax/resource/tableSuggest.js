@@ -18,7 +18,8 @@
 org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                            millisBetweenKeyUps,
                                            startChars,
-                                           charset)
+                                           charset,
+                                           acceptValueToField)
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
@@ -34,6 +35,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     this.requestLocker = false;
 
     this.startChars = startChars;
+    this.acceptValueToField = acceptValueToField;
 
     this.lastKeyPressTime = new Date();
     this.millisBetweenKeyUps = millisBetweenKeyUps;
@@ -228,7 +230,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                             if(type == "load" && data)
                             {
                               dojo.debug("response successful");
-			      var tablePagesArray = dojo.html.createNodesFromText(data);
+			                  var tablePagesArray = dojo.html.createNodesFromText(data);
                               var collection = tableSuggest.tablePagesCollection;
 
                               var firstPage = null;
@@ -249,8 +251,8 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                       k++;
 
                                       if(firstPage.rows && firstPage.rows.length == 2) {
-                                         var row = firstPage.rows[1];
-                                         tableSuggest.putValueToField(row);
+                                          if(tableSuggest.acceptValueToField)
+                                            tableSuggest.putValueToField(firstPage.rows[1]);
                                       }
                                   }
                                   else
@@ -272,7 +274,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                               tableSuggest.requestLocker = false;
                             }
                          },
-               mimetype: "text/plain",
+               mimetype: "text/html",
                content: { charset: this.charset }
             });
         }
