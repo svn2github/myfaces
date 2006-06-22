@@ -15,7 +15,7 @@ public class ConversationServletFilter implements Filter
 {
 	public final static String CONVERSATION_FILTER_CALLED = "org.apache.myfaces.conversation.ConversationServletFilter.CALLED";
 
-	private final static ThreadLocal externalContext = new ThreadLocal();  
+	private final static ThreadLocal externalContext = new ThreadLocal();
 
 	public void init(FilterConfig arg0) throws ServletException
 	{
@@ -24,7 +24,7 @@ public class ConversationServletFilter implements Filter
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
 	{
 		ConversationManager conversationManager = null;
-		
+
 		if (!Boolean.TRUE.equals(request.getAttribute(CONVERSATION_FILTER_CALLED)))
 		{
 			if (request instanceof HttpServletRequest)
@@ -37,18 +37,20 @@ public class ConversationServletFilter implements Filter
 					if (conversationManager != null)
 					{
 						externalContext.set(ConversationExternalContext.create(httpRequest));
-						
+
 						conversationManager.attachPersistence();
 					}
 				}
 			}
-			
+
 			request.setAttribute(CONVERSATION_FILTER_CALLED, Boolean.TRUE);
 		}
-		
+
+		boolean ok = false;
 		try
 		{
 			chain.doFilter(request, response);
+			ok = true;
 		}
 		finally
 		{
@@ -56,7 +58,14 @@ public class ConversationServletFilter implements Filter
 			{
 				try
 				{
-					conversationManager.detachPersistence();
+					if (!ok)
+					{
+						conversationManager.purgePersistence();
+					}
+					else
+					{
+						conversationManager.detachPersistence();
+					}
 				}
 				finally
 				{
@@ -69,7 +78,7 @@ public class ConversationServletFilter implements Filter
 	public void destroy()
 	{
 	}
-	
+
 	protected static ConversationExternalContext getConversationExternalContext()
 	{
 		return (ConversationExternalContext) externalContext.get();

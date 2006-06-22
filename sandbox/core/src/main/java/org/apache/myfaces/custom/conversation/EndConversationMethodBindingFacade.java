@@ -87,9 +87,11 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 		}
 		catch (Throwable t)
 		{
+			ConversationManager conversationManager = ConversationManager.getInstance(context);
+			conversationManager.purgePersistence();
+			
 			if (errorOutcome != null)
 			{
-				ConversationManager conversationManager = ConversationManager.getInstance(context);
 				conversationManager.getMessager().setConversationException(context, t);
 
 				returnValue = errorOutcome;

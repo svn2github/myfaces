@@ -31,26 +31,26 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 /**
  * The manager will deal with the various contexts in the current session.
  * A new context will be created if the current window has none associated.
- *  
- * @author imario@apache.org 
+ *
+ * @author imario@apache.org
  */
 public class ConversationManager
 {
 	private final static Log log = LogFactory.getLog(ConversationManager.class);
-	
+
 	public final static String CONVERSATION_CONTEXT_PARAM = "conversationContext";
-	
+
 	private final static String INIT_PERSISTENCE_MANAGER_FACOTRY = "org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY";
 	private final static String INIT_MESSAGER = "org.apache.myfaces.conversation.MESSAGER";
 
 	private final static String CONVERSATION_MANAGER_KEY = "org.apache.myfaces.ConversationManager";
 	private final static String CONVERSATION_CONTEXT_REQ = "org.apache.myfaces.ConversationManager.conversationContext";
-	
-	private static long NEXT_CONVERSATION_CONTEXT = 1;  
+
+	private static long NEXT_CONVERSATION_CONTEXT = 1;
 
 	private PersistenceManagerFactory persistenceManagerFactory;
 	private ConversationMessager conversationMessager;
-	
+
 	private final Map conversationContexts = new HashMap();
 
 	// private final List registeredEndConversations = new ArrayList(10);
@@ -69,7 +69,7 @@ public class ConversationManager
 			while (!isInterrupted())
 			{
 				checkContextTimeout();
-				
+
 				try
 				{
 					Thread.sleep(CHECK_TIME);
@@ -81,8 +81,8 @@ public class ConversationManager
 			}
 		}
 	}
-	private ContextWiperThread wiperThread = new ContextWiperThread(); 
-	
+	private ContextWiperThread wiperThread = new ContextWiperThread();
+
 	protected ConversationManager()
 	{
 		wiperThread.start();
@@ -100,7 +100,7 @@ public class ConversationManager
 		}
 		return getInstance(context);
 	}
-	
+
 	/**
 	 * Get the conversation manager
 	 */
@@ -122,7 +122,7 @@ public class ConversationManager
 			// set mark
 			context.getExternalContext().getSessionMap().put(CONVERSATION_MANAGER_KEY, conversationManager);
 		}
-		
+
 		return conversationManager;
 	}
 
@@ -150,17 +150,17 @@ public class ConversationManager
 		}
 		return (ConversationManager) session.getAttribute(CONVERSATION_MANAGER_KEY);
 	}
-	
+
 	/**
 	 * Get the current, or create a new unique conversationContextId.<br />
 	 * The current conversationContextId will retrieved from the request parameters, if we cant find it there
-	 * a new one will be created. In either case the result will be stored within the request for faster lookup. 
+	 * a new one will be created. In either case the result will be stored within the request for faster lookup.
 	 */
 	protected Long getConversationContextId()
 	{
 		Map requestMap;
 		Map requestParameterMap;
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context != null)
 		{
@@ -194,16 +194,16 @@ public class ConversationManager
 				synchronized (ConversationManager.class)
 				{
 					conversationContextId = new Long(NEXT_CONVERSATION_CONTEXT);
-					NEXT_CONVERSATION_CONTEXT++;					
+					NEXT_CONVERSATION_CONTEXT++;
 				}
 			}
-			
+
 			requestMap.put(CONVERSATION_CONTEXT_REQ, conversationContextId);
 		}
-		
+
 		return conversationContextId;
 	}
-	
+
 	/**
 	 * Get the conversation context for the given id
 	 */
@@ -214,7 +214,7 @@ public class ConversationManager
 			return (ConversationContext) conversationContexts.get(conversationContextId);
 		}
 	}
-	
+
 	/**
 	 * Get the conversation context for the given id. <br />
 	 * If there is no conversation context a new one will be created
@@ -226,10 +226,10 @@ public class ConversationManager
 			ConversationContext conversationContext = (ConversationContext) conversationContexts.get(conversationContextId);
 			if (conversationContext == null)
 			{
-				conversationContext = new ConversationContext(conversationContextId.longValue());			
+				conversationContext = new ConversationContext(conversationContextId.longValue());
 				conversationContexts.put(conversationContextId, conversationContext);
 			}
-			
+
 			return conversationContext;
 		}
 	}
@@ -244,7 +244,7 @@ public class ConversationManager
 			conversationContexts.remove(conversationContextId);
 		}
 	}
-	
+
 	/**
 	 * Start a conversation
 	 * @see ConversationContext#startConversation(String, boolean)
@@ -255,10 +255,10 @@ public class ConversationManager
 		ConversationContext conversationContext = getOrCreateConversationContext(conversationContextId);
 		conversationContext.startConversation(name, persistence);
 	}
-	
+
 	/**
 	 * End a conversation
-	 * @see ConversationContext#endConversation(String) 
+	 * @see ConversationContext#endConversation(String)
 	 */
 	public void endConversation(String name)
 	{
@@ -267,7 +267,7 @@ public class ConversationManager
 		if (conversationContext != null)
 		{
 			conversationContext.endConversation(name);
-			
+
 			if (!conversationContext.hasConversations())
 			{
 				destroyConversationContext(conversationContextId);
@@ -277,8 +277,8 @@ public class ConversationManager
 
 	/**
 	 * Get the conversation with the given name
-	 * 
-	 * @return null if no conversation context is active or if the conversation did not exist. 
+	 *
+	 * @return null if no conversation context is active or if the conversation did not exist.
 	 */
 	public Conversation getConversation(String name)
 	{
@@ -315,7 +315,7 @@ public class ConversationManager
 	}
 
 	/**
-	 * Register the conversation to be ended after the cycle  
+	 * Register the conversation to be ended after the cycle
 	protected void registerEndConversation(String conversationName)
 	{
 		synchronized (registeredEndConversations)
@@ -339,7 +339,7 @@ public class ConversationManager
 	public boolean hasConversationContext()
 	{
 		FacesContext context = FacesContext.getCurrentInstance();
-		
+
 		return
 			(context.getExternalContext().getRequestMap().containsKey(CONVERSATION_CONTEXT_REQ) ||
 			context.getExternalContext().getRequestParameterMap().containsKey(CONVERSATION_CONTEXT_PARAM)) &&
@@ -356,7 +356,7 @@ public class ConversationManager
 		{
 			return null;
 		}
-		
+
 		return conversationContext.getPersistenceManager();
 	}
 
@@ -412,7 +412,7 @@ public class ConversationManager
 	}
 
 	/**
-	 * Get the persistenceManagerFactory.<br /> 
+	 * Get the persistenceManagerFactory.<br />
 	 * The factory can be configured in your web.xml using the init parameter named
 	 * <code>org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY</code>
 	 */
@@ -454,7 +454,7 @@ public class ConversationManager
 			conversationContext.attachPersistence();
 		}
 	}
-	
+
 	protected void detachPersistence()
 	{
 		ConversationContext conversationContext = getConversationContext();
@@ -463,14 +463,23 @@ public class ConversationManager
 			conversationContext.detachPersistence();
 		}
 	}
-	
+
+	protected void purgePersistence()
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext != null)
+		{
+			conversationContext.purgePersistence();
+		}
+	}
+
 	protected void checkContextTimeout()
 	{
 		synchronized (conversationContexts)
 		{
 			long timeToLive = 30 * 60 * 1000;
 			long checkTime = System.currentTimeMillis();
-			
+
 			Iterator iterContexts = conversationContexts.values().iterator();
 			while (iterContexts.hasNext())
 			{

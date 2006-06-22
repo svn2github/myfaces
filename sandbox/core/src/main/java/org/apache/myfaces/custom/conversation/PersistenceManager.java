@@ -16,7 +16,7 @@
 package org.apache.myfaces.custom.conversation;
 
 /**
- * the interface to help the conversation framework to deal with your persistence manager (EntityManager) 
+ * the interface to help the conversation framework to deal with your persistence manager (EntityManager)
  * 
  * @author imario@apache.org
  */
@@ -26,19 +26,24 @@ public interface PersistenceManager
 	 * commit the transaction
 	 */
 	public void commit();
-	
+
 	/**
 	 * rollback the transaction
 	 */
 	public void rollback();
-	
+
 	/**
 	 * attach to your underlaying persistence
 	 */
 	public void attach();
-	
+
 	/**
 	 * detach from your underlaying persistence
 	 */
 	public void detach();
+
+	/**
+	 * purge this persistence manager - e.g. throw away your session due to some exceptions
+	 */
+	void purge();
 }

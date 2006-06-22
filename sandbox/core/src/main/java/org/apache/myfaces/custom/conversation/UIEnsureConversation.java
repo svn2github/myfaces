@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.conversation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.redirectTracker.RedirectTrackerManager;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -89,9 +90,16 @@ public class UIEnsureConversation extends AbstractConversationComponent
 
 			String actionUrl = context.getApplication().getViewHandler().getActionURL(
 						context, getRedirectTo());
+			String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
 
-			context.getExternalContext().redirect(
-				context.getExternalContext().encodeActionURL(actionUrl));
+			/* this is bad - but I have no clue now what to do else now ==>
+			The best will be to decorate the ExternalContext, but I see no way how to do it
+			*/
+			// RedirectTrackerManager manager = RedirectTrackerManager.getInstance(context);
+			// encodedActionUrl = manager.trackRedirect(context, encodedActionUrl);
+			/* <== */
+
+			context.getExternalContext().redirect(encodedActionUrl);
 
 			return;
 		}

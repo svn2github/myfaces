@@ -25,23 +25,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * The ConversationContext handles all conversations within the current context 
- *  
- * @author imario@apache.org 
+ * The ConversationContext handles all conversations within the current context
+ *
+ * @author imario@apache.org
  */
 public class ConversationContext
 {
 	private final static Log log = LogFactory.getLog(ConversationContext.class);
-	
+
 	private final long id;
-	
+
 	private final Object mutex = new Object();
 	private final Map conversations = new TreeMap();
 	private final List conversationStack = new ArrayList(10);
 	private Conversation currentConversation;
-	
+
 	private long lastAccess;
-	
+
 	protected ConversationContext(long id)
 	{
 		this.id = id;
@@ -52,7 +52,7 @@ public class ConversationContext
 	{
 		lastAccess = System.currentTimeMillis();
 	}
-	
+
 	public long getLastAccess()
 	{
 		return lastAccess;
@@ -68,15 +68,15 @@ public class ConversationContext
 				Conversation conversation = (Conversation) iterConversation.next();
 				conversation.endConversation(false);
 			}
-			
+
 			conversations.clear();
-			conversationStack.clear();			
+			conversationStack.clear();
 		}
 	}
-	
+
 	/**
 	 * Start a conversation if not already started.<br />
-	 * All nested conversations (if any) are closed if the conversation already existed.  
+	 * All nested conversations (if any) are closed if the conversation already existed.
 	 * @param name
 	 */
 	public void startConversation(String name, boolean persistence)
@@ -100,7 +100,7 @@ public class ConversationContext
 	}
 
 	/**
-	 * Ends all conversations nested under conversation 
+	 * Ends all conversations nested under conversation
 	 */
 	protected void endNestedConversations(Conversation conversation, boolean regularEnd)
 	{
@@ -115,7 +115,7 @@ public class ConversationContext
 				{
 					return;
 				}
-	
+
 				endConversation((Conversation) conversationStack.remove(index), regularEnd);
 			}
 		}
@@ -133,7 +133,7 @@ public class ConversationContext
 			conversations.remove(conversation.getName());
 		}
 	}
-	
+
 	/**
 	 * End the conversation with given name.<br />
 	 * This also automatically closes all nested conversations.
@@ -163,7 +163,7 @@ public class ConversationContext
 			}
 		}
 	}
-	
+
 	/**
 	 * Get the current conversation. The current conversation is the one last seen by the startConversation tag.
 	 */
@@ -198,7 +198,7 @@ public class ConversationContext
 	}
 
 	/**
-	 * get a conversation by name 
+	 * get a conversation by name
 	 */
 	public Conversation getConversation(String name)
 	{
@@ -210,11 +210,11 @@ public class ConversationContext
 	}
 
 	/**
-	 * inject all beans from the conversation context to their configured scope 
+	 * inject all beans from the conversation context to their configured scope
 	protected void injectConversationBeans(FacesContext context)
 	{
 		Set alreadyAdded = new TreeSet(new ValueBindingKey());
-		
+
 		for (int i = conversationStack.size(); i>0; i--)
 		{
 			Conversation conversation = (Conversation) conversationStack.get(i-1);
@@ -247,7 +247,7 @@ public class ConversationContext
 					return conversation.getBean(name);
 				}
 			}
-			
+
 			return null;
 		}
 	}
@@ -268,7 +268,7 @@ public class ConversationContext
 					return conversation.getPersistenceManager();
 				}
 			}
-			
+
 			return null;
 		}
 	}
@@ -287,6 +287,25 @@ public class ConversationContext
 				if (conversation.isPersistence())
 				{
 					conversation.getPersistenceManager().detach();
+				}
+			}
+		}
+	}
+
+	/**
+	 * detach all conversations from their underlaying persistence
+	 */
+	public void purgePersistence()
+	{
+		synchronized (mutex)
+		{
+			touch();
+			for (int i = conversationStack.size(); i>0; i--)
+			{
+				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					conversation.getPersistenceManager().purge();
 				}
 			}
 		}
