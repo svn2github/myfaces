@@ -405,6 +405,10 @@
     <faces-context-factory>org.apache.myfaces.custom.redirectTracker.RedirectTrackerFacesContextFactory</faces-context-factory>
   </factory>
 
+  <application>
+    <variable-resolver>org.apache.myfaces.custom.redirectTracker.RedirectTrackerVariableResolver</variable-resolver>
+  </application>
+
   <!--custom validators -->
   <validator>
       <validator-id>org.apache.myfaces.validator.Url</validator-id>

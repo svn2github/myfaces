@@ -9,7 +9,15 @@
 <body>
     <f:view>
 
-		Damn cool, isnt it?
+		<h:panelGrid columns="1">
+
+			<h:outputText value="Your input:" />
+
+			<h:outputText value="#{requestTrackerRedirectBean.input}" />
+
+			<h:outputText value="Damn cool, isnt it?" />
+
+		</h:panelGrid>
 
 		<f:verbatim><hr /></f:verbatim>
 

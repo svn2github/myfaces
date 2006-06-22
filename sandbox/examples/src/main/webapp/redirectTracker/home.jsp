@@ -10,10 +10,16 @@
     <f:view>
 		<h:form>
 
-			Press the button to issue a redirect navigation request and see how the messages will survive.
+			<h:panelGrid columns="1" >
+				<h:outputText value="Please enter something - this will be put into the REQUEST bean" />
 
-			<h:commandButton value="Press Me" action="#{requestTrackerRedirectBean.redirectAction}" />
-			
+				<h:inputText value="#{requestTrackerRedirectBean.input}" />
+
+				<h:outputText value="Press the button to issue a redirect navigation request and see how the messages and the data will survive." />
+
+				<h:commandButton value="Press Me" action="#{requestTrackerRedirectBean.redirectAction}" />
+			</h:panelGrid>
+
 		</h:form>
 	</f:view>
 </body>
