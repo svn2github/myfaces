@@ -28,7 +28,7 @@ components.
         <tr>
           <td colspan="1" rowspan="1">component-family</td>
 
-          <td colspan="1" rowspan="1">javax.faces.Form</td>
+          <td colspan="1" rowspan="1">org.apache.myfaces.SubForm</td>
         </tr>
 
         <tr>
@@ -68,7 +68,8 @@ components.
        <h:inputText value="#{bean.value}" />
    </s:subForm>
    <t:commandButton value="Submit subForm" actionFor="subFormId"/>
-</h:form>]]></source>Submit from inside the subForm:<source xml:space="preserve"><![CDATA[<h:form> 
+</h:form>]]></source>Submit from inside the subForm:<source
+    xml:space="preserve"><![CDATA[<h:form> 
    <s:subForm id="subFormId"> 
        <h:inputText value="#{bean.value}" />
        <t:commandButton value="Submit subForm"/> 
