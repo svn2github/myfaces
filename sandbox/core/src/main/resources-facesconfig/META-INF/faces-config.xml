@@ -401,12 +401,9 @@
 	  <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
   </lifecycle>
 
-  <factory>
-    <faces-context-factory>org.apache.myfaces.custom.redirectTracker.RedirectTrackerFacesContextFactory</faces-context-factory>
-  </factory>
-
   <application>
     <variable-resolver>org.apache.myfaces.custom.redirectTracker.RedirectTrackerVariableResolver</variable-resolver>
+	<navigation-handler>org.apache.myfaces.custom.redirectTracker.RedirectTrackerNavigationHandler</navigation-handler>
   </application>
 
   <!--custom validators -->
