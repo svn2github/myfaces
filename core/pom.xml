@@ -88,6 +88,13 @@
           <scope>compile</scope>
       </dependency>
 
+      <dependency>
+          <groupId>jstl</groupId>
+          <artifactId>jstl</artifactId>
+          <version>1.1.0</version>
+          <scope>compile</scope>
+      </dependency>
+
     <!-- provided dependencies -->
 
     <dependency>
