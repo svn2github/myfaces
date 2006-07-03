@@ -30,8 +30,6 @@ import javax.faces.component.html.HtmlCommandLink;
  */
 public class UITreeDataTest extends AbstractTreeTestCase
 {
-    private NodeSimulator nodeSim;
-
     /**
      * Constructor
      * @param name String
@@ -166,6 +164,18 @@ public class UITreeDataTest extends AbstractTreeTestCase
 
         tree.setNodeId("0:1:0");
         assertFalse("Node O:1:0 should not be expanded", tree.isNodeExpanded());
+    }
+
+    /**
+     * Its possible that a facet will be empty on the decode if it contained only EL text.
+     * So its wrong to throw an exception when this is the case.  (See TOMAHAWK-510)
+     *
+     * @throws Exception
+     */
+    public void testEmptyFacet() throws Exception
+    {
+        tree.processDecodes(facesContext);
+
     }
 
     public static Test suite()

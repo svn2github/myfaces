@@ -37,6 +37,9 @@ import javax.faces.event.PhaseId;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * TreeData is a {@link UIComponent} that supports binding data stored in a tree represented
  * by a {@link TreeNode} instance.  During iterative processing over the tree nodes in the
@@ -50,6 +53,7 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
  */
 public class UITreeData extends UIComponentBase implements NamingContainer
 {
+    private Log log = LogFactory.getLog(UITreeData.class);
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Tree2";
     public static final String COMPONENT_FAMILY = "org.apache.myfaces.HtmlTree2";
@@ -493,7 +497,9 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
             if (facet == null)
             {
-                throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
+                log.warn("Unable to locate facet with the name: " + node.getType());
+                continue;
+                //throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
             }
 
             switch (processAction)
