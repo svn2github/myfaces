@@ -139,12 +139,12 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
-            <version>1.1.4-SNAPSHOT</version>
+            <version>1.1.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
-            <version>1.1.4-SNAPSHOT</version>
+            <version>1.1.5-SNAPSHOT</version>
             <!-- Sandbox must only have runtime dependency to myfaces-impl
             so that it will be automatically added to binary. But there must not be
             any compile dependency on impl so that is is always possible to use
