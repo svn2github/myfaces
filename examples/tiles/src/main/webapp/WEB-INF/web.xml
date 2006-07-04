@@ -76,7 +76,7 @@
     		state saving.  See MyFaces wiki/web site documentation for instructions
     		on how to configure an application for diffenent encryption strengths.
     	</description>
-        <param-name>org.apache.myfaces.secret</param-name>
+        <param-name>org.apache.myfaces.SECRET</param-name>
         <param-value>NzY1NDMyMTA=</param-value>
     </context-param>
   
@@ -84,7 +84,7 @@
   		<description>
   			Validate managed beans and navigation rules.
   		</description>
-       	<param-name>org.apache.myfaces.validate</param-name>
+       	<param-name>org.apache.myfaces.VALIDATE</param-name>
        	<param-value>true</param-value>
     </context-param>  
   
