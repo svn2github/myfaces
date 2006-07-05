@@ -95,14 +95,8 @@ class HtmlNavigationMenuRendererUtils {
                     }
                 }
                 else {
-                    //there is an external link value and display value exists, so, render it as an output link and ignore
-                    //the children
-                    writer.startElement(HTML.ANCHOR_ELEM, null);
-                    writer.writeAttribute(HTML.HREF_ATTR, externalLink, null);
-                    if (navItem.getTarget() != null)
-                        writer.writeAttribute(HTML.TARGET_ATTR, navItem.getTarget(), null);
-                    writer.writeText(value, JSFAttr.VALUE_ATTR);
-                    writer.endElement(HTML.ANCHOR_ELEM);
+                    //there is an external link value and display value exists, so, just render its children
+                    renderChildren(facesContext, navItem, panelNav);
                 }
 
                 if (hasCommandNavigationItemChildren(navItem)) {

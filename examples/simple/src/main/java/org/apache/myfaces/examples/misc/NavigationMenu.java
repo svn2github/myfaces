@@ -82,7 +82,7 @@ public class NavigationMenu {
         // Contact
         menu.add(getMenuNaviagtionItem("#{example_messages['panelnav_contact']}", "#{navigationMenu.getAction2}"));
         // External Link
-        item = getMenuNaviagtionItem("External Link", null);
+        item = getMenuNaviagtionItem("#{example_messages['panelnav_contact']}", null);
         item.setExternalLink("#{example_messages['external_link']}");
         item.setTarget("_blank");
         menu.add(item);

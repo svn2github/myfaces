@@ -281,6 +281,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
             }
             uiNavigationMenuItem.setIcon(navigationMenuItem.getIcon());
             uiNavigationMenuItem.setRendered(navigationMenuItem.isRendered());
+            uiNavigationMenuItem.setActiveOnViewIds(navigationMenuItem.getActiveOnViewIds());
             uiNavigationMenuItem.setSplit(navigationMenuItem.isSplit());
             uiNavigationMenuItem.setItemLabel(navigationMenuItem.getLabel());
             uiNavigationMenuItem.setOpen(navigationMenuItem.isOpen());
@@ -355,6 +356,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
             newItem.setRendered(uiNavMenuItem.isRendered());
         if (!copyValueBinding(uiNavMenuItem, newItem, "externalLink"))
             newItem.setExternalLink(uiNavMenuItem.getExternalLink());
+        if (!copyValueBinding(uiNavMenuItem, newItem, "activeOnViewIds"))
+            newItem.setActiveOnViewIds(uiNavMenuItem.getActiveOnViewIds());
 
         if (uiNavMenuItem.isOpen() && ! menu.isExpandAll())
             newItem.toggleOpen();

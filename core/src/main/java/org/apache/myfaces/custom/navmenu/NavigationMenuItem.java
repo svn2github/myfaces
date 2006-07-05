@@ -41,6 +41,7 @@ public class NavigationMenuItem extends SelectItem {
     private String _disabledStyle;
     private String _disabledStyleClass;
     private String _externalLink;
+    private String _activeOnViewIds;
 
     public NavigationMenuItem(String label, String action) {
         super(label, label);
@@ -96,6 +97,14 @@ public class NavigationMenuItem extends SelectItem {
 
     public boolean isRendered() {
         return rendered;
+    }
+
+    public String getActiveOnViewIds() {
+        return _activeOnViewIds;
+    }
+
+    public void setActiveOnViewIds(String activeOnViewIds) {
+        _activeOnViewIds = activeOnViewIds;
     }
 
 
