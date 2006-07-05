@@ -50,8 +50,8 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     private static final Log log = LogFactory.getLog(TableSuggestAjaxRenderer.class);
 
     public static final int DEFAULT_START_REQUEST = 0;
-    public static final int DEFAULT_BETWEEN_KEY_UP = 200;
-
+    public static final int DEFAULT_BETWEEN_KEY_UP = 1000;
+    
    /**
      * Encodes any stand-alone javascript functions that are needed.
      * Uses either the extension filter, or a
@@ -208,13 +208,13 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String tableSuggestVar = "tableSuggest"+clientId.replace(':','_');
 
         //doing ajax request and handling the response
-        buf.append(   "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " +  
-                      betweenKeyUp +", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() + ");\n" +
-                      "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { "+ tableSuggestVar+".decideRequest(evt); });\n");
-        
+        buf.append( "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " 
+                   + betweenKeyUp + ", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() + ");\n" 
+                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { " 
+                   + tableSuggestVar + ".decideRequest(evt); });\n");
+
         //if setting the focus outside the input field, popup should not be displayed
-        buf.append("dojo.event.connect(document, \"onclick\", function(evt) { "+tableSuggestVar+".resetSettings(); });\n");
-        
+        buf.append("dojo.event.connect(document, \"onclick\", function(evt) { " + tableSuggestVar + ".resetSettings(); });\n");
         return buf;
     }
 
@@ -380,7 +380,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                             bodyContent.append("<td> <span ");
                             if(htmlOutputText.getFor()!=null)
                                 bodyContent.append("id=\"putValueTo"+RendererUtils.getClientId(context, tableSuggestAjax, htmlOutputText.getFor()) + "\"");
-
+                                
                             bodyContent.append(">" + htmlOutputText.getLabel() + "</span>");
                             if (htmlOutputText.getValue()!=null)
                             {
@@ -454,4 +454,5 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     }
 
 }
+
 

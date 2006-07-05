@@ -24,6 +24,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
     this.inputField = null;
+
     this.popUp = null;
     this.url = ajaxUrl;
     this.charset = charset;
@@ -31,15 +32,12 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     this.actualHighlightedElem = null;
 
     this.iframe = null;
-
-    this.requestLocker = false;
+    this.timeOut = null;
 
     this.startChars = startChars;
     this.acceptValueToField = acceptValueToField;
-
     this.lastKeyPressTime = new Date();
     this.millisBetweenKeyUps = millisBetweenKeyUps;
-
     this.scrollingRow = 0;
 
     //puting the values from the choosen row into the fields
@@ -129,156 +127,163 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         }
     };
 
-    org_apache_myfaces_TableSuggest.prototype.handleRequestResponse = function(event)
+    org_apache_myfaces_TableSuggest.prototype.handleRequestResponse = function(tableSuggest)
     {
-        var tableSuggest = this;
-
-        if(event.keyCode == 40)  //down key
+        
+        if (this.timeOut != null) 
         {
-            if(!this.firstHighlightedElem)
-            {
-                var firstOptionElem = this.getFirstRowElem(this.popUp);
-                this.putValueToField(firstOptionElem);
-                this.addHoverClass(firstOptionElem);
-                this.firstHighlightedElem = firstOptionElem;
-                this.actualHighlightedElem = firstOptionElem;
-            }
-            else
-            {
-                var nextElem = dojo.dom.nextElement(this.actualHighlightedElem);
+            clearTimeout(this.timeOut);
+            this.timeOut = null;
+        }
+        
+        var idValuePair = "&" + this.inputField.id + "=" + this.inputField.value;
 
-                if(nextElem)
-                {
-                    if(dojo.dom.getTagName(nextElem) == "tr")
-                    {
-                        this.putValueToField(nextElem);
-                        this.addOutClass(this.actualHighlightedElem);
-                        this.addHoverClass(nextElem);
-                        this.actualHighlightedElem = nextElem
-                    }
-                }
-                else
-                {
-                    var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
-                    var pageField = dojo.dom.nextElement(table);
+        this.timeOut = setTimeout(function() {
+        
+            this.firstHighlightedElem = null;
+            this.actualHighlightedElem = null;
 
-                    if(pageField)
+            dojo.io.bind(
+            {
+                url:  tableSuggest.url + idValuePair,
+                handle: function(type, data, evt) {
+                
+                    dojo.debug("after response");
+                    //if(data) dojo.debug(data);
+                    
+                    if(type == "load" && data)
                     {
-                        if(dojo.dom.getTagName(pageField) == "div")
+                        dojo.debug("response successful");
+                        var tablePagesArray = dojo.html.createNodesFromText(data);
+                        var collection = tableSuggest.tablePagesCollection;
+
+                        var firstPage = null;
+                        var firstPageField = null;
+
+                        dojo.dom.removeChildren(tableSuggest.popUp);
+
+                        collection.clear();
+
+                        for(k=0;k<tablePagesArray.length;k++)
                         {
-                            this.nextPage(pageField);
-                            this.firstHighlightedElem = this.getFirstRowElem(this.popUp);
-                            this.putValueToField(this.firstHighlightedElem);
-                            this.addOutClass(this.actualHighlightedElem);
-                            this.addHoverClass(this.firstHighlightedElem);
-                            this.actualHighlightedElem = this.firstHighlightedElem;
+                            if(k==0)
+                            {
+                                firstPage = tablePagesArray[k];
+                                firstPageField = tablePagesArray[k+1];
+                                dojo.dom.insertAtPosition(firstPage, tableSuggest.popUp, "first");
+                                dojo.dom.insertAtPosition(firstPageField, tableSuggest.popUp, "last");
+                                k++;
+					
+                                if(firstPage.rows && firstPage.rows.length == 2) 
+                                {
+                                    var row = firstPage.rows[1];
+                                    tableSuggest.putValueToField(row);
+                                }
+                            }
+                            else
+                            {
+                                collection.add(tablePagesArray[k]);
+                            }
                         }
+
+                        tableSuggest.handleIFrame();
+                    }   
+                    else if(type == "error")
+                    {
+                        dojo.debug("error during response");
+                        //dojo.debug(data);
+                        // here, data is our error object
                     }
-                    else
-                        dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
-                }
+                },   //end function
+                mimetype: "text/plain",
+                content: { charset: tableSuggest.charset }
+            }); //end bind
+            
+        }, this.millisBetweenKeyUps);
+    };
+    
+    //handles the user pressing the 'Up-Arrow' key
+    org_apache_myfaces_TableSuggest.prototype.handleUpKey = function()
+    {
+        var prevElem = dojo.dom.prevElement(this.actualHighlightedElem);
+
+        if(prevElem)
+        {
+            if(dojo.dom.getTagName(prevElem) == "tr")
+            {
+                this.putValueToField(prevElem);
+                this.addOutClass(this.actualHighlightedElem);
+                this.addHoverClass(prevElem);
+                this.actualHighlightedElem = prevElem;
             }
         }
-        else if(event.keyCode == 38)  //up key
+        else
         {
-            var prevElem = dojo.dom.prevElement(this.actualHighlightedElem);
+            var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
 
-            if(prevElem)
+            if(table)
             {
-                if(dojo.dom.getTagName(prevElem) == "tr")
+                this.previousPage(table);
+                this.addOutClass(this.actualHighlightedElem);
+                this.actualHighlightedElem = this.getLastRowElem(this.popUp);
+                this.putValueToField(this.actualHighlightedElem);
+                this.addHoverClass(this.actualHighlightedElem);
+            }
+            else
+                dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
+            }
+        }	
+    }
+    
+    
+    //handles the user pressing the 'Down Arrow' key
+    org_apache_myfaces_TableSuggest.prototype.handleDownKey = function()
+    {
+        if(!this.firstHighlightedElem)
+        {
+            var firstOptionElem = this.getFirstRowElem(this.popUp);
+            this.putValueToField(firstOptionElem);
+            this.addHoverClass(firstOptionElem);
+            this.firstHighlightedElem = firstOptionElem;
+            this.actualHighlightedElem = firstOptionElem;
+        }
+        else
+        {
+            var nextElem = dojo.dom.nextElement(this.actualHighlightedElem);
+
+            if(nextElem)
+            {
+                if(dojo.dom.getTagName(nextElem) == "tr")
                 {
-                    this.putValueToField(prevElem);
+                    this.putValueToField(nextElem);
                     this.addOutClass(this.actualHighlightedElem);
-                    this.addHoverClass(prevElem);
-                    this.actualHighlightedElem = prevElem;
+                    this.addHoverClass(nextElem);
+                    this.actualHighlightedElem = nextElem
                 }
             }
             else
             {
                 var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
+                var pageField = dojo.dom.nextElement(table);
 
-                if(table)
+                if(pageField)
                 {
-                    this.previousPage(table);
-                    this.addOutClass(this.actualHighlightedElem);
-                    this.actualHighlightedElem = this.getLastRowElem(this.popUp);
-                    this.putValueToField(this.actualHighlightedElem);
-                    this.addHoverClass(this.actualHighlightedElem);
+                    if(dojo.dom.getTagName(pageField) == "div")
+                    {
+                        this.nextPage(pageField);
+                        this.firstHighlightedElem = this.getFirstRowElem(this.popUp);
+                        this.putValueToField(this.firstHighlightedElem);
+                        this.addOutClass(this.actualHighlightedElem);
+                        this.addHoverClass(this.firstHighlightedElem);
+                        this.actualHighlightedElem = this.firstHighlightedElem;
+                    }
                 }
                 else
                     dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
             }
         }
-        else if( !this.requestLocker && this.requestBetweenKeyUpEvents() )
-        {
-            this.requestLocker = true;
-            dojo.debug("taking lock, starting AJAX request");
-
-            var idValuePair = "&" + this.inputField.id + "=" + this.inputField.value;
-
-            this.firstHighlightedElem = null;
-            this.actualHighlightedElem = null;
-
-            dojo.io.bind
-            ({
-               url:  this.url + idValuePair,
-               handle: function(type, data, evt)
-                       {
-                            dojo.debug("after response");
-                            //if(data) dojo.debug(data);
-
-                            if(type == "load" && data)
-                            {
-                              dojo.debug("response successful");
-			                  var tablePagesArray = dojo.html.createNodesFromText(data);
-                              var collection = tableSuggest.tablePagesCollection;
-
-                              var firstPage = null;
-                              var firstPageField = null;
-
-                              dojo.dom.removeChildren(tableSuggest.popUp);
-
-                              collection.clear();
-
-                              for(k=0;k<tablePagesArray.length;k++)
-                              {
-                                  if(k==0)
-                                  {
-                                      firstPage = tablePagesArray[k];
-                                      firstPageField = tablePagesArray[k+1];
-                                      dojo.dom.insertAtPosition(firstPage, tableSuggest.popUp, "first");
-                                      dojo.dom.insertAtPosition(firstPageField, tableSuggest.popUp, "last");
-                                      k++;
-
-                                      if(firstPage.rows && firstPage.rows.length == 2) {
-                                          if(tableSuggest.acceptValueToField)
-                                            tableSuggest.putValueToField(firstPage.rows[1]);
-                                      }
-                                  }
-                                  else
-                                  {
-                                      collection.add(tablePagesArray[k]);
-                                  }
-                              }
-
-                              tableSuggest.handleIFrame();
-
-                              dojo.debug("releasing lock");
-                              tableSuggest.requestLocker = false;
-                            }
-                            else if(type == "error")
-                            {
-                              dojo.debug("error during response");
-                              //dojo.debug(data);
-                              // here, data is our error object
-                              tableSuggest.requestLocker = false;
-                            }
-                         },
-               mimetype: "text/html",
-               content: { charset: this.charset }
-            });
-        }
-    };
+    } 
+    
 
     org_apache_myfaces_TableSuggest.prototype.nextPage = function(thisPageField)
     {
@@ -362,11 +367,11 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         dojo.html.addClass(elem,"tableSuggestOut");
     };
 
-    org_apache_myfaces_TableSuggest.prototype.requestBetweenKeyUpEvents = function()
+    org_apache_myfaces_TableSuggest.prototype.requestBetweenKeyUpEvents = function(millisBetweenKeyPress)
     {
         var currentTime = new Date();
 
-        if( (currentTime - this.lastKeyPressTime) > this.millisBetweenKeyUps)
+        if( (currentTime - this.lastKeyPressTime) > millisBetweenKeyPress)
         {
             dojo.debug(currentTime - this.lastKeyPressTime);
             this.lastKeyPressTime = currentTime;
@@ -413,10 +418,27 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         }
     };
 
+    org_apache_myfaces_TableSuggest.prototype.lastKeyUpEvent = function()
+    {
+        //dojo.lang.setTimeout('',4000);
+        var currentTime = new Date();
+        dojo.debug("last keyUpEvent?");
+        dojo.debug(currentTime - this.lastKeyPressTime);
+        if( (currentTime - this.lastKeyPressTime) > 250)
+        {
+            dojo.debug("was last keyUpEvent");
+            return true;
+        }
+        else return false;
+    };
+
     org_apache_myfaces_TableSuggest.prototype.resetSettings = function()
     {
         if(this.popUp)
+        {
             dojo.dom.removeChildren(this.popUp);
+            this.popUp.style.cssText = "";
+        }
 
         if(this.iframe && this.popUp)
             this.popUp.parentNode.removeChild(this.popUp.parentNode.childNodes[0])
@@ -430,29 +452,42 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
     org_apache_myfaces_TableSuggest.prototype.decideRequest = function(event)
     {
-        if( (event.keyCode == 13) || (event.keyCode == 9) ) //enter,tab
-             this.resetSettings();
-        else
-        {
-            this.inputField = dojo.byId(event.target.id);
-            this.popUp = dojo.byId(event.target.id+"_auto_complete");
-
-            var inputValue = event.target.value;
-
-            if(this.startChars)
-            {
-                if(inputValue.length >= this.startChars)
-                    this.handleRequestResponse(event);
-                else
-                    this.resetSettings();
-            }
-            else if(inputValue != "" )
-                this.handleRequestResponse(event);
-
-            if(inputValue == "" )
-                this.resetSettings();
+        this.inputField = dojo.byId(event.target.id);
+        this.popUp = dojo.byId(event.target.id + "_auto_complete");
+        
+        var inputValue = this.inputField.value;
+        	
+        if( (event.keyCode == 13) || (event.keyCode == 9) ) //enter, tab keys
+        {             
+            this.resetSettings();
+            return;
         }
-        dojo.debug("leaving decide function");
+			
+	if(inputValue == "" )
+	{
+            this.resetSettings();
+            return;
+        }
+		
+        if (this.startChars) //minimum # of characters required before look-up is activated
+        {
+            if (inputValue.length < this.startChars)
+            {
+                this.resetSettings();
+                return;
+            }
+        }
+            
+        switch (event.keyCode) 
+        {
+            case 40:    //down key
+                this.handleDownKey();
+                break;
+            case 30:    //up key    
+                this.handleUpKey();
+                break;
+            default: 
+                this.handleRequestResponse(this);
+        }
     };
 
-}
