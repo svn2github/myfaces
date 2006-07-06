@@ -49,7 +49,7 @@ Requirements and Setup
 	[]
 
 	* Add the following to your JSP page in order to use one of the MyFaces custom components:\
-	<<<\<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"\>>>>
+	<<<\<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %\>>>>
 
 	[]
 
