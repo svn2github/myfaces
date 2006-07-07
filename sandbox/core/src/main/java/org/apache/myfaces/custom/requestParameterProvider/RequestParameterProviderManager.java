@@ -3,6 +3,9 @@ package org.apache.myfaces.custom.requestParameterProvider;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 import javax.faces.context.FacesContext;
 
@@ -13,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Thomas Obereder
  * @version 27.04.2006 22:42:32
  */
-public class RequestParameterProviderManager
+public class RequestParameterProviderManager implements Serializable
 {
     private static final Log LOG = LogFactory.getLog(RequestParameterProviderManager.class);
 
@@ -80,7 +83,7 @@ public class RequestParameterProviderManager
     		{
     			throw new IllegalStateException("RequestParameterServletFilter not called. Please configure the filter " + RequestParameterServletFilter.class.getName() + " in your web.xml to cover your faces requests.");
     		}
-    		
+
         StringBuffer sb = new StringBuffer();
         if(url == null)
         {
@@ -102,7 +105,7 @@ public class RequestParameterProviderManager
             for (int i = 0; i < fields.length; i++)
             {
             	nuofParams++;
-            	
+
                 sb.append(nuofParams == 0 ? firstSeparator : PARAMETER_SEP);
                 sb.append(fields[i]);
                 sb.append("=");
@@ -121,7 +124,7 @@ public class RequestParameterProviderManager
     {
         return this.providers != null && !this.providers.isEmpty();
     }
-    
+
     public boolean isFilterCalled()
     {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -129,7 +132,24 @@ public class RequestParameterProviderManager
         {
             throw new IllegalStateException("no faces context available!");
         }
-        
+
         return Boolean.TRUE.equals(context.getExternalContext().getRequestMap().get(RequestParameterServletFilter.REQUEST_PARAM_FILTER_CALLED));
     }
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException
+	{
+		// the conversation manager is not (yet) serializable, we just implement it
+		// to make it work with distributed sessions
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		// nothing written, so nothing to read
+	}
+
+	private Object readResolve() throws ObjectStreamException
+	{
+		// do not return a real object, that way on first request a new manager will be created
+		return null;
+	}
 }
