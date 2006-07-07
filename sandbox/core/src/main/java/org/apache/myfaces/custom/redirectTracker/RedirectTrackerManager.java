@@ -21,18 +21,19 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Locale;
 
 /**
  * The redirect tracker maintains a list/map of data needed to restore the myfaces
  * system after a navigation redirect
  */
-public class RedirectTrackerManager
+public class RedirectTrackerManager implements Serializable
 {
 	private final static Log log = LogFactory.getLog(RedirectTrackerManager.class);
 
@@ -47,7 +48,7 @@ public class RedirectTrackerManager
 
 	private long requests = 0;
 
-	private static class Entry
+	private static class Entry implements Serializable
 	{
 		private final String mapKey;
 		private List messages;
@@ -86,7 +87,7 @@ public class RedirectTrackerManager
 		}
 	}
 
-	private static class MessageEntry
+	private static class MessageEntry implements Serializable
 	{
 		private final Object clientId;
 		private final Object message;
