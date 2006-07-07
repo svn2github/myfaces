@@ -18,6 +18,9 @@ package org.apache.myfaces.custom.conversation;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectStreamException;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -34,7 +37,7 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  *
  * @author imario@apache.org
  */
-public class ConversationManager
+public class ConversationManager implements Serializable
 {
 	private final static Log log = LogFactory.getLog(ConversationManager.class);
 
@@ -495,5 +498,22 @@ public class ConversationManager
 				}
 			}
 		}
+	}
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException
+	{
+		// the conversation manager is not (yet) serializable, we just implement it
+		// to make it work with distributed sessions
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		// nothing written, so nothing to read
+	}
+
+	private Object readResolve() throws ObjectStreamException
+	{
+		// do not return a real object, that way on first request a new conversation manager will be created
+		return null;
 	}
 }
