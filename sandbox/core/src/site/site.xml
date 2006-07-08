@@ -21,7 +21,7 @@
       <item name="Impl" href="../impl/index.html"/>
       <item name="Tomahawk" href="../tomahawk/index.html"/>
       <item name="Sandbox" href="index.html"/>
-      <item name="Tobago" href="http://myfaces.apache.org/tobago"/>
+      <item name="Tobago" href="../tobago/index.html"/>
     </links>
 
     <menu name="MyFaces Projects">
