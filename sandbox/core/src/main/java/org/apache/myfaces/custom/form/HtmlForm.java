@@ -15,6 +15,8 @@
  */
 package org.apache.myfaces.custom.form;
 
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -30,10 +32,23 @@ public class HtmlForm extends javax.faces.component.html.HtmlForm
     private String _scheme;
     private String _serverName;
     private Integer _port;
+    private String _action;
+    private String _method;
 
     public HtmlForm()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
+    }
+
+    public String getClientId(FacesContext context)
+    {
+        String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
+        if (clientId == null)
+        {
+            clientId = super.getClientId(context);
+        }
+
+        return clientId;
     }
 
     /**
@@ -41,11 +56,13 @@ public class HtmlForm extends javax.faces.component.html.HtmlForm
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[4];
+        Object[] values = new Object[6];
         values[0] = super.saveState(context);
         values[1] = _scheme;
         values[2] = _serverName;
         values[3] = _port;
+        values[4] = _action;
+        values[5] = _method;
         return values;
     }
 
@@ -59,12 +76,14 @@ public class HtmlForm extends javax.faces.component.html.HtmlForm
         _scheme = (String) values[1];
         _serverName = (String) values[2];
         _port = (Integer) values[3];
+        _action = (String) values[4];
+        _method = (String) values[5];
     }
 
     /**
      * @param localValue
      * @param valueBindingName
-     * @return
+     * @return value binding value
      */
     private Object getLocalOrValueBindingValue(Object localValue,
                     String valueBindingName)
@@ -103,6 +122,26 @@ public class HtmlForm extends javax.faces.component.html.HtmlForm
     public void setServerName(String serverName)
     {
         _serverName = serverName;
+    }
+
+    public String getAction()
+    {
+        return (String) getLocalOrValueBindingValue(_action, "action");
+    }
+
+    public void setAction(String action)
+    {
+        _action = action;
+    }
+
+    public String getMethod()
+    {
+        return (String) getLocalOrValueBindingValue(_method, "method");
+    }
+
+    public void setMethod(String method)
+    {
+        _method = method;
     }
 
 }

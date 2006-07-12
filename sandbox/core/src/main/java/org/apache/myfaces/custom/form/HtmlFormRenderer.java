@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -28,8 +29,9 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
  */
 public class HtmlFormRenderer extends HtmlFormRendererBase
 {
+
     /**
-     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase#getActionUrl(javax.faces.context.FacesContext, javax.faces.component.UIForm)
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase#getActionUrl(javax.faces.context.FacesContext, javax.faces.component.UIForm )
      */
     protected String getActionUrl(FacesContext facesContext, UIForm form)
     {
@@ -37,60 +39,84 @@ public class HtmlFormRenderer extends HtmlFormRendererBase
         if (form instanceof HtmlForm)
         {
             HtmlForm htmlForm = (HtmlForm) form;
-            String scheme = htmlForm.getScheme();
-            String serverName = htmlForm.getServerName();
-            Integer portObj = htmlForm.getPort();
-            if (!(scheme == null && serverName == null && portObj == null))
+
+            if(htmlForm.getAction()!=null)
             {
-                Object request = facesContext.getExternalContext().getRequest();
-
-                //todo: fix this to work in PortletRequest as well
-                if (request instanceof HttpServletRequest)
+                return htmlForm.getAction();
+            }
+            else
+            {
+                String scheme = htmlForm.getScheme();
+                String serverName = htmlForm.getServerName();
+                Integer portObj = htmlForm.getPort();
+                if (!(scheme == null && serverName == null && portObj == null))
                 {
-                    HttpServletRequest httpRequest = (HttpServletRequest) request;
-                    // build absolute url
-                    int serverPort = 0;
-                    if (portObj == null)
-                    {
-                        serverPort = httpRequest.getServerPort();
-                    }
-                    else
-                    {
-                        serverPort = portObj.intValue();
-                    }
-                    if (scheme == null)
-                    {
-                        scheme = httpRequest.getScheme();
-                    }
-                    else if (portObj == null)
-                    {
-                        serverPort = 0;
-                    }
+                    Object request = facesContext.getExternalContext().getRequest();
 
-                    if (serverName == null)
+                    //todo: fix this to work in PortletRequest as well
+                    if (request instanceof HttpServletRequest)
                     {
-                        serverName = httpRequest.getServerName();
-                    }
-                    StringBuffer sb = new StringBuffer();
-                    sb.append(scheme);
-                    sb.append("://");
-                    sb.append(serverName);
-
-                    if (serverPort != 0)
-                    {
-                        if (("http".equals(scheme) && serverPort != 80)
-                                        || ("https".equals(scheme) && serverPort != 443))
+                        HttpServletRequest httpRequest = (HttpServletRequest) request;
+                        // build absolute url
+                        int serverPort = 0;
+                        if (portObj == null)
                         {
-                            sb.append(":");
-                            sb.append(serverPort);
+                            serverPort = httpRequest.getServerPort();
                         }
-                    }
+                        else
+                        {
+                            serverPort = portObj.intValue();
+                        }
+                        if (scheme == null)
+                        {
+                            scheme = httpRequest.getScheme();
+                        }
+                        else if (portObj == null)
+                        {
+                            serverPort = 0;
+                        }
 
-                    sb.append(actionUrl);
-                    actionUrl = sb.toString();
+                        if (serverName == null)
+                        {
+                            serverName = httpRequest.getServerName();
+                        }
+                        StringBuffer sb = new StringBuffer();
+                        sb.append(scheme);
+                        sb.append("://");
+                        sb.append(serverName);
+
+                        if (serverPort != 0)
+                        {
+                            if (("http".equals(scheme) && serverPort != 80)
+                                            || ("https".equals(scheme) && serverPort != 443))
+                            {
+                                sb.append(":");
+                                sb.append(serverPort);
+                            }
+                        }
+
+                        sb.append(actionUrl);
+                        actionUrl = sb.toString();
+                    }
                 }
             }
         }
         return actionUrl;
     }
+    /**
+     * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase#getMethod(javax.faces.context.FacesContext, javax.faces.component.UIForm )
+     */
+    protected String getMethod(FacesContext facesContext, UIForm form)
+    {
+        if(form instanceof HtmlForm)
+        {
+            String method = ((HtmlForm) form).getMethod();
+
+            if(method != null)
+                return method;
+        }
+
+        return "post";
+    }
+
 }

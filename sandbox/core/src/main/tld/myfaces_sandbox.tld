@@ -258,7 +258,8 @@ Sandbox-related entities.
 		&html_universal_attributes;
 		&html_event_handler_attributes;
 		&html_form_attributes;
-		<attribute>
+		&ext_forceId_attribute;
+        <attribute>
 			<name>scheme</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -276,7 +277,19 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<description>This attribute can be used to set the port for the action attribute</description>
 		</attribute>
-	</tag>
+		<attribute>
+			<name>action</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>This attribute can be used to set an entirely different action (might be something JSF-unspecific) to the form.</description>
+		</attribute>
+		<attribute>
+			<name>method</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>This attribute can be used to set a method to the form which is different to the regular POST method used.</description>
+		</attribute>
+    </tag>
 
 	<!-- Validators -->
 	<!-- Validator for Url -->

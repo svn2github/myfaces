@@ -29,6 +29,8 @@ public class HtmlFormTag extends HtmlFormTagBase
     private String _scheme;
     private String _serverName;
     private String _port;
+    private String _method;
+    private String _action;
 
     public String getComponentType()
     {
@@ -49,6 +51,8 @@ public class HtmlFormTag extends HtmlFormTagBase
         setStringProperty(component, "scheme", _scheme);
         setStringProperty(component, "serverName", _serverName);
         setIntegerProperty(component, "port", _port);
+        setStringProperty(component,"action",_action);
+        setStringProperty(component,"method",_method);
     }
 
     /**
@@ -60,6 +64,8 @@ public class HtmlFormTag extends HtmlFormTagBase
         _scheme = null;
         _serverName = null;
         _port = null;
+        _action = null;
+        _method = null;
     }
 
     public void setPort(String port)
@@ -75,6 +81,16 @@ public class HtmlFormTag extends HtmlFormTagBase
     public void setServerName(String serverName)
     {
         _serverName = serverName;
+    }
+
+    public void setMethod(String method)
+    {
+        _method = method;
+    }
+
+    public void setAction(String action)
+    {
+        _action = action;
     }
 
 }
