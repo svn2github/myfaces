@@ -418,7 +418,7 @@ public class HtmlJSCookMenuRenderer
         writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
 
         StringBuffer buf = new StringBuffer();
-        buf.append("\tcmDraw ('").
+        buf.append("\tif(window.cmDraw!=undefined) { cmDraw ('").
                 append(menuId).
                 append("', ").
                 append(menuId).
@@ -428,7 +428,7 @@ public class HtmlJSCookMenuRenderer
                 append(theme).
                 append(", '").
                 append(theme).
-                append("');");
+                append("');}");
 
         writer.writeText(buf.toString(),null);
         writer.endElement(HTML.SCRIPT_ELEM);

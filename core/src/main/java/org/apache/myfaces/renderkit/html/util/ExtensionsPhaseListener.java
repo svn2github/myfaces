@@ -66,7 +66,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
             renderCodeBeforeBodyEnd(facesContext);
         } catch (IOException e)
         {
-            e.printStackTrace();
+            log.error("Exception while rendering extension filter code.",e);
         }
     }
 
@@ -74,7 +74,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
      * Renders stuff such as the dummy form and the autoscroll javascript, which goes before the closing &lt;/body&gt;
      * @throws IOException
      */
-    public void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+    private void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
     {
         Object myFacesJavascript = facesContext.getExternalContext().getRequestMap().get(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT);
 
@@ -86,7 +86,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
         facesContext.getExternalContext().getRequestMap().put(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, getCodeBeforeBodyEnd(facesContext));
     }
     
-    public static String getCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+    private static String getCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
     {
         ResponseWriter responseWriter = facesContext.getResponseWriter();
         HtmlBufferResponseWriterWrapper writerWrapper = HtmlBufferResponseWriterWrapper
@@ -170,8 +170,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
         }
         catch (Exception e)
         {
-            System.err.println("CAUGHT");
-            e.printStackTrace();
+            log.error("Exception while rendering code for listeners.",e);
         }
     }
 }
