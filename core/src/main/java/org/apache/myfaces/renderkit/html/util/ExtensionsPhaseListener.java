@@ -63,7 +63,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
 
         try
         {
-            renderCodeBeforeBodyEnd(facesContext);
+            getJavaScriptCodeAndStoreInRequest(facesContext);
         } catch (IOException e)
         {
             log.error("Exception while rendering extension filter code.",e);
@@ -71,10 +71,13 @@ public class ExtensionsPhaseListener implements PhaseListener {
     }
 
     /**
-     * Renders stuff such as the dummy form and the autoscroll javascript, which goes before the closing &lt;/body&gt;
+     * Creates javascript-code such as the dummy form and the autoscroll javascript, which goes before the closing &lt;/body&gt;
+     *
+     * The extension filter will then finally process it and render it into the page.
+     * 
      * @throws IOException
      */
-    private void renderCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+    private void getJavaScriptCodeAndStoreInRequest(FacesContext facesContext) throws IOException
     {
         Object myFacesJavascript = facesContext.getExternalContext().getRequestMap().get(ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT);
 
@@ -103,7 +106,18 @@ public class ExtensionsPhaseListener implements PhaseListener {
         return "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n";
     }
 
-	public static void writeCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
+    /**In case of StreamingAddResource and a documentBody-Tag, this method will be called with the
+     * normal response writer set.
+     *
+     * It will directly render out the javascript-text at the current position (immediately before body-closing).
+     *
+     * In the case of DefaultAddResource, this method will be called with a wrapped response writer - and we'll
+     * buffer the javascript-text in the request, for the ExtensionFilter to catch and render it.
+     *
+     * @param facesContext
+     * @throws IOException
+     */
+    public static void writeCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
 	{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
