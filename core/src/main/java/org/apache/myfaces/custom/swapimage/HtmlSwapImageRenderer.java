@@ -73,8 +73,7 @@ public class HtmlSwapImageRenderer
         {
             writer.startElement(HTML.IMG_ELEM, uiComponent);
 
-            String clientId = uiComponent.getClientId(facesContext);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+            renderId(facesContext, uiComponent);
 
             String src = facesContext.getApplication()
                     .getViewHandler().getResourceURL(facesContext, url);
@@ -90,7 +89,7 @@ public class HtmlSwapImageRenderer
 
                 if (swapImageUrl != null)
                 {
-                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "SI_MM_swapImage('" + clientId + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
+                    writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "SI_MM_swapImage('" + getClientId(facesContext, uiComponent) + "','','" + facesContext.getExternalContext().encodeResourceURL(swapImageUrl) + "',1);", null);
                     writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, "SI_MM_swapImgRestore();", null);
                 }
             }

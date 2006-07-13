@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.fileupload;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.webapp.filter.MultipartRequestWrapper;
 
@@ -41,7 +42,7 @@ import java.util.Map;
  * @version $Revision$ $Date$
  */
 public class HtmlFileUploadRenderer
-        extends Renderer
+        extends HtmlRenderer
 {
     private static final Log log = LogFactory.getLog(HtmlFileUploadRenderer.class);
 
@@ -52,9 +53,9 @@ public class HtmlFileUploadRenderer
 
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
-        writer.writeAttribute(HTML.TYPE_ATTR, "file", null);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.FILE_ATTR, null);
         String clientId = uiComponent.getClientId(facesContext);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        renderId(facesContext, uiComponent);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
         UploadedFile value = (UploadedFile)((HtmlInputFileUpload)uiComponent).getValue();
         if (value != null)

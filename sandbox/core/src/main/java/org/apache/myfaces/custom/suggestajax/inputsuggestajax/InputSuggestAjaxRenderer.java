@@ -115,7 +115,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String value = RendererUtils.getStringValue(context, component);
 
         out.startElement(HTML.INPUT_ELEM, component);
-        out.writeAttribute(HTML.ID_ATTR, clientId, null);
+        renderId(context, component);
         out.writeAttribute(HTML.NAME_ATTR, clientId, null);
         out.writeAttribute(HTML.SIZE_ATTR, "100px", null);
         out.writeAttribute("dojoType", "combobox", null);
