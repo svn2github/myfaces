@@ -121,7 +121,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         out.writeAttribute("dojoType", "combobox", null);
         out.writeAttribute("dataUrl", ajaxUrl, null);
         out.writeAttribute("mode", "remote", null);
-        if (value != null)
+        if (value != null && value.length()>0)
         {
             out.writeAttribute(HTML.VALUE_ATTR, value, null);
         }
