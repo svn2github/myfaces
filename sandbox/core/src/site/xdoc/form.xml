@@ -75,6 +75,8 @@ components.
                 <code>scheme - either "http" or "https" (optional)</code><br/>
                 <code>servername - the server name or an ip address (optional)</code><br/>
                 <code>port - a int value which defines the port (optional)</code>
+                <code>method - a method with which the request should be sent (optional)</code>
+                <code>action - if this attribute is set, the action of the form can be specified directly. Scheme, servername and port are not used in this case (optional).</code>
             </blockquote>
         </section>
     </body>
