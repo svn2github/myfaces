@@ -185,6 +185,8 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
     private StringBuffer getEventHandlingCode(String ajaxUrl, String clientId, TableSuggestAjax tableSuggestAjax)
     {
+        FacesContext context = FacesContext.getCurrentInstance(); 
+        
         int betweenKeyUp = 0;
         int startRequest = 0;
         String charset = null;
@@ -206,10 +208,14 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         
         StringBuffer buf = new StringBuffer();
         String tableSuggestVar = "tableSuggest"+clientId.replace(':','_');
-
+        String fieldNames = this.getFieldNames(tableSuggestAjax, context);
+        String fieldNamesVar = tableSuggestVar + "_fieldNames";
+        
         //doing ajax request and handling the response
-        buf.append( "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " 
-                   + betweenKeyUp + ", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() + ");\n" 
+        buf.append( "var " + fieldNamesVar + " = " + fieldNames + ";\n"
+                   + "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " 
+                   + betweenKeyUp + ", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() 
+                   + ", " + fieldNamesVar + ");\n" 
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { " 
                    + tableSuggestVar + ".decideRequest(evt); });\n"  
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onblur\", function(evt) { " 
@@ -238,7 +244,8 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         UIViewRoot root = context.getViewRoot();
 
         UIComponent ajaxComp = root.findComponent(clientId);
-
+        
+        
         //checking if ajaxComp is inside a dataTable; here needed for getting the correct ids
         if (ajaxComp instanceof UIComponentPerspective)
         {
@@ -381,7 +388,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         {
             
             Object addressEntryObject = it.next();
-
+            
             context.getExternalContext().getRequestMap().put(
                     tableSuggestAjax.getVar(), addressEntryObject);
             
@@ -412,11 +419,12 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                     {
                         response.append("<forText>");
                         
-                        response.append(
-                                RendererUtils.getClientId(context,
-                                        tableSuggestAjax,
-                                        htmlOutputText.getFor()));
+                        String forText = RendererUtils.getClientId(context,
+                                tableSuggestAjax,
+                                htmlOutputText.getFor());
                         
+                        response.append(forText);
+                                                
                         response.append("</forText>");
                         
                         response.append("<label>");
@@ -430,11 +438,12 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                     {
                         response.append("<forValue>");
                         
-                        response.append(
-                                RendererUtils.getClientId(context,
-                                        tableSuggestAjax,
-                                        htmlOutputText.getForValue()));
+                        String forValue = RendererUtils.getClientId(context,
+                                tableSuggestAjax,
+                                htmlOutputText.getForValue());
                         
+                        response.append(forValue);
+                                                
                         response.append("</forValue>");
                         
                         response.append("<label>");
@@ -460,7 +469,65 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         context.getResponseWriter().write(response.toString());
         
     }
+    
+    //Gather the names of the the primary field as well as all
+    //the foreign-key fields in the javascript array literal format:
+    // eg. [ field1, field2, field3 ]
+    private String getFieldNames(TableSuggestAjax tableSuggestAjax,
+            FacesContext context) 
+    {
+        StringBuffer fieldNames = new StringBuffer(); 
+        fieldNames.append("[");
+        
+        if (getChildren(tableSuggestAjax) == null
+                || getChildren(tableSuggestAjax).isEmpty())
+        {
+            return null;
+        }
+            
+        Iterator columns = tableSuggestAjax.getChildren().iterator();
+        while (columns.hasNext()) 
+        {
+            UIComponent column = (UIComponent) columns.next();
 
+            Iterator columnChildren = column.getChildren().iterator(); 
+            while (columnChildren.hasNext())
+            {
+                Object component = columnChildren.next();
+                    
+                if (!(component instanceof HtmlOutputText)) 
+                {
+                    continue;
+                }
+                    
+                HtmlOutputText htmlOutputText = (HtmlOutputText) component;
+                    
+                //foreign-key field is a simple text field
+                if (htmlOutputText.getFor() != null)
+                {
+
+                    String fieldName = RendererUtils.getClientId(context,
+                            tableSuggestAjax,
+                            htmlOutputText.getFor());
+                        
+                    fieldNames.append("\"" + fieldName + "\",");                                                        
+                        
+                }
+                //foreign-key field is a combo-box field 
+                else if (htmlOutputText.getForValue() != null)
+                {
+//                    String forValue = RendererUtils.getClientId(context,
+//                            tableSuggestAjax,
+//                            htmlOutputText.getForValue());
+//                    fieldNames.add(forValue);
+                }        
+            }
+        }
+        
+        fieldNames.append("]");
+        return fieldNames.toString();
+    }   
+    
     
     
     

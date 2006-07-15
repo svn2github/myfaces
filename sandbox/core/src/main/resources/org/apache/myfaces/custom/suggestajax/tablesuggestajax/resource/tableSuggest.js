@@ -19,7 +19,8 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                            millisBetweenKeyUps,
                                            startChars,
                                            charset,
-                                           acceptValueToField)
+                                           acceptValueToField,
+                                           fieldNames)
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
@@ -46,6 +47,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     this.lastKeyPressTime = new Date();
     this.millisBetweenKeyUps = millisBetweenKeyUps;
     this.scrollingRow = 0;
+    this.fieldNames = fieldNames;
 
     //puting the values from the choosen row into the fields
     org_apache_myfaces_TableSuggest.prototype.putValueToField = function(trElem)
@@ -632,8 +634,13 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 if (inputValue == primaryColumn.label) return;
             }
             //clear all the fields (including foreign keys)
-            tableSuggest.inputField.value = "";
-            //tableSuggest.inputField.focus();
+            for (var i = 0; i < tableSuggest.fieldNames.length; i++)
+            {
+                var field = dojo.byId(tableSuggest.fieldNames[i]);
+                field.value = "";
+                //tableSuggest.inputField.value = "";
+                //tableSuggest.inputField.focus();
+            }
       }, 500);
 
     }
