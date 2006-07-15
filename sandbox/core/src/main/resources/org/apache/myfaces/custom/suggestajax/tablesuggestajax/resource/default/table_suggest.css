@@ -1,11 +1,14 @@
 .ajaxTable{
     font-family: Verdana, sans-serif;
-	font-size: 11px;
-	background-color: rgb(171, 202, 219);
+    font-size: 11px;
+    background-color: rgb(171, 202, 219);
     color: rgb(0, 106, 164);
     line-height: 16px;
     border-collapse:collapse;
     table-layout:auto;
+    cursor:default;
+    cellpadding: 3;
+    border: 1px solid black;
 }
 
 .ajaxTableWidth{
@@ -40,7 +43,7 @@
 }
 
 .ajaxTable thead tr th{
-text-align:center;
+  text-align:center;
 }
 
 input.myFacesInputSuggestAjax{

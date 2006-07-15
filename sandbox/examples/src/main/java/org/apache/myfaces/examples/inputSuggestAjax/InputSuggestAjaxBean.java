@@ -16,6 +16,8 @@
 package org.apache.myfaces.examples.inputSuggestAjax;
 
 import javax.faces.model.SelectItem;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -28,6 +30,46 @@ import java.util.ArrayList;
 public class InputSuggestAjaxBean
 {
     private String suggestValue = null;
+    private static List cities = new ArrayList();
+    
+    static { 
+        cities.add(new City("San Antonio", "Texas", "TX", "78821"));
+        cities.add(new City("Sacramento", "California", "CA", "78880"));
+        cities.add(new City("Salinas", "California", "CA", "78881"));
+        cities.add(new City("San Bernardino", "California", "CA", "78882"));
+        cities.add(new City("San Clemente", "California", "CA", "78883"));
+        cities.add(new City("San Diego", "California", "CA", "78884"));
+        cities.add(new City("San Dimas", "California", "CA", "78885"));
+        cities.add(new City("San Fernando", "California", "CA", "78886"));
+        cities.add(new City("San Francisco", "California", "CA", "78887"));
+        cities.add(new City("San Gabriel", "California", "CA", "78888"));
+        cities.add(new City("San Jose", "California", "CA", "78889"));
+        cities.add(new City("San Marino", "California", "CA", "78890"));
+        cities.add(new City("San Mateo", "California", "CA", "78895"));
+        cities.add(new City("San Padre", "Texas", "TX", "78823"));
+        cities.add(new City("San Rafael", "California", "CA", "78845"));
+        cities.add(new City("Santa Ana", "California", "CA", "78811"));
+        cities.add(new City("Santa Monica", "California", "CA", "78345"));
+        cities.add(new City("Seal Beach", "California", "CA", "78526"));
+    }
+    
+    public List getCityList(String cityFragment)
+    {
+        List filteredCities = new ArrayList();
+        
+        Iterator it = cities.iterator();
+        while (it.hasNext()) 
+        {
+            City city = (City) it.next();
+            if (city.getCity().startsWith(cityFragment))
+            {
+                filteredCities.add(city);
+            }
+        }
+        System.out.println("returning cities: " + filteredCities.size());
+        return filteredCities;
+    }
+        
 
     public List getAddressList(String cityFragment)
     {

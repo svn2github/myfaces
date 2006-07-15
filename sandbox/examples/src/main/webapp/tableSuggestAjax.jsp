@@ -36,63 +36,44 @@
 
      <h:panelGrid >
         <h:panelGrid columns="4">
-         <f:verbatim> City Field ppTableSuggest <br/>  (Paginator) <br/> Suggest starts with 2. char </f:verbatim>
+         <f:verbatim> City Names starting with 'Sa' <br/> Suggest starts with 2. char </f:verbatim>
          <s:tableSuggestAjax var="address" id="suggest" startRequest="2"
                              nextPageFieldClass="ajaxNextTablePageField"
                              value="#{inputSuggestAjax.suggestValue}" betweenKeyUp="300"
                              columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
-                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}"
-                             maxSuggestedItems="10" tableStyleClass="ajaxTable"
-                             charset="utf-8">
+                             suggestedItemsMethod="#{inputSuggestAjax.getCityList}"
+                             tableStyleClass="ajaxTable" charset="utf-8">
             <t:column>
                  <f:facet name="header">
-                     <s:outputText value="city"/>
+                     <s:outputText value="City"/>
                  </f:facet>
-                 <s:outputText for="cityField" label="#{address.city}"/>
+                 <s:outputText for="suggest" label="#{address.city}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
-                     <s:outputText value="street"/>
+                     <s:outputText value="Zip"/>
                  </f:facet>
-                 <s:outputText for="streetNameField" label="#{address.streetName}"/>
+                 <s:outputText for="zipField" label="#{address.zip}"/>
              </t:column>
              <t:column>
                  <f:facet name="header">
-                     <s:outputText value="state"/>
+                     <s:outputText value="State"/>
                  </f:facet>
-                 <s:outputText forValue="stateField" label="#{address.state}" value="#{address.zip}"/>
+                 <s:outputText forValue="stateField" label="#{address.stateName}" value="#{address.stateCode}"/>
              </t:column>
          </s:tableSuggestAjax>
-         <f:verbatim> City Field TableSuggest <br/>  (Scrolling) <br/> If first chars are "as" scrolling list appears </f:verbatim>
-         <s:tableSuggestAjax var="address" id="cityField2" tableStyleClass="ajaxTableWidth"
-                             nextPageFieldClass="ajaxNextTablePageField" betweenKeyUp="300"
-                             columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
-                             maxSuggestedItems="50" popupStyle="position:absolute; z-index:100000; overflow:auto; height:200px;"
-                             suggestedItemsMethod="#{inputSuggestAjax.getAddressList}" charset="utf-8">
-            <t:column>
-                 <s:outputText for="cityField2" label="#{address.city}"/>
-             </t:column>
-             <t:column>
-                 <s:outputText for="streetNameField" label="#{address.streetName}"/>
-             </t:column>
-             <t:column>
-                 <s:outputText forValue="stateField" label="#{address.state}" value="#{address.zip}"/>
-             </t:column>
-         </s:tableSuggestAjax>
+             
      </h:panelGrid>
          <f:verbatim><br/><br/><br/><br/><br/></f:verbatim>
          <h:panelGrid>
              <h:commandButton/>
-             <h:outputText value="Street"/>
-             <t:inputText id="streetNameField" />
+             <h:outputText value="Zip Code"/>
+             <t:inputText id="zipField" />
              <h:outputText value="State"/>
              <t:selectOneMenu id="stateField">
-                  <f:selectItem value="" itemLabel="NY" itemValue="11"/>
-                  <f:selectItem value="" itemLabel="IL" itemValue="12"/>
-                  <f:selectItem value="" itemLabel="NW" itemValue="13"/>
-                  <f:selectItem value="" itemLabel="SJ" itemValue="14"/>
-                  <f:selectItem value="" itemLabel="KL" itemValue="15"/>
-                  <f:selectItem value="" itemLabel="MH" itemValue="16"/>
+                  <f:selectItem value="" itemLabel="New York" itemValue="NY"/>
+                  <f:selectItem value="" itemLabel="California" itemValue="CA"/>
+                  <f:selectItem value="" itemLabel="Texas" itemValue="TX"/>
              </t:selectOneMenu>
          </h:panelGrid>
  </h:panelGrid>

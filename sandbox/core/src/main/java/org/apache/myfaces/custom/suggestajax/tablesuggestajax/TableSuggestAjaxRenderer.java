@@ -211,7 +211,11 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         buf.append( "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " 
                    + betweenKeyUp + ", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() + ");\n" 
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { " 
-                   + tableSuggestVar + ".decideRequest(evt); });\n");
+                   + tableSuggestVar + ".decideRequest(evt); });\n"  
+                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onblur\", function(evt) { " 
+                   + tableSuggestVar + ".onBlur(evt); });\n" 
+                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onfocus\", function(evt) { " 
+                   + tableSuggestVar + ".onFocus(evt); });\n");
 
         //if setting the focus outside the input field, popup should not be displayed
         buf.append("dojo.event.connect(document, \"onclick\", function(evt) { " + tableSuggestVar + ".resetSettings(); });\n");
@@ -246,7 +250,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                 {
                     try
                     {
-                        encodeTable( (TableSuggestAjax)uiComponent, facesContext);
+                        renderResponse ( (TableSuggestAjax) uiComponent, facesContext);
                     }
                     catch (IOException e)
                     {
@@ -259,7 +263,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
         else
         {
-            encodeTable( (TableSuggestAjax) uiComponent, context);
+            renderResponse ( (TableSuggestAjax) uiComponent, context);
         }
     }
 
@@ -331,6 +335,136 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         buf.append(renderNextPageField(tableSuggestAjax, context));
     }
 
+    
+    private void encodeAjaxTableTemplate(FacesContext context, 
+            TableSuggestAjax tableSuggestAjax) throws IOException
+    {
+        StringBuffer buf = new StringBuffer();
+        buf.append("<table");
+        if (tableSuggestAjax.getTableStyleClass() != null)
+        {
+            buf.append(" class=\"" + tableSuggestAjax.getTableStyleClass() + "\" ");
+        }
+        
+        buf.append(" id=\"" + tableSuggestAjax.getClientId(context) + "_table" + "\" ");
+        buf.append(">");
+        
+        buf.append(renderTableHeader(tableSuggestAjax.getChildren()));
+        buf.append("<tbody></tbody>");
+        buf.append("</table>");
+        
+        context.getResponseWriter().write(buf.toString());
+                
+    }
+    
+    
+    
+    //renders the response data in an XML format
+    private void renderResponse(TableSuggestAjax tableSuggestAjax,
+            FacesContext context) throws IOException
+    {
+        
+        renderColumnHeaders(tableSuggestAjax, context);
+        
+        StringBuffer response = new StringBuffer();
+
+        Collection suggestedItems = 
+            getSuggestedItems(context, tableSuggestAjax);
+
+        if (getChildren(tableSuggestAjax) == null
+                || getChildren(tableSuggestAjax).isEmpty())
+        {
+            return;
+        }
+            
+        for (Iterator it = suggestedItems.iterator(); it.hasNext();) 
+        {
+            
+            Object addressEntryObject = it.next();
+
+            context.getExternalContext().getRequestMap().put(
+                    tableSuggestAjax.getVar(), addressEntryObject);
+            
+            response.append("<item>");
+
+            Iterator columns = tableSuggestAjax.getChildren().iterator();
+            while (columns.hasNext()) 
+            {
+                UIComponent column = (UIComponent) columns.next();
+
+                Iterator columnChildren = column.getChildren().iterator(); 
+                while (columnChildren.hasNext())
+                {
+                    Object component = columnChildren.next();
+                    
+                    if (!(component instanceof HtmlOutputText)) 
+                    {
+                        continue;
+                    }
+                    
+                    HtmlOutputText htmlOutputText = 
+                        (HtmlOutputText) component;
+
+                    response.append("<column>");
+                    
+                    //foreign-key field is a simple text field
+                    if (htmlOutputText.getFor() != null)
+                    {
+                        response.append("<forText>");
+                        
+                        response.append(
+                                RendererUtils.getClientId(context,
+                                        tableSuggestAjax,
+                                        htmlOutputText.getFor()));
+                        
+                        response.append("</forText>");
+                        
+                        response.append("<label>");
+                        response.append(
+                                htmlOutputText.getLabel());
+                        response.append("</label>");
+                        
+                    }
+                    //foreign-key field is a combo-box field 
+                    else if (htmlOutputText.getForValue() != null)
+                    {
+                        response.append("<forValue>");
+                        
+                        response.append(
+                                RendererUtils.getClientId(context,
+                                        tableSuggestAjax,
+                                        htmlOutputText.getForValue()));
+                        
+                        response.append("</forValue>");
+                        
+                        response.append("<label>");
+                        
+                        response.append(
+                                htmlOutputText.getLabel());
+                        response.append("</label>");
+                        
+                        response.append("<value>");
+                        
+                        response.append(
+                                htmlOutputText.getValue());
+                        response.append("</value>");
+                    }
+                    response.append("</column>");
+                }
+            }
+            response.append("</item>");
+        }
+        
+        context.getExternalContext().getRequestMap().remove(tableSuggestAjax.getVar());
+        System.out.println(response.toString());
+        context.getResponseWriter().write(response.toString());
+        
+    }
+
+    
+    
+    
+    
     private StringBuffer renderTableBody(TableSuggestAjax tableSuggestAjax,
                                          Collection suggesteds,
                                          FacesContext context)
@@ -434,6 +568,42 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         return headerContent;
     }
 
+    //renders column names in the XML response
+    private void renderColumnHeaders(TableSuggestAjax tableSuggestAjax,
+            FacesContext context) throws IOException
+    {
+        StringBuffer columnHeaders = new StringBuffer();
+
+        Iterator it = tableSuggestAjax.getChildren().iterator();
+        
+        while (it.hasNext())
+        {
+            UIComponent column = (UIComponent) it.next();
+
+            if (column instanceof UIColumn)
+            {
+                UIComponent tableHeader = (UIComponent) column.getFacet("header");
+
+                if (tableHeader != null &&
+                        tableHeader instanceof HtmlOutputText)
+                {
+                    columnHeaders.append("<columnHeader>");
+                    HtmlOutputText htmlOutputText = (HtmlOutputText) tableHeader;
+                    columnHeaders.append(htmlOutputText.getValue());
+                    columnHeaders.append("</columnHeader>");
+                }
+            }
+        }
+        System.out.println(columnHeaders.toString());
+        context.getResponseWriter().write(columnHeaders.toString());
+    }
+    
+    
+    
+    
+    
+    
+    
     private StringBuffer renderNextPageField(TableSuggestAjax tableSuggestAjax,FacesContext context)
     {
         StringBuffer content = new StringBuffer();
