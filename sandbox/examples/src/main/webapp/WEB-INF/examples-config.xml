@@ -37,6 +37,14 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <!-- managed bean for form-->
+
+    <managed-bean>
+        <managed-bean-name>formBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.form.FormBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
     <!-- managed bean for autoUpdateDataTable-->
 
     <managed-bean>

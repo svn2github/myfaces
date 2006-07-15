@@ -171,7 +171,7 @@ public class HtmlJSCookMenuRenderer
                 formName = DummyFormUtils.getDummyFormName();
             }
             else {
-                HtmlFormRendererBase.addHiddenCommandParameter(parentForm,JSCOOK_ACTION_PARAM);
+                HtmlFormRendererBase.addHiddenCommandParameter(context,parentForm,JSCOOK_ACTION_PARAM);
             }
 
             String myId = getMenuId(context, component);
