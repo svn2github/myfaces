@@ -1,4 +1,4 @@
-﻿﻿﻿<%@ page session="false" contentType="text/html;charset=utf-8"%>
+??<%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 
@@ -36,6 +36,7 @@
 
 	            <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>DateTimeConverter - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
 	            <h:outputLink value="valueChangeNotifier.jsf"><f:verbatim>valueChangeNotifier - Calls a custom valueChangeEvent method during MODEL_UPDATE Phase of the Faces Lifecycle</f:verbatim></h:outputLink>
+	            <h:outputLink value="form.jsf"><f:verbatim>form component. Standard form vs. Tomahawk/Sandbox form</f:verbatim></h:outputLink>
 
 	            <h:outputText value="Validation"/>
 	            <h:panelGrid style="padding-left:25px">
