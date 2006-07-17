@@ -328,14 +328,22 @@
     <managed-bean-scope>application</managed-bean-scope>
   </managed-bean>
 
-	<!--  manage bean for the selectManyPicklist component -->
+	<!--  Managed bean for the selectManyPicklist component -->
 	<managed-bean>
 		<managed-bean-name>picklistBean</managed-bean-name>
 		<managed-bean-class>org.apache.myfaces.examples.picklist.PicklistBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
-	<!-- Managed beans for the scope shop  -->
+	
+	<!--  Managed bean for the selectItems component -->
+	<managed-bean>
+		<managed-bean-name>selectItemsBean</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.selectitems.SelectItemsBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+    <!-- Managed beans for the scope shop  -->
 	<managed-bean>
 		<managed-bean-name>ScopeBean</managed-bean-name>
 		<managed-bean-class>
