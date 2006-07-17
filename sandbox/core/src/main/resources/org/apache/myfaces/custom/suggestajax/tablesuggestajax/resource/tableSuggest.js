@@ -631,11 +631,17 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         
         var tableSuggest = this;
         this.hasFocus = false;
-                
+        
+        var selectedRecord = null;
+        
+        //the timeout function will validate the user's input
         this.blurTimer = setTimeout(function() { 
             
             tableSuggest.resetSettings();        
             if (tableSuggest.hasFocus) return;
+
+            //next time you tab into this field, you must save the old values
+            tableSuggest.saveOldValues = true;
             
             var inputValue = tableSuggest.inputField.value;
                         
@@ -645,9 +651,13 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
             {
 	        var item = tableSuggest.data[i];
                 var primaryColumn = item[0];
-                if (inputValue == primaryColumn.label) return;
+                if (inputValue == primaryColumn.label) 
+                {
+                    tableSuggest.updateForeignKeyFields(item);
+                    return;
+                }
             }
-            //restore the original values of all the fields (including foreign-key fields)
+            //validation failed : restore the original values of all the fields (including foreign-key fields)
             for (var i = 0; i < tableSuggest.fieldNames.length; i++)
             {   
                 var fieldName = tableSuggest.fieldNames[i];
@@ -656,13 +666,32 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 //tableSuggest.inputField.value = "";
                 //tableSuggest.inputField.focus();
             }
-            //next time you tab into this field, you must save the old values
-            tableSuggest.saveOldValues = true;
+            
       }, 500);
 
     }
-
-
+    
+    org_apache_myfaces_TableSuggest.prototype.updateForeignKeyFields = function(row) 
+    {
+        for (var i = 0; i < row.length; i++)
+        {
+            var column = row[i];
+            var fieldId, field;
+            
+            if (typeof column.forText != "undefined")
+            {
+                fieldId = column.forText;
+                field = dojo.byId(fieldId); 
+                field.value = column.label;
+            }
+            else {
+                fieldId = column.forValue;
+                field = dojo.byId(fieldId);     
+                field.value = column.value;
+            }
+        }
+    }
+    
     org_apache_myfaces_TableSuggest.prototype.handleKeyDown = function(evt)
     {
         var keyCode = evt.keyCode;
