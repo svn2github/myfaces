@@ -467,7 +467,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
         
         context.getExternalContext().getRequestMap().remove(tableSuggestAjax.getVar());
-        System.out.println(response.toString());
         context.getResponseWriter().write(response.toString());
         
     }
@@ -488,8 +487,19 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
             
         Iterator columns = tableSuggestAjax.getChildren().iterator();
+        boolean first = true;
         while (columns.hasNext()) 
         {
+            
+            if (first) 
+            {
+                first = false;
+            }
+            else 
+            {
+                fieldNames.append(",");
+            }
+            
             UIComponent column = (UIComponent) columns.next();
 
             Iterator columnChildren = column.getChildren().iterator(); 
@@ -512,7 +522,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                             tableSuggestAjax,
                             htmlOutputText.getFor());
                         
-                    fieldNames.append("\"" + fieldName + "\",");                                                        
+                    fieldNames.append("\"" + fieldName + "\"");                                                        
                         
                 }
                 //foreign-key field is a combo-box field 
@@ -521,11 +531,11 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                     String fieldName = RendererUtils.getClientId(context,
                             tableSuggestAjax,
                             htmlOutputText.getForValue());
-                    fieldNames.append("\"" + fieldName + "\",");
+                    fieldNames.append("\"" + fieldName + "\"");
                 }        
             }
         }
-        
+                
         fieldNames.append("]");
         return fieldNames.toString();
     }   
@@ -663,7 +673,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                 }
             }
         }
-        System.out.println(columnHeaders.toString());
         context.getResponseWriter().write(columnHeaders.toString());
     }
     

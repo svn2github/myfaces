@@ -102,10 +102,17 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
     org_apache_myfaces_TableSuggest.prototype.typeAhead = function(suggestion)
     {
-        if (this.inputField.createTextRange || this.inputField.setSelectionRange) 
+        var len = this.inputField.value.length; 
+        this.inputField.value = suggestion;
+        
+        if (this.inputField.createTextRange)
         {
-            var len = this.inputField.value.length; 
-            this.inputField.value = suggestion;
+            var range = this.inputField.createTextRange();
+            range.moveStart("character",  len);
+            range.moveEnd("character", suggestion.length - len);
+            range.select();
+        }
+        else if (this.inputField.setSelectionRange) {
             this.inputField.setSelectionRange(len, suggestion.length);
         }
     }
@@ -351,7 +358,8 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 var evt = (event) ? event : window.event;
 
                 //find the enclosing tr element
-                var obj = evt.target.parentNode;
+                var target = evt.target || evt.srcElement;
+                var obj = target.parentNode;
                 while (obj.tagName != 'TR')
                 {
                     obj = obj.parentNode;
