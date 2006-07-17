@@ -221,7 +221,9 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onblur\", function(evt) { " 
                    + tableSuggestVar + ".onBlur(evt); });\n" 
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onfocus\", function(evt) { " 
-                   + tableSuggestVar + ".onFocus(evt); });\n");
+                   + tableSuggestVar + ".onFocus(evt); });\n"
+                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeydown\", function(evt) { " 
+                   + "return " + tableSuggestVar + ".handleKeyDown(evt); });\n");
 
         //if setting the focus outside the input field, popup should not be displayed
         buf.append("dojo.event.connect(document, \"onclick\", function(evt) { " + tableSuggestVar + ".resetSettings(); });\n");
@@ -516,10 +518,10 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                 //foreign-key field is a combo-box field 
                 else if (htmlOutputText.getForValue() != null)
                 {
-//                    String forValue = RendererUtils.getClientId(context,
-//                            tableSuggestAjax,
-//                            htmlOutputText.getForValue());
-//                    fieldNames.add(forValue);
+                    String fieldName = RendererUtils.getClientId(context,
+                            tableSuggestAjax,
+                            htmlOutputText.getForValue());
+                    fieldNames.append("\"" + fieldName + "\",");
                 }        
             }
         }

@@ -35,7 +35,9 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
     this.blurTimer = null;
     this.validateInput = true;
-
+    this.saveOldValues = true;
+    this.oldValues = null;
+    
     this.iframe = null;
     this.timeOut = null;
     
@@ -404,6 +406,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
             this.putValueToField(firstOptionElem);
             this.addHoverClass(firstOptionElem);
             this.firstHighlightedElem = firstOptionElem;
+
             this.actualHighlightedElem = firstOptionElem;
         }
         else
@@ -611,6 +614,17 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
     org_apache_myfaces_TableSuggest.prototype.onFocus = function() {
         this.hasFocus = true;
+        if (this.saveOldValues)
+        {
+            this.oldValues = new Object();
+            for (var i = 0; i < this.fieldNames.length; i++)
+            {
+                var fieldName = this.fieldNames[i];
+                var field = dojo.byId(fieldName);
+                this.oldValues[fieldName] = field.value;
+            }
+            this.saveOldValues = false;
+        }
     }
     
     org_apache_myfaces_TableSuggest.prototype.onBlur = function() {
@@ -633,19 +647,46 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 var primaryColumn = item[0];
                 if (inputValue == primaryColumn.label) return;
             }
-            //clear all the fields (including foreign keys)
+            //restore the original values of all the fields (including foreign-key fields)
             for (var i = 0; i < tableSuggest.fieldNames.length; i++)
-            {
-                var field = dojo.byId(tableSuggest.fieldNames[i]);
-                field.value = "";
+            {   
+                var fieldName = tableSuggest.fieldNames[i];
+                var field = dojo.byId(fieldName);
+                field.value = tableSuggest.oldValues[fieldName]; 
                 //tableSuggest.inputField.value = "";
                 //tableSuggest.inputField.focus();
             }
+            //next time you tab into this field, you must save the old values
+            tableSuggest.saveOldValues = true;
       }, 500);
 
     }
 
 
+    org_apache_myfaces_TableSuggest.prototype.handleKeyDown = function(evt)
+    {
+        var keyCode = evt.keyCode;
+        
+        switch (keyCode) 
+        {
+            case 40:    //down key
+                this.handleDownKey();
+                break;
+            case 38:    //up key    
+                this.handleUpKey();
+                break;
+            case 27: //escape
+                this.resetSettings();
+                break;
+            case 13:  //enter
+                this.resetSettings();
+                break;
+            default:
+                return true;
+        }
+        evt.preventDefault();
+    }
+        
     org_apache_myfaces_TableSuggest.prototype.decideRequest = function(event)
     {
         this.inputFieldId = event.target.id;
@@ -674,17 +715,19 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 return;
             }
         }
-            
+        
+        //I tried to block these events in the keydown event-handler itself, but 
+        //haven't quite figured out how to do it. 
         switch (event.keyCode) 
         {
             case 40:    //down key
-                this.handleDownKey();
-                break;
-            case 30:    //up key    
-                this.handleUpKey();
-                break;
-            default: 
-                this.handleRequestResponse(this);
+            case 38:    //up key    
+            case 27: //escape
+            case 13:  //enter
+              return;
         }
+    
+        this.handleRequestResponse(this);
+        
     };
 
