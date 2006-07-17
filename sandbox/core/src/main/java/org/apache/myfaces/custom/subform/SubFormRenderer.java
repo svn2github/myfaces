@@ -15,17 +15,17 @@
  */
 package org.apache.myfaces.custom.subform;
 
-import java.io.IOException;
-import java.util.Map;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author Gerald Muellan
@@ -47,8 +47,11 @@ public class SubFormRenderer extends HtmlRenderer
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-        UIForm parentForm = findParentForm(component);
-        writer.writeText(createPartialSubmitJS(component.getId(), parentForm.getClientId(context)), null);
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(component,context);
+        if(parentFormInfo!=null)
+        {
+            writer.writeText(createPartialSubmitJS(component.getId(), parentFormInfo.getFormName()), null);
+        }
 
         writer.endElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_ELEM);
         HtmlRendererUtils.writePrettyLineSeparator(context);
@@ -87,16 +90,4 @@ public class SubFormRenderer extends HtmlRenderer
         return script.toString();
     }
 
-    /**
-     * 
-     */
-    protected UIForm findParentForm(UIComponent component)
-    {
-        UIComponent parentComponent = component.getParent();
-        while (!(parentComponent instanceof UIForm))
-        {
-            parentComponent = parentComponent.getParent();
-        }
-        return (UIForm) parentComponent;
-    }
 }

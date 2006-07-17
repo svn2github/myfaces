@@ -25,6 +25,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import javax.faces.FacesException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +41,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.HTMLEncoder;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -157,6 +159,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
      */
     private UIComponent htmlTabbedPaneRenderer_getUIComponent(UIComponent uiComponent)
     {
+        /* todo: forms other than UIForm, e.g. Trinidad's UIForm */
         if (uiComponent instanceof UIForm || uiComponent instanceof UINamingContainer)
         {
             List children = uiComponent.getChildren();
@@ -228,18 +231,10 @@ public class InputHtmlRenderer extends HtmlRenderer {
 
     private void encodeEndNormalMode(FacesContext context, InputHtml editor) throws IOException {
         String clientId = editor.getClientId(context);
-        String formId;
-        {
-            UIComponent tmpComponent = editor.getParent();
-            while((tmpComponent != null) && !(tmpComponent instanceof UIForm) ){
-                tmpComponent = tmpComponent.getParent();
-            }
-            if (tmpComponent == null) {
-                log.warn("The inputHtml component must be within a form, giving up!");
-                return;
-            } 
-            formId = tmpComponent.getClientId(context);
-        }
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(editor, context);
+        if(parentFormInfo == null)
+            throw new FacesException("InputHtml must be embedded in a form.");
+        String formId = parentFormInfo.getFormName();
 
         AddResource addResource = AddResourceFactory.getInstance(context);
         addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupustyles.css");

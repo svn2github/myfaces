@@ -68,6 +68,7 @@ public class HtmlPanelTabbedPane
 
     private UIComponent getUIComponent(UIComponent uiComponent)
     {
+        /*todo: checking for UIForm is not enough - Trinidad form, etc.*/
         if (uiComponent instanceof UINamingContainer || uiComponent instanceof UIForm)
         {
             List children = uiComponent.getChildren();

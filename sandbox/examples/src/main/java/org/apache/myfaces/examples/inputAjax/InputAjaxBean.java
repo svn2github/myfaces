@@ -21,7 +21,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -67,7 +67,7 @@ public class InputAjaxBean
             String valStr = (String) value;
             if (valStr.length() < 3)
             {
-                ((UIInput) toValidate).setValid(false);
+                ((EditableValueHolder) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Text must be longer than 3 characters", null));
             }
         }
@@ -81,7 +81,7 @@ public class InputAjaxBean
             String valStr = (String) value;
             if (valStr.length() > 5)
             {
-                ((UIInput) toValidate).setValid(false);
+                ((EditableValueHolder) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Length must be smaller than 5 characters", null));
             }
         }
@@ -95,7 +95,7 @@ public class InputAjaxBean
             String valStr = (String) value;
             if (valStr.length() < 5)
             {
-                ((UIInput) toValidate).setValid(false);
+                ((EditableValueHolder) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Length must be longer than 5 characters", null));
             }
         }
@@ -108,7 +108,7 @@ public class InputAjaxBean
             String valStr = (String) value;
             if (valStr.indexOf(" ") != -1)
             {
-                ((UIInput) toValidate).setValid(false);
+                ((EditableValueHolder) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot contain a space", null));
             }
         }

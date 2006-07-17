@@ -15,27 +15,27 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIInput;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-
-import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Iterator;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -138,9 +138,14 @@ public class HtmlSelectOneRadio
         return defaultValue;
     }
 
-    private static void callValidators(FacesContext context, UIInput input, Object convertedValue)
+    private static void callValidators(FacesContext context, UIComponent input, Object convertedValue)
     {
-        Validator[] validators = input.getValidators();
+        if(!(input instanceof EditableValueHolder))
+            throw new FacesException("param input not of type EditableValueHolder, but of : "+input.getClass().getName());
+
+        EditableValueHolder holder = (EditableValueHolder) input;
+
+        Validator[] validators = holder.getValidators();
         for (int i = 0; i < validators.length; i++)
         {
             Validator validator = validators[i];
@@ -150,7 +155,7 @@ public class HtmlSelectOneRadio
             }
             catch (ValidatorException e)
             {
-                input.setValid(false);
+                holder.setValid(false);
                 FacesMessage facesMessage = e.getFacesMessage();
                 if (facesMessage != null)
                 {
@@ -160,7 +165,7 @@ public class HtmlSelectOneRadio
             }
         }
 
-        MethodBinding validatorBinding = input.getValidator();
+        MethodBinding validatorBinding = holder.getValidator();
         if (validatorBinding != null)
         {
             try
@@ -169,7 +174,7 @@ public class HtmlSelectOneRadio
             }
             catch (EvaluationException e)
             {
-                input.setValid(false);
+                holder.setValid(false);
                 Throwable cause = e.getCause();
                 if (cause instanceof ValidatorException)
                 {

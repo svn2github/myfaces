@@ -16,28 +16,23 @@
 
 package org.apache.myfaces.custom.schedule.renderer;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeSet;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.el.ValueBinding;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * <p>
@@ -111,8 +106,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = schedule.getClientId(context);
-        UIForm parentForm = getParentForm(schedule);
-        String formId = parentForm == null ? null : parentForm.getClientId(context);
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
+        String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
 
         for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator
                 .hasNext();)
@@ -250,7 +245,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     }
 
     private void writeBackground(FacesContext context, HtmlSchedule schedule,
-            ResponseWriter writer) throws IOException
+                                 ResponseWriter writer) throws IOException
     {
         final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
         final int headerHeight = rowHeight + 10;
@@ -418,52 +413,52 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
     private int getRenderedStartHour(HtmlSchedule schedule)
     {
-    	int startHour = schedule.getVisibleStartHour();
-        
+        int startHour = schedule.getVisibleStartHour();
+
         //default behaviour: do not auto-expand the schedule to display all
         //entries
         if (!expandToFitEntries(schedule)) return startHour;
-    	
-    	for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();)
-    	{
-    		ScheduleDay day = (ScheduleDay) dayIterator.next();
-    		int dayStart = day.getFirstEventHour();
-    		
-    		if (dayStart < startHour) {
-    			startHour = dayStart;
-    		}
-    	}
 
-    	return startHour;
+        for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();)
+        {
+            ScheduleDay day = (ScheduleDay) dayIterator.next();
+            int dayStart = day.getFirstEventHour();
+
+            if (dayStart < startHour) {
+                startHour = dayStart;
+            }
+        }
+
+        return startHour;
     }
 
     private int getRenderedEndHour(HtmlSchedule schedule)
     {
-    	int endHour = schedule.getVisibleEndHour();
-    	
+        int endHour = schedule.getVisibleEndHour();
+
         //default behaviour: do not auto-expand the schedule to display all
         //entries
         if (!expandToFitEntries(schedule)) return endHour;
 
         for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();)
-    	{
-    		ScheduleDay day = (ScheduleDay) dayIterator.next();
-    		int dayEnd = day.getLastEventHour();
-    		
-    		if (dayEnd > endHour) {
-    			endHour = dayEnd;
-    		}
-    	}
-    	
-    	return endHour;
+        {
+            ScheduleDay day = (ScheduleDay) dayIterator.next();
+            int dayEnd = day.getLastEventHour();
+
+            if (dayEnd > endHour) {
+                endHour = dayEnd;
+            }
+        }
+
+        return endHour;
     }
-    
+
     private void writeEntries(FacesContext context, HtmlSchedule schedule,
-            ScheduleDay day, ResponseWriter writer) throws IOException
+                              ScheduleDay day, ResponseWriter writer) throws IOException
     {
-        final UIForm parentForm = getParentForm(schedule);
         final String clientId = schedule.getClientId(context);
-        final String formId = parentForm == null ? null : parentForm.getClientId(context);
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
+        String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
 
         TreeSet entrySet = new TreeSet();
 
@@ -585,13 +580,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     }
 
     private void writeForegroundStart(FacesContext context,
-            HtmlSchedule schedule, ResponseWriter writer) throws IOException
+                                      HtmlSchedule schedule, ResponseWriter writer) throws IOException
     {
         final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
         final int headerHeight = rowHeight + 10;
         final String clientId = schedule.getClientId(context);
-        final UIForm parentForm = getParentForm(schedule);
-        final String formId = parentForm == null ? null : parentForm.getClientId(context);
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
+        String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
 
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
@@ -685,7 +680,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         //the dateId is the schedule client id + "_" + yyyyMMdd 
         String day = dateId.substring(dateId.lastIndexOf("_") + 1);
         Date date = ScheduleUtil.getDateFromId(day);
-        
+
         if (date != null) cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, getRenderedStartHour(schedule));
         //OK, we have the date, let's determine the time
@@ -700,7 +695,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         log.debug("last clicked datetime: " + cal.getTime());
         return cal.getTime();
     }
-    
+
     /**
      * <p>
      * When the start- and endtime of an entry are the same, should the entry
@@ -759,7 +754,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 .booleanValue();
     }
 
-    
+
     private class EntryWrapper implements Comparable
     {
         //~ Static fields/initializers -----------------------------------------
@@ -886,7 +881,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             StringBuffer buffer = new StringBuffer();
 
             boolean entryVisible = height > 0 || renderZeroLengthEntries(schedule);
-            
+
             if (!entryVisible)
             {
                 buffer.append("visibility: hidden; ");

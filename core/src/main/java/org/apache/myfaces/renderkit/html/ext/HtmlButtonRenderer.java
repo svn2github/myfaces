@@ -15,13 +15,12 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-
 import org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlButtonRenderer;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 
 /**
@@ -31,7 +30,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 public class HtmlButtonRenderer
     extends ExtendedHtmlButtonRenderer
 {
-    protected void addHiddenCommandParameter(FacesContext facesContext, UIForm nestingForm, String hiddenFieldName)
+    protected void addHiddenCommandParameter(FacesContext facesContext, UIComponent nestingForm, String hiddenFieldName)
 	{
 		if (nestingForm != null)
         {

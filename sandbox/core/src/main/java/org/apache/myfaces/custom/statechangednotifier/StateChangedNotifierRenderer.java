@@ -24,6 +24,7 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import javax.faces.FacesException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
@@ -36,6 +37,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 
 /**
@@ -86,8 +88,11 @@ public class StateChangedNotifierRenderer extends HtmlRenderer {
         String replacedClientId = notifierClientId.replaceAll(":", "_");
         String initFunctionName = "init_" + replacedClientId;
 
-        UIForm form   = getParentForm(notifier);
-        String formId = form.getClientId(facesContext);
+        FormInfo formInfo   = RendererUtils.findNestingForm(notifier,facesContext);
+        if(formInfo == null)
+            throw new FacesException("StateChangedNotifier must be embedded in a form.");
+
+        String formId = formInfo.getFormName();
 
         String notifierVar = replacedClientId + "Notifier";
 
@@ -110,24 +115,6 @@ public class StateChangedNotifierRenderer extends HtmlRenderer {
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
         addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, sb.toString());
-    }
-
-    /**
-     * Get the parent UIForm. If no parent is a UIForm then returns null.
-     *
-     * @param component
-     * @return UIForm
-     */
-    private UIForm getParentForm(UIComponent component) {
-
-        // See if we are in a form
-        UIComponent parent = component.getParent();
-
-        while ((parent != null) && !(parent instanceof UIForm)) {
-            parent = parent.getParent();
-        }
-
-        return (UIForm) parent;
     }
 
     private void renderInitialization(FacesContext facesContext, UIComponent uiComponent, StateChangedNotifier notifier)

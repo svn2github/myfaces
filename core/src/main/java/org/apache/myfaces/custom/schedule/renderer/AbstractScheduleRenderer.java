@@ -16,21 +16,6 @@
 
 package org.apache.myfaces.custom.schedule.renderer;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.el.ValueBinding;
-import javax.faces.event.ActionEvent;
-import javax.faces.render.Renderer;
-
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.ScheduleMouseEvent;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
@@ -39,6 +24,19 @@ import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;
+import javax.faces.event.ActionEvent;
+import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * <p>
@@ -325,31 +323,6 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         return (String) attributes.get("headerDateFormat");
     }
 
-    /**
-     * <p>
-     * Get the parent form of the schedule component
-     * </p>
-     *
-     * @param component the component
-     *
-     * @return the parent form
-     */
-    protected UIForm getParentForm(UIComponent component)
-    {
-        UIComponent parent = component.getParent();
-
-        while (parent != null)
-        {
-            if (parent instanceof UIForm)
-            {
-                break;
-            }
-
-            parent = parent.getParent();
-        }
-
-        return (UIForm) parent;
-    }
 
     /**
      * <p>

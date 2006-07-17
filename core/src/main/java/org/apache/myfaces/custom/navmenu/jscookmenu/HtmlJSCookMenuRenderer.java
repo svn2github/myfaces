@@ -15,22 +15,6 @@
  */
 package org.apache.myfaces.custom.navmenu.jscookmenu;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.el.MethodBinding;
-import javax.faces.el.ValueBinding;
-import javax.faces.event.ActionEvent;
-import javax.faces.webapp.UIComponentTag;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
@@ -45,7 +29,23 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
+import javax.faces.event.ActionEvent;
+import javax.faces.webapp.UIComponentTag;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * @author Thomas Spiegl
@@ -161,18 +161,22 @@ public class HtmlJSCookMenuRenderer
         List list = NavigationMenuUtils.getNavigationMenuItemList(component);
         if (list.size() > 0)
         {
-            UIForm parentForm = getParentForm(component);
-            String formName = getFormName(parentForm,context);
+            FormInfo parentFormInfo = RendererUtils.findNestingForm(component, context);
+
+            if(parentFormInfo == null)
+                throw new FacesException("jscook menu is not embedded in a form.");
+            String formName = parentFormInfo.getFormName();
             List uiNavMenuItemList = component.getChildren();
-            if( formName == null ) {
+            /* todo: disabled for now. Check if dummy form stuff is still needed/desired
+                if( formName == null ) {
                 DummyFormUtils.setWriteDummyForm(context,true);
                 DummyFormUtils.addDummyFormParameter(context,JSCOOK_ACTION_PARAM);
 
                 formName = DummyFormUtils.getDummyFormName();
             }
-            else {
-                HtmlFormRendererBase.addHiddenCommandParameter(context,parentForm,JSCOOK_ACTION_PARAM);
-            }
+            else {*/
+                HtmlFormRendererBase.addHiddenCommandParameter(context,parentFormInfo.getForm(),JSCOOK_ACTION_PARAM);
+            //}
 
             String myId = getMenuId(context, component);
 
@@ -191,36 +195,6 @@ public class HtmlJSCookMenuRenderer
             writer.writeText(script.toString(),null);
             writer.endElement(HTML.SCRIPT_ELEM);
         }
-    }
-
-    /**
-     * Method getFormName.
-     *
-     * @param facesContext FacesContext
-     * @return String
-     */
-    private String getFormName(UIForm parentForm,
-                               FacesContext facesContext) {
-        // See if we are in a form
-        if (parentForm != null) { return parentForm.getClientId(facesContext); }
-
-        // Not in a form. Return the child form's name
-        return null;
-    }
-
-    /**
-     * Get the parent UIForm. If no parent is a UIForm then returns null.
-     * 
-     * @param component
-     * @return UIForm
-     */
-    private UIForm getParentForm(UIComponent component) {
-        // See if we are in a form
-        UIComponent parent = component.getParent();
-        while (parent != null && !(parent instanceof UIForm)) {
-            parent = parent.getParent();
-        }
-        return (UIForm) parent;
     }
 
     private void encodeNavigationMenuItems(FacesContext context,
@@ -396,8 +370,8 @@ public class HtmlJSCookMenuRenderer
                 // should never happen; theme is a required attribute in the jsp tag definition
             throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
         }
-        
-    	addResourcesToHeader(theme,menu,context);
+
+        addResourcesToHeader(theme,menu,context);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException

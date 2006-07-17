@@ -16,27 +16,22 @@
 
 package org.apache.myfaces.custom.schedule.renderer;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeSet;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * <p>
@@ -147,9 +142,9 @@ public abstract class AbstractCompactScheduleRenderer extends
                                 boolean isCurrentMonth, int rowspan) throws IOException
     {
         final String clientId = schedule.getClientId(context);
-        final UIForm parentForm = getParentForm(schedule);
         final Map attributes = schedule.getAttributes();
-        final String formId = parentForm == null ? null : parentForm.getClientId(context);
+        final FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
+        final String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
         final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate());
         final String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate());
         writer.startElement(HTML.TD_ELEM, schedule);
@@ -220,8 +215,8 @@ public abstract class AbstractCompactScheduleRenderer extends
                     null);
         }
 
-        
-        
+
+
         writer.writeText(getDateString(context, schedule, day.getDate()), null);
         writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);
@@ -256,7 +251,7 @@ public abstract class AbstractCompactScheduleRenderer extends
                 HTML.STYLE_ATTR,
                 "width: 100%; height: 100%; vertical-align: top;",
                 null);
-        
+
         //register an onclick event listener to a day cell which will capture
         //the date
         if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
@@ -303,9 +298,9 @@ public abstract class AbstractCompactScheduleRenderer extends
     protected void writeEntries(FacesContext context, HtmlSchedule schedule,
                                 ScheduleDay day, ResponseWriter writer) throws IOException
     {
-        final UIForm parentForm = getParentForm(schedule);
         final String clientId = schedule.getClientId(context);
-        final String formId = parentForm == null ? null : parentForm.getClientId(context);
+        final FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
+        final String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
         final TreeSet entrySet = new TreeSet(comparator);
 
         for (Iterator entryIterator = day.iterator(); entryIterator.hasNext();)
@@ -389,7 +384,7 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         return selectedEntry.getId().equals(entry.getId());
     }
-    
+
     /**
      * In the compact renderer, we don't take the y coordinate of the mouse
      * into account when determining the last clicked date.
@@ -399,12 +394,12 @@ public abstract class AbstractCompactScheduleRenderer extends
         //the dateId is the schedule client id + "_" + yyyyMMdd 
         String day = dateId.substring(dateId.lastIndexOf("_") + 1);
         Date date = ScheduleUtil.getDateFromId(day);
-        
+
         if (date != null) cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleStartHour());
         log.debug("last clicked datetime: " + cal.getTime());
         return cal.getTime();
     }
-    
+
 }
 // The End

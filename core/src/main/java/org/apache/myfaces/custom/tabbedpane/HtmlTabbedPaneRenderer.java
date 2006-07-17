@@ -34,6 +34,7 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
@@ -106,8 +107,8 @@ public class HtmlTabbedPaneRenderer
 
         int selectedIndex = tabbedPane.getSelectedIndex();
 
-        UIForm parentForm = RendererUtils.findParentForm(tabbedPane);
-        if (parentForm == null)
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(tabbedPane, facesContext);
+        if (parentFormInfo == null)
         {
             writeFormStart(writer, facesContext, tabbedPane);
         }
@@ -227,7 +228,7 @@ public class HtmlTabbedPaneRenderer
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.endElement(HTML.TABLE_ELEM);
 
-        if (parentForm == null)
+        if (parentFormInfo == null)
         {
             writeFormEnd(writer, facesContext);
         }
@@ -539,6 +540,7 @@ public class HtmlTabbedPaneRenderer
 
     private UIComponent getUIComponent(UIComponent uiComponent)
     {
+        /* todo: handle forms other than UIForm */
         if (uiComponent instanceof UIForm || uiComponent instanceof UINamingContainer)
         {
             List children = uiComponent.getChildren();
