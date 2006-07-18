@@ -15,7 +15,6 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import javax.faces.component.UIOutput;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.NewspaperTable;
@@ -27,8 +26,6 @@ import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
 import org.apache.myfaces.renderkit.html.util.TableContext;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
@@ -36,7 +33,8 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
 import javax.faces.application.Application;
-import javax.faces.component.UIColumn;
+import javax.faces.component.*;
+
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 
 /**
@@ -486,6 +484,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                 if (replaceHeaderFacets && isSortHeaderNeeded(aColumn, headerFacet))
                 {
                     propertyName = propertyName != null ? propertyName : getSortPropertyFromEL(aColumn);
+                    if (propertyName == null)
+                        log.warn("Couldn't determine sort property for column ["+aColumn.getId()+"].");
 
                     HtmlCommandSortHeader sortHeader = createSortHeaderComponent(context, aColumn, headerFacet, propertyName);
                     columnName = sortHeader.getColumnName();
@@ -494,10 +494,21 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                     sortHeader.setParent(aColumn);
                 }
                 else if (headerFacet instanceof HtmlCommandSortHeader)
-                {
+                {                    
+                    //command sort headers are already in place, just store the column name and sort property name
                     HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader)headerFacet;
                     columnName = sortHeader.getColumnName();
                     propertyName = sortHeader.getPropertyName();
+
+                    //if the command sort header component doesn't specify a sort property, determine it
+                    if (propertyName == null)
+                    {
+                        propertyName = getSortPropertyFromEL(aColumn);
+                        sortHeader.setPropertyName(propertyName);
+                    }
+
+                    if (propertyName == null)
+                        log.warn("Couldn't determine sort property for column ["+aColumn.getId()+"].");
                 }
 
                 //make the column marked as default sorted be the current sorted column
@@ -505,7 +516,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                 {
                     setSortColumn(columnName);
                     setSortProperty(propertyName);
-                }
+                }                              
             }
         }
 
@@ -546,16 +557,17 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     protected String getSortPropertyFromEL(UIComponent component)
     {
         if (getVar() == null)
+        {
+            log.warn("There is no 'var' specified on the dataTable, sort properties cannot be determined automaticaly.");
             return null;
+        }
 
         for (Iterator iter = component.getChildren().iterator(); iter.hasNext();)
         {
             UIComponent aChild = (UIComponent) iter.next();
-            if (aChild.isRendered() && aChild instanceof UIOutput)
+            if (aChild.isRendered())
             {
-                UIOutput output = (UIOutput)aChild;
-
-                ValueBinding vb = output.getValueBinding("value");
+                ValueBinding vb = aChild.getValueBinding("value");
                 if (vb != null)
                 {
                     String expressionString = vb.getExpressionString();
@@ -571,8 +583,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                             return tokenizer.nextToken();
                     }
                 }
+                else
+                {
+                    String sortProperty = getSortPropertyFromEL(aChild);
+                    if (sortProperty != null)
+                        return sortProperty;
+                }
             }
-            else return getSortPropertyFromEL(aChild);
         }
 
         return null;
@@ -673,6 +690,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         Object values[] = new Object[33];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
+        
         if (isPreserveDataModel())
         {
             values[2] = saveAttachedState(context, getSerializableDataModel());
@@ -745,7 +763,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         if (!(dataModel instanceof SortableModel))
         {
             //if sortable=true make each column sortable
-            //if sortable=false, check to see if at least one column sortable
+            //if sortable=false, check to see if at least one column sortable case in which
+            //the current model needs to be wrapped by a sortable one.
             for (Iterator iter = getChildren().iterator(); iter.hasNext();)
             {
                 UIComponent component = (UIComponent) iter.next();
