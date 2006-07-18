@@ -210,12 +210,15 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String tableSuggestVar = "tableSuggest"+clientId.replace(':','_');
         String fieldNames = this.getFieldNames(tableSuggestAjax, context);
         String fieldNamesVar = tableSuggestVar + "_fieldNames";
+        String styleClassOptions = this.getStyleClassOptions(tableSuggestAjax);
+        String styleClassOptionsVar = tableSuggestVar + "_options";
         
         //doing ajax request and handling the response
         buf.append( "var " + fieldNamesVar + " = " + fieldNames + ";\n"
+                   + "var " + styleClassOptionsVar + " = " + styleClassOptions + ";\n"
                    + "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " 
                    + betweenKeyUp + ", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() 
-                   + ", " + fieldNamesVar + ");\n" 
+                   + ", " + fieldNamesVar + ", " + styleClassOptionsVar + ");\n" 
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { " 
                    + tableSuggestVar + ".decideRequest(evt); });\n"  
                    + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onblur\", function(evt) { " 
@@ -539,6 +542,26 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         fieldNames.append("]");
         return fieldNames.toString();
     }   
+    
+    
+    //returns a javascript hashmap containing the style class settings
+    private String getStyleClassOptions(TableSuggestAjax tableSuggestAjax)
+    {
+        StringBuffer settings = new StringBuffer();
+        settings.append("{ ");
+        settings.append("tableStyleClass: "); 
+        settings.append("\"" + tableSuggestAjax.getTableStyleClass() + "\"");
+        settings.append(", ");
+        settings.append("columnOutClass: "); 
+        settings.append("\"" + tableSuggestAjax.getColumnOutClass() + "\"");
+        settings.append(", ");
+        settings.append("columnHoverClass: "); 
+        settings.append("\"" + tableSuggestAjax.getColumnHoverClass() + "\"");
+        settings.append(" }");
+        
+        return settings.toString();
+        
+    }
     
     
     

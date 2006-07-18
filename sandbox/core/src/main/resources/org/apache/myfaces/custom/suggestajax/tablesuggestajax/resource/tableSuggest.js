@@ -20,7 +20,8 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                            startChars,
                                            charset,
                                            acceptValueToField,
-                                           fieldNames)
+                                           fieldNames, 
+                                           styleClassOptions)
 {
     this.tablePagesCollection = new dojo.collections.ArrayList();
 
@@ -50,6 +51,12 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     this.millisBetweenKeyUps = millisBetweenKeyUps;
     this.scrollingRow = 0;
     this.fieldNames = fieldNames;
+
+    
+    this.tableStyleClass = styleClassOptions.tableStyleClass;
+    this.columnHoverClass = styleClassOptions.columnHoverClass;  
+    this.columnOutClass = styleClassOptions.columnOutClass;  
+    
 
     //puting the values from the choosen row into the fields
     org_apache_myfaces_TableSuggest.prototype.putValueToField = function(trElem)
@@ -315,13 +322,17 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     org_apache_myfaces_TableSuggest.prototype.renderDropdown = function()
     {
         dojo.dom.removeChildren(this.popUp);
-
+        
         //if no data exists
-        if (this.data.length == 0) return;       
- 
+        if (this.data == null || this.data.length == 0) 
+        {
+            this.resetSettings();        
+            return;       
+        }
+        
         //create a table for the suggesting items
 	var suggestTable = document.createElement("table");
-        //suggestTable.setAttribute("class", "ajaxTable");
+        //suggestTable.setAttribute("class", this.tableStyleClass);
         suggestTable.className = "ajaxTable";
          
         var tbody = document.createElement("tbody");
@@ -340,18 +351,16 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
             td.appendChild(tn);
         }
         	
+        var tableSuggestAjax = this;
+
         //adding the data items	
 	for (var i = 0; i < this.data.length; i++)
         {
             var columnsArray = this.data[i];
             tr = tbody.insertRow(tbody.rows.length);
-            //tr.setAttribute("onmouseover", "this.className='tableSuggestHover'");
-            //tr.setAttribute("onmouseout", "this.className='tableSuggestOut'");
-            //tr.setAttribute("id", "row" + (i + 1) + this.inputFieldId);
-            //tr.setAttribute("onclick", "tableSuggest" + this.inputFieldId.replace(':', '_') + ".putValueToField(this)");
-            
-            tr.onmouseover = function() { this.className= 'tableSuggestHover'; }
-            tr.onmouseout = function() { this.className= 'tableSuggestOut'; }
+                        
+            tr.onmouseover = function() { this.className = tableSuggestAjax.columnHoverClass; }
+            tr.onmouseout = function() { this.className= tableSuggestAjax.columnOutClass; }
             tr.id = "row" + (i + 1) + this.inputFieldId;
             var tableSuggest = this;
             tr.onclick = function(event) { 
@@ -527,14 +536,14 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
     org_apache_myfaces_TableSuggest.prototype.addHoverClass = function(elem)
     {
-        dojo.html.removeClass(elem,"tableSuggestOut");
-        dojo.html.addClass(elem,"tableSuggestHover");
+        dojo.html.removeClass(elem, this.columnOutClass);
+        dojo.html.addClass(elem, this.columnHoverClass);
     };
 
     org_apache_myfaces_TableSuggest.prototype.addOutClass = function(elem)
     {
-        dojo.html.removeClass(elem,"tableSuggestHover");
-        dojo.html.addClass(elem,"tableSuggestOut");
+        dojo.html.removeClass(elem, this.columnHoverClass);
+        dojo.html.addClass(elem, this.columnOutClass);
     };
 
     org_apache_myfaces_TableSuggest.prototype.requestBetweenKeyUpEvents = function(millisBetweenKeyPress)
