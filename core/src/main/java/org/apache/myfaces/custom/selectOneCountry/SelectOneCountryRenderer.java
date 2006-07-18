@@ -36,6 +36,15 @@ import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
  */
 public class SelectOneCountryRenderer extends HtmlMenuRenderer {
 
+	public void decode(FacesContext facesContext, UIComponent component) {
+		super.decode(facesContext, component);
+		SelectOneCountry selectOneCountry = (SelectOneCountry) component;
+		//if the empty selection is submitted, reset the submitted value
+		Object submittedValue = selectOneCountry.getSubmittedValue(); 
+		if(submittedValue != null && submittedValue.equals(selectOneCountry.getEmptySelection()))
+			selectOneCountry.setSubmittedValue(null);
+	}
+	
     public void encodeEnd(FacesContext facesContext, UIComponent component)
     throws IOException
     {

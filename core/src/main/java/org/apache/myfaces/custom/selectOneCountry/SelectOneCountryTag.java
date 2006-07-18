@@ -33,19 +33,32 @@ public class SelectOneCountryTag extends HtmlSelectOneMenuTag {
     }
 
     private String maxLength;
+    
+    private String emptySelection;
 
     public void release() {
         super.release();
         maxLength=null;
+        emptySelection=null;
     }
 
     protected void setProperties(UIComponent component) {
         super.setProperties(component);
 
         setIntegerProperty(component, "maxLength", maxLength);
+        setStringProperty(component, "emptySelection", emptySelection);
     }
 
     public void setMaxLength(String maxLength){
         this.maxLength = maxLength;
     }
+
+	public String getEmptySelection() {
+		return emptySelection;
+	}
+
+	public void setEmptySelection(String emptySelection) {
+		this.emptySelection = emptySelection;
+	}
+
 }
