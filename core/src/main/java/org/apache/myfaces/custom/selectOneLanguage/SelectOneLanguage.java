@@ -42,6 +42,8 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SelectOneLanguageRenderer";
 
     private Integer _maxLength = null;
+    
+    private String _emptySelection = null;
 
     public SelectOneLanguage() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -55,11 +57,21 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
     public void setMaxLength(Integer maxLength) {
         _maxLength = maxLength;
     }
+    
+    public String getEmptySelection() {
+    	if (_emptySelection != null) return _emptySelection;
+        ValueBinding vb = getValueBinding("emptySelection");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+    public void setEmptySelection(String emptySelection) {
+    	_emptySelection = emptySelection;
+    }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
         values[0] = super.saveState(context);
         values[1] = _maxLength;
+        values[2] = _emptySelection;
         return values;
     }
 
@@ -67,6 +79,7 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _maxLength = (Integer)values[1];
+        _emptySelection = (String) values[2];
     }
 
     private Set getFilterSet(){
@@ -108,6 +121,8 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
         }
 
         List languagesSelectItems = new ArrayList( map.size() );
+        if(getEmptySelection() != null)
+        	languagesSelectItems.add(new SelectItem(getEmptySelection(), getEmptySelection()));
 
         Integer maxLength = getMaxLength();
         int maxDescriptionLength = maxLength==null ? Integer.MAX_VALUE : maxLength.intValue();

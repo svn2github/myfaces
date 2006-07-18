@@ -36,6 +36,15 @@ import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
  */
 public class SelectOneLanguageRenderer extends HtmlMenuRenderer {
 
+	public void decode(FacesContext facesContext, UIComponent component) {
+		super.decode(facesContext, component);
+		SelectOneLanguage selectOneLanguage = (SelectOneLanguage) component;
+		//if the empty selection is submitted, reset the submitted value
+		Object submittedValue = selectOneLanguage.getSubmittedValue(); 
+		if(submittedValue != null && submittedValue.equals(selectOneLanguage.getEmptySelection()))
+			selectOneLanguage.setSubmittedValue(null);
+	}
+	
 	public void encodeEnd(FacesContext facesContext, UIComponent component)
     throws IOException
 	{
