@@ -487,14 +487,17 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                     if (propertyName == null)
                         log.warn("Couldn't determine sort property for column ["+aColumn.getId()+"].");
 
-                    HtmlCommandSortHeader sortHeader = createSortHeaderComponent(context, aColumn, headerFacet, propertyName);
-                    columnName = sortHeader.getColumnName();
+                    if (headerFacet != null)
+                    {
+                        HtmlCommandSortHeader sortHeader = createSortHeaderComponent(context, aColumn, headerFacet, propertyName);
+                        columnName = sortHeader.getColumnName();
 
-                    aColumn.setHeader(sortHeader);
-                    sortHeader.setParent(aColumn);
+                        aColumn.setHeader(sortHeader);
+                        sortHeader.setParent(aColumn);
+                    }
                 }
                 else if (headerFacet instanceof HtmlCommandSortHeader)
-                {                    
+                {
                     //command sort headers are already in place, just store the column name and sort property name
                     HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader)headerFacet;
                     columnName = sortHeader.getColumnName();
@@ -959,7 +962,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * but it works.
      */
     public void setSortColumn(String sortColumn)
-    {
+    {        
         _sortColumn = sortColumn;
         // update model is necessary here, because processUpdates is never called
         // reason: HtmlCommandSortHeader.isImmediate() == true
