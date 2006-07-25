@@ -101,7 +101,7 @@ public class UserDataTest extends TestCase {
 		userData.setSeconds("30");
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 11);
+		calendar.set(Calendar.HOUR_OF_DAY, 10);
 		calendar.set(Calendar.MINUTE, 50);
 		calendar.set(Calendar.SECOND, 30);
 		
