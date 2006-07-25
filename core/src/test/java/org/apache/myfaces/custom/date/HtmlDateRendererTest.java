@@ -86,7 +86,7 @@ public class HtmlDateRendererTest extends TestCase {
     inputDate.setId("test");
     inputDate.setType("date");
     Date today = new Date();
-    inputDate.setSubmittedValue(new UserData(today, Locale.ENGLISH, null, true));
+    inputDate.setSubmittedValue(new UserData(today, Locale.ENGLISH, null, true, "date"));
     HtmlDateRenderer subject = new HtmlDateRenderer();
     // setup the request map
     Map map = new HashMap();

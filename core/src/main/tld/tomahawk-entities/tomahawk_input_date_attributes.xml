@@ -26,3 +26,19 @@
                 use 24hr time.  Default false.
             </description>
         </attribute>
+        <attribute>
+            <name>emptyMonthSelection</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+				Label to be used when displaying an empty month selection
+            </description>
+        </attribute>
+        <attribute>
+            <name>emptyAmpmSelection</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+				Label to be used when displaying an empty ampm selection
+            </description>
+        </attribute>

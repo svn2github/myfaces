@@ -1300,9 +1300,9 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function
         this.myFacesInputDateClientId = clientId;
         this.dateFormat = format;
 
-        this.selectedDate.date = parseInt(this._formatInt(document.getElementById(clientId + ".day").value), 10);
-        this.selectedDate.month = parseInt(this._formatInt(document.getElementById(clientId + ".month").value), 10) - 1;
-        this.selectedDate.year = parseInt(this._formatInt(document.getElementById(clientId + ".year").value), 10);
+        this.selectedDate.date = document.getElementById(clientId + ".day").value != "" ? parseInt(this._formatInt(document.getElementById(clientId + ".day").value), 10) : this.dateNow;
+        this.selectedDate.month = document.getElementById(clientId + ".month").value != "-1" ? parseInt(this._formatInt(document.getElementById(clientId + ".month").value), 10) - 1 : this.monthNow;
+        this.selectedDate.year = document.getElementById(clientId + ".year").value != "" ? parseInt(this._formatInt(document.getElementById(clientId + ".year").value), 10) : this.yearNow;
         this.ctlNow = document.getElementById(clientId + ".day");
         this._popUpCalendar_Show(document.getElementById(clientId + ".day"));
     }

@@ -86,7 +86,7 @@ public class HtmlDateRenderCactus extends ServletTestCase {
     inputDate.setId("test");
     inputDate.setType("date");
     Date today = new Date();
-    inputDate.setSubmittedValue(new UserData(today, Locale.ENGLISH, null,false));
+    inputDate.setSubmittedValue(new UserData(today, Locale.ENGLISH, null,false, "date"));
     HtmlDateRenderer subject = new HtmlDateRenderer();
     // decode
     subject.decode(facesContext, inputDate);

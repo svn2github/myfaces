@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
@@ -53,6 +54,8 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     private Boolean _popupCalendar = null;
     private String _timeZone = null;
     private Boolean _ampm = null;
+    private String _emptyMonthSelection = null;
+    private String _emptyAmpmSelection = null;
 
 
     private Boolean _disabled = null;
@@ -62,7 +65,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
 
     public UserData getUserData(Locale currentLocale){
-        return new UserData((Date) getValue(), currentLocale, getTimeZone(), isAmpm());
+        return new UserData((Date) getValue(), currentLocale, getTimeZone(), isAmpm(), getType());
     }
 
 	public String getType() {
@@ -103,6 +106,26 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     public void setTimeZone(String timeZone){
         _timeZone = timeZone;
     }
+    
+	public String getEmptyMonthSelection() {
+		if (_emptyMonthSelection != null) return _emptyMonthSelection;
+		ValueBinding vb = getValueBinding("emptyMonthSelection");
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : "";
+	}
+	
+	public void setEmptyMonthSelection(String string) {
+		_emptyMonthSelection = string;
+	}
+	
+	public String getEmptyAmpmSelection() {
+		if (_emptyAmpmSelection != null) return _emptyAmpmSelection;
+		ValueBinding vb = getValueBinding("emptyAmpmSelection");
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : "";
+	}
+	
+	public void setEmptyAmpmSelection(String string) {
+		_emptyAmpmSelection = string;
+	}
 
     public boolean isReadonly(){
         if (_readonly != null) return _readonly.booleanValue();
@@ -148,7 +171,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[11];
         values[0] = super.saveState(context);
         values[1] = _type;
         values[2] = _popupCalendar;
@@ -158,6 +181,8 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         values[6] = _visibleOnUserRole;
         values[7] = _timeZone;
         values[8] = _ampm;
+        values[9] = _emptyMonthSelection;
+        values[10] = _emptyAmpmSelection;
         return values;
     }
 
@@ -172,6 +197,8 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         _visibleOnUserRole = (String)values[6];
         _timeZone = (String)values[7];
         _ampm = (Boolean)values[8];
+        _emptyMonthSelection = (String)values[9];
+        _emptyAmpmSelection = (String)values[10];
     }
 
     public static class UserData implements Serializable {
@@ -185,17 +212,21 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         private TimeZone timeZone = null;
         private String ampm;
         private boolean uses_ampm;
+        private String type;
 
-        public UserData(Date date, Locale currentLocale, String _timeZone, boolean uses_ampm){
+        public UserData(Date date, Locale currentLocale, String _timeZone, boolean uses_ampm, String type){
         	this.uses_ampm = uses_ampm;
-            if( date == null )
-                date = new Date();
+        	this.type = type;
 
             Calendar calendar = Calendar.getInstance(currentLocale);
             if (_timeZone != null) {
 				timeZone = TimeZone.getTimeZone(_timeZone);
                 calendar.setTimeZone(timeZone);
 			}
+            
+            if(date == null)
+            	return;
+          
             calendar.setTime( date );
             day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
             month = Integer.toString(calendar.get(Calendar.MONTH)+1);
@@ -222,23 +253,36 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
             if (timeZone != null)
                    tempCalendar.setTimeZone(timeZone);
             try{
-	            tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
-	            tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
-	            tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
-	            if (uses_ampm) {
-	            	int int_hours = Integer.parseInt(hours);
-	            	// ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
-	            	if (int_hours == 12) {
-	        			int_hours = 0;
+        		if(!isSubmitValid(uses_ampm, type)) {
+        			return null;
+        		}
+        		
+            	if(! (type.equals( "time" ) || type.equals( "short_time" )) ) {
+            		tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
+            		tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
+            		tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
+            	}
+
+            	if(! type.equals( "date" )) {
+            		
+            		if (uses_ampm) {
+	            		int int_hours = Integer.parseInt(hours);
+	            		// ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
+	            		if (int_hours == 12) {
+	            			int_hours = 0;
+	            		}
+	            		tempCalendar.set(Calendar.HOUR,int_hours);
+	            		tempCalendar.set(Calendar.AM_PM,Integer.parseInt(ampm));
+	            	} else {
+	            		tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
 	            	}
-	            	tempCalendar.set(Calendar.HOUR,int_hours);
-	                tempCalendar.set(Calendar.AM_PM,Integer.parseInt(ampm));
-	            } else {
-	            	tempCalendar.set(Calendar.HOUR_OF_DAY,Integer.parseInt(hours));
-	            }
-	            tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
-	            tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
-	            tempCalendar.set(Calendar.MILLISECOND, 0);
+            		tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
+            		
+            		if (type.equals("full") || type.equals("time")) {
+	            		tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
+            		}
+            	}
+            	tempCalendar.set(Calendar.MILLISECOND, 0);
 	            retDate = tempCalendar.getTime();
             } catch (NumberFormatException e) {
             	throw new ParseException(e.getMessage(),0);
@@ -262,7 +306,40 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
                 return "0"+i;
             return Integer.toString(i);
         }
-
+        
+        private boolean isDateSubmitted(boolean usesAmpm, String type) {
+        	boolean isDateSubmitted = ! (StringUtils.isEmpty(getDay()) && getMonth().equals("-1") && StringUtils.isEmpty(getYear()));
+        	if(usesAmpm)
+        		isDateSubmitted = isDateSubmitted || isAmpmSubmitted();
+        	return isDateSubmitted;
+        }
+        
+        private boolean isTimeSubmitted(boolean usesAmpm, String type) {
+        	boolean isTimeSubmitted = ! (StringUtils.isEmpty(getHours()) && StringUtils.isEmpty(getMinutes()));
+        	if(type.equals("time") || type.equals("full") || type.equals("both"))
+        		isTimeSubmitted = isTimeSubmitted || ! StringUtils.isEmpty(getSeconds());
+        	if(usesAmpm)
+        		isTimeSubmitted = isTimeSubmitted || isAmpmSubmitted();
+        	return isTimeSubmitted;
+        }
+        
+        private boolean isSubmitValid(boolean usesAmpm, String type) {
+        	if(type.equals("date"))
+        		return isDateSubmitted(usesAmpm, type);
+        	else if(type.equals("time") || (type.equals("short_time")))
+        		return isTimeSubmitted(usesAmpm, type);
+        	else if(type.equals("full") || type.equals("both"))
+        		return isDateSubmitted(usesAmpm, type) || isTimeSubmitted(usesAmpm, type);
+        	else
+        		return false;
+        }
+        
+        private boolean isAmpmSubmitted() {
+        	if(getAmpm() == null)
+        		return false;
+        	else
+        		return ! getAmpm().equals("-1");
+        }
 
         public String getDay() {
             return formatedInt( day );
@@ -310,6 +387,13 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         }
         public void setAmpm(String ampm) {
             this.ampm = ampm;
+        }
+        
+        public String getType() {
+            return type;
+        }
+        public void setType(String type) {
+            this.type = type;
         }
     }
 }

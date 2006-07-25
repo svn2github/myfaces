@@ -38,6 +38,8 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
     private String ampm;
     private String popupCalendar;
     private String timeZone;
+    private String emptyMonthSelection;
+    private String emptyAmpmSelection;
 
 
     // UIComponent attributes --> already implemented in UIComponentTagBase
@@ -62,6 +64,8 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
         ampm=null;
         popupCalendar=null;
         timeZone = null;
+        emptyMonthSelection=null;
+        emptyAmpmSelection=null;
     }
 
     protected void setProperties(UIComponent component) {
@@ -71,6 +75,8 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
         setBooleanProperty(component, "popupCalendar", popupCalendar);
         setBooleanProperty(component, "ampm", ampm);
         setStringProperty(component, "timeZone", timeZone);
+        setStringProperty(component, "emptyMonthSelection", emptyMonthSelection);
+        setStringProperty(component, "emptyAmpmSelection", emptyAmpmSelection);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, visibleOnUserRole);
@@ -100,4 +106,21 @@ public class HtmlInputDateTag extends HtmlInputTextTagBase {
     {
         this.timeZone = timeZone;
     }
+
+    public String getEmptyMonthSelection() {
+    	return emptyMonthSelection;
+    }
+    
+    public void setEmptyMonthSelection(String emptyMonthSelection) {
+    	this.emptyMonthSelection = emptyMonthSelection;
+    }
+    
+	public String getEmptyAmpmSelection() {
+		return emptyAmpmSelection;
+	}
+
+	public void setEmptyAmpmSelection(String emptyAmpmSelection) {
+		this.emptyAmpmSelection = emptyAmpmSelection;
+	}
+
 }

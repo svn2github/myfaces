@@ -73,7 +73,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         HtmlInputDate inputDate = (HtmlInputDate) uiComponent;
         Locale currentLocale = facesContext.getViewRoot().getLocale();
         UserData userData = (UserData) inputDate.getSubmittedValue();
-        if( userData == null )
+        if( userData == null )        
             userData = inputDate.getUserData(currentLocale);
         String type = inputDate.getType();
         boolean ampm = inputDate.isAmpm();
@@ -164,8 +164,9 @@ public class HtmlDateRenderer extends HtmlRenderer {
         }
 
         int selectedMonth = userData.getMonth() == null ? -1 : Integer.parseInt(userData.getMonth())-1;
-
+        
         String[] months = HtmlCalendarRenderer.mapMonths(new DateFormatSymbols(currentLocale));
+        encodeEmptyInputMonthSelection(uiComponent, writer, selectedMonth);
         for (int i = 0; i < months.length; i++) {
             String monthName = months[i];
             String monthNumber = Integer.toString(i+1);
@@ -185,6 +186,17 @@ public class HtmlDateRenderer extends HtmlRenderer {
         // bug #970747: force separate end tag
         writer.writeText("", null);
         writer.endElement(HTML.SELECT_ELEM);
+    }
+    
+    protected void encodeEmptyInputMonthSelection(UIComponent component, ResponseWriter writer, int selectedMonth) throws IOException{
+    	 writer.startElement(HTML.OPTION_ELEM, component);
+         writer.writeAttribute(HTML.VALUE_ATTR, "-1", null);
+         
+         if(selectedMonth == -1)
+        	 writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
+         
+         writer.writeText(((HtmlInputDate)component).getEmptyMonthSelection(), null);
+         writer.endElement(HTML.OPTION_ELEM);
     }
 
     protected void encodeInputYear(UIComponent uiComponent, ResponseWriter writer, String clientId,
@@ -238,6 +250,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
         
         int selectedAmpm = userData.getAmpm() == null ? -1 : Integer.parseInt(userData.getAmpm());
+        encodeEmtypAmpmChoice(uiComponent, writer, selectedAmpm);
         encodeAmpmChoice(symbols, uiComponent, writer, Calendar.AM, selectedAmpm);
         encodeAmpmChoice(symbols, uiComponent, writer, Calendar.PM, selectedAmpm);
 
@@ -245,6 +258,17 @@ public class HtmlDateRenderer extends HtmlRenderer {
         // bug #970747: force separate end tag
         writer.writeText("", null);
         writer.endElement(HTML.SELECT_ELEM);
+    }
+    
+    protected void encodeEmtypAmpmChoice(UIComponent component, ResponseWriter writer, int selectedAmpm) throws IOException{
+    	 writer.startElement(HTML.OPTION_ELEM, component);
+         writer.writeAttribute(HTML.VALUE_ATTR, "-1", null);
+         
+         if(selectedAmpm == -1)
+        	 writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
+         
+         writer.writeText(((HtmlInputDate)component).getEmptyAmpmSelection(), null);
+         writer.endElement(HTML.OPTION_ELEM);
     }
     
     protected void encodePopupCalendarButton(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId, Locale currentLocale) throws IOException{
@@ -323,7 +347,6 @@ public class HtmlDateRenderer extends HtmlRenderer {
             	userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
             }
         }
-
         inputDate.setSubmittedValue( userData );
     }
     
