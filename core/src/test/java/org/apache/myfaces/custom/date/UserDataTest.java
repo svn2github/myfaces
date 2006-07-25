@@ -3,6 +3,7 @@ package org.apache.myfaces.custom.date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.Date;
 import java.util.Locale;
 
@@ -52,7 +53,7 @@ public class UserDataTest extends TestCase {
 		userData.setMonth("7");
 		userData.setYear("2006");
 		
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"), Locale.ENGLISH);
 		calendar.set(Calendar.DAY_OF_MONTH, 20);
 		calendar.set(Calendar.MONTH, 6);
 		calendar.set(Calendar.YEAR, 2006);
@@ -100,7 +101,7 @@ public class UserDataTest extends TestCase {
 		userData.setMinutes("50");
 		userData.setSeconds("30");
 		
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"), Locale.ENGLISH);
 		calendar.set(Calendar.HOUR_OF_DAY, 10);
 		calendar.set(Calendar.MINUTE, 50);
 		calendar.set(Calendar.SECOND, 30);
