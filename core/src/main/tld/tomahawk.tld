@@ -817,6 +817,7 @@
         &html_event_handler_attributes;
         &html_input_attributes;
         &user_role_attributes;
+        &ext_forceId_attribute;
         &tomahawk_input_date_attributes;
     </tag>
 

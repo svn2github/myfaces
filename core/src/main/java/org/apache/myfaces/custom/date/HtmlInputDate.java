@@ -25,6 +25,7 @@ import java.util.TimeZone;
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIInput;
@@ -66,6 +67,20 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 
     public UserData getUserData(Locale currentLocale){
         return new UserData((Date) getValue(), currentLocale, getTimeZone(), isAmpm(), getType());
+    }
+    
+    /**
+     * Overriden to support the force id, since the parent is not an extended component 
+     */
+    public String getClientId(FacesContext context)
+    {
+        String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
+        if (clientId == null)
+        {
+            clientId = super.getClientId(context);
+        }
+
+        return clientId;
     }
 
 	public String getType() {
