@@ -1224,7 +1224,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                 writer.writeAttribute(HTML.CLASS_ATTR, "kupu-editor-iframe", null);
                 writer.writeAttribute(HTML.FRAMEBORDER_ATTR, "0", null);
                 writer.writeAttribute(HTML.SCROLLING_ATTR, "auto", null);
-                writer.writeAttribute(HTML.SRC_ATTR, "about:blank", null); // Text is loaded afterward by javascript
+                writer.writeAttribute(HTML.SRC_ATTR, "javascript:false;", null); // Text is loaded afterward by javascript
 
                 // Warning, this is special to MyFaces, to allow to have the component in a hidden tab.
                 writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, "myFacesKupuReactivateDesignMode(this)", null);

@@ -11,7 +11,7 @@ function orgApacheMyfacesPopupfixIE() {
 
 
 		if(iframe == null) {
-			orgApacheMyfacesPopupFrameUnder = document.createElement("<iframe id='"+orgApacheMyfacesPopupCurrentlyOpenedPopup.id+"_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
+			orgApacheMyfacesPopupFrameUnder = document.createElement("<iframe src='javascript:false;' id='"+orgApacheMyfacesPopupCurrentlyOpenedPopup.id+"_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
 	   		document.body.insertBefore(orgApacheMyfacesPopupFrameUnder);
    		} else {
    			orgApacheMyfacesPopupFrameUnder = iframe;
