@@ -163,6 +163,7 @@ public class InputSuggestRenderer
         while (i.hasNext())
         {
             String choice = (String) i.next();
+            if(choice.compareTo("-1")==0) continue;
             String text = (String) choices.get(choice);
             out.startElement(HTML.DIV_ELEM, null);
             out.writeAttribute(HTML.ID_ATTR,
