@@ -258,22 +258,8 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 this.actualHighlightedElem = prevElem;
             }
         }
-        else
-        {
-            var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
-
-            if(table)
-            {
-                this.previousPage(table);
-                this.addOutClass(this.actualHighlightedElem);
-                this.actualHighlightedElem = this.getLastRowElem(this.popUp);
-                this.putValueToField(this.actualHighlightedElem);
-                this.addHoverClass(this.actualHighlightedElem);
-            }
-            else
-                dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
-            }
-        }	
+        
+        return;
     }
     
     //parses the XML ajax response data
@@ -321,6 +307,11 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     //Render the ajax drop-down window
     org_apache_myfaces_TableSuggest.prototype.renderDropdown = function()
     {
+        if (this.actualHighlightedElem != null)
+        {
+            this.actualHighlightedElem = null;        
+        }
+
         dojo.dom.removeChildren(this.popUp);
         
         //if no data exists
@@ -417,50 +408,23 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     //handles the user pressing the 'Down Arrow' key
     org_apache_myfaces_TableSuggest.prototype.handleDownKey = function()
     {
-        if(!this.firstHighlightedElem)
+        if(this.actualHighlightedElem == null)
         {
-	    var firstOptionElem = this.getFirstRowElem(this.popUp);
-            this.putValueToField(firstOptionElem);
-            this.addHoverClass(firstOptionElem);
-            this.firstHighlightedElem = firstOptionElem;
-
-            this.actualHighlightedElem = firstOptionElem;
+	    this.actualHighlightedElem = this.getFirstRowElem(this.popUp);
+            if (this.actualHighlightedElem == null) return;
         }
-        else
-        {
+        else {
             var nextElem = dojo.dom.nextElement(this.actualHighlightedElem);
-
-            if(nextElem)
-            {
-                if(dojo.dom.getTagName(nextElem) == "tr")
-                {
-                    this.putValueToField(nextElem);
-                    this.addOutClass(this.actualHighlightedElem);
-                    this.addHoverClass(nextElem);
-                    this.actualHighlightedElem = nextElem
-                }
-            }
-            else
-            {
-                var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
-                var pageField = dojo.dom.nextElement(table);
-
-                if(pageField)
-                {
-                    if(dojo.dom.getTagName(pageField) == "div")
-                    {
-                        this.nextPage(pageField);
-                        this.firstHighlightedElem = this.getFirstRowElem(this.popUp);
-                        this.putValueToField(this.firstHighlightedElem);
-                        this.addOutClass(this.actualHighlightedElem);
-                        this.addHoverClass(this.firstHighlightedElem);
-                        this.actualHighlightedElem = this.firstHighlightedElem;
-                    }
-                }
-                else
-                    dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
-            }
+            if (nextElem == null) return;
+        
+            this.addOutClass(this.actualHighlightedElem);
+            this.actualHighlightedElem = nextElem;
         }
+        
+        this.putValueToField(this.actualHighlightedElem);
+        this.addHoverClass(this.actualHighlightedElem);
+        
+        return;    
     } 
     
 
@@ -776,4 +740,5 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         this.handleRequestResponse(this);
         
     };
+}
 
