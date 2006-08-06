@@ -76,6 +76,9 @@
 	    <item name="Tiles Support" href="tiles.html"/>  
 	  </menu>    
 	
+      <menu name="Testing">
+        <item name="OpenQA Selenium" href="/testing/selenium.html"/>
+      </menu>
 	  ${reports}
     
   </body>
