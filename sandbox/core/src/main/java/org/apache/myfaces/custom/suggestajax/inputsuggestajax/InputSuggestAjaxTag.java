@@ -16,9 +16,9 @@
 package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 
 
-import javax.faces.component.UIComponent;
-
 import org.apache.myfaces.custom.suggestajax.SuggestAjaxTag;
+
+import javax.faces.component.UIComponent;
 
 
 /**
@@ -29,12 +29,6 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjaxTag;
 
 public class InputSuggestAjaxTag extends SuggestAjaxTag
 {
-    private String _listId;
-    private String _listStyleClass;
-    private String _listStyle;
-
-    private String _listItemStyleClass;
-    private String _listItemStyle;
 
     public String getComponentType() {
         return InputSuggestAjax.COMPONENT_TYPE;
@@ -47,49 +41,11 @@ public class InputSuggestAjaxTag extends SuggestAjaxTag
     public void release() {
 
         super.release();
-
-       _listId = null;
-       _listStyleClass = null;
-       _listStyle = null;
-       _listItemStyleClass = null;
-       _listItemStyle = null;
     }
 
     protected void setProperties(UIComponent component) {
 
         super.setProperties(component);
-
-        setStringProperty(component,"listId",_listId);
-        setStringProperty(component,"listStyleClass",_listStyleClass);
-        setStringProperty(component,"listStyle",_listStyle);
-        setStringProperty(component,"listItemStyleClass",_listItemStyleClass);
-        setStringProperty(component,"listItemStyle",_listItemStyle);
-    }
-
-    // setter methodes to populate the components properites
-    public void setListId(String listId)
-    {
-        _listId = listId;
-    }
-
-    public void setListStyleClass(String listStyleClass)
-    {
-        _listStyleClass = listStyleClass;
-    }
-
-    public void setListStyle(String listStyle)
-    {
-        _listStyle = listStyle;
-    }
-
-    public void setListItemStyleClass(String listItemStyleClass)
-    {
-        _listItemStyleClass = listItemStyleClass;
-    }
-
-    public void setListItemStyle(String listItemStyle)
-    {
-        _listItemStyle = listItemStyle;
     }
 
 }

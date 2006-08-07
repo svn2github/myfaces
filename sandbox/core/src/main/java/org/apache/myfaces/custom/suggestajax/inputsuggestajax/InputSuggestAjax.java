@@ -18,7 +18,6 @@ package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 import org.apache.myfaces.custom.suggestajax.SuggestAjax;
 
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import java.io.IOException;
 
 /**
@@ -33,13 +32,6 @@ public class InputSuggestAjax extends SuggestAjax
     public static final String COMPONENT_TYPE = "org.apache.myfaces.InputSuggestAjax";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.InputSuggestAjax";
 
-    private String _listId;
-    private String _listStyleClass;
-    private String _listStyle;
-
-    private String _listItemStyleClass;
-    private String _listItemStyle;
-
     public InputSuggestAjax()
     {
         super();
@@ -49,13 +41,8 @@ public class InputSuggestAjax extends SuggestAjax
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[6];
+        Object[] values = new Object[1];
         values[0] = super.saveState(context);
-        values[1] = _listId;
-        values[2] = _listStyleClass;
-        values[3] = _listStyle;
-        values[4] = _listItemStyleClass;
-        values[5] = _listItemStyle;
 
         return values;
     }
@@ -64,11 +51,6 @@ public class InputSuggestAjax extends SuggestAjax
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        _listId = (String) values[1];
-        _listStyleClass = (String) values[2];
-        _listStyle = (String) values[3];
-        _listItemStyleClass = (String) values[4] ;
-        _listItemStyle = (String) values[5];
     }
 
     public void encodeChildren(FacesContext context) throws IOException
@@ -76,68 +58,4 @@ public class InputSuggestAjax extends SuggestAjax
         super.encodeChildren(context);
     }
 
-    public String getListId()
-    {
-        if (_listId != null)
-            return _listId;
-        ValueBinding vb = getValueBinding("listId");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setListId(String listId)
-    {
-        _listId = listId;
-    }
-
-    public String getListStyleClass()
-    {
-        if (_listStyleClass != null)
-            return _listStyleClass;
-        ValueBinding vb = getValueBinding("listStyleClass");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setListStyleClass(String listStyleClass)
-    {
-        _listStyleClass = listStyleClass;
-    }
-
-    public String getListStyle()
-    {
-        if (_listStyle != null)
-            return _listStyle;
-        ValueBinding vb = getValueBinding("listStyle");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setListStyle(String listStyle)
-    {
-        _listStyle = listStyle;
-    }
-
-    public String getListItemStyleClass()
-    {
-        if (_listItemStyleClass != null)
-            return _listItemStyleClass;
-        ValueBinding vb = getValueBinding("listItemStyleClass");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setListItemStyleClass(String listItemStyleClass)
-    {
-        _listItemStyleClass = listItemStyleClass;
-    }
-
-    public String getListItemStyle()
-    {
-        if (_listItemStyle != null)
-            return _listItemStyle;
-        ValueBinding vb = getValueBinding("listItemStyle");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setListItemStyle(String listItemStyle)
-    {
-        _listItemStyle = listItemStyle;
-    }
 }

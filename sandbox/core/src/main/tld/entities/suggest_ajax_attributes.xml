@@ -1,7 +1,6 @@
 &standard_input_text_attributes;
 &ext_forceId_attribute;
 &alt_location_attributes;
-&html_input_suggest_attributes;
 &display_value_only_attributes;
 &user_role_attributes;
 
@@ -21,38 +20,6 @@
     <description>optional attribute to identify the max size of suggested Values.
                  If specified in tableSuggestAjax, paginator functionality is used.
     </description>
-</attribute>
-
-<attribute>
-    <name>layout</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description></description>
-</attribute>
-
-<attribute>
-    <name>popupStyle</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>Style for the window with a suggested list of items;pop up for each incoming Ajax response</description>
-</attribute>
-
-<attribute>
-    <name>popupStyleClass</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
-</attribute>
-
-<attribute>
-    <name>popupId</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>Id for the pop up window</description>
 </attribute>
 
 <attribute>

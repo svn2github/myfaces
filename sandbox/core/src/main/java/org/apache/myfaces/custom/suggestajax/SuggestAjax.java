@@ -37,11 +37,7 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
 
     private MethodBinding _suggestedItemsMethod;
 
-    private String _popupId;
-    private String _popupStyleClass;
-    private String _popupStyle;
     private String _charset;
-    private String _layout;
 
     private Integer _maxSuggestedItems;
 
@@ -54,15 +50,11 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[8];
+        Object[] values = new Object[4];
         values[0] = super.saveState(context);
         values[1] = saveAttachedState(context, _suggestedItemsMethod);
-        values[2] = _popupId;
-        values[3] = _popupStyleClass;
-        values[4] = _popupStyle;
-        values[5] = _layout;
-        values[6] = _maxSuggestedItems;
-        values[7] = _charset;
+        values[2] = _maxSuggestedItems;
+        values[3] = _charset;
 
         return values;
     }
@@ -72,12 +64,8 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _suggestedItemsMethod = (MethodBinding) restoreAttachedState(context, values[1]);
-         _popupId = (String) values[2];
-        _popupStyleClass = (String) values[3];
-        _popupStyle = (String) values[4];
-        _layout = (String) values[5];
-        _maxSuggestedItems = (Integer) values[6];
-        _charset = (String) values[7];
+        _maxSuggestedItems = (Integer) values[2];
+        _charset = (String) values[3];
     }
     
     public void encodeAjax(FacesContext context)
@@ -102,19 +90,6 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
         super.encodeChildren(context);
     }
 
-    public String getLayout()
-    {
-        if (_layout != null)
-            return _layout;
-        ValueBinding vb = getValueBinding("layout");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : "default";
-    }
-
-    public void setLayout(String layout)
-    {
-        _layout = layout;
-    }
-
      public void setSuggestedItemsMethod(MethodBinding suggestedItemsMethod)
     {
        _suggestedItemsMethod = suggestedItemsMethod;
@@ -123,45 +98,6 @@ public class SuggestAjax extends HtmlInputText implements AjaxComponent
     public MethodBinding getSuggestedItemsMethod()
     {
         return _suggestedItemsMethod;
-    }
-
-    public String getPopupId()
-    {
-        if (_popupId != null)
-            return _popupId;
-        ValueBinding vb = getValueBinding("popupId");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setPopupId(String popupId)
-    {
-        _popupId = popupId;
-    }
-
-    public String getPopupStyleClass()
-    {
-        if (_popupStyleClass != null)
-            return _popupStyleClass;
-        ValueBinding vb = getValueBinding("popupStyleClass");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setPopupStyleClass(String popupStyleClass)
-    {
-        _popupStyleClass = popupStyleClass;
-    }
-
-    public String getPopupStyle()
-    {
-        if (_popupStyle != null)
-            return _popupStyle;
-        ValueBinding vb = getValueBinding("popupStyle");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
-    }
-
-    public void setPopupStyle(String popupStyle)
-    {
-        _popupStyle = popupStyle;
     }
 
     public Integer getMaxSuggestedItems() {

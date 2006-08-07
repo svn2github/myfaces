@@ -120,7 +120,6 @@ Sandbox-related entities.
 <!ENTITY value_change_notifier_attributes       SYSTEM "entities/value_change_notifier_attributes.xml">
 <!ENTITY html_script_attributes       SYSTEM "entities/html_script_attributes.xml">
 <!ENTITY ui_state_changed_notifier_attributes       SYSTEM "entities/ui_state_changed_notifier_attributes.xml">
-<!ENTITY input_suggest_ajax_attributes       SYSTEM "entities/input_suggest_ajax_attributes.xml">
 <!ENTITY table_suggest_ajax_attributes       SYSTEM "entities/table_suggest_ajax_attributes.xml">
 <!ENTITY suggest_ajax_attributes       SYSTEM "entities/suggest_ajax_attributes.xml">
 <!ENTITY html_fisheye_list_attributes	SYSTEM "entities/html_fisheyelist_attributes.xml">
@@ -197,9 +196,10 @@ Sandbox-related entities.
 		<name>inputSuggestAjax</name>
 		<tag-class>org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjaxTag</tag-class>
 		<body-content>JSP</body-content>
-		<description>Provides an input textbox with "suggest" functionality, using an ajax request
-            to the server.</description>
-        &input_suggest_ajax_attributes;
+		<description>
+                     Provides an input textbox with "suggest" functionality, using an ajax request
+                     to the server.
+        </description>
         &suggest_ajax_attributes;
     </tag>
 

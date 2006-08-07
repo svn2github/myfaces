@@ -31,6 +31,11 @@ public class TableSuggestAjax extends SuggestAjax
     public static final String COMPONENT_TYPE = "org.apache.myfaces.TableSuggestAjax";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.TableSuggestAjax";
 
+    private String _layout;
+    private String _popupId;
+    private String _popupStyleClass;
+    private String _popupStyle;
+
     private String _tableStyleClass;
     private String _nextPageFieldClass;
 
@@ -53,7 +58,7 @@ public class TableSuggestAjax extends SuggestAjax
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[9];
+        Object[] values = new Object[13];
         values[0] = super.saveState(context);
         values[1] = _var;
         values[2] = _columnHoverClass;
@@ -63,6 +68,10 @@ public class TableSuggestAjax extends SuggestAjax
         values[6] = _tableStyleClass;
         values[7] = _nextPageFieldClass;
         values[8] = _acceptValueToField;
+        values[9] = _popupId;
+        values[10] = _popupStyleClass;
+        values[11] = _popupStyle;
+        values[12] = _layout;
 
         return values;
     }
@@ -79,6 +88,10 @@ public class TableSuggestAjax extends SuggestAjax
         _tableStyleClass = (String) values[6];
         _nextPageFieldClass = (String) values[7];
         _acceptValueToField = (Boolean) values[8];
+        _popupId = (String) values[9];
+        _popupStyleClass = (String) values[10];
+        _popupStyle = (String) values[11];
+        _layout = (String) values[12];
     }
 
     public boolean getRendersChildren()
@@ -188,5 +201,57 @@ public class TableSuggestAjax extends SuggestAjax
     public void setAcceptValueToField(Boolean acceptValueToField)
     {
         _acceptValueToField = acceptValueToField;
+    }
+
+     public String getPopupId()
+    {
+        if (_popupId != null)
+            return _popupId;
+        ValueBinding vb = getValueBinding("popupId");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
+
+    public void setPopupId(String popupId)
+    {
+        _popupId = popupId;
+    }
+
+    public String getPopupStyleClass()
+    {
+        if (_popupStyleClass != null)
+            return _popupStyleClass;
+        ValueBinding vb = getValueBinding("popupStyleClass");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
+
+    public void setPopupStyleClass(String popupStyleClass)
+    {
+        _popupStyleClass = popupStyleClass;
+    }
+
+    public String getPopupStyle()
+    {
+        if (_popupStyle != null)
+            return _popupStyle;
+        ValueBinding vb = getValueBinding("popupStyle");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : null;
+    }
+
+    public void setPopupStyle(String popupStyle)
+    {
+        _popupStyle = popupStyle;
+    }
+
+    public String getLayout()
+    {
+        if (_layout != null)
+            return _layout;
+        ValueBinding vb = getValueBinding("layout");
+        return vb != null ? vb.getValue(getFacesContext()).toString() : "default";
+    }
+
+    public void setLayout(String layout)
+    {
+        _layout = layout;
     }
 }

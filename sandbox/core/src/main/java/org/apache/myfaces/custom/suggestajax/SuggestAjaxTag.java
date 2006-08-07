@@ -39,11 +39,7 @@ public class SuggestAjaxTag extends HtmlInputTextTag
     private String _suggestedItemsMethod;
     private String _maxSuggestedItems;
 
-    private String _popupId;
-    private String _popupStyleClass;
-    private String _popupStyle;
     private String _charset;
-    private String _layout;
 
     public String getComponentType() {
         return InputSuggestAjax.COMPONENT_TYPE;
@@ -59,10 +55,6 @@ public class SuggestAjaxTag extends HtmlInputTextTag
 
        _suggestedItemsMethod = null;
        _maxSuggestedItems = null;
-       _popupId = null;
-       _popupStyleClass = null;
-       _popupStyle = null;
-       _layout = null;
        _charset = null;
        
     }
@@ -74,10 +66,6 @@ public class SuggestAjaxTag extends HtmlInputTextTag
         setIntegerProperty(component,"maxSuggestedItems", _maxSuggestedItems);
 
         SuggestAjaxTag.setSuggestedItemsMethodProperty(getFacesContext(),component,_suggestedItemsMethod);
-        setStringProperty(component,"popupId",_popupId);
-        setStringProperty(component,"popupStyleClass",_popupStyleClass);
-        setStringProperty(component,"popupStyle",_popupStyle);
-        setStringProperty(component,"layout",_layout);
         setStringProperty(component,"charset",_charset);
     }
 
@@ -109,29 +97,10 @@ public class SuggestAjaxTag extends HtmlInputTextTag
     }
 
     // setter methodes to populate the components properites
-    public void setLayout(String layout)
-    {
-        _layout = layout;
-    }
 
     public void setSuggestedItemsMethod(String suggestedItemsMethod)
     {
         _suggestedItemsMethod = suggestedItemsMethod;
-    }
-
-    public void setPopupId(String popupId)
-    {
-        _popupId = popupId;
-    }
-
-    public void setPopupStyleClass(String popupStyleClass)
-    {
-        _popupStyleClass = popupStyleClass;
-    }
-
-    public void setPopupStyle(String popupStyle)
-    {
-        _popupStyle = popupStyle;
     }
 
     public void setMaxSuggestedItems(String maxSuggestedItems) {

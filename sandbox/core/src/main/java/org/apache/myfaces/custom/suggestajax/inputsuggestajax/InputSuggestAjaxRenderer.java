@@ -22,8 +22,6 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -57,7 +55,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                                                                         throws IOException
     {
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
@@ -65,25 +62,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         DojoUtils.addRequire(context, component, "extensions.ComboBox");
         DojoUtils.addRequire(context, component, "dojo.widget.Wizard");
         DojoUtils.addRequire(context, component, "dojo.event.*");
-
-        AddResource addResource = AddResourceFactory.getInstance(context);
-
-        InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) component;
-
-        if (inputSuggestAjax.getPopupStyleClass() == null)
-        {
-            if( styleLocation != null)
-            {
-                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, styleLocation + "/input_suggest.css");
-            }
-            else
-            {
-                String theme = ((InputSuggestAjax)component).getLayout();
-                if(theme == null)
-                    theme = "default";
-                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, InputSuggestAjaxRenderer.class, theme + "/input_suggest.css");
-            }
-        }
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
@@ -93,14 +71,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) component;
 
         encodeJavascript(context,component);
-
-        inputSuggestAjax.getAttributes().put("autocomplete","off");
-
-    /*     String oldStyleClass = inputSuggestAjax.getStyleClass();
-    inputSuggestAjax.setStyleClass(
-            (oldStyleClass!=null && oldStyleClass.length()>=0 ? oldStyleClass : "")+" myFacesInputSuggestAjax");
-
-    inputSuggestAjax.setStyleClass(oldStyleClass);*/
 
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
@@ -117,7 +87,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         out.startElement(HTML.INPUT_ELEM, component);
         renderId(context, component);
         out.writeAttribute(HTML.NAME_ATTR, clientId, null);
-        out.writeAttribute(HTML.SIZE_ATTR, "100px", null);
         out.writeAttribute("dojoType", "combobox", null);
         out.writeAttribute("dataUrl", ajaxUrl, null);
         out.writeAttribute("mode", "remote", null);
@@ -130,7 +99,14 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         {
             out.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
         }
-
+        if (inputSuggestAjax.getStyle() != null)
+        {
+            out.writeAttribute(HTML.STYLE_ATTR,inputSuggestAjax.getStyle(), null);
+        }
+        if (inputSuggestAjax.getStyleClass() != null)
+        {
+            out.writeAttribute(HTML.CLASS_ATTR,inputSuggestAjax.getStyleClass(), null);
+        }
         out.endElement(HTML.INPUT_ELEM);
 
         out.startElement(HTML.SCRIPT_ELEM, null);

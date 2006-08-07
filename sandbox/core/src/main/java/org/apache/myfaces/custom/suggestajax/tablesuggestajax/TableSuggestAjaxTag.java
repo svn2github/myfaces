@@ -27,6 +27,11 @@ import javax.faces.component.UIComponent;
  */
 public class TableSuggestAjaxTag extends SuggestAjaxTag
 {
+    private String _popupId;
+    private String _popupStyleClass;
+    private String _popupStyle;
+    private String _layout;
+
     private String _tableStyleClass;
     private String _nextPageFieldClass;
 
@@ -60,6 +65,10 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
        _tableStyleClass = null;
        _nextPageFieldClass = null;
        _acceptValueToField = null;
+       _popupId = null;
+       _popupStyleClass = null;
+       _popupStyle = null;
+       _layout = null;
     }
 
     protected void setProperties(UIComponent component) {
@@ -74,6 +83,10 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
         setStringProperty(component,"tableStyleClass",_tableStyleClass);
         setStringProperty(component,"nextPageFieldClass",_nextPageFieldClass);
         setBooleanProperty(component,"acceptValueToField",_acceptValueToField);
+        setStringProperty(component,"popupId",_popupId);
+        setStringProperty(component,"popupStyleClass",_popupStyleClass);
+        setStringProperty(component,"popupStyle",_popupStyle);
+        setStringProperty(component,"layout",_layout);
 
         setStringProperty(component, JSFAttr.VAR_ATTR, _var);
     }
@@ -117,5 +130,25 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
     public void setAcceptValueToField(String acceptValueToField)
     {
         _acceptValueToField = acceptValueToField;
+    }
+
+    public void setLayout(String layout)
+    {
+        _layout = layout;
+    }
+
+        public void setPopupId(String popupId)
+    {
+        _popupId = popupId;
+    }
+
+    public void setPopupStyleClass(String popupStyleClass)
+    {
+        _popupStyleClass = popupStyleClass;
+    }
+
+    public void setPopupStyle(String popupStyle)
+    {
+        _popupStyle = popupStyle;
     }
 }

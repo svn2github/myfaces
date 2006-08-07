@@ -72,3 +72,35 @@
                  dot of the var.
     </description>
 </attribute>
+
+<attribute>
+    <name>layout</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description></description>
+</attribute>
+
+<attribute>
+    <name>popupStyle</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>Style for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+</attribute>
+
+<attribute>
+    <name>popupStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+</attribute>
+
+<attribute>
+    <name>popupId</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>Id for the pop up window</description>
+</attribute>
