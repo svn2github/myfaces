@@ -119,7 +119,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
 
-        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId);
+        String ajaxUrl = context.getExternalContext().encodeActionURL(addQueryString(actionURL, "affectedAjaxComponent=" + clientId));
 
         ResponseWriter out = context.getResponseWriter();
 

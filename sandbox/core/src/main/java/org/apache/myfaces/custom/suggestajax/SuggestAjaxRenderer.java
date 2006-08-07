@@ -85,4 +85,9 @@ public class SuggestAjaxRenderer extends HtmlTextRenderer implements AjaxSuggest
     {
         super.decode(facesContext, component);
     }
+
+     protected String addQueryString(String url, String queryString)
+     {    	
+   	    return url + (url.indexOf("?") > 0 ? "&" : "?") + queryString;
+     }
 }

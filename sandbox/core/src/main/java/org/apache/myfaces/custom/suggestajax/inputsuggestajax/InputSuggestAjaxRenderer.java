@@ -25,6 +25,7 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -77,8 +78,8 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         String charset = (inputSuggestAjax.getCharset() != null ? inputSuggestAjax.getCharset() : "");
 
-        String ajaxUrl = context.getExternalContext().encodeActionURL(actionURL+"?affectedAjaxComponent=" + clientId +
-                "&charset=" + charset + "&" + clientId + "=%{searchString}");
+        String ajaxUrl = context.getExternalContext().encodeActionURL(addQueryString(actionURL, "affectedAjaxComponent=" + clientId +
+                "&charset=" + charset + "&" + clientId + "=%{searchString}"));
 
         ResponseWriter out = context.getResponseWriter();
 
@@ -109,12 +110,14 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
         out.endElement(HTML.INPUT_ELEM);
 
+        String escapedValue = escapeQuotes(value);
+
         out.startElement(HTML.SCRIPT_ELEM, null);
         out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         out.write("dojo.event.connect(window, \"onload\", function(evt) {\n"
                     + "var comboWidget = dojo.widget.byId(\""+ clientId +"\");\n"
-                    + "comboWidget.textInputNode.value = \""+ value +"\";\n"
-                    + "comboWidget.comboBoxValue.value = \""+ value +"\";\n");
+                    + "comboWidget.textInputNode.value = \""+ escapedValue +"\";\n"
+                    + "comboWidget.comboBoxValue.value = \""+ escapedValue +"\";\n");
         out.write("});\n");
         out.endElement(HTML.SCRIPT_ELEM);
     }
@@ -138,8 +141,10 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
             Object item = suggestedItem.next();
 
-            buf.append("[\"").append(item.toString()).append("\",\"")
-                .append(item.toString().substring(0, 1).toUpperCase()).append("\"],");
+            String prefix = escapeQuotes(UnicodeEncoder.encode(item.toString()).substring(0, 1)).toUpperCase();
+
+            buf.append("[\"").append(UnicodeEncoder.encode(escapeQuotes(item.toString()))).append("\",\"")
+               .append(prefix).append("\"],");
         }
 
         buf.append("];");
@@ -150,6 +155,11 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     public void decode(FacesContext facesContext, UIComponent component)
     {
         super.decode(facesContext, component);
+    }
+
+    private String escapeQuotes(String input)
+    {
+   	    return input != null ? input.replaceAll("\"", "\\\\\"") : "";
     }
 
 }
