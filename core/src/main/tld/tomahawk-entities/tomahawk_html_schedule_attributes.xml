@@ -2,7 +2,7 @@
          <name>submitOnClick</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Boolean</type>
+         <type>java.lang.String</type>
       </attribute>
       <attribute>
          <name>mouseListener</name>
@@ -14,19 +14,19 @@
          <name>compactMonthRowHeight</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Integer</type>
+         <type>java.lang.String</type>
       </attribute>
       <attribute>
          <name>compactWeekRowHeight</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Integer</type>
+         <type>java.lang.String</type>
       </attribute>
       <attribute>
          <name>detailedRowHeight</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Integer</type>
+         <type>java.lang.String</type>
       </attribute>
       <attribute>
          <name>headerDateFormat</name>
@@ -38,7 +38,7 @@
          <name>readonly</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Boolean</type>
+         <type>java.lang.String</type>
       </attribute>
       <attribute>
          <name>theme</name>
@@ -50,7 +50,7 @@
          <name>tooltip</name>
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Boolean</type>
+         <type>java.lang.String</type>
       </attribute>
       <attribute>
         <name>columnClass</name>
@@ -200,12 +200,12 @@
          <name>renderZeroLengthEntries</name> 
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Boolean</type>
+         <type>java.lang.String</type>
        </attribute>
        <attribute>
          <name>expandToFitEntries</name> 
          <required>false</required>
          <rtexprvalue>false</rtexprvalue>
-         <type>java.lang.Boolean</type>
+         <type>java.lang.String</type>
        </attribute>
        
