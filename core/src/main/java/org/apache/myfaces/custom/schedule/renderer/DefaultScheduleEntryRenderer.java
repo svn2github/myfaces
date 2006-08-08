@@ -52,34 +52,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
     {
         if (compact)
         {
-            StringBuffer text = new StringBuffer();
-            Date startTime = entry.getStartTime();
-
-            if (day.getDayStart().after(entry.getStartTime()))
-            {
-                startTime = day.getDayStart();
-            }
-
-            Date endTime = entry.getEndTime();
-
-            if (day.getDayEnd().before(entry.getEndTime()))
-            {
-                endTime = day.getDayEnd();
-            }
-
-            if (!entry.isAllDay())
-            {
-            	DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
-            	text.append(format.format(startTime));
-            	if (!startTime.equals(endTime)) {
-            		text.append("-");
-            		text.append(format.format(endTime));
-            	}
-            	text.append(": ");
-            }
-            text.append(entry.getTitle());
-
-            writer.writeText(text.toString(), null);
+            renderCompactContent(context, writer, schedule, day, entry, selected);
         } else
         {
             if (selected)
@@ -99,54 +72,74 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
                 writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                                                                      "text"), null);
                 writer.writeAttribute(HTML.STYLE_ATTR,entryStyle.toString(), null);
-                // write the title of the entry
-                if (entry.getTitle() != null)
-                {
-                    writer.startElement(HTML.SPAN_ELEM, schedule);
-                    writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(
-                            schedule, "title"), null);
-                    writer.writeText(entry.getTitle(), null);
-                    writer.endElement(HTML.SPAN_ELEM);
-                }
-                if (entry.getSubtitle() != null)
-                {
-                    writer.startElement("br", schedule);
-                    writer.endElement("br");
-                    writer.startElement(HTML.SPAN_ELEM, schedule);
-                    writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(
-                            schedule, "subtitle"), null);
-                    writer.writeText(entry.getSubtitle(), null);
-                    writer.endElement(HTML.SPAN_ELEM);
-                }
-
+                
+                renderDetailedContentText(context, writer, schedule, day, entry, selected);
+                
                 writer.endElement(HTML.DIV_ELEM);
             } else
             {
-                // write the title
-                if (entry.getTitle() != null)
-                {
-                    writer.startElement(HTML.SPAN_ELEM, schedule);
-                    writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(
-                            schedule, "title"), null);
-                    writer.writeText(entry.getTitle(), null);
-                    writer.endElement(HTML.SPAN_ELEM);
-                }
-                // write the subtitle
-                if (entry.getSubtitle() != null)
-                {
-                    writer.startElement("br", schedule);
-                    writer.endElement("br");
-                    writer.startElement(HTML.SPAN_ELEM, schedule);
-                    writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(
-                            schedule, "subtitle"), null);
-                    writer.writeText(entry.getSubtitle(), null);
-                    writer.endElement(HTML.SPAN_ELEM);
-                }
+                renderDetailedContentText(context, writer, schedule, day, entry, selected);
             }
         }
 
     }
 
+    protected void renderCompactContent(FacesContext context, ResponseWriter writer, HtmlSchedule schedule, ScheduleDay day, ScheduleEntry entry, boolean selected) throws IOException
+    {
+        StringBuffer text = new StringBuffer();
+        Date startTime = entry.getStartTime();
+
+        if (day.getDayStart().after(entry.getStartTime()))
+        {
+            startTime = day.getDayStart();
+        }
+
+        Date endTime = entry.getEndTime();
+
+        if (day.getDayEnd().before(entry.getEndTime()))
+        {
+            endTime = day.getDayEnd();
+        }
+
+        if (!entry.isAllDay())
+        {
+        	DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
+        	text.append(format.format(startTime));
+        	if (!startTime.equals(endTime)) {
+        		text.append("-");
+        		text.append(format.format(endTime));
+        	}
+        	text.append(": ");
+        }
+        text.append(entry.getTitle());
+
+        writer.writeText(text.toString(), null);    	
+    }
+    
+    protected void renderDetailedContentText(FacesContext context, ResponseWriter writer,
+            HtmlSchedule schedule, ScheduleDay day, ScheduleEntry entry, boolean selected) throws IOException
+    {
+        // write the title of the entry
+        if (entry.getTitle() != null)
+        {
+            writer.startElement(HTML.SPAN_ELEM, schedule);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(
+                    schedule, "title"), null);
+            writer.writeText(entry.getTitle(), null);
+            writer.endElement(HTML.SPAN_ELEM);
+        }
+        if (entry.getSubtitle() != null)
+        {
+            writer.startElement("br", schedule);
+            writer.endElement("br");
+            writer.startElement(HTML.SPAN_ELEM, schedule);
+            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(
+                    schedule, "subtitle"), null);
+            writer.writeText(entry.getSubtitle(), null);
+            writer.endElement(HTML.SPAN_ELEM);
+        }    	
+    }
+    
     /**
      * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#getColor(javax.faces.context.FacesContext, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
      */
