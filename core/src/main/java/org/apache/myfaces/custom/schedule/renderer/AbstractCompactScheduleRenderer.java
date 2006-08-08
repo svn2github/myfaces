@@ -241,7 +241,6 @@ public abstract class AbstractCompactScheduleRenderer extends
                         HTML.STYLE_ATTR,
                         "width: 100%; height: 100%; overflow: auto; vertical-align: top;",
                         null);
-        writer.writeAttribute(HTML.ID_ATTR, dayBodyId, null);
 
         //this extra div is required, because when a scrollbar is visible and
         //it is clicked, the fireScheduleTimeClicked() method is fired.
@@ -252,6 +251,8 @@ public abstract class AbstractCompactScheduleRenderer extends
                 "width: 100%; height: 100%; vertical-align: top;",
                 null);
 
+        writer.writeAttribute(HTML.ID_ATTR, dayBodyId, null);
+        
         //register an onclick event listener to a day cell which will capture
         //the date
         if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
@@ -397,6 +398,9 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         if (date != null) cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleStartHour());
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         log.debug("last clicked datetime: " + cal.getTime());
         return cal.getTime();
     }
