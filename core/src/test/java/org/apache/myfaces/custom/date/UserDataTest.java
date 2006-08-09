@@ -20,7 +20,6 @@ public class UserDataTest extends TestCase {
 	}
 	
 	public void testConstructorDoesNotSetDateVariablesWhenTheDateIsNull() {
-		System.out.println(getDefaultTimeZoneId());
 		userData = new UserData(null, Locale.getDefault(), getDefaultTimeZoneId() , false, "date");
 		assertNull(userData.getYear());
 		assertNull(userData.getDay());
