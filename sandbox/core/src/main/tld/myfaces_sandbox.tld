@@ -1175,7 +1175,7 @@ Sandbox-related entities.
 	</tag>
 
 	<tag>
-		<name>selectitems</name>
+		<name>selectItems</name>
 		<tag-class>org.apache.myfaces.custom.selectitems.SelectItemsTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>
