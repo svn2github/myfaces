@@ -31,15 +31,15 @@
 
     <h:form>
 		<h:selectOneMenu id="menu1" value="#{selectItemsBean.selectedCarColor}">
-   			<s:selectitems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+   			<s:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
 		</h:selectOneMenu>
 		
         <h:selectOneRadio id="radio1" value="#{selectItemsBean.selectedCarColor}">
-   			<s:selectitems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+   			<s:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
         </h:selectOneRadio>
         
         <h:selectOneListbox id="list1" value="#{selectItemsBean.selectedCarColor}">
-   			<s:selectitems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+   			<s:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
         </h:selectOneListbox>
     </h:form>
 </f:view>
