@@ -17,14 +17,14 @@ public class RegExprValidatorTestCase extends AbstractValidatorTestCase
   
   RegExprValidator validator;
   
-  public void setUp()
+  protected void setUp() throws Exception
   {
     super.setUp();
     validator = new RegExprValidator();
     
   }
 
-  public void tearDown()
+  protected void tearDown() throws Exception
   {
     super.tearDown();
   }

@@ -16,13 +16,13 @@ public class EmailValidatorTestCase extends AbstractValidatorTestCase
   
   EmailValidator emailValidator;
   
-  public void setUp()
+  protected void setUp() throws Exception
   {
     super.setUp();
     emailValidator = new EmailValidator();    
   }
 
-  public void tearDown()
+  protected void tearDown() throws Exception
   {
     super.tearDown();
   }

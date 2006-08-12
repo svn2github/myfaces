@@ -36,7 +36,7 @@ import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.mock.MockRenderKitFactory;
 
 /**
- * @author Mathias Brökelmann (latest modification by $Author$)
+ * @author Mathias Brï¿½kelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class HtmlDataTableTest extends AbstractJsfTestCase
@@ -52,7 +52,7 @@ public class HtmlDataTableTest extends AbstractJsfTestCase
 		return null; // keep this method or maven won't run it
 	}
     
-    public void setUp()
+    protected void setUp() throws Exception
     {
         super.setUp();
         // TODO remove these two lines once shale-test goes alpha, see MYFACES-1155
@@ -61,7 +61,7 @@ public class HtmlDataTableTest extends AbstractJsfTestCase
         _dataTable = new HtmlDataTable();
     }
 
-    public void tearDown()
+    protected void tearDown() throws Exception
     {
     	super.tearDown();
     	// once shale-test is updated in maven, this will not be necessary

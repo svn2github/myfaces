@@ -16,7 +16,7 @@ public abstract class AbstractValidatorTestCase extends AbstractJmockJsfTestCase
   Mock mockComponent;
   UIComponent component;
   
-  public void setUp()
+  protected void setUp() throws Exception
   {
     super.setUp();
     mockComponent = mock(UIComponent.class);
@@ -24,7 +24,7 @@ public abstract class AbstractValidatorTestCase extends AbstractJmockJsfTestCase
     
   }
 
-  public void tearDown()
+  protected void tearDown() throws Exception
   {
     super.tearDown();
   }

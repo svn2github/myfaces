@@ -35,7 +35,7 @@ public class StylesheetRendererTest extends AbstractJsfTestCase
         super(name);
     }
     
-    public void setUp()
+    protected void setUp() throws Exception
     {
         super.setUp();
         stylesheet = new Stylesheet();
@@ -51,7 +51,7 @@ public class StylesheetRendererTest extends AbstractJsfTestCase
                 new StylesheetRenderer());
     }
 
-    public void tearDown()
+    protected void tearDown() throws Exception
     {
         super.tearDown();
         writer = null;

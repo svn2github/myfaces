@@ -42,7 +42,7 @@ public class UITreeDataTest extends AbstractTreeTestCase
     /**
      * See abstract class
      */
-    public void setUp()
+    protected void setUp() throws Exception
     {
         super.setUp();
     }

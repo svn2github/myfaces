@@ -76,7 +76,7 @@ public class AbstractTreeTestCase extends AbstractJsfTestCase
     /**
      * See abstract class
      */
-    public void setUp()
+    protected void setUp() throws Exception
     {
         super.setUp();
 
