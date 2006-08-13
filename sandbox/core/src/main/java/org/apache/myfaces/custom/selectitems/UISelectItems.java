@@ -27,6 +27,10 @@ import javax.faces.el.ValueBinding;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+/**
+ * @author cagatay (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 public class UISelectItems extends javax.faces.component.UISelectItems {
 	
     public static final String COMPONENT_TYPE = "org.apache.myfaces.UISelectItems";

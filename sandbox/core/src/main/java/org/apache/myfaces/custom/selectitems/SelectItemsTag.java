@@ -20,6 +20,10 @@ import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
+/**
+ * @author cagatay (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 public class SelectItemsTag extends UIComponentTagBase {
 	
 	private String _var;
