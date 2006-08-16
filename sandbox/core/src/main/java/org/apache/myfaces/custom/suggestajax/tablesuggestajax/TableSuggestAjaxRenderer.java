@@ -273,51 +273,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
     }
 
-    private void encodeTable(TableSuggestAjax tableSuggestAjax, FacesContext context)
-                                                                                throws IOException
-
-    {
-        //now, writing the response
-        StringBuffer buf = new StringBuffer();
-
-        Collection suggesteds = getSuggestedItems(context, tableSuggestAjax);
-
-        if (getChildren(tableSuggestAjax)!=null
-                && !getChildren(tableSuggestAjax).isEmpty())
-        {
-            if (tableSuggestAjax.getMaxSuggestedItems() != null)
-            {
-                List oneSuggestedTable = new ArrayList();
-                List wholeList = new ArrayList();
-                wholeList.addAll(suggesteds);
-
-                int j = 0;
-
-                while (j <= wholeList.size()-1)
-                {
-                    for (int i = 0; i < tableSuggestAjax.getMaxSuggestedItems().intValue(); i++)
-                    {
-                        Object entry = wholeList.get(j);
-                        oneSuggestedTable.add(entry);
-                        j++;
-
-                        if(j == wholeList.size())
-                            break;
-                    }
-
-                    writeOneSuggestList(buf, oneSuggestedTable, context, tableSuggestAjax);
-                    oneSuggestedTable.clear();
-                }
-            }
-            else
-            {
-                writeSuggestList(buf, suggesteds, context, tableSuggestAjax);
-            }
-        }
-
-        context.getResponseWriter().write(buf.toString());
-    }
-
     private void writeOneSuggestList(StringBuffer buf,Collection suggesteds,
                                      FacesContext context, TableSuggestAjax tableSuggestAjax)
     {
@@ -341,29 +296,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         buf.append(renderNextPageField(tableSuggestAjax, context));
     }
 
-    
-    private void encodeAjaxTableTemplate(FacesContext context, 
-            TableSuggestAjax tableSuggestAjax) throws IOException
-    {
-        StringBuffer buf = new StringBuffer();
-        buf.append("<table");
-        if (tableSuggestAjax.getTableStyleClass() != null)
-        {
-            buf.append(" class=\"" + tableSuggestAjax.getTableStyleClass() + "\" ");
-        }
-        
-        buf.append(" id=\"" + tableSuggestAjax.getClientId(context) + "_table" + "\" ");
-        buf.append(">");
-        
-        buf.append(renderTableHeader(tableSuggestAjax.getChildren()));
-        buf.append("<tbody></tbody>");
-        buf.append("</table>");
-        
-        context.getResponseWriter().write(buf.toString());
-                
-    }
-    
-    
     
     //renders the response data in an XML format
     private void renderResponse(TableSuggestAjax tableSuggestAjax,
