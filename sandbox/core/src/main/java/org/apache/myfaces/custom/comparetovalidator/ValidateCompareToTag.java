@@ -71,7 +71,7 @@ public class ValidateCompareToTag extends ValidatorBaseTag {
         if (_comparator != null)
 		{
 			ValueBinding vb = facesContext.getApplication().createValueBinding(_comparator);
-			validator.setComparator(vb.getValue(facesContext).toString());
+			validator.setComparator(vb.getValue(facesContext));
 		}
         
         if (_foreignComponentName != null)
