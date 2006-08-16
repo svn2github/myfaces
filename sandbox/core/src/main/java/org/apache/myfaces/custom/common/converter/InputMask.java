@@ -1,7 +1,5 @@
 package org.apache.myfaces.custom.common.converter;
 
-import javax.faces.context.FacesContext;
-
 /**
  * interface to allow a converter to send code which converts a string to object and vice versa
  * on the client

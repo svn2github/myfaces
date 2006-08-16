@@ -15,8 +15,6 @@
  */
 package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
@@ -47,8 +45,6 @@ import java.util.List;
  */
 public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements AjaxRenderer
 {
-    private static final Log log = LogFactory.getLog(TableSuggestAjaxRenderer.class);
-
     public static final int DEFAULT_START_REQUEST = 0;
     public static final int DEFAULT_BETWEEN_KEY_UP = 1000;
     
@@ -241,8 +237,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     public void encodeAjax(FacesContext context, UIComponent uiComponent)
                                                                     throws IOException
     {
-        TableSuggestAjax tableSuggestAjax;
-
         String clientId = (String)context.getExternalContext()
                                     .getRequestParameterMap().get("affectedAjaxComponent");
 
@@ -256,7 +250,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         {
             UIComponentPerspective componentPerspective = (UIComponentPerspective) ajaxComp;
 
-            tableSuggestAjax = (TableSuggestAjax) componentPerspective.executeOn(context, new ExecuteOnCallback()
+            componentPerspective.executeOn(context, new ExecuteOnCallback()
             {
                 public Object execute(FacesContext facesContext, UIComponent uiComponent)
                 {

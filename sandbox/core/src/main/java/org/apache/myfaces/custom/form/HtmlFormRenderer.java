@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)

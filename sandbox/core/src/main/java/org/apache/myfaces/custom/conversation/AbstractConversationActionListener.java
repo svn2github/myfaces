@@ -20,7 +20,6 @@ import java.io.Serializable;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import javax.faces.event.PhaseId;
 
 /**
  * base class to handle actions events

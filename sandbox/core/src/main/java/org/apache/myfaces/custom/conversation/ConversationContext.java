@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * The ConversationContext handles all conversations within the current context
  *
@@ -31,8 +28,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ConversationContext
 {
-	private final static Log log = LogFactory.getLog(ConversationContext.class);
-
 	private final long id;
 
 	private final Object mutex = new Object();

@@ -16,8 +16,6 @@
 
 package org.apache.myfaces.custom.inputAjax;
 
-import org.apache.myfaces.component.html.ext.HtmlMessage;
-
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import java.io.IOException;

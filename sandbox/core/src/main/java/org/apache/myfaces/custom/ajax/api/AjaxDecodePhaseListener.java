@@ -21,7 +21,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
 import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
-import org.apache.myfaces.custom.suggestajax.SuggestAjax;
 import org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjax;
 import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;

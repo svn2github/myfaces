@@ -16,8 +16,6 @@
 
 package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
@@ -41,8 +39,6 @@ import java.util.Iterator;
  */
 public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements AjaxRenderer
 {
-    private static final Log log = LogFactory.getLog(InputSuggestAjaxRenderer.class);
-
    /**
      * Encodes any stand-alone javascript functions that are needed.
      * Uses either the extension filter, or a

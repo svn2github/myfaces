@@ -16,7 +16,6 @@
 package org.apache.myfaces.custom.ajax.api;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -52,8 +51,6 @@ public class AjaxPhaseListener implements PhaseListener
         {
             possibleClientId = (String) facesContext.getExternalContext().getRequestParameterMap().get(
                     "affectedAjaxComponent");
-
-            UIViewRoot root = facesContext.getViewRoot();
 
             UIComponent ajaxComponent =
                     facesContext.getViewRoot().findComponent(possibleClientId);

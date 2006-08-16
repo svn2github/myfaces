@@ -18,7 +18,6 @@ package org.apache.myfaces.custom.inputAjax;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.ext.HtmlMessage;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

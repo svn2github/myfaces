@@ -18,7 +18,6 @@ package org.apache.myfaces.custom.statechangednotifier;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;

@@ -84,11 +84,7 @@ public class HtmlCommandButtonAjaxRenderer extends HtmlButtonRenderer implements
         String clientId = component.getClientId(context);
         String submitFunctionStart = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit3('" + clientId + "');";
         HtmlCommandButtonAjax comp = (HtmlCommandButtonAjax) component;
-        //comp.setOnclick(comp.getOnclick() == null ? submitFunctionStart : comp.getOnclick() + ";" + submitFunctionStart);
         comp.setOnclick(submitFunctionStart);
-        String loadingStyleClass = AjaxRendererUtils.STYLECLASS_LOADER;
-        //comp.setStyleClass(comp.getStyleClass() == null ? loadingStyleClass : comp.getStyleClass() + ";" + loadingStyleClass);
-        //comp.setStyleClass(loadingStyleClass);
 
         this.encodeJavascript(context, component);
         super.encodeEnd(context, component);

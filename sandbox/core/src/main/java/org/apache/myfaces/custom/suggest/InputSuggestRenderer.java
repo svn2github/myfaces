@@ -274,8 +274,6 @@ public class InputSuggestRenderer
     private void encodeStyles(UIComponent component, FacesContext context) throws
                                                                            IOException
     {
-        ResponseWriter out = context.getResponseWriter();
-
         AddResource addResource = AddResourceFactory.getInstance(context);
         String styleLocation = (String) component.getAttributes().get(JSFAttr.
             STYLE_LOCATION);

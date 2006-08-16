@@ -15,9 +15,6 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import java.io.IOException;
@@ -35,8 +32,6 @@ import java.io.IOException;
  */
 public class UIEnsureConversation extends AbstractConversationComponent
 {
-	private final static Log log = LogFactory.getLog(UIEnsureConversation.class);
-
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.EnsureConversation";
 
 	private String redirectTo;
