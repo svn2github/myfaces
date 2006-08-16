@@ -93,7 +93,7 @@ public class HtmlJSCookMenuRenderer
                         action  = action.substring(2, action.length());
                         action = decodeValueBinding(action, context);
                         MethodBinding mb;
-                        if (UIComponentTag.isValueReference(action)) {
+                        if (NavigationMenuUtils.isValueReference(action)) {
                             mb = context.getApplication().createMethodBinding(action, null);
                         }
                         else {
@@ -111,7 +111,7 @@ public class HtmlJSCookMenuRenderer
                             ((HtmlCommandJSCookMenu)component).setValue(value);
                         }
                         MethodBinding mb;
-                        if (UIComponentTag.isValueReference(action)) {
+                        if (NavigationMenuUtils.isValueReference(action)) {
                             mb = context.getApplication().createMethodBinding(action, ACTION_LISTENER_ARGS);
                             ((HtmlCommandJSCookMenu)component).setActionListener(mb);
                             if (value != null)
@@ -322,7 +322,7 @@ public class HtmlJSCookMenuRenderer
             str = value.toString();
         }
 
-        if(UIComponentTag.isValueReference(str))
+        if(NavigationMenuUtils.isValueReference(str))
         {
             value = facesContext.getApplication().createValueBinding(str).getValue(facesContext);
 

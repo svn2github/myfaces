@@ -153,5 +153,23 @@ public class NavigationMenuUtils
             throw new IllegalArgumentException("Value binding of UINavigationMenuItems with id " + child.getClientId(facesContext) + " does not reference an Object of type NavigationMenuItem, NavigationMenuItem[], Collection or Map");
         }
     }
+    
+    
+    /**
+     * Return true if the specified string contains an EL expression.
+     * <p>
+     * This is taken almost verbatim from {@link javax.faces.webapp.UIComponentTag}
+     * in order to remove JSP dependencies from the renderers.
+     */
+    public static boolean isValueReference(String value)
+    {
+        if (value == null) return false;
+
+        int start = value.indexOf("#{");
+        if (start < 0) return false;
+
+        int end = value.lastIndexOf('}');
+        return (end >=0 && start < end);
+    }
 
 }

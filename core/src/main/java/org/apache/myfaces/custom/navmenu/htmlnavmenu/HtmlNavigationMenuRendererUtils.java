@@ -19,6 +19,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
+import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.shared_tomahawk.el.SimpleActionMethodBinding;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -320,7 +321,7 @@ class HtmlNavigationMenuRendererUtils {
 
     public static MethodBinding getMethodBinding(FacesContext facesContext, String value, boolean actionListener) {
         MethodBinding mb;
-        if (HtmlNavigationMenuRendererUtils.isValueReference(value)) {
+        if (NavigationMenuUtils.isValueReference(value)) {
             mb = facesContext.getApplication().createMethodBinding(value, actionListener ? ACTION_LISTENER_ARGS : null);
         }
         else {
@@ -338,7 +339,7 @@ class HtmlNavigationMenuRendererUtils {
     public static void setAttributeValue(FacesContext facesContext, UIComponent comp, String attribute, String value) {
         if (value == null)
             return;
-        if (HtmlNavigationMenuRendererUtils.isValueReference(value)) {
+        if (NavigationMenuUtils.isValueReference(value)) {
             ValueBinding vb = facesContext.getApplication().createValueBinding(value);
             comp.setValueBinding(attribute, vb);
         }
@@ -346,10 +347,5 @@ class HtmlNavigationMenuRendererUtils {
             comp.getAttributes().put(attribute, value);
         }
     }
-
-    public static boolean isValueReference(String value) {
-        if (value == null)
-            return false;
-        return UIComponentTag.isValueReference(value);
-    }
+   
 }

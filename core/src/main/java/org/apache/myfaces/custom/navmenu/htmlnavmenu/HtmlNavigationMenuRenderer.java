@@ -415,7 +415,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
             uiGraphic.getClientId(facesContext);
             newItem.getChildren().add(uiGraphic);
             uiGraphic.setParent(newItem);
-            if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getIcon())) {
+            if (NavigationMenuUtils.isValueReference(uiNavMenuItem.getIcon())) {
                 uiGraphic.setValueBinding("value",
                                           facesContext.getApplication().createValueBinding(uiNavMenuItem.getIcon()));
             }
@@ -432,7 +432,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
             newItem.getChildren().add(uiOutput);
             uiOutput.setParent(newItem);
             if (uiNavMenuItem.getItemLabel() != null) {
-                if (HtmlNavigationMenuRendererUtils.isValueReference(uiNavMenuItem.getItemLabel())) {
+                if (NavigationMenuUtils.isValueReference(uiNavMenuItem.getItemLabel())) {
                     uiOutput.setValueBinding("value",
                                              facesContext.getApplication().createValueBinding(uiNavMenuItem.getItemLabel()));
                 }
@@ -443,7 +443,7 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
             else {
                 Object value = uiNavMenuItem.getValue();
                 if (value != null &&
-                    HtmlNavigationMenuRendererUtils.isValueReference(value.toString())) {
+                    NavigationMenuUtils.isValueReference(value.toString())) {
                     uiOutput.setValueBinding("value",
                                              facesContext.getApplication().createValueBinding(value.toString()));
                 }
