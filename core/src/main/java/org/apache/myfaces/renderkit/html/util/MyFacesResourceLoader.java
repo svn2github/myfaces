@@ -75,7 +75,7 @@ public class MyFacesResourceLoader implements ResourceLoader
             catch (ParseException e)
             {
                 lastModified = new Date().getTime();
-                log.error("Unparsable lastModified : " + sLastModified);
+                log.warn("Unparsable lastModified : " + sLastModified);
             }
         }
 
