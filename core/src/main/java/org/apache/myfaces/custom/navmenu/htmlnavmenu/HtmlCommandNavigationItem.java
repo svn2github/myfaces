@@ -241,20 +241,6 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink {
         return value.split(",");
     }
 
-    private void openParents() {
-        UIComponent comp = this;
-
-        while ((comp = comp.getParent()) instanceof HtmlCommandNavigationItem) {
-            HtmlCommandNavigationItem parent = (HtmlCommandNavigationItem) comp;
-            if (!parent.isOpen()) {
-                parent.setOpen(true);
-            }
-            else {
-                return;
-            }
-        }
-    }
-
     public void deactivateAll() {
         UIComponent parent = this.getParent();
         while (!(parent instanceof HtmlPanelNavigationMenu) && parent != null) {

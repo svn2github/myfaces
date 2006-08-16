@@ -308,7 +308,6 @@ public class ReducedHTMLParser
     String consumeAttrValue()
     {
         consumeWhitespace();
-        char singleQuote = '\'';
 
         if (consumeMatch("'"))
         {
@@ -568,7 +567,7 @@ public class ReducedHTMLParser
                         // html can have "stand-alone" attributes with no following equals sign
                         if (consumeMatch("="))
                         {
-                            String attrValue = consumeAttrValue();
+                            consumeAttrValue();
                         }
                     }
                 }

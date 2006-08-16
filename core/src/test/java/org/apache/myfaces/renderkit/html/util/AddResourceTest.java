@@ -53,7 +53,7 @@ public class AddResourceTest extends TestCase
         assertNotSame(instance1, instance2);
         */
 
-        AddResource instance1a = AddResourceFactory.getInstance(cacheMap, "/test1", null);
+        AddResourceFactory.getInstance(cacheMap, "/test1", null);
     }
 
     public void setUp()

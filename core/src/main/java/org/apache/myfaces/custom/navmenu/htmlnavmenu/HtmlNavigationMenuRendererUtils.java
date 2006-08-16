@@ -34,10 +34,7 @@ import javax.faces.webapp.UIComponentTag;
 import javax.faces.event.ActionEvent;
 import java.util.List;
 import java.util.Iterator;
-import java.util.Map;
 import java.io.IOException;
-
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 /**
  * @author Thomas Spiegl
@@ -61,7 +58,6 @@ class HtmlNavigationMenuRendererUtils {
             if (!child.isRendered()) continue;
 
             if (child instanceof UINavigationMenuItem) {
-                UINavigationMenuItem navItem = (UINavigationMenuItem) child;
                 renderChildrenListLayout(facesContext, writer, panelNav, child.getChildren(), level);
             }
             if (child instanceof HtmlCommandNavigationItem) {

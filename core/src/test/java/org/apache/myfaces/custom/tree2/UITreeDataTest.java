@@ -17,8 +17,6 @@
 package org.apache.myfaces.custom.tree2;
 
 
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

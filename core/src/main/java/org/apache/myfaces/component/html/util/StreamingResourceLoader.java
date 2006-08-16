@@ -23,7 +23,6 @@ public class StreamingResourceLoader implements ResourceLoader
 	{
 		int pos = resourceUri.indexOf("/");
 		Long requestId = new Long(Long.parseLong(resourceUri.substring(0, pos), 10));
-		String resourceType = resourceUri.substring(pos+1);
 		
 		StreamingAddResource.HeaderInfoEntry headerInfoEntry = StreamingAddResource.getHeaderInfo(requestId);
 		if (headerInfoEntry == null)

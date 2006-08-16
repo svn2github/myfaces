@@ -22,7 +22,6 @@ import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.shared_tomahawk.el.SimpleActionMethodBinding;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;

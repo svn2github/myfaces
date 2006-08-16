@@ -16,7 +16,6 @@
 
 package org.apache.myfaces.custom.tree2;
 
-import org.apache.shale.test.base.AbstractJsfTestCase;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

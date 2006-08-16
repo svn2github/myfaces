@@ -688,7 +688,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     public Object saveState(FacesContext context)
     {
         boolean preserveSort = isPreserveSort();
-        boolean sortable     = isSortable();
 
         Object values[] = new Object[33];
         values[0] = super.saveState(context);

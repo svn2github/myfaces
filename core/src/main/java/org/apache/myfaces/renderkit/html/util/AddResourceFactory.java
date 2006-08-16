@@ -16,10 +16,6 @@
 
 package org.apache.myfaces.renderkit.html.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,9 +29,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,8 +37,6 @@ import org.apache.myfaces.shared_tomahawk.webapp.webxml.FilterMapping;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 import org.apache.myfaces.shared_tomahawk.webapp.webxml.WebXml;
 import org.apache.myfaces.webapp.filter.ExtensionsFilter;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class provides the ability to instantiate AddResource objects. By

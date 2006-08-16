@@ -23,8 +23,6 @@ import javax.faces.render.Renderer;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * <p>Utility class for providing basic functionality to the HTML faces 
@@ -35,8 +33,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public final class HtmlComponentUtils
 {
-    private static Log log = LogFactory.getLog(HtmlComponentUtils.class);
-
     /**
      * Constructor (Private)
      */

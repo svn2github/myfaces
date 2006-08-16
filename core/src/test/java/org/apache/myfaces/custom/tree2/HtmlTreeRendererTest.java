@@ -16,16 +16,10 @@
 
 package org.apache.myfaces.custom.tree2;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.shale.test.mock.MockResponseWriter;
-
-import com.meterware.httpunit.WebResponse;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import java.util.Stack;
-import java.io.BufferedWriter;
-import java.io.CharArrayWriter;
 
 /**
  * - .. Root (0)

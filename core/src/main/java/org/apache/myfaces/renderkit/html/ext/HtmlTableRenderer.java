@@ -19,8 +19,6 @@ package org.apache.myfaces.renderkit.html.ext;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Hashtable;
-import java.util.Enumeration;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -43,13 +41,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.component.ValueHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-import java.io.IOException;
 import java.util.*;
 
 /**

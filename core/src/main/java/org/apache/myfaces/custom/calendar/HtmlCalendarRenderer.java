@@ -55,7 +55,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * @author Martin Marinschek (latest modification by $Author$)

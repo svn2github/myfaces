@@ -16,7 +16,6 @@
 package org.apache.myfaces.custom.navigation;
 
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

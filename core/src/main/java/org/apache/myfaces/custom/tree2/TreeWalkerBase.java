@@ -18,7 +18,6 @@ package org.apache.myfaces.custom.tree2;
 
 import org.apache.commons.lang.StringUtils;
 import java.util.Stack;
-import java.util.List;
 
 /**
  * A base implementation of the {@link TreeWalker} interface.  Uses a simple node naming

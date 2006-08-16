@@ -27,7 +27,6 @@ public class TreeNodeBase implements TreeNode, Comparable
     private String description;
     private boolean leaf;
     private String identifier;
-    private TreeNode parent;
 
     public TreeNodeBase()
     {}

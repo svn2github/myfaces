@@ -17,10 +17,8 @@ package org.apache.myfaces.custom.fileupload;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;

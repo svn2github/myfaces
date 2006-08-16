@@ -30,7 +30,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ExternalContext;
-import javax.faces.render.Renderer;
 import javax.faces.convert.ConverterException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;

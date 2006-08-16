@@ -27,8 +27,6 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
@@ -40,8 +38,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
  */
 public class HtmlDataScrollerRenderer extends HtmlRenderer
 {
-    private static final Log log = LogFactory.getLog(HtmlDataScrollerRenderer.class);
-
     public static final String RENDERER_TYPE = "org.apache.myfaces.DataScroller";
 
     protected static final String PAGE_NAVIGATION = "idx".intern();

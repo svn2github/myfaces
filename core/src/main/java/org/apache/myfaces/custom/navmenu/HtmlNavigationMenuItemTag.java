@@ -29,10 +29,7 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
 {
 
     private static final String ICON_ATTR   = "icon";
-    private static final String ACTION_ATTR = "action";
     private static final String SPLIT_ATTR  = "split";
-    private static final String OPEN_ATTR  = "open";
-    private static final String ACTIVE_ATTR  = "active";
     private static final String TARGET_ATTR = "target";
     private static final String DISABLED_ATTR = "disabled";
     private static final String DISABLED_STYLE_ATTR = "disabledStyle";
@@ -44,8 +41,6 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
     private String _actionListener;
     private String _immediate;
     private String _split;
-    private String _open;
-    private String _active;
     private String _target;
     private String _disabled;
     private String _disabledStyle;

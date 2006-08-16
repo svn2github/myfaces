@@ -17,12 +17,8 @@ package org.apache.myfaces.custom.document;
 
 import java.io.IOException;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
 
 /**
@@ -34,8 +30,6 @@ import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
  */
 public class DocumentBodyRenderer extends AbstractDocumentRenderer
 {
-    private static final Log log = LogFactory.getLog(DocumentBodyRenderer.class);
-    
 	public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
 	
 	protected String getHtmlTag()

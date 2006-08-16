@@ -16,10 +16,8 @@
 package org.apache.myfaces.custom.column;
 
 import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import org.apache.myfaces.component.html.ext.HtmlDataTable;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
