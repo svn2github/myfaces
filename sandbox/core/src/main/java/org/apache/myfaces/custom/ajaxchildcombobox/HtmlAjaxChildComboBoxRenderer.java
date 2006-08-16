@@ -81,7 +81,6 @@ public class HtmlAjaxChildComboBoxRenderer extends HtmlMenuRenderer implements A
         super.encodeEnd(context, component);
         
         String clientId = component.getClientId(context);
-        String url = getActionUrl(context);
         
         UIComponent parentComboBox = this.getParentComboBox(childComboBox);
         if (parentComboBox == null) 

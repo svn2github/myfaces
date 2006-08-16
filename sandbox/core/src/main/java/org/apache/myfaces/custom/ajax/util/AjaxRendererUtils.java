@@ -103,24 +103,10 @@ public final class AjaxRendererUtils
         ViewHandler viewHandler = context.getApplication().getViewHandler();
         String ajaxURL = viewHandler.getActionURL(context, viewId);
 
-        HtmlInputTextAjax htmlInputTextAjax = null;
-
         String ajaxMessagesId = null;
-        String ajaxMessageId = null;
 
         if (uiComponent instanceof HtmlInputTextAjax)
         {
-            htmlInputTextAjax = (HtmlInputTextAjax) uiComponent;
-
-            //finding the corresponding message component to display an ajaxMessage
-            UIComponent ajaxMessage = context.getViewRoot()
-                    .findComponent(htmlInputTextAjax.getClientId(context) + "_msgFor");
-
-            if (ajaxMessage != null)
-            {
-                ajaxMessageId = ajaxMessage.getClientId(context);
-            }
-
             //finding the corresponding messages component to display an ajaxMessage
             UIComponent ajaxMessages = (UIComponent) ComponentUtils
                     .findFirstMessagesComponent(context, context.getViewRoot());
