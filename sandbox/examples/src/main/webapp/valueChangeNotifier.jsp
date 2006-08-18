@@ -68,6 +68,9 @@
 		</h:dataTable>
 
 		<h:commandButton />
+
+		<f:verbatim>You selected:</f:verbatim><h:outputText value="#{notifierBean.selectedCategory}" />
+
 	</h:form>
 </f:view>
 

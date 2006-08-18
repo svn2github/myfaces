@@ -37,7 +37,7 @@ public class NotifierBean
 			this.listData = listData;
 		}
 	}
-	
+
 	public static class Entry implements Serializable
 	{
 		private String data;
@@ -55,7 +55,7 @@ public class NotifierBean
 		{
 			this.data = data;
 		}
-		
+
 		public String toString()
 		{
 			return "Entry=" + data;
@@ -67,7 +67,7 @@ public class NotifierBean
 		categories = new ArrayList();
 		categories.add(new SelectItem("a", "Category A"));
 		categories.add(new SelectItem("b", "Category b"));
-		
+
 		Entry a1 = new Entry();
 		a1.setData("A1");
 		Entry b1 = new Entry();
@@ -92,12 +92,12 @@ public class NotifierBean
 		{
 				a2,b2,c2,d2
 		});
-		
+
 		EntryList al1 = new EntryList();
 		al1.setListData(listData1);
 		EntryList al2 = new EntryList();
 		al2.setListData(listData2);
-		
+
 		listData = Arrays.asList(new EntryList[]
 		                                       {
 				al1, al2
@@ -111,7 +111,7 @@ public class NotifierBean
 		{
 			log.info("invoked valueChange method with " + vce.getNewValue()
 					+ " as its new value");
-			
+
 			if (listDataBinding != null)
 			{
 				log.info("current uiData row=" + listDataBinding.getRowIndex());
@@ -121,6 +121,8 @@ public class NotifierBean
 				}
 			}
 		}
+
+		selectedCategory = vce.getNewValue()!=null?vce.getNewValue().toString():"#null?";
 	}
 
 	public List getListData()
