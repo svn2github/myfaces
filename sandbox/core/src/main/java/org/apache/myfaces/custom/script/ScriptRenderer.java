@@ -30,17 +30,34 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
  */
 public class ScriptRenderer extends HtmlRenderer {
 
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        if ((context == null) || (component == null)) {
-            throw new NullPointerException();
-        }
-        Script script = (Script) component;
-        ResponseWriter writer = context.getResponseWriter();
+	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+		if ((context == null) || (component == null)) {
+			throw new NullPointerException();
+		}
+		Script script = (Script) component;
+		ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement(HTML.SCRIPT_ELEM, component);
-        writer.writeAttribute(HTML.SRC_ATTR, context.getApplication().getViewHandler().getResourceURL(context, script.getSrc()), null);
-        writer.writeAttribute(HTML.TYPE_ATTR, script.getType(), null);
-        writer.writeText("",null);
+		writer.startElement(HTML.SCRIPT_ELEM, component);
+		if (script.getSrc() != null)
+		{
+			writer.writeAttribute(HTML.SRC_ATTR, context.getApplication().getViewHandler().getResourceURL(context, script.getSrc()), null);
+		}
+		if (script.getType() != null)
+		{
+			writer.writeAttribute(HTML.TYPE_ATTR, script.getType(), null);
+		}
+		if (script.getLanguage() != null)
+		{
+			writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, script.getLanguage(), null);
+		}
+		writer.writeText("",null);
+	}
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+		if ((context == null) || (component == null)) {
+			throw new NullPointerException();
+		}
+
+		ResponseWriter writer = context.getResponseWriter();
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 }

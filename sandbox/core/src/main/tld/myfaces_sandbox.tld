@@ -184,7 +184,7 @@ Sandbox-related entities.
 	<tag>
 		<name>script</name>
 		<tag-class>org.apache.myfaces.custom.script.ScriptTag</tag-class>
-		<body-content>empty</body-content>
+		<body-content>JSP</body-content>
 		<display-name>Script component</display-name>
 		<description>Adds (java)script to the browser</description>
 		&ui_component_attributes;
@@ -209,7 +209,7 @@ Sandbox-related entities.
         <tag-class>org.apache.myfaces.custom.ajaxchildcombobox.AjaxChildComboBoxTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-            Refreshes contents through an ajax call when the parent combo box's value is changed 
+            Refreshes contents through an ajax call when the parent combo box's value is changed
         </description>
         &standard_select_one_listbox_attributes;
         &ext_escape_attribute;
@@ -466,18 +466,18 @@ Sandbox-related entities.
 		<name>convertStringUtils</name>
 		<tag-class>org.apache.myfaces.custom.convertStringUtils.StringUtilsConverterTag</tag-class>
 		<display-name>StringUtils Converter</display-name>
-		<description>Converts the format of a string</description> 
+		<description>Converts the format of a string</description>
 
 		<attribute>
 			<name>appendEllipsesDuringInput</name>
 			<required>false</required>
 			<description>Boolean value determining if data should be truncated with ellipses during input conversion. Default = false</description>
-		</attribute> 
+		</attribute>
 		<attribute>
 			<name>appendEllipsesDuringOutput</name>
 			<required>false</required>
 			<description>Boolean value determining if data should be truncated with ellipses during output conversion. Default = false</description>
-		</attribute> 
+		</attribute>
 		<attribute>
 			<name>format</name>
 			<required>false</required>
@@ -492,7 +492,7 @@ Sandbox-related entities.
 			<name>trim</name>
 			<required>false</required>
 			<description>Boolean value determining is the string should be trimmed before any other formatting takes place. Default = false</description>
-		</attribute> 
+		</attribute>
 	</tag>
 
 	<tag>
@@ -960,8 +960,8 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.Boolean</type>
 		</attribute>
-		
-		
+
+
 		<attribute>
 			<name>baseScriptUri</name>
 			<required>false</required>
@@ -1058,7 +1058,7 @@ Sandbox-related entities.
 			<type>java.lang.String</type>
             <description>Specify the id of the dom element where the value should be put in.
                          This value is also included in the suggested table, but only in a hidden
-                         span element following the span for the label in one row. 
+                         span element following the span for the label in one row.
             </description>
         </attribute>
         <attribute>
@@ -1067,7 +1067,7 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
             <description>To provide a second value in form of a label. Usage like SelectItem.
-                         Label is brought to client in a hidden span element near the value.            
+                         Label is brought to client in a hidden span element near the value.
             </description>
         </attribute>
     </tag>
@@ -1076,7 +1076,7 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.ifmessage.IfMessageTag</tag-class>
 		<body-content>JSP</body-content>
 		<display-name>ifMessage component</display-name>
-		<description>Provide a component that will optionally render its children if the specified 
+		<description>Provide a component that will optionally render its children if the specified
 			component(s) specified has a message.</description>
         <attribute>
 			<name>for</name>
@@ -1086,7 +1086,7 @@ Sandbox-related entities.
             <description></description>
         </attribute>
     </tag>
-    
+
 	<!--  fishEyeList -->
 	<tag>
 		<name>fishEyeNavigationMenu</name>
@@ -1098,8 +1098,8 @@ Sandbox-related entities.
 		&faces_rendered_attribute;
 
 		&html_fisheye_list_attributes;
-	</tag>    
-	
+	</tag>
+
 	<!-- timed notifier -->
 	<tag>
 		<name>timedNotifier</name>
@@ -1163,15 +1163,15 @@ Sandbox-related entities.
 		<description>
             This tag creates a number formatting converter and associates it
             with the nearest parent UIComponent.
-            
+
 			It uses either the manually set &lt;code&gt;destType&lt;/code&gt; or the value binding
 			to determine the correct destination type to convert the number to.
- 
+
             Unless otherwise specified, all attributes accept static values or EL expressions.
 		</description>
 		&convertNumber_attributes;
 		&ui_convertNumber_attributes;
-		
+
 	</tag>
 
 	<tag>

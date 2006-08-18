@@ -34,8 +34,9 @@ public class Script extends UIOutput {
 
     private String src = null;
     private String type = HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT;
+	private String language = null;
 
-    // ------------------------------------------------------------ Constructor
+	// ------------------------------------------------------------ Constructor
     public Script() {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
@@ -73,25 +74,35 @@ public class Script extends UIOutput {
         this.type = type;
     }
 
-    //  ------------------------------------------------------------ StateHolder
+	public String getLanguage() {
+		if (language != null) return language;
+		ValueBinding vb = getValueBinding("language");
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+	}
+
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	//  ------------------------------------------------------------ StateHolder
     public void restoreState(FacesContext context, Object state) {
 
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         src = (String) values[1];
         type = (String) values[2];
-
+		language = (String) values[3];
     }
 
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[6];
-        values[0] = super.saveState(context);
-        values[1] = src;
-        values[2] = type;
-        return values;
-
+        return new Object[]
+		{
+			super.saveState(context),
+        	src,
+        	type,
+			language
+		};
     }
-
-
 }

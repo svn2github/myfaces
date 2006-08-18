@@ -28,9 +28,9 @@ public class ScriptTag extends HtmlOutputTextTagBase {
 
 	private String src = null;
     private String type = null;
-    
-    
-    //  ------------------------------------------------------------ UIComponentTags
+	private String language = null;
+
+	//  ------------------------------------------------------------ UIComponentTags
     public String getComponentType() {
         return Script.COMPONENT_TYPE;
 
@@ -39,7 +39,7 @@ public class ScriptTag extends HtmlOutputTextTagBase {
     public String getRendererType() {
         return "org.apache.myfaces.Script";
     }
-    
+
     public void release() {
 
         super.release();
@@ -47,15 +47,16 @@ public class ScriptTag extends HtmlOutputTextTagBase {
         type = null;
 
     }
-    
+
     protected void setProperties(UIComponent component) {
 
         super.setProperties(component);
         setStringProperty(component, HTML.SRC_ATTR, src);
         setStringProperty(component, HTML.TYPE_ATTR, type);
-    }    
+		setStringProperty(component, HTML.SCRIPT_LANGUAGE_ATTR, language);
+    }
 
-    
+
     //  ------------------------------------------------------------ setter
 	public void setSrc(String src) {
 		this.src = src;
@@ -64,5 +65,10 @@ public class ScriptTag extends HtmlOutputTextTagBase {
 		this.type = type;
 	}
 
-
+	public String getLanguage() {
+		return language;
+	}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 }

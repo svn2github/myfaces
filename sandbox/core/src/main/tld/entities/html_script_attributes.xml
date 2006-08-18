@@ -14,4 +14,11 @@
                 type of script source
             </description>
         </attribute>
-        
+		<attribute>
+			<name>language</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>
+				script language
+			</description>
+		</attribute>
