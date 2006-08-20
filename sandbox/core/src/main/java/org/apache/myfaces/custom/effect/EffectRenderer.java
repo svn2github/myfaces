@@ -151,7 +151,10 @@ public class EffectRenderer extends HtmlRenderer
             String fadeColor = (String) component.getAttributes().get(EffectTag.TAG_PARAM_FADECOLOR);
             fadeColor = (fadeColor != null) ? fadeColor : DEFAULT_FADE_COLOR;
             fadeColor = fadeColor.equals("") ? DEFAULT_FADE_COLOR : fadeColor;
-            return fadeColor;
+            if(fadeColor.trim().matches("^\\\\[(.*\\,)+\\\\]$")) //pattern [col,col,col] roughly
+            	return fadeColor;
+            else return "\""+fadeColor+"\"";
+            
         }
         return null;
     }
@@ -248,15 +251,16 @@ public class EffectRenderer extends HtmlRenderer
 
         if (fade != null && fade.booleanValue())
         {
-            writer.startElement(HTML.SCRIPT_ELEM, component);
+            DojoUtils.addRequire(facesContext,component, "dojo.lfx.*");
+        	writer.startElement(HTML.SCRIPT_ELEM, component);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, HTML.SCRIPT_LANGUAGE_JAVASCRIPT, null);
             StringBuffer commandBuffer = new StringBuffer(128);
-            commandBuffer.append("dojo.fx.html.colorFadeIn(dojo.byId('");
+            commandBuffer.append("dojo.lfx.html.highlight('");
             commandBuffer.append(component.getClientId(facesContext));
-            commandBuffer.append("'),'");
+            commandBuffer.append("',");
             commandBuffer.append(getFadeColor(component));
-            commandBuffer.append("'," + duration.toString() + ");");
+            commandBuffer.append(",0).play(" + duration.toString() + ");");
             writer.write(commandBuffer.toString());
             writer.endElement(HTML.SCRIPT_ELEM);
 
