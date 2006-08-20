@@ -108,7 +108,7 @@ public class TimedNotifierRenderer extends HtmlRenderer {
             	
         sb.append( notifierVar + ".showDialog();\n");
         sb.append("};\n");
-        sb.append("setTimeout('"+replacedClientId+"()',"+timeShow.toString()+");");
+        sb.append("dojo.lang.setTimeout("+replacedClientId+","+timeShow.toString()+");");
 
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, notifier);

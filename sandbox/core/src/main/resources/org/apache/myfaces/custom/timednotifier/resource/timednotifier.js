@@ -23,7 +23,7 @@
 * system within myfaces
 ======================================================*/
 myfaces_TimedNotifier = function (dialogId, confirmButtonId, timeShow, timeHide) {
-    dojo.widget.HtmlWidget.call(this);
+//    dojo.widget.HtmlWidget.call(this);
     this.dialogId = dialogId;
     /*
 	 * notification message timeouts
@@ -48,7 +48,7 @@ myfaces_TimedNotifier = function (dialogId, confirmButtonId, timeShow, timeHide)
     this.showDialog = function () {
         this.dialog.show();
         if (this.timeoutHide > 0) {
-            dojo.lang.setTimeout(this, this.hideDialog, this.timeoutHide);
+            dojo.lang.setTimeout(dojo.lang.hitch(this, 'hideDialog'), this.timeoutHide);
         }
     };
     /*
