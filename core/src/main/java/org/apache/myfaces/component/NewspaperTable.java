@@ -25,7 +25,9 @@ import javax.faces.component.UIComponent;
  */
 
 public interface NewspaperTable {
+	public static final String NEWSPAPER_HORIZONTAL_ORIENTATION = "horizontal";
     public int getNewspaperColumns();
     public UIComponent getSpacer();
+    public String getNewspaperOrientation();
 
 }

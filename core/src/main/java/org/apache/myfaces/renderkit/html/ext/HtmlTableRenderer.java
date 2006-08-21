@@ -98,6 +98,21 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         return super.hasNewspaperTableSpacer(component);
     }
 
+    /**
+     * @param component dataTable
+     * @return if the orientation of the has newspaper columns is horizontal 
+     */
+    protected boolean isNewspaperHorizontalOrientation(UIComponent component) {
+        if (component instanceof NewspaperTable)
+        {
+        	// get the value of the newspaperOrientation attribute, any value besides horizontal
+        	// means vertical, the default
+            NewspaperTable newspaperTable = (NewspaperTable)component;
+            return NewspaperTable.NEWSPAPER_HORIZONTAL_ORIENTATION.equals(newspaperTable.getNewspaperOrientation());
+        }
+        return super.isNewspaperHorizontalOrientation(component);
+    }
+
     protected void afterRow(FacesContext facesContext, UIData uiData) throws IOException {
         super.afterRow(facesContext, uiData);
 

@@ -57,9 +57,12 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     /** the property names */
     public static final String NEWSPAPER_COLUMNS_PROPERTY = "newspaperColumns";
     public static final String SPACER_FACET_NAME = "spacer";
+    public static final String NEWSPAPER_ORIENTATION_PROPERTY = "newspaperOrientation";
 
     /** the value of the column count property */
     private int _newspaperColumns = 1;
+    /** the value of the newspaper orientation property */
+    private String _newspaperOrientation = null;
 
     private _SerializableDataModel _preservedDataModel;
 
@@ -689,7 +692,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         boolean preserveSort = isPreserveSort();
 
-        Object values[] = new Object[33];
+        Object values[] = new Object[34];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
         
@@ -736,6 +739,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         values[31] = new Integer(_sortColumnIndex);
 
         values[32] = new Integer(_newspaperColumns);
+        values[33] = _newspaperOrientation;
 
         return values;
     }
@@ -864,6 +868,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         _sortedColumnVar = (String)values[30];
         _sortColumnIndex = values[31] != null ? ((Integer)values[31]).intValue() : -1;
         _newspaperColumns = ((Integer)values[32]).intValue();
+        _newspaperOrientation = (String) values[33];
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -1294,6 +1299,19 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     }
     public void setNewspaperColumns(int newspaperColumns) {
         this._newspaperColumns = newspaperColumns;
+    }
+    
+    /**
+     * Set the orientation of the newspaper columns.
+     */
+    public void setNewspaperOrientation(String newspaperOrientation)
+    {        
+        this._newspaperOrientation = newspaperOrientation;
+    }
+
+    public String getNewspaperOrientation()
+    {
+        return _newspaperOrientation;
     }
     
     /**

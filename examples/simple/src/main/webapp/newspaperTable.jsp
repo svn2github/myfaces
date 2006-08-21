@@ -45,7 +45,7 @@ managed beans used:
 	            headerClass="standardTable_Header"
 	            footerClass="standardTable_Header"
 	            rowClasses="standardTable_Row1,standardTable_Row2"
-	            columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+	            columnClasses="standardTable_Column,standardTable_ColumnCentered"
 	            var="country"
 	            value="#{countryList.countries}">
 	           <f:facet name="spacer">
@@ -75,7 +75,38 @@ managed beans used:
 	            headerClass="standardTable_Header"
 	            footerClass="standardTable_Header"
 	            rowClasses="standardTable_Row1,standardTable_Row2"
-	            columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+	            columnClasses="standardTable_Column,standardTable_ColumnCentered"
+	            var="country"
+	            value="#{countryList.countries}">
+	           <f:facet name="spacer">
+	             <f:verbatim> &nbsp; </f:verbatim>
+	           </f:facet>
+	       <h:column>
+	           <f:facet name="header">
+	              <h:outputText value="#{example_messages['label_country_name']}" />
+	           </f:facet>
+	            <h:outputText value="#{country.name}" />
+	       </h:column>
+	
+	       <h:column>
+	           <f:facet name="header">
+	              <h:outputText value="#{example_messages['label_country_iso']}" />
+	           </f:facet>
+	           <h:outputText value="#{country.isoCode}" />
+	       </h:column>
+	
+	    </t:dataTable>
+	
+		<h:outputText value="Implementation using t:dataTable horizontally" />
+	
+	    <t:dataTable id="dataNew2"
+	            newspaperColumns="2"
+	            newspaperOrientation="horizontal"
+	            styleClass="standardTable"
+	            headerClass="standardTable_Header"
+	            footerClass="standardTable_Header"
+	            rowClasses="standardTable_Row1,standardTable_Row2"
+	            columnClasses="standardTable_Column,standardTable_ColumnCentered"
 	            var="country"
 	            value="#{countryList.countries}">
 	           <f:facet name="spacer">

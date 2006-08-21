@@ -76,6 +76,8 @@ public class HtmlDataTableTag
 
     /** the number of newspaper columns */
     private String _newspaperColumns = null;
+    /** the orientation of the newspaper table - horizontal/vertical */
+    private String _newspaperOrientation = null;
     
     public void release() 
     {
@@ -114,6 +116,7 @@ public class HtmlDataTableTag
         _rowGroupStyleClass = null;
         
         _newspaperColumns = null;
+        _newspaperOrientation = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -152,7 +155,8 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowGroupStyle", _rowGroupStyle);
         setStringProperty(component, "rowGroupStyleClass", _rowGroupStyleClass);
 
-        setIntegerProperty(component, HtmlNewspaperTable.NEWSPAPER_COLUMNS_PROPERTY, _newspaperColumns);
+        setIntegerProperty(component, HtmlDataTable.NEWSPAPER_COLUMNS_PROPERTY, _newspaperColumns);
+        setStringProperty(component, HtmlDataTable.NEWSPAPER_ORIENTATION_PROPERTY, _newspaperOrientation);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -310,6 +314,10 @@ public class HtmlDataTableTag
     
     public void setNewspaperColumns(String newspaperColumns) {
         this._newspaperColumns = newspaperColumns;
+    }
+    
+    public void setNewspaperOrientation(String newspaperOrientation) {
+        this._newspaperOrientation = newspaperOrientation;
     }
     
 }
