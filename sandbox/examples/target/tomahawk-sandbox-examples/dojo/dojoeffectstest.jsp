@@ -70,24 +70,24 @@
 				   		fade field
 				   </div>
 				   <script type="text/javascript">
-				   		myfaces_fader = function(theid, thetime) {
+				   		org_apache_myfaces_effects_fader = function(theid, thetime) {
 				   		   fadeid = theid;
 				   		   time = thetime;
 				   		};
-				   		myfaces_fader.prototype.hide  =  function() {
+				   		org_apache_myfaces_effects_fader.prototype.hide  =  function() {
 				   			dojo.style.setOpacity( dojo.byId(fadeid),0);
 						};
-						myfaces_fader.prototype.fadeIn = function() {
+						org_apache_myfaces_effects_fader.prototype.fadeIn = function() {
 				   			dojo.lfx.html.fadeIn( dojo.byId(fadeid), time).play();
 				   	    };  
-				   	    myfaces_fader.prototype.show  =  function() {
+				   	    org_apache_myfaces_effects_fader.prototype.show  =  function() {
 				   			dojo.style.setOpacity( dojo.byId(fadeid),100);
 						}; 
-						myfaces_fader.prototype.fadeOut = function() {
+						org_apache_myfaces_effects_fader.prototype.fadeOut = function() {
 				   			dojo.lfx.html.fadeOut( dojo.byId(fadeid), time).play();
 				   	    };  
 				   		
-				   		var fader = new myfaces_fader('fade',300);
+				   		var fader = new org_apache_myfaces_effects_fader('fade',300);
 				   		fader.hide();	
 				   </script>
 				   
