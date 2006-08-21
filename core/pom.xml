@@ -179,6 +179,24 @@
       <artifactId>shale-test</artifactId>
       <version>1.0.3-SNAPSHOT</version>
       <scope>test</scope>		
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.myfaces</groupId>
+          <artifactId>myfaces-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.myfaces</groupId>
+          <artifactId>myfaces-impl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>myfaces</groupId>
+          <artifactId>myfaces-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>myfaces</groupId>
+          <artifactId>myfaces-impl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>jmock</groupId>
