@@ -23,7 +23,10 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.custom.dojo.DojoConfig;
 
 /**
  * @author Rogerio Pereira Araujo (latest modification by $Author$)
@@ -31,6 +34,18 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  */
 public class HtmlFocusRenderer extends Renderer
 {
+
+    public void decode(FacesContext facesContext, UIComponent component)
+    {
+        RendererUtils.checkParamValidity(facesContext, component, HtmlFocus.class);
+
+        HtmlFocus focus = (HtmlFocus) component;
+
+        if(focus.isRememberClientFocus())
+        {
+            focus.setSubmittedValue(RendererUtils.getStringValue(facesContext, component));
+        }
+    }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException
@@ -44,6 +59,10 @@ public class HtmlFocusRenderer extends Renderer
 
         if(targetComponent != null)
         {
+            String javascriptLocation = (String)uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+            DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
+            DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
+
             String clientId = targetComponent.getClientId(facesContext);
 
             ResponseWriter writer = facesContext.getResponseWriter();
@@ -52,6 +71,12 @@ public class HtmlFocusRenderer extends Renderer
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             writer.writeText("document.getElementById('" + clientId + "').focus()", null);
             writer.endElement(HTML.SCRIPT_ELEM);
+
+            writer.startElement(HTML.INPUT_ELEM, uiComponent);
+            writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_HIDDEN,null);
+            writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext), JSFAttr.ID_ATTR);
+            writer.writeAttribute(HTML.VALUE_ATTR,clientId,JSFAttr.VALUE_ATTR);
+            writer.endElement(HTML.INPUT_ELEM);
         }
     }
 

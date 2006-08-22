@@ -17,6 +17,8 @@ package org.apache.myfaces.custom.focus;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -24,14 +26,16 @@ import javax.faces.el.ValueBinding;
  * @author Rogerio Pereira Araujo (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFocus extends UIComponentBase
+public class HtmlFocus extends UIInput
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Focus";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Focus";
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
     
 	private String _for = null;
-	
+    private Boolean _rememberClientFocus=null;
+    private static final boolean DEFAULT_REMEMBER_CLIENT_FOCUS = true;
+
     public String getFamily()
     {
         return COMPONENT_FAMILY;
@@ -50,16 +54,23 @@ public class HtmlFocus extends UIComponentBase
 		return vb != null ? (String) vb.getValue(getFacesContext()) : null;
 	}
 
+    public void setRememberClientFocus(boolean rememberClientFocus)
+    {
+        _rememberClientFocus = Boolean.valueOf(rememberClientFocus);
+    }
 
-	protected UIComponent findUIComponent()
+    public boolean isRememberClientFocus()
+    {
+        if (_rememberClientFocus != null) return _rememberClientFocus.booleanValue();
+        ValueBinding vb = getValueBinding("rememberClientFocus");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_REMEMBER_CLIENT_FOCUS;
+    }
+
+
+    protected UIComponent findUIComponent()
 	{
 		String forStr = getFor();
-		
-		// It's unclear to me whether the following is necessary or useful.
-        if(forStr == null) 
-        {
-            forStr = (String) this.getAttributes().get("for");
-        }
 
 		if (forStr == null)
 		{
@@ -78,10 +89,11 @@ public class HtmlFocus extends UIComponentBase
 
 	public Object saveState(FacesContext context)
 	{
-		Object values[] = new Object[2];
+		Object values[] = new Object[3];
 		values[0] = super.saveState(context);
 		values[1] = _for;
-		return values;
+        values[2] = _rememberClientFocus;
+        return values;
 	}
 
 	public void restoreState(FacesContext context, Object state)
@@ -89,7 +101,8 @@ public class HtmlFocus extends UIComponentBase
 		Object values[] = (Object[]) state;
 		super.restoreState(context, values[0]);
 		_for = (String) values[1];
-	}
+        _rememberClientFocus = (Boolean) values[2];
+    }
 
 }
  
