@@ -26,6 +26,7 @@ import org.apache.myfaces.custom.div.Div;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
+import org.apache.myfaces.custom.statechangednotifier.StateChangedNotifierRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -77,9 +78,11 @@ public class EffectRenderer extends HtmlRenderer
                 addResource
                         .addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/prototype.js");
                 addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/effects.js");
+                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/fader.js");
 
                 if (fade != null && fade.booleanValue())
                     DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+           
             }
             else
             {
@@ -91,6 +94,10 @@ public class EffectRenderer extends HtmlRenderer
                 if (fade != null && fade.booleanValue())
                     DojoUtils.addMainInclude(context, component, null, new DojoConfig());
 
+                if (!DojoUtils.isInlineScriptSet(context, "fader.js"))
+                    addResource.addJavaScriptHere(context, EffectRenderer.class, "fader.js");
+
+            
             }
         }
         catch (IOException e)
@@ -176,7 +183,15 @@ public class EffectRenderer extends HtmlRenderer
         // if(fade != null && fade.booleanValue())
         // ScriptController.renderScriptWithDeps(context, component, writer,
         // ScriptController.FAT_VIEW_ID);
-
+        if (puff != null && puff.booleanValue())
+        {
+            //writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:new Effect.Puff(this);", null);
+        	writer.startElement(HTML.SCRIPT_ELEM, component);
+        	writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        	writer.write("var "+component.getClientId(context).replaceAll("\\:","_")+"_fader = new org_apache_myfaces_effects_fader('"+component.getClientId(context)+"',300);");
+        	writer.endElement(HTML.SCRIPT_ELEM);
+        }
+  
         writer.startElement(HTML.DIV_ELEM, component);
         HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
 
@@ -199,7 +214,11 @@ public class EffectRenderer extends HtmlRenderer
 
         if (puff != null && puff.booleanValue())
         {
-            writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:new Effect.Puff(this);", null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:"+component.getClientId(context).replaceAll("\\:","_")+"_fader.fadeOut();", null);
+        	//writer.startElement(HTML.SCRIPT_ELEM, component);
+        	//writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        	///writer.write("var "+component.getClientId(context).replaceAll("\\:","_")+"_fader = new org_apache_myfaces_effects_fader('"+component.getClientId(context)+"',300);");
+        	//writer.endElement(HTML.SCRIPT_ELEM);
         }
         if (squish != null && squish.booleanValue())
         {
