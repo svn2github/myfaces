@@ -45,6 +45,8 @@
 
 </f:view>
 
+<%@include file="inc/page_footer.jsp" %>
+
 </body>
 
 </html>
