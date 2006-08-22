@@ -1,4 +1,4 @@
-??<%@ page session="false" contentType="text/html;charset=utf-8"%>
+<%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 
@@ -20,7 +20,10 @@
                     <h:outputText style="font-size:10px;color:#FFFFFF" value=" (Sandbox Version #{buildInfo['tomahawk_version']}, using #{buildInfo ['jsf_implementation']})"/>
                 </f:verbatim>
             </h:panelGrid>
-
+            <h:outputText value="Partial Page Rendering"/>
+            <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="pprPanelGroup.jsf" ><f:verbatim>PPRPanelGroup - Panelgroup which gets refreshed by AJAX-Calls</f:verbatim></h:outputLink>
+            </h:panelGrid>
             <h:outputText value="Resource Serving"/>
             <h:panelGrid style="padding-left:25px">
 	            <h:outputLink value="graphicImageDynamic.jsf" ><f:verbatim>GraphicImageDynamic - graphic image without a dedicated servlet</f:verbatim></h:outputLink>

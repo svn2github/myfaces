@@ -10,8 +10,8 @@
 
     <!--  logger/debugging phase listener -->
     <lifecycle>
-       <phase-listener>org.apache.myfaces.examples.debug.DebugPhaseListener</phase-listener>
-    </lifecycle>
+       <!--<phase-listener>org.apache.myfaces.examples.debug.DebugPhaseListener</phase-listener>
+    --></lifecycle>
 
     <!-- managed bean for notifierBean-->
 
@@ -81,6 +81,14 @@
         <managed-bean-name>ajaxChildComboBoxBean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.ajaxchildcombobox.AjaxChildComboBoxBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <!-- Managed Beans for pprPanelGroup.jsp -->
+
+    <managed-bean>
+        <managed-bean-name>pprExampleBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.ppr.PPRExampleBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
   <managed-bean>

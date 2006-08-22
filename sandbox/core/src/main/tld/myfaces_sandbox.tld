@@ -1186,4 +1186,20 @@ Sandbox-related entities.
 		&ui_select_items_attributes;
 		&select_items_attributes;
 	</tag>
+    <!-- inputSuggest -->
+	<tag>
+		<name>pprPanelGroup</name>
+		<tag-class>org.apache.myfaces.custom.ppr.PPRPanelGroupTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
+		&standard_panel_group_attributes;
+		<attribute>
+			<name>partialTriggers</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description>Comma or Space seperated List of ids from ui_command-items which trigger
+            a partial update of this PanelGroup</description>
+        </attribute>
+	</tag>
 </taglib>
