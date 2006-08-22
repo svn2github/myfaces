@@ -3,6 +3,7 @@
         <attribute><name>headerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>headertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>headercolspan</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute>
             <name>headerstyleClass</name>
             <required>false</required>
@@ -25,6 +26,7 @@
         <attribute><name>footerlang</name>    <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footerstyle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute><name>footertitle</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
+        <attribute><name>footercolspan</name>   <required>false</required>  <rtexprvalue>false</rtexprvalue></attribute>
         <attribute>
             <name>footerstyleClass</name>
             <required>false</required>
@@ -47,6 +49,12 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>This attribute can be used to set the width of the &lt;TD> elements</description>
+        </attribute>
+        <attribute>
+            <name>colspan</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>This attribute specifies the colspan attribute for the cell</description>
         </attribute>
         <attribute>
             <name>groupBy</name>

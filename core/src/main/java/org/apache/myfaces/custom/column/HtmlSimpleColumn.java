@@ -31,6 +31,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     private String _headerstyle;
     private String _headerstyleClass;
     private String _headertitle;
+    private String _headercolspan;
 
     //HTML event handler attributes for header
     private String _headeronclick;
@@ -50,6 +51,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     private String _footerstyle;
     private String _footerstyleClass;
     private String _footertitle;
+    private String _footercolspan;
 
     //HTML event handler attributes for footer
     private String _footeronclick;
@@ -83,6 +85,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     private String _onmouseup;
     
     private String _width;
+    private String _colspan;
     private Boolean _groupBy;
     
     private Boolean _defaultSorted;
@@ -357,6 +360,22 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     }
 
     /**
+     * @see org.apache.myfaces.custom.column.HtmlColumn#getFootercolspan()
+     */
+    public String getFootercolspan()
+    {
+        return (String) getLocalOrValueBindingValue(_footercolspan, "footercolspan");
+    }
+
+    /**
+     * @see org.apache.myfaces.custom.column.HtmlColumn#setFootercolspan(java.lang.String)
+     */
+    public void setFootercolspan(String footercolspan)
+    {
+        _footercolspan = footercolspan;
+    }
+
+    /**
      * @see org.apache.myfaces.custom.column.HtmlColumn#getHeaderdir()
      */
     public String getHeaderdir()
@@ -605,6 +624,22 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     public void setHeadertitle(String headertitle)
     {
         _headertitle = headertitle;
+    }
+
+    /**
+     * @see org.apache.myfaces.custom.column.HtmlColumn#getHeadercolspan()
+     */
+    public String getHeadercolspan()
+    {
+        return (String) getLocalOrValueBindingValue(_headercolspan, "headercolspan");
+    }
+
+    /**
+     * @see org.apache.myfaces.custom.column.HtmlColumn#setHeadercolspan(java.lang.String)
+     */
+    public void setHeadercolspan(String headercolspan)
+    {
+        _headercolspan = headercolspan;
     }
 
     /**
@@ -863,6 +898,22 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _width = width;
     }
 
+    /**
+     * @see org.apache.myfaces.custom.column.HtmlColumn#getColspan()
+     */
+    public String getColspan()
+    {
+        return (String) getLocalOrValueBindingValue(_colspan, "colspan");
+    }
+
+    /**
+     * @see org.apache.myfaces.custom.column.HtmlColumn#setColspan(java.lang.String)
+     */
+    public void setColspan(String colspan)
+    {
+        _colspan = colspan;
+    }
+
     public boolean isGroupBy()
     {
         if (_groupBy != null) return _groupBy.booleanValue();
@@ -917,7 +968,7 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[51];
+        Object[] values = new Object[54];
         values[0] = super.saveState(context);
 
         values[1] = _headerdir;
@@ -974,6 +1025,9 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         values[48] = _defaultSorted;
         values[49] = _sortable;
         values[50] = _sortPropertyName;
+        values[51] = _headercolspan;
+        values[52] = _footercolspan;
+        values[53] = _colspan;
 
         return values;
     }
@@ -1040,5 +1094,8 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _defaultSorted = (Boolean) values[48];
         _sortable = (Boolean) values[49];
         _sortPropertyName = (String) values[50];
+        _headercolspan = (String) values[51];
+        _footercolspan = (String) values[52];
+        _colspan = (String) values[53];
     }
 }

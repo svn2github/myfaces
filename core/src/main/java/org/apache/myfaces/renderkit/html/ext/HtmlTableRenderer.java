@@ -40,6 +40,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
+import org.apache.myfaces.shared_tomahawk.util.ArrayUtils;
 
 import javax.faces.component.ValueHolder;
 import javax.faces.convert.Converter;
@@ -578,6 +579,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
         else if (component instanceof HtmlColumn)
         {
+            if (amISpannedOver(null, component))
+                return;
             writer.startElement(HTML.TD_ELEM, uiData);
             String styleClass = ((HtmlColumn) component).getStyleClass();
             if(styles.hasColumnStyle())
@@ -662,6 +665,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     {
         if (uiComponent instanceof HtmlColumn)
         {
+            if (amISpannedOver("header", uiComponent))
+                return;
             writer.startElement(HTML.TH_ELEM, uiComponent);
             if (colspan > 1)
             {
@@ -702,6 +707,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     {
         if (uiComponent instanceof HtmlColumn)
         {
+            if (amISpannedOver("footer", uiComponent))
+                return;
             writer.startElement(HTML.TD_ELEM, uiComponent);
             if (colspan > 1)
             {
@@ -735,7 +742,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     protected void renderHtmlColumnAttributes(ResponseWriter writer,
                                               UIComponent uiComponent, String prefix) throws IOException
     {
-        String[] attrs = HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE;
+        String[] attrs = (String[]) ArrayUtils.concat(HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE, new String[] {HTML.COLSPAN_ATTR});
         for (int i = 0, size = attrs.length; i < size; i++)
         {
             String attributeName = attrs[i];
@@ -873,5 +880,38 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
         else if (sortedColumnVar != null)
             requestMap.remove(sortedColumnVar);
+    }
+
+    /**
+     * specify if the header, footer or <td> is spanned over (not shown) because
+     * of a colspan in a cell in a previous column
+     * 
+     * @param prefix header, footer or null
+     * @param uiComponent
+     */
+    protected boolean amISpannedOver(String prefix, UIComponent component) {
+        UIComponent table = component.getParent();
+        int span = 0;
+        for (Iterator it = table.getChildren().iterator(); it.hasNext();) {
+            UIComponent columnComponent = (UIComponent) it.next();
+            if (!(columnComponent instanceof HtmlColumn))
+            	return false;
+            if (span > 0)
+                span--;
+            if (columnComponent == component)
+                return span > 0;
+            if (span == 0) {
+                try {
+                    if (prefix == null && ((HtmlColumn)columnComponent).getColspan() != null)
+                        span = Integer.parseInt(((HtmlColumn)columnComponent).getColspan());
+                    if ("header".equals(prefix) && ((HtmlColumn)columnComponent).getHeadercolspan() != null)
+                        span = Integer.parseInt(((HtmlColumn)columnComponent).getHeadercolspan());
+                    if ("footer".equals(prefix) && ((HtmlColumn)columnComponent).getFootercolspan() != null)
+                        span = Integer.parseInt(((HtmlColumn)columnComponent).getFootercolspan());
+                }
+                catch (NumberFormatException ex) { }
+            }
+        }
+        return false;
     }
 }

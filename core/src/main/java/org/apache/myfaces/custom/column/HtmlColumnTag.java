@@ -30,6 +30,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
     private String _headerstyle;
     private String _headerstyleClass;
     private String _headertitle;
+    private String _headercolspan;
 
     //HTML event handler attributes for header
     private String _headeronclick;
@@ -49,6 +50,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
     private String _footerstyle;
     private String _footerstyleClass;
     private String _footertitle;
+    private String _footercolspan;
 
     //HTML event handler attributes for footer
     private String _footeronclick;
@@ -63,6 +65,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
     private String _footeronmouseup;
 
     private String _width;
+    private String _colspan;
     private String _groupBy;
 
     //sort related attributes
@@ -85,6 +88,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _headerstyle = null;
         _headerstyleClass = null;
         _headertitle = null;
+        _headercolspan = null;
         _headeronclick = null;
         _headerondblclick = null;
         _headeronkeydown = null;
@@ -101,6 +105,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _footerstyle = null;
         _footerstyleClass = null;
         _footertitle = null;
+        _footercolspan = null;
         _footeronclick = null;
         _footerondblclick = null;
         _footeronkeydown = null;
@@ -113,6 +118,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _footeronmouseup = null;
 
         _width = null;
+        _colspan = null;
         _groupBy = null;
 
         _defaultSorted = null;
@@ -126,6 +132,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, "headerlang", _headerlang);
         setStringProperty(component, "headerstyle", _headerstyle);
         setStringProperty(component, "headertitle", _headertitle);
+        setStringProperty(component, "headercolspan", _headercolspan);
         setStringProperty(component, "headerstyleClass", _headerstyleClass);
         setStringProperty(component, "headeronclick", _headeronclick);
         setStringProperty(component, "headerondblclick", _headerondblclick);
@@ -142,6 +149,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, "footerlang", _footerlang);
         setStringProperty(component, "footerstyle", _footerstyle);
         setStringProperty(component, "footertitle", _footertitle);
+        setStringProperty(component, "footercolspan", _footercolspan);
         setStringProperty(component, "footerstyleClass", _footerstyleClass);
         setStringProperty(component, "footeronclick", _footeronclick);
         setStringProperty(component, "footerondblclick", _footerondblclick);
@@ -155,6 +163,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
 
         setStringProperty(component, "width", _width);
+        setStringProperty(component, "colspan", _colspan);
         setBooleanProperty(component, "groupBy", _groupBy);
 
         setBooleanProperty(component, "defaultSorted", _defaultSorted);
@@ -216,6 +225,11 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
 
     public void setFooterstyleClass(String footerstyleClass) {
         _footerstyleClass = footerstyleClass;
+    }
+
+    public void setFootercolspan(String footercolspan)
+    {
+        _footercolspan = footercolspan;
     }
 
     public void setFootertitle(String footertitle) {
@@ -282,8 +296,18 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _headertitle = headertitle;
     }
 
+    public void setHeadercolspan(String headercolspan)
+    {
+        _headercolspan = headercolspan;
+    }
+
     public void setWidth(String width) {
         _width = width;
+    }
+
+    public void setColspan(String colspan)
+    {
+        _colspan = colspan;
     }
 
     public void setGroupBy(String groupBy) {

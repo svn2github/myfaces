@@ -44,6 +44,7 @@
                     <h:outputLink value="optDataTable.jsf" ><f:verbatim>Optional Header/Footer</f:verbatim></h:outputLink>
                     <h:outputLink value="simpleGroupBy.jsf" ><f:verbatim>Group by columns</f:verbatim></h:outputLink>
                 	<h:outputLink value="newspaperTable.jsf" ><f:verbatim>Newspaper Table</f:verbatim></h:outputLink>
+                	<h:outputLink value="colspan.jsf" ><f:verbatim>Colspan</f:verbatim></h:outputLink>
                 </h:panelGrid>
                 <h:outputLink value="selectbox.jsf" ><f:verbatim>Select boxes</f:verbatim></h:outputLink>
                 <h:outputLink value="fileupload.jsf" ><f:verbatim>File upload</f:verbatim></h:outputLink>

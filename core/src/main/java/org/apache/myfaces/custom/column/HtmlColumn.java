@@ -205,4 +205,16 @@ public interface HtmlColumn
 
     void setWidth(String width);
 
+    String getColspan();
+
+    void setColspan(String colspan);
+
+    String getHeadercolspan();
+
+    void setHeadercolspan(String headercolspan);
+
+    String getFootercolspan();
+
+    void setFootercolspan(String footercolspan);
+
 }

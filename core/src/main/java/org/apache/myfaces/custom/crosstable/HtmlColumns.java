@@ -542,6 +542,14 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
         _sortPropertyName = sortPropertyName;
     }
 
+    // the following are not implemented, but are in the HtmlColumn interface
+    public String getColspan() {return null;}
+    public void setColspan(String colspan) {}
+    public String getHeadercolspan() {return null;}
+    public void setHeadercolspan(String headercolspan) {}
+    public String getFootercolspan() {return null;}
+    public void setFootercolspan(String footercolspan) {}
+
     /**
      * @see javax.faces.component.UIData#saveState(javax.faces.context.FacesContext)
      */

@@ -66,7 +66,8 @@ components.
         <section name="Syntax">
             
             <blockquote><h3>&lt;t:column/&gt;</h3>
-                <code>witdh - the width of the column.</code><br/>
+                <code>width - the width of the column.</code><br/>
+                <code>colspan - html colspan passthru.</code><br/>
                 <br/>
                 <code>dir - row cell, ltr | rtl.</code><br/>
                 <code>lang - row cell, language see RFC 1766</code><br/>
@@ -87,6 +88,7 @@ components.
                 <code>headerdir - header cell, ltr | rtl.</code><br/>
                 <code>headerlang - header cell, language see RFC 1766</code><br/>
                 <code>headertitle - header cell, title (tooltip)</code><br/>
+                <code>headercolspan - colspan passthru for header column</code><br/>
                 <code>headerstyle - header cell, inline css-style</code><br/>
                 <code>headerstyleClass - header cell, css style class</code><br/>
                 <code>headeronclick - header cell, onclick event</code><br/>
@@ -103,6 +105,7 @@ components.
                 <code>footerdir - footer cell, ltr | rtl.</code><br/>
                 <code>footerlang - footer cell, language see RFC 1766</code><br/>
                 <code>footertitle - footer cell, title (tooltip)</code><br/>
+                <code>footercolspan - colspan passthru for footer column</code><br/>
                 <code>footerstyle - footer cell, inline css-style</code><br/>
                 <code>footerstyleClass - footer cell, css style class</code><br/>
                 <code>footeronclick - footer cell, onclick event</code><br/>
