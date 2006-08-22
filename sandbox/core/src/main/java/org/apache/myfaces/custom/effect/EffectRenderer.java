@@ -26,14 +26,13 @@ import org.apache.myfaces.custom.div.Div;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
-import org.apache.myfaces.custom.statechangednotifier.StateChangedNotifierRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
  * Fade field only currently the renderer is implemented and the tag, because we
