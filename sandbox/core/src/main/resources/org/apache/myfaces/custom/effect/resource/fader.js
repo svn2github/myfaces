@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 org_apache_myfaces_effects_fader = function (theid, thetime) {
-	fadeid = theid;
-	time = thetime;
+	this.fadeid = theid;
+	this.time = thetime;
 };
 org_apache_myfaces_effects_fader.prototype.hide = function () {
-	dojo.style.setOpacity(dojo.byId(fadeid), 0);
+	dojo.style.setOpacity(dojo.byId(this.fadeid), 0);
 };
 org_apache_myfaces_effects_fader.prototype.fadeIn = function () {
-	dojo.lfx.html.fadeIn(dojo.byId(fadeid), time).play();
+	dojo.lfx.html.fadeIn(dojo.byId(this.fadeid), this.time).play();
 };
 org_apache_myfaces_effects_fader.prototype.show = function () {
-	dojo.style.setOpacity(dojo.byId(fadeid), 100);
+	dojo.style.setOpacity(dojo.byId(this.fadeid), 100);
 };
 org_apache_myfaces_effects_fader.prototype.fadeOut = function () {
-	dojo.lfx.html.fadeOut(dojo.byId(fadeid), time).play();
+	dojo.lfx.html.fadeOut(dojo.byId(this.fadeid), this.time).play();
 };
-
