@@ -24,7 +24,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
