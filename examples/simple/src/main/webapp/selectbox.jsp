@@ -47,10 +47,17 @@
             </h:selectOneListbox>
 
             <h:outputLabel for="selone_menu_colors" value="#{example_messages['label_colors']}" />
-            <h:selectOneMenu id="selone_menu_colors" value="#{carconf.color}" styleClass="selectOneMenu" required="true" >
+            <h:selectOneMenu id="selone_menu_colors" value="#{carconf.color}"
+                             styleClass="selectOneMenu" required="true" converter="#{carconf.colorConverter}">
                 <f:selectItem itemValue="" itemLabel="#{example_messages['empty_selitem']}" />
                 <f:selectItems value="#{carconf.colors}" />
             </h:selectOneMenu>
+
+            <h:outputLabel for="selmany_menu_colors" value="#{example_messages['label_interior_color']}" />
+            <h:selectManyListbox id="selmany_menu_colors" value="#{carconf.interiorColors}"
+                             styleClass="selectOneMenu" required="true" converter="#{carconf.colorConverter}">
+                <f:selectItems value="#{carconf.colors}" />
+            </h:selectManyListbox>
 
             <h:outputLabel for="selone_menu_extras" value="#{example_messages['label_extras']}" />
             <h:selectManyCheckbox id="selone_menu_extras" value="#{carconf.extras}" layout="pageDirection" styleClass="selectManyCheckbox">
@@ -111,6 +118,15 @@
     <h:outputFormat value="#{example_messages['msg_price']}" >
         <f:param value="#{carconf.price}" />
     </h:outputFormat>
+
+    <h:dataTable var="interiorColor" value="#{carconf.interiorColors}">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="#{example_messages.label_interior_color}"/>
+            </f:facet>
+            <h:outputText value="#{example_messages[interiorColor.color]}"/>
+        </h:column>
+    </h:dataTable>
 
 </f:view>
 

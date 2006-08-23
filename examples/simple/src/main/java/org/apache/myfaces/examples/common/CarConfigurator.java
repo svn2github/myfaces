@@ -22,6 +22,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -60,10 +63,10 @@ public class CarConfigurator
         _cars.add(new SelectItem("c6", "James Blond Car", null));
         _cars.add(new SelectItem("c7", "Neko Bus", null));
 
-        _colors.add(new LocalizedSelectItem("color_black"));
-        _colors.add(new LocalizedSelectItem("color_blue"));
-        _colors.add(new LocalizedSelectItem("color_marine"));
-        _colors.add(new LocalizedSelectItem("color_red"));
+        _colors.add(new LocalizedSelectItem(new Color("color_black"),"color_black"));
+        _colors.add(new LocalizedSelectItem(new Color("color_blue"),"color_blue"));
+        _colors.add(new LocalizedSelectItem(new Color("color_marine"),"color_marine"));
+        _colors.add(new LocalizedSelectItem(new Color("color_red"),"color_red"));
 
         _extrasList.add(new LocalizedSelectItem("extra_aircond"));
         _extrasList.add(new LocalizedSelectItem("extra_sideab"));
@@ -96,7 +99,8 @@ public class CarConfigurator
     private String _discount2 = "0";
     private String _bandName;
     private String _car;
-    private String _color = "color_blue";
+    private Color _color = new Color("color_blue");
+    private List _interiorColors = null;
     private boolean _salesTax = false;
     private int _doors = 4;
 
@@ -142,14 +146,24 @@ public class CarConfigurator
         _car = car;
     }
 
-    public String getColor()
+    public Color getColor()
     {
         return _color;
     }
 
-    public void setColor(String color)
+    public void setColor(Color color)
     {
         _color = color;
+    }
+
+    public List getInteriorColors()
+    {
+        return _interiorColors;
+    }
+
+    public void setInteriorColors(List interiorColors)
+    {
+        _interiorColors = interiorColors;
     }
 
     public BigDecimal getPrice()
@@ -215,7 +229,7 @@ public class CarConfigurator
     public String calcPrice()
     {
         String car = getCar();
-        String color = getColor();
+        Color color = getColor();
         if (car == null ||
             color == null)
         {
@@ -224,7 +238,7 @@ public class CarConfigurator
         }
 
         BigDecimal carprice = (BigDecimal)_priceList.get(car);
-        BigDecimal colorfactor = (BigDecimal)_priceFactorColors.get(color);
+        BigDecimal colorfactor = (BigDecimal)_priceFactorColors.get(color.getColor());
         if (carprice == null ||
             colorfactor == null)
         {
@@ -294,5 +308,64 @@ public class CarConfigurator
         }
     }
 
+    public Converter getColorConverter()
+    {
+        return new ColorConverter();
+    }
+
+    public static class ColorConverter implements Converter
+    {
+
+        public Object getAsObject(FacesContext facesContext, UIComponent component, String string) throws ConverterException
+        {
+            if(string==null)
+                return null;
+
+            return new Color(string);
+        }
+
+        public String getAsString(FacesContext facesContext, UIComponent component, Object object) throws ConverterException
+        {
+            if(object instanceof Color)
+            {
+                return ((Color) object).getColor();
+            }
+
+            return null;
+        }
+    }
+
+    public static class Color implements Serializable
+    {
+        private String color;
+
+        public Color(String color)
+        {
+            this.color = color;
+        }
+
+        public String getColor()
+        {
+            return color;
+        }
+
+        public void setColor(String color)
+        {
+            this.color = color;
+        }
+
+        public boolean equals(Object cmp)
+        {
+            if(!(cmp instanceof Color))
+                return false;
+
+            String cmpColor = ((Color) cmp).getColor();
+
+            if(this.color == null && cmpColor!=null)
+                return false;
+
+            return this.color.equals(cmpColor);
+        }
+    }
 
 }

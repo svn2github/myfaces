@@ -35,4 +35,12 @@ public class LocalizedSelectItem extends SelectItem
         String label = GuiUtil.getMessageResource(key, null);
         setLabel(label);
     }
+
+    public LocalizedSelectItem(Object value, String key)
+    {
+        super(value);
+
+        String label = GuiUtil.getMessageResource(key, null);
+        setLabel(label);
+    }
 }
