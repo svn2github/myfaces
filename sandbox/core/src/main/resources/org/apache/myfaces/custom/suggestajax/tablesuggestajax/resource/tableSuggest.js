@@ -65,11 +65,11 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         {
             this.scrollOverflowDiv(trElem);
 
-            for (j = 0; j < trElem.childNodes.length; j++)
+            for (var j = 0; j < trElem.childNodes.length; j+=1)
             {
                 var tdElem = trElem.childNodes[j];
 
-                for (a = 0; a < tdElem.childNodes.length; a++)
+                for (var a = 0; a < tdElem.childNodes.length; a+=1)
                 {
                     var spanElem = tdElem.childNodes[a];
 
@@ -90,12 +90,13 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                             }
                             else if (dojo.dom.getTagName(elemToPutValue) == "select")
                             {
-                                for (i = 0; i < elemToPutValue.options.length; i++)
+                                for (i = 0; i < elemToPutValue.options.length; i+=1)
                                 {
                                     var optionValue = spanElem.innerHTML;
 
-                                    if (elemToPutValue.options[i].value == optionValue)
+                                    if (elemToPutValue.options[i].value == optionValue) {
                                         elemToPutValue.options[i].selected = true;
+                                    }    
                                 }
                             }
                         }
@@ -122,7 +123,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         else if (this.inputField.setSelectionRange) {
             this.inputField.setSelectionRange(len, suggestion.length);
         }
-    }
+    };
     
     org_apache_myfaces_TableSuggest.prototype.scrollOverflowDiv = function(trElem)
     {
@@ -138,7 +139,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
                 if (prevElem)
                 {
-                    this.scrollingRow++;
+                    this.scrollingRow+=1;
 
                     if (this.scrollingRow >= 4)
                     {
@@ -205,7 +206,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
                         collection.clear();
 
-                        for(k=0;k<tablePagesArray.length;k++)
+                        for(k=0;k<tablePagesArray.length;k+=1)
                         {
                             if(k==0)
                             {
@@ -213,7 +214,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                 firstPageField = tablePagesArray[k+1];
                                 dojo.dom.insertAtPosition(firstPage, tableSuggest.popUp, "first");
                                 dojo.dom.insertAtPosition(firstPageField, tableSuggest.popUp, "last");
-                                k++;
+                                k+=1;
 					
                                 if(firstPage.rows && firstPage.rows.length == 2) 
                                 {
@@ -270,7 +271,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 	//parse the column names of the table to be rendered 
         var columnHeaders = root.getElementsByTagName("columnHeader");
 	var columnHeadersArray = new Array();
-	for (var i = 0; i < columnHeaders.length; i++)
+	for (var i = 0; i < columnHeaders.length; i+=1)
         {
  	    columnHeadersArray[i] = columnHeaders[i].firstChild.nodeValue;
 	}
@@ -280,12 +281,12 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         var items = root.getElementsByTagName("item");
         var itemsArray = new Array();
         
-        for (var i = 0; i < items.length; i++)
+        for (var i = 0; i < items.length; i+=1)
         {
             var currentItem = items[i];
 	    var columnsArray = new Array();
             
-            for (var j = 0; j < currentItem.childNodes.length; j++)
+            for (var j = 0; j < currentItem.childNodes.length; j+=1)
             {   
                 var currentColumn = currentItem.childNodes[j];
                 var column = new Object();
@@ -335,7 +336,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 	//add the column Headers
         tr = thead.insertRow(0);
         
-        for (var i = 0; i < this.columnHeaders.length; i++)
+        for (var i = 0; i < this.columnHeaders.length; i+=1)
         {
 	    td = tr.insertCell(tr.cells.length);
             tn = document.createTextNode(this.columnHeaders[i]);
@@ -345,7 +346,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         var tableSuggestAjax = this;
 
         //adding the data items	
-	for (var i = 0; i < this.data.length; i++)
+	for (var i = 0; i < this.data.length; i+=1)
         {
             var columnsArray = this.data[i];
             tr = tbody.insertRow(tbody.rows.length);
@@ -368,7 +369,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 tableSuggest.putValueToField(obj);
             }
 	                            	
-            for (var j = 0; j < columnsArray.length; j++) 
+            for (var j = 0; j < columnsArray.length; j+=1) 
             {
                 td = tr.insertCell(tr.cells.length);
                 
@@ -598,7 +599,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         if (this.saveOldValues)
         {
             this.oldValues = new Object();
-            for (var i = 0; i < this.fieldNames.length; i++)
+            for (var i = 0; i < this.fieldNames.length; i+=1)
             {
                 var fieldName = this.fieldNames[i];
                 var field = dojo.byId(fieldName);
@@ -628,7 +629,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                         
             if (tableSuggest.data == null) return;
             //search if this value is from the list of acceptable values
-            for (var i = 0; i < tableSuggest.data.length; i++)
+            for (var i = 0; i < tableSuggest.data.length; i+=1)
             {
 	        var item = tableSuggest.data[i];
                 var primaryColumn = item[0];
@@ -639,7 +640,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 }
             }
             //validation failed : restore the original values of all the fields (including foreign-key fields)
-            for (var i = 0; i < tableSuggest.fieldNames.length; i++)
+            for (var i = 0; i < tableSuggest.fieldNames.length; i+=1)
             {   
                 var fieldName = tableSuggest.fieldNames[i];
                 var field = dojo.byId(fieldName);
@@ -654,7 +655,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     
     org_apache_myfaces_TableSuggest.prototype.updateForeignKeyFields = function(row) 
     {
-        for (var i = 0; i < row.length; i++)
+        for (var i = 0; i < row.length; i+=1)
         {
             var column = row[i];
             var fieldId, field;
