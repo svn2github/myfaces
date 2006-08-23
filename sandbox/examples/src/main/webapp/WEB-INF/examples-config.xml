@@ -478,6 +478,13 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 
+	<!-- validation -->
+    <managed-bean>
+        <managed-bean-name>validateForm</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.validate.ValidateForm</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
 	<!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>

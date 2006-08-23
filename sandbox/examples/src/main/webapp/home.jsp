@@ -46,6 +46,7 @@
 	            	<h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
 	            	<h:outputLink value="validateCompareTo.jsf" ><f:verbatim>validateCompareTo - Compare values on two different components</f:verbatim></h:outputLink>
 	            	<h:outputLink value="subForm.jsf"><f:verbatim>SubForm - Partial validation and model update with SubForms</f:verbatim></h:outputLink>
+	            	<h:outputLink value="validateCSV.jsf"><f:verbatim>CSVValidator - validate comma separated values with a given (sub)validator</f:verbatim></h:outputLink>
 	            </h:panelGrid>
 
             </h:panelGrid>
