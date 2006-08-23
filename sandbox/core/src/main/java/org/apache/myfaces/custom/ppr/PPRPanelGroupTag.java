@@ -24,38 +24,39 @@ import javax.faces.component.UIComponent;
  */
 public class PPRPanelGroupTag extends HtmlPanelGroupTag
 {
-    private String _partialTriggers;
+	private String _partialTriggers;
 
-    public String getComponentType()
-    {
-        return PPRPanelGroup.COMPONENT_TYPE;
-    }
+	public String getComponentType()
+	{
+		return PPRPanelGroup.COMPONENT_TYPE;
+	}
 
-    public String getRendererType()
-    {
-        return PPRPanelGroup.DEFAULT_RENDERER_TYPE;
-    }
+	public String getRendererType()
+	{
+		return PPRPanelGroup.DEFAULT_RENDERER_TYPE;
+	}
 
+	public void release()
+	{
+		super.release();
+		_partialTriggers = null;
+	}
 
-    public void release()
-    {
-        super.release();
-        _partialTriggers = null;
-    }
-     protected void setProperties(UIComponent component) {
-        super.setProperties(component);
+	protected void setProperties(UIComponent component)
+	{
+		super.setProperties(component);
 
-        setStringProperty(component, "partialTriggers", _partialTriggers);
-    }
+		setStringProperty(component, "partialTriggers", _partialTriggers);
+	}
 
-    public String getPartialTriggers()
-    {
-        return _partialTriggers;
-    }
+	public String getPartialTriggers()
+	{
+		return _partialTriggers;
+	}
 
-    public void setPartialTriggers(String partialTriggers)
-    {
-        this._partialTriggers = partialTriggers;
-    }
+	public void setPartialTriggers(String partialTriggers)
+	{
+		this._partialTriggers = partialTriggers;
+	}
 
 }

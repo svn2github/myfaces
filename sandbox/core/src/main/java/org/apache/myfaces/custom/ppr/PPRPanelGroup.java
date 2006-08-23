@@ -24,48 +24,46 @@ import javax.faces.context.FacesContext;
  */
 public class PPRPanelGroup extends HtmlPanelGroup
 {
-    private String _partialTriggers;
+	public static final String COMPONENT_TYPE = "org.apache.myfaces.PPRPanelGroup";
+	public static final String COMPONENT_FAMILY = "org.apache.myfaces.PPRPanelGroup";
+	public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRPanelGroup";
 
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.PPRPanelGroup";
+	private String _partialTriggers;
 
-    public static final String COMPONENT_FAMILY = "org.apache.myfaces.PPRPanelGroup";
+	public PPRPanelGroup()
+	{
+		setRendererType(DEFAULT_RENDERER_TYPE);
+	}
 
-    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRPanelGroup";
+	public String getFamily()
+	{
+		return COMPONENT_FAMILY;
+	}
 
-    public PPRPanelGroup()
-    {
-        setRendererType(DEFAULT_RENDERER_TYPE);
-    }
+	public String getPartialTriggers()
+	{
+		return _partialTriggers;
+	}
 
-    public String getFamily()
-    {
-        return COMPONENT_FAMILY;
-    }
+	public void setPartialTriggers(String partialTriggers)
+	{
+		this._partialTriggers = partialTriggers;
+	}
 
-    public String getPartialTriggers()
-    {
-        return _partialTriggers;
-    }
+	public void restoreState(FacesContext context, Object state)
+	{
 
-    public void setPartialTriggers(String partialTriggers)
-    {
-        this._partialTriggers = partialTriggers;
-    }
+		Object[] values = (Object[]) state;
+		super.restoreState(context, values[0]);
+		_partialTriggers = (String) values[1];
 
-    public void restoreState(FacesContext context, Object state)
-    {
+	}
 
-        Object[] values = (Object[]) state;
-        super.restoreState(context, values[0]);
-        _partialTriggers = (String) values[1];
-
-    }
-
-    public Object saveState(FacesContext context)
-    {
-        Object[] values = new Object[2];
-        values[0] = super.saveState(context);
-        values[1] = _partialTriggers;
-        return values;
-    }
+	public Object saveState(FacesContext context)
+	{
+		Object[] values = new Object[2];
+		values[0] = super.saveState(context);
+		values[1] = _partialTriggers;
+		return values;
+	}
 }
