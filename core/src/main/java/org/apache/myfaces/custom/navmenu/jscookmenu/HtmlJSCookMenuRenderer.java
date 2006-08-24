@@ -51,8 +51,7 @@ import java.util.StringTokenizer;
  * @version $Revision$ $Date$
  */
 public class HtmlJSCookMenuRenderer
-    extends HtmlRenderer
-{
+    extends HtmlRenderer {
     private static final String MYFACES_HACK_SCRIPT = "MyFacesHack.js";
 
     private static final String JSCOOK_MENU_SCRIPT = "JSCookMenu.js";
@@ -63,6 +62,7 @@ public class HtmlJSCookMenuRenderer
     private static final Class[] ACTION_LISTENER_ARGS = {ActionEvent.class};
 
     private static final Map builtInThemes = new java.util.HashMap();
+
     static {
         builtInThemes.put("ThemeOffice", "ThemeOffice/");
         builtInThemes.put("ThemeMiniBlack", "ThemeMiniBlack/");
@@ -70,19 +70,16 @@ public class HtmlJSCookMenuRenderer
         builtInThemes.put("ThemePanel", "ThemePanel/");
     }
 
-    public void decode(FacesContext context, UIComponent component)
-    {
+    public void decode(FacesContext context, UIComponent component) {
         RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
 
         Map parameter = context.getExternalContext().getRequestParameterMap();
-        String actionParam = (String)parameter.get(JSCOOK_ACTION_PARAM);
+        String actionParam = (String) parameter.get(JSCOOK_ACTION_PARAM);
         if (actionParam != null && !actionParam.trim().equals("") &&
-            !actionParam.trim().equals("null"))
-        {
-            String compId = getMenuId(context,component);
+            !actionParam.trim().equals("null")) {
+            String compId = getMenuId(context, component);
             StringTokenizer tokenizer = new StringTokenizer(actionParam, ":");
-            if (tokenizer.countTokens() > 1)
-            {
+            if (tokenizer.countTokens() > 1) {
                 String actionId = tokenizer.nextToken();
                 if (! compId.equals(actionId)) {
                     return;
@@ -90,7 +87,7 @@ public class HtmlJSCookMenuRenderer
                 while (tokenizer.hasMoreTokens()) {
                     String action = tokenizer.nextToken();
                     if (action.startsWith("A]")) {
-                        action  = action.substring(2, action.length());
+                        action = action.substring(2, action.length());
                         action = decodeValueBinding(action, context);
                         MethodBinding mb;
                         if (NavigationMenuUtils.isValueReference(action)) {
@@ -99,23 +96,23 @@ public class HtmlJSCookMenuRenderer
                         else {
                             mb = new SimpleActionMethodBinding(action);
                         }
-                        ((HtmlCommandJSCookMenu)component).setAction(mb);
+                        ((HtmlCommandJSCookMenu) component).setAction(mb);
                     }
                     else if (action.startsWith("L]")) {
-                        action  = action.substring(2, action.length());
+                        action = action.substring(2, action.length());
                         String value = null;
                         int idx = action.indexOf(";");
-                        if (idx > 0 && idx < action.length()-1) {
+                        if (idx > 0 && idx < action.length() - 1) {
                             value = action.substring(idx + 1, action.length());
                             action = action.substring(0, idx);
-                            ((HtmlCommandJSCookMenu)component).setValue(value);
+                            ((HtmlCommandJSCookMenu) component).setValue(value);
                         }
                         MethodBinding mb;
                         if (NavigationMenuUtils.isValueReference(action)) {
                             mb = context.getApplication().createMethodBinding(action, ACTION_LISTENER_ARGS);
-                            ((HtmlCommandJSCookMenu)component).setActionListener(mb);
+                            ((HtmlCommandJSCookMenu) component).setActionListener(mb);
                             if (value != null)
-                                ((HtmlCommandJSCookMenu)component).setValue(value);
+                                ((HtmlCommandJSCookMenu) component).setValue(value);
                         }
                     }
                 }
@@ -124,8 +121,7 @@ public class HtmlJSCookMenuRenderer
         }
     }
 
-    private String decodeValueBinding(String actionParam, FacesContext context)
-    {
+    private String decodeValueBinding(String actionParam, FacesContext context) {
         int idx = actionParam.indexOf(";#{");
         if (idx == -1) {
             return actionParam;
@@ -148,21 +144,19 @@ public class HtmlJSCookMenuRenderer
         return newActionParam;
     }
 
-    public boolean getRendersChildren()
-    {
+    public boolean getRendersChildren() {
         return true;
     }
 
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException
-    {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
 
         List list = NavigationMenuUtils.getNavigationMenuItemList(component);
-        if (list.size() > 0)
-        {
+        if (list.size() > 0) {
             FormInfo parentFormInfo = RendererUtils.findNestingForm(component, context);
+            ResponseWriter writer = context.getResponseWriter();
 
-            if(parentFormInfo == null)
+            if (parentFormInfo == null)
                 throw new FacesException("jscook menu is not embedded in a form.");
             String formName = parentFormInfo.getFormName();
             List uiNavMenuItemList = component.getChildren();
@@ -174,15 +168,22 @@ public class HtmlJSCookMenuRenderer
                 formName = DummyFormUtils.getDummyFormName();
             }
             else {*/
-                HtmlFormRendererBase.addHiddenCommandParameter(context,parentFormInfo.getForm(),JSCOOK_ACTION_PARAM);
+            if (RendererUtils.isAdfOrTrinidadForm(parentFormInfo.getForm())) {
+                // need to add hidden input, cause MyFaces form is missing hence will not render hidden inputs
+                writer.write("<input type=\"hidden\" name=\"");
+                writer.write(JSCOOK_ACTION_PARAM);
+                writer.write("\" />");
+            }
+            else {
+                HtmlFormRendererBase.addHiddenCommandParameter(context, parentFormInfo.getForm(), JSCOOK_ACTION_PARAM);
+            }
+
             //}
 
             String myId = getMenuId(context, component);
 
-            ResponseWriter writer = context.getResponseWriter();
-
-            writer.startElement(HTML.SCRIPT_ELEM,component);
-            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+            writer.startElement(HTML.SCRIPT_ELEM, component);
+            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             StringBuffer script = new StringBuffer();
             script.append("var ").append(getMenuId(context, component)).append(" =\n[");
             encodeNavigationMenuItems(context, script,
@@ -191,7 +192,7 @@ public class HtmlJSCookMenuRenderer
                                       myId, formName);
 
             script.append("];");
-            writer.writeText(script.toString(),null);
+            writer.writeText(script.toString(), null);
             writer.endElement(HTML.SCRIPT_ELEM);
         }
     }
@@ -201,10 +202,8 @@ public class HtmlJSCookMenuRenderer
                                            NavigationMenuItem[] items,
                                            List uiNavMenuItemList,
                                            String menuId, String formName)
-        throws IOException
-    {
-        for (int i = 0; i < items.length; i++)
-        {
+        throws IOException {
+        for (int i = 0; i < items.length; i++) {
             NavigationMenuItem item = items[i];
             Object tempObj = null;
             UINavigationMenuItem uiNavMenuItem = null;
@@ -221,60 +220,50 @@ public class HtmlJSCookMenuRenderer
                 continue;
             }
 
-            if (i > 0)
-            {
+            if (i > 0) {
                 writer.append(",\n");
             }
 
-            if (item.isSplit())
-            {
+            if (item.isSplit()) {
                 writer.append("_cmSplit,");
 
-                if (item.getLabel().equals("0"))
-                {
+                if (item.getLabel().equals("0")) {
                     continue;
                 }
             }
 
             writer.append("[");
-            if (item.getIcon() != null)
-            {
+            if (item.getIcon() != null) {
                 String iconSrc = context.getApplication().getViewHandler().getResourceURL(context, item.getIcon());
                 writer.append("'<img src=\"");
                 writer.append(context.getExternalContext().encodeResourceURL(iconSrc));
                 writer.append("\"/>'");
             }
-            else
-            {
+            else {
                 writer.append("null");
             }
             writer.append(", '");
-            if( item.getLabel() != null ) {
-                writer.append(getString(context,item.getLabel()));
+            if (item.getLabel() != null) {
+                writer.append(getString(context, item.getLabel()));
             }
             writer.append("', ");
             StringBuffer actionStr = new StringBuffer();
-            if ((item.getAction() != null || item.getActionListener() != null) && ! item.isDisabled())
-            {
+            if ((item.getAction() != null || item.getActionListener() != null) && ! item.isDisabled()) {
                 actionStr.append("'");
                 actionStr.append(menuId);
-                if (item.getActionListener() != null)
-                {
+                if (item.getActionListener() != null) {
                     actionStr.append(":L]");
                     actionStr.append(item.getActionListener());
-                    if (uiNavMenuItem != null && uiNavMenuItem.getItemValue() != null)
-                    {
+                    if (uiNavMenuItem != null && uiNavMenuItem.getItemValue() != null) {
                         actionStr.append(';');
-                        actionStr.append(getString(context,uiNavMenuItem.getItemValue()));
+                        actionStr.append(getString(context, uiNavMenuItem.getItemValue()));
                     }
-                    else if (item.getValue() != null)
-                    {
+                    else if (item.getValue() != null) {
                         actionStr.append(';');
-                        actionStr.append(getString(context,item.getValue()));
+                        actionStr.append(getString(context, item.getValue()));
                     }
                 }
-                if (item.getAction() != null)
-                {
+                if (item.getAction() != null) {
                     actionStr.append(":A]");
                     actionStr.append(item.getAction());
                     if (uiNavMenuItem != null) {
@@ -284,8 +273,7 @@ public class HtmlJSCookMenuRenderer
                 actionStr.append("'");
                 writer.append(actionStr.toString());
             }
-            else
-            {
+            else {
                 writer.append("null");
             }
             writer.append(", '");
@@ -296,14 +284,13 @@ public class HtmlJSCookMenuRenderer
             if (item.isRendered() && ! item.isDisabled()) {
                 // render children only if parent is visible/enabled
                 NavigationMenuItem[] menuItems = item.getNavigationMenuItems();
-                if (menuItems != null && menuItems.length > 0)
-                {
+                if (menuItems != null && menuItems.length > 0) {
                     writer.append(",");
-                    if (uiNavMenuItem != null)
-                    {
+                    if (uiNavMenuItem != null) {
                         encodeNavigationMenuItems(context, writer, menuItems,
                                                   uiNavMenuItem.getChildren(), menuId, formName);
-                    } else {
+                    }
+                    else {
                         encodeNavigationMenuItems(context, writer, menuItems,
                                                   new ArrayList(1), menuId, formName);
                     }
@@ -313,25 +300,20 @@ public class HtmlJSCookMenuRenderer
         }
     }
 
-    private String getString(FacesContext facesContext, Object value)
-    {
+    private String getString(FacesContext facesContext, Object value) {
         String str = "";
 
-        if(value!=null)
-        {
+        if (value != null) {
             str = value.toString();
         }
 
-        if(NavigationMenuUtils.isValueReference(str))
-        {
+        if (NavigationMenuUtils.isValueReference(str)) {
             value = facesContext.getApplication().createValueBinding(str).getValue(facesContext);
 
-            if(value != null)
-            {
+            if (value != null) {
                 str = value.toString();
             }
-            else
-            {
+            else {
                 str = "";
             }
         }
@@ -340,8 +322,7 @@ public class HtmlJSCookMenuRenderer
     }
 
     private void encodeValueBinding(StringBuffer writer, UINavigationMenuItem uiNavMenuItem,
-                                    NavigationMenuItem item)
-    {
+                                    NavigationMenuItem item) {
         ValueBinding vb = uiNavMenuItem.getValueBinding("NavMenuItemValue");
         if (vb == null) {
             return;
@@ -361,22 +342,20 @@ public class HtmlJSCookMenuRenderer
         writer.append(tempObj.toString());
     }
 
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
-    {
-        HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu) component;
         String theme = menu.getTheme();
         if (theme == null) {
-                // should never happen; theme is a required attribute in the jsp tag definition
+            // should never happen; theme is a required attribute in the jsp tag definition
             throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
         }
 
-        addResourcesToHeader(theme,menu,context);
+        addResourcesToHeader(theme, menu, context);
     }
 
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
-    {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, HtmlCommandJSCookMenu.class);
-        HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu)component;
+        HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu) component;
         String theme = menu.getTheme();
 
 
@@ -387,41 +366,38 @@ public class HtmlJSCookMenuRenderer
         writer.write("<div id=\"");
         writer.write(menuId);
         writer.write("\"></div>\n");
-        writer.startElement(HTML.SCRIPT_ELEM,menu);
-        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
+        writer.startElement(HTML.SCRIPT_ELEM, menu);
+        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
         StringBuffer buf = new StringBuffer();
         buf.append("\tif(window.cmDraw!=undefined) { cmDraw ('").
-                append(menuId).
-                append("', ").
-                append(menuId).
-                append(", '").
-                append(menu.getLayout()).
-                append("', cm").
-                append(theme).
-                append(", '").
-                append(theme).
-                append("');}");
+            append(menuId).
+            append("', ").
+            append(menuId).
+            append(", '").
+            append(menu.getLayout()).
+            append("', cm").
+            append(theme).
+            append(", '").
+            append(theme).
+            append("');}");
 
-        writer.writeText(buf.toString(),null);
+        writer.writeText(buf.toString(), null);
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
-    private void addResourcesToHeader(String themeName, HtmlCommandJSCookMenu menu, FacesContext context)
-    {
+    private void addResourcesToHeader(String themeName, HtmlCommandJSCookMenu menu, FacesContext context) {
         String javascriptLocation = (String) menu.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
         AddResource addResource = AddResourceFactory.getInstance(context);
 
-        if(javascriptLocation != null)
-        {
+        if (javascriptLocation != null) {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
         }
-        else
-        {
+        else {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, MYFACES_HACK_SCRIPT);
         }
@@ -432,50 +408,43 @@ public class HtmlJSCookMenuRenderer
     /**
      * A theme for a menu requires a number of external files; this method
      * outputs those into the page head section.
-     * 
-     * @param themeName is the name of the theme for this menu. It is never
-     * null. It may match one of the built-in theme names or may be a custom
-     * theme defined by the application.
      *
-     * @param styleLocation is the URL of a directory containing a 
-     * "theme.css" file. A stylesheet link tag will be inserted into
-     * the page header referencing that file. If null then if the
-     * themeName is a built-in one then a reference to the appropriate
-     * built-in stylesheet is generated (requires the ExtensionsFilter).
-     * If null and a custom theme is used then no stylesheet link will be 
-     * generated here.
-     * 
-     * @param javascriptLocation is the URL of a directory containing a 
-     * "theme.js" file. A script tag will be inserted into the page header
-     * referencing that file. If null then if the themeName is a built-in
-     * one then a reference to the built-in stylesheet is generated (requires
-     * the ExtensionsFilter). If null and a custom theme is used then no
-     * stylesheet link will be generated here.
-     * 
-     * @param imageLocation is the URL of a directory containing files
-     * (esp. image files) used by the theme.js file to define the menu
-     * theme. A javascript variable of name "my{themeName}Base" is
-     * generated in the page header containing this URL, so that the
-     * theme.js script can locate the files. If null then if the themeName
-     * is a built-in one then the URL to the appropriate resource directory
-     * is generated (requires the ExtensionsFilter). If null and a custom
-     * theme is used then no javascript variable will be generated here.
-     * 
-     * @param context is the current faces context.
+     * @param themeName          is the name of the theme for this menu. It is never
+     *                           null. It may match one of the built-in theme names or may be a custom
+     *                           theme defined by the application.
+     * @param styleLocation      is the URL of a directory containing a
+     *                           "theme.css" file. A stylesheet link tag will be inserted into
+     *                           the page header referencing that file. If null then if the
+     *                           themeName is a built-in one then a reference to the appropriate
+     *                           built-in stylesheet is generated (requires the ExtensionsFilter).
+     *                           If null and a custom theme is used then no stylesheet link will be
+     *                           generated here.
+     * @param javascriptLocation is the URL of a directory containing a
+     *                           "theme.js" file. A script tag will be inserted into the page header
+     *                           referencing that file. If null then if the themeName is a built-in
+     *                           one then a reference to the built-in stylesheet is generated (requires
+     *                           the ExtensionsFilter). If null and a custom theme is used then no
+     *                           stylesheet link will be generated here.
+     * @param imageLocation      is the URL of a directory containing files
+     *                           (esp. image files) used by the theme.js file to define the menu
+     *                           theme. A javascript variable of name "my{themeName}Base" is
+     *                           generated in the page header containing this URL, so that the
+     *                           theme.js script can locate the files. If null then if the themeName
+     *                           is a built-in one then the URL to the appropriate resource directory
+     *                           is generated (requires the ExtensionsFilter). If null and a custom
+     *                           theme is used then no javascript variable will be generated here.
+     * @param context            is the current faces context.
      */
     private void addThemeSpecificResources(String themeName, String styleLocation,
-                                           String javascriptLocation, String imageLocation, FacesContext context)
-    {
+                                           String javascriptLocation, String imageLocation, FacesContext context) {
         String themeLocation = (String) builtInThemes.get(themeName);
-        if(themeLocation == null)
-        {
+        if (themeLocation == null) {
             log.debug("Unknown theme name '" + themeName + "' specified.");
         }
 
         AddResource addResource = AddResourceFactory.getInstance(context);
 
-        if ((imageLocation != null) || (themeLocation != null))
-        {
+        if ((imageLocation != null) || (themeLocation != null)) {
             // Generate a javascript variable containing a reference to the
             // directory containing theme image files, for use by the theme
             // javascript file. If neither of these is defined (ie a custom
@@ -487,13 +456,11 @@ public class HtmlJSCookMenuRenderer
             buf.append(themeName);
             buf.append("Base='");
             ExternalContext externalContext = context.getExternalContext();
-            if (imageLocation != null)
-            {
+            if (imageLocation != null) {
                 buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
                                                                                         imageLocation + "/" + themeName)));
             }
-            else
-            {
+            else {
                 buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
                                                                                         HtmlJSCookMenuRenderer.class, themeLocation)));
             }
@@ -502,57 +469,50 @@ public class HtmlJSCookMenuRenderer
         }
 
 
-        if ((javascriptLocation != null) || (themeLocation != null))
-        {
+        if ((javascriptLocation != null) || (themeLocation != null)) {
             // Generate a <script> tag in the page header pointing to the
             // theme.js file for this theme. If neither of these is defined
             // then presumably the theme.js file is referenced by a <script>
             // tag hard-wired into the page or inserted via some other means.
-            if (javascriptLocation != null)
-            {
+            if (javascriptLocation != null) {
                 // For now, assume that if the user specified a location for a custom
                 // version of the jscookMenu.js file then the theme.js file can be found
                 // in the same location.
                 addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + themeName
-                                                                                       + "/theme.js");
+                    + "/theme.js");
             }
-            else
-            {
+            else {
                 // Using a built-in theme, so we know where the theme.js file is.
                 addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
-                                                                                                                     + "/theme.js");
+                    + "/theme.js");
             }
         }
 
-        if ((styleLocation != null) || (themeLocation != null))
-        {
+        if ((styleLocation != null) || (themeLocation != null)) {
             // Generate a <link type="text/css"> tag in the page header pointing to
             // the theme stylesheet. If neither of these is defined then presumably
             // the stylesheet is referenced by a <link> tag hard-wired into the page
             // or inserted via some other means.
-            if (styleLocation != null)
-            {
+            if (styleLocation != null) {
                 addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, styleLocation + "/" + themeName + "/theme.css");
             }
-            else
-            {
+            else {
                 addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
-                                                                                                           + "/theme.css");
+                    + "/theme.css");
             }
         }
     }
 
     /**
      * Fetch the very last part of the menu id.
-     * 
+     *
      * @param context
      * @param component
      * @return String id of the menu
      */
     private String getMenuId(FacesContext context, UIComponent component) {
-        String menuId = component.getClientId(context).replaceAll(":","_") + "_menu";
-        while(menuId.startsWith("_"))
-        {
+        String menuId = component.getClientId(context).replaceAll(":", "_") + "_menu";
+        while (menuId.startsWith("_")) {
             menuId = menuId.substring(1);
         }
         return menuId;

@@ -35,12 +35,11 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 /**
  * Renderer for the FishEyeList component
- * 
+ *
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
-{
+public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
     public static final String ATTACH_EDGE_ATTR = "dojo:attachEdge";
 
     public static final String CAPTION_ATTR = "caption";
@@ -61,63 +60,58 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
     /**
      * @see javax.faces.render.Renderer#decode(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
-    public void decode(FacesContext context, UIComponent component)
-    {
+    public void decode(FacesContext context, UIComponent component) {
         FormInfo nestingForm = findNestingForm(component, context);
-        if (nestingForm != null)
-        {
-            String fieldName = HtmlRendererUtils.getHiddenCommandLinkFieldName(nestingForm.getFormName());
+        if (nestingForm != null) {
+            String fieldName = HtmlRendererUtils.getHiddenCommandLinkFieldName(nestingForm);
             String reqValue = (String) context.getExternalContext()
-            .getRequestParameterMap().get(fieldName);
+                .getRequestParameterMap().get(fieldName);
             UIComponent source = context.getViewRoot().findComponent(reqValue);
-            if (source instanceof UINavigationMenuItem)
-            {
+            if (source instanceof UINavigationMenuItem) {
                 UINavigationMenuItem item = (UINavigationMenuItem) source;
                 item.queueEvent(new ActionEvent(item));
             }
         }
-        
+
     }
 
     /**
      * @see javax.faces.render.Renderer#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeBegin(FacesContext context, UIComponent component)
-            throws IOException
-    {
-        if (component.isRendered())
-        {
+        throws IOException {
+        if (component.isRendered()) {
             HtmlFishEyeNavigationMenu fisheye = (HtmlFishEyeNavigationMenu) component;
             ResponseWriter writer = context.getResponseWriter();
             //initialize DOJO
             String javascriptLocation = (String) component.getAttributes().get(
-                    JSFAttr.JAVASCRIPT_LOCATION);
+                JSFAttr.JAVASCRIPT_LOCATION);
             DojoUtils.addMainInclude(context, component, javascriptLocation,
-                    DojoUtils.getDjConfigInstance(context));
+                                     DojoUtils.getDjConfigInstance(context));
             DojoUtils.addRequire(context, component, "dojo.widget.FisheyeList");
 
             writer.startElement(HTML.DIV_ELEM, fisheye);
             writer.writeAttribute(HTML.CLASS_ATTR, DOJO_STYLE_CLASS, null);
             writeAttribute(writer, fisheye, ITEM_WIDTH_ATTR, fisheye
-                    .getItemWidth());
+                .getItemWidth());
             writeAttribute(writer, fisheye, ITEM_HEIGHT_ATTR, fisheye
-                    .getItemHeight());
+                .getItemHeight());
             writeAttribute(writer, fisheye, ITEM_MAX_WIDTH_ATTR, fisheye
-                    .getItemMaxWidth());
+                .getItemMaxWidth());
             writeAttribute(writer, fisheye, ITEM_MAX_HEIGHT_ATTR, fisheye
-                    .getItemMaxHeight());
+                .getItemMaxHeight());
             writeAttribute(writer, fisheye, ORIENTATION_ATTR, fisheye
-                    .getOrientation());
+                .getOrientation());
             writeAttribute(writer, fisheye, EFFECT_UNITS_ATTR, fisheye
-                    .getEffectUnits());
+                .getEffectUnits());
             writeAttribute(writer, fisheye, ITEM_PADDING_ATTR, fisheye
-                    .getItemPadding());
+                .getItemPadding());
             writeAttribute(writer, fisheye, ATTACH_EDGE_ATTR, fisheye
-                    .getAttachEdge());
+                .getAttachEdge());
             writeAttribute(writer, fisheye, LABEL_EDGE_ATTR, fisheye
-                    .getLabelEdge());
+                .getLabelEdge());
             writeAttribute(writer, fisheye, CONSERVATIVE_TRIGGER_ATTR, fisheye
-                    .getConservativeTrigger());
+                .getConservativeTrigger());
         }
     }
 
@@ -125,17 +119,14 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
      * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeChildren(FacesContext context, UIComponent component)
-            throws IOException
-    {
+        throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List children = component.getChildren();
-        for (Iterator cit = children.iterator(); cit.hasNext();)
-        {
+        for (Iterator cit = children.iterator(); cit.hasNext();) {
             UIComponent child = (UIComponent) cit.next();
             if (!child.isRendered())
                 continue;
-            if (child instanceof UINavigationMenuItem)
-            {
+            if (child instanceof UINavigationMenuItem) {
                 renderMenuItem(context, writer, (UINavigationMenuItem) child);
             }
         }
@@ -145,10 +136,8 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
      * @see javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeEnd(FacesContext context, UIComponent component)
-            throws IOException
-    {
-        if (component.isRendered())
-        {
+        throws IOException {
+        if (component.isRendered()) {
             ResponseWriter writer = context.getResponseWriter();
             writer.endElement(HTML.DIV_ELEM);
         }
@@ -157,22 +146,19 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
     /**
      * @see javax.faces.render.Renderer#getRendersChildren()
      */
-    public boolean getRendersChildren()
-    {
+    public boolean getRendersChildren() {
         //always render the menu items
         return true;
     }
 
     protected void renderMenuItem(FacesContext context, ResponseWriter writer,
-            UINavigationMenuItem item) throws IOException
-    {
+                                  UINavigationMenuItem item) throws IOException {
         //find the enclosing form
         FormInfo formInfo = findNestingForm(item, context);
         String clientId = item.getClientId(context);
-        if (formInfo == null)
-        {
+        if (formInfo == null) {
             throw new IllegalArgumentException("Component " + clientId
-                    + " must be embedded in an form");
+                + " must be embedded in an form");
         }
         UIComponent nestingForm = formInfo.getForm();
         String formName = formInfo.getFormName();
@@ -181,21 +167,20 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
 
         //call the clear_<formName> method
         onClick.append(
-                HtmlRendererUtils
-                        .getClearHiddenCommandFormParamsFunctionName(formName))
-                .append("();");
+            HtmlRendererUtils
+                .getClearHiddenCommandFormParamsFunctionName(formName))
+            .append("();");
         String jsForm = "document.forms['" + formName + "']";
 
         if (MyfacesConfig.getCurrentInstance(context.getExternalContext())
-                .isAutoScroll())
-        {
+            .isAutoScroll()) {
             org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils
-                    .appendAutoScrollAssignment(onClick, formName);
+                .appendAutoScrollAssignment(onClick, formName);
         }
 
         //add id parameter for decode
         String hiddenFieldName = HtmlRendererUtils
-                .getHiddenCommandLinkFieldName(formName);
+            .getHiddenCommandLinkFieldName(formInfo);
         onClick.append(jsForm);
         onClick.append(".elements['").append(hiddenFieldName).append("']");
         onClick.append(".value='").append(clientId).append("';");
@@ -203,8 +188,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
 
         //add the target window
         String target = item.getTarget();
-        if (target != null && target.trim().length() > 0)
-        {
+        if (target != null && target.trim().length() > 0) {
             onClick.append(jsForm);
             onClick.append(".target='");
             onClick.append(target);
@@ -213,9 +197,9 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
 
         // onSubmit
         onClick.append("if(").append(jsForm).append(".onsubmit){var result=")
-                .append(jsForm).append(
-                        ".onsubmit();  if( (typeof result == 'undefined') || result ) {"
-                                + jsForm + ".submit();}}else{");
+            .append(jsForm).append(
+            ".onsubmit();  if( (typeof result == 'undefined') || result ) {"
+                + jsForm + ".submit();}}else{");
 
         //submit
         onClick.append(jsForm);
@@ -231,11 +215,9 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer
     }
 
     protected void writeAttribute(ResponseWriter writer,
-            HtmlFishEyeNavigationMenu fisheye, String name, Object value)
-            throws IOException
-    {
-        if (name != null && value != null)
-        {
+                                  HtmlFishEyeNavigationMenu fisheye, String name, Object value)
+        throws IOException {
+        if (name != null && value != null) {
             writer.writeAttribute(name, value, null);
         }
     }

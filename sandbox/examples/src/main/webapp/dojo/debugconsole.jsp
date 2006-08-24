@@ -1,19 +1,19 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
+<%@ page session="false" contentType="text/html;charset=utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
+<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
+<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
+<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s" %>
 
 <html>
-	<head>
-		<meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8" />
-		<title>MyFaces - the free JSF Implementation</title>
+<head>
+    <meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8"/>
+    <title>MyFaces - the free JSF Implementation</title>
 
-		<link rel="stylesheet" type="text/css" href="css/basic.css" />
-	
-	</head>
+    <link rel="stylesheet" type="text/css" href="css/basic.css"/>
 
-	<!--
+</head>
+
+<!--
 /*
  * Copyright 2004 The Apache Software Foundation.
  *
@@ -32,43 +32,46 @@
 //-->
 
 
+<body>
+<f:view>
+    <h:panelGroup>
+        <s:dojoInitializer require="dojo.widget.Editor" debug="true"/>
+        <s:dojoInitializer require="dojo.widget.DebugConsole"/>
+        <s:dojoInitializer require="dojo.widget.ResizeHandle"/>
+        <s:dojoInitializer require="dojo.widget.Button"/>
+        <f:verbatim>
+            <script type="text/javascript">
+                function generateSomeDebuggingInfo() {
+                    for (var x = 0; x < 10; x++) {
+                        dojo.debug(x + ": Here is some debugging info, should be 10 new lines");
+                    }
+                }
+            </script>
 
-	<body>
-		<f:view>
-			<h:panelGroup>
-				<s:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
-				<s:dojoInitializer require="dojo.widget.DebugConsole" />	
-				<s:dojoInitializer require="dojo.widget.ResizeHandle" />	
-				<s:dojoInitializer require="dojo.widget.Button" />	
-				<f:verbatim>
-					<script type="text/javascript" >
-						function generateSomeDebuggingInfo() {
-							for (var x=0; x<10; x++) {
-								dojo.debug(x + ": Here is some debugging info, should be 10 new lines");
-							}
-						}
-					</script>
-					<p>Debugging Console.  This widget, once loaded, will have djConfig output all debugging information to its floating pane.  Some debugging information won't go to the debugConsole before it loads, but there isn't much that can be done about that.  If you set djConfig = {isDebug:true}  it will log to the bottom of the screen (or some div if you set that) until the debugConsole finishes loading.</p> 
-					<button id="go" class="dojo-button" onClick="generateSomeDebuggingInfo();">Generate Debugging info
-					</button>
-					
-					<div dojoType="DebugConsole"
-						title="Debug Console"
-						iconSrc="images/flatScreen.gif";
-						constrainToContainer="1"
-						style="width: 700px; height: 500px; left: 200px;"
-						hasShadow="true"
-						resizable="true"
-						displayCloseAction="true"
-						layoutAlign="client"
-					>
-					</div>
-					
-					
-				</f:verbatim>
-			</h:panelGroup>
-		
-		</f:view>
-		<%@include file="../inc/page_footer.jsp"%>
-	</body>
+            <p>Debugging Console. This widget, once loaded, will have djConfig output all debugging information to its
+                floating pane. Some debugging information won't go to the debugConsole before it loads, but there isn't
+                much that can be done about that. If you set djConfig = {isDebug:true} it will log to the bottom of the
+                screen (or some div if you set that) until the debugConsole finishes loading.</p>
+            <button id="go" class="dojo-button" onClick="generateSomeDebuggingInfo();">Generate Debugging info
+            </button>
+
+            <div dojoType="DebugConsole"
+                 title="Debug Console"
+                 iconSrc="images/flatScreen.gif"
+                 constrainToContainer="1"
+                 style="width: 700px; height: 500px; left: 200px;"
+                 hasShadow="true"
+                 resizable="true"
+                 displayCloseAction="true"
+                 layoutAlign="client"
+                >
+            </div>
+
+
+        </f:verbatim>
+    </h:panelGroup>
+
+</f:view>
+<%@ include file="../inc/page_footer.jsp" %>
+</body>
 </html>
