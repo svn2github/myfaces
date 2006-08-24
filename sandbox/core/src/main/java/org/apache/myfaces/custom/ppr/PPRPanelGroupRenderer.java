@@ -24,10 +24,13 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.FacesException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Set;
@@ -46,10 +49,16 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 	private static final String PPR_JS_FILE = "ppr.js";
 	private static final String BODY_SCRIPT_INFOS_ATTRIBUTE_NAME = "bodyScriptInfos";
 	private static final String MY_FACES_PPR_INIT_CODE =
-		"var myFacesPPRCtrl = new org.apache.myfaces.PPRCtrl(\"mainform\");";
+		"var myFacesPPRCtrl = new org.apache.myfaces.PPRCtrl";
 
-	public void encodeJavaScript(FacesContext facesContext, UIComponent uiComponent) throws IOException
+	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup uiComponent) throws IOException
 	{
+		FormInfo fi = _ComponentUtils.findNestingForm(uiComponent, facesContext);
+		if (fi == null)
+		{
+			throw new FacesException("PPRPanelGroup must be embedded in an form.");
+		}
+
 		if (!isInlineScriptSet(facesContext, MY_FACES_PPR_INITIALIZED))
 		{
 			String javascriptLocation = (String) uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
@@ -63,9 +72,10 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 				AddResource.HEADER_BEGIN,
 				PPRPanelGroup.class,
 				PPR_JS_FILE);
-
-			writeInlineScript(facesContext, uiComponent, MY_FACES_PPR_INIT_CODE);
 		}
+
+		writeInlineScript(facesContext, uiComponent, MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "');");
+
 		String partialTriggerId = null;
 		String partialTriggerClientId = null;
 		UIComponent partialTriggerComponent = null;
@@ -75,7 +85,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		while (st.hasMoreTokens())
 		{
 			partialTriggerId = st.nextToken();
-			partialTriggerComponent = facesContext.getViewRoot().findComponent(partialTriggerId);
+			partialTriggerComponent = uiComponent.findComponent(partialTriggerId);
 			if (partialTriggerComponent != null)
 			{
 				partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
@@ -103,10 +113,11 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		super.encodeEnd(facesContext, uiComponent);
 		if (uiComponent instanceof PPRPanelGroup)
 		{
-			if (((PPRPanelGroup) uiComponent).getPartialTriggers() != null &&
-				((PPRPanelGroup) uiComponent).getPartialTriggers().length() > 0)
+			PPRPanelGroup pprGroup = (PPRPanelGroup) uiComponent;
+			if (pprGroup.getPartialTriggers() != null &&
+				pprGroup.getPartialTriggers().length() > 0)
 			{
-				encodeJavaScript(facesContext, uiComponent);
+				encodeJavaScript(facesContext, pprGroup);
 			}
 		}
 	}
