@@ -81,7 +81,7 @@
 								groups.pop();
 							}
 							
-							built = dojo.widget.fromScript("Editor", { items: groups }, eb);
+							built = dojo.widget.createWidget("Editor", { items: groups }, eb);
 							dojo.fx.wipeOut(ob, 750);
 						}
 					</script>
