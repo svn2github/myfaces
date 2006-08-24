@@ -321,11 +321,11 @@ public class CompareToValidator extends ValidatorBase {
         }
         else if (value instanceof Comparable)
         {
-            throw new ClassCastException(getClassCastExceptionMessage("value", Comparable.class, value));
+            throw new ClassCastException(getClassCastExceptionMessage(foreignComponent.getId(), Comparable.class, foreignValue));
         }
         else if (foreignValue instanceof Comparable)
         {
-            throw new ClassCastException(getClassCastExceptionMessage("foreignValue", Comparable.class, foreignValue));
+            throw new ClassCastException(getClassCastExceptionMessage(uiComponent.getId(), Comparable.class, value));
         }
     }
 
