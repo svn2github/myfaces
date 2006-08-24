@@ -50,7 +50,7 @@
 						var editorArgs = {
 			    			items: ["textGroup", "blockGroup", "justifyGroup", "colorGroup", "listGroup", "indentGroup", "linkGroup"]
 						};
-						var editor = dojo.widget.fromScript("Editor", editorArgs,
+						var editor = dojo.widget.createWidget("Editor", editorArgs,
 			                                    dojo.byId("myForm:myInputTextarea"));
 //--></script>
 					</f:verbatim>
