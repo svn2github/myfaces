@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -54,6 +55,15 @@ import javax.servlet.http.HttpServletRequest;
  * @version $Revision$ $Date$
  */
 public final class DojoUtils {
+    private static final String MYFACES_DOJO_DEBUGCONSOLE_ID = "myfaces_Dojo_Debugger";
+    private static final String DEBUG_CONSOLE_TYPE = "DebugConsole";
+    private static final String LAYOUT_ALIGN_ATTR = "layoutAlign";
+    private static final String DISPLAY_CLOSE_ACTION_ATTR = "displayCloseAction";
+    private static final String RESIZABLE_ATTR = "resizable";
+    private static final String HAS_SHADOW_ATTR = "hasShadow";
+    private static final String CONSTRAIN_TO_CONTAINER_ATTR = "constrainToContainer";
+    private static final String ICON_SRC_ATTR = "iconSrc";
+    private static final String TITLE_ATTR = "title";
     private static final String INCL_TYPE_REQ_KEY                = "DOJO_DEVELOPMENT_INCLUDE";
     private static final Log    log                              = LogFactory.getLog(DojoUtils.class);
     private static final String DOJO_PROVIDE                     = "dojo.provide:";
@@ -96,19 +106,20 @@ public final class DojoUtils {
         //Since this is for debugging purposes only, we can live with it
 
         writer.startElement(HTML.DIV_ELEM, component);
-        writer.writeAttribute(HTML.ID_ATTR, "myfaces_Dojo_Debugger", null);
-        writer.writeAttribute("dojoType", "DebugConsole", null);
-        writer.writeAttribute("title", "MyFaces Dojo Debug console", null);
-        writer.writeAttribute("iconSrc", "images/flatScreen.gif", null);
-        writer.writeAttribute("constrainToContainer", "1", null);
-        writer.writeAttribute(HTML.STYLE_ATTR, "width: 400px; height: 500px; left: 200px;", null);
-        writer.writeAttribute("hasShadow", "true", null);
-        writer.writeAttribute("resizable", "true", null);
-        writer.writeAttribute("displayCloseAction", "true", null);
-        writer.writeAttribute("layoutAlign", "client", null);
-
+        writer.writeAttribute(HTML.ID_ATTR, MYFACES_DOJO_DEBUGCONSOLE_ID, null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "width: 400px; height: 500px; left: 200px;",null);
         writer.endElement(HTML.DIV_ELEM);
 
+        
+        Map attributeMap = new HashMap();
+        attributeMap.put(TITLE_ATTR, "MyFaces Dojo Debug console");
+        attributeMap.put(ICON_SRC_ATTR, "images/flatScreen.gif");
+        attributeMap.put(CONSTRAIN_TO_CONTAINER_ATTR, new Integer(1));
+        attributeMap.put(HAS_SHADOW_ATTR, new Boolean(true));
+        attributeMap.put(RESIZABLE_ATTR, new Boolean(true));
+        attributeMap.put(DISPLAY_CLOSE_ACTION_ATTR, new Boolean(true));
+        attributeMap.put(LAYOUT_ALIGN_ATTR, "client");
+        renderWidgetInitializationCode(writer, component, DEBUG_CONSOLE_TYPE,attributeMap, MYFACES_DOJO_DEBUGCONSOLE_ID, true);
     }
 
     public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, DojoConfig config)
