@@ -133,9 +133,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
             paramMap.put(CONSERVATIVE_TRIGGER_ATTR, fisheye
                 .getConservativeTrigger());
 
-            String menu = DojoUtils.renderWidgetInitializationCode(context,
-                                                                   component, DOJO_COMPONENT_TYPE, paramMap);
-            getChildsMenuStack(context, component).push(menu);
+            DojoUtils.renderWidgetInitializationCode(context, component, DOJO_COMPONENT_TYPE, paramMap);
 
         }
 
@@ -185,10 +183,8 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
         if (component.isRendered()) {
             ResponseWriter writer = context.getResponseWriter();
             Stack menuStack = getChildsMenuStack(context, component);
-            String jsMenuVar = (String) menuStack.remove(0);// TODO change this
-            // to a separate
-            // location this is evil
-
+            String jsMenuVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
+            
             writer.startElement(HTML.SCRIPT_ELEM, component);
             writer.writeAttribute(HTML.TYPE_ATTR,
                                   HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
@@ -278,8 +274,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
         Map paramMap = new HashMap();
         paramMap.put(CAPTION_ATTR, item.getItemLabel());
         paramMap.put(ICON_SRC_ATTR, item.getIcon());
-        paramMap.put(ON_CLICK_ATTR, new StringBuffer("function () {").append(
-            onClick).append("}"));
+        paramMap.put(ON_CLICK_ATTR, new StringBuffer("function () {").append(onClick).append("}"));
         // push the onclick as lambda and use a stringbuffer so that we do not
         // get enclosing quotes
         String menuItemId = DojoUtils.renderWidgetInitializationCode(writer,
