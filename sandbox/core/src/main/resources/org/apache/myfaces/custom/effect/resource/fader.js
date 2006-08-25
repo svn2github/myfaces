@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2006 The Apache Software Foundation.
  *
@@ -13,20 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+dojo.require("dojo.lfx.html.*");
 
 org_apache_myfaces_effects_fader = function (theid, thetime) {
 	this.fadeid = theid;
 	this.time = thetime;
 };
 org_apache_myfaces_effects_fader.prototype.hide = function () {
+	dojo.style.hide(dojo.byId(this.fadeid));
 	dojo.style.setOpacity(dojo.byId(this.fadeid), 0);
 };
 org_apache_myfaces_effects_fader.prototype.fadeIn = function () {
-	dojo.lfx.html.fadeIn(dojo.byId(this.fadeid), this.time).play();
+	dojo.lfx.html.fadeShow(dojo.byId(this.fadeid), this.time).play();
 };
 org_apache_myfaces_effects_fader.prototype.show = function () {
-	dojo.style.setOpacity(dojo.byId(this.fadeid), 100);
+	dojo.style.show(dojo.byId(this.fadeid));
 };
 org_apache_myfaces_effects_fader.prototype.fadeOut = function () {
-	dojo.lfx.html.fadeOut(dojo.byId(this.fadeid), this.time).play();
+	dojo.lfx.html.fadeHide (dojo.byId(this.fadeid), this.time).play();
 };
