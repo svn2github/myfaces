@@ -61,10 +61,13 @@ public class PPRPhaseListener implements PhaseListener
 
 		if (externalRequestMap.containsKey(PPR_PARAMETER))
 		{
+			context.getExternalContext().getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
+
 			ServletResponse response =
 				(ServletResponse) context.getExternalContext().getResponse();
 			ServletRequest request =
 				(ServletRequest) context.getExternalContext().getRequest();
+
 			UIViewRoot viewRoot = context.getViewRoot();
 			ResponseWriter writer = context.getResponseWriter();
 			response.setContentType("text/xml;charset=" + request.getCharacterEncoding());
