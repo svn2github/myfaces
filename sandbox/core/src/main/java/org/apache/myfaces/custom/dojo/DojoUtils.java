@@ -19,6 +19,7 @@ package org.apache.myfaces.custom.dojo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -28,8 +29,11 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -315,6 +319,94 @@ public final class DojoUtils {
         return true;
     }
 
+
+    /**
+     * please, instead of using standard
+     * dojo taglib mechanisms use this code for initialisation
+     * it will render a clean and proper javascript initialisation
+     * instead. There are issues with ADF and the dojo taglib mechanisms
+     * and also (Alex Russel wont like to hear this) the 
+     * dojo taglib initialisation fails on W3C validations.
+     * returns the name of the javascript var for further processing
+     * @param facesContext standard faces context
+     * @param component standard component
+     * @param dojoType the dojo type of this component
+     * @param paramMap
+     */  
+    public static String renderWidgetInitializationCode(FacesContext facesContext, UIComponent component, String dojoType, Map paramMap) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        String clientId = component.getClientId(facesContext);
+        return renderWidgetInitializationCode(writer,component, dojoType, paramMap,  clientId, true);
+    }
+    
+    /**
+     * same for a given neutral id...
+     * @param dojoType
+     * @param paramMap
+     * @param clientId the referencing id which the widget has to render to (note the id is enforced the uicomponent does nothing in this case!!!!)
+     * @param refId if true the refid is set in the dojo javascript init code if false no ref is set the false often is needed
+     * for containers which dynamically generated widgets with no referencing div
+     * @return a string with the name of the javascript variable
+     */
+    public static String renderWidgetInitializationCode(ResponseWriter writer, UIComponent component,  String dojoType, Map paramMap, String clientId, boolean refId) throws IOException {
+        
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        String javascriptVar = calculateWidgetVarName(clientId);
+        
+        Iterator it = paramMap.entrySet().iterator();
+        
+        writer.write("var ");
+        writer.write(javascriptVar);
+        writer.write(" = ");
+        
+        writer.write("dojo.widget.createWidget(\"");
+        writer.write(dojoType);
+        writer.write("\",");
+        
+        writer.write("{");
+        boolean first = true;
+        while(it.hasNext()) {
+        	Entry entry = (Entry) it.next();
+        	if(entry.getValue() != null) {
+        		if(!first)
+            		writer.write(",");
+	        	writer.write(entry.getKey().toString());
+	        	writer.write(":"); //only real string values should be within ambersants, dojo req
+	        	boolean isString = entry.getValue() instanceof String;
+	        	if(isString)
+	        		writer.write("'");
+	        	writer.write(entry.getValue().toString());
+	          	if(isString)
+	        		writer.write("'");
+	    	}
+        	first = false;
+        }
+        writer.write("}");
+        if(refId) {
+	        writer.write(",dojo.byId('");
+	        writer.write(clientId);
+	        writer.write("')");
+        }
+        writer.write(");");
+             
+        writer.endElement(HTML.SCRIPT_ELEM);
+        return javascriptVar;
+    }
+
+    /**
+     * helper method to centralize the widget
+     * variable name calculation for our dojo
+     * javascript widget init code
+     * @param clientId the client id upon which the var name
+     * has to be generated
+     * @return the javascript widget var name for the given client id
+     */
+	public static String calculateWidgetVarName(String clientId) {
+		return clientId.replaceAll("\\:", "_") + "_dojoControl";
+	}
+
+    
     /**
      * helper to merge in an external dojo config instance
      * the merge algorithm is that an existing entry is overwritten
@@ -451,5 +543,7 @@ public final class DojoUtils {
         writer.write(script);
         writer.endElement(HTML.SCRIPT_ELEM);
     }
+    
+    
 
 }
