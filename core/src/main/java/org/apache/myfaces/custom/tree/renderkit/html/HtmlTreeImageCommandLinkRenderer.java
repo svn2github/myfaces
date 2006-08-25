@@ -34,23 +34,20 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
  * @version $Revision$ $Date$
  */
 public class HtmlTreeImageCommandLinkRenderer
-        extends ExtendedHtmlLinkRenderer
-{
+    extends ExtendedHtmlLinkRenderer {
 
     private static final Integer ZERO = new Integer(0);
 
 
-    public void decode(FacesContext facesContext, UIComponent component)
-    {
+    public void decode(FacesContext facesContext, UIComponent component) {
         super.decode(facesContext, component);
         String clientId = component.getClientId(facesContext);
-        String reqValue = (String)facesContext
-        	.getExternalContext()
-        	.getRequestParameterMap().get(HtmlRendererUtils
-        			.getHiddenCommandLinkFieldName(DummyFormUtils.findNestingForm(component, facesContext).getFormName()));
-        if (reqValue != null && reqValue.equals(clientId))
-        {
-            HtmlTreeNode node = (HtmlTreeNode)component.getParent();
+        String reqValue = (String) facesContext
+            .getExternalContext()
+            .getRequestParameterMap().get(HtmlRendererUtils
+            .getHiddenCommandLinkFieldName(DummyFormUtils.findNestingForm(component, facesContext)));
+        if (reqValue != null && reqValue.equals(clientId)) {
+            HtmlTreeNode node = (HtmlTreeNode) component.getParent();
 
             node.toggleExpanded();
         }
@@ -62,15 +59,13 @@ public class HtmlTreeImageCommandLinkRenderer
                                           String clientId,
                                           Object value,
                                           String style,
-                                          String styleClass) throws IOException
-    {
+                                          String styleClass) throws IOException {
 
         super.renderCommandLinkStart(facesContext, component, clientId, value, style, styleClass);
 
-        String url = ((HtmlTreeImageCommandLink)component).getImage();
+        String url = ((HtmlTreeImageCommandLink) component).getImage();
 
-        if ((url != null) && (url.length() > 0))
-        {
+        if ((url != null) && (url.length() > 0)) {
             ResponseWriter writer = facesContext.getResponseWriter();
             writer.startElement(HTML.IMG_ELEM, component);
             String src = facesContext.getApplication().getViewHandler().getResourceURL(facesContext, url);

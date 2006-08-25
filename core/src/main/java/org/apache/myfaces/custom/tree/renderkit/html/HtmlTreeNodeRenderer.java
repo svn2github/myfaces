@@ -28,22 +28,19 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
  * @version $Revision$ $Date$
  */
 public class HtmlTreeNodeRenderer
-        extends ExtendedHtmlLinkRenderer
-{
+    extends ExtendedHtmlLinkRenderer {
 
-    public void decode(FacesContext facesContext, UIComponent component)
-    {
+    public void decode(FacesContext facesContext, UIComponent component) {
         super.decode(facesContext, component);
         String clientId = component.getClientId(facesContext);
-        String reqValue = (String)facesContext
-        .getExternalContext()
-        .getRequestParameterMap()
-        .get(HtmlRendererUtils
-        		.getHiddenCommandLinkFieldName(DummyFormUtils
-        				.findNestingForm(component, facesContext).getFormName()));
-        if (reqValue != null && reqValue.equals(clientId))
-        {
-            HtmlTreeNode node = (HtmlTreeNode)component;
+        String reqValue = (String) facesContext
+            .getExternalContext()
+            .getRequestParameterMap()
+            .get(HtmlRendererUtils
+                .getHiddenCommandLinkFieldName(DummyFormUtils
+                .findNestingForm(component, facesContext)));
+        if (reqValue != null && reqValue.equals(clientId)) {
+            HtmlTreeNode node = (HtmlTreeNode) component;
 
             node.setSelected(true);
         }

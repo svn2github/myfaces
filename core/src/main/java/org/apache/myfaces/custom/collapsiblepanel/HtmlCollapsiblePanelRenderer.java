@@ -38,19 +38,16 @@ import java.util.Map;
  * @author Kalle Korhonen (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
-{
+public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
     private static final String LINK_ID = "ToggleCollapsed".intern();
     private static final String COLLAPSED_STATE_ID = "CollapsedState".intern();
 
-    public boolean getRendersChildren()
-    {
+    public boolean getRendersChildren() {
         return true;
     }
 
-    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException
-    {
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         // RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
         ResponseWriter writer = facesContext.getResponseWriter();
         HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
@@ -59,18 +56,15 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
         UIComponent linkToReset = null;
         String resetId = null;
 
-        if(headerComp!=null)
-        {
-            linkToReset = RendererUtils.findComponent(headerComp,HtmlHeaderLink.class);
+        if (headerComp != null) {
+            linkToReset = RendererUtils.findComponent(headerComp, HtmlHeaderLink.class);
 
-            if(linkToReset != null)
-            {
+            if (linkToReset != null) {
                 resetId = linkToReset.getId();
                 linkToReset.setId(collapsiblePanel.getId() + LINK_ID);
             }
         }
-        else
-        {
+        else {
             HtmlCommandLink link = getLink(facesContext, collapsiblePanel);
             collapsiblePanel.getChildren().add(link);
 
@@ -78,18 +72,17 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
         }
 
         //Render the current state - collapsed or not - of the panel.
-        HtmlRendererUtils.renderHiddenInputField(writer,collapsiblePanel.getClientId(facesContext)+
-                COLLAPSED_STATE_ID,
-                collapsiblePanel.getSubmittedValue()!=null?
-                        collapsiblePanel.getSubmittedValue():(collapsiblePanel.isCollapsed()+""));
+        HtmlRendererUtils.renderHiddenInputField(writer, collapsiblePanel.getClientId(facesContext) +
+            COLLAPSED_STATE_ID,
+                                                 collapsiblePanel.getSubmittedValue() != null ?
+                                                     collapsiblePanel.getSubmittedValue() : (collapsiblePanel.isCollapsed() + ""));
 
         // Always render the header - to be able toggle the collapsed state
         RendererUtils.renderChild(facesContext, headerComp);
         headerComp.setRendered(false);
 
         // conditionally render the rest of the children
-        if (!collapsiblePanel.isCollapsed())
-        {
+        if (!collapsiblePanel.isCollapsed()) {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             // TODO apply styles from the parent element to this DIV
             writer.startElement(HTML.DIV_ELEM, uiComponent);
@@ -97,11 +90,9 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
             writer.endElement(HTML.DIV_ELEM);
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         }
-        else
-        {
+        else {
             UIComponent component = collapsiblePanel.getFacet("closedContent");
-            if (component != null)
-            {
+            if (component != null) {
                 writer.startElement(HTML.DIV_ELEM, uiComponent);
                 RendererUtils.renderChild(facesContext, component);
                 writer.endElement(HTML.DIV_ELEM);
@@ -111,14 +102,12 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 
         headerComp.setRendered(true);
 
-        if(linkToReset != null)
-        {
+        if (linkToReset != null) {
             linkToReset.setId(resetId);
         }
     }
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
-    {
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -133,47 +122,42 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
     }
 
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
-    {
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         //RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.DIV_ELEM);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
     }
 
-    public void decode(FacesContext facesContext, UIComponent uiComponent)
-    {
+    public void decode(FacesContext facesContext, UIComponent uiComponent) {
         RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlCollapsiblePanel.class);
         HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
 
         Map reqParams = facesContext.getExternalContext().getRequestParameterMap();
 
         String togglingIndicated = (String) reqParams.get(HtmlRendererUtils
-        		.getHiddenCommandLinkFieldName(
-        				DummyFormUtils.findNestingForm(collapsiblePanel, facesContext).getFormName()));
+            .getHiddenCommandLinkFieldName(
+            DummyFormUtils.findNestingForm(collapsiblePanel, facesContext)));
         String reqValue = (String) reqParams.get(
-                collapsiblePanel.getClientId(facesContext)+COLLAPSED_STATE_ID);
+            collapsiblePanel.getClientId(facesContext) + COLLAPSED_STATE_ID);
 
         collapsiblePanel.setCurrentlyCollapsed(HtmlCollapsiblePanel.isCollapsed(reqValue));
 
-        if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(togglingIndicated))
-        {
-            if(reqValue!=null)
-                collapsiblePanel.setSubmittedValue(""+!collapsiblePanel.isCurrentlyCollapsed());
+        if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(togglingIndicated)) {
+            if (reqValue != null)
+                collapsiblePanel.setSubmittedValue("" + !collapsiblePanel.isCurrentlyCollapsed());
             else
-                collapsiblePanel.setSubmittedValue(""+!collapsiblePanel.isCollapsed());
+                collapsiblePanel.setSubmittedValue("" + !collapsiblePanel.isCollapsed());
         }
-        else
-        {
-            if(reqValue!=null)
-                collapsiblePanel.setSubmittedValue(""+collapsiblePanel.isCurrentlyCollapsed());
+        else {
+            if (reqValue != null)
+                collapsiblePanel.setSubmittedValue("" + collapsiblePanel.isCurrentlyCollapsed());
         }
 
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlCollapsiblePanel collapsiblePanel)
-            throws IOException
-    {
+        throws IOException {
         Application application = facesContext.getApplication();
         HtmlCommandLink link = (HtmlCommandLink) application.createComponent(HtmlCommandLink.COMPONENT_TYPE);
         link.setId(collapsiblePanel.getId() + LINK_ID);
@@ -193,8 +177,7 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
 
         // Create the optional label
         String label = collapsiblePanel.getTitle();
-        if (label != null)
-        {
+        if (label != null) {
             uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
             uiText.setTransient(true);
             uiText.setValue(" " + label);
@@ -205,10 +188,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer
         return link;
     }
 
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException
-    {
-        if(submittedValue instanceof String)
-        {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        if (submittedValue instanceof String) {
             return Boolean.valueOf((String) submittedValue);
         }
 
