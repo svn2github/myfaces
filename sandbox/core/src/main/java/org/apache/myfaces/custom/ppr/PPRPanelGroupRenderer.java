@@ -46,10 +46,10 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 	private static Log log = LogFactory.getLog(PPRPanelGroupRenderer.class);
 
 	private static final String MY_FACES_PPR_INITIALIZED = "/*MyFaces PPR initialized*/";
-	private static final String ADD_PARTIAL_TRIGGER_FUNCTION = "myFacesPPRCtrl.addPartialTrigger";
+	private static final String ADD_PARTIAL_TRIGGER_FUNCTION = "addPartialTrigger";
 	private static final String PPR_JS_FILE = "ppr.js";
 
-	private static final String MY_FACES_PPR_INIT_CODE = "var myFacesPPRCtrl = new org.apache.myfaces.PPRCtrl";
+	private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
 
 	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup uiComponent) throws IOException
 	{
@@ -79,11 +79,25 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 				AddResource.HEADER_BEGIN,
 				PPRPanelGroup.class,
 				PPR_JS_FILE);
-		}
+        }
+        
+        if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED  +
+                    "." +
+                    fi.getFormName()))
+		{
+			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED  +
+                    "." +
+                    fi.getFormName(),
+                    Boolean.TRUE);
+            writeInlineScript(facesContext, uiComponent,
+                    "document.getElementById('" +
+                    fi.getFormName() +
+                    "').myFacesPPRCtrl =" +
+                    MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "');");
+        }
 
-		writeInlineScript(facesContext, uiComponent, MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "');");
 
-		String partialTriggerId = null;
+        String partialTriggerId = null;
 		String partialTriggerClientId = null;
 		UIComponent partialTriggerComponent = null;
 		String partialTriggers = ((PPRPanelGroup) uiComponent).getPartialTriggers();
@@ -97,7 +111,10 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 			{
 				partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
 				writeInlineScript(facesContext, uiComponent,
-					ADD_PARTIAL_TRIGGER_FUNCTION +
+                    "document.getElementById('" +
+                    fi.getFormName() +
+                    "').myFacesPPRCtrl." +
+                    ADD_PARTIAL_TRIGGER_FUNCTION +
 						"('" +
 						partialTriggerClientId +
 						"','" +
