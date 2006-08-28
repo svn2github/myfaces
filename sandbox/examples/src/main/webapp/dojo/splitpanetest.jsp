@@ -49,27 +49,32 @@
 				<s:dojoInitializer require="dojo.widget.SplitContainer" />
 				<s:dojoInitializer require="dojo.widget.ContentPane" />
 
-				<f:verbatim>
-					<div id="origSplitContainer" 
+				
+					<t:div id="origSplitContainer" forceId="true"
 						style="width: 100%; height: 100%; background: #eeeeee; padding: 10px;">
-						<div id="leftcontainer"  style="overflow: auto;">
-							I'm a content pane, and I'm the first child of the
-							SplitContainer, so I appear on the left. My initial size is 20%,
-							but if you adjust it and come back to the demo, my parent (the
-							SplitContainer) will remember the size you set. On my right is a
-							split container. (The parent split container contains a child
-							split container.)
-						</div>
+						<t:div id="leftcontainer"  style="overflow: auto;">
+						   <f:verbatim>
+								I'm a content pane, and I'm the first child of the
+								SplitContainer, so I appear on the left. My initial size is 20%,
+								but if you adjust it and come back to the demo, my parent (the
+								SplitContainer) will remember the size you set. On my right is a
+								split container. (The parent split container contains a child
+								split container.)
+								
+								This test is now done in a mixed jsf, html environment.
+							</f:verbatim>
+						</t:div>
 
-						<div id="rightPane">
-							<div id="topcontainer">
-								This is the top part of the inner split container.
-							</div>
-							<div id="bottomcontainer">
-								...and this is the bottom.
-							</div>
-						</div>
-					</div>
+						<t:div id="rightPane" forceId="true">
+							<t:div id="topcontainer" forceId="true">
+								<h:outputFormat value="This is the top part of the inner split container."></h:outputFormat>
+							</t:div>
+							<t:div id="bottomcontainer" forceId="true">
+								<h:outputFormat value="...and this is the bottom."></h:outputFormat>
+							</t:div>
+						</t:div>
+					</t:div>
+				<f:verbatim>	
 					<script type="text/javascript">
 					<!--
 						var container = dojo.widget.createWidget("SplitContainer", {id:"mycontainer", orientation:"horizontal", sizerWidth:5,
@@ -81,14 +86,14 @@
 						activeSizing:0}, dojo.byId("rightPane"));
 					
 						var topcontainer = dojo.widget.createWidget("ContentPane", {id:"mytopcontainer", sizeShare:50}, dojo.byId("topcontainer"));
-						var bottomcontainer = dojo.widget.createWidget("ContentPane", {id:"mybottomcontainer", sizeShare:50}, dojo.byId("bottom"));
+						var bottomcontainer = dojo.widget.createWidget("ContentPane", {id:"mybottomcontainer", sizeShare:50}, dojo.byId("bottomcontainer"));
 					
 					
-						container.addChild(leftcontainer);
 						container.addChild(rightPane);
-						
-						rightPane.addChild(topcontainer);
+						container.addChild(leftcontainer);
+					
 						rightPane.addChild(bottomcontainer);
+						rightPane.addChild(topcontainer);
 					//-->
 					</script>
 				</f:verbatim>
