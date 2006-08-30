@@ -1204,6 +1204,84 @@ Sandbox-related entities.
         </attribute>
 	</tag>
 
+	<tag>
+		<name>dojoContentPane</name>
+		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoContentPaneTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
+        &ui_output_attributes;
+		<attribute>
+			<name>sizeShare</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+            <description>Size share value describing the place the content pane wants from its parent</description>
+        </attribute>
+		<attribute>
+		    <name>styleClass</name>
+		    <required>false</required>
+		    <rtexprvalue>false</rtexprvalue>
+		    <description>The CSS class for this element.  Corresponds to the HTML 'class' attribute.</description>
+		</attribute>
+		<attribute>
+		    <name>style</name>
+		    <required>false</required>
+		    <rtexprvalue>false</rtexprvalue>
+		    <description>The CSS class for this element.  Corresponds to the HTML 'class' attribute.</description>
+		</attribute>
+
+	</tag>
+	<tag>
+		<name>dojoSplitPane</name>
+		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoSplitPaneTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
+        &ui_output_attributes;
+		<attribute>
+		    <name>styleClass</name>
+		    <required>false</required>
+		    <rtexprvalue>false</rtexprvalue>
+		    <description>The CSS class for this element.  Corresponds to the HTML 'class' attribute.</description>
+		</attribute>
+		<attribute>
+		    <name>style</name>
+		    <required>false</required>
+		    <rtexprvalue>false</rtexprvalue>
+		    <description>The CSS class for this element.  Corresponds to the HTML 'class' attribute.</description>
+		</attribute>
+
+		<attribute>
+			<name>sizeShare</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+            <description>Size share value describing the place the content pane wants from its parent</description>
+        </attribute>
+		<attribute>
+			<name>activeSizing</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+            <description>Size share value describing the place the content pane wants from its parent</description>
+        </attribute>
+		<attribute>
+			<name>sizerWidth</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+            <description>width of the sizer bar</description>
+        </attribute>
+		<attribute>
+			<name>splitOrientation</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description>horizontal or vertical</description>
+        </attribute>
+	</tag>
+
+
+
 	<!-- Validator for csv validation items -->
 	<tag>
 		<name>validateCSV</name>
@@ -1213,4 +1291,6 @@ Sandbox-related entities.
         &ext_validator_base_attributes;
 		&csvvalidator_attributes;
 	</tag>
+
+
 </taglib>
