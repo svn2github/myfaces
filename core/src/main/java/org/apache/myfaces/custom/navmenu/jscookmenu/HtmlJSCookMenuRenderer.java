@@ -39,7 +39,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
-import javax.faces.webapp.UIComponentTag;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

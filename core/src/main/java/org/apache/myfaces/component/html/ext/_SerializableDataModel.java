@@ -140,7 +140,7 @@ class _SerializableDataModel
     {
         if (!isRowAvailable())
         {
-            throw new IllegalStateException();
+            throw new IllegalStateException("row not available");
         }
         return _list.get(_rowIndex - _first);
     }
