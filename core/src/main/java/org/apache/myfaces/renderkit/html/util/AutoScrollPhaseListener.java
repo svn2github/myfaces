@@ -21,6 +21,7 @@ package org.apache.myfaces.renderkit.html.util;
  * @version $Revision$ $Date$
  */
 
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -49,10 +50,14 @@ public class AutoScrollPhaseListener
     public void afterPhase(PhaseEvent event)
     {
         FacesContext facesContext = event.getFacesContext();
-        String viewId = facesContext.getViewRoot().getViewId();
-        if (viewId != null)
+        UIViewRoot view = facesContext.getViewRoot();
+        if(view != null)
         {
-            JavascriptUtils.setOldViewId(facesContext.getExternalContext(), viewId);
+            String viewId = view.getViewId();
+            if (viewId != null)
+            {
+                JavascriptUtils.setOldViewId(facesContext.getExternalContext(), viewId);
+            }   
         }
     }
 
