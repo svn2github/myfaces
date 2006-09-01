@@ -121,11 +121,6 @@ public class ExtensionsPhaseListener implements PhaseListener {
 	{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		
-		if (DummyFormUtils.isWriteDummyForm(facesContext))
-        {
-            DummyFormUtils.writeDummyForm(writer, DummyFormUtils.getDummyFormParameters(facesContext));
-        }
-
         MyfacesConfig myfacesConfig = MyfacesConfig.getCurrentInstance(facesContext.getExternalContext());
         if (myfacesConfig.isDetectJavascript())
         {
