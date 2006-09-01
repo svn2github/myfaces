@@ -83,7 +83,7 @@ public class HtmlPopupRenderer
         {
             writer.writeAttribute(HTML.CLASS_ATTR,popup.getStyleClass(),null);
         }
-        renderId(facesContext, popup);
+        writer.writeAttribute(HTML.ID_ATTR, popup.getClientId(facesContext),null);
         writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, new String(popupId+".redisplay();"),null);
 
         Boolean closeExitPopup = popup.getClosePopupOnExitingPopup();
