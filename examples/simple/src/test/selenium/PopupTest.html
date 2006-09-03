@@ -1,0 +1,89 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>PopupTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">PopupTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://localhost:8080/myfaces-example-simple</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Popup</td>
+	<td></td>
+</tr>
+<!--Mouse over the first line-->
+<tr>
+	<td>mouseOver</td>
+	<td>id=data:0:ox</td>
+	<td></td>
+</tr>
+<!--Assert that only the data:0:x popup is visible-->
+<tr>
+	<td>assertVisible</td>
+	<td>id=data:0:x</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>id=data:0:y</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>id=data:0:z</td>
+	<td></td>
+</tr>
+<!--Mouse over the second line-->
+<tr>
+	<td>mouseOver</td>
+	<td>id=data:0:oy</td>
+	<td></td>
+</tr>
+<!--Assert that only the data:0:y popup is visible-->
+<tr>
+	<td>assertNotVisible</td>
+	<td>id=data:0:x</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>id=data:0:y</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>id=data:0:z</td>
+	<td></td>
+</tr>
+<!--Mouse over the third line-->
+<tr>
+	<td>mouseOver</td>
+	<td>id=data:0:oz</td>
+	<td></td>
+</tr>
+<!--Assert that only the data:0:z popup is visible-->
+<tr>
+	<td>assertNotVisible</td>
+	<td>id=data:0:x</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>id=data:0:y</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>id=data:0:z</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

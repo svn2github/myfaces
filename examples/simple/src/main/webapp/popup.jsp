@@ -55,13 +55,13 @@
                 </f:facet>
             </t:popup>
 
-            <t:popup
+            <t:popup id="y"
                 styleClass="popup"
                 closePopupOnExitingElement="true"
                 closePopupOnExitingPopup="true"
                 displayAtDistanceX="10"
                 displayAtDistanceY="10" >
-                <h:outputText value="This is the second textual text situation."/>
+                <h:outputText id="oy" value="This is the second textual text situation."/>
                 <f:facet name="popup">
                     <h:panelGroup>
                         <h:panelGrid columns="1" >
@@ -71,8 +71,8 @@
                 </f:facet>
             </t:popup>
 
-            <t:popup styleClass="popup">
-                <h:outputText value="This is the third textual text situation."/>
+            <t:popup styleClass="popup" id="z">
+                <h:outputText id="oz" value="This is the third textual text situation."/>
                 <f:facet name="popup">
                     <h:panelGroup>
                         <h:panelGrid columns="1" >
