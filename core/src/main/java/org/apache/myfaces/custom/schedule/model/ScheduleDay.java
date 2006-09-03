@@ -203,7 +203,7 @@ public class ScheduleDay
     		
     		if (!next.isAllDay()) {
     			startTime = GregorianCalendar.getInstance();
-    			startTime.setTime(((ScheduleEntry) entries.first()).getStartTime());
+    			startTime.setTime(next.getStartTime());
     			break;
     		}
     	}
