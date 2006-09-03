@@ -78,6 +78,7 @@
 	
       <menu name="Testing">
         <item name="OpenQA Selenium" href="/testing/selenium.html"/>
+        <item name="Autoriginate HostedQA" href="/testing/hostedqa.html"/>
       </menu>
 	  ${reports}
     
