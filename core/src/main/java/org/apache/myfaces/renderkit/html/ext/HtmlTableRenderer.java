@@ -26,6 +26,8 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.component.NewspaperTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
@@ -54,7 +56,7 @@ import java.util.*;
  */
 public class HtmlTableRenderer extends HtmlTableRendererBase
 {
-    //private static final Log log = LogFactory.getLog(HtmlTableRenderer.class);
+    private static final Log log = LogFactory.getLog(HtmlTableRenderer.class);
 
     /** DetailStamp facet name. */
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
@@ -539,6 +541,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
             if(!columnInfo.isRendered()) return;
 
+            if (component instanceof HtmlColumn && amISpannedOver(null, component))
+                return;
             writer.startElement(HTML.TD_ELEM, uiData);
             String styleClass = ((HtmlColumn) component).getStyleClass();
             if(columnInfo.getStyleClass()!= null)
@@ -895,7 +899,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         for (Iterator it = table.getChildren().iterator(); it.hasNext();) {
             UIComponent columnComponent = (UIComponent) it.next();
             if (!(columnComponent instanceof HtmlColumn))
-            	return false;
+               continue;
             if (span > 0)
                 span--;
             if (columnComponent == component)
@@ -909,7 +913,9 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                     if ("footer".equals(prefix) && ((HtmlColumn)columnComponent).getFootercolspan() != null)
                         span = Integer.parseInt(((HtmlColumn)columnComponent).getFootercolspan());
                 }
-                catch (NumberFormatException ex) { }
+                catch (NumberFormatException ex) {
+                    log.warn("Invalid " + ((prefix == null) ? "" : prefix) + "colspan attribute ignored");
+                }
             }
         }
         return false;
