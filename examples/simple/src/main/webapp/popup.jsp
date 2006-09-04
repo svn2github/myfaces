@@ -29,6 +29,8 @@
 <body>
 
 <f:view>
+    <h:outputText value="Mouse over the country name, abbreviation and the text
+                         'Country ID' to see three different popups."/>
     <t:dataTable id="data"
             styleClass="standardTable"
             headerClass="standardTable_Header"
@@ -38,6 +40,60 @@
             value="#{countryList.countries}"
             preserveDataModel="true">
        <h:column>
+        <h:panelGrid columns="3">
+            <t:popup id="a"
+                styleClass="popup"
+                closePopupOnExitingElement="true"
+                closePopupOnExitingPopup="true"
+                displayAtDistanceX="10"
+                displayAtDistanceY="10" >
+                <h:outputText id="oa" value="#{country.name}"/>
+                <f:facet name="popup">
+                    <h:panelGroup>
+                        <h:panelGrid columns="1" >
+                        <h:outputText value="#{country.cities}"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </f:facet>
+            </t:popup>
+
+            <t:popup id="b"
+                styleClass="popup"
+                closePopupOnExitingElement="true"
+                closePopupOnExitingPopup="true"
+                displayAtDistanceX="10"
+                displayAtDistanceY="10" >
+                <h:outputText id="ob" value="#{country.isoCode}"/>
+                <f:facet name="popup">
+                    <h:panelGroup>
+                        <h:panelGrid columns="1" >
+                        <h:outputText value="Sample Popup Text"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </f:facet>
+            </t:popup>
+
+            <t:popup id="c"
+                styleClass="popup"
+                closePopupOnExitingElement="true"
+                closePopupOnExitingPopup="true"
+                displayAtDistanceX="10"
+                displayAtDistanceY="10" >
+                <h:outputText id="oc" value="Country ID"/>
+                <f:facet name="popup">
+                    <h:panelGroup>
+                        <h:panelGrid columns="1" >
+                            <h:outputText value="#{country.id}"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </f:facet>
+            </t:popup>
+        </h:panelGrid>
+      </h:column>
+   </t:dataTable>
+
+   <h:outputText value="Mouse over the text below to see the popups."/>
+
         <h:panelGrid columns="1">
             <t:popup id="x"
                 styleClass="popup"
@@ -96,9 +152,23 @@
                     </h:panelGroup>
                 </f:facet>
             </t:popup>
+            <t:popup
+                styleClass="popup"
+                closePopupOnExitingElement="true"
+                closePopupOnExitingPopup="true"
+                displayAtDistanceX="10"
+                displayAtDistanceY="10" >
+                <h:outputText value="This is some text without an id."/>
+                <f:facet name="popup">
+                    <h:panelGroup>
+                        <h:panelGrid columns="1" >
+                        <h:outputText value="no id popup text"/>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </f:facet>
+            </t:popup>
+
         </h:panelGrid>
-      </h:column>
-   </t:dataTable>
 
 </f:view>
 

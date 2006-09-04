@@ -10,7 +10,7 @@
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>http://localhost:8080/myfaces-example-simple</td>
+	<td>/myfaces-example-simple</td>
 	<td></td>
 </tr>
 <tr>
@@ -21,69 +21,71 @@
 <!--Mouse over the first line-->
 <tr>
 	<td>mouseOver</td>
-	<td>id=data:0:ox</td>
+	<td>id=ox</td>
 	<td></td>
 </tr>
-<!--Assert that only the data:0:x popup is visible-->
+<!--Assert that only the popup with id 'x' is visible-->
 <tr>
 	<td>assertVisible</td>
-	<td>id=data:0:x</td>
+	<td>id=x</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
-	<td>id=data:0:y</td>
+	<td>id=y</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
-	<td>id=data:0:z</td>
+	<td>id=z</td>
 	<td></td>
 </tr>
 <!--Mouse over the second line-->
 <tr>
 	<td>mouseOver</td>
-	<td>id=data:0:oy</td>
+	<td>id=oy</td>
 	<td></td>
 </tr>
-<!--Assert that only the data:0:y popup is visible-->
+<!--Assert that only the popup with id 'y' is visible-->
 <tr>
 	<td>assertNotVisible</td>
-	<td>id=data:0:x</td>
+	<td>id=x</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertVisible</td>
-	<td>id=data:0:y</td>
+	<td>id=y</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
-	<td>id=data:0:z</td>
+	<td>id=z</td>
 	<td></td>
 </tr>
 <!--Mouse over the third line-->
 <tr>
 	<td>mouseOver</td>
-	<td>id=data:0:oz</td>
+	<td>id=oz</td>
 	<td></td>
 </tr>
-<!--Assert that only the data:0:z popup is visible-->
+<!--Assert that only the popup with id 'z' is visible-->
 <tr>
 	<td>assertNotVisible</td>
-	<td>id=data:0:x</td>
+	<td>id=x</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertNotVisible</td>
-	<td>id=data:0:y</td>
+	<td>id=y</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertVisible</td>
-	<td>id=data:0:z</td>
+	<td>id=z</td>
 	<td></td>
 </tr>
+<!-- TODO: Mouse over the text with no id-->
+<!-- TODO: Assert that the 'no id popup text' is visible -->
 </tbody></table>
 </body>
 </html>

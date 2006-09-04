@@ -69,7 +69,7 @@
         <profile>
             <id>hostedqa</id>
             <properties>
-                <hostedqa.resourceId>30</hostedqa.resourceId>
+                <hostedqa.resourceId>31</hostedqa.resourceId>
                 <hostedqa.suiteId>55</hostedqa.suiteId>
                 <hostedqa.clientConfigs>117,118</hostedqa.clientConfigs>
                 <hostedqa.appConfigs>56</hostedqa.appConfigs>
