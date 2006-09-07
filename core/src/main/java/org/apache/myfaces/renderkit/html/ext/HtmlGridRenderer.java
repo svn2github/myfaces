@@ -15,6 +15,12 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
+import java.io.IOException;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.component.UIComponent;
+import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGridRendererBase;
 
 /**
@@ -26,4 +32,17 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGridRendererBase;
 public class HtmlGridRenderer
     extends HtmlGridRendererBase
 {
+    protected int childAttributes(FacesContext context,
+            ResponseWriter writer,
+            UIComponent component,
+            int columnIndex)
+        throws IOException
+    {
+        if (component instanceof HtmlPanelGroup && ((HtmlPanelGroup)component).getColspan() != HtmlPanelGroup.DEFAULT_COLSPAN) {
+            int colspan = ((HtmlPanelGroup)component).getColspan();
+            writer.writeAttribute(HTML.COLSPAN_ATTR, "" + colspan, null);
+            columnIndex += (colspan - 1);
+        }
+        return columnIndex;
+    }
 }

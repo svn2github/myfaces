@@ -1,12 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
+<%@ page session="false" contentType="text/html;charset=utf-8"%> <%@ taglib uri="http://java.sun.com/jsf/html"
+prefix="h"%> <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%> <%@ taglib
+uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <html>
 
-<%@include file="inc/head.inc"%>
+	<%@include file="inc/head.inc"%>
 
-<!--
+	<!--
 /*
  * Copyright 2004 The Apache Software Foundation.
  *
@@ -24,164 +23,186 @@
  */
 //-->
 
-<body>
+	<body>
 
-<f:view>
-    <h:form id="test">
-        <h:panelGrid columns="1">
-            <t:dataTable id="data1" value="#{testColspanBean.lines}" var="line" border="2" width="100%">
-                <t:column colspan="2">
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 1</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 1</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col1}" />
-                </t:column>
-                <t:column headercolspan="3">
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 2</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 2</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col2}" />
-                </t:column>
-                <t:column>
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 3</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 3</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col3}" />
-                </t:column>
-                <t:column footercolspan="2">
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 4</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 4</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col4}" />
-                </t:column>
-                <t:column>
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 5</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 5</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col5}" />
-                </t:column>
-            </t:dataTable>
-    
-            <f:verbatim>&nbsp;</f:verbatim>
+		<f:view>
+			<h:form id="test">
+				<h:panelGrid columns="1">
 
-            <t:dataTable id="data2" value="#{testColspanBean.lines}" var="line" border="2" width="100%">
-                <t:column >
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 1</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 1</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col1}" />
-                </t:column>
-                <t:column colspan="2" >
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 2</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 2</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col2}" />
-                </t:column>
-                <t:column headercolspan="3" footercolspan="3">
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 3</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 3</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col3}" />
-                </t:column>
-                <t:column>
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 4</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 4</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col4}" />
-                </t:column>
-                <t:column>
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 5</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 5</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col5}" />
-                </t:column>
-            </t:dataTable>
-    
-            <f:verbatim>&nbsp;</f:verbatim>
+					<h:outputText value="Implementation using t:panelGrid" />
 
-            <t:dataTable id="data3" value="#{testColspanBean.lines}" var="line" border="2" width="100%">
-                <t:column headercolspan="2" >
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 1</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 1</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col1}" />
-                </t:column>
-                <t:column>
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 2</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 2</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col2}" />
-                </t:column>
-                <t:column colspan="3" >
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 3</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 3</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col3}" />
-                </t:column>
-                <t:column headercolspan="2" >
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 4</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 4</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col4}" />
-                </t:column>
-                <t:column>
-                    <f:facet name="header">
-                        <f:verbatim escape="false">head 5</f:verbatim>
-                    </f:facet>
-                    <f:facet name="footer">
-                        <f:verbatim escape="false">foot 5</f:verbatim>
-                    </f:facet>
-                    <h:outputText value="#{line.col5}" />
-                </t:column>
-            </t:dataTable>
-        </h:panelGrid>
-    </h:form>
-</f:view>
+					<t:panelGrid id="grid1" columns="4" border="1" styleClass="standardTable standardTable_Row1 standardTable_Column" >
+						<t:panelGroup>
+							<f:verbatim escape="false">1-1</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">1-2</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup colspan="2">
+							<f:verbatim escape="false">1-3</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup colspan="3">
+							<f:verbatim escape="false">2-1</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">2-4</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">3-1</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">3-2</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">3-3</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">3-4</f:verbatim>
+						</t:panelGroup>
+					</t:panelGrid>
 
-<%@include file="inc/page_footer.jsp" %>
+					<f:verbatim>&nbsp;</f:verbatim>
 
-</body>
+					<t:panelGrid id="grid2" columns="4" border="1" styleClass="standardTable standardTable_Row1 standardTable_Column" >
+						<t:panelGroup>
+							<f:verbatim escape="false">1-1</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">1-2</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">1-3</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">1-4</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">2-1</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup colspan="2">
+							<f:verbatim escape="false">2-2</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup>
+							<f:verbatim escape="false">2-4</f:verbatim>
+						</t:panelGroup>
+						<t:panelGroup colspan="4">
+							<f:verbatim escape="false">3-1</f:verbatim>
+						</t:panelGroup>
+					</t:panelGrid>
+
+					<f:verbatim>&nbsp;</f:verbatim>
+					<h:outputText value="Implementation using t:dataTable" />
+
+					<t:dataTable id="table1" value="#{testColspanBean.lines}" var="line"
+						rowClasses="standardTable_Row1,standardTable_Row2"
+	            	columnClasses="standardTable_Column,standardTable_ColumnCentered"
+	            	styleClass="standardTable" headerClass="standardTable_Header" footerClass="standardTable_Header">
+						<t:column colspan="2">
+							<f:facet name="header">
+								<f:verbatim escape="false">head 1</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 1</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col1}" />
+						</t:column>
+						<t:column headercolspan="3">
+							<f:facet name="header">
+								<f:verbatim escape="false">head 2</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 2</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col2}" />
+						</t:column>
+						<t:column>
+							<f:facet name="header">
+								<f:verbatim escape="false">head 3</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 3</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col3}" />
+						</t:column>
+						<t:column footercolspan="2">
+							<f:facet name="header">
+								<f:verbatim escape="false">head 4</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 4</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col4}" />
+						</t:column>
+						<t:column>
+							<f:facet name="header">
+								<f:verbatim escape="false">head 5</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 5</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col5}" />
+						</t:column>
+					</t:dataTable>
+
+					<f:verbatim>&nbsp;</f:verbatim>
+
+					<t:dataTable id="table2" value="#{testColspanBean.lines}" var="line"
+						rowClasses="standardTable_Row1,standardTable_Row2"
+	            	columnClasses="standardTable_Column,standardTable_ColumnCentered"
+	            	styleClass="standardTable" headerClass="standardTable_Header" footerClass="standardTable_Header">
+						<t:column headercolspan="2">
+							<f:facet name="header">
+								<f:verbatim escape="false">head 1</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 1</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col1}" />
+						</t:column>
+						<t:column>
+							<f:facet name="header">
+								<f:verbatim escape="false">head 2</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 2</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col2}" />
+						</t:column>
+						<t:column colspan="3">
+							<f:facet name="header">
+								<f:verbatim escape="false">head 3</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 3</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col3}" />
+						</t:column>
+						<t:column headercolspan="2">
+							<f:facet name="header">
+								<f:verbatim escape="false">head 4</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 4</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col4}" />
+						</t:column>
+						<t:column>
+							<f:facet name="header">
+								<f:verbatim escape="false">head 5</f:verbatim>
+							</f:facet>
+							<f:facet name="footer">
+								<f:verbatim escape="false">foot 5</f:verbatim>
+							</f:facet>
+							<h:outputText value="#{line.col5}" />
+						</t:column>
+					</t:dataTable>
+
+				</h:panelGrid>
+			</h:form>
+		</f:view>
+
+		<%@include file="inc/page_footer.jsp" %>
+
+	</body>
 
 </html>

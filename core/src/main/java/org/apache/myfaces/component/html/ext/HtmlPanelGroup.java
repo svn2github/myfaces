@@ -32,6 +32,8 @@ public class HtmlPanelGroup
         extends javax.faces.component.html.HtmlPanelGroup
         implements UserRoleAware, DisplayValueOnlyCapable
 {
+    public static final int DEFAULT_COLSPAN = Integer.MIN_VALUE;
+
     public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
@@ -55,6 +57,7 @@ public class HtmlPanelGroup
     private Boolean _displayValueOnly = null;
 	private String _displayValueOnlyStyle = null;
 	private String _displayValueOnlyStyleClass = null;
+    private Integer _colspan = null;
 
     public HtmlPanelGroup()
     {
@@ -123,6 +126,18 @@ public class HtmlPanelGroup
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
 
+    public void setColspan(int colspan)
+    {
+        _colspan = new Integer(colspan);
+    }
+
+    public int getColspan()
+    {
+        if (_colspan != null) return _colspan.intValue();
+        ValueBinding vb = getValueBinding("colspan");
+        Number v = vb != null ? (Number)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.intValue() : DEFAULT_COLSPAN;
+    }
 
     public boolean isRendered()
     {
@@ -132,13 +147,14 @@ public class HtmlPanelGroup
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
         values[3] = _displayValueOnly;
         values[4] = _displayValueOnlyStyle;
         values[5] = _displayValueOnlyStyleClass;
+        values[6] = _colspan;
         return ((Object) (values));
     }
 
@@ -151,6 +167,7 @@ public class HtmlPanelGroup
         _displayValueOnly = (Boolean)values[3];
         _displayValueOnlyStyle = (String)values[4];
         _displayValueOnlyStyleClass = (String)values[5];
+        _colspan = (Integer)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

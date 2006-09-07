@@ -135,6 +135,8 @@
       SYSTEM "tomahawk-entities/tomahawk_navigation_menu_item_attributes.xml">
 <!ENTITY tomahawk_js_cook_menu_attributes
       SYSTEM "tomahawk-entities/tomahawk_js_cook_menu_attributes.xml">
+<!ENTITY tomahawk_panel_group_attributes
+      SYSTEM "tomahawk-entities/tomahawk_panel_group_attributes.xml">
 <!ENTITY tomahawk_panel_layout_attributes
       SYSTEM "tomahawk-entities/tomahawk_panel_layout_attributes.xml">
 <!ENTITY tomahawk_panel_navigation_2_attributes
@@ -503,6 +505,7 @@
         &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;
+        &tomahawk_panel_group_attributes;
     </tag>
 
     <!-- selectOneMenu -->

@@ -15,12 +15,12 @@
  */
 package org.apache.myfaces.taglib.html.ext;
 
+import javax.faces.component.UIComponent;
 import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
-
-import javax.faces.component.UIComponent;
 
 /**
  * @author Manfred Geiler (latest modification by $Author$)
@@ -46,10 +46,13 @@ public class HtmlPanelGroupTag
 	private String _displayValueOnlyStyle;
 	private String _displayValueOnlyStyleClass;
 
+    private String _colspan;
+    
     public void release() {
         super.release();
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _colspan=null;
    }
 
     protected void setProperties(UIComponent component)
@@ -61,6 +64,7 @@ public class HtmlPanelGroupTag
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
+        setIntegerProperty(component, HTML.COLSPAN_ATTR, _colspan);
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -88,4 +92,8 @@ public class HtmlPanelGroupTag
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
 
+    public void setColspan(String colspan)
+    {
+        _colspan = colspan;
+    }
 }

@@ -1,0 +1,6 @@
+        <attribute>
+            <name>colspan</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>standard html colspan attribute for table cell</description>
+        </attribute>
