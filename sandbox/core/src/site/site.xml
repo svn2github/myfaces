@@ -47,6 +47,7 @@
     
     <menu name="Validators">
       <item name="validateCompareTo" href="validateCompareTo.html"/>
+      <item name="validateCSV" href="validateCSV.html"/>
     </menu>    
 
 	

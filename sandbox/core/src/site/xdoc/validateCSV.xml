@@ -12,7 +12,7 @@ components.
         <section name="Description">
             
             <p>
-                Validate by separating comma (or custom separator) separated values and validating them individually
+                Validate by separating comma (or custom separator) separated values (CSV) and validating them individually with a given validator
             </p>
         </section>
         <!-- screen shot -->
@@ -43,10 +43,11 @@ components.
         <section name="Usage">
             
             <source xml:space="preserve">
-			&lt;h:inputText id="creditCardNumber" value="#{validateForm.creditCardNumber}" required="true"&gt;
-				&lt;s:validateCSV subvalidatorId="org.apache.myfaces.validator.CreditCard" separator="\\." /&gt;
-			&lt;/h:inputText&gt;
-			</source>
+            &lt;f:verbatim&gt;enter credit card numbers, separated by a period:&lt;/f:verbatim&gt;
+            &lt;h:inputText id="creditCardNumber" value="#{backingBean.creditCardNumbers}" required="true"&gt;
+                &lt;s:validateCSV subvalidatorId="org.apache.myfaces.validator.CreditCard" separator="\\." /&gt;
+            &lt;/h:inputText&gt;
+            </source>
         </section>
         
         <!-- Syntax -->
@@ -63,7 +64,7 @@ components.
             
             <p>
 				Use this validator to allow users to enter multiple input values in a single input,
-				separated by a comma, semicolon, or other custome separator. The CSVValidator will
+				separated by a comma, semicolon, or other custom separator. The CSVValidator will
 				separate the input values and call the subvalidator for each of those values.
             </p>
             <p>See "myfaces-example-sandbox/validatecsv.jsp" for an example.</p>
