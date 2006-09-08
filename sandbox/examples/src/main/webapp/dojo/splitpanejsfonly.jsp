@@ -49,7 +49,7 @@
 				<s:dojoInitializer require="dojo.widget.SplitContainer" />
 				<s:dojoInitializer require="dojo.widget.ContentPane" />
 				<s:layoutingSplitPane id="split" activeSizing="0" 
-					style="width: 100%; height: 100%; background: #eeeeee; padding: 10px;" sizerWidth="2">
+					style="width: 400px; height: 400px; background: #eeeeee; padding: 10px;" sizerWidth="2">
 					<s:layoutingContentPane id="left" sizeShare="10">
 						<h:outputFormat value="content1"></h:outputFormat>
 						<h:outputFormat value="content2"></h:outputFormat>
