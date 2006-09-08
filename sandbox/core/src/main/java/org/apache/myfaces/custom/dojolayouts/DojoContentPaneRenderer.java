@@ -103,6 +103,10 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
         DojoContentPane pane = (DojoContentPane) component;
         Map attributes = new HashedMap();
         attributes.put("sizeShare", pane.getSizeShare());
+        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
+        attributes.put("id", panelComponentVar);      
+    
+        
         DojoUtils.renderWidgetInitializationCode(context, component, "ContentPane", attributes);
     }
 

@@ -36,7 +36,15 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
     protected void encodeJavascriptBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeJavascriptBegin(context, component);
+        ResponseWriter writer = context.getResponseWriter();
+        //writer.startElement(HTML.SCRIPT_ELEM, component);
+        //writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        //writer.write("dojo.hostenv.setModulePrefix('org.apache.myfaces.dojolayouts', '../dojolayouts.ResourceLoader');\n");
+        //writer.endElement(HTML.SCRIPT_ELEM);
         DojoUtils.addRequire(context, component, "dojo.widget.SplitContainer");
+
+        //DojoUtils.addRequire(context, component, "org.apache.myfaces.dojolayouts.MyfacesSplitContainer");
+
     }
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -110,18 +118,21 @@ public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
         if (pane.getStartPoint() != null)
             attributes.put("lastPoint", pane.getLastPoint());
 
+        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
+        attributes.put("id", panelComponentVar);      
+        
         DojoUtils.renderWidgetInitializationCode(context, component, "SplitContainer", attributes);
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
         Stack stack = this.getChildsStack(context, component);
-        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
         while (!stack.isEmpty()) {
             String javascriptVar = (String) stack.pop();
             writer.write(panelComponentVar + ".addChild(" + javascriptVar + ");\n");
         }
-        ;
+        writer.write(panelComponentVar+".postCreate();\n");
+        
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
