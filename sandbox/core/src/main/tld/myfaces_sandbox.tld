@@ -1231,6 +1231,42 @@ Sandbox-related entities.
 		</attribute>
 
 	</tag>
+
+	<tag>
+		<name>layoutingTitlePane</name>
+		<tag-class>org.apache.myfaces.custom.dojolayouts.TitlePaneTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Title Pane layouting element</description>
+        &ui_output_attributes;
+
+		<attribute>
+			<name>containerNodeClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>the css node class for the container part of the element</description>
+		</attribute>
+
+		<attribute>
+			<name>labelNodeClass</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>the css node class for the label part of the pane</description>
+		</attribute>
+		<attribute>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				Label for the titled paned element
+			</description>
+		</attribute>
+
+	</tag>
+
+
 	<tag>
 		<name>layoutingSplitPane</name>
 		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoSplitPaneTag</tag-class>
