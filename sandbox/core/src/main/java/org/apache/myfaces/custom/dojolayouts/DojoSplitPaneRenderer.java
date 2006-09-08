@@ -89,11 +89,27 @@ public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
         DojoSplitPane pane = (DojoSplitPane) component;
         Map attributes = new HashedMap();
 
-        attributes.put("sizeShare", pane.getSizeShare());
-        attributes.put("activeSizing", pane.getActiveSizing());
-        attributes.put("orientation", pane.getSplitOrientationation());
-        attributes.put("sizerWidth", pane.getSizerWidth());
-     
+        if (pane.getSizeShare() != null)
+            attributes.put("sizeShare", pane.getSizeShare());
+
+        if (pane.getActiveSizing() != null)
+            attributes.put("activeSizing", pane.getActiveSizing());
+
+        if (pane.getSplitOrientationation() != null)
+            attributes.put("orientation", pane.getSplitOrientationation());
+
+        if (pane.getSizerWidth() != null)
+            attributes.put("sizerWidth", pane.getSizerWidth());
+
+        if (pane.getPersist() != null)
+            attributes.put("persist", pane.getPersist());
+
+        if (pane.getStartPoint() != null)
+            attributes.put("startPoint", pane.getStartPoint());
+
+        if (pane.getStartPoint() != null)
+            attributes.put("lastPoint", pane.getLastPoint());
+
         DojoUtils.renderWidgetInitializationCode(context, component, "SplitContainer", attributes);
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);

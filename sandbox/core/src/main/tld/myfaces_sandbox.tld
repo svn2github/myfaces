@@ -1205,7 +1205,7 @@ Sandbox-related entities.
 	</tag>
 
 	<tag>
-		<name>dojoContentPane</name>
+		<name>layoutingContentPane</name>
 		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoContentPaneTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
@@ -1232,7 +1232,7 @@ Sandbox-related entities.
 
 	</tag>
 	<tag>
-		<name>dojoSplitPane</name>
+		<name>layoutingSplitPane</name>
 		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoSplitPaneTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
@@ -1277,6 +1277,27 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
             <description>horizontal or vertical</description>
+        </attribute>
+		<attribute>
+            <name>persist</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Boolean</type>
+            <description>If true, cookie persisting of the split pane is enabled</description>
+        </attribute>
+        <attribute>
+            <name>startPoint</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Integer</type>
+            <description>Starting Point of the split pane as defined by dojo</description>
+        </attribute>
+        <attribute>
+            <name>lastPoint</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Integer</type>
+            <description>Last point of the split pane</description>
         </attribute>
 	</tag>
 
