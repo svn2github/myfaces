@@ -121,6 +121,11 @@
             <h:panelGrid style="padding-left:25px">
                 <h:outputLink value="dojo/dojoDialog.jsf" ><f:verbatim>Dojo Dialog examples</f:verbatim></h:outputLink>
             </h:panelGrid>
+            <h:outputText value="Dojo Split Pane"/>
+            <h:panelGrid style="padding-left:25px">
+                <h:outputLink value="dojo/splitpanejsfonly.jsf" ><f:verbatim>Split Pane example</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
         </h:panelGrid>
     </h:form>
     </f:view>
