@@ -48,17 +48,17 @@
 			<h:panelGroup style="width: 100%; height: 100%;">
 				<s:dojoInitializer require="dojo.widget.SplitContainer" />
 				<s:dojoInitializer require="dojo.widget.ContentPane" />
-				<s:dojoSplitPane id="split" activeSizing="0" 
+				<s:layoutingSplitPane id="split" activeSizing="0" 
 					style="width: 100%; height: 100%; background: #eeeeee; padding: 10px;" sizerWidth="5">
-					<s:dojoContentPane id="left" sizeShare="20">
+					<s:layoutingContentPane id="left" sizeShare="20">
 						<h:outputFormat value="content1"></h:outputFormat>
 						<h:outputFormat value="content2"></h:outputFormat>
-					</s:dojoContentPane>
-					<s:dojoContentPane id="right">
+					</s:layoutingContentPane>
+					<s:layoutingContentPane id="right">
 						<h:outputFormat value="contentright1"></h:outputFormat>
 						<h:outputFormat value="contentright2"></h:outputFormat>
-					</s:dojoContentPane>
-				</s:dojoSplitPane>
+					</s:layoutingContentPane>
+				</s:layoutingSplitPane>
 			</h:panelGroup>
 
 		</f:view>
