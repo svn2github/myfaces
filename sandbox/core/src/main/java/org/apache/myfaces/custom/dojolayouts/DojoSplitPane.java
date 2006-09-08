@@ -58,7 +58,7 @@ public class DojoSplitPane extends DojoContentPane {
     public String getSplitOrientationation() {
         if (_splitOrientation != null)
             return _splitOrientation;
-        ValueBinding vb = getValueBinding("orientation");
+        ValueBinding vb = getValueBinding("splitOrientation");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
