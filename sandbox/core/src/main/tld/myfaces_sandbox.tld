@@ -1280,7 +1280,41 @@ Sandbox-related entities.
         </attribute>
 	</tag>
 
-
+    <tag>
+        <name>dojoDialog</name>
+        <tag-class>org.apache.myfaces.custom.dialog.DojoDialogTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>Modal Dojo Dialog</description>
+        &ui_panel_attributes;
+        <attribute>
+            <name>dialogVar</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>The name of the variable to control the dialog with javascript.</description>
+        </attribute>
+        <attribute>
+            <name>dialogId</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>The id to control the dialog with javascript.</description>
+        </attribute>
+        <attribute>
+            <name>dialogAttr</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>A space separated list with attribute='value' pairs, which control the behaviour of the dojo dialog.</description>
+        </attribute>
+        <attribute>
+            <name>hiderIds</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>A comma separated list with ids of input-elements, which tell (by javascript-code) the dialog to hide.</description>
+        </attribute>
+    </tag>
 
 	<!-- Validator for csv validation items -->
 	<tag>

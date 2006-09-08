@@ -117,6 +117,10 @@
            		<h:outputLink value="template/index.jsf" ><f:verbatim>XML Template examples</f:verbatim></h:outputLink>
             </h:panelGrid>
 
+            <h:outputText value="Dojo Dialog"/>
+            <h:panelGrid style="padding-left:25px">
+                <h:outputLink value="dojo/dojoDialog.jsf" ><f:verbatim>Dojo Dialog examples</f:verbatim></h:outputLink>
+            </h:panelGrid>
         </h:panelGrid>
     </h:form>
     </f:view>
