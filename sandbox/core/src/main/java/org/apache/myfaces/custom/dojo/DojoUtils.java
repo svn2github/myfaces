@@ -390,8 +390,9 @@ public final class DojoUtils {
 	        	writer.write(entry.getValue().toString());
 	          	if(isString)
 	        		writer.write("'");
-	    	}
-        	first = false;
+                first = false;
+            }
+        	
         }
         writer.write("}");
         if(refId) {
