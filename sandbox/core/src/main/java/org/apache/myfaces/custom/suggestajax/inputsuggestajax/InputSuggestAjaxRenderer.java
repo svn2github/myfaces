@@ -16,6 +16,7 @@
 
 package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
@@ -31,6 +32,7 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Gerald Müllan
@@ -56,9 +58,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
         DojoUtils.addRequire(context, component, "dojo.widget.ComboBox");
-        DojoUtils.addRequire(context, component, "extensions.ComboBox");
-        DojoUtils.addRequire(context, component, "dojo.widget.Wizard");
-        DojoUtils.addRequire(context, component, "dojo.event.*");
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
@@ -81,40 +80,43 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         String value = RendererUtils.getStringValue(context, component);
 
-        out.startElement(HTML.INPUT_ELEM, component);
-        renderId(context, component);
-        out.writeAttribute(HTML.NAME_ATTR, clientId, null);
-        out.writeAttribute("dojoType", "combobox", null);
-        out.writeAttribute("dataUrl", ajaxUrl, null);
-        out.writeAttribute("mode", "remote", null);
-        if (value != null && value.length()>0)
-        {
-            out.writeAttribute(HTML.VALUE_ATTR, value, null);
-        }
+        out.startElement(HTML.DIV_ELEM, component);
+        out.writeAttribute(HTML.ID_ATTR, clientId , null);
+        out.endElement(HTML.DIV_ELEM);
 
-        if (isDisabled(context, component))
-        {
-            out.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
-        }
-        if (inputSuggestAjax.getStyle() != null)
-        {
-            out.writeAttribute(HTML.STYLE_ATTR,inputSuggestAjax.getStyle(), null);
-        }
-        if (inputSuggestAjax.getStyleClass() != null)
-        {
-            out.writeAttribute(HTML.CLASS_ATTR,inputSuggestAjax.getStyleClass(), null);
-        }
-        out.endElement(HTML.INPUT_ELEM);
+        Map attributes = new HashedMap();
+
+        attributes.put("dataUrl", ajaxUrl);
+        attributes.put("mode", "remote");
+
+        DojoUtils.renderWidgetInitializationCode(context, component, "ComboBox", attributes);
 
         String escapedValue = escapeQuotes(value);
+        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
 
         out.startElement(HTML.SCRIPT_ELEM, null);
         out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        out.write("dojo.event.connect(window, \"onload\", function(evt) {\n"
-                    + "var comboWidget = dojo.widget.byId(\""+ clientId +"\");\n"
-                    + "comboWidget.textInputNode.value = \""+ escapedValue +"\";\n"
-                    + "comboWidget.comboBoxValue.value = \""+ escapedValue +"\";\n");
-        out.write("});\n");
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("dojo.addOnLoad(function() {\n")
+                .append(inputSuggestComponentVar).append(".textInputNode.name=\"").append(clientId).append("\";\n");
+
+        if (inputSuggestAjax.getStyle() != null)
+        {
+            buffer.append(inputSuggestComponentVar).append(".cbTableNode.style.cssText=\"").append(inputSuggestAjax.getStyle()).append("\";\n");
+        }
+        if (inputSuggestAjax.getStyleClass() != null)
+        {
+            buffer.append(inputSuggestComponentVar).append(".cbTableNode.className=\"").append(inputSuggestAjax.getStyleClass()).append("\";\n");
+        }
+
+        buffer.append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(escapedValue).append("\";\n")
+              .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(escapedValue).append("\";\n")
+              .append("});\n");
+
+        out.write(buffer.toString());
+
         out.endElement(HTML.SCRIPT_ELEM);
     }
 
@@ -143,7 +145,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                .append(prefix).append("\"],");
         }
 
-        buf.append("];");
+        buf.append("]");
 
         context.getResponseWriter().write(buf.toString());
     }
