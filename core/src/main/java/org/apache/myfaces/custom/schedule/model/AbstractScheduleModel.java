@@ -240,6 +240,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
         clear();
 
         Calendar cal = GregorianCalendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
         cal.setTime(date);
 
         // go back to the first day of the month;
