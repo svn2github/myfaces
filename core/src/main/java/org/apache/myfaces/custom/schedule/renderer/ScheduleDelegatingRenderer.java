@@ -87,7 +87,7 @@ public class ScheduleDelegatingRenderer extends Renderer implements Serializable
         getDelegateRenderer(component).encodeEnd(context, component);
     }
 
-    private Renderer getDelegateRenderer(UIComponent component)
+    protected Renderer getDelegateRenderer(UIComponent component)
     {
         HtmlSchedule schedule = (HtmlSchedule) component;
 

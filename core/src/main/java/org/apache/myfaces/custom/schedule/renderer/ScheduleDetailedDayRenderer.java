@@ -162,7 +162,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private String getCellClass(HtmlSchedule schedule, int column, int row, int hour)
+    protected String getCellClass(HtmlSchedule schedule, int column, int row, int hour)
     {
         String cellClass = "free";
         ScheduleDay day = (ScheduleDay) schedule.getModel().get(column);
@@ -181,7 +181,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         return getStyleClass(schedule, cellClass);
     }
 
-    private boolean isSelected(HtmlSchedule schedule, EntryWrapper entry)
+    protected boolean isSelected(HtmlSchedule schedule, EntryWrapper entry)
     {
         ScheduleEntry selectedEntry = schedule.getModel().getSelectedEntry();
 
@@ -196,7 +196,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         return returnboolean;
     }
 
-    private void maximizeEntries(EntryWrapper[] entries, int numberOfColumns)
+    protected void maximizeEntries(EntryWrapper[] entries, int numberOfColumns)
     {
         for (int i = 0; i < entries.length; i++)
         {
@@ -211,7 +211,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         }
     }
 
-    private void scanEntries(EntryWrapper[] entries, int index)
+    protected void scanEntries(EntryWrapper[] entries, int index)
     {
         if (entries.length <= 0)
         {
@@ -244,7 +244,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         }
     }
 
-    private void writeBackground(FacesContext context, HtmlSchedule schedule,
+    protected void writeBackground(FacesContext context, HtmlSchedule schedule,
                                  ResponseWriter writer) throws IOException
     {
         final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
@@ -411,7 +411,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private int getRenderedStartHour(HtmlSchedule schedule)
+    protected int getRenderedStartHour(HtmlSchedule schedule)
     {
         int startHour = schedule.getVisibleStartHour();
 
@@ -432,7 +432,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         return startHour;
     }
 
-    private int getRenderedEndHour(HtmlSchedule schedule)
+    protected int getRenderedEndHour(HtmlSchedule schedule)
     {
         int endHour = schedule.getVisibleEndHour();
 
@@ -453,7 +453,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         return endHour;
     }
 
-    private void writeEntries(FacesContext context, HtmlSchedule schedule,
+    protected void writeEntries(FacesContext context, HtmlSchedule schedule,
                               ScheduleDay day, ResponseWriter writer) throws IOException
     {
         final String clientId = schedule.getClientId(context);
@@ -572,14 +572,14 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         }
     }
 
-    private void writeForegroundEnd(ResponseWriter writer) throws IOException
+    protected void writeForegroundEnd(ResponseWriter writer) throws IOException
     {
         writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.TABLE_ELEM);
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    private void writeForegroundStart(FacesContext context,
+    protected void writeForegroundStart(FacesContext context,
                                       HtmlSchedule schedule, ResponseWriter writer) throws IOException
     {
         final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
@@ -755,7 +755,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     }
 
 
-    private class EntryWrapper implements Comparable
+    protected class EntryWrapper implements Comparable
     {
         //~ Static fields/initializers -----------------------------------------
 
