@@ -1338,24 +1338,38 @@ Sandbox-related entities.
 	</tag>
 
     <tag>
-        <name>dojoDialog</name>
-        <tag-class>org.apache.myfaces.custom.dialog.DojoDialogTag</tag-class>
+        <name>modalDialog</name>
+        <tag-class>org.apache.myfaces.custom.dialog.ModalDialogTag</tag-class>
         <body-content>JSP</body-content>
-        <description>Modal Dojo Dialog</description>
+        <description>Modal Dojo Dialog (is not working with overridden 'onload')</description>
         &ui_panel_attributes;
+        <!-- style attributes -->
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>HTML: CSS styling instructions.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>The CSS class for this element.  Corresponds to the HTML 'class' attribute.</description>
+        </attribute>
+        <!-- custom attributes -->
         <attribute>
             <name>dialogVar</name>
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>The name of the variable to control the dialog with javascript.</description>
+            <description>The name of the variable to control the dialog (dojo widget) with javascript.</description>
         </attribute>
         <attribute>
             <name>dialogId</name>
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>The id to control the dialog with javascript.</description>
+            <description>The id to control the dialog (dojo widget) with javascript.</description>
         </attribute>
         <attribute>
             <name>dialogAttr</name>
@@ -1369,7 +1383,7 @@ Sandbox-related entities.
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
-            <description>A comma separated list with ids of input-elements, which tell (by javascript-code) the dialog to hide.</description>
+            <description>A comma separated list with ids of input-elements, which can tell (by javascript-code) the dialog to hide.</description>
         </attribute>
     </tag>
 

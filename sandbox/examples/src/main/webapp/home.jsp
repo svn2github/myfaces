@@ -53,7 +53,9 @@
 
             <h:outputText value="Layout"/>
             <h:panelGrid style="padding-left:25px">
-            	<h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
+                <h:outputLink value="/dojo/splitpanejsfonly.jsf" ><f:verbatim>SplitPane - Dojos ContentPane widget to separate a page into panes of belonging content</f:verbatim></h:outputLink>
+                <h:outputLink value="/dojo/titlepanejsfonly.jsf" ><f:verbatim>TitlePane - Dojos TitlePane; Displays some data with a title on top. Data can be collapsed leaving only the title shown. </f:verbatim></h:outputLink>
+                <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
                 <h:outputLink value="hmenu.jsf" ><f:verbatim>Horizontal Menu</f:verbatim></h:outputLink>
             </h:panelGrid>
 
@@ -117,13 +119,9 @@
            		<h:outputLink value="template/index.jsf" ><f:verbatim>XML Template examples</f:verbatim></h:outputLink>
             </h:panelGrid>
 
-            <h:outputText value="Dojo Dialog"/>
+            <h:outputText value="Modal Dialog"/>
             <h:panelGrid style="padding-left:25px">
-                <h:outputLink value="dojo/dojoDialog.jsf" ><f:verbatim>Dojo Dialog examples</f:verbatim></h:outputLink>
-            </h:panelGrid>
-            <h:outputText value="Dojo Split Pane"/>
-            <h:panelGrid style="padding-left:25px">
-                <h:outputLink value="dojo/splitpanejsfonly.jsf" ><f:verbatim>Split Pane example</f:verbatim></h:outputLink>
+                <h:outputLink value="dojo/dojoDialog.jsf" ><f:verbatim>A modal dialog similar to an alert or confirm or popup window</f:verbatim></h:outputLink>
             </h:panelGrid>
 
         </h:panelGrid>

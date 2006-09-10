@@ -206,8 +206,8 @@
   </component>
 
   <component>
-    <component-type>org.apache.myfaces.DojoDialog</component-type>
-    <component-class>org.apache.myfaces.custom.dialog.DojoDialog</component-class>
+    <component-type>org.apache.myfaces.ModalDialog</component-type>
+    <component-class>org.apache.myfaces.custom.dialog.ModalDialog</component-class>
   </component>
   
  <component>
@@ -438,8 +438,8 @@
 
     <renderer>
         <component-family>javax.faces.Panel</component-family>
-        <renderer-type>org.apache.myfaces.DojoDialog</renderer-type>
-        <renderer-class>org.apache.myfaces.custom.dialog.DojoDialogRenderer</renderer-class>
+        <renderer-type>org.apache.myfaces.ModalDialog</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.dialog.ModalDialogRenderer</renderer-class>
     </renderer>
 
   <renderer>

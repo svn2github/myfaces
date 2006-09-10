@@ -51,9 +51,9 @@
             </h:outputLink>
         </h:panelGrid>
     </h:panelGrid>
-    <s:dojoDialog dialogId="DialogContent" dialogVar="dojoDialog"
+    <s:modalDialog dialogId="DialogContent" dialogVar="dojoDialog"
                   dialogAttr="bgColor='white' bgOpacity='0.5' toggle='fade' toggleDuration='250'"
-                  hiderIds="cancel1,cancel2,cancel3">
+                  hiderIds="cancel1,cancel2,cancel3" styleClass="dojoDialog">
         <h:panelGrid columns="1">
             <h:panelGrid columns="2">
                 <t:inputText id="filter1" forceId="true" value="Test" size="25"/>
@@ -68,10 +68,7 @@
                 <t:commandButton id="cancel3" forceId="true" value="Cancel" onclick="dojo.widget.byId('DialogContent').hide();" />
             </h:panelGrid>
         </h:panelGrid>
-    </s:dojoDialog>
+    </s:modalDialog>
 </f:view>
-
-<%@include file="../inc/page_footer.jsp" %>
-
 </body>
 </html>

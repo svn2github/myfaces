@@ -1,19 +1,3 @@
-/*
- * Copyright 2006 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.apache.myfaces.custom.dialog;
 
 import org.apache.myfaces.custom.dojo.DojoUtils;
@@ -26,8 +10,8 @@ import javax.faces.render.Renderer;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-public class DojoDialogRenderer extends Renderer {
-    public static final String RENDERER_TYPE = "org.apache.myfaces.DojoDialog";
+public class ModalDialogRenderer extends Renderer {
+    public static final String RENDERER_TYPE = "org.apache.myfaces.ModalDialog";
 
     public static final String DIV_ID_PREFIX = "_div";
 
@@ -39,7 +23,7 @@ public class DojoDialogRenderer extends Renderer {
                                  DojoUtils.getDjConfigInstance(context));
         DojoUtils.addRequire(context, component, "dojo.widget.Dialog");
 
-        writeDojoDialogBegin((DojoDialog) component, context.getResponseWriter());
+        writeModalDialogBegin((ModalDialog) component, context.getResponseWriter());
     }
 
     //@Override
@@ -51,7 +35,7 @@ public class DojoDialogRenderer extends Renderer {
         context.getResponseWriter().write(buf.toString());
     }
 
-    private void appendHiderIds(StringBuffer buf, DojoDialog dlg) {
+    private void appendHiderIds(StringBuffer buf, ModalDialog dlg) {
         String[] hiders = null;
         if (dlg.getHiderIds() != null) {
             hiders = dlg.getHiderIds().split(",");
@@ -65,7 +49,7 @@ public class DojoDialogRenderer extends Renderer {
         }
     }
 
-    private void appendDialogAttributes(StringBuffer buf, DojoDialog dlg) {
+    private void appendDialogAttributes(StringBuffer buf, ModalDialog dlg) {
         if(dlg.getDialogAttr() == null)
             return;
 
@@ -86,7 +70,7 @@ public class DojoDialogRenderer extends Renderer {
         buf.setLength(buf.length() - 2);
     }
 
-    private void writeDojoDialogBegin(DojoDialog dlg, ResponseWriter writer) throws IOException {
+    private void writeModalDialogBegin(ModalDialog dlg, ResponseWriter writer) throws IOException {
         StringBuffer buf = new StringBuffer();
         buf.append("<script type=\"text/javascript\">")
         .append("var ").append(dlg.getDialogVar()).append(";")
