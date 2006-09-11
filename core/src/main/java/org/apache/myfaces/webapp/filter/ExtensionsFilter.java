@@ -171,10 +171,16 @@ public class ExtensionsFilter implements Filter {
 		        }
 		        else
 		        {
-		        	// When not filtering due to not valid content-type, deliver the byte-array instead of a charset-converted string.
-		        	// Otherwise a binary stream get corrupted.
-		            servletResponse.getOutputStream().write(extendedResponse.getBytes());
-		        }
+
+		        	byte[] responseArray = extendedResponse.getBytes();
+
+                    if(responseArray.length > 0)
+                    {
+ 			        	// When not filtering due to not valid content-type, deliver the byte-array instead of a charset-converted string.
+ 			        	// Otherwise a binary stream gets corrupted.
+ 			            servletResponse.getOutputStream().write(responseArray);
+ 		        	}
+                }
 	        }
 	        else
 	        {
