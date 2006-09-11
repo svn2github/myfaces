@@ -20,29 +20,52 @@ import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputTextTagBase;
 
+/**
+ * dojo content pane
+ * tag
+ * jsfied tagdescriptor for the dojo content pane
+ * @see http://www.dojotoolkit.org for further
+ * references to this class
+ * 
+ * @author werpu
+ *
+ */
 public class DojoContentPaneTag extends HtmlOutputTextTagBase {
 
-    private static final String TAG_PARAM_STYLE_CLASS = "styleClass";
+    public static final String  TAG_PARAM_AdjustPaths    = "adjustPaths";
+    public static final String  TAG_PARAM_ExecuteScripts = "executeScripts";
+    public static final String  TAG_PARAM_ExtractContent = "extractContent";
+    public static final String  TAG_PARAM_Handler        = "handler";
+    public static final String  TAG_PARAM_Href           = "href";
+    public static final String  TAG_PARAM_LayoutAlign    = "layoutAlign";
+    public static final String  TAG_PARAM_ParseContent   = "parseContent";
+    public static final String  TAG_PARAM_Preload        = "preload";
+    public static final String  TAG_PARAM_RefreshOnShow  = "refreshOnShow";
+    public static final String  TAG_PARAM_ScriptScope    = "scriptScope";
+    public static final String  TAG_PARAM_SIZESHARE      = "sizeShare";
+    private static final String TAG_PARAM_STYLE          = "style";
+    private static final String TAG_PARAM_STYLE_CLASS    = "styleClass";
 
-    private static final String TAG_PARAM_STYLE       = "style";
+    private String              _adjustPaths             = null;
+    private String              _executeScripts          = null;
+    private String              _extractContent          = null;
+    private String              _handler                 = null;
+    private String              _href                    = null;
+    private String              _layoutAlign             = null;
+    private String              _parseContent            = null;
+    private String              _preload                 = null;
+    private String              _refreshOnShow           = null;
+    private String              _scriptScope             = null;
+    private String              _sizeShare               = null;
+    private String              _style                   = null;
+    private String              _styleClass              = null;
 
+    public String getComponentType() {
+        return DojoContentPane.DEFAULT_COMPONENT_TYPE;
+    }
 
-    public static final String  TAG_PARAM_SIZESHARE   = "sizeShare";
-
-    private String              _sizeShare            = null;
-
-    private String              _style                = null;
-
-    private String              _styleClass           = null;
-
-
-    protected void setProperties(UIComponent component) {
-        super.setProperties(component);
-        super.setIntegerProperty(component, TAG_PARAM_SIZESHARE, _sizeShare);
-        super.setStringProperty(component, TAG_PARAM_STYLE, _style);
-        super.setStringProperty(component, TAG_PARAM_STYLE_CLASS, _styleClass);
-
-
+    public String getRendererType() {
+        return DojoContentPane.DEFAULT_RENDERER_TYPE;
     }
 
     public void release() {
@@ -51,19 +74,132 @@ public class DojoContentPaneTag extends HtmlOutputTextTagBase {
         _styleClass = null;
         _sizeShare = null;
 
+        // //release handler begin
+        _handler = null;
+        // //release handler end
 
+        // //release parseContent begin
+        _parseContent = null;
+        // //release parseContent end
+        // // release href begin
+        _href = null;
+        // //release href end
+
+        // //release adjustPaths begin
+        _adjustPaths = null;
+        // //release adjustPaths end
+        // // release extractContent begin
+        _extractContent = null;
+        // //release extractContent end
+        // // release refreshOnShow begin
+        _refreshOnShow = null;
+        // //release refreshOnShow end
+
+        // //release executeScripts begin
+        _executeScripts = null;
+        // //release executeScripts end
+
+        // //release preload begin
+        _preload = null;
+        // //release preload end
+
+        // //release scriptScope begin
+        _scriptScope = null;
+        // //release scriptScope end
+
+        // //release layoutAlign begin
+        _layoutAlign = null;
+        // //release layoutAlign end
+
+    }
+
+    public void setAdjustPaths(String adjustPaths) {
+        _adjustPaths = adjustPaths;
+    }
+
+    public void setExecuteScripts(String executeScripts) {
+        _executeScripts = executeScripts;
+    }
+
+    public void setExtractContent(String extractContent) {
+        _extractContent = extractContent;
+    }
+
+    public void setHandler(String handler) {
+        _handler = handler;
+    }
+
+    public void setHref(String href) {
+        _href = href;
+    }
+
+    public void setLayoutAlign(String layoutAlign) {
+        _layoutAlign = layoutAlign;
+    }
+
+    public void setParseContent(String parseContent) {
+        _parseContent = parseContent;
+    }
+
+    public void setPreload(String preload) {
+        _preload = preload;
+    }
+
+    protected void setProperties(UIComponent component) {
+        super.setProperties(component);
+        super.setIntegerProperty(component, TAG_PARAM_SIZESHARE, _sizeShare);
+        super.setStringProperty(component, TAG_PARAM_STYLE, _style);
+        super.setStringProperty(component, TAG_PARAM_STYLE_CLASS, _styleClass);
+
+        // //setProperties refreshOnShow begin
+        super.setBooleanProperty(component, TAG_PARAM_RefreshOnShow, _refreshOnShow);
+        // //setProperties refreshOnShow end
+
+        // //setProperties scriptScope begin
+        super.setStringProperty(component, TAG_PARAM_ScriptScope, _scriptScope);
+        // //setProperties scriptScope end
+
+        // //setProperties preload begin
+        super.setBooleanProperty(component, TAG_PARAM_Preload, _preload);
+        // //setProperties preload end
+        // //setProperties parseContent begin
+        super.setBooleanProperty(component, TAG_PARAM_ParseContent, _parseContent);
+        // //setProperties parseContent end
+        // //setProperties handler begin
+        super.setStringProperty(component, TAG_PARAM_Handler, _handler);
+        // //setProperties handler end
+
+        // //setProperties href begin
+        super.setStringProperty(component, TAG_PARAM_Href, _href);
+        // //setProperties href end
+
+        // //setProperties extractContent begin
+        super.setBooleanProperty(component, TAG_PARAM_ExtractContent, _extractContent);
+        // //setProperties extractContent end
+
+        // //setProperties adjustPaths begin
+        super.setBooleanProperty(component, TAG_PARAM_AdjustPaths, _adjustPaths);
+        // //setProperties adjustPaths end
+
+        // //setProperties executeScripts begin
+        super.setBooleanProperty(component, TAG_PARAM_ExecuteScripts, _executeScripts);
+        // //setProperties executeScripts end
+        // // setProperties layoutAlign begin
+        super.setStringProperty(component, TAG_PARAM_LayoutAlign, _layoutAlign);
+        // //setProperties layoutAlign end
+
+    }
+
+    public void setRefreshOnShow(String refreshOnShow) {
+        _refreshOnShow = refreshOnShow;
+    }
+
+    public void setScriptScope(String scriptScope) {
+        _scriptScope = scriptScope;
     }
 
     public void setSizeShare(String sizeShare) {
         this._sizeShare = sizeShare;
-    }
-
-    public String getRendererType() {
-        return DojoContentPane.DEFAULT_RENDERER_TYPE;
-    }
-
-    public String getComponentType() {
-        return DojoContentPane.DEFAULT_COMPONENT_TYPE;
     }
 
     public void setStyle(String style) {
@@ -74,5 +210,5 @@ public class DojoContentPaneTag extends HtmlOutputTextTagBase {
         this._styleClass = styleClass;
     }
 
-
 }
+

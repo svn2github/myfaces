@@ -31,14 +31,21 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
+/**
+ * Simple renderer to the dojo content pane renders a simple div and the
+ * javascripted initializer we do not use the dojo taglib mechanism here due to
+ * the fact that the dojo tag system is incompatible with adf and other projects
+ * 
+ * @author werpu
+ * 
+ */
 public class DojoContentPaneRenderer extends HtmlRenderer {
 
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
 
     }
-    
-    
+
     protected void encodeJavascriptBegin(FacesContext context, UIComponent component) throws IOException {
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         try {
@@ -73,7 +80,7 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
         HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
 
         DojoContentPane pane = (DojoContentPane) component;
-        
+
         String styleClass = pane.getStyleClass();
         String style = pane.getStyle();
         if (null != styleClass) {
@@ -86,8 +93,8 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
     }
 
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-//        RendererUtils.renderChildren(context, component);
-//        HtmlRendererUtils.writePrettyLineSeparator(context);
+        // RendererUtils.renderChildren(context, component);
+        // HtmlRendererUtils.writePrettyLineSeparator(context);
         super.encodeChildren(context, component);
     }
 
@@ -103,9 +110,28 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
         Map attributes = new HashedMap();
         attributes.put("sizeShare", pane.getSizeShare());
         String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
-        attributes.put("id", panelComponentVar);      
-    
-        
+        attributes.put("id", panelComponentVar);
+
+        // optional incoming dojo attrs
+        if (pane.getAdjustPaths() != null)
+            attributes.put("adjustPaths", pane.getAdjustPaths());
+        if (pane.getExecuteScripts() != null)
+            attributes.put("executeScripts", pane.getExecuteScripts());
+        if (pane.getExtractContent() != null)
+            attributes.put("extractContent", pane.getExtractContent());
+        if (pane.getHandler() != null)
+            attributes.put("handler", pane.getHandler());
+        if (pane.getHref() != null)
+            attributes.put("href", pane.getHref());
+        if (pane.getLayoutAlign() != null)
+            attributes.put("layoutAlign", pane.getLayoutAlign());
+        if (pane.getParseContent() != null)
+            attributes.put("parseContent", pane.getParseContent());
+        if (pane.getPreload() != null)
+            attributes.put("preload", pane.getPreload());
+        if (pane.getRefreshOnShow() != null)
+            attributes.put("refreshOnShow", pane.getRefreshOnShow());
+
         DojoUtils.renderWidgetInitializationCode(context, component, "ContentPane", attributes);
     }
 

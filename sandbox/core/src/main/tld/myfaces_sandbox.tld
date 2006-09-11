@@ -1208,7 +1208,7 @@ Sandbox-related entities.
 		<name>layoutingContentPane</name>
 		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoContentPaneTag</tag-class>
 		<body-content>JSP</body-content>
-		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
+		<description>Base content pane for the dojo layouts</description>
         &ui_output_attributes;
 		<attribute>
 			<name>sizeShare</name>
@@ -1228,6 +1228,101 @@ Sandbox-related entities.
 		    <required>false</required>
 		    <rtexprvalue>false</rtexprvalue>
 		    <description>The CSS class for this element.  Corresponds to the HTML 'class' attribute.</description>
+		</attribute>
+		<attribute>
+			<name>href</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>Remote href for iframe simulation</description>
+		</attribute>
+	
+		<attribute>
+			<name>adjustPaths</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>Path adjustment as defined by dojo</description>
+		</attribute>
+	
+		<attribute>
+			<name>extractContent</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>Defined by dojo, see the examples</description>
+		</attribute>
+	
+		<attribute>
+			<name>parseContent</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>Defined by dojo see the examples</description>
+		</attribute>
+	
+		<attribute>
+			<name>preload</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>Content Preloading</description>
+		</attribute>
+	
+		<attribute>
+			<name>handler</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				Javascript function which should generate the content
+			</description>
+		</attribute>
+	
+		<attribute>
+			<name>scriptScope</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>Scopecontainer for downloaded Scripts</description>
+		</attribute>
+	
+		<attribute>
+			<name>executeScripts</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>
+				If true scripts will be evaled after rendering
+			</description>
+		</attribute>
+	
+		<attribute>
+			<name>refreshOnShow</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>Description for the attribute</description>
+		</attribute>
+	
+		<attribute>
+			<name>layoutAlign</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				Layoutalignment usable in conjunction with a layout
+				container
+			</description>
+		</attribute>
+		<attribute>
+			<name>executeScripts</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>
+				If true scripts will be evaled after rendering
+			</description>
 		</attribute>
 
 	</tag>
