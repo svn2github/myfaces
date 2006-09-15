@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -44,15 +45,9 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.AliasBeansScope";
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.AliasBeansScope";
 
     private ArrayList _aliases = new ArrayList();
     transient FacesContext _context = null;
-
-    public AliasBeansScope()
-    {
-        setRendererType(DEFAULT_RENDERER_TYPE);
-    }
 
     void addAlias(Alias alias)
     {
@@ -64,7 +59,11 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
         return COMPONENT_FAMILY;
     }
 
-    public Object saveState(FacesContext context)
+    public String getRendererType() {
+      return null;
+    }
+
+  public Object saveState(FacesContext context)
     {
         log.debug("saveState");
         _context = context;
@@ -191,6 +190,18 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
         log.debug("processUpdates");
         makeAliases(context);
         super.processUpdates(context);
+        removeAliases(context);
+    }
+
+    public void encodeBegin(FacesContext context) throws IOException
+    {
+        log.debug("encodeBegin");
+        makeAliases(context);
+    }
+
+    public void encodeEnd(FacesContext context)
+    {
+        log.debug("encodeEnd");
         removeAliases(context);
     }
 
