@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import java.util.List;
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller </a>
  * @version $Revision$ $Date$
  */
-public class DefaultMutableTreeNode implements MutableTreeNode
+public class DefaultMutableTreeNode implements MutableTreeNode, Serializable
 {
 
     private List children = new ArrayList();

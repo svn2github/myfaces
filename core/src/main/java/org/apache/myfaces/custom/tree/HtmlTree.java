@@ -16,6 +16,7 @@
 package org.apache.myfaces.custom.tree;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -910,7 +911,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         }
     }
 
-    private static class ModelListener implements TreeModelListener
+    private static class ModelListener implements TreeModelListener, Serializable
     {
 
         private long lastAccessTime = System.currentTimeMillis();

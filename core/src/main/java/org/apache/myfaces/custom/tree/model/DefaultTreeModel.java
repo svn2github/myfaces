@@ -19,6 +19,7 @@ import org.apache.myfaces.custom.tree.DefaultMutableTreeNode;
 import org.apache.myfaces.custom.tree.MutableTreeNode;
 import org.apache.myfaces.custom.tree.TreeNode;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -29,7 +30,7 @@ import java.util.LinkedList;
  * @version $Revision$ $Date$
  */
 public class DefaultTreeModel
-        implements TreeModel
+        implements TreeModel, Serializable
 {
 
     private TreeNode root;
