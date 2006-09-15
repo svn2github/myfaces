@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,7 +62,6 @@ public class AliasBean extends UIComponentBase implements BindingAware
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.AliasBean";
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.AliasBean";
 
     private Alias alias;
     private boolean scopeSearched = false;
@@ -71,13 +71,16 @@ public class AliasBean extends UIComponentBase implements BindingAware
 
     public AliasBean()
     {
-        setRendererType(DEFAULT_RENDERER_TYPE);
         alias = new Alias(this);
     }
 
     public String getFamily()
     {
         return COMPONENT_FAMILY;
+    }
+
+    public String getRendererType() {
+        return null;
     }
 
     /**
@@ -251,7 +254,17 @@ public class AliasBean extends UIComponentBase implements BindingAware
         removeAlias(context);
     }
 
-    public void queueEvent(FacesEvent event)
+
+  public void encodeBegin(FacesContext context) throws IOException {
+    makeAlias(context);
+  }
+
+
+  public void encodeEnd(FacesContext context) throws IOException {
+    removeAlias();
+  }
+
+  public void queueEvent(FacesEvent event)
     {
         super.queueEvent(new FacesEventWrapper(event, this));
     }

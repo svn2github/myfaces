@@ -517,12 +517,6 @@
 
         <renderer>
             <component-family>javax.faces.Data</component-family>
-            <renderer-type>org.apache.myfaces.AliasBean</renderer-type>
-            <renderer-class>org.apache.myfaces.custom.aliasbean.AliasBeanRenderer</renderer-class>
-        </renderer>
-
-        <renderer>
-            <component-family>javax.faces.Data</component-family>
             <renderer-type>org.apache.myfaces.AliasBeansScope</renderer-type>
             <renderer-class>org.apache.myfaces.custom.aliasbean.AliasBeansScopeRenderer</renderer-class>
         </renderer>
