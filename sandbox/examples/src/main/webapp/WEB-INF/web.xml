@@ -49,8 +49,15 @@
             Default: "false"</description>
     <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
     <param-value>true</param-value>
-  </context-param> 
-  
+  </context-param>
+  <context-param>
+    <description>Set the redirectTracker policy. You can use your own implementation by providing the
+		  FQN of the class here.
+    </description>
+    <param-name>org.apache.myfaces.redirectTracker.POLICY</param-name>
+    <param-value>org.apache.myfaces.custom.redirectTracker.policy.FullRedirectTrackPolicy</param-value>
+  </context-param>
+
   <filter>
     <filter-name>requestParameterProviderFilter</filter-name>
     <filter-class>org.apache.myfaces.custom.requestParameterProvider.RequestParameterServletFilter</filter-class>
@@ -100,7 +107,7 @@
     <filter-name>conversationFilter</filter-name>
     <url-pattern>*.jsf</url-pattern>
   </filter-mapping>
- 
+
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -111,7 +118,7 @@
     <servlet-class>org.apache.myfaces.shared_tomahawk.util.servlet.SourceCodeServlet</servlet-class>
   </servlet>
   <!-- Spellchecker Servlet -->
-  
+
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>

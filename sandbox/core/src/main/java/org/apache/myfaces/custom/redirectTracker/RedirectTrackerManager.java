@@ -17,10 +17,13 @@ package org.apache.myfaces.custom.redirectTracker;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import org.apache.myfaces.custom.redirectTracker.policy.NoopRedirectTrackPolicy;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.FacesException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,24 +38,28 @@ import java.util.TreeMap;
  */
 public class RedirectTrackerManager implements Serializable
 {
+	private final static String INIT_POLICY = "org.apache.myfaces.redirectTracker.POLICY";
+	private final static String INIT_MAX_REDIRECTS = "org.apache.myfaces.redirectTracker.MAX_REDIRECTS";
+	public static final int TRACK_REDIRECTS = 20;
+
 	private final static Log log = LogFactory.getLog(RedirectTrackerManager.class);
 
 	public static final String SESSION_KEY = RedirectTrackerManager.class.getName();
 	public static final String REDIRECT_ARG = "_rtid";
-	public static final int TRACK_REDIRECTS = 20; // TODO: make configureable
 
+	private final String redirectTrackerPolicy;
 	private final int redirects;
-	private final Map redirectEntryMap;
-	private final List redirectEntryList;
 	private final Map requestBeanMap = new TreeMap();
 
+	private transient Map redirectEntryMap;
+	private transient List redirectEntryList;
 	private long requests = 0;
 
-	private static class Entry implements Serializable
+	static class Entry implements Serializable
 	{
 		private final String mapKey;
 		private List messages;
-		private Map beanMap;
+		private Map beanMap = new TreeMap();
 		private Locale locale;
 
 		private Entry(String mapKey)
@@ -104,11 +111,19 @@ public class RedirectTrackerManager implements Serializable
 	 *
 	 * @param redirects nuof redirects to track
 	 */
-	public RedirectTrackerManager(int redirects)
+	public RedirectTrackerManager(final int redirects, final String redirectTrackerPolicy)
 	{
 		this.redirects = redirects;
-		redirectEntryMap = new TreeMap();
-		redirectEntryList = new ArrayList(redirects);
+		this.redirectTrackerPolicy = redirectTrackerPolicy;
+	}
+
+	protected void initRedirectEntryMap()
+	{
+		if (redirectEntryMap == null)
+		{
+			redirectEntryMap = new TreeMap();
+			redirectEntryList = new ArrayList(redirects);
+		}
 	}
 
 	/**
@@ -135,6 +150,7 @@ public class RedirectTrackerManager implements Serializable
 			return false;
 		}
 
+		initRedirectEntryMap();
 		synchronized (redirectEntryMap)
 		{
 			return redirectEntryMap.containsKey(rtid);
@@ -154,7 +170,7 @@ public class RedirectTrackerManager implements Serializable
 		RedirectTrackerManager redirectManager = (RedirectTrackerManager) sessionMap.get(SESSION_KEY);
 		if (redirectManager == null)
 		{
-			redirectManager = createRedirectTrackerManager();
+			redirectManager = createRedirectTrackerManager(facesContext);
 			sessionMap.put(SESSION_KEY, redirectManager);
 		}
 
@@ -164,9 +180,34 @@ public class RedirectTrackerManager implements Serializable
 	/**
 	 * create a new redirect tracker
 	 */
-	protected static RedirectTrackerManager createRedirectTrackerManager()
+	protected static RedirectTrackerManager createRedirectTrackerManager(FacesContext facesContext)
 	{
-		return new RedirectTrackerManager(TRACK_REDIRECTS);
+		String initPolicy = (String) facesContext.getExternalContext().getInitParameter(INIT_POLICY);
+		if (initPolicy == null)
+		{
+			initPolicy = NoopRedirectTrackPolicy.class.getName();
+			if (log.isInfoEnabled())
+			{
+				log.info("No context init parameter '" + INIT_POLICY + "' found, using default value " + initPolicy);
+			}
+		}
+
+		String maxRedirects = (String) facesContext.getExternalContext().getInitParameter(INIT_MAX_REDIRECTS);
+		int numMaxRedirects;
+		if (maxRedirects == null)
+		{
+			numMaxRedirects = TRACK_REDIRECTS;
+			if (log.isInfoEnabled())
+			{
+				log.info("No context init parameter '" + INIT_MAX_REDIRECTS + "' found, using default value " + numMaxRedirects);
+			}
+		}
+		else
+		{
+			numMaxRedirects = Integer.parseInt(maxRedirects, 10);
+		}
+
+		return new RedirectTrackerManager(numMaxRedirects, initPolicy);
 	}
 
 	/**
@@ -180,8 +221,13 @@ public class RedirectTrackerManager implements Serializable
 
 		Entry entry = new Entry(mapKey);
 
-		saveBeans(entry);
-		saveMessages(facesContext, entry);
+		RedirectTrackerContext context = new RedirectTrackerContext(this, entry, facesContext);
+
+		RedirectTrackerPolicy policy = getRedirectTrackerPolicy();
+		redirectPath = policy.trackRedirect(context, redirectPath);
+
+		// saveBeans(entry);
+		// saveMessages(facesContext, entry);
 
 		// prepare for next redirect
 		clearSaveStateBean();
@@ -192,6 +238,7 @@ public class RedirectTrackerManager implements Serializable
 			return redirectPath;
 		}
 
+		initRedirectEntryMap();
 		synchronized (redirectEntryMap)
 		{
 			redirectEntryMap.put(mapKey, entry);
@@ -214,9 +261,34 @@ public class RedirectTrackerManager implements Serializable
 		}
 	}
 
+	protected RedirectTrackerPolicy getRedirectTrackerPolicy()
+	{
+		try
+		{
+			return (RedirectTrackerPolicy) ClassUtils.classForName(redirectTrackerPolicy).newInstance();
+		}
+		catch (InstantiationException e)
+		{
+			throw new FacesException(e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new FacesException(e);
+		}
+		catch (ClassNotFoundException e)
+		{
+			throw new FacesException(e);
+		}
+	}
+
 	protected void saveBeans(Entry entry)
 	{
-		entry.beanMap = new TreeMap(requestBeanMap);
+		entry.beanMap.putAll(requestBeanMap);
+	}
+
+	protected void saveBean(Entry entry, String name, Object value)
+	{
+		entry.beanMap.put(name, value);
 	}
 
 	/**
@@ -302,6 +374,7 @@ public class RedirectTrackerManager implements Serializable
 	protected void setupFaces(FacesContext facesContext, Object rtid)
 	{
 		Entry entry;
+		initRedirectEntryMap();
 		synchronized (redirectEntryMap)
 		{
 			entry = (Entry) redirectEntryMap.get(rtid);
