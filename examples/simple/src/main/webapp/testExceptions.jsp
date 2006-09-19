@@ -40,7 +40,10 @@
 		  		<h:commandButton action="#{testException.wrappedServletNpeTxt}" value="wrapped npe in ServletException"/>
 		  	</h:panelGrid>
 		  </h:form>
-  	</f:view>	
+
+          <jsp:include page="inc/mbean_source.jsp"/>
+          
+      </f:view>
 
 <%@include file="inc/page_footer.jsp" %>
 

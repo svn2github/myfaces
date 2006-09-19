@@ -39,6 +39,9 @@
     <t:htmlTag value="p">
     	<t:htmlTag value="b" rendered="false">This should not be bold, because the <i>b</i> tag is not rendered</t:htmlTag>
     </t:htmlTag>
+
+    <jsp:include page="inc/mbean_source.jsp"/>
+
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

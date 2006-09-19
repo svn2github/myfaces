@@ -15,9 +15,12 @@
  */
 package org.apache.myfaces.examples.accessedbeans;
 
+import org.apache.myfaces.taglib.core.LoadBundleTag;
+
 import javax.faces.el.VariableResolver;
 import javax.faces.el.EvaluationException;
 import javax.faces.context.FacesContext;
+import java.util.Map;
 
 /**
  * @author Martin Marinschek (latest modification by $Author: matzew $)
@@ -43,8 +46,11 @@ public class AccessTrackingVariableResolver extends VariableResolver
 
         if(!(resolvedBean instanceof AccessedBeans) && resolvedBean!=null)
         {
-            ((AccessedBeans) facesContext.getApplication().
-                    getVariableResolver().resolveVariable(facesContext,"accessedBeans")).addBean(name, resolvedBean);
+            if(!resolvedBean.getClass().getName().startsWith("java.lang.") && !(resolvedBean instanceof Map))
+            {
+                ((AccessedBeans) facesContext.getApplication().
+                        getVariableResolver().resolveVariable(facesContext,"accessedBeans")).addBean(name, resolvedBean);
+            }
         }
 
         return resolvedBean;

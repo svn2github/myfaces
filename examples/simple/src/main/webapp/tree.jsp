@@ -64,7 +64,9 @@
             selectedNodeClass="treenodeSelected"
             expandRoot="true">
         </t:tree>
-    </h:form>    
+    </h:form>
+
+    <jsp:include page="inc/mbean_source.jsp"/>        
 
 </f:view>
 

@@ -129,6 +129,8 @@ managed beans used:
 	    </t:dataTable>
 
 	</h:panelGrid>
+
+    <jsp:include page="inc/mbean_source.jsp"/>
 	
 </f:view>
 

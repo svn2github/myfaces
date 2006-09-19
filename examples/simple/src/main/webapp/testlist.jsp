@@ -48,6 +48,9 @@ managed beans used:
            <h:outputText value="#{country.name}" />
     </t:dataList>
 
+    <jsp:include page="inc/mbean_source.jsp"/>
+    
+
 </f:view>
 
 </body>

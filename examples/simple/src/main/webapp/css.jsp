@@ -35,6 +35,8 @@
         <h:outputText value="#{example_messages['css_msg']}"/><code>stylesheet</code>-Component<br />
         <a href='http://myfaces.apache.org'>The MyFaces-Team</a>.
 
+         <jsp:include page="inc/mbean_source.jsp"/>
+
         <%@include file="inc/page_footer.jsp" %>
 
     </body>

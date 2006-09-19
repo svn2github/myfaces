@@ -199,7 +199,8 @@ uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
 				</h:panelGrid>
 			</h:form>
-		</f:view>
+            <jsp:include page="inc/mbean_source.jsp"/>
+        </f:view>
 
 		<%@include file="inc/page_footer.jsp" %>
 

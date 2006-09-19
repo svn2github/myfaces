@@ -96,6 +96,9 @@ managed beans used:
 
     </t:panelLayout>
 
+    <jsp:include page="inc/mbean_source.jsp"/>
+
+
 </f:view>
 
 </body>

@@ -32,6 +32,8 @@
     <t:swapImage url="images/myfaces_powered.gif" swapImageUrl="images/myfaces_powered_over.gif" border="none" />
     <t:swapImage url="/images/myfaces_powered.gif" swapImageUrl="/images/myfaces_powered_over.gif" border="none" />
 
+    <jsp:include page="inc/mbean_source.jsp"/>
+
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

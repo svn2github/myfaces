@@ -21,7 +21,7 @@
 //-->
 
 <html>
-<%@include file="../inc/head.inc"%>
+<%@include file="/inc/head.inc"%>
 <body>
 <f:view>
 	<h:form>
@@ -112,7 +112,10 @@
 			<h:commandButton action="#{scheduleSettings2.save}" value="save" />
 		</h:panelGrid>
 	</h:form>
-	<%@include file="../inc/page_footer.jsp"%>
+	<%@include file="/inc/page_footer.jsp"%>
+
+    <jsp:include page="inc/mbean_source.jsp"/>
+
 </f:view>
 </body>
 </html>

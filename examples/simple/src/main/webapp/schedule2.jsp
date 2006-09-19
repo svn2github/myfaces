@@ -21,7 +21,7 @@
 //-->
 
 <html>
-<%@include file="../inc/head.inc"%>
+<%@include file="/inc/head.inc"%>
 <body>
 <f:view>
 	<h:form>
@@ -45,9 +45,12 @@
 					value="delete selected entry"
 					rendered="#{scheduleHandler1.model.entrySelected}"/>
 			</h:panelGrid>
-		    <%@include file="../inc/page_footer.jsp" %>
+		    <%@include file="/inc/page_footer.jsp" %>
 		</t:div>
 	</h:form>
+
+    <jsp:include page="inc/mbean_source.jsp"/>
+
 </f:view>
 </body>
 </html>

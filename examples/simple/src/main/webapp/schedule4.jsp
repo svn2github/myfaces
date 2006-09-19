@@ -74,9 +74,12 @@ table.background td.freeReddish {
 					actionListener="#{scheduleHandler1.addSampleHoliday}"
 					value="add sample holiday" />
 			</h:panelGrid>
-			<%@include file="../inc/page_footer.jsp"%>
+			<%@include file="/inc/page_footer.jsp"%>
 		</t:div>
 	</h:form>
+
+    <jsp:include page="inc/mbean_source.jsp"/>
+
 </f:view>
 </body>
 </html>
