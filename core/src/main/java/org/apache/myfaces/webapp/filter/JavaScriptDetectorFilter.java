@@ -53,8 +53,9 @@ public class JavaScriptDetectorFilter implements Filter
 
         JavascriptUtils.setJavascriptDetected(request.getSession(true), true); // mark the session to use javascript
 
-        log.info("Enabled JavaScript for session - redirect to" + request.getParameter("goto"));
-        response.sendRedirect(request.getParameter("goto"));
+        String redirectURL = response.encodeRedirectURL(request.getParameter("goto"));
+        log.info("Enabled JavaScript for session - redirect to " + redirectURL);
+        response.sendRedirect(redirectURL);
     }
 
     public void destroy()
