@@ -55,12 +55,6 @@ import org.apache.myfaces.webapp.filter.ExtensionsFilter;
  */
 public class AddResourceFactory
 {
-	private final static Set VALID_EXTFLT_PATH = Collections
-		.unmodifiableSet(new TreeSet(Arrays.asList(new String[]
-		{
-				"/faces/*", "/faces/myFacesExtensionResource/*"
-		})));
-
 	public static class RequestMapWrapper implements Map
 	{
 		private final HttpServletRequest request;
@@ -331,7 +325,7 @@ public class AddResourceFactory
 	    	for (Iterator iterServletMappings = facesServletMappings.iterator(); iterServletMappings.hasNext();)
 	    	{
 	    		FilterMapping filterMapping = (FilterMapping) iterServletMappings.next();
-	    		if (checkFilterPattern(filterMapping))
+	    		if (checkFilterPattern(extctx, filterMapping))
 	    		{
 	    			foundMapping = true;
 	    			break;
@@ -347,9 +341,11 @@ public class AddResourceFactory
 		}
 	}
 
-	protected static boolean checkFilterPattern(FilterMapping filterMapping)
+    protected static boolean checkFilterPattern(ExternalContext extCtxt, FilterMapping filterMapping)
 	{
-		if (filterMapping.getUrlPattern() != null && VALID_EXTFLT_PATH.contains(filterMapping.getUrlPattern()))
+		if (filterMapping.getUrlPattern() != null &&
+                ("/faces/*".equals(filterMapping.getUrlPattern()) ||
+                        (MyfacesConfig.getCurrentInstance(extCtxt).getResourceVirtualPath()+"/*").equals(filterMapping.getUrlPattern())))
 		{
 			return true;
 		}

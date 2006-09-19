@@ -22,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -99,6 +100,8 @@ public class DefaultAddResource implements AddResource
     protected int beforeBodyPosition = -1;
     protected int afterBodyContentInsertPosition = -1;
     protected int beforeBodyEndPosition = -1;
+
+    private String resourceVirtualPath;
 
     protected DefaultAddResource()
     {
@@ -462,7 +465,7 @@ public class DefaultAddResource implements AddResource
                                     boolean withContextPath)
     {
         StringBuffer sb = new StringBuffer(200);
-        sb.append(RESOURCE_VIRTUAL_PATH);
+        sb.append(MyfacesConfig.getCurrentInstance(context.getExternalContext()).getResourceVirtualPath());
         sb.append(PATH_SEPARATOR);
         sb.append(resourceLoader.getName());
         sb.append(PATH_SEPARATOR);
@@ -515,16 +518,17 @@ public class DefaultAddResource implements AddResource
         return cacheKey.longValue();
     }
 
-    public boolean isResourceUri(HttpServletRequest request)
+    public boolean isResourceUri(ServletContext servletContext, HttpServletRequest request)
     {
+
         String path;
         if (_contextPath != null)
         {
-            path = _contextPath + RESOURCE_VIRTUAL_PATH;
+            path = _contextPath + getResourceVirtualPath(servletContext);
         }
         else
         {
-            path = RESOURCE_VIRTUAL_PATH;
+            path = getResourceVirtualPath(servletContext);
         }
 
         //fix for TOMAHAWK-660; to be sure this fix is backwards compatible, the
@@ -545,6 +549,21 @@ public class DefaultAddResource implements AddResource
         return request.getRequestURI().startsWith(path);
     }
 
+    private String getResourceVirtualPath(ServletContext servletContext)
+    {
+        if(resourceVirtualPath == null)
+        {
+            resourceVirtualPath = servletContext.getInitParameter(MyfacesConfig.INIT_PARAM_RESOURCE_VIRTUAL_PATH);
+
+            if(resourceVirtualPath == null)
+            {
+                resourceVirtualPath = MyfacesConfig.INIT_PARAM_RESOURCE_VIRTUAL_PATH_DEFAULT;
+            }
+        }
+
+        return resourceVirtualPath;
+    }
+
     private Class getClass(String className) throws ClassNotFoundException
     {
         Class clazz = ClassUtils.classForName(className);
@@ -558,7 +577,7 @@ public class DefaultAddResource implements AddResource
         String pathInfo = request.getPathInfo();
         String uri = request.getContextPath() + request.getServletPath()
                 + (pathInfo == null ? "" : pathInfo);
-        String classNameStartsAfter = RESOURCE_VIRTUAL_PATH + '/';
+        String classNameStartsAfter = getResourceVirtualPath(context) + '/';
 
         int posStartClassName = uri.indexOf(classNameStartsAfter) + classNameStartsAfter.length();
         int posEndClassName = uri.indexOf(PATH_SEPARATOR, posStartClassName);

@@ -45,6 +45,7 @@ import org.apache.myfaces.renderkit.html.util.ResourceHandler;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.renderkit.html.util.ResourcePosition;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -74,25 +75,25 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  */
 public class StreamingAddResource implements AddResource
 {
-	/**
-	 * central place where all request store their "to be added" stylesheets
-	 */
-	private final static Map headerInfos = new HashMap();
+    /**
+     * central place where all request store their "to be added" stylesheets
+     */
+    private final static Map headerInfos = new HashMap();
 
-	/**
-	 * request counter
-	 */
-	private static long REQUEST_ID_COUNTER = 0;
+    /**
+     * request counter
+     */
+    private static long REQUEST_ID_COUNTER = 0;
 
-	/**
-	 * own request
-	 */
-	private Long requestId;
+    /**
+     * own request
+     */
+    private Long requestId;
 
-	/**
-	 * own header infos - e.g holds the "to be added" stylesheets and a destroy time
-	 */
-	private HeaderInfoEntry headerInfoEntry;
+    /**
+     * own header infos - e.g holds the "to be added" stylesheets and a destroy time
+     */
+    private HeaderInfoEntry headerInfoEntry;
 
     /**
      * helper to determines if the resource has already been added
@@ -108,104 +109,105 @@ public class StreamingAddResource implements AddResource
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
 
     protected String _contextPath;
+    private String resourceVirtualPath;
 
-	public static class HeaderInfoEntry
-	{
-		private final long destroyTime = System.currentTimeMillis() + (1000 * 60); // one minute;
-		private final List addedInfos = new ArrayList(10);
-		private volatile boolean requestDone = false;
+    public static class HeaderInfoEntry
+    {
+        private final long destroyTime = System.currentTimeMillis() + (1000 * 60); // one minute;
+        private final List addedInfos = new ArrayList(10);
+        private volatile boolean requestDone = false;
 
-		protected HeaderInfoEntry()
-		{
-		}
+        protected HeaderInfoEntry()
+        {
+        }
 
-		protected boolean isDestroyable(long now)
-		{
-			return destroyTime < now;
-		}
+        protected boolean isDestroyable(long now)
+        {
+            return destroyTime < now;
+        }
 
-		protected void addInfo(StreamablePositionedInfo positionedInfo)
-		{
-			synchronized (addedInfos)
-			{
-				addedInfos.add(positionedInfo);
-				addedInfos.notifyAll();
-			}
-		}
+        protected void addInfo(StreamablePositionedInfo positionedInfo)
+        {
+            synchronized (addedInfos)
+            {
+                addedInfos.add(positionedInfo);
+                addedInfos.notifyAll();
+            }
+        }
 
-		protected StreamablePositionedInfo fetchInfo() throws InterruptedException
-		{
-			synchronized (addedInfos)
-			{
-				while (addedInfos.size() < 1 && !requestDone)
-				{
-					addedInfos.wait(100);
-				}
-				if (addedInfos.size() < 1)
-				{
-					// request done
-					return null;
-				}
+        protected StreamablePositionedInfo fetchInfo() throws InterruptedException
+        {
+            synchronized (addedInfos)
+            {
+                while (addedInfos.size() < 1 && !requestDone)
+                {
+                    addedInfos.wait(100);
+                }
+                if (addedInfos.size() < 1)
+                {
+                    // request done
+                    return null;
+                }
 
-				return (StreamablePositionedInfo) addedInfos.remove(0);
-			}
-		}
+                return (StreamablePositionedInfo) addedInfos.remove(0);
+            }
+        }
 
-		protected void setRequestDone()
-		{
-			requestDone = true;
-		}
-	}
+        protected void setRequestDone()
+        {
+            requestDone = true;
+        }
+    }
 
     private static class CleanupThread implements Runnable
     {
-    	// how many entries should be removed per run
-    	private final static int CHECKS_PER_RUN = 10;
+        // how many entries should be removed per run
+        private final static int CHECKS_PER_RUN = 10;
 
-    	// but never reach this maximum
-    	private final static int CACHE_LIMIT = 1000;
+        // but never reach this maximum
+        private final static int CACHE_LIMIT = 1000;
 
-		public void run()
-		{
-			while (!Thread.interrupted())
-			{
-				checkMap();
+        public void run()
+        {
+            while (!Thread.interrupted())
+            {
+                checkMap();
 
-				try
-				{
-					Thread.sleep(1000 * 30); // check every 30 sek
-				}
-				catch (InterruptedException e)
-				{
-					// ignore
-				}
-			}
-		}
+                try
+                {
+                    Thread.sleep(1000 * 30); // check every 30 sek
+                }
+                catch (InterruptedException e)
+                {
+                    // ignore
+                }
+            }
+        }
 
-		private void checkMap()
-		{
-			synchronized (headerInfos)
-			{
-				long now = System.currentTimeMillis();
+        private void checkMap()
+        {
+            synchronized (headerInfos)
+            {
+                long now = System.currentTimeMillis();
 
-				int checkNo = 0;
-				Iterator iterEntries = headerInfos.entrySet().iterator();
-				while (iterEntries.hasNext() && !Thread.currentThread().isInterrupted())
-				{
-					checkNo++;
-					if (headerInfos.size() < CACHE_LIMIT && checkNo > CHECKS_PER_RUN)
-					{
-						return;
-					}
-					Map.Entry entry = (Map.Entry) iterEntries.next();
-					HeaderInfoEntry headerInfoEntry = (HeaderInfoEntry) entry.getValue();
-					if (headerInfoEntry.isDestroyable(now))
-					{
-						iterEntries.remove();
-					}
-				}
-			}
-		}
+                int checkNo = 0;
+                Iterator iterEntries = headerInfos.entrySet().iterator();
+                while (iterEntries.hasNext() && !Thread.currentThread().isInterrupted())
+                {
+                    checkNo++;
+                    if (headerInfos.size() < CACHE_LIMIT && checkNo > CHECKS_PER_RUN)
+                    {
+                        return;
+                    }
+                    Map.Entry entry = (Map.Entry) iterEntries.next();
+                    HeaderInfoEntry headerInfoEntry = (HeaderInfoEntry) entry.getValue();
+                    if (headerInfoEntry.isDestroyable(now))
+                    {
+                        iterEntries.remove();
+                    }
+                }
+            }
+        }
     }
 
     static
@@ -214,7 +216,7 @@ public class StreamingAddResource implements AddResource
         cleanupThread.setDaemon(true);
         cleanupThread.start();
     }
-    
+
     public StreamingAddResource()
     {
     }
@@ -222,18 +224,18 @@ public class StreamingAddResource implements AddResource
     public static HeaderInfoEntry getHeaderInfo(Long requestId)
     {
         synchronized (headerInfos)
-		{
-        	return (HeaderInfoEntry) headerInfos.get(requestId);
-		}
+        {
+            return (HeaderInfoEntry) headerInfos.get(requestId);
+        }
     }
 
-	public static void removeHeaderInfo(Long requestId)
-	{
+    public static void removeHeaderInfo(Long requestId)
+    {
         synchronized (headerInfos)
-		{
-        	headerInfos.remove(requestId);
-		}
-	}
+        {
+            headerInfos.remove(requestId);
+        }
+    }
 
     // Methods to add resources
 
@@ -274,8 +276,8 @@ public class StreamingAddResource implements AddResource
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
-	public void addJavaScriptHerePlain(FacesContext context, String uri) throws IOException
-	{
+    public void addJavaScriptHerePlain(FacesContext context, String uri) throws IOException
+    {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_ELEM, null);
@@ -283,7 +285,7 @@ public class StreamingAddResource implements AddResource
         String src = getResourceUri(context, uri);
         writer.writeURIAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SRC_ATTR, src, null);
         writer.endElement(HTML.SCRIPT_ELEM);
-	}
+    }
 
     /**
      * Insert a [script src="url"] entry at the current location in the response.
@@ -370,11 +372,11 @@ public class StreamingAddResource implements AddResource
      * after the page is complete.
      */
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
-            ResourceHandler resourceHandler)
+                                        ResourceHandler resourceHandler)
     {
         addJavaScriptAtPosition(context, position, resourceHandler, false);
     }
-    
+
     /**
      * Insert a [script src="url"] entry into the document header at the
      * specified document position. If the script has already been
@@ -388,18 +390,18 @@ public class StreamingAddResource implements AddResource
      * "example/Widget/resource/script.js" in the classpath.
      */
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
-            Class myfacesCustomComponent, String resourceName)
+                                        Class myfacesCustomComponent, String resourceName)
     {
         addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(
                 myfacesCustomComponent, resourceName));
     }
 
-	public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position, Class myfacesCustomComponent, String resourceName)
-	{
+    public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position, Class myfacesCustomComponent, String resourceName)
+    {
         addJavaScriptAtPosition(context, position,
-        		new MyFacesResourceHandler(myfacesCustomComponent, resourceName),
-        		false, false);
-	}
+                new MyFacesResourceHandler(myfacesCustomComponent, resourceName),
+                false, false);
+    }
 
     /**
      * Insert a [script src="url"] entry into the document header at the
@@ -412,7 +414,7 @@ public class StreamingAddResource implements AddResource
      * load and be run.
      */
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
-            Class myfacesCustomComponent, String resourceName, boolean defer)
+                                        Class myfacesCustomComponent, String resourceName, boolean defer)
     {
         addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(
                 myfacesCustomComponent, resourceName), defer);
@@ -436,77 +438,77 @@ public class StreamingAddResource implements AddResource
      * If the script has already been referenced, it's added only once.
      */
     public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position, String uri,
-            boolean defer)
+                                        boolean defer)
     {
-    	WritablePositionedInfo info = (WritablePositionedInfo) getScriptInstance(context, uri, defer);
-    	if (checkAlreadyAdded(info))
-    	{
-    		return;
-    	}
-    	HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-    	try
-		{
-			info.writePositionedInfo(response, context.getResponseWriter());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+        WritablePositionedInfo info = (WritablePositionedInfo) getScriptInstance(context, uri, defer);
+        if (checkAlreadyAdded(info))
+        {
+            return;
+        }
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        try
+        {
+            info.writePositionedInfo(response, context.getResponseWriter());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addJavaScriptToBodyTag(FacesContext context, String javascriptEventName,
-            String addedJavaScript)
+                                       String addedJavaScript)
     {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Adds the given Javascript resource at the specified document position.
      * If the script has already been referenced, it's added only once.
      */
-	public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position, ResourceHandler resourceHandler, boolean defer)
-	{
-		addJavaScriptAtPosition(context, position, resourceHandler, defer, false);
-	}
+    public void addJavaScriptAtPosition(FacesContext context, ResourcePosition position, ResourceHandler resourceHandler, boolean defer)
+    {
+        addJavaScriptAtPosition(context, position, resourceHandler, defer, false);
+    }
 
     private void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
-            ResourceHandler resourceHandler, boolean defer, boolean encodeURL)
+                                         ResourceHandler resourceHandler, boolean defer, boolean encodeURL)
     {
         validateResourceHandler(resourceHandler);
-    	WritablePositionedInfo info = (WritablePositionedInfo) getScriptInstance(context, resourceHandler, defer, encodeURL);
-    	if (checkAlreadyAdded(info))
-    	{
-    		return;
-    	}
-    	HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-    	try
-		{
-			info.writePositionedInfo(response, context.getResponseWriter());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+        WritablePositionedInfo info = (WritablePositionedInfo) getScriptInstance(context, resourceHandler, defer, encodeURL);
+        if (checkAlreadyAdded(info))
+        {
+            return;
+        }
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        try
+        {
+            info.writePositionedInfo(response, context.getResponseWriter());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean checkAlreadyAdded(PositionedInfo info)
-	{
-    	Long key = new Long(info.hashCode());
-    	if (alreadySeenResources.contains(key))
-    	{
-    		return true;
-    	}
+    {
+        Long key = new Long(info.hashCode());
+        if (alreadySeenResources.contains(key))
+        {
+            return true;
+        }
 
-    	alreadySeenResources.add(key);
-		return false;
-	}
+        alreadySeenResources.add(key);
+        return false;
+    }
 
-	/**
+    /**
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
     public void addStyleSheet(FacesContext context, ResourcePosition position,
-            Class myfacesCustomComponent, String resourceName)
+                              Class myfacesCustomComponent, String resourceName)
     {
         addStyleSheet(context, position, new MyFacesResourceHandler(myfacesCustomComponent,
                 resourceName));
@@ -518,44 +520,44 @@ public class StreamingAddResource implements AddResource
      */
     public void addStyleSheet(FacesContext context, ResourcePosition position, String uri)
     {
-		uri = getAbsoluteUri(context, uri);
+        uri = getAbsoluteUri(context, uri);
 
         addStyleSheet(getStyleInstance(context, uri));
     }
 
     protected String getAbsoluteUri(FacesContext context, String uri)
-	{
-    	if (uri.startsWith("/"))
-    	{
-    		return uri;
-    	}
+    {
+        if (uri.startsWith("/"))
+        {
+            return uri;
+        }
 
-    	StringBuffer sb = new StringBuffer(80);
-    	if (context.getExternalContext().getRequestPathInfo() != null)
-    	{
-    		sb.append(context.getExternalContext().getRequestPathInfo());
-    	}
-    	sb.append("/");
-    	sb.append(uri);
+        StringBuffer sb = new StringBuffer(80);
+        if (context.getExternalContext().getRequestPathInfo() != null)
+        {
+            sb.append(context.getExternalContext().getRequestPathInfo());
+        }
+        sb.append("/");
+        sb.append(uri);
 
-    	return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	private void addStyleSheet(StreamablePositionedInfo styleInstance)
-	{
-    	if (checkAlreadyAdded(styleInstance))
-    	{
-    		return;
-    	}
-    	getHeaderInfoEntry().addInfo(styleInstance);
-	}
+    private void addStyleSheet(StreamablePositionedInfo styleInstance)
+    {
+        if (checkAlreadyAdded(styleInstance))
+        {
+            return;
+        }
+        getHeaderInfoEntry().addInfo(styleInstance);
+    }
 
-	/**
+    /**
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
      */
     public void addStyleSheet(FacesContext context, ResourcePosition position,
-            ResourceHandler resourceHandler)
+                              ResourceHandler resourceHandler)
     {
         validateResourceHandler(resourceHandler);
         addStyleSheet(getStyleInstance(context, resourceHandler));
@@ -573,26 +575,26 @@ public class StreamingAddResource implements AddResource
      * Adds the given Inline Script at the specified document position.
      */
     public void addInlineScriptAtPosition(FacesContext context, ResourcePosition position,
-            String inlineScript)
+                                          String inlineScript)
     {
-    	WritablePositionedInfo info = (WritablePositionedInfo) getInlineScriptInstance(inlineScript);
-    	if (checkAlreadyAdded(info))
-    	{
-    		return;
-    	}
-    	HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-    	try
-		{
-			info.writePositionedInfo(response, context.getResponseWriter());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+        WritablePositionedInfo info = (WritablePositionedInfo) getInlineScriptInstance(inlineScript);
+        if (checkAlreadyAdded(info))
+        {
+            return;
+        }
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+        try
+        {
+            info.writePositionedInfo(response, context.getResponseWriter());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getResourceUri(FacesContext context, Class myfacesCustomComponent,
-            String resource, boolean withContextPath)
+                                 String resource, boolean withContextPath)
     {
         return getResourceUri(context,
                 new MyFacesResourceHandler(myfacesCustomComponent, resource), withContextPath);
@@ -620,7 +622,7 @@ public class StreamingAddResource implements AddResource
      * Get the Path used to retrieve an resource.
      */
     public String getResourceUri(FacesContext context, ResourceHandler resourceHandler,
-            boolean withContextPath)
+                                 boolean withContextPath)
     {
         String uri = resourceHandler.getResourceUri(context);
         if (uri == null)
@@ -656,7 +658,7 @@ public class StreamingAddResource implements AddResource
      * Get the Path used to retrieve an resource.
      */
     protected String getResourceUri(FacesContext context, Class resourceLoader,
-            boolean withContextPath)
+                                    boolean withContextPath)
     {
         StringBuffer sb = new StringBuffer(200);
         sb.append(RESOURCE_VIRTUAL_PATH);
@@ -712,16 +714,16 @@ public class StreamingAddResource implements AddResource
         return cacheKey.longValue();
     }
 
-    public boolean isResourceUri(HttpServletRequest request)
+    public boolean isResourceUri(ServletContext servletContext, HttpServletRequest request)
     {
         String path;
         if (_contextPath != null)
         {
-            path = _contextPath + RESOURCE_VIRTUAL_PATH;
+            path = _contextPath + getResourceVirtualPath(servletContext);
         }
         else
         {
-            path = RESOURCE_VIRTUAL_PATH;
+            path = getResourceVirtualPath(servletContext);
         }
 
         //fix for TOMAHAWK-660; to be sure this fix is backwards compatible, the
@@ -750,7 +752,7 @@ public class StreamingAddResource implements AddResource
     }
 
     public void serveResource(ServletContext context, HttpServletRequest request,
-            HttpServletResponse response) throws IOException
+                              HttpServletResponse response) throws IOException
     {
         String pathInfo = request.getPathInfo();
         String uri = request.getContextPath() + request.getServletPath()
@@ -801,26 +803,26 @@ public class StreamingAddResource implements AddResource
 
     public boolean hasHeaderBeginInfos(HttpServletRequest request)
     {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Parses the response to mark the positions where code will be inserted
      */
     public void parseResponse(HttpServletRequest request, String bufferedResponse,
-            HttpServletResponse response)
+                              HttpServletResponse response)
     {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Writes the javascript code necessary for myfaces in every page, just befode the closing &lt;/body&gt; tag
      */
     public void writeMyFacesJavascriptBeforeBodyEnd(HttpServletRequest request,
-            HttpServletResponse response) throws IOException
+                                                    HttpServletResponse response) throws IOException
     {
-    	throw new UnsupportedOperationException();
-    	/*
+        throw new UnsupportedOperationException();
+        /*
         if (beforeBodyEndPosition >= 0)
         {
             String myFacesJavascript = (String) request.getAttribute("org.apache.myfaces.myFacesJavascript");
@@ -844,18 +846,18 @@ public class StreamingAddResource implements AddResource
      * The ordering is such that the user header CSS & JS override the MyFaces' ones.
      */
     public void writeWithFullHeader(HttpServletRequest request,
-            HttpServletResponse response) throws IOException
+                                    HttpServletResponse response) throws IOException
     {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Writes the response
      */
     public void writeResponse(HttpServletRequest request,
-            HttpServletResponse response) throws IOException
+                              HttpServletResponse response) throws IOException
     {
-    	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     private StylePositionedInfo getStyleInstance(FacesContext context, ResourceHandler resourceHandler)
@@ -864,7 +866,7 @@ public class StreamingAddResource implements AddResource
     }
 
     private PositionedInfo getScriptInstance(FacesContext context, ResourceHandler resourceHandler,
-            boolean defer, boolean encodeUrl)
+                                             boolean defer, boolean encodeUrl)
     {
         return new ScriptPositionedInfo(getResourceUri(context, resourceHandler), defer, encodeUrl);
     }
@@ -904,7 +906,7 @@ public class StreamingAddResource implements AddResource
         public abstract void writePositionedInfo(HttpServletResponse response, PrintWriter writer)
                 throws IOException;
     }
-    
+
     private abstract class AbstractResourceUri
     {
         protected final String _resourceUri;
@@ -960,14 +962,14 @@ public class StreamingAddResource implements AddResource
             writer.endElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.LINK_ELEM);
         }
 
-		public void writePositionedInfo(HttpServletResponse response, PrintWriter writer) throws IOException
-		{
-			writer.println();
-			writer.write("@import url(\"");
-			writer.write(response.encodeURL(this.getResourceUri()));
-			writer.write("\");");
-			writer.println();
-		}
+        public void writePositionedInfo(HttpServletResponse response, PrintWriter writer) throws IOException
+        {
+            writer.println();
+            writer.write("@import url(\"");
+            writer.write(response.encodeURL(this.getResourceUri()));
+            writer.write("\");");
+            writer.println();
+        }
     }
 
     private class ScriptPositionedInfo extends AbstractResourceUri implements
@@ -980,7 +982,7 @@ public class StreamingAddResource implements AddResource
         {
             this(resourceUri, defer, true);
         }
-        
+
         public ScriptPositionedInfo(String resourceUri, boolean defer, boolean encodeUrl)
         {
             super(resourceUri);
@@ -991,10 +993,10 @@ public class StreamingAddResource implements AddResource
         public int hashCode()
         {
             return new HashCodeBuilder()
-            	.append(this.getResourceUri())
-            	.append(_defer)
-            	.append(_encodeUrl)
-            	.toHashCode();
+                .append(this.getResourceUri())
+                .append(_defer)
+                .append(_encodeUrl)
+                .toHashCode();
         }
 
         public boolean equals(Object obj)
@@ -1005,9 +1007,9 @@ public class StreamingAddResource implements AddResource
                 {
                     ScriptPositionedInfo other = (ScriptPositionedInfo) obj;
                     return new EqualsBuilder()
-                    	.append(_defer, other._defer)
-                    	.append(_encodeUrl, other._encodeUrl)
-                    	.isEquals();
+                        .append(_defer, other._defer)
+                        .append(_encodeUrl, other._encodeUrl)
+                        .isEquals();
                 }
             }
             return false;
@@ -1020,11 +1022,11 @@ public class StreamingAddResource implements AddResource
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             if (_encodeUrl)
             {
-            	writer.writeAttribute(HTML.SRC_ATTR, response.encodeURL(this.getResourceUri()), null);
+                writer.writeAttribute(HTML.SRC_ATTR, response.encodeURL(this.getResourceUri()), null);
             }
             else
             {
-            	writer.writeAttribute(HTML.SRC_ATTR, this.getResourceUri(), null);
+                writer.writeAttribute(HTML.SRC_ATTR, this.getResourceUri(), null);
             }
 
             if (_defer)
@@ -1107,49 +1109,49 @@ public class StreamingAddResource implements AddResource
             writer.endElement(HTML.STYLE_ELEM);
         }
 
-		public void writePositionedInfo(HttpServletResponse response, PrintWriter writer) throws IOException
-		{
-			writer.println();
-			writer.write(getInlineValue());
-			writer.println();
-		}
+        public void writePositionedInfo(HttpServletResponse response, PrintWriter writer) throws IOException
+        {
+            writer.println();
+            writer.write(getInlineValue());
+            writer.println();
+        }
     }
 
-	public boolean requiresBuffer()
-	{
-		return false;
-	}
-	
+    public boolean requiresBuffer()
+    {
+        return false;
+    }
+
     protected HeaderInfoEntry getHeaderInfoEntry()
-	{
-    	if (headerInfoEntry == null)
-    	{
-    		throw new IllegalStateException("responseStarted() needs to be called first");
-    	}
-    	
-    	return headerInfoEntry;
-	}
-    
-	public void responseStarted()
-	{
+    {
+        if (headerInfoEntry == null)
+        {
+            throw new IllegalStateException("responseStarted() needs to be called first");
+        }
+
+        return headerInfoEntry;
+    }
+
+    public void responseStarted()
+    {
         synchronized(StreamingAddResource.class)
         {
-        	REQUEST_ID_COUNTER++;
-        	requestId = new Long(REQUEST_ID_COUNTER);
+            REQUEST_ID_COUNTER++;
+            requestId = new Long(REQUEST_ID_COUNTER);
         }
         headerInfoEntry = new HeaderInfoEntry();
         synchronized (headerInfos)
-		{
-        	headerInfos.put(requestId, headerInfoEntry);
-		}
-	}
-	
-	public void responseFinished()
-	{
-		getHeaderInfoEntry().setRequestDone();
-	}
+        {
+            headerInfos.put(requestId, headerInfoEntry);
+        }
+    }
 
-	public boolean hasHeaderBeginInfos()
+    public void responseFinished()
+    {
+        getHeaderInfoEntry().setRequestDone();
+    }
+
+    public boolean hasHeaderBeginInfos()
     {
         return false;
     }
@@ -1166,5 +1168,20 @@ public class StreamingAddResource implements AddResource
                         true), null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.STYLE_TYPE_TEXT_CSS, null);
         writer.endElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.LINK_ELEM);
+    }
+
+    private String getResourceVirtualPath(ServletContext servletContext)
+    {
+        if(resourceVirtualPath == null)
+        {
+            resourceVirtualPath = servletContext.getInitParameter(MyfacesConfig.INIT_PARAM_RESOURCE_VIRTUAL_PATH);
+
+            if(resourceVirtualPath == null)
+            {
+                resourceVirtualPath = MyfacesConfig.INIT_PARAM_RESOURCE_VIRTUAL_PATH_DEFAULT;
+            }
+        }
+
+        return resourceVirtualPath;
     }
 }

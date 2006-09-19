@@ -121,7 +121,7 @@ public class ExtensionsFilter implements Filter {
         try
         {
             addResource=AddResourceFactory.getInstance(httpRequest);
-            if( addResource.isResourceUri( httpRequest ) ){
+            if( addResource.isResourceUri(_servletContext, httpRequest ) ){
                 addResource.serveResource(_servletContext, httpRequest, httpResponse);
                 return;
             }

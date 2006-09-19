@@ -236,7 +236,7 @@ public interface AddResource
     public String getResourceUri(FacesContext context, String uri, boolean withContextPath);
 
 
-    public boolean isResourceUri(HttpServletRequest request);
+    public boolean isResourceUri(ServletContext servletContext, HttpServletRequest request);
 
     public void serveResource(ServletContext context, HttpServletRequest request,
             HttpServletResponse response) throws IOException;

@@ -108,6 +108,17 @@
     <param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
     <param-value>true</param-value>
   </context-param>
+
+  <context-param>
+    <description>
+        Change the url-pattern from the ExtensionsFilter
+        Default is "/faces/myFacesExtensionResource"
+        Note: The filter-mapping for ExtensionsFilter, the url-pattern is
+        this value + "/*", else there comes a exception
+    </description>
+    <param-name>org.apache.myfaces.RESOURCE_VIRTUAL_PATH</param-name>
+    <param-value>/faces/extensionResource</param-value>
+</context-param>
   
   <filter>
     <filter-name>extensionsFilter</filter-name>
