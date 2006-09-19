@@ -316,9 +316,41 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                 if (!isRowAvailable())
                     break;
 
+                // If we are in the decode phase, the values restored into our
+                // facet in setRowIndex() may be incorrect. This will happen
+                // if some input fields are rendered in some rows, but not
+                // rendered in others. In this case the input field components
+                // will still contain the _submittedValue from the previous row
+                // that had that input field and _submittedValue will not be set to
+                // null by the process() method if there was no value submitted.
+                // Thus, an invalid component state for that row will be saved in
+                // _detailRowStates. The validation phase will not put a null into
+                // _sumbittedValue either, b/c the component is not rendered, so
+                // validation code doesn't run. This erroneous value will propagate all the way
+                // to the render phase, and result in all rows on the current page being
+                // rendered with the "stuck" _submittedValue, rather than evaluating the
+                // value to render for every row.
+                //
+                // We can fix this by initializing _submittedValue of all input fields in the facet
+                // to null before calling the process() method below during the decode phase.
+                //
+                if ( PROCESS_DECODES == processAction ) {
+                resetAllSubmittedValues(facet);
+                }
+
                 process(context,facet,processAction);
             }
     	}
+    }
+
+    private void resetAllSubmittedValues(UIComponent component) {
+               if ( component instanceof UIInput ) {
+             ((UIInput)component).setSubmittedValue(null);
+               }
+
+               for (Iterator it = component.getFacetsAndChildren(); it.hasNext(); ) {
+                   resetAllSubmittedValues((UIComponent)it.next());
+               }
     }
 
     /**
