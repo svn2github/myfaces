@@ -45,7 +45,7 @@ public class HtmlTagRenderer extends HtmlRenderer
         if (htmlTag.isRendered())
         {
             String tag = htmlTag.getValue().toString();
-            if( tag.trim().length() == 0 ) // Don't render the tag, but renders the childs.
+            if( tag.trim().length() == 0 ) // Don't render the tag, but render the children.
                 return;
 
             ResponseWriter writer = context.getResponseWriter();
