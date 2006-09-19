@@ -121,7 +121,7 @@ org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
 
         if (iframe == null)
         {
-            // the source attirbute is to avoid a IE error message about non secure content on https connections
+            // the source attribute is to avoid a IE error message about non secure content on https connections
             iframe = document.createElement("<iframe src='javascript:false;' id='" + overDiv.id + "_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
             this.containerCtl.appendChild(iframe);
         }
@@ -1154,7 +1154,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
         var dateLink = document.createElement("a");
         dateLink.className = sStyle;
         dateLink.setAttribute("href", "#");
-        dateLink.setAttribute("title", "sHint");
+        dateLink.setAttribute("title", sHint);
 
         dateLink.sNormalStyle = sNormalStyle;
         dateLink.sSelectStyle = sSelectStyle;
