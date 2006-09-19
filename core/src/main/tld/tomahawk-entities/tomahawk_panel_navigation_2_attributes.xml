@@ -67,7 +67,7 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                Table or List Layout (default is Table)
+                'table' or 'list' Layout (default is 'table')
             </description>
         </attribute>
         <attribute>
