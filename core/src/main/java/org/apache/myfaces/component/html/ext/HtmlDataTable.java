@@ -194,7 +194,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         set.add(facet);
         if (rowIndex != -1 && facet != null)
         {
-
             _detailRowStates.put(getClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
         }
 
@@ -354,6 +353,15 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
                 }
 
                 process(context, facet, processAction);
+
+                if ( rowIndex == (last - 1) )
+                {
+                    Set set = new HashSet();
+                    set.add(facet);
+                    _detailRowStates.put(
+                            getClientId(FacesContext.getCurrentInstance()),
+                                saveDescendantComponentStates(set.iterator(),false));
+                }
             }
         }
     }
