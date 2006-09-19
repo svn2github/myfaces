@@ -281,7 +281,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         {
             return;
         }
+
+        // We must remove and then replace the facet so that
+        // it is not processed by default facet handling code
+        //
+        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
         super.processDecodes(context);
+        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, facet);
+
         setRowIndex(-1);
         processColumns(context, PROCESS_DECODES);
         setRowIndex(-1);
@@ -402,7 +409,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         {
             return;
         }
+        // We must remove and then replace the facet so that
+        // it is not processed by default facet handling code
+        //
+        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
         super.processValidators(context);
+        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, facet);
+
         processColumns(context, PROCESS_VALIDATORS);
         setRowIndex(-1);
         processDetails(context, PROCESS_VALIDATORS);
@@ -420,7 +433,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         {
             return;
         }
+
+        // We must remove and then replace the facet so that
+        // it is not processed by default facet handling code
+        //
+        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
         super.processUpdates(context);
+        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, facet);
+
         processColumns(context, PROCESS_UPDATES);
         setRowIndex(-1);
         processDetails(context, PROCESS_UPDATES);
