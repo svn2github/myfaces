@@ -300,8 +300,12 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
         _headerstyle = headerstyle;
     }
 
-    public void setHeaderstyleclass(String headerstyleclass) {
-        _headerstyleClass = headerstyleclass;
+    /**
+     * changed to uppercase 'C' - fix for TOMAHAWK-628
+     * @param headerstyleClass
+     */
+    public void setHeaderstyleClass(String headerstyleClass) {
+        _headerstyleClass = headerstyleClass;
     }
 
     public void setHeadertitle(String headertitle) {
