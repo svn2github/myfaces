@@ -17,6 +17,7 @@ package org.apache.myfaces.component.html.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.net.URLEncoder;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -721,6 +723,22 @@ public class StreamingAddResource implements AddResource
         {
             path = RESOURCE_VIRTUAL_PATH;
         }
+
+        //fix for TOMAHAWK-660; to be sure this fix is backwards compatible, the
+        //encoded context-path is only used as a first option to check for the prefix
+        //if we're sure this works for all cases, we can directly return the first value
+        //and not double-check.
+        try
+        {
+            if(request.getRequestURI().startsWith(URLEncoder.encode(path,"UTF-8")))
+                return true;
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            log.error("Unsupported encoding UTF-8 used",e);
+
+        }
+
         return request.getRequestURI().startsWith(path);
     }
 
