@@ -15,11 +15,9 @@
  */
 package org.apache.myfaces.examples.accessedbeans;
 
-import org.apache.myfaces.taglib.core.LoadBundleTag;
-
-import javax.faces.el.VariableResolver;
-import javax.faces.el.EvaluationException;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
+import javax.faces.el.VariableResolver;
 import java.util.Map;
 
 /**
