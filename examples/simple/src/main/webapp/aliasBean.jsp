@@ -108,6 +108,8 @@
         <h:commandButton/>
     </h:form>
 
+    <jsp:include page="inc/mbean_source.jsp"/>
+
 </f:view>
 
 <%@include file="inc/page_footer.jsp" %>

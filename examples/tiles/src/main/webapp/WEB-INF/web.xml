@@ -5,7 +5,7 @@
     <description>Comma separated list of URIs of (additional) faces config files.
             (e.g. /WEB-INF/my-config.xml)
             See JSF 1.0 PRD2, 10.3.2
-            Attention: You do not have to put /WEB-INF/faces-config.xml in here.
+            Attention: You may not put /WEB-INF/faces-config.xml in here.
     </description>
     <param-name>javax.faces.CONFIG_FILES</param-name>
     <param-value>/WEB-INF/examples-config.xml</param-value>
@@ -86,7 +86,36 @@
   		</description>
        	<param-name>org.apache.myfaces.VALIDATE</param-name>
        	<param-value>true</param-value>
-    </context-param>  
+    </context-param>
+  <context-param>
+    <description>A class implementing the
+		    org.apache.myfaces.shared.renderkit.html.util.AddResource
+		    interface. It is responsible to
+   			place scripts and css on the right position in your HTML document.
+            Default: "org.apache.myfaces.shared.renderkit.html.util.DefaultAddResource"
+            Follow the description on the MyFaces-Wiki-Performance page to enable
+            StreamingAddResource instead of DefaultAddResource if you want to
+            gain performance.
+    </description>
+    <param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
+    <param-value>org.apache.myfaces.renderkit.html.util.DefaultAddResource</param-value>
+    <!--param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value-->
+  </context-param>
+
+  <context-param>
+    <description>
+        A very common problem in configuring MyFaces-web-applications
+        is that the Extensions-Filter is not configured at all
+        or improperly configured. This parameter will check for a properly
+        configured Extensions-Filter if it is needed by the web-app.
+        In most cases this check will work just fine, there might be cases
+        where an internal forward will bypass the Extensions-Filter and the check
+        will not work. If this is the case, you can disable the check by setting
+        this parameter to false.
+    </description>
+    <param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
+    <param-value>true</param-value>
+  </context-param>
   
       <!-- Tiles ViewHandler config file --> 	 
      <context-param> 	 

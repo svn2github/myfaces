@@ -10,6 +10,16 @@
 
 <faces-config>
 
+    <application>
+        <variable-resolver>org.apache.myfaces.examples.accessedbeans.AccessTrackingVariableResolver</variable-resolver>
+    </application>
+
+    <!-- Accessed beans on the last request -->
+    <managed-bean>
+        <managed-bean-name>accessedBeans</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.accessedbeans.AccessedBeans</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
     <!-- Managed Beans for sample1.jsp -->
 

@@ -41,7 +41,7 @@ import org.apache.myfaces.webapp.filter.ExtensionsFilter;
 /**
  * This class provides the ability to instantiate AddResource objects. By
  * default, this class will instantiate instances of
- * org.apache.myfaces.component.html.util.DefaultAddResource. However, the
+ * org.apache.myfaces.renderkit.html.util.DefaultAddResource. However, the
  * context parameter org.apache.myfaces.ADD_RESOURCE_CLASS can specify an
  * alternative implementation of the AddResource interface. The class must have
  * a constructor with a single String argument, representing the context path.
