@@ -38,15 +38,14 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
  * communication with the server is necessary. These components can use
  * methods on the <code>DummyFormRequestInfo</code> object accessable via this
  * class to register parameters and get the name of a form to submit.
- * <p>
+ * <p/>
  * Only one dummy form will be rendered into the response.
- * 
+ *
  * @author Manfred Geiler (latest modification by $Author$)
  * @author Bruno Aranda
  * @version $Revision$ $Date$
  */
-public class DummyFormUtils
-{
+public class DummyFormUtils {
     private static final Log log = LogFactory.getLog(DummyFormUtils.class);
 
     public static final String DUMMY_FORM_NAME = "linkDummyForm";
@@ -55,7 +54,7 @@ public class DummyFormUtils
     /**
      * Used to store the instance of <code>DummyFormRequestInfo</code> in the request map
      */
-    public static final String DUMMY_FORM_INFO = DummyFormUtils.class.getName()+".DUMMY_FORM_INFO";
+    public static final String DUMMY_FORM_INFO = DummyFormUtils.class.getName() + ".DUMMY_FORM_INFO";
 
 
     public static String getDummyFormName() {
@@ -70,55 +69,47 @@ public class DummyFormUtils
      * @param facesContext
      * @param writeDummyForm
      */
-    public static void setWriteDummyForm(FacesContext facesContext, boolean writeDummyForm)
-    {
-        if (!writeDummyForm)
-        {
+    public static void setWriteDummyForm(FacesContext facesContext, boolean writeDummyForm) {
+        if (!writeDummyForm) {
             return;
         }
 
-         if (!isWriteDummyForm(facesContext))
-         {
-             DummyFormRequestInfo dummyFormInfo = new DummyFormRequestInfo();
-             facesContext.getExternalContext().getRequestMap().put(DUMMY_FORM_INFO, dummyFormInfo);
-         }
+        if (!isWriteDummyForm(facesContext)) {
+            DummyFormRequestInfo dummyFormInfo = new DummyFormRequestInfo();
+            facesContext.getExternalContext().getRequestMap().put(DUMMY_FORM_INFO, dummyFormInfo);
+        }
     }
 
     /**
      * Checks if the DummyFormRequestInfo is already in the request map.
+     *
      * @param facesContext
      * @return boolean true, if dummy form is to be written
      */
-    public static boolean isWriteDummyForm(FacesContext facesContext)
-    {
+    public static boolean isWriteDummyForm(FacesContext facesContext) {
         return facesContext.getExternalContext().getRequestMap().containsKey(DUMMY_FORM_INFO);
     }
 
     /**
      * Delegator method to add a parameter to the DummyFormRequestInfo object in the request
-     * 
+     *
      * @param facesContext
      * @param paramName
      */
-    public static void addDummyFormParameter(FacesContext facesContext, String paramName)
-    {
-        if (isWriteDummyForm(facesContext))
-        {
+    public static void addDummyFormParameter(FacesContext facesContext, String paramName) {
+        if (isWriteDummyForm(facesContext)) {
             DummyFormRequestInfo dummyFormInfo = (DummyFormRequestInfo) facesContext.getExternalContext().getRequestMap().get(DUMMY_FORM_INFO);
             dummyFormInfo.addDummyFormParameter(paramName);
         }
-        else
-        {
-            if (log.isWarnEnabled())
-            {
+        else {
+            if (log.isWarnEnabled()) {
                 log.warn("Dummy Form parameter was not added because dummy form is not written");
             }
         }
     }
 
     public static Set getDummyFormParameters(FacesContext facesContext) {
-        if (isWriteDummyForm(facesContext))
-        {
+        if (isWriteDummyForm(facesContext)) {
             DummyFormRequestInfo dummyFormInfo = (DummyFormRequestInfo) facesContext.getExternalContext().getRequestMap().get(DUMMY_FORM_INFO);
             return dummyFormInfo.getDummyFormParams();
         }
@@ -128,8 +119,7 @@ public class DummyFormUtils
 
 
     public static void writeDummyForm(ResponseWriter writer,
-                                      Set dummyFormParams) throws IOException
-    {
+                                      Set dummyFormParams) throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
         String viewId = facesContext.getViewRoot().getViewId();
@@ -153,47 +143,35 @@ public class DummyFormUtils
         StateManager.SerializedView serializedView = stateManager.saveSerializedView(facesContext);
         // Adam Winer - TOMAHAWK-253: Ideally, this code should be refactored so that the server-side code is also calling StateManager.writeState() too
         //    it's a significant problem that DummyFormUtils has hardcoded knowledge of how the StateManager works.
-        if (stateManager.isSavingStateInClient(facesContext))
-        {
+        if (stateManager.isSavingStateInClient(facesContext)) {
             //render state parameters
             stateManager.writeState(facesContext, serializedView);
-        }
-        else
-        {
-            writer.startElement(HTML.INPUT_ELEM, null);
-            writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.TYPE_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.INPUT_TYPE_HIDDEN, null);
-            writer.writeAttribute(HTML.NAME_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.SEQUENCE_PARAM, null);
-            writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.VALUE_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getViewSequence(facesContext), null);
-            writer.endElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.INPUT_ELEM);
         }
 
         if (org.apache.myfaces.shared_tomahawk.config.MyfacesConfig.getCurrentInstance(facesContext.getExternalContext()).isAutoScroll())
         {
-            JavascriptUtils.renderAutoScrollHiddenInput(facesContext,writer);
+            JavascriptUtils.renderAutoScrollHiddenInput(facesContext, writer);
         }
 
         org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-        if (dummyFormParams != null)
-        {
+        if (dummyFormParams != null) {
             org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils.renderHiddenCommandFormParams(writer, dummyFormParams);
             org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils.renderClearHiddenCommandFormParamsFunction(writer,
-                                                                         DUMMY_FORM_NAME,
-                                                                         dummyFormParams, null);
+                                                                                                                           DUMMY_FORM_NAME,
+                                                                                                                           dummyFormParams, null);
         }
         org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils.writePrettyLineSeparator(facesContext);
 
         writer.endElement(HTML.FORM_ELEM);
     }
-    
-    public static FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
-    {
-    	FormInfo formInfo = _ComponentUtils.findNestingForm(uiComponent, facesContext);
-    	if (formInfo != null)
-    	{
-    		return formInfo;
-    	}
-    	
+
+    public static FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext) {
+        FormInfo formInfo = _ComponentUtils.findNestingForm(uiComponent, facesContext);
+        if (formInfo != null) {
+            return formInfo;
+        }
+
         DummyFormUtils.setWriteDummyForm(facesContext, true);
-    	return new FormInfo(null, DUMMY_FORM_NAME);
+        return new FormInfo(null, DUMMY_FORM_NAME);
     }
 }
