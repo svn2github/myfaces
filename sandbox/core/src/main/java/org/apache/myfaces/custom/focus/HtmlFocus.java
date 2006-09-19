@@ -15,6 +15,9 @@
  */
 package org.apache.myfaces.custom.focus;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.ValueHolder;
@@ -35,6 +38,8 @@ public class HtmlFocus extends UIInput
 	private String _for = null;
     private Boolean _rememberClientFocus=null;
     private static final boolean DEFAULT_REMEMBER_CLIENT_FOCUS = true;
+
+    private static Log log = LogFactory.getLog(HtmlFocus.class);
 
     public String getFamily()
     {
@@ -80,8 +85,7 @@ public class HtmlFocus extends UIInput
 		UIComponent forComp = findComponent(forStr);
 		if (forComp == null)
 		{
-			throw new IllegalArgumentException(
-			        "could not find UIComponent referenced by attribute focus@for = '"
+			log.warn("could not find UIComponent referenced by attribute focus@for = '"
 					+ forStr + "'");
 		}
 		return forComp;
