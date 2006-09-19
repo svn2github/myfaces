@@ -85,7 +85,7 @@ managed beans used:
                             <h:outputText value="#{country.name}" />
                             <!-- for convenience: MyFaces extension. sets id of current row in countryForm -->
                             <!-- you don't have to implement a custom action! -->
-                            <t:updateActionListener property="#{countryForm.id}" value="#{country.id}" />
+                            <t:updateActionListener property="#{countryForm.}" value="#{country.id}" />
                        </t:commandLink>
                    </h:column>
 

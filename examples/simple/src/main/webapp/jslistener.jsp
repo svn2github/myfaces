@@ -54,12 +54,12 @@
                 <h:outputText value="Countryname - enter ISO Code in first input-field (e.g. AT)"/>
             </h:panelGroup>
             <h:panelGroup/>
-            <h:selectOneMenu id="selone_menu_colors" value="red" styleClass="selectOneMenu">
+            <h:selectOneMenu id="selone_menu_options" value="o2" styleClass="selectOneMenu">
                 <f:selectItem itemValue="" itemLabel="#{example_messages['empty_selitem']}" />
-                <f:selectItems value="#{carconf.colors}" />
-                <t:jsValueChangeListener for="selone_menu_subcolors" expressionValue="($srcElem.options[$srcElem.selectedIndex].value=='color_black')?$destElem.style.display='inline':$destElem.style.display='none';"/>
+                <f:selectItems value="#{jsListenerModel.optionItems}" />
+                <t:jsValueChangeListener for="selone_menu_options_text" expressionValue="($srcElem.options[$srcElem.selectedIndex].value=='o1')?$destElem.style.display='inline':$destElem.style.display='none';"/>
             </h:selectOneMenu>
-            <h:inputText id="selone_menu_subcolors"/>
+            <h:inputText id="selone_menu_options_text"/>
         </h:panelGrid>
 
     </h:form>

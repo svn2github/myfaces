@@ -125,7 +125,7 @@
     <!-- Managed Beans for selectOneCountry.jsp -->
 
     <managed-bean>
-        <managed-bean-name>country</managed-bean-name>
+        <managed-bean-name>countryBean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.misc.Country</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
@@ -152,6 +152,13 @@
         <managed-bean-name>simpleGroupBy</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.listexample.SimpleGroupByList</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <!-- JsListener on the last request -->
+    <managed-bean>
+        <managed-bean-name>jsListenerModel</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.jslistener.JsListenerModel</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
 
