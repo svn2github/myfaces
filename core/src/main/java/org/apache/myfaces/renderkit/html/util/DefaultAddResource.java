@@ -30,10 +30,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.net.URLEncoder;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -150,8 +152,8 @@ public class DefaultAddResource implements AddResource
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
-	public void addJavaScriptHerePlain(FacesContext context, String uri) throws IOException
-	{
+    public void addJavaScriptHerePlain(FacesContext context, String uri) throws IOException
+    {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_ELEM, null);
@@ -159,8 +161,8 @@ public class DefaultAddResource implements AddResource
         String src = getResourceUri(context, uri);
         writer.writeURIAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SRC_ATTR, src, null);
         writer.endElement(HTML.SCRIPT_ELEM);
-	}
-	
+    }
+
     /**
      * Insert a [script src="url"] entry at the current location in the response.
      *
@@ -267,14 +269,14 @@ public class DefaultAddResource implements AddResource
         addJavaScriptAtPosition(context, position, new MyFacesResourceHandler(
                 myfacesCustomComponent, resourceName));
     }
-    
-	public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position, Class myfacesCustomComponent, String resourceName)
-	{
+
+    public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position, Class myfacesCustomComponent, String resourceName)
+    {
         addJavaScriptAtPosition(context, position,
-        		new MyFacesResourceHandler(myfacesCustomComponent, resourceName),
-        		false, false);
-	}
-	
+                new MyFacesResourceHandler(myfacesCustomComponent, resourceName),
+                false, false);
+    }
+
 
     /**
      * Insert a [script src="url"] entry into the document header at the
@@ -338,12 +340,12 @@ public class DefaultAddResource implements AddResource
     }
 
     private void addJavaScriptAtPosition(FacesContext context, ResourcePosition position,
-            ResourceHandler resourceHandler, boolean defer, boolean encodeUrl)
-	{
-		validateResourceHandler(resourceHandler);
-		addPositionedInfo(position, getScriptInstance(context, resourceHandler, defer, encodeUrl));
-	}
-    
+                                         ResourceHandler resourceHandler, boolean defer, boolean encodeUrl)
+    {
+        validateResourceHandler(resourceHandler);
+        addPositionedInfo(position, getScriptInstance(context, resourceHandler, defer, encodeUrl));
+    }
+
     /**
      * Adds the given Style Sheet at the specified document position.
      * If the style sheet has already been referenced, it's added only once.
@@ -524,6 +526,22 @@ public class DefaultAddResource implements AddResource
         {
             path = RESOURCE_VIRTUAL_PATH;
         }
+
+        //fix for TOMAHAWK-660; to be sure this fix is backwards compatible, the
+        //encoded context-path is only used as a first option to check for the prefix
+        //if we're sure this works for all cases, we can directly return the first value
+        //and not double-check.
+        try
+        {
+            if(request.getRequestURI().startsWith(URLEncoder.encode(path,"UTF-8")))
+                return true;
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            log.error("Unsupported encoding UTF-8 used",e);
+
+        }
+
         return request.getRequestURI().startsWith(path);
     }
 
@@ -822,11 +840,11 @@ public class DefaultAddResource implements AddResource
     }
 
     private PositionedInfo getScriptInstance(FacesContext context, ResourceHandler resourceHandler,
-            boolean defer, boolean encodeURL)
+                                             boolean defer, boolean encodeURL)
     {
-   		return new ScriptPositionedInfo(getResourceUri(context, resourceHandler), defer, encodeURL);
+           return new ScriptPositionedInfo(getResourceUri(context, resourceHandler), defer, encodeURL);
     }
-    
+
     private PositionedInfo getStyleInstance(FacesContext context, String uri)
     {
         return new StylePositionedInfo(getResourceUri(context, uri));
@@ -949,7 +967,7 @@ public class DefaultAddResource implements AddResource
         {
             this(resourceUri, defer, true);
         }
-        
+
         public ScriptPositionedInfo(String resourceUri, boolean defer, boolean encodeUrl)
         {
             super(resourceUri);
@@ -960,10 +978,10 @@ public class DefaultAddResource implements AddResource
         public int hashCode()
         {
             return new HashCodeBuilder()
-            	.append(this.getResourceUri())
-            	.append(_defer)
-            	.append(_encode)
-            	.toHashCode();
+                .append(this.getResourceUri())
+                .append(_defer)
+                .append(_encode)
+                .toHashCode();
         }
 
         public boolean equals(Object obj)
@@ -974,9 +992,9 @@ public class DefaultAddResource implements AddResource
                 {
                     ScriptPositionedInfo other = (ScriptPositionedInfo) obj;
                     return new EqualsBuilder()
-	                    .append(_defer, other._defer)
-	                    .append(_encode, other._encode)
-	                    .isEquals();
+                        .append(_defer, other._defer)
+                        .append(_encode, other._encode)
+                        .isEquals();
                 }
             }
             return false;
@@ -989,11 +1007,11 @@ public class DefaultAddResource implements AddResource
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             if (_encode)
             {
-            	writer.writeAttribute(HTML.SRC_ATTR, response.encodeURL(this.getResourceUri()), null);
+                writer.writeAttribute(HTML.SRC_ATTR, response.encodeURL(this.getResourceUri()), null);
             }
             else
             {
-            	writer.writeAttribute(HTML.SRC_ATTR, this.getResourceUri(), null);
+                writer.writeAttribute(HTML.SRC_ATTR, this.getResourceUri(), null);
             }
 
             if (_defer)
@@ -1160,10 +1178,10 @@ public class DefaultAddResource implements AddResource
         return true;
     }
 
-	public void responseStarted()
-	{
-	}
-	
+    public void responseStarted()
+    {
+    }
+
     public void responseFinished()
     {
     }
