@@ -169,14 +169,6 @@ public class NavigationMenuItem extends SelectItem {
         _target = target;
     }
 
-    public boolean isDisabled() {
-        return _disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        _disabled = disabled;
-    }
-
     public String getDisabledStyle() {
         return _disabledStyle;
     }
