@@ -291,6 +291,12 @@ public class ReducedHTMLParser
             }
             else
             {
+            	if (escaping)
+            	{
+                    stringBuf.append('\\');
+                    escaping = false;            		
+            	}
+
                 stringBuf.append(c);
             }
         }

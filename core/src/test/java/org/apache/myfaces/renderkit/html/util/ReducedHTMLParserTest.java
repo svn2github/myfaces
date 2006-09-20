@@ -274,6 +274,28 @@ public class ReducedHTMLParserTest extends TestCase
         assertEquals("String correctly parsed", "don't quote me", str1);
     }
 
+    public void testConsumeStringEscapedNonQuote()
+    {
+        char quoteMark = '"';
+
+        // build literal sequence 'don\'t quote me' not-in-the-string
+        StringBuffer buf = new StringBuffer();
+        buf.append(quoteMark);
+        buf.append("don\\'t quote me");
+        buf.append(quoteMark);
+        buf.append(" not-in-the-string");
+
+        CallbackListener listener = new ParseCallbackListener();
+        ReducedHTMLParser parser = new ReducedHTMLParser(buf, listener);
+
+        // Note that the consumeString method always expects the leading quote to
+        // have been consumed already..
+
+        parser.consumeMatch("\"");
+        String str1 = parser.consumeString('"');
+        assertEquals("String correctly parsed", "don\\'t quote me", str1);
+    }
+    
     public void testConsumeStringEscapedEscape()
     {
         char quoteMark = '\'';
