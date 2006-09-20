@@ -341,12 +341,14 @@ public class HtmlTabbedPaneRenderer
 
         writer.startElement(HTML.TABLE_ELEM, tabbedPane);
         writer.writeAttribute(HTML.ID_ATTR, getTableStylableId(tabbedPane,facesContext), null);
-        writer.writeAttribute(HTML.CLASS_ATTR, "myFaces_panelTabbedPane", null);
+        String oldTabbedStyleClass = tabbedPane.getStyleClass();
+        tabbedPane.setStyleClass ((oldTabbedStyleClass == null) ? "myFaces_panelTabbedPane" : "myFaces_panelTabbedPane " + oldTabbedStyleClass);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
         HtmlRendererUtils.renderHTMLAttributes(writer, tabbedPane, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         writer.flush();
 
         tabbedPane.setBgcolor(oldBgColor);
+        tabbedPane.setStyleClass(oldTabbedStyleClass);
     }
 
     /**
