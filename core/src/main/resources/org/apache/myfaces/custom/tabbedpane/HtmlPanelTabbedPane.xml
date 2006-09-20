@@ -45,4 +45,8 @@
         <name>tabContentStyleClass</name>
         <type>java.lang.String</type>
     </field>
+    <field>
+        <name>activePanelTabVar</name>
+        <type>java.lang.String</type>
+    </field>
 </component>

@@ -63,6 +63,7 @@ public class HtmlPanelTabbedPaneTag
     private String _inactiveSubStyleClass;
     private String _tabContentStyleClass;
     private String _serverSideTabSwitch;
+    private String _activePanelTabVar;
     // User Role support --> already handled by HtmlPanelGroupTag
 
 
@@ -91,6 +92,7 @@ public class HtmlPanelTabbedPaneTag
         setStringProperty(component, "inactiveSubStyleClass", _inactiveSubStyleClass);
         setStringProperty(component, "tabContentStyleClass", _tabContentStyleClass);
         setBooleanProperty(component, "serverSideTabSwitch", _serverSideTabSwitch);
+        setStringProperty(component, "activePanelTabVar", _activePanelTabVar);
     }
 
 
@@ -116,6 +118,7 @@ public class HtmlPanelTabbedPaneTag
         _inactiveSubStyleClass = null;
         _tabContentStyleClass = null;
         _serverSideTabSwitch = null;
+        _activePanelTabVar = null;
     }
 
     public void setServerSideTabSwitch(String serverSideTabSwitch)
@@ -222,4 +225,7 @@ public class HtmlPanelTabbedPaneTag
         _disabledTabStyleClass = disabledTabStyleClass;
     }
 
+    public void setActivePanelTabVar(String activePanelTabVar) {
+        _activePanelTabVar = activePanelTabVar;
+    }
 }

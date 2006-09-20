@@ -161,6 +161,7 @@ public class HtmlPanelTabbedPane
     private String _inactiveSubStyleClass = null;
     private String _tabContentStyleClass = null;
     private Boolean _serverSideTabSwitch = null;
+    private String _activePanelTabVar;
 
     public HtmlPanelTabbedPane()
     {
@@ -171,6 +172,17 @@ public class HtmlPanelTabbedPane
     {
         return COMPONENT_FAMILY;
     }
+
+    public String getActiveTabVar() {
+        if (_activePanelTabVar != null) return _activePanelTabVar;
+        ValueBinding vb = getValueBinding("activeTabVar");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setActiveTabVar(String activeTabVar) {
+        _activePanelTabVar = activeTabVar;
+    }
+
 
     public void setSelectedIndex(int selectedIndex)
     {
@@ -284,7 +296,7 @@ public class HtmlPanelTabbedPane
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[11];
+        Object values[] = new Object[12];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex;
         values[2] = _bgcolor;
@@ -296,6 +308,7 @@ public class HtmlPanelTabbedPane
         values[8] = _tabContentStyleClass;
         values[9] = _disabledTabStyleClass;
         values[10] = _serverSideTabSwitch;
+        values[11] = _activePanelTabVar;
         return ((Object) (values));
     }
 
@@ -313,6 +326,7 @@ public class HtmlPanelTabbedPane
         _tabContentStyleClass = (String)values[8];
         _disabledTabStyleClass = (String)values[9];
         _serverSideTabSwitch = (Boolean) values[10];
+        _activePanelTabVar = (String) values[11];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

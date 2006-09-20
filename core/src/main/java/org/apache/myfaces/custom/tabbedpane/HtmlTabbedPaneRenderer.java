@@ -220,7 +220,7 @@ public class HtmlTabbedPaneRenderer
         String tabContentStyleClass = tabbedPane.getTabContentStyleClass();
         writer.writeAttribute(HTML.CLASS_ATTR, TAB_PANE_CLASS+(tabContentStyleClass==null ? "" : " "+tabContentStyleClass), null);
 
-        writeTabsContents(writer,  facesContext, tabbedPane, selectedIndex);
+        writeTabsContents(writer, facesContext, tabbedPane, selectedIndex);
 
         writer.endElement(HTML.TD_ELEM);
         writer.endElement(HTML.TR_ELEM);
@@ -514,28 +514,38 @@ public class HtmlTabbedPaneRenderer
 
     protected void writeTabsContents(ResponseWriter writer, FacesContext facesContext, HtmlPanelTabbedPane tabbedPane,
                                      int selectedIndex) throws IOException {
-       HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
 
-       int tabIdx = 0;
-       List children = tabbedPane.getChildren();
-       for (int i = 0, len = children.size(); i < len; i++) {
-           UIComponent child = getUIComponent((UIComponent) children.get(i));
-           if (child instanceof HtmlPanelTab) {
-               HtmlPanelTab tab = (HtmlPanelTab)child;
-               writer.startElement(HTML.DIV_ELEM, tabbedPane);
-               writer.writeAttribute(HTML.ID_ATTR, tab.getClientId(facesContext), null);
-               // the inactive tabs are hidden with a div-tag
-               if (tabIdx != selectedIndex) {
-                   writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
-               }
-               RendererUtils.renderChild(facesContext, child);
-               writer.endElement(HTML.DIV_ELEM);
+        int tabIdx = 0;
+        List children = tabbedPane.getChildren();
+        for (int i = 0, len = children.size(); i < len; i++) {
+            UIComponent child = getUIComponent((UIComponent) children.get(i));
+            if (child instanceof HtmlPanelTab) {
+                String activeTabVar = tabbedPane.getActiveTabVar();
+                if (activeTabVar != null) {
+                    Map requestMap = facesContext.getExternalContext().getRequestMap();
+                    requestMap.put(activeTabVar, Boolean.valueOf(tabIdx == selectedIndex));
+                }
 
-               tabIdx++;
-           } else {
-               RendererUtils.renderChild(facesContext, child);
-           }
-       }
+                HtmlPanelTab tab = (HtmlPanelTab)child;
+                writer.startElement(HTML.DIV_ELEM, tabbedPane);
+                writer.writeAttribute(HTML.ID_ATTR, tab.getClientId(facesContext), null);
+                // the inactive tabs are hidden with a div-tag
+                if (tabIdx != selectedIndex) {
+                    writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
+                }
+                RendererUtils.renderChild(facesContext, child);
+                writer.endElement(HTML.DIV_ELEM);
+
+                tabIdx++;
+                if (activeTabVar != null) {
+                    Map requestMap = facesContext.getExternalContext().getRequestMap();
+                    requestMap.remove(tabbedPane.getActiveTabVar());
+                }
+            } else {
+                RendererUtils.renderChild(facesContext, child);
+            }
+        }
    }
 
     private UIComponent getUIComponent(UIComponent uiComponent)
