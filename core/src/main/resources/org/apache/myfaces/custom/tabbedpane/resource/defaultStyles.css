@@ -37,7 +37,7 @@ table.myFaces_panelTabbedPane{
 	background-color: silver;
 }
 .myFaces_panelTabbedPane_disabledHeaderCell label{
-	cursor: normal;
+	cursor: default;
 	background-color: silver;
 }
 .myFaces_panelTabbedPane_emptyHeaderCell{
@@ -50,7 +50,6 @@ table.myFaces_panelTabbedPane{
 
 .myFaces_panelTabbedPane_subHeaderCell{
  	height: 2px;
-	line-height: 0;
 	font-size: 0;
 	border-bottom: 0px none;
 }
@@ -75,3 +74,4 @@ table.myFaces_panelTabbedPane{
 	border-left: 2px outset silver;
 	padding: 10px;
 }
+
