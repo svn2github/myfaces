@@ -96,7 +96,7 @@ public class MyFacesResourceLoader implements ResourceLoader
      * which define the mime content-type; this is deduced from the
      * filename suffix of the resource.
      * <p>
-     * @see org.apache.myfaces.shared.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext,
+     * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext,
      *     javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
@@ -133,22 +133,32 @@ public class MyFacesResourceLoader implements ResourceLoader
         }
         resource = "resource/" + resource;
 
-        InputStream is = componentClass.getResourceAsStream(resource);
-        if (is == null)
+        InputStream is = null;
+
+        try
         {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to find resource "
-                    + resource + " for component " + component
-                    + ". Check that this file is available " + "in the classpath in sub-directory "
-                    + "/resource of the package-directory.");
-            log.error("Unable to find resource " + resource + " for component " + component
-                    + ". Check that this file is available " + "in the classpath in sub-directory "
-                    + "/resource of the package-directory.");
+            is = componentClass.getResourceAsStream(resource);
+            if (is == null)
+            {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to find resource "
+                        + resource + " for component " + component
+                        + ". Check that this file is available " + "in the classpath in sub-directory "
+                        + "/resource of the package-directory.");
+                log.error("Unable to find resource " + resource + " for component " + component
+                        + ". Check that this file is available " + "in the classpath in sub-directory "
+                        + "/resource of the package-directory.");
+            }
+            else
+            {
+                defineContentHeaders(request, response, resource);
+                defineCaching(request, response, resource);
+                writeResource(request, response, is);
+            }
         }
-        else
+        finally
         {
-            defineContentHeaders(request, response, resource);
-            defineCaching(request, response, resource);
-            writeResource(request, response, is);
+            if(is!=null)
+                is.close();            
         }
     }
 
