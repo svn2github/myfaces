@@ -141,7 +141,7 @@ public class ConversationContext
 			Conversation conversation = (Conversation) conversations.get(name);
 			if (conversation != null)
 			{
-				while (conversationStack.size()>0)
+				while (conversationStack.size()>1)
 				{
 					Conversation dependingConversation = (Conversation) conversationStack.get(conversationStack.size()-1);
 					endConversation(dependingConversation, false);
