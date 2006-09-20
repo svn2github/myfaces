@@ -63,7 +63,8 @@ public class BindingScheduleExampleHandler extends ScheduleExampleHandler
 
     public String scheduleAction()
     {
-        log.debug("The schedule was clicked");
+        log.info("The schedule was clicked");
+        log.info("selected entry: " + schedule.getModel().getSelectedEntry());
         return "success";
     }
 
@@ -82,6 +83,7 @@ public class BindingScheduleExampleHandler extends ScheduleExampleHandler
             break;
         case ScheduleMouseEvent.SCHEDULE_ENTRY_CLICKED:
             buffer.append("schedule entry was clicked.");
+            
             break;
         default:
             buffer.append("no schedule mouse events registered");
