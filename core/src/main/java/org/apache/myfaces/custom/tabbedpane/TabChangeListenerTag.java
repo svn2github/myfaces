@@ -69,19 +69,30 @@ public class TabChangeListenerTag extends TagSupport
             UIComponent component = componentTag.getComponentInstance();
             if (component instanceof HtmlPanelTabbedPane)
             {
-                String className;
+                Object listenerRef = type;
                 if (UIComponentTag.isValueReference(type))
                 {
                     FacesContext facesContext = FacesContext.getCurrentInstance();
                     ValueBinding valueBinding = facesContext.getApplication().createValueBinding(type);
-                    className = (String) valueBinding.getValue(facesContext);
-                } else
-                {
-                    className = type;
+                    listenerRef = valueBinding.getValue(facesContext);
                 }
-                TabChangeListener listener = (TabChangeListener) ClassUtils.newInstance(className);
-                ((HtmlPanelTabbedPane) component).addTabChangeListener(listener);
-            } else
+
+                if(listenerRef instanceof String)
+                {
+                    String className = (String) listenerRef;
+                    TabChangeListener listener = (TabChangeListener) ClassUtils.newInstance(className);
+                    ((HtmlPanelTabbedPane) component).addTabChangeListener(listener);
+                }
+                else if(listenerRef instanceof TabChangeListener)
+                {
+                    TabChangeListener listener = (TabChangeListener) listenerRef;
+                    ((HtmlPanelTabbedPane) component).addTabChangeListener(listener);
+
+                }
+                else
+                    throw new JspException("type is neither a 'String' nor a value-binding to a 'String' or a 'TabChangeListener' instance.");
+            }
+            else
             {
                 throw new JspException("Component " + component.getId() + " is no HtmlPanelTabbedPane");
             }
