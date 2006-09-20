@@ -118,7 +118,7 @@
     </description>
     <param-name>org.apache.myfaces.RESOURCE_VIRTUAL_PATH</param-name>
     <param-value>/faces/extensionResource</param-value>
-</context-param>
+  </context-param>
   
   <filter>
     <filter-name>extensionsFilter</filter-name>
@@ -160,7 +160,7 @@
   </servlet>
   <servlet>
     <servlet-name>SourceCodeServlet</servlet-name>
-    <servlet-class>org.apache.myfaces.shared_tomahawk.util.servlet.SourceCodeServlet</servlet-class>
+    <servlet-class>org.apache.myfaces.shared.util.servlet.SourceCodeServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
