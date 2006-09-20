@@ -92,7 +92,7 @@ public class UIEndConversation extends AbstractConversationComponent
 		super.restoreState(context, states[0]);
 		inited = ((Boolean) states[1]).booleanValue();
 		onOutcome = (String) states[2];
-		errorOutcome = (String) states[2];
+		errorOutcome = (String) states[3];
 	}
 
 	public Object saveState(FacesContext context)
