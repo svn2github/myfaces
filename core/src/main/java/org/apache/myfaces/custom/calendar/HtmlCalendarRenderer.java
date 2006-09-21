@@ -179,14 +179,15 @@ public class HtmlCalendarRenderer
                 String calendarVar = JavascriptUtils.getValidJavascriptName(
                         inputCalendar.getClientId(facesContext)+"CalendarVar",false);
 
-                writer.writeText("var "+calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
+                writer.writeText(calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
                 writer.writeText(getLocalizedLanguageScript(facesContext,symbols,
                                                             timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
                 writer.writeText(calendarVar+".init(document.getElementById('"+
                                  inputCalendar.getClientId(facesContext)+"Span"+"'));\n",null);
+                writer.endElement(HTML.SCRIPT_ELEM);
                 if(!inputCalendar.isDisplayValueOnly())
                 {
-                    writer.writeText(getScriptBtn(facesContext, inputCalendar,
+                    getScriptBtn(writer, facesContext, inputCalendar,
                                                   dateFormat,inputCalendar.getPopupButtonString(), new FunctionCallProvider(){
                         public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
                         {
@@ -194,11 +195,10 @@ public class HtmlCalendarRenderer
 
                             String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
 
-                            return clientVar+"._popUpCalendar(this,document.getElementById(\\'"+clientId+"\\'),\\'"+dateFormat+"\\')";
+                            return clientVar+"._popUpCalendar(this,document.getElementById('"+clientId+"'),'"+dateFormat+"')";
                         }
-                    })+"\n",null);
+                    });
                 }
-                writer.endElement(HTML.SCRIPT_ELEM);
             }
         }
         else
@@ -440,13 +440,10 @@ public class HtmlCalendarRenderer
         script.append(");\n");
     }
 
-    public static String getScriptBtn(FacesContext facesContext, UIComponent uiComponent,
+    public static void getScriptBtn(ResponseWriter writer, FacesContext facesContext, UIComponent uiComponent,
                                       String dateFormat, String popupButtonString, FunctionCallProvider prov)
         throws IOException
     {
-        HtmlBufferResponseWriterWrapper writer = HtmlBufferResponseWriterWrapper.
-                getInstance(facesContext.getResponseWriter());
-
         boolean renderButtonAsImage = false;
         String popupButtonStyle = null;
         String popupButtonStyleClass = null;
@@ -458,9 +455,6 @@ public class HtmlCalendarRenderer
             popupButtonStyle = calendar.getPopupButtonStyle();
             popupButtonStyleClass = calendar.getPopupButtonStyleClass();
         }
-
-        writer.write("\nif (!document.layers) {\n");
-        writer.write("document.write('");
 
         if (!renderButtonAsImage) {
             // render the button
@@ -521,11 +515,6 @@ public class HtmlCalendarRenderer
 
             writer.endElement(HTML.IMG_ELEM);
         }
-
-        writer.write("');");
-        writer.write("\n}");
-
-        return writer.toString();
     }
 
 
