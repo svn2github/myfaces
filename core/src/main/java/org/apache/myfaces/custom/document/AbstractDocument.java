@@ -17,10 +17,11 @@ package org.apache.myfaces.custom.document;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * Base class to handle the document family
- * 
+ *
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -29,7 +30,7 @@ public class AbstractDocument extends UIComponentBase
 	private String _state = null;
 
 	public static final String COMPONENT_FAMILY = "javax.faces.Data";
-	
+
 	public AbstractDocument(String renderType)
 	{
 		setRendererType(renderType);
@@ -45,16 +46,16 @@ public class AbstractDocument extends UIComponentBase
 		_state = state;
 	}
 
-	protected String getState()
+	public String getState()
 	{
 		return _state;
 	}
-	
+
 	public boolean hasState()
 	{
 		return isStartState() || isEndState();
 	}
-	
+
 	public boolean isStartState()
 	{
 		return "start".equals(getState());
@@ -64,7 +65,7 @@ public class AbstractDocument extends UIComponentBase
 	{
 		return "start".equals(getState());
 	}
-	
+
 	public Object saveState(FacesContext context)
 	{
 		Object values[] = new Object[2];
