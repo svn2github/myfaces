@@ -297,7 +297,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         writer.write(localizedLanguageScript);
         writer.writeText(calendarVar+".init(document.getElementById('"+
                 uiComponent.getClientId(facesContext)+"Span"+"'));\n",null);
-        writer.writeText(HtmlCalendarRenderer.getScriptBtn(facesContext, uiComponent,
+        HtmlCalendarRenderer.getScriptBtn(writer, facesContext, uiComponent,
                 dateFormat,"...",new FunctionCallProvider(){
             public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
             {
@@ -308,7 +308,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
                 return clientVar+"._popUpCalendarForInputDate(\\'"+clientId+"\\',\\'"+dateFormat+"\\');";
 
             }
-        })+"\n",null);
+        });
 
         writer.endElement(HTML.SCRIPT_ELEM);
     }
