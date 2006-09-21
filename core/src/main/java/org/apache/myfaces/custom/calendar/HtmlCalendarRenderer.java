@@ -566,12 +566,7 @@ public class HtmlCalendarRenderer
     private Calendar copyCalendar(FacesContext facesContext, Calendar timeKeeper)
     {
         Calendar cal = Calendar.getInstance(facesContext.getViewRoot().getLocale());
-        cal.set(Calendar.YEAR, timeKeeper.get(Calendar.YEAR));
-        cal.set(Calendar.MONTH, timeKeeper.get(Calendar.MONTH));
-        cal.set(Calendar.HOUR_OF_DAY, timeKeeper.get(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE, timeKeeper.get(Calendar.MINUTE));
-        cal.set(Calendar.SECOND, timeKeeper.get(Calendar.SECOND));
-        cal.set(Calendar.MILLISECOND, timeKeeper.get(Calendar.MILLISECOND));
+        cal.setTime(timeKeeper.getTime());
         return cal;
     }
 
