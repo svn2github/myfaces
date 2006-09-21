@@ -482,17 +482,17 @@ public class HtmlTabbedPaneRenderer
                     classes.append(SUB_HEADER_CELL_CLASS_FIRST);
                 }
                 if( renderedIndex == visibleTabCount ){
-                    classes.append(' ');
-                    classes.append(SUB_HEADER_CELL_CLASS_LAST);
-                    if( activeSubStyleUserClass != null ){
-                        classes.append(' ');
-                        classes.append(activeSubStyleUserClass);
-                    }
-                }else{
-                    if( inactiveSubStyleUserClass != null ){
-                        classes.append(' ');
-                        classes.append(inactiveSubStyleUserClass);
-                    }
+                	classes.append(' ');
+                	classes.append(SUB_HEADER_CELL_CLASS_LAST);
+                }
+                if( renderedIndex == visibleTabSelectedIndex ){
+                	if( activeSubStyleUserClass != null ){
+	                	classes.append(' ');
+	                	classes.append(activeSubStyleUserClass);
+                	}
+                }else if( inactiveSubStyleUserClass != null ){
+            		classes.append(' ');
+            		classes.append(inactiveSubStyleUserClass);
                 }
 
                 classes.append(' ');
