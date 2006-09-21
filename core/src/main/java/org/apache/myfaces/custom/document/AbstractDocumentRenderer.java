@@ -26,7 +26,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 /**
  * Base class to handle the document family
- * 
+ *
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -34,7 +34,7 @@ public abstract class AbstractDocumentRenderer extends Renderer
 {
 	protected abstract String getHtmlTag();
 	protected abstract Class getDocumentClass();
-	
+
 	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
 			throws IOException
 	{
@@ -42,35 +42,42 @@ public abstract class AbstractDocumentRenderer extends Renderer
 				getDocumentClass());
 
 		AbstractDocument document = (AbstractDocument) uiComponent;
-		
+
 		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		if (document.isEndState())
-		{
-	        writeBeforeEnd(facesContext);
-		}
-		
+
 		if (document.hasState() && document.isEndState())
 		{
-			writer.endElement(getHtmlTag());
+			closeTag(facesContext, writer);
 		}
 		else
 		{
-			writer.startElement(getHtmlTag(), uiComponent);
+			openTag(writer, uiComponent);
 		}
+	}
+
+	protected void openTag(ResponseWriter writer, UIComponent uiComponent)
+		throws IOException
+	{
+		writer.startElement(getHtmlTag(), uiComponent);
+	}
+
+	protected void closeTag(FacesContext facesContext, ResponseWriter writer)
+		throws IOException
+	{
+		writeBeforeEnd(facesContext);
+		writer.endElement(getHtmlTag());
 	}
 
 	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
 			throws IOException
 	{
 		AbstractDocument document = (AbstractDocument) uiComponent;
-		
+
 		ResponseWriter writer = facesContext.getResponseWriter();
-		
+
 		if (!document.hasState())
 		{
-			writeBeforeEnd(facesContext);
-			writer.endElement(getHtmlTag());
+			closeTag(facesContext, writer);
 		}
 	}
 

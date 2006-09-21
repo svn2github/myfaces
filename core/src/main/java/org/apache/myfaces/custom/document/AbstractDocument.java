@@ -63,7 +63,7 @@ public class AbstractDocument extends UIComponentBase
 
 	public boolean isEndState()
 	{
-		return "start".equals(getState());
+		return "end".equals(getState());
 	}
 
 	public Object saveState(FacesContext context)
