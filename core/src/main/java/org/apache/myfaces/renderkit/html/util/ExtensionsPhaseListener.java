@@ -45,7 +45,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
     private static final Log log = LogFactory.getLog(ExtensionsPhaseListener.class);
 
 
-    private static final String ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT = "org.apache.myfaces.myFacesJavascript";
+    public  static final String ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT = "org.apache.myfaces.myFacesJavascript";
     public static final String LISTENERS_MAP = "_MyFaces_inputAjax_listenersMap";
 
     public PhaseId getPhaseId()

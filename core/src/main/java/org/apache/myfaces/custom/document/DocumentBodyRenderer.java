@@ -24,14 +24,14 @@ import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
 /**
  * Document to enclose the whole document. If not otherwise possible you can use
  * state="start|end" to demarkate the document boundaries
- * 
+ *
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class DocumentBodyRenderer extends AbstractDocumentRenderer
 {
 	public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
-	
+
 	protected String getHtmlTag()
 	{
 		return "body";
@@ -46,5 +46,8 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
 	{
 		super.writeBeforeEnd(facesContext);
        	ExtensionsPhaseListener.writeCodeBeforeBodyEnd(facesContext);
+
+		// fake string, so the ExtensionsPhaseListener will not create the javascript again
+		facesContext.getExternalContext().getRequestMap().put(ExtensionsPhaseListener.ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "");
 	}
 }
