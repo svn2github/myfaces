@@ -27,4 +27,8 @@
         <name>displayValueOnlyStyleClass</name>
         <type>java.lang.String</type>
     </field>
+    <field>
+    	<name>layout</name>
+    	<type>java.lang.String</type>
+    </field>
 </component>

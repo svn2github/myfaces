@@ -82,7 +82,7 @@
                 <h:outputLink value="swapimage.jsf" ><f:verbatim>Swap Image</f:verbatim></h:outputLink>
                 <h:outputLink value="collapsiblePanel.jsf" ><f:verbatim>Collapsible Panel</f:verbatim></h:outputLink>
                 <h:outputLink value="testExceptions.jsf" ><f:verbatim>Test the custom error page - not really jsf stuff, but a demonstration how to print the real exception</f:verbatim></h:outputLink>
-
+				<h:outputLink value="panelGroup.jsf" ><f:verbatim>Panel Group</f:verbatim></h:outputLink>
                 <h:outputText value="Schedule" />
                 <h:panelGrid style="padding-left:25px">
                     <h:outputLink value="schedule1.jsf">

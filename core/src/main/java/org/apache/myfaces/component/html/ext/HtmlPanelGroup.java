@@ -51,6 +51,8 @@ public class HtmlPanelGroup
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlPanelGroup";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
+    
+    public static final String BLOCK_LAYOUT = "block";
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
@@ -58,6 +60,7 @@ public class HtmlPanelGroup
 	private String _displayValueOnlyStyle = null;
 	private String _displayValueOnlyStyleClass = null;
     private Integer _colspan = null;
+	private String _layout;
 
     public HtmlPanelGroup()
     {
@@ -125,10 +128,20 @@ public class HtmlPanelGroup
     public void setDisplayValueOnlyStyleClass(String displayValueOnlyStyleClass) {
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
+    
+    public String getLayout() {
+        if (_layout != null) return _layout;
+        ValueBinding vb = getValueBinding("layout");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+    }
 
     public void setColspan(int colspan)
     {
         _colspan = new Integer(colspan);
+    }
+
+    public void setLayout(String layout) {
+        _layout = layout;
     }
 
     public int getColspan()
@@ -147,7 +160,7 @@ public class HtmlPanelGroup
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[7];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
@@ -155,6 +168,7 @@ public class HtmlPanelGroup
         values[4] = _displayValueOnlyStyle;
         values[5] = _displayValueOnlyStyleClass;
         values[6] = _colspan;
+        values[7] = _layout;
         return ((Object) (values));
     }
 
@@ -168,6 +182,7 @@ public class HtmlPanelGroup
         _displayValueOnlyStyle = (String)values[4];
         _displayValueOnlyStyleClass = (String)values[5];
         _colspan = (Integer)values[6];
+        _layout = (String) values[7];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

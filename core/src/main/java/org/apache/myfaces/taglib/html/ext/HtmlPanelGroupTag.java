@@ -29,7 +29,9 @@ import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
 public class HtmlPanelGroupTag
         extends HtmlPanelGroupTagBase
 {
-    public String getComponentType()
+    private static final String LAYOUT_ATTR = "layout";
+
+	public String getComponentType()
     {
         return HtmlPanelGroup.COMPONENT_TYPE;
     }
@@ -45,6 +47,8 @@ public class HtmlPanelGroupTag
     private String _displayValueOnly;
 	private String _displayValueOnlyStyle;
 	private String _displayValueOnlyStyleClass;
+	
+	private String _layout;
 
     private String _colspan;
     
@@ -53,6 +57,7 @@ public class HtmlPanelGroupTag
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
         _colspan=null;
+        _layout = null;
    }
 
     protected void setProperties(UIComponent component)
@@ -65,6 +70,7 @@ public class HtmlPanelGroupTag
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
         setIntegerProperty(component, HTML.COLSPAN_ATTR, _colspan);
+        setStringProperty(component, LAYOUT_ATTR, _layout);
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
@@ -91,7 +97,11 @@ public class HtmlPanelGroupTag
     {
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
-
+    
+    public void setLayout(String layout)
+    {
+    	_layout = layout;
+    }
     public void setColspan(String colspan)
     {
         _colspan = colspan;

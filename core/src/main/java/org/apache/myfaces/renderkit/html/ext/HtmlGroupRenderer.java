@@ -15,7 +15,18 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 
 /**
@@ -25,4 +36,44 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
 public class HtmlGroupRenderer
     extends HtmlGroupRendererBase
 {
+	
+	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        boolean span = false;
+        String element = getHtmlElement(component);
+        
+        if(component.getId()!=null && !component.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
+        {
+            span = true;
+
+            writer.startElement(element, component);
+
+            HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
+
+            HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+        }
+        else
+        {
+            span=HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer,
+                                                                             component,
+                                                                             element,
+                                                                             HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+        }
+
+        RendererUtils.renderChildren(context, component);
+        if (span)
+        {
+            writer.endElement(element);
+        }
+    }
+	
+	private String getHtmlElement(UIComponent component) {
+		if (component instanceof HtmlPanelGroup) {
+			HtmlPanelGroup group = (HtmlPanelGroup) component;
+			if (HtmlPanelGroup.BLOCK_LAYOUT.equals(group.getLayout())) {
+				return HTML.DIV_ELEM;
+			}
+		}
+		return HTML.SPAN_ELEM;
+	}
 }

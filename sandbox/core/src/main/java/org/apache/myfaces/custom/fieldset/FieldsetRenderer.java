@@ -31,6 +31,11 @@ public class FieldsetRenderer extends HtmlTagRenderer
 {
     public static final String RENDERER_TYPE = "org.apache.myfaces.FieldsetRenderer";
 
+    public boolean getRendersChildren() 
+    {
+    	return true;
+    }
+    
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException
     {
