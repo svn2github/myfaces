@@ -45,15 +45,18 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 public class HtmlTabbedPaneRenderer
         extends HtmlRenderer
 {
+    private static final String HEADER_ROW_CLASS = "myFaces_pannelTabbedPane_HeaderRow";
     private static final String ACTIVE_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_activeHeaderCell";
     private static final String INACTIVE_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_inactiveHeaderCell";
     private static final String DISABLED_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_disabledHeaderCell";
     private static final String EMPTY_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_emptyHeaderCell";
+    private static final String SUB_HEADER_ROW_CLASS = "myFaces_pannelTabbedPane_subHeaderRow";
     private static final String SUB_HEADER_CELL_CLASS = "myFaces_panelTabbedPane_subHeaderCell";
     private static final String SUB_HEADER_CELL_CLASS_ACTIVE = "myFaces_panelTabbedPane_subHeaderCell_active";
     private static final String SUB_HEADER_CELL_CLASS_INACTIVE = "myFaces_panelTabbedPane_subHeaderCell_inactive";
     private static final String SUB_HEADER_CELL_CLASS_FIRST = "myFaces_panelTabbedPane_subHeaderCell_first";
     private static final String SUB_HEADER_CELL_CLASS_LAST = "myFaces_panelTabbedPane_subHeaderCell_last";
+    private static final String CONTENT_ROW_CLASS = "myFaces_panelTabbedPane_contentRow";
     private static final String TAB_PANE_CLASS = "myFaces_panelTabbedPane_pane";
 
     private static final String DEFAULT_BG_COLOR = "white";
@@ -165,6 +168,7 @@ public class HtmlTabbedPaneRenderer
         writeTableStart(writer, facesContext, tabbedPane);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.TR_ELEM, tabbedPane);
+        writer.writeAttribute(HTML.CLASS_ATTR, HEADER_ROW_CLASS, null);
 
         //Tab headers
         int tabIdx = 0;
@@ -208,6 +212,7 @@ public class HtmlTabbedPaneRenderer
         //Sub header cells
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.TR_ELEM, tabbedPane);
+        writer.writeAttribute(HTML.CLASS_ATTR, SUB_HEADER_ROW_CLASS, null);
         writeSubHeaderCells(writer, facesContext, tabbedPane, visibleTabCount, visibleTabSelectedIdx);
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.endElement(HTML.TR_ELEM);
@@ -215,6 +220,7 @@ public class HtmlTabbedPaneRenderer
         //Tabs
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.TR_ELEM, tabbedPane);
+        writer.writeAttribute(HTML.CLASS_ATTR, CONTENT_ROW_CLASS, null);
         writer.startElement(HTML.TD_ELEM, tabbedPane);
         writer.writeAttribute(HTML.COLSPAN_ATTR, Integer.toString(visibleTabCount + 1), null);
         String tabContentStyleClass = tabbedPane.getTabContentStyleClass();
