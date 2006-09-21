@@ -129,7 +129,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
         Object[] values = (Object[]) state;
         _summaryMessage = (String) values[0];
         _detailMessage = (String) values[1];
-        _valueBindingMap = (Map) restoreValueBindingMap(context, values[2]);
+        restoreValueBindingMap(context, values[2]);
     }
 
     public boolean isTransient() {
