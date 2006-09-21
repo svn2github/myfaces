@@ -33,9 +33,21 @@ import javax.servlet.jsp.JspException;
 public class ValidatorBaseTag extends ValidatorTag {
     private static final long serialVersionUID = 4416508071412794682L;
     private String _message = null;
+    private String _detailMessage = null;
+    private String _summaryMessage = null;
 
     public void setMessage(String string) {
         _message = string;
+    }
+
+    public void setDetailMessage(String detailMessage)
+    {
+        _detailMessage = detailMessage;
+    }
+
+    public void setSummaryMessage(String summaryMessage)
+    {
+        _summaryMessage = summaryMessage;
     }
 
     protected Validator createValidator() throws JspException {
@@ -44,16 +56,37 @@ public class ValidatorBaseTag extends ValidatorTag {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        if (_message != null)
+        if(_message != null && _detailMessage != null)
+            throw new JspException("you may not set detailMessage and detailMessage together - they serve the same purpose.");
+
+        String detailMessage = _message;
+
+        if(_detailMessage != null)
+            detailMessage = _detailMessage;
+
+        if (detailMessage != null)
         {
-            if (UIComponentTag.isValueReference(_message))
+            if (UIComponentTag.isValueReference(detailMessage))
             {
-                ValueBinding vb = facesContext.getApplication().createValueBinding(_message);
-                validator.setMessage(new String(vb.getValue(facesContext).toString()));
+                ValueBinding vb = facesContext.getApplication().createValueBinding(detailMessage);
+                validator.setValueBinding("detailMessage",vb);
             }
             else
             {
-                validator.setMessage(_message);
+                validator.setDetailMessage(detailMessage);
+            }
+        }
+
+        if (_summaryMessage != null)
+        {
+            if (UIComponentTag.isValueReference(_summaryMessage))
+            {
+                ValueBinding vb = facesContext.getApplication().createValueBinding(_summaryMessage);
+                validator.setValueBinding("summaryMessage",vb);
+            }
+            else
+            {
+                validator.setSummaryMessage(_summaryMessage);
             }
         }
 
@@ -64,5 +97,7 @@ public class ValidatorBaseTag extends ValidatorTag {
     {
         super.release();
         _message= null;
+        _detailMessage = null;
+        _summaryMessage = null;
     }
 }

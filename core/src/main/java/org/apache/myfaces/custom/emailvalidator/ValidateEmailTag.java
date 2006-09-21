@@ -15,10 +15,10 @@
  */
 package org.apache.myfaces.custom.emailvalidator;
 
+import org.apache.myfaces.validator.ValidatorBaseTag;
+
 import javax.faces.validator.Validator;
 import javax.servlet.jsp.JspException;
-
-import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author mwessendorf (latest modification by $Author$)

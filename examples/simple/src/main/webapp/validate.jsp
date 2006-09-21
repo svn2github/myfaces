@@ -52,19 +52,19 @@ managed beans used:
 
                 <h:outputLabel for="email2" value="#{example_messages['validate_email']}2"/>
                 <h:inputText id="email2" value="#{validateForm.email2}" required="true">
-                    <t:validateEmail/>
+                    <t:validateEmail detailMessage="Not a valid email address."/>
                 </h:inputText>
                 <t:message id="emailError2" for="email2" styleClass="error"/>
 
                 <h:outputLabel for="creditCardNumber" value="#{example_messages['validate_credit']}"/>
                 <h:inputText id="creditCardNumber" value="#{validateForm.creditCardNumber}" required="true">
-                    <t:validateCreditCard/>
+                    <t:validateCreditCard detailMessage='#{"{0} is not a valid credit card number."}'/>
                 </h:inputText>
                 <t:message id="creditCardNumberError" for="creditCardNumber" styleClass="error"/>
 
                 <h:outputLabel for="regExprValue" value="#{example_messages['validate_regexp']}"/>
                 <h:inputText id="regExprValue" value="#{validateForm.regExpr}" required="true">
-                    <t:validateRegExpr pattern='\d{5}'/>
+                    <t:validateRegExpr pattern='\d{5}' detailMessage='#{"{0} is not valid in this field." }'/>
                 </h:inputText>
                 <t:message id="regExprValueError" for="regExprValue" styleClass="error"/>
 
@@ -74,7 +74,9 @@ managed beans used:
 
                 <h:outputLabel for="equal2" value="#{example_messages['validate_equal']}2"/>
                 <h:inputText id="equal2" value="#{validateForm.equal2}" required="true">
-                    <t:validateEqual for="equal"/>
+                    <t:validateEqual for="equal"
+                                     summaryMessage='#{"Value {0} should equal {1}"}'
+                                     detailMessage='#{"The value of this field, {0}, should equal the value of that other field, {1}"}'/>
                 </h:inputText>
                 <t:message id="equal2Error" for="equal2" styleClass="error"/>
 

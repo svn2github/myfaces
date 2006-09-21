@@ -608,7 +608,6 @@ Sandbox-related entities.
         &html_anchor_attributes;
     		&user_role_attributes;
 		&ext_forceId_attribute;
-
 		<attribute>
 			<name>resourceRendererClass</name>
 			<required>true</required>
@@ -624,8 +623,7 @@ Sandbox-related entities.
 				passed by nested f:param elements and/or using session or application scoped beans.
 			</description>
 		</attribute>
-
-	</tag>
+    </tag>
 
 	<!--  effect -->
 	<tag>

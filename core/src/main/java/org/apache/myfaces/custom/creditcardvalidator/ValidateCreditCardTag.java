@@ -15,13 +15,13 @@
  */
 package org.apache.myfaces.custom.creditcardvalidator;
 
+import org.apache.myfaces.validator.ValidatorBaseTag;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.webapp.UIComponentTag;
 import javax.servlet.jsp.JspException;
-
-import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  * @author mwessendorf (latest modification by $Author$)

@@ -21,9 +21,11 @@ import org.apache.myfaces.validator.ValidatorBase;
 import org.apache.commons.validator.GenericValidator;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+
 
 /**
  * @author mwessendorf (latest modification by $Author$)
@@ -64,10 +66,7 @@ public class EmailValidator extends ValidatorBase {
 			}
 			if (!GenericValidator.isEmail(value.toString())) {
 				Object[] args = {value.toString()};
-                String message = getMessage();
-                if (null == message)  message = EMAIL_MESSAGE_ID;
-
-                throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+	            throw new ValidatorException(getFacesMessage(EMAIL_MESSAGE_ID, args));
 			}
 
 	}

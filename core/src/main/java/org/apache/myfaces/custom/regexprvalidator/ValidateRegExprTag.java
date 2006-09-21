@@ -15,18 +15,19 @@
  */
 package org.apache.myfaces.custom.regexprvalidator;
 
+import org.apache.myfaces.validator.ValidatorBaseTag;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.validator.Validator;
 import javax.faces.webapp.UIComponentTag;
 import javax.servlet.jsp.JspException;
 
-import org.apache.myfaces.validator.ValidatorBaseTag;
-
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 public class ValidateRegExprTag extends ValidatorBaseTag {
   private static final long serialVersionUID = -449945949876262076L;
   //the pattern, needed by Commons-Validator.

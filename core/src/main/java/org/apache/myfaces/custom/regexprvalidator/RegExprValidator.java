@@ -30,6 +30,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 public class RegExprValidator extends ValidatorBase {
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -54,22 +55,17 @@ public class RegExprValidator extends ValidatorBase {
 		Object value)
 		throws ValidatorException {
 
-			if (facesContext == null) throw new NullPointerException("facesContext");
-			if (uiComponent == null) throw new NullPointerException("uiComponent");
+		if (facesContext == null) throw new NullPointerException("facesContext");
+		if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-			if (value == null)
+		if (value == null)
 			{
 				return;
 		}
 		Object[] args = {value.toString()};
-		if(!GenericValidator.matchRegexp(value.toString(),"^" + getPattern() + "$")){
-
-            String message = getMessage();
-            if (null == message)  message = REGEXPR_MESSAGE_ID;
-
-            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
-            }
-
+		if(!GenericValidator.matchRegexp(value.toString(),"^"+getPattern()+"$")){
+			throw new ValidatorException(getFacesMessage(REGEXPR_MESSAGE_ID, args));
+        }
 	}
 
 

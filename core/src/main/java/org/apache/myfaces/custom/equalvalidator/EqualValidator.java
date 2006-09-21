@@ -25,10 +25,12 @@ import javax.faces.validator.ValidatorException;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 
+
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 public class EqualValidator extends ValidatorBase {
 
 	/**
@@ -48,7 +50,7 @@ public class EqualValidator extends ValidatorBase {
 	//the foreign component_id on which the validation is based.
 	private String _for= null;
 
-	// -------------------------------------------------------- ValidatorIF
+  // -------------------------------------------------------- ValidatorIF
 	public void validate(
 		FacesContext facesContext,
 		UIComponent uiComponent,
@@ -78,21 +80,18 @@ public class EqualValidator extends ValidatorBase {
 
 		if(foreignEditableValueHolder.getValue()==null || !foreignEditableValueHolder.getValue().toString().equals(value.toString())  )
         {
-            String message = getMessage();
-            if (null == message)  message = EQUAL_MESSAGE_ID;
-
-            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+            throw new ValidatorException(getFacesMessage(EQUAL_MESSAGE_ID, args));
         }
 
 	}
 	// -------------------------------------------------------- StateholderIF
 
-    public Object saveState(FacesContext context) {
-        Object values[] = new Object[6];
-        values[0] = super.saveState(context);
-        values[1] = _for;
-        return values;
-    }
+	public Object saveState(FacesContext context) {
+		Object[] state = new Object[2];
+		state[0] = super.saveState(context);
+        state[1] =_for;
+		return state;
+	}
 
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[])state;
@@ -114,5 +113,4 @@ public class EqualValidator extends ValidatorBase {
 	public void setFor(String string) {
 		_for = string;
 	}
-
 }

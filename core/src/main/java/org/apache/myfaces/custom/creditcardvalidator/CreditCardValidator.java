@@ -15,13 +15,12 @@
  */
 package org.apache.myfaces.custom.creditcardvalidator;
 
+import org.apache.myfaces.validator.ValidatorBase;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-import org.apache.myfaces.validator.ValidatorBase;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
@@ -82,10 +81,7 @@ public class CreditCardValidator extends ValidatorBase {
 		initValidator();
 		if (!this.creditCardValidator.isValid(value.toString())){
 			Object[] args = {value.toString()};
-            String message = getMessage();
-            if (null == message)  message = CREDITCARD_MESSAGE_ID;
-
-            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+            throw new ValidatorException(getFacesMessage(CREDITCARD_MESSAGE_ID, args));
 		}
 	}
 

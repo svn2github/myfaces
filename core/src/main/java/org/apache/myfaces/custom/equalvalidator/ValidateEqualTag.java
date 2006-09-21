@@ -27,7 +27,9 @@ import org.apache.myfaces.validator.ValidatorBaseTag;
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+
 public class ValidateEqualTag extends ValidatorBaseTag {
+
   private static final long serialVersionUID = -3249115551944863108L;
   //the foreign component_id on which the validation is based.
 	private String _for = null;

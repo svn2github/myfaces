@@ -16,10 +16,10 @@
 
 package org.apache.myfaces.custom.urlvalidator;
 
+import org.apache.myfaces.validator.ValidatorBaseTag;
+
 import javax.faces.validator.Validator;
 import javax.servlet.jsp.JspException;
-
-import org.apache.myfaces.validator.ValidatorBaseTag;
 
 /**
  *
@@ -34,14 +34,14 @@ public class ValidateUrlTag extends ValidatorBaseTag
 
   public ValidateUrlTag()
     {
-	}
+    }
 
-	protected Validator createValidator() throws JspException
+    protected Validator createValidator() throws JspException
     {
-		setValidatorId(UrlValidator.VALIDATOR_ID);
-	    UrlValidator validator = (UrlValidator)super.createValidator();
-		return validator;
-	}
+        setValidatorId(UrlValidator.VALIDATOR_ID);
+        UrlValidator validator = (UrlValidator)super.createValidator();
+        return validator;
+    }
 
     public void release()
     {
