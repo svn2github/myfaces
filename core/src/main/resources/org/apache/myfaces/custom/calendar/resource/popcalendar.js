@@ -1318,6 +1318,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     var toppos = 0;
 
     var aTag = ctl;
+    var aTagPositioningisAbsolute = false;
     // Added try-catch to the next loop (MYFACES-870)
     try
     {
@@ -1325,8 +1326,9 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
             aTag = aTag.offsetParent;
             leftpos += aTag.offsetLeft;
             toppos += aTag.offsetTop;
+            aTagPositioningisAbsolute = (aTag.style.position == "absolute")
         }
-        while (aTag.tagName != "BODY");
+        while ((aTag.tagName != "BODY") && (aTag.tagName != "DIV") && (!aTagPositioningisAbsolute));
     }
     catch (ex)
     {
@@ -1345,7 +1347,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
             topScrollOffset += aTag.scrollTop;
             aTag = aTag.parentNode;
         }
-        while (aTag.tagName != "BODY");
+        while ((aTag.tagName != "BODY") && (aTag.tagName != "DIV") && (aTag.style.position != "absolute"));
     }
     catch (ex)
     {
@@ -1354,8 +1356,17 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
 
     var bodyRect = this._getVisibleBodyRectangle();
     var cal = this.calendarDiv;
-    var top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight + 2;
-    var left = ctl.offsetLeft + leftpos - leftScrollOffset;
+    
+    var top = 0;
+    var left = 0
+    if (aTagPositioningisAbsolute) {    
+        top = ctl.offsetTop - topScrollOffset + ctl.offsetHeight + 2;
+        left = ctl.offsetLeft - leftScrollOffset;
+    }
+    else {
+        top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight + 2;
+        left = ctl.offsetLeft + leftpos - leftScrollOffset;
+    }
 
     if(this.initData.popupLeft)
     {
@@ -1464,4 +1475,5 @@ org_apache_myfaces_PopupCalendar.prototype._formatInt = function(str)
     return str;
 
 }
+
 
