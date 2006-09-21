@@ -49,15 +49,18 @@ public class AutoScrollPhaseListener
 
     public void afterPhase(PhaseEvent event)
     {
-        FacesContext facesContext = event.getFacesContext();
-        UIViewRoot view = facesContext.getViewRoot();
-        if(view != null)
+        if(event != null)
         {
-            String viewId = view.getViewId();
-            if (viewId != null)
+            FacesContext facesContext = event.getFacesContext();
+            UIViewRoot view = facesContext.getViewRoot();
+            if(view != null)
             {
-                JavascriptUtils.setOldViewId(facesContext.getExternalContext(), viewId);
-            }   
+                String viewId = view.getViewId();
+                if (viewId != null)
+                {
+                    JavascriptUtils.setOldViewId(facesContext.getExternalContext(), viewId);
+                }   
+            }
         }
     }
 
