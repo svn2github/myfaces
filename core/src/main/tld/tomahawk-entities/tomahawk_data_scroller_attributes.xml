@@ -176,3 +176,15 @@
             <type>java.lang.String</type>
             <description>MethodBinding pointing at method acception an ActionEvent with return type void.</description>
         </attribute>
+        <attribute>
+            <name>onclick</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>HTML: Script to be invoked when the element is clicked.</description>
+        </attribute>
+        <attribute>
+            <name>ondblclick</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>HTML: Script to be invoked when the element is double-clicked.</description>
+        </attribute> 

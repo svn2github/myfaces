@@ -77,4 +77,12 @@
         <type>boolean</type>
         <default-value>false</default-value>
     </field>
+    <field>
+        <name>onclick</name>
+        <type>String</type>
+    </field>
+    <field>
+        <name>ondblclick</name>
+        <type>String</type>
+    </field>    
 </component>

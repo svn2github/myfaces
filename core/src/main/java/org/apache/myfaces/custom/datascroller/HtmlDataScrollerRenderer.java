@@ -282,7 +282,17 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
                                UIComponent facetComp, String facetName) throws IOException
     {
-        UIComponent link = getLink(facesContext, scroller, facetName);
+    	String onclick = scroller.getOnclick();
+    	String ondblclick = scroller.getOndblclick();
+
+    	HtmlCommandLink link = getLink(facesContext, scroller, facetName);
+        if(onclick != null){
+        	link.setOnclick(onclick);
+        }
+        if(ondblclick != null){
+        	link.setOndblclick(ondblclick);
+        }
+    	
         link.encodeBegin(facesContext);
         facetComp.encodeBegin(facesContext);
         if (facetComp.getRendersChildren())
@@ -345,6 +355,9 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
         writer.startElement("tr", scroller);
 
+   	    String onclick = scroller.getOnclick();
+   	    String ondblclick = scroller.getOndblclick();
+        
         for (int i = start, size = start + pages; i < size; i++)
         {
             int idx = i + 1;
@@ -371,6 +384,13 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             }
 
             HtmlCommandLink link = getLink(facesContext, scroller, Integer.toString(idx), idx);
+            if(onclick != null){
+            	link.setOnclick(onclick);
+            }
+            if(ondblclick != null){
+            	link.setOndblclick(ondblclick);
+            }
+            
             link.encodeBegin(facesContext);
             link.encodeChildren(facesContext);
             link.encodeEnd(facesContext);

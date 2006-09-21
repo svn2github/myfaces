@@ -32,6 +32,7 @@ import javax.faces.event.PhaseId;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * A component which works together with a UIData component to allow a
@@ -505,6 +506,8 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
     private String _paginatorActiveColumnStyle = null;
     private Boolean _renderFacetsIfSinglePage = null;
     private Boolean _immediate;
+    private String _onclick;
+    private String _ondblclick;
 
     public static final String FACET_FIRST = "first".intern();
     public static final String FACET_PREVIOUS = "previous".intern();
@@ -788,9 +791,43 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         return v != null ? v.booleanValue() : DEFAULT_IMMEDIATE;
     }
 
+    public void setOnclick(String onclick)
+    {
+        _onclick = onclick;
+    }
+
+    public String getOnclick()
+    {
+        if(_onclick != null)
+        {
+            return _onclick;
+        } else
+        {
+            javax.faces.el.ValueBinding vb = getValueBinding("onclick");
+            return vb == null ? null : _ComponentUtils.getStringValue(getFacesContext(), vb);
+        }
+    }    
+
+    public void setOndblclick(String ondblclick)
+    {
+        _ondblclick = ondblclick;
+    }
+
+    public String getOndblclick()
+    {
+        if(_ondblclick != null)
+        {
+            return _ondblclick;
+        } else
+        {
+            javax.faces.el.ValueBinding vb = getValueBinding("ondblclick");
+            return vb == null ? null : _ComponentUtils.getStringValue(getFacesContext(), vb);
+        }
+    }   
+    
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[23];
+        Object values[] = new Object[25];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -813,7 +850,9 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         values[19] = _paginatorActiveColumnStyle;
         values[20] = _renderFacetsIfSinglePage;
         values[21] = _immediate;
-        values[22] = saveAttachedState(context, _actionListener);
+        values[22] = _onclick;//mh
+        values[23] = _ondblclick;//mh
+        values[24] = saveAttachedState(context, _actionListener);
         return values;
     }
 
@@ -842,7 +881,9 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         _paginatorActiveColumnStyle = (String) values[19];
         _renderFacetsIfSinglePage = (Boolean) values[20];
         _immediate = (Boolean) values[21];
-        _actionListener = (MethodBinding)restoreAttachedState(context, values[22]);
+        _onclick = (String)values[22];
+        _ondblclick = (String)values[23];
+        _actionListener = (MethodBinding)restoreAttachedState(context, values[24]);
     }
 
     //------------------ GENERATED CODE END ---------------------------------------

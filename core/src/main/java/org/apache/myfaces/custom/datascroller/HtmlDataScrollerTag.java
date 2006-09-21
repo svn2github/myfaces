@@ -73,7 +73,10 @@ public class HtmlDataScrollerTag
     private String _renderFacetsIfSinglePage;
     
     private String _immediate;
+    private String _onclick;
+    private String _ondblclick;
     private String _actionListener;
+
 
     // User Role support
     private String _enabledOnUserRole;
@@ -103,6 +106,8 @@ public class HtmlDataScrollerTag
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
         _immediate=null;
+        _onclick = null;
+        _ondblclick=null;
         _actionListener=null;
     }
     
@@ -142,6 +147,8 @@ public class HtmlDataScrollerTag
         
         setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
         setActionListenerProperty(component, _actionListener);
+        setStringProperty(component, "onclick", _onclick);
+        setStringProperty(component, "ondblclick", _ondblclick);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
@@ -263,4 +270,13 @@ public class HtmlDataScrollerTag
     {
         _visibleOnUserRole = visibleOnUserRole;
     }
+
+	public void setOnclick(String onclick) {
+		this._onclick = onclick;
+	}
+
+
+	public void setOndblclick(String ondblclick) {
+		this._ondblclick = ondblclick;
+	}
 }
