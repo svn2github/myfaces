@@ -37,11 +37,16 @@ public class NavigationMenuItem extends SelectItem {
     private boolean rendered = true;
     private List _navigationMenuItems = null;
     private String _target;
-    private boolean _disabled;
     private String _disabledStyle;
     private String _disabledStyleClass;
     private String _externalLink;
     private String _activeOnViewIds;
+
+    // CONSTRUCTORS
+    public NavigationMenuItem()
+    {
+        super();
+    }
 
     public NavigationMenuItem(String label, String action) {
         super(label, label);
