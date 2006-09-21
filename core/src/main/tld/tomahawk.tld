@@ -550,17 +550,55 @@
         <tag-class>org.apache.myfaces.taglib.html.ext.HtmlSelectOneRadioTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-            Extends standard selectOneRadio with user role support.
-            Additionally this extended selectOneRadio accepts a layout attribute
-            of value "spread" (see custom radio tag).
+            Implements the standard html selectOneRadio tag, with additional features.
+            
+            Supports user roles.
+
+            Supports the "spread" layout value, which gives developer control
+            over radio button positioning.  See the "layout" attribute and 
+            the "radio" tag for further information.            
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        &standard_select_one_radio_attributes;
+        
+        <!-- Standard attributes -->
+        &ui_select_one_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_input_radio_attributes;
+        
+        <!-- extension attributes -->
         &ext_escape_attribute;
         &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;
+        
+        <!-- overridden attributes from standard tag. -->
+        <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                Orientation of the options list. Valid values are 
+                "pageDirection" for a vertical layout, "lineDirection" for
+                 horizontal, or "spread" for developer placement. The default 
+                 value is "lineDirection". 
+                 
+                 If the "spread" option is selected, this tag does not render HTML.
+                 Instead, the developer uses "radio" tags to position radio
+                 buttons for each of the SelectItem instances.
+                 
+                 See the "radio" tag for further information.
+            </description>
+        </attribute>
+        <attribute>
+            <name>border</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Width in pixels of the border to be drawn around the table containing the options list.</description>
+        </attribute>        
     </tag>
 
     <!-- selectBooleanCheckbox -->
@@ -1142,9 +1180,11 @@
         <tag-class>org.apache.myfaces.custom.radio.HtmlRadioTag</tag-class>
         <body-content>JSP</body-content>
         <description>
-            Renders a HTML input of type "radio". The associated SelectItem comes from
-            an extended selectOneRadio component with layout "spread". The selectOneRadio
-            is referenced by the "for" attribute.
+            This tag is used in conjunction with the extended selectOneRadio tag
+            when the "spread" layout is selected.  It specifies the position within
+            the document that the radio button corresponding to a specific SelectItem
+            should be rendered.
+            
             All HTML pass-through attributes for this input are taken from the associated
             selectOneRadio.
 

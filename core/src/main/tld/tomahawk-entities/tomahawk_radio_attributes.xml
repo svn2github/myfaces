@@ -4,7 +4,9 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                 id of the referenced extended selectOneRadio component
+                 The id of the referenced extended selectOneRadio component.  This value 
+                 is resolved to the particular component using the standard
+                 UIComponent.findComponent() searching algorithm.
             </description>
         </attribute>
         <attribute>
@@ -12,6 +14,7 @@
             <required>true</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                n-th SelectItem of referenced UISelectOne starting with 0.
+                The index of the corresponding SelectItem, where 0 represents
+                the first SelectItem.
             </description>
         </attribute>
