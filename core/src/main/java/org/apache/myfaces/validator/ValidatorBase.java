@@ -1,5 +1,5 @@
 /*
- * Copyright 2004 The Apache Software Foundation.
+ * Copyright 2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,22 +25,7 @@
  *
  * @author mkienenb (latest modification by $Author$)
  * @version $Revision$
- *//*
- * Copyright 2006 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
-
 package org.apache.myfaces.validator;
 
 import java.util.*;
@@ -53,6 +38,7 @@ import javax.faces.validator.Validator;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * Base validator implementation for Tomahawk validators.
@@ -68,8 +54,11 @@ public abstract class ValidatorBase implements StateHolder, Validator {
      *
      * @return  The summary message to be displayed
      */
-    public String getSummaryMessage() {
-        return _summaryMessage;
+    public String getSummaryMessage()
+    {
+        if (_summaryMessage != null) return _summaryMessage;
+        ValueBinding vb = getValueBinding("summaryMessage");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     /**
@@ -83,6 +72,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
     /**
      *
      * @return  The message.
+     * @deprecated Use getDetailMessage()
      */
     public String getMessage() {
         return getDetailMessage();
@@ -91,6 +81,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
     /**
      *
      * @param message  The detail message to be displayed.
+     * @deprecated Use setDetailMessage()
      */
     public void setMessage(String message) {
         setDetailMessage(message);
@@ -102,7 +93,9 @@ public abstract class ValidatorBase implements StateHolder, Validator {
      * @return  The detail message.
      */
     public String getDetailMessage() {
-        return _detailMessage;
+        if (_detailMessage != null) return _detailMessage;
+        ValueBinding vb = getValueBinding("detailMessage");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
     /**
