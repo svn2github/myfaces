@@ -63,7 +63,7 @@
             </description>
         </attribute>
         <attribute>
-            <name>_activePanelTabVar</name>
+            <name>activePanelTabVar</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
