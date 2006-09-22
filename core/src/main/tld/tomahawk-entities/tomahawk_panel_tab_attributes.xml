@@ -6,3 +6,4 @@
                 Label of this tab.
             </description>
         </attribute>
+        &html_disabled_attribute;
