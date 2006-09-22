@@ -332,7 +332,7 @@ public class CompareToValidator extends ValidatorBase {
     protected String getClassCastExceptionMessage(String name, Class clazz, Object object)
     {
         if (null == object)
-            return name + " must be type " + clazz + " but is null" + object.getClass();
+            return name + " must be type " + clazz + " but is null";
         else return name + " must be type " + clazz + " but is type " + object.getClass();
     }
 
