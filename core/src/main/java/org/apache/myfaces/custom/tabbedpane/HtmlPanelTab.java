@@ -37,8 +37,10 @@ public class HtmlPanelTab
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlPanelTab";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
     private static final String DEFAULT_RENDERER_TYPE = "javax.faces.Group";
+    private static final boolean DEFAULT_DISABLED = false;
 
     private String _label = null;
+    private Boolean _disabled = null;
 
     public HtmlPanelTab()
     {
@@ -61,13 +63,27 @@ public class HtmlPanelTab
         ValueBinding vb = getValueBinding("label");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }
+    
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = Boolean.valueOf(disabled);
+    }
+
+    public boolean isDisabled()
+    {
+        if (_disabled != null) return _disabled.booleanValue();
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_DISABLED;
+    }
 
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
         values[0] = super.saveState(context);
         values[1] = _label;
+        values[2] = _disabled;
         return ((Object) (values));
     }
 
@@ -76,6 +92,7 @@ public class HtmlPanelTab
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _label = (String)values[1];
+        _disabled =  (Boolean)values[2];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 

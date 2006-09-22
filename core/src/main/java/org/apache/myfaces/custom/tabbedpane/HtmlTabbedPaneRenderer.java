@@ -188,7 +188,7 @@ public class HtmlTabbedPaneRenderer
                                     tabIdx,
                                     visibleTabCount,
                                     tabIdx == selectedIndex,
-                                    isDisabled(facesContext, child));
+                                    isDisabled(facesContext, (HtmlPanelTab)child));
                     if (tabIdx == selectedIndex)
                     {
                         visibleTabSelectedIdx = visibleTabCount;
@@ -581,8 +581,8 @@ public class HtmlTabbedPaneRenderer
         writer.endElement(HTML.FORM_ELEM);
     }
 
-    protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
+    protected boolean isDisabled(FacesContext facesContext, HtmlPanelTab tab)
     {
-        return !UserRoleUtils.isEnabledOnUserRole(uiComponent);
+        return !UserRoleUtils.isEnabledOnUserRole(tab) || tab.isDisabled();
     }
 }

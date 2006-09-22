@@ -39,12 +39,14 @@ public class HtmlPanelTabTag
     }
 
     private String _label;
+    private String _disabled;
 
     // User Role support --> already handled by HtmlPanelGroupTag
 
     public void release() {
         super.release();
         _label=null;
+        _disabled=null;
     }
     
     protected void setProperties(UIComponent component)
@@ -52,10 +54,16 @@ public class HtmlPanelTabTag
         super.setProperties(component);
 
         setStringProperty(component, "label", _label);
+        setBooleanProperty(component, "disabled", _disabled);
     }
 
     public void setLabel(String label)
     {
         _label = label;
+    }
+    
+    public void setDisabled(String disabled)
+    {
+        _disabled = disabled;
     }
 }
