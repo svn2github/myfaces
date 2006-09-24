@@ -48,9 +48,9 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
     private static final String ON_CLICK_ATTR = "onClick";
 
-    private static final String DOJO_COMPONENT_TYPE = "FisheyeList";
+    private static final String DOJO_COMPONENT_TYPE = "ScrollableFisheyeList";
 
-    private static final String DOJO_ITEM_TYPE = "FisheyeListItem";
+    private static final String DOJO_ITEM_TYPE = "ScrollableFisheyeListItem";
 
     public static final String ATTACH_EDGE_ATTR = "attachEdge";
 
@@ -112,8 +112,10 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
                 JSFAttr.JAVASCRIPT_LOCATION);
             DojoUtils.addMainInclude(context, component, javascriptLocation,
                                      DojoUtils.getDjConfigInstance(context));
-            DojoUtils.addRequire(context, component, "dojo.widget.FisheyeList");
-
+            DojoUtils.addRequire(context, component, "dojo.widget.myfaces.ScrollableFisheyeList");
+            DojoUtils.addRequire(context, component, "dojo.widget.html.myfaces.ScrollableFisheyeListItem");
+            DojoUtils.addRequire(context, component, "dojo.widget.Button");
+             
             writer.startElement(HTML.DIV_ELEM, fisheye);
             writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context),
                                   null);
@@ -195,6 +197,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
                 writer.write(item);
                 writer.write(");\n");
             }
+            writer.write(jsMenuVar+".programmaticDone();\n");
             writer.endElement(HTML.SCRIPT_ELEM);
         }
     }
