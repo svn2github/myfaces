@@ -81,7 +81,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 	maxNoDisplayItems:10000, //all items
 	scrollerBegin: 0, //first item beginning item
-	visibleWindow:5,
+	visibleWindow:100,
 
 	persist: true,		// save splitter positions in a cookie
 	
@@ -156,14 +156,19 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		
 	},
 	
-	postCreate: function(args, frag) {
+	programmaticDone: function(args, frag) {
 		if(this.persist){
 			this.restoreState();
 		}
+
 		if(this.visibleWindow > this.children.length)
 			this.visibleWindow = this.children.length;
 		if(this.scrollerBegin > this.children.length)
 			this.scrollerBegin = this.children.length - this.visibleWindow;
+		postCreate(args, frag);
+	},
+	
+	postCreate: function(args, frag) {
 
 		this.initializePositioning();
 
