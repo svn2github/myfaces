@@ -165,26 +165,29 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 			this.visibleWindow = this.children.length;
 		if(this.scrollerBegin > this.children.length)
 			this.scrollerBegin = this.children.length - this.visibleWindow;
-		postCreate(args, frag);
 	},
 	
 	postCreate: function(args, frag) {
 
-		this.initializePositioning();
-
-		//
-		// in liberal trigger mode, activate menu whenever mouse is close
-		//
-		if( !this.conservativeTrigger ){
-			dojo.event.connect(document.documentElement, "onmousemove", this, "mouseHandler");
-		}
+		if((args != null) && (args[0] != null) && (args[0] == "programmaticdone")) {
+			this.programmaticDone(args, frag);
 		
-		// Deactivate the menu if mouse is moved off screen (doesn't work for FF?)
-		dojo.event.connect(document.documentElement, "onmouseout", this, "onBodyOut");
-		dojo.event.connect(this, "addChild", this, "initializePositioning");
-		//dojo.event.connect(this, "removeChild", this, "initializePositioning");
+		
+			this.initializePositioning();
 	
+			//
+			// in liberal trigger mode, activate menu whenever mouse is close
+			//
+			if( !this.conservativeTrigger ){
+				dojo.event.connect(document.documentElement, "onmousemove", this, "mouseHandler");
+			}
+			
+			// Deactivate the menu if mouse is moved off screen (doesn't work for FF?)
+			dojo.event.connect(document.documentElement, "onmouseout", this, "onBodyOut");
+			dojo.event.connect(this, "addChild", this, "initializePositioning");
+			//dojo.event.connect(this, "removeChild", this, "initializePositioning");
 	
+		}
 	
 	},
 
