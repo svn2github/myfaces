@@ -35,6 +35,8 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 	private String conversationName;
 	private Collection onOutcomes;
 	private String errorOutcome;
+	private Boolean restart;
+	private MethodBinding restartAction;
 
 	private boolean _transient = false;
 
@@ -42,12 +44,16 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 	{
 	}
 
-	public EndConversationMethodBindingFacade(String conversation, Collection onOutcomes, MethodBinding original, String errorOutcome)
+	public EndConversationMethodBindingFacade(
+		String conversation, Collection onOutcomes, MethodBinding original,
+		String errorOutcome, Boolean restart, MethodBinding restartAction)
 	{
 		this.original = original;
 		this.conversationName = conversation;
 		this.onOutcomes = onOutcomes;
 		this.errorOutcome = errorOutcome;
+		this.restart = restart;
+		this.restartAction = restartAction;
 	}
 
 	public String getConversationName()
@@ -89,7 +95,7 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 		{
 			ConversationManager conversationManager = ConversationManager.getInstance(context);
 			conversationManager.purgePersistence();
-			
+
 			if (errorOutcome != null)
 			{
 				conversationManager.getMessager().setConversationException(context, t);
@@ -110,12 +116,11 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 				{
 					end = onOutcomes.contains(returnValue);
 				}
-			}
 
-			if (end)
-			{
-				ConversationManager conversationManager = ConversationManager.getInstance(context);
-				conversationManager.endConversation(getConversationName());
+				if (end)
+				{
+					ConversationUtils.endAndRestartConversation(context, conversationName, restart, restartAction);
+				}
 			}
 		}
 		return returnValue;
@@ -139,6 +144,8 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 		conversationName = (String) state[1];
 		onOutcomes = (Collection) state[2];
 		errorOutcome = (String) state[3];
+		restart = (Boolean) state[4];
+		restartAction = (MethodBinding) UIComponentBase.restoreAttachedState(context, state[5]);
 	}
 
 	public Object saveState(FacesContext context)
@@ -148,7 +155,9 @@ public class EndConversationMethodBindingFacade extends MethodBinding implements
 				UIComponentBase.saveAttachedState(context, original),
 				conversationName,
 				onOutcomes,
-				errorOutcome
+				errorOutcome,
+				restart,
+				UIComponentBase.saveAttachedState(context, restartAction)
 			};
 	}
 }

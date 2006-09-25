@@ -20,6 +20,8 @@ import java.util.Iterator;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.el.ValueBinding;
+import javax.faces.el.MethodBinding;
+import javax.faces.context.FacesContext;
 
 public class ConversationUtils
 {
@@ -42,12 +44,12 @@ public class ConversationUtils
 			}
 		}
 		while (parent != null);
-		
+
 		return null;
 	}
 
 	/**
-	 * Find a child start or end conversation component for the given conversation name  
+	 * Find a child start or end conversation component for the given conversation name
 	 */
 	public static AbstractConversationComponent findStartOrEndConversationComponent(UIComponent component, String conversationName)
 	{
@@ -56,7 +58,7 @@ public class ConversationUtils
 		{
 			Object child = iterComponents.next();
 			AbstractConversationComponent conversation;
-			
+
 			if (child instanceof UIStartConversation || child instanceof UIEndConversation)
 			{
 				conversation = (AbstractConversationComponent) child;
@@ -74,13 +76,36 @@ public class ConversationUtils
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static String extractBeanName(ValueBinding vb)
 	{
 		String valueBinding = vb.getExpressionString();
 		return valueBinding.substring(2, valueBinding.length()-1);
 	}
+
+	/**
+	 * end and restart a conversation
+	 */
+	static void endAndRestartConversation(FacesContext context, String conversationName, Boolean restart, MethodBinding restartAction)
+	{
+		ConversationManager conversationManager = ConversationManager.getInstance(context);
+		Conversation conversation = conversationManager.getConversation(conversationName);
+
+		conversationManager.endConversation(conversationName);
+
+		if (restart != null && restart.booleanValue() && conversation != null)
+		{
+			conversationManager.startConversation(conversationName, conversation.isPersistence());
+
+			if (restartAction != null)
+			{
+				restartAction.invoke(context, null);
+			}
+		}
+	}
+
+
 }

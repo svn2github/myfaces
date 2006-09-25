@@ -16,28 +16,46 @@
 package org.apache.myfaces.custom.conversation;
 
 import javax.faces.component.UIComponent;
+import javax.faces.el.MethodBinding;
 
 /**
  * Ends a conversation
- * 
+ *
  * @author imario@apache.org
  */
 public class EndConversationTag extends AbstractConversationTag
 {
 	private String onOutcome;
 	private String errorOutcome;
+	private String restart;
+	private String restartAction;
 
 	public String getComponentType()
 	{
 		return UIEndConversation.COMPONENT_TYPE;
 	}
-	
+
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
-        setStringProperty(component, "onOutcome", getOnOutcome());
+
+		UIEndConversation endConversation = (UIEndConversation) component;
+
+		setStringProperty(component, "onOutcome", getOnOutcome());
 		setStringProperty(component, "errorOutcome", getErrorOutcome());
-    }
+		setBooleanProperty(component, "restart", getRestart());
+
+		if (isValueReference(getRestartAction()))
+		{
+			MethodBinding mb = getFacesContext().getApplication().createMethodBinding(
+				getRestartAction(), null);
+			endConversation.setRestartAction(mb);
+		}
+		else
+		{
+			throw new IllegalArgumentException("argument 'restartAction' must be a method binding");
+		}
+	}
 
 	public String getOnOutcome()
 	{
@@ -57,5 +75,25 @@ public class EndConversationTag extends AbstractConversationTag
 	public void setErrorOutcome(String errorOutcome)
 	{
 		this.errorOutcome = errorOutcome;
+	}
+
+	public String getRestart()
+	{
+		return restart;
+	}
+
+	public void setRestart(String restart)
+	{
+		this.restart = restart;
+	}
+
+	public String getRestartAction()
+	{
+		return restartAction;
+	}
+
+	public void setRestartAction(String restartAction)
+	{
+		this.restartAction = restartAction;
 	}
 }

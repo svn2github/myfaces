@@ -36,6 +36,8 @@ public class UIEndConversation extends AbstractConversationComponent
 
 	private String onOutcome;
 	private String errorOutcome;
+	private Boolean restart;
+	private MethodBinding restartAction;
 
 	private boolean inited = false;
 
@@ -64,14 +66,22 @@ public class UIEndConversation extends AbstractConversationComponent
 				command.addActionListener(actionListener);
 				*/
 				MethodBinding original = command.getAction();
-				command.setAction(new EndConversationMethodBindingFacade(getName(), getOnOutcomes(), original, getErrorOutcome()));
+				command.setAction(new EndConversationMethodBindingFacade(
+					getName(),
+					getOnOutcomes(),
+					original,
+					getErrorOutcome(),
+					getRestart(),
+					getRestartAction()));
 				inited = true;
 			}
 		}
 		else
 		{
-			ConversationManager conversationManager = ConversationManager.getInstance();
-			conversationManager.endConversation(getName());
+			ConversationUtils.endAndRestartConversation(context,
+				getName(),
+				getRestart(),
+				getRestartAction());
 		}
 	}
 
@@ -93,6 +103,8 @@ public class UIEndConversation extends AbstractConversationComponent
 		inited = ((Boolean) states[1]).booleanValue();
 		onOutcome = (String) states[2];
 		errorOutcome = (String) states[3];
+		restart = (Boolean) states[4];
+		restartAction = (MethodBinding) restoreAttachedState(context, states[5]);
 	}
 
 	public Object saveState(FacesContext context)
@@ -102,7 +114,9 @@ public class UIEndConversation extends AbstractConversationComponent
 				super.saveState(context),
 				inited ? Boolean.TRUE : Boolean.FALSE,
 				onOutcome,
-				errorOutcome
+				errorOutcome,
+				restart,
+				saveAttachedState(context, restartAction)
 			};
 	}
 
@@ -142,5 +156,34 @@ public class UIEndConversation extends AbstractConversationComponent
 	public void setErrorOutcome(String errorOutcome)
 	{
 		this.errorOutcome = errorOutcome;
+	}
+
+	public Boolean getRestart()
+	{
+		if (restart != null)
+		{
+			return restart;
+		}
+		ValueBinding vb = getValueBinding("restart");
+		if (vb == null)
+		{
+			return null;
+		}
+		return (Boolean) vb.getValue(getFacesContext());
+	}
+
+	public void setRestart(Boolean restart)
+	{
+		this.restart = restart;
+	}
+
+	public MethodBinding getRestartAction()
+	{
+		return restartAction;
+	}
+
+	public void setRestartAction(MethodBinding restartAction)
+	{
+		this.restartAction = restartAction;
 	}
 }

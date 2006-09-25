@@ -27,25 +27,25 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * handle conversation related stuff like beans
- * @author imario@apache.org 
+ * @author imario@apache.org
  */
 public class Conversation
 {
 	private final static Log log = LogFactory.getLog(Conversation.class);
-	
+
 	private final String name;
 	private final boolean persistence;
 
-	private PersistenceManager persistenceManager; 
-	
+	private PersistenceManager persistenceManager;
+
 	// private final Map beans = new TreeMap(new ValueBindingKey());
 	private final Map beans = new TreeMap();
-	
+
 	protected Conversation(String name, boolean persistence)
 	{
 		this.name = name;
 		this.persistence = persistence;
-		
+
 		if (log.isDebugEnabled())
 		{
 			log.debug("start conversation:" + name + "(persistence=" + persistence + ")");
@@ -54,7 +54,7 @@ public class Conversation
 
 	/**
 	 * Add the given valueBinding to the context map. <br/>
-	 * This will also resolve the value of the binding. 
+	 * This will also resolve the value of the binding.
 	 */
 	public void putBean(FacesContext context, ValueBinding vb)
 	{
@@ -96,14 +96,14 @@ public class Conversation
 		{
 			log.debug("end conversation:" + name);
 		}
-		
+
 		Iterator iterBeans = beans.values().iterator();
 		while (iterBeans.hasNext())
 		{
 			Object bean = iterBeans.next();
 			if (bean instanceof ConversationListener)
 			{
-				((ConversationListener) bean).conversationEnded();				
+				((ConversationListener) bean).conversationEnded();
 			}
 		}
 		beans.clear();
@@ -118,12 +118,14 @@ public class Conversation
 			{
 				getPersistenceManager().rollback();
 			}
+			
+			getPersistenceManager().purge();
 		}
 	}
 
 	/**
 	 * Iterate all beans associated to this context
-	 * 
+	 *
 	 * @return Iterator of {@link Map.Entry} elements
 	public Iterator iterateBeanEntries()
 	{
@@ -140,7 +142,7 @@ public class Conversation
 	{
 		return beans.get(name);
 	}
-	
+
 	/**
 	 * returns true if this conversation hold the persistence manager (aka EntityManager)
 	 */
@@ -155,7 +157,7 @@ public class Conversation
 		{
 			persistenceManager = ConversationManager.getInstance().createPersistenceManager();
 		}
-		
+
 		return persistenceManager;
 	}
 }
