@@ -258,7 +258,7 @@ public class HtmlTreeRenderer extends Renderer
         // if client side toggling is on, add a span to be used for displaying/hiding children
         if (clientSideToggle)
         {
-            String spanId = TOGGLE_SPAN + ":" + tree.getId() + ":" + tree.getNodeId();
+            String spanId = TOGGLE_SPAN + ":" + tree.getClientId(context) + ":" + tree.getNodeId();
 
             out.startElement(HTML.SPAN_ELEM, tree);
             out.writeAttribute(HTML.ID_ATTR, spanId, null);
@@ -393,7 +393,7 @@ public class HtmlTreeRenderer extends Renderer
     {
         TreeNode node = tree.getNode();
         String nodeId = tree.getNodeId();
-        String spanId = TOGGLE_SPAN + ":" + tree.getId() + ":" + nodeId;//TOGGLE_SPAN + nodeId;
+        String spanId = TOGGLE_SPAN + ":" + tree.getClientId(context) + ":" + nodeId;//TOGGLE_SPAN + nodeId;
         boolean showLines = tree.isShowLines();
         boolean clientSideToggle = tree.isClientSideToggle();
         UIComponent nodeTypeFacet = tree.getFacet(node.getType());
