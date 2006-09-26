@@ -542,7 +542,10 @@ public class HtmlTabbedPaneRenderer
                 if (tabIdx != selectedIndex) {
                     writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
                 }
-                RendererUtils.renderChild(facesContext, child);
+                if (tabbedPane.isClientSide() || selectedIndex == tabIdx) {
+                  // render all content in client side mode or only the selected in server side mode
+                  RendererUtils.renderChild(facesContext, child);
+                }
                 writer.endElement(HTML.DIV_ELEM);
 
                 tabIdx++;
