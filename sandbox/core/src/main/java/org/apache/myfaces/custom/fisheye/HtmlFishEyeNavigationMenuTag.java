@@ -39,7 +39,19 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
     private String _itemWidth;
     private String _labelEdge;
     private String _orientation;
+    private String _visibleWindow         = null;
 
+
+ 
+ public static final String TAG_PARAM_VisibleWindow = "visibleWindow";
+ 
+ 
+ public void setVisibleWindow(String visibleWindow) {
+ 	_visibleWindow = visibleWindow;
+ }
+ 
+    
+    
     public String getAttachEdge()
     {
         return _attachEdge;
@@ -112,6 +124,7 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
         _itemWidth = null;
         _labelEdge = null;
         _orientation = null;
+        _visibleWindow = null;
     }
 
     public void setAttachEdge(String attachEdge)
@@ -291,6 +304,21 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
                         .valueOf(_conservativeTrigger));
             }
         }
+        if (_visibleWindow != null)
+        {
+            if (isValueReference(_visibleWindow))
+            {
+                fisheye.setValueBinding("visibleWindow", app
+                        .createValueBinding(_visibleWindow));
+            }
+            else
+            {
+                fisheye.setVisibleWindow(Integer
+                        .valueOf(_visibleWindow));
+            }
+        }
+
+ 
     }
 
 }

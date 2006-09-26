@@ -60,7 +60,7 @@ body {
 	<t:div styleClass="outerbar">
 		<s:fishEyeNavigationMenu itemWidth="50" itemHeight="50" itemMaxWidth="200"
 			itemMaxHeight="200" orientation="horizontal" effectUnits="2"
-			itemPadding="10" attachEdge="top" labelEdge="bottom">
+			itemPadding="10" attachEdge="top" labelEdge="bottom" visibleWindow="3" >
 
 			<t:navigationMenuItem icon="images/icon_browser.png"
 				itemLabel="Web Browser"

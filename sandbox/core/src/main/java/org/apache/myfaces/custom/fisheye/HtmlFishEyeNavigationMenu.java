@@ -52,6 +52,21 @@ public class HtmlFishEyeNavigationMenu extends Div
     private String _labelEdge;
     private String _orientation;
 
+     private Integer _visibleWindow = null;
+ 
+     public void setVisibleWindow(Integer visibleWindow)
+    {
+        _visibleWindow = visibleWindow;
+    }
+
+    public Integer getVisibleWindow()
+    {
+        if (_visibleWindow != null) return _visibleWindow;
+        ValueBinding vb = getValueBinding("visibleWindow");
+        return vb != null ? (Integer)vb.getValue(getFacesContext()) : null;
+    }
+ 
+    
     public HtmlFishEyeNavigationMenu()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -180,6 +195,8 @@ public class HtmlFishEyeNavigationMenu extends Div
         _attachEdge = (String) values[8];
         _labelEdge = (String) values[9];
         _conservativeTrigger = (Boolean) values[10];
+        _visibleWindow = (Integer)values[11];
+
     }
 
     /**
@@ -187,7 +204,7 @@ public class HtmlFishEyeNavigationMenu extends Div
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[11];
+        Object[] values = new Object[12];
         values[0] = super.saveState(context);
         values[1] = _itemWidth;
         values[2] = _itemHeight;
@@ -199,6 +216,8 @@ public class HtmlFishEyeNavigationMenu extends Div
         values[8] = _attachEdge;
         values[9] = _labelEdge;
         values[10] = _conservativeTrigger;
+        values[11] = _visibleWindow;
+
         return values;
     }
 

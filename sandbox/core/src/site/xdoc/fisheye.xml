@@ -67,6 +67,7 @@
 			   [effectUnits="2"]
 			   [itemPadding="10"]
 			   [attachEdge="top|bottom"]
+			   [visibleWindow="4"]
 			   [labelEdge="top|bottom"]&gt;
 &lt;/s:fishEyeNavigationMenu&gt;
             </source>
