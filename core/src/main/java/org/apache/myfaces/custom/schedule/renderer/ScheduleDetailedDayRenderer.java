@@ -933,6 +933,25 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         /**
          * <p>
+         * What is the minimum end time allocated to this event?
+         * Where the event has a duration, the end time of the event
+         * is the minimum end time.<br />
+         * Where the event has no duration, a minimum end time of half
+         * and hour after the start is implemented.
+         * </p>
+         * @return The minimum end time of the event
+         */
+        Date minimumEndTime() {
+            Date start = entry.getStartTime();
+            Date end = entry.getEndTime();
+
+            return end != null ?
+                    (end.after(start) ? end : new Date(start.getTime() + HALF_HOUR))
+                    : null;
+        }
+
+        /**
+         * <p>
          * Does this entry overlap with another?
          * </p>
          *
@@ -942,13 +961,16 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
          */
         boolean overlaps(EntryWrapper other)
         {
-            if ((entry.getStartTime() == null) || (entry.getEndTime() == null))
+            Date start = entry.getStartTime();
+        	Date end = minimumEndTime();
+
+            if ((start == null) || (end == null))
             {
                 return false;
             }
 
-            boolean returnboolean = (entry.getStartTime().before(
-                    other.entry.getEndTime()) && entry.getEndTime().after(
+            boolean returnboolean = (start.before(
+                    other.minimumEndTime()) && end.after(
                     other.entry.getStartTime()));
 
             return returnboolean;
