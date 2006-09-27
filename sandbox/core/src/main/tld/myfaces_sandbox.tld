@@ -1185,7 +1185,7 @@ Sandbox-related entities.
 		&ui_select_items_attributes;
 		&select_items_attributes;
 	</tag>
-    <!-- inputSuggest -->
+    <!-- Partial Page Rendering -->
 	<tag>
 		<name>pprPanelGroup</name>
 		<tag-class>org.apache.myfaces.custom.ppr.PPRPanelGroupTag</tag-class>
@@ -1197,9 +1197,24 @@ Sandbox-related entities.
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
-            <description>Comma or Space seperated List of ids from ui_command-items which trigger
-            a partial update of this PanelGroup</description>
+            <description>Comma or Space seperated List of ids from ui_command-items which trigger a partial update of this PanelGroup</description>
         </attribute>
+        <attribute>
+			<name>partialTriggerPattern</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description>Regular Expression If the client Id of a submitting Component matches this Pattern the corresponding pprPanelGroup is updated via AJAX</description>
+        </attribute>
+	  <attribute>
+			<name>inlineLoadingMessage</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+            <description>If this attribute is set the content of the PPRPanelGroup will be replaced by the provided
+		Loading-Message during partial update</description>
+        </attribute>
+	
 	</tag>
 
 	<tag>

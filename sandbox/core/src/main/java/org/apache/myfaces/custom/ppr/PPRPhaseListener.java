@@ -103,18 +103,24 @@ public class PPRPhaseListener implements PhaseListener
 		{
 			clientId = st.nextToken();
 			component = viewRoot.findComponent(clientId);
-			out.print("<component id=\"" +
-				component.getClientId(context) +
-				"\"><![CDATA[");
-			try
-			{
-				RendererUtils.renderChild(context, component);
+			if(component!=null) {
+				out.print("<component id=\"" +
+					component.getClientId(context) +
+					"\"><![CDATA[");
+				try
+				{
+					RendererUtils.renderChildren(context, component);
+				}
+				catch (IOException e)
+				{
+					throw new FacesException(e);
+				}
+				out.print("]]></component>");
 			}
-			catch (IOException e)
+			else
 			{
-				throw new FacesException(e);
+				log.debug("PPRPhaseListener component with id" + clientId + "not found!");
 			}
-			out.print("]]></component>");
 		}
 	}
 

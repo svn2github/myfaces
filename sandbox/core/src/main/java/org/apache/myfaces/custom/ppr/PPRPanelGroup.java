@@ -16,8 +16,10 @@
 package org.apache.myfaces.custom.ppr;
 
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * @author Ernst Fastl
@@ -29,6 +31,10 @@ public class PPRPanelGroup extends HtmlPanelGroup
 	public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRPanelGroup";
 
 	private String _partialTriggers;
+	
+	private String _partialTriggerPattern;
+	
+	private String _inlineLoadingMessage;
 
 	public PPRPanelGroup()
 	{
@@ -42,12 +48,38 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
 	public String getPartialTriggers()
 	{
-		return _partialTriggers;
+		if (_partialTriggers != null) return _partialTriggers;
+        ValueBinding vb = getValueBinding("partialTriggers");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
 	}
 
 	public void setPartialTriggers(String partialTriggers)
 	{
 		this._partialTriggers = partialTriggers;
+	}
+	
+	public String getPartialTriggerPattern()
+	{
+		if (_partialTriggerPattern != null) return _partialTriggerPattern;
+        ValueBinding vb = getValueBinding("partialTriggerPattern");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+	}
+
+	public void setPartialTriggerPattern(String partialTriggerPattern)
+	{
+		this._partialTriggerPattern = partialTriggerPattern;
+	}
+	
+	public String getInlineLoadingMessage()
+	{
+		if (_inlineLoadingMessage != null) return _inlineLoadingMessage;
+        ValueBinding vb = getValueBinding("inlineLoadingMessage");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+	}
+
+	public void setInlineLoadingMessage(String inlineLoadingMessage)
+	{
+		this._inlineLoadingMessage = inlineLoadingMessage;
 	}
 
 	public void restoreState(FacesContext context, Object state)
@@ -56,14 +88,16 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		Object[] values = (Object[]) state;
 		super.restoreState(context, values[0]);
 		_partialTriggers = (String) values[1];
+		_partialTriggerPattern = (String) values[1];
 
 	}
 
 	public Object saveState(FacesContext context)
 	{
-		Object[] values = new Object[2];
+		Object[] values = new Object[3];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
+		values[2] = _partialTriggerPattern;
 		return values;
 	}
 }

@@ -47,6 +47,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 
 	private static final String MY_FACES_PPR_INITIALIZED = "/*MyFaces PPR initialized*/";
 	private static final String ADD_PARTIAL_TRIGGER_FUNCTION = "addPartialTrigger";
+	private static final String ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION = "addPartialTriggerPattern";
+	private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
 	private static final String PPR_JS_FILE = "ppr.js";
 
 	private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
@@ -100,32 +102,72 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
         String partialTriggerId = null;
 		String partialTriggerClientId = null;
 		UIComponent partialTriggerComponent = null;
+		
 		String partialTriggers = ((PPRPanelGroup) uiComponent).getPartialTriggers();
 		String clientId = uiComponent.getClientId(facesContext);
-		StringTokenizer st = new StringTokenizer(partialTriggers, ",; ", false);
-		while (st.hasMoreTokens())
+		
+		String partialTriggerPattern = ((PPRPanelGroup) uiComponent).getPartialTriggerPattern();
+		if(partialTriggerPattern != null && partialTriggerPattern.trim().length()>0) 
 		{
-			partialTriggerId = st.nextToken();
-			partialTriggerComponent = uiComponent.findComponent(partialTriggerId);
-			if (partialTriggerComponent != null)
-			{
-				partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
-				writeInlineScript(facesContext, uiComponent,
+			writeInlineScript(facesContext, uiComponent,
                     "document.getElementById('" +
                     fi.getFormName() +
                     "').myFacesPPRCtrl." +
-                    ADD_PARTIAL_TRIGGER_FUNCTION +
+                    ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION +
 						"('" +
-						partialTriggerClientId +
+						partialTriggerPattern +
 						"','" +
 						clientId +
 						"');");
-			}
-			else
+		}
+		
+		String inlineLoadingMessage =((PPRPanelGroup) uiComponent).getInlineLoadingMessage();
+		
+		if(inlineLoadingMessage!= null && inlineLoadingMessage.trim().length()>0)
+		{
+			writeInlineScript(facesContext, uiComponent,
+                    "document.getElementById('" +
+                    fi.getFormName() +
+                    "').myFacesPPRCtrl." +
+                    ADD_INLINE_LOADING_MESSAGE_FUNCTION +
+						"('" +
+						inlineLoadingMessage +
+						"','" +
+						clientId +
+						"');");
+		}
+		
+		if(partialTriggers!= null && partialTriggers.trim().length()>0)
+		{
+			StringTokenizer st = new StringTokenizer(partialTriggers, ",; ", false);
+			while (st.hasMoreTokens())
 			{
-				if (log.isDebugEnabled())
+				partialTriggerId = st.nextToken();
+				partialTriggerComponent = uiComponent.findComponent(partialTriggerId);
+				if(partialTriggerComponent == null)
 				{
-					log.debug("PPRPanelGroupRenderer Component with id " + partialTriggerId + " not found!");
+					partialTriggerComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent(partialTriggerId);
+				}
+				if (partialTriggerComponent != null)
+				{
+					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
+					writeInlineScript(facesContext, uiComponent,
+	                    "document.getElementById('" +
+	                    fi.getFormName() +
+	                    "').myFacesPPRCtrl." +
+	                    ADD_PARTIAL_TRIGGER_FUNCTION +
+							"('" +
+							partialTriggerClientId +
+							"','" +
+							clientId +
+							"');");
+				}
+				else
+				{
+					if (log.isDebugEnabled())
+					{
+						log.debug("PPRPanelGroupRenderer Component with id " + partialTriggerId + " not found!");
+					}
 				}
 			}
 		}
@@ -148,8 +190,10 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		{
 			PPRPanelGroup pprGroup = (PPRPanelGroup) uiComponent;
 
-			if (pprGroup.getPartialTriggers() != null &&
-				pprGroup.getPartialTriggers().length() > 0)
+			if ((pprGroup.getPartialTriggers() != null &&
+				pprGroup.getPartialTriggers().length() > 0) ||
+				(pprGroup.getPartialTriggerPattern() != null &&
+						pprGroup.getPartialTriggerPattern().length() > 0))
 			{
 				encodeJavaScript(facesContext, pprGroup);
 			}

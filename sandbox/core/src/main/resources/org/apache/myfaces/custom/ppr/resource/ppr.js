@@ -21,23 +21,46 @@ dojo.provide("org.apache.myfaces");
 
 org.apache.myfaces.PPRCtrl = function(formId)
 {
-    this.partialTriggers = new Array;
+	if(typeof window.myFacesPartialTriggers == "undefined")
+	{
+    	window.myFacesPartialTriggers = new Array;
+    }
+    if(typeof window.myFacesPartialTriggerPatterns == "undefined")
+	{
+    	window.myFacesPartialTriggerPatterns = new Array;
+    }
+    if(typeof window.myFacesInlineLoadingMessage == "undefined")
+	{
+    	window.myFacesInlineLoadingMessage = new Array;
+    }
     this.replaceFormSubmitFunction(formId);
     this.addButtonOnClickHandlers();
 }
+
+//Method for JSF Components to register Regular Expressions for partial update triggering
+
+org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, refreshZoneId)
+{
+        window.myFacesInlineLoadingMessage[refreshZoneId] = message;
+};
+
+org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern, refreshZoneId)
+{
+        window.myFacesPartialTriggerPatterns[refreshZoneId] = pattern;
+};
 
 //Method for JSF Components to register their Partial Triggers
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, refreshZoneId)
 {
-    if (this.partialTriggers[inputElementId] === undefined)
+    if (window.myFacesPartialTriggers[inputElementId] === undefined)
     {
-        this.partialTriggers[inputElementId] = refreshZoneId;
+        window.myFacesPartialTriggers[inputElementId] = refreshZoneId;
     }
     else
     {
-        this.partialTriggers[inputElementId] =
-        this.partialTriggers[inputElementId] +
+        window.myFacesPartialTriggers[inputElementId] =
+        window.myFacesPartialTriggers[inputElementId] +
         "," +
         refreshZoneId;
     }
@@ -49,15 +72,17 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 {
     if(type == "load")
     {
-    var componentUpdates = data.getElementsByTagName("component");
-    var componentUpdate = null;
-    var domElement = null;
-        for (var i = 0; i < componentUpdates.length; i++)
-        {
-            componentUpdate = componentUpdates[i];
-            domElement = document.getElementById(componentUpdate.getAttribute("id"));
-            domElement.innerHTML = componentUpdate.firstChild.data;
-        }
+	    var componentUpdates = data.getElementsByTagName("component");
+	    var componentUpdate = null;
+	    var domElement = null;
+	        for (var i = 0; i < componentUpdates.length; i++)
+	        {
+	            componentUpdate = componentUpdates[i];
+	            domElement = document.getElementById(componentUpdate.getAttribute("id"));
+	            domElement.innerHTML = componentUpdate.firstChild.data;
+	        }
+	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
+	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();    
     }
     else
     {
@@ -70,11 +95,36 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 
 org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElement)
 {
-    if(typeof triggerElement != "undefined")
+    if(typeof triggerElement != "undefined" ||
+    	typeof this.form.elements[this.form.name +':'+'_idcl'] != "undefined")
     {
-        var triggeredComponents = this.getTriggeredComponents(triggerElement);
+		var triggerId;    
+    	var content=new Array;
+    	if(typeof triggerElement != "undefined")
+    	{
+    		triggerId=triggerElement.id;
+    		var formName = this.form.name;
+    		if (triggerElement.tagName.toLowerCase() == "input" &&
+                (triggerElement.type.toLowerCase() == "submit" ||
+                 triggerElement.type.toLowerCase() == "image")
+                )
+            {
+            	content[triggerElement.name]=triggerElement.value;
+            }
+            else
+            {
+        		oamSetHiddenInput(formName,formName +':'+'_idcl',triggerElement.id);
+        	}
+    	}
+    	else 
+    	{
+    		triggerId=this.form.elements[this.form.name +':'+'_idcl'].value;
+    	}
+    	
+        var triggeredComponents = this.getTriggeredComponents(triggerId);
         if(triggeredComponents !=null)
         {
+        	this.displayInlineLoadingMessages(triggeredComponents);
             var requestUri = "";
             var formAction = this.form.attributes["action"];
             if(formAction == null)
@@ -86,8 +136,7 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
                 requestUri = formAction.nodeValue;
             }
 
-            var content=new Array;
-            content[triggerElement.name]=triggerElement.value;
+            
             content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
             content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
             dojo.io.bind({
@@ -111,6 +160,30 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     {
         this.form.submit_orig();
     }
+}
+
+//This Method replaces the content of the PPRPanelGroups which have
+//an inline-loading-message set with the loading message
+
+org.apache.myfaces.PPRCtrl.prototype.displayInlineLoadingMessages = function(components)
+{
+	if(typeof components != "string")
+	{
+		return;
+	}
+	var componentIds = components.split(',');
+	var domElement = null;
+	for (index in componentIds)
+	{
+		if(typeof window.myFacesInlineLoadingMessage[componentIds[index]] != "undefined")
+		{
+			domElement = document.getElementById(componentIds[index]);
+			if(domElement != null)
+			{
+				domElement.innerHTML = window.myFacesInlineLoadingMessage[componentIds[index]];
+			}
+		}	
+	}
 }
 
 //This Method replaces the mainform Submitfunciton to call AJAX submit
@@ -161,10 +234,13 @@ org.apache.myfaces.PPRCtrl.prototype.addButtonOnClickHandlers = function()
         for (var i = 0; i < formButtons.length; i++)
         {
             var button = formButtons[i];
+            if(typeof button.onclick_orig == "undefined")
+            {
                 button.onclick_orig = button.onclick;
                 button.onclick = this.buttonOnClickHandler;
                 button.myFacesPPRCtrl=this;
-                //dojo.event.connect(button,"onClick",this,"buttonOnClickHandler");
+            }
+            
         }
 
 }
@@ -184,14 +260,45 @@ org.apache.myfaces.PPRCtrl.prototype.buttonOnClickHandler = function (_event)
 //Based on the Component which triggerd the submit this Method returns a comma-seperated
 //list of component-ids which are to be updated via an AJAX call
 
-org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerElement)
-{
-    if (typeof triggerElement != "undefined")
+
+org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId)
+{	
+    if (typeof triggerId != "undefined")
     {
-        if (typeof this.partialTriggers[triggerElement.id] != "undefined")
+    var retval = null;
+        if (typeof window.myFacesPartialTriggers[triggerId] != "undefined")
         {
-            return this.partialTriggers[triggerElement.id];
+            retval = window.myFacesPartialTriggers[triggerId];
         }
+        
+		for (refreshZoneId in window.myFacesPartialTriggerPatterns)
+		{
+			if(this.isMatchingPattern(window.myFacesPartialTriggerPatterns[refreshZoneId],triggerId) &&
+				typeof refreshZoneId == "string" )
+				if(retval == null || retval == "")
+				{
+					retval = refreshZoneId;
+				}
+				else
+				{
+					retval += "," + refreshZoneId;
+				}
+		}	
+	return retval;        
     }
     return null;
 };
+
+org.apache.myfaces.PPRCtrl.prototype.isMatchingPattern = function(pattern,stringToMatch)
+{	
+	if(typeof pattern != "string")
+	{
+		return false;
+	}
+	if(typeof stringToMatch != "string")
+	{
+		return false;
+	}
+	var expr =  new RegExp(pattern);
+	return expr.test(stringToMatch);
+}

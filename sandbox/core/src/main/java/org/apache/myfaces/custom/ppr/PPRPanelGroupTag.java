@@ -25,6 +25,10 @@ import javax.faces.component.UIComponent;
 public class PPRPanelGroupTag extends HtmlPanelGroupTag
 {
 	private String _partialTriggers;
+	
+	private String _partialTriggerPattern;
+	
+	private String _inlineLoadingMessage;
 
 	public String getComponentType()
 	{
@@ -47,6 +51,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 		super.setProperties(component);
 
 		setStringProperty(component, "partialTriggers", _partialTriggers);
+		setStringProperty(component, "partialTriggerPattern", _partialTriggerPattern);
+		setStringProperty(component, "inlineLoadingMessage", _inlineLoadingMessage);
 	}
 
 	public String getPartialTriggers()
@@ -58,5 +64,23 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 	{
 		this._partialTriggers = partialTriggers;
 	}
+
+	public String getPartialTriggerPattern() {
+		return _partialTriggerPattern;
+	}
+
+	public void setPartialTriggerPattern(String triggerPattern) {
+		_partialTriggerPattern = triggerPattern;
+	}
+
+	public String getInlineLoadingMessage() {
+		return _inlineLoadingMessage;
+	}
+
+	public void setInlineLoadingMessage(String loadingMessage) {
+		_inlineLoadingMessage = loadingMessage;
+	}
+	
+	
 
 }
