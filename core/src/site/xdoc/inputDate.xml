@@ -49,7 +49,7 @@
             
             <source xml:space="preserve">
 &lt;t:inputDate type="{date|time|both|short_time|full}"
-                popupCalendar="{true|false}"/&gt;
+                popupCalendar="{true|false}"
                 ampm="{true|false}"/&gt;
             </source>
         </section>
