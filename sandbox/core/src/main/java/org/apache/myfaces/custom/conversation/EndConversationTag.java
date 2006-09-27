@@ -45,15 +45,22 @@ public class EndConversationTag extends AbstractConversationTag
 		setStringProperty(component, "errorOutcome", getErrorOutcome());
 		setBooleanProperty(component, "restart", getRestart());
 
-		if (isValueReference(getRestartAction()))
+		if (getRestartAction() != null)
 		{
-			MethodBinding mb = getFacesContext().getApplication().createMethodBinding(
-				getRestartAction(), null);
-			endConversation.setRestartAction(mb);
+			if (isValueReference(getRestartAction()))
+			{
+				MethodBinding mb = getFacesContext().getApplication().createMethodBinding(
+					getRestartAction(), null);
+				endConversation.setRestartAction(mb);
+			}
+			else
+			{
+				throw new IllegalArgumentException("argument 'restartAction' must be a method binding");
+			}
 		}
 		else
 		{
-			throw new IllegalArgumentException("argument 'restartAction' must be a method binding");
+				endConversation.setRestartAction(null);
 		}
 	}
 
