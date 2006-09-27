@@ -54,7 +54,7 @@ public class DojoInitializer extends UIOutput {
         return _dojoConfig.getBaseScriptUri();
     }
 
-    public Boolean getBindEncoding() {
+    public String getBindEncoding() {
         return _dojoConfig.getBindEncoding();
     }
 
@@ -94,7 +94,7 @@ public class DojoInitializer extends UIOutput {
         return _dojoConfig.getIgnoreClassNames();
     }
 
-    public Boolean getIoSendTransport() {
+    public String getIoSendTransport() {
         return _dojoConfig.getIoSendTransport();
     }
 
@@ -135,11 +135,11 @@ public class DojoInitializer extends UIOutput {
         super.restoreState(context, values[0]);
         _dojoConfig.setAllowQueryConfig((Boolean) values[1]);
         _dojoConfig.setBaseScriptUri((String) values[2]);
-        _dojoConfig.setBindEncoding((Boolean) values[3]);
+        _dojoConfig.setBindEncoding((String) values[3]);
         _dojoConfig.setDebug((Boolean) values[4]);
         _dojoConfig.setDebugContainerId((String) values[5]);
         _dojoConfig.setIgnoreClassNames((Boolean) values[6]);
-        _dojoConfig.setIoSendTransport((Boolean) values[7]);
+        _dojoConfig.setIoSendTransport((String) values[7]);
         _dojoConfig.setParseWidgets((Boolean) values[8]);
         _dojoConfig.setPreventBackButtonFix((Boolean) values[9]);
         _dojoConfig.setSearchIds((String) values[10]);
@@ -193,7 +193,7 @@ public class DojoInitializer extends UIOutput {
         _dojoConfig.setBaseScriptUri(baseScriptUri);
     }
 
-    public void setBindEncoding(Boolean bindEncoding) {
+    public void setBindEncoding(String bindEncoding) {
 
         if (bindEncoding != null) {
             dojoConfigParamSet = true;
@@ -263,7 +263,7 @@ public class DojoInitializer extends UIOutput {
         _dojoConfig.setIgnoreClassNames(ignoreClassNames);
     }
 
-    public void setIoSendTransport(Boolean ioSendTransport) {
+    public void setIoSendTransport(String ioSendTransport) {
 
         if (ioSendTransport != null) {
             dojoConfigParamSet = true;

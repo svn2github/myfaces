@@ -51,12 +51,12 @@ public class DojoConfig implements Serializable {
     public static String        ATTR_DOJO_TYPE        = "dojoType";
     Boolean                     _allowQueryConfig     = null;
     String                      _baseScriptUri        = null;
-    Boolean                     _bindEncoding         = null;
+    String                      _bindEncoding         = null;
     Boolean                     _debug                = null;
     Boolean                     _debugAtAllCosts      = null;
     String                      _debugContainerId     = null;
     Boolean                     _ignoreClassNames     = null;
-    Boolean                     _ioSendTransport      = null;
+    String                      _ioSendTransport      = null;
     Boolean                     _parseWidgets         = null;
     Boolean                     _preventBackButtonFix = null;
     String                      _searchIds            = null;
@@ -70,7 +70,7 @@ public class DojoConfig implements Serializable {
         return _baseScriptUri;
     }
 
-    public Boolean getBindEncoding() {
+    public String getBindEncoding() {
         return _bindEncoding;
     }
 
@@ -90,7 +90,7 @@ public class DojoConfig implements Serializable {
         return _ignoreClassNames;
     }
 
-    public Boolean getIoSendTransport() {
+    public String getIoSendTransport() {
         return _ioSendTransport;
     }
 
@@ -114,7 +114,7 @@ public class DojoConfig implements Serializable {
         this._baseScriptUri = baseScriptUri;
     }
 
-    public void setBindEncoding(Boolean bindEncoding) {
+    public void setBindEncoding(String bindEncoding) {
         this._bindEncoding = bindEncoding;
     }
 
@@ -134,7 +134,7 @@ public class DojoConfig implements Serializable {
         this._ignoreClassNames = ignoreClassNames;
     }
 
-    public void setIoSendTransport(Boolean ioSendTransport) {
+    public void setIoSendTransport(String ioSendTransport) {
         this._ioSendTransport = ioSendTransport;
     }
 
@@ -176,17 +176,30 @@ public class DojoConfig implements Serializable {
         return configBuilder.toString();
     }
 
-    private final void createConfigEntry(StringBuffer target, String name, Object toCheck) {
+    /**
+     * helper to create a new config entry in the expected djConfig syntax
+     * @param target    the target stringbuffer which gets all the values
+     * @param configKey      the name of the entry
+     * @param configValue     the value of the entry
+     */
+    private final void createConfigEntry(StringBuffer target, String configKey, Object configValue) {
 
-        if (toCheck == null)
+        if (configValue == null)
             return;
 
         if (target.indexOf(":") != -1)
             target.append(",\n");
 
-        target.append(name);
+        target.append(configKey);
         target.append(":");
-        target.append(toCheck);
+        //strings have to be handled separately because we have to have them in quotes
+        boolean isStringValue = (configValue instanceof String);
+        if(isStringValue)
+            target.append("'");
+        target.append(configValue);
+        if(isStringValue)
+            target.append("'");
+
     }
 
 }

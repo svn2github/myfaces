@@ -139,14 +139,14 @@ public class DojoInitializerTag extends HtmlOutputTextTagBase {
 
     protected void setProperties(UIComponent component) {
         super.setProperties(component);
-        super.setBooleanProperty(component, "ioSendTransport", _ioSendTransport);
+        super.setStringProperty(component, "ioSendTransport", _ioSendTransport);
         super.setBooleanProperty(component, "debug", _debug);
         super.setStringProperty(component, "baseScriptUri", _baseScriptUri);
         super.setBooleanProperty(component, "allowQueryConfig", _allowQueryConfig);
         super.setStringProperty(component, "debugContainerId", _debugContainerId);
         super.setStringProperty(component, "searchIds", _searchIds);
         super.setBooleanProperty(component, "parseWidgets", _parseWidgets);
-        super.setBooleanProperty(component, "bindEncoding", _bindEncoding);
+        super.setStringProperty(component, "bindEncoding", _bindEncoding);
         super.setBooleanProperty(component, "ignoreClassNames", _ignoreClassNames);
         super.setBooleanProperty(component, "preventBackButtonFix", _preventBackButtonFix);
         super.setStringProperty(component, "require", _require);

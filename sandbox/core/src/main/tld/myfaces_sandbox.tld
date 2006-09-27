@@ -932,7 +932,7 @@ Sandbox-related entities.
 			<name>ioSendTransport</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
+			<type>java.lang.String</type>
 		</attribute>
 
 		<attribute>
@@ -995,7 +995,7 @@ Sandbox-related entities.
 			<name>bindEncoding</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>ignoreClassNames</name>
