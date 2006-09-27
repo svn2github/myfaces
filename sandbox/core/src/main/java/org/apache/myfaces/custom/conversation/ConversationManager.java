@@ -99,6 +99,13 @@ public class ConversationManager implements Serializable
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context == null)
 		{
+			// check if we have a chance outside the FacesContext
+			ConversationManager cm = ConversationServletFilter.getConversationManager();
+			if (cm != null)
+			{
+				return cm;
+			}
+			
 			throw new IllegalStateException("no faces context available");
 		}
 		return getInstance(context);
