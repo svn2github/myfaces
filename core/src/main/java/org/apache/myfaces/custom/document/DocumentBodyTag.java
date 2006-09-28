@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.apache.myfaces.custom.document;
+import javax.faces.component.UIComponent;
 
 /**
  * Document to enclose the whole document. If not otherwise possible you can use
@@ -24,7 +25,12 @@ package org.apache.myfaces.custom.document;
  */
 public class DocumentBodyTag extends AbstractDocumentTag
 {
-	public String getComponentType()
+    private String _onload;
+    private String _onunload;
+    private String _onresize;
+    private String _onkeypress;
+
+    public String getComponentType()
 	{
 		return DocumentBody.COMPONENT_TYPE;
 	}
@@ -33,4 +39,36 @@ public class DocumentBodyTag extends AbstractDocumentTag
 	{
 		return DocumentBodyRenderer.RENDERER_TYPE;
 	}
+
+    public void release() {
+        super.release();
+        _onload = null;
+        _onunload = null;
+        _onresize = null;
+        _onkeypress = null;
+    }
+
+    protected void setProperties(UIComponent component) {
+        super.setProperties(component);
+        setStringProperty(component, "onload", _onload);
+        setStringProperty(component, "onunload", _onunload);
+        setStringProperty(component, "onresize", _onresize);
+        setStringProperty(component, "onkeypress", _onkeypress);
+    }
+
+    public void setOnload(String onload) {
+        _onload = onload;
+    }
+
+    public void setOnunload(String onunload) {
+        _onunload = onunload;
+    }
+
+    public void setOnresize(String onresize) {
+        _onresize = onresize;
+    }
+
+    public void setOnkeypress(String onkeypress) {
+        _onkeypress = onkeypress;
+    }
 }

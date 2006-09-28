@@ -16,10 +16,11 @@
 package org.apache.myfaces.custom.document;
 
 import java.io.IOException;
-
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
+import javax.faces.context.ResponseWriter;
 import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * Document to enclose the whole document. If not otherwise possible you can use
@@ -31,16 +32,27 @@ import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
 public class DocumentBodyRenderer extends AbstractDocumentRenderer
 {
 	public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
+	private String BODY_ELEM = "body";
+	private String[] ATTRS = new String[] {"onload", "onunload", "onresize", "onkeypress"};
 
 	protected String getHtmlTag()
 	{
-		return "body";
+		return BODY_ELEM;
 	}
 
 	protected Class getDocumentClass()
 	{
 		return DocumentBody.class;
 	}
+
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+    	throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(BODY_ELEM, uiComponent);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, ATTRS);
+        writer.endElement(BODY_ELEM);
+    }
 
 	protected void writeBeforeEnd(FacesContext facesContext) throws IOException
 	{

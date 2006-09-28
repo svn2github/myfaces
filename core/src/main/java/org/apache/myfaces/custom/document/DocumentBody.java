@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 package org.apache.myfaces.custom.document;
-
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * Document to enclose the document body. If not otherwise possible you can use
@@ -27,9 +29,88 @@ public class DocumentBody extends AbstractDocument
 {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.DocumentBody";
 	private static final String DEFAULT_RENDERER_TYPE = DocumentBodyRenderer.RENDERER_TYPE;
+    private String _onload;
+    private String _onunload;
+    private String _onresize;
+    private String _onkeypress;
 
 	public DocumentBody()
 	{
 		super(DEFAULT_RENDERER_TYPE);
 	}
+
+    /**
+     * @param localValue
+     * @param valueBindingName
+     * @return the value
+     */
+    private Object getLocalOrValueBindingValue(Object localValue,
+                    String valueBindingName)
+    {
+        if (localValue != null)
+            return localValue;
+        ValueBinding vb = getValueBinding(valueBindingName);
+        return vb != null ? vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnload(String onload)
+    {
+        _onload = onload;
+    }
+
+    public String getOnload()
+    {
+        return (String) getLocalOrValueBindingValue(_onload, "onload");
+    }
+
+    public void setOnunload(String onunload)
+    {
+        _onunload = onunload;
+    }
+
+    public String getOnunload()
+    {
+        return (String) getLocalOrValueBindingValue(_onunload, "onunload");
+    }
+
+    public void setOnresize(String onresize)
+    {
+        _onresize = onresize;
+    }
+
+    public String getOnresize()
+    {
+        return (String) getLocalOrValueBindingValue(_onresize, "onresize");
+    }
+
+    public void setOnkeypress(String onkeypress)
+    {
+        _onkeypress = onkeypress;
+    }
+
+    public String getOnkeypress()
+    {
+        return (String) getLocalOrValueBindingValue(_onkeypress, "onkeypress");
+    }
+
+    public Object saveState(FacesContext context)
+    {
+        Object[] values = new Object[5];
+        values[0] = super.saveState(context);
+        values[1] = _onload;
+        values[2] = _onunload;
+        values[3] = _onresize;
+        values[4] = _onkeypress;
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] values = (Object[]) state;
+        super.restoreState(context, values[0]);
+        _onload = (String) values[1];
+        _onunload = (String) values[2];
+        _onresize = (String) values[3];
+        _onkeypress = (String) values[4];
+    }
 }
