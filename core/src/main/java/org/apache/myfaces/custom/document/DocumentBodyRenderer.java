@@ -45,14 +45,12 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
 		return DocumentBody.class;
 	}
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-    	throws IOException
-    {
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(BODY_ELEM, uiComponent);
+	protected void openTag(ResponseWriter writer, UIComponent uiComponent)
+	throws IOException
+	{
+		super.openTag(writer, uiComponent);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, ATTRS);
-        writer.endElement(BODY_ELEM);
-    }
+	}
 
 	protected void writeBeforeEnd(FacesContext facesContext) throws IOException
 	{
