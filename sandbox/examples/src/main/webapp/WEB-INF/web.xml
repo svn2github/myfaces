@@ -161,7 +161,7 @@
   </servlet>
   <servlet>
     <servlet-name>SourceCodeServlet</servlet-name>
-    <servlet-class>org.apache.myfaces.shared.util.servlet.SourceCodeServlet</servlet-class>
+    <servlet-class>org.apache.myfaces.shared_tomahawk.util.servlet.SourceCodeServlet</servlet-class>
   </servlet>
   <!-- Spellchecker Servlet -->
 
