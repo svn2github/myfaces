@@ -8,8 +8,10 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 public class ConversationServletFilter implements Filter
 {
@@ -18,8 +20,11 @@ public class ConversationServletFilter implements Filter
 	private final static ThreadLocal externalContextTL = new ThreadLocal();
 	private final static ThreadLocal conversationManagerTL = new ThreadLocal();
 
+	private ServletContext servletContext;
+
 	public void init(FilterConfig arg0) throws ServletException
 	{
+		servletContext = arg0.getServletContext();
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
@@ -38,7 +43,7 @@ public class ConversationServletFilter implements Filter
 					if (conversationManager != null)
 					{
 						conversationManagerTL.set(conversationManager);
-						externalContextTL.set(ConversationExternalContext.create(httpRequest));
+						externalContextTL.set(ConversationExternalContext.create(servletContext, httpRequest));
 
 						conversationManager.attachPersistence();
 					}

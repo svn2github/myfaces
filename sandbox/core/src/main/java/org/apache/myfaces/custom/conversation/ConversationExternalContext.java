@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.conversation;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletContext;
 
 /**
  * we need some information we normally get from the FacesContext.getExternalContext BEFORE the FacesContext is active.
@@ -27,15 +28,30 @@ public class ConversationExternalContext
 {
 	private final Map requestMap;
 	private final Map requestParameterMap;
-	
-	protected ConversationExternalContext(Map requestMap, Map requestParameterMap)
+	private final Map initParameterMap;
+
+	protected ConversationExternalContext(Map initParameterMap, Map requestMap, Map requestParameterMap)
 	{
 		this.requestMap = requestMap;
 		this.requestParameterMap = requestParameterMap;
+		this.initParameterMap = initParameterMap;
 	}
-	
-	public static ConversationExternalContext create(final HttpServletRequest httpRequest)
+
+	public static ConversationExternalContext create(final ServletContext servletContext, final HttpServletRequest httpRequest)
 	{
+		Map initParameterMap = new FakeMap()
+		{
+			public boolean containsKey(Object key)
+			{
+				return servletContext.getInitParameter((String) key) != null;
+			}
+
+			public Object get(Object key)
+			{
+				return servletContext.getInitParameter((String) key);
+			}
+		};
+
 		Map requestParameterMap = new FakeMap()
 		{
 			public boolean containsKey(Object key)
@@ -48,7 +64,7 @@ public class ConversationExternalContext
 				return httpRequest.getParameter((String) key);
 			}
 		};
- 
+
 		Map requestMap = new FakeMap()
 		{
 			public boolean containsKey(Object key)
@@ -68,8 +84,8 @@ public class ConversationExternalContext
 				return prev;
 			}
 		};
-		
-		return new ConversationExternalContext(requestMap, requestParameterMap);
+
+		return new ConversationExternalContext(initParameterMap, requestMap, requestParameterMap);
 	}
 
 	public Map getRequestMap()
@@ -80,5 +96,10 @@ public class ConversationExternalContext
 	public Map getRequestParameterMap()
 	{
 		return requestParameterMap;
+	}
+
+	public Map getInitParameterMap()
+	{
+		return initParameterMap;
 	}
 }

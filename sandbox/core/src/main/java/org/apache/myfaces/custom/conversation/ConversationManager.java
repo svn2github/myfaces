@@ -105,7 +105,7 @@ public class ConversationManager implements Serializable
 			{
 				return cm;
 			}
-			
+
 			throw new IllegalStateException("no faces context available");
 		}
 		return getInstance(context);
@@ -430,7 +430,7 @@ public class ConversationManager implements Serializable
 	{
 		if (persistenceManagerFactory == null)
 		{
-			String persistenceManagerFactoryName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(INIT_PERSISTENCE_MANAGER_FACOTRY);
+			String persistenceManagerFactoryName = (String) ConversationServletFilter.getConversationExternalContext().getInitParameterMap().get(INIT_PERSISTENCE_MANAGER_FACOTRY);
 			if (persistenceManagerFactoryName == null)
 			{
 				throw new IllegalArgumentException("please configure '" + INIT_PERSISTENCE_MANAGER_FACOTRY + "' in your web.xml");
