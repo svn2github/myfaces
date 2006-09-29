@@ -94,7 +94,7 @@ public class ConversationUtils
 		ConversationManager conversationManager = ConversationManager.getInstance(context);
 		Conversation conversation = conversationManager.getConversation(conversationName);
 
-		conversationManager.endConversation(conversationName);
+		conversationManager.endConversation(conversationName, true);
 
 		if (restart != null && restart.booleanValue() && conversation != null)
 		{
@@ -106,6 +106,4 @@ public class ConversationUtils
 			}
 		}
 	}
-
-
 }

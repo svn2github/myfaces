@@ -268,15 +268,15 @@ public class ConversationManager implements Serializable
 
 	/**
 	 * End a conversation
-	 * @see ConversationContext#endConversation(String)
+	 * @see ConversationContext#endConversation(String, boolean)
 	 */
-	public void endConversation(String name)
+	public void endConversation(String name, boolean regularEnd)
 	{
 		Long conversationContextId = getConversationContextId();
 		ConversationContext conversationContext = getConversationContext(conversationContextId);
 		if (conversationContext != null)
 		{
-			conversationContext.endConversation(name);
+			conversationContext.endConversation(name, regularEnd);
 
 			if (!conversationContext.hasConversations())
 			{

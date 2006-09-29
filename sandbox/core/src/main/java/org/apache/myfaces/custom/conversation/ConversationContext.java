@@ -133,7 +133,7 @@ public class ConversationContext
 	 * End the conversation with given name.<br />
 	 * This also automatically closes all nested conversations.
 	 */
-	public void endConversation(String name)
+	public void endConversation(String name, boolean regularEnd)
 	{
 		synchronized (mutex)
 		{
@@ -154,7 +154,7 @@ public class ConversationContext
 						return;
 					}
 				}
-				endConversation(conversation, true);
+				endConversation(conversation, regularEnd);
 			}
 		}
 	}
