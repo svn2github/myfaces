@@ -625,6 +625,48 @@ Sandbox-related entities.
 		</attribute>
     </tag>
 
+        <!-- htmlToggleGroup -->
+        <tag>
+            <name>toggleGroup</name>
+            <tag-class>org.apache.myfaces.custom.toggle.HtmlToggleGroupTag</tag-class>
+            <body-content>JSP</body-content>
+            <description>
+                Extends PanelGroup. Allows user to toggle between 'view' mode and 'edit' mode
+            </description>
+            &standard_panel_group_attributes;
+        </tag>
+
+        <!-- toggleOutputLink -->
+	<tag>
+		<name>toggleOutputLink</name>
+		<tag-class>org.apache.myfaces.custom.toggle.ToggleOutputLinkTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Extends standard outputLink but links to a dynamically rendered resource (image, file, ...).</description>
+		&ui_output_attributes;
+        &html_universal_attributes;
+        &html_event_handler_attributes;
+        &html_anchor_attributes;
+    		&user_role_attributes;
+		&ext_forceId_attribute;
+
+		<attribute>
+			<name>for</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				The class which implements org.apache.myfaces.custom.dynamicResources.ResourceRenderer.
+				The resource renderer is responsible for resource the image.
+				The class must have a default constructor.
+				Any request scoped attribute or managed bean is not	available when this resource renderer
+				is instantiated and used.
+				The resource renderer must render the binary data for the resource by using the parameters
+				passed by nested f:param elements and/or using session or application scoped beans.
+			</description>
+		</attribute>
+
+	</tag>
+
 	<!--  effect -->
 	<tag>
 		<name>effect</name>

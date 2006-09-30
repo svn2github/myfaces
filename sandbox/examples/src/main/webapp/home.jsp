@@ -34,6 +34,7 @@
             <h:outputText value="Input Handling"/>
             <h:panelGrid style="padding-left:25px">
             	<h:outputLink value="focus.jsf"><f:verbatim>Focus - a component to set a target component as the focus on page load.</f:verbatim></h:outputLink>
+                <h:outputLink value="toggleOutputLink.jsf"><f:verbatim>Toggle - a component that allows the user to switch between Display/Edit modes</f:verbatim></h:outputLink>
             	<h:outputLink value="stateChangedNotifier.jsf"><f:verbatim>stateChangedNotifier - Shows a confirmation message if some of the fields in the form have changed</f:verbatim></h:outputLink>
             	<h:outputLink value="timedNotifier.jsf"><f:verbatim>timedNotifier - Shows a time triggered notification dialog</f:verbatim></h:outputLink>
 
