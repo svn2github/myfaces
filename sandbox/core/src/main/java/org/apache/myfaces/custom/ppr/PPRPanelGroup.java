@@ -88,7 +88,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		Object[] values = (Object[]) state;
 		super.restoreState(context, values[0]);
 		_partialTriggers = (String) values[1];
-		_partialTriggerPattern = (String) values[1];
+		_partialTriggerPattern = (String) values[2];
 
 	}
 
