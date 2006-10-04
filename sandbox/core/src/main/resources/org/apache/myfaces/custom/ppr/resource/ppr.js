@@ -95,16 +95,23 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 
 org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElement)
 {
+    var formName = this.form.id;
+
+    if(typeof formName == "undefined")
+    {
+        formName = this.form.name;
+    }
+
     if(typeof triggerElement != "undefined" ||
-    	typeof this.form.elements[this.form.name +':'+'_idcl'] != "undefined")
+    	typeof this.form.elements[formName +':'+'_idcl'] != "undefined")
     {
 		var triggerId;    
     	var content=new Array;
     	if(typeof triggerElement != "undefined")
     	{
     		triggerId=triggerElement.id;
-    		var formName = this.form.name;
-    		if (triggerElement.tagName.toLowerCase() == "input" &&
+
+            if (triggerElement.tagName.toLowerCase() == "input" &&
                 (triggerElement.type.toLowerCase() == "submit" ||
                  triggerElement.type.toLowerCase() == "image")
                 )
@@ -118,7 +125,7 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     	}
     	else 
     	{
-    		triggerId=this.form.elements[this.form.name +':'+'_idcl'].value;
+    		triggerId=this.form.elements[formName +':'+'_idcl'].value;
     	}
     	
         var triggeredComponents = this.getTriggeredComponents(triggerId);
