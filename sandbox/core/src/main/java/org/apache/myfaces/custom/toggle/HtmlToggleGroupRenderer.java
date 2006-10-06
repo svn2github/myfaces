@@ -17,6 +17,8 @@ package org.apache.myfaces.custom.toggle;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -26,28 +28,18 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
 
-import java.util.Iterator;
-import java.util.List;
-
-public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase
-{
-
-    private static Log log = LogFactory.getLog(HtmlToggleGroupRenderer.class);
+public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase {
 
     private static final String DISPLAY_NONE_STYLE = ";display:none;";
 
-    public void encodeEnd(FacesContext context, UIComponent component)
-            throws IOException
-    {
-        RendererUtils.checkParamValidity(context, component,
-                HtmlToggleGroup.class);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        RendererUtils.checkParamValidity(context, component, HtmlToggleGroup.class);
         boolean editMode = checkEditMode(component.getChildren());
         toggleVisibility(component.getChildren(), editMode);
         super.encodeEnd(context, component);
     }
 
-    private void toggleVisibility(List children, boolean editMode)
-    {
+    private void toggleVisibility(List children, boolean editMode) {
         Iterator it = children.iterator();
         while (it.hasNext()) {
             UIComponent component = (UIComponent) it.next();
@@ -81,8 +73,7 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase
     }
 
     // checks if this component has getStyle/setStyle methods
-    private boolean hasStyleAttribute(UIComponent component)
-    {
+    private boolean hasStyleAttribute(UIComponent component) {
         Method[] methods = component.getClass().getMethods();
 
         for (int i = 0; i < methods.length; i++) {
@@ -95,24 +86,22 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase
     }
 
     // hides component by appending 'display:none' to the 'style' attribute
-    private void hideComponent(UIComponent component)
-    {
+    private void hideComponent(UIComponent component) {
 
         System.out.println("hiding component is " + component.getClass());
 
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (!hasStyleAttribute(component)) {
-            log.info("style attribute expected, not found for component "
-                    + component.getClientId(context));
+            Log log = getLog();
+            log.info("style attribute expected, not found for component " + component.getClientId(context));
             return;
         }
 
         try {
             Class c = component.getClass();
             Method getStyle = c.getMethod("getStyle", new Class[] {});
-            Method setStyle = c.getMethod("setStyle",
-                    new Class[] { String.class });
+            Method setStyle = c.getMethod("setStyle", new Class[] { String.class });
 
             String style = (String) getStyle.invoke(component, new Object[] {});
             if (style == null) {
@@ -122,30 +111,33 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase
             }
             setStyle.invoke(component, new Object[] { style });
         } catch (Throwable e) {
-            log.error("unable to set style attribute on component "
-                    + component.getClientId(context));
+            Log log = getLog();
+            log.error("unable to set style attribute on component " + component.getClientId(context));
         }
 
     }
 
+    private Log getLog() {
+        Log log = LogFactory.getLog(HtmlToggleGroupRenderer.class);
+        return log;
+    }
+
     // displays component by removing, if present, any 'display:none' style
     // attribute
-    private void showComponent(UIComponent component)
-    {
+    private void showComponent(UIComponent component) {
 
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (!hasStyleAttribute(component)) {
-            log.info("style attribute expected, not found for component "
-                    + component.getClientId(context));
+            Log log = getLog();
+            log.info("style attribute expected, not found for component " + component.getClientId(context));
             return;
         }
 
         try {
             Class c = component.getClass();
             Method getStyle = c.getMethod("getStyle", new Class[] {});
-            Method setStyle = c.getMethod("setStyle",
-                    new Class[] { String.class });
+            Method setStyle = c.getMethod("setStyle", new Class[] { String.class });
 
             String style = (String) getStyle.invoke(component, new Object[] {});
             if (style == null || style.length() == 0) {
@@ -163,27 +155,24 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase
             }
             setStyle.invoke(component, new Object[] { style });
         } catch (Throwable e) {
-            log.error("unable to set style attribute on component "
-                    + component.getClientId(context));
+            Log log = getLog();
+            log.error("unable to set style attribute on component " + component.getClientId(context));
         }
 
     }
 
     // gets the edit mode from the child 'toggleOutputLink' component
-    private boolean checkEditMode(List children)
-    {
+    private boolean checkEditMode(List children) {
         Iterator it = children.iterator();
         while (it.hasNext()) {
             UIComponent component = (UIComponent) it.next();
             if (component instanceof ToggleOutputLink) {
-                System.out.println("edit mode is "
-                        + ((ToggleOutputLink) component).getEditMode());
+                System.out.println("edit mode is " + ((ToggleOutputLink) component).getEditMode());
                 return ((ToggleOutputLink) component).getEditMode();
             }
         }
-
-        log
-                .error("Could not find child ToggleOutputLink component for HtmlToggleGroup");
+        Log log = getLog();
+        log.error("Could not find child ToggleOutputLink component for HtmlToggleGroup");
         return false;
 
     }

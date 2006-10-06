@@ -18,15 +18,12 @@ package org.apache.myfaces.custom.toggle;
 
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
 
-public class HtmlToggleGroupTag extends HtmlPanelGroupTagBase
-{
-    public String getComponentType()
-    {
+public class HtmlToggleGroupTag extends HtmlPanelGroupTagBase {
+    public String getComponentType() {
         return HtmlToggleGroup.COMPONENT_TYPE;
     }
 
-    public String getRendererType()
-    {
+    public String getRendererType() {
         return HtmlToggleGroup.DEFAULT_RENDERER_TYPE;
     }
 }

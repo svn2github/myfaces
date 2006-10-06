@@ -15,13 +15,11 @@
  */
 package org.apache.myfaces.custom.toggle;
 
+import javax.faces.component.UIComponent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputLinkTagBase;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
 
 /**
  * JSP tag class for ToggleOutputLink component

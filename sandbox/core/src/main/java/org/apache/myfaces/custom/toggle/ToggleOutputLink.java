@@ -15,15 +15,8 @@
  */
 package org.apache.myfaces.custom.toggle;
 
-import org.apache.myfaces.custom.ajax.api.AjaxComponent;
-import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
-
 import javax.faces.component.html.HtmlOutputLink;
-import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
-import javax.faces.render.Renderer;
-import java.io.IOException;
 
 /**
  * Should be nested within an HtmlToggleGroup component. Controls nested within

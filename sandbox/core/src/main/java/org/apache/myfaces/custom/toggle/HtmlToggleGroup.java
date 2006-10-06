@@ -16,7 +16,7 @@
 
 package org.apache.myfaces.custom.toggle;
 
-import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import javax.faces.component.html.HtmlPanelGroup;
 
 /**
  * Container class allows user to toggle between view/edit mode.
