@@ -142,7 +142,7 @@ public class ToggleOutputLinkRenderer extends HtmlLinkRenderer
     private String getJavascriptFunctionName(FacesContext context, 
     		ToggleOutputLink toggleOutputLink)
     {
-    	String modifiedId = toggleOutputLink.getClientId(context).replace(":", "_");
+    	String modifiedId = toggleOutputLink.getClientId(context).replaceAll("\\:", "_");
     	return "toggle_" + modifiedId;
     }
      
