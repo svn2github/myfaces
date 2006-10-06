@@ -15,28 +15,17 @@
  */
 package org.apache.myfaces.custom.toggle;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.dojo.DojoConfig;
-import org.apache.myfaces.custom.dojo.DojoUtils;
-import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
-import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import java.io.IOException;
+
 import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.el.MethodBinding;
-import javax.faces.model.SelectItem;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.renderkit.html.HtmlLinkRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * Renderer for component HtmlAjaxChildComboBox
