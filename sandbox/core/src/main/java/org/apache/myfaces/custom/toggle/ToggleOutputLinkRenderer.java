@@ -36,7 +36,6 @@ public class ToggleOutputLinkRenderer extends HtmlLinkRenderer
 {
     public static final int DEFAULT_MAX_SUGGESTED_ITEMS = 200;
  
-    private static Log log = LogFactory.getLog(ToggleOutputLinkRenderer.class);
         
     
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
@@ -107,6 +106,7 @@ public class ToggleOutputLinkRenderer extends HtmlLinkRenderer
     		
     		if (component == null) 
     		{
+                Log log = LogFactory.getLog(ToggleOutputLinkRenderer.class);
     			log.error("Unable to find component with id " + componentId);
     			continue;
     		}
