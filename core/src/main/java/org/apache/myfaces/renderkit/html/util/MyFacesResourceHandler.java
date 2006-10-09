@@ -53,7 +53,7 @@ public class MyFacesResourceHandler implements ResourceHandler
      * class in the getResourceUri method and use that info to locate
      * the resource data represented by this object.
      * 
-     * @see org.apache.myfaces.shared.renderkit.html.util.ResourceHandler#getResourceLoaderClass()
+     * @see ResourceHandler#getResourceLoaderClass()
      */
     public Class getResourceLoaderClass()
     {

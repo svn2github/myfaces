@@ -50,7 +50,7 @@ public interface ResourceHandler
      * identify the resource to load. This URI will be interpreted
      * by an instance of the class returned by getResourceLoaderClass. 
      * 
-     * @see ResourceLoader#serveResource(ServletContext, HttpServletRequest, HttpServletResponse, String)
+     * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, String)
      */
     public String getResourceUri(FacesContext context);
     
