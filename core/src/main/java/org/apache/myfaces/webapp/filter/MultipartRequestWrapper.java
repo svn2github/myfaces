@@ -131,11 +131,26 @@ public class MultipartRequestWrapper
         for (Iterator it = request.getParameterMap().entrySet().iterator(); it.hasNext(); )
         {
             Map.Entry entry = (Map.Entry)it.next();
-            String[] valuesArray = (String[])entry.getValue();
-            for (int i = 0; i < valuesArray.length; i++)
+
+            Object value = entry.getValue();
+
+            if(value instanceof String[])
             {
-                addTextParameter((String)entry.getKey(), valuesArray[i]);
+                String[] valuesArray = (String[])entry.getValue();
+                for (int i = 0; i < valuesArray.length; i++)
+                {
+                    addTextParameter((String)entry.getKey(), valuesArray[i]);
+                }
             }
+            else if(value instanceof String)
+            {
+                String strValue = (String)entry.getValue();
+                addTextParameter((String)entry.getKey(), strValue);
+            }
+            else if(value != null)
+                throw new IllegalStateException("value of type : "+value.getClass()+" for key : "+
+                        entry.getKey()+" cannot be handled.");
+
         }
     }
 
@@ -188,7 +203,7 @@ public class MultipartRequestWrapper
     }
 
     /**
-     * Not used internaly by MyFaces, but provides a way to handle the uploaded files
+     * Not used internally by MyFaces, but provides a way to handle the uploaded files
      * out of MyFaces.
      */
     public Map getFileItems(){
