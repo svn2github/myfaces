@@ -51,8 +51,7 @@ import org.apache.commons.logging.LogFactory;
  * @author Hans Bergsten (Some code taken from an example in his O'Reilly JavaServer Faces book. Copied with permission)
  * @version $Revision$ $Date$
  */
-public class UITreeData extends UIComponentBase implements NamingContainer
-{
+public class UITreeData extends UIComponentBase implements NamingContainer, Tree {
     private Log log = LogFactory.getLog(UITreeData.class);
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Tree2";
@@ -63,7 +62,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     private static final int PROCESS_VALIDATORS = 2;
     private static final int PROCESS_UPDATES = 3;
 
-    private TreeModel _model;
+    private TreeModel _cachedModel;
     private String _nodeId;
     private TreeNode _node;
 
@@ -166,7 +165,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        _model = null;
+        _cachedModel = null;
         _saved = new HashMap();
 
         setNodeId(null);
@@ -217,7 +216,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
     {
         if ("value".equals(name))
         {
-            _model = null;
+            _cachedModel = null;
         } else if ("nodeVar".equals(name) || "nodeId".equals(name) || "treeVar".equals(name))
         {
             throw new IllegalArgumentException("name " + name);
@@ -242,7 +241,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
 
         // FIX for MYFACES-404
         // do not use the cached model the render phase
-        _model = null;
+        _cachedModel = null;
 
         super.encodeBegin(context);
     }
@@ -251,11 +250,36 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      * Sets the value of the TreeData.
      *
      * @param value The new value
+     *
+     * @deprecated
      */
     public void setValue(Object value)
     {
-        _model = null;
+        _cachedModel = null;
         _value = value;
+    }
+
+
+    /**
+     * Gets the model of the TreeData -
+     *  due to backwards-compatibility, this can also be retrieved by getValue.
+     *
+     * @return The value
+     */
+    public Object getModel()
+    {
+        return getValue();
+    }
+
+    /**
+     * Sets the model of the TreeData -
+     *  due to backwards-compatibility, this can also be set by calling setValue.
+     *
+     * @param model The new model
+     */
+    public void setModel(Object model)
+    {
+        setValue(model);
     }
 
 
@@ -263,6 +287,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      * Gets the value of the TreeData.
      *
      * @return The value
+     *
+     * @deprecated
      */
     public Object getValue()
     {
@@ -287,7 +313,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      * Return the request-scope attribute under which the data object for the current node will be exposed
      * when iterating. This property is not enabled for value binding expressions.
      *
-     * @return The iterrator attribute
+     * @return The iterator attribute
      */
     public String getVar()
     {
@@ -395,9 +421,9 @@ public class UITreeData extends UIComponentBase implements NamingContainer
      */
     public TreeModel getDataModel()
     {
-        if (_model != null)
+        if (_cachedModel != null)
         {
-            return _model;
+            return _cachedModel;
         }
 
         Object value = getValue();
@@ -405,11 +431,11 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         {
             if (value instanceof TreeModel)
             {
-                _model = (TreeModel) value;
+                _cachedModel = (TreeModel) value;
             }
             else if (value instanceof TreeNode)
             {
-                _model = new TreeModelBase((TreeNode) value);
+                _cachedModel = new TreeModelBase((TreeNode) value);
             } else
             {
                 throw new IllegalArgumentException("Value must be a TreeModel or TreeNode");
@@ -417,9 +443,9 @@ public class UITreeData extends UIComponentBase implements NamingContainer
         }
 
         if (_restoredState != null)
-            _model.setTreeState(_restoredState); // set the restored state (if there is one) on the model
+            _cachedModel.setTreeState(_restoredState); // set the restored state (if there is one) on the model
 
-        return _model;
+        return _cachedModel;
     }
 
     /**

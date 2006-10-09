@@ -28,14 +28,14 @@ public class TreeWalkerBase implements TreeWalker
     private String ROOT_NODE_ID = "0";
     private String TREE_NODE_SEPARATOR = ":";
 
-    private UITreeData tree;
+    private Tree tree;
     private Stack nodeStack = new Stack();
     private Stack idStack = new Stack();
     private boolean checkState = true;
     private boolean startedWalking = false;
 
     // see interface
-    public void setTree(UITreeData tree)
+    public void setTree(Tree tree)
     {
         this.tree = tree;
     }
