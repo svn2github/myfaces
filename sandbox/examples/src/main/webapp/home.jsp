@@ -54,8 +54,8 @@
 
             <h:outputText value="Layout"/>
             <h:panelGrid style="padding-left:25px">
-                <h:outputLink value="/dojo/splitpanejsfonly.jsf" ><f:verbatim>SplitPane - Dojos ContentPane widget to separate a page into panes of belonging content</f:verbatim></h:outputLink>
-                <h:outputLink value="/dojo/titlepanejsfonly.jsf" ><f:verbatim>TitlePane - Dojos TitlePane; Displays some data with a title on top. Data can be collapsed leaving only the title shown. </f:verbatim></h:outputLink>
+                <h:outputLink value="dojo/splitpanejsfonly.jsf" ><f:verbatim>SplitPane - Dojos ContentPane widget to separate a page into panes of belonging content</f:verbatim></h:outputLink>
+                <h:outputLink value="dojo/titlepanejsfonly.jsf" ><f:verbatim>TitlePane - Dojos TitlePane; Displays some data with a title on top. Data can be collapsed leaving only the title shown. </f:verbatim></h:outputLink>
                 <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
                 <h:outputLink value="hmenu.jsf" ><f:verbatim>Horizontal Menu</f:verbatim></h:outputLink>
 				<h:outputLink value="fieldset.jsf"><f:verbatim>FieldSet</f:verbatim></h:outputLink>
