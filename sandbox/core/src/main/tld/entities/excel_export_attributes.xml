@@ -1,0 +1,7 @@
+<attribute>
+    <name>for</name>
+    <required>true</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>The datatable component whose values to be exported</description>
+</attribute>
