@@ -126,6 +126,13 @@
                 <h:outputLink value="dojo/dojoDialog.jsf" ><f:verbatim>A modal dialog similar to an alert or confirm or popup window</f:verbatim></h:outputLink>
             </h:panelGrid>
 
+            <h:outputText value="Submit on event"/>
+            <h:panelGrid style="padding-left:25px">
+                <h:outputLink value="submitOnEventInput.jsf" ><f:verbatim>submit on event attached to input controls</f:verbatim></h:outputLink>
+                <h:outputLink value="submitOnEventGlobal.jsf" ><f:verbatim>submit on a global event</f:verbatim></h:outputLink>
+                <h:outputLink value="submitOnEventLink.jsf" ><f:verbatim>submit on a global event as child of a commandLink</f:verbatim></h:outputLink>
+            </h:panelGrid>
+
         </h:panelGrid>
     </h:form>
     </f:view>

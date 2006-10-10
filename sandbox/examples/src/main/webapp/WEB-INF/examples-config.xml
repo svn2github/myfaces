@@ -487,6 +487,12 @@
     	<managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+    	<managed-bean-name>submitOnEvent</managed-bean-name>
+    	<managed-bean-class>org.apache.myfaces.examples.submitOnEvent.SubmitOnEventBean</managed-bean-class>
+    	<managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
     <!-- XMLTemplate -->
     <managed-bean>
     	<managed-bean-name>templateBacker</managed-bean-name>
