@@ -273,7 +273,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
             onClick.append(HtmlRendererUtils.getClearHiddenCommandFormParamsFunctionName(formName)).append("();");
 
             if (MyfacesConfig.getCurrentInstance(context.getExternalContext()).isAutoScroll()) {
-                org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils.appendAutoScrollAssignment(onClick, formName);
+                HtmlRendererUtils.appendAutoScrollAssignment(onClick, formName);
             }
 
             // add id parameter for decode

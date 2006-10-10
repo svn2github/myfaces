@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 
 /**
@@ -75,7 +76,8 @@ public class ExtensionsPhaseListener implements PhaseListener {
      *
      * The extension filter will then finally process it and render it into the page.
      * 
-     * @throws IOException
+     * @throws IOException an exception if writer cannot be written to
+     * @param facesContext The current faces-context
      */
     private void getJavaScriptCodeAndStoreInRequest(FacesContext facesContext) throws IOException
     {
@@ -114,8 +116,8 @@ public class ExtensionsPhaseListener implements PhaseListener {
      * In the case of DefaultAddResource, this method will be called with a wrapped response writer - and we'll
      * buffer the javascript-text in the request, for the ExtensionFilter to catch and render it.
      *
-     * @param facesContext
-     * @throws IOException
+     * @param facesContext The current faces-context.
+     * @throws IOException Exception if writing to the output-stream fails.
      */
     public static void writeCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
 	{
@@ -139,7 +141,7 @@ public class ExtensionsPhaseListener implements PhaseListener {
 
         if (myfacesConfig.isAutoScroll())
         {
-            JavascriptUtils.renderAutoScrollFunction(facesContext, writer);
+            HtmlRendererUtils.renderAutoScrollFunction(facesContext, writer);
         }
 
         // now write out listeners

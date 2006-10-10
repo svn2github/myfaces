@@ -28,6 +28,7 @@ import javax.faces.context.ResponseWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
@@ -150,7 +151,7 @@ public class DummyFormUtils {
 
         if (org.apache.myfaces.shared_tomahawk.config.MyfacesConfig.getCurrentInstance(facesContext.getExternalContext()).isAutoScroll())
         {
-            JavascriptUtils.renderAutoScrollHiddenInput(facesContext, writer);
+            HtmlRendererUtils.renderAutoScrollHiddenInput(facesContext, writer);
         }
 
         org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils.writePrettyLineSeparator(facesContext);
