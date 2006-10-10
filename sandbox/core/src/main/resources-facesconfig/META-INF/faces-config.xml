@@ -229,6 +229,11 @@
     <component-type>org.apache.myfaces.SubmitOnEvent</component-type>
     <component-class>org.apache.myfaces.custom.submitOnEvent.SubmitOnEvent</component-class>
   </component>
+  
+  <component>
+		<component-type>org.apache.myfaces.ExcelExport</component-type>
+		<component-class>org.apache.myfaces.custom.excelexport.ExcelExport</component-class>
+  </component>
 
   <!-- sandbox converters -->
 
@@ -479,6 +484,12 @@
     <component-family>org.apache.myfaces.SubmitOnEvent</component-family>
     <renderer-type>org.apache.myfaces.SubmitOnEvent</renderer-type>
     <renderer-class>org.apache.myfaces.custom.submitOnEvent.SubmitOnEventRenderer</renderer-class>
+  </renderer>
+  
+  <renderer>
+	<component-family>org.apache.myfaces.Export</component-family>
+	<renderer-type>org.apache.myfaces.ExcelExportRenderer</renderer-type>
+    <renderer-class>org.apache.myfaces.custom.excelexport.ExcelExportRenderer</renderer-class>
   </renderer>
 
    <!-- <renderer>
