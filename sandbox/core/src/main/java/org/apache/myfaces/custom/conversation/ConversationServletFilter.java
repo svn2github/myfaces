@@ -36,14 +36,15 @@ public class ConversationServletFilter implements Filter
 			if (request instanceof HttpServletRequest)
 			{
 				HttpServletRequest httpRequest = (HttpServletRequest) request;
+				externalContextTL.set(ConversationExternalContext.create(servletContext, httpRequest));
+
 				HttpSession httpSession = httpRequest.getSession(false);
-				if (request != null)
+				if (httpSession != null)
 				{
 					conversationManager = ConversationManager.getInstance(httpSession);
 					if (conversationManager != null)
 					{
 						conversationManagerTL.set(conversationManager);
-						externalContextTL.set(ConversationExternalContext.create(servletContext, httpRequest));
 
 						conversationManager.attachPersistence();
 					}
