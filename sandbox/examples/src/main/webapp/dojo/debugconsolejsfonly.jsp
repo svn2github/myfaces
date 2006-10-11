@@ -36,10 +36,10 @@
 	<body>
 		<f:view>
 			<h:panelGroup>
-				<s:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
-				<s:dojoInitializer require="dojo.widget.DebugConsole" debugAtAllCosts="false"/>	
-				<s:dojoInitializer require="dojo.widget.ResizeHandle" />	
-				<s:dojoInitializer debugConsole="true" expanded="true"/>
+				<t:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
+				<t:dojoInitializer require="dojo.widget.DebugConsole" debugAtAllCosts="false"/>	
+				<t:dojoInitializer require="dojo.widget.ResizeHandle" />	
+				<t:dojoInitializer debugConsole="true" expanded="true"/>
 					
 				<f:verbatim>
 					<script type="text/javascript" >

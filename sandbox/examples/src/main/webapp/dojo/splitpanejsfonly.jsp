@@ -46,8 +46,8 @@
 	<body>
 		<f:view>
 			<h:panelGroup style="width: 100%; height: 100%;">
-				<s:dojoInitializer require="dojo.widget.SplitContainer" />
-				<s:dojoInitializer require="dojo.widget.ContentPane" />
+				<t:dojoInitializer require="dojo.widget.SplitContainer" />
+				<t:dojoInitializer require="dojo.widget.ContentPane" />
 				<s:layoutingSplitPane id="split" activeSizing="0" 
 					style="width: 400px; height: 400px; background: #eeeeee; padding: 10px;" sizerWidth="2">
 					<s:layoutingContentPane id="left" sizeShare="10">

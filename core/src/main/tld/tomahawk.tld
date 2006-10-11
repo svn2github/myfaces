@@ -101,6 +101,7 @@
 <!ENTITY standard_select_one_radio_attributes SYSTEM "entities/standard_select_one_radio_attributes.xml">
 <!ENTITY alt_location_attributes             SYSTEM "entities/alt_location_attributes.xml">
 
+
 <!ENTITY tomahawk_input_secret_attributes 
       SYSTEM "tomahawk-entities/tomahawk_input_secret_attributes.xml">
 <!ENTITY tomahawk_message_attributes 
@@ -211,6 +212,9 @@
       SYSTEM "tomahawk-entities/tomahawk_html_schedule_attributes.xml">
 <!ENTITY tomahawk_panel_group_attributes
       SYSTEM "tomahawk-entities/tomahawk_panel_group_attributes.xml">
+<!ENTITY tomahawk_dojo_intializer_attributes
+      SYSTEM "tomahawk-entities/tomahawk_dojo_initializer_attributes.xml">
+
 ]>
 
 <taglib>
@@ -1571,6 +1575,16 @@
 		&ui_command_attributes;
 		&tomahawk_ui_schedule_attributes;
 		&tomahawk_html_schedule_attributes;
+	</tag>
+
+
+	<tag>
+		<name>dojoInitializer</name>
+		<tag-class>org.apache.myfaces.custom.dojo.DojoInitializerTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Dojo initializer helper tag for debugging and communication flags. This tag encapsules the Dojo DjConfig meta configuration and also adds the needed dojo required functionality.</description>
+		&ui_component_attributes;
+		&tomahawk_dojo_intializer_attributes;
 	</tag>
 
 

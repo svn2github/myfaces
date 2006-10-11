@@ -35,10 +35,10 @@
 <body>
 <f:view>
     <h:panelGroup>
-        <s:dojoInitializer require="dojo.widget.Editor" debug="true"/>
-        <s:dojoInitializer require="dojo.widget.DebugConsole"/>
-        <s:dojoInitializer require="dojo.widget.ResizeHandle"/>
-        <s:dojoInitializer require="dojo.widget.Button"/>
+        <t:dojoInitializer require="dojo.widget.Editor" debug="true"/>
+        <t:dojoInitializer require="dojo.widget.DebugConsole"/>
+        <t:dojoInitializer require="dojo.widget.ResizeHandle"/>
+        <t:dojoInitializer require="dojo.widget.Button"/>
         <f:verbatim>
             <script type="text/javascript">
                 function generateSomeDebuggingInfo() {

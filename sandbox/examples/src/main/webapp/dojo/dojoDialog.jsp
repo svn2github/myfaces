@@ -49,8 +49,13 @@
             <h:outputLink value="#" onclick="dojoDialog.show();document.getElementById('filter3').focus();">
                 <h:outputText value="search"/>
             </h:outputLink>
+            <h:outputLink value="#" onclick="dojoDialogOuterform.show();">
+                <h:outputText value="searchOuterForm"/>
+            </h:outputLink>
+
         </h:panelGrid>
     </h:panelGrid>
+
     <s:modalDialog dialogId="DialogContent" dialogVar="dojoDialog"
                   dialogAttr="bgColor='white' bgOpacity='0.5' toggle='fade' toggleDuration='250'"
                   hiderIds="cancel1,cancel2,cancel3" styleClass="dojoDialog">
@@ -69,6 +74,30 @@
             </h:panelGrid>
         </h:panelGrid>
     </s:modalDialog>
+
+	<h:form id="outerform">
+	    <s:modalDialog dialogId="FormDialog" dialogVar="dojoDialogOuterform"
+	                  dialogAttr="bgColor='white' bgOpacity='0.5' toggle='fade' toggleDuration='250'"
+	                  hiderIds="cancel1x,cancel2x,cancel3x" styleClass="dojoDialog">
+	        <h:panelGrid columns="1">
+	            <h:panelGrid columns="2">
+	                <t:inputText id="filter1Outerform" forceId="true" value="Test" size="25"/>
+	                <t:commandButton id="cancel1Outerform" forceId="true" value="Cancel" onclick="dojo.widget.byId('FormDialog').hide();" />
+	            </h:panelGrid>
+	            <h:panelGrid columns="2">
+	                <t:inputText id="filter2Outerform" forceId="true" value="Test" size="25"/>
+	                <t:commandButton id="cancel2Outerform" forceId="true" value="Cancel" onclick="dojo.widget.byId('FormDialog').hide();" />
+	            </h:panelGrid>
+	            <h:panelGrid columns="2">
+	                <t:inputText id="filter3Outerform" forceId="true" value="Test" size="25"/>
+	                <t:commandButton id="cancel3Outerform" forceId="true" value="Cancel" onclick="dojo.widget.byId('FormDialog').hide();" />
+	            </h:panelGrid>
+	            <h:commandLink id="outerformsubmit"><h:outputFormat value="Submit"/></h:commandLink>
+	        </h:panelGrid>
+	    </s:modalDialog>
+	</h:form>
+
+
 </f:view>
 </body>
 </html>

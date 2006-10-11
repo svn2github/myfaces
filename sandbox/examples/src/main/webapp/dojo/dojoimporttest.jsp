@@ -90,8 +90,8 @@
 
 
 
-				<s:dojoInitializer require="dojo.fx.*"/>	
-				<s:dojoInitializer require="dojo.widget.Editor"/>	
+				<t:dojoInitializer require="dojo.fx.*"/>	
+				<t:dojoInitializer require="dojo.widget.Editor"/>	
 
 								
 				<h:outputText value="Dojo import tests, you now can setup dojo by using the s:dojoInitializer component." />

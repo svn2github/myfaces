@@ -43,7 +43,6 @@
       <item name="Dynamic Image" href="graphicImageDynamic.html"/>  
       <item name="FishEye Navigation Menu" href="fisheye.html"/> 
 	  <item name="SelectItems" href="selectItems.html"/> 
-      <item name="Dojo Initializer" href="dojoInitializer.html"/>
     </menu>    
     
     <menu name="Validators">

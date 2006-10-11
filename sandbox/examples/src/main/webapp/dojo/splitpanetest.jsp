@@ -46,8 +46,8 @@
 	<body>
 		<f:view>
 			<h:panelGroup>
-				<s:dojoInitializer require="dojo.widget.SplitContainer" />
-				<s:dojoInitializer require="dojo.widget.ContentPane" />
+				<t:dojoInitializer require="dojo.widget.SplitContainer" />
+				<t:dojoInitializer require="dojo.widget.ContentPane" />
 
 				
 					<t:div id="origSplitContainer" forceId="true"
