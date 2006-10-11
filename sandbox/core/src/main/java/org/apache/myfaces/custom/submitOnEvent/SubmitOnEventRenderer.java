@@ -38,15 +38,11 @@ public class SubmitOnEventRenderer extends HtmlRenderer
 {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
-        AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(
-                facesContext, AddResource.HEADER_BEGIN, SubmitOnEventRenderer.class,
-                "submitOnEvent.js");
-
         SubmitOnEvent submitOnEvent = (SubmitOnEvent) uiComponent;
 
         UIComponent forComponent = null;
-        UIComponent triggerComponent = null;
 
+		UIComponent triggerComponent = null;
         UIComponent parent = uiComponent.getParent();
         if (parent != null)
         {
@@ -60,7 +56,13 @@ public class SubmitOnEventRenderer extends HtmlRenderer
             }
         }
 
-        if (forComponent == null)
+		if (triggerComponent != null && !triggerComponent.isRendered())
+		{
+			// the component we are attaced to is not being rendered, so we can quit now ...
+			return;
+		}
+
+		if (forComponent == null)
         {
             String forComponentId = submitOnEvent.getFor();
             if (forComponentId == null)
@@ -74,6 +76,10 @@ public class SubmitOnEventRenderer extends HtmlRenderer
                 throw new IllegalArgumentException("SubmitOnEvent: can't find 'for'-component '" + forComponentId + "'");
             }
         }
+
+		AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(
+				facesContext, AddResource.HEADER_BEGIN, SubmitOnEventRenderer.class,
+				"submitOnEvent.js");
 
         StringBuffer js = new StringBuffer(80);
         js.append("setTimeout(\"");
