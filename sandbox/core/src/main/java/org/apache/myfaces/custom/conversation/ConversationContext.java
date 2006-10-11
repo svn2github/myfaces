@@ -15,9 +15,7 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -32,7 +30,7 @@ public class ConversationContext
 
 	private final Object mutex = new Object();
 	private final Map conversations = new TreeMap();
-	private final List conversationStack = new ArrayList(10);
+	// private final List conversationStack = new ArrayList(10);
 	private Conversation currentConversation;
 
 	private long lastAccess;
@@ -65,7 +63,7 @@ public class ConversationContext
 			}
 
 			conversations.clear();
-			conversationStack.clear();
+			// conversationStack.clear();
 		}
 	}
 
@@ -84,19 +82,21 @@ public class ConversationContext
 			{
 				conversation = new Conversation(name, persistence);
 				conversations.put(name, conversation);
-				conversationStack.add(conversation);
+				// conversationStack.add(conversation);
 			}
+			/*
 			else
 			{
 				endNestedConversations(conversation, false);
 			}
+			*/
 			currentConversation = conversation;
 		}
 	}
 
-	/**
+	/*
 	 * Ends all conversations nested under conversation
-	 */
+	 *
 	protected void endNestedConversations(Conversation conversation, boolean regularEnd)
 	{
 		synchronized (mutex)
@@ -115,6 +115,7 @@ public class ConversationContext
 			}
 		}
 	}
+	*/
 
 	/**
 	 * End the given conversation
@@ -141,6 +142,7 @@ public class ConversationContext
 			Conversation conversation = (Conversation) conversations.get(name);
 			if (conversation != null)
 			{
+				/*
 				while (conversationStack.size()>1)
 				{
 					Conversation dependingConversation = (Conversation) conversationStack.get(conversationStack.size()-1);
@@ -154,6 +156,7 @@ public class ConversationContext
 						return;
 					}
 				}
+				*/
 				endConversation(conversation, regularEnd);
 			}
 		}
@@ -234,9 +237,20 @@ public class ConversationContext
 		synchronized (mutex)
 		{
 			touch();
+			/*
 			for (int i = conversationStack.size(); i>0; i--)
 			{
 				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.hasBean(name))
+				{
+					return conversation.getBean(name);
+				}
+			}
+			*/
+			Iterator iterConversations = conversations.values().iterator();
+			while (iterConversations.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversations.next();
 				if (conversation.hasBean(name))
 				{
 					return conversation.getBean(name);
@@ -255,9 +269,20 @@ public class ConversationContext
 		synchronized (mutex)
 		{
 			touch();
+			/*
 			for (int i = conversationStack.size(); i>0; i--)
 			{
 				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					return conversation.getPersistenceManager();
+				}
+			}
+			*/
+			Iterator iterConversations = conversations.values().iterator();
+			while (iterConversations.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversations.next();
 				if (conversation.isPersistence())
 				{
 					return conversation.getPersistenceManager();
@@ -276,9 +301,20 @@ public class ConversationContext
 		synchronized (mutex)
 		{
 			touch();
+			/*
 			for (int i = conversationStack.size(); i>0; i--)
 			{
 				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					conversation.getPersistenceManager().detach();
+				}
+			}
+			*/
+			Iterator iterConversations = conversations.values().iterator();
+			while (iterConversations.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversations.next();
 				if (conversation.isPersistence())
 				{
 					conversation.getPersistenceManager().detach();
@@ -295,9 +331,20 @@ public class ConversationContext
 		synchronized (mutex)
 		{
 			touch();
+			/*
 			for (int i = conversationStack.size(); i>0; i--)
 			{
 				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					conversation.getPersistenceManager().purge();
+				}
+			}
+			*/
+			Iterator iterConversations = conversations.values().iterator();
+			while (iterConversations.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversations.next();
 				if (conversation.isPersistence())
 				{
 					conversation.getPersistenceManager().purge();
@@ -314,9 +361,20 @@ public class ConversationContext
 		synchronized (mutex)
 		{
 			touch();
+			/*
 			for (int i = conversationStack.size(); i>0; i--)
 			{
 				Conversation conversation = (Conversation) conversationStack.get(i-1);
+				if (conversation.isPersistence())
+				{
+					conversation.getPersistenceManager().attach();
+				}
+			}
+			*/
+			Iterator iterConversations = conversations.values().iterator();
+			while (iterConversations.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversations.next();
 				if (conversation.isPersistence())
 				{
 					conversation.getPersistenceManager().attach();
