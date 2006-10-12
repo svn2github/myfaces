@@ -73,6 +73,7 @@
             <h:panelGrid style="padding-left:25px">
             	<h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
             	<h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
+            	<h:outputLink value="excelExport.jsf"><f:verbatim>ExcelExport - Export datatable contents as an excel file</f:verbatim></h:outputLink>
             </h:panelGrid>
 
             <h:outputText value="Selection Lists"/>
