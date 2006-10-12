@@ -96,8 +96,7 @@
             <h:panelGrid style="padding-left:25px">
 	 			<h:commandLink action="go_scope_shop"><f:verbatim>Scopeshop1, an extended saveState Example showing a wizard</f:verbatim></h:commandLink>
            		<h:outputLink value="effect.jsf" ><f:verbatim>Effect - DOJO and script.aculo.us effects</f:verbatim></h:outputLink>
-	            <h:outputLink value="dojo/textareatestjsfonly.jsf"><f:verbatim>Integration of Dojo Toolkit</f:verbatim></h:outputLink>
-                <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
+	            <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
                 <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>automatically convert the number to the correct type</f:verbatim></h:outputLink>
 
             </h:panelGrid>

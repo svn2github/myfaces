@@ -83,6 +83,18 @@
                 <h:outputLink value="collapsiblePanel.jsf" ><f:verbatim>Collapsible Panel</f:verbatim></h:outputLink>
                 <h:outputLink value="testExceptions.jsf" ><f:verbatim>Test the custom error page - not really jsf stuff, but a demonstration how to print the real exception</f:verbatim></h:outputLink>
 				<h:outputLink value="panelGroup.jsf" ><f:verbatim>Panel Group</f:verbatim></h:outputLink>
+                <h:outputText value="Dojo Integration" />
+                <h:panelGrid style="padding-left:25px">
+                	<h:outputLink value="dojo/dojoimporttest.jsf">
+                		<f:verbatim>Dojo Library Import via t:dojoInitializer</f:verbatim>
+                	</h:outputLink>
+                	<h:outputLink value="dojo/textareatestjsfonly.jsf">
+                		<f:verbatim>Simple Integration of the Dojo Toolkit example</f:verbatim>
+                	</h:outputLink>
+                	<h:outputLink value="dojo/debugconsolejsfonly.jsf">
+                		<f:verbatim>The dojo Debug Console</f:verbatim>
+                	</h:outputLink>
+                </h:panelGrid>
                 <h:outputText value="Schedule" />
                 <h:panelGrid style="padding-left:25px">
                     <h:outputLink value="schedule1.jsf">
