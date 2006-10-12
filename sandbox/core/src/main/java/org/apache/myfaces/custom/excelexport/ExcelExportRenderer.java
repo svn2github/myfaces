@@ -56,7 +56,10 @@ public class ExcelExportRenderer extends HtmlRenderer {
 	private void decorateOnClick(FacesContext facesContext, UIComponent child, String tableId) {
 		String jsCall = getJSCall(facesContext, tableId);
 		String onclickEvent = (String) child.getAttributes().get("onclick");
-		child.getAttributes().put("onclick", onclickEvent + ";" + jsCall);
+		if(onclickEvent == null)
+			child.getAttributes().put("onclick", jsCall);
+		else
+			child.getAttributes().put("onclick", onclickEvent + ";" + jsCall);
 	}
 	
 	private String getJSCall(FacesContext facesContext, String tableId) {
