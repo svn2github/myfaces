@@ -496,6 +496,7 @@
   	  <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
 	  <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
 	  <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener>
+   	  <phase-listener>org.apache.myfaces.custom.excelexport.ExcelExportPhaseListener</phase-listener>
   </lifecycle>
 
   <application>
