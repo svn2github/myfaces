@@ -638,17 +638,17 @@ Sandbox-related entities.
             &standard_panel_group_attributes;
         </tag>
 
-        <!-- toggleOutputLink -->
+        <!-- toggleLink -->
 	<tag>
-		<name>toggleOutputLink</name>
-		<tag-class>org.apache.myfaces.custom.toggle.ToggleOutputLinkTag</tag-class>
+		<name>toggleLink</name>
+		<tag-class>org.apache.myfaces.custom.toggle.ToggleLinkTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Extends standard outputLink but links to a dynamically rendered resource (image, file, ...).</description>
 		&ui_output_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_anchor_attributes;
-    		&user_role_attributes;
+    	&user_role_attributes;
 		&ext_forceId_attribute;
 
 		<attribute>
