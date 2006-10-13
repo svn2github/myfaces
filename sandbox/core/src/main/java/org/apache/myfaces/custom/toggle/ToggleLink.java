@@ -17,6 +17,7 @@ package org.apache.myfaces.custom.toggle;
 
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * Should be nested within an HtmlToggleGroup component. Controls nested within
@@ -30,9 +31,11 @@ public class ToggleLink extends HtmlOutputLink
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.ToggleLink";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.ToggleLink";
+    private static final boolean DEFAULT_DISABLED = false;
 
     private boolean _editMode = false;
     private String _for = null;
+    private Boolean _disabled = null;
 
     public void setEditMode(boolean val)
     {
@@ -53,6 +56,19 @@ public class ToggleLink extends HtmlOutputLink
     {
         return _for;
     }
+    
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = Boolean.valueOf(disabled);
+    }
+
+    public boolean isDisabled()
+    {
+        if (_disabled != null) return _disabled.booleanValue();
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_DISABLED;
+    }
 
     public ToggleLink()
     {
@@ -65,10 +81,9 @@ public class ToggleLink extends HtmlOutputLink
         super.processDecodes(context);
 
         String hiddenFieldId = this.getClientId(context) + "_hidden";
-        String editMode = (String) context.getExternalContext()
-                .getRequestParameterMap().get(hiddenFieldId);
+        String editMode = (String) context.getExternalContext().getRequestParameterMap().get(hiddenFieldId);
 
-        if (editMode.trim().equals("true")) {
+        if (editMode != null && editMode.trim().equals("true")) {
 
             this.setEditMode(true);
         }
@@ -83,9 +98,10 @@ public class ToggleLink extends HtmlOutputLink
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[2];
+        Object[] values = new Object[3];
         values[0] = super.saveState(context);
         values[1] = _for;
+        values[2] = _disabled;
         return values;
     }
 
@@ -94,6 +110,7 @@ public class ToggleLink extends HtmlOutputLink
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         _for = (String) values[1];
+        _disabled =  (Boolean)values[2];
     }
 
 }

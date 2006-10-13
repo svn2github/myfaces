@@ -37,6 +37,10 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
+        
+        if(((ToggleLink) component).isDisabled())
+        	return;
+        	
         super.encodeEnd(context, component);
 
         // render the hidden input field
@@ -56,10 +60,11 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     }
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
-
+        
         ToggleLink toggleLink = (ToggleLink) component;
+        if(toggleLink.isDisabled())
+        	return;
 
         this.writeJavascriptToToggleVisibility(context, toggleLink);
 
@@ -68,7 +73,7 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
 
         super.encodeBegin(context, component);
     }
-
+ 
     // Generate the javascript function to hide the Link component
     // and display the components specified in the 'for' attribute
     private void writeJavascriptToToggleVisibility(FacesContext context, ToggleLink toggleLink) throws IOException {

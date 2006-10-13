@@ -31,6 +31,7 @@ public class ToggleLinkTag extends HtmlOutputLinkTagBase
     private static Log log = LogFactory.getLog(ToggleLinkTag.class);
 
     private String _for;
+    private String _disabled;
 
     public String getComponentType()
     {
@@ -46,16 +47,23 @@ public class ToggleLinkTag extends HtmlOutputLinkTagBase
     {
         super.release();
         _for = null;
+        _disabled=null;
     }
 
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
         setStringProperty(component, "for", _for);
+        setBooleanProperty(component, "disabled", _disabled);
     }
 
     public void setFor(String value)
     {
         this._for = value;
+    }
+    
+    public void setDisabled(String disabled)
+    {
+        _disabled = disabled;
     }
 }
