@@ -115,8 +115,8 @@
   </component>
 
   <component>
-    <component-type>org.apache.myfaces.ToggleOutputLink</component-type>
-    <component-class>org.apache.myfaces.custom.toggle.ToggleOutputLink</component-class>
+    <component-type>org.apache.myfaces.ToggleLink</component-type>
+    <component-class>org.apache.myfaces.custom.toggle.ToggleLink</component-class>
   </component>
 
   <component>
@@ -379,8 +379,8 @@
 
     <renderer>
        <component-family>javax.faces.Output</component-family>
-       <renderer-type>org.apache.myfaces.ToggleOutputLink</renderer-type>
-       <renderer-class>org.apache.myfaces.custom.toggle.ToggleOutputLinkRenderer</renderer-class>
+       <renderer-type>org.apache.myfaces.ToggleLink</renderer-type>
+       <renderer-class>org.apache.myfaces.custom.toggle.ToggleLinkRenderer</renderer-class>
     </renderer>
 
     <renderer>
