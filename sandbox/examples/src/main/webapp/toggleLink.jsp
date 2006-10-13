@@ -42,9 +42,9 @@
 			        <f:validateLength minimum="5"/>
 			</t:inputText>
 			
-			<s:toggleOutputLink for="code" value="#">
+			<s:toggleLink for="code" value="#">
 				<h:outputText value="#{toggleBean.testValue}"/>
-			</s:toggleOutputLink>
+			</s:toggleLink>
 
                         </s:toggleGroup>
                         
