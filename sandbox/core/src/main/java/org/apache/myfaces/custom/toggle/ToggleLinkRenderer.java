@@ -32,24 +32,24 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * 
  * @author Sharath Reddy
  */
-public class ToggleOutputLinkRenderer extends HtmlLinkRenderer {
+public class ToggleLinkRenderer extends HtmlLinkRenderer {
     public static final int DEFAULT_MAX_SUGGESTED_ITEMS = 200;
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        RendererUtils.checkParamValidity(context, component, ToggleOutputLink.class);
+        RendererUtils.checkParamValidity(context, component, ToggleLink.class);
         super.encodeEnd(context, component);
 
         // render the hidden input field
         ResponseWriter writer = context.getResponseWriter();
-        ToggleOutputLink toggleOutputLink = (ToggleOutputLink) component;
-        String hiddenFieldId = toggleOutputLink.getClientId(context) + "_hidden";
+        ToggleLink toggleLink = (ToggleLink) component;
+        String hiddenFieldId = toggleLink.getClientId(context) + "_hidden";
 
         writer.startElement(HTML.INPUT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
         writer.writeAttribute(HTML.ID_ATTR, hiddenFieldId, null);
         writer.writeAttribute(HTML.NAME_ATTR, hiddenFieldId, null);
 
-        String value = new Boolean(toggleOutputLink.getEditMode()).toString();
+        String value = new Boolean(toggleLink.getEditMode()).toString();
         writer.writeAttribute(HTML.VALUE_ATTR, value, null);
 
         writer.endElement(HTML.INPUT_ELEM);
@@ -57,45 +57,45 @@ public class ToggleOutputLinkRenderer extends HtmlLinkRenderer {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 
-        RendererUtils.checkParamValidity(context, component, ToggleOutputLink.class);
+        RendererUtils.checkParamValidity(context, component, ToggleLink.class);
 
-        ToggleOutputLink toggleOutputLink = (ToggleOutputLink) component;
+        ToggleLink toggleLink = (ToggleLink) component;
 
-        this.writeJavascriptToToggleVisibility(context, toggleOutputLink);
+        this.writeJavascriptToToggleVisibility(context, toggleLink);
 
-        String functionName = this.getJavascriptFunctionName(context, toggleOutputLink);
-        toggleOutputLink.setOnclick(functionName + "(true);");
+        String functionName = this.getJavascriptFunctionName(context, toggleLink);
+        toggleLink.setOnclick(functionName + "(true);");
 
         super.encodeBegin(context, component);
     }
 
     // Generate the javascript function to hide the Link component
     // and display the components specified in the 'for' attribute
-    private void writeJavascriptToToggleVisibility(FacesContext context, ToggleOutputLink toggleOutputLink) throws IOException {
+    private void writeJavascriptToToggleVisibility(FacesContext context, ToggleLink toggleLink) throws IOException {
 
         ResponseWriter out = context.getResponseWriter();
 
         out.startElement(HTML.SCRIPT_ELEM, null);
         out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-        String functionName = getJavascriptFunctionName(context, toggleOutputLink);
+        String functionName = getJavascriptFunctionName(context, toggleLink);
 
         out.write(functionName + " = function() { ");
-        out.write("var toggleOutputLink = document.getElementById(");
-        out.write("'" + toggleOutputLink.getClientId(context) + "'");
+        out.write("var toggleLink = document.getElementById(");
+        out.write("'" + toggleLink.getClientId(context) + "'");
         out.write(");");
         out.write("\n");
-        out.write("toggleOutputLink.style.display = 'none';\n");
+        out.write("toggleLink.style.display = 'none';\n");
 
-        String[] componentsToToggle = toggleOutputLink.getFor().split(",");
+        String[] componentsToToggle = toggleLink.getFor().split(",");
 
         for (int i = 0; i < componentsToToggle.length; i++) {
             String componentId = componentsToToggle[i].trim();
 
-            UIComponent component = toggleOutputLink.findComponent(componentId);
+            UIComponent component = toggleLink.findComponent(componentId);
 
             if (component == null) {
-                Log log = LogFactory.getLog(ToggleOutputLinkRenderer.class);
+                Log log = LogFactory.getLog(ToggleLinkRenderer.class);
                 log.error("Unable to find component with id " + componentId);
                 continue;
             }
@@ -108,7 +108,7 @@ public class ToggleOutputLinkRenderer extends HtmlLinkRenderer {
 
         // toggle the value of the hidden field
         out.write("var hiddenField = document.getElementById(");
-        out.write("'" + toggleOutputLink.getClientId(context) + "_hidden'");
+        out.write("'" + toggleLink.getClientId(context) + "_hidden'");
         out.write(");\n");
         out.write("hiddenField.value = 'true';");
 
@@ -117,8 +117,8 @@ public class ToggleOutputLinkRenderer extends HtmlLinkRenderer {
 
     }
 
-    private String getJavascriptFunctionName(FacesContext context, ToggleOutputLink toggleOutputLink) {
-        String modifiedId = toggleOutputLink.getClientId(context).replaceAll("\\:", "_");
+    private String getJavascriptFunctionName(FacesContext context, ToggleLink toggleLink) {
+        String modifiedId = toggleLink.getClientId(context).replaceAll("\\:", "_");
         return "toggle_" + modifiedId;
     }
 

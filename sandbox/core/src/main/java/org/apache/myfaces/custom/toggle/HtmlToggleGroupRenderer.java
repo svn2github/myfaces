@@ -47,7 +47,7 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase {
             if (editMode)
             // The toggle component is hidden in edit mode
             {
-                if (component instanceof ToggleOutputLink) {
+                if (component instanceof ToggleLink) {
                     hideComponent(component);
                 }
                 // all other components: show if in edit mode
@@ -60,7 +60,7 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase {
             if (!editMode)
             // The toggle component is displayed in 'view' mode
             {
-                if (component instanceof ToggleOutputLink) {
+                if (component instanceof ToggleLink) {
                     showComponent(component);
                 }
                 // all other components are hidden in 'view' mode
@@ -161,18 +161,18 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase {
 
     }
 
-    // gets the edit mode from the child 'toggleOutputLink' component
+    // gets the edit mode from the child 'toggleLink' component
     private boolean checkEditMode(List children) {
         Iterator it = children.iterator();
         while (it.hasNext()) {
             UIComponent component = (UIComponent) it.next();
-            if (component instanceof ToggleOutputLink) {
-                System.out.println("edit mode is " + ((ToggleOutputLink) component).getEditMode());
-                return ((ToggleOutputLink) component).getEditMode();
+            if (component instanceof ToggleLink) {
+                System.out.println("edit mode is " + ((ToggleLink) component).getEditMode());
+                return ((ToggleLink) component).getEditMode();
             }
         }
         Log log = getLog();
-        log.error("Could not find child ToggleOutputLink component for HtmlToggleGroup");
+        log.error("Could not find child ToggleLink component for HtmlToggleGroup");
         return false;
 
     }

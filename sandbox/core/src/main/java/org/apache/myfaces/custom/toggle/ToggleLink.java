@@ -26,10 +26,10 @@ import javax.faces.context.FacesContext;
  * 
  * @author Sharath Reddy
  */
-public class ToggleOutputLink extends HtmlOutputLink
+public class ToggleLink extends HtmlOutputLink
 {
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.ToggleOutputLink";
-    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.ToggleOutputLink";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.ToggleLink";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.ToggleLink";
 
     private boolean _editMode = false;
     private String _for = null;
@@ -54,10 +54,10 @@ public class ToggleOutputLink extends HtmlOutputLink
         return _for;
     }
 
-    public ToggleOutputLink()
+    public ToggleLink()
     {
         super();
-        setRendererType(ToggleOutputLink.DEFAULT_RENDERER_TYPE);
+        setRendererType(ToggleLink.DEFAULT_RENDERER_TYPE);
     }
 
     public void processDecodes(FacesContext context)

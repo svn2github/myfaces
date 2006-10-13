@@ -22,24 +22,24 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputLinkTagBase;
 
 /**
- * JSP tag class for ToggleOutputLink component
+ * JSP tag class for ToggleLink component
  * 
  * @author Sharath Reddy
  */
-public class ToggleOutputLinkTag extends HtmlOutputLinkTagBase
+public class ToggleLinkTag extends HtmlOutputLinkTagBase
 {
-    private static Log log = LogFactory.getLog(ToggleOutputLinkTag.class);
+    private static Log log = LogFactory.getLog(ToggleLinkTag.class);
 
     private String _for;
 
     public String getComponentType()
     {
-        return ToggleOutputLink.COMPONENT_TYPE;
+        return ToggleLink.COMPONENT_TYPE;
     }
 
     public String getRendererType()
     {
-        return ToggleOutputLink.DEFAULT_RENDERER_TYPE;
+        return ToggleLink.DEFAULT_RENDERER_TYPE;
     }
 
     public void release()
