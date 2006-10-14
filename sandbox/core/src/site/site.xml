@@ -32,7 +32,7 @@
       <item name="Sandbox" href="index.html"/>
     </menu>
 
-	  <menu name="Components">
+	<menu name="Components">
       <item name="Input Suggest Ajax Menu" href="inputSuggestAjax.html"/>
       <item name="Auto Update DataTable" href="autoUpdateDataTable.html"/>  
       <item name="Input Suggest" href="inputSuggest.html"/>  
@@ -43,6 +43,7 @@
       <item name="Dynamic Image" href="graphicImageDynamic.html"/>  
       <item name="FishEye Navigation Menu" href="fisheye.html"/> 
 	  <item name="SelectItems" href="selectItems.html"/> 
+	  <item name="ExcelExport" href="excelexport.html"/> 
     </menu>    
     
     <menu name="Validators">
