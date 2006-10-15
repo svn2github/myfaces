@@ -43,6 +43,17 @@
     </repository>
   </repositories>
 
+  <profiles>
+    <profile>
+      <activation>
+        <jdk>1.5</jdk>
+      </activation>
+      <modules>
+        <module>sandbox15</module>
+      </modules>
+    </profile> 
+  </profiles>
+
   <modules>
     <module>core</module>
     <module>examples</module>
