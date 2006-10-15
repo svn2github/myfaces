@@ -793,6 +793,7 @@ public class JsfGuiBuilder extends GuiBuilder
 	public void initOutputDefaults(UIOutput cmp, FieldInterface field)
 	{
 		initValueBinding(cmp, field);
+        initConverter(cmp, field);
 	}
 
 	/**
@@ -976,20 +977,28 @@ public class JsfGuiBuilder extends GuiBuilder
 			cmp.setRequired(true);
 		}
 
-		// if there is no converter setup one now.
-		// we need this if the binding point to a map instead to a bean.
-		// For a map JSF cant determine the wanted value type
-		if (cmp.getConverter() == null && field.getType() != null)
-		{
-			Converter converter = doCreateConverter(field);
-			if (converter != null)
-			{
-				cmp.setConverter(converter);
-			}
-		}
-	}
+        initConverter(cmp, field);
+    }
 
-	/**
+    /**
+     * setup a converter if required
+     */
+    public void initConverter(UIOutput cmp, FieldInterface field)
+    {
+        // if there is no converter setup one now.
+        // we need this if the binding point to a map instead to a bean.
+        // For a map JSF cant determine the wanted value type
+        if (cmp.getConverter() == null && field.getType() != null)
+        {
+            Converter converter = doCreateConverter(field);
+            if (converter != null)
+            {
+                cmp.setConverter(converter);
+            }
+        }
+    }
+
+    /**
 	 * insert possible selection items
 	 */
 	@SuppressWarnings("unchecked")

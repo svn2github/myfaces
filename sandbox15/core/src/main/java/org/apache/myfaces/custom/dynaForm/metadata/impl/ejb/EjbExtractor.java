@@ -613,7 +613,7 @@ public class EjbExtractor implements Extractor
 		/*
 		else if (Number.class.isAssignableFrom(type))
 		{
-		}
+		}        1
 		*/
 	}
 
