@@ -21,7 +21,7 @@
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox15/core</developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox15/core</url>
     </scm>
-
+/
     <dependencies>
   
         <!-- compile -->
@@ -31,6 +31,19 @@
             <artifactId>tomahawk</artifactId>
             <version>${version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.myfaces.tomahawk</groupId>
+            <artifactId>tomahawk-sandbox</artifactId>
+            <version>${version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>bcel</groupId>
+            <artifactId>bcel</artifactId>
+            <version>5.1</version>
         </dependency>
 
         <dependency>
@@ -68,19 +81,13 @@
             <scope>compile</scope>
         </dependency>
 
-		<dependency>
-			<groupId>portlet-api</groupId>
-			<artifactId>portlet-api</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-		</dependency>
-
         <dependency>
-            <groupId>poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>2.5.1-final-20040804</version>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0</version>
             <scope>compile</scope>
         </dependency>
+
 
         <!-- provided dependencies -->
 
@@ -150,6 +157,13 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+	            <configuration>
+                        <source>1.5</source>
+                        <target>1.5</target>
+                    </configuration>
             </plugin>
         </plugins>
     </build>
