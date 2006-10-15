@@ -40,9 +40,11 @@ public class MyFacesGuiBuilder extends JsfGuiBuilder
 	}
 
 	@Override
-	public Converter doCreateConverter(Class type)
+	public Converter doCreateConverter(FieldInterface field)
 	{
-		if (Float.class.isAssignableFrom(type)
+        Class type = field.getType();
+
+        if (Float.class.isAssignableFrom(type)
             || Double.class.isAssignableFrom(type)
             || float.class.isAssignableFrom(type)
             || double.class.isAssignableFrom(type)
@@ -51,7 +53,7 @@ public class MyFacesGuiBuilder extends JsfGuiBuilder
 			return getContext().getApplication().createConverter(TypedNumberConverter.CONVERTER_ID);
 		}
 
-		return super.doCreateConverter(type);
+		return super.doCreateConverter(field);
 	}
 
 	@Override

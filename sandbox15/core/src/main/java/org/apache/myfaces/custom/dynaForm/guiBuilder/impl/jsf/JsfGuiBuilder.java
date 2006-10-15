@@ -60,6 +60,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Date;
 
 /**
  * concrete gui builder which knows how to build JSF forms
@@ -332,9 +333,11 @@ public class JsfGuiBuilder extends GuiBuilder
 		return cmp;
 	}
 
-	public Converter doCreateConverter(Class type)
+	public Converter doCreateConverter(FieldInterface field)
 	{
-		if (Boolean.class.isAssignableFrom(type))
+        Class type = field.getType();
+
+        if (Boolean.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(BooleanConverter.CONVERTER_ID);
 		}
@@ -375,6 +378,10 @@ public class JsfGuiBuilder extends GuiBuilder
 		{
 			return context.getApplication().createConverter(BigDecimalConverter.CONVERTER_ID);
 		}
+        if (Date.class.isAssignableFrom(type))
+        {
+            return doCreateDateConverter(field);
+        }
 
 		return null;
 	}
@@ -403,7 +410,7 @@ public class JsfGuiBuilder extends GuiBuilder
 			cnv.setType("both");
 		}
 		cnv.setDateStyle("short");
-		cnv.setTimeStyle("long");
+		cnv.setTimeStyle("medium");
 		return cnv;
 	}
 
@@ -974,7 +981,7 @@ public class JsfGuiBuilder extends GuiBuilder
 		// For a map JSF cant determine the wanted value type
 		if (cmp.getConverter() == null && field.getType() != null)
 		{
-			Converter converter = doCreateConverter(field.getType());
+			Converter converter = doCreateConverter(field);
 			if (converter != null)
 			{
 				cmp.setConverter(converter);

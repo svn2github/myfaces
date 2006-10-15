@@ -15,9 +15,8 @@
  */
 package org.apache.myfaces.examples.dynaForm;
 
-import org.apache.myfaces.custom.dynaForm.annot.ui.Temporal;
-
 import javax.persistence.TemporalType;
+import javax.persistence.Temporal;
 import java.util.Date;
 
 public class SimpleBean
