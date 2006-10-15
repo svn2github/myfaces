@@ -16,5 +16,5 @@
 
 <%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%
-response.sendRedirect("/dynaForm/home.jsf");
+response.sendRedirect("home.jsf");
 %>

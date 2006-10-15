@@ -43,6 +43,7 @@
                     uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
                     valueBindingPrefix="simpleBeanBacking.simpleBean"
                     bundle="simpleBeanBundle">
+                
                 <h:panelGrid
                         id="simpleBean-layout"
                         columns="2" />
@@ -90,3 +91,4 @@
 </t:documentBody>
 </t:document>
 </f:view>
+

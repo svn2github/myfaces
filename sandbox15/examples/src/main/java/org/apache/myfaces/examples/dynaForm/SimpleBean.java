@@ -15,8 +15,8 @@
  */
 package org.apache.myfaces.examples.dynaForm;
 
-import javax.persistence.TemporalType;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 public class SimpleBean
@@ -26,6 +26,7 @@ public class SimpleBean
     private Date creationDate;
     private Date birthday;
     private MartialStatus martialStatus;
+    private String description;
     private boolean checkedData;
 
     public String getUser()
@@ -87,5 +88,15 @@ public class SimpleBean
     public void setCheckedData(boolean checkedData)
     {
         this.checkedData = checkedData;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

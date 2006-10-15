@@ -18,6 +18,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
+<%@ taglib uri="http://myfaces.apache.org/sandbox15" prefix="sn"%>
 
 <f:view>
 <t:document>
@@ -25,15 +26,35 @@
     <%@include file="/inc/head.inc" %>
 </t:documentHead>
 <t:documentBody>
-                        
+
     <h:form>
         <%@include file="/inc/page_header.jsp" %>
 
+        <f:loadBundle basename="org.apache.myfaces.examples.resource.simpleBean_messages" var="simpleBeanBundle"/>
+
         <h:panelGrid>
 
-            <h:outputLink value="simpleBean.jsf" ><f:verbatim>Show a simple bean as form and list</f:verbatim></h:outputLink>
-            <h:outputLink value="customizedSimpleBean.jsf" ><f:verbatim>Show a simple bean as form with customized property</f:verbatim></h:outputLink>
+            <t:htmlTag value="h2">
+                <h:outputText value="A simple bean input form with customized 'description'" />
+            </t:htmlTag>
 
+            <sn:dynaForm
+                    var="simpleBean"
+                    uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
+                    valueBindingPrefix="simpleBeanBacking.simpleBean"
+                    bundle="simpleBeanBundle">
+                <sn:dynaFormConfigs>
+                    <sn:dynaFormConfig for="description">
+                        <t:inputHtml/>
+                    </sn:dynaFormConfig>
+                </sn:dynaFormConfigs>
+                
+                <h:panelGrid
+                        id="simpleBean-layout"
+                        columns="2" />
+            </sn:dynaForm>
+
+            <h:commandButton/>
         </h:panelGrid>
 
         <%@include file="/inc/page_footer.jsp" %>
@@ -42,3 +63,4 @@
 </t:documentBody>
 </t:document>
 </f:view>
+
