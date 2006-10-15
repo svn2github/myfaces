@@ -34,15 +34,15 @@ public class SimpleBeanBacking
         simpleBean = new SimpleBean();
 
         SimpleBean s1 = new SimpleBean();
-        s1.setAnyBoolean(true);
-        s1.setAnyDateTime(new Date());
-        s1.setAnyLong(1L);
-        s1.setAnyString("bean 1");
+        s1.setCheckedData(true);
+        s1.setCreationDate(new Date());
+        s1.setAge(1L);
+        s1.setUser("bean 1");
         SimpleBean s2 = new SimpleBean();
-        s2.setAnyBoolean(true);
-        s2.setAnyDateTime(new Date());
-        s2.setAnyLong(2L);
-        s2.setAnyString("bean 2");
+        s2.setCheckedData(true);
+        s2.setCreationDate(new Date());
+        s2.setAge(2L);
+        s2.setUser("bean 2");
 
         simpleBeans = new ArrayList<SimpleBean>();
         simpleBeans.add(s1);

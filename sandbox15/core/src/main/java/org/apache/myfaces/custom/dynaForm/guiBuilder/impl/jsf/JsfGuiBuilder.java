@@ -1004,8 +1004,15 @@ public class JsfGuiBuilder extends GuiBuilder
 		for (Selection selection : selections)
 		{
 			UISelectItem si = new UISelectItem();
-			si.setItemLabel(selection.getLabel());
-			si.setItemValue(selection.getValue());
+            if (getLabelBundle() != null && selection.getLabel() != null)
+            {
+                si.setItemLabel((String) getLabelBundle().get(selection.getLabel()));
+            }
+            else
+            {
+                si.setItemLabel(selection.getLabel());
+            }
+            si.setItemValue(selection.getValue());
 			cmp.getChildren().add(si);
 		}
 	}

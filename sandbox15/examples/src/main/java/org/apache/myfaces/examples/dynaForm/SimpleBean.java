@@ -21,60 +21,71 @@ import java.util.Date;
 
 public class SimpleBean
 {
-    private String anyString;
-    private long anyLong;
-    private boolean anyBoolean;
-    private Date anyDateTime;
-    private Date anyDateOnly;
+    private String user;
+    private long age;
+    private Date creationDate;
+    private Date birthday;
+    private MartialStatus martialStatus;
+    private boolean checkedData;
 
-    public String getAnyString()
+    public String getUser()
     {
-        return anyString;
+        return user;
     }
 
-    public void setAnyString(String anyString)
+    public void setUser(String user)
     {
-        this.anyString = anyString;
+        this.user = user;
     }
 
-    public long getAnyLong()
+    public long getAge()
     {
-        return anyLong;
+        return age;
     }
 
-    public void setAnyLong(long anyLong)
+    public void setAge(long age)
     {
-        this.anyLong = anyLong;
+        this.age = age;
     }
 
-    public boolean isAnyBoolean()
+    public Date getCreationDate()
     {
-        return anyBoolean;
+        return creationDate;
     }
 
-    public void setAnyBoolean(boolean anyBoolean)
+    public void setCreationDate(Date creationDate)
     {
-        this.anyBoolean = anyBoolean;
-    }
-
-    public Date getAnyDateTime()
-    {
-        return anyDateTime;
-    }
-
-    public void setAnyDateTime(Date anyDateTime)
-    {
-        this.anyDateTime = anyDateTime;
+        this.creationDate = creationDate;
     }
 
     @Temporal(value=TemporalType.DATE)
-    public Date getAnyDateOnly()
+    public Date getBirthday()
     {
-        return anyDateOnly;
+        return birthday;
     }
 
-    public void setAnyDateOnly(Date anyDateOnly)
+    public void setBirthday(Date birthday)
     {
-        this.anyDateOnly = anyDateOnly;
+        this.birthday = birthday;
+    }
+
+    public MartialStatus getMartialStatus()
+    {
+        return martialStatus;
+    }
+
+    public void setMartialStatus(MartialStatus martialStatus)
+    {
+        this.martialStatus = martialStatus;
+    }
+
+    public boolean isCheckedData()
+    {
+        return checkedData;
+    }
+
+    public void setCheckedData(boolean checkedData)
+    {
+        this.checkedData = checkedData;
     }
 }

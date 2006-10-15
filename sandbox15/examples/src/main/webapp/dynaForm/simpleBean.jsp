@@ -30,6 +30,8 @@
     <h:form>
         <%@include file="/inc/page_header.jsp" %>
 
+        <f:loadBundle basename="org.apache.myfaces.examples.resource.simpleBean_messages" var="simpleBeanBundle"/>
+
         <h:panelGrid>
 
             <t:htmlTag value="h2">
@@ -39,7 +41,8 @@
             <sn:dynaForm
                     var="simpleBean"
                     uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
-                    valueBindingPrefix="simpleBeanBacking.simpleBean">
+                    valueBindingPrefix="simpleBeanBacking.simpleBean"
+                    bundle="simpleBeanBundle">
                 <h:panelGrid
                         id="simpleBean-layout"
                         columns="2" />
@@ -52,7 +55,8 @@
 
             <sn:dynaForm
                     var="simpleBean2"
-                    uri="org.apache.myfaces.examples.dynaForm.SimpleBean">
+                    uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
+                    bundle="simpleBeanBundle">
                 <h:dataTable
                         var="entry"
                         id="simpleBean2-layout"
@@ -68,7 +72,8 @@
             <sn:dynaForm
                     var="simpleBean3"
                     uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
-                    displayOnly="true">
+                    displayOnly="true"
+                    bundle="simpleBeanBundle">
                 <h:dataTable
                         var="entry"
                         id="simpleBean3-layout"
