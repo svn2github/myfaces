@@ -74,12 +74,11 @@ import javax.servlet.jsp.jstl.sql.Result;
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class UIColumns extends UIData
-{
+public class UIColumns extends UIData {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Columns";
 
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
-    
+
     private static final int PROCESS_DECODES = 1;
     private static final int PROCESS_VALIDATORS = 2;
     private static final int PROCESS_UPDATES = 3;
@@ -96,65 +95,52 @@ public class UIColumns extends UIData
 
     private Map _dataModelMap = new HashMap();
 
-    public UIColumns()
-    {
+    public UIColumns() {
         super();
     }
 
     /**
      * Return true if there are any more <i>columns</i> to process.
      */
-    public boolean isRowAvailable()
-    {
+    public boolean isRowAvailable() {
         return getDataModel().isRowAvailable();
     }
 
     /**
      * Get the number of dynamic columns represented by this instance.
      */
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return getDataModel().getRowCount();
     }
 
     /** Get the object representing the current column. */
-    public Object getRowData()
-    {
+    public Object getRowData() {
         return getDataModel().getRowData();
     }
 
     /** Get the currently selected column index. */
-    public int getRowIndex()
-    {
+    public int getRowIndex() {
         return _colIndex;
     }
-    
+
     /** Set the currently selected column. */
-    public void setRowIndex(int colIndex)
-    {
-        if (colIndex < -1)
-        {
+    public void setRowIndex(int colIndex) {
+        if (colIndex < -1) {
             throw new IllegalArgumentException("colIndex is less than -1");
         }
 
-        if (_colIndex == colIndex)
-        {
+        if (_colIndex == colIndex) {
             return;
         }
 
         FacesContext facesContext = getFacesContext();
 
-        if (_colIndex == -1)
-        {
-            if (_initialDescendantComponentState == null)
-            {
+        if (_colIndex == -1) {
+            if (_initialDescendantComponentState == null) {
                 _initialDescendantComponentState = saveDescendantComponentStates(getFacetsAndChildren());
             }
-        }
-        else
-        {
-            _cellStates.put(getClientId(facesContext),
-                    saveDescendantComponentStates(getFacetsAndChildren()));
+        } else {
+            _cellStates.put(getClientId(facesContext), saveDescendantComponentStates(getFacetsAndChildren()));
         }
 
         _colIndex = colIndex;
@@ -163,106 +149,70 @@ public class UIColumns extends UIData
         dataModel.setRowIndex(colIndex);
 
         String var = getVar();
-        if (colIndex == -1)
-        {
-            if (var != null)
-            {
+        if (colIndex == -1) {
+            if (var != null) {
                 facesContext.getExternalContext().getRequestMap().remove(var);
             }
-        }
-        else
-        {
-            if (var != null)
-            {
-                if (isRowAvailable())
-                {
+        } else {
+            if (var != null) {
+                if (isRowAvailable()) {
                     Object rowData = dataModel.getRowData();
-                    facesContext.getExternalContext().getRequestMap().put(var,
-                            rowData);
-                }
-                else
-                {
-                    facesContext.getExternalContext().getRequestMap().remove(
-                            var);
+                    facesContext.getExternalContext().getRequestMap().put(var, rowData);
+                } else {
+                    facesContext.getExternalContext().getRequestMap().remove(var);
                 }
             }
         }
 
-        if (_colIndex == -1)
-        {
-            restoreDescendantComponentStates(getFacetsAndChildren(),
-                    _initialDescendantComponentState);
-        }
-        else
-        {
+        if (_colIndex == -1) {
+            restoreDescendantComponentStates(getFacetsAndChildren(), _initialDescendantComponentState);
+        } else {
             Object rowState = _cellStates.get(getClientId(facesContext));
-            if (rowState == null)
-            {
-                restoreDescendantComponentStates(getFacetsAndChildren(),
-                        _initialDescendantComponentState);
-            }
-            else
-            {
-                restoreDescendantComponentStates(getFacetsAndChildren(),
-                        rowState);
+            if (rowState == null) {
+                restoreDescendantComponentStates(getFacetsAndChildren(), _initialDescendantComponentState);
+            } else {
+                restoreDescendantComponentStates(getFacetsAndChildren(), rowState);
             }
         }
     }
 
-    protected void restoreDescendantComponentStates(Iterator childIterator,
-            Object state)
-    {
+    protected void restoreDescendantComponentStates(Iterator childIterator, Object state) {
         Iterator descendantStateIterator = null;
-        while (childIterator.hasNext())
-        {
-            if (descendantStateIterator == null && state != null)
-            {
+        while (childIterator.hasNext()) {
+            if (descendantStateIterator == null && state != null) {
                 descendantStateIterator = ((Collection) state).iterator();
             }
             UIComponent component = (UIComponent) childIterator.next();
             // reset the client id (see spec 3.1.6)
             component.setId(component.getId());
-            if (!component.isTransient())
-            {
+            if (!component.isTransient()) {
                 Object childState = null;
                 Object descendantState = null;
-                if (descendantStateIterator != null
-                        && descendantStateIterator.hasNext())
-                {
+                if (descendantStateIterator != null && descendantStateIterator.hasNext()) {
                     Object[] object = (Object[]) descendantStateIterator.next();
                     childState = object[0];
                     descendantState = object[1];
                 }
-                if (component instanceof EditableValueHolder)
-                {
-                    ((EditableValueHolderState) childState)
-                            .restoreState((EditableValueHolder) component);
+                if (component instanceof EditableValueHolder) {
+                    ((EditableValueHolderState) childState).restoreState((EditableValueHolder) component);
                 }
-                restoreDescendantComponentStates(component
-                        .getFacetsAndChildren(), descendantState);
+                restoreDescendantComponentStates(component.getFacetsAndChildren(), descendantState);
             }
         }
     }
 
-    protected Object saveDescendantComponentStates(Iterator childIterator)
-    {
+    protected Object saveDescendantComponentStates(Iterator childIterator) {
         Collection childStates = null;
-        while (childIterator.hasNext())
-        {
-            if (childStates == null)
-            {
+        while (childIterator.hasNext()) {
+            if (childStates == null) {
                 childStates = new ArrayList();
             }
             UIComponent child = (UIComponent) childIterator.next();
-            if (!child.isTransient())
-            {
-                Object descendantState = saveDescendantComponentStates(child
-                        .getFacetsAndChildren());
+            if (!child.isTransient()) {
+                Object descendantState = saveDescendantComponentStates(child.getFacetsAndChildren());
                 Object state = null;
-                if (child instanceof EditableValueHolder)
-                {
-                    state = new EditableValueHolderState(
-                            (EditableValueHolder) child);
+                if (child instanceof EditableValueHolder) {
+                    state = new EditableValueHolderState((EditableValueHolder) child);
                 }
                 childStates.add(new Object[] { state, descendantState });
             }
@@ -270,26 +220,19 @@ public class UIColumns extends UIData
         return childStates;
     }
 
-    public void setValue(Object value)
-    {
+    public void setValue(Object value) {
         super.setValue(value);
         _dataModelMap.clear();
         _cellStates.clear();
         _isValidChilds = true;
     }
 
-    public void setValueBinding(String name, ValueBinding binding)
-    {
-        if (name == null)
-        {
+    public void setValueBinding(String name, ValueBinding binding) {
+        if (name == null) {
             throw new NullPointerException("name");
-        }
-        else if (name.equals("value"))
-        {
+        } else if (name.equals("value")) {
             _dataModelMap.clear();
-        }
-        else if (name.equals("var") || name.equals("rowIndex"))
-        {
+        } else if (name.equals("var") || name.equals("rowIndex")) {
             throw new IllegalArgumentException("name " + name);
         }
         super.setValueBinding(name, binding);
@@ -299,29 +242,24 @@ public class UIColumns extends UIData
      * Get a DataModel whose wrapped data contains a collection of
      * objects representing columns.
      */
-    protected DataModel getDataModel()
-    {
+    protected DataModel getDataModel() {
         String clientID = "";
         UIComponent parent = getParentUIData().getParent();
-        if(parent != null)
-        {
+        if (parent != null) {
             clientID = parent.getClientId(getFacesContext());
         }
         DataModel dataModel = (DataModel) _dataModelMap.get(clientID);
-        if (dataModel == null)
-        {
+        if (dataModel == null) {
             dataModel = createDataModel();
             _dataModelMap.put(clientID, dataModel);
         }
         return dataModel;
     }
 
-    protected void setDataModel(DataModel dataModel)
-    {
+    protected void setDataModel(DataModel dataModel) {
         UIComponent parent = getParentUIData().getParent();
         String clientID = "";
-        if(parent != null)
-        {
+        if (parent != null) {
             clientID = parent.getClientId(getFacesContext());
         }
         _dataModelMap.put(clientID, dataModel);
@@ -330,82 +268,57 @@ public class UIColumns extends UIData
     /**
      * Creates a new DataModel around the current value.
      */
-    protected DataModel createDataModel()
-    {
+    protected DataModel createDataModel() {
         Object value = getValue();
-        if (value == null)
-        {
+        if (value == null) {
             return EMPTY_DATA_MODEL;
-        }
-        else if (value instanceof DataModel)
-        {
+        } else if (value instanceof DataModel) {
             return (DataModel) value;
-        }
-        else if (value instanceof List)
-        {
+        } else if (value instanceof List) {
             return new ListDataModel((List) value);
-        }
-        else if (value instanceof Collection)
-        {
+        } else if (value instanceof Collection) {
             return new ListDataModel(new ArrayList((Collection) value));
-        }
-        else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass()))
-        {
+        } else if (OBJECT_ARRAY_CLASS.isAssignableFrom(value.getClass())) {
             return new ArrayDataModel((Object[]) value);
-        }
-        else if (value instanceof ResultSet)
-        {
+        } else if (value instanceof ResultSet) {
             return new ResultSetDataModel((ResultSet) value);
-        }
-        else if (value instanceof Result)
-        {
+        } else if (value instanceof Result) {
             return new ResultDataModel((Result) value);
-        }
-        else
-        {
+        } else {
             return new ScalarDataModel(value);
         }
     }
 
-    private static final DataModel EMPTY_DATA_MODEL = new DataModel()
-    {
-        public boolean isRowAvailable()
-        {
+    private static final DataModel EMPTY_DATA_MODEL = new DataModel() {
+        public boolean isRowAvailable() {
             return false;
         }
 
-        public int getRowCount()
-        {
+        public int getRowCount() {
             return 0;
         }
 
-        public Object getRowData()
-        {
+        public Object getRowData() {
             throw new IllegalArgumentException();
         }
 
-        public int getRowIndex()
-        {
+        public int getRowIndex() {
             return -1;
         }
 
-        public void setRowIndex(int i)
-        {
+        public void setRowIndex(int i) {
             if (i < -1)
                 throw new IndexOutOfBoundsException("Index < 0 : " + i);
         }
 
-        public Object getWrappedData()
-        {
+        public Object getWrappedData() {
             return null;
         }
 
-        public void setWrappedData(Object obj)
-        {
+        public void setWrappedData(Object obj) {
             if (obj == null)
                 return; //Clearing is allowed
-            throw new UnsupportedOperationException(this.getClass().getName()
-                    + " UnsupportedOperationException");
+            throw new UnsupportedOperationException(this.getClass().getName() + " UnsupportedOperationException");
         }
     };
 
@@ -414,8 +327,7 @@ public class UIColumns extends UIData
      * 
      * @see javax.faces.component.UIData#processDecodes(javax.faces.context.FacesContext)
      */
-    public void processDecodes(FacesContext context)
-    {
+    public void processDecodes(FacesContext context) {
         if (context == null)
             throw new NullPointerException("context");
         if (!isRendered())
@@ -426,39 +338,28 @@ public class UIColumns extends UIData
         processRows(context, PROCESS_DECODES);
         setRowIndex(-1);
 
-        try
-        {
+        try {
             decode(context);
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             context.renderResponse();
             throw e;
         }
     }
 
-    private void processColumnsFacets(FacesContext context, int processAction)
-    {
+    private void processColumnsFacets(FacesContext context, int processAction) {
         int first = getFirst();
         int cols = getRows();
         int last;
-        if (cols == 0)
-        {
+        if (cols == 0) {
             last = getRowCount();
-        }
-        else
-        {
+        } else {
             last = first + cols;
         }
 
-        for (int colIndex = first; colIndex < last; colIndex++)
-        {
+        for (int colIndex = first; colIndex < last; colIndex++) {
             setRowIndex(colIndex);
-            if (isRowAvailable())
-            {
-                for (Iterator facetsIter = getFacets().values().iterator(); facetsIter
-                        .hasNext();)
-                {
+            if (isRowAvailable()) {
+                for (Iterator facetsIter = getFacets().values().iterator(); facetsIter.hasNext();) {
                     UIComponent facet = (UIComponent) facetsIter.next();
                     process(context, facet, processAction);
                 }
@@ -467,26 +368,20 @@ public class UIColumns extends UIData
         setRowIndex(-1);
     }
 
-    private void processRows(FacesContext context, int processAction)
-    {
+    private void processRows(FacesContext context, int processAction) {
         UIData parentUIData = getParentUIData();
         int first = parentUIData.getFirst();
         int rows = parentUIData.getRows();
         int last;
-        if (rows == 0)
-        {
+        if (rows == 0) {
             last = parentUIData.getRowCount();
-        }
-        else
-        {
+        } else {
             last = first + rows;
         }
 
-        for (int rowIndex = first; rowIndex < last; rowIndex++)
-        {
+        for (int rowIndex = first; rowIndex < last; rowIndex++) {
             parentUIData.setRowIndex(rowIndex);
-            if (parentUIData.isRowAvailable())
-            {
+            if (parentUIData.isRowAvailable()) {
                 processColumns(context, processAction);
             }
         }
@@ -498,45 +393,32 @@ public class UIColumns extends UIData
      * Actually, this component will only function correctly when nested within
      * an org.apache.myfaces.component.html.ext.HtmlDataTable.
      */
-    private UIData getParentUIData()
-    {
-        if (_parentUIData == null)
-        {
+    private UIData getParentUIData() {
+        if (_parentUIData == null) {
             UIComponent parent = getParent();
-            if (!(parent instanceof UIData))
-            {
-                throw new IllegalStateException(
-                        "UIColumns component must be a child of a UIData component");
+            if (!(parent instanceof UIData)) {
+                throw new IllegalStateException("UIColumns component must be a child of a UIData component");
             }
             _parentUIData = (UIData) parent;
         }
         return _parentUIData;
     }
 
-    private void processColumns(FacesContext context, int processAction)
-    {
+    private void processColumns(FacesContext context, int processAction) {
         int first = getFirst();
         int cols = getRows();
         int last;
-        if (cols == 0)
-        {
+        if (cols == 0) {
             last = getRowCount();
-        }
-        else
-        {
+        } else {
             last = first + cols;
         }
 
-        for (int colIndex = first; colIndex < last; colIndex++)
-        {
+        for (int colIndex = first; colIndex < last; colIndex++) {
             setRowIndex(colIndex);
-            if (isRowAvailable())
-            {
-                for (Iterator columnChildIter = getChildren().iterator(); columnChildIter
-                        .hasNext();)
-                {
-                    UIComponent columnChild = (UIComponent) columnChildIter
-                            .next();
+            if (isRowAvailable()) {
+                for (Iterator columnChildIter = getChildren().iterator(); columnChildIter.hasNext();) {
+                    UIComponent columnChild = (UIComponent) columnChildIter.next();
                     process(context, columnChild, processAction);
                 }
             }
@@ -547,8 +429,7 @@ public class UIColumns extends UIData
     /**
      * @see javax.faces.component.UIData#processValidators(javax.faces.context.FacesContext)
      */
-    public void processValidators(FacesContext context)
-    {
+    public void processValidators(FacesContext context) {
         if (context == null)
             throw new NullPointerException("context");
         if (!isRendered())
@@ -559,8 +440,7 @@ public class UIColumns extends UIData
         setRowIndex(-1);
 
         // check if an validation error forces the render response for our data
-        if (context.getRenderResponse())
-        {
+        if (context.getRenderResponse()) {
             _isValidChilds = false;
         }
     }
@@ -568,8 +448,7 @@ public class UIColumns extends UIData
     /**
      * @see javax.faces.component.UIData#processUpdates(javax.faces.context.FacesContext)
      */
-    public void processUpdates(FacesContext context)
-    {
+    public void processUpdates(FacesContext context) {
         if (context == null)
             throw new NullPointerException("context");
         if (!isRendered())
@@ -580,17 +459,13 @@ public class UIColumns extends UIData
         setRowIndex(-1);
 
         // check if an validation error forces the render response for our data
-        if (context.getRenderResponse())
-        {
+        if (context.getRenderResponse()) {
             _isValidChilds = false;
         }
     }
 
-    private void process(FacesContext context, UIComponent component,
-            int processAction)
-    {
-        switch (processAction)
-        {
+    private void process(FacesContext context, UIComponent component, int processAction) {
+        switch (processAction) {
         case PROCESS_DECODES:
             component.processDecodes(context);
             break;
@@ -607,25 +482,20 @@ public class UIColumns extends UIData
      * Called from HtmlDataTable.encodeBegin, ie called once when rendering
      * for the entire table starts.
      */
-    public void encodeTableBegin(FacesContext context)
-    {
+    public void encodeTableBegin(FacesContext context) {
         setRowIndex(-1);
         _initialDescendantComponentState = null;
-        if (_isValidChilds && !hasErrorMessages(context))
-        {
+        if (_isValidChilds && !hasErrorMessages(context)) {
             //Refresh DataModel for rendering:
             _dataModelMap.clear();
             _cellStates.clear();
         }
     }
 
-    protected boolean hasErrorMessages(FacesContext context)
-    {
-        for(Iterator iter = context.getMessages(); iter.hasNext();)
-        {
+    protected boolean hasErrorMessages(FacesContext context) {
+        for (Iterator iter = context.getMessages(); iter.hasNext();) {
             FacesMessage message = (FacesMessage) iter.next();
-            if(FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0)
-            {
+            if (FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0) {
                 return true;
             }
         }
@@ -636,32 +506,43 @@ public class UIColumns extends UIData
      * Called from HtmlDataTable.encodeEnd, ie called once after rendering
      * for the entire table has completed.
      */
-    public void encodeTableEnd(FacesContext context)
-    {
+    public void encodeTableEnd(FacesContext context) {
         setRowIndex(-1);
     }
 
-    private class EditableValueHolderState
-    {
+    private class EditableValueHolderState {
         private final Object _value;
         private final boolean _localValueSet;
         private final boolean _valid;
         private final Object _submittedValue;
 
-        public EditableValueHolderState(EditableValueHolder evh)
-        {
+        public EditableValueHolderState(EditableValueHolder evh) {
             _value = evh.getLocalValue();
             _localValueSet = evh.isLocalValueSet();
             _valid = evh.isValid();
             _submittedValue = evh.getSubmittedValue();
         }
 
-        public void restoreState(EditableValueHolder evh)
-        {
+        public void restoreState(EditableValueHolder evh) {
             evh.setValue(_value);
             evh.setLocalValueSet(_localValueSet);
             evh.setValid(_valid);
             evh.setSubmittedValue(_submittedValue);
         }
     }
+
+    /// ------ EUR/SI/BS/JC MODIFICATIONS START HERE ---------
+
+    public String getClientId(FacesContext context) {
+        String clientId2 = super.getClientId(context);
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1) {
+            return clientId2;
+        }
+        else {
+            return clientId2 + "_" + rowIndex;
+        }
+    }
+
+    /// ------ EUR/SI/BS/JC MODIFICATIONS END HERE ---------
 }
