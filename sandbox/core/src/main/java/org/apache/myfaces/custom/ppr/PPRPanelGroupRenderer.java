@@ -99,14 +99,14 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
         }
 
 
-        String partialTriggerId = null;
-		String partialTriggerClientId = null;
-		UIComponent partialTriggerComponent = null;
+        String partialTriggerId;
+		String partialTriggerClientId;
+		UIComponent partialTriggerComponent;
 		
-		String partialTriggers = ((PPRPanelGroup) uiComponent).getPartialTriggers();
+		String partialTriggers = uiComponent.getPartialTriggers();
 		String clientId = uiComponent.getClientId(facesContext);
 		
-		String partialTriggerPattern = ((PPRPanelGroup) uiComponent).getPartialTriggerPattern();
+		String partialTriggerPattern = uiComponent.getPartialTriggerPattern();
 		if(partialTriggerPattern != null && partialTriggerPattern.trim().length()>0) 
 		{
 			writeInlineScript(facesContext, uiComponent,
@@ -121,7 +121,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 						"');");
 		}
 		
-		String inlineLoadingMessage =((PPRPanelGroup) uiComponent).getInlineLoadingMessage();
+		String inlineLoadingMessage = uiComponent.getInlineLoadingMessage();
 		
 		if(inlineLoadingMessage!= null && inlineLoadingMessage.trim().length()>0)
 		{
@@ -201,13 +201,13 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 	}
 
 	/**
-	 * helper to write an inline javascript at the
-	 * exact resource location of the call
+	 * Helper to write an inline javascript at the
+	 * exact resource location of the call.
 	 *
-	 * @param facesContext
-	 * @param component
-	 * @param script
-	 * @throws IOException
+	 * @param facesContext The current faces-context.
+	 * @param component The component for which the script is written.
+	 * @param script The script to be written.
+	 * @throws IOException A forwarded exception from the underlying renderer.
 	 */
 	private static void writeInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException
 	{

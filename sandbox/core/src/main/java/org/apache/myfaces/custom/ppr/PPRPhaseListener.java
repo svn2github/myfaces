@@ -24,7 +24,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
@@ -69,8 +68,7 @@ public class PPRPhaseListener implements PhaseListener
 				(ServletRequest) context.getExternalContext().getRequest();
 
 			UIViewRoot viewRoot = context.getViewRoot();
-			ResponseWriter writer = context.getResponseWriter();
-			response.setContentType("text/xml;charset=" + request.getCharacterEncoding());
+            response.setContentType("text/xml;charset=" + request.getCharacterEncoding());
 			response.setLocale(viewRoot.getLocale());
 			String triggeredComponents = (String) externalRequestMap.get(TRIGGERED_COMPONENTS_PARAMETER);
 			try
@@ -91,14 +89,14 @@ public class PPRPhaseListener implements PhaseListener
 			}
 
 			context.responseComplete();
-		}
+		}                                          
 	}
 
 	private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot, FacesContext context)
 	{
 		StringTokenizer st = new StringTokenizer(triggeredComponents, ",", false);
-		String clientId = null;
-		UIComponent component = null;
+		String clientId;
+		UIComponent component;
 		while (st.hasMoreTokens())
 		{
 			clientId = st.nextToken();
@@ -122,7 +120,11 @@ public class PPRPhaseListener implements PhaseListener
 				log.debug("PPRPhaseListener component with id" + clientId + "not found!");
 			}
 		}
-	}
+        out.print("<state><![CDATA[");
+
+        out.print("]]></state>");
+
+    }
 
 	public PhaseId getPhaseId()
 	{
