@@ -15,30 +15,25 @@
  */
 package org.apache.myfaces.custom.fisheye;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.TreeMap;
+import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
+import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.myfaces.custom.dojo.DojoUtils;
-import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
-import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
-import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Renderer for the FishEyeList component
@@ -47,38 +42,25 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @version $Revision$ $Date$
  */
 public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
+
     private static final String ON_CLICK_ATTR             = "onClick";
-
     private static final String DOJO_COMPONENT_TYPE       = "ScrollableFisheyeList";
-
     private static final String DOJO_ITEM_TYPE            = "ScrollableFisheyeListItem";
-
     public static final String  ATTACH_EDGE_ATTR          = "attachEdge";
-
     public static final String  CAPTION_ATTR              = "caption";
-
     public static final String  EFFECT_UNITS_ATTR         = "effectUnits";
-
     public static final String  ICON_SRC_ATTR             = "iconSrc";
-
     public static final String  ITEM_HEIGHT_ATTR          = "itemHeight";
-
     public static final String  ITEM_MAX_HEIGHT_ATTR      = "itemMaxHeight";
-
     public static final String  ITEM_MAX_WIDTH_ATTR       = "itemMaxWidth";
-
     public static final String  ITEM_PADDING_ATTR         = "itemPadding";
-
     public static final String  ITEM_WIDTH_ATTR           = "itemWidth";
-
     public static final String  LABEL_EDGE_ATTR           = "labelEdge";
-
     public static final String  ORIENTATION_ATTR          = "orientation";
-
     public static final String  CONSERVATIVE_TRIGGER_ATTR = "conservativeTrigger";
-
     public static final String  RENDERER_TYPE             = "org.apache.myfaces.FishEyeList";
 
+    private Log log = LogFactory.getLog(HtmlFishEyeNavigationMenuRenderer.class);
     /**
      * @see javax.faces.render.Renderer#decode(javax.faces.context.FacesContext,
      *      javax.faces.component.UIComponent)
@@ -89,10 +71,15 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
             String fieldName = HtmlRendererUtils.getHiddenCommandLinkFieldName(nestingForm);
             String reqValue = (String) context.getExternalContext().getRequestParameterMap().get(fieldName);
             if (reqValue != null && reqValue.length() > 0) {
-                UIComponent source = context.getViewRoot().findComponent(reqValue);
-                if (source instanceof UINavigationMenuItem) {
-                    UINavigationMenuItem item = (UINavigationMenuItem) source;
-                    item.queueEvent(new ActionEvent(item));
+                if (component instanceof FishEyeCommandLink && reqValue.equals(component.getClientId(context))) {
+                    component.queueEvent(new ActionEvent(component));
+                } else {
+                    // deprecated : the old UINavigationMenuItem way
+                    UIComponent source = context.getViewRoot().findComponent(reqValue);
+                    if (source instanceof UINavigationMenuItem) {
+                        source.queueEvent(new ActionEvent(source));
+                    }
+
                 }
             }
         }
@@ -205,13 +192,26 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List children = component.getChildren();
-        Stack menuStack = (Stack) getChildsMenuStack(context, component);
-        for (Iterator cit = children.iterator(); cit.hasNext();) {
-            UIComponent child = (UIComponent) cit.next();
-            if (!child.isRendered())
-                continue;
-            if (child instanceof UINavigationMenuItem) {
-                renderMenuItem(context, writer, component, (UINavigationMenuItem) child, menuStack);
+        Stack menuStack = getChildsMenuStack(context, component);
+        HtmlFishEyeNavigationMenu menu = (HtmlFishEyeNavigationMenu) component;
+        if (menu.getChildCount() == 1 && menu.getChildren().get(0) instanceof FishEyeCommandLink) {
+            FishEyeCommandLink link = (FishEyeCommandLink) menu.getChildren().get(0);
+            for (int i = 0; i < menu.getRowCount(); i++) {
+                menu.setRowIndex(i);
+                if(!menu.isRowAvailable()) {
+                    log.error("Model is not available. Rowindex = " + i);
+                    break;
+                }
+                renderMenuItem(context, writer, component, link, menuStack);
+            }
+        } else {
+            for (Iterator cit = children.iterator(); cit.hasNext();) {
+                UIComponent child = (UIComponent) cit.next();
+                if (!child.isRendered())
+                    continue;
+                if (child instanceof UINavigationMenuItem) {
+                    renderMenuItem(context, writer, component, (UINavigationMenuItem) child, menuStack);
+                }
             }
         }
     }
@@ -248,7 +248,7 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
         return true;
     }
 
-    protected void renderMenuItem(FacesContext context, ResponseWriter writer, UIComponent menu, UINavigationMenuItem item, Stack childsMenuStack)
+    protected void renderMenuItem(FacesContext context, ResponseWriter writer, UIComponent menu, UIComponent item, Stack childsMenuStack)
             throws IOException {
         // find the enclosing form
         FormInfo formInfo = findNestingForm(item, context);
@@ -272,9 +272,9 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
             // call the clear_<formName> method
             onClick.append(HtmlRendererUtils.getClearHiddenCommandFormParamsFunctionName(formName)).append("();");
 
-            if (MyfacesConfig.getCurrentInstance(context.getExternalContext()).isAutoScroll()) {
-                HtmlRendererUtils.appendAutoScrollAssignment(onClick, formName);
-            }
+            //if (MyfacesConfig.getCurrentInstance(context.getExternalContext()).isAutoScroll()) {
+                //HtmlRendererUtils.appendAutoScrollAssignment(onClick, formName);
+            //}
 
             // add id parameter for decode
             String hiddenFieldName = HtmlRendererUtils.getHiddenCommandLinkFieldName(formInfo);
@@ -283,9 +283,22 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
             onClick.append(".value='").append(clientId).append("';");
             addHiddenCommandParameter(context, nestingForm, hiddenFieldName);
         }
+        String target;
+        String caption;
+        String iconSrc;
+        if (item instanceof UINavigationMenuItem) {
+            target = ((UINavigationMenuItem)item).getTarget();
+            caption = ((UINavigationMenuItem)item).getItemLabel();
+            iconSrc = ((UINavigationMenuItem)item).getIcon();
+        } else if (item instanceof FishEyeCommandLink) {
+            target = ((FishEyeCommandLink)item).getTarget();
+            caption = ((FishEyeCommandLink)item).getCaption();
+            iconSrc = ((FishEyeCommandLink)item).getIconSrc();
+        } else {
+            throw new IllegalArgumentException("expected UINavigationMenuItem or FisheyCommandLink");
+        }
 
         // add the target window
-        String target = item.getTarget();
         if (target != null && target.trim().length() > 0) {
             onClick.append(jsForm);
             onClick.append(".target='");
@@ -304,8 +317,8 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
                                                     // the click
 
         Map paramMap = new HashMap();
-        paramMap.put(CAPTION_ATTR, item.getItemLabel());
-        paramMap.put(ICON_SRC_ATTR, item.getIcon());
+        paramMap.put(CAPTION_ATTR, caption);
+        paramMap.put(ICON_SRC_ATTR, iconSrc);
         paramMap.put(ON_CLICK_ATTR, new StringBuffer("function () {").append(onClick).append("}"));
         // push the onclick as lambda and use a stringbuffer so that we do not
         // get enclosing quotes

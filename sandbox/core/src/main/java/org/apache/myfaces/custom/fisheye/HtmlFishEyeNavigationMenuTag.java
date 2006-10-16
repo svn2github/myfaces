@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.custom.div.DivTag;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 /**
  * JSP Tag for the FishEyeList component
@@ -27,7 +28,7 @@ import org.apache.myfaces.custom.div.DivTag;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFishEyeNavigationMenuTag extends DivTag
+public class HtmlFishEyeNavigationMenuTag extends UIComponentTagBase
 {
     private String _attachEdge;
     private String _conservativeTrigger;
@@ -39,77 +40,40 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
     private String _itemWidth;
     private String _labelEdge;
     private String _orientation;
-    private String _visibleWindow         = null;
+    private String _visibleWindow;
+    private String _var;
+    private String _immediate;
 
-
- 
- public static final String TAG_PARAM_VisibleWindow = "visibleWindow";
- 
- 
- public void setVisibleWindow(String visibleWindow) {
- 	_visibleWindow = visibleWindow;
- }
- 
-    
-    
-    public String getAttachEdge()
-    {
-        return _attachEdge;
+    public void setValue(String value) {
+        super.setValue(value);    //To change body of overridden methods use File | Settings | File Templates.
     }
+
+    public static final String TAG_PARAM_VisibleWindow = "visibleWindow";
 
     public String getComponentType()
     {
         return HtmlFishEyeNavigationMenu.COMPONENT_TYPE;
     }
 
-    public String getConservativeTrigger()
-    {
-        return _conservativeTrigger;
-    }
-
-    public String getEffectUnits()
-    {
-        return _effectUnits;
-    }
-
-    public String getItemHeight()
-    {
-        return _itemHeight;
-    }
-
-    public String getItemMaxHeight()
-    {
-        return _itemMaxHeight;
-    }
-
-    public String getItemMaxWidth()
-    {
-        return _itemMaxWidth;
-    }
-
-    public String getItemPadding()
-    {
-        return _itemPadding;
-    }
-
-    public String getItemWidth()
-    {
-        return _itemWidth;
-    }
-
-    public String getLabelEdge()
-    {
-        return _labelEdge;
-    }
-
-    public String getOrientation()
-    {
-        return _orientation;
-    }
-
-    public String getRendererType()
-    {
+    public String getRendererType() {
         return HtmlFishEyeNavigationMenuRenderer.RENDERER_TYPE;
+    }
+
+    protected void setProperties(UIComponent component)
+    {
+        super.setProperties(component);
+        setStringProperty(component, "attachedEdge", _attachEdge);
+        setIntegerProperty(component, "effectUnits", _effectUnits);
+        setIntegerProperty(component, "itemHeight", _itemHeight);
+        setIntegerProperty(component, "itemMaxHeight", _itemMaxHeight);
+        setIntegerProperty(component, "itemMaxWidth", _itemMaxWidth);
+        setIntegerProperty(component, "itemPadding", _itemPadding);
+        setIntegerProperty(component, "itemWidth", _itemWidth);
+        setStringProperty(component, "labelEdge", _labelEdge);
+        setStringProperty(component, "orientation", _orientation);
+        setBooleanProperty(component, "conservativeTrigger", _conservativeTrigger);
+        setIntegerProperty(component, "visibleWindow", _visibleWindow);
+        setStringProperty(component, "var", _var);
     }
 
     public void release()
@@ -125,6 +89,17 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
         _labelEdge = null;
         _orientation = null;
         _visibleWindow = null;
+        _var = null;
+    }
+
+    public void setVisibleWindow(String visibleWindow)
+    {
+        _visibleWindow = visibleWindow;
+    }
+
+    public String getConservativeTrigger()
+    {
+        return _conservativeTrigger;
     }
 
     public void setAttachEdge(String attachEdge)
@@ -177,148 +152,8 @@ public class HtmlFishEyeNavigationMenuTag extends DivTag
         this._orientation = orientation;
     }
 
-    protected void setProperties(UIComponent component)
+    public void setVar(String var)
     {
-        super.setProperties(component);
-        HtmlFishEyeNavigationMenu fisheye = (HtmlFishEyeNavigationMenu) component;
-        FacesContext context = FacesContext.getCurrentInstance();
-        Application app = context.getApplication();
-        if (_attachEdge != null)
-        {
-            if (isValueReference(_attachEdge))
-            {
-                fisheye.setValueBinding("attachEdge", app
-                        .createValueBinding(_attachEdge));
-            }
-            else
-            {
-                fisheye.setAttachEdge(_attachEdge);
-            }
-        }
-        if (_effectUnits != null)
-        {
-            if (isValueReference(_effectUnits))
-            {
-                fisheye.setValueBinding("effectUnits", app
-                        .createValueBinding(_effectUnits));
-            }
-            else
-            {
-                fisheye.setEffectUnits(new Integer(_effectUnits));
-            }
-        }
-        if (_itemHeight != null)
-        {
-            if (isValueReference(_itemHeight))
-            {
-                fisheye.setValueBinding("itemHeight", app
-                        .createValueBinding(_itemHeight));
-            }
-            else
-            {
-                fisheye.setItemHeight(new Integer(_itemHeight));
-            }
-        }
-        if (_itemMaxHeight != null)
-        {
-            if (isValueReference(_itemMaxHeight))
-            {
-                fisheye.setValueBinding("itemMaxHeight", app
-                        .createValueBinding(_itemMaxHeight));
-            }
-            else
-            {
-                fisheye.setItemMaxHeight(new Integer(_itemMaxHeight));
-            }
-        }
-        if (_itemMaxWidth != null)
-        {
-            if (isValueReference(_itemMaxWidth))
-            {
-                fisheye.setValueBinding("itemMaxWidth", app
-                        .createValueBinding(_itemMaxWidth));
-            }
-            else
-            {
-                fisheye.setItemMaxWidth(new Integer(_itemMaxWidth));
-            }
-        }
-        if (_itemPadding != null)
-        {
-            if (isValueReference(_itemPadding))
-            {
-                fisheye.setValueBinding("itemPadding", app
-                        .createValueBinding(_itemPadding));
-            }
-            else
-            {
-                fisheye.setItemPadding(new Integer(_itemPadding));
-            }
-        }
-        if (_itemWidth != null)
-        {
-            if (isValueReference(_itemWidth))
-            {
-                fisheye.setValueBinding("itemWidth", app
-                        .createValueBinding(_itemWidth));
-            }
-            else
-            {
-                fisheye.setItemWidth(new Integer(_itemWidth));
-            }
-        }
-        if (_labelEdge != null)
-        {
-            if (isValueReference(_labelEdge))
-            {
-                fisheye.setValueBinding("labelEdge", app
-                        .createValueBinding(_labelEdge));
-            }
-            else
-            {
-                fisheye.setLabelEdge(_labelEdge);
-            }
-        }
-        if (_orientation != null)
-        {
-            if (isValueReference(_orientation))
-            {
-                fisheye.setValueBinding("orientation", app
-                        .createValueBinding(_orientation));
-            }
-            else
-            {
-                fisheye.setOrientation(_orientation);
-            }
-        }
-        if (_conservativeTrigger != null)
-        {
-            if (isValueReference(_conservativeTrigger))
-            {
-                fisheye.setValueBinding("conservativeTrigger", app
-                        .createValueBinding(_conservativeTrigger));
-            }
-            else
-            {
-                fisheye.setConservativeTrigger(Boolean
-                        .valueOf(_conservativeTrigger));
-            }
-        }
-        if (_visibleWindow != null)
-        {
-            if (isValueReference(_visibleWindow))
-            {
-                fisheye.setValueBinding("visibleWindow", app
-                        .createValueBinding(_visibleWindow));
-            }
-            else
-            {
-                fisheye.setVisibleWindow(Integer
-                        .valueOf(_visibleWindow));
-            }
-        }
-
- 
+        _var = var;
     }
-
 }

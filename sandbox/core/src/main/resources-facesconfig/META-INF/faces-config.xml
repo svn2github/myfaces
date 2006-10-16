@@ -181,6 +181,11 @@
   	<component-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenu</component-class>
   </component>
 
+  <component>
+    <component-type>org.apache.myfaces.FishEyeCommandLink</component-type>
+    <component-class>org.apache.myfaces.custom.fisheye.FishEyeCommandLink</component-class>
+  </component>
+
  <component>
     <component-type>org.apache.myfaces.TimedNotifier</component-type>
     <component-class>org.apache.myfaces.custom.timednotifier.TimedNotifier</component-class>
@@ -430,10 +435,16 @@
     </renderer>
 
     <renderer>
-		<component-family>javax.faces.Output</component-family>
+		<component-family>javax.faces.Data</component-family>
 		<renderer-type>org.apache.myfaces.FishEyeList</renderer-type>
 		<renderer-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenuRenderer</renderer-class>
 	</renderer>
+
+    <renderer>
+        <component-family>javax.faces.Command</component-family>
+        <renderer-type>org.apache.myfaces.FishEyeCommandLink</renderer-type>
+        <renderer-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenuRenderer</renderer-class>
+    </renderer>
 
 	<renderer>
 	    <component-family>javax.faces.Output</component-family>

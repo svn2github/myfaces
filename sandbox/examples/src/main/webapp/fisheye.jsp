@@ -36,7 +36,7 @@
 .outerbar {
 	background-color: #666;
 	text-align: center;
-	position: absolute;
+    position: absolute;
 	left: 0px;
 	top: 0px;
 	width: 100%;
@@ -56,32 +56,16 @@ body {
 </head>
 <body>
 <f:view>
-	<h:form>
+    <f:loadBundle basename="org.apache.myfaces.examples.fisheye.labels" var="label"/>
+    <h:form>
 	<t:div styleClass="outerbar">
-		<s:fishEyeNavigationMenu itemWidth="50" itemHeight="50" itemMaxWidth="200"
-			itemMaxHeight="200" orientation="horizontal" effectUnits="2"
-			itemPadding="10" attachEdge="top" labelEdge="bottom" visibleWindow="3" >
-
-			<t:navigationMenuItem icon="images/icon_browser.png"
-				itemLabel="Web Browser"
-				actionListener="#{fisheye.processAction}" />
-			<t:navigationMenuItem icon="images/icon_calendar.png"
-				itemLabel="Calendar"
-				actionListener="#{fisheye.processAction}" />
-			<t:navigationMenuItem icon="images/icon_email.png" itemLabel="Email"
-				actionListener="#{fisheye.processAction}" />
-			<t:navigationMenuItem icon="images/icon_texteditor.png"
-				itemLabel="Text Editor"
-				actionListener="#{fisheye.processAction}" />
-			<t:navigationMenuItem icon="images/icon_update.png"
-				itemLabel="Software Update"
-				actionListener="#{fisheye.processAction}" />
-			<t:navigationMenuItem icon="images/icon_users.png" itemLabel="Users"
-				actionListener="#{fisheye.processAction}" />
-
-		</s:fishEyeNavigationMenu>
+        <s:fishEyeNavigationMenu itemWidth="50" itemHeight="50" itemMaxWidth="80"
+            itemMaxHeight="80" orientation="horizontal" effectUnits="2" var="item" value="#{fisheye.items}"
+            itemPadding="10" attachEdge="top" labelEdge="bottom" visibleWindow="3" >
+                <s:fishEyeCommandLink caption="#{fisheye.labels[item.caption]}" iconSrc="#{item.iconSrc}" target="#{item.target}"
+                                      actionListener="#{fisheye.processAction}"/>
+        </s:fishEyeNavigationMenu>
 	</t:div>
-
 	<t:div styleClass="page">
 		<t:outputText value="#{fisheye.actionName}" />
 		<%@include file="../inc/page_footer.jsp"%>

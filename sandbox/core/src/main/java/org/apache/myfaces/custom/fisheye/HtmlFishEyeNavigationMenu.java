@@ -15,10 +15,11 @@
  */
 package org.apache.myfaces.custom.fisheye;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.custom.div.Div;
+import java.util.Iterator;
 
 /**
  * A Mac OSX-style toolbar, using the DOJO toolkit.
@@ -28,7 +29,7 @@ import org.apache.myfaces.custom.div.Div;
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFishEyeNavigationMenu extends Div
+public class HtmlFishEyeNavigationMenu extends UIData
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.FishEyeList";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FishEyeList";
@@ -40,6 +41,7 @@ public class HtmlFishEyeNavigationMenu extends Div
     public static final String EDGE_TOP = "top";
     public static final String HORIZONTAL_ORIENTATION = "horizontal";
     public static final String VERTICAL_ORIENTATION = "vertical";
+    private static final String NODE_STAMP_FACET_NAME = "nodeStamp";
 
     private String _attachEdge;
     private Boolean _conservativeTrigger;
@@ -52,11 +54,57 @@ public class HtmlFishEyeNavigationMenu extends Div
     private String _labelEdge;
     private String _orientation;
 
-     private Integer _visibleWindow = null;
- 
-     public void setVisibleWindow(Integer visibleWindow)
+    private Integer _visibleWindow = null;
+
+    public HtmlFishEyeNavigationMenu()
+    {
+        setRendererType(DEFAULT_RENDERER_TYPE);
+    }
+
+    public void processDecodes(FacesContext context) {
+        super.processDecodes(context);
+        int first = getFirst();
+        int rows = getRows();
+        int last;
+        if (rows == 0)
+        {
+            last = getRowCount();
+        }
+        else
+        {
+            last = first + rows;
+        }
+        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
+        {
+            setRowIndex(rowIndex);
+
+            //scrolled past the last row
+            if (!isRowAvailable())
+                break;
+
+            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            {
+                UIComponent child = (UIComponent) it.next();
+                if (child instanceof FishEyeCommandLink)
+                {
+                    if (!child.isRendered())
+                    {
+                        //Column is not visible
+                        continue;
+                    }
+                    child.processDecodes(context);
+                }
+            }
+        }
+    }
+
+    public void setVisibleWindow(Integer visibleWindow)
     {
         _visibleWindow = visibleWindow;
+    }
+
+    public void setValueBinding(String string, ValueBinding valueBinding) {
+        super.setValueBinding(string, valueBinding);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     public Integer getVisibleWindow()
@@ -65,11 +113,10 @@ public class HtmlFishEyeNavigationMenu extends Div
         ValueBinding vb = getValueBinding("visibleWindow");
         return vb != null ? (Integer)vb.getValue(getFacesContext()) : null;
     }
- 
-    
-    public HtmlFishEyeNavigationMenu()
+
+    public UIComponent getNodeStamp()
     {
-        setRendererType(DEFAULT_RENDERER_TYPE);
+        return (UIComponent) getFacets().get(NODE_STAMP_FACET_NAME);
     }
 
     public String getAttachEdge()

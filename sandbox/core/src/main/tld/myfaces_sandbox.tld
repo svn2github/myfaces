@@ -123,6 +123,7 @@ Sandbox-related entities.
 <!ENTITY table_suggest_ajax_attributes       SYSTEM "entities/table_suggest_ajax_attributes.xml">
 <!ENTITY suggest_ajax_attributes       SYSTEM "entities/suggest_ajax_attributes.xml">
 <!ENTITY html_fisheye_list_attributes	SYSTEM "entities/html_fisheyelist_attributes.xml">
+<!ENTITY html_fishey_commandlink_attributes	SYSTEM "entities/html_fishey_commandlink_attributes.xml">
 <!ENTITY html_timed_notifier_attributes	SYSTEM "entities/html_timed_notifier_attributes.xml">
 <!ENTITY start_conversation_attributes	SYSTEM "entities/start_conversation_attributes.xml">
 <!ENTITY end_conversation_attributes	SYSTEM "entities/end_conversation_attributes.xml">
@@ -1030,7 +1031,7 @@ Sandbox-related entities.
         </attribute>
     </tag>
 
-	<!--  fishEyeList -->
+	<!--  fishEye -->
 	<tag>
 		<name>fishEyeNavigationMenu</name>
 		<tag-class>org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenuTag</tag-class>
@@ -1042,6 +1043,18 @@ Sandbox-related entities.
 
 		&html_fisheye_list_attributes;
 	</tag>
+    <tag>
+        <name>fishEyeCommandLink</name>
+        <tag-class>org.apache.myfaces.custom.fisheye.FishEyeCommandLinkTag</tag-class>
+        <body-content>JSP</body-content>
+        <display-name>fishEye commandLink component</display-name>
+        <description>CommandLink component that can be used in nodeStamp facet</description>
+        &faces_id_optional_attribute;
+        &faces_rendered_attribute;
+        &ui_command_attributes;
+
+        &html_fishey_commandlink_attributes;
+    </tag>
 
 	<!-- timed notifier -->
 	<tag>
