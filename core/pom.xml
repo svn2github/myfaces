@@ -7,7 +7,7 @@
   <artifactId>tomahawk</artifactId>
   <packaging>jar</packaging>
   <name>Tomahawk Core</name>
-  
+
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
     <artifactId>tomahawk-project</artifactId>
@@ -44,14 +44,14 @@
       <version>1.0</version>
       <scope>compile</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.1</version>
       <scope>compile</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>struts</groupId>
       <artifactId>struts</artifactId>
@@ -178,7 +178,7 @@
       <groupId>org.apache.shale</groupId>
       <artifactId>shale-test</artifactId>
       <version>1.0.3-SNAPSHOT</version>
-      <scope>test</scope>		
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.apache.myfaces</groupId>
@@ -212,7 +212,7 @@
       <scope>test</scope>
     </dependency>
 
-    
+
 
   </dependencies>
 
@@ -228,18 +228,6 @@
     </resources>
 
     <plugins>
-
-      <plugin>
-        <groupId>org.apache.myfaces.maven</groupId>
-        <artifactId>facelets-plugin</artifactId>
-        <version>1.0.5-SNAPSHOT</version>  
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals><goal>generate-taglibs</goal></goals>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
