@@ -33,6 +33,7 @@ public class HtmlDataScrollerTag
     //private static final Log log = LogFactory.getLog(HtmlDataScrollerTag.class);
 
     private static final String FOR_ATTR                = "for";
+    private static final String LAYOUT_ATTR             = "layout";
     private static final String FAST_STEP_ATTR          = "fastStep";
     private static final String PAGE_INDEX_ATTR         = "pageIndexVar";
     private static final String PAGE_COUNT_ATTR         = "pageCountVar";
@@ -49,10 +50,18 @@ public class HtmlDataScrollerTag
     private static final String PAGINATOR_COL_CLASS_ATTR    = "paginatorColumnClass";
     private static final String PAGINATOR_COL_STYLE_ATTR    = "paginatorColumnStyle";
     private static final String PAGINATOR_ACTCOL_CLASS_ATTR = "paginatorActiveColumnClass";
+    private static final String PAGINATOR_RENDER_LINK_FOR_ACTIVE = "paginatorRenderLinkForActive";
+    private static final String FIRST_CLASS_ATTR            = "firstStyleClass";
+    private static final String LAST_CLASS_ATTR             = "lastStyleClass";
+    private static final String PREVIOUS_CLASS_ATTR         = "previousStyleClass";
+    private static final String NEXT_CLASS_ATTR             = "nextStyleClass";
+    private static final String FASTF_CLASS_ATTR            = "fastfStyleClass";
+    private static final String FASTR_CLASS_ATTR            = "fastrStyleClass";
     private static final String PAGINATOR_ACTCOL_STYLE_ATTR = "paginatorActiveColumnStyle";
     private static final String RENDER_FACETS_IF_SINGLE_PAGE_ATTR = "renderFacetsIfSinglePage";
 
     private String _for;
+    private String _layout;
     private String _fastStep;
     private String _pageIndexVar;
     private String _pageCountVar;
@@ -70,6 +79,13 @@ public class HtmlDataScrollerTag
     private String _paginatorColumnStyle;
     private String _paginatorActiveColumnClass;
     private String _paginatorActiveColumnStyle;
+    private String _paginatorRenderLinkForActive;
+    private String _firstStyleClass;
+    private String _lastStyleClass;
+    private String _previousStyleClass;
+    private String _nextStyleClass;
+    private String _fastfStyleClass;
+    private String _fastrStyleClass;
     private String _renderFacetsIfSinglePage;
     
     private String _immediate;
@@ -82,9 +98,11 @@ public class HtmlDataScrollerTag
     private String _enabledOnUserRole;
     private String _visibleOnUserRole;
 
+
     public void release() {
         super.release();
         _for=null;
+        _layout=null;
         _fastStep=null;
         _pageIndexVar=null;
         _pageCountVar=null;
@@ -102,6 +120,7 @@ public class HtmlDataScrollerTag
         _paginatorColumnStyle=null;
         _paginatorActiveColumnClass=null;
         _paginatorActiveColumnStyle=null;
+        _paginatorRenderLinkForActive=null;
         _renderFacetsIfSinglePage=null;
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
@@ -109,6 +128,12 @@ public class HtmlDataScrollerTag
         _onclick = null;
         _ondblclick=null;
         _actionListener=null;
+        _firstStyleClass=null;
+        _lastStyleClass=null;
+        _previousStyleClass=null;
+        _nextStyleClass=null;
+        _fastfStyleClass=null;
+        _fastrStyleClass=null;
     }
     
     public String getComponentType()
@@ -126,6 +151,7 @@ public class HtmlDataScrollerTag
         super.setProperties(component);
 
         setStringProperty(component, FOR_ATTR, _for);
+        setStringProperty(component, LAYOUT_ATTR, _layout);
         setIntegerProperty(component, FAST_STEP_ATTR, _fastStep);
         setStringProperty(component, PAGE_INDEX_ATTR, _pageIndexVar);
         setStringProperty(component, PAGE_COUNT_ATTR, _pageCountVar);
@@ -143,6 +169,14 @@ public class HtmlDataScrollerTag
         setStringProperty(component, PAGINATOR_COL_STYLE_ATTR, _paginatorColumnStyle);
         setStringProperty(component, PAGINATOR_ACTCOL_CLASS_ATTR, _paginatorActiveColumnClass);
         setStringProperty(component, PAGINATOR_ACTCOL_STYLE_ATTR, _paginatorActiveColumnStyle);
+        setBooleanProperty(component, PAGINATOR_RENDER_LINK_FOR_ACTIVE, _paginatorRenderLinkForActive);
+        setStringProperty(component, FIRST_CLASS_ATTR, _firstStyleClass);
+        setStringProperty(component, LAST_CLASS_ATTR, _lastStyleClass);
+        setStringProperty(component, PREVIOUS_CLASS_ATTR, _previousStyleClass);
+        setStringProperty(component, NEXT_CLASS_ATTR, _nextStyleClass);
+        setStringProperty(component, FASTF_CLASS_ATTR, _fastfStyleClass);
+        setStringProperty(component, FASTR_CLASS_ATTR, _fastrStyleClass);
+
         setBooleanProperty(component, RENDER_FACETS_IF_SINGLE_PAGE_ATTR, _renderFacetsIfSinglePage);
         
         setBooleanProperty(component, JSFAttr.IMMEDIATE_ATTR, _immediate);
@@ -158,6 +192,11 @@ public class HtmlDataScrollerTag
     public void setFor(String aFor)
     {
         _for = aFor;
+    }
+
+    public void setLayout(String layout)
+    {
+        _layout = layout;
     }
 
     public void setFastStep(String fastStep)
@@ -248,6 +287,11 @@ public class HtmlDataScrollerTag
     public void setRenderFacetsIfSinglePage(String renderFacetsIfSinglePage)
     {
         _renderFacetsIfSinglePage = renderFacetsIfSinglePage;
+    }
+
+    public void setPaginatorRenderLinkForActive(String paginatorRenderLinkForActive)
+    {
+        _paginatorRenderLinkForActive = paginatorRenderLinkForActive;
     }
 
     public void setImmediate(String immediate)

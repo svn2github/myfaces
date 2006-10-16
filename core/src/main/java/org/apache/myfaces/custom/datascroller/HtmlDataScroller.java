@@ -53,10 +53,54 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
     private static final String FAST_FORWARD_FACET_NAME = "fastforward";
     private static final String FAST_REWIND_FACET_NAME = "fastrewind";
 
+    private static final String TABLE_LAYOUT = "table";
+    private static final String LIST_LAYOUT = "list";
+    private static final String SINGLE_LIST_LAYOUT = "singleList";
+    private static final String SINGLE_TABLE_LAYOUT = "singleTable";
+
     // just for caching the associated uidata
     private transient UIData _UIData;
 
+    private transient Boolean _listLayout;
+
+    private transient Boolean _singleElementLayout;
+
     private MethodBinding _actionListener;
+
+    public boolean isListLayout()
+    {
+        if(_listLayout == null)
+        {
+            String layout=getLayout();
+            if(layout == null || layout.equals(TABLE_LAYOUT) || layout.equals(SINGLE_TABLE_LAYOUT))
+                _listLayout = Boolean.FALSE;
+            else if(layout.equals(LIST_LAYOUT) || layout.equals(SINGLE_LIST_LAYOUT))
+            {
+                _listLayout = Boolean.TRUE;
+            }
+            else
+            {
+                log.error("Invalid layout-parameter : "+layout +" provided. Defaulting to table-layout.");
+                _listLayout = Boolean.FALSE;
+            }
+        }
+
+        return _listLayout.booleanValue();
+    }
+
+    public boolean isSingleElementLayout()
+    {
+        if(_singleElementLayout == null)
+        {
+            String layout=getLayout();
+            if(layout == null || layout.equals(SINGLE_LIST_LAYOUT) || layout.equals(SINGLE_TABLE_LAYOUT))
+                _singleElementLayout = Boolean.TRUE;
+            else
+                _singleElementLayout = Boolean.FALSE;
+        }
+
+        return _singleElementLayout.booleanValue();
+    }
 
     /**
      * Catch any attempts to queue events for this component, and ensure
@@ -244,7 +288,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         int rows = uiData.getRows();
         if (0 == rows)
         {
-            throw new FacesException("Missing 'rows' attribute on component '" + uiData.getId() + "'" );
+            throw new FacesException("You need to set a value to the 'rows' attribute of component '" + uiData.getClientId(getFacesContext()) + "'" );
         }
 
         int pageIndex;
@@ -504,10 +548,17 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
     private String _paginatorColumnStyle = null;
     private String _paginatorActiveColumnClass = null;
     private String _paginatorActiveColumnStyle = null;
+    private Boolean _paginatorRenderLinkForActive = null;        
     private Boolean _renderFacetsIfSinglePage = null;
     private Boolean _immediate;
     private String _onclick;
     private String _ondblclick;
+    private String _firstStyleClass;
+    private String _lastStyleClass;
+    private String _previousStyleClass;
+    private String _nextStyleClass;
+    private String _fastfStyleClass;
+    private String _fastrStyleClass;  
 
     public static final String FACET_FIRST = "first".intern();
     public static final String FACET_PREVIOUS = "previous".intern();
@@ -750,6 +801,99 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
+    public void setPaginatorRenderLinkForActive(boolean paginatorRenderLinkForActive)
+    {
+        _paginatorRenderLinkForActive = Boolean.valueOf(paginatorRenderLinkForActive);
+    }
+
+    public boolean isPaginatorRenderLinkForActive()
+    {
+        if (_paginatorRenderLinkForActive != null)
+            return _paginatorRenderLinkForActive.booleanValue();
+        ValueBinding vb = getValueBinding("paginatorRenderLinkForActive");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : true;
+    }
+
+    public void setFirstStyleClass(String firstStyleClass)
+    {
+        _firstStyleClass = firstStyleClass;
+    }
+
+    public String getFirstStyleClass()
+    {
+        if (_firstStyleClass != null)
+            return _firstStyleClass;
+        ValueBinding vb = getValueBinding("firstStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setLastStyleClass(String lastStyleClass)
+    {
+        _lastStyleClass = lastStyleClass;
+    }
+
+    public String getLastStyleClass()
+    {
+        if (_lastStyleClass != null)
+            return _lastStyleClass;
+        ValueBinding vb = getValueBinding("lastStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setPreviousStyleClass(String previousStyleClass)
+    {
+        _previousStyleClass = previousStyleClass;
+    }
+
+    public String getPreviousStyleClass()
+    {
+        if (_previousStyleClass != null)
+            return _previousStyleClass;
+        ValueBinding vb = getValueBinding("previousStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setNextStyleClass(String nextStyleClass)
+    {
+        _nextStyleClass = nextStyleClass;
+    }
+
+    public String getNextStyleClass()
+    {
+        if (_nextStyleClass != null)
+            return _nextStyleClass;
+        ValueBinding vb = getValueBinding("nextStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setFastfStyleClass(String fastfStyleClass)
+    {
+        _fastfStyleClass = fastfStyleClass;
+    }
+
+    public String getFastfStyleClass()
+    {
+        if (_fastfStyleClass != null)
+            return _fastfStyleClass;
+        ValueBinding vb = getValueBinding("fastfStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setFastrStyleClass(String fastrStyleClass)
+    {
+        _fastrStyleClass = fastrStyleClass;
+    }
+
+    public String getFastrStyleClass()
+    {
+        if (_fastrStyleClass != null)
+            return _fastrStyleClass;
+        ValueBinding vb = getValueBinding("fastrStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+
     public void setPaginatorActiveColumnStyle(String paginatorActiveColumnStyle)
     {
         _paginatorActiveColumnStyle = paginatorActiveColumnStyle;
@@ -827,7 +971,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
     
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[25];
+        Object values[] = new Object[32];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -848,11 +992,18 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         values[17] = _paginatorColumnStyle;
         values[18] = _paginatorActiveColumnClass;
         values[19] = _paginatorActiveColumnStyle;
-        values[20] = _renderFacetsIfSinglePage;
-        values[21] = _immediate;
-        values[22] = _onclick;//mh
-        values[23] = _ondblclick;//mh
-        values[24] = saveAttachedState(context, _actionListener);
+        values[20] = _paginatorRenderLinkForActive;
+        values[21] = _firstStyleClass;
+        values[22] = _lastStyleClass;
+        values[23] = _previousStyleClass;
+        values[24] = _nextStyleClass;
+        values[25] = _fastfStyleClass;
+        values[26] = _fastrStyleClass;
+        values[27] = _renderFacetsIfSinglePage;
+        values[28] = _immediate;
+        values[29] = _onclick;//mh
+        values[30] = _ondblclick;//mh
+        values[31] = saveAttachedState(context, _actionListener);
         return values;
     }
 
@@ -879,11 +1030,18 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
         _paginatorColumnStyle = (String) values[17];
         _paginatorActiveColumnClass = (String) values[18];
         _paginatorActiveColumnStyle = (String) values[19];
-        _renderFacetsIfSinglePage = (Boolean) values[20];
-        _immediate = (Boolean) values[21];
-        _onclick = (String)values[22];
-        _ondblclick = (String)values[23];
-        _actionListener = (MethodBinding)restoreAttachedState(context, values[24]);
+        _paginatorRenderLinkForActive = (Boolean) values[20];
+        _firstStyleClass = (String) values[21];
+        _lastStyleClass = (String) values[22];
+        _previousStyleClass = (String) values[23];
+        _nextStyleClass = (String) values[24];
+        _fastfStyleClass = (String) values[25];
+        _fastrStyleClass = (String) values[26];
+        _renderFacetsIfSinglePage = (Boolean) values[27];
+        _immediate = (Boolean) values[28];
+        _onclick = (String)values[29];
+        _ondblclick = (String)values[30];
+        _actionListener = (MethodBinding)restoreAttachedState(context, values[31]);
     }
 
     //------------------ GENERATED CODE END ---------------------------------------

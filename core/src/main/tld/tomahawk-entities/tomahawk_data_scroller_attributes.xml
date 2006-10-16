@@ -9,6 +9,17 @@
             </description>
         </attribute>
         <attribute>
+            <name>layout</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The layout this scroller should render with. Default is 'table',
+                'list' is implemented as well. Additionally you can use 'singleList' -
+                then the data-scroller will render a list, but not the paginator - same with the
+                value 'singleTable'.
+            </description>
+        </attribute>
+        <attribute>
             <name>fastStep</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
@@ -149,12 +160,68 @@
             </description>
         </attribute>
         <attribute>
+            <name>paginatorRenderLinkForActive</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                'true' - render a link for the paginator's column with pageIndex = currentPageIndex. Default-value is 'true'.
+            </description>
+        </attribute>
+        <attribute>
             <name>renderFacetsIfSinglePage</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
                 If set to false, the facets aren't renderd if all the lines are contained on a single page.
                 Default is true.
+            </description>
+        </attribute>
+        <attribute>
+            <name>nextStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                style-class for dataScroller next-element
+            </description>
+        </attribute>
+        <attribute>
+            <name>lastStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                style-class for data-scroller last-element
+            </description>
+        </attribute>
+        <attribute>
+            <name>fastfStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                style-class for data-scroller fast-forward-element
+            </description>
+        </attribute>
+        <attribute>
+            <name>fastrStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                style-class for data-scroller fast-rewind-element
+            </description>
+        </attribute>
+        <attribute>
+            <name>firstStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                style-class for data-scroller first-element
+            </description>
+        </attribute>
+        <attribute>
+            <name>previousStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                style-class for data-scroller previous-element
             </description>
         </attribute>
         <attribute>

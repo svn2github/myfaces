@@ -28,7 +28,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * Renderer for the HtmlDataScroller component.
@@ -213,70 +215,111 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             && scroller.getLast() == null)
             return;
 
-        writer.startElement("table", scroller);
+        writeScrollerStart(writer, scroller);
         String styleClass = scroller.getStyleClass();
         if (styleClass != null)
         {
-            writer.writeAttribute("class", styleClass, null);
+            writer.writeAttribute(HTML.CLASS_ATTR, styleClass, JSFAttr.STYLE_CLASS_ATTR);
         }
         String style = scroller.getStyle();
         if (style != null)
         {
-            writer.writeAttribute("style", style, null);
+            writer.writeAttribute(HTML.STYLE_ATTR, style, JSFAttr.STYLE_ATTR);
         }
-        writer.startElement("tr", scroller);
+        writeScrollerRowStart(writer, scroller);
 
         UIComponent facetComp = scroller.getFirst();
         if (facetComp != null)
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
+            writeStyleClass("firstStyleClass", scroller.getFirstStyleClass(), writer);
             renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FIRST);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getFastRewind();
         if (facetComp != null)
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
+            writeStyleClass("fastrStyleClass", scroller.getFastrStyleClass(), writer);
             renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FAST_REWIND);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getPrevious();
         if (facetComp != null)
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
+            writeStyleClass("previous", scroller.getPreviousStyleClass(), writer);
             renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_PREVIOUS);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
         if (scroller.isPaginator())
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
             renderPaginator(facesContext, scroller);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getNext();
         if (facetComp != null)
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
+            writeStyleClass("next", scroller.getNextStyleClass(), writer);
             renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_NEXT);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getFastForward();
         if (facetComp != null)
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
+            writeStyleClass("fastf", scroller.getFastfStyleClass(), writer);
             renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FAST_FORWARD);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getLast();
         if (facetComp != null)
         {
-            writer.startElement("td", scroller);
+            writeScrollerElementStart(writer, scroller);
+            writeStyleClass("last", scroller.getLastStyleClass(), writer);
             renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_LAST);
-            writer.endElement("td");
+            writeScrollerElementEnd(writer, scroller);
         }
 
-        writer.endElement("tr");
-        writer.endElement("table");
+        writeScrollerRowEnd(writer, scroller);
+        writeScrollerEnd(writer, scroller);
+    }
+
+    private void writeStyleClass(String jsfAttrName, String styleClass, ResponseWriter writer) throws IOException {
+        if (styleClass != null)
+        {
+            writer.writeAttribute(HTML.CLASS_ATTR, styleClass, jsfAttrName);
+        }
+    }
+
+    private boolean isListLayout(HtmlDataScroller scroller) {
+        return scroller.isListLayout();
+    }
+
+    protected void writeScrollerEnd(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.endElement(isListLayout(scroller)?HTML.UL_ELEM:HTML.TABLE_ELEM);
+    }
+
+    protected void writeScrollerRowEnd(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        if(!isListLayout(scroller)) writer.endElement(HTML.TR_ELEM);
+    }
+
+    protected void writeScrollerElementEnd(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.endElement(isListLayout(scroller)?HTML.LI_ELEM:HTML.TD_ELEM);
+    }
+
+    protected void writeScrollerElementStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.startElement(isListLayout(scroller)?HTML.LI_ELEM:HTML.TD_ELEM, scroller);
+    }
+
+    protected void writeScrollerRowStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        if(!isListLayout(scroller)) writer.startElement(HTML.TR_ELEM, scroller);
+    }
+
+    protected void writeScrollerStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.startElement(isListLayout(scroller)?HTML.UL_ELEM:HTML.TABLE_ELEM, scroller);
     }
 
     protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
@@ -340,28 +383,31 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             start = 0;
         }
 
-        writer.startElement("table", scroller);
-
-        String styleClass = scroller.getPaginatorTableClass();
-        if (styleClass != null)
+        if(!scroller.isSingleElementLayout())
         {
-            writer.writeAttribute("class", styleClass, null);
-        }
-        String style = scroller.getPaginatorTableStyle();
-        if (style != null)
-        {
-            writer.writeAttribute("style", style, null);
+            writePaginatorStart(writer, scroller);
+
+            String styleClass = scroller.getPaginatorTableClass();
+            if (styleClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, styleClass, "paginatorTableClass");
+            }
+            String style = scroller.getPaginatorTableStyle();
+            if (style != null)
+            {
+                writer.writeAttribute(HTML.STYLE_ATTR, style, "paginatorTableStyle");
+            }
+
+            writePaginatorRowStart(writer, scroller);
         }
 
-        writer.startElement("tr", scroller);
-
-   	    String onclick = scroller.getOnclick();
+        String onclick = scroller.getOnclick();
    	    String ondblclick = scroller.getOndblclick();
         
         for (int i = start, size = start + pages; i < size; i++)
         {
             int idx = i + 1;
-            writer.startElement("td", scroller);
+            writePaginatorElementStart(writer, scroller);
             String cStyleClass;
             String cStyle;
             if (idx == pageIndex)
@@ -376,30 +422,64 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             }
             if (cStyleClass != null)
             {
-                writer.writeAttribute("class", cStyleClass, null);
+                writer.writeAttribute(HTML.CLASS_ATTR, cStyleClass, idx==pageIndex?"paginatorActiveColumnClass":"paginatorColumnClass");
             }
             if (cStyle != null)
             {
-                writer.writeAttribute("style", cStyle, null);
+                writer.writeAttribute(HTML.STYLE_ATTR, cStyle, idx==pageIndex?"paginatorActiveColumnStyle":"paginatorColumnStyle");
             }
 
-            HtmlCommandLink link = getLink(facesContext, scroller, Integer.toString(idx), idx);
-            if(onclick != null){
-            	link.setOnclick(onclick);
+            if(idx == pageIndex && !scroller.isPaginatorRenderLinkForActive())
+            {
+                writer.write(Integer.toString(idx));
             }
-            if(ondblclick != null){
-            	link.setOndblclick(ondblclick);
-            }
-            
-            link.encodeBegin(facesContext);
-            link.encodeChildren(facesContext);
-            link.encodeEnd(facesContext);
+            else
+            {
+                HtmlCommandLink link = getLink(facesContext, scroller, Integer.toString(idx), idx);
+                if(onclick != null){
+                    link.setOnclick(onclick);
+                }
+                if(ondblclick != null){
+                    link.setOndblclick(ondblclick);
+                }
 
-            writer.endElement("td");
+                link.encodeBegin(facesContext);
+                link.encodeChildren(facesContext);
+                link.encodeEnd(facesContext);
+            }
+
+            writePaginatorElementEnd(writer, scroller);
         }
 
-        writer.endElement("tr");
-        writer.endElement("table");
+        if(!scroller.isSingleElementLayout())
+        {
+            writePaginatorRowEnd(writer, scroller);
+            writePaginatorEnd(writer, scroller);
+        }
+    }
+
+    protected void writePaginatorEnd(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.endElement(isListLayout(scroller)?HTML.UL_ELEM:HTML.TABLE_ELEM);
+    }
+
+    protected void writePaginatorRowEnd(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        if(!isListLayout(scroller)) writer.endElement(HTML.TR_ELEM);
+    }
+
+    protected void writePaginatorElementEnd(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.endElement(isListLayout(scroller)?HTML.LI_ELEM:HTML.TD_ELEM);
+    }
+
+    protected void writePaginatorElementStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.startElement(isListLayout(scroller)?HTML.LI_ELEM:HTML.TD_ELEM, scroller);
+    }
+
+    protected void writePaginatorRowStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        if(!isListLayout(scroller)) writer.startElement(HTML.TR_ELEM, scroller);
+    }
+
+    protected void writePaginatorStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
+        writer.startElement(isListLayout(scroller)?HTML.UL_ELEM:HTML.TABLE_ELEM, scroller);
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlDataScroller scroller,
