@@ -67,13 +67,24 @@ public class FishEyeHandler implements Serializable
 
     public List getItems() {
         List list = new ArrayList();
-        list.add(new FishEyeItem("browser","images/icon_browser.png"));
-        list.add(new FishEyeItem("cal", "images/icon_calendar.png"));
-        list.add(new FishEyeItem("email", "images/icon_email.png"));
-        list.add(new FishEyeItem("texteditor", "images/icon_texteditor.png"));
-        list.add(new FishEyeItem("swupdate", "images/icon_update.png"));
-        list.add(new FishEyeItem("users", "images/icon_users.png"));
+        list.add(new FooFishEyeItem("browser","images/icon_browser.png"));
+        list.add(new FooFishEyeItem("cal", "images/icon_calendar.png"));
+        list.add(new FooFishEyeItem("email", "images/icon_email.png"));
+        list.add(new FooFishEyeItem("texteditor", "images/icon_texteditor.png"));
+        list.add(new FooFishEyeItem("swupdate", "images/icon_update.png"));
+        list.add(new FooFishEyeItem("users", "images/icon_users.png"));
         return list;
+    }
+
+    public class FooFishEyeItem extends FishEyeItem {
+        public FooFishEyeItem(String caption, String iconSrc) {
+            super(caption, iconSrc);
+        }
+
+        public void action(ActionEvent event) {
+            _actionName = getCaption() + " item was clicked";
+        }
+
     }
 
     public Map getLabels() {

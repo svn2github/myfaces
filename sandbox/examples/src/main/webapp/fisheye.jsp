@@ -62,8 +62,8 @@ body {
         <s:fishEyeNavigationMenu itemWidth="50" itemHeight="50" itemMaxWidth="80"
             itemMaxHeight="80" orientation="horizontal" effectUnits="2" var="item" value="#{fisheye.items}"
             itemPadding="10" attachEdge="top" labelEdge="bottom" visibleWindow="3" >
-                <s:fishEyeCommandLink caption="#{fisheye.labels[item.caption]}" iconSrc="#{item.iconSrc}" target="#{item.target}"
-                                      actionListener="#{fisheye.processAction}"/>
+                <s:fishEyeCommandLink caption="#{labels.labels[item.caption]}" iconSrc="#{item.iconSrc}" target="#{item.target}"
+                                      actionListener="#{item.action}"/>
         </s:fishEyeNavigationMenu>
 	</t:div>
 	<t:div styleClass="page">
