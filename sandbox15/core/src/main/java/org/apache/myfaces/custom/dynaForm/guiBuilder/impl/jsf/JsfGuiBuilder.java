@@ -16,13 +16,13 @@
 package org.apache.myfaces.custom.dynaForm.guiBuilder.impl.jsf;
 
 import org.apache.myfaces.custom.dynaForm.guiBuilder.GuiBuilder;
-import org.apache.myfaces.custom.dynaForm.lib.SelectionSourceEnum;
-import org.apache.myfaces.custom.dynaForm.lib.ObjectSerializationConverter;
 import org.apache.myfaces.custom.dynaForm.metadata.FieldInterface;
 import org.apache.myfaces.custom.dynaForm.metadata.Selection;
 import org.apache.myfaces.custom.dynaForm.metadata.utils.TypeInfos;
+import org.apache.myfaces.custom.dynaForm.lib.ObjectSerializationConverter;
 
 import javax.faces.FacesException;
+import javax.faces.el.MethodBinding;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -40,27 +40,27 @@ import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.component.html.HtmlSelectManyListbox;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.BigDecimalConverter;
+import javax.faces.convert.BigIntegerConverter;
+import javax.faces.convert.BooleanConverter;
+import javax.faces.convert.ByteConverter;
+import javax.faces.convert.CharacterConverter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.DateTimeConverter;
-import javax.faces.convert.BooleanConverter;
-import javax.faces.convert.CharacterConverter;
-import javax.faces.convert.ByteConverter;
-import javax.faces.convert.ShortConverter;
+import javax.faces.convert.FloatConverter;
 import javax.faces.convert.IntegerConverter;
 import javax.faces.convert.LongConverter;
-import javax.faces.convert.FloatConverter;
 import javax.faces.convert.NumberConverter;
-import javax.faces.convert.BigIntegerConverter;
-import javax.faces.convert.BigDecimalConverter;
+import javax.faces.convert.ShortConverter;
 import javax.faces.event.ActionEvent;
 import javax.faces.validator.DoubleRangeValidator;
 import javax.faces.validator.LengthValidator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Date;
 
 /**
  * concrete gui builder which knows how to build JSF forms
@@ -237,6 +237,23 @@ public class JsfGuiBuilder extends GuiBuilder
 		fireNewComponent(field, cmp);
 	}
 
+	/*
+	@Override
+	public void createSearchForSelectMenu(FieldInterface field)
+	{
+		UIComponent cmp;
+		if (!isDisplayOnly())
+		{
+			cmp = doCreateSearchForSelectMenu(field);
+		}
+		else
+		{
+			cmp = doCreateOutputText(field);
+		}
+		fireNewComponent(field, cmp);
+	}
+	*/
+
 	@Override
 	public void createNative(FieldInterface field)
 	{
@@ -335,37 +352,50 @@ public class JsfGuiBuilder extends GuiBuilder
 
 	public Converter doCreateConverter(FieldInterface field)
 	{
-        Class type = field.getType();
+		if (field.getConverterClass() != null)
+		{
+			return context.getApplication().createConverter(field.getConverterClass());
+		}
+		if (field.getConverterId() != null)
+		{
+			return context.getApplication().createConverter(field.getConverterId());
+		}
 
-        if (Boolean.class.isAssignableFrom(type))
+		Class type = field.getType();
+		if (type == null)
+		{
+			return null;
+		}
+
+		if (Boolean.class.isAssignableFrom(type) || boolean.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(BooleanConverter.CONVERTER_ID);
 		}
-		if (Character.class.isAssignableFrom(type))
+		if (Character.class.isAssignableFrom(type) || char.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(CharacterConverter.CONVERTER_ID);
 		}
-		if (Byte.class.isAssignableFrom(type))
+		if (Byte.class.isAssignableFrom(type) || byte.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(ByteConverter.CONVERTER_ID);
 		}
-		if (Short.class.isAssignableFrom(type))
+		if (Short.class.isAssignableFrom(type) || short.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(ShortConverter.CONVERTER_ID);
 		}
-		if (Integer.class.isAssignableFrom(type))
+		if (Integer.class.isAssignableFrom(type) || int.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(IntegerConverter.CONVERTER_ID);
 		}
-		if (Long.class.isAssignableFrom(type))
+		if (Long.class.isAssignableFrom(type) || long.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(LongConverter.CONVERTER_ID);
 		}
-		if (Float.class.isAssignableFrom(type))
+		if (Float.class.isAssignableFrom(type) || float.class.isAssignableFrom(type))
 		{
 			return context.getApplication().createConverter(FloatConverter.CONVERTER_ID);
 		}
-		if (Double.class.isAssignableFrom(type))
+		if (Double.class.isAssignableFrom(type) || double.class.isAssignableFrom(type))
 		{
 			// use the number converter to have locale sensitive input
 			return context.getApplication().createConverter(NumberConverter.CONVERTER_ID);
@@ -516,8 +546,10 @@ public class JsfGuiBuilder extends GuiBuilder
 	}
 
 	@SuppressWarnings("unchecked")
-	public HtmlPanelGroup doCreateSearchFor(FieldInterface field)
+	public UIComponent doCreateSearchFor(FieldInterface field)
 	{
+		throw new UnsupportedOperationException();
+		/*
 		HtmlPanelGroup panel = doCreatePanelGroupComponent();
 
 		HtmlCommandLink command = doCreateCommandLink(field);
@@ -546,6 +578,7 @@ public class JsfGuiBuilder extends GuiBuilder
 		panel.setId("pnl_" + command.getId());
 
 		return panel;
+		*/
 	}
 
 	@SuppressWarnings("unchecked")
@@ -562,6 +595,7 @@ public class JsfGuiBuilder extends GuiBuilder
 			select = doCreateSelectManyListbox(field);
 		}
 
+		/*
 		SelectionSourceEnum selectionSource;
 		if (field.isEntityType())
 		{
@@ -579,26 +613,29 @@ public class JsfGuiBuilder extends GuiBuilder
 		{
 			throw new IllegalArgumentException("cant use selectionSource 'relation' for property " + field.getName());
 		}
+		*/
 
-		String itemSource;
-		String itemSourceName;
-		switch (selectionSource)
-		{
-		case manual:
-			itemSource=null;
-			itemSourceName=null;
-			break;
-		case relation:
-			itemSource="relationValues";
-			itemSourceName=field.getType().getName();
-			break;
-		case distinct:
-			itemSource="distinctValues";
-			itemSourceName=field.getName();
-			break;
-		default:
-			throw new IllegalArgumentException("dont know how to handle selectionSource: " + field.getSelectionSource());
-		}
+		/*
+			String itemSource;
+			String itemSourceName;
+			switch (selectionSource)
+			{
+			case manual:
+				itemSource=null;
+				itemSourceName=null;
+				break;
+			case relation:
+				itemSource="relationValues";
+				itemSourceName=field.getType().getName();
+				break;
+			case distinct:
+				itemSource="distinctValues";
+				itemSourceName=field.getName();
+				break;
+			default:
+				throw new IllegalArgumentException("dont know how to handle selectionSource: " + field.getSelectionSource());
+			}
+		*/
 
 		if (!field.getAllowMultipleSelections() && !Boolean.TRUE.equals(field.getRequired()))
 		{
@@ -620,6 +657,19 @@ public class JsfGuiBuilder extends GuiBuilder
 			select.getChildren().add(item);
 		}
 
+		MethodBinding mbValues = context.getApplication().createMethodBinding(
+			field.getDataSource(),
+			new Class[]{String.class});
+		MethodBinding mbLabels = context.getApplication().createMethodBinding(
+			field.getDataSourceDescription(),
+			new Class[]{field.getType()});
+
+		UISelectItems items = new UISelectItems();
+		items.setValueBinding("value",
+			new ValueBindingDataSourceAdapter(mbValues, mbLabels));
+		select.getChildren().add(items);
+
+/*
 		if (itemSource != null)
 		{
 			UISelectItems items = new UISelectItems();
@@ -628,6 +678,7 @@ public class JsfGuiBuilder extends GuiBuilder
 						"#{" + backingBeanPrefix + "." + itemSource + "['" + itemSourceName + "']}"));
 			select.getChildren().add(items);
 		}
+*/
 
 		Converter converter;
         /*
@@ -988,7 +1039,7 @@ public class JsfGuiBuilder extends GuiBuilder
         // if there is no converter setup one now.
         // we need this if the binding point to a map instead to a bean.
         // For a map JSF cant determine the wanted value type
-        if (cmp.getConverter() == null && field.getType() != null)
+        if (cmp.getConverter() == null)
         {
             Converter converter = doCreateConverter(field);
             if (converter != null)

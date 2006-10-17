@@ -19,13 +19,17 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.convert.Converter;
+import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import javax.persistence.TemporalType;
 
 import org.apache.myfaces.custom.dynaForm.guiBuilder.impl.jsf.JsfGuiBuilder;
 import org.apache.myfaces.custom.dynaForm.metadata.FieldInterface;
+import org.apache.myfaces.custom.dynaForm.lib.ObjectSerializationConverter;
 
 import org.apache.myfaces.custom.calendar.HtmlInputCalendar;
 import org.apache.myfaces.custom.convertNumber.TypedNumberConverter;
+import org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjax;
 
 import java.math.BigDecimal;
 
@@ -50,6 +54,7 @@ public class MyFacesGuiBuilder extends JsfGuiBuilder
             || double.class.isAssignableFrom(type)
             || BigDecimal.class.isAssignableFrom(type))
 		{
+			// use the super duper intelligent number converter
 			return getContext().getApplication().createConverter(TypedNumberConverter.CONVERTER_ID);
 		}
 
@@ -98,9 +103,77 @@ public class MyFacesGuiBuilder extends JsfGuiBuilder
         HtmlPanelGroup panel = doCreatePanelGroupComponent();
 		panel.setId("pnl_" + cmp.getId());
 		panel.getChildren().add(cmp);
-		panel.setStyleClass("ff_nowrap");
+		panel.setStyle("white-space:nowrap;");
         // <==
 
 		fireNewComponent(field, panel);
+	}
+
+	@Override
+	public UIComponent doCreateSearchFor(FieldInterface field)
+	{
+		HtmlPanelGroup panel = doCreatePanelGroupComponent();
+
+		InputSuggestAjax cmp = new InputSuggestAjax();
+		initInputDefaults(cmp, field);
+
+		String dataSource = field.getDataSource();
+		String dataSourceDescription = field.getDataSourceDescription();
+
+		MethodBinding mbSearch = FacesContext.getCurrentInstance().getApplication().createMethodBinding(
+			dataSource,
+			new Class[]
+				{
+					String.class
+				});
+		MethodBinding mbLabel = FacesContext.getCurrentInstance().getApplication().createMethodBinding(
+			dataSourceDescription,
+			new Class[]
+				{
+					field.getType()
+				});
+
+		cmp.setSuggestedItemsMethod(mbSearch);
+		//cmp.setSuggestedItemsLabel(mbLabel);
+
+		if (cmp.getConverter() == null)
+		{
+			cmp.setConverter(new ObjectSerializationConverter());
+		}
+
+		panel.getChildren().add(cmp);
+		return panel;
+
+		/*
+		HtmlPanelGroup panel = doCreatePanelGroupComponent();
+
+
+		HtmlCommandLink command = doCreateCommandLink(field);
+		// avoid duplicate id
+		command.setId("cmd_" + command.getId());
+		command.setValue("...");
+		command.setStyleClass("ff_searchLink");
+		command.setImmediate(true);
+
+		command.getChildren().add(
+				createParameter(SEARCH_ENTITY_TYPE, field.getType().getName()));
+		command.getChildren().add(
+				createParameter(SEARCH_ENTITY_BINDING,
+						createValueBindingString(field)));
+
+		Converter converter = context.getApplication().createConverter(field.getType());
+		HtmlOutputText text = doCreateOutputText(field);
+		if (converter != null)
+		{
+			text.setConverter(converter);
+		}
+		panel.getChildren().add(text);
+
+		panel.getChildren().add(command);
+
+		panel.setId("pnl_" + command.getId());
+
+		return panel;
+		*/
 	}
 }

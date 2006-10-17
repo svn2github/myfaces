@@ -268,16 +268,6 @@ public class DynaForm extends UIComponentBase
     }
 
     /**
-     * we need to inject our "var" early in decoding phase
-     */
-    public void processDecodes(FacesContext context)
-    {
-        ((DynaFormRenderer) getRenderer(context)).processDecodes(context, this);
-
-        super.processDecodes(context);
-    }
-
-    /**
      * Find the dynaForm component
      */
     public static DynaForm getDynaForm(UIComponent component)
@@ -318,7 +308,7 @@ public class DynaForm extends UIComponentBase
                 return formConfigs;
 			}
 		}
-		
+
 		return null;
 	}
 }

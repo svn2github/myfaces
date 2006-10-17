@@ -13,16 +13,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.myfaces.custom.dynaForm.guiBuilder;
+package org.apache.myfaces.custom.dynaForm.annot.ui;
 
-public enum ComponentEnum
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+/**
+ * where to get the data for a relation between entities
+ */
+@Target(value={ElementType.METHOD, ElementType.FIELD})
+@Retention(value= RetentionPolicy.RUNTIME)
+public @interface DataProvider
 {
-	Automatic,
-	OutputText,
-	InputText,
-	InputDate,
-	SelectOneMenu,
-	// SelectSearchMenu,
-	InputNumber,
-	InputBoolean
+	/**
+	 * points to a method returning a list
+	 */
+	public String value();
+
+	/**
+	 * the properties to use as description. This can be a JSF value-binding.
+	 */
+	public String description();
 }

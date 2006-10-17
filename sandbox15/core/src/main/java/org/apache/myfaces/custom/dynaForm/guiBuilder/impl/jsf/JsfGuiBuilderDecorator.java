@@ -41,7 +41,7 @@ import org.apache.myfaces.custom.dynaForm.metadata.FieldInterface;
 public class JsfGuiBuilderDecorator extends JsfGuiBuilder
 {
 	private final JsfGuiBuilder original;
-	
+
 	public JsfGuiBuilderDecorator(JsfGuiBuilder original)
 	{
 		this.original = original;
@@ -51,7 +51,7 @@ public class JsfGuiBuilderDecorator extends JsfGuiBuilder
 	{
 		return original;
 	}
-	
+
 	public void createInputBoolean(FieldInterface field)
 	{
 		original.createInputBoolean(field);
@@ -96,11 +96,13 @@ public class JsfGuiBuilderDecorator extends JsfGuiBuilder
 	{
 		original.createSearchFor(field);
 	}
-	
+
+	/*
 	public void createSearchForSelectMenu(FieldInterface field)
 	{
 		original.createSearchForSelectMenu(field);
 	}
+	*/
 
 	public void createSelectOneMenu(FieldInterface field)
 	{
@@ -192,7 +194,7 @@ public class JsfGuiBuilderDecorator extends JsfGuiBuilder
 		return original.doCreatePanelGroupComponent();
 	}
 
-	public HtmlPanelGroup doCreateSearchFor(FieldInterface field)
+	public UIComponent doCreateSearchFor(FieldInterface field)
 	{
 		return original.doCreateSearchFor(field);
 	}

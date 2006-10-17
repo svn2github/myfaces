@@ -30,7 +30,13 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <navigation-rule>
+	<managed-bean>
+		<managed-bean-name>personProvider</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.dynaForm.lib.PersonProvider</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+
+	<navigation-rule>
         <navigation-case>
             <from-action>go_home</from-action>
             <to-view-id>/home.jsp</to-view-id>
@@ -40,5 +46,5 @@
             <to-view-id>/dynaForm/home.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
+
 </faces-config>

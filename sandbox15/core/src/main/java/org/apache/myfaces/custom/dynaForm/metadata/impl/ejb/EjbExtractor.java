@@ -52,6 +52,7 @@ import org.apache.myfaces.custom.dynaForm.annot.ui.Max;
 import org.apache.myfaces.custom.dynaForm.annot.ui.Range;
 import org.apache.myfaces.custom.dynaForm.annot.ui.NotNull;
 import org.apache.myfaces.custom.dynaForm.annot.ui.Length;
+import org.apache.myfaces.custom.dynaForm.annot.ui.DataProvider;
 import org.apache.myfaces.custom.dynaForm.metadata.Extractor;
 import org.apache.myfaces.custom.dynaForm.metadata.MetaData;
 import org.apache.myfaces.custom.dynaForm.metadata.RelationType;
@@ -479,6 +480,12 @@ public class EjbExtractor implements Extractor
 		if (accessibleObject.isAnnotationPresent(ManyToMany.class))
 		{
 			mdField.setRelationType(RelationType.MANY_TO_MANY);
+		}
+		if (accessibleObject.isAnnotationPresent(DataProvider.class))
+		{
+			DataProvider dataProvider = accessibleObject.getAnnotation(DataProvider.class);
+			mdField.setDataSource(dataProvider.value());
+			mdField.setDataSourceDescription(dataProvider.description());
 		}
 
 		// get Temporal from model ...

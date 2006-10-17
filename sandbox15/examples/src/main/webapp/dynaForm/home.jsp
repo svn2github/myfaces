@@ -25,7 +25,7 @@
     <%@include file="/inc/head.inc" %>
 </t:documentHead>
 <t:documentBody>
-                        
+
     <h:form>
         <%@include file="/inc/page_header.jsp" %>
 
@@ -33,8 +33,9 @@
 
             <h:outputLink value="simpleBean.jsf" ><f:verbatim>Show a simple bean as form and list</f:verbatim></h:outputLink>
             <h:outputLink value="customizedSimpleBean.jsf" ><f:verbatim>Show a simple bean as form with customized property</f:verbatim></h:outputLink>
+            <h:outputLink value="relationBean.jsf" ><f:verbatim>Show a bean which as a relation to another bean</f:verbatim></h:outputLink>
 
-        </h:panelGrid>
+		</h:panelGrid>
 
         <%@include file="/inc/page_footer.jsp" %>
     </h:form>

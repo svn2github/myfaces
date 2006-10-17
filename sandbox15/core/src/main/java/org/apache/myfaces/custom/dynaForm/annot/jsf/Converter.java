@@ -13,16 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.myfaces.custom.dynaForm.guiBuilder;
+package org.apache.myfaces.custom.dynaForm.annot.jsf;
 
-public enum ComponentEnum
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * setup a converter. <br />
+ * converterId and converterClass are mutually exclusive
+ */
+@Target(value={ElementType.METHOD, ElementType.FIELD})
+@Retention(value= RetentionPolicy.RUNTIME)
+public @interface Converter
 {
-	Automatic,
-	OutputText,
-	InputText,
-	InputDate,
-	SelectOneMenu,
-	// SelectSearchMenu,
-	InputNumber,
-	InputBoolean
+	/**
+	 * attach a converter by its id
+	 */
+	String converterId() default "";
+
+	/**
+	 * attach a converter by its class
+	 */
+	Class converterClass() default Void.class;
 }

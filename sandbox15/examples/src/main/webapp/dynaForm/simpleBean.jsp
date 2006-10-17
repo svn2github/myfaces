@@ -30,7 +30,7 @@
     <h:form>
         <%@include file="/inc/page_header.jsp" %>
 
-        <f:loadBundle basename="org.apache.myfaces.examples.resource.simpleBean_messages" var="simpleBeanBundle"/>
+        <f:loadBundle basename="org.apache.myfaces.examples.resource.dynaForm_messages" var="dynaFormBundle"/>
 
         <h:panelGrid>
 
@@ -39,13 +39,13 @@
             </t:htmlTag>
 
             <sn:dynaForm
-                    var="simpleBean"
-                    uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
-                    valueBindingPrefix="simpleBeanBacking.simpleBean"
-                    bundle="simpleBeanBundle">
-                
+                    var="person"
+                    uri="org.apache.myfaces.examples.dynaForm.lib.Person"
+                    valueBindingPrefix="simpleBeanBacking.person"
+                    bundle="dynaFormBundle">
+
                 <h:panelGrid
-                        id="simpleBean-layout"
+                        id="person-layout"
                         columns="2" />
             </sn:dynaForm>
 
@@ -55,13 +55,13 @@
             </t:htmlTag>
 
             <sn:dynaForm
-                    var="simpleBean2"
-                    uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
-                    bundle="simpleBeanBundle">
+                    var="person2"
+                    uri="org.apache.myfaces.examples.dynaForm.lib.Person"
+                    bundle="dynaFormBundle">
                 <h:dataTable
                         var="entry"
-                        id="simpleBean2-layout"
-                        value="#{simpleBeanBacking.simpleBeans}" />
+                        id="person2-layout"
+                        value="#{simpleBeanBacking.persons}" />
             </sn:dynaForm>
 
 
@@ -71,14 +71,14 @@
             </t:htmlTag>
 
             <sn:dynaForm
-                    var="simpleBean3"
-                    uri="org.apache.myfaces.examples.dynaForm.SimpleBean"
+                    var="person3"
+                    uri="org.apache.myfaces.examples.dynaForm.lib.Person"
                     displayOnly="true"
-                    bundle="simpleBeanBundle">
+                    bundle="dynaFormBundle">
                 <h:dataTable
                         var="entry"
-                        id="simpleBean3-layout"
-                        value="#{simpleBeanBacking.simpleBeans}" />
+                        id="person3-layout"
+                        value="#{simpleBeanBacking.persons}" />
             </sn:dynaForm>
 
 

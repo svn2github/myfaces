@@ -15,14 +15,18 @@
  */
 package org.apache.myfaces.examples.dynaForm;
 
+import org.apache.myfaces.examples.dynaForm.lib.Person;
+import org.apache.myfaces.examples.dynaForm.lib.PersonRelation;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class SimpleBeanBacking
 {
-    private SimpleBean simpleBean;
-    private List<SimpleBean> simpleBeans;
+	private PersonRelation personRelation;
+    private Person person;
+    private List<Person> persons;
 
     public SimpleBeanBacking()
     {
@@ -31,41 +35,56 @@ public class SimpleBeanBacking
 
     protected void initBean()
     {
-        simpleBean = new SimpleBean();
+        person = new Person();
+		person.setId(666L);
 
-        SimpleBean s1 = new SimpleBean();
-        s1.setCheckedData(true);
+		Person s1 = new Person();
+		s1.setId(4711L);
+		s1.setCheckedData(true);
         s1.setCreationDate(new Date());
         s1.setAge(1L);
-        s1.setUser("bean 1");
-        SimpleBean s2 = new SimpleBean();
-        s2.setCheckedData(true);
+        s1.setUserName("bean 1");
+        Person s2 = new Person();
+		s2.setId(815L);
+		s2.setCheckedData(true);
         s2.setCreationDate(new Date());
         s2.setAge(2L);
-        s2.setUser("bean 2");
+        s2.setUserName("bean 2");
 
-        simpleBeans = new ArrayList<SimpleBean>();
-        simpleBeans.add(s1);
-        simpleBeans.add(s2);
-    }
+        persons = new ArrayList<Person>();
+        persons.add(s1);
+        persons.add(s2);
 
-    public SimpleBean getSimpleBean()
+		personRelation = new PersonRelation();
+	}
+
+    public Person getPerson()
     {
-        return simpleBean;
+        return person;
     }
 
-    public void setSimpleBean(SimpleBean simpleBean)
+    public void setPerson(Person person)
     {
-        this.simpleBean = simpleBean;
+        this.person = person;
     }
 
-    public List<SimpleBean> getSimpleBeans()
+    public List<Person> getPersons()
     {
-        return simpleBeans;
+        return persons;
     }
 
-    public void setSimpleBeans(List<SimpleBean> simpleBeans)
+    public void setPersons(List<Person> persons)
     {
-        this.simpleBeans = simpleBeans;
-    }
+        this.persons = persons;
+	}
+
+	public PersonRelation getPersonRelation()
+	{
+		return personRelation;
+	}
+
+	public void setPersonRelation(PersonRelation personRelation)
+	{
+		this.personRelation = personRelation;
+	}
 }

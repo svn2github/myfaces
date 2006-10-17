@@ -21,7 +21,6 @@ import org.apache.myfaces.custom.dynaForm.guiBuilder.impl.jsf.JsfGuiBuilderFacto
 import org.apache.myfaces.custom.dynaForm.guiBuilder.impl.jsf.NewComponentListener;
 import org.apache.myfaces.custom.dynaForm.jsfext.ComponentUtils;
 import org.apache.myfaces.custom.dynaForm.lib.ViewType;
-import org.apache.myfaces.custom.dynaForm.metadata.FieldInterface;
 import org.apache.myfaces.custom.dynaForm.metadata.MetaData;
 import org.apache.myfaces.custom.dynaForm.metadata.impl.jsf.JsfExclusiveExtractor;
 import org.apache.myfaces.custom.dynaForm.metadata.impl.jsf.JsfExtractor;
@@ -34,8 +33,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -114,17 +111,6 @@ public class DynaFormRenderer extends Renderer
 	}
 
 	/**
-	 * pre decode - early inject var to make children happy
-	 */
-	public void processDecodes(FacesContext context, DynaForm dynaForm)
-	{
-		UIComponent layoutComponent = findLayoutComponent(dynaForm);
-		ViewType viewType = getViewType(layoutComponent);
-
-		injectVar(context, dynaForm, layoutComponent, viewType);
-	}
-
-	/**
 	 * on create view or in development mode this will build the component tree
 	 */
 	@Override
@@ -144,23 +130,6 @@ public class DynaFormRenderer extends Renderer
 		{
 			addComponents(context, dynaForm, layoutComponent, viewType);
 		}
-
-		injectVar(context, dynaForm, layoutComponent, viewType);
-	}
-
-	protected FieldInterface getFieldMetaData(final DynaForm dynaForm, String propertyName)
-	{
-		MetaData metaData = new MetaData();
-
-		// we are only interested in the property we are configured for
-		metaData.requestField(propertyName);
-		MetaData.FieldImpl field = metaData.getOrCreateField(propertyName);
-		metaData.setLockFields(true);
-
-		// use the users extractor
-		dynaForm.getExtractor().getMetaData(metaData, dynaForm.getConfiguration().getEntity());
-
-		return field;
 	}
 
 	/**
@@ -219,37 +188,6 @@ public class DynaFormRenderer extends Renderer
 		}
 
 		return null;
-	}
-
-	/**
-	 * provide access to the form controller
-	 */
-	@SuppressWarnings("unchecked")
-	protected void injectVar(FacesContext context, DynaForm dynaForm,
-			UIComponent layoutComponent, ViewType viewType)
-	{
-        // todo: what todo?
-    }
-
-	/**
-	 * get rid of var again
-	 */
-	protected void removeVar(FacesContext context, DynaForm dynaForm)
-	{
-		context.getExternalContext().getRequestMap().remove(
-				dynaForm.getVar());
-	}
-
-	/**
-	 * collect all input components within our layout component
-	 */
-	protected List<UIInput> getInputComponents(UIComponent layoutComponent)
-	{
-		List<UIInput> ret = new ArrayList<UIInput>(30);
-
-		collectInputComponents(ret, layoutComponent);
-
-		return Collections.unmodifiableList(ret);
 	}
 
 	/**

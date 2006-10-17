@@ -35,27 +35,41 @@
         <h:panelGrid>
 
             <t:htmlTag value="h2">
-                <h:outputText value="A simple bean input form with customized 'description'" />
+                <h:outputText value="A bean where a property has a relation to another bean" />
             </t:htmlTag>
 
             <sn:dynaForm
-                    var="person"
-                    uri="org.apache.myfaces.examples.dynaForm.lib.Person"
-                    valueBindingPrefix="simpleBeanBacking.person"
+                    var="personRelation"
+                    uri="org.apache.myfaces.examples.dynaForm.lib.PersonRelation"
+                    valueBindingPrefix="simpleBeanBacking.personRelation"
                     bundle="dynaFormBundle">
-                <sn:dynaFormConfigs>
-                    <sn:dynaFormConfig for="description">
-                        <t:inputHtml/>
-                    </sn:dynaFormConfig>
-                </sn:dynaFormConfigs>
 
-                <h:panelGrid
-                        id="person-layout"
+				<h:panelGrid
+                        id="personRelation-layout"
                         columns="2" />
             </sn:dynaForm>
 
-            <h:commandButton/>
-        </h:panelGrid>
+			<h:commandButton/>
+
+
+			<t:htmlTag value="h2">
+				<h:outputText value="Current bean values" />
+			</t:htmlTag>
+
+			<sn:dynaForm
+					var="personRelationOutput"
+					uri="org.apache.myfaces.examples.dynaForm.lib.PersonRelation"
+					valueBindingPrefix="simpleBeanBacking.personRelation"
+					bundle="dynaFormBundle"
+					displayOnly="true">
+
+				<h:panelGrid
+						id="personRelationOutput-layout"
+						columns="2" />
+
+			</sn:dynaForm>
+
+		</h:panelGrid>
 
         <%@include file="/inc/page_footer.jsp" %>
     </h:form>

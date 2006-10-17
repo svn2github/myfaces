@@ -48,28 +48,34 @@ public class MetaData implements MetaDataInterface
 		private final String name;
 		private final String baseName;
 		private String preferredExternalName;
-		private Class type = null;
-		private boolean entityType = false;
-		private Boolean canRead = null;
-		private Boolean canWrite = null;
-		private Boolean disabled = null;
-		private Boolean displayOnly = null;
-		private boolean required = false;
+		private Class type;
+		private boolean entityType;
+		private Boolean canRead;
+		private Boolean canWrite;
+		private Boolean disabled;
+		private Boolean displayOnly;
+		private boolean required;
 		private RelationType relationType = RelationType.NONE;
 		private boolean embedded = true;
-		private Integer displaySize = null;
-		private Integer minSize = null;
-		private Integer maxSize = null;
-		private Double minValue = null;
-		private Double maxValue = null;
-		private TemporalType temporalType = null;
+		private Integer displaySize;
+		private Integer minSize;
+		private Integer maxSize;
+		private Double minValue;
+		private Double maxValue;
+		private TemporalType temporalType;
 
-		private Selection[] allowedSelection = null;
-		private boolean allowMultipleSelections = false;
-		private SelectionSourceEnum selectionSource = null;
+		private Selection[] allowedSelection;
+		private boolean allowMultipleSelections;
+		private SelectionSourceEnum selectionSource;
 
-		private UIComponent wantedComponent = null;
+		private UIComponent wantedComponent;
 		private ComponentEnum wantedComponentType = ComponentEnum.Automatic;
+
+		private String dataSource;
+		private String dataSourceDescription;
+
+		private String converterId;
+		private Class converterClass;
 
 		protected FieldImpl(String name)
 		{
@@ -324,6 +330,46 @@ public class MetaData implements MetaDataInterface
 		public void setEmbedded(boolean embedded)
 		{
 			this.embedded = embedded;
+		}
+
+		public String getDataSource()
+		{
+			return dataSource;
+		}
+
+		public void setDataSource(String dataSource)
+		{
+			this.dataSource = dataSource;
+		}
+
+		public String getDataSourceDescription()
+		{
+			return dataSourceDescription;
+		}
+
+		public void setDataSourceDescription(String dataSourceDescription)
+		{
+			this.dataSourceDescription = dataSourceDescription;
+		}
+
+		public String getConverterId()
+		{
+			return converterId;
+		}
+
+		public void setConverterId(String converterId)
+		{
+			this.converterId = converterId;
+		}
+
+		public Class getConverterClass()
+		{
+			return converterClass;
+		}
+
+		public void setConverterClass(Class converterClass)
+		{
+			this.converterClass = converterClass;
 		}
 	}
 

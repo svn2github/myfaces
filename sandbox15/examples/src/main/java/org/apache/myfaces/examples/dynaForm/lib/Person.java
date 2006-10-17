@@ -13,15 +13,20 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.myfaces.examples.dynaForm;
+package org.apache.myfaces.examples.dynaForm.lib;
+
+import org.apache.myfaces.custom.dynaForm.annot.ui.DisplayOnly;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 
-public class SimpleBean
+public class Person implements Serializable
 {
-    private String user;
+	private Long id;
+
+	private String userName;
     private long age;
     private Date creationDate;
     private Date birthday;
@@ -29,14 +34,25 @@ public class SimpleBean
     private String description;
     private boolean checkedData;
 
-    public String getUser()
+	@DisplayOnly
+	public Long getId()
+	{
+		return id;
+	}
+
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
+
+	public String getUserName()
     {
-        return user;
+        return userName;
     }
 
-    public void setUser(String user)
+    public void setUserName(String userName)
     {
-        this.user = user;
+        this.userName = userName;
     }
 
     public long getAge()
@@ -99,4 +115,12 @@ public class SimpleBean
     {
         this.description = description;
     }
+
+	@Override
+	public boolean equals(Object o)
+	{
+		Person p = (Person) o;
+
+		return id.equals(p.id);
+	}
 }

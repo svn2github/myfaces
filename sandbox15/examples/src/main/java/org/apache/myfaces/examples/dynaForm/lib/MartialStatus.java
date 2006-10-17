@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.myfaces.examples.dynaForm;
+package org.apache.myfaces.examples.dynaForm.lib;
 
 public enum MartialStatus
 {

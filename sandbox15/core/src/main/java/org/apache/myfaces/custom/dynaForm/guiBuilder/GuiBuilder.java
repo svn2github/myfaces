@@ -98,8 +98,13 @@ public abstract class GuiBuilder
 	 */
 	public abstract void createSearchFor(FieldInterface field);
 
+	/**
+	 * search for component
+	 */
 	public abstract void createSearchForSelectMenu(FieldInterface field);
-	
+
+	// public abstract void createSearchForSelectMenu(FieldInterface field);
+
 	/**
 	 * this is when the user passed in a component to use for the this field
 	 */
@@ -117,7 +122,7 @@ public abstract class GuiBuilder
 			createNative(field);
 			return true;
 		}
-		
+
 		if (!field.getWantedComponentType().equals(ComponentEnum.Automatic))
 		{
 			switch(field.getWantedComponentType())
@@ -125,15 +130,15 @@ public abstract class GuiBuilder
 				case OutputText:
 					createOutputText(field);
 					return true;
-					
+
 				case InputText:
 					createInputText(field);
 					return true;
-					
+
 				case InputDate:
 					createInputDate(field);
 					return true;
-					
+
 				case SelectOneMenu:
 					if (RelationType.MANY_TO_ONE.equals(field.getRelationType()))
 					{
@@ -145,16 +150,18 @@ public abstract class GuiBuilder
 						createSelectOneMenu(field);
 					}
 					return true;
-					
+
+				/*
 				case SelectSearchMenu:
 					createSearchForSelectMenu(field);
 					return true;
-					
+				*/
+
 				case InputNumber:
 					createInputNumber(field);
 					return true;
-					
-				case InputBoolean: 
+
+				case InputBoolean:
 					createInputBoolean(field);
 					return true;
 			}
@@ -182,7 +189,7 @@ public abstract class GuiBuilder
 		{
 			throw new IllegalArgumentException("No type for field '" + field.getName() + "' detected.");
 		}
-		
+
 		if (Date.class.isAssignableFrom(fieldType))
 		{
 			createInputDate(field);

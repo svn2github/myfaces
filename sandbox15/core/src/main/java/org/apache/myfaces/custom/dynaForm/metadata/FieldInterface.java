@@ -58,4 +58,9 @@ public interface FieldInterface
 	public TemporalType getTemporalType();
 	public boolean getAllowMultipleSelections();
 	public SelectionSourceEnum getSelectionSource();
+
+	public String getDataSource();
+	public String getDataSourceDescription();
+	public String getConverterId();
+	public Class getConverterClass();
 }
