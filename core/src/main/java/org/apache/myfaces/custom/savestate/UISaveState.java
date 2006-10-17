@@ -15,6 +15,7 @@
  */
 package org.apache.myfaces.custom.savestate;
 
+import javax.faces.component.StateHolder;
 import javax.faces.component.UIParameter;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -61,9 +62,19 @@ public class UISaveState
 {
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
         values[0] = super.saveState(context);
-        values[1] = saveAttachedState(context, getValue());
+        Object objectToSave = getValue();
+        if (objectToSave instanceof StateHolder)
+        {
+        	values[1] = Boolean.TRUE;
+        	values[2] = saveAttachedState(context, objectToSave);
+        }
+        else
+        {
+        	values[1] = Boolean.FALSE;
+        	values[2] = objectToSave;
+        }
         return values;
     }
 
@@ -71,11 +82,21 @@ public class UISaveState
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        Object value = restoreAttachedState(context,values[1]);
+        
+        Object savedObject;
+        Boolean storedObjectIsAStateHolder = (Boolean) values[1];
+        if ( Boolean.TRUE.equals( storedObjectIsAStateHolder ) )
+        {
+        	savedObject = restoreAttachedState(context,values[2]);
+        }
+        else
+        {
+        	savedObject = values[2];
+        }
         ValueBinding vb = getValueBinding("value");
         if (vb != null)
         {
-            vb.setValue(context, value);
+            vb.setValue(context, savedObject);
         }
     }
 
