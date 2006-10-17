@@ -17,6 +17,8 @@
 
 dojo.provide("org.apache.myfaces");
 
+dojo.require("dojo.dom.*");
+
 //Define the Partial Page Rendering Controller Class
 
 org.apache.myfaces.PPRCtrl = function(formId)
@@ -79,10 +81,26 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	        {
 	            componentUpdate = componentUpdates[i];
 	            domElement = document.getElementById(componentUpdate.getAttribute("id"));
-	            domElement.innerHTML = componentUpdate.firstChild.data;
+                //todo - doesn't work with tables in IE
+                domElement.innerHTML = componentUpdate.firstChild.data;
 	        }
 	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
-	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();    
+	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();
+
+	    var stateUpdate = dojo.dom.firstElement(data.getElementsByTagName("state")[0],'INPUT');
+
+        if(stateUpdate.getAttribute('id')!='javax.faces.ViewState')
+            alert("server didn't return appropriate element for state-update. returned element-id: "+
+                  stateUpdate.getAttribute('id')+", value : "+stateUpdate.getAttribute('value'));
+
+        var formArray = document.forms;
+
+        for(var i=0; i<formArray.length; i++)
+        {
+          var form = formArray[i];
+          var domElement = form.elements['javax.faces.ViewState'];
+          domElement.value = stateUpdate.getAttribute('value');
+        }
     }
     else
     {

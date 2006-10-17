@@ -21,6 +21,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
 
 import javax.faces.FacesException;
+import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -120,9 +121,21 @@ public class PPRPhaseListener implements PhaseListener
 				log.debug("PPRPhaseListener component with id" + clientId + "not found!");
 			}
 		}
-        out.print("<state><![CDATA[");
+        out.print("<state>");
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                StateManager stateManager = facesContext.getApplication().getStateManager();
+                StateManager.SerializedView serializedView
+                        = stateManager.saveSerializedView(facesContext);
+                try
+                {
+                    stateManager.writeState(facesContext, serializedView);
+                }
+                catch (IOException e)
+                {
+                    throw new FacesException(e);
+                }
 
-        out.print("]]></state>");
+        out.print("</state>");
 
     }
 
