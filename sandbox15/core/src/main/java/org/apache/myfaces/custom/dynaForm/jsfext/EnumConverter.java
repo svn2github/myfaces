@@ -38,16 +38,16 @@ public class EnumConverter implements Converter
 		{
 			return null;
 		}
-		
+
 		int pos = value.indexOf('@');
 		if (pos < 0)
 		{
 			throw new IllegalArgumentException(value + " do not point to an enum");
 		}
-		
+
 		String clazz = value.substring(0, pos);
 		int ordinal = Integer.parseInt(value.substring(pos+1), 10);
-		
+
 		try
 		{
 			Enum e = ordinalToEnum(Class.forName(clazz), ordinal);
@@ -60,7 +60,7 @@ public class EnumConverter implements Converter
 		{
 			throw new RuntimeException(e1);
 		}
-		
+
 		throw new IllegalArgumentException("ordinal " + ordinal + " not found in enum " + clazz);
 	}
 
@@ -72,31 +72,15 @@ public class EnumConverter implements Converter
 		}
 
 		Enum e = (Enum) value;
-		
-		if (component instanceof UIInput)
+
+		if (component instanceof UIInput || UIInput.COMPONENT_FAMILY.equals(component.getFamily()))
 		{
 			return e.getClass().getName() + "@" + Integer.toString(e.ordinal(), 10);
 		}
-		
-		return e.name();
+
+		return e.toString();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected Enum stringToEnum(Class type, String string)
-	{
-		EnumSet es = EnumSet.allOf(type);
-        for (Object e1 : es)
-        {
-            Enum e = (Enum) e1;
-            if (string.equals(e.name()))
-            {
-                return e;
-            }
-        }
-
-        return null;
-	}
-	
 	@SuppressWarnings("unchecked")
 	protected Enum ordinalToEnum(Class type, int ordinal)
 	{
@@ -111,23 +95,5 @@ public class EnumConverter implements Converter
         }
 
         return null;
-	}
-	
-	public String fixString(Class type, String string)
-	{
-		Enum e = stringToEnum(type, string);
-		if (e == null)
-		{
-			throw new IllegalArgumentException("cant find enum for string '" + string + "' type '" + type.getName() + "'");
-		}
-		
-		String prefix = type.getName() + "@";
-		
-		if (!string.startsWith(prefix))
-		{
-			return prefix + e.ordinal();
-		}
-		
-		return string;
 	}
 }
