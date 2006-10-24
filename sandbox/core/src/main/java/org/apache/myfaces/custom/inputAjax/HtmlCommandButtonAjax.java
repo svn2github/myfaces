@@ -48,7 +48,6 @@ public class HtmlCommandButtonAjax extends HtmlCommandButton implements AjaxComp
         super();
         setRendererType(DEFAULT_RENDERER_TYPE);
         setType("button"); // we don't want this to submit
-        setOnclick("");
     }
 
     /**

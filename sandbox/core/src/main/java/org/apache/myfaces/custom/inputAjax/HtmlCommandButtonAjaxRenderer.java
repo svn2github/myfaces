@@ -78,18 +78,26 @@ public class HtmlCommandButtonAjaxRenderer extends HtmlButtonRenderer implements
             return;
         }
 
-
-
-
-        String clientId = component.getClientId(context);
-        String submitFunctionStart = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit3('" + clientId + "');";
-        HtmlCommandButtonAjax comp = (HtmlCommandButtonAjax) component;
-        comp.setOnclick(submitFunctionStart);
-
         this.encodeJavascript(context, component);
         super.encodeEnd(context, component);
         // now write loading image
-        AjaxRendererUtils.writeLoadingImage(context, comp);
+        AjaxRendererUtils.writeLoadingImage(context, component);
+    }
+
+
+    protected StringBuffer buildOnClick(UIComponent uiComponent, FacesContext facesContext, ResponseWriter writer) throws IOException {
+        String clientId = uiComponent.getClientId(facesContext);
+        String submitFunctionStart = AjaxRendererUtils.JS_MYFACES_NAMESPACE + "ajaxSubmit3('" + clientId + "');";
+
+        StringBuffer buf = super.buildOnClick(uiComponent, facesContext, writer);
+
+        if(buf.length()!=0 && !(buf.charAt(buf.length()-1)==';'))
+        {
+            buf.append(";");
+        }
+        buf.append(submitFunctionStart);
+
+        return buf;
     }
 
     public void encodeAjax(FacesContext context, UIComponent component) throws IOException
