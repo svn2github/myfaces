@@ -30,6 +30,7 @@ import java.io.IOException;
  * @version $Revision: $ $Date: $
  *          <p/>
  *          $Log: $
+ * @deprecated: Use periodicalUpdate mechanism of partial page rendering instead 
  */
 public class AutoUpdateDataTable extends HtmlDataTable implements AjaxComponent{
 

@@ -31,8 +31,9 @@ public class PPRPanelGroup extends HtmlPanelGroup
 	public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRPanelGroup";
 
 	private String _partialTriggers;
-	
-	private String _partialTriggerPattern;
+    private Integer _periodicalUpdate;
+
+    private String _partialTriggerPattern;
 	
 	private String _inlineLoadingMessage;
 
@@ -57,8 +58,20 @@ public class PPRPanelGroup extends HtmlPanelGroup
 	{
 		this._partialTriggers = partialTriggers;
 	}
-	
-	public String getPartialTriggerPattern()
+
+    public Integer getPeriodicalUpdate() 
+    {
+        if (_periodicalUpdate != null) return _periodicalUpdate;
+        ValueBinding vb = getValueBinding("periodicalUpdate");
+        return (vb != null) ? (Integer) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setPeriodicalUpdate(Integer periodicalUpdate)
+    {
+        _periodicalUpdate = periodicalUpdate;
+    }
+
+    public String getPartialTriggerPattern()
 	{
 		if (_partialTriggerPattern != null) return _partialTriggerPattern;
         ValueBinding vb = getValueBinding("partialTriggerPattern");
@@ -89,15 +102,17 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		super.restoreState(context, values[0]);
 		_partialTriggers = (String) values[1];
 		_partialTriggerPattern = (String) values[2];
+        _periodicalUpdate = (Integer) values[3];
 
-	}
+    }
 
 	public Object saveState(FacesContext context)
 	{
-		Object[] values = new Object[3];
+		Object[] values = new Object[4];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
 		values[2] = _partialTriggerPattern;
-		return values;
+        values[3] = _periodicalUpdate;
+        return values;
 	}
 }

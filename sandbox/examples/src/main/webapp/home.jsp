@@ -22,7 +22,8 @@
             </h:panelGrid>
             <h:outputText value="Partial Page Rendering"/>
             <h:panelGrid style="padding-left:25px">
-	            <h:outputLink value="pprPanelGroup.jsf" ><f:verbatim>PPRPanelGroup - Panelgroup which gets refreshed by AJAX-Calls</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroup.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting manually refreshed by AJAX-Calls</f:verbatim></h:outputLink>
+                 <h:outputLink value="pprPanelGroupPeriodicalUpdate.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting automatically refreshed by AJAX-Calls (through periodic intervals)</f:verbatim></h:outputLink>
             </h:panelGrid>
             <h:outputText value="Resource Serving"/>
             <h:panelGrid style="padding-left:25px">

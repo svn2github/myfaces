@@ -16,7 +16,11 @@
 
 package org.apache.myfaces.examples.ppr;
 
+import org.apache.myfaces.examples.inputSuggestAjax.Address;
+
 import javax.faces.event.ValueChangeEvent;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Ernst Fastl
@@ -56,8 +60,22 @@ public class PPRExampleBean
 		setMessage("testAction called");
 		return "test";
 	}
-	
-	public void testValueChangeListener(ValueChangeEvent event){
+
+    public List getPeriodicalUpdatedValues()
+    {
+        List refreshList = new ArrayList();
+
+        for (int i = 0; i < 10; i++)
+        {
+            Address address = new Address((int) (Math.random()*100), "dummyStreet", "fakeCity",
+                                                (int) (Math.random()*10), "noState");
+
+            refreshList.add(address);
+        }
+        return refreshList;
+    }
+
+    public void testValueChangeListener(ValueChangeEvent event){
 		
 		_message = "Value Change to: ";
 		if(event.getNewValue()!=null)

@@ -53,14 +53,14 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 
 	private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
 
-	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup uiComponent) throws IOException
+	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException
 	{
 		if (facesContext.getExternalContext().getRequestMap().containsKey(PPR_RESPONSE))
 		{
 			return;
 		}
 
-		FormInfo fi = _ComponentUtils.findNestingForm(uiComponent, facesContext);
+		FormInfo fi = _ComponentUtils.findNestingForm(pprGroup, facesContext);
 		if (fi == null)
 		{
 			throw new FacesException("PPRPanelGroup must be embedded in an form.");
@@ -70,11 +70,11 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		{
 			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED, Boolean.TRUE);
 
-			String javascriptLocation = (String) uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+			String javascriptLocation = (String) pprGroup.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
 			AddResource addResource = AddResourceFactory.getInstance(facesContext);
-			DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
-			DojoUtils.addRequire(facesContext, uiComponent, "dojo.io.*");
-			DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
+			DojoUtils.addMainInclude(facesContext, pprGroup, javascriptLocation, new DojoConfig());
+			DojoUtils.addRequire(facesContext, pprGroup, "dojo.io.*");
+			DojoUtils.addRequire(facesContext, pprGroup, "dojo.event.*");
 			addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, MY_FACES_PPR_INITIALIZED);
 
 			addResource.addJavaScriptAtPosition(facesContext,
@@ -91,26 +91,34 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
                     "." +
                     fi.getFormName(),
                     Boolean.TRUE);
-            writeInlineScript(facesContext, uiComponent,
-                    "document.getElementById('" +
+
+            renderInlineScript(facesContext, pprGroup,
+                    "dojo.byId('" +
                     fi.getFormName() +
                     "').myFacesPPRCtrl =" +
                     MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "');");
         }
 
+        String clientId = pprGroup.getClientId(facesContext);
+
+        if (pprGroup.getPeriodicalUpdate() != null)
+        {
+            String script = "dojo.byId('"+ fi.getFormName() + "').myFacesPPRCtrl.startPeriodicalUpdate("+ pprGroup.getPeriodicalUpdate() +",'"+ clientId +"');";
+
+            renderInlineScript(facesContext, pprGroup, script);
+        }
 
         String partialTriggerId;
 		String partialTriggerClientId;
 		UIComponent partialTriggerComponent;
 		
-		String partialTriggers = uiComponent.getPartialTriggers();
-		String clientId = uiComponent.getClientId(facesContext);
-		
-		String partialTriggerPattern = uiComponent.getPartialTriggerPattern();
+		String partialTriggers = pprGroup.getPartialTriggers();
+
+		String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
 		if(partialTriggerPattern != null && partialTriggerPattern.trim().length()>0) 
 		{
-			writeInlineScript(facesContext, uiComponent,
-                    "document.getElementById('" +
+			renderInlineScript(facesContext, pprGroup,
+                    "dojo.byId('" +
                     fi.getFormName() +
                     "').myFacesPPRCtrl." +
                     ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION +
@@ -121,12 +129,12 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 						"');");
 		}
 		
-		String inlineLoadingMessage = uiComponent.getInlineLoadingMessage();
+		String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
 		
 		if(inlineLoadingMessage!= null && inlineLoadingMessage.trim().length()>0)
 		{
-			writeInlineScript(facesContext, uiComponent,
-                    "document.getElementById('" +
+			renderInlineScript(facesContext, pprGroup,
+                    "dojo.byId('" +
                     fi.getFormName() +
                     "').myFacesPPRCtrl." +
                     ADD_INLINE_LOADING_MESSAGE_FUNCTION +
@@ -143,7 +151,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 			while (st.hasMoreTokens())
 			{
 				partialTriggerId = st.nextToken();
-				partialTriggerComponent = uiComponent.findComponent(partialTriggerId);
+				partialTriggerComponent = pprGroup.findComponent(partialTriggerId);
 				if(partialTriggerComponent == null)
 				{
 					partialTriggerComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent(partialTriggerId);
@@ -151,8 +159,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 				if (partialTriggerComponent != null)
 				{
 					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
-					writeInlineScript(facesContext, uiComponent,
-	                    "document.getElementById('" +
+					renderInlineScript(facesContext, pprGroup,
+	                    "dojo.byId('" +
 	                    fi.getFormName() +
 	                    "').myFacesPPRCtrl." +
 	                    ADD_PARTIAL_TRIGGER_FUNCTION +
@@ -171,8 +179,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 				}
 			}
 		}
-
-	}
+    }
 
 	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
 	{
@@ -190,10 +197,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		{
 			PPRPanelGroup pprGroup = (PPRPanelGroup) uiComponent;
 
-			if ((pprGroup.getPartialTriggers() != null &&
-				pprGroup.getPartialTriggers().length() > 0) ||
-				(pprGroup.getPartialTriggerPattern() != null &&
-						pprGroup.getPartialTriggerPattern().length() > 0))
+			if ((pprGroup.getPartialTriggers() != null && pprGroup.getPartialTriggers().length() > 0)
+                 || (pprGroup.getPartialTriggerPattern() != null && pprGroup.getPartialTriggerPattern().length() > 0)
+                 ||  pprGroup.getPeriodicalUpdate() != null)
 			{
 				encodeJavaScript(facesContext, pprGroup);
 			}
@@ -209,7 +215,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 	 * @param script The script to be written.
 	 * @throws IOException A forwarded exception from the underlying renderer.
 	 */
-	private static void writeInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException
+	private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException
 	{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		writer.startElement(HTML.SCRIPT_ELEM, component);

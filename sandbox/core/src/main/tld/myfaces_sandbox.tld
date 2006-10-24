@@ -1163,16 +1163,24 @@ Sandbox-related entities.
 			<type>java.lang.String</type>
             <description>Regular Expression If the client Id of a submitting Component matches this Pattern the corresponding pprPanelGroup is updated via AJAX</description>
         </attribute>
-	  <attribute>
+	    <attribute>
 			<name>inlineLoadingMessage</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
             <description>If this attribute is set the content of the PPRPanelGroup will be replaced by the provided
-		Loading-Message during partial update</description>
+		                 Loading-Message during partial update</description>
         </attribute>
-	
-	</tag>
+        <attribute>
+			<name>periodicalUpdate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Integer</type>
+            <description>Does a periodical refresh of the partial page inside the ppr group. In milliseconds.
+                         No partialTriggers are needed. 
+            </description>
+        </attribute>
+    </tag>
 
 	<tag>
 		<name>layoutingContentPane</name>

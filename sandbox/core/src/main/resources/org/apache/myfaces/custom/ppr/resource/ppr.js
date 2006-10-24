@@ -23,7 +23,7 @@ dojo.require("dojo.dom.*");
 
 org.apache.myfaces.PPRCtrl = function(formId)
 {
-	if(typeof window.myFacesPartialTriggers == "undefined")
+    if(typeof window.myFacesPartialTriggers == "undefined")
 	{
     	window.myFacesPartialTriggers = new Array;
     }
@@ -36,6 +36,7 @@ org.apache.myfaces.PPRCtrl = function(formId)
     	window.myFacesInlineLoadingMessage = new Array;
     }
     this.replaceFormSubmitFunction(formId);
+
     this.addButtonOnClickHandlers();
 }
 
@@ -54,7 +55,7 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
 //Method for JSF Components to register their Partial Triggers
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, refreshZoneId)
-{
+{             
     if (window.myFacesPartialTriggers[inputElementId] === undefined)
     {
         window.myFacesPartialTriggers[inputElementId] = refreshZoneId;
@@ -68,6 +69,16 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId,
     }
 };
 
+// starting point of automatically partial page refresh
+
+org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
+{
+    var content = new Array;
+    content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
+    this.doAjaxSubmit(content, refreshTimeout, refreshZoneId);
+};
+
+
 //Callback Method which handles the AJAX Response
 
 org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
@@ -80,7 +91,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	        for (var i = 0; i < componentUpdates.length; i++)
 	        {
 	            componentUpdate = componentUpdates[i];
-	            domElement = document.getElementById(componentUpdate.getAttribute("id"));
+	            domElement = dojo.byId(componentUpdate.getAttribute("id"));
                 //todo - doesn't work with tables in IE
                 domElement.innerHTML = componentUpdate.firstChild.data;
 	        }
@@ -99,7 +110,8 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
         {
           var form = formArray[i];
           var domElement = form.elements['javax.faces.ViewState'];
-          domElement.value = stateUpdate.getAttribute('value');
+          if(domElement)
+			domElement.value = stateUpdate.getAttribute('value');
         }
     }
     else
@@ -150,31 +162,8 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
         if(triggeredComponents !=null)
         {
         	this.displayInlineLoadingMessages(triggeredComponents);
-            var requestUri = "";
-            var formAction = this.form.attributes["action"];
-            if(formAction == null)
-            {
-                requestUri = location.href;
-            }
-            else
-            {
-                requestUri = formAction.nodeValue;
-            }
-
-            
             content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
-            content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
-            dojo.io.bind({
-                url		: requestUri,
-                method	: "post",
-                useCache: false,
-                content	: content,
-                handle	: this.handleCallback,
-                mimetype: "text/xml",
-                transport: "XMLHTTPTransport",
-                formNode: this.form
-            });
-            return false;
+            return this.doAjaxSubmit(content, null, null)
         }
         else
         {
@@ -186,6 +175,43 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
         this.form.submit_orig();
     }
 }
+
+org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId)
+{   
+	var ppr = this;  
+    var requestUri = "";
+    var formAction = this.form.attributes["action"];
+    if(formAction == null)
+    {
+        requestUri = location.href;
+    }
+    else
+    {
+        requestUri = formAction.nodeValue;
+    }
+
+    content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
+
+    dojo.io.bind({
+        url		: requestUri,
+        method	: "post",
+        useCache: false,
+        content	: content,
+        handle	: this.handleCallback,
+        mimetype: "text/xml",
+        transport: "XMLHTTPTransport",
+        formNode: this.form
+    });
+
+    if(refreshTimeout)
+    {
+        window.setTimeout(function() {
+            ppr.startPeriodicalUpdate(refreshTimeout, refreshZoneId);
+        }, refreshTimeout)
+    }
+
+    return false;
+};
 
 //This Method replaces the content of the PPRPanelGroups which have
 //an inline-loading-message set with the loading message
@@ -202,7 +228,7 @@ org.apache.myfaces.PPRCtrl.prototype.displayInlineLoadingMessages = function(com
 	{
 		if(typeof window.myFacesInlineLoadingMessage[componentIds[index]] != "undefined")
 		{
-			domElement = document.getElementById(componentIds[index]);
+			domElement = dojo.byId(componentIds[index]);
 			if(domElement != null)
 			{
 				domElement.innerHTML = window.myFacesInlineLoadingMessage[componentIds[index]];
@@ -223,7 +249,7 @@ org.apache.myfaces.PPRCtrl.prototype.formSubmitReplacement = function(triggeredE
 
 org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId)
 {
-    this.form = document.getElementById(formId);
+    this.form = dojo.byId(formId);
     if(typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
     {
         alert("MyFaces PPR Engine: Form with id:" + formId + " not found!");
