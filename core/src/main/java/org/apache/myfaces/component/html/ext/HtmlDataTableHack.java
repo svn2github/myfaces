@@ -378,7 +378,8 @@ public abstract class HtmlDataTableHack extends
         }
         else if (name.equals("var") || name.equals("rowIndex"))
         {
-            throw new IllegalArgumentException("name " + name);
+            throw new IllegalArgumentException(
+                    "You can never set the 'rowIndex' or the 'var' attribute as a value-binding. Set the property directly instead. Name " + name);
         }
         super.setValueBinding(name, binding);
     }
