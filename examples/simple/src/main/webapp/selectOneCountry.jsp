@@ -31,10 +31,10 @@
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
     <h:form>
-        <t:selectOneCountry value="#{countryBean.code}" maxLength="25" onchange="this.form.submit();"/>
+        <t:selectOneCountry value="#{countryForm.isoCode}" maxLength="25" onchange="this.form.submit();"/>
         <f:verbatim><br/></f:verbatim>
         <h:outputLabel for="countryCode" value="Code : "/>
-        <h:outputText id="countryCode" value="#{countryBean.code}"/>
+        <h:outputText id="countryCode" value="#{countryForm.isoCode}"/>
         <f:verbatim><br/><br/></f:verbatim>
         <h:commandButton value="Update"/>
     </h:form>

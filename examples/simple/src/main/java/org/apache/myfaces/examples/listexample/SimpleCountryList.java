@@ -111,7 +111,7 @@ public class SimpleCountryList
     }
 
     /**
-	 * @param strings
+	 * @param names
 	 * @return
 	 */
 	private SimpleCity[] createCities(String[] names)

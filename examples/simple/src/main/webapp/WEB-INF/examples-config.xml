@@ -121,14 +121,6 @@
         <managed-bean-class>org.apache.myfaces.examples.common.CarConfigurator</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
-    <!-- Managed Beans for selectOneCountry.jsp -->
-
-    <managed-bean>
-        <managed-bean-name>countryBean</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.examples.misc.Country</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
 
     <!-- Managed Beans for selectOneLanguage.jsp -->
 
