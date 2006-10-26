@@ -29,7 +29,7 @@
 		<h:messages tooltip="true" layout="table" globalOnly="false" />
 		<h:panelGrid columns="3">
 			<h:outputLabel for="mode" value="Display mode:" />
-			<h:selectOneRadio id="mode" value="#{scheduleHandler2.model.mode}">
+			<h:selectOneRadio id="mode" value="#{scheduleSettings2.model.mode}">
 				<f:selectItem itemValue="0" itemLabel="day"/>
 				<f:selectItem itemValue="1" itemLabel="workweek"/>
 				<f:selectItem itemValue="2" itemLabel="week" />

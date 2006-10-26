@@ -63,7 +63,7 @@ table.background td.freeReddish {
 				entryRenderer="#{randomColorEntryRenderer}" />
 		</t:div>
 		<!--  The column on the left, containing the calendar and other controls -->
-		<t:div style="position: absolute; left: 5px; top: 5px; width: 210px;">
+		<t:div style="position: absolute; left: 5px; top: 5px; width: 210px; overflow: auto">
 			<h:panelGrid columns="1">
 				<t:inputCalendar id="scheduleNavigator"
 					value="#{scheduleHandler1.model.selectedDate}" />
@@ -75,10 +75,9 @@ table.background td.freeReddish {
 					value="add sample holiday" />
 			</h:panelGrid>
 			<%@include file="/inc/page_footer.jsp"%>
+		    <jsp:include page="inc/mbean_source.jsp"/>
 		</t:div>
 	</h:form>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
 
 </f:view>
 </body>
