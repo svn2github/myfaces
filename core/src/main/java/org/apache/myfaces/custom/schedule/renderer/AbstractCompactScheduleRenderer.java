@@ -151,8 +151,10 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         writer.writeAttribute("rowspan", String.valueOf(rowspan), null);
 
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                                                             isCurrentMonth ? "day" : "inactive-day"), null);
+        String dayClass = getStyleClass(schedule, isCurrentMonth ? "day" : "inactive-day") + 
+        		" " + getStyleClass(schedule, isWeekend ? "weekend" : "workday");
+        
+        writer.writeAttribute(HTML.CLASS_ATTR, dayClass, null);
 
         // determine the height of the day in pixels
         StringBuffer styleBuffer = new StringBuffer();
@@ -236,6 +238,8 @@ public abstract class AbstractCompactScheduleRenderer extends
                               null);
 
         writer.startElement(HTML.DIV_ELEM, schedule);
+        writer.writeAttribute(HTML.CLASS_ATTR, 
+        		getStyleClass(schedule, "contentview"), null);
         writer
                 .writeAttribute(
                         HTML.STYLE_ATTR,
