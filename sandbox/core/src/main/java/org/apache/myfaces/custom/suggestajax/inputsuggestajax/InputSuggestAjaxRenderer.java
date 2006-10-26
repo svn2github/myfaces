@@ -29,6 +29,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
+import javax.faces.el.MethodBinding;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,6 +60,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
         DojoUtils.addRequire(context, component, "dojo.widget.ComboBox");
+        DojoUtils.addRequire(context, component, "dojo.event.*");
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
@@ -78,21 +81,68 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         ResponseWriter out = context.getResponseWriter();
 
-        String value = RendererUtils.getStringValue(context, component);
+        Object valueObject = inputSuggestAjax.getValue();
+        String label = null;
+        String value = null;
+
+        String valueToRender = null;
+        
+        String idToRender = null;
+
+        if (valueObject instanceof String)
+        {
+            valueToRender = (String) valueObject;
+
+            idToRender = clientId;
+        }
+        else if (valueObject == null)
+        {
+            valueToRender = "";
+
+            idToRender = clientId;
+        }
+        else
+        {
+            MethodBinding labelMethod = inputSuggestAjax.getItemLabelMethod();
+
+            if (labelMethod != null)
+            {
+                Converter converter = inputSuggestAjax.getConverter();
+
+                if (converter == null)
+                {
+                    throw new IllegalStateException("There must be a registered converter if " +
+                                                                      "attribute \"labelMethod\" is used");
+                }
+
+                label = (String) labelMethod.invoke(context, new Object[]{valueObject});
+                value = converter.getAsString(context, inputSuggestAjax, valueObject);
+
+                idToRender = clientId + "_valueFake";
+            }
+        }
 
         out.startElement(HTML.DIV_ELEM, component);
         out.writeAttribute(HTML.ID_ATTR, clientId , null);
         out.endElement(HTML.DIV_ELEM);
+
+        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
 
         Map attributes = new HashedMap();
 
         attributes.put("dataUrl", ajaxUrl);
         attributes.put("mode", "remote");
 
-        DojoUtils.renderWidgetInitializationCode(context, component, "ComboBox", attributes);
+        if (label != null)
+        {
+            valueToRender = label;
+        }
+        else if (valueToRender != null)
+        {
+            valueToRender = escapeQuotes(valueToRender);
+        }
 
-        String escapedValue = escapeQuotes(value);
-        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
+        DojoUtils.renderWidgetInitializationCode(context, component, "ComboBox", attributes);
 
         out.startElement(HTML.SCRIPT_ELEM, null);
         out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
@@ -100,7 +150,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("dojo.addOnLoad(function() {\n")
-                .append(inputSuggestComponentVar).append(".textInputNode.name=\"").append(clientId).append("\";\n");
+                .append(inputSuggestComponentVar).append(".textInputNode.name=\"").append(idToRender).append("\";\n");
 
         if (inputSuggestAjax.getStyle() != null)
         {
@@ -111,38 +161,86 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             buffer.append(inputSuggestComponentVar).append(".cbTableNode.className=\"").append(inputSuggestAjax.getStyleClass()).append("\";\n");
         }
 
-        buffer.append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(escapedValue).append("\";\n")
-              .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(escapedValue).append("\";\n")
+        buffer.append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(valueToRender).append("\";\n")
+              .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(valueToRender).append("\";\n")
               .append("});\n");
 
         out.write(buffer.toString());
 
         out.endElement(HTML.SCRIPT_ELEM);
+
+        if (value != null)
+        {
+            out.startElement(HTML.INPUT_ELEM, inputSuggestAjax);
+            out.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
+            out.writeAttribute(HTML.ID_ATTR, clientId, null);
+            out.writeAttribute(HTML.NAME_ATTR, clientId, null);
+            out.writeAttribute(HTML.VALUE_ATTR, value, null);
+            out.endElement(HTML.INPUT_ELEM);
+
+            out.startElement(HTML.SCRIPT_ELEM, null);
+            out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+
+            StringBuffer script = new StringBuffer();
+
+             script.append("dojo.event.connect("+inputSuggestComponentVar+", \"selectOption\", function(evt) { \n"
+                   + "dojo.byId('"+ clientId +"').value = ").append(inputSuggestComponentVar).append(".comboBoxSelectionValue.value; });\n");
+
+            out.write(script.toString());
+
+            out.endElement(HTML.SCRIPT_ELEM);
+        }
     }
 
     public void encodeAjax(FacesContext context, UIComponent uiComponent)
                                                                     throws IOException
     {
+        InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) uiComponent;
+
         Collection suggesteds = getSuggestedItems(context, uiComponent);
+
+        MethodBinding labelMethod = inputSuggestAjax.getItemLabelMethod();
 
         StringBuffer buf = new StringBuffer();
 
         buf.append("[");
 
-        int suggestedCount=0;
-
-        //writing the suggested list
-        for (Iterator suggestedItem = suggesteds.iterator() ; suggestedItem.hasNext() ; suggestedCount++)
+        if (labelMethod != null)
         {
-            if( suggestedCount > DEFAULT_MAX_SUGGESTED_ITEMS)
-                break;
+            Converter converter = inputSuggestAjax.getConverter();
 
-            Object item = suggestedItem.next();
+            if (converter == null)
+            {
+                throw new IllegalStateException("There must be a registered converter if attribute \"labelMethod\" is used");
+            }
 
-            String prefix = escapeQuotes(UnicodeEncoder.encode(item.toString()).substring(0, 1)).toUpperCase();
+            for (Iterator iterator = suggesteds.iterator(); iterator.hasNext();)
+            {
+                Object suggestedItemObject = iterator.next();
 
-            buf.append("[\"").append(UnicodeEncoder.encode(escapeQuotes(item.toString()))).append("\",\"")
-               .append(prefix).append("\"],");
+                String label = (String) labelMethod.invoke(context, new Object[]{suggestedItemObject});
+                String value = converter.getAsString(context, inputSuggestAjax, suggestedItemObject);
+
+                buf.append("[\"").append(label).append("\",\"").append(value).append("\"],");
+            }
+        }
+        else
+        {
+            int suggestedCount=0;
+
+            //writing the suggested list
+            for (Iterator suggestedItem = suggesteds.iterator() ; suggestedItem.hasNext() ; suggestedCount++)
+            {
+                if( suggestedCount > DEFAULT_MAX_SUGGESTED_ITEMS)
+                    break;
+
+                Object item = suggestedItem.next();
+
+                String prefix = escapeQuotes(UnicodeEncoder.encode(item.toString()).substring(0, 1)).toUpperCase();
+
+                buf.append("[\"").append(UnicodeEncoder.encode(escapeQuotes(item.toString()))).append("\",\"")
+                   .append(prefix).append("\"],");
+            }
         }
 
         buf.append("]");

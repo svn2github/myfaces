@@ -1,7 +1,5 @@
 package org.apache.myfaces.examples.inputSuggestAjax;
 
-import javax.faces.model.SelectItem;
-
 /**
  * @author Gerald Muellan
  *         Date: 12.02.2006

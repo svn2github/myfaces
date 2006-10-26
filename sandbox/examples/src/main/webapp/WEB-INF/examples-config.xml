@@ -632,4 +632,10 @@
             <!--org.apache.myfaces.sandbox.application.jsp.RequestParameterProviderViewHandler-->
         <!--</view-handler>-->
     <!--</application>-->
+
+    <converter>
+        <converter-id>inputSuggestAjaxConverter</converter-id>
+        <converter-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxConverter</converter-class>
+    </converter>
+
 </faces-config>

@@ -19,6 +19,7 @@ package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 import org.apache.myfaces.custom.suggestajax.SuggestAjaxTag;
 
 import javax.faces.component.UIComponent;
+import javax.faces.el.MethodBinding;
 
 
 /**
@@ -29,6 +30,7 @@ import javax.faces.component.UIComponent;
 
 public class InputSuggestAjaxTag extends SuggestAjaxTag
 {
+    private String _itemLabelMethod;
 
     public String getComponentType() {
         return InputSuggestAjax.COMPONENT_TYPE;
@@ -39,13 +41,31 @@ public class InputSuggestAjaxTag extends SuggestAjaxTag
     }
 
     public void release() {
-
         super.release();
+        _itemLabelMethod = null;
     }
 
     protected void setProperties(UIComponent component) {
-
         super.setProperties(component);
+
+        if (_itemLabelMethod != null)
+        {
+            if (isValueReference(_itemLabelMethod))
+            {
+                MethodBinding mb = getFacesContext().getApplication()
+                                        .createMethodBinding(_itemLabelMethod, new Class[] {Object.class});
+
+                ((InputSuggestAjax)component).setItemLabelMethod(mb);
+            }
+            else
+            {
+                throw new IllegalStateException("Invalid expression " + _itemLabelMethod);
+            }
+        }
     }
 
+    public void setItemLabelMethod(String itemLabelMethod)
+    {
+        _itemLabelMethod = itemLabelMethod;
+    }
 }

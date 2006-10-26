@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.suggestajax.inputsuggestajax;
 import org.apache.myfaces.custom.suggestajax.SuggestAjax;
 
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 import java.io.IOException;
 
 /**
@@ -32,6 +33,8 @@ public class InputSuggestAjax extends SuggestAjax
     public static final String COMPONENT_TYPE = "org.apache.myfaces.InputSuggestAjax";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.InputSuggestAjax";
 
+    private MethodBinding _itemLabelMethod;
+
     public InputSuggestAjax()
     {
         super();
@@ -41,8 +44,9 @@ public class InputSuggestAjax extends SuggestAjax
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[1];
+        Object[] values = new Object[2];
         values[0] = super.saveState(context);
+        values[1] = saveAttachedState(context, _itemLabelMethod);
 
         return values;
     }
@@ -51,6 +55,7 @@ public class InputSuggestAjax extends SuggestAjax
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
+        _itemLabelMethod = (MethodBinding) restoreAttachedState(context, values[1]);
     }
 
     public void encodeChildren(FacesContext context) throws IOException
@@ -58,4 +63,13 @@ public class InputSuggestAjax extends SuggestAjax
         super.encodeChildren(context);
     }
 
+    public MethodBinding getItemLabelMethod()
+    {
+        return _itemLabelMethod;
+    }
+
+    public void setItemLabelMethod(MethodBinding itemLabelMethod)
+    {
+        _itemLabelMethod = itemLabelMethod;
+    }
 }

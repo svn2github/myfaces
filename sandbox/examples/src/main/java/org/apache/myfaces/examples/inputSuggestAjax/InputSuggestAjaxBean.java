@@ -15,11 +15,9 @@
  */
 package org.apache.myfaces.examples.inputSuggestAjax;
 
-import javax.faces.model.SelectItem;
-
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Backing bean for the input-suggest-ajax component
@@ -30,9 +28,24 @@ import java.util.ArrayList;
 public class InputSuggestAjaxBean
 {
     private String suggestValue = null;
+    private String suggestValueMaxItems = null;
+
     private static List cities = new ArrayList();
+
+    private Address choosenAddress;
+
+    public static List dummyDataBaseAddresses = new ArrayList();
+
+    static
+    {
+        dummyDataBaseAddresses.add(new Address(11,"nonamestreet","detroit",15,"KL"));
+        dummyDataBaseAddresses.add(new Address(12,"maxstreet","san diego",14,"SJ"));
+        dummyDataBaseAddresses.add(new Address(13,"philstreet","philadelphia",13,"NW"));
+        dummyDataBaseAddresses.add(new Address(14,"newstreet","new york",12,"IL"));
+        dummyDataBaseAddresses.add(new Address(15,"sanstreet","san francisco",11,"NY"));
+    }
     
-    static { 
+    static {
         cities.add(new City("San Antonio", "Texas", "TX", "78821"));
         cities.add(new City("Sacramento", "California", "CA", "78880"));
         cities.add(new City("Salinas", "California", "CA", "78881"));
@@ -148,6 +161,24 @@ public class InputSuggestAjaxBean
     	return li;
     }
 
+    public List getAddresses(String prefix)
+    {
+        return dummyDataBaseAddresses;
+    }
+
+    public String getAddressLabel(Object adress)
+    {
+        if (adress instanceof Address)
+        {
+            Address a = (Address) adress;
+            return a.getCity() + "," + a.getStreetName() + "," + a.getState();
+        }
+        else
+        {
+            return adress.toString();
+        }
+    }
+
     public String getSuggestValue()
     {
         return suggestValue;
@@ -156,5 +187,29 @@ public class InputSuggestAjaxBean
     public void setSuggestValue(String suggestValue)
     {
         this.suggestValue = suggestValue;
+    }
+
+    public String getSuggestValueMaxItems()
+    {
+        return suggestValueMaxItems;
+    }
+
+    public void setSuggestValueMaxItems(String suggestValueMaxItems)
+    {
+        this.suggestValueMaxItems = suggestValueMaxItems;
+    }
+
+    public Address getChoosenAddress()
+    {
+        if (choosenAddress == null)
+        {
+            return new Address(11,"nonamestreet","detroit",15,"KL");
+        }
+        return choosenAddress;
+    }
+
+    public void setChoosenAddress(Address choosenAddress)
+    {
+        this.choosenAddress = choosenAddress;
     }
 }
