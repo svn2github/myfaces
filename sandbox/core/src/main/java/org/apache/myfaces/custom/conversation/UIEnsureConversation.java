@@ -15,6 +15,8 @@
  */
 package org.apache.myfaces.custom.conversation;
 
+import org.apache.myfaces.custom.redirectTracker.RedirectTrackerManager;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import java.io.IOException;
@@ -84,6 +86,14 @@ public class UIEnsureConversation extends AbstractConversationComponent
 			String actionUrl = context.getApplication().getViewHandler().getActionURL(
 						context, getRedirectTo());
 			String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
+
+			// XXX: figure out a way to avoid this ==>
+			RedirectTrackerManager manager = RedirectTrackerManager.getInstance(context);
+			if (manager != null)
+			{
+				encodedActionUrl = manager.trackRedirect(context, encodedActionUrl);
+			}
+			// XXX: figure out a way to avoid this <==
 
 			context.getExternalContext().redirect(encodedActionUrl);
 
