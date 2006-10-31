@@ -27,7 +27,7 @@
         <component-type>org.apache.myfaces.dynaForm.DynaConfigs</component-type>
         <component-class>org.apache.myfaces.custom.dynaForm.component.dynaForm.DynaConfigs</component-class>
     </component>
-    
+
     <component>
         <component-type>org.apache.myfaces.dynaForm.DynaConfig</component-type>
         <component-class>org.apache.myfaces.custom.dynaForm.component.dynaForm.DynaConfig</component-class>
@@ -131,6 +131,6 @@
 	<!--  converters -->
 	<converter>
 		<converter-for-class>java.lang.Enum</converter-for-class>
-		<converter-class>org.apache.myfaces.custom.dynaForm.jsfext.EnumConverter</converter-class>
+		<converter-class>org.apache.myfaces.custom.converter.enumeration.EnumConverter</converter-class>
 	</converter>
 </faces-config>
