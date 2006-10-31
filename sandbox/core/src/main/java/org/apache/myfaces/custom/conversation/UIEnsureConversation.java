@@ -76,7 +76,7 @@ public class UIEnsureConversation extends AbstractConversationComponent
 			{
 				super.saveState(context),
 				redirectTo,
-				action
+				saveAttachedState(context, action)
 			};
 	}
 
