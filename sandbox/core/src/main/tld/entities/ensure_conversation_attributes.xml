@@ -6,3 +6,11 @@
        redirect to the given view if the conversation is not running
     </description>
 </attribute>
+<attribute>
+	<name>action</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<description>
+		the action which should be called in case of a not running conversation
+	</description>
+</attribute>

@@ -30,7 +30,7 @@
 <body>
 <f:view>
 
-<s:ensureConversation name="wizard" redirectTo="/conversation/wizardPage1.jsp" />
+<s:ensureConversation name="wizard" action="wizardPage1" />
 
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
@@ -51,19 +51,19 @@
 			<h:commandButton value="Next >>" action="wizardPage3" />
 		</h:panelGroup>
 	</f:facet>
-	
+
     <h:outputText value="Street: " />
     <h:inputText id="street" value="#{wizardData.street}" required="true"/>
-    
+
     <h:outputText value="City: " />
     <h:inputText id="city" value="#{wizardData.city}" required="true"/>
-    
+
     <h:outputText value="State: " />
     <h:inputText id="state" value="#{wizardData.state}" required="true"/>
 
     <h:outputText value="Province: " />
     <h:inputText id="province" value="#{wizardData.province}" />
-    
+
     <h:outputText value="Postal: " />
     <h:inputText id="postal" value="#{wizardData.postal}" required="true"/>
 </h:panelGrid>

@@ -15,6 +15,9 @@
  */
 package org.apache.myfaces.custom.conversation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
@@ -22,33 +25,36 @@ import javax.faces.el.ValueBinding;
 
 /**
  * add a bean under context control
- * 
+ *
  * @author imario@apache.org
  */
 public class UIConversation extends AbstractConversationComponent
 {
+	private final static Log log = LogFactory.getLog(UIConversation.class);
+
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.Conversation";
 
 	public void encodeBegin(FacesContext context) throws IOException
 	{
 		super.encodeBegin(context);
-		
+
 		elevateBean(context);
 	}
 
 	public void elevateBean(FacesContext context)
 	{
+		ValueBinding vb = getValueBinding("value");
+		String name = ConversationUtils.extractBeanName(vb);
+
 		Conversation conversation = ConversationManager.getInstance().getConversation(getName());
 		if (conversation == null)
 		{
-			throw new IllegalStateException("no conversation named '" + getName() + "' running");
+			log.debug("no conversation named '" + getName() + "' running - can't elevate bean '" + name);
+			return;
 		}
 
-		ValueBinding vb = getValueBinding("value");
 		conversation.putBean(context, vb);
-		
-		String name = ConversationUtils.extractBeanName(vb);
-		
+
 		// remove it from the other contexts
 		context.getExternalContext().getRequestMap().remove(name);
 		context.getExternalContext().getSessionMap().remove(name);

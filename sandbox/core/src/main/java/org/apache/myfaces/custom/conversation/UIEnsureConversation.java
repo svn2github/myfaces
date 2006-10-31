@@ -19,6 +19,7 @@ import org.apache.myfaces.custom.redirectTracker.RedirectTrackerManager;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.el.MethodBinding;
 import java.io.IOException;
 
 /**
@@ -37,6 +38,7 @@ public class UIEnsureConversation extends AbstractConversationComponent
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.EnsureConversation";
 
 	private String redirectTo;
+	private MethodBinding action;
 
 	public void encodeBegin(FacesContext context) throws IOException
 	{
@@ -65,6 +67,7 @@ public class UIEnsureConversation extends AbstractConversationComponent
 
 		super.restoreState(context, states[0]);
 		redirectTo = (String) states[1];
+		action = (MethodBinding) restoreAttachedState(context, states[2]);
 	}
 
 	public Object saveState(FacesContext context)
@@ -72,7 +75,8 @@ public class UIEnsureConversation extends AbstractConversationComponent
 		return new Object[]
 			{
 				super.saveState(context),
-				redirectTo
+				redirectTo,
+				action
 			};
 	}
 
@@ -83,19 +87,29 @@ public class UIEnsureConversation extends AbstractConversationComponent
 		{
 			conversationManager.getMessager().setConversationNotActive(context, getName());
 
-			String actionUrl = context.getApplication().getViewHandler().getActionURL(
-						context, getRedirectTo());
-			String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
-
-			// XXX: figure out a way to avoid this ==>
-			RedirectTrackerManager manager = RedirectTrackerManager.getInstance(context);
-			if (manager != null)
+			if (getAction() != null)
 			{
-				encodedActionUrl = manager.trackRedirect(context, encodedActionUrl);
-			}
-			// XXX: figure out a way to avoid this <==
+				String actionResult = (String) getAction().invoke(context, null);
 
-			context.getExternalContext().redirect(encodedActionUrl);
+				// hopefully the user configured the navigation as redirect ...
+				context.getApplication().getNavigationHandler().handleNavigation(context, null, actionResult);
+			}
+			else
+			{
+				String actionUrl = context.getApplication().getViewHandler().getActionURL(
+							context, getRedirectTo());
+				String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
+
+				// XXX: figure out a way to avoid this ==>
+				RedirectTrackerManager manager = RedirectTrackerManager.getInstance(context);
+				if (manager != null)
+				{
+					encodedActionUrl = manager.trackRedirect(context, encodedActionUrl);
+				}
+				// XXX: figure out a way to avoid this <==
+
+				context.getExternalContext().redirect(encodedActionUrl);
+			}
 
 			return;
 		}
@@ -118,5 +132,15 @@ public class UIEnsureConversation extends AbstractConversationComponent
 	public void setRedirectTo(String redirectTo)
 	{
 		this.redirectTo = redirectTo;
+	}
+
+	public MethodBinding getAction()
+	{
+		return action;
+	}
+
+	public void setAction(MethodBinding action)
+	{
+		this.action = action;
 	}
 }

@@ -15,26 +15,49 @@
  */
 package org.apache.myfaces.custom.conversation;
 
+import org.apache.myfaces.shared_tomahawk.el.SimpleActionMethodBinding;
+
 import javax.faces.component.UIComponent;
+import javax.faces.el.MethodBinding;
 
 /**
  * Checks if a conversation is active, else redirects to another view
- * 
+ *
  * @author imario@apache.org
  */
 public class EnsureConversationTag extends AbstractConversationTag
 {
 	private String redirectTo;
+	private String action;
 
 	public String getComponentType()
 	{
 		return UIEnsureConversation.COMPONENT_TYPE;
 	}
-	
+
     protected void setProperties(UIComponent component)
     {
         super.setProperties(component);
-        setStringProperty(component, "redirectTo", getRedirectTo());
+		UIEnsureConversation ensureConversation = (UIEnsureConversation) component;
+
+		setStringProperty(component, "redirectTo", getRedirectTo());
+		if (getAction() != null)
+		{
+			if (isValueReference(getAction()))
+			{
+				MethodBinding mb = getFacesContext().getApplication().createMethodBinding(
+					getAction(), null);
+				ensureConversation.setAction(mb);
+			}
+			else
+			{
+				ensureConversation.setAction(new SimpleActionMethodBinding(getAction()));
+			}
+		}
+		else
+		{
+				ensureConversation.setAction(null);
+		}
     }
 
 	public String getRedirectTo()
@@ -45,5 +68,15 @@ public class EnsureConversationTag extends AbstractConversationTag
 	public void setRedirectTo(String redirectTo)
 	{
 		this.redirectTo = redirectTo;
+	}
+
+	public String getAction()
+	{
+		return action;
+	}
+
+	public void setAction(String action)
+	{
+		this.action = action;
 	}
 }
