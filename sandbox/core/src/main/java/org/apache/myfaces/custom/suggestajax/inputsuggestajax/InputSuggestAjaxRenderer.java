@@ -89,34 +89,33 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         
         String idToRender = null;
 
-        if (valueObject instanceof String)
-        {
-            valueToRender = (String) valueObject;
+		/* check if the user supplied a label method */
+		if (inputSuggestAjax.getItemLabelMethod() == null)
+		{
+			if (valueObject instanceof String)
+			{
+				valueToRender = (String) valueObject;
 
-            idToRender = clientId;
-        }
-        else if (valueObject == null)
-        {
-            valueToRender = "";
+				idToRender = clientId;
+			}
+			else if (valueObject == null)
+			{
+				valueToRender = "";
 
-            idToRender = clientId;
-        }
-        else
+				idToRender = clientId;
+			}
+		}
+		else
         {
             MethodBinding labelMethod = inputSuggestAjax.getItemLabelMethod();
 
             if (labelMethod != null)
             {
-                Converter converter = inputSuggestAjax.getConverter();
-
-                if (converter == null)
-                {
-                    throw new IllegalStateException("There must be a registered converter if " +
-                                                                      "attribute \"labelMethod\" is used");
-                }
+				Converter converter = getRequiredConverter(context, inputSuggestAjax);
 
                 label = (String) labelMethod.invoke(context, new Object[]{valueObject});
-                value = converter.getAsString(context, inputSuggestAjax, valueObject);
+
+				value = converter.getAsString(context, inputSuggestAjax, valueObject);
 
                 idToRender = clientId + "_valueFake";
             }
@@ -192,7 +191,29 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
     }
 
-    public void encodeAjax(FacesContext context, UIComponent uiComponent)
+	protected Converter getRequiredConverter(FacesContext context, InputSuggestAjax inputSuggestAjax)
+	{
+		Converter converter = inputSuggestAjax.getConverter();
+		if (converter != null)
+		{
+			return converter;
+		}
+		
+		Class type = inputSuggestAjax.getValueBinding("value").getType(context);
+		if (type != null)
+		{
+			converter = context.getApplication().createConverter(type);
+			if (converter != null)
+			{
+				return converter;
+			}
+		}
+
+		throw new IllegalStateException("There must be a converter if " +
+														  "attribute \"labelMethod\" is used");
+	}
+
+	public void encodeAjax(FacesContext context, UIComponent uiComponent)
                                                                     throws IOException
     {
         InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) uiComponent;
@@ -207,12 +228,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         if (labelMethod != null)
         {
-            Converter converter = inputSuggestAjax.getConverter();
-
-            if (converter == null)
-            {
-                throw new IllegalStateException("There must be a registered converter if attribute \"labelMethod\" is used");
-            }
+			Converter converter = getRequiredConverter(context, inputSuggestAjax);
 
             for (Iterator iterator = suggesteds.iterator(); iterator.hasNext();)
             {
