@@ -134,7 +134,7 @@ public class MyFacesGuiBuilder extends JsfGuiBuilder
 				});
 
 		cmp.setSuggestedItemsMethod(mbSearch);
-		//cmp.setSuggestedItemsLabel(mbLabel);
+		cmp.setItemLabelMethod(mbLabel);
 
 		if (cmp.getConverter() == null)
 		{
