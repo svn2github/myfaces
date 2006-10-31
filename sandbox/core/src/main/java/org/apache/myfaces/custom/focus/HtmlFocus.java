@@ -34,18 +34,18 @@ public class HtmlFocus extends UIInput
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Focus";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Focus";
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
-    
+
 	private String _for = null;
     private Boolean _rememberClientFocus=null;
-    private static final boolean DEFAULT_REMEMBER_CLIENT_FOCUS = true;
+    private static final boolean DEFAULT_REMEMBER_CLIENT_FOCUS = false;
 
     private static Log log = LogFactory.getLog(HtmlFocus.class);
 
     public String getFamily()
     {
         return COMPONENT_FAMILY;
-    }    
-    
+    }
+
 	public void setFor(String forValue)
 	{
 		_for = forValue;
@@ -81,7 +81,7 @@ public class HtmlFocus extends UIInput
 		{
 			throw new IllegalArgumentException("focus@for must be specified");
 		}
-		
+
 		UIComponent forComp = findComponent(forStr);
 		if (forComp == null)
 		{
@@ -109,4 +109,3 @@ public class HtmlFocus extends UIInput
     }
 
 }
- 

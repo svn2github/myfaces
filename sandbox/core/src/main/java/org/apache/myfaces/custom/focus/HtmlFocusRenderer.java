@@ -59,25 +59,31 @@ public class HtmlFocusRenderer extends Renderer
 
         if(targetComponent != null)
         {
-            String javascriptLocation = (String)uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-            DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
-            DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
+			if (focus.isRememberClientFocus())
+			{
+				String javascriptLocation = (String)uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+				DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
+				DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
+			}
 
-            String clientId = targetComponent.getClientId(facesContext);
+			String clientId = targetComponent.getClientId(facesContext);
 
             ResponseWriter writer = facesContext.getResponseWriter();
 
             writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-            writer.writeText("document.getElementById('" + clientId + "').focus()", null);
+            writer.writeText("setTimeout(\"document.getElementById('" + clientId + "').focus()\", 0)", null);
             writer.endElement(HTML.SCRIPT_ELEM);
 
-            writer.startElement(HTML.INPUT_ELEM, uiComponent);
-            writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_HIDDEN,null);
-            writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext), JSFAttr.ID_ATTR);
-            writer.writeAttribute(HTML.VALUE_ATTR,clientId,JSFAttr.VALUE_ATTR);
-            writer.endElement(HTML.INPUT_ELEM);
-        }
+			if (focus.isRememberClientFocus())
+			{
+				writer.startElement(HTML.INPUT_ELEM, uiComponent);
+				writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_HIDDEN,null);
+				writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext), JSFAttr.ID_ATTR);
+				writer.writeAttribute(HTML.VALUE_ATTR,clientId,JSFAttr.VALUE_ATTR);
+				writer.endElement(HTML.INPUT_ELEM);
+			}
+		}
     }
 
 }
