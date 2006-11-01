@@ -74,7 +74,7 @@ public class ModalDialogRenderer extends Renderer {
         StringBuffer buf = new StringBuffer();
         buf.append("<script type=\"text/javascript\">")
         .append("var ").append(dlg.getDialogVar()).append(";")
-        .append("function loader(e) {").append(dlg.getDialogVar())
+        .append("function "+dlg.getDialogVar()+"_loader(e) {").append(dlg.getDialogVar())
         .append(" = dojo.widget.createWidget(\"dialog\", {id:")
         .append("\"").append(dlg.getDialogId()).append("\", ");
 
@@ -89,7 +89,7 @@ public class ModalDialogRenderer extends Renderer {
         appendHiderIds(buf, dlg);
 
         buf.append("}")
-        .append("dojo.addOnLoad(loader);")
+        .append("setTimeout('"+dlg.getDialogVar()+"_loader();',500);")
         .append("</script>");
 
         buf.append("<div id=\"").append(dlgId).append("\"");
