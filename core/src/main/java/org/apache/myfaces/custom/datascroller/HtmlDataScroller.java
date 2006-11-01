@@ -167,19 +167,19 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                 String facet = scrollerEvent.getScrollerfacet();
                 if (FACET_FIRST.equals(facet))
                 {
-                    uiData.setFirst(0);
+                    setFirst(uiData, 0);
                 }
                 else if (FACET_PREVIOUS.equals(facet))
                 {
                     int previous = uiData.getFirst() - uiData.getRows();
                     if (previous >= 0)
-                        uiData.setFirst(previous);
+                        setFirst(uiData, previous);
                 }
                 else if (FACET_NEXT.equals(facet))
                 {
                     int next = uiData.getFirst() + uiData.getRows();
                     if (next < uiData.getRowCount())
-                        uiData.setFirst(next);
+                        setFirst(uiData, next);
                 }
                 else if (FACET_FAST_FORWARD.equals(facet))
                 {
@@ -190,7 +190,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                     int rowcount = uiData.getRowCount();
                     if (next > rowcount)
                         next = (rowcount - 1) - ((rowcount - 1) % uiData.getRows());
-                    uiData.setFirst(next);
+                    setFirst(uiData, next);
                 }
                 else if (FACET_FAST_REWIND.equals(facet))
                 {
@@ -200,7 +200,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                     int previous = uiData.getFirst() - uiData.getRows() * fastStep;
                     if (previous < 0)
                         previous = 0;
-                    uiData.setFirst(previous);
+                    setFirst(uiData, previous);
                 }
                 else if (FACET_LAST.equals(facet))
                 {
@@ -210,11 +210,11 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                     int first = delta > 0 && delta < rows ? rowcount - delta : rowcount - rows;
                     if (first >= 0)
                     {
-                        uiData.setFirst(first);
+                        setFirst(uiData, first);
                     }
                     else
                     {
-                        uiData.setFirst(0);
+                        setFirst(uiData, 0);
                     }
                 }
             }
@@ -229,9 +229,22 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                 {
                     pageindex = 1;
                 }
-                uiData.setFirst(uiData.getRows() * (pageindex - 1));
+                setFirst(uiData, uiData.getRows() * (pageindex - 1));
             }
         }
+    }
+
+    protected void setFirst(UIData uiData, int value) {
+        //there might be special cases where the first-property of the data-table
+        //is bound to a backing bean. If this happens, the user probably wants
+        //the data-scroller to update this backing-bean value - if not, you can always
+        //override this method in a subclass.
+        if(uiData.getValueBinding("first")!=null)
+        {
+            ValueBinding vb = uiData.getValueBinding("first");
+            vb.setValue(getFacesContext(),new Integer(value));
+        }
+        uiData.setFirst(value);
     }
 
     /**
