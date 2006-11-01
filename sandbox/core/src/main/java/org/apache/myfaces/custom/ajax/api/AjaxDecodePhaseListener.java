@@ -233,6 +233,12 @@ public class AjaxDecodePhaseListener
 
                 if (component instanceof HtmlCommandButtonAjax)
                 {
+                    buff = new StringBuffer();
+                    buff.append("<triggerComponent id=\"");
+                    buff.append(component.getClientId(context));
+                    buff.append("\" />\n");
+                    out.print(buff);                    
+
                     // special treatment for this one, it will try to update the entire form
                     // 1. get surrounding form
                     //String elname = (String) requestMap.get("elname");

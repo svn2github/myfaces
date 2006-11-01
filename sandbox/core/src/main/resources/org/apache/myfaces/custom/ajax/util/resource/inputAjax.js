@@ -2,6 +2,8 @@
  * Extra javascript functions to handle Ajax components.
  */
 var _MyFaces_inputAjax_ajaxResponseMap = new Object();
+var _MyFaces_inputAjax_listenersMap = new Object();
+
 function _MyFaces_inputAjax_clearById(elname)
 {
     var el = document.getElementById(elname);
@@ -10,11 +12,28 @@ function _MyFaces_inputAjax_clearById(elname)
 
 function _MyFaces_inputAjax_notifyElement(originalRequest, successful)
 {
+    var clientId = originalRequest.clientId;
+
+    var triggerComponent =
+            originalRequest.responseXML.getElementsByTagName("response")[0].
+                    getElementsByTagName("triggerComponent")[0];
+    var triggerComponentId;
+
+    if(triggerComponent)
+    {
+        triggerComponentId = triggerComponent.getAttribute("id");
+    }
+
     //_MyFaces_log('req: ' + originalRequest.responseText);
     _MyFaces_inputAjax_clearGlobalMessages();
+
+    var validationSuccessful = true;
+
     var errorArray = originalRequest.responseXML.getElementsByTagName("response")[0].getElementsByTagName("error");
     if (errorArray && errorArray.length > 0)
     {
+        validationSuccessful = false;
+
         for (ierr = 0; ierr < errorArray.length; ierr++)
         {
             var myObError = errorArray[ierr];
@@ -30,6 +49,24 @@ function _MyFaces_inputAjax_notifyElement(originalRequest, successful)
             _MyFaces_inputAjax_displayError(errorClientId, errorSeverity, errorSummary, errorDetail, styleClass, style);
         }
     }
+
+    if(validationSuccessful)
+    {
+        var method = _MyFaces_inputAjax_ajaxResponseMap[triggerComponentId]['onSuccessFunction'];
+        if(method)
+        {
+            method();
+        }
+    }
+    else
+    {
+        var method = _MyFaces_inputAjax_ajaxResponseMap[triggerComponentId]['onFailureFunction'];
+        if(method)
+        {
+            method();
+        }
+    }
+
     var myObElementArray = originalRequest.responseXML.getElementsByTagName("response")[0].getElementsByTagName("elementUpdated");
     if (myObElementArray && myObElementArray.length > 0)
     {
@@ -65,7 +102,7 @@ function _MyFaces_inputAjax_notifyElement(originalRequest, successful)
                             elToUpdate.innerHTML = elvalue;
                         }
                     }
-                    if (_MyFaces_inputAjax_listenersMap)
+                    if (!(typeof _MyFaces_inputAjax_listenersMap == 'undefined'))
                     {
                         var _MyFaces_listenerArray = _MyFaces_inputAjax_listenersMap[elname];
                         if (_MyFaces_listenerArray)
@@ -198,7 +235,7 @@ function _MyFaces_inputAjax_ajaxSubmit(elname, elvalue, el, extraParams, updateO
     //_MyFaces_log('Parameters: ' + pars);
     var _ajaxRequest = new Ajax.Request(
             _MyFaces_inputAjax_ajaxUrl,
-    {method: 'post', parameters: pars, onComplete: _MyFaces_inputAjax_complete, onSuccess: _MyFaces_inputAjax_notifyElementSuccess, onFailure: _MyFaces_inputAjax_notifyElementFailure}
+    {clientId: elname, method: 'post', parameters: pars, onComplete: _MyFaces_inputAjax_complete, onSuccess: _MyFaces_inputAjax_notifyElementSuccess, onFailure: _MyFaces_inputAjax_notifyElementFailure}
             );
 }
 function _MyFaces_inputAjax_updateComponent(elname)
