@@ -262,7 +262,7 @@
                 <dependency>
                     <groupId>com.hostedqa</groupId>
                     <artifactId>hostedqa-remote-ant</artifactId>
-                    <version>1.0-SNAPSHOT</version>
+                    <version>1.6.2</version>
                     <scope>test</scope>
                 </dependency>
             </dependencies>
@@ -302,16 +302,18 @@
                                         <taskdef resource="hostedqatasks" classpathref="maven.plugin.classpath"/>
                                         <upload file="${project.build.directory}/${project.build.finalName}.war"
                                                 account="myfaces"
-                                                email="${hostedqa.email}"
-                                                password="${hostedqa.password}"
+                                                email="${myfaces.hostedqa.email}"
+                                                password="${myfaces.hostedqa.password}"
                                                 resourceId="${hostedqa.resourceId}"/>
 
-                                        <playsuite suiteId="${hostedqa.suiteId}"
-                                                   clientConfigs="${hostedqa.clientConfigs}"
+                                        <playsuite clientConfigs="${hostedqa.clientConfigs}"
                                                    appConfigs="${hostedqa.appConfigs}"
                                                    account="myfaces"
-                                                   email="${hostedqa.email}"
-                                                   password="${hostedqa.password}"/>
+                                                   email="${myfaces.hostedqa.email}"
+                                                   password="${myfaces.hostedqa.password}">
+                                            <fileSet dir="${basedir}/src/test/selenium"
+                                                     excludes="TestSuite.html"/>
+                                        </playsuite>
                                     </tasks>
                                 </configuration>
                             </execution>
@@ -320,7 +322,7 @@
                             <dependency>
                                 <groupId>com.hostedqa</groupId>
                                 <artifactId>hostedqa-remote-ant</artifactId>
-                                <version>1.0-SNAPSHOT</version>
+                                <version>1.6.2</version>
                             </dependency>
                         </dependencies>
                     </plugin>

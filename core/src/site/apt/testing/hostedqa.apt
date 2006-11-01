@@ -30,8 +30,8 @@ Hosted QA
        <profile>
          <id>hostedqa</id>
          <properties>
-            <hostedqa.email>your-id@apache.org</hostedqa.email>
-            <hostedqa.password>your-password</hostedqa.password>
+            <myfaces.hostedqa.email>your-id@apache.org</myfaces.hostedqa.email>
+            <myfaces.hostedqa.password>your-password</myfaces.hostedqa.password>
          </properties>
        </profile>
 +-----+
@@ -49,8 +49,8 @@ Hosted QA
   []
 
   In addition, the pom for each example app includes a 'hostedqa' profile that
-  defines which resource, suite, client, and application configuration should
-  be used.
+  defines which resource, client, and application configuration should be used.
+  The 
 
  With an email address and password configured in settings.xml, execute the tests
  as follows
@@ -86,10 +86,10 @@ $ mvn package -P hostedqa
    [upload] Patch uploaded
    [upload] Upload complete
    [upload] Saving newly uploaded file for future use
-[playsuite] Playing tests for suite ID 55, application configurations 56, and client configurations 117,118
+[playsuite] Playing 3 Selenium tests on application configurations 56, and clien
+t configurations 117
 [playsuite] HostedQA tests complete. Results can be found at:
-[playsuite]  - https://myfaces.hostedqa.com/project/54/session/suite/505/view
-[playsuite]  - https://myfaces.hostedqa.com/project/54/session/suite/506/view
+[playsuite]  - https://myfaces.hostedqa.com/project/54/session/suite/972/view
 [playsuite] The tests have PASSED
 ...
 [INFO] ------------------------------------------------------------------------
@@ -99,9 +99,14 @@ $ mvn package -P hostedqa
 
 * Add Tests
 
- See {{{selenium.html}this page}} for more information on adding Selenium tests for the example apps.
+ See {{{selenium.html}this page}} for more information on adding Selenium tests
+ for the example apps.
 
- When a new test is added to the Subversion repo, import it into HostedQA using the web interface,
- {{{http://myfaces.hostedqa.com}here}}, then modify the context name and port as appropriate.
+ New tests in src/test/selenium will automatically be picked up by the
+ configuration.
 
- The myfaces-example-simple app is running as context name 'simple' on port 9090.
+ The myfaces-example-simple app is running as context name
+ 'myfaces-example-simple' on port 9090, and only Firefox on WinXP (client
+ configuration 117) is enabled.  Client config 118 is IE on WinXP.  It is 
+ disabled because some of the tests fail on IE.  Help with figuring out why
+ that happens is welcome!
