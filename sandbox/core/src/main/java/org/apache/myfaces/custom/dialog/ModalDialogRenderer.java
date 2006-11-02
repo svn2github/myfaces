@@ -1,16 +1,19 @@
 package org.apache.myfaces.custom.dialog;
 
-import org.apache.myfaces.custom.dojo.DojoUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.StringTokenizer;
 
-public class ModalDialogRenderer extends Renderer {
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+
+public class ModalDialogRenderer extends HtmlRenderer {
     public static final String RENDERER_TYPE = "org.apache.myfaces.ModalDialog";
 
     public static final String DIV_ID_PREFIX = "_div";
@@ -101,4 +104,22 @@ public class ModalDialogRenderer extends Renderer {
 
         writer.write(buf.toString());
     }
+    
+    public boolean getRendersChildren()
+    {
+        return true;
+    }
+    /*
+     * (non-Javadoc)
+     *
+     * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext,
+     *      javax.faces.component.UIComponent)
+     */
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    {
+
+        RendererUtils.renderChildren(facesContext, uiComponent);
+        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+    }
+    
 }
