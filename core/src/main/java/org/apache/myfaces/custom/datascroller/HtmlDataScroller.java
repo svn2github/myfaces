@@ -244,7 +244,10 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
             ValueBinding vb = uiData.getValueBinding("first");
             vb.setValue(getFacesContext(),new Integer(value));
         }
-        uiData.setFirst(value);
+        else
+        {
+            uiData.setFirst(value);
+        }
     }
 
     /**
