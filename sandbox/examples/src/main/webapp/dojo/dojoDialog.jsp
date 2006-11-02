@@ -8,17 +8,22 @@
 		<meta http-equiv="Content-Type"
 			content="text/html; charset=iso-8859-1" />
 		<link type="text/css" rel="stylesheet" href="/css/basic.css" />
+		 <style type="text/css">
+        	.dojoDialog {
+	            background : #eee;
+	            border : 1px solid #999;
+	            -moz-border-radius : 5px;
+	            padding : 4px;
+	            /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+	            position:absolute;
+	            left: -800px;
+	            top:-800px;
+	        }
+    	</style>
 	</head>
 	<body>
 		<f:view>
-			<style type="text/css">
-        .dojoDialog {
-            background : #eee;
-            border : 1px solid #999;
-            -moz-border-radius : 5px;
-            padding : 4px;
-        }
-    </style>
+		
 			<h:panelGrid columns="2" style="width:700px;">
 				<h:outputLabel value="Email" for="email1" styleClass="label" />
 				<h:panelGrid columns="4" width="180">
