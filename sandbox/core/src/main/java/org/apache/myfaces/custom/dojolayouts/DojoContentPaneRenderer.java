@@ -23,7 +23,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -106,33 +105,12 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
     }
 
     protected void encodeJavascriptEnd(FacesContext context, UIComponent component) throws IOException {
-        DojoContentPane pane = (DojoContentPane) component;
-        Map attributes = new HashedMap();
-        attributes.put("sizeShare", pane.getSizeShare());
-        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
-        attributes.put("id", panelComponentVar);
+        
+        String [] attributeNames = {"sizeShare", "id", "adjustPaths", "executeScripts",
+                "extractContent", "handler", "href", "layoutAlign",
+                "parseContent", "preload", "refreshOnShow"};
 
-        // optional incoming dojo attrs
-        if (pane.getAdjustPaths() != null)
-            attributes.put("adjustPaths", pane.getAdjustPaths());
-        if (pane.getExecuteScripts() != null)
-            attributes.put("executeScripts", pane.getExecuteScripts());
-        if (pane.getExtractContent() != null)
-            attributes.put("extractContent", pane.getExtractContent());
-        if (pane.getHandler() != null)
-            attributes.put("handler", pane.getHandler());
-        if (pane.getHref() != null)
-            attributes.put("href", pane.getHref());
-        if (pane.getLayoutAlign() != null)
-            attributes.put("layoutAlign", pane.getLayoutAlign());
-        if (pane.getParseContent() != null)
-            attributes.put("parseContent", pane.getParseContent());
-        if (pane.getPreload() != null)
-            attributes.put("preload", pane.getPreload());
-        if (pane.getRefreshOnShow() != null)
-            attributes.put("refreshOnShow", pane.getRefreshOnShow());
-
-        DojoUtils.renderWidgetInitializationCode(context, component, "ContentPane", attributes);
+        DojoUtils.renderWidgetInitializationCode(context, component, "ContentPane", attributeNames);
     }
 
     public boolean getRendersChildren() {

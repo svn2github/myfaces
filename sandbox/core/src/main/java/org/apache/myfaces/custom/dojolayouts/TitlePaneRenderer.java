@@ -1,12 +1,10 @@
 package org.apache.myfaces.custom.dojolayouts;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -41,19 +39,9 @@ public class TitlePaneRenderer extends DojoContentPaneRenderer {
     }
 
     protected void encodeJavascriptEnd(FacesContext context, UIComponent component) throws IOException {
-        TitlePane pane = (TitlePane) component;
-        Map attributes = new HashedMap();
-        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
-        attributes.put("id", panelComponentVar);
 
-        if (pane.getContainerNodeClass() != null)
-            attributes.put("containerNodeClass", pane.getContainerNodeClass());
-        if (pane.getLabel() != null)
-            attributes.put("label", pane.getLabel());
-        if (pane.getLabelNodeClass() != null)
-            attributes.put("labelNodeClass", pane.getLabelNodeClass());
-
-        DojoUtils.renderWidgetInitializationCode(context, component, "SavestatingTitlePane", attributes);
+        String [] attributeNames = {"containerNodeClass", "label", "labelNodeClass", "id"};
+        DojoUtils.renderWidgetInitializationCode(context, component, "SavestatingTitlePane", attributeNames);
     }
 
     public boolean getRendersChildren() {

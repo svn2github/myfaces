@@ -94,34 +94,14 @@ public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
 
     protected void encodeJavascriptEnd(FacesContext context, UIComponent component) throws IOException {
         // called by super.encodeEnd
-        DojoSplitPane pane = (DojoSplitPane) component;
-        Map attributes = new HashedMap();
-
-        if (pane.getSizeShare() != null)
-            attributes.put("sizeShare", pane.getSizeShare());
-
-        if (pane.getActiveSizing() != null)
-            attributes.put("activeSizing", pane.getActiveSizing());
-
-        if (pane.getSplitOrientationation() != null)
-            attributes.put("orientation", pane.getSplitOrientationation());
-
-        if (pane.getSizerWidth() != null)
-            attributes.put("sizerWidth", pane.getSizerWidth());
-
-        if (pane.getPersist() != null)
-            attributes.put("persist", pane.getPersist());
-
-        if (pane.getStartPoint() != null)
-            attributes.put("startPoint", pane.getStartPoint());
-
-        if (pane.getStartPoint() != null)
-            attributes.put("lastPoint", pane.getLastPoint());
-
-        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
-        attributes.put("id", panelComponentVar);      
+        //"sizeShare",
+        String [] attributeNames = {"activeSizing", "orientation", 
+                "sizerWidth", "persist", "startPoint", "lastPoint","id"};
         
-        DojoUtils.renderWidgetInitializationCode(context, component, "SplitContainer", attributes);
+        
+        String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));
+        
+        DojoUtils.renderWidgetInitializationCode(context, component, "SplitContainer", attributeNames);
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);

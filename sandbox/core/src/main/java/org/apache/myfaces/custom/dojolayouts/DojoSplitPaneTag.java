@@ -20,7 +20,7 @@ import javax.faces.component.UIComponent;
 
 public class DojoSplitPaneTag extends DojoContentPaneTag {
 
-    private static final String TAG_PARAM_ORIENTATION  = "splitOrientation";
+    private static final String TAG_PARAM_ORIENTATION  = "orientation";
 
     private static final String TAG_PARAM_SIZERWIDTH   = "sizerWidth";
 

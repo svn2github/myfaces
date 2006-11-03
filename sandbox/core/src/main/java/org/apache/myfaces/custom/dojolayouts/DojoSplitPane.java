@@ -29,7 +29,7 @@ public class DojoSplitPane extends DojoContentPane {
 
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DojoSplitPaneRenderer";
 
-    private String             _splitOrientation     = null;
+    private String             _orientation     = null;
 
     private Integer            _sizerWidth           = null;
 
@@ -51,13 +51,13 @@ public class DojoSplitPane extends DojoContentPane {
         return COMPONENT_FAMILY;
     }
 
-    public void setSplitOrientationation(String orientation) {
-        _splitOrientation = orientation;
+    public void setOrientation(String orientation) {
+        _orientation = orientation;
     }
 
-    public String getSplitOrientationation() {
-        if (_splitOrientation != null)
-            return _splitOrientation;
+    public String getOrientation() {
+        if (_orientation != null)
+            return _orientation;
         ValueBinding vb = getValueBinding("splitOrientation");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
@@ -121,7 +121,7 @@ public class DojoSplitPane extends DojoContentPane {
     public Object saveState(FacesContext context) {
         Object values[] = new Object[7];
         values[0] = super.saveState(context);
-        values[1] = _splitOrientation;
+        values[1] = _orientation;
         values[2] = _sizerWidth;
         values[3] = _activeSizing;
         values[4] = _persist;
@@ -140,7 +140,7 @@ public class DojoSplitPane extends DojoContentPane {
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _splitOrientation = (String) values[1];
+        _orientation = (String) values[1];
         _sizerWidth = (Integer) values[2];
         _activeSizing = (Integer) values[3];
         _persist = (Boolean) values[4];
