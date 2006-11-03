@@ -18,6 +18,7 @@ package org.apache.myfaces.custom.dojo;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 
 /**
@@ -36,7 +37,8 @@ public class DojoInitializer extends UIOutput {
     Boolean                    _expanded             = null;
     String                     _provide              = null;
     String                     _require              = null;
-
+    Boolean                    _development          = null;
+    
     //we handle that specifically to speed things up (we do not want an NxN runtime complexity via enforced
     //reflection in the utils
     boolean dojoConfigParamSet = false;
@@ -148,10 +150,11 @@ public class DojoInitializer extends UIOutput {
         _debugConsole = (Boolean) values[13];
         _dojoConfig.setDebugAtAllCosts((Boolean) values[14]);
         _expanded = (Boolean) values[15];
+        _development = (Boolean) values[16];
     }
 
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[16];
+        Object[] values = new Object[17];
         values[0]  = super.saveState(context);
         values[1]  = _dojoConfig.getAllowQueryConfig();
         values[2]  = _dojoConfig.getBaseScriptUri();
@@ -168,7 +171,8 @@ public class DojoInitializer extends UIOutput {
         values[13] = _debugConsole;
         values[14] = _dojoConfig.getDebugAtAllCosts();
         values[15] = _expanded;
-
+        values[16] = _development;
+        
         return values;
     }
 
@@ -312,4 +316,15 @@ public class DojoInitializer extends UIOutput {
         _dojoConfig.setSearchIds(searchIds);
     }
 
+ 
+     public void setDevelopment(Boolean development)
+    {
+         if (development != null) {
+             dojoConfigParamSet = true;
+             DojoUtils.getDjConfigInstance(FacesContext.getCurrentInstance()).setDevelopment(development);
+         }
+         _development = development;
+    }
+
+ 
 }

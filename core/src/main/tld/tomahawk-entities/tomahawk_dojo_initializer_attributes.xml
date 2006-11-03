@@ -90,3 +90,9 @@
 	<rtexprvalue>false</rtexprvalue>
 	<type>java.lang.String</type>
 </attribute>
+<attribute>
+	<name>development</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+</attribute>

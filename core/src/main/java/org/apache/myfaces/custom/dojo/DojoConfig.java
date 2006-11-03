@@ -60,7 +60,8 @@ public class DojoConfig implements Serializable {
     Boolean                     _parseWidgets         = null;
     Boolean                     _preventBackButtonFix = null;
     String                      _searchIds            = null;
-
+    Boolean                     _development           = null;
+    
     //getters and setters for the djconfig
     public Boolean getAllowQueryConfig() {
         return _allowQueryConfig;
@@ -200,6 +201,14 @@ public class DojoConfig implements Serializable {
         if(isStringValue)
             target.append("'");
 
+    }
+
+    public Boolean getDevelopment() {
+        return _development;
+    }
+
+    public void setDevelopment(Boolean development) {
+        this._development = development;
     }
 
 }

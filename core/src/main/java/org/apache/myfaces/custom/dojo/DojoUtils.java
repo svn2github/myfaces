@@ -392,9 +392,14 @@ public final class DojoUtils {
      * @return
      */
     public static Boolean getExpanded(FacesContext facesContext) {
+        //either the development attribute set or a special request key
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         Boolean devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
-
+        DojoConfig config = getDjConfigInstance(facesContext);
+        if(devStatus == null)
+            devStatus = new Boolean(false);
+        devStatus = new Boolean (devStatus.booleanValue() || (config.getDevelopment() != null && config.getDevelopment().booleanValue()));
+        
         return devStatus;
     }
 

@@ -92,6 +92,8 @@
 			[provide="&lt;dojo class with package&gt;"]
 			[require="&lt;dojo class with package&gt;"]
 			[searchIds="&lt;some id of an existing defined container &gt;"]
+			[development="true|false"]
+
 			&lt;/s:dojoInitializer&gt;
 			</source>
 		</section>
@@ -353,6 +355,13 @@
 					usage is xmlhttprequest, hence setting this encoding
 					will not change too much. But different encodings
 					like iframe are planned for the future.
+				</p>
+				<p>
+					<b>development</b>
+					<br />
+					If this parameter is set to true. The expanded
+					debuggable version of dojo is included
+					if set to false the compressed one is included.
 				</p>
 
 
