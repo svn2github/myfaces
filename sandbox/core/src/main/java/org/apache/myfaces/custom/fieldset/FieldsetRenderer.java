@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.custom.htmlTag.HtmlTagRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 /**
  * @author svieujot (latest modification by $Author$)
@@ -56,4 +57,9 @@ public class FieldsetRenderer extends HtmlTagRenderer
             writer.endElement( "legend" );
         }  
     }
+    
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    	RendererUtils.renderChildren(context, component);
+    }
+    
 }
