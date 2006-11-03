@@ -282,6 +282,18 @@ public final class DojoUtils {
     }
 
     /**
+     * convenience method for easier requires handling
+     * @param facesContext standard faces context
+     * @param component the component
+     * @param requires an array of requires which is rendered into single dojo.require statements
+     * @throws IOException
+     */
+    public static void addRequire(FacesContext facesContext, UIComponent component, String [] requires) throws IOException {
+        for(int cnt = 0; cnt < requires.length; cnt ++)
+            addRequire(facesContext, component, requires[cnt]);
+    }    
+    
+    /**
      * adds a dojo require include to our mix of stuff used
      * 
      * @param facesContext
