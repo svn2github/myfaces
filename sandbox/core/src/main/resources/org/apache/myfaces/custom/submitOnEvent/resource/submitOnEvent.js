@@ -16,30 +16,32 @@
 
 function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inputComponentId, clickComponentId)
 {
-    // alert("eventType:" + eventType + " callback:" + callbackFunction + " input:" + inputComponentId + " click:" + clickComponentId);
-    
-    var inputComponent;
+	// alert("eventType:" + eventType + " callback:" + callbackFunction + " input:" + inputComponentId + " click:" + clickComponentId);
+
+    var inputComponents = [];
     if (inputComponentId != null && inputComponentId != '')
     {
-        inputComponent = document.getElementById(inputComponentId);
-    }
+        inputComponents = document.getElementsByName(inputComponentId);
+	}
     else
     {
-        inputComponent = document;
+        inputComponents = [ document ];
     }
 
     var clickComponent = document.getElementById(clickComponentId);
     if (!clickComponent)
     {
-        alert("SubmitOnEvent: can't find button or link '" + clickComponentId + "'");
-        return;
-    }
+		alert("SubmitOnEvent: can't find button or link '" + clickComponentId + "'");
+		return;
+	}
 
     var handler;
+	var userHandler = false;
 
-    if (callbackFunction != null && callbackFunction != '')
+	if (callbackFunction != null && callbackFunction != '')
     {
-        handler=function(event)
+		userHandler = true;
+		handler=function(event)
         {
             if (!event)
             {
@@ -57,14 +59,14 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
             orgApacheMyfacesSubmitOnEventSetEvent(event, !ret);
             if (ret)
             {
-                orgApacheMyfacesSubmitOnEventGeneral(clickComponentId);            
+                orgApacheMyfacesSubmitOnEventGeneral(clickComponentId);
             }
             return !ret;
         };
     }
     else if (eventType == "keypress" || eventType == "keydown" || eventType == "keyup")
     {
-        handler=function(event)
+		handler=function(event)
         {
             return orgApacheMyfacesSubmitOnEventSetEvent(event, orgApacheMyfacesSubmitOnEventKeypress(event, clickComponentId));
         };
@@ -77,18 +79,92 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
         };
     }
 
-    if (inputComponent.addEventListener)
-    {
-        inputComponent.addEventListener(eventType, handler, false);
-    }
-    else if (inputComponent.attachEvent)
-    {
-        inputComponent.attachEvent("on" + eventType, handler);
-    }
-    else
-    {
-        alert("SubmitOnEvent: your browser do support event attaching");
-    }
+	for (var cmpNum = 0; cmpNum < inputComponents.length; cmpNum++)
+	{
+		var inputComponent = inputComponents[cmpNum];
+		if (!orgApacheMyfacesSubmitOnEventIsFormElement(inputComponent))
+		{
+			continue;
+		}
+		orgApacheMyfacesSubmitOnEventAttachEvent(inputComponent, inputComponents, eventType, handler, userHandler);
+	}
+}
+
+function orgApacheMyfacesSubmitOnEventGetNodeName(component)
+{
+	if (component.nodeName)
+	{
+		return component.nodeName.toLowerCase();
+	}
+	if (component.tagName)
+	{
+		return component.tagName.toLowerCase();
+	}
+
+	return null;
+}
+
+function orgApacheMyfacesSubmitOnEventIsFormElement(component)
+{
+	var nodeName = orgApacheMyfacesSubmitOnEventGetNodeName(component);
+	if (!nodeName)
+	{
+		return false;
+	}
+
+	return nodeName == "input" || nodeName == "select" || nodeName == "textarea";
+}
+
+function orgApacheMyfacesSubmitOnEventAttachEvent(component, components, eventType, handler, userHandler)
+{
+	var setupHandler;
+
+	if (document.all && eventType == "change" && !userHandler && component.type && component.type.toLowerCase() == "radio")
+	{
+		// install IE fix for onchange bug with radio buttons
+		// the idea is to reroute the event to an onclick instead of onchange and check
+		// the change of the value manually. Fire event only on value change.
+
+		component.orgApacheMyfacesSubmitOnEventChecked = component.checked;
+
+		eventType="click";
+		setupHandler = function(event)
+		{
+			if (component.orgApacheMyfacesSubmitOnEventChecked == component.checked)
+			{
+				return true;
+			}
+
+			for (var cmpNum = 0; cmpNum < components.length; cmpNum++)
+			{
+				var partComponent = components[cmpNum];
+				if (!orgApacheMyfacesSubmitOnEventIsFormElement(partComponent))
+				{
+					continue;
+				}
+				partComponent.orgApacheMyfacesSubmitOnEventChecked = component.checked;
+			}
+
+			return handler(event);
+		}
+	}
+	else
+	{
+		setupHandler = handler;
+	}
+
+	if (component.addEventListener)
+	{
+		component.addEventListener(eventType, setupHandler, false);
+	}
+	else if (component.attachEvent)
+	{
+		component.attachEvent("on" + eventType, setupHandler);
+	}
+	else
+	{
+		alert("SubmitOnEvent: your browser do support event attaching");
+	}
 }
 
 function orgApacheMyfacesSubmitOnEventSetEvent(event, ret)
@@ -157,7 +233,7 @@ function orgApacheMyfacesSubmitOnEventKeypress(event, componentId)
         orgApacheMyfacesSubmitOnEventGeneral(componentId);
         return false;
     }
-    
+
     return true;
 }
 

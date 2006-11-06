@@ -105,7 +105,7 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         js.append("','");
         js.append(forComponent.getClientId(facesContext));
         // js.append("');");
-        js.append("');\", 0)");
+        js.append("');\", 50)");
 
         // AddResourceFactory.getInstance(facesContext).addInlineScriptAtPosition(facesContext, AddResource.BODY_END, js.toString());
 
