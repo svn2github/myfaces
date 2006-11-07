@@ -20,14 +20,18 @@ import java.io.Serializable;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.faces.component.StateHolder;
+import javax.faces.context.FacesContext;
 
 /**
  * base class to handle actions events
  * @author imario@apache.org 
  */
-public abstract class AbstractConversationActionListener implements ActionListener, Serializable
+public abstract class AbstractConversationActionListener implements ActionListener, StateHolder
 {
 	private String conversationName;
+
+	private transient boolean isTransient;
 	
 	public AbstractConversationActionListener()
 	{
@@ -49,6 +53,31 @@ public abstract class AbstractConversationActionListener implements ActionListen
 	public void setConversationName(String conversationName)
 	{
 		this.conversationName = conversationName;
+	}
+
+
+	public Object saveState(FacesContext context)
+	{
+		return new Object[]
+		{
+			conversationName
+		};
+	}
+
+	public void restoreState(FacesContext context, Object state)
+	{
+		Object[] states = (Object[]) state;
+		conversationName = (String) states[0];
+	}
+
+	public boolean isTransient()
+	{
+		return isTransient;
+	}
+
+	public void setTransient(boolean newTransientValue)
+	{
+		isTransient = newTransientValue;
 	}
 
 	public void processAction(ActionEvent actionEvent) throws AbortProcessingException

@@ -30,37 +30,31 @@
 <body>
 <f:view>
 
-<s:ensureConversation name="wizard" action="#{wizardController.ensureConversationAction}" />
-
-<t:htmlTag value="h1">Registration Wizard</t:htmlTag>
-
 <h:outputLink value="home.jsf"><h:outputText value="Menu" /></h:outputLink>
-<s:separateConversationContext>
-	<h:outputLink value="home.jsf"><h:outputText value="Menu (with new conversationContext)" /></h:outputLink>
-</s:separateConversationContext>
 
 <h:form>
-<h:outputText value="Whatever the page might tell you, no data will ever be saved ;-)." />
 <h:panelGrid columns="2">
-	<f:facet name="header">
-		<h:outputText value="Registration Wizard (page 3/3)" />
-	</f:facet>
-	<f:facet name="footer">
-		<h:panelGroup>
-			<h:commandButton value="<< Prev" action="wizardPage2" immediate="true"/>
-			<h:commandButton value="Finish" action="wizardFinish" />
-		</h:panelGroup>
-	</f:facet>
-	
-    <h:outputText value="Info: " />
-    <t:inputHtml
-    		id="info"
-    		value="#{wizardData.info}"
-    		allowEditSource="false"
-    		allowExternalLinks="false"/>
+    <h:outputText value="Enter something into this field: " />
+    <h:inputText value="#{convData.input}" />
     
+    <h:commandLink value="check value"/>
+
+	<h:panelGrid columns="2">
+		<h:commandLink value="start conversation">
+			<s:startConversation name="pageDemand">
+				<s:conversation value="#{convData}" />
+			</s:startConversation>
+		</h:commandLink>
+		<h:commandLink value="end conversation">
+			<s:endConversation name="pageDemand" />
+		</h:commandLink>
+	</h:panelGrid>
 </h:panelGrid>
-<h:messages showDetail="true"/>
+<h:panelGrid columns="1">
+    <h:outputText value="Press 'check value' to issue a new request" />
+	<h:outputText value="Press 'start conversation' to start the conversation (which will elevate the bean)" />
+    <h:outputText value="Press 'end conversation' to simulate a server action AND END the conversation (then your value will be lost)" />
+</h:panelGrid>
 </h:form>
 </f:view>
 </body>

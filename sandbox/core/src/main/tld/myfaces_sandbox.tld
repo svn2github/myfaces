@@ -1109,7 +1109,15 @@ Sandbox-related entities.
 		<body-content>JSP</body-content>
 		<description>puts a bean into the conversation context</description>
 
-		&standard_conversation_attributes;
+		<attribute>
+    		<name>name</name>
+    		<required>false</required>
+    		<rtexprvalue>false</rtexprvalue>
+    		<description>
+       		the name of the conversation. Notice: required if tag not as child of startConversation tag.
+    		</description>
+		</attribute>
+
 		&conversation_attributes;
 	</tag>
 	<tag>

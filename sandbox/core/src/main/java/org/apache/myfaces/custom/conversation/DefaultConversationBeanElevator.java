@@ -13,21 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.myfaces.examples.conversation;
+package org.apache.myfaces.custom.conversation;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
-public class WizardController
+/**
+ * Simple elevator. Can't deal with aliased beans. 
+ */
+public class DefaultConversationBeanElevator implements ConversationBeanElevator
 {
-	public String ensureConversationAction()
+	public void elevateBean(FacesContext context, Conversation conversation, ValueBinding valueBinding)
 	{
-		return "wizardPage1";
-	}
+		String name = ConversationUtils.extractBeanName(valueBinding);
 
-	public String save()
-	{
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("data saved"));
-		return "success";
+		conversation.putBean(context, name, valueBinding.getValue(context));
+
+		// remove it from the other contexts
+		context.getExternalContext().getRequestMap().remove(name);
+		context.getExternalContext().getSessionMap().remove(name);
 	}
 }

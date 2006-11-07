@@ -56,9 +56,8 @@ public class Conversation
 	 * Add the given valueBinding to the context map. <br/>
 	 * This will also resolve the value of the binding.
 	 */
-	public void putBean(FacesContext context, ValueBinding vb)
+	public void putBean(FacesContext context, String name, Object value)
 	{
-		String name = ConversationUtils.extractBeanName(vb);
 		if (name.indexOf('.') > -1)
 		{
 			throw new IllegalArgumentException("you cant put a property under conversation control. name: " + name);
@@ -72,7 +71,7 @@ public class Conversation
 		{
 			log.debug("put bean to conversation:" + name + "(bean=" + name + ")");
 		}
-		beans.put(name, vb.getValue(context));
+		beans.put(name, value);
 	}
 
 	/**

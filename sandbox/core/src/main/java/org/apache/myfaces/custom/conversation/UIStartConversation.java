@@ -16,6 +16,9 @@
 package org.apache.myfaces.custom.conversation;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UICommand;
@@ -39,11 +42,27 @@ public class UIStartConversation extends AbstractConversationComponent
 	public static class ConversationStartAction extends AbstractConversationActionListener
 	{
 		private boolean persistence;
+		private List beanToElevate;
 	    
 		public void doConversationAction(AbstractConversationComponent abstractConversationComponent)
 		{
 			ConversationManager conversationManager = ConversationManager.getInstance();
 			conversationManager.startConversation(getConversationName(), isPersistence());
+
+			if (beanToElevate != null)
+			{
+				FacesContext context = FacesContext.getCurrentInstance();
+
+				Iterator iterBeans = beanToElevate.iterator();
+				while (iterBeans.hasNext())
+				{
+					String vb = (String) iterBeans.next();
+					UIConversation.elevateBean(
+						context,
+						getConversationName(),
+						context.getApplication().createValueBinding(vb));
+				}
+			}
 		}
 
 		public boolean isPersistence()
@@ -55,11 +74,39 @@ public class UIStartConversation extends AbstractConversationComponent
 		{
 			this.persistence = persistence;
 		}
+
+		public void addBeanToElevate(String beanBinding)
+		{
+			if (beanToElevate == null)
+			{
+				beanToElevate = new ArrayList();
+			}
+			beanToElevate.add(beanBinding);
+		}
+
+
+		public Object saveState(FacesContext context)
+		{
+			return new Object[]
+			{
+				super.saveState(context),
+				Boolean.valueOf(persistence),
+				beanToElevate
+			};
+		}
+
+		public void restoreState(FacesContext context, Object state)
+		{
+			Object[] states = (Object[]) state;
+			super.restoreState(context, states[0]);
+			persistence = ((Boolean) states[1]).booleanValue();
+			beanToElevate = (List) states[2];
+		}
 	}
 	
-	public void encodeBegin(FacesContext context) throws IOException
+	public void encodeEnd(FacesContext context) throws IOException
 	{
-		super.encodeBegin(context);
+		super.encodeEnd(context);
 		
 		setupConversationSystem(context);
 		
@@ -72,6 +119,18 @@ public class UIStartConversation extends AbstractConversationComponent
 				actionListener.setConversationName(getName());
 				actionListener.setPersistence(toBoolean(getPersistence()));
 				command.addActionListener(actionListener);
+
+				Iterator iterChildren = getChildren().iterator();
+				while (iterChildren.hasNext())
+				{
+					Object child = iterChildren.next();
+					if (child instanceof UIConversation)
+					{
+						UIConversation conversation = (UIConversation) child;
+						actionListener.addBeanToElevate(conversation.getBeanBinding().getExpressionString());
+					}
+				}
+
 				inited = true;
 			}
 		}

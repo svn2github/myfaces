@@ -3,6 +3,6 @@
     <required>true</required>
     <rtexprvalue>false</rtexprvalue>
     <description>
-       the name of the conversation to end
+       the name of the conversation
     </description>
 </attribute>

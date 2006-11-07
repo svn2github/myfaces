@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.component.UIComponent;
 
 /**
  * add a bean under context control
@@ -38,25 +39,34 @@ public class UIConversation extends AbstractConversationComponent
 	{
 		super.encodeBegin(context);
 
-		elevateBean(context);
-	}
-
-	public void elevateBean(FacesContext context)
-	{
-		ValueBinding vb = getValueBinding("value");
-		String name = ConversationUtils.extractBeanName(vb);
-
-		Conversation conversation = ConversationManager.getInstance().getConversation(getName());
-		if (conversation == null)
+		UIComponent cmp = getParent();
+		if (cmp instanceof UIStartConversation)
 		{
-			log.debug("no conversation named '" + getName() + "' running - can't elevate bean '" + name);
+			// start conversation should to the work
 			return;
 		}
 
-		conversation.putBean(context, vb);
+		if (getName() == null)
+		{
+			throw new IllegalArgumentException("conversation name (attribute name=) required if used outside of startConversation tag");
+		}
 
-		// remove it from the other contexts
-		context.getExternalContext().getRequestMap().remove(name);
-		context.getExternalContext().getSessionMap().remove(name);
+		elevateBean(context, getName(), getBeanBinding());
+	}
+
+	ValueBinding getBeanBinding()
+	{
+		return getValueBinding("value");
+	}
+	
+	public static void elevateBean(FacesContext context, String conversationName, ValueBinding valueBinding)
+	{
+		Conversation conversation = ConversationManager.getInstance().getConversation(conversationName);
+		if (conversation == null)
+		{
+			log.debug("no conversation named '" + conversationName + "' running - can't elevate bean '" + valueBinding.getExpressionString());
+			return;
+		}
+		ConversationManager.getInstance().getConversationBeanElevator().elevateBean(context, conversation, valueBinding);
 	}
 }

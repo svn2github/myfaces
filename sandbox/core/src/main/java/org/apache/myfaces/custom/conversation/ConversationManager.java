@@ -45,6 +45,7 @@ public class ConversationManager implements Serializable
 
 	private final static String INIT_PERSISTENCE_MANAGER_FACOTRY = "org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY";
 	private final static String INIT_MESSAGER = "org.apache.myfaces.conversation.MESSAGER";
+	private final static String INIT_BEAN_ELEVATOR = "org.apache.myfaces.conversation.BEAN_ELEVATOR";
 
 	private final static String CONVERSATION_MANAGER_KEY = "org.apache.myfaces.ConversationManager";
 	private final static String CONVERSATION_CONTEXT_REQ = "org.apache.myfaces.ConversationManager.conversationContext";
@@ -53,6 +54,7 @@ public class ConversationManager implements Serializable
 
 	private PersistenceManagerFactory persistenceManagerFactory;
 	private ConversationMessager conversationMessager;
+	private ConversationBeanElevator conversationBeanElevator;
 
 	private final Map conversationContexts = new HashMap();
 
@@ -145,6 +147,9 @@ public class ConversationManager implements Serializable
 
 		// initialize the messager
 		conversationManager.createMessager();
+
+		// initialize the bean elevator
+		conversationManager.createBeanElevator();
 
 		return conversationManager;
 	}
@@ -422,6 +427,40 @@ public class ConversationManager implements Serializable
 	}
 
 	/**
+	 * Create the BeanElevator used to find a bean within the different contexts and elevate it
+	 * into the conversation scope.<br />
+	 * You can configure it in your web.xml using the init parameter named
+	 * <code>org.apache.myfaces.conversation.BEAN_ELEVATOR</code>
+	 */
+	protected void createBeanElevator()
+	{
+		String conversationBeanElevatorName = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(INIT_BEAN_ELEVATOR);
+		if (conversationBeanElevatorName == null)
+		{
+			conversationBeanElevator = new DefaultConversationBeanElevator();
+		}
+		else
+		{
+			try
+			{
+				conversationBeanElevator = (DefaultConversationBeanElevator) ClassUtils.classForName(conversationBeanElevatorName).newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				throw new FacesException("error creating bean elevator: " + conversationBeanElevatorName, e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new FacesException("error creating bean elevator: " + conversationBeanElevatorName, e);
+			}
+			catch (ClassNotFoundException e)
+			{
+				throw new FacesException("error creating bean elevator: " + conversationBeanElevatorName, e);
+			}
+		}
+	}
+
+	/**
 	 * Get the persistenceManagerFactory.<br />
 	 * The factory can be configured in your web.xml using the init parameter named
 	 * <code>org.apache.myfaces.conversation.PERSISTENCE_MANAGER_FACTORY</code>
@@ -505,6 +544,15 @@ public class ConversationManager implements Serializable
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * the bean elevator used to get beans int the conversation scope
+	 */
+	public ConversationBeanElevator getConversationBeanElevator()
+	{
+		return conversationBeanElevator;
 	}
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException

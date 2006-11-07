@@ -13,21 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.apache.myfaces.examples.conversation;
+package org.apache.myfaces.custom.conversation;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
-public class WizardController
+/**
+ * Interface used by the system to instruct the elevator to find and elevate a bean into the
+ * conversation scope 
+ */
+public interface ConversationBeanElevator
 {
-	public String ensureConversationAction()
-	{
-		return "wizardPage1";
-	}
-
-	public String save()
-	{
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("data saved"));
-		return "success";
-	}
+	public void elevateBean(FacesContext context, Conversation conversation, ValueBinding valueBinding);
 }
