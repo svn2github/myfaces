@@ -105,15 +105,6 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-
-    <!-- Managed Beans for treeSelectMenu -->
-
-    <managed-bean>
-        <managed-bean-name>treeSelectMenu</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.examples.treeselectmenu.TreeSelectMenuBacker</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-
   <managed-bean>
     <managed-bean-name>userHandler</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.examples.inputsuggest.UserHandler</managed-bean-class>
