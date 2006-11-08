@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.custom.dojo;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -120,9 +121,9 @@ public final class DojoUtils {
             try {
                 String attributeName = attributeNames[cnt];
                 String getterMethod = "get" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
-                if (attributeName.equals("id")) {
-                    String componentVar = DojoUtils.calculateWidgetVarName(component.getClientId(facesContext));
-                    returnMap.put("id", componentVar);
+                if (attributeName.equals("id") || attributeName.equals("widgetId")) {
+                    String calculatedId = DojoUtils.calculateWidgetId(facesContext, component);
+                    returnMap.put("id", calculatedId);
                 } else {
                     Method m = componentClass.getDeclaredMethod(getterMethod, null);
                     if (m != null) {
@@ -291,11 +292,11 @@ public final class DojoUtils {
      * @param requires an array of requires which is rendered into single dojo.require statements
      * @throws IOException
      */
-    public static void addRequire(FacesContext facesContext, UIComponent component, String [] requires) throws IOException {
-        for(int cnt = 0; cnt < requires.length; cnt ++)
+    public static void addRequire(FacesContext facesContext, UIComponent component, String[] requires) throws IOException {
+        for (int cnt = 0; cnt < requires.length; cnt++)
             addRequire(facesContext, component, requires[cnt]);
-    }    
-    
+    }
+
     /**
      * adds a dojo require include to our mix of stuff used
      * 
@@ -395,14 +396,14 @@ public final class DojoUtils {
      * @return
      */
     public static Boolean getExpanded(FacesContext facesContext) {
-        //either the development attribute set or a special request key
+        // either the development attribute set or a special request key
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         Boolean devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
         DojoConfig config = getDjConfigInstance(facesContext);
-        if(devStatus == null)
+        if (devStatus == null)
             devStatus = new Boolean(false);
-        devStatus = new Boolean (devStatus.booleanValue() || (config.getDevelopment() != null && config.getDevelopment().booleanValue()));
-        
+        devStatus = new Boolean(devStatus.booleanValue() || (config.getDevelopment() != null && config.getDevelopment().booleanValue()));
+
         return devStatus;
     }
 
@@ -463,12 +464,12 @@ public final class DojoUtils {
      * @return
      * @throws IOException
      */
-    public static String renderWidgetInitializationCode(FacesContext facesContext, UIComponent component, String dojoType, String [] attributeNames) throws IOException {
+    public static String renderWidgetInitializationCode(FacesContext facesContext, UIComponent component, String dojoType, String[] attributeNames)
+            throws IOException {
         Map paramMap = DojoUtils.getAttributeMap(facesContext, attributeNames, component);
         return renderWidgetInitializationCode(facesContext, component, dojoType, paramMap);
     }
-    
-    
+
     /**
      * same for a given neutral id...
      * 
@@ -488,8 +489,11 @@ public final class DojoUtils {
 
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        String javascriptVar = calculateWidgetVarName(clientId);
 
+        String javascriptVar = (String) paramMap.get("widgetVar");
+        if (StringUtils.isBlank(javascriptVar))
+            javascriptVar = calculateWidgetVarName(clientId);
+        
         Iterator it = paramMap.entrySet().iterator();
 
         writer.write("var ");
@@ -508,8 +512,8 @@ public final class DojoUtils {
                 if (!first)
                     writer.write(",");
                 writer.write(entry.getKey().toString());
-                writer.write(":"); // only real string values should be within
-                                    // ambersants, dojo req
+                writer.write(":"); 	// only real string values should be within
+                					// ambersants, dojo req
                 boolean isString = entry.getValue() instanceof String;
                 if (isString)
                     writer.write("'");
@@ -542,6 +546,37 @@ public final class DojoUtils {
      */
     public static String calculateWidgetVarName(String clientId) {
         return clientId.replaceAll("\\:", "_") + "_dojoControl";
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public static String calculateWidgetId(FacesContext context, UIComponent widget) {
+        String widgetVarName = "";
+        if (widget instanceof DojoWidget) {
+            widgetVarName = ((DojoWidget) widget).getWidgetId();
+        }
+        if (StringUtils.isBlank(widgetVarName)) {
+            widgetVarName = calculateWidgetVarName(widget.getClientId(context));
+        }
+        return widgetVarName;
+    }
+
+    
+    /**
+     * 
+     * @return
+     */
+    public static String calculateWidgetVarName(FacesContext context, UIComponent widget) {
+        String widgetVarName = "";
+        if (widget instanceof DojoWidget) {
+            widgetVarName = ((DojoWidget) widget).getWidgetVar();
+        }
+        if (StringUtils.isBlank(widgetVarName)) {
+            widgetVarName = calculateWidgetVarName(widget.getClientId(context));
+        }
+        return widgetVarName;
     }
 
     /**

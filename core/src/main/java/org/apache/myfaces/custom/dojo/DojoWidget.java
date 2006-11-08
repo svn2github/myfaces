@@ -45,5 +45,18 @@ public interface DojoWidget {
      * @param widgetVar
      */
     public void setWidgetVar(String widgetVar);
+  
     
+    /**
+     * forces the internal widget id onto the given value
+     * 
+     * @param forceIt
+     */
+    public void setWidgetId(String widgetId);
+    
+    /**
+     * 
+     * @return the enforced widgetid
+     */
+    public String getWidgetId();
 }
