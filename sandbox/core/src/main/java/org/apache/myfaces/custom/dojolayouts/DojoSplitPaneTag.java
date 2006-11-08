@@ -20,54 +20,37 @@ import javax.faces.component.UIComponent;
 
 public class DojoSplitPaneTag extends DojoContentPaneTag {
 
+    private static final String TAG_PARAM_ACTIVESIZING = "activeSizing";
+
+    public static final String  TAG_PARAM_LastPoint    = "lastPoint";
+
     private static final String TAG_PARAM_ORIENTATION  = "orientation";
+
+    public static final String  TAG_PARAM_Persist      = "persist";
 
     private static final String TAG_PARAM_SIZERWIDTH   = "sizerWidth";
 
-    private static final String TAG_PARAM_ACTIVESIZING = "activeSizing";
+    public static final String  TAG_PARAM_StartPoint   = "startPoint";
 
-    public static final String  TAG_PARAM_Persist     = "persist";
+    public static final String  TAG_PARAM_WidgetId     = "widgetId";
 
-    public static final String  TAG_PARAM_StartPoint  = "startPoint";
-
-    public static final String  TAG_PARAM_LastPoint   = "lastPoint";
-
-    
-    private String              _orientation           = null;
-
-    private String              _sizerWidth            = null;
+    public static final String  TAG_PARAM_WidgetVar    = "widgetVar";
 
     private String              _activeSizing          = null;
 
+    private String              _lastPoint             = null;
+
+    private String              _orientation           = null;
+
     private String              _persist               = null;
+
+    private String              _sizerWidth            = null;
 
     private String              _startPoint            = null;
 
-    private String              _lastPoint             = null;
+    private String              _widgetId              = null;
 
-    public void setActiveSizing(String activeSizing) {
-        this._activeSizing = activeSizing;
-    }
-
-    public void setOrientation(String orientation) {
-        this._orientation = orientation;
-    }
-
-    public void setSizerWidth(String sizerWidth) {
-        this._sizerWidth = sizerWidth;
-    }
-
-    public void setPersist(String persist) {
-        _persist = persist;
-    }
-
-    public void setLastPoint(String lastPoint) {
-        _lastPoint = lastPoint;
-    }
-
-    public void setStartPoint(String startPoint) {
-        _startPoint = startPoint;
-    }
+    private String              _widgetVar             = null;
 
     public String getComponentType() {
         return DojoSplitPane.COMPONENT_TYPE;
@@ -75,6 +58,50 @@ public class DojoSplitPaneTag extends DojoContentPaneTag {
 
     public String getRendererType() {
         return DojoSplitPane.DEFAULT_RENDERER_TYPE;
+    }
+
+    public void release() {
+        super.release();
+        _activeSizing = null;
+        _orientation = null;
+        _sizerWidth = null;
+
+        // //release persist begin
+        _persist = null;
+        // //release persist end
+
+        // //release startPoint begin
+        _startPoint = null;
+        // //release startPoint end
+
+        // //release startPoint begin
+        _lastPoint = null;
+        // //release startPoint end
+
+        // //release widgetVar begin
+        _widgetVar = null;
+        // //release widgetVar end
+
+        // //release widgetId begin
+        _widgetId = null;
+        // //release widgetId end
+
+    }
+
+    public void setActiveSizing(String activeSizing) {
+        this._activeSizing = activeSizing;
+    }
+
+    public void setLastPoint(String lastPoint) {
+        _lastPoint = lastPoint;
+    }
+
+    public void setOrientation(String orientation) {
+        this._orientation = orientation;
+    }
+
+    public void setPersist(String persist) {
+        _persist = persist;
     }
 
     protected void setProperties(UIComponent component) {
@@ -95,26 +122,29 @@ public class DojoSplitPaneTag extends DojoContentPaneTag {
         super.setIntegerProperty(component, TAG_PARAM_LastPoint, _lastPoint);
         // //setProperties lastPoint end
 
-        // //release lastPoint begin
-        _lastPoint = null;
-        // //release lastPoint end
+        // //setProperties widgetVar begin
+        super.setStringProperty(component, TAG_PARAM_WidgetVar, _widgetVar);
+        // //setProperties widgetVar end
+
+        // //setProperties widgetId begin
+        super.setStringProperty(component, TAG_PARAM_WidgetId, _widgetId);
+        // //setProperties widgetId end
 
     }
 
-    public void release() {
-        super.release();
-        _activeSizing = null;
-        _orientation = null;
-        _sizerWidth = null;
-        // //release persist begin
-        _persist = null;
-        // //release persist end
-        // //release startPoint begin
-        _startPoint = null;
-        // //release startPoint end
-        // //release startPoint begin
-        _lastPoint = null;
-        // //release startPoint end
+    public void setSizerWidth(String sizerWidth) {
+        this._sizerWidth = sizerWidth;
+    }
 
+    public void setStartPoint(String startPoint) {
+        _startPoint = startPoint;
+    }
+
+    public void setWidgetId(String widgetId) {
+        _widgetId = widgetId;
+    }
+
+    public void setWidgetVar(String widgetVar) {
+        _widgetVar = widgetVar;
     }
 }

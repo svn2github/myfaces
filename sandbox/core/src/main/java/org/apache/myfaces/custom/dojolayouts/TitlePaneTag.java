@@ -16,6 +16,27 @@ public class TitlePaneTag extends DojoContentPaneTag {
 
     private String             _labelNodeClass              = null;
 
+    public static final String TAG_PARAM_WidgetVar = "widgetVar";
+    
+    private String       _widgetVar         = null;
+    
+    public void setWidgetVar(String widgetVar) {
+        _widgetVar = widgetVar;
+    }
+
+    
+       
+    
+    public static final String TAG_PARAM_WidgetId = "widgetId";
+    
+    private String       _widgetId         = null;
+    
+    public void setWidgetId(String widgetId) {
+        _widgetId = widgetId;
+    }
+
+ 
+    
     public String getComponentType() {
         return TitlePane.COMPONENT_TYPE;
     }
@@ -37,6 +58,15 @@ public class TitlePaneTag extends DojoContentPaneTag {
         // //release label begin
         _label = null;
         // //release label end
+
+        ////release widgetVar begin
+        _widgetVar = null;
+        ////release widgetVar end
+
+        
+        ////release widgetId begin
+        _widgetId = null;
+        ////release widgetId end
 
     }
 
@@ -64,6 +94,16 @@ public class TitlePaneTag extends DojoContentPaneTag {
         // // setProperties label begin
         super.setStringProperty(component, TAG_PARAM_Label, _label);
         // //setProperties label end
+        ////setProperties widgetVar begin
+        super.setStringProperty(component, TAG_PARAM_WidgetVar, _widgetVar );
+        ////setProperties widgetVar end
+
+      
+        
+        ////setProperties widgetId begin
+        super.setStringProperty(component, TAG_PARAM_WidgetId, _widgetId );
+        ////setProperties widgetId end
+
 
     }
 }

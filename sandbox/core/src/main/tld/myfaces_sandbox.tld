@@ -138,6 +138,10 @@ Sandbox-related entities.
 <!ENTITY csvvalidator_attributes SYSTEM "entities/csvvalidator_attributes.xml">
 <!ENTITY submit_on_event_attributes	SYSTEM "entities/submit_on_event_attributes.xml">
 <!ENTITY excel_export_attributes	SYSTEM "entities/excel_export_attributes.xml">
+<!ENTITY dojowidget_attributes	SYSTEM "entities/dojowidget_attributes.xml">
+
+<!ENTITY floatingpane_base_attributes	SYSTEM "entities/floatingpane_base_attributes.xml">
+
 ]>
 
 
@@ -1206,6 +1210,7 @@ Sandbox-related entities.
 		<body-content>JSP</body-content>
 		<description>Base content pane for the dojo layouts</description>
         &ui_output_attributes;
+        &dojowidget_attributes;
 		<attribute>
 			<name>sizeShare</name>
 			<required>false</required>
@@ -1329,7 +1334,7 @@ Sandbox-related entities.
 		<body-content>JSP</body-content>
 		<description>Title Pane layouting element</description>
         &ui_output_attributes;
-
+		&dojowidget_attributes;
 		<attribute>
 			<name>containerNodeClass</name>
 			<required>false</required>
@@ -1364,6 +1369,7 @@ Sandbox-related entities.
 		<body-content>JSP</body-content>
 		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
         &ui_output_attributes;
+		&dojowidget_attributes;
 		<attribute>
 		    <name>styleClass</name>
 		    <required>false</required>
@@ -1434,6 +1440,7 @@ Sandbox-related entities.
         <body-content>JSP</body-content>
         <description>Modal Dojo Dialog (is not working with overridden 'onload')</description>
         &ui_panel_attributes;
+        &dojowidget_attributes;
         <!-- style attributes -->
         <attribute>
             <name>style</name>
@@ -1506,5 +1513,16 @@ Sandbox-related entities.
         </description>
         &excel_export_attributes;
     </tag>
+
+	<tag>
+		<name>floatingPane</name>
+		<tag-class>org.apache.myfaces.custom.dojolayouts.FloatingPaneTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>PanelGroup which supports a partialTriggers Attribute similar to the one in Trinidad</description>
+        &ui_output_attributes;
+		&dojowidget_attributes;
+		&floatingpane_base_attributes;
+	</tag>
+
 
 </taglib>

@@ -71,7 +71,7 @@ public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
             if (!child.isRendered())
                 continue;
             if (child instanceof DojoContentPane) {
-                stack.push(DojoUtils.calculateWidgetVarName(child.getClientId(context)));
+                stack.push(DojoUtils.calculateWidgetVarName(context, child));
             }
         }
     }
@@ -96,7 +96,7 @@ public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
         // called by super.encodeEnd
         //"sizeShare",
         String [] attributeNames = {"activeSizing", "orientation", 
-                "sizerWidth", "persist", "startPoint", "lastPoint","id"};
+                "sizerWidth", "persist", "startPoint", "lastPoint",  "widgetVar", "widgetId"};
         
         
         String panelComponentVar = DojoUtils.calculateWidgetVarName(component.getClientId(context));

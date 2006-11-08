@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -108,7 +109,7 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
         
         String [] attributeNames = {"sizeShare", "id", "adjustPaths", "executeScripts",
                 "extractContent", "handler", "href", "layoutAlign",
-                "parseContent", "preload", "refreshOnShow"};
+                "parseContent", "preload", "refreshOnShow", "widgetVar", "widgetId"};
 
         DojoUtils.renderWidgetInitializationCode(context, component, "ContentPane", attributeNames);
     }

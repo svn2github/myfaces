@@ -3,6 +3,8 @@ package org.apache.myfaces.custom.dojolayouts;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import org.apache.myfaces.custom.dojo.DojoWidget;
+
 /**
  * TitlePane Component class
  */
@@ -18,7 +20,7 @@ import javax.faces.el.ValueBinding;
  * 
  */
 
-public class TitlePane extends DojoContentPane {
+public class TitlePane extends DojoContentPane implements DojoWidget {
     // ------------------ GENERATED CODE BEGIN (do not modify!)
     // --------------------
 
@@ -34,6 +36,35 @@ public class TitlePane extends DojoContentPane {
 
     private String             _labelNodeClass       = null;
 
+     private String _widgetVar = null;
+ 
+      private String _widgetId = null;
+ 
+     public void setWidgetId(String widgetId)
+    {
+        _widgetId = widgetId;
+    }
+
+    public String getWidgetId()
+    {
+        if (_widgetId != null) return _widgetId;
+        ValueBinding vb = getValueBinding("widgetId");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+ 
+     
+     public void setWidgetVar(String widgetVar)
+    {
+        _widgetVar = widgetVar;
+    }
+
+    public String getWidgetVar()
+    {
+        if (_widgetVar != null) return _widgetVar;
+        ValueBinding vb = getValueBinding("widgetVar");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+    
     public TitlePane() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -78,17 +109,27 @@ public class TitlePane extends DojoContentPane {
         _label = (String) values[3];
         // //restorestate label end
 
+        ////restorestate widgetVar begin
+        _widgetVar = (String)values[4];
+        ////restorestate widgetVar end
+           ////restorestate widgetId begin
+           _widgetId = (String)values[5];
+           ////restorestate widgetId end
+
+        
+
     }
     // ------------------ GENERATED CODE END
     // ---------------------------------------
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[4];
+        Object values[] = new Object[6];
         values[0] = super.saveState(context);
         ;
         // //savestate labelNodeClass begin
         values[1] = _labelNodeClass;
         // //savestate labelNodeClass end
+
         // //savestate containerNodeClass begin
         values[2] = _containerNodeClass;
         // //savestate containerNodeClass end
@@ -97,6 +138,14 @@ public class TitlePane extends DojoContentPane {
         values[3] = _label;
         // //savestate label end
 
+        ////savestate widgetVar begin
+        values[4] = _widgetVar;
+        ////savestate widgetVar end
+        
+        ////savestate widgetId begin
+        values[5] = _widgetId;
+        ////savestate widgetId end
+        
         return ((Object) (values));
     }
 

@@ -20,16 +20,18 @@ import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import org.apache.myfaces.custom.dojo.DojoWidget;
+
 /**
  * jsfed dojo content pane
- * @see http://www.dojotoolkit.org for further
- * references to this control
- * and its parameters
+ * 
+ * @see http://www.dojotoolkit.org for further references to this control and
+ *      its parameters
  * 
  * @author werpu
- *
+ * 
  */
-public class DojoContentPane extends UIOutput {
+public class DojoContentPane extends UIOutput implements DojoWidget {
 
     public static final String DEFAULT_COMPONENT_FAMILY = "javax.faces.Output";
 
@@ -62,6 +64,10 @@ public class DojoContentPane extends UIOutput {
     private String             _style                   = null;
 
     private String             _styleClass              = null;
+
+    private java.lang.String   _widgetId                = null;
+
+    private String             _widgetVar               = null;
 
     public DojoContentPane() {
         super();
@@ -163,6 +169,20 @@ public class DojoContentPane extends UIOutput {
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
+    public String getWidgetId() {
+        if (_widgetId != null)
+            return _widgetId;
+        ValueBinding vb = getValueBinding("widgetId");
+        return vb != null ? (java.lang.String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public String getWidgetVar() {
+        if (_widgetVar != null)
+            return _widgetVar;
+        ValueBinding vb = getValueBinding("widgetVar");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
@@ -203,10 +223,16 @@ public class DojoContentPane extends UIOutput {
         _layoutAlign = (String) values[13];
         // //restorestate layoutAlign end
 
+        _widgetVar = (String) values[14];
+
+        // //restorestate widgetId begin
+        _widgetId = (java.lang.String) values[15];
+        // //restorestate widgetId end
+
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[14];
+        Object values[] = new Object[16];
         values[0] = super.saveState(context);
         values[1] = _sizeShare;
         values[2] = _style;
@@ -251,6 +277,12 @@ public class DojoContentPane extends UIOutput {
         // //savestate layoutAlign begin
         values[13] = _layoutAlign;
         // //savestate layoutAlign end
+
+        values[14] = _widgetVar;
+
+        // //savestate widgetId begin
+        values[15] = _widgetId;
+        // //savestate widgetId end
 
         return ((Object) (values));
     }
@@ -305,5 +337,13 @@ public class DojoContentPane extends UIOutput {
 
     public void setSTyleClass(String styleClass) {
         _styleClass = styleClass;
+    }
+
+    public void setWidgetId(java.lang.String widgetId) {
+        _widgetId = widgetId;
+    }
+
+    public void setWidgetVar(String widgetVar) {
+        _widgetVar = widgetVar;
     }
 }

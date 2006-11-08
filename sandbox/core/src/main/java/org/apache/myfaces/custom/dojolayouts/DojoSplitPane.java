@@ -19,9 +19,9 @@ package org.apache.myfaces.custom.dojolayouts;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-public class DojoSplitPane extends DojoContentPane {
-    // ------------------ GENERATED CODE BEGIN (do not modify!)
-    // --------------------
+import org.apache.myfaces.custom.dojo.DojoWidget;
+
+public class DojoSplitPane extends DojoContentPane implements DojoWidget {
 
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.DojoSplitPane";
 
@@ -29,7 +29,7 @@ public class DojoSplitPane extends DojoContentPane {
 
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DojoSplitPaneRenderer";
 
-    private String             _orientation     = null;
+    private String             _orientation          = null;
 
     private Integer            _sizerWidth           = null;
 
@@ -41,6 +41,33 @@ public class DojoSplitPane extends DojoContentPane {
 
     private Integer            _lastPoint            = null;
 
+    private String   _widgetVar            = null;
+
+     private String _widgetId = null;
+ 
+     public void setWidgetId(String widgetId)
+    {
+        _widgetId = widgetId;
+    }
+
+    public String getWidgetId()
+    {
+        if (_widgetId != null) return _widgetId;
+        ValueBinding vb = getValueBinding("widgetId");
+        return vb != null ? (String)vb.getValue(getFacesContext()) : null;
+    }
+ 
+    
+    public void setWidgetVar(java.lang.String widgetVar) {
+        _widgetVar = widgetVar;
+    }
+
+    public java.lang.String getWidgetVar() {
+        if (_widgetVar != null)
+            return _widgetVar;
+        ValueBinding vb = getValueBinding("widgetVar");
+        return vb != null ? (java.lang.String) vb.getValue(getFacesContext()) : null;
+    }
 
     public DojoSplitPane() {
         super();
@@ -116,10 +143,9 @@ public class DojoSplitPane extends DojoContentPane {
         ValueBinding vb = getValueBinding("startPoint");
         return vb != null ? (Integer) vb.getValue(getFacesContext()) : null;
     }
-    
-    
+
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[7];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = _orientation;
         values[2] = _sizerWidth;
@@ -133,6 +159,14 @@ public class DojoSplitPane extends DojoContentPane {
         // //savestate lastPoint begin
         values[6] = _lastPoint;
         // //savestate lastPoint end
+
+        // //savestate widgetVar begin
+        values[7] = _widgetVar;
+        // //savestate widgetVar end
+
+        ////savestate widgetId begin
+        values[8] = _widgetId;
+        ////savestate widgetId end
 
         return ((Object) (values));
     }
@@ -153,7 +187,14 @@ public class DojoSplitPane extends DojoContentPane {
         _lastPoint = (Integer) values[6];
         // //restorestate lastPoint end
 
+        // //restorestate widgetVar begin
+        _widgetVar = (java.lang.String) values[7];
+        // //restorestate widgetVar end
+
+        ////restorestate widgetId begin
+        _widgetId = (String)values[8];
+        ////restorestate widgetId end
+
+
     }
-    // ------------------ GENERATED CODE END
-    // ---------------------------------------
 }

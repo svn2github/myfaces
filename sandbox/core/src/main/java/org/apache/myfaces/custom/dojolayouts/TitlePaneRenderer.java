@@ -29,9 +29,9 @@ public class TitlePaneRenderer extends DojoContentPaneRenderer {
         catch (IOException e) {
             e.printStackTrace();
         }
-        DojoUtils.addRequire(context, component, "dojo.widget.myfaces.SavestatingTitlePane");
-        DojoUtils.addRequire(context, component, "dojo.widget.html.myfaces.SavestatingTitlePane");
-
+        String [] requires = {"dojo.widget.myfaces.SavestatingTitlePane",
+                              "dojo.widget.html.myfaces.SavestatingTitlePane"};
+        DojoUtils.addRequire(context, component, requires);
     }
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -40,7 +40,7 @@ public class TitlePaneRenderer extends DojoContentPaneRenderer {
 
     protected void encodeJavascriptEnd(FacesContext context, UIComponent component) throws IOException {
 
-        String [] attributeNames = {"containerNodeClass", "label", "labelNodeClass", "id"};
+        String [] attributeNames = {"containerNodeClass", "label", "labelNodeClass", "widgetVar", "widgetId"};
         DojoUtils.renderWidgetInitializationCode(context, component, "SavestatingTitlePane", attributeNames);
     }
 

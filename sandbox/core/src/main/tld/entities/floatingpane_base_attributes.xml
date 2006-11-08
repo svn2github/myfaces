@@ -1,0 +1,89 @@
+<attribute>
+	<name>title</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+	<description>the floating pane Title</description>
+</attribute>
+
+<attribute>
+	<name>IconSrc</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+	<description>The pane icon source</description>
+</attribute>
+
+<attribute>
+	<name>hasShadow</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>Shadow drawn or not</description>
+</attribute>
+
+<attribute>
+	<name>constrainToContainer</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>limit to parent container</description>
+</attribute>
+
+<attribute>
+	<name>taskBarId</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+	<description>The taskbar id</description>
+</attribute>
+
+<attribute>
+	<name>resizable</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>Window resizable</description>
+</attribute>
+
+<attribute>
+	<name>titleBarDisplay</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>Displays the title bar of the Window</description>
+</attribute>
+
+<attribute>
+	<name>windowState</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+	<description>Display state of the window</description>
+</attribute>
+
+<attribute>
+	<name>displayCloseAction</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>if true a close button is displayed</description>
+</attribute>
+
+<attribute>
+	<name>displayMinimizeAction</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>if true a minimize button is displayed</description>
+</attribute>
+
+<attribute>
+	<name>modal</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.Boolean</type>
+	<description>Description for the attribute</description>
+</attribute>
+
+
