@@ -200,6 +200,10 @@ public class MyFacesResourceLoader implements ResourceLoader
         Calendar expires = Calendar.getInstance();
         expires.add(Calendar.DAY_OF_YEAR, 7);
         response.setDateHeader("Expires", expires.getTimeInMillis());
+
+		//12 hours: 43200 = 60s * 60 * 12
+    	response.setHeader("Cache-Control", "max-age=43200");
+    	response.setHeader("Pragma", "");
     }
 
     /**
