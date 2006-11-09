@@ -60,6 +60,17 @@ public class HtmlTree extends UITreeData
         _showLines = Boolean.TRUE;
     }
 
+    /**
+     * @see org.apache.myfaces.custom.tree2.UITreeData#processNodes(javax.faces.context.FacesContext, int, org.apache.myfaces.custom.tree2.TreeWalker)
+     */
+    protected void processNodes(FacesContext context, int processAction, TreeWalker walker)
+    {
+        if (isClientSideToggle()) {
+            walker.setCheckState(false);
+        }
+        super.processNodes(context, processAction, walker);
+    }
+
     // see superclass for documentation
     public Object saveState(FacesContext context)
     {

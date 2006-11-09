@@ -174,7 +174,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         setNodeId(null);
         decode(context);
 
-        processNodes(context, PROCESS_DECODES);
+        processNodes(context, PROCESS_DECODES, getDataModel().getTreeWalker());
 
     }
 
@@ -184,7 +184,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        processNodes(context, PROCESS_VALIDATORS);
+        processNodes(context, PROCESS_VALIDATORS, getDataModel().getTreeWalker());
 
         setNodeId(null);
     }
@@ -196,7 +196,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         if (context == null) throw new NullPointerException("context");
         if (!isRendered()) return;
 
-        processNodes(context, PROCESS_UPDATES);
+        processNodes(context, PROCESS_UPDATES, getDataModel().getTreeWalker());
 
         setNodeId(null);
     }
@@ -512,10 +512,9 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
     }
 
 
-    protected void processNodes(FacesContext context, int processAction)
+    protected void processNodes(FacesContext context, int processAction, TreeWalker walker)
     {
         UIComponent facet = null;
-        TreeWalker walker = getDataModel().getTreeWalker();
         walker.reset();
         walker.setTree(this);
 
