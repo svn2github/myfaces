@@ -57,17 +57,72 @@ public class HtmlPanelTabbedPane
        if (context == null) throw new NullPointerException("context");
        decode(context);
 
-//       int tabIdx = 0;
-//       int selectedIndex = getSelectedIndex();
+       int tabIdx = 0;
+       int selectedIndex = getSelectedIndex();
 
        Iterator it = getFacetsAndChildren();
 
        while (it.hasNext())
        {
            UIComponent childOrFacet = getUIComponent((UIComponent) it.next());
-           childOrFacet.processDecodes(context);
+           if (childOrFacet instanceof HtmlPanelTab) {
+               if (isClientSide() || selectedIndex == tabIdx) {
+                   childOrFacet.processDecodes(context);
+               }
+               tabIdx++;
+           } else {
+               childOrFacet.processDecodes(context);
+           }
        }
    }
+
+    public void processValidators(FacesContext context)
+    {
+        if (context == null) throw new NullPointerException("context");
+        if (!isRendered()) return;
+
+        int tabIdx = 0;
+        int selectedIndex = getSelectedIndex();
+
+        Iterator it = getFacetsAndChildren();
+
+        while (it.hasNext())
+        {
+            UIComponent childOrFacet = getUIComponent((UIComponent) it.next());
+            if (childOrFacet instanceof HtmlPanelTab) {
+                if (isClientSide() || selectedIndex == tabIdx) {
+                    childOrFacet.processValidators(context);
+                }
+                tabIdx++;
+            } else {
+                childOrFacet.processValidators(context);
+            }
+        }
+    }
+
+    public void processUpdates(FacesContext context)
+    {
+        if (context == null) throw new NullPointerException("context");
+        if (!isRendered()) return;
+
+        int tabIdx = 0;
+        int selectedIndex = getSelectedIndex();
+
+        Iterator it = getFacetsAndChildren();
+
+        while (it.hasNext())
+        {
+            UIComponent childOrFacet = getUIComponent((UIComponent) it.next());
+            if (childOrFacet instanceof HtmlPanelTab) {
+                if (isClientSide() || selectedIndex == tabIdx) {
+                    childOrFacet.processUpdates(context);
+                }
+                tabIdx++;
+            } else {
+                childOrFacet.processUpdates(context);
+            }
+        }
+    }
 
     private UIComponent getUIComponent(UIComponent uiComponent)
     {
