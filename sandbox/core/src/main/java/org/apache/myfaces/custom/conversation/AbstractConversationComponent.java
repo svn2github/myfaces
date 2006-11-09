@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import javax.faces.component.UIComponentBase;
+import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -26,7 +26,7 @@ import javax.faces.el.ValueBinding;
  * base class for all the conversation components
  * @author imario@apache.org
  */
-public class AbstractConversationComponent extends UIComponentBase
+public class AbstractConversationComponent extends UICommand
 {
 	public static final String COMPONENT_FAMILY = "javax.faces.Component";
 
@@ -40,7 +40,7 @@ public class AbstractConversationComponent extends UIComponentBase
 	public void restoreState(FacesContext context, Object state)
 	{
 		Object[] states = (Object[]) state;
-		
+
 		super.restoreState(context, states[0]);
 		name = (String) states[1];
 	}
