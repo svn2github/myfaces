@@ -89,6 +89,11 @@ public class UIEnsureConversation extends AbstractConversationComponent
 			if (getAction() != null)
 			{
 				String actionResult = (String) getAction().invoke(context, null);
+				if (actionResult == null)
+				{
+					// no further action, maybe the user started a conversation
+					return;
+				}
 
 				// hopefully the user configured the navigation as redirect ...
 				context.getApplication().getNavigationHandler().handleNavigation(context, null, actionResult);
