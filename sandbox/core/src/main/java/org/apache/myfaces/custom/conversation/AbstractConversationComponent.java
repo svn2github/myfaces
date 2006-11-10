@@ -32,6 +32,11 @@ public class AbstractConversationComponent extends UICommand
 
 	private String name;
 
+	public AbstractConversationComponent()
+	{
+		setRendererType(null);
+	}
+
 	public String getFamily()
 	{
 		return COMPONENT_FAMILY;
