@@ -35,7 +35,7 @@ dojo.inherits(dojo.widget.html.ScrollableFisheyeList, dojo.widget.HtmlWidget);
 dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 	templateString: '<div class="dojoHtmlFisheyeListBar"></div>',
-	templateCssPath: dojo.uri.dojoUri("src/widget/templates/HtmlFisheyeList.css"),
+	templateCssPath: dojo.uri.dojoUri("src/widget/templates/FisheyeList.css"),
 	widgetType: "ScrollableFisheyeList",
 
 	EDGE: {
