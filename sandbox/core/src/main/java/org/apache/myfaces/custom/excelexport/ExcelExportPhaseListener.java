@@ -35,6 +35,7 @@ import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.myfaces.custom.util.ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -115,8 +116,8 @@ public class ExcelExportPhaseListener implements PhaseListener {
 		HSSFCell cell = rowHeader.createCell((short)index);
 		cell.setEncoding(HSSFCell.ENCODING_UTF_16);
 		if(component instanceof ValueHolder) {
-			ValueHolder valueHolder = (ValueHolder) component;
-			cell.setCellValue(valueHolder.getValue().toString());
+			String stringValue = RendererUtils.getStringValue(FacesContext.getCurrentInstance(), component);
+			cell.setCellValue(stringValue);
 		}
 	}
 	
