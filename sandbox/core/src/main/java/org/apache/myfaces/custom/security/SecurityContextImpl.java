@@ -24,14 +24,17 @@ import javax.faces.context.FacesContext;
  * 
  * @author cagatay
  */
-public class SecurityContextImpl implements SecurityContext{
+public class SecurityContextImpl extends SecurityContext{
 
 	public String getAuthType() {
 		return FacesContext.getCurrentInstance().getExternalContext().getAuthType();
 	}
-
+	
 	public String getRemoteUser() {
 		return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
 	}
 
+	public boolean ifGranted(String role) {
+		return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
+	}
 }

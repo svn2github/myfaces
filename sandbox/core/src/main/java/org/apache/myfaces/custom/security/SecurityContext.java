@@ -22,11 +22,82 @@ package org.apache.myfaces.custom.security;
  * 
  * @author cagatay
  */
-public interface SecurityContext {
+public abstract class SecurityContext {
 
-	public String getAuthType();
+	public final static int AUTH_MODE_NONE = -1;
+	public final static int AUTH_MODE_SINGLE = 0;
+	public final static int AUTH_MODE_ALL = 1;
+	public final static int AUTH_MODE_ANY = 2;
+	public final static int AUTH_MODE_NOT = 3;
 	
-	public String getRemoteUser();
+	private String[] roles;
+	private int authMode = AUTH_MODE_NONE;
 	
-	//TODO add more
+	public abstract String getAuthType();	
+	
+	public abstract String getRemoteUser();
+	
+	public abstract boolean ifGranted(String role);
+	
+	public boolean ifSingleGranted() {
+		return ifGranted(roles[0]);
+	}
+	
+	public boolean ifAllGranted() {
+		boolean isAuthorized = false;
+		for (int i = 0; i < roles.length; i++) {
+			String role = roles[i];
+			if(ifGranted(role)) {
+				isAuthorized = true;
+			} else {
+				isAuthorized = false;
+				break;
+			}
+		}
+		return isAuthorized;
+	}
+	
+	public boolean ifAnyGranted() {
+		boolean isAuthorized = false;
+		for (int i = 0; i < roles.length; i++) {
+			String role = roles[i];
+			if(ifGranted(role)) {
+				isAuthorized = true;
+				break;
+			}
+		}
+		return isAuthorized;
+	}
+	
+	public boolean ifNotGranted() {
+		boolean isAuthorized = false;
+		for (int i = 0; i < roles.length; i++) {
+			String role = roles[i];
+			if(ifGranted(role)) {
+				isAuthorized = false;
+				break;
+			} else {
+				isAuthorized = true;
+			}
+		}
+		return isAuthorized;
+	}
+	
+	public boolean inAuthMode() {
+		return authMode != AUTH_MODE_NONE;
+	}
+	
+	public int getAuthMode() {
+		return authMode;
+	}
+	public void setAuthMode(int authMode) {
+		this.authMode = authMode;
+	}
+
+	public String[] getRoles() {
+		return roles;
+	}
+	public void setRoles(String[] roles) {
+		this.roles = roles;
+	}
 }
