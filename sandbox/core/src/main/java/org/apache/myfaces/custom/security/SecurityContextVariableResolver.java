@@ -29,6 +29,7 @@ import javax.faces.el.VariableResolver;
 public class SecurityContextVariableResolver extends VariableResolver{
 
 	private static final String SECURITY_CONTEXT = "securityContext";
+	private static final String INIT_PARAM_SECURITY_CONTEXT = "org.apache.myfaces.SECURITY_CONTEXT";
 
 	private VariableResolver originalResolver;
 
@@ -38,10 +39,24 @@ public class SecurityContextVariableResolver extends VariableResolver{
 	
 	public Object resolveVariable(FacesContext facesContext, String name) throws EvaluationException {
 		if(SECURITY_CONTEXT.equals(name)) {
-			return new SecurityContextImpl();
+			return getSecurityContextImpl(facesContext);
 		}
 		else {
 			return originalResolver.resolveVariable(facesContext, name);
+		}
+	}
+	
+	private Object getSecurityContextImpl(FacesContext facesContext) {
+		String className = (String) facesContext.getExternalContext().getInitParameter(INIT_PARAM_SECURITY_CONTEXT);
+		
+		if(className == null)
+			return new SecurityContextImpl();		//return default implementation
+		
+		try {
+			Class clazz = Class.forName(className);
+			return clazz.newInstance();
+		}catch(Exception e) {
+			throw new EvaluationException(e);
 		}
 	}
 
