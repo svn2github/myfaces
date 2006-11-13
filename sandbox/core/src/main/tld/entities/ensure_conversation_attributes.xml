@@ -22,4 +22,4 @@
 		Delegate the check to the action method at all. The user has to check if a conversation
 		is running. A action method is mandatory.
 	</description>
-</attribute
+</attribute>
