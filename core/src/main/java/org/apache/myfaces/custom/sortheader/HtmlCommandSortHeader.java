@@ -49,8 +49,6 @@ public class HtmlCommandSortHeader
 
     public void broadcast(FacesEvent event) throws AbortProcessingException
     {
-        super.broadcast(event);
-
         if (event instanceof ActionEvent)
         {
             HtmlDataTable dataTable = findParentDataTable();
@@ -82,6 +80,7 @@ public class HtmlCommandSortHeader
                 }
             }
         }
+        super.broadcast(event);
     }       
 
     public HtmlDataTable findParentDataTable()
