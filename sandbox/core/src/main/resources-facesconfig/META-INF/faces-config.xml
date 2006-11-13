@@ -532,6 +532,8 @@
   <application>
     <variable-resolver>org.apache.myfaces.custom.redirectTracker.RedirectTrackerVariableResolver</variable-resolver>
 	<navigation-handler>org.apache.myfaces.custom.redirectTracker.RedirectTrackerNavigationHandler</navigation-handler>
+	<variable-resolver>org.apache.myfaces.custom.security.SecurityContextVariableResolver</variable-resolver>
+	<property-resolver>org.apache.myfaces.custom.security.SecurityContextPropertyResolver</property-resolver>
   </application>
 
   <!--custom validators -->
