@@ -14,3 +14,12 @@
 		the action which should be called in case of a not running conversation
 	</description>
 </attribute>
+<attribute>
+	<name>preCheck</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<description>
+		Delegate the check to the action method at all. The user has to check if a conversation
+		is running. A action method is mandatory.
+	</description>
+</attribute

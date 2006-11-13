@@ -29,6 +29,7 @@ public class EnsureConversationTag extends AbstractConversationTag
 {
 	private String redirectTo;
 	private String action;
+	private String preCheck;
 
 	public String getComponentType()
 	{
@@ -41,6 +42,7 @@ public class EnsureConversationTag extends AbstractConversationTag
 
 		setStringProperty(component, "redirectTo", getRedirectTo());
 		setActionProperty(component, getAction());
+		setBooleanProperty(component, "preCheck", getPreCheck());
     }
 
 	public String getRedirectTo()
@@ -61,5 +63,15 @@ public class EnsureConversationTag extends AbstractConversationTag
 	public void setAction(String action)
 	{
 		this.action = action;
+	}
+
+	public String getPreCheck()
+	{
+		return preCheck;
+	}
+
+	public void setPreCheck(String preCheck)
+	{
+		this.preCheck = preCheck;
 	}
 }

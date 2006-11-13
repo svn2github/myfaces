@@ -40,6 +40,7 @@ public class UIEnsureConversation extends AbstractConversationComponent
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.EnsureConversation";
 
 	private String redirectTo;
+	private Boolean preCheck;
 
 	public void encodeBegin(FacesContext context) throws IOException
 	{
@@ -68,6 +69,7 @@ public class UIEnsureConversation extends AbstractConversationComponent
 
 		super.restoreState(context, states[0]);
 		redirectTo = (String) states[1];
+		preCheck = (Boolean) states[2];
 	}
 
 	public Object saveState(FacesContext context)
@@ -75,14 +77,28 @@ public class UIEnsureConversation extends AbstractConversationComponent
 		return new Object[]
 			{
 				super.saveState(context),
-				redirectTo
+				redirectTo,
+				preCheck
 			};
 	}
 
 	protected void checkConversation(FacesContext context, String name) throws IOException
 	{
 		ConversationManager conversationManager = ConversationManager.getInstance();
-		if (!conversationManager.hasConversation(name))
+
+		if (Boolean.TRUE.equals(preCheck))
+		{
+			String actionResult = (String) getAction().invoke(context, null);
+			if (actionResult == null)
+			{
+				// no further action, maybe the user started a conversation
+				return;
+			}
+
+			conversationManager.getMessager().setConversationNotActive(context, getName());
+			return;
+		}
+		else if (!conversationManager.hasConversation(name))
 		{
 			if (getAction() != null)
 			{
@@ -100,7 +116,7 @@ public class UIEnsureConversation extends AbstractConversationComponent
 			else
 			{
 				conversationManager.getMessager().setConversationNotActive(context, getName());
-				
+
 				String actionUrl = context.getApplication().getViewHandler().getActionURL(
 							context, getRedirectTo());
 				String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
