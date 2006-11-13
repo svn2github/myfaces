@@ -84,8 +84,6 @@ public class UIEnsureConversation extends AbstractConversationComponent
 		ConversationManager conversationManager = ConversationManager.getInstance();
 		if (!conversationManager.hasConversation(name))
 		{
-			conversationManager.getMessager().setConversationNotActive(context, getName());
-
 			if (getAction() != null)
 			{
 				String actionResult = (String) getAction().invoke(context, null);
@@ -94,12 +92,15 @@ public class UIEnsureConversation extends AbstractConversationComponent
 					// no further action, maybe the user started a conversation
 					return;
 				}
+				conversationManager.getMessager().setConversationNotActive(context, getName());
 
 				// hopefully the user configured the navigation as redirect ...
 				context.getApplication().getNavigationHandler().handleNavigation(context, null, actionResult);
 			}
 			else
 			{
+				conversationManager.getMessager().setConversationNotActive(context, getName());
+				
 				String actionUrl = context.getApplication().getViewHandler().getActionURL(
 							context, getRedirectTo());
 				String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
