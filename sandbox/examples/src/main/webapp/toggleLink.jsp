@@ -25,32 +25,30 @@
 //-->
 <html>
 
-	<%@include file="inc/head.inc" %>
+<%@include file="inc/head.inc" %>
 
 <body>
 	<f:view>
 		<h:form>
-	              <h:outputText
-		            value="Allows toggling between View/Edit modes. Click on the link to enter a value. An entry less than 5 characters triggers validation error. When the page is re-displayed after a validation error, the component 'remembers' that it is in Edit mode. "/>
+			<h:outputText value="Allows toggling between View/Edit modes. Click on the link to enter a value. An entry less than 5 characters triggers validation error. When the page is re-displayed after a validation error, the component 'remembers' that it is in Edit mode. "/>
 
-                        <f:verbatim> <br/><br/> </f:verbatim>
+			<f:verbatim> <br/><br/> </f:verbatim>
 
-                        <s:toggleGroup>
+			<s:toggleGroup>
+				<s:toggleLink for="code">
+					<h:outputText value="#{toggleBean.testValue}"/>
+				</s:toggleLink>
 
-                        <t:inputText
-		            id="code"
-			    value="#{toggleBean.testValue}"
-		            required="true" style="font-color:red" 
-			    size="6">
-			        <f:validateLength minimum="5"/>
-			</t:inputText>
-			
-			<s:toggleLink for="code" value="#">
-				<h:outputText value="#{toggleBean.testValue}"/>
-			</s:toggleLink>
+				<t:inputText
+					id="code"
+					value="#{toggleBean.testValue}"
+					required="true"
+					style="font-color:red"
+					size="6">
+		        	<f:validateLength minimum="5"/>
+				</t:inputText>
+			</s:toggleGroup>
 
-                        </s:toggleGroup>
-                        
 			<t:messages showDetail="true"/>
 			<h:commandButton value="Update"/>
 		</h:form>

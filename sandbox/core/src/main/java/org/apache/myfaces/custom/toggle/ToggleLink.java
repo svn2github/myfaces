@@ -77,6 +77,7 @@ public class ToggleLink extends HtmlOutputLink
     {
         super();
         setRendererType(ToggleLink.DEFAULT_RENDERER_TYPE);
+        setValue( "#" );
     }
 
     public void processDecodes(FacesContext context)

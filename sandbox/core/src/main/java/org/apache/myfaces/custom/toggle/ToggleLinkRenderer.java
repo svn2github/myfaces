@@ -40,10 +40,10 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
-        
+
         if(((ToggleLink) component).isDisabled())
         	return;
-        	
+
         super.encodeEnd(context, component);
 
         // render the hidden input field
@@ -64,7 +64,7 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
-        
+
         ToggleLink toggleLink = (ToggleLink) component;
         if(toggleLink.isDisabled())
         	return;
