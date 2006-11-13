@@ -91,31 +91,43 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    var componentUpdates = data.getElementsByTagName("component");
 	    var componentUpdate = null;
 	    var domElement = null;
-	        for (var i = 0; i < componentUpdates.length; i++)
-	        {
-	            componentUpdate = componentUpdates[i];
-	            domElement = dojo.byId(componentUpdate.getAttribute("id"));
-                //todo - doesn't work with tables in IE
-                domElement.innerHTML = componentUpdate.firstChild.data;
-	        }
+		for (var i = 0; i < componentUpdates.length; i++)
+		{
+			componentUpdate = componentUpdates[i];
+			domElement = dojo.byId(componentUpdate.getAttribute("id"));
+			//todo - doesn't work with tables in IE
+			domElement.innerHTML = componentUpdate.firstChild.data;
+		}
 	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();
 
-	    var stateUpdate = dojo.dom.firstElement(data.getElementsByTagName("state")[0],'INPUT');
+		var stateElem = data.getElementsByTagName("state")[0];
+	    
+		if(stateElem)
+		{
+			var stateUpdate = dojo.dom.firstElement(stateElem,'INPUT');
+		
+			if(stateUpdate)
+			{
+				 var stateUpdateId = stateUpdate.getAttribute('id');
 
-        if(stateUpdate.getAttribute('id')!='javax.faces.ViewState')
-            alert("server didn't return appropriate element for state-update. returned element-id: "+
-                  stateUpdate.getAttribute('id')+", value : "+stateUpdate.getAttribute('value'));
-
-        var formArray = document.forms;
-
-        for(var i=0; i<formArray.length; i++)
-        {
-          var form = formArray[i];
-          var domElement = form.elements['javax.faces.ViewState'];
-          if(domElement)
-			domElement.value = stateUpdate.getAttribute('value');
-        }
+				 if(stateUpdateId =='javax.faces.ViewState')
+				 {
+					var formArray = document.forms;
+			
+					for(var i=0; i<formArray.length; i++)
+					{
+					  var form = formArray[i];
+					  var domElement = form.elements['javax.faces.ViewState'];
+					  if(domElement)
+						domElement.value = stateUpdate.getAttribute('value');
+					}
+				}
+				else if (stateUpdateId !='jsf_tree')
+					alert("server didn't return appropriate element for state-update. returned element-id: "+
+						  stateUpdate.getAttribute('id')+", value : "+stateUpdate.getAttribute('value'));
+			}
+		}
     }
     else
     {
