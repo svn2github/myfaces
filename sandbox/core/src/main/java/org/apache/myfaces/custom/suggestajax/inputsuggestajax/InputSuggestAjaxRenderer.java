@@ -53,7 +53,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
      *
      * @param context FacesContext
      * @param component UIComponent
-     * @throws java.io.IOException
+     * @throws java.io.IOException if base-transport layer was not available
      */
     private void encodeJavascript(FacesContext context, UIComponent component)
                                                                         throws IOException
@@ -255,9 +255,9 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
                 Object item = suggestedItem.next();
 
-                String prefix = escapeQuotes(UnicodeEncoder.encode(item.toString()).substring(0, 1)).toUpperCase();
+                String prefix = escapeQuotes(encodeSuggestString(item.toString()).substring(0, 1)).toUpperCase();
 
-                buf.append("[\"").append(UnicodeEncoder.encode(escapeQuotes(item.toString()))).append("\",\"")
+                buf.append("[\"").append(encodeSuggestString(escapeQuotes(item.toString()))).append("\",\"")
                    .append(prefix).append("\"],");
             }
         }
@@ -265,6 +265,12 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         buf.append("]");
 
         context.getResponseWriter().write(buf.toString());
+    }
+
+    protected String encodeSuggestString(String str)
+    {
+        //If you want UTF-8 and we don't do it, you can enable it here with UnicodeEncoder.encode()
+        return str;
     }
 
     public void decode(FacesContext facesContext, UIComponent component)
