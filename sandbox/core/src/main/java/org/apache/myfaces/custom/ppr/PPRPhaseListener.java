@@ -72,14 +72,15 @@ public class PPRPhaseListener implements PhaseListener
 				(ServletRequest) context.getExternalContext().getRequest();
 
 			UIViewRoot viewRoot = context.getViewRoot();
-            response.setContentType("text/xml;charset=" + request.getCharacterEncoding());
+            String contentType = getContentType("text/xml",request.getCharacterEncoding());
+            response.setContentType(contentType);
 			response.setLocale(viewRoot.getLocale());
 			String triggeredComponents = (String) externalRequestMap.get(TRIGGERED_COMPONENTS_PARAMETER);
 			try
 			{
 				PrintWriter out = response.getWriter();
 				context.setResponseWriter(new HtmlResponseWriterImpl(out,
-					null,
+					contentType,
 					request.getCharacterEncoding()));
 				out.print(XML_HEADER);
 				out.print("<response>\n");
@@ -96,7 +97,15 @@ public class PPRPhaseListener implements PhaseListener
 		}                                          
 	}
 
-	private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot, FacesContext context)
+    private String getContentType(String contentType, String charset)
+    {
+        if (charset == null || charset.trim().length() == 0)
+            return contentType;
+        else
+            return contentType + ";charset=" + charset;
+    }
+
+    private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot, FacesContext context)
 	{
 		StringTokenizer st = new StringTokenizer(triggeredComponents, ",", false);
 		String clientId;

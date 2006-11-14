@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 
@@ -83,8 +84,6 @@ public class DefaultAddResource implements AddResource
     private static final String PATH_SEPARATOR = "/";
 
     protected static final Log log = LogFactory.getLog(DefaultAddResource.class);
-
-    private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
     private static final String RESOURCES_CACHE_KEY = AddResource.class.getName() + ".CACHE_KEY";
 
@@ -172,7 +171,7 @@ public class DefaultAddResource implements AddResource
     /**
      * Insert a [script src="url"] entry at the current location in the response.
      *
-     * @param context
+     * @param context The current faces-context
      * @param resourceHandler is an object which specifies exactly how to build the url
      *                        that is emitted into the script tag. Code which needs to generate URLs in ways
      *                        that this class does not support by default can implement a custom ResourceHandler.
@@ -209,7 +208,7 @@ public class DefaultAddResource implements AddResource
      * Class object whose instances implements the ResourceLoader
      * interface.
      *
-     * @param resourceHandler
+     * @param resourceHandler handler to check
      */
     protected void validateResourceHandler(ResourceHandler resourceHandler)
     {
@@ -224,7 +223,7 @@ public class DefaultAddResource implements AddResource
      * Given a Class object, verify that the instances of that class
      * implement the ResourceLoader interface.
      *
-     * @param resourceloader
+     * @param resourceloader loader to check
      */
     protected void validateResourceLoader(Class resourceloader)
     {
@@ -463,6 +462,11 @@ public class DefaultAddResource implements AddResource
 
     /**
      * Get the Path used to retrieve an resource.
+     * @param context current faces-context
+     * @param resourceLoader resourceLoader
+     * @param withContextPath use the context-path of the web-app when accessing the resources
+     *
+     * @return the URI of the resource
      */
     protected String getResourceUri(FacesContext context, Class resourceLoader,
                                     boolean withContextPath)
@@ -507,6 +511,10 @@ public class DefaultAddResource implements AddResource
      * data cached by browsers will become invalid after a webapp deploy (all
      * the urls to the resources change). It also means that changes that occur
      * to a resource <i>without</i> a webapp redeploy will not be seen by browsers.
+     *
+     * @param context the current faces-context
+     *
+     * @return the key for caching
      */
     protected long getCacheKey(FacesContext context)
     {
@@ -757,8 +765,8 @@ public class DefaultAddResource implements AddResource
             }
         }
 
-        ResponseWriter writer = new org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl(response.getWriter(), org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils
-                .selectContentType(request.getHeader("accept")),
+        ResponseWriter writer = new HtmlResponseWriterImpl(response.getWriter(),
+                HtmlRendererUtils.selectContentType(request.getHeader("accept")),
                 response.getCharacterEncoding());
 
         if (afterBodyContentInsertPosition >= 0)
@@ -844,7 +852,7 @@ public class DefaultAddResource implements AddResource
     public void writeResponse(HttpServletRequest request,
                               HttpServletResponse response) throws IOException
     {
-        ResponseWriter writer = new HtmlResponseWriterImpl(response.getWriter(), org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils
+        ResponseWriter writer = new HtmlResponseWriterImpl(response.getWriter(), HtmlRendererUtils
                 .selectContentType(request.getHeader("accept")),
                 response.getCharacterEncoding());
         writer.write(originalResponse.toString());

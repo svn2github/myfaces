@@ -202,11 +202,11 @@ public class AjaxDecodePhaseListener
             {
                 if (context.getResponseWriter() == null)
                 {
-                    response.setContentType(getContentType("text/html", charset));
+                    String contentType = getContentType("text/html", charset);
+                    response.setContentType(contentType);
                     PrintWriter writer = response.getWriter();
                     context.setResponseWriter(new HtmlResponseWriterImpl(writer,
-                                              null,
-                                              request.getCharacterEncoding()));
+                                              contentType, response.getCharacterEncoding()));
                 }
 
                 ((AjaxComponent) component).encodeAjax(context);
@@ -220,7 +220,8 @@ public class AjaxDecodePhaseListener
         {
             try
             {
-                response.setContentType(getContentType("text/xml", charset));
+                String contentType = getContentType("text/xml", charset);
+                response.setContentType(contentType);
 
                 StringBuffer buff = new StringBuffer();
                 buff.append("<?xml version=\"1.0\"?>\n");
@@ -231,7 +232,7 @@ public class AjaxDecodePhaseListener
 
                 // imario@apache.org: setup response writer, otherwise the component will fail with an NPE. I dont know why this worked before.
                 context.setResponseWriter(new HtmlResponseWriterImpl(out,
-                                          null,
+                                          contentType,
                                           request.getCharacterEncoding()));
 
                 if (component instanceof HtmlCommandButtonAjax)

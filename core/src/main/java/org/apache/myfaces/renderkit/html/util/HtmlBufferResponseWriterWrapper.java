@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.renderkit.html.util;
 
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
+
 import javax.faces.context.ResponseWriter;
 import java.io.*;
 
@@ -26,8 +28,7 @@ import java.io.*;
  * @author Sylvain Vieujot (latest modification by $Author: grantsmith $)
  * @version $Revision: 169649 $ $Date: 2005-05-11 17:47:12 +0200 (Wed, 11 May 2005) $
  */
-public class HtmlBufferResponseWriterWrapper extends org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl
-{
+public class HtmlBufferResponseWriterWrapper extends HtmlResponseWriterImpl {
 
     /**
      * Buffer writer to write content to and buffer it.
