@@ -20,6 +20,8 @@
 package org.apache.myfaces.custom.toggle;
 
 import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * Container class allows user to toggle between view/edit mode.
@@ -32,9 +34,36 @@ public class HtmlToggleGroup extends HtmlPanelGroup
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlToggleGroup";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlToggleGroup";
 
+    public static final boolean DEFAULT_TOGGLED = false;
+
+    private Boolean _toggled = null;
+    
     public HtmlToggleGroup()
     {
         super();
         setRendererType(HtmlToggleGroup.DEFAULT_RENDERER_TYPE);
+    }
+
+    public boolean isToggled()
+    {
+        if (_toggled != null) return _toggled.booleanValue();
+        ValueBinding vb = getValueBinding("toggled");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_TOGGLED;
+    }
+
+    public Object saveState(FacesContext context)
+    {
+        Object[] values = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = _toggled;
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        _toggled =  (Boolean)values[2];
     }
 }

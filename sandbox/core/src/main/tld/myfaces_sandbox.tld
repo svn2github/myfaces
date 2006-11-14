@@ -645,18 +645,31 @@ Sandbox-related entities.
 		</attribute>
     </tag>
 
-        <!-- htmlToggleGroup -->
-        <tag>
-            <name>toggleGroup</name>
-            <tag-class>org.apache.myfaces.custom.toggle.HtmlToggleGroupTag</tag-class>
-            <body-content>JSP</body-content>
-            <description>
-                Extends PanelGroup. Allows user to toggle between 'view' mode and 'edit' mode
-            </description>
-            &standard_panel_group_attributes;
-        </tag>
+    <!-- toggleGroup -->
+    <tag>
+        <name>toggleGroup</name>
+        <tag-class>org.apache.myfaces.custom.toggle.HtmlToggleGroupTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends PanelGroup. Allows user to toggle between 'view' mode and 'edit' mode.
+            In the toggleGroup, include a toggleLink.
+            When the toggleLink is clicked, the rest of the group is shown, and the link is hidden.
+        </description>
+        &standard_panel_group_attributes;
 
-        <!-- toggleLink -->
+		<attribute>
+			<name>toggled</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				You can set toggled to true to force the toggleGroup to always be in toggle mode.
+				Default is false.
+			</description>
+		</attribute>
+    </tag>
+
+    <!-- toggleLink -->
 	<tag>
 		<name>toggleLink</name>
 		<tag-class>org.apache.myfaces.custom.toggle.ToggleLinkTag</tag-class>

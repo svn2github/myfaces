@@ -33,18 +33,16 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
 
 public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase {
 
-    private static final String DISPLAY_NONE_STYLE = ";display:none;";
-
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, HtmlToggleGroup.class);
-        boolean editMode = checkEditMode(component.getChildren());
-        toggleVisibility(component.getChildren(), editMode);
-        super.encodeEnd(context, component);
+        HtmlToggleGroup toggleGroup = (HtmlToggleGroup) component;
+        boolean editMode = toggleGroup.isToggled() || checkEditMode(toggleGroup.getChildren());
+        toggleVisibility(toggleGroup.getChildren(), editMode);
+        super.encodeEnd(context, toggleGroup);
     }
 
     private void toggleVisibility(List children, boolean editMode) {
-        Iterator it = children.iterator();
-        while (it.hasNext()) {
+        for(Iterator it = children.iterator(); it.hasNext(); ) {
             UIComponent component = (UIComponent) it.next();
 
             if (editMode)
@@ -166,16 +164,20 @@ public class HtmlToggleGroupRenderer extends HtmlGroupRendererBase {
 
     // gets the edit mode from the child 'toggleLink' component
     private boolean checkEditMode(List children) {
-        Iterator it = children.iterator();
-        while (it.hasNext()) {
+    	boolean toggleLinkFound = false;
+
+        for(Iterator it = children.iterator(); it.hasNext(); ) {
             UIComponent component = (UIComponent) it.next();
-            if (component instanceof ToggleLink) {
-                System.out.println("edit mode is " + ((ToggleLink) component).getEditMode());
-                return ((ToggleLink) component).getEditMode();
+            if (component instanceof ToggleLink ) {
+            	toggleLinkFound = true;
+                if( ((ToggleLink) component).getEditMode() )
+                	return true;
             }
         }
-        Log log = getLog();
-        log.error("Could not find child ToggleLink component for HtmlToggleGroup");
+
+        if( ! toggleLinkFound )
+        	getLog().error("Could not find child ToggleLink component for HtmlToggleGroup");
+
         return false;
 
     }
