@@ -29,19 +29,19 @@ import javax.faces.el.ValueBinding;
  * @author Sharath
  * 
  */
-public class HtmlToggleGroup extends HtmlPanelGroup
+public class TogglePanel extends HtmlPanelGroup
 {
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlToggleGroup";
-    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlToggleGroup";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.TogglePanel";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.TogglePanel";
 
     public static final boolean DEFAULT_TOGGLED = false;
 
     private Boolean _toggled = null;
-    
-    public HtmlToggleGroup()
+
+    public TogglePanel()
     {
         super();
-        setRendererType(HtmlToggleGroup.DEFAULT_RENDERER_TYPE);
+        setRendererType(TogglePanel.DEFAULT_RENDERER_TYPE);
     }
 
     public boolean isToggled()
@@ -50,6 +50,10 @@ public class HtmlToggleGroup extends HtmlPanelGroup
         ValueBinding vb = getValueBinding("toggled");
         Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
         return v != null ? v.booleanValue() : DEFAULT_TOGGLED;
+    }
+    public void setToggled(boolean toggleMode)
+    {
+    	_toggled = Boolean.valueOf( toggleMode );  
     }
 
     public Object saveState(FacesContext context)
@@ -64,6 +68,24 @@ public class HtmlToggleGroup extends HtmlPanelGroup
     {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _toggled =  (Boolean)values[2];
+        _toggled =  (Boolean)values[1];
+    }
+    
+    public void processDecodes(FacesContext context)
+    {
+        super.processDecodes(context);
+
+        String hiddenFieldId = this.getClientId(context) + "_hidden";
+        String toggleMode = (String) context.getExternalContext().getRequestParameterMap().get(hiddenFieldId);
+
+        if (toggleMode != null && toggleMode.trim().equals("1")) {
+            this.setToggled(true);
+        }
+    }
+
+    public void processUpdates(FacesContext context)
+    {
+        super.processUpdates(context);
+        this.setToggled(false);
     }
 }

@@ -645,14 +645,14 @@ Sandbox-related entities.
 		</attribute>
     </tag>
 
-    <!-- toggleGroup -->
+    <!-- togglePanel -->
     <tag>
-        <name>toggleGroup</name>
-        <tag-class>org.apache.myfaces.custom.toggle.HtmlToggleGroupTag</tag-class>
+        <name>togglePanel</name>
+        <tag-class>org.apache.myfaces.custom.toggle.TogglePanelTag</tag-class>
         <body-content>JSP</body-content>
         <description>
             Extends PanelGroup. Allows user to toggle between 'view' mode and 'edit' mode.
-            In the toggleGroup, include a toggleLink.
+            In the togglePanel, include a toggleLink.
             When the toggleLink is clicked, the rest of the group is shown, and the link is hidden.
         </description>
         &standard_panel_group_attributes;
@@ -667,6 +667,18 @@ Sandbox-related entities.
 				Default is false.
 			</description>
 		</attribute>
+    </tag>
+
+    <!-- toggleGroup -->
+    <tag>
+        <name>toggleGroup</name>
+        <tag-class>org.apache.myfaces.custom.toggle.ToggleGroupTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Extends PanelGroup. Allows user to have several toggleLink in a group.
+            When the togglePanel is toggled, the toggleGroup will be hidden.
+        </description>
+        &standard_panel_group_attributes;
     </tag>
 
     <!-- toggleLink -->

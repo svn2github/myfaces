@@ -36,19 +36,8 @@ public class ToggleLink extends HtmlOutputLink
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.ToggleLink";
     private static final boolean DEFAULT_DISABLED = false;
 
-    private boolean _editMode = false;
     private String _for = null;
     private Boolean _disabled = null;
-
-    public void setEditMode(boolean val)
-    {
-        _editMode = val;
-    }
-
-    public boolean getEditMode()
-    {
-        return _editMode;
-    }
 
     public void setFor(String value)
     {
@@ -78,26 +67,6 @@ public class ToggleLink extends HtmlOutputLink
         super();
         setRendererType(ToggleLink.DEFAULT_RENDERER_TYPE);
         setValue( "#" );
-    }
-
-    public void processDecodes(FacesContext context)
-    {
-        super.processDecodes(context);
-
-        String hiddenFieldId = this.getClientId(context) + "_hidden";
-        String editMode = (String) context.getExternalContext().getRequestParameterMap().get(hiddenFieldId);
-
-        if (editMode != null && editMode.trim().equals("true")) {
-
-            this.setEditMode(true);
-        }
-
-    }
-
-    public void processUpdates(FacesContext context)
-    {
-        super.processUpdates(context);
-        this.setEditMode(false);
     }
 
     public Object saveState(FacesContext context)

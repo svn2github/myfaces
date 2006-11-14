@@ -34,7 +34,7 @@
 
 			<f:verbatim> <br/><br/> </f:verbatim>
 
-			<s:toggleGroup>
+			<s:togglePanel>
 				<s:toggleLink for="code">
 					<h:outputText value="#{toggleBean.testValue}"/>
 				</s:toggleLink>
@@ -47,10 +47,31 @@
 					size="6">
 		        	<f:validateLength minimum="5"/>
 				</t:inputText>
-			</s:toggleGroup>
-
+			</s:togglePanel>
 			<t:messages showDetail="true"/>
 			<h:commandButton value="Update"/>
+			
+			<f:verbatim> <br/><hr/><br/> </f:verbatim>
+
+			<s:togglePanel>
+				<s:toggleGroup>
+					<h:outputLabel for="fullName" value="Full Name (click to edit) "/>
+					<s:toggleLink for="editNames">
+						<h:outputText id="fullName" value="#{toggleBean.firstName} #{toggleBean.lastName}"/>
+					</s:toggleLink>
+				</s:toggleGroup>
+
+				<t:div id="editNames">
+					<h:outputLabel for="firstName" value="First Name"/>
+					<t:inputText id="firstName"	value="#{toggleBean.firstName}"/>
+
+					<h:outputLabel for="lastName" value="Last Name"/>
+					<t:inputText id="lastName"	value="#{toggleBean.lastName}"/>
+
+					<h:commandButton value="Update"/>	
+				</t:div>
+			</s:togglePanel>
+
 		</h:form>
 	</f:view>
 </body>

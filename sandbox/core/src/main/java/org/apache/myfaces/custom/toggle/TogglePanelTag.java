@@ -17,40 +17,38 @@
  * under the License.
  */
 
-package org.apache.myfaces.examples.toggle;
+package org.apache.myfaces.custom.toggle;
 
-import java.io.Serializable;
+import javax.faces.component.UIComponent;
 
-public class ToggleBean implements Serializable
-{
-	private String testValue = "default";
-	
-	private String firstName = "firstName";
-	private String lastName = "lastName";
-	
-	public String getTestValue()
-	{
-		return testValue;
-	}
-	
-	public void setTestValue(String val)
-	{
-		testValue = val;
-	}
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
 
-	public String getFirstName() {
-		return firstName;
-	}
+public class TogglePanelTag extends HtmlPanelGroupTagBase {
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+	private String _toggled;
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getComponentType() {
+        return TogglePanel.COMPONENT_TYPE;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getRendererType() {
+        return TogglePanel.DEFAULT_RENDERER_TYPE;
+    }
+
+    public void release()
+    {
+        super.release();
+        _toggled=null;
+    }
+
+    protected void setProperties(UIComponent component)
+    {
+        super.setProperties(component);
+        setBooleanProperty(component, "toggled", _toggled);
+    }
+
+    public void setToggled(String value)
+    {
+        this._toggled = value;
+    }
 }

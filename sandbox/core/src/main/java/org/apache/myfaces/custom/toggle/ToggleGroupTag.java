@@ -23,32 +23,13 @@ import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
 
-public class HtmlToggleGroupTag extends HtmlPanelGroupTagBase {
-
-	private String _toggled;
+public class ToggleGroupTag extends HtmlPanelGroupTagBase {
 
     public String getComponentType() {
-        return HtmlToggleGroup.COMPONENT_TYPE;
+        return ToggleGroup.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return HtmlToggleGroup.DEFAULT_RENDERER_TYPE;
-    }
-
-    public void release()
-    {
-        super.release();
-        _toggled=null;
-    }
-
-    protected void setProperties(UIComponent component)
-    {
-        super.setProperties(component);
-        setBooleanProperty(component, "toggled", _toggled);
-    }
-
-    public void setToggled(String value)
-    {
-        this._toggled = value;
+        return ToggleGroup.DEFAULT_RENDERER_TYPE;
     }
 }

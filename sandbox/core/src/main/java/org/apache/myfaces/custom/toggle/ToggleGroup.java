@@ -17,40 +17,25 @@
  * under the License.
  */
 
-package org.apache.myfaces.examples.toggle;
+package org.apache.myfaces.custom.toggle;
 
-import java.io.Serializable;
+import javax.faces.component.html.HtmlPanelGroup;
 
-public class ToggleBean implements Serializable
+/**
+ * Container class allows user to toggle between view/edit mode.
+ * 
+ * @author Sharath
+ * 
+ */
+public class ToggleGroup extends HtmlPanelGroup
 {
-	private String testValue = "default";
-	
-	private String firstName = "firstName";
-	private String lastName = "lastName";
-	
-	public String getTestValue()
-	{
-		return testValue;
-	}
-	
-	public void setTestValue(String val)
-	{
-		testValue = val;
-	}
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.ToggleGroup";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.ToggleGroup";
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public ToggleGroup()
+    {
+        super();
+        setRendererType(ToggleGroup.DEFAULT_RENDERER_TYPE);
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 }
