@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * A ResourceLoader capable of fetching resources from the classpath,
@@ -139,8 +141,11 @@ public class MyFacesResourceLoader implements ResourceLoader
 
         try
         {
-            is = componentClass.getResourceAsStream(resource);
-            if (is == null)
+			// is = componentClass.getResourceAsStream(resource);
+			//if (is == null)
+
+			URL url = componentClass.getResource(resource);
+			if (url == null)
             {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to find resource "
                         + resource + " for component " + component
@@ -152,7 +157,12 @@ public class MyFacesResourceLoader implements ResourceLoader
             }
             else
             {
-                defineContentHeaders(request, response, resource);
+				URLConnection con = url.openConnection();
+				int contentLength = con.getContentLength();
+
+				is = con.getInputStream();
+
+				defineContentHeaders(request, response, resource, contentLength);
                 defineCaching(request, response, resource);
                 writeResource(request, response, is);
             }
@@ -164,7 +174,7 @@ public class MyFacesResourceLoader implements ResourceLoader
         }
     }
 
-    /**
+	/**
      * Copy the content of the specified input stream to the servlet response.
      */
     protected void writeResource(HttpServletRequest request, HttpServletResponse response,
@@ -213,9 +223,14 @@ public class MyFacesResourceLoader implements ResourceLoader
      * The mime-type output is determined by the resource filename suffix.
      */
     protected void defineContentHeaders(HttpServletRequest request, HttpServletResponse response,
-            String resource)
+										String resource, int contentLength)
     {
-        if (resource.endsWith(".js"))
+		if (contentLength > -1)
+		{
+			response.setContentLength(contentLength);
+		}
+		
+		if (resource.endsWith(".js"))
             response.setContentType(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
         else if (resource.endsWith(".css"))
             response.setContentType(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.STYLE_TYPE_TEXT_CSS);
