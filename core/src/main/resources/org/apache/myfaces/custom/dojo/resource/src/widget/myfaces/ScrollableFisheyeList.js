@@ -11,6 +11,7 @@
 dojo.provide("dojo.widget.myfaces.ScrollableFisheyeList");
 dojo.provide("dojo.widget.html.myfaces.ScrollableFisheyeList");
 dojo.provide("dojo.widget.html.myfaces.ScrollableFisheyeListItem");
+dojo.provide("dojo.widget.myfaces.ScrollableFisheyeListItem");
 
 //
 // TODO
@@ -74,14 +75,12 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 	attachEdge: 'center',
 	labelEdge: 'bottom',
-	
-	leftButton: null,
 
 	enableCrappySvgSupport: false,
 
 	maxNoDisplayItems:10000, //all items
 	scrollerBegin: 0, //first item beginning item
-	visibleWindow:100,
+	visibleWindow:5,
 
 	persist: true,		// save splitter positions in a cookie
 	
@@ -91,7 +90,6 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 	/////////////////////////////////////////////////////////////////
 
 	fillInTemplate: function(args, frag) {
-	
 		//dojo.debug(this.orientation);
 
 		dojo.html.disableSelection(this.domNode);
@@ -151,43 +149,32 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 			this.proximityTop    /= 2;
 			this.proximityBottom /= 2;
 		}
-		
-	
-		
-	},
-	
-	programmaticDone: function(args, frag) {
-		if(this.persist){
-			this.restoreState();
-		}
-
-		if(this.visibleWindow > this.children.length)
-			this.visibleWindow = this.children.length;
-		if(this.scrollerBegin > this.children.length)
-			this.scrollerBegin = this.children.length - this.visibleWindow;
 	},
 	
 	postCreate: function(args, frag) {
-
-		if((args != null) && (args[0] != null) && (args[0] == "programmaticdone")) {
-			this.programmaticDone(args, frag);
-		
-		
-			this.initializePositioning();
-	
-			//
-			// in liberal trigger mode, activate menu whenever mouse is close
-			//
-			if( !this.conservativeTrigger ){
-				dojo.event.connect(document.documentElement, "onmousemove", this, "mouseHandler");
+		if(args && args[0] == 'programmaticdone') {
+			if(this.persist){
+				this.restoreState();
 			}
-			
-			// Deactivate the menu if mouse is moved off screen (doesn't work for FF?)
-			dojo.event.connect(document.documentElement, "onmouseout", this, "onBodyOut");
-			dojo.event.connect(this, "addChild", this, "initializePositioning");
-			//dojo.event.connect(this, "removeChild", this, "initializePositioning");
-	
+			if(this.visibleWindow > this.children.length) {
+				this.visibleWindow = this.children.length;
+			}
+			if(this.scrollerBegin > this.children.length) {
+				this.scrollerBegin = this.children.length - this.visibleWindow;
+			}	
 		}
+		this.initializePositioning();
+
+		//
+		// in liberal trigger mode, activate menu whenever mouse is close
+		//
+		if( !this.conservativeTrigger ){
+			dojo.event.connect(document.documentElement, "onmousemove", this, "mouseHandler");
+		}
+		
+		// Deactivate the menu if mouse is moved off screen (doesn't work for FF?)
+		dojo.event.connect(document.documentElement, "onmouseout", this, "onBodyOut");
+		dojo.event.connect(this, "addChild", this, "initializePositioning");
 	
 	},
 
@@ -233,20 +220,17 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		//
 		// calculate effect ranges for each item
 		//
-		for(var i=0; i<(this.scrollerBegin); i++) {
+		for(var i=0; i<(this.scrollerBegin); i+=1) {
 			this.children[i].posX = 1000;
 			this.children[i].posY = 1000;
 		}
 
-		for(var i=scrollerEnd; i<(this.children.length); i++) {
+		for(var i=scrollerEnd; i<(this.children.length); i+=1) {
 			this.children[i].posX = 1000;
 			this.children[i].posY = 1000;
 		}
 
-		
-
-		for (var i=this.scrollerBegin; i<scrollerEnd; i++){
-
+		for (var i=this.scrollerBegin; i<scrollerEnd; i+=1){
 
 			this.children[i].posX = this.itemWidth  * (this.isHorizontal ? (i - this.scrollerBegin) : 0);
 			this.children[i].posY = this.itemHeight * (this.isHorizontal ? 0 : i);
@@ -287,7 +271,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		//
 		// position the items
 		//
-		for(var i=0; i<this.scrollerBegin; i++) {
+		for(var i=0; i<this.scrollerBegin; i+=1) {
 			var itm = this.children[i];
 			var elm = itm.domNode;
 			//elm.style.left   = 8000 + 'px';
@@ -295,7 +279,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 			elm.style.visibility = "hidden";
 		}
 
-		for(var i=scrollerEnd; i<(this.children.length); i++) {
+		for(var i=scrollerEnd; i<(this.children.length); i+=1) {
 			var itm = this.children[i];
 			var elm = itm.domNode;
 			//elm.style.left   = 8000 + 'px';
@@ -304,7 +288,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		}
 
 		
-		for (var i=this.scrollerBegin; i<scrollerEnd; i++){
+		for (var i=this.scrollerBegin; i<scrollerEnd; i+=1){
 			var itm = this.children[i];
 			var elm = itm.domNode;
 			elm.style.left   = itm.posX  + 'px';
@@ -316,7 +300,6 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 				itm.svgNode.style.position = 'absolute';
 				itm.svgNode.style.left = this.itemPadding+'%';
 				itm.svgNode.style.top = this.itemPadding+'%';
-				//dojo.debug("nodesvg:"+itm.svgNode.style.left);
 				itm.svgNode.style.width = (100 - 2 * this.itemPadding) + '%';
 				itm.svgNode.style.height = (100 - 2 * this.itemPadding) + '%';
 				itm.svgNode.style.zIndex = 1;
@@ -325,13 +308,10 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 			} else {
 				itm.imgNode.style.left = this.itemPadding+'%';
 				itm.imgNode.style.top = this.itemPadding+'%';
-				//dojo.debug("nodenon:"+itm.imgNode.style.left);
 				itm.imgNode.style.width = (100 - 2 * this.itemPadding) + '%';
 				itm.imgNode.style.height = (100 - 2 * this.itemPadding) + '%';
 			}
 		}
-
-
 
 		//
 		// calc the grid
@@ -342,7 +322,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 	onBodyOut: function(e){
 		// clicking over an object inside of body causes this event to fire; ignore that case
-		if( dojo.html.overElement(document.body, e) ){
+		if( dojo.html.overElement(dojo.body(), e) ){
 			return;
 		}
 		this.setDormant(e);
@@ -424,10 +404,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 			(1.0-this.timerScale)*this.itemWidth + this.timerScale*this.itemMaxWidth :
 			(1.0-this.timerScale)*this.itemHeight + this.timerScale*this.itemMaxHeight ;
 
-         
 		var cen = ((pos - prx) / siz) - 0.5 + this.scrollerBegin;
-		
-		
 		var max_off_cen = (sim / siz) - 0.5;
 
 		if (max_off_cen > this.effectUnits){ max_off_cen = this.effectUnits; }
@@ -475,7 +452,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		// set the sizes
 		//
 
-		for(var i=this.scrollerBegin; i<scrollerEnd; i++){
+		for(var i=this.scrollerBegin; i<scrollerEnd; i+=1){
 
 			var weight = this.weightAt(cen, i);
 
@@ -529,12 +506,14 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		this.setitemsize(p, w);
 
 		var wx = w;
-		for(var i=p; i<this.itemCount; i++){
+		
+		for(var i=p; i<this.itemCount; i+=1){
 			wx = 0.8 * wx;
 			this.setitemsize(i, wx);
 		}
 
 		var wx = w;
+		
 		for(var i=p; i>=0; i--){
 			wx = 0.8 * wx;
 			this.setitemsize(i, wx);
@@ -545,7 +524,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		scale *= this.timerScale;
 		var w = Math.round(this.itemWidth  + ((this.itemMaxWidth  - this.itemWidth ) * scale));
 		var h = Math.round(this.itemHeight + ((this.itemMaxHeight - this.itemHeight) * scale));
-
+		
 		if (this.isHorizontal){
 
 			this.children[p].sizeW = w;
@@ -605,7 +584,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 		this.children[p].domNode.style.width  = w + 'px';
 		this.children[p].domNode.style.height = h + 'px';
-
+		
 		if (this.children[p].svgNode){
 			this.children[p].svgNode.setSize(w, h);
 		}
@@ -614,7 +593,6 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 	positionElementsFrom: function(p, offset){
 		var pos = 0;
 		var scrollerEnd = this.calcScrollerEnd();;
-		//if(p > this.children.length) p = this.children.length;
 
 	
 		if (this.isHorizontal){
@@ -633,7 +611,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 		var bpos = pos;
 
-		for(var y=p-1; y>=this.scrollerBegin; y--){
+		for(var y=p-1; y>=this.scrollerBegin; y-=1){
 
 			bpos -= this.children[y].sizeMain;
 
@@ -651,7 +629,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 		var apos = pos;
 
-		for(var i=p+1; i< scrollerEnd;  i++){
+		for(var i=p+1; i< scrollerEnd;  i+=1){
 
 			apos += this.children[i-1].sizeMain;
 
@@ -670,27 +648,26 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		var x = 0;
 		var y = 0;
 		
-		var labelW = dojo.style.getOuterWidth(itm.lblNode);
-		var labelH = dojo.style.getOuterHeight(itm.lblNode);
+		var mb = dojo.html.getMarginBox(itm.lblNode);
 
 		if (this.labelEdge == this.EDGE.TOP){
-			x = Math.round((itm.sizeW / 2) - (labelW / 2));
-			y = -labelH;
+			x = Math.round((itm.sizeW / 2) - (mb.width / 2));
+			y = -mb.height;
 		}
 
 		if (this.labelEdge == this.EDGE.BOTTOM){
-			x = Math.round((itm.sizeW / 2) - (labelW / 2));
+			x = Math.round((itm.sizeW / 2) - (mb.width / 2));
 			y = itm.sizeH;
 		}
 
 		if (this.labelEdge == this.EDGE.LEFT){
-			x = -labelW;
-			y = Math.round((itm.sizeH / 2) - (labelH / 2));
+			x = -mb.width;
+			y = Math.round((itm.sizeH / 2) - (mb.height / 2));
 		}
 
 		if (this.labelEdge == this.EDGE.RIGHT){
 			x = itm.sizeW;
-			y = Math.round((itm.sizeH / 2) - (labelH / 2));
+			y = Math.round((itm.sizeH / 2) - (mb.height / 2));
 		}
 
 		itm.lblNode.style.left = x + 'px';
@@ -699,7 +676,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 
 	calcHitGrid: function(){
 
-		var pos = dojo.style.getAbsolutePosition(this.domNode, true);
+		var pos = dojo.html.getAbsolutePosition(this.domNode, true);
 
 		this.hitX1 = pos.x - this.proximityLeft;
 		this.hitY1 = pos.y - this.proximityTop;
@@ -746,7 +723,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeList, {
 		// need to disconnect when we destroy
 		dojo.event.disconnect(document.documentElement, "onmouseout", this, "onBodyOut");
 		dojo.event.disconnect(document.documentElement, "onmousemove", this, "mouseHandler");
-		dojo.widget.html.ScrollableFisheyeList.superclass.destroy.call(this);
+		dojo.widget.FisheyeList.superclass.destroy.call(this);
 	}
 });
 
@@ -759,12 +736,15 @@ dojo.widget.html.ScrollableFisheyeListItem = function(){
 dojo.inherits(dojo.widget.html.ScrollableFisheyeListItem, dojo.widget.HtmlWidget);
 
 dojo.lang.extend(dojo.widget.html.ScrollableFisheyeListItem, {
+
 	widgetType: "ScrollableFisheyeListItem",
 	
 	// Constructor arguments
 	iconSrc: "",
 	svgSrc: "",
 	caption: "",
+	// will be set to the id of the orginal div element
+	id: "",
 
 	blankImgPath: dojo.uri.dojoUri("src/widget/templates/images/blank.gif"),
 
@@ -786,10 +766,19 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeListItem, {
 			this.svgNode = this.createSvgNode(this.svgSrc);
 			this.domNode.appendChild(this.svgNode);
 			this.imgNode.style.display = 'none';
-		} else if((this.iconSrc.toLowerCase().substring(this.iconSrc.length-4)==".png")&&(dojo.render.html.ie)){
+		} else if((this.iconSrc.toLowerCase().substring(this.iconSrc.length-4)==".png")&&(dojo.render.html.ie)&&(!dojo.render.html.ie70)){
+			/* we set the id of the new fisheyeListItem to the id of the div defined in the HTML */
+			if (dojo.dom.hasParent(this.imgNode) && this.id != ""){
+				var parent = this.imgNode.parentNode;
+				parent.setAttribute("id", this.id);
+			}
 			this.imgNode.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+this.iconSrc+"', sizingMethod='scale')";
 			this.imgNode.src = this.blankImgPath.toString();
 		} else {
+			if (dojo.dom.hasParent(this.imgNode) && this.id != ""){
+				var parent = this.imgNode.parentNode;
+				parent.setAttribute("id", this.id);
+			}
 			this.imgNode.src = this.iconSrc;
 		}
 
@@ -841,7 +830,7 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeListItem, {
 			var scale_x = w / this.zeroWidth;
 			var scale_y = h / this.zeroHeight;
 
-			for(var i=0; i<this.svgDoc.childNodes.length; i++){
+			for(var i=0; i<this.svgDoc.childNodes.length; i+=1){
 				if (this.svgDoc.childNodes[i].setAttribute){
 					this.svgDoc.childNodes[i].setAttribute( "transform", "scale("+scale_x+","+scale_y+")" );
 				}
@@ -869,4 +858,6 @@ dojo.lang.extend(dojo.widget.html.ScrollableFisheyeListItem, {
 	onClick: function() {
 	}
 });
+
+
 
