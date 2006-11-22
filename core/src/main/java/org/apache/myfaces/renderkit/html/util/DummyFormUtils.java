@@ -30,11 +30,11 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * Many JSF components can be used without an enclosing h:form. In this
@@ -170,7 +170,7 @@ public class DummyFormUtils {
     }
 
     public static FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext) {
-        FormInfo formInfo = _ComponentUtils.findNestingForm(uiComponent, facesContext);
+        FormInfo formInfo = RendererUtils.findNestingForm(uiComponent, facesContext);
         if (formInfo != null) {
             return formInfo;
         }
