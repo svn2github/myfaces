@@ -29,7 +29,6 @@ import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
@@ -140,7 +139,7 @@ public class AjaxDecodePhaseListener
             // special treatment for this one, it will try to update the entire form
             // 1. get surrounding form
             //String elname = (String) requestMap.get("elname");
-            FormInfo fi = _ComponentUtils.findNestingForm(ajaxComponent, context);
+            FormInfo fi = RendererUtils.findNestingForm(ajaxComponent, context);
             UIComponent form = fi.getForm();
             //System.out.println("FOUND FORM: " + form);
             if (form != null)
@@ -246,7 +245,7 @@ public class AjaxDecodePhaseListener
                     // special treatment for this one, it will try to update the entire form
                     // 1. get surrounding form
                     //String elname = (String) requestMap.get("elname");
-                    FormInfo fi = _ComponentUtils.findNestingForm(component, context);
+                    FormInfo fi = RendererUtils.findNestingForm(component, context);
                     UIComponent form = fi.getForm();
                     //System.out.println("FOUND FORM: " + form);
                     if (form != null)

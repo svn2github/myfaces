@@ -26,9 +26,9 @@ import org.apache.myfaces.renderkit.html.ext.HtmlGroupRenderer;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -63,7 +63,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 			return;
 		}
 
-		FormInfo fi = _ComponentUtils.findNestingForm(pprGroup, facesContext);
+		FormInfo fi = RendererUtils.findNestingForm(pprGroup, facesContext);
 		if (fi == null)
 		{
 			throw new FacesException("PPRPanelGroup must be embedded in an form.");
