@@ -158,6 +158,27 @@ Sandbox-related entities.
         Enhanced standard JSP actions and custom MyFaces actions.
     </description>
 
+    <!-- inputSuggest -->
+	<tag>
+		<name>loadBundle</name>
+		<tag-class>org.apache.myfaces.custom.loadbundle.LoadBundleTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Extended loadbundle which does its job in all life-cycle phases or even on calling LoadBundle.loadBundle()
+            - not only when rendering happens...</description>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Variable this bundle will be stored under, e.g. mybundle. Use #{mybundle.propertykey} or #{mybundle['propertykey']} to access the keys of the bundle.</description>            
+        </attribute>
+        <attribute>
+            <name>basename</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Path to the bundle-file in the class-path, e.g.: org.apache.myfaces.i18n.myprops</description>
+    	</attribute>
+    </tag>
+
     <!-- xmlTemplate -->
 	<tag>
 		<name>xmlTemplate</name>

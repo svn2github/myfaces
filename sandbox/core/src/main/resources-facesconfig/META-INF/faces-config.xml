@@ -28,6 +28,11 @@
   <!-- sandbox components -->
 
   <component>
+    <component-type>org.apache.myfaces.LoadBundle</component-type>
+    <component-class>org.apache.myfaces.custom.loadbundle.LoadBundle</component-class>
+  </component>
+
+  <component>
     <component-type>org.apache.myfaces.InputSuggestAjax</component-type>
     <component-class>org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjax</component-class>
   </component>
