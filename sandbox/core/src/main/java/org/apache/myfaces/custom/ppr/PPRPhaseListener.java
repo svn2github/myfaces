@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 import javax.faces.FacesException;
 import javax.faces.application.StateManager;
@@ -118,7 +119,9 @@ public class PPRPhaseListener implements PhaseListener
 				out.print("<component id=\"" +
 					component.getClientId(context) +
 					"\"><![CDATA[");
-				try
+                boolean oldValue = HtmlRendererUtils.isAllowedCdataSection(context);
+                HtmlRendererUtils.allowCdataSection(context, false);
+                try
 				{
 					RendererUtils.renderChildren(context, component);
 				}
@@ -126,7 +129,8 @@ public class PPRPhaseListener implements PhaseListener
 				{
 					throw new FacesException(e);
 				}
-				out.print("]]></component>");
+                HtmlRendererUtils.allowCdataSection(context, oldValue);
+                out.print("]]></component>");
 			}
 			else
 			{
