@@ -154,6 +154,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         buffer.append("dojo.addOnLoad(function() {\n")
                 .append(inputSuggestComponentVar).append(".textInputNode.name=\"").append(idToRender).append("\";\n");
 
+        /** todo: cbTableNode doesn't exist anymore in dojo 0.4 - what to do?
         if (inputSuggestAjax.getStyle() != null)
         {
             buffer.append(inputSuggestComponentVar).append(".cbTableNode.style.cssText=\"").append(inputSuggestAjax.getStyle()).append("\";\n");
@@ -162,6 +163,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         {
             buffer.append(inputSuggestComponentVar).append(".cbTableNode.className=\"").append(inputSuggestAjax.getStyleClass()).append("\";\n");
         }
+        */
 
         buffer.append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(valueToRender).append("\";\n")
               .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(valueToRender).append("\";\n")
