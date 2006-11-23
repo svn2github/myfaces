@@ -233,7 +233,7 @@ public final class DojoUtils {
      * @param location
      *            the script location
      * @throws IOException
-     * @see http://blog.dojotoolkit.org/2006/01/11/putting-your-code-outside-of-the-dojo-source-tree
+     * @link http://blog.dojotoolkit.org/2006/01/11/putting-your-code-outside-of-the-dojo-source-tree
      */
     public static void addNamespace(FacesContext facesContext, UIComponent component, String namespace, String location) throws IOException {
 
