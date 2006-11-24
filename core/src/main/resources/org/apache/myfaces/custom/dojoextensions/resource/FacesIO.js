@@ -14,16 +14,12 @@ dojo.io.FacesTransport = new function() {
     }
 
     this.isClientStateSaving = function() {
-        return dojo.byId("jsf_state") || dojo.byId("jsf_state_64");
+        return dojo.byId("javax.faces.ViewState");
     }
 
     this.addJsfState = function(request) {
         request.content = request.content || {};
-        this.addInputValue(request.content, "jsf_state");
-        this.addInputValue(request.content, "jsf_state_64");
-        this.addInputValue(request.content, "jsf_tree");
-        this.addInputValue(request.content, "jsf_tree_64");
-        this.addInputValue(request.content, "jsf_viewid");
+        this.addInputValue(request.content, "javax.faces.ViewState");
     }
 
     this.addInputValue = function (content, inputName) {
