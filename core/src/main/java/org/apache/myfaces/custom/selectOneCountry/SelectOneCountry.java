@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeMap;
 
-import javax.faces.application.FacesMessage;
+import javax.faces.component.UISelectItems;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -34,7 +34,6 @@ import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.html.ext.HtmlSelectOneMenu;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
  * @author Sylvain Vieujot (latest modification by $Author$)
@@ -148,17 +147,11 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
     }
 
     protected void validateValue(FacesContext context, Object value) {
-        if( !isValid() || value == null )
-            return;
-
-        // selected value must match to one of the available options
-        for(Iterator i = getCountriesChoicesAsSelectItemList().iterator(); i.hasNext() ; ){
-            if( value.equals( ((SelectItem)i.next()).getValue() ) )
-                return;
-        }
-
-        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, INVALID_MESSAGE_ID,  new Object[] {getId()}, context);
-
-        setValid(false);
+    	UISelectItems selectItems = new UISelectItems();
+    	selectItems.setTransient(true);
+    	selectItems.setValue(getCountriesChoicesAsSelectItemList());
+    	getChildren().add(selectItems);
+    	
+    	super.validateValue(context,value);
     }
 }
