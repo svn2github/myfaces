@@ -73,7 +73,7 @@
             <id>hostedqa</id>
             <properties>
                 <hostedqa.resourceId>31</hostedqa.resourceId>
-                <hostedqa.clientConfigs>117,316</hostedqa.clientConfigs>
+                <hostedqa.clientConfigs>117</hostedqa.clientConfigs>
                 <hostedqa.appConfigs>56</hostedqa.appConfigs>
             </properties>
         </profile>
