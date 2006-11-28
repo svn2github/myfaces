@@ -38,7 +38,7 @@
           activeItemClass="activeItemClass" itemClass="itemClass"
           disabledStyleClass="disabledStyleClass"
           openItemClass="openItemClass" separatorClass="seperatorClass"
-          styleClass="styleClass">
+          styleClass="styleClass" style="background-color: silver;">
           <t:navigationMenuItem id="nmi_p1" action="page_1"
             itemLabel="Page 1" icon="/testSuite/images/icon1.jpg" />
           <t:navigationMenuItem id="nmi_p2" action="page_2"
