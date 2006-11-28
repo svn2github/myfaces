@@ -31,11 +31,11 @@
       </t:htmlTag>
     </t:documentHead>
     <t:documentBody>
-      <t:outputText value="Hello World" />
+      <h:outputText value="Hello World" />
       <h:form id="footerLinks">
         <h:commandLink id="homeLink" action="home" value="Home" />
         <h:outputText value=" " />
-        <h:outputLink target="sourceWindow"
+        <h:outputLink id="sourceLink" target="sourceWindow"
           value="#{facesContext.externalContext.requestContextPath}#{view.viewId}.source">
           <h:outputText value="View source in popup window" />
         </h:outputLink>
