@@ -51,7 +51,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
         writer.writeAttribute(HTML.ID_ATTR, hiddenFieldId, null);
         writer.writeAttribute(HTML.NAME_ATTR, hiddenFieldId, null);
 
-        writer.writeAttribute(HTML.VALUE_ATTR, togglePanel.isToggled() ? "1" : "", null);
+        writer.writeAttribute(HTML.VALUE_ATTR, toggleMode ? "1" : "", null);
 
         writer.endElement(HTML.INPUT_ELEM);
 
@@ -150,22 +150,26 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
 
         out.write("function "+functionName + "(idsToShowS){\n");
 
-        out.write( "var idsToHideS = '" );
-        boolean firstId = true;
+        StringBuffer idsToHide = new StringBuffer();
+        int idsToHideCount = 0;
         for(Iterator it = togglePanel.getChildren().iterator(); it.hasNext(); ) {
             UIComponent component = (UIComponent) it.next();
             if ( isHiddenWhenToggled( component ) ) {
-            	if( firstId )
-            		firstId = false;
-            	else
-            		out.write( ',' );
-            	out.write( component.getClientId( context ) );
+            	if( idsToHideCount > 0 )
+            		idsToHide.append( ',' );
+            	idsToHide.append( component.getClientId( context ) );
+            	idsToHideCount++;
             }
         }
-        out.write( "';\n" );
-        
-        out.write( "var idsToHide = idsToHideS.split(',');\n" );
-        out.write( "for(var i=0;i<idsToHide.length;i++) document.getElementById(idsToHide[i]).style.display = 'none';\n");
+
+        if( idsToHideCount == 1 ){
+        	out.write( "document.getElementById('"+ idsToHide.toString() +"').style.display = 'none';\n" );
+        }else if( idsToHideCount > 1 ){
+        	out.write( "var idsToHide = '" + idsToHide.toString() + "'.split(',');\n" );
+        	out.write( "for(var i=0;i<idsToHide.length;i++) document.getElementById(idsToHide[i]).style.display = 'none';\n" );
+        }else{ // no idsToHide set
+        	getLog().warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
+        }
         out.write( "var idsToShow = idsToShowS.split(',');\n" );
         out.write( "for(var j=0;j<idsToShow.length;j++) document.getElementById(idsToShow[j]).style.display = 'inline';\n");
 
