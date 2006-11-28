@@ -49,6 +49,12 @@
 	<td>//form[@id='navListForm']//ul@class</td>
 	<td>styleClass</td>
 </tr>
+<!--Note: IE 6 and 7 returns the style attribute as [object] -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//form[@id='navListForm']//ul@style</td>
+	<td>regexp:(\[object\]|background-color: silver;)</td>
+</tr>
 <tr>
 	<td>assertAttribute</td>
 	<td>//form[@id='navListForm']//ul//li[1]@class</td>
