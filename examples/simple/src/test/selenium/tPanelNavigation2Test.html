@@ -1,4 +1,13 @@
 <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>tPanelNavigation2Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">tPanelNavigation2Test</td></tr>
+</thead><tbody>
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,15 +28,6 @@
  * under the License.
  */
 //-->
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>tPanelNavigation2Test</title>
-</head>
-<body>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr><td rowspan="1" colspan="3">tPanelNavigation2Test</td></tr>
-</thead><tbody>
 <tr>
 	<td>open</td>
 	<td>/myfaces-example-simple/testSuite/home.jsf</td>
@@ -57,7 +57,7 @@
 <tr>
 	<td>assertAttribute</td>
 	<td>//form[@id='navListForm']//ul//li[1]//img[@id='navListForm_pn2_list_img0']@src</td>
-	<td>/myfaces-example-simple/testSuite/images/icon1.jpg</td>
+	<td>regexp:(http:\/\/*|)\/myfaces-example-simple\/testSuite\/images\/icon1.jpg</td>
 </tr>
 <!--panel Navigation2 + Table format + navigationMenuItem -->
 <tr>
@@ -89,7 +89,7 @@
 <tr>
 	<td>assertAttribute</td>
 	<td>//form[@id='navList2Form']//ul//li[2]//a[@id='navList2Form:pn2_list:cn2_p2']//img@src</td>
-	<td>/myfaces-example-simple/testSuite/images/icon2.jpg</td>
+	<td>regexp:(http:\/\/*|)\/myfaces-example-simple\/testSuite\/images\/icon2.jpg</td>
 </tr>
 <!--panel Navigation2 + Table  format + CommandNavigation2-->
 <tr>
