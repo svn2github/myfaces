@@ -177,7 +177,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
     }
 
     static public String getToggleJavascriptFunctionName(FacesContext context, TogglePanel togglePanel) {
-        String modifiedId = togglePanel.getClientId(context).replaceAll("\\:", "_");
+        String modifiedId = togglePanel.getClientId(context).replaceAll("\\:", "_").replaceAll("-", "_");
         return "toggle_" + modifiedId;
     }
 }
