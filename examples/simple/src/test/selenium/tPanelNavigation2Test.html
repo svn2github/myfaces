@@ -46,23 +46,23 @@
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navListForm']//ul@class</td>
+	<td>//form[@id='navListForm']/ul@class</td>
 	<td>styleClass</td>
 </tr>
 <!--Note: IE 6 and 7 returns the style attribute as [object] -->
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navListForm']//ul@style</td>
+	<td>//form[@id='navListForm']/ul@style</td>
 	<td>regexp:(\[object\]|background-color: silver;)</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navListForm']//ul//li[1]@class</td>
+	<td>//form[@id='navListForm']/ul/li[1]@class</td>
 	<td>itemClass</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navListForm']//ul//li[1]//img[@id='navListForm_pn2_list_img0']@src</td>
+	<td>//form[@id='navListForm']/ul/li[1]/a/img[@id='navListForm_pn2_list_img0']@src</td>
 	<td>regexp:(http:\/\/*|)\/myfaces-example-simple\/testSuite\/images\/icon1.jpg</td>
 </tr>
 <!--panel Navigation2 + Table format + navigationMenuItem -->
@@ -73,7 +73,7 @@
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navTableForm']//table@class</td>
+	<td>//form[@id='navTableForm']/table@class</td>
 	<td>styleClass</td>
 </tr>
 <!--panel Navigation2 + List  format + CommandNavigation2-->
@@ -84,17 +84,17 @@
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navList2Form']//ul@class</td>
+	<td>//form[@id='navList2Form']/ul@class</td>
 	<td>styleClass</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navList2Form']//ul//li[1]@class</td>
+	<td>//form[@id='navList2Form']/ul/li[1]@class</td>
 	<td>itemClass</td>
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navList2Form']//ul//li[2]//a[@id='navList2Form:pn2_list:cn2_p2']//img@src</td>
+	<td>//form[@id='navList2Form']/ul/li[2]/a[@id='navList2Form:pn2_list:cn2_p2']/img@src</td>
 	<td>regexp:(http:\/\/*|)\/myfaces-example-simple\/testSuite\/images\/icon2.jpg</td>
 </tr>
 <!--panel Navigation2 + Table  format + CommandNavigation2-->
@@ -105,7 +105,7 @@
 </tr>
 <tr>
 	<td>assertAttribute</td>
-	<td>//form[@id='navTable2Form']//table@class</td>
+	<td>//form[@id='navTable2Form']/table@class</td>
 	<td>styleClass</td>
 </tr>
 
