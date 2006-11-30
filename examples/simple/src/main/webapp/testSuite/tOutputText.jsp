@@ -27,23 +27,31 @@
   <t:document>
     <t:documentHead>
       <t:htmlTag value="title">
-        <h:outputText value="Testing Home" />
+        <h:outputText value="t:outputText" />
       </t:htmlTag>
     </t:documentHead>
     <t:documentBody>
-      <h:form>
-        <t:panelNavigation2 layout="list">
-          <t:navigationMenuItem action="hGraphicImage" itemLabel="h:graphicImage" />
-          <t:navigationMenuItem action="hOutputText" itemLabel="h:outputText" />
-          <t:navigationMenuItem action="hPanelGrid" itemLabel="h:panelGrid" />
-          <t:navigationMenuItem action="tPanelNavigation" itemLabel="t:commandNavigation" />
-          <t:navigationMenuItem action="tPanelNavigation2" itemLabel="t:commandNavigation2" />
-          <t:navigationMenuItem action="tPanelNavigation" itemLabel="t:navigationMenuItem" />
-          <t:navigationMenuItem action="tPanelNavigation2" itemLabel="t:navigationMenuItem #2" />
-          <t:navigationMenuItem action="tPanelNavigation" itemLabel="t:panelNavigation" />
-          <t:navigationMenuItem action="tPanelNavigation2" itemLabel="t:panelNavigation2" />
-          <t:navigationMenuItem action="tOutputText" itemLabel="t:outputText" />
-        </t:panelNavigation2>
+      <h:outputText value="t:outputText" />
+
+      <t:outputText id="unProtectedValue" value="unprotected" />
+      <h:outputText value=" | " />
+      <t:outputText id="enableProtected" enabledOnUserRole="role1"
+        value="Protected by enable" />
+      <h:outputText value=" | " />
+      <t:outputText id="visableProtected" visibleOnUserRole="role1"
+        value="Protected by visable" />
+      <h:outputText value=" | " />
+      <t:outputText id="visibleProtectedAndRendered"
+        visibleOnUserRole="role1" rendered="true"
+        value="Protected by visible and rendered" />
+
+      <h:form id="footerLinks">
+        <h:commandLink id="homeLink" action="home" value="Home" />
+        <h:outputText value=" " />
+        <h:outputLink id="sourceLink" target="sourceWindow"
+          value="#{facesContext.externalContext.requestContextPath}#{view.viewId}.source">
+          <h:outputText value="View source in popup window" />
+        </h:outputLink>
       </h:form>
     </t:documentBody>
   </t:document>
