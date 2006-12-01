@@ -27,7 +27,7 @@
   <t:document>
     <t:documentHead>
       <t:htmlTag value="title">
-        <h:outputText value="#{view.viewId}" />
+        <h:outputText value="Test #{view.viewId}" />
       </t:htmlTag>
     </t:documentHead>
     <t:documentBody>
@@ -37,8 +37,29 @@
 
       <!-- Begin test -->
 
+      <h:form id="basicForm">
+        <h:outputText id="hOutputText" value="in basicForm" />
+      </h:form>
+
+      <!-- Verify form is not rendered -->
+      <h:form id="nonRenderedForm" rendered="false">
+        <h:outputText id="hOutputText" value="in nonrenderedForm" />
+      </h:form>
+
+      <!-- 
+  Just testing attributes.  The value for each attribute are not ment
+  to be valid.
+-->
+      <h:form id="formWithAttributes" target="formFrame"
+        accept="contentType" acceptCharset="charSet"
+        enctype="encodeType" onreset="Alert('onReset');"
+        onsubmit="Alert('onSubmit');">
+        <h:outputText id="hOutputText" value="in formWithAttributes" />
+      </h:form>
+
       <!-- End test -->
 
+      <t:htmlTag value="br" />
       <t:htmlTag value="br" />
       <h:form id="footerLinks">
         <h:commandLink id="homeLink" action="home" value="Home" />
