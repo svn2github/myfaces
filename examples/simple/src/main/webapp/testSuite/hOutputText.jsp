@@ -33,42 +33,9 @@
     <t:documentBody>
       <h:outputText value="h:outputText" />
 
-      <h:outputText id="outputText" lang="en"
+      <h:outputText id="outputText" 
         style="background-color: gray;" title="title" styleClass="class"
         value="text" />
-      <h:outputText id="dirLtr" dir="ltr" value="dir ltr" />
-      <h:outputText value=" | " />
-      <h:outputText id="dirRtl" dir="rtl" value="dir rtl" />
-      <h:outputText value=" | " />
-      <h:outputText id="click" onclick="alert('You Clicked');"
-        value="Click" />
-      <h:outputText value=" | " />
-      <h:outputText id="dblclick"
-        ondblclick="alert('You Double Clicked');" value="Double Click" />
-      <h:outputText value=" | " />
-      <h:outputText id="mouseDown"
-        onmousedown="alert('You Mouse Downed');" value="Mouse Down" />
-      <h:outputText value=" | " />
-      <h:outputText id="mouseUp" onmouseup="alert('You Mouse Uped');"
-        value="Mouse Up" />
-      <h:outputText value=" | " />
-      <h:outputText id="mouseOver"
-        onmouseover="alert('Your Mouse Overed');" value="Mouse Overed" />
-      <h:outputText value=" | " />
-      <h:outputText id="mouseMove"
-        onmousemove="alert('Your Mouse Moved');" value="Mouse Move" />
-      <h:outputText value=" | " />
-      <h:outputText id="mouseOut"
-        onmouseout="alert('Your Mouse Moved Out');" value="Mouse Out" />
-      <h:outputText value=" | " />
-      <h:outputText id="keyPress" onkeypress="alert('You Key Pressed');"
-        value="Key Press" />
-      <h:outputText value=" | " />
-      <h:outputText id="keyDown" onkeydown="alert('You Key Downed');"
-        value="Key Down" />
-      <h:outputText value=" | " />
-      <h:outputText id="keyUp" onkeyup="alert('You Key Uped');"
-        value="Key Up" />
       <h:outputText value=" | " />
       <h:outputText id="renderedTrue" value="You should see this"
         style="color: green;" rendered="true" />
