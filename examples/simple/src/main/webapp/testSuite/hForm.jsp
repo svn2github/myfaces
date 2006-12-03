@@ -51,7 +51,7 @@
   to be valid.
 -->
       <h:form id="formWithAttributes" target="formFrame"
-        accept="contentType" acceptCharset="charSet"
+        accept="contentType" acceptcharset="charSet"
         enctype="encodeType" onreset="Alert('onReset');"
         onsubmit="Alert('onSubmit');">
         <h:outputText id="hOutputText" value="in formWithAttributes" />
