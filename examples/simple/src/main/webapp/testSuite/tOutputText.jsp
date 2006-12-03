@@ -33,6 +33,43 @@
     <t:documentBody>
       <h:outputText value="t:outputText" />
 
+      <h:outputText value=" | " />
+      <t:outputText id="lang" lang="en" value="English" />
+      <h:outputText value=" | " />
+      <t:outputText id="dirLtr" dir="ltr" value="dir ltr" />
+      <h:outputText value=" | " />
+      <t:outputText id="dirRtl" dir="rtl" value="dir rtl" />
+      <h:outputText value=" | " />
+      <t:outputText id="click" onclick="alert('You Clicked');"
+        value="Click" />
+      <h:outputText value=" | " />
+      <t:outputText id="dblclick"
+        ondblclick="alert('You Double Clicked');" value="Double Click" />
+      <h:outputText value=" | " />
+      <t:outputText id="mouseDown"
+        onmousedown="alert('You Mouse Downed');" value="Mouse Down" />
+      <h:outputText value=" | " />
+      <t:outputText id="mouseUp" onmouseup="alert('You Mouse Uped');"
+        value="Mouse Up" />
+      <h:outputText value=" | " />
+      <t:outputText id="mouseOver"
+        onmouseover="alert('Your Mouse Overed');" value="Mouse Overed" />
+      <h:outputText value=" | " />
+      <t:outputText id="mouseMove"
+        onmousemove="alert('Your Mouse Moved');" value="Mouse Move" />
+      <h:outputText value=" | " />
+      <t:outputText id="mouseOut"
+        onmouseout="alert('Your Mouse Moved Out');" value="Mouse Out" />
+      <h:outputText value=" | " />
+      <t:outputText id="keyPress" onkeypress="alert('You Key Pressed');"
+        value="Key Press" />
+      <h:outputText value=" | " />
+      <t:outputText id="keyDown" onkeydown="alert('You Key Downed');"
+        value="Key Down" />
+      <h:outputText value=" | " />
+      <t:outputText id="keyUp" onkeyup="alert('You Key Uped');"
+        value="Key Up" />
+      <h:outputText value=" | " />
       <t:outputText id="unProtectedValue" value="unprotected" />
       <h:outputText value=" | " />
       <t:outputText id="enableProtected" enabledOnUserRole="role1"

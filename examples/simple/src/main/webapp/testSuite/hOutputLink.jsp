@@ -27,26 +27,31 @@
   <t:document>
     <t:documentHead>
       <t:htmlTag value="title">
-        <h:outputText value="Testing Home" />
+        <h:outputText value="#{view.viewId}" />
       </t:htmlTag>
     </t:documentHead>
     <t:documentBody>
-      <h:form>
-        <t:panelNavigation2 layout="list">
-          <t:navigationMenuItem action="hForm" itemLabel="h:Form" />
-          <t:navigationMenuItem action="hGraphicImage" itemLabel="h:graphicImage" />
-          <t:navigationMenuItem action="hForm" itemLabel="h:Form" />
-          <t:navigationMenuItem action="hOutputLink" itemLabel="h:outputLink" />
-          <t:navigationMenuItem action="hOutputText" itemLabel="h:outputText" />
-          <t:navigationMenuItem action="hPanelGrid" itemLabel="h:panelGrid" />
-          <t:navigationMenuItem action="tPanelNavigation" itemLabel="t:commandNavigation" />
-          <t:navigationMenuItem action="tPanelNavigation2" itemLabel="t:commandNavigation2" />
-          <t:navigationMenuItem action="tPanelNavigation" itemLabel="t:navigationMenuItem" />
-          <t:navigationMenuItem action="tPanelNavigation2" itemLabel="t:navigationMenuItem #2" />
-          <t:navigationMenuItem action="tPanelNavigation" itemLabel="t:panelNavigation" />
-          <t:navigationMenuItem action="tPanelNavigation2" itemLabel="t:panelNavigation2" />
-          <t:navigationMenuItem action="tOutputText" itemLabel="t:outputText" />
-        </t:panelNavigation2>
+      <h:outputText value="Running test #{view.viewId}" />
+      <t:htmlTag value="br" />
+      <t:htmlTag value="br" />
+
+      <!-- Begin test -->
+<h:outputLink id="hOutputLink" value="http://myfaces.apache.org"
+accesskey="1" onblur="Alert('Onblur');" onfocus="Alert('onFocus');"
+type="contentType" target="targetWindow" coords="1,2" hreflang="en"
+rev="http://foo.bar.com" shape="square" >
+  <h:outputText id="hOutputText" value="Link"/>
+</h:outputLink>
+      <!-- End test -->
+
+      <t:htmlTag value="br" />
+      <h:form id="footerLinks">
+        <h:commandLink id="homeLink" action="home" value="Home" />
+        <h:outputText value=" " />
+        <h:outputLink id="sourceLink" target="sourceWindow"
+          value="#{facesContext.externalContext.requestContextPath}#{view.viewId}.source">
+          <h:outputText value="View source in popup window" />
+        </h:outputLink>
       </h:form>
     </t:documentBody>
   </t:document>

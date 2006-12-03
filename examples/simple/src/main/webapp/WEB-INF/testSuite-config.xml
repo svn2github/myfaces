@@ -42,6 +42,10 @@
 			<to-view-id>/testSuite/page_4.jsp</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>tOutputLink</from-outcome>
+			<to-view-id>/testSuite/tOutputLink.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>tOutputText</from-outcome>
 			<to-view-id>/testSuite/tOutputText.jsp</to-view-id>
 		</navigation-case>
