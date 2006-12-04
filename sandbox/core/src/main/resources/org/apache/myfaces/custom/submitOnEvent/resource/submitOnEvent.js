@@ -202,7 +202,8 @@ function orgApacheMyfacesSubmitOnEventGeneral(componentId)
         orgApacheMyfacesSubmitOnEventClickLink(clickComponent);
         return false;
     }
-    else if (clickComponent.type && clickComponent.type.toLowerCase() == "submit")
+    else if (clickComponent.type
+        && (clickComponent.type.toLowerCase() == "submit" || clickComponent.type.toLowerCase() == "image"))
     {
         orgApacheMyfacesSubmitOnEventClickButton(clickComponent);
         return false;
