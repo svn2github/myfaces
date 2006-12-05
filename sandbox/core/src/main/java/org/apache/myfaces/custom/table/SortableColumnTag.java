@@ -33,6 +33,8 @@ public class SortableColumnTag extends HtmlComponentBodyTagBase {
     private static final String FORMAT_ATTR = "format";
     private static final String ALIGN_ATTR = "align";
     private static final String VALIGN_ATTR = "valign";
+    private static final String TEXT_ATTR = "text";
+    private static final String ESCAPE_ATTR = "escape";
 
     private String _field;
     private String _dataType;
@@ -40,6 +42,8 @@ public class SortableColumnTag extends HtmlComponentBodyTagBase {
     private String _format;
     private String _align;
     private String _valign;
+    private String _text;
+    private String _escape;
 
     public String getComponentType() {
         return SortableColumn.COMPONENT_TYPE;
@@ -57,6 +61,8 @@ public class SortableColumnTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, FORMAT_ATTR, _format);
         setStringProperty(component, ALIGN_ATTR, _align);
         setStringProperty(component, VALIGN_ATTR, _valign);
+        setStringProperty(component, TEXT_ATTR, _text);
+        setBooleanProperty(component, ESCAPE_ATTR, _escape);
     }
 
     public String getField() {
@@ -95,6 +101,14 @@ public class SortableColumnTag extends HtmlComponentBodyTagBase {
         _valign = valign;
     }
 
+    public void setText(String text) {
+        _text = text;
+    }
+
+    public void setEscape(String escape) {
+        _escape = escape;
+    }
+
     public void release() {
         super.release();
         _field = null;
@@ -103,5 +117,7 @@ public class SortableColumnTag extends HtmlComponentBodyTagBase {
         _format = null;
         _align = null;
         _valign = null;
+        _text = null;
+        _escape = null;
     }
 }

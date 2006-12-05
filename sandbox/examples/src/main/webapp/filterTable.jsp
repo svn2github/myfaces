@@ -90,22 +90,13 @@
     <input type="button" value="Show only manufacturers between M and Z" onclick="dojo.widget.byId('filterTbl').setFilter('manufacturer', manufacturerFilter);" />
     <input type="button" value="Clear Filters" onclick="dojo.widget.byId('filterTbl').clearFilters()" />
     <s:filterTable id="filterTbl" var="car" value="#{sortableTableBean.cars}" >
-        <s:sortableColumn field="id" dataType="Number">
-            <f:facet name="header">
-                <h:outputText value="Id" />
-            </f:facet>
+        <s:sortableColumn field="id" dataType="Number" text="Id">
             <h:outputText value="#{car.id}" />
         </s:sortableColumn>
-        <s:sortableColumn field="manufacturer">
-            <f:facet name="header">
-                <h:outputText value="Manufacturer" />
-            </f:facet>
+        <s:sortableColumn field="manufacturer" text="Manufacturer">
             <h:outputText value="#{car.manufacturer}" />
         </s:sortableColumn>
-        <s:sortableColumn field="model">
-            <f:facet name="header">
-                <h:outputText value="Model" />
-            </f:facet>
+        <s:sortableColumn field="model" text="Model">
             <h:outputText value="#{car.model}" />
         </s:sortableColumn>
     </s:filterTable>

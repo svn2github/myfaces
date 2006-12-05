@@ -118,20 +118,22 @@ public class FilterTableRenderer extends HtmlRenderer {
             UIComponent child = (UIComponent) it.next();
             if (child.isRendered() && child instanceof SortableColumn) {
                 SortableColumn col = (SortableColumn) child;
-                UIComponent header = col.getHeader();
-                if (header != null) {
-                    writer.startElement(HTML.TH_ELEM, header);
-                    if (col.getField() != null) {
-                        writer.writeAttribute("field", col.getField(), null);
-                    }
-                    if (col.getDataType() != null) {
-                        writer.writeAttribute("dataType", col.getDataType(), null);
-                    } else {
-                        writer.writeAttribute("dataType", "String", null);
-                    }
-                    RendererUtils.renderChild(context, header);
-                    writer.endElement(HTML.TH_ELEM);
+                writer.startElement(HTML.TH_ELEM, col);
+                if (col.getField() != null) {
+                    writer.writeAttribute("field", col.getField(), null);
                 }
+                if (col.getDataType() != null) {
+                    writer.writeAttribute("dataType", col.getDataType(), null);
+                } else {
+                    writer.writeAttribute("dataType", "String", null);
+                }
+                Boolean escape = col.getEscape();
+                if (escape == null || escape.booleanValue())  {
+                    writer.writeText(col.getText(), JSFAttr.VALUE_ATTR);
+                } else {
+                    writer.writeText(col.getText(), null);
+                }
+                writer.endElement(HTML.TH_ELEM);
             }
         }
         writer.endElement(HTML.TR_ELEM);
