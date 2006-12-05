@@ -129,11 +129,16 @@ public class UISelectItems extends javax.faces.component.UISelectItems {
 		return (SelectItem[]) items.toArray(new SelectItem[0]);
 	}
 
-	
 	private SelectItem createSelectItem() {
+		SelectItem item = null;
 		Object value = getItemValue();
 		String label = getItemLabel() != null ? getItemLabel().toString() : null;
-		SelectItem item = new SelectItem(value, label);
+		
+		if(label != null)
+			item = new SelectItem(value, label);
+		else
+			item = new SelectItem(value);
+		
 		return item;
 	}
 	
