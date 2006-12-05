@@ -254,7 +254,15 @@
   	<component-class>org.apache.myfaces.custom.dojolayouts.FloatingPaneBase</component-class>
   </component>
 
+  <component>
+    <component-type>org.apache.myfaces.FilterTable</component-type>
+    <component-class>org.apache.myfaces.custom.table.FilterTable</component-class>
+  </component>
 
+    <component>
+      <component-type>org.apache.myfaces.SortableColumn</component-type>
+      <component-class>org.apache.myfaces.custom.table.SortableColumn</component-class>
+    </component>
 
   <!-- sandbox converters -->
 
@@ -526,7 +534,11 @@
      <renderer-class>org.apache.myfaces.custom.dojolayouts.FloatingPaneBaseRenderer</renderer-class>
   </renderer>
 
-  
+   <renderer>
+      <component-family>javax.faces.Data</component-family>
+      <renderer-type>org.apache.myfaces.FilterTable</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.table.FilterTableRenderer</renderer-class>
+   </renderer>
   
 
    <!-- <renderer>

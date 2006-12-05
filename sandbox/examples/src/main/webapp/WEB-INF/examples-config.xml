@@ -5,7 +5,6 @@
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
-
 <faces-config>
 
     <!--  logger/debugging phase listener -->
@@ -43,7 +42,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- managed bean for form-->
+    <!-- managed bean for form-->                                                                             *
 
     <managed-bean>
         <managed-bean-name>formBean</managed-bean-name>
@@ -508,6 +507,12 @@
     <managed-bean>
         <managed-bean-name>validateForm</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.validate.ValidateForm</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>sortableTableBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.data.SortableTableBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
