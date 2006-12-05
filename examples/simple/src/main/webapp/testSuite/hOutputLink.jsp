@@ -42,11 +42,13 @@
   to be valid.
 -->
 
-      <h:outputLink id="hOutputLink" value="http://myfaces.apache.org"
+      <h:outputLink id="hOutputLink" value="http://myfaces.apache.org/index.html"
         accesskey="1" onblur="Alert('Onblur');"
         onfocus="Alert('onFocus');" type="contentType"
         target="targetWindow" coords="1,2" hreflang="en"
         rev="http://foo.bar.com" shape="square">
+        <f:param name="param1" value="value1"/>
+        <f:param name="param2" value="value2"/>
         <h:outputText id="hOutputText" value="Link" />
       </h:outputLink>
       <!-- End test -->

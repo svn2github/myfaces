@@ -45,14 +45,20 @@
 	<td>//a[@id='hOutputLink']@type</td>
 	<td>contentType</td>
 </tr>
-<!--
+<!-- Using glob: and ? instead or &amp; for second parameter due to IE -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//a[@id='hOutputLink']@href</td>
+	<td>glob:http://myfaces.apache.org/index.html?param1=value1?param2=value2</td>
+</tr>
+<!-- Does not work with IE
 <tr>
 	<td>assertAttribute</td>
 	<td>//a[@id='hOutputLink']@onblur</td>
 	<td>glob:*Alert('onBlur');*</td>
 </tr>
 -->
-<!--
+<!-- Does not work with IE
 <tr>
 	<td>assertAttribute</td>
 	<td>//a[@id='hOutputLink']@onfocus</td>
