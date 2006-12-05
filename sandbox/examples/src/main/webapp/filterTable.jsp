@@ -81,43 +81,34 @@
 </style>
 <script type="text/javascript">
     function manufacturerFilter(name){
-        return (manufacturer.charAt(0) >= 'M' && manufacturer.charAt(0) <= 'Z');
+        return (name.charAt(0) >= 'M' && name.charAt(0) <= 'Z');
     }
 </script>
 </head>
 <body>
 <f:view>
-    <s:modalDialog dialogId="carDialog" dialogVar="carDialog"
-                   dialogAttr="bgColor='white' bgOpacity='0.5' toggle='fade' toggleDuration='250'"
-                   hiderIds="back" styleClass="dojoDialog">
-        <h:panelGrid columns="1">
-            <input type="button" id="back" value="Back"
-                   onclick="dojo.widget.byId('carDialog').hide();" />
-        </h:panelGrid>
-    </s:modalDialog>
     <input type="button" value="Show only manufacturers between M and Z" onclick="dojo.widget.byId('filterTbl').setFilter('manufacturer', manufacturerFilter);" />
-    <div class="tableContainer">
-        <s:filterTable id="filterTbl" var="car" value="#{sortableTableBean.cars}" >
-            <s:sortableColumn field="id" dataType="Number">
-                <f:facet name="header">
-                    <h:outputText value="Id" />
-                </f:facet>
-                <h:outputText value="#{car.id}" />
-            </s:sortableColumn>
-            <s:sortableColumn field="manufacturer">
-                <f:facet name="header">
-                    <h:outputText value="Manufacturer" />
-                </f:facet>
-                <h:outputText value="#{car.manufacturer}" />
-            </s:sortableColumn>
-            <s:sortableColumn field="model">
-                <f:facet name="header">
-                    <h:outputText value="Model" />
-                </f:facet>
-                <h:outputText value="#{car.model}" />
-            </s:sortableColumn>
-        </s:filterTable>
-    </div>
+    <input type="button" value="Clear Filters" onclick="dojo.widget.byId('filterTbl').clearFilters()" />
+    <s:filterTable id="filterTbl" var="car" value="#{sortableTableBean.cars}" >
+        <s:sortableColumn field="id" dataType="Number">
+            <f:facet name="header">
+                <h:outputText value="Id" />
+            </f:facet>
+            <h:outputText value="#{car.id}" />
+        </s:sortableColumn>
+        <s:sortableColumn field="manufacturer">
+            <f:facet name="header">
+                <h:outputText value="Manufacturer" />
+            </f:facet>
+            <h:outputText value="#{car.manufacturer}" />
+        </s:sortableColumn>
+        <s:sortableColumn field="model">
+            <f:facet name="header">
+                <h:outputText value="Model" />
+            </f:facet>
+            <h:outputText value="#{car.model}" />
+        </s:sortableColumn>
+    </s:filterTable>
 </f:view>
 
 <%@ include file="inc/page_footer.jsp" %>

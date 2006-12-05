@@ -20,6 +20,14 @@
                     <h:outputText style="font-size:10px;color:#FFFFFF" value=" (Sandbox Version #{buildInfo['tomahawk_version']}, using #{buildInfo ['jsf_implementation']})"/>
                 </f:verbatim>
             </h:panelGrid>
+
+            <h:outputText value="New in 1.5" style="font-weight:bold;color:red"/>
+            <h:panelGrid style="padding-left:25px">
+                <f:verbatim><a href="#partialPageRendering">Partial Page Rendering</a></f:verbatim>
+                <f:verbatim><a href="#filterTable">Filter Table</a></f:verbatim>
+            </h:panelGrid>
+
+            <f:verbatim><a name="partialPageRendering" /></f:verbatim>
             <h:outputText value="Partial Page Rendering"/>
             <h:panelGrid style="padding-left:25px">
 	            <h:outputLink value="pprPanelGroup.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting manually refreshed by AJAX-Calls</f:verbatim></h:outputLink>
@@ -72,6 +80,8 @@
 
             <h:outputText value="Data Tables"/>
             <h:panelGrid style="padding-left:25px">
+                <f:verbatim><a name="filterTable" /></f:verbatim>
+                <h:outputLink value="filterTable.jsf" ><f:verbatim>Filter Table</f:verbatim></h:outputLink>
             	<h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
             	<h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
             	<h:outputLink value="excelExport.jsf"><f:verbatim>ExcelExport - Export datatable contents as an excel file</f:verbatim></h:outputLink>
