@@ -36,12 +36,19 @@
       <t:htmlTag value="br" />
 
       <!-- Begin test -->
-<h:outputLink id="hOutputLink" value="http://myfaces.apache.org"
-accesskey="1" onblur="Alert('Onblur');" onfocus="Alert('onFocus');"
-type="contentType" target="targetWindow" coords="1,2" hreflang="en"
-rev="http://foo.bar.com" shape="square" >
-  <h:outputText id="hOutputText" value="Link"/>
-</h:outputLink>
+
+      <!-- 
+  Just testing attributes.  The value for each attribute are not ment
+  to be valid.
+-->
+
+      <h:outputLink id="hOutputLink" value="http://myfaces.apache.org"
+        accesskey="1" onblur="Alert('Onblur');"
+        onfocus="Alert('onFocus');" type="contentType"
+        target="targetWindow" coords="1,2" hreflang="en"
+        rev="http://foo.bar.com" shape="square">
+        <h:outputText id="hOutputText" value="Link" />
+      </h:outputLink>
       <!-- End test -->
 
       <t:htmlTag value="br" />
