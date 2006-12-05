@@ -27,22 +27,21 @@ import java.util.ArrayList;
 public class SortableTableBean {
 
     public static class Car {
-        private Long _id;
+        private long _id;
         private String _manufacturer;
         private String _model;
 
-
-        public Car(Long id, String manufacturer, String model) {
+        public Car(long id, String manufacturer, String model) {
             _id = id;
             _manufacturer = manufacturer;
             _model = model;
         }
 
-        public Long getId() {
+        public long getId() {
             return _id;
         }
 
-        public void setId(Long id) {
+        public void setId(long id) {
             _id = id;
         }
 
