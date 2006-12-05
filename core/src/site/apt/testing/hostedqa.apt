@@ -106,7 +106,16 @@ t configurations 117
  configuration.
 
  The myfaces-example-simple app is running as context name
- 'myfaces-example-simple' on port 9090, and only Firefox on WinXP (client
- configuration 117) is enabled.  Client config 118 is IE on WinXP.  It is 
- disabled because some of the tests fail on IE.  Help with figuring out why
- that happens is welcome!
+ 'myfaces-example-simple' on port 9090.  The following clients have
+ been configued:
+
+*-----------------+------------------+
+| <<Client Code>> | <<Browser>>      |
+*-----------------+------------------+
+| 117             | Firefox on WinXP |
+*-----------------+------------------+
+| 118             | IE 6 on WinXP    |
+*-----------------+------------------+
+| 316             | IE 7 on WinXP    |
+*-----------------+------------------+
+Available HostedQA Client Codes as configued in <<<pom.xml>>>
