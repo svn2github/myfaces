@@ -31,6 +31,10 @@
             <from-outcome>nav_page3</from-outcome>
             <to-view-id>/non-tile.jsp</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>nav_page4</from-outcome>
+            <to-view-id>/page4.jsp</to-view-id>
+        </navigation-case>
     </navigation-rule>
 
 	<navigation-rule>
