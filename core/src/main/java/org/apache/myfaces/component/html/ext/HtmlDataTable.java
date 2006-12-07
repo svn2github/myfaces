@@ -95,6 +95,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     private String _rowGroupStyle = null;
     private String _rowGroupStyleClass = null;
     private String _varDetailToggler = null;
+    private String _bodyStyleClass = null;
+    private String _bodyStyle = null;
 
     private int _sortColumnIndex = -1;
 
@@ -769,7 +771,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         boolean preserveSort = isPreserveSort();
 
-        Object values[] = new Object[34];
+        Object values[] = new Object[36];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
 
@@ -817,6 +819,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
         values[32] = new Integer(_newspaperColumns);
         values[33] = _newspaperOrientation;
+        values[34] = _bodyStyle;
+        values[35] = _bodyStyleClass;
 
         return values;
     }
@@ -947,6 +951,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         _sortColumnIndex = values[31] != null ? ((Integer) values[31]).intValue() : -1;
         _newspaperColumns = ((Integer) values[32]).intValue();
         _newspaperOrientation = (String) values[33];
+        _bodyStyle = (String) values[34];
+        _bodyStyleClass = (String) values[35];
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -1317,12 +1323,41 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     public String getRowGroupStyleClass()
     {
-        return _rowGroupStyleClass;
+        if (_rowGroupStyleClass != null)
+            return _rowGroupStyleClass;
+        ValueBinding vb = getValueBinding("rowGroupStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     public void setRowGroupStyleClass(String rowGroupStyleClass)
     {
         _rowGroupStyleClass = rowGroupStyleClass;
+    }
+
+    public String getBodyStyle()
+    {
+        if (_bodyStyle != null)
+            return _bodyStyle;
+        ValueBinding vb = getValueBinding("bodyStyle");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setBodyStyle(String bodyStyle)
+    {
+        _bodyStyle = bodyStyle;
+    }
+
+    public String getBodyStyleClass()
+    {
+        if (_bodyStyleClass != null)
+            return _bodyStyleClass;
+        ValueBinding vb = getValueBinding("bodyStyleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setBodyStyleClass(String bodyStyleClass)
+    {
+        _bodyStyleClass = bodyStyleClass;
     }
 
     public HtmlDataTable()

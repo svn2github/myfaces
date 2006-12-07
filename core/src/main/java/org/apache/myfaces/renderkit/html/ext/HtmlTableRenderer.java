@@ -63,6 +63,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     /** DetailStamp facet name. */
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
+    private static final String BODY_STYLE_CLASS = "bodyStyleClass";
+    private static final String BODY_STYLE = "bodyStyle";
 
     /**
      * @param component dataTable
@@ -923,4 +925,32 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
         return false;
     }
+
+
+    /**
+     * Perform any operations necessary in the TBODY start tag.
+     *
+     * @param facesContext the <code>FacesContext</code>.
+     * @param uiData the <code>UIData</code> being rendered.
+     */
+    protected void inBodyStart(FacesContext facesContext, UIData uiData) throws IOException
+    {
+        String bodyStyleClass;
+        String bodyStyle;
+
+        if(uiData instanceof HtmlDataTable) {
+            bodyStyleClass = ((HtmlDataTable)uiData).getBodyStyleClass();
+            bodyStyle = ((HtmlDataTable)uiData).getBodyStyle();
+        } else {
+            bodyStyleClass = (String)uiData.getAttributes().get(BODY_STYLE_CLASS);
+            bodyStyle = (String)uiData.getAttributes().get(BODY_STYLE);
+        }
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.writeAttribute(HTML.CLASS_ATTR, bodyStyleClass, BODY_STYLE_CLASS);
+        writer.writeAttribute(HTML.STYLE_ATTR, bodyStyle, BODY_STYLE);
+    }
+
+
+
 }

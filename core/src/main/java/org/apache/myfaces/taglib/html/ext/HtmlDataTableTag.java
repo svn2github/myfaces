@@ -77,6 +77,9 @@ public class HtmlDataTableTag
     private String _rowGroupStyle;
     private String _rowGroupStyleClass;
 
+    private String _bodyStyle;
+    private String _bodyStyleClass;
+
     /** the number of newspaper columns */
     private String _newspaperColumns = null;
     /** the orientation of the newspaper table - horizontal/vertical */
@@ -120,6 +123,9 @@ public class HtmlDataTableTag
         
         _newspaperColumns = null;
         _newspaperOrientation = null;
+
+        _bodyStyle = null;
+        _bodyStyleClass = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -157,6 +163,9 @@ public class HtmlDataTableTag
         setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
         setStringProperty(component, "rowGroupStyle", _rowGroupStyle);
         setStringProperty(component, "rowGroupStyleClass", _rowGroupStyleClass);
+
+        setStringProperty(component, "bodyStyle", _bodyStyle);
+        setStringProperty(component, "bodyStyleClass", _bodyStyleClass);
 
         setIntegerProperty(component, HtmlDataTable.NEWSPAPER_COLUMNS_PROPERTY, _newspaperColumns);
         setStringProperty(component, HtmlDataTable.NEWSPAPER_ORIENTATION_PROPERTY, _newspaperOrientation);
@@ -322,5 +331,12 @@ public class HtmlDataTableTag
     public void setNewspaperOrientation(String newspaperOrientation) {
         this._newspaperOrientation = newspaperOrientation;
     }
-    
+
+    public String getBodyStyle() {
+		return _bodyStyle;
+	}
+
+    public String getBodyStyleClass() {
+		return _bodyStyleClass;
+	}
 }
