@@ -23,7 +23,8 @@
 //-->
 <html>
 
-<%@include file="inc/head.inc" %>
+<%-- Unnecessary, as we define head below --%>
+<%-- <%@include file="inc/head.inc" %> --%>
 
 <f:view>
     <head>
