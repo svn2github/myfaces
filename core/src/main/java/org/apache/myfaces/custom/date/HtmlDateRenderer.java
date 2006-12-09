@@ -345,8 +345,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
             userData.setMinutes( (String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
             if (type.equals("full") || type.equals("time"))
 				userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
-            else
-            	userData.setSeconds("0");
+
             if (inputDate.isAmpm()) {
             	userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
             }

@@ -334,7 +334,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         
         private boolean isTimeSubmitted(boolean usesAmpm, String type) {
         	boolean isTimeSubmitted = ! (StringUtils.isEmpty(getHours()) && StringUtils.isEmpty(getMinutes()));
-        	if(type.equals("time") || type.equals("full") || type.equals("both"))
+        	if(type.equals("time") || type.equals("full"))
         		isTimeSubmitted = isTimeSubmitted || ! StringUtils.isEmpty(getSeconds());
         	if(usesAmpm)
         		isTimeSubmitted = isTimeSubmitted || isAmpmSubmitted();
