@@ -242,6 +242,15 @@ Sandbox-related entities.
                          to achieve the same mechanism as it can be found at select menues with the label/value pair.
             </description>
         </attribute>
+        <attribute>
+            <name>autoComplete</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Boolean</type>
+            <description>If false, the input field is not automatically populated with the first suggested value.
+                         Default: true
+            </description>
+        </attribute>
     </tag>
 
     <!-- Ajax child combobox  -->

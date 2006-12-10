@@ -37,17 +37,23 @@
 
      <f:verbatim><br/><br/></f:verbatim>
 
-     <h:panelGrid columns="7">
+     <t:dojoInitializer bindEncoding="utf-8"/>
+
+     <h:panelGrid columns="9">
          <h:outputText value="default suggest"/>
-         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"  style="width:100px;"
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"
                              value="#{inputSuggestAjax.suggestValue}"  charset="utf-8"/>
 
+         <h:outputText value="suggest without autoComplete"/>
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"
+                             value="#{inputSuggestAjax.suggestValue}" autoComplete="false"/>
+
          <h:outputText value="suggest with limited suggested items"/>
-         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}" style="width:100px;"
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getItems}"
                              maxSuggestedItems="2" value="#{inputSuggestAjax.suggestValueMaxItems}"/>
 
          <h:outputText value="suggest with label/value functionality"/>
-         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getAddresses}" style="width:250px;"
+         <s:inputSuggestAjax suggestedItemsMethod="#{inputSuggestAjax.getAddresses}" 
                              itemLabelMethod="#{inputSuggestAjax.getAddressLabel}"
                              value="#{inputSuggestAjax.choosenAddress}">
              <f:converter converterId="inputSuggestAjaxConverter" />

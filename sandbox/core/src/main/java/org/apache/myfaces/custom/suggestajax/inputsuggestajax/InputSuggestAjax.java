@@ -22,6 +22,7 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjax;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
 import java.io.IOException;
 
 /**
@@ -38,6 +39,8 @@ public class InputSuggestAjax extends SuggestAjax
 
     private MethodBinding _itemLabelMethod;
 
+    private Boolean _autoComplete = new Boolean(true);
+
     public InputSuggestAjax()
     {
         super();
@@ -47,9 +50,10 @@ public class InputSuggestAjax extends SuggestAjax
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[2];
+        Object[] values = new Object[3];
         values[0] = super.saveState(context);
         values[1] = saveAttachedState(context, _itemLabelMethod);
+        values[2] = _autoComplete;
 
         return values;
     }
@@ -59,11 +63,27 @@ public class InputSuggestAjax extends SuggestAjax
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
         _itemLabelMethod = (MethodBinding) restoreAttachedState(context, values[1]);
+        _autoComplete = (Boolean) values[2];
     }
 
     public void encodeChildren(FacesContext context) throws IOException
     {
         super.encodeChildren(context);
+    }
+
+    public Boolean getAutoComplete()
+    {
+         if (_autoComplete != null)
+        {
+            return _autoComplete;
+        }
+        ValueBinding vb = getValueBinding("autoComplete");
+        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setAutoComplete(Boolean autoComplete)
+    {
+        _autoComplete = autoComplete;
     }
 
     public MethodBinding getItemLabelMethod()

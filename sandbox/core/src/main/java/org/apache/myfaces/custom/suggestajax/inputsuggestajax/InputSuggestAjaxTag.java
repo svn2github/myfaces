@@ -34,6 +34,7 @@ import javax.faces.el.MethodBinding;
 public class InputSuggestAjaxTag extends SuggestAjaxTag
 {
     private String _itemLabelMethod;
+    private String _autoComplete;
 
     public String getComponentType() {
         return InputSuggestAjax.COMPONENT_TYPE;
@@ -46,6 +47,7 @@ public class InputSuggestAjaxTag extends SuggestAjaxTag
     public void release() {
         super.release();
         _itemLabelMethod = null;
+        _autoComplete = null;
     }
 
     protected void setProperties(UIComponent component) {
@@ -65,10 +67,16 @@ public class InputSuggestAjaxTag extends SuggestAjaxTag
                 throw new IllegalStateException("Invalid expression " + _itemLabelMethod);
             }
         }
+        setBooleanProperty(component, "autoComplete", _autoComplete);
     }
 
     public void setItemLabelMethod(String itemLabelMethod)
     {
         _itemLabelMethod = itemLabelMethod;
+    }
+
+    public void setAutoComplete(String autoComplete)
+    {
+        _autoComplete = autoComplete;
     }
 }
