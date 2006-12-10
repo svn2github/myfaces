@@ -22,29 +22,19 @@ package org.apache.myfaces.custom.dojo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
-import java.io.IOException;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import java.util.HashMap;
-import java.util.Iterator;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Map.Entry;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Utils class for the dojo infrastructure to ease the component building
@@ -508,16 +498,23 @@ public final class DojoUtils {
         boolean first = true;
         while (it.hasNext()) {
             Entry entry = (Entry) it.next();
-            if (entry.getValue() != null) {
+            Object value = entry.getValue();
+            if (value != null) {
                 if (!first)
                     writer.write(",");
                 writer.write(entry.getKey().toString());
                 writer.write(":"); 	// only real string values should be within
                 					// ambersants, dojo req
-                boolean isString = entry.getValue() instanceof String;
+                boolean isString = value instanceof String;
+                if (isString)
+                {                      
+                    if( value.equals("true")
+                        || value.equals("false") )
+                        isString = false;
+                }
                 if (isString)
                     writer.write("'");
-                writer.write(entry.getValue().toString());
+                writer.write(value.toString());
                 if (isString)
                     writer.write("'");
                 first = false;
