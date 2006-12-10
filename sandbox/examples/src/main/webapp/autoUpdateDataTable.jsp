@@ -44,6 +44,8 @@
 
      <h:form>
 
+        <h:outputText value="Note: This component is deprecated; Use pprPeriodicalUpdate instead!" style="font-weight:bold"/>
+
         <s:autoUpdateDataTable id="data1"
                 rows="5"
                 styleClass="standardTable"
