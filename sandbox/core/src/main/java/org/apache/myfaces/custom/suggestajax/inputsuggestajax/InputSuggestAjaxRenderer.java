@@ -138,7 +138,9 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         attributes.put("dataUrl", ajaxUrl);
         attributes.put("mode", "remote");
-        attributes.put("autoComplete", inputSuggestAjax.getAutoComplete().booleanValue());
+
+        String autoComplete = inputSuggestAjax.getAutoComplete().booleanValue()?"true":"false";
+        attributes.put("autoComplete", autoComplete);
 
         if (label != null)
         {
