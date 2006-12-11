@@ -68,11 +68,11 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         {
             this.scrollOverflowDiv(trElem);
 
-            for (var j = 0; j < trElem.childNodes.length; j+=1)
+            for (j = 0; j < trElem.childNodes.length; j++)
             {
                 var tdElem = trElem.childNodes[j];
 
-                for (var a = 0; a < tdElem.childNodes.length; a+=1)
+                for (a = 0; a < tdElem.childNodes.length; a++)
                 {
                     var spanElem = tdElem.childNodes[a];
 
@@ -83,7 +83,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
                         if (elemToPutValue)
                         {
-                            if (dojo.dom.getTagName(elemToPutValue) == "input")
+                            if (elemToPutValue.tagName == "INPUT")
                             {
                                 elemToPutValue.value = spanElem.innerHTML;
                                 if (elemToPutValue.onchange)
@@ -91,15 +91,14 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                     elemToPutValue.onchange();
                                 } 
                             }
-                            else if (dojo.dom.getTagName(elemToPutValue) == "select")
+                            else if (elemToPutValue.tagName == "SELECT")
                             {
-                                for (i = 0; i < elemToPutValue.options.length; i+=1)
+                                for (i = 0; i < elemToPutValue.options.length; i++)
                                 {
                                     var optionValue = spanElem.innerHTML;
 
-                                    if (elemToPutValue.options[i].value == optionValue) {
+                                    if (elemToPutValue.options[i].value == optionValue)
                                         elemToPutValue.options[i].selected = true;
-                                    }    
                                 }
                             }
                         }
@@ -126,7 +125,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         else if (this.inputField.setSelectionRange) {
             this.inputField.setSelectionRange(len, suggestion.length);
         }
-    };
+    }
     
     org_apache_myfaces_TableSuggest.prototype.scrollOverflowDiv = function(trElem)
     {
@@ -142,7 +141,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
                 if (prevElem)
                 {
-                    this.scrollingRow+=1;
+                    this.scrollingRow++;
 
                     if (this.scrollingRow >= 4)
                     {
@@ -209,7 +208,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
                         collection.clear();
 
-                        for(k=0;k<tablePagesArray.length;k+=1)
+                        for(k=0;k<tablePagesArray.length;k++)
                         {
                             if(k==0)
                             {
@@ -217,7 +216,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                                 firstPageField = tablePagesArray[k+1];
                                 dojo.dom.insertAtPosition(firstPage, tableSuggest.popUp, "first");
                                 dojo.dom.insertAtPosition(firstPageField, tableSuggest.popUp, "last");
-                                k+=1;
+                                k++;
 					
                                 if(firstPage.rows && firstPage.rows.length == 2) 
                                 {
@@ -254,7 +253,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
         if(prevElem)
         {
-            if(dojo.dom.getTagName(prevElem) == "tr")
+            if(prevElem.tagName == "tr")
             {
                 this.putValueToField(prevElem);
                 this.addOutClass(this.actualHighlightedElem);
@@ -262,8 +261,22 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 this.actualHighlightedElem = prevElem;
             }
         }
-        
-        return;
+        else
+        {
+            var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
+
+            if(table)
+            {
+                this.previousPage(table);
+                this.addOutClass(this.actualHighlightedElem);
+                this.actualHighlightedElem = this.getLastRowElem(this.popUp);
+                this.putValueToField(this.actualHighlightedElem);
+                this.addHoverClass(this.actualHighlightedElem);
+            }
+            else
+                dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
+            }
+        }	
     }
     
     //parses the XML ajax response data
@@ -274,7 +287,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 	//parse the column names of the table to be rendered 
         var columnHeaders = root.getElementsByTagName("columnHeader");
 	var columnHeadersArray = new Array();
-	for (var i = 0; i < columnHeaders.length; i+=1)
+	for (var i = 0; i < columnHeaders.length; i++)
         {
  	    columnHeadersArray[i] = columnHeaders[i].firstChild.nodeValue;
 	}
@@ -284,22 +297,22 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         var items = root.getElementsByTagName("item");
         var itemsArray = new Array();
         
-        for (var i = 0; i < items.length; i+=1)
+        for (var i = 0; i < items.length; i++)
         {
             var currentItem = items[i];
 	    var columnsArray = new Array();
             
-            for (var j = 0; j < currentItem.childNodes.length; j+=1)
+            for (var j = 0; j < currentItem.childNodes.length; j++)
             {   
                 var currentColumn = currentItem.childNodes[j];
                 var column = new Object();
 
                 var currentChild = currentColumn.firstChild;                
-
-                do {
-                    column[currentChild.tagName] = currentChild.firstChild.nodeValue;
-                } while (currentChild = currentChild.nextSibling);
-                
+				if( currentChild != null){
+					do {
+						column[currentChild.tagName] = currentChild.firstChild.nodeValue;
+					} while (currentChild = currentChild.nextSibling);
+                }
                 columnsArray[j] = column;
 	    }
             
@@ -311,11 +324,6 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     //Render the ajax drop-down window
     org_apache_myfaces_TableSuggest.prototype.renderDropdown = function()
     {
-        if (this.actualHighlightedElem != null)
-        {
-            this.actualHighlightedElem = null;        
-        }
-
         dojo.dom.removeChildren(this.popUp);
         
         //if no data exists
@@ -339,7 +347,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 	//add the column Headers
         tr = thead.insertRow(0);
         
-        for (var i = 0; i < this.columnHeaders.length; i+=1)
+        for (var i = 0; i < this.columnHeaders.length; i++)
         {
 	    td = tr.insertCell(tr.cells.length);
             tn = document.createTextNode(this.columnHeaders[i]);
@@ -349,7 +357,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         var tableSuggestAjax = this;
 
         //adding the data items	
-	for (var i = 0; i < this.data.length; i+=1)
+	for (var i = 0; i < this.data.length; i++)
         {
             var columnsArray = this.data[i];
             tr = tbody.insertRow(tbody.rows.length);
@@ -372,7 +380,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 tableSuggest.putValueToField(obj);
             }
 	                            	
-            for (var j = 0; j < columnsArray.length; j+=1) 
+            for (var j = 0; j < columnsArray.length; j++) 
             {
                 td = tr.insertCell(tr.cells.length);
                 
@@ -386,7 +394,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                     span.appendChild(tn);
                     td.appendChild(span);
                 }
-                else {
+                else if (typeof columnsArray[j].forValue != "undefined"){
                     span = document.createElement("span");
                     span.id = "putValueTo" + columnsArray[j].forValue;
                     tn = document.createTextNode(columnsArray[j].value); 
@@ -396,6 +404,11 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                     
                     span = document.createElement("span");
                     tn = document.createTextNode(columnsArray[j].label); 
+                    span.appendChild(tn);
+                    td.appendChild(span);
+                } else {
+					span = document.createElement("span");
+                    tn = document.createTextNode(columnsArray[j].value); 
                     span.appendChild(tn);
                     td.appendChild(span);
                 }
@@ -412,23 +425,50 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     //handles the user pressing the 'Down Arrow' key
     org_apache_myfaces_TableSuggest.prototype.handleDownKey = function()
     {
-        if(this.actualHighlightedElem == null)
+        if(!this.firstHighlightedElem)
         {
-	    this.actualHighlightedElem = this.getFirstRowElem(this.popUp);
-            if (this.actualHighlightedElem == null) return;
+	    var firstOptionElem = this.getFirstRowElem(this.popUp);
+            this.putValueToField(firstOptionElem);
+            this.addHoverClass(firstOptionElem);
+            this.firstHighlightedElem = firstOptionElem;
+
+            this.actualHighlightedElem = firstOptionElem;
         }
-        else {
+        else
+        {
             var nextElem = dojo.dom.nextElement(this.actualHighlightedElem);
-            if (nextElem == null) return;
-        
-            this.addOutClass(this.actualHighlightedElem);
-            this.actualHighlightedElem = nextElem;
+
+            if(nextElem)
+            {
+                if(nextElem.tagName == "tr")
+                {
+                    this.putValueToField(nextElem);
+                    this.addOutClass(this.actualHighlightedElem);
+                    this.addHoverClass(nextElem);
+                    this.actualHighlightedElem = nextElem
+                }
+            }
+            else
+            {
+                var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
+                var pageField = dojo.dom.nextElement(table);
+
+                if(pageField)
+                {
+                    if(pageField.tagName == "div")
+                    {
+                        this.nextPage(pageField);
+                        this.firstHighlightedElem = this.getFirstRowElem(this.popUp);
+                        this.putValueToField(this.firstHighlightedElem);
+                        this.addOutClass(this.actualHighlightedElem);
+                        this.addHoverClass(this.firstHighlightedElem);
+                        this.actualHighlightedElem = this.firstHighlightedElem;
+                    }
+                }
+                else
+                    dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
+            }
         }
-        
-        this.putValueToField(this.actualHighlightedElem);
-        this.addHoverClass(this.actualHighlightedElem);
-        
-        return;    
     } 
     
 
@@ -602,11 +642,14 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         if (this.saveOldValues)
         {
             this.oldValues = new Object();
-            for (var i = 0; i < this.fieldNames.length; i+=1)
+            for (var i = 0; i < this.fieldNames.length; i++)
             {
-                var fieldName = this.fieldNames[i];
-                var field = dojo.byId(fieldName);
-                this.oldValues[fieldName] = field.value;
+				if(typeof this.fieldNames[i] != "undefined")
+				{
+					var fieldName = this.fieldNames[i];
+					var field = dojo.byId(fieldName);
+					this.oldValues[fieldName] = field.value;
+                }
             }
             this.saveOldValues = false;
         }
@@ -632,7 +675,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                         
             if (tableSuggest.data == null) return;
             //search if this value is from the list of acceptable values
-            for (var i = 0; i < tableSuggest.data.length; i+=1)
+            for (var i = 0; i < tableSuggest.data.length; i++)
             {
 	        var item = tableSuggest.data[i];
                 var primaryColumn = item[0];
@@ -643,11 +686,13 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 }
             }
             //validation failed : restore the original values of all the fields (including foreign-key fields)
-            for (var i = 0; i < tableSuggest.fieldNames.length; i+=1)
+            for (var i = 0; i < tableSuggest.fieldNames.length; i++)
             {   
                 var fieldName = tableSuggest.fieldNames[i];
                 var field = dojo.byId(fieldName);
-                field.value = tableSuggest.oldValues[fieldName]; 
+                if(field != null ){
+					field.value = tableSuggest.oldValues[fieldName]; 
+                }
                 //tableSuggest.inputField.value = "";
                 //tableSuggest.inputField.focus();
             }
@@ -658,7 +703,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     
     org_apache_myfaces_TableSuggest.prototype.updateForeignKeyFields = function(row) 
     {
-        for (var i = 0; i < row.length; i+=1)
+        for (var i = 0; i < row.length; i++)
         {
             var column = row[i];
             var fieldId, field;
@@ -671,8 +716,10 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
             }
             else {
                 fieldId = column.forValue;
-                field = dojo.byId(fieldId);     
-                field.value = column.value;
+                field = dojo.byId(fieldId);
+                if(field != null && field != "undefined" && field.tagName == "INPUT"){    
+					field.value = column.value;
+                }
             }
         }
     }
@@ -744,5 +791,5 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         this.handleRequestResponse(this);
         
     };
-}
+
 

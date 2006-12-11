@@ -70,7 +70,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
         DojoUtils.addRequire(context, component, "dojo.event.*");
         DojoUtils.addRequire(context, component, "dojo.string");
-        DojoUtils.addRequire(context, component, "dojo.fx.html");
+        DojoUtils.addRequire(context, component, "dojo.lfx.html");
         DojoUtils.addRequire(context, component, "dojo.lang");
         DojoUtils.addRequire(context, component, "dojo.html");
         DojoUtils.addRequire(context, component, "dojo.style");
@@ -391,6 +391,10 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                         response.append(
                                 htmlOutputText.getValue());
                         response.append("</value>");
+                    } else {
+						response.append("<value>");
+                        response.append(htmlOutputText.getValue());
+                        response.append("</value>");
                     }
                     response.append("</column>");
                 }
@@ -654,5 +658,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     }
 
 }
+
 
 
