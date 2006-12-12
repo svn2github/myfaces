@@ -106,6 +106,7 @@ public class StreamingAddResource implements AddResource
     private static final String PATH_SEPARATOR = "/";
 
     protected static final Log log = LogFactory.getLog(StreamingAddResource.class);
+	protected static final Log logSend = LogFactory.getLog(StreamingAddResource.class.getName() + ".SEND");
 
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
@@ -771,7 +772,8 @@ public class StreamingAddResource implements AddResource
         {
             resourceUri = uri.substring(posEndCacheKey + 1);
         }
-        try
+
+		try
         {
             Class resourceLoader = getClass(className);
             validateResourceLoader(resourceLoader);
@@ -782,29 +784,47 @@ public class StreamingAddResource implements AddResource
         catch (ClassNotFoundException e)
         {
             log.error("Could not find class for name: " + className, e);
-            response.sendError(HttpServletResponse.SC_NOT_FOUND,
+			sendError(response, HttpServletResponse.SC_NOT_FOUND,
                     "Could not find resourceloader class for name: " + className);
-        }
+		}
         catch (InstantiationException e)
         {
             log.error("Could not instantiate class for name: " + className, e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+            sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Could not instantiate resourceloader class for name: " + className);
         }
         catch (IllegalAccessException e)
         {
             log.error("Could not access class for name: " + className, e);
-            response.sendError(HttpServletResponse.SC_FORBIDDEN,
+            sendError(response, HttpServletResponse.SC_FORBIDDEN,
                     "Could not access resourceloader class for name: " + className);
         }
+		catch (IOException e)
+		{
+			logSend.error("Error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
+			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
         catch (Throwable e)
         {
-            log.error("Error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            log.error("Unknown error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
+            sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
-    public boolean hasHeaderBeginInfos(HttpServletRequest request)
+	protected void sendError(HttpServletResponse response, int errorCode, String errorText)
+		throws IOException
+	{
+		try
+		{
+			response.sendError(errorCode, errorText);
+		}
+		catch (IllegalStateException e)
+		{
+			logSend.error("Could not send error, maybe some data has already been sent.", e);
+		}
+	}
+
+	public boolean hasHeaderBeginInfos(HttpServletRequest request)
     {
         throw new UnsupportedOperationException();
     }
