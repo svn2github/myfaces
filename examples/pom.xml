@@ -346,7 +346,7 @@
                                                    email="${myfaces.hostedqa.email}"
                                                    password="${myfaces.hostedqa.password}">
                                             <fileSet dir="${basedir}/src/test/selenium"
-                                                     excludes="TestSuite.html"/>
+                                                     excludes="TestSuite*.html,*FireFox.html"/>
                                         </playsuite>
                                     </tasks>
                                 </configuration>
