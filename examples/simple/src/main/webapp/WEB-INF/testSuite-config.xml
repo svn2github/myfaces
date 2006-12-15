@@ -14,6 +14,18 @@
 			<to-view-id>/testSuite/home.jsp</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>hForm</from-outcome>
+			<to-view-id>/testSuite/hForm.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>hFormWithInputs</from-outcome>
+			<to-view-id>/testSuite/hFormWithInputs.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>hFormWithSelects</from-outcome>
+			<to-view-id>/testSuite/hFormWithSelects.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>hGraphicImage</from-outcome>
 			<to-view-id>/testSuite/hGraphicImage.jsp</to-view-id>
 		</navigation-case>

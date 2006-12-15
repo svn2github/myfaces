@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>hFormWithSelectsTest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">hFormWithSelectsTest</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/myfaces-example-simple/testSuite/home.jsf</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/myfaces-example-simple/testSuite/hFormWithSelects.jsf</td>
+	<td></td>
+</tr>
+<!-- Testing h:selectBooleanCheckbox -->
+<tr>
+	<td>verifyAttribute</td>
+	<td>//input[@id="selectBooleanCheckboxForm:hSelectBooleanCheckboxFalse"]@type</td>
+	<td>checkbox</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//input[@id="selectBooleanCheckboxForm:hSelectBooleanCheckboxFalse"]</td>
+	<td>off</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//input[@id="selectBooleanCheckboxForm:hSelectBooleanCheckboxTrue"]</td>
+	<td>on</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
