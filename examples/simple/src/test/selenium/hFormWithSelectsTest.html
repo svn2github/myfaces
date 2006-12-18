@@ -34,6 +34,89 @@
 	<td>//input[@id="selectBooleanCheckboxForm:hSelectBooleanCheckboxTrue"]</td>
 	<td>on</td>
 </tr>
+<!-- Testing h:selectManyCheckbox -->
+<tr>
+	<td>assertElementPresent</td>
+	<td>document.forms[1].elements['selectManyCheckboxForm:hSelectManyCheckbox'][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTable</td>
+	<td>selectManyCheckboxForm:hSelectManyCheckbox.0.0</td>
+	<td>Check Box 1</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>//input[@name="selectManyCheckboxForm:hSelectManyCheckbox" and @value="CB2"]@disabled</td>
+	<td>glob:*</td>
+</tr>
+<!-- Testing h:selectManyCheckbox  Page Direction -->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//table[@id="selectManyCheckboxPageDirectionForm:hSelectManyCheckbox"]//tr[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//table[@id="selectManyCheckboxPageDirectionForm:hSelectManyCheckbox"]//tr[6]</td>
+	<td></td>
+</tr>
+<!-- Testing h:selectManyCheckbox  Line Direction -->
+<tr>
+	<td>assertElementPresent</td>
+	<td>//table[@id="selectManyCheckboxLineDirectionForm:hSelectManyCheckbox"]//tr/td[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//table[@id="selectManyCheckboxLineDirectionForm:hSelectManyCheckbox"]//tr/td[6]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementNotPresent</td>
+	<td>//table[@id="selectManyCheckboxLineDirectionForm:hSelectManyCheckbox"]//tr[2]</td>
+	<td></td>
+</tr>
+<!-- Testing h:selectManyListBoxForm" -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//select[@name="selectManyListBoxForm:hSelectManyListbox"]@size</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>//select[@name="selectManyListBoxForm:hSelectManyListbox"]/option[1]@value</td>
+	<td>LB1</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>//select[@name="selectManyListBoxForm:hSelectManyListbox"]//option[@value="LB2"]@disabled</td>
+	<td>glob:*</td>
+</tr>
+<!-- Testing h:selectManyMenuForm" -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//select[@name="selectManyMenuForm:hSelectManyMenu"]@size</td>
+	<td>1</td>
+</tr>
+<!-- Testing h:selectOneListboxForm" -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//select[@name="selectOneListBoxForm:hSelectOneListbox"]@size</td>
+	<td>10</td>
+</tr>
+<!-- Testing h:selectOneMenuForm" -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//select[@name="selectOneMenuForm:hSelectOneMenu"]@size</td>
+	<td>1</td>
+</tr>
+<!-- Testing h:selectOneRadioForm" -->
+<tr>
+	<td>assertAttribute</td>
+	<td>//input[@name="selectOneRadioForm:hSelectOneRadio" and @value="RB1"]@type</td>
+	<td>radio</td>
+</tr>
 
 </tbody></table>
 </body>
