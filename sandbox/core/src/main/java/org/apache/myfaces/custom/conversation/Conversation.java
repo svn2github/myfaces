@@ -145,6 +145,11 @@ public class Conversation
 		return beans.get(name);
 	}
 
+	public Object removeBean(String name)
+	{
+		return beans.remove(name);
+	}
+
 	/**
 	 * returns true if this conversation hold the persistence manager (aka EntityManager)
 	 */
