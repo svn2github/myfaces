@@ -46,6 +46,15 @@
       <h:outputText id="escape" escape="true" value="10 &gt; 5" />
       <h:outputText value=" | " />
       <h:outputText id="notEscape" escape="false" value="10 &gt; 5" />
+      <h:outputText value=" | " />
+      <h:outputText id="utf8charEscaped" value="δόφί" escape="true" /> 
+      <h:outputText value=" | " />
+      <h:outputText id="utf8charNotEscaped" value="δόφί" escape="false" /> 
+      <h:outputText value=" | " />
+      <h:outputText id="utf8char" value="δόφί" /> 
+      <h:outputText value=" | " />
+      <h:outputText id="utf8charInEscapedFormat" value="&#228;&#252;&#246;&#223;" escape="false" /> 
+
 
       <h:form id="footerLinks">
         <h:commandLink id="homeLink" action="home" value="Home" />
