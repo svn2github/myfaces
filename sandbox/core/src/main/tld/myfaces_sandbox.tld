@@ -906,7 +906,6 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjaxTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Extends standard commandButton allowing for dynamic ajax submitting of the form.</description>
-		&html_button_attributes;
         &standard_command_button_attributes;
         &ext_forceId_attribute;
 		&ext_ajax_attributes;
