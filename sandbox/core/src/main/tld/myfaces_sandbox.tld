@@ -1057,7 +1057,6 @@ Sandbox-related entities.
 		<display-name>outputText component</display-name>
 		<description>Extending the outputText component in order to introduce the for attribute.</description>
         &standard_output_text_attributes;
-        &ui_output_attributes;
         <attribute>
 			<name>for</name>
 			<required>false</required>
