@@ -1118,10 +1118,7 @@ Sandbox-related entities.
         <body-content>JSP</body-content>
         <display-name>fishEye commandLink component</display-name>
         <description>CommandLink component that can be used in nodeStamp facet</description>
-        &faces_id_optional_attribute;
-        &faces_rendered_attribute;
         &ui_command_attributes;
-
         &html_fishey_commandlink_attributes;
     </tag>
 
