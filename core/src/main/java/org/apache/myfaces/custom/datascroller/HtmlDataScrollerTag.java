@@ -326,4 +326,29 @@ public class HtmlDataScrollerTag
 	public void setOndblclick(String ondblclick) {
 		this._ondblclick = ondblclick;
 	}
+
+	public void setNextStyleClass(String styleClass) {
+		_nextStyleClass = styleClass;
+	}
+
+	public void setLastStyleClass(String styleClass) {
+		_lastStyleClass = styleClass;
+	}
+
+	public void setFastfStyleClass(String styleClass) {
+		_fastfStyleClass = styleClass;
+	}
+
+	public void setFastrStyleClass(String styleClass) {
+		_fastrStyleClass = styleClass;
+	}
+
+	public void setFirstStyleClass(String styleClass) {
+		_firstStyleClass = styleClass;
+	}
+
+	public void setPreviousStyleClass(String styleClass) {
+		_previousStyleClass = styleClass;
+	}
+	
 }
