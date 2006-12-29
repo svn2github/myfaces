@@ -126,7 +126,7 @@ Sandbox-related entities.
 <!ENTITY table_suggest_ajax_attributes       SYSTEM "entities/table_suggest_ajax_attributes.xml">
 <!ENTITY suggest_ajax_attributes       SYSTEM "entities/suggest_ajax_attributes.xml">
 <!ENTITY html_fisheye_list_attributes	SYSTEM "entities/html_fisheyelist_attributes.xml">
-<!ENTITY html_fishey_commandlink_attributes	SYSTEM "entities/html_fishey_commandlink_attributes.xml">
+<!ENTITY html_fisheye_commandlink_attributes	SYSTEM "entities/html_fisheye_commandlink_attributes.xml">
 <!ENTITY html_timed_notifier_attributes	SYSTEM "entities/html_timed_notifier_attributes.xml">
 <!ENTITY start_conversation_attributes	SYSTEM "entities/start_conversation_attributes.xml">
 <!ENTITY end_conversation_attributes	SYSTEM "entities/end_conversation_attributes.xml">
@@ -1119,7 +1119,7 @@ Sandbox-related entities.
         <display-name>fishEye commandLink component</display-name>
         <description>CommandLink component that can be used in nodeStamp facet</description>
         &ui_command_attributes;
-        &html_fishey_commandlink_attributes;
+        &html_fisheye_commandlink_attributes;
     </tag>
 
 	<!-- timed notifier -->
@@ -1338,16 +1338,6 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
 			<description>Scopecontainer for downloaded Scripts</description>
-		</attribute>
-	
-		<attribute>
-			<name>executeScripts</name>
-			<required>false</required>
-			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
-			<description>
-				If true scripts will be evaled after rendering
-			</description>
 		</attribute>
 	
 		<attribute>
