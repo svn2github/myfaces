@@ -32,11 +32,13 @@ public class MyFacesTagLibTestCase extends AbstractTagLibTestCase {
 	protected static final String META_INF = "META-INF/";
 
 	protected void setUp() throws Exception {
+		
 		tldPaths = new String[3];
 		tldPaths[0] = META_INF + "myfaces_html.tld";
 		tldPaths[1] = META_INF + "myfaces_core.tld";
 		tldPaths[2] = META_INF + "tomahawk.tld";
 		// tldPaths[3] = META_INF + "myfaces_sandbox.tld";
+		
 		tlds = new Tld[tldPaths.length];
 
 		super.setUp();
