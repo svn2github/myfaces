@@ -51,11 +51,11 @@
 	<f:facet name="footer">
 		<h:panelGroup>
 			<h:commandButton value="Save" action="#{wizardController.save}">
-				<s:endConversation name="springConvData" onOutcome="success"/>
+				<s:endConversation name="wizard" onOutcome="success"/>
 			</h:commandButton>
 
 			<h:commandButton value="End conversation and jump into the mid of a new one" action="wizardPage2">
-				<s:endConversation name="springConvData" />
+				<s:endConversation name="wizard" />
 			</h:commandButton>
 
 		</h:panelGroup>

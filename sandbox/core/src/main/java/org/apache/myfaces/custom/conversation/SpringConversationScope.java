@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.context.FacesContext;
 
 /**
- * adapts the conversation scope to a new spring scope 
+ * adapts the conversation scope to a new spring scope
  */
 public class SpringConversationScope implements Scope
 {
@@ -34,6 +34,13 @@ public class SpringConversationScope implements Scope
 
 	public String getConversationId()
 	{
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ConversationManager manager = ConversationManager.getInstance(facesContext);
+		if (manager.hasConversationContext())
+		{
+			return Long.toString(manager.getConversationContextId().longValue(), 10);
+		}
+
 		return null;
 	}
 
@@ -84,7 +91,7 @@ public class SpringConversationScope implements Scope
 
 	/**
 	 * remove the bean from the conversation.
-	 * TODO: when will this be called .. and should we close the conversation then? 
+	 * TODO: when will this be called .. and should we close the conversation then?
 	 */
 	public Object remove(String name)
 	{

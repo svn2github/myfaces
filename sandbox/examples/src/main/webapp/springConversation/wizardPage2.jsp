@@ -33,7 +33,7 @@
 <body>
 <f:view>
 
-<s:ensureConversation name="wizard" redirectTo="/conversation/wizardPage1.jsp" />
+<s:ensureConversation name="springConvData" action="wizardPage1" />
 
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
@@ -46,60 +46,29 @@
 <h:outputText value="Whatever the page might tell you, no data will ever be saved ;-)." />
 <h:panelGrid columns="2">
 	<f:facet name="header">
-		<h:outputText value="Registration Wizard (Check)" />
+		<h:outputText value="Registration Wizard (page 2/3)" />
 	</f:facet>
 	<f:facet name="footer">
 		<h:panelGroup>
-			<h:commandButton value="Save" action="#{wizardController.save}">
-				<s:endConversation name="springConvData" onOutcome="success"/>
-			</h:commandButton>
-
-			<h:commandButton value="End conversation and jump into the mid of a new one" action="wizardPage2">
-				<s:endConversation name="springConvData" />
-			</h:commandButton>
-
+			<h:commandButton value="<< Prev" action="wizardPage1" immediate="true"/>
+			<h:commandButton value="Next >>" action="wizardPage3" />
 		</h:panelGroup>
 	</f:facet>
 
-    <h:outputText value="Edit data on" />
-	<h:commandButton value="Page1" action="wizardPage1" />
-
-    <h:outputText value="Salutation: " />
-    <h:outputText value="#{wizardData.salutation}" />
-
-    <h:outputText value="Title: " />
-    <h:outputText value="#{wizardData.title}" />
-
-    <h:outputText value="Name: " />
-    <h:outputText value="#{wizardData.name}" />
-
-    <h:outputText value="Surename: " />
-    <h:outputText value="#{wizardData.surename}" />
-
-    <h:outputText value="Edit data on" />
-	<h:commandButton value="Page2" action="wizardPage2" />
-
     <h:outputText value="Street: " />
-    <h:outputText value="#{wizardData.street}" />
+    <h:inputText id="street" value="#{wizardData.street}" required="true"/>
 
     <h:outputText value="City: " />
-    <h:outputText value="#{wizardData.city}" />
+    <h:inputText id="city" value="#{wizardData.city}" required="true"/>
 
     <h:outputText value="State: " />
-    <h:outputText value="#{wizardData.state}" />
+    <h:inputText id="state" value="#{wizardData.state}" required="true"/>
 
     <h:outputText value="Province: " />
-    <h:outputText value="#{wizardData.province}" />
+    <h:inputText id="province" value="#{wizardData.province}" />
 
     <h:outputText value="Postal: " />
-    <h:outputText value="#{wizardData.postal}" />
-
-    <h:outputText value="Edit data on" />
-	<h:commandButton value="Page3" action="wizardPage3" />
-
-    <h:outputText value="Info: " />
-    <t:outputText value="#{wizardData.info}" escape="false" />
-
+    <h:inputText id="postal" value="#{wizardData.postal}" required="true"/>
 </h:panelGrid>
 <h:messages showDetail="true"/>
 </h:form>

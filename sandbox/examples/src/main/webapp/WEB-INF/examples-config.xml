@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE faces-config PUBLIC
   "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
@@ -42,29 +42,27 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- managed bean for form-->                                                                             *
-
+	<!-- managed bean for form-->
     <managed-bean>
         <managed-bean-name>formBean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.form.FormBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- managed bean for autoUpdateDataTable-->
-
+	<!-- managed bean for autoUpdateDataTable-->
     <managed-bean>
         <managed-bean-name>autoUpdateDataTableBean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.autoupdatedatatable.AutoUpdateDataTableBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- managed bean for ajaxInputSuggest-->
+	<!-- managed bean for ajaxInputSuggest-->
 
-    <managed-bean>
-        <managed-bean-name>inputSuggestAjax</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+	<managed-bean>
+		<managed-bean-name>inputSuggestAjax</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 
   <!-- Managed Beans for inputSuggest.jsp -->
 
@@ -356,7 +354,7 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
-	
+
 	<!--  Managed bean for the selectItems component -->
 	<managed-bean>
 		<managed-bean-name>selectItemsBean</managed-bean-name>
@@ -482,7 +480,7 @@
     	<managed-bean-class>org.apache.myfaces.examples.submitOnEvent.SubmitOnEventBean</managed-bean-class>
     	<managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <managed-bean>
     	<managed-bean-name>excelExportBean</managed-bean-name>
     	<managed-bean-class>org.apache.myfaces.examples.excelexport.ExcelExportBean</managed-bean-class>
@@ -533,7 +531,7 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<!-- conversation -->
 	<navigation-rule>
 		<navigation-case>
@@ -629,7 +627,11 @@
         <!--</view-handler>-->
     <!--</application>-->
 
-    <converter>
+	<application>
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+	</application>
+
+	<converter>
         <converter-id>inputSuggestAjaxConverter</converter-id>
         <converter-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxConverter</converter-class>
     </converter>

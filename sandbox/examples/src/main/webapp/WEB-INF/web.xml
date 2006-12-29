@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4" id="WebApp_ID">
+
+  <listener>
+    <listener-class> org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
   <description>debug web.xml</description>
   <display-name>
   tomahawk-sandbox-examples</display-name>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/examples-springConfig.xml</param-value>
+  </context-param>
+
   <context-param>
     <description>Comma separated list of URIs of (additional) faces config files.
             (e.g. /WEB-INF/my-config.xml)
