@@ -19,6 +19,8 @@
 package org.apache.myfaces.custom.newspaper;
 
 import javax.faces.component.UIComponent;
+
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlDataTableTagBase;
 
 /**
@@ -31,6 +33,8 @@ public class HtmlNewspaperTableTag
 {
     /** the number of newspaper columns */
     private String newspaperColumns = null;
+	
+	private String newspaperOrientation = null;
     
     public void release() {
         super.release();
@@ -48,13 +52,18 @@ public class HtmlNewspaperTableTag
     public void setNewspaperColumns(String newspaperColumns) {
         this.newspaperColumns = newspaperColumns;
     }
-    
-    /**
+	
+    public void setNewspaperOrientation(String newspaperOrientation) {
+		this.newspaperOrientation = newspaperOrientation;
+	}
+
+	/**
      * Apply properties from this tag to the specified component.
      */
     protected void setProperties(UIComponent component) {
         super.setProperties(component);
         
         setIntegerProperty(component, HtmlNewspaperTable.NEWSPAPER_COLUMNS_PROPERTY, newspaperColumns);
+		setStringProperty(component, HtmlDataTable.NEWSPAPER_ORIENTATION_PROPERTY, newspaperOrientation);
     }
 }
