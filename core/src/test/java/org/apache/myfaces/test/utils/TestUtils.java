@@ -46,6 +46,84 @@ public final class TestUtils
      */
     public static void addDefaultRenderers(FacesContext facesContext)
     {
+        // Standard HTML Renderers
+        addRenderer(facesContext, "javax.faces.Command", "javax.faces.Button",
+                "org.apache.myfaces.renderkit.html.HtmlButtonRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectBoolean",
+                "javax.faces.Checkbox",
+                "org.apache.myfaces.renderkit.html.HtmlCheckboxRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectMany",
+                "javax.faces.Checkbox",
+                "org.apache.myfaces.renderkit.html.HtmlCheckboxRenderer");
+
+        addRenderer(facesContext, "javax.faces.Form", "javax.faces.Form",
+                "org.apache.myfaces.renderkit.html.HtmlFormRenderer");
+
+        addRenderer(facesContext, "javax.faces.Panel", "javax.faces.Grid",
+                "org.apache.myfaces.renderkit.html.HtmlGridRenderer");
+
+        addRenderer(facesContext, "javax.faces.Panel", "javax.faces.Group",
+                "org.apache.myfaces.renderkit.html.HtmlGroupRenderer");
+
+        addRenderer(facesContext, "javax.faces.Input", "javax.faces.Hidden",
+                "org.apache.myfaces.renderkit.html.HtmlHiddenRenderer");
+
+        addRenderer(facesContext, "javax.faces.Graphic", "javax.faces.Image",
+                "org.apache.myfaces.renderkit.html.HtmlImageRenderer");
+
+        addRenderer(facesContext, "javax.faces.Output", "javax.faces.Label",
+                "org.apache.myfaces.renderkit.html.HtmlLabelRenderer");
+
+        addRenderer(facesContext, "javax.faces.Output", "javax.faces.Link",
+                "org.apache.myfaces.renderkit.html.HtmlLinkRenderer");
+
+        addRenderer(facesContext, "javax.faces.Command", "javax.faces.Link",
+                "org.apache.myfaces.renderkit.html.HtmlLinkRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectOne",
+                "javax.faces.Listbox",
+                "org.apache.myfaces.renderkit.html.HtmlListboxRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectMany",
+                "javax.faces.Listbox",
+                "org.apache.myfaces.renderkit.html.HtmlListboxRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectOne", "javax.faces.Menu",
+                "org.apache.myfaces.renderkit.html.HtmlMenuRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectMany", "javax.faces.Menu",
+                "org.apache.myfaces.renderkit.html.HtmlMenuRenderer");
+
+        addRenderer(facesContext, "javax.faces.Message", "javax.faces.Message",
+                "org.apache.myfaces.renderkit.html.HtmlMessageRenderer");
+
+        addRenderer(facesContext, "javax.faces.Output", "javax.faces.Format",
+                "org.apache.myfaces.renderkit.html.HtmlFormatRenderer");
+
+        addRenderer(facesContext, "javax.faces.Messages",
+                "javax.faces.Messages",
+                "org.apache.myfaces.renderkit.html.HtmlMessagesRenderer");
+
+        addRenderer(facesContext, "javax.faces.SelectOne", "javax.faces.Radio",
+                "org.apache.myfaces.renderkit.html.HtmlRadioRenderer");
+
+        addRenderer(facesContext, "javax.faces.Input", "javax.faces.Secret",
+                "org.apache.myfaces.renderkit.html.HtmlSecretRenderer");
+
+        addRenderer(facesContext, "javax.faces.Data", "javax.faces.Table",
+                "org.apache.myfaces.renderkit.html.HtmlTableRenderer");
+
+        addRenderer(facesContext, "javax.faces.Input", "javax.faces.Textarea",
+                "org.apache.myfaces.renderkit.html.HtmlTextareaRenderer");
+
+        addRenderer(facesContext, "javax.faces.Input", "javax.faces.Text",
+                "org.apache.myfaces.renderkit.html.HtmlTextRenderer");
+
+        addRenderer(facesContext, "javax.faces.Output", "javax.faces.Text",
+                "org.apache.myfaces.renderkit.html.HtmlTextRenderer");
+
         // extended standard renderers
 
         addRenderer(facesContext, "javax.faces.Command",
