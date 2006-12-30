@@ -19,10 +19,12 @@
 
 package org.apache.myfaces.custom.tree2;
 
+import java.util.Stack;
+
+import javax.faces.component.html.HtmlForm;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
-import java.util.Stack;
 
 /**
  * - .. Root (0)
@@ -84,6 +86,7 @@ public class HtmlTreeRendererTest extends AbstractTreeTestCase
      */
     public void testHideRootNodeServer() throws Exception
     {
+        tree.setParent(new HtmlForm());
         tree.setClientSideToggle(false);
         tree.setShowRootNode(false);
 
