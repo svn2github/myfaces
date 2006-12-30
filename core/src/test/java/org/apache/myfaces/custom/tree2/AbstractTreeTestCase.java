@@ -19,19 +19,20 @@
 
 package org.apache.myfaces.custom.tree2;
 
-import org.apache.shale.test.base.AbstractJsfTestCase;
-import org.apache.shale.test.mock.MockRenderKitFactory;
-import org.apache.shale.test.mock.MockResponseWriter;
-import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
-
 import java.io.BufferedWriter;
 import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.util.Stack;
+
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import junit.framework.TestSuite;
+
 import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
+import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
  * An abstract test case that sets up a Tree2 for testing using the structure below.
@@ -59,7 +60,7 @@ import junit.framework.Test;
  * | .. d (0:3)
  */
 
-public class AbstractTreeTestCase extends AbstractJsfTestCase
+public class AbstractTreeTestCase extends AbstractTomahawkJsfTestCase
 {
     static final String DEFAULT_NODE_TYPE = "default";
     static final String TREE_ID = "some_foo_tree";
@@ -89,9 +90,6 @@ public class AbstractTreeTestCase extends AbstractJsfTestCase
         // additional setup not provided automatically by the shale mock stuff
         facesContext.getExternalContext().getApplicationMap().put(MyfacesConfig.class.getName(), new MyfacesConfig());
         facesContext.setResponseWriter(new MockResponseWriter(new BufferedWriter(new CharArrayWriter()), null, null));
-
-        // TODO remove these two lines once shale-test goes alpha, see MYFACES-1155
-        facesContext.getViewRoot().setRenderKitId(MockRenderKitFactory.HTML_BASIC_RENDER_KIT);
         
         // set up the test tree with the standard data
         rootNode = new TreeNodeBase(DEFAULT_NODE_TYPE, "Root", "Root", false);
