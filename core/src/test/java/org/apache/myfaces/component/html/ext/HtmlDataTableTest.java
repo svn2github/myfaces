@@ -18,31 +18,30 @@
  */
 package org.apache.myfaces.component.html.ext;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
-import java.io.Serializable;
 
 import javax.faces.FactoryFinder;
-import javax.faces.el.ValueBinding;
-import javax.faces.model.ListDataModel;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+import javax.faces.model.ListDataModel;
 
 import junit.framework.Test;
 
-import org.apache.shale.test.base.AbstractJsfTestCase;
-import org.apache.shale.test.mock.MockRenderKitFactory;
+import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
 
 /**
  * @author Mathias Br�kelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlDataTableTest extends AbstractJsfTestCase
+public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
 {
     
     private HtmlDataTable _dataTable;
@@ -58,9 +57,6 @@ public class HtmlDataTableTest extends AbstractJsfTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-        // TODO remove these two lines once shale-test goes alpha, see MYFACES-1155
-    	FactoryFinder.releaseFactories();
-        facesContext.getViewRoot().setRenderKitId(MockRenderKitFactory.HTML_BASIC_RENDER_KIT);
         _dataTable = new HtmlDataTable();
     }
 
