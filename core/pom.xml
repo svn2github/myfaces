@@ -235,6 +235,7 @@
         <configuration>
           <excludes>
             <exclude>**/*HtmlDateRendererTest*</exclude>
+            <exclude>**/TestUtils.java</exclude>
           </excludes>
         </configuration>
       </plugin>
