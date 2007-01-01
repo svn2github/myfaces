@@ -123,7 +123,6 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
     {
         // Define the component
         UIData dataTable = new HtmlDataTable();
-        dataTable.setParent(new HtmlForm());
 
         // Add rows to the table
         List rows = new ArrayList();
@@ -135,7 +134,7 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
         // Render the component
         try
         {
-            TestUtils.renderComponent(facesContext, dataTable.getParent());
+            TestUtils.renderComponent(facesContext, dataTable);
         }
         catch (IOException e)
         {
