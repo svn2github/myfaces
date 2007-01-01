@@ -40,14 +40,13 @@ import org.w3c.dom.Document;
 /**
  * Insures the following ...
  * <ul>
- * <li> all tag handlers are in the classpath</li>
- * <li> tag handlers do not appear in the TLD more than once</li>
- * <li> tag handler attributes do not occur mare than once</li>
- * <li> tag handlers have setters for all tag attributes</li>
+ * <li> Tag handlers have setters for all tag attributes</li>
+ * <li> All tag handlers are in the classpath</li>
+ * <li> Tag handlers do not appear in the TLD more than once</li>
+ * <li> Tag handler attributes do not occur mare than once</li>
  * </ul>
- * TODO get this in Shale test jar ?
  * 
- * @author Dennis C. Byrne
+ * @author Dennis Byrne
  * @see http://maven-taglib.sourceforge.net/ for dependency download
  */
 
@@ -57,13 +56,8 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 	protected Tld[] tlds;
 
 	protected String[] tldPaths;
-
-	private static final String WARNING = " This test can fail when "
-			+ "validating TLDs produced by any project, not necessarily "
-			+ "the project it is run from.  This is a temporary "
-			+ "problem, allowing us to avoid some undesired "
-			+ "dependencies or copy and pasting this class in "
-			+ "multiple projects.";
+	
+	private ClassLoader classLoader = getClass().getClassLoader();
 
 	/**
 	 * Unmarshall TLDs to an object model. TLDs are supplied by a subclass.
@@ -75,14 +69,22 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 			throw new NullPointerException(
 					"tldPaths cannot point to null before setUp() is called");
 
-		for (int t = 0; t < tldPaths.length; t++) {
+		int length = tldPaths.length;
+
+		if (length == 0)
+			throw new IllegalStateException(
+					"tldPaths should have at least one resource path");
+
+		tlds = new Tld[length];
+
+		for (int t = 0; t < length; t++) {
 			String name = tldPaths[t];
-			InputStream stream = getClass().getClassLoader()
-					.getResourceAsStream(name);
+
+			InputStream stream = classLoader.getResourceAsStream(name);
 
 			if (stream == null)
 				throw new NullPointerException(
-						"couldn't get an input stream for " + name + WARNING);
+						"couldn't get an input stream for " + name);
 
 			tlds[t] = TldTestUtils.getTld(name, stream);
 			stream.close();
@@ -103,8 +105,7 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 					throw new NullPointerException("tag");
 
 				String name = tag.getName();
-				String msg = name + " found more than once in " + tldPaths[lib]
-						+ WARNING;
+				String msg = name + " found more than once in " + tldPaths[lib];
 				assertFalse(msg, tagNames.contains(name));
 				tagNames.add(name);
 			} // end t
@@ -137,7 +138,7 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 			TagAttribute att = atts[a++];
 			String name = att.getAttributeName();
 			String msg = " @" + name + " of " + path + ":" + tagName
-					+ " is duplicated." + WARNING;
+					+ " is duplicated.";
 			assertFalse(msg, attributeNames.contains(name));
 			attributeNames.add(name);
 
@@ -159,33 +160,41 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 			for (int s = 0; s < tags.length; s++) {
 				Tag tag = tags[s];
 				String filename = tld.getFilename();
-				Object object = TldTestUtils.getTagClassInstance(tag, filename,
-						getClass().getClassLoader());
+
+				Object object = TldTestUtils.makeTagClassInstance(tag,
+						filename, classLoader);
 
 				assertSetters(tag, filename, object);
 
 			} // end for tag
 		} // end for lib
 
-	} // end method
+	}
 
 	private void assertSetters(final Tag tag, final String path,
 			final Object object) {
 
 		TagAttribute[] attributes = tag.getAttributes();
+		String tagName = tag.getName();
 
 		for (int a = 0; a < attributes.length; a++) {
 			TagAttribute attribute = attributes[a];
 			String name = attribute.getAttributeName();
-			String msg = path + ":" + tag.getName() + "@" + name
+
+			if (name == null || "".equals(name.trim()))
+				throw new IllegalStateException(path + ":" + tagName
+						+ " has a nameless attribute ");
+
+			String msg = path + ":" + tagName + "@" + name
 					+ " exists, but " + object.getClass().getName()
-					+ " has no setter." + WARNING;
+					+ " has no setter.";
+			
 			assertTrue(msg, PropertyUtils.isWriteable(object, name));
 		} // end for attributes
 
 	}
 
-	public static class TldTestUtils {
+	private static class TldTestUtils {
 		private static Log log = LogFactory.getLog(TldTestUtils.class);
 
 		private static DocumentBuilderFactory dbf = DocumentBuilderFactory
@@ -202,28 +211,7 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 			return TldParser.parse(doc, name);
 		}
 
-		public static TagAttribute getTagAttributeByName(String name,
-				TagAttribute[] tagAttributes) {
-
-			for (int a = 0; a < tagAttributes.length; a++) {
-				TagAttribute tagAttribute = tagAttributes[a];
-				if (tagAttribute.getAttributeName().equals(name))
-					return tagAttribute;
-			}
-			return null;
-		}
-
-		public static Tag getTagByName(String name, Tag[] tags) {
-
-			for (int t = 0; t < tags.length; t++) {
-				Tag tag = tags[t];
-				if (tag.getName().equals(name))
-					return tag;
-			}
-			return null;
-		}
-
-		public static Object getTagClassInstance(Tag tag, String filename,
+		public static Object makeTagClassInstance(Tag tag, String filename,
 				ClassLoader classLoader) throws Exception {
 
 			String clazzName = tag.getTagClass();
