@@ -336,7 +336,15 @@ public class HtmlDataTableTag
 		return _bodyStyle;
 	}
 
+    public void setBodyStyle(String bodyStyle) {
+        _bodyStyle = bodyStyle;
+    }
+
     public String getBodyStyleClass() {
-		return _bodyStyleClass;
+        return _bodyStyleClass;
+    }
+
+    public void setBodyStyleClass(String bodyStyleClass) {
+        _bodyStyleClass = bodyStyleClass;
 	}
 }

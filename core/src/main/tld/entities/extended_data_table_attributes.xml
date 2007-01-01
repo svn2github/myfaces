@@ -260,3 +260,16 @@
               "toggleDetail" which expand/collapse the current detail row.
          </description>
       </attribute>
+        <attribute>
+            <name>bodyStyleClass</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML class attribute for the table body tag.</description>
+        </attribute>
+        <attribute>
+            <name>bodyStyle</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>Corresponds to the HTML style attribute for the table body tag.</description>
+        </attribute>
+      
