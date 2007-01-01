@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.component.html.ext;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
+import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.ListDataModel;
@@ -36,6 +38,7 @@ import javax.faces.model.ListDataModel;
 import junit.framework.Test;
 
 import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
+import org.apache.myfaces.test.utils.TestUtils;
 
 /**
  * @author Mathias Br�kelmann (latest modification by $Author$)
@@ -43,28 +46,33 @@ import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
  */
 public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
 {
-    
+
     private HtmlDataTable _dataTable;
 
-    public HtmlDataTableTest(String name) {
-		super(name);
-	}
+    public HtmlDataTableTest(String name)
+    {
+        super(name);
+    }
 
-	public static Test suite() {
-		return null; // keep this method or maven won't run it
-	}
-    
+    public static Test suite()
+    {
+        return null; // keep this method or maven won't run it
+    }
+
     protected void setUp() throws Exception
     {
         super.setUp();
+        servletContext.addInitParameter("org.apache.myfaces.PRETTY_HTML",
+                "false");
+
         _dataTable = new HtmlDataTable();
     }
 
     protected void tearDown() throws Exception
     {
-    	super.tearDown();
-    	// once shale-test is updated in maven, this will not be necessary
-    	FactoryFinder.releaseFactories();
+        super.tearDown();
+        // once shale-test is updated in maven, this will not be necessary
+        FactoryFinder.releaseFactories();
         _dataTable = null;
     }
 
@@ -81,17 +89,17 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
         for (int i = 0; i < 10; i++)
         {
             _dataTable.setRowIndex(i);
-            assertTrue("Duplicate client id while iterating rows",
-                    rowClientIds.add(_dataTable.getClientId(facesContext)));
+            assertTrue("Duplicate client id while iterating rows", rowClientIds
+                    .add(_dataTable.getClientId(facesContext)));
         }
         _dataTable.setRowIndex(-1);
         assertEquals(baseClientId, _dataTable.getClientId(facesContext));
     }
 
     /*
-    * Test method for
-    * 'org.apache.myfaces.component.html.ext.HtmlDataTable.findComponent(String clientId)'
-    */
+     * Test method for
+     * 'org.apache.myfaces.component.html.ext.HtmlDataTable.findComponent(String clientId)'
+     */
     public void testFindComponent()
     {
         UIInput input = createInputInTree(facesContext);
@@ -104,8 +112,35 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
 
         UIInput uiInput = (UIInput) comp;
 
-        assertEquals(uiInput.getValue(),"test2");
+        assertEquals(uiInput.getValue(), "test2");
 
+    }
+
+    /**
+     * Verify component renders with the default renderer.
+     */
+    public void testDefaultRenderer()
+    {
+        // Define the component
+        UIData dataTable = new HtmlDataTable();
+        dataTable.setParent(new HtmlForm());
+
+        // Add rows to the table
+        List rows = new ArrayList();
+        rows.add(new TestData("test1", "test1"));
+        rows.add(new TestData("test2", "test2"));
+        rows.add(new TestData("test3", "test3"));
+        dataTable.setValue(new ListDataModel(rows));
+
+        // Render the component
+        try
+        {
+            TestUtils.renderComponent(facesContext, dataTable.getParent());
+        }
+        catch (IOException e)
+        {
+            fail(e.getMessage());
+        }
     }
 
     private UIInput createInputInTree(FacesContext context)
@@ -115,9 +150,9 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
         uiData.setId("data");
 
         List li = new ArrayList();
-        li.add(new TestData("test1","test1"));
-        li.add(new TestData("test2","test2"));
-        li.add(new TestData("test3","test3"));
+        li.add(new TestData("test1", "test1"));
+        li.add(new TestData("test2", "test2"));
+        li.add(new TestData("test3", "test3"));
 
         uiData.setValue(new ListDataModel(li));
         uiData.setVar("detail");
@@ -128,7 +163,8 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
 
         UIInput input = new UIInput();
         input.setId("input");
-        input.setValueBinding("value",createValueBinding("#{detail.description}"));
+        input.setValueBinding("value",
+                createValueBinding("#{detail.description}"));
 
         column.getChildren().add(input);
 
