@@ -18,7 +18,10 @@
  */
 package org.apache.myfaces.test.utils;
 
+import java.io.IOException;
+
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKit;
 import javax.faces.render.Renderer;
@@ -483,5 +486,22 @@ public final class TestUtils
             log.error(e.getMessage(), e);
             throw new FacesException(e);
         }
+    }
+
+    /**
+     * Renderered a component and it's children.
+     * 
+     * @param context Faces Context
+     * @param component Component to be rendered.
+     * @throws IOException Thrown while rendering.
+     */
+    public static void renderComponent(FacesContext context,
+            UIComponent component) throws IOException
+    {
+        Renderer renderer = context.getRenderKit().getRenderer(
+                component.getFamily(), component.getRendererType());
+        renderer.encodeBegin(context, component);
+        renderer.encodeChildren(context, component);
+        renderer.encodeEnd(context, component);
     }
 }
