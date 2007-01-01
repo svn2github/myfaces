@@ -18,8 +18,13 @@
  */
 package org.apache.myfaces.test;
 
+import java.io.BufferedWriter;
+import java.io.CharArrayWriter;
+
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.test.utils.TestUtils;
 import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
  * Abstract Shale Test base class, which sets up the JSF environment.  If the test
@@ -42,12 +47,19 @@ public class AbstractTomahawkJsfTestCase extends AbstractJsfTestCase
     /**
      *  Setup the test environment, including the following:
      *  <ul>
+     *  <li>Set the Application Map.</li>
+     *  <li>Set a response writer</li>
      *  <li>Add Tomahawk's renderers to the faces context.</li>
      *  </ul> 
      */
     protected void setUp() throws Exception
     {
         super.setUp();
+
+        // additional setup not provided automatically by the shale mock stuff
+        facesContext.getExternalContext().getApplicationMap().put(MyfacesConfig.class.getName(), new MyfacesConfig());
+        facesContext.setResponseWriter(new MockResponseWriter(new BufferedWriter(new CharArrayWriter()), null, null));
+
         TestUtils.addDefaultRenderers(facesContext);
     }
 

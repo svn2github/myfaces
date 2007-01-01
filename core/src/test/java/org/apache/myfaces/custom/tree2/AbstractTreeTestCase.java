@@ -19,8 +19,6 @@
 
 package org.apache.myfaces.custom.tree2;
 
-import java.io.BufferedWriter;
-import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.util.Stack;
 
@@ -30,9 +28,7 @@ import javax.faces.context.FacesContext;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
-import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
  * An abstract test case that sets up a Tree2 for testing using the structure below.
@@ -87,10 +83,6 @@ public class AbstractTreeTestCase extends AbstractTomahawkJsfTestCase
         tree = new HtmlTree();
         tree.setId(TREE_ID);
 
-        // additional setup not provided automatically by the shale mock stuff
-        facesContext.getExternalContext().getApplicationMap().put(MyfacesConfig.class.getName(), new MyfacesConfig());
-        facesContext.setResponseWriter(new MockResponseWriter(new BufferedWriter(new CharArrayWriter()), null, null));
-        
         // set up the test tree with the standard data
         rootNode = new TreeNodeBase(DEFAULT_NODE_TYPE, "Root", "Root", false);
 
