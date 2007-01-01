@@ -947,8 +947,15 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         }
 
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.writeAttribute(HTML.CLASS_ATTR, bodyStyleClass, BODY_STYLE_CLASS);
-        writer.writeAttribute(HTML.STYLE_ATTR, bodyStyle, BODY_STYLE);
+        if (bodyStyleClass != null)
+        {
+            writer.writeAttribute(HTML.CLASS_ATTR, bodyStyleClass,
+                    BODY_STYLE_CLASS);
+        }
+        if (bodyStyle != null)
+        {
+            writer.writeAttribute(HTML.STYLE_ATTR, bodyStyle, BODY_STYLE);
+        }
     }
 
 
