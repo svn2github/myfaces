@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.faces.FactoryFinder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -61,17 +60,12 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-        servletContext.addInitParameter("org.apache.myfaces.PRETTY_HTML",
-                "false");
-
         _dataTable = new HtmlDataTable();
     }
 
     protected void tearDown() throws Exception
     {
         super.tearDown();
-        // once shale-test is updated in maven, this will not be necessary
-        FactoryFinder.releaseFactories();
         _dataTable = null;
     }
 
@@ -121,24 +115,28 @@ public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
     public void testDefaultRenderer()
     {
         // Define the component
-        UIData dataTable = new HtmlDataTable();
+        UIData component = new HtmlDataTable();
+        component.setId("TestComponent");
 
         // Add rows to the table
         List rows = new ArrayList();
         rows.add(new TestData("test1", "test1"));
         rows.add(new TestData("test2", "test2"));
         rows.add(new TestData("test3", "test3"));
-        dataTable.setValue(new ListDataModel(rows));
+        component.setValue(new ListDataModel(rows));
 
         // Render the component
         try
         {
-            TestUtils.renderComponent(facesContext, dataTable);
+            TestUtils.renderComponent(facesContext, component);
         }
         catch (IOException e)
         {
             fail(e.getMessage());
         }
+
+        // Verify component was rendered
+        assertIdExists(component.getId());
     }
 
     private UIInput createInputInTree(FacesContext context)

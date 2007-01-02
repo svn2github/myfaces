@@ -18,12 +18,11 @@
  */
 package org.apache.myfaces.test;
 
-import java.io.BufferedWriter;
-import java.io.CharArrayWriter;
+import java.io.StringWriter;
 
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.test.utils.TestUtils;
-import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.apache.shale.test.base.AbstractViewControllerTestCase;
 import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
@@ -31,8 +30,10 @@ import org.apache.shale.test.mock.MockResponseWriter;
  * overrides <code>setUp()</code> and/or <code>tearDown()</code>, then those
  * methods but call the overwitten method to insure a valid test environment.
  */
-public class AbstractTomahawkJsfTestCase extends AbstractJsfTestCase
+public class AbstractTomahawkJsfTestCase extends AbstractViewControllerTestCase
 {
+    /** Response Writer */
+    private MockResponseWriter writer;
 
     /**
      * Construct a new instance of the test.
@@ -55,10 +56,11 @@ public class AbstractTomahawkJsfTestCase extends AbstractJsfTestCase
     protected void setUp() throws Exception
     {
         super.setUp();
-
         // additional setup not provided automatically by the shale mock stuff
-        facesContext.getExternalContext().getApplicationMap().put(MyfacesConfig.class.getName(), new MyfacesConfig());
-        facesContext.setResponseWriter(new MockResponseWriter(new BufferedWriter(new CharArrayWriter()), null, null));
+        facesContext.getExternalContext().getApplicationMap().put(
+                MyfacesConfig.class.getName(), new MyfacesConfig());
+        writer = new MockResponseWriter(new StringWriter(), null, null);
+        facesContext.setResponseWriter(writer);
 
         TestUtils.addDefaultRenderers(facesContext);
     }
@@ -69,6 +71,26 @@ public class AbstractTomahawkJsfTestCase extends AbstractJsfTestCase
     protected void tearDown() throws Exception
     {
         super.tearDown();
+    }
+
+    /**
+     * Verify the following:
+     * <ul>
+     * <li>id is not null</li>
+     * <li>Response is complete</li>
+     * <li>Responce contains the id</li>
+     * </ul>
+     * 
+     * @param id ID to verify
+     */
+    protected void assertIdExists(String id)
+    {
+        assertNotNull("ID is not null", id);
+        assertTrue("Response Complete", facesContext.getResponseComplete());
+        String output = writer.getWriter().toString();
+//        System.out.println("Output = '" + output + "'");
+        assertNotNull("Has output", output);
+        assertTrue("Contains id '" + id + "'", output.indexOf(id) != -1);
     }
 
 }
