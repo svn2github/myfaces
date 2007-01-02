@@ -20,7 +20,6 @@ package org.apache.myfaces.custom.document;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * Base class to handle the document family

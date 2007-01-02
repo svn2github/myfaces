@@ -25,7 +25,6 @@ import javax.faces.el.ValueBinding;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.validator.GenericValidator;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 

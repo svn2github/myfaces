@@ -25,7 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 
 

@@ -19,8 +19,6 @@
 package org.apache.myfaces.renderkit.html.util;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Represents a single resource that a component in a page needs a

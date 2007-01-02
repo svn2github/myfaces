@@ -19,7 +19,6 @@
 package org.apache.myfaces.custom.document;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * Document to enclose the document body. If not otherwise possible you can use

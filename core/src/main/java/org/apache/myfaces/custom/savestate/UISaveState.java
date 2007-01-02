@@ -20,7 +20,6 @@ package org.apache.myfaces.custom.savestate;
 
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIParameter;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 

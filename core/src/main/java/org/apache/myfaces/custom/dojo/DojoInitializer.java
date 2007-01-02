@@ -21,7 +21,6 @@ package org.apache.myfaces.custom.dojo;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 
 /**

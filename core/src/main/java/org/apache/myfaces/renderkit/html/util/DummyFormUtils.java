@@ -33,7 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 /**

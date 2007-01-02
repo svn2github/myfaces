@@ -19,14 +19,11 @@
 
 package org.apache.myfaces.renderkit.html.util;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -36,8 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
-import org.apache.myfaces.shared_tomahawk.webapp.webxml.FilterMapping;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import org.apache.myfaces.shared_tomahawk.webapp.webxml.FilterMapping;
 import org.apache.myfaces.shared_tomahawk.webapp.webxml.WebXml;
 import org.apache.myfaces.webapp.filter.ExtensionsFilter;
 
