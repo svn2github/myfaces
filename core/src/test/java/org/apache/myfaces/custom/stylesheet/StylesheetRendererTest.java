@@ -25,7 +25,6 @@ import java.io.StringWriter;
 import junit.framework.Test;
 
 import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
-import org.apache.shale.test.mock.MockRenderKitFactory;
 import org.apache.shale.test.mock.MockResponseWriter;
 
 public class StylesheetRendererTest extends AbstractTomahawkJsfTestCase
