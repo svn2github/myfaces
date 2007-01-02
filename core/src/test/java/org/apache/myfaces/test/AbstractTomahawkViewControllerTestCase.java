@@ -30,7 +30,7 @@ import org.apache.shale.test.mock.MockResponseWriter;
  * overrides <code>setUp()</code> and/or <code>tearDown()</code>, then those
  * methods but call the overwitten method to insure a valid test environment.
  */
-public class AbstractTomahawkJsfTestCase extends AbstractViewControllerTestCase
+public class AbstractTomahawkViewControllerTestCase extends AbstractViewControllerTestCase
 {
     /** Response Writer */
     private MockResponseWriter writer;
@@ -40,7 +40,7 @@ public class AbstractTomahawkJsfTestCase extends AbstractViewControllerTestCase
      * 
      * @param name Name of the test.
      */
-    public AbstractTomahawkJsfTestCase(String name)
+    public AbstractTomahawkViewControllerTestCase(String name)
     {
         super(name);
     }

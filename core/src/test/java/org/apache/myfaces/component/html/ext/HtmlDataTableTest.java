@@ -35,14 +35,14 @@ import javax.faces.model.ListDataModel;
 
 import junit.framework.Test;
 
-import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
+import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 import org.apache.myfaces.test.utils.TestUtils;
 
 /**
  * @author Mathias Br�kelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlDataTableTest extends AbstractTomahawkJsfTestCase
+public class HtmlDataTableTest extends AbstractTomahawkViewControllerTestCase
 {
 
     private HtmlDataTable _dataTable;
