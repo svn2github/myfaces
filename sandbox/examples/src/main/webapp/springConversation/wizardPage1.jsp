@@ -48,7 +48,7 @@
 	</f:facet>
 	<f:facet name="footer">
 		<h:panelGroup>
-			<h:commandButton value="Next >>" action="wizardPage2" />
+			<h:commandButton value="Next >>" action="springWizardPage2" />
 		</h:panelGroup>
 	</f:facet>
 

@@ -33,7 +33,7 @@
 <body>
 <f:view>
 
-<s:ensureConversation name="springConvData" action="#{wizardController.ensureConversationAction}" />
+<s:ensureConversation name="springWizardData" action="#{springWizardController.ensureConversationAction}" />
 
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
@@ -50,15 +50,15 @@
 	</f:facet>
 	<f:facet name="footer">
 		<h:panelGroup>
-			<h:commandButton value="<< Prev" action="wizardPage2" immediate="true"/>
-			<h:commandButton value="Finish" action="wizardFinish" />
+			<h:commandButton value="<< Prev" action="springWizardPage2" immediate="true"/>
+			<h:commandButton value="Finish" action="springWizardFinish" />
 		</h:panelGroup>
 	</f:facet>
 
     <h:outputText value="Info: " />
     <t:inputHtml
     		id="info"
-    		value="#{wizardData.info}"
+    		value="#{springWizardData.info}"
     		allowEditSource="false"
     		allowExternalLinks="false"/>
 

@@ -51,6 +51,8 @@ public class SpringConversationScope implements Scope
 	 */
 	public Object get(String name, ObjectFactory objectFactory)
 	{
+		name = buildBeanName(name);
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		ConversationManager manager = ConversationManager.getInstance(facesContext);
@@ -87,6 +89,26 @@ public class SpringConversationScope implements Scope
 
 		// get the bean
 		return conversation.getBean(name);
+	}
+
+	/**
+	 * strip off any spring namespace.
+	 * TODO: Is this valid?
+	 */
+	protected String buildBeanName(String name)
+	{
+		if (name == null)
+		{
+			return null;
+		}
+
+		int pos = name.lastIndexOf('.');
+		if (pos < 0)
+		{
+			return name;
+		}
+
+		return name.substring(pos+1);
 	}
 
 	/**

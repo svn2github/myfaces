@@ -569,6 +569,32 @@
 			<to-view-id>/conversation/wizardFinish.jsp</to-view-id>
 			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-action>#{springWizardController.save}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/springConversation/wizardPage1.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>springWizardPage1</from-outcome>
+			<to-view-id>/springConversation/wizardPage1.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>springWizardPage2</from-outcome>
+			<to-view-id>/springConversation/wizardPage2.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>springWizardPage3</from-outcome>
+			<to-view-id>/springConversation/wizardPage3.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>springWizardFinish</from-outcome>
+			<to-view-id>/springConversation/wizardFinish.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
 
     <!-- navigational rules for the wizard -->

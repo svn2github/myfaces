@@ -33,7 +33,7 @@
 <body>
 <f:view>
 
-<s:ensureConversation name="springConvData" action="wizardPage1" />
+<s:ensureConversation name="springWizardData" action="springWizardPage1" />
 
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
@@ -50,25 +50,25 @@
 	</f:facet>
 	<f:facet name="footer">
 		<h:panelGroup>
-			<h:commandButton value="<< Prev" action="wizardPage1" immediate="true"/>
-			<h:commandButton value="Next >>" action="wizardPage3" />
+			<h:commandButton value="<< Prev" action="springWizardPage1" immediate="true"/>
+			<h:commandButton value="Next >>" action="springWizardPage3" />
 		</h:panelGroup>
 	</f:facet>
 
     <h:outputText value="Street: " />
-    <h:inputText id="street" value="#{wizardData.street}" required="true"/>
+    <h:inputText id="street" value="#{springWizardData.street}" required="true"/>
 
     <h:outputText value="City: " />
-    <h:inputText id="city" value="#{wizardData.city}" required="true"/>
+    <h:inputText id="city" value="#{springWizardData.city}" required="true"/>
 
     <h:outputText value="State: " />
-    <h:inputText id="state" value="#{wizardData.state}" required="true"/>
+    <h:inputText id="state" value="#{springWizardData.state}" required="true"/>
 
     <h:outputText value="Province: " />
-    <h:inputText id="province" value="#{wizardData.province}" />
+    <h:inputText id="province" value="#{springWizardData.province}" />
 
     <h:outputText value="Postal: " />
-    <h:inputText id="postal" value="#{wizardData.postal}" required="true"/>
+    <h:inputText id="postal" value="#{springWizardData.postal}" required="true"/>
 </h:panelGrid>
 <h:messages showDetail="true"/>
 </h:form>

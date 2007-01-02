@@ -33,7 +33,7 @@
 <body>
 <f:view>
 
-<s:ensureConversation name="wizard" redirectTo="/conversation/wizardPage1.jsp" />
+<s:ensureConversation name="springWizardData" redirectTo="/conversation/wizardPage1.jsp" />
 
 <t:htmlTag value="h1">Registration Wizard</t:htmlTag>
 
@@ -50,55 +50,55 @@
 	</f:facet>
 	<f:facet name="footer">
 		<h:panelGroup>
-			<h:commandButton value="Save" action="#{wizardController.save}">
-				<s:endConversation name="wizard" onOutcome="success"/>
+			<h:commandButton value="Save" action="#{springWizardController.save}" >
+				<s:endConversation name="springWizardData" onOutcome="success"/>
 			</h:commandButton>
 
-			<h:commandButton value="End conversation and jump into the mid of a new one" action="wizardPage2">
-				<s:endConversation name="wizard" />
+			<h:commandButton value="End conversation and jump into the mid of a new one" action="springWizardPage2">
+				<s:endConversation name="springWizardData" />
 			</h:commandButton>
 
 		</h:panelGroup>
 	</f:facet>
 
     <h:outputText value="Edit data on" />
-	<h:commandButton value="Page1" action="wizardPage1" />
+	<h:commandButton value="Page1" action="springWizardPage1" />
 
     <h:outputText value="Salutation: " />
-    <h:outputText value="#{wizardData.salutation}" />
+    <h:outputText value="#{springWizardData.salutation}" />
 
     <h:outputText value="Title: " />
-    <h:outputText value="#{wizardData.title}" />
+    <h:outputText value="#{springWizardData.title}" />
 
     <h:outputText value="Name: " />
-    <h:outputText value="#{wizardData.name}" />
+    <h:outputText value="#{springWizardData.name}" />
 
     <h:outputText value="Surename: " />
-    <h:outputText value="#{wizardData.surename}" />
+    <h:outputText value="#{springWizardData.surename}" />
 
     <h:outputText value="Edit data on" />
-	<h:commandButton value="Page2" action="wizardPage2" />
+	<h:commandButton value="Page2" action="springWizardPage2" />
 
     <h:outputText value="Street: " />
-    <h:outputText value="#{wizardData.street}" />
+    <h:outputText value="#{springWizardData.street}" />
 
     <h:outputText value="City: " />
-    <h:outputText value="#{wizardData.city}" />
+    <h:outputText value="#{springWizardData.city}" />
 
     <h:outputText value="State: " />
-    <h:outputText value="#{wizardData.state}" />
+    <h:outputText value="#{springWizardData.state}" />
 
     <h:outputText value="Province: " />
-    <h:outputText value="#{wizardData.province}" />
+    <h:outputText value="#{springWizardData.province}" />
 
     <h:outputText value="Postal: " />
-    <h:outputText value="#{wizardData.postal}" />
+    <h:outputText value="#{springWizardData.postal}" />
 
     <h:outputText value="Edit data on" />
-	<h:commandButton value="Page3" action="wizardPage3" />
+	<h:commandButton value="Page3" action="springWizardPage3" />
 
     <h:outputText value="Info: " />
-    <t:outputText value="#{wizardData.info}" escape="false" />
+    <t:outputText value="#{springWizardData.info}" escape="false" />
 
 </h:panelGrid>
 <h:messages showDetail="true"/>

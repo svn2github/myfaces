@@ -120,6 +120,7 @@
             <h:outputText value="Conversation"/>
             <h:panelGrid style="padding-left:25px">
            		<h:outputLink value="conversation/index.jsf" ><f:verbatim>Conversation Tag examples</f:verbatim></h:outputLink>
+				<h:outputLink value="springConversation/index.jsf" ><f:verbatim>A new Spring "conversation" scope</f:verbatim></h:outputLink>
             </h:panelGrid>
 
 			<h:outputText value="Redirect Tracker"/>

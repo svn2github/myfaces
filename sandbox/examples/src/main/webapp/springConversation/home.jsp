@@ -16,8 +16,6 @@
 
             <h:outputText value="Conversation"/>
             <h:panelGrid style="padding-left:25px">
-           		<h:outputLink value="pageConversation.jsf" ><f:verbatim>Single page conversation</f:verbatim></h:outputLink>
-				<h:outputLink value="startConversation.jsf" ><f:verbatim>Start a conversation "on command"</f:verbatim></h:outputLink>
            		<h:outputLink value="wizardPage1.jsf" ><f:verbatim>Wizard</f:verbatim></h:outputLink>
             </h:panelGrid>
 

@@ -65,6 +65,7 @@ public class Conversation
 		{
 			throw new IllegalArgumentException("you cant put a property under conversation control. name: " + name);
 		}
+
 		if (beans.containsKey(name))
 		{
 			// already there
@@ -120,7 +121,7 @@ public class Conversation
 			{
 				getPersistenceManager().rollback();
 			}
-			
+
 			getPersistenceManager().purge();
 		}
 	}
