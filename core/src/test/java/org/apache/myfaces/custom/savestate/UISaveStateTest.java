@@ -25,13 +25,13 @@ import javax.faces.el.ValueBinding;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
+import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 
 /**
  * @author cagatay
  * Tests for UISaveState
  */
-public class UISaveStateTest extends AbstractTomahawkJsfTestCase{
+public class UISaveStateTest extends AbstractTomahawkViewControllerTestCase{
 
 	private UISaveState saveState;
 	private SaveStateTestBean saveStateTestBean;

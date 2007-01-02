@@ -24,10 +24,10 @@ import java.io.StringWriter;
 
 import junit.framework.Test;
 
-import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
+import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 import org.apache.shale.test.mock.MockResponseWriter;
 
-public class StylesheetRendererTest extends AbstractTomahawkJsfTestCase
+public class StylesheetRendererTest extends AbstractTomahawkViewControllerTestCase
 {
 
     private MockResponseWriter writer ;

@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
+import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 
 /**
  * An abstract test case that sets up a Tree2 for testing using the structure below.
@@ -56,7 +56,7 @@ import org.apache.myfaces.test.AbstractTomahawkJsfTestCase;
  * | .. d (0:3)
  */
 
-public class AbstractTreeTestCase extends AbstractTomahawkJsfTestCase
+public class AbstractTreeTestCase extends AbstractTomahawkViewControllerTestCase
 {
     static final String DEFAULT_NODE_TYPE = "default";
     static final String TREE_ID = "some_foo_tree";
