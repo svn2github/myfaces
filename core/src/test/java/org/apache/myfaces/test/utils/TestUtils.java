@@ -489,7 +489,7 @@ public final class TestUtils
     }
 
     /**
-     * Renderered a component and it's children.
+     * Renderered a component, including it's children, then complete the reponse.
      * 
      * @param context Faces Context
      * @param component Component to be rendered.
@@ -503,5 +503,7 @@ public final class TestUtils
         renderer.encodeBegin(context, component);
         renderer.encodeChildren(context, component);
         renderer.encodeEnd(context, component);
+        context.responseComplete();
+        context.renderResponse();
     }
 }
