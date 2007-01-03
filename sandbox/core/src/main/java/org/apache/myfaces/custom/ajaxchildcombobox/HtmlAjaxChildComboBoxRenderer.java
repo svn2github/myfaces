@@ -68,7 +68,8 @@ public class HtmlAjaxChildComboBoxRenderer extends HtmlMenuRenderer implements A
 		String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
 		DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
 		DojoUtils.addRequire(context, component, "dojo.event.*");
-		DojoUtils.addRequire(context, component, "dojo.io.bind");
+		// not required - and results in an error
+		// DojoUtils.addRequire(context, component, "dojo.io.bind");
 
 		AddResource addResource = AddResourceFactory.getInstance(context);
 
