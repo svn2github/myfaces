@@ -62,6 +62,7 @@
 	    <item name="Column" href="column.html"/>   
         <item name="Schedule" href="schedule.html"/>
 	    <item name="Dojo Initializer" href="dojoInitializer.html"/>
+		<item name="SelectItems" href="selectItems.html"/> 
 	  </menu>    
 	  
 	  <menu name="Validators">
