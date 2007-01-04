@@ -217,6 +217,8 @@
       SYSTEM "tomahawk-entities/tomahawk_panel_group_attributes.xml">
 <!ENTITY tomahawk_dojo_intializer_attributes
       SYSTEM "tomahawk-entities/tomahawk_dojo_initializer_attributes.xml">
+<!ENTITY tomahawk_select_items_attributes 
+      SYSTEM "tomahawk-entities/tomahawk_select_items_attributes.xml">
 
 ]>
 
@@ -1588,6 +1590,19 @@
 		<description>Dojo initializer helper tag for debugging and communication flags. This tag encapsules the Dojo DjConfig meta configuration and also adds the needed dojo required functionality.</description>
 		&ui_component_attributes;
 		&tomahawk_dojo_intializer_attributes;
+	</tag>
+	
+	<tag>
+		<name>selectItems</name>
+		<tag-class>org.apache.myfaces.custom.selectitems.SelectItemsTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+            An extended version of the standard UISelectItems.
+
+            Populates the SelectItem collection from the given value automatically using the itemLabel and itemValue attributes.
+		</description>
+		&ui_select_items_attributes;
+		&tomahawk_select_items_attributes;
 	</tag>
 
 
