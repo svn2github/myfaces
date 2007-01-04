@@ -60,7 +60,7 @@ public class UISelectItemsTest extends AbstractJsfTestCase{
 	 * Sets up the test environment for <s:selectItems value="#{PossibleValueHere}" var="Movie" itemLabel="#{Movie.name} itemValue="#{Movie.director}" />
 	 * Accepted possible values for the component can be a SelectItems array, a collection, a map and SelectItems group collection.
 	 */
-	public void setUp() {
+	public void setUp() throws Exception{
 		super.setUp();
 		//component
 		selectItems = new UISelectItems();
@@ -105,7 +105,7 @@ public class UISelectItemsTest extends AbstractJsfTestCase{
  		return group;
 	}
 	
-	public void tearDown() {
+	public void tearDown() throws Exception{
 		selectItems = null;
 		super.tearDown();
 	}
