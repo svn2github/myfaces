@@ -65,6 +65,7 @@
                 <h:outputLink value="inputHtml.jsf" ><f:verbatim>Html Editor</f:verbatim></h:outputLink>
                 <h:outputLink value="htmlTag.jsf" ><f:verbatim>Html Tag</f:verbatim></h:outputLink>
                 <h:outputLink value="dataList.jsf" ><f:verbatim>Dynamic Lists</f:verbatim></h:outputLink>
+                <h:outputLink value="selectItems.jsf" ><f:verbatim>Auto-generated SelectItems</f:verbatim></h:outputLink>
                 <h:outputLink value="selectOneCountry.jsf" ><f:verbatim>Select one Country</f:verbatim></h:outputLink>
                 <h:outputLink value="selectOneLanguage.jsf" ><f:verbatim>Select one Language</f:verbatim></h:outputLink>
                 <h:outputLink value="tree.jsf" ><f:verbatim>Tree</f:verbatim></h:outputLink>

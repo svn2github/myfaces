@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
 <html>
 
 <!--
@@ -34,15 +33,15 @@
 
     <h:form>
 		<h:selectOneMenu id="menu1" value="#{selectItemsBean.selectedCarColor}">
-   			<s:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+   			<t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
 		</h:selectOneMenu>
 		
         <h:selectOneRadio id="radio1" value="#{selectItemsBean.selectedCarColor}">
-   			<s:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+   			<t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
         </h:selectOneRadio>
         
         <h:selectOneListbox id="list1" value="#{selectItemsBean.selectedCarColor}">
-   			<s:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+   			<t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
         </h:selectOneListbox>
     </h:form>
 </f:view>

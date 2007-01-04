@@ -377,6 +377,13 @@
     	<managed-bean-class>java.util.Date</managed-bean-class>
     	<managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+	
+	<!--  Managed bean for the selectItems component -->
+	<managed-bean>
+		<managed-bean-name>selectItemsBean</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.selectitems.SelectItemsBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 
     <managed-bean>
     	<managed-bean-name>scheduleModel1</managed-bean-name>

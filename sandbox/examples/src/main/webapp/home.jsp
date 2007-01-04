@@ -90,7 +90,6 @@
             <h:outputText value="Selection Lists"/>
             <h:panelGrid style="padding-left:25px">
                <h:outputLink value="picklist.jsf"><f:verbatim>selectManyPicklist - A picklist, where you select components from a list and the selected items are displayed in another list</f:verbatim></h:outputLink>
-               <h:outputLink value="selectItems.jsf"><f:verbatim>selectitems - An extended version of the UISelectItems, implicitly populates the SelectItem collection from the given value</f:verbatim></h:outputLink>
             </h:panelGrid>
 
             <h:outputText value="Messages"/>

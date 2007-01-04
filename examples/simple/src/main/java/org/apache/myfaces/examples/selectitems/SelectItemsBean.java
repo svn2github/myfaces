@@ -22,7 +22,7 @@ package org.apache.myfaces.examples.selectitems;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.myfaces.examples.selectOneRow.SimpleCar;
+import org.apache.myfaces.examples.listexample.SimpleCar;
 
 public class SelectItemsBean {
 
