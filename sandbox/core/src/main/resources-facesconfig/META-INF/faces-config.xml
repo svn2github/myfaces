@@ -210,11 +210,6 @@
   </component>
 
   <component>
-    <component-type>org.apache.myfaces.UISelectItems</component-type>
-    <component-class>org.apache.myfaces.custom.selectitems.UISelectItems</component-class>
-  </component>
-
-  <component>
     <component-type>org.apache.myfaces.PPRPanelGroup</component-type>
     <component-class>org.apache.myfaces.custom.ppr.PPRPanelGroup</component-class>
   </component>

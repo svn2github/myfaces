@@ -387,6 +387,11 @@
         <component-class>org.apache.myfaces.custom.stylesheet.Stylesheet</component-class>
     </component>
     
+    <component>
+	    <component-type>org.apache.myfaces.UISelectItems</component-type>
+    	<component-class>org.apache.myfaces.custom.selectitems.UISelectItems</component-class>
+	</component>
+    
 
     <!-- additional "by type" converters -->
 
