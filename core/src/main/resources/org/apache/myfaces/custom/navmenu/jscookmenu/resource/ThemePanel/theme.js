@@ -5,6 +5,20 @@ var cmThemePanelBase = 'jscookmenu/ThemePanel/';
 if(myThemePanelBase)
     cmThemePanelBase = myThemePanelBase;
 
+var myPrefix = cmThemePanelBase;
+var mySuffix="";
+
+// sub menu display attributes
+if(cmThemePanelBase.indexOf("/;j")>-1){
+	myPrefix=cmThemePanelBase.substring(0,cmThemePanelBase.indexOf("/;j")) + "/";
+	mySuffix=cmThemePanelBase.substring(cmThemePanelBase.indexOf("/;j")+1);
+}
+
+var myFolderLeft=myPrefix + 'blank.gif' + mySuffix;
+var myFolderRight=myPrefix + 'arrow.gif' + mySuffix;
+var myItemLeft=myPrefix + 'blank.gif' + mySuffix;
+var myItemRight=myPrefix + 'blank.gif' + mySuffix;	
+
 var cmThemePanel =
 {
   	// main menu display attributes
@@ -16,24 +30,24 @@ var cmThemePanel =
   	// a separate TD cell.
 
   	// HTML code to the left of the folder item
-  	mainFolderLeft: '<img alt="" src="' + cmThemePanelBase + 'blank.gif">',
+  	mainFolderLeft: '<img alt="" src="' + myFolderLeft + '">',
   	// HTML code to the right of the folder item
-  	mainFolderRight: '<img alt="" src="' + cmThemePanelBase + 'arrow.gif">',
+  	mainFolderRight: '<img alt="" src="' + myFolderRight + '">',
 	// HTML code to the left of the regular item
-	mainItemLeft: '<img alt="" src="' + cmThemePanelBase + 'blank.gif">',
+	mainItemLeft: '<img alt="" src="' + myItemLeft + '">',
 	// HTML code to the right of the regular item
-	mainItemRight: '<img alt="" src="' + cmThemePanelBase + 'blank.gif">',
+	mainItemRight: '<img alt="" src="' + myItemRight + '">',
 
 	// sub menu display attributes
 
 	// HTML code to the left of the folder item
-	folderLeft: '<img alt="" src="' + cmThemePanelBase + 'blank.gif">',
+	folderLeft: '<img alt="" src="' + myFolderLeft + '">',
 	// HTML code to the right of the folder item
-	folderRight: '<img alt="" src="' + cmThemePanelBase + 'arrow.gif">',
+	folderRight: '<img alt="" src="' + myFolderRight + '">',
 	// HTML code to the left of the regular item
-	itemLeft: '<img alt="" src="' + cmThemePanelBase + 'blank.gif">',
+	itemLeft: '<img alt="" src="' + myItemLeft + '">',
 	// HTML code to the right of the regular item
-	itemRight: '<img alt="" src="' + cmThemePanelBase + 'blank.gif">',
+	itemRight: '<img alt="" src="' + myItemRight + '">',
 	// cell spacing for main menu
 	mainSpacing: 0,
 	// cell spacing for sub menus

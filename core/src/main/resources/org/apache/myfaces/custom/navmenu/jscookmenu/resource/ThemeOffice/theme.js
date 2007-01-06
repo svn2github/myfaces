@@ -4,6 +4,21 @@ var cmThemeOfficeBase = 'jscookmenu/ThemeOffice/';
 if(myThemeOfficeBase)
     cmThemeOfficeBase = myThemeOfficeBase;
 
+var myPrefix = cmThemeOfficeBase;
+var mySuffix="";
+
+// sub menu display attributes
+if(cmThemeOfficeBase.indexOf("/;j")>-1){
+	myPrefix=cmThemeOfficeBase.substring(0,cmThemeOfficeBase.indexOf("/;j")) + "/";
+	mySuffix=cmThemeOfficeBase.substring(cmThemeOfficeBase.indexOf("/;j")+1);
+}
+
+var myFolderLeft=myPrefix + 'spacer.gif' + mySuffix;
+var myFolderRight=myPrefix + 'arrow.gif' + mySuffix;
+var myItemLeft=myPrefix + 'spacer.gif' + mySuffix;
+var myItemRight=myPrefix + 'blank.gif' + mySuffix;	
+
+
 var cmThemeOffice =
 {
   	// main menu display attributes
@@ -26,13 +41,13 @@ var cmThemeOffice =
 	// sub menu display attributes
 
 	// 0, HTML code to the left of the folder item
-	folderLeft: '<img alt="" src="' + cmThemeOfficeBase + 'spacer.gif">',
+	folderLeft: '<img alt="" src="' + myFolderLeft + '">',
 	// 1, HTML code to the right of the folder item
-	folderRight: '<img alt="" src="' + cmThemeOfficeBase + 'arrow.gif">',
+	folderRight: '<img alt="" src="' + myFolderRight + '">',
 	// 2, HTML code to the left of the regular item
-	itemLeft: '<img alt="" src="' + cmThemeOfficeBase + 'spacer.gif">',
+	itemLeft: '<img alt="" src="' + myItemLeft + '">',
 	// 3, HTML code to the right of the regular item
-	itemRight: '<img alt="" src="' + cmThemeOfficeBase + 'blank.gif">',
+	itemRight: '<img alt="" src="' + myItemRight + '">',
 	// 4, cell spacing for main menu
 	mainSpacing: 0,
 	// 5, cell spacing for sub menus

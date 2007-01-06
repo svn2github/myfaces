@@ -4,6 +4,20 @@ var cmThemeIEBase = 'jscookmenu/ThemeIE/';
 if(myThemeIEBase)
     cmThemeIEBase = myThemeIEBase;
 
+var myPrefix = cmThemeIEBase;
+var mySuffix="";
+
+// sub menu display attributes
+if(cmThemeIEBase.indexOf("/;j")>-1){
+	myPrefix=cmThemeIEBase.substring(0,cmThemeIEBase.indexOf("/;j")) + "/";
+	mySuffix=cmThemeIEBase.substring(cmThemeIEBase.indexOf("/;j")+1);
+}
+
+var myFolderLeft=myPrefix + 'folder.gif' + mySuffix;
+var myFolderRight=myPrefix + 'arrow.gif' + mySuffix;
+var myItemLeft=myPrefix + 'link.gif' + mySuffix;
+
+
 var cmThemeIE =
 {
   	// main menu display attributes
@@ -26,11 +40,11 @@ var cmThemeIE =
 	// sub menu display attributes
 
 	// HTML code to the left of the folder item
-	folderLeft: '<img alt="" src="' + cmThemeIEBase + 'folder.gif">',
+	folderLeft: '<img alt="" src="' + myFolderLeft + '">',
 	// HTML code to the right of the folder item
-	folderRight: '<img alt="" src="' + cmThemeIEBase + 'arrow.gif">',
+	folderRight: '<img alt="" src="' + myFolderRight + '">',
 	// HTML code to the left of the regular item
-	itemLeft: '<img alt="" src="' + cmThemeIEBase + 'link.gif">',
+	itemLeft: '<img alt="" src="' + myItemLeft + '">',
 	// HTML code to the right of the regular item
 	itemRight: '',
 	// cell spacing for main menu
