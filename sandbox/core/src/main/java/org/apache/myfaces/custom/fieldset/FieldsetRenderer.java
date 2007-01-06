@@ -49,8 +49,8 @@ public class FieldsetRenderer extends HtmlTagRenderer
         if (fieldset.isRendered())
         {
         	super.encodeBegin(context, component);
-        	String legend = fieldset.getLegend().toString();
-        	if( legend.trim().length() == 0 ) // Don't render the legend
+        	String legend = fieldset.getLegend();
+        	if( legend == null || legend.trim().length() == 0 ) // Don't render the legend
         		return;
         	
             ResponseWriter writer = context.getResponseWriter();
