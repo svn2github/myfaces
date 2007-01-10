@@ -85,7 +85,7 @@ public final class DojoUtils {
 
     private static final String DJCONFIG_REQ_KEY                 = "MYFACES_DJCONFIG";
 
-    private static final String DOJOEXTENSIONS_NAMESPACE         = "dojo.hostenv.setModulePrefix('extensions', '../dojoextensions.ResourceLoader');";
+    private static final String DOJOEXTENSIONS_NAMESPACE         = "dojo.setModulePrefix('extensions', '../dojoextensions.ResourceLoader');";
 
     private DojoUtils() {
         // nope
