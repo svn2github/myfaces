@@ -33,11 +33,11 @@
     <t:documentBody>
       <h:form>
         <t:panelNavigation2 layout="list">
-          <t:navigationMenuItem action="hForm" itemLabel="h:Form" />
-          <t:navigationMenuItem action="hGraphicImage" itemLabel="h:graphicImage" />
+          <t:navigationMenuItem action="hCommandButton" itemLabel="h:commandButton" />
           <t:navigationMenuItem action="hForm" itemLabel="h:Form" />
           <t:navigationMenuItem action="hFormWithInputs" itemLabel="h:Form and h:input..." />
           <t:navigationMenuItem action="hFormWithSelects" itemLabel="h:Form and h:select..." />
+          <t:navigationMenuItem action="hGraphicImage" itemLabel="h:graphicImage" />
           <t:navigationMenuItem action="hOutputLink" itemLabel="h:outputLink" />
           <t:navigationMenuItem action="hOutputText" itemLabel="h:outputText" />
           <t:navigationMenuItem action="hPanelGrid" itemLabel="h:panelGrid" />
