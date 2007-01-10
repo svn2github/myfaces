@@ -74,8 +74,8 @@
         </h:selectManyCheckbox>
       </h:form>
 
-      <h:form id="selectManyListBoxForm" >
-         <h:selectManyListbox id="hSelectManyListbox" size="2" enabledClass="enabled_class" disabledClass="disable_class">
+      <h:form id="selectManyListBoxForm">
+         <h:selectManyListbox id="hSelectManyListbox" size="2" enabledClass="enabled_class" disabledClass="disable_class" onselect="onSelect" accesskey="A">
           <f:selectItem id="lb_1" itemLabel="Listbox Item 1" itemValue="LB1"/>
           <f:selectItem id="lb_2" itemLabel="Listbox Item 2" itemValue="LB2" itemDisabled="true"/>
           <f:selectItem id="lb_3" itemLabel="Listbox Item 3" itemValue="LB3"/>
@@ -85,7 +85,7 @@
       </h:form>
       
       <h:form id="selectManyMenuForm" >
-         <h:selectManyMenu id="hSelectManyMenu">
+         <h:selectManyMenu id="hSelectManyMenu" onselect="onSelect" accesskey="A">
           <f:selectItem id="mi_1" itemLabel="Menu Item 1" itemValue="MI1"/>
           <f:selectItem id="mi_2" itemLabel="Menu Item 2" itemValue="MI2" itemDisabled="true"/>
           <f:selectItem id="mi_3" itemLabel="Menu Item 3" itemValue="MI3"/>
@@ -95,7 +95,7 @@
       </h:form>
       
       <h:form id="selectOneListBoxForm" >
-         <h:selectOneListbox id="hSelectOneListbox" size="10">
+         <h:selectOneListbox id="hSelectOneListbox" size="10" onselect="onSelect" accesskey="A">
           <f:selectItem id="lb_1" itemLabel="Listbox Item 1" itemValue="LB1"/>
           <f:selectItem id="lb_2" itemLabel="Listbox Item 2" itemValue="LB2" itemDisabled="true"/>
           <f:selectItem id="lb_3" itemLabel="Listbox Item 3" itemValue="LB3"/>
@@ -105,7 +105,7 @@
       </h:form>
 
       <h:form id="selectOneMenuForm" >
-         <h:selectOneMenu id="hSelectOneMenu">
+         <h:selectOneMenu id="hSelectOneMenu" onselect="onSelect" accesskey="A">
           <f:selectItem id="mi_1" itemLabel="Menu Item 1" itemValue="MI1"/>
           <f:selectItem id="mi_2" itemLabel="Menu Item 2" itemValue="MI2" itemDisabled="true"/>
           <f:selectItem id="mi_3" itemLabel="Menu Item 3" itemValue="MI3"/>
