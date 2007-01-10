@@ -1,4 +1,5 @@
-dojo.hostenv.conditionalLoadModule({
-        browser: [["extensions.FacesIO", false, false]]
+dojo.kwCompoundRequire({
+	browser: ["extensions.FacesIO"]
 });
-dojo.hostenv.moduleLoaded("extensions.*");
+
+dojo.provide("extensions.*");
