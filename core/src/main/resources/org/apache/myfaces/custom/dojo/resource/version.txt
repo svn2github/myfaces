@@ -1,2 +1,1 @@
-keeDOJO library version 0.4
-kitchen sink release
+kitchen sink release 0.4.1
