@@ -30,4 +30,5 @@ dojo.io.FacesTransport = new function() {
     }
 
     dojo.io.transports.addTransport("FacesTransport");
+    dojo.io.transports.reverse();
 }
