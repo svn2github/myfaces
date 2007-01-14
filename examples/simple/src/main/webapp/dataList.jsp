@@ -73,11 +73,12 @@
 
     <f:verbatim><br/><br/></f:verbatim>
     <h:outputText value="#{example_messages['dataList_ol']}" styleClass="standard_bold" />
-    <t:dataList id="data3"
+    <t:dataList id="data4"
         styleClass="standardList"
         var="country"
         value="#{countryList.countries}"
-        layout="orderedList">
+        layout="orderedList"
+        forceId="true">
         <h:inputText value="#{country.name}" />
     </t:dataList>
 
