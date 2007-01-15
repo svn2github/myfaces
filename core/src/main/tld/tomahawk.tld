@@ -27,7 +27,7 @@
 <!ENTITY ext_textarea_attribute         SYSTEM "entities/ext_textarea_attribute.xml">
 <!ENTITY ext_actionfor_attribute        SYSTEM "entities/ext_actionfor_attribute.xml">
 <!ENTITY ext_escape_attribute           SYSTEM "entities/ext_escape_attribute.xml">
-<!ENTITY ext_disabled_attribute         SYSTEM "entities/ext_disabled_attribute.xml">        
+<!ENTITY ext_disabled_attribute         SYSTEM "entities/ext_disabled_attribute.xml">
 <!ENTITY ext_validator_base_attributes  SYSTEM "entities/ext_validator_base_attributes.xml">
 <!ENTITY faces_binding_attribute        SYSTEM "entities/faces_binding_attribute.xml">
 <!ENTITY faces_id_optional_attribute    SYSTEM "entities/faces_id_optional_attribute.xml">
@@ -105,13 +105,13 @@
 <!ENTITY alt_location_attributes             SYSTEM "entities/alt_location_attributes.xml">
 
 
-<!ENTITY tomahawk_input_secret_attributes 
+<!ENTITY tomahawk_input_secret_attributes
       SYSTEM "tomahawk-entities/tomahawk_input_secret_attributes.xml">
-<!ENTITY tomahawk_message_attributes 
+<!ENTITY tomahawk_message_attributes
       SYSTEM "tomahawk-entities/tomahawk_message_attributes.xml">
-<!ENTITY tomahawk_messages_attributes 
+<!ENTITY tomahawk_messages_attributes
       SYSTEM "tomahawk-entities/tomahawk_messages_attributes.xml">
-<!ENTITY tomahawk_select_many_checkbox_attributes 
+<!ENTITY tomahawk_select_many_checkbox_attributes
       SYSTEM "tomahawk-entities/tomahawk_select_many_checkbox_attributes.xml">
 <!ENTITY tomahawk_input_calendar_attributes
       SYSTEM "tomahawk-entities/tomahawk_input_calendar_attributes.xml">
@@ -287,7 +287,7 @@
             sortColumn, sortAscending and preserveSort.
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
-        </description>        
+        </description>
         &standard_data_table_attributes;
         <!-- MyFaces extensions -->
         &extended_data_table_attributes;
@@ -340,7 +340,7 @@
             Extends standard inputText by user role support.
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
-        </description>        
+        </description>
          <attribute>
             <name>autocomplete</name>
             <required>false</required>
@@ -357,14 +357,14 @@
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
             <description>
-                If true the input is rendered disabled on the client side 
+                If true the input is rendered disabled on the client side
                 and a hidden input is used to actualy submit his value back
                 to the server.
             </description>
         </attribute>
         &html_datafld_datasrc_dataformatas_attributes;
         &standard_input_text_attributes;
-        &user_role_attributes;        
+        &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;
     </tag>
@@ -560,28 +560,28 @@
         <body-content>JSP</body-content>
         <description>
             Implements the standard html selectOneRadio tag, with additional features.
-            
+
             Supports user roles.
 
             Supports the "spread" layout value, which gives developer control
-            over radio button positioning.  See the "layout" attribute and 
-            the "radio" tag for further information.            
+            over radio button positioning.  See the "layout" attribute and
+            the "radio" tag for further information.
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        
+
         <!-- Standard attributes -->
         &ui_select_one_attributes;
         &html_universal_attributes;
         &html_event_handler_attributes;
         &html_input_radio_attributes;
-        
+
         <!-- extension attributes -->
         &ext_escape_attribute;
         &user_role_attributes;
         &ext_forceId_attribute;
         &display_value_only_attributes;
-        
+
         <!-- overridden attributes from standard tag. -->
         <attribute>
             <name>layout</name>
@@ -589,15 +589,15 @@
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
             <description>
-                Orientation of the options list. Valid values are 
+                Orientation of the options list. Valid values are
                 "pageDirection" for a vertical layout, "lineDirection" for
-                 horizontal, or "spread" for developer placement. The default 
-                 value is "lineDirection". 
-                 
+                 horizontal, or "spread" for developer placement. The default
+                 value is "lineDirection".
+
                  If the "spread" option is selected, this tag does not render HTML.
                  Instead, the developer uses "radio" tags to position radio
                  buttons for each of the SelectItem instances.
-                 
+
                  See the "radio" tag for further information.
             </description>
         </attribute>
@@ -607,7 +607,7 @@
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
             <description>Width in pixels of the border to be drawn around the table containing the options list.</description>
-        </attribute>        
+        </attribute>
     </tag>
 
     <!-- selectBooleanCheckbox -->
@@ -981,7 +981,7 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
-        <!-- 
+        <!--
         commenting this out for TOMAHAWK-405 - dennisbyrne
          <attribute>
             <name>renderAll</name>
@@ -1193,7 +1193,7 @@
             when the "spread" layout is selected.  It specifies the position within
             the document that the radio button corresponding to a specific SelectItem
             should be rendered.
-            
+
             All HTML pass-through attributes for this input are taken from the associated
             selectOneRadio.
 
@@ -1214,6 +1214,7 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+		&ui_component_attributes;
         &tomahawk_tree_attributes;
     </tag>
 
@@ -1407,7 +1408,7 @@
         </description>
         &tomahawk_document_attributes;
     </tag>
-    
+
     <!-- document head -->
     <tag>
         <name>documentHead</name>
@@ -1418,7 +1419,7 @@
         </description>
         &tomahawk_document_head_attributes;
     </tag>
-    
+
     <!-- document body -->
     <tag>
         <name>documentBody</name>
@@ -1429,7 +1430,7 @@
         </description>
         &tomahawk_document_body_attributes;
     </tag>
-    
+
     <!-- saveState -->
     <tag>
         <name>saveState</name>
