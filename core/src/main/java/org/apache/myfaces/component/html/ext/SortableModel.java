@@ -362,17 +362,18 @@ public final class SortableModel extends DataModel
             // even if the underlying object is not a Comparable.
             // This happens if the object at rowIndex zero is null.
             // So test before we cast:
-            if (value1 instanceof Comparable) 
-            {
-                return ((Comparable) value1).compareTo(value2);
-            } 
-            else if (value1 instanceof String) {
+            
+            if (value1 instanceof String) {
             	//if the object is a String we best compare locale-sesitive
             	CollationKey collationKey1 = getCollationKey((String)value1);
             	CollationKey collationKey2 = getCollationKey((String)value2);
             	
             	return collationKey1.compareTo(collationKey2);
             }
+            else if (value1 instanceof Comparable) 
+            {
+                return ((Comparable) value1).compareTo(value2);
+            } 
             else 
             {
                 // if the object is not a Comparable, then
