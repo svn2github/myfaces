@@ -22,11 +22,16 @@ package org.apache.myfaces.component.html.ext;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.text.CollationKey;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ReferenceSyntaxException;
 import javax.faces.model.ArrayDataModel;
@@ -39,6 +44,7 @@ import javax.servlet.jsp.el.ELException;
 import javax.servlet.jsp.el.FunctionMapper;
 import javax.servlet.jsp.el.VariableResolver;
 import javax.servlet.jsp.jstl.sql.Result;
+
 import org.apache.commons.el.Expression;
 import org.apache.commons.el.ExpressionString;
 import org.apache.commons.el.Logger;
@@ -202,8 +208,11 @@ public final class SortableModel extends DataModel implements VariableResolver
             {
                 // don't propagate this exception out. This is because it might break
                 // the VE.
-
                 log.warn(e);
+                return false;
+            }
+            catch (Exception e) {
+            	log.warn(e);
                 return false;
             }
         } 
@@ -278,6 +287,7 @@ public final class SortableModel extends DataModel implements VariableResolver
                 comp = new Inverter(comp);
             
             Collections.sort(_baseIndicesList, comp);
+            
             _sortedIndicesList = null;
         }
         
@@ -368,22 +378,35 @@ public final class SortableModel extends DataModel implements VariableResolver
     {
         private final String _prop;
         
+        private Collator _collator;
+        
+        private Map _collationKeys;
+        
         public Comp(String property) 
         {            
             _prop = property;
-        }
+            _collator = Collator.getInstance(FacesContext.getCurrentInstance().getViewRoot().getLocale()); 
+            _collationKeys = new HashMap();
+        }               
         
         public int compare(Object o1, Object o2) 
         {
             int index1 = ((Integer) o1).intValue();
             int index2 = ((Integer) o2).intValue();
             
-            _model.setRowIndex(index1);
-            Object value1 = getPropertyValue(_prop);
-            
-            _model.setRowIndex(index2);
-            Object value2 = getPropertyValue(_prop);
-            
+            Object value1 = null;
+            Object value2 = null;
+            try {
+            	_model.setRowIndex(index1);
+            	value1 = getPropertyValue(_prop);
+            	
+            	_model.setRowIndex(index2);
+            	value2 = getPropertyValue(_prop);
+            }
+            catch (Exception exc) {	
+            	log.error(exc);
+            }
+                                    
             if (value1 == null)
                 return (value2 == null) ? 0 : -1;
             
@@ -398,13 +421,30 @@ public final class SortableModel extends DataModel implements VariableResolver
             {
                 return ((Comparable) value1).compareTo(value2);
             } 
+            else if (value1 instanceof String) {
+            	//if the object is a String we best compare locale-sesitive
+            	CollationKey collationKey1 = getCollationKey((String)value1);
+            	CollationKey collationKey2 = getCollationKey((String)value2);
+            	
+            	return collationKey1.compareTo(collationKey2);
+            }
             else 
             {
                 // if the object is not a Comparable, then
                 // the best we can do is string comparison:
                 return value1.toString().compareTo(value2.toString());
             }
-        }               
+        }         
+        
+        private CollationKey getCollationKey(String propertyValue) {
+        	CollationKey key = (CollationKey)_collationKeys.get(propertyValue);
+        	if (key == null) {
+        		key = _collator.getCollationKey(propertyValue);
+        		_collationKeys.put(propertyValue, key);
+        	}
+        		
+        	return key;
+        }
     }
     /**
      *
