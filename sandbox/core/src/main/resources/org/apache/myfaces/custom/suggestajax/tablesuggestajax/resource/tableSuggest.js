@@ -253,7 +253,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
 
         if(prevElem)
         {
-            if(prevElem.tagName == "tr")
+            if(prevElem.tagName == "TR")
             {
                 this.putValueToField(prevElem);
                 this.addOutClass(this.actualHighlightedElem);
@@ -263,7 +263,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
         }
         else
         {
-            var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
+            var table = dojo.dom.getFirstAncestorByTag(this.actualHighlightedElem,"table");
 
             if(table)
             {
@@ -424,23 +424,27 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     
     //handles the user pressing the 'Down Arrow' key
     org_apache_myfaces_TableSuggest.prototype.handleDownKey = function()
-    {
+    {   
         if(!this.firstHighlightedElem)
         {
-	    var firstOptionElem = this.getFirstRowElem(this.popUp);
+    	    var firstOptionElem = this.getFirstRowElem(this.popUp);
             this.putValueToField(firstOptionElem);
             this.addHoverClass(firstOptionElem);
             this.firstHighlightedElem = firstOptionElem;
-
             this.actualHighlightedElem = firstOptionElem;
         }
         else
         {
             var nextElem = dojo.dom.nextElement(this.actualHighlightedElem);
 
+            if(!nextElem)
+            {
+                nextElem = this.getFirstRowElem(this.popUp);     
+            }
+
             if(nextElem)
             {
-                if(nextElem.tagName == "tr")
+                if(nextElem.tagName == "TR")
                 {
                     this.putValueToField(nextElem);
                     this.addOutClass(this.actualHighlightedElem);
@@ -448,14 +452,14 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                     this.actualHighlightedElem = nextElem
                 }
             }
-            else
-            {
-                var table = dojo.html.getFirstAncestorByTag(this.actualHighlightedElem,"table");
+           /* else
+            {   todo: make paginator work again
+                var table = dojo.dom.getFirstAncestorByTag(this.actualHighlightedElem,"table");
                 var pageField = dojo.dom.nextElement(table);
 
                 if(pageField)
                 {
-                    if(pageField.tagName == "div")
+                    if(pageField.tagName == "DIV")
                     {
                         this.nextPage(pageField);
                         this.firstHighlightedElem = this.getFirstRowElem(this.popUp);
@@ -467,7 +471,7 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
                 }
                 else
                     dojo.debug("could not move to next item in table, wrong item is");dojo.debug(nextElem);
-            }
+            } */
         }
     } 
     
@@ -727,7 +731,6 @@ org_apache_myfaces_TableSuggest = function(ajaxUrl,
     org_apache_myfaces_TableSuggest.prototype.handleKeyDown = function(evt)
     {
         var keyCode = evt.keyCode;
-        
         switch (keyCode) 
         {
             case 40:    //down key
