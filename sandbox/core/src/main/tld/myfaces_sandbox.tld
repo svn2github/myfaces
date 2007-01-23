@@ -245,7 +245,6 @@ Sandbox-related entities.
             <name>autoComplete</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.Boolean</type>
             <description>If false, the input field is not automatically populated with the first suggested value.
                          Default: true
             </description>
@@ -765,19 +764,16 @@ Sandbox-related entities.
 			<name>fade</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<name>squish</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<name>puff</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 		</attribute>
 		<attribute>
 			<name>scale</name>
@@ -790,13 +786,11 @@ Sandbox-related entities.
 			<name>scaleSize</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
 			<name>duration</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
 		</attribute>
 
 		<attribute>
@@ -1236,7 +1230,6 @@ Sandbox-related entities.
 			<name>periodicalUpdate</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
             <description>Does a periodical refresh of the partial page inside the ppr group. In milliseconds.
                          No partialTriggers are needed. 
             </description>
@@ -1254,7 +1247,6 @@ Sandbox-related entities.
 			<name>sizeShare</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
             <description>Size share value describing the place the content pane wants from its parent</description>
         </attribute>
 		<attribute>
@@ -1281,7 +1273,6 @@ Sandbox-related entities.
 			<name>adjustPaths</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 			<description>Path adjustment as defined by dojo</description>
 		</attribute>
 	
@@ -1289,7 +1280,6 @@ Sandbox-related entities.
 			<name>extractContent</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 			<description>Defined by dojo, see the examples</description>
 		</attribute>
 	
@@ -1297,7 +1287,6 @@ Sandbox-related entities.
 			<name>parseContent</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 			<description>Defined by dojo see the examples</description>
 		</attribute>
 	
@@ -1305,7 +1294,6 @@ Sandbox-related entities.
 			<name>preload</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 			<description>Content Preloading</description>
 		</attribute>
 	
@@ -1331,7 +1319,6 @@ Sandbox-related entities.
 			<name>refreshOnShow</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 			<description>Description for the attribute</description>
 		</attribute>
 	
@@ -1349,7 +1336,6 @@ Sandbox-related entities.
 			<name>executeScripts</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
 			<description>
 				If true scripts will be evaled after rendering
 			</description>
@@ -1416,21 +1402,18 @@ Sandbox-related entities.
 			<name>sizeShare</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
             <description>Size share value describing the place the content pane wants from its parent</description>
         </attribute>
 		<attribute>
 			<name>activeSizing</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
             <description>Size share value describing the place the content pane wants from its parent</description>
         </attribute>
 		<attribute>
 			<name>sizerWidth</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Integer</type>
             <description>width of the sizer bar</description>
         </attribute>
 		<attribute>
@@ -1444,21 +1427,18 @@ Sandbox-related entities.
             <name>persist</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.Boolean</type>
             <description>If true, cookie persisting of the split pane is enabled</description>
         </attribute>
         <attribute>
             <name>startPoint</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.Integer</type>
             <description>Starting Point of the split pane as defined by dojo</description>
         </attribute>
         <attribute>
             <name>lastPoint</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <type>java.lang.Integer</type>
             <description>Last point of the split pane</description>
         </attribute>
 	</tag>

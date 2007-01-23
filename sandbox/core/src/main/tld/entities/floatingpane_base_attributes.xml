@@ -18,7 +18,6 @@
 	<name>hasShadow</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
 	<description>Shadow drawn or not</description>
 </attribute>
 
@@ -26,7 +25,6 @@
 	<name>constrainToContainer</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
 	<description>limit to parent container</description>
 </attribute>
 
@@ -42,7 +40,6 @@
 	<name>resizable</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
 	<description>Window resizable</description>
 </attribute>
 
@@ -50,7 +47,6 @@
 	<name>titleBarDisplay</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
 	<description>Displays the title bar of the Window</description>
 </attribute>
 
@@ -74,7 +70,6 @@
 	<name>displayMinimizeAction</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
 	<description>if true a minimize button is displayed</description>
 </attribute>
 
@@ -82,7 +77,6 @@
 	<name>modal</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
 	<description>Description for the attribute</description>
 </attribute>
 
