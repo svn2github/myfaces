@@ -18,66 +18,65 @@
  */
 package org.apache.myfaces.custom.stylesheet;
 
-import java.io.IOException;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import java.io.IOException;
 
 /**
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
-*/
+ */
+public class StylesheetRenderer extends HtmlRenderer
+{
+	public void encodeEnd(FacesContext context, UIComponent component)
+		throws IOException
+	{
 
-public class StylesheetRenderer extends HtmlRenderer {
+		if ((context == null) || (component == null))
+		{
+			throw new NullPointerException();
+		}
+		Stylesheet stylesheet = (Stylesheet) component;
+		ResponseWriter writer = context.getResponseWriter();
 
-     public void encodeEnd(FacesContext context, UIComponent component)
-        throws IOException {
+		if (stylesheet.isInline())
+		{
+			//include as inline css
+			writer.startElement("style", component);
+			writer.writeAttribute("type", "text/css", null);
+			if (stylesheet.getMedia() != null)
+			{
+				writer.writeAttribute("media", stylesheet.getMedia(), null);
+			}
+			//writer.writeText("<!--\n", null);
+			Object text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
+			if (text != null)
+			{
+				writer.writeText(text, null);
+			}
+			//writer.writeText("\n-->", null);
+			writer.endElement("style");
+		}
+		else
+		{
+			//refere as link-element
+			writer.startElement("link", component);
+			writer.writeAttribute("rel", "stylesheet", null);
+			writer.writeAttribute("type", "text/css", null);
+			if (stylesheet.getMedia() != null)
+			{
+				writer.writeAttribute("media", stylesheet.getMedia(), null);
+			}
 
-        if ((context == null) || (component == null)) {
-            throw new NullPointerException();
-        }
-        Stylesheet stylesheet = (Stylesheet) component;
-        ResponseWriter writer = context.getResponseWriter();
-
-        if(stylesheet.isInline())
-        {
-          //include as inline css
-          writer.startElement("style", component);
-          writer.writeAttribute("type", "text/css", null);
-          if(stylesheet.getMedia() != null)
-          {
-            writer.writeAttribute("media", stylesheet.getMedia(), null);
-          }
-          //writer.writeText("<!--\n", null);
-          Object text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
-          if (text != null)
-          {
-              writer.writeText(text, null);
-          }
-          //writer.writeText("\n-->", null);
-          writer.endElement("style");
-        }
-        else
-        {
-          //refere as link-element
-          writer.startElement("link", component);
-          writer.writeAttribute("rel", "stylesheet", null);
-          writer.writeAttribute("type", "text/css", null);
-          if(stylesheet.getMedia() != null)
-          {
-            writer.writeAttribute("media", stylesheet.getMedia(), null);
-          }
-          writer.writeURIAttribute
-              ("href",
-               context.getApplication().getViewHandler().getResourceURL(context, stylesheet.getPath()),
-               "path");
-          writer.endElement("link");
-        }
-
-
-    }
+			writer.writeURIAttribute
+				("href",
+					context.getApplication().getViewHandler().getResourceURL(context, stylesheet.getPath()),
+					"path");
+			writer.endElement("link");
+		}
+	}
 }
