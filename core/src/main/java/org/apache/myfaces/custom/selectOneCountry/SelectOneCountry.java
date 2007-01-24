@@ -124,7 +124,7 @@ public class SelectOneCountry extends HtmlSelectOneMenu {
 
         List countriesSelectItems = new ArrayList( map.size() );
         if(getEmptySelection() != null)
-        	countriesSelectItems.add(new SelectItem(getEmptySelection(), getEmptySelection()));
+        	countriesSelectItems.add(new SelectItem("", getEmptySelection()));
 
         Integer maxLength = getMaxLength();
         int maxDescriptionLength = maxLength==null ? Integer.MAX_VALUE : maxLength.intValue();
