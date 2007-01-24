@@ -124,7 +124,7 @@ public class SelectOneLanguage extends HtmlSelectOneMenu {
 
         List languagesSelectItems = new ArrayList( map.size() );
         if(getEmptySelection() != null)
-        	languagesSelectItems.add(new SelectItem(getEmptySelection(), getEmptySelection()));
+        	languagesSelectItems.add(new SelectItem("", getEmptySelection()));
 
         Integer maxLength = getMaxLength();
         int maxDescriptionLength = maxLength==null ? Integer.MAX_VALUE : maxLength.intValue();
