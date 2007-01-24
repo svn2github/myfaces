@@ -20,6 +20,7 @@ package org.apache.myfaces.custom.stylesheet;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -53,7 +54,16 @@ public class StylesheetRenderer extends HtmlRenderer
 				writer.writeAttribute("media", stylesheet.getMedia(), null);
 			}
 			//writer.writeText("<!--\n", null);
-			Object text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
+
+			Object text;
+			if (stylesheet.isFiltered())
+			{
+				text = TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, stylesheet.getPath());
+			}
+			else
+			{
+				text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
+			}
 			if (text != null)
 			{
 				writer.writeText(text, null);
@@ -72,10 +82,18 @@ public class StylesheetRenderer extends HtmlRenderer
 				writer.writeAttribute("media", stylesheet.getMedia(), null);
 			}
 
-			writer.writeURIAttribute
-				("href",
-					context.getApplication().getViewHandler().getResourceURL(context, stylesheet.getPath()),
-					"path");
+			String stylesheetPath;
+			if (stylesheet.isFiltered())
+			{
+				TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, stylesheet.getPath());
+				stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(context, TextResourceFilterProvider.class, stylesheet.getPath(), true);
+			}
+			else
+			{
+				stylesheetPath = context.getApplication().getViewHandler().getResourceURL(context, stylesheet.getPath());
+			}
+
+			writer.writeURIAttribute("href", stylesheetPath, "path");
 			writer.endElement("link");
 		}
 	}

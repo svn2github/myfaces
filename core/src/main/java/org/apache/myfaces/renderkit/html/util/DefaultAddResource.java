@@ -518,7 +518,7 @@ public class DefaultAddResource implements AddResource
      */
     protected long getCacheKey(FacesContext context)
     {
-        // cache key is hold in application scope so it is recreated on redeploying the webapp.
+		// cache key is hold in application scope so it is recreated on redeploying the webapp.
         Map applicationMap = context.getExternalContext().getApplicationMap();
         Long cacheKey = (Long) applicationMap.get(RESOURCES_CACHE_KEY);
         if (cacheKey == null)

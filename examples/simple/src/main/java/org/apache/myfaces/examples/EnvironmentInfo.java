@@ -16,15 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.custom.stylesheet;
+package org.apache.myfaces.examples;
+
+import javax.faces.context.FacesContext;
 
 /**
- * filters a stylesheet
- * <p/>
- * This will replace any el expressing of the original stylesheet with its evaluated string form
- *
- * @author imario
+ * provide access to some environmental infos
  */
-public class StylesheetFilter
+public class EnvironmentInfo
 {
+	public String getRequestContextPath()
+	{
+		return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+	}
 }

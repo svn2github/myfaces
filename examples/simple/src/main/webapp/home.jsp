@@ -10,7 +10,7 @@
 
         <f:view>
         <h:form>
-    
+
             <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
             <f:loadBundle basename="org.apache.myfaces.examples.resource.build" var="buildInfo"/>
 
@@ -31,6 +31,7 @@
                 <h:outputLink value="aliasBean.jsf" ><f:verbatim>Alias Bean</f:verbatim></h:outputLink>
                 <h:outputLink value="buffer.jsf" ><f:verbatim>Buffer</f:verbatim></h:outputLink>
                 <h:outputLink value="div.jsf" ><f:verbatim>Div</f:verbatim></h:outputLink>
+				<h:outputLink value="filteredStylesheet.jsf" ><f:verbatim>Filtered Stylesheet</f:verbatim></h:outputLink>
                 <h:outputText value="Data Table"/>
                 <h:panelGrid style="padding-left:25px">
                     <h:outputLink value="masterDetail.jsf" ><f:verbatim>Master-Detail</f:verbatim></h:outputLink>

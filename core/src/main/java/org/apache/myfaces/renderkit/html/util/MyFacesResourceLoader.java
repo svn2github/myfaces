@@ -33,13 +33,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
 
 /**
  * A ResourceLoader capable of fetching resources from the classpath,
  * but only for classes under package org.apache.myfaces.custom.
- * 
+ *
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -106,7 +105,7 @@ public class MyFacesResourceLoader implements ResourceLoader
     public void serveResource(ServletContext context, HttpServletRequest request,
             HttpServletResponse response, String resourceUri) throws IOException
     {
-        String[] uriParts = resourceUri.split("/", 2);
+		String[] uriParts = resourceUri.split("/", 2);
 
         String component = uriParts[0];
         if (component == null || component.trim().length() == 0)
@@ -135,7 +134,6 @@ public class MyFacesResourceLoader implements ResourceLoader
             log.error("No resource defined component class " + className);
             return;
         }
-        resource = "resource/" + resource;
 
         InputStream is = null;
 
@@ -144,8 +142,34 @@ public class MyFacesResourceLoader implements ResourceLoader
 			// is = componentClass.getResourceAsStream(resource);
 			//if (is == null)
 
-			URL url = componentClass.getResource(resource);
-			if (url == null)
+			ResourceProvider resourceProvider;
+			if (ResourceProvider.class.isAssignableFrom(componentClass))
+			{
+				try
+				{
+					resourceProvider = (ResourceProvider) componentClass.newInstance();
+				}
+				catch (InstantiationException e)
+				{
+					response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Unable to instantiate resource provider for resource "
+							+ resource + " for component " + component);
+					log.error("Unable to instantiate resource provider for resource " + resource + " for component " + component, e);
+					return;
+				}
+				catch (IllegalAccessException e)
+				{
+					response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Unable to instantiate resource provider for resource "
+							+ resource + " for component " + component);
+					log.error("Unable to instantiate resource provider for resource " + resource + " for component " + component, e);
+					return;
+				}
+			}
+			else
+			{
+				resourceProvider = new DefaultResourceProvider(componentClass);
+			}
+
+			if (!resourceProvider.exists(context, resource))
             {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to find resource "
                         + resource + " for component " + component
@@ -157,20 +181,46 @@ public class MyFacesResourceLoader implements ResourceLoader
             }
             else
             {
-				URLConnection con = url.openConnection();
-				int contentLength = con.getContentLength();
+				// URLConnection con = url.openConnection();
 
-				is = con.getInputStream();
+				long lastModified = resourceProvider.getLastModified(context, resource);
+				if (lastModified < 1)
+				{
+					// fallback
+					lastModified = getLastModified();
+				}
 
-				defineContentHeaders(request, response, resource, contentLength);
-                defineCaching(request, response, resource);
+				long browserDate = request.getDateHeader("If-Modified-Since");
+				if (browserDate > -1)
+				{
+					// normalize to seconds - this should work with any os
+					lastModified = (lastModified / 1000) * 1000;
+					browserDate = (browserDate / 1000) * 1000;
+
+					if (lastModified == browserDate)
+					{
+						// the browser already has the correct version
+
+						response.setStatus(HttpURLConnection.HTTP_NOT_MODIFIED);
+						return;
+					}
+				}
+
+
+				int contentLength = resourceProvider.getContentLength(context, resource);
+				String contentEncoding = resourceProvider.getEncoding(context, resource);
+
+				is = resourceProvider.getInputStream(context, resource);
+
+				defineContentHeaders(request, response, resource, contentLength, contentEncoding);
+                defineCaching(request, response, resource, lastModified);
                 writeResource(request, response, is);
             }
         }
         finally
         {
             if(is!=null)
-                is.close();            
+                is.close();
         }
     }
 
@@ -205,9 +255,9 @@ public class MyFacesResourceLoader implements ResourceLoader
      * effectively reload files on webapp redeploy.
      */
     protected void defineCaching(HttpServletRequest request, HttpServletResponse response,
-            String resource)
+            String resource, long lastModified)
     {
-        response.setDateHeader("Last-Modified", getLastModified());
+        response.setDateHeader("Last-Modified", lastModified);
 
         Calendar expires = Calendar.getInstance();
         expires.add(Calendar.DAY_OF_YEAR, 7);
@@ -223,17 +273,24 @@ public class MyFacesResourceLoader implements ResourceLoader
      * The mime-type output is determined by the resource filename suffix.
      */
     protected void defineContentHeaders(HttpServletRequest request, HttpServletResponse response,
-										String resource, int contentLength)
+										String resource, int contentLength, String contentEncoding)
     {
+		String charset = "";
+		if (contentEncoding != null)
+		{
+			charset = "; charset=" + contentEncoding;
+		}
 		if (contentLength > -1)
 		{
 			response.setContentLength(contentLength);
 		}
-		
+
 		if (resource.endsWith(".js"))
-            response.setContentType(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT);
+            response.setContentType(
+				org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT + charset);
         else if (resource.endsWith(".css"))
-            response.setContentType(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.STYLE_TYPE_TEXT_CSS);
+            response.setContentType(
+				org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.STYLE_TYPE_TEXT_CSS + charset);
         else if (resource.endsWith(".gif"))
             response.setContentType("image/gif");
         else if (resource.endsWith(".png"))

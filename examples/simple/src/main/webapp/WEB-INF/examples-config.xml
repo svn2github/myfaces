@@ -14,7 +14,14 @@
         <variable-resolver>org.apache.myfaces.examples.accessedbeans.AccessTrackingVariableResolver</variable-resolver>
     </application>
 
-    <!-- Accessed beans on the last request -->
+
+	<managed-bean>
+		<managed-bean-name>environmentInfo</managed-bean-name>
+		<managed-bean-class>org.apache.myfaces.examples.EnvironmentInfo</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Accessed beans on the last request -->
     <managed-bean>
         <managed-bean-name>accessedBeans</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.accessedbeans.AccessedBeans</managed-bean-class>
@@ -69,13 +76,13 @@
         <managed-bean-class>org.apache.myfaces.examples.aliasexample.AliasHolder</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <managed-bean>
         <managed-bean-name>aliasTest3</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.aliasexample.AliasHolder</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <managed-bean>
         <managed-bean-name>aliasTest4</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.aliasexample.AliasHolder</managed-bean-class>
@@ -185,7 +192,7 @@
         <managed-bean-class>org.apache.myfaces.examples.listexample.SimpleSortableCarList</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <!-- Managed Beans for simpleAutoSortList.jsp -->
 
     <managed-bean>
@@ -215,7 +222,7 @@
         <managed-bean-class>org.apache.myfaces.examples.crosstable.DataBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    
+
     <!-- Managed Beans for date.jsp -->
 
     <managed-bean>
@@ -223,7 +230,7 @@
         <managed-bean-class>java.util.Date</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <managed-bean>
         <managed-bean-name>date2</managed-bean-name>
         <managed-bean-class>java.util.Date</managed-bean-class>
@@ -320,13 +327,13 @@
         <managed-bean-class>org.apache.myfaces.examples.misc.TabbedPaneBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <managed-bean>
         <managed-bean-name>testCheckBox</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.misc.TestCheckBox</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
 	<managed-bean>
         <managed-bean-name>testCheckList</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.misc.TestCheckBoxList</managed-bean-class>
@@ -377,7 +384,7 @@
     	<managed-bean-class>java.util.Date</managed-bean-class>
     	<managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
-	
+
 	<!--  Managed bean for the selectItems component -->
 	<managed-bean>
 		<managed-bean-name>selectItemsBean</managed-bean-name>
@@ -541,7 +548,7 @@
     		</map-entry>
     	</map-entries>
     </managed-bean>
-    
+
     <managed-bean>
     	<managed-bean-name>randomColorEntryRenderer</managed-bean-name>
     	<managed-bean-class>org.apache.myfaces.examples.schedule.RandomColorScheduleEntryRenderer</managed-bean-class>
@@ -565,7 +572,7 @@
     </managed-bean>
 
     <!-- NAVIGATION RULES -->
-	
+
     <navigation-rule>
         <navigation-case>
             <from-outcome>go_home</from-outcome>
@@ -594,7 +601,7 @@
             <from-outcome>go_aliasBean</from-outcome>
             <to-view-id>/aliasBean.jsp</to-view-id>
         </navigation-case>
-        
+
         <navigation-case>
             <from-outcome>go_buffer</from-outcome>
             <to-view-id>/buffer.jsp</to-view-id>
@@ -654,12 +661,12 @@
             <from-outcome>go_tree</from-outcome>
             <to-view-id>/tree.jsp</to-view-id>
         </navigation-case>
-        
+
         <navigation-case>
             <from-outcome>go_tree2</from-outcome>
             <to-view-id>/tree2.jsp</to-view-id>
-        </navigation-case>        
-        
+        </navigation-case>
+
         <navigation-case>
             <from-outcome>go_treeTable</from-outcome>
             <to-view-id>/treeTable.jsp</to-view-id>
@@ -694,7 +701,7 @@
             <from-outcome>go_datascroller</from-outcome>
             <to-view-id>/dataScroller.jsp</to-view-id>
         </navigation-case>
-        
+
         <navigation-case>
             <from-outcome>go_panelstack</from-outcome>
             <to-view-id>/panelstack.jsp</to-view-id>
@@ -709,7 +716,7 @@
             <from-outcome>go_newspaperTable</from-outcome>
             <to-view-id>/newspaperTable.jsp</to-view-id>
         </navigation-case>
-		
+
 		<navigation-case>
             <from-outcome>go_forceId</from-outcome>
             <to-view-id>/forceId.jsp</to-view-id>
@@ -719,7 +726,7 @@
             <from-outcome>go_swapimage</from-outcome>
             <to-view-id>/swapimage.jsp</to-view-id>
         </navigation-case>
-        
+
         <navigation-case>
             <from-outcome>go_selectOneCountry</from-outcome>
             <to-view-id>/selectOneCountry.jsp</to-view-id>
@@ -804,7 +811,7 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>/schedule_addentry.jsp</from-view-id>
 		<navigation-case>
@@ -823,7 +830,7 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	
+
 	<navigation-rule>
 		<from-view-id>/schedule3.jsp</from-view-id>
 		<navigation-case>

@@ -16,6 +16,19 @@
                 ]]>
             </description>
         </attribute>
+		<attribute>
+			<name>filtered</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description><![CDATA[
+				true|false. When true, any EL expression in the stylesheet will be
+				evaluated and replaced by its string representation on the first
+				access.
+				The stylesheet will be processed only once. Every subsequent request
+				will get a cached view.
+				]]>
+			</description>
+		</attribute>
         <attribute>
             <name>media</name>
             <required>false</required>

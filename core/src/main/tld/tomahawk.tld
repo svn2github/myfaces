@@ -217,7 +217,7 @@
       SYSTEM "tomahawk-entities/tomahawk_panel_group_attributes.xml">
 <!ENTITY tomahawk_dojo_intializer_attributes
       SYSTEM "tomahawk-entities/tomahawk_dojo_initializer_attributes.xml">
-<!ENTITY tomahawk_select_items_attributes 
+<!ENTITY tomahawk_select_items_attributes
       SYSTEM "tomahawk-entities/tomahawk_select_items_attributes.xml">
 
 ]>
@@ -1213,7 +1213,7 @@
             A tree data component.
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
-        </description>
+h        </description>
 		&ui_component_attributes;
         &tomahawk_tree_attributes;
     </tag>
@@ -1592,7 +1592,7 @@
 		&ui_component_attributes;
 		&tomahawk_dojo_intializer_attributes;
 	</tag>
-	
+
 	<tag>
 		<name>selectItems</name>
 		<tag-class>org.apache.myfaces.custom.selectitems.SelectItemsTag</tag-class>
