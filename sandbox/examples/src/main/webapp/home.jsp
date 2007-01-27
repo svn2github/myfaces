@@ -143,6 +143,15 @@
                 <h:outputLink value="submitOnEventGlobal.jsf" ><f:verbatim>submit on a global event</f:verbatim></h:outputLink>
                 <h:outputLink value="submitOnEventLink.jsf" ><f:verbatim>submit on a global event as child of a commandLink</f:verbatim></h:outputLink>
             </h:panelGrid>
+            
+            <h:outputText value="SecurityContext"/>
+             <h:panelGrid style="padding-left:25px">
+           		<h:outputLink value="securityContext.jsf" ><f:verbatim>Security Extensions for Page Authorization</f:verbatim></h:outputLink>
+           		<h:outputText value="Try following user accounts during authentication"></h:outputText>
+           		<h:outputText value="user: 'admin' , password: 'myfacesrocks' , role: 'admin'"></h:outputText>
+           		<h:outputText value="user: 'editor' , password: 'editor' , role: 'writer'"></h:outputText>
+           		<h:outputText value="user: 'guest' , password: 'guest' , role: 'reader'"></h:outputText>           		
+            </h:panelGrid>
 
         </h:panelGrid>
     </h:form>
