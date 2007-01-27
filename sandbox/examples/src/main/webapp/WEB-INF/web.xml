@@ -195,4 +195,33 @@
   	<welcome-file>default.htm</welcome-file>
   	<welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>SecurityContext</web-resource-name>
+			<url-pattern>/securityContext.jsf</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+			<role-name>writer</role-name>
+			<role-name>reader</role-name>
+		</auth-constraint>
+	</security-constraint>
+  
+  <security-role>
+	<role-name>admin</role-name>
+  </security-role>
+  
+    <security-role>
+	<role-name>writer</role-name>
+  </security-role>
+  
+    <security-role>
+	<role-name>reader</role-name>
+  </security-role>
+  
+  <login-config>
+	<auth-method>BASIC</auth-method>
+  </login-config>
+  
 </web-app>
