@@ -67,7 +67,7 @@ Automatically page refresh through periodic updates
             <h:panelGrid>
                 <h:outputText value="List of updated addresses after 2000ms:"/>
 
-                <s:pprPanelGroup id="periodicalUpdatedArea" periodicalUpdate="2000">
+                <s:pprPanelGroup id="periodicalUpdatedArea" periodicalUpdate="2000" showDebugMessages="false">
                     <t:dataTable var="address" value="#{pprExampleBean.periodicalUpdatedValues}">
                         <t:column>
                             <f:facet name="header">
@@ -101,7 +101,7 @@ Automatically page refresh through periodic updates
 
             <h:panelGrid>
                 <h:outputText value="List of updated addresses after 5000ms: (another ppr-group)"/>
-                <s:pprPanelGroup id="periodicalUpdatedArea2" periodicalUpdate="5000">
+                <s:pprPanelGroup id="periodicalUpdatedArea2" periodicalUpdate="5000" showDebugMessages="false">
                 <t:dataTable var="address" value="#{pprExampleBean.periodicalUpdatedValues}">
                     <t:column>
                         <f:facet name="header">
@@ -118,6 +118,8 @@ Automatically page refresh through periodic updates
                 </t:dataTable>
                 </s:pprPanelGroup>
             </h:panelGrid>
+            
+            <h:commandButton action="#{pprExampleBean.doTimeConsumingStuff}" value="test blocking of auto refresh"/>
 
         </h:panelGrid>
     </h:form>

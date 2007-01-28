@@ -64,6 +64,19 @@ public class PPRExampleBean
 		return "test";
 	}
 
+    public String doTimeConsumingStuff()
+    {
+        try
+        {
+            Thread.sleep(7000L);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();  
+        }
+        return null;
+    }
+
     public List getPeriodicalUpdatedValues()
     {
         List refreshList = new ArrayList();

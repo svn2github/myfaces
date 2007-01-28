@@ -27,6 +27,7 @@ dojo.require("dojo.dom.*");
 
 org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages)
 {
+    org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost = false;
     org.apache.myfaces.PPRCtrl.showDebugMessages = showDebugMessages;
                                 
     if(typeof window.myFacesPartialTriggers == "undefined")
@@ -76,6 +77,22 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId,
     }
 };
 
+// registering a function (called before submit) on each form to block periodical refresh during request-response cycle
+
+org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
+{
+    var ppr = this;
+
+   for(var i = 0; i < document.forms.length; i++)
+    {
+        var form = document.forms[i];
+        dojo.event.connect(form, "onsubmit", function(evt) {
+            ppr.doBlockPeriodicalUpdateDuringPost();
+        });
+    }
+};
+
+
 // init function of automatically partial page refresh
 
 org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
@@ -85,12 +102,19 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
     this.doAjaxSubmit(content, refreshTimeout, refreshZoneId);
 };
 
+// blocking periodical update and refreshing viewState
+
+org.apache.myfaces.PPRCtrl.prototype.doBlockPeriodicalUpdateDuringPost = function()
+{
+    org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost = true;
+};
+
 
 //Callback Method which handles the AJAX Response
 
 org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 {      
-    if(type == "load")
+    if(type == "load" && !org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost)
     {
 	    var componentUpdates = data.getElementsByTagName("component");
 	    var componentUpdate = null;
@@ -222,7 +246,7 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         formNode: this.form
     });
 
-    if(refreshTimeout)
+    if(refreshTimeout && !org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost)
     {
         window.setTimeout(function() {
             ppr.startPeriodicalUpdate(refreshTimeout, refreshZoneId);

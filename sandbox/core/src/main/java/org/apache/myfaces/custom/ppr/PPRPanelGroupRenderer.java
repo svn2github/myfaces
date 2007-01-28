@@ -101,6 +101,11 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
             script.append(pprCtrlReference + "=" +
                     MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"+ pprGroup.getShowDebugMessages().booleanValue()+");\n");
 
+            if (pprGroup.getPeriodicalUpdate() != null)
+            {
+                script.append(pprCtrlReference + ".registerOnSubmitInterceptor();");
+            }
+
             renderInlineScript(facesContext, pprGroup, script.toString());
         }
 
