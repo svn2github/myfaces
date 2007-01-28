@@ -50,7 +50,7 @@ public class FloatingPaneTag extends DojoContentPaneTag {
 
     public static final String TAG_PARAM_HasShadow             = "hasShadow";
 
-    public static final String TAG_PARAM_iconSrc               = "IconSrc";
+    public static final String TAG_PARAM_IconSrc               = "iconSrc";
 
     public static final String TAG_PARAM_Modal                 = "modal";
 
@@ -82,7 +82,7 @@ public class FloatingPaneTag extends DojoContentPaneTag {
 
     private String             _hasShadow                      = null;
 
-    private String             _IconSrc                        = null;
+    private String             _iconSrc                        = null;
 
     private String             _modal                          = null;
 
@@ -129,7 +129,7 @@ public class FloatingPaneTag extends DojoContentPaneTag {
         _title = null;
         // //release title end
         // //release IconSrc begin
-        _IconSrc = null;
+        _iconSrc = null;
         // //release IconSrc end
         // //release hasShadow begin
         _hasShadow = null;
@@ -185,9 +185,9 @@ public class FloatingPaneTag extends DojoContentPaneTag {
         _hasShadow = hasShadow;
     }
 
-    public void seticonSrc(String IconSrc) {
-        _IconSrc = IconSrc;
-    }
+    public void setIconSrc(String iconSrc) {
+        _iconSrc = iconSrc;
+     }
 
     public void setModal(String modal) {
         _modal = modal;
@@ -208,7 +208,7 @@ public class FloatingPaneTag extends DojoContentPaneTag {
         super.setStringProperty(component, TAG_PARAM_Title, _title);
         // //setProperties title end
         // //setProperties IconSrc begin
-        super.setStringProperty(component, TAG_PARAM_iconSrc, _IconSrc);
+        super.setStringProperty(component, TAG_PARAM_IconSrc, _iconSrc);
         // //setProperties IconSrc end
         // //setProperties hasShadow begin
         super.setBooleanProperty(component, TAG_PARAM_HasShadow, _hasShadow);
