@@ -35,6 +35,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 
     private String _periodicalUpdate;
 
+    private String _showDebugMessages;
+
     public String getComponentType()
 	{
 		return PPRPanelGroup.COMPONENT_TYPE;
@@ -50,6 +52,7 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 		super.release();
 		_partialTriggers = null;
         _periodicalUpdate = null;
+        _showDebugMessages = null;
     }
 
 	protected void setProperties(UIComponent component)
@@ -60,6 +63,7 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 		setStringProperty(component, "partialTriggerPattern", _partialTriggerPattern);
 		setStringProperty(component, "inlineLoadingMessage", _inlineLoadingMessage);
         setIntegerProperty(component,"periodicalUpdate", _periodicalUpdate);
+        setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
     }
 
 	public String getPartialTriggers()
@@ -91,5 +95,11 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
     public void setPeriodicalUpdate(String periodicalUpdate)
     {
         _periodicalUpdate = periodicalUpdate;
+    }
+
+
+    public void setShowDebugMessages(String showDebugMessages)
+    {
+        _showDebugMessages = showDebugMessages;
     }
 }

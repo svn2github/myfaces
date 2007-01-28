@@ -66,7 +66,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		FormInfo fi = RendererUtils.findNestingForm(pprGroup, facesContext);
 		if (fi == null)
 		{
-			throw new FacesException("PPRPanelGroup must be embedded in an form.");
+			throw new FacesException("PPRPanelGroup must be embedded in a form.");
 		}
 
 		if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED))
@@ -85,6 +85,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 				PPRPanelGroup.class,
 				PPR_JS_FILE);
         }
+
+        StringBuffer script = new StringBuffer();
+        String pprCtrlReference = "dojo.byId('"+ fi.getFormName() + "').myFacesPPRCtrl";
         
         if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED  +
                     "." +
@@ -95,20 +98,20 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
                     fi.getFormName(),
                     Boolean.TRUE);
 
-            renderInlineScript(facesContext, pprGroup,
-                    "dojo.byId('" +
-                    fi.getFormName() +
-                    "').myFacesPPRCtrl =" +
-                    MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "');");
+            script.append(pprCtrlReference + "=" +
+                    MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"+ pprGroup.getShowDebugMessages().booleanValue()+");\n");
+
+            renderInlineScript(facesContext, pprGroup, script.toString());
         }
 
         String clientId = pprGroup.getClientId(facesContext);
 
         if (pprGroup.getPeriodicalUpdate() != null)
         {
-            String script = "dojo.byId('"+ fi.getFormName() + "').myFacesPPRCtrl.startPeriodicalUpdate("+ pprGroup.getPeriodicalUpdate() +",'"+ clientId +"');";
+            script = new StringBuffer();
+            script.append(pprCtrlReference + ".startPeriodicalUpdate("+ pprGroup.getPeriodicalUpdate() +",'"+ clientId +"');");
 
-            renderInlineScript(facesContext, pprGroup, script);
+            renderInlineScript(facesContext, pprGroup, script.toString());
         }
 
         String partialTriggerId;
@@ -120,32 +123,23 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 		String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
 		if(partialTriggerPattern != null && partialTriggerPattern.trim().length()>0) 
 		{
-			renderInlineScript(facesContext, pprGroup,
-                    "dojo.byId('" +
-                    fi.getFormName() +
-                    "').myFacesPPRCtrl." +
-                    ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION +
-						"('" +
-						partialTriggerPattern +
-						"','" +
-						clientId +
-						"');");
+            script = new StringBuffer();
+            script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION +
+						    "('" + partialTriggerPattern + "','" + clientId + "');");
+
+            renderInlineScript(facesContext, pprGroup, script.toString());
 		}
 		
 		String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
 		
 		if(inlineLoadingMessage!= null && inlineLoadingMessage.trim().length()>0)
 		{
-			renderInlineScript(facesContext, pprGroup,
-                    "dojo.byId('" +
-                    fi.getFormName() +
-                    "').myFacesPPRCtrl." +
-                    ADD_INLINE_LOADING_MESSAGE_FUNCTION +
-						"('" +
-						inlineLoadingMessage +
-						"','" +
-						clientId +
-						"');");
+            script = new StringBuffer();
+            script.append(pprCtrlReference + "." + ADD_INLINE_LOADING_MESSAGE_FUNCTION +
+						        "('" + inlineLoadingMessage + "','" + clientId + "');");
+
+            renderInlineScript(facesContext, pprGroup, script.toString());
+
 		}
 		
 		if(partialTriggers!= null && partialTriggers.trim().length()>0)
@@ -162,16 +156,12 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 				if (partialTriggerComponent != null)
 				{
 					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
-					renderInlineScript(facesContext, pprGroup,
-	                    "dojo.byId('" +
-	                    fi.getFormName() +
-	                    "').myFacesPPRCtrl." +
-	                    ADD_PARTIAL_TRIGGER_FUNCTION +
-							"('" +
-							partialTriggerClientId +
-							"','" +
-							clientId +
-							"');");
+                    script = new StringBuffer();
+                    script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION +
+							            "('" + partialTriggerClientId + "','" + clientId + "');");
+
+                    renderInlineScript(facesContext, pprGroup, script.toString());
+
 				}
 				else
 				{

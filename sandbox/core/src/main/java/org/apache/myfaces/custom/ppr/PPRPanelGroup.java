@@ -40,7 +40,9 @@ public class PPRPanelGroup extends HtmlPanelGroup
 	
 	private String _inlineLoadingMessage;
 
-	public PPRPanelGroup()
+    private Boolean _showDebugMessages = new Boolean(false);
+
+    public PPRPanelGroup()
 	{
 		setRendererType(DEFAULT_RENDERER_TYPE);
 	}
@@ -98,7 +100,22 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		this._inlineLoadingMessage = inlineLoadingMessage;
 	}
 
-	public void restoreState(FacesContext context, Object state)
+    public Boolean getShowDebugMessages()
+    {
+         if (_showDebugMessages != null)
+        {
+            return _showDebugMessages;
+        }
+        ValueBinding vb = getValueBinding("showDebugMessages");
+        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setShowDebugMessages(Boolean showDebugMessages)
+    {
+        _showDebugMessages = showDebugMessages;
+    }
+
+    public void restoreState(FacesContext context, Object state)
 	{
 
 		Object[] values = (Object[]) state;
@@ -106,16 +123,18 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		_partialTriggers = (String) values[1];
 		_partialTriggerPattern = (String) values[2];
         _periodicalUpdate = (Integer) values[3];
+        _showDebugMessages = (Boolean) values[4];
 
     }
 
 	public Object saveState(FacesContext context)
 	{
-		Object[] values = new Object[4];
+		Object[] values = new Object[5];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
 		values[2] = _partialTriggerPattern;
         values[3] = _periodicalUpdate;
+        values[4] = _showDebugMessages;
         return values;
 	}
 }

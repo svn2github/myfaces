@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 //Declare the myfaces package in the JS Context
 
 dojo.provide("org.apache.myfaces");
@@ -24,8 +25,10 @@ dojo.require("dojo.dom.*");
 
 //Define the Partial Page Rendering Controller Class
 
-org.apache.myfaces.PPRCtrl = function(formId)
+org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages)
 {
+    org.apache.myfaces.PPRCtrl.showDebugMessages = showDebugMessages;
+                                
     if(typeof window.myFacesPartialTriggers == "undefined")
 	{
     	window.myFacesPartialTriggers = new Array;
@@ -38,6 +41,7 @@ org.apache.myfaces.PPRCtrl = function(formId)
 	{
     	window.myFacesInlineLoadingMessage = new Array;
     }
+
     this.replaceFormSubmitFunction(formId);
 
     this.addButtonOnClickHandlers();
@@ -72,7 +76,7 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId,
     }
 };
 
-// starting point of automatically partial page refresh
+// init function of automatically partial page refresh
 
 org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
 {
@@ -85,7 +89,7 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
 //Callback Method which handles the AJAX Response
 
 org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
-{
+{      
     if(type == "load")
     {
 	    var componentUpdates = data.getElementsByTagName("component");
@@ -93,7 +97,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    var domElement = null;
 		for (var i = 0; i < componentUpdates.length; i++)
 		{
-			componentUpdate = componentUpdates[i];
+			componentUpdate = componentUpdates[i];           
 			domElement = dojo.byId(componentUpdate.getAttribute("id"));
 			//todo - doesn't work with tables in IE
 			domElement.innerHTML = componentUpdate.firstChild.data;
@@ -105,7 +109,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    
 		if(stateElem)
 		{
-			var stateUpdate = dojo.dom.firstElement(stateElem,'INPUT');
+            var stateUpdate = dojo.dom.firstElement(stateElem,'INPUT');
 		
 			if(stateUpdate)
 			{
@@ -123,13 +127,13 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 						domElement.value = stateUpdate.getAttribute('value');
 					}
 				}
-				else if (stateUpdateId !='jsf_tree')
+				else if (stateUpdateId !='jsf_tree' && org.apache.myfaces.PPRCtrl.showDebugMessages)
 					alert("server didn't return appropriate element for state-update. returned element-id: "+
 						  stateUpdate.getAttribute('id')+", value : "+stateUpdate.getAttribute('value'));
 			}
 		}
-    }
-    else
+    } 
+    else if(org.apache.myfaces.PPRCtrl.showDebugMessages)
     {
         alert("an Error occured during the ajax-request " + data.message);
     }
@@ -265,7 +269,8 @@ org.apache.myfaces.PPRCtrl.prototype.formSubmitReplacement = function(triggeredE
 org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId)
 {
     this.form = dojo.byId(formId);
-    if(typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
+    if( (typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
+            && org.apache.myfaces.PPRCtrl.showDebugMessages)
     {
         alert("MyFaces PPR Engine: Form with id:" + formId + " not found!");
         return;
