@@ -156,7 +156,7 @@ Sandbox-related entities.
         Enhanced standard JSP actions and custom MyFaces actions.
     </description>
 
-    <!-- inputSuggest -->
+    
 	<tag>
 		<name>loadBundle</name>
 		<tag-class>org.apache.myfaces.custom.loadbundle.LoadBundleTag</tag-class>
@@ -193,7 +193,7 @@ Sandbox-related entities.
 		<tag-class>org.apache.myfaces.custom.suggest.InputSuggestTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Provides an input textbox with "suggest" functionality.</description>
-		&standard_input_text_attributes;
+		&ui_input_attributes;
 		&ext_forceId_attribute;
 		&alt_location_attributes;
 		&html_input_suggest_attributes;
