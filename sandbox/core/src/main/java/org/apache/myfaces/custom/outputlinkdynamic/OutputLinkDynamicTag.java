@@ -58,4 +58,8 @@ public class OutputLinkDynamicTag extends HtmlOutputLinkTagBase
     {
         _resourceRendererClass = resourceRendererClass;
     }
+    
+    public void enabledOnUserRole(String enabledOnUserrole) {
+    	//please do something here, because it is referenced by the tld
+    }
 }
