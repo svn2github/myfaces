@@ -256,11 +256,11 @@ public class RedirectTrackerManager implements Serializable
 
 		if (redirectPath.indexOf('?') == -1)
 		{
-			return redirectPath + "?" + REDIRECT_ARG + "=" + rtid;
+			return redirectPath + "?" + REDIRECT_ARG + "=" + mapKey;
 		}
 		else
 		{
-			return redirectPath + "&" + REDIRECT_ARG + "=" + rtid;
+			return redirectPath + "&" + REDIRECT_ARG + "=" + mapKey;
 		}
 	}
 
