@@ -38,7 +38,11 @@ public class AjaxChildComboBoxTag extends HtmlSelectOneMenuTag
 
     private String _parentComboBox;
     private String _ajaxSelectItemsMethod;
-  
+    private String _size; //please fix this, this has to do something
+    //it is referenced from the tld!!!!
+    
+    
+    
     public String getComponentType() {
         return AjaxChildComboBox.COMPONENT_TYPE;
     }
@@ -59,6 +63,7 @@ public class AjaxChildComboBoxTag extends HtmlSelectOneMenuTag
         AjaxChildComboBoxTag.setAjaxSelectItemsMethodProperty(getFacesContext(),
         		component, _ajaxSelectItemsMethod);
         setStringProperty(component, "parentComboBox", _parentComboBox);
+    
     }
 
     public static void setAjaxSelectItemsMethodProperty(FacesContext context,
@@ -86,5 +91,9 @@ public class AjaxChildComboBoxTag extends HtmlSelectOneMenuTag
     public void setParentComboBox(String parentComboBox) 
     {
         this._parentComboBox = parentComboBox;
+    }
+    
+    public void setSize(String size) {
+    	this._size = size;
     }
 }
