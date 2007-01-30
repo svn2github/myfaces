@@ -147,7 +147,12 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
 
             if (fisheye.getVisibleWindow() != null) {
                 paramMap.put("visibleWindow", fisheye.getVisibleWindow());
+            } else {
+            	 HtmlFishEyeNavigationMenu menu = (HtmlFishEyeNavigationMenu) component;
+            	 int visibleWindow = calculateVisbleWindow(component, menu);
+                 paramMap.put("visibleWindow",new Integer( visibleWindow)); //lets expand, the fisheye will shrink it as needed
             }
+            	
 
             paramMap.put(ITEM_WIDTH_ATTR, fisheye.getItemWidth());
             paramMap.put(ITEM_HEIGHT_ATTR, fisheye.getItemHeight());
@@ -176,6 +181,25 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
         }
 
     }
+
+	private int calculateVisbleWindow(UIComponent component, HtmlFishEyeNavigationMenu menu) {
+		int visibleWindow = 0;
+		 if (menu.getChildCount() == 1 && menu.getChildren().get(0) instanceof FishEyeCommandLink) {
+		     visibleWindow = menu.getRowCount();
+		 } else {
+			 List children = component.getChildren();
+			 
+			 for (Iterator cit = children.iterator(); cit.hasNext();) {
+		         UIComponent child = (UIComponent) cit.next();
+		         if (!child.isRendered())
+		             continue;
+		         if (child instanceof UINavigationMenuItem) {
+		        	 visibleWindow += 1;
+		         }
+			 }     
+		 }
+		return visibleWindow;
+	}
 
     private Stack getChildsMenuStack(FacesContext context, UIComponent component) {
         Stack menuStack = (Stack) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(component.getClientId(context)
