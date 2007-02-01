@@ -67,15 +67,6 @@ public class DefaultResourceProvider implements ResourceProvider
 
 	public String getEncoding(ServletContext context, String resource) throws IOException
 	{
-		// cant be determined ... use default
-		try
-		{
-			return System.getProperty("file.encoding");
-		}
-		catch (SecurityException e)
-		{
-			// not allowed
-			return null;
-		}
+		return null; //Tomahawk-877, this has to be null for now to avoid encoding issues
 	}
 }
