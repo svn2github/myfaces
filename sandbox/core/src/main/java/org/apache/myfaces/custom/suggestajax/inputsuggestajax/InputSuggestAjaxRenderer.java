@@ -24,20 +24,15 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
-import org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjaxRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.UnicodeEncoder;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
-import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -183,7 +178,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
             StringBuffer script = new StringBuffer();
 
-             script.append("dojo.event.connect("+inputSuggestComponentVar+", \"selectOption\", function(evt) { \n"
+             script.append("dojo.event.connect("+inputSuggestComponentVar+", \"_selectOption\", function(evt) { \n"
                    + "dojo.byId('"+ clientId +"').value = ").append(inputSuggestComponentVar).append(".comboBoxSelectionValue.value; });\n");
 
             out.write(script.toString());
