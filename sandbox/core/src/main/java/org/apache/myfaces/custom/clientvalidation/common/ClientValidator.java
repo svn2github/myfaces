@@ -24,5 +24,10 @@ package org.apache.myfaces.custom.clientvalidation.common;
  */
 public interface ClientValidator {
 
+	/**
+	 * Returns the signature of the validator script function
+	 * 
+	 * @return Script method signature
+	 */
 	public String getScriptFunction();
 }

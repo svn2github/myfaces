@@ -24,6 +24,11 @@ package org.apache.myfaces.custom.clientvalidation.common;
  */
 public interface ClientConverter {
 
+	/**
+	 * Returns the signature of the converter script function
+	 * 
+	 * @return Script method signature
+	 */
     public String getScriptFunction();
     
 }
