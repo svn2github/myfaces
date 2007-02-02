@@ -118,7 +118,8 @@
 				</h:form>
 
 			</s:modalDialog>
-
+      
+      <%@ include file="../inc/page_footer.jsp"%>
 
 		</f:view>
 	</body>
