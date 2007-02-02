@@ -505,7 +505,14 @@
         <managed-bean-class>org.apache.myfaces.examples.data.SortableTableBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
+    
+  <!-- managed bean for imageLoop -->
+  <managed-bean>
+    <managed-bean-name>imageLoopBean</managed-bean-name>
+    <managed-bean-class>org.apache.myfaces.examples.imageloop.ImageLoopBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+  
 	<!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>

@@ -144,6 +144,8 @@ Sandbox-related entities.
 <!ENTITY floatingpane_base_attributes	SYSTEM "entities/floatingpane_base_attributes.xml">
 <!ENTITY filter_table_attributes  	SYSTEM "entities/filter_table_attributes.xml">
 <!ENTITY sortable_column_attributes 	SYSTEM "entities/sortable_column_attributes.xml">
+<!ENTITY html_imageloop_attributes	SYSTEM "entities/html_imageloop_attributes.xml">
+<!ENTITY html_imageloopitems_attributes	SYSTEM "entities/html_imageloopitems_attributes.xml">
 ]>
 
 <taglib>
@@ -615,6 +617,47 @@ Sandbox-related entities.
 			<description>The fieldset's legend.</description>
 		</attribute>
 	</tag>
+	
+	<!-- imageLoop-->
+    <tag>
+        <name>imageLoop</name>
+        <tag-class>org.apache.myfaces.custom.imageloop.HtmlImageLoopTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>
+            Image loop/slide show component. Provides Javascript methods to control
+            image loop behaviour.
+            Methods:
+              getImageLoop(id) - get image loop object with id,
+              play() - play loop,
+              stop() - stop loop,
+              accelerate() - accelerate loop until minDelay reached,
+              decelerate() - decelerate loop until maxDelay reached,
+              setImageIndex(index) - show image with index,
+              reset() - reset settings to origin values,
+              getImageCount() - get number of images loaded
+        </description>
+        &ext_forceId_attribute;
+        &faces_id_optional_attribute;
+        &html_imageloop_attributes;
+	</tag>
+
+    <!--  imageLoopItem -->
+    <tag>
+        <name>imageLoopItem</name>
+        <tag-class>org.apache.myfaces.custom.imageloop.ImageLoopItemTag</tag-class>
+        <body-content>empty</body-content>
+        <description>Image loop item.</description>
+        &ui_graphic_attributes;
+    </tag>
+
+    <!--  imageLoopItems -->
+    <tag>
+        <name>imageLoopItems</name>
+        <tag-class>org.apache.myfaces.custom.imageloop.ImageLoopItemsTag</tag-class>
+        <body-content>empty</body-content>
+        <description>Image loop items.</description>
+        &html_imageloopitems_attributes;
+    </tag>
 
 	<!-- graphicImageDynamic -->
 	<tag>

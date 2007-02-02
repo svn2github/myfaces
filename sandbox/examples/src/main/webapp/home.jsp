@@ -23,6 +23,7 @@
 
             <h:outputText value="New in 1.5" style="font-weight:bold;color:red"/>
             <h:panelGrid style="padding-left:25px">
+                <f:verbatim><a href="#imageLoop">Image loop - slide show component</a></f:verbatim>
                 <f:verbatim><a href="#partialPageRendering">Partial Page Rendering</a></f:verbatim>
                 <f:verbatim><a href="#filterTable">Filter Table</a></f:verbatim>
             </h:panelGrid>
@@ -31,7 +32,8 @@
             <h:outputText value="Partial Page Rendering"/>
             <h:panelGrid style="padding-left:25px">
 	            <h:outputLink value="pprPanelGroup.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting manually refreshed by AJAX-Calls</f:verbatim></h:outputLink>
-                 <h:outputLink value="pprPanelGroupPeriodicalUpdate.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting automatically refreshed by AJAX-Calls (through periodic intervals)</f:verbatim></h:outputLink>
+                <h:outputLink value="pprScroller.jsf" ><f:verbatim>PPRPanelGroup - another example where a scrollable table gets refreshed</f:verbatim></h:outputLink>
+                <h:outputLink value="pprPanelGroupPeriodicalUpdate.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting automatically refreshed by AJAX-Calls (through periodic intervals)</f:verbatim></h:outputLink>
             </h:panelGrid>
             <h:outputText value="Resource Serving"/>
             <h:panelGrid style="padding-left:25px">
@@ -106,6 +108,7 @@
             <h:panelGrid style="padding-left:25px">
 	 			<h:commandLink action="go_scope_shop"><f:verbatim>Scopeshop1, an extended saveState Example showing a wizard</f:verbatim></h:commandLink>
            		<h:outputLink value="effect.jsf" ><f:verbatim>Effect - DOJO and script.aculo.us effects</f:verbatim></h:outputLink>
+                <f:verbatim><a name="imageLoop" /></f:verbatim><h:outputLink value="imageloop.jsf" ><f:verbatim>Image loop/slide show with fading effects based on Dojo</f:verbatim></h:outputLink>
 	            <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
                 <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>automatically convert the number to the correct type</f:verbatim></h:outputLink>
 
@@ -145,6 +148,8 @@
             </h:panelGrid>
 
         </h:panelGrid>
+    
+        <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
     </f:view>
 
