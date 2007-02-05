@@ -31,4 +31,11 @@ public interface ClientConverter {
 	 */
     public String getScriptFunction();
     
+    /**
+	 * Returns the resource file containing the script to be included
+	 * 
+	 * @return Path to Script Resource
+	 */
+    public String getScriptResource();
+    
 }
