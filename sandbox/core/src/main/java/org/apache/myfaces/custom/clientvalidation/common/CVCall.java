@@ -32,8 +32,10 @@ public class CVCall implements Serializable{
 	private String _id;
 	private String _clientId;
 	private boolean _required;
-	private String _converterScript;
-	private String[] _validatorScripts;
+	private String _converterScriptFunction;
+	private String _converterScriptResource;
+	private String[] _validatorScriptFunctions;
+	private String[] _validatorScriptResources;
 	
 	public CVCall() {}
 	
@@ -57,26 +59,39 @@ public class CVCall implements Serializable{
 		this._clientId = clientId;
 	}
 	
-	public String getConverterScript() {
-		return _converterScript;
-	}
-	public void setConverterScript(String converterScript) {
-		this._converterScript = converterScript;
-	}
-	
 	public boolean isRequired() {
 		return _required;
 	}
 	public void setRequired(boolean required) {
 		this._required = required;
 	}
-	
-	public String[] getValidatorScripts() {
-		return _validatorScripts;
+
+	public String getConverterScriptFunction() {
+		return _converterScriptFunction;
 	}
-	public void setValidatorScripts(String[] validatorScripts) {
-		this._validatorScripts = validatorScripts;
+	public void setConverterScriptFunction(String scriptFunction) {
+		_converterScriptFunction = scriptFunction;
 	}
-	
+
+	public String getConverterScriptResource() {
+		return _converterScriptResource;
+	}
+	public void setConverterScriptResource(String scriptResource) {
+		_converterScriptResource = scriptResource;
+	}
+
+	public String[] getValidatorScriptFunctions() {
+		return _validatorScriptFunctions;
+	}
+	public void setValidatorScriptFunctions(String[] scriptFunctions) {
+		_validatorScriptFunctions = scriptFunctions;
+	}
+
+	public String[] getValidatorScriptResources() {
+		return _validatorScriptResources;
+	}
+	public void setValidatorScriptResources(String[] scriptResources) {
+		_validatorScriptResources = scriptResources;
+	}
 }
 
