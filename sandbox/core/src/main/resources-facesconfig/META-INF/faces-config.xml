@@ -618,5 +618,19 @@
       <validator-id>org.apache.myfaces.validator.csv</validator-id>
       <validator-class>org.apache.myfaces.custom.csvvalidator.CSVValidator</validator-class>
   </validator>
+  
+  <!-- extended converters and validators -->
+  <converter>
+		<converter-id>javax.faces.Integer</converter-id>
+		<converter-class>org.apache.myfaces.convert.ex.IntegerConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>java.lang.Integer</converter-for-class>
+		<converter-class>org.apache.myfaces.convert.ex.IntegerConverter</converter-class>
+	</converter>
+	<validator>
+		<validator-id>javax.faces.Length</validator-id>
+		<validator-class>org.apache.myfaces.validator.ex.LengthValidator</validator-class>
+	</validator>
 
 </faces-config>
