@@ -30,4 +30,8 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
 		return "tomahawk.LengthValidator(" + getMinimum() + "," + getMaximum() + ")";
 	}
 
+	public String getScriptResource() {
+		return null;
+	}
+
 }
