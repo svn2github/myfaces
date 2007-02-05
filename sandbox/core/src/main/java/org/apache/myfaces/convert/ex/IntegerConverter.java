@@ -30,4 +30,8 @@ public class IntegerConverter extends javax.faces.convert.IntegerConverter imple
 		return "tomahawk.IntegerConverter()";
 	}
 
+	public String getScriptResource() {
+		return null;
+	}
+
 }
