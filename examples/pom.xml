@@ -89,7 +89,7 @@
 
             <properties>
                 <jsf_implementation>MyFaces</jsf_implementation>
-                <myfaces>1.1.5-SNAPSHOT</myfaces>
+                <myfaces>1.1.6-SNAPSHOT</myfaces>
             </properties>
         </profile>
 
