@@ -111,8 +111,8 @@ tomahawk.MessageUtils = new function() {
 	}
 	
 	this.getMessage = function(severity,messageID,args) {
-		var summary = MessageBundle.getString( messageID );
-		var detail = MessageBundle.getString( messageID + this.MESSAGE_DEFAULT_SUFFIX );
+		var summary = tomahawk.MessageBundle.getString( messageID );
+		var detail = tomahawk.MessageBundle.getString( messageID + this.MESSAGE_DEFAULT_SUFFIX );
 		
 		if(args != null && args.length > 0) {
 			summary = this.formatMessage(summary,args);
