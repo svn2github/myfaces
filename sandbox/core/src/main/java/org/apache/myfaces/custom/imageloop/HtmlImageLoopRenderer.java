@@ -18,12 +18,8 @@
  */
 package org.apache.myfaces.custom.imageloop;
 
-import java.io.IOException;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
+import org.apache.myfaces.custom.dojo.DojoConfig;
+import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -31,8 +27,10 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
-import org.apache.myfaces.custom.dojo.DojoConfig;
-import org.apache.myfaces.custom.dojo.DojoUtils;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 
 /**
  * HTML image loop renderer. 
@@ -41,8 +39,8 @@ import org.apache.myfaces.custom.dojo.DojoUtils;
  */
 public class HtmlImageLoopRenderer extends HtmlRenderer {
     
-    private static final Integer DEFAULT_DELAY = Integer.valueOf(1000);
-    private static final Integer DEFAULT_TRANSITION_TIME = Integer.valueOf(1000);
+    private static final Integer DEFAULT_DELAY = new Integer(1000);
+    private static final Integer DEFAULT_TRANSITION_TIME = new Integer(1000);
 
     /**
      * Add the javascript files needed by Dojo and the custom javascript for

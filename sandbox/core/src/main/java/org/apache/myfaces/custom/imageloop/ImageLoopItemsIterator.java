@@ -18,16 +18,15 @@
  */
 package org.apache.myfaces.custom.imageloop;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Image items iterator.
@@ -67,8 +66,7 @@ public class ImageLoopItemsIterator implements Iterator {
                 UIGraphic uiGraphic = (UIGraphic) child;
                 // UIGraphic.getUrl() is an alias for UIGraphic.getValue()
                 String url = uiGraphic.getUrl();
-                GraphicItem item = new GraphicItem(url);
-                _nextItem = item;
+                _nextItem = new GraphicItem(url);
                 return true;
             }
             else if (child instanceof ImageLoopItems)
