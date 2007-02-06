@@ -69,4 +69,10 @@ public class ToggleLinkTag extends HtmlOutputLinkTagBase
     {
         _disabled = disabled;
     }
+    public void setEnabledOnUserRole(String enabledOnUserrole) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
+    public void setVisibleOnUserRole(String enabledOnUserrole) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
 }

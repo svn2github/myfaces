@@ -150,4 +150,6 @@ public class DojoSplitPaneTag extends DojoContentPaneTag {
     public void setWidgetVar(String widgetVar) {
         _widgetVar = widgetVar;
     }
+
+   
 }

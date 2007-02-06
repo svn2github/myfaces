@@ -7,7 +7,7 @@
 </attribute>
 
 <attribute>
-	<name>IconSrc</name>
+	<name>iconSrc</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
 	<type>java.lang.String</type>

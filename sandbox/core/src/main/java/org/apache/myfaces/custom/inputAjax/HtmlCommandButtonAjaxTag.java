@@ -52,5 +52,14 @@ public class HtmlCommandButtonAjaxTag extends HtmlCommandButtonTag
         super.setProperties(component);
     }
 
+    public void setOnSuccess(String onSuccess) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
+    public void setOnFailure(String onSuccess) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
+    public void setOnStart(String onSuccess) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
 
 }

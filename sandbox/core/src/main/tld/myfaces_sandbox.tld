@@ -1470,7 +1470,7 @@ Sandbox-related entities.
             <description>width of the sizer bar</description>
         </attribute>
 		<attribute>
-			<name>splitOrientation</name>
+			<name>orientation</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>

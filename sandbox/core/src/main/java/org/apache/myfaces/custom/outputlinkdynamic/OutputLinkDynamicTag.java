@@ -60,6 +60,10 @@ public class OutputLinkDynamicTag extends HtmlOutputLinkTagBase
     }
     
     public void setEnabledOnUserRole(String enabledOnUserrole) {
-    	//please do something here, because it is referenced by the tld
+    	//TODO: please do something here, because it is referenced by the tld
     }
+    public void setVisibleOnUserRole(String enabledOnUserrole) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
+
 }

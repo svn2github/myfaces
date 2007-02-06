@@ -41,7 +41,7 @@ public class FilterTableTag extends HtmlComponentTagBase {
     private String _styleClass;
     private String _headClass;
     private String _tbodyClass;
-    private String _mulitiple;
+    private String _multiple;
     private String _alternateRows;
     private String _maxSortable;
     private String _cellpadding;
@@ -62,7 +62,7 @@ public class FilterTableTag extends HtmlComponentTagBase {
         setStringProperty(component, JSFAttr.STYLE_CLASS_ATTR, _styleClass);
         setStringProperty(component, HEAD_CLASS_ATTR, _headClass);
         setStringProperty(component, TBODY_CLASS_ATTR, _tbodyClass);
-        setBooleanProperty(component, MULTIPLE_SELECT_ATTR, _mulitiple);
+        setBooleanProperty(component, MULTIPLE_SELECT_ATTR, _multiple);
         setBooleanProperty(component, ALETERNATE_ROWS_ATTR, _alternateRows);
         setIntegerProperty(component, MAX_SELECTABLE_ATTR, _maxSortable);
         setIntegerProperty(component, CELLPADING_ATTR, _cellpadding);
@@ -86,8 +86,8 @@ public class FilterTableTag extends HtmlComponentTagBase {
         _tbodyClass = tbodyClass;
     }
 
-    public void setMulitiple(String mulitiple) {
-        _mulitiple = mulitiple;
+    public void setMultiple(String multiple) {
+        _multiple = multiple;
     }
 
     public void setAlternateRows(String alternateRows) {
@@ -116,7 +116,7 @@ public class FilterTableTag extends HtmlComponentTagBase {
         _styleClass = null;
         _headClass = null;
         _tbodyClass = null;
-        _mulitiple = null;
+        _multiple = null;
         _alternateRows = null;
         _maxSortable = null;
         _cellpadding = null;

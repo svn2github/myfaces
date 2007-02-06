@@ -37,5 +37,12 @@ public class HtmlSelectManyPicklistTag extends HtmlSelectListboxTagBase
         return HtmlSelectManyPicklist.DEFAULT_RENDERER_TYPE;
     }
     
+    public void setEnabledOnUserRole(String enabledOnUserrole) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
+    public void setVisibleOnUserRole(String enabledOnUserrole) {
+        //TODO: please do something here, because it is referenced by the tld
+    }
+    
 }
  
