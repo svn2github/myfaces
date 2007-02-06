@@ -1282,7 +1282,7 @@ Sandbox-related entities.
 			<name>showDebugMessages</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
+			
             <description>If false, alert messages which can be fired after a ppr response are not displayed in the browser.
                          May switched to true in test environments. Default: false
             </description>

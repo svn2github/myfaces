@@ -62,7 +62,7 @@
 	<name>displayCloseAction</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
-	<type>java.lang.Boolean</type>
+
 	<description>if true a close button is displayed</description>
 </attribute>
 
