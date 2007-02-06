@@ -26,6 +26,10 @@
                 <f:verbatim><a href="#imageLoop">Image loop - slide show component</a></f:verbatim>
                 <f:verbatim><a href="#partialPageRendering">Partial Page Rendering</a></f:verbatim>
                 <f:verbatim><a href="#filterTable">Filter Table</a></f:verbatim>
+                <h:outputText value="Client Side Validation"/>
+	            <h:panelGrid style="padding-left:25px">
+	            	<h:outputLink value="clientValidation.jsf"><f:verbatim>Conversion&Validation at Client Side</f:verbatim></h:outputLink>
+	            </h:panelGrid>
             </h:panelGrid>
 
             <f:verbatim><a name="partialPageRendering" /></f:verbatim>
