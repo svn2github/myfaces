@@ -39,17 +39,20 @@ public class ValidationScriptRenderer extends Renderer {
 		RendererUtils.checkParamValidity(context, component,ValidationScript.class);
 		
 		if (CVUtils.isCVEnabled()) {
+			encodeJavascript(context, component);
 			CVUtils.queueCVCalls(context.getViewRoot());
 			CVUtils.encodeValidationScript(context);
-			
-			encodeJavascript(context, component);
 		}
 	}
 
 	private void encodeJavascript(FacesContext context, UIComponent component)throws IOException {
-		//Common
 		AddResource addResource = AddResourceFactory.getInstance(context);
+		
+		//Common
 		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, "common.js");
+		
+		//MessageBundle
+		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, CVUtils.getJSMessageBundle(context));
 		
 		//Converters and Validators
 		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, "converters.js");
