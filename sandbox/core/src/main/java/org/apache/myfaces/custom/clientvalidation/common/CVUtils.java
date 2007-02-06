@@ -31,7 +31,10 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.validator.Validator;
 
+import org.apache.myfaces.custom.clientvalidation.validationscript.ValidationScript;
 import org.apache.myfaces.custom.util.ComponentUtils;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 /**
@@ -171,14 +174,19 @@ public class CVUtils {
 		writer.write("\t\t }\n");
 	}
 	 
-	public static ClassLoader getCurrentLoader(Object defaultObject)
-	   {
-	       ClassLoader loader = Thread.currentThread().getContextClassLoader();
-	       if(loader == null)
-	       {
-	           loader = defaultObject.getClass().getClassLoader();
-	       }
-	       return loader;
-	  }
+	//renders included resources
+	public static void encodeJavascript(FacesContext context)throws IOException {
+		AddResource addResource = AddResourceFactory.getInstance(context);
+		
+		//Common
+		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, "common.js");
+		
+		//MessageBundle
+		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, CVUtils.getJSMessageBundle(context));
+		
+		//Converters and Validators
+		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, "converters.js");
+		addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,ValidationScript.class, "validators.js");
+	}
 
 }
