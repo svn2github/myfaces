@@ -18,10 +18,14 @@
  */
 package org.apache.myfaces.custom.form;
 
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.myfaces.custom.clientvalidation.common.CVUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
 
 /**
@@ -31,7 +35,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
  */
 public class HtmlFormRenderer extends HtmlFormRendererBase
 {
-
+	private static String CLIENT_VALIDATON_SCRIPT = "return tomahawk.executeClientLifeCycle();";
+	
     /**
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase#getActionUrl(javax.faces.context.FacesContext, javax.faces.component.UIForm )
      */
@@ -120,5 +125,39 @@ public class HtmlFormRenderer extends HtmlFormRendererBase
 
         return "post";
     }
+    
+    public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
+    	if(CVUtils.isCVEnabled()) {
+    		if(!isDecorated(facesContext, component))
+    		decorateOnSubmit(facesContext, component);
+    	}
+    	super.encodeBegin(facesContext, component);
+    }
+    
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    	super.encodeEnd(facesContext, component);
+    	if(CVUtils.isCVEnabled()) {
+    		CVUtils.encodeJavascript(facesContext);
+			CVUtils.queueCVCalls(facesContext.getViewRoot());
+			CVUtils.encodeValidationScript(facesContext);
+    	}
+    }
+    
+    private boolean isDecorated(FacesContext facesContext, UIComponent child) {
+		String onSubmit= (String) child.getAttributes().get("onsubmit");
+		
+		if(onSubmit == null || onSubmit.indexOf(CLIENT_VALIDATON_SCRIPT) == -1)
+			return false;
+		else
+			return true;
+	}
+	
+	private void decorateOnSubmit(FacesContext facesContext, UIComponent child) {
+		String onSubmitEvent = (String) child.getAttributes().get("onsubmit");
+		if(onSubmitEvent == null)
+			child.getAttributes().put("onsubmit", CLIENT_VALIDATON_SCRIPT);
+		else
+			child.getAttributes().put("onsubmit", onSubmitEvent + ";" + CLIENT_VALIDATON_SCRIPT);
+	}
 
 }
