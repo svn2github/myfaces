@@ -19,10 +19,8 @@
 package org.apache.myfaces.custom.clientvalidation.common;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -105,33 +103,17 @@ public class CVUtils {
 	public static void encodeValidationScript(FacesContext facesContext) throws IOException{
 		ResponseWriter writer = facesContext.getResponseWriter();
 		writer.write("\n<script type=\"text/javascript\" >\n");
-		
-		encodeMessageBundle(facesContext);			//renders message bundle map
+	
 		encodeCreateViewFunction(facesContext);
 		encodeRenderResponseFunction(facesContext);
 		
 		writer.write("</script>");
 	}
 	
-	//TODO: Remove this later, include message bundle instead of rendering it
-	public static void encodeMessageBundle(FacesContext facesContext) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
+	public static String getJSMessageBundle(FacesContext facesContext) throws IOException{
 		Locale locale = facesContext.getViewRoot().getLocale();
-		String bundleName = "javax.faces.Messages";
-		ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale, getCurrentLoader(bundleName));
-		
-		writer.write("MessageBundle = new function() {\n");
-		writer.write("this.messages = new Array();\n");
-		for(Enumeration e = bundle.getKeys() ; e.hasMoreElements() ;) {
-			String key = e.nextElement().toString() ;
-			String value = bundle.getString(key).replace("\"", "\\\"");
-			writer.write("this.messages[\"" + key + "\"] = \"" + value + "\";\n");
-		}
-		writer.write("this.getString = function(key) { \n");
-		writer.write("return this.messages[key];\n");
-		writer.write("}\n");
-		writer.write("}\n");
+		String bundleName = "messages/Messages_" + locale.getLanguage() + ".js";
+		return bundleName;
 	}
 	
 	public static void encodeCreateViewFunction(FacesContext facesContext) throws IOException {
