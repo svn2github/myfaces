@@ -27,7 +27,7 @@ tomahawk.IntegerConverter = function() {
 			if( value.length > 0)  {
 				convertedValue = parseInt( value );
 				if( isNaN( convertedValue) ) {
-					facesMessage = tomahawk.MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+					facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
 					throw new tomahawk.ConverterException( facesMessage );
 				}
 				else {
