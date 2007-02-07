@@ -32,6 +32,7 @@ import org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox;
 import org.apache.myfaces.custom.ajax.AjaxCallbacks;
 import org.apache.myfaces.custom.ajax.api.AjaxComponent;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
+import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
 
 /**
  * Current limitations
@@ -40,7 +41,7 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
  * @author Travis Reeder (latest modification by $Author: mmarinschek $)
  * @version $Revision: 290397 $ $Date: 2005-09-20 10:35:09 +0200 (Di, 20 Sep 2005) $
  */
-public class HtmlSelectManyCheckboxAjax extends HtmlSelectManyCheckbox implements AjaxComponent, AjaxCallbacks
+public class HtmlSelectManyCheckboxAjax extends HtmlSelectManyCheckbox implements DeprecatedAjaxComponent, AjaxCallbacks
 {
     private static final Log log = LogFactory.getLog(HtmlSelectManyCheckboxAjax.class);
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectManyCheckboxAjax";

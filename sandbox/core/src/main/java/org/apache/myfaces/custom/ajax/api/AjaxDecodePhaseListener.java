@@ -24,7 +24,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
 import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
-import org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjax;
 import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
@@ -81,7 +80,7 @@ public class AjaxDecodePhaseListener
             String affectedAjaxComponent = (String) context.getExternalContext()
                                                         .getRequestParameterMap().get("affectedAjaxComponent");
             UIComponent ajaxComponent = root.findComponent(affectedAjaxComponent);
-            //checking if ajaxComp is inside a dataTable;
+            //checking if ajaxComp is inside a dataTable - necessary for non JSF 1.2 MyFaces implementation
             if (ajaxComponent instanceof UIComponentPerspective)
             {
                 UIComponentPerspective componentPerspective = (UIComponentPerspective) ajaxComponent;
@@ -134,6 +133,8 @@ public class AjaxDecodePhaseListener
             throw new ComponentNotFoundException(msg);
         }
         log.debug("affectedAjaxComponent: " + ajaxComponent + " - " + ajaxComponent.getId());
+        //todo: refactor this completely - should be somewhere else, but definitely not
+        //in the general phase listener
         if (ajaxComponent instanceof HtmlCommandButtonAjax)
         {
             // special treatment for this one, it will try to update the entire form
@@ -195,27 +196,8 @@ public class AjaxDecodePhaseListener
         */
         response.setLocale(viewRoot.getLocale());
 
-        if (component instanceof InputSuggestAjax)
-        {
-            try
-            {
-                if (context.getResponseWriter() == null)
-                {
-                    String contentType = getContentType("text/html", charset);
-                    response.setContentType(contentType);
-                    PrintWriter writer = response.getWriter();
-                    context.setResponseWriter(new HtmlResponseWriterImpl(writer,
-                                              contentType, response.getCharacterEncoding()));
-                }
 
-                ((AjaxComponent) component).encodeAjax(context);
-            }
-            catch (IOException e)
-            {
-                log.error("Exception while rendering ajax-response", e);
-            }
-        }
-        else
+        if(component instanceof DeprecatedAjaxComponent)
         {
             try
             {
@@ -272,6 +254,27 @@ public class AjaxDecodePhaseListener
                 log.error("Exception while rendering ajax-response", e);
             }
         }
+        else if (component instanceof AjaxComponent)
+        {
+            try
+            {
+                if (context.getResponseWriter() == null)
+                {
+                    String contentType = getContentType("text/html", charset);
+                    response.setContentType(contentType);
+                    PrintWriter writer = response.getWriter();
+                    context.setResponseWriter(new HtmlResponseWriterImpl(writer,
+                                              contentType, response.getCharacterEncoding()));
+                }
+
+                ((AjaxComponent) component).encodeAjax(context);
+            }
+            catch (IOException e)
+            {
+                log.error("Exception while rendering ajax-response", e);
+            }
+        }
+
     }
 
     private String getContentType(String contentType, String charset)

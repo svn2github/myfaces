@@ -18,13 +18,12 @@
  */
 package org.apache.myfaces.custom.suggestajax.tablesuggestajax;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.suggestajax.SuggestAjaxRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
@@ -36,10 +35,9 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Gerald Muellan
@@ -50,6 +48,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 {
     public static final int DEFAULT_START_REQUEST = 0;
     public static final int DEFAULT_BETWEEN_KEY_UP = 1000;
+    public static final String DEFAULT_AUTO_COMPLETE = "true";
     
    /**
      * Encodes any stand-alone javascript functions that are needed.
@@ -60,49 +59,16 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
      * @param component UIComponent
      * @throws java.io.IOException
      */
-    private void encodeJavascript(FacesContext context, UIComponent component)
-                                                                        throws IOException
+    private void encodeJavascript(FacesContext context, UIComponent component) throws IOException
     {
+
         String javascriptLocation = (String)component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-        String styleLocation = (String)component.getAttributes().get(JSFAttr.STYLE_LOCATION);
 
-        DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+        DojoConfig dojoConfig = new DojoConfig();
+        DojoUtils.addMainInclude(context, component, javascriptLocation, dojoConfig);
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
+        DojoUtils.addRequire(context, component, "extensions.widget.TableSuggest");
         DojoUtils.addRequire(context, component, "dojo.event.*");
-        DojoUtils.addRequire(context, component, "dojo.string");
-        DojoUtils.addRequire(context, component, "dojo.lfx.html");
-        DojoUtils.addRequire(context, component, "dojo.lang");
-        DojoUtils.addRequire(context, component, "dojo.html");
-        DojoUtils.addRequire(context, component, "dojo.style");
-        DojoUtils.addRequire(context, component, "dojo.collections.ArrayList");
-
-        AddResource addResource = AddResourceFactory.getInstance(context);
-
-        if(javascriptLocation != null)
-        {
-            addResource.addJavaScriptHere(context,  javascriptLocation + "/tableSuggest.js");
-        }
-        else
-        {
-            addResource.addJavaScriptHere(context,  TableSuggestAjaxRenderer.class, "tableSuggest.js");
-        }
-
-        TableSuggestAjax tableSuggestAjax = (TableSuggestAjax) component;
-
-        if (tableSuggestAjax.getPopupStyleClass() == null)
-        {
-            if( styleLocation != null )
-            {
-                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, styleLocation + "/table_suggest.css");
-            }
-            else
-            {
-                String theme = ((TableSuggestAjax)component).getLayout();
-                if(theme == null)
-                    theme = "default";
-                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, TableSuggestAjaxRenderer.class, theme + "/table_suggest.css");
-            }
-        }
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
@@ -113,123 +79,124 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         encodeJavascript(context,component);
 
-       tableSuggestAjax.getAttributes().put("autocomplete","off");
+        //Disables browser auto completion
+        tableSuggestAjax.getAttributes().put("autocomplete","off");
 
         String clientId = component.getClientId(context);
         String actionURL = getActionUrl(context);
 
-        String ajaxUrl = context.getExternalContext().encodeActionURL(addQueryString(actionURL, "affectedAjaxComponent=" + clientId));
+        String charset = (tableSuggestAjax.getCharset() != null ? tableSuggestAjax.getCharset() : "");
+        String ajaxUrl = context.getExternalContext().encodeActionURL(addQueryString(actionURL, "affectedAjaxComponent=" + clientId +
+                "&charset=" + charset + "&" + clientId + "=%{searchString}"));
 
         ResponseWriter out = context.getResponseWriter();
+
+        String valueToRender = RendererUtils.getStringValue(context,tableSuggestAjax);
+        valueToRender = escapeQuotes(valueToRender);
 
         if (getChildren(tableSuggestAjax) != null
                 && !getChildren(tableSuggestAjax).isEmpty())
         {
-            //suggestTable stuff
-            out.startElement(HTML.TABLE_ELEM, null);
-            out.writeAttribute(HTML.STYLE_ATTR,"border-collapse:collapse;",null);
-            out.writeAttribute(HTML.CELLPADDING_ATTR,"0",null);
-            out.startElement(HTML.TR_ELEM, null);
-            out.startElement(HTML.TD_ELEM, null);
-
-            super.encodeEnd(context, tableSuggestAjax);
-
-            out.endElement(HTML.TR_ELEM);
-            out.endElement(HTML.TD_ELEM);
-
-            out.startElement(HTML.TR_ELEM, null);
-            out.startElement(HTML.TD_ELEM, null);
-
-            out.startElement(HTML.DIV_ELEM, null);
-            if(tableSuggestAjax.getPopupStyleClass()!= null)
-            {
-                out.writeAttribute(HTML.CLASS_ATTR, tableSuggestAjax.getPopupStyleClass(), null);
-            }
-            else if(tableSuggestAjax.getLayout().equals("default"))
-            {
-                out.writeAttribute(HTML.CLASS_ATTR, "ajaxTablePopup", null);
-            }
-            if (tableSuggestAjax.getPopupId() != null)
-            {
-                out.writeAttribute(HTML.ID_ATTR,tableSuggestAjax.getPopupId(), null);
-            }
-            else
-            {
-                out.writeAttribute(HTML.ID_ATTR,
-                        component.getClientId(context)+"_auto_complete", null);
-            }
-            if (tableSuggestAjax.getPopupStyle() != null)
-            {
-                out.writeAttribute(HTML.STYLE_ATTR, tableSuggestAjax.getPopupStyle(), null);
-            }
-            else
-            {
-                out.writeAttribute(HTML.STYLE_ATTR,"display:inline;", null);
-            }
-
+            out.startElement(HTML.DIV_ELEM, component);
+            out.writeAttribute(HTML.ID_ATTR, clientId , null);
             out.endElement(HTML.DIV_ELEM);
 
-            out.endElement(HTML.TR_ELEM);
-            out.endElement(HTML.TD_ELEM);
-            out.endElement(HTML.TABLE_ELEM);
+            String tableSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
+
+            Map attributes = new HashedMap();
+            String betweenKeyUp = "";
+            String startRequest = "";
+            String autoComplete = "";
+
+            //General attributes
+            attributes.put("dataUrl", ajaxUrl);
+            attributes.put("mode", "remote");
+
+            //BetweenKeyUp
+            if (tableSuggestAjax.getBetweenKeyUp() != null) {
+                betweenKeyUp = tableSuggestAjax.getBetweenKeyUp().toString();
+            }
+            else {
+                betweenKeyUp = Integer.toString(DEFAULT_BETWEEN_KEY_UP);
+            }
+            attributes.put("searchDelay", betweenKeyUp);
+
+            //StartRequest
+            if (tableSuggestAjax.getStartRequest() != null) {
+                startRequest = tableSuggestAjax.getStartRequest().toString();
+            }
+            else {
+                startRequest = Integer.toString(DEFAULT_START_REQUEST);
+            }
+            attributes.put("startRequest", startRequest);
+
+            //Autocomplete
+            if (tableSuggestAjax.getAutocomplete()!=null) {
+                autoComplete = tableSuggestAjax.getAutocomplete();
+            }
+            else {
+                autoComplete = DEFAULT_AUTO_COMPLETE;
+            }
+            attributes.put("autoComplete", autoComplete);
+
+            //PopupId
+            if (tableSuggestAjax.getPopupId() != null) {
+                attributes.put("popupId", tableSuggestAjax.getPopupId());
+            }
+
+            //PopupStyleClass
+            if (tableSuggestAjax.getPopupStyleClass() != null) {
+                attributes.put("popupStyleClass", tableSuggestAjax.getPopupStyleClass());
+            }
+
+            //TableStyleClass
+            if (tableSuggestAjax.getTableStyleClass() != null) {
+                attributes.put("tableStyleClass", tableSuggestAjax.getTableStyleClass());
+            }
+
+            //ComboBoxStyleClass
+            if (tableSuggestAjax.getComboBoxStyleClass() != null) {
+                attributes.put("comboBoxStyleClass", tableSuggestAjax.getComboBoxStyleClass());
+            }
+
+            //RowStyleClass
+            if (tableSuggestAjax.getRowStyleClass() != null) {
+                attributes.put("rowStyleClass", tableSuggestAjax.getRowStyleClass());
+            }
+
+            //EvenRowStyleClass
+            if (tableSuggestAjax.getEvenRowStyleClass() != null) {
+                attributes.put("evenRowStyleClass", tableSuggestAjax.getEvenRowStyleClass());
+            }
+
+            //OddRowStyleClass
+            if (tableSuggestAjax.getOddRowStyleClass() != null) {
+                attributes.put("oddRowStyleClass", tableSuggestAjax.getOddRowStyleClass());
+            }
+
+            //HoverRowStyleClass
+            if (tableSuggestAjax.getHoverRowStyleClass() != null) {
+                attributes.put("hoverRowStyleClass", tableSuggestAjax.getHoverRowStyleClass());
+            }
+
+            DojoUtils.renderWidgetInitializationCode(context, component, "extensions:TableSuggest", attributes);
 
             out.startElement(HTML.SCRIPT_ELEM, null);
             out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-            out.write(getEventHandlingCode(ajaxUrl, clientId, tableSuggestAjax).toString());
+            StringBuffer buffer = new StringBuffer();
+
+            buffer.append("dojo.addOnLoad(function() {\n")
+                  .append(tableSuggestComponentVar).append(".textInputNode.id=\"").append(clientId).append("\";\n")
+                  .append(tableSuggestComponentVar).append(".textInputNode.value = \"").append(valueToRender).append("\";\n")
+                  .append(tableSuggestComponentVar).append(".comboBoxValue.value = \"").append(valueToRender).append("\";\n")
+                  .append(tableSuggestComponentVar).append(".onResize();\n")
+                  .append("});\n");
+
+            out.write(buffer.toString());
 
             out.endElement(HTML.SCRIPT_ELEM);
         }
-    }
-
-    private StringBuffer getEventHandlingCode(String ajaxUrl, String clientId, TableSuggestAjax tableSuggestAjax)
-    {
-        FacesContext context = FacesContext.getCurrentInstance(); 
-        
-        int betweenKeyUp = 0;
-        int startRequest = 0;
-        String charset = null;
-
-        if (tableSuggestAjax.getBetweenKeyUp()!=null)
-            betweenKeyUp = tableSuggestAjax.getBetweenKeyUp().intValue();
-        else
-            betweenKeyUp = DEFAULT_BETWEEN_KEY_UP;
-
-        if(tableSuggestAjax.getStartRequest()!=null)
-            startRequest = tableSuggestAjax.getStartRequest().intValue();
-        else
-            startRequest = DEFAULT_START_REQUEST;
-
-        if (tableSuggestAjax.getCharset() != null)
-            charset = tableSuggestAjax.getCharset();
-        else
-            charset = "";
-        
-        StringBuffer buf = new StringBuffer();
-        String tableSuggestVar = "tableSuggest"+clientId.replace(':','_');
-        String fieldNames = this.getFieldNames(tableSuggestAjax, context);
-        String fieldNamesVar = tableSuggestVar + "_fieldNames";
-        String styleClassOptions = this.getStyleClassOptions(tableSuggestAjax);
-        String styleClassOptionsVar = tableSuggestVar + "_options";
-        
-        //doing ajax request and handling the response
-        buf.append( "var " + fieldNamesVar + " = " + fieldNames + ";\n"
-                   + "var " + styleClassOptionsVar + " = " + styleClassOptions + ";\n"
-                   + "var " + tableSuggestVar + " = new org_apache_myfaces_TableSuggest(\""+ ajaxUrl + "\", " 
-                   + betweenKeyUp + ", " + startRequest + ", \"" + charset + "\", " + tableSuggestAjax.getAcceptValueToField().toString() 
-                   + ", " + fieldNamesVar + ", " + styleClassOptionsVar + ");\n" 
-                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeyup\", function(evt) { " 
-                   + tableSuggestVar + ".decideRequest(evt); });\n"  
-                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onblur\", function(evt) { " 
-                   + tableSuggestVar + ".onBlur(evt); });\n" 
-                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onfocus\", function(evt) { " 
-                   + tableSuggestVar + ".onFocus(evt); });\n"
-                   + "dojo.event.connect(dojo.byId(\"" + clientId + "\"), \"onkeydown\", function(evt) { " 
-                   + "return " + tableSuggestVar + ".handleKeyDown(evt); });\n");
-
-        //if setting the focus outside the input field, popup should not be displayed
-        buf.append("dojo.event.connect(document, \"onclick\", function(evt) { " + tableSuggestVar + ".resetSettings(); });\n");
-        return buf;
     }
 
     public void decode(FacesContext facesContext, UIComponent component)
@@ -275,41 +242,19 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             renderResponse ( (TableSuggestAjax) uiComponent, context);
         }
     }
-
-    private void writeOneSuggestList(StringBuffer buf,Collection suggesteds,
-                                     FacesContext context, TableSuggestAjax tableSuggestAjax)
-    {
-        writeSuggestList(buf, suggesteds, context, tableSuggestAjax);
-    }
-
-    private void writeSuggestList(StringBuffer buf,Collection suggesteds,
-                                  FacesContext context, TableSuggestAjax tableSuggestAjax)
-    {
-        buf.append("<table");
-        if(tableSuggestAjax.getTableStyleClass()!=null)
-            buf.append(" class=\""+tableSuggestAjax.getTableStyleClass()+"\">");
-        else
-            buf.append(">");
-
-        buf.append(renderTableHeader(tableSuggestAjax.getChildren()));
-        buf.append(renderTableBody(tableSuggestAjax, suggesteds, context));
-
-        buf.append("</table>");
-
-        buf.append(renderNextPageField(tableSuggestAjax, context));
-    }
-
     
     //renders the response data in an XML format
     private void renderResponse(TableSuggestAjax tableSuggestAjax,
             FacesContext context) throws IOException
     {
-        
+
+        context.getResponseWriter().write("[");
         renderColumnHeaders(tableSuggestAjax, context);
         
         StringBuffer response = new StringBuffer();
+        response.append("[");
 
-        Collection suggestedItems = 
+        Collection suggestedItems =
             getSuggestedItems(context, tableSuggestAjax);
 
         if (getChildren(tableSuggestAjax) == null
@@ -325,8 +270,8 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             
             context.getExternalContext().getRequestMap().put(
                     tableSuggestAjax.getVar(), addressEntryObject);
-            
-            response.append("<item>");
+
+            response.append("[");
 
             Iterator columns = tableSuggestAjax.getChildren().iterator();
             while (columns.hasNext()) 
@@ -346,261 +291,52 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                     HtmlOutputText htmlOutputText = 
                         (HtmlOutputText) component;
 
-                    response.append("<column>");
+                    response.append("{");
                     
                     //foreign-key field is a simple text field
                     if (htmlOutputText.getFor() != null)
                     {
-                        response.append("<forText>");
-                        
+                        response.append("\"forText\": ");
                         String forText = RendererUtils.getClientId(context,
                                 tableSuggestAjax,
                                 htmlOutputText.getFor());
-                        
-                        response.append(forText);
-                                                
-                        response.append("</forText>");
-                        
-                        response.append("<label>");
-                        response.append(
-                                htmlOutputText.getLabel());
-                        response.append("</label>");
-                        
+                        response.append("\"").append(forText).append("\",");
+                        response.append("\"label\": ");
+                        response.append("\"").append(htmlOutputText.getLabel()).append("\"");
                     }
                     //foreign-key field is a combo-box field 
                     else if (htmlOutputText.getForValue() != null)
                     {
-                        response.append("<forValue>");
-                        
+                        response.append("\"forValue\": ");
                         String forValue = RendererUtils.getClientId(context,
                                 tableSuggestAjax,
                                 htmlOutputText.getForValue());
-                        
-                        response.append(forValue);
-                                                
-                        response.append("</forValue>");
-                        
-                        response.append("<label>");
-                        
-                        response.append(
-                                htmlOutputText.getLabel());
-                        response.append("</label>");
-                        
-                        response.append("<value>");
-                        
-                        response.append(
-                                htmlOutputText.getValue());
-                        response.append("</value>");
+                        response.append("\"").append(forValue).append("\",");
+                        response.append("\"label\": ");
+                        response.append("\"").append(htmlOutputText.getLabel()).append("\",");
+                        response.append("\"value\": ");
+                        response.append("\"").append(htmlOutputText.getValue()).append("\"");
                     } else {
-						response.append("<value>");
-                        response.append(htmlOutputText.getValue());
-                        response.append("</value>");
+                        response.append("\"label\": ");
+                        response.append("\"").append(htmlOutputText.getValue()).append("\"");
                     }
-                    response.append("</column>");
+                    response.append("}");
+                    if (columnChildren.hasNext() || columns.hasNext()) {
+                        response.append(",");
+                    }
                 }
             }
-            response.append("</item>");
+            response.append("]");
+            if (it.hasNext()) {
+                response.append(",");
+            }
         }
         
         context.getExternalContext().getRequestMap().remove(tableSuggestAjax.getVar());
+        response.append("]");
         context.getResponseWriter().write(response.toString());
+        context.getResponseWriter().write("]");
         
-    }
-    
-    //Gather the names of the the primary field as well as all
-    //the foreign-key fields in the javascript array literal format:
-    // eg. [ field1, field2, field3 ]
-    private String getFieldNames(TableSuggestAjax tableSuggestAjax,
-            FacesContext context) 
-    {
-        StringBuffer fieldNames = new StringBuffer(); 
-        fieldNames.append("[");
-        
-        if (getChildren(tableSuggestAjax) == null
-                || getChildren(tableSuggestAjax).isEmpty())
-        {
-            return null;
-        }
-            
-        Iterator columns = tableSuggestAjax.getChildren().iterator();
-        boolean first = true;
-        while (columns.hasNext()) 
-        {
-            
-            if (first) 
-            {
-                first = false;
-            }
-            else 
-            {
-                fieldNames.append(",");
-            }
-            
-            UIComponent column = (UIComponent) columns.next();
-
-            Iterator columnChildren = column.getChildren().iterator(); 
-            while (columnChildren.hasNext())
-            {
-                Object component = columnChildren.next();
-                    
-                if (!(component instanceof HtmlOutputText)) 
-                {
-                    continue;
-                }
-                    
-                HtmlOutputText htmlOutputText = (HtmlOutputText) component;
-                    
-                //foreign-key field is a simple text field
-                if (htmlOutputText.getFor() != null)
-                {
-
-                    String fieldName = RendererUtils.getClientId(context,
-                            tableSuggestAjax,
-                            htmlOutputText.getFor());
-                        
-                    fieldNames.append("\"" + fieldName + "\"");                                                        
-                        
-                }
-                //foreign-key field is a combo-box field 
-                else if (htmlOutputText.getForValue() != null)
-                {
-                    String fieldName = RendererUtils.getClientId(context,
-                            tableSuggestAjax,
-                            htmlOutputText.getForValue());
-                    fieldNames.append("\"" + fieldName + "\"");
-                }        
-            }
-        }
-                
-        fieldNames.append("]");
-        return fieldNames.toString();
-    }   
-    
-    
-    //returns a javascript hashmap containing the style class settings
-    private String getStyleClassOptions(TableSuggestAjax tableSuggestAjax)
-    {
-        StringBuffer settings = new StringBuffer();
-        settings.append("{ ");
-        settings.append("tableStyleClass: "); 
-        settings.append("\"" + tableSuggestAjax.getTableStyleClass() + "\"");
-        settings.append(", ");
-        settings.append("columnOutClass: "); 
-        settings.append("\"" + tableSuggestAjax.getColumnOutClass() + "\"");
-        settings.append(", ");
-        settings.append("columnHoverClass: "); 
-        settings.append("\"" + tableSuggestAjax.getColumnHoverClass() + "\"");
-        settings.append(" }");
-        
-        return settings.toString();
-        
-    }
-    
-    
-    
-    
-    
-    private StringBuffer renderTableBody(TableSuggestAjax tableSuggestAjax,
-                                         Collection suggesteds,
-                                         FacesContext context)
-    {
-        StringBuffer bodyContent = new StringBuffer();
-
-        String clientId = tableSuggestAjax.getClientId(context);
-        String tableSuggestVar = clientId.replace(':','_');
-
-        bodyContent.append("<tbody>");
-
-        int i = 0;
-
-        for (Iterator suggestedEntry = suggesteds.iterator(); suggestedEntry.hasNext();)
-        {
-           Object addressEntryObject = suggestedEntry.next();
-
-           bodyContent.append("<tr id=\"row"+ (i+1) + clientId +"\" onmouseover=");
-            if(tableSuggestAjax.getColumnHoverClass()!=null)
-                bodyContent.append("\"this.className='")
-                        .append(tableSuggestAjax.getColumnHoverClass()).append("'\" ");
-
-            if(tableSuggestAjax.getColumnOutClass()!=null)
-                bodyContent.append("onmouseout=\"this.className='")
-                        .append(tableSuggestAjax.getColumnOutClass()).append("'\" ");
-
-            bodyContent.append("onclick=\"tableSuggest"+ tableSuggestVar +".putValueToField(this,'"+ clientId +"')\">");
-            i++;
-
-            context.getExternalContext().getRequestMap()
-                            .put(tableSuggestAjax.getVar(),addressEntryObject);
-
-            for (Iterator iterColumns = tableSuggestAjax.getChildren().iterator(); iterColumns.hasNext();)
-            {
-                UIComponent column = (UIComponent)iterColumns.next();
-
-                for (Iterator iterComps = column.getChildren().iterator(); iterComps.hasNext();)
-                {
-                    Object comp =  iterComps.next();
-
-                    if (comp instanceof HtmlOutputText)
-                    {
-                        HtmlOutputText htmlOutputText = (HtmlOutputText) comp;
-
-                        if (htmlOutputText.getLabel()!=null)
-                        {
-                            bodyContent.append("<td> <span ");
-                            if(htmlOutputText.getFor()!=null)
-                                bodyContent.append("id=\"putValueTo"+RendererUtils.getClientId(context, tableSuggestAjax, htmlOutputText.getFor()) + "\"");
-                                
-                            bodyContent.append(">" + htmlOutputText.getLabel() + "</span>");
-                            if (htmlOutputText.getValue()!=null)
-                            {
-                                bodyContent.append("<span id=\"putValueTo")
-                                        .append(RendererUtils.getClientId(context, tableSuggestAjax, htmlOutputText.getForValue()) + "\"")
-                                        .append(" style=\"display:none;\">" + htmlOutputText.getValue() + "</span>").append("</td>");
-                            }
-                            else
-                            {
-                                bodyContent.append("</td>");
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            context.getExternalContext().getRequestMap().remove(tableSuggestAjax.getVar());
-            bodyContent.append("</tr>");
-        }
-
-        bodyContent.append("</tbody>");
-
-        return bodyContent;
-    }
-
-
-    private StringBuffer renderTableHeader(List columns)
-    {
-        StringBuffer headerContent = new StringBuffer();
-
-        headerContent.append("<thead><tr>");
-
-        for (Iterator iterColumns = columns.iterator(); iterColumns.hasNext();)
-        {
-            UIComponent column = (UIComponent)iterColumns.next();
-
-            if (column instanceof UIColumn)
-            {
-                UIComponent tableHeader = (UIComponent) column.getFacet("header");
-
-                if (tableHeader!=null &&
-                        tableHeader instanceof HtmlOutputText)
-                {
-                    HtmlOutputText htmlOutputText = (HtmlOutputText) tableHeader;
-                    headerContent.append("<th>").append(htmlOutputText.getValue()).append("</th>");
-                }
-            }
-        }
-
-        headerContent.append("</tr></thead>");
-        return headerContent;
     }
 
     //renders column names in the XML response
@@ -608,6 +344,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             FacesContext context) throws IOException
     {
         StringBuffer columnHeaders = new StringBuffer();
+        columnHeaders.append("[");
 
         Iterator it = tableSuggestAjax.getChildren().iterator();
         
@@ -619,45 +356,24 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             {
                 UIComponent tableHeader = (UIComponent) column.getFacet("header");
 
-                if (tableHeader != null &&
-                        tableHeader instanceof HtmlOutputText)
+                if (tableHeader != null && tableHeader instanceof HtmlOutputText)
                 {
-                    columnHeaders.append("<columnHeader>");
                     HtmlOutputText htmlOutputText = (HtmlOutputText) tableHeader;
-                    columnHeaders.append(htmlOutputText.getValue());
-                    columnHeaders.append("</columnHeader>");
+                    columnHeaders.append("\"").append(htmlOutputText.getValue()).append("\"");
+                    if (it.hasNext()) {
+                        columnHeaders.append(",");
+                    }
                 }
             }
         }
+        columnHeaders.append("],");
         context.getResponseWriter().write(columnHeaders.toString());
     }
-    
-    
-    
-    
-    
-    
-    
-    private StringBuffer renderNextPageField(TableSuggestAjax tableSuggestAjax,FacesContext context)
+
+    private String escapeQuotes(String input)
     {
-        StringBuffer content = new StringBuffer();
-
-        String tableSuggestVar = tableSuggestAjax.getClientId(context).replace(':','_');
-
-        content.append("<div onclick=\"tableSuggest"+ tableSuggestVar +".nextPage(this)\"");
-        if(tableSuggestAjax.getNextPageFieldClass()!=null)
-            content.append(" class=\""+ tableSuggestAjax.getNextPageFieldClass() +"\" ");
-
-            String popUpStyle = tableSuggestAjax.getPopupStyle();
-            if(popUpStyle!=null && popUpStyle.indexOf("overflow:auto") > -1)
-                content.append("style=\"display:none;\"");
-
-        content.append(">. . . </div>");
-
-        return content;
+   	    return input != null ? input.replaceAll("\"", "\\\\\"") : "";
     }
 
 }
-
-
 

@@ -30,13 +30,14 @@ import org.apache.myfaces.component.html.ext.HtmlSelectOneRadio;
 import org.apache.myfaces.custom.ajax.AjaxCallbacks;
 import org.apache.myfaces.custom.ajax.api.AjaxComponent;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
+import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
 
 /**
  * User: treeder
  * Date: Nov 10, 2005
  * Time: 4:45:09 PM
  */
-public class HtmlSelectOneRadioAjax extends HtmlSelectOneRadio implements AjaxComponent, AjaxCallbacks
+public class HtmlSelectOneRadioAjax extends HtmlSelectOneRadio implements DeprecatedAjaxComponent, AjaxCallbacks
 {
     private static final Log log = LogFactory.getLog(HtmlSelectOneRadioAjax.class);
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectOneRadioAjax";

@@ -30,23 +30,18 @@ import javax.faces.component.UIComponent;
  */
 public class TableSuggestAjaxTag extends SuggestAjaxTag
 {
+    private String _var;
     private String _popupId;
-    private String _popupStyleClass;
-    private String _popupStyle;
-    private String _layout;
-
-    private String _tableStyleClass;
-    private String _nextPageFieldClass;
-
-    private String _columnHoverClass;
-    private String _columnOutClass;
-
     private String _betweenKeyUp;
     private String _startRequest;
 
-    private String _acceptValueToField;
-
-    private String _var;
+    private String _popupStyleClass;
+    private String _tableStyleClass;
+    private String _comboBoxStyleClass;
+    private String _rowStyleClass;
+    private String _evenRowStyleClass;
+    private String _oddRowStyleClass;
+    private String _hoverRowStyleClass;
 
     public String getComponentType() {
         return TableSuggestAjax.COMPONENT_TYPE;
@@ -61,37 +56,34 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
         super.release();
 
        _var = null;
-       _columnHoverClass = null;
-       _columnOutClass = null;
+       _popupId = null;
        _betweenKeyUp = null;
        _startRequest = null;
        _tableStyleClass = null;
-       _nextPageFieldClass = null;
-       _acceptValueToField = null;
-       _popupId = null;
        _popupStyleClass = null;
-       _popupStyle = null;
-       _layout = null;
+       _comboBoxStyleClass = null;
+       _rowStyleClass = null;
+       _evenRowStyleClass = null;
+       _oddRowStyleClass = null;
+       _hoverRowStyleClass = null;
     }
 
     protected void setProperties(UIComponent component) {
 
         super.setProperties(component);
 
+        setStringProperty(component, JSFAttr.VAR_ATTR, _var);
+        setStringProperty(component,"popupId",_popupId);
         setIntegerProperty(component,"betweenKeyUp",_betweenKeyUp);
         setIntegerProperty(component,"startRequest", _startRequest);
 
-        setStringProperty(component,"columnHoverClass",_columnHoverClass);
-        setStringProperty(component,"columnOutClass",_columnOutClass);
         setStringProperty(component,"tableStyleClass",_tableStyleClass);
-        setStringProperty(component,"nextPageFieldClass",_nextPageFieldClass);
-        setBooleanProperty(component,"acceptValueToField",_acceptValueToField);
-        setStringProperty(component,"popupId",_popupId);
         setStringProperty(component,"popupStyleClass",_popupStyleClass);
-        setStringProperty(component,"popupStyle",_popupStyle);
-        setStringProperty(component,"layout",_layout);
-
-        setStringProperty(component, JSFAttr.VAR_ATTR, _var);
+        setStringProperty(component,"comboBoxStyleClass",_comboBoxStyleClass);
+        setStringProperty(component,"rowStyleClass",_rowStyleClass);
+        setStringProperty(component,"evenRowStyleClass",_evenRowStyleClass);
+        setStringProperty(component,"oddRowStyleClass",_oddRowStyleClass);
+        setStringProperty(component,"hoverRowStyleClass",_hoverRowStyleClass);
     }
 
     // setter methodes to populate the components properites
@@ -115,32 +107,7 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
         _var = var;
     }
 
-    public void setColumnHoverClass(String columnHoverClass)
-    {
-        _columnHoverClass = columnHoverClass;
-    }
-
-    public void setColumnOutClass(String columnOutClass)
-    {
-        _columnOutClass = columnOutClass;
-    }
-
-    public void setNextPageFieldClass(String nextPageFieldClass)
-    {
-        _nextPageFieldClass = nextPageFieldClass;
-    }
-
-    public void setAcceptValueToField(String acceptValueToField)
-    {
-        _acceptValueToField = acceptValueToField;
-    }
-
-    public void setLayout(String layout)
-    {
-        _layout = layout;
-    }
-
-        public void setPopupId(String popupId)
+    public void setPopupId(String popupId)
     {
         _popupId = popupId;
     }
@@ -150,8 +117,24 @@ public class TableSuggestAjaxTag extends SuggestAjaxTag
         _popupStyleClass = popupStyleClass;
     }
 
-    public void setPopupStyle(String popupStyle)
-    {
-        _popupStyle = popupStyle;
+    public void setComboBoxStyleClass(String comboBoxStyleClass) {
+        _comboBoxStyleClass = comboBoxStyleClass;
     }
+
+    public void setRowStyleClass(String rowStyleClass) {
+        _rowStyleClass = rowStyleClass;
+    }
+
+    public void setEvenRowStyleClass(String evenRowStyleClass) {
+        _evenRowStyleClass = evenRowStyleClass;
+    }
+
+    public void setOddRowStyleClass(String oddRowStyleClass) {
+        _oddRowStyleClass = oddRowStyleClass;
+    }
+
+    public void setHoverRowStyleClass(String hoverRowStyleClass) {
+        _hoverRowStyleClass = hoverRowStyleClass;
+    }
+
 }

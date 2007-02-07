@@ -137,15 +137,18 @@ public class HtmlAjaxChildComboBoxRenderer extends HtmlMenuRenderer implements A
 		SelectItem[] options = (SelectItem[])
 			mb.invoke(context, new Object[]{parentValue});
 
-		for (int i = 0; i < options.length; i++)
+        xml.append("<?xml version=\"1.0\"?>\n");
+        xml.append("<response>\n");
+        for (int i = 0; i < options.length; i++)
 		{
 			xml.append(BEGIN_OPTION);
 			xml.append(BEGIN_OPTION_TEXT).append(options[i].getLabel()).append(END_OPTION_TEXT);
 			xml.append(BEGIN_OPTION_VALUE).append(options[i].getValue()).append(END_OPTION_VALUE);
 			xml.append(END_OPTION);
 		}
+        xml.append("</response>");
 
-		writer.write(xml.toString());
+        writer.write(xml.toString());
 
 	}
 

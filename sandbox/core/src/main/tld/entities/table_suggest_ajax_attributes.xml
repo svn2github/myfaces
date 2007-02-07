@@ -11,16 +11,6 @@
 </attribute>
 
 <attribute>
-    <name>acceptValueToField</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>If set to true and if there is only one suggested column, values are put mandatory to
-                 the corresponding dom nodes.
-    </description>
-</attribute>
-
-<attribute>
     <name>startRequest</name>
     <required>false</required>
     <rtexprvalue>false</rtexprvalue>
@@ -28,38 +18,6 @@
     <description>The AJAX Request is only triggered if the number of chars typed in is
                  equal or greater than this given value.
     </description>
-</attribute>
-
-<attribute>
-    <name>tableStyleClass</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>StyleClass for the suggested table.</description>
-</attribute>
-
-<attribute>
-    <name>nextPageFieldClass</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>StyleClass for the div field which steps to next page</description>
-</attribute>
-
-<attribute>
-    <name>columnHoverClass</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>StyleClass for a onmouseover event of the suggested columns</description>
-</attribute>
-
-<attribute>
-    <name>columnOutClass</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>StyleClass for a onmouseout event of the suggested columns</description>
 </attribute>
 
 <attribute>
@@ -74,19 +32,11 @@
 </attribute>
 
 <attribute>
-    <name>layout</name>
+    <name>popupId</name>
     <required>false</required>
     <rtexprvalue>false</rtexprvalue>
     <type>java.lang.String</type>
-    <description></description>
-</attribute>
-
-<attribute>
-    <name>popupStyle</name>
-    <required>false</required>
-    <rtexprvalue>false</rtexprvalue>
-    <type>java.lang.String</type>
-    <description>Style for the window with a suggested list of items;pop up for each incoming Ajax response</description>
+    <description>Id for the pop up window</description>
 </attribute>
 
 <attribute>
@@ -98,9 +48,49 @@
 </attribute>
 
 <attribute>
-    <name>popupId</name>
+    <name>tableStyleClass</name>
     <required>false</required>
     <rtexprvalue>false</rtexprvalue>
     <type>java.lang.String</type>
-    <description>Id for the pop up window</description>
+    <description>StyleClass for the suggested table.</description>
+</attribute>
+
+<attribute>
+    <name>comboBoxStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for dropdown box and arrow.</description>
+</attribute>
+
+<attribute>
+    <name>rowStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass which applies to every row in the suggested table.</description>
+</attribute>
+
+<attribute>
+    <name>evenRowStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass which only applies to even rows in the suggested table.</description>
+</attribute>
+
+<attribute>
+    <name>oddRowStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass which only applies to odd rows in the suggested table.</description>
+</attribute>
+
+<attribute>
+    <name>hoverRowStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>StyleClass for the rows for onmouseover events.</description>
 </attribute>

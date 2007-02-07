@@ -32,13 +32,15 @@ import org.apache.myfaces.component.html.ext.HtmlSelectBooleanCheckbox;
 import org.apache.myfaces.custom.ajax.AjaxCallbacks;
 import org.apache.myfaces.custom.ajax.api.AjaxComponent;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
+import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
 
 /**
  * User: treeder
  * Date: Nov 21, 2005
  * Time: 8:47:27 AM
  */
-public class HtmlSelectBooleanCheckboxAjax extends HtmlSelectBooleanCheckbox implements AjaxComponent, AjaxCallbacks
+public class HtmlSelectBooleanCheckboxAjax extends HtmlSelectBooleanCheckbox
+        implements DeprecatedAjaxComponent, AjaxCallbacks
 {
 
     private static final Log log = LogFactory.getLog(HtmlSelectBooleanCheckboxAjax.class);

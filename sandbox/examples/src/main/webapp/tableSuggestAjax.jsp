@@ -41,11 +41,8 @@
         <h:panelGrid columns="4">
          <f:verbatim> City Names starting with 'Sa' <br/> Suggest starts with 2. char </f:verbatim>
          <s:tableSuggestAjax var="address" id="suggest" startRequest="2"
-                             nextPageFieldClass="ajaxNextTablePageField"
                              value="#{inputSuggestAjax.suggestValue}" betweenKeyUp="300"
-                             columnOutClass="tableSuggestOut" columnHoverClass="tableSuggestHover"
-                             suggestedItemsMethod="#{inputSuggestAjax.getCityList}"
-                             tableStyleClass="ajaxTable" charset="utf-8">
+                             suggestedItemsMethod="#{inputSuggestAjax.getCityList}" charset="utf-8">
             <t:column>
                  <f:facet name="header">
                      <s:outputText value="City"/>
@@ -89,4 +86,5 @@
 </body>
 
 </html>
+
 

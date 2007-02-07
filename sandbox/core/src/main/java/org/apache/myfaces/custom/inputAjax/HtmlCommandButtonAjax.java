@@ -18,12 +18,12 @@
  */
 package org.apache.myfaces.custom.inputAjax;
 
-import org.apache.myfaces.component.html.ext.HtmlCommandButton;
-import org.apache.myfaces.custom.ajax.api.AjaxComponent;
-import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
-import org.apache.myfaces.custom.ajax.AjaxCallbacks;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.ext.HtmlCommandButton;
+import org.apache.myfaces.custom.ajax.AjaxCallbacks;
+import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
+import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
@@ -34,7 +34,7 @@ import java.io.IOException;
  * Date: Mar 22, 2006
  * Time: 4:37:53 PM
  */
-public class HtmlCommandButtonAjax extends HtmlCommandButton implements AjaxComponent, AjaxCallbacks
+public class HtmlCommandButtonAjax extends HtmlCommandButton implements DeprecatedAjaxComponent, AjaxCallbacks
 {
     private static final Log log = LogFactory.getLog(HtmlInputTextAjax.class);
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCommandButtonAjax";

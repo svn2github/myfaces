@@ -29,13 +29,14 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
 import org.apache.myfaces.custom.ajax.AjaxCallbacks;
 import org.apache.myfaces.custom.ajax.api.AjaxComponent;
 import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
+import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
 
 /**
  * User: treeder
  * Date: Oct 28, 2005
  * Time: 7:48:57 PM
  */
-public class HtmlInputTextAjax extends HtmlInputText implements AjaxComponent, AjaxCallbacks
+public class HtmlInputTextAjax extends HtmlInputText implements DeprecatedAjaxComponent, AjaxCallbacks
 {
     private static final Log log = LogFactory.getLog(HtmlInputTextAjax.class);
     public static final String COMPONENT_TYPE = "org.apache.myfaces.InputTextAjax";
