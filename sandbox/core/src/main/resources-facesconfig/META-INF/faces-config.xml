@@ -323,6 +323,11 @@
     <render-kit-id>HTML_BASIC</render-kit-id>
 
     <!-- extended standard renderers -->
+     <renderer>
+         <component-family>javax.faces.Form</component-family>
+         <renderer-type>javax.faces.Form</renderer-type>
+         <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlFormRenderer</renderer-class>
+     </renderer>
 
     <!-- custom component renderers -->
     <renderer>
