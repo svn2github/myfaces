@@ -137,20 +137,20 @@ public class DojoInitializer extends UIOutput {
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        _dojoConfig.setAllowQueryConfig((Boolean) values[1]);
-        _dojoConfig.setBaseScriptUri((String) values[2]);
-        _dojoConfig.setBindEncoding((String) values[3]);
-        _dojoConfig.setDebug((Boolean) values[4]);
-        _dojoConfig.setDebugContainerId((String) values[5]);
-        _dojoConfig.setIgnoreClassNames((Boolean) values[6]);
-        _dojoConfig.setIoSendTransport((String) values[7]);
-        _dojoConfig.setParseWidgets((Boolean) values[8]);
-        _dojoConfig.setPreventBackButtonFix((Boolean) values[9]);
-        _dojoConfig.setSearchIds((String) values[10]);
+        setAllowQueryConfig((Boolean) values[1]);
+        setBaseScriptUri((String) values[2]);
+        setBindEncoding((String) values[3]);
+        setDebug((Boolean) values[4]);
+        setDebugContainerId((String) values[5]);
+        setIgnoreClassNames((Boolean) values[6]);
+        setIoSendTransport((String) values[7]);
+        setParseWidgets((Boolean) values[8]);
+        setPreventBackButtonFix((Boolean) values[9]);
+        setSearchIds((String) values[10]);
         _require      = (String) values[11];
         _provide      = (String) values[12];
         _debugConsole = (Boolean) values[13];
-        _dojoConfig.setDebugAtAllCosts((Boolean) values[14]);
+        setDebugAtAllCosts((Boolean) values[14]);
         _expanded = (Boolean) values[15];
         _development = (Boolean) values[16];
     }
