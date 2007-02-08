@@ -32,7 +32,7 @@
 
 <f:view>
 
-  <h:form id="carForm" onsubmit="return tomahawk.executeClientLifeCycle();">
+  <h:form id="carForm">
 
 		<t:messages forceSpan="true" layout="list" />
 
@@ -57,12 +57,6 @@
 		</h:panelGrid>
 
 		<h:commandButton id="btn_save" value="Create" action=""/>
-		
-		<%--
-			Not necessary when h:form or s:form is used, only added just to give an example
-			
-			<s:validationScript></s:validationScript> 
-		--%>
 
 	</h:form>
 	

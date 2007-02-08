@@ -28,8 +28,9 @@
                 <f:verbatim><a href="#filterTable">Filter Table</a></f:verbatim>
                 <h:outputText value="Client Side Validation"/>
 	            <h:panelGrid style="padding-left:25px">
+   		            <h:outputLink value="clientValidationWithStandardForm.jsf"><f:verbatim>Conversion&Validation with Standart Form</f:verbatim></h:outputLink>
+ 		            <h:outputLink value="clientValidationWithExtForm.jsf"><f:verbatim>Conversion&Validation with Extended Form</f:verbatim></h:outputLink>
 	            	<h:outputLink value="clientValidation.jsf"><f:verbatim>Conversion&Validation with ValidationScript Component</f:verbatim></h:outputLink>
- 		            <h:outputLink value="clientValidationWithForm.jsf"><f:verbatim>Conversion&Validation with Extended Form</f:verbatim></h:outputLink>
 	            </h:panelGrid>
             </h:panelGrid>
 
