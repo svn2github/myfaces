@@ -159,7 +159,7 @@ Sandbox-related entities.
         Enhanced standard JSP actions and custom MyFaces actions.
     </description>
 
-    
+
 	<tag>
 		<name>loadBundle</name>
 		<tag-class>org.apache.myfaces.custom.loadbundle.LoadBundleTag</tag-class>
@@ -1285,6 +1285,15 @@ Sandbox-related entities.
 			
             <description>If false, alert messages which can be fired after a ppr response are not displayed in the browser.
                          May switched to true in test environments. Default: false
+            </description>
+        </attribute>
+        <attribute>
+			<name>stateUpdate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<type>java.lang.Boolean</type>
+            <description>If set to false, there will be no stateUpdate on server side due to the partialPage refresh. 
+                         Default: true
             </description>
         </attribute>
     </tag>

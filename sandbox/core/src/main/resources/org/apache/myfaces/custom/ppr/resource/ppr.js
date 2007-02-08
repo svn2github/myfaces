@@ -25,10 +25,11 @@ dojo.require("dojo.dom.*");
 
 //Define the Partial Page Rendering Controller Class
 
-org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages)
+org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 {
     org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost = false;
     org.apache.myfaces.PPRCtrl.showDebugMessages = showDebugMessages;
+    org.apache.myfaces.PPRCtrl.stateUpdate = stateUpdate;
                                 
     if(typeof window.myFacesPartialTriggers == "undefined")
 	{
@@ -129,34 +130,33 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();
 
-		var stateElem = data.getElementsByTagName("state")[0];
-	    
-		if(stateElem)
-		{
-            var stateUpdate = dojo.dom.firstElement(stateElem,'INPUT');
-		
-			if(stateUpdate)
-			{
-				 var stateUpdateId = stateUpdate.getAttribute('id');
+        if (org.apache.myfaces.PPRCtrl.stateUpdate)
+        {
+            var stateElem = data.getElementsByTagName("state")[0];
+            var stateUpdate = dojo.dom.firstElement(stateElem, 'INPUT');
 
-				 if(stateUpdateId =='javax.faces.ViewState')
-				 {
-					var formArray = document.forms;
-			
-					for(var i=0; i<formArray.length; i++)
-					{
-					  var form = formArray[i];
-					  var domElement = form.elements['javax.faces.ViewState'];
-					  if(domElement)
-						domElement.value = stateUpdate.getAttribute('value');
-					}
-				}
-				else if (stateUpdateId !='jsf_tree' && org.apache.myfaces.PPRCtrl.showDebugMessages)
-					alert("server didn't return appropriate element for state-update. returned element-id: "+
-						  stateUpdate.getAttribute('id')+", value : "+stateUpdate.getAttribute('value'));
-			}
-		}
-    } 
+            if (stateUpdate)
+            {
+                var stateUpdateId = stateUpdate.getAttribute('id');
+
+                if (stateUpdateId == 'javax.faces.ViewState')
+                {
+                    var formArray = document.forms;
+
+                    for (var i = 0; i < formArray.length; i++)
+                    {
+                        var form = formArray[i];
+                        var domElement = form.elements['javax.faces.ViewState'];
+                        if (domElement)
+                            domElement.value = stateUpdate.getAttribute('value');
+                    }
+                }
+                else if (stateUpdateId != 'jsf_tree' && org.apache.myfaces.PPRCtrl.showDebugMessages)
+                    alert("server didn't return appropriate element for state-update. returned element-id: " +
+                          stateUpdate.getAttribute('id') + ", value : " + stateUpdate.getAttribute('value'));
+            }
+        }
+    }
     else if(org.apache.myfaces.PPRCtrl.showDebugMessages)
     {
         alert("an Error occured during the ajax-request " + data.message);

@@ -99,7 +99,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
                     Boolean.TRUE);
 
             script.append(pprCtrlReference + "=" +
-                    MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"+ pprGroup.getShowDebugMessages().booleanValue()+");\n");
+                    MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"+ pprGroup.getShowDebugMessages().booleanValue()
+                                                                     + ","+ pprGroup.getStateUpdate().booleanValue()+");\n");
 
             if (pprGroup.getPeriodicalUpdate() != null)
             {
