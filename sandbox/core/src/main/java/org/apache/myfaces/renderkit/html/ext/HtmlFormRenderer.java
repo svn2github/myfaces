@@ -24,12 +24,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.custom.clientvalidation.common.CVUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
 
 /**
  * @author cagatay (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlFormRenderer extends org.apache.myfaces.renderkit.html.HtmlFormRenderer{
+public class HtmlFormRenderer extends HtmlFormRendererBase{
 
 	private static String CLIENT_VALIDATON_SCRIPT = "return tomahawk.executeClientLifeCycle();";
 	
@@ -43,6 +44,7 @@ public class HtmlFormRenderer extends org.apache.myfaces.renderkit.html.HtmlForm
     
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
     	super.encodeEnd(facesContext, component);
+    	
     	if(CVUtils.isCVEnabled()) {
     		CVUtils.encodeJavascript(facesContext);
 			CVUtils.queueCVCalls(facesContext.getViewRoot());
@@ -61,6 +63,7 @@ public class HtmlFormRenderer extends org.apache.myfaces.renderkit.html.HtmlForm
 	
 	private void decorateOnSubmit(FacesContext facesContext, UIComponent child) {
 		String onSubmitEvent = (String) child.getAttributes().get("onsubmit");
+		
 		if(onSubmitEvent == null)
 			child.getAttributes().put("onsubmit", CLIENT_VALIDATON_SCRIPT);
 		else
