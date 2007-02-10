@@ -1582,6 +1582,7 @@ Sandbox-related entities.
         <body-content>JSP</body-content>
         <description>Export datatable contents to an excel file
         </description>
+        &ui_component_attributes;
         &excel_export_attributes;
     </tag>
 
