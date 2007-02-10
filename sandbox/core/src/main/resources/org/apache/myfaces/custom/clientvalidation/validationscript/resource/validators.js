@@ -25,12 +25,14 @@ tomahawk.IntegerConverter = function() {
 		if( value != null ) {
 			//TODO trim
 			if( value.length > 0)  {
-				convertedValue = parseInt( value );
-				if( isNaN( convertedValue) ) {
-					facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+				var integerRegExp = /(^-?\d\d*$)/;
+				var isInteger = integerRegExp.test(value);						
+				if( !isInteger ) {
+					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
 					throw new tomahawk.ConverterException( facesMessage );
 				}
 				else {
+					var convertedValue = parseInt( value );
 					return convertedValue;
 				}
 			}
