@@ -125,6 +125,14 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         out.startElement(HTML.DIV_ELEM, component);
         out.writeAttribute(HTML.ID_ATTR, clientId , null);
+        if(inputSuggestAjax.getStyle() != null)
+        {
+            out.writeAttribute(HTML.STYLE_ATTR, inputSuggestAjax.getStyle(), null);
+        }
+        if(inputSuggestAjax.getStyleClass() != null)
+        {
+            out.writeAttribute(HTML.CLASS_ATTR, inputSuggestAjax.getStyleClass(), null);
+        }
         out.endElement(HTML.DIV_ELEM);
 
         String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
