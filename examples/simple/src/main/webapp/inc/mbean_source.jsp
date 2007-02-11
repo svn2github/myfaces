@@ -7,7 +7,7 @@
 <br/>
 
 <t:dataList value="#{accessedBeans.beanList}" var="accessedBean" layout="unorderedList">
-    <h:outputLink value="#{request.requestURI}/#{accessedBean.clazz}.java.source">
+    <h:outputLink value="#{facesContext.externalContext.requestContextPath}/#{accessedBean.clazz}.java.source">
         <h:outputText value="Show source of bean with name : "/>
         <h:outputText value="#{accessedBean.name}"/>
         <h:outputText value=" and class : "/>
