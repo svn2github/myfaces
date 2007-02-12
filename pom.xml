@@ -31,16 +31,49 @@
     <url>http://issues.apache.org/jira/browse/TOMAHAWK</url>
   </issueManagement>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.myfaces.core</groupId>
+        <artifactId>myfaces-api</artifactId>
+        <version>${myfaces.version}</version>
+      </dependency>
+  
+      <dependency>
+        <groupId>org.apache.myfaces.core</groupId>
+        <artifactId>myfaces-impl</artifactId>
+        <version>${myfaces.version}</version>
+      </dependency>
+  
+      <dependency>
+        <groupId>org.apache.myfaces.shared</groupId>
+        <artifactId>myfaces-shared-tomahawk</artifactId>
+        <version>${myfaces-shared.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <repositories>
     <repository>
-        <releases>
-          <enabled>false</enabled>
-        </releases>
-        <snapshots>
-          <enabled>true</enabled>
-        </snapshots>
       <id>apache-maven-snapshots</id>
       <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>myfaces-staging</id>
+      <url>http://people.apache.org/builds/myfaces/m2-staging-repository</url>
+      <releases>
+        <enabled>false</enabled>  <!-- Enable to test a MyFaces core release candidate with tomahawk -->
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
@@ -76,5 +109,10 @@
             </plugin>
         </plugins>
     </build>
+
+  <properties>
+    <myfaces.version>1.1.6-SNAPSHOT</myfaces.version>
+    <myfaces-shared.version>2.0.6-SNAPSHOT</myfaces-shared.version>
+  </properties>
 
 </project>

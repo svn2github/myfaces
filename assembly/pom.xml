@@ -6,7 +6,7 @@
   <packaging>pom</packaging>
   <name>Tomahawk Assembly</name>
   <description>
-  	This is the MyFaces Assembly [INSERT MORE STUFF HERE]
+  	This is the MyFaces Tomahawk Assembly [INSERT MORE STUFF HERE]
   </description>
 
   <parent>
@@ -99,10 +99,10 @@
                   <classifier>sources</classifier>
                 </artifactItem>
 
-  		<artifactItem>
+  		          <artifactItem>
                   <groupId>org.apache.myfaces.shared</groupId>
                   <artifactId>myfaces-shared-tomahawk</artifactId>
-                  <version>2.0.4-SNAPSHOT</version>
+                  <version>${myfaces-shared.version}</version>
                   <classifier>sources</classifier>
                 </artifactItem>
 
