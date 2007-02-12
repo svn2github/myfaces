@@ -27,9 +27,9 @@ dojo.require("dojo.dom.*");
 
 org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 {
-    org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost = false;
-    org.apache.myfaces.PPRCtrl.showDebugMessages = showDebugMessages;
-    org.apache.myfaces.PPRCtrl.stateUpdate = stateUpdate;
+    this.blockPeriodicalUpdateDuringPost = false;
+    this.showDebugMessages = showDebugMessages;
+    this.stateUpdate = stateUpdate;
                                 
     if(typeof window.myFacesPartialTriggers == "undefined")
 	{
@@ -107,7 +107,7 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
 
 org.apache.myfaces.PPRCtrl.prototype.doBlockPeriodicalUpdateDuringPost = function()
 {
-    org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost = true;
+    this.blockPeriodicalUpdateDuringPost = true;
 };
 
 
@@ -115,7 +115,7 @@ org.apache.myfaces.PPRCtrl.prototype.doBlockPeriodicalUpdateDuringPost = functio
 
 org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 {      
-    if(type == "load" && !org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost)
+    if(type == "load" && !this.blockPeriodicalUpdateDuringPost)
     {
 	    var componentUpdates = data.getElementsByTagName("component");
 	    var componentUpdate = null;
@@ -130,7 +130,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();
 
-        if (org.apache.myfaces.PPRCtrl.stateUpdate)
+        if (this.stateUpdate)
         {
             var stateElem = data.getElementsByTagName("state")[0];
             var stateUpdate = dojo.dom.firstElement(stateElem, 'INPUT');
@@ -151,13 +151,13 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
                             domElement.value = stateUpdate.getAttribute('value');
                     }
                 }
-                else if (stateUpdateId != 'jsf_tree' && org.apache.myfaces.PPRCtrl.showDebugMessages)
+                else if (stateUpdateId != 'jsf_tree' && this.showDebugMessages)
                     alert("server didn't return appropriate element for state-update. returned element-id: " +
                           stateUpdate.getAttribute('id') + ", value : " + stateUpdate.getAttribute('value'));
             }
         }
     }
-    else if(org.apache.myfaces.PPRCtrl.showDebugMessages)
+    else if(this.showDebugMessages)
     {
         alert("an Error occured during the ajax-request " + data.message);
     }
@@ -246,7 +246,7 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         formNode: this.form
     });
 
-    if(refreshTimeout && !org.apache.myfaces.PPRCtrl.blockPeriodicalUpdateDuringPost)
+    if(refreshTimeout && !this.blockPeriodicalUpdateDuringPost)
     {
         window.setTimeout(function() {
             ppr.startPeriodicalUpdate(refreshTimeout, refreshZoneId);
@@ -294,7 +294,7 @@ org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId
 {
     this.form = dojo.byId(formId);
     if( (typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
-            && org.apache.myfaces.PPRCtrl.showDebugMessages)
+            && this.showDebugMessages)
     {
         alert("MyFaces PPR Engine: Form with id:" + formId + " not found!");
         return;
