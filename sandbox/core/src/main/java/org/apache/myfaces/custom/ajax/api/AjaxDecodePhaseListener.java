@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 import org.apache.myfaces.custom.ajax.util.AjaxRendererUtils;
 import org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax;
+import org.apache.myfaces.custom.util.URIComponentUtils;
 import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
@@ -325,11 +326,7 @@ public class AjaxDecodePhaseListener
     {
         String possibleClientId = component.getClientId(context);
 
-        if (context.getExternalContext().getRequestParameterMap().containsKey(possibleClientId))
-        {
-            return context.getExternalContext().getRequestParameterMap().get(possibleClientId);
-        }
-        else
+        if (!context.getExternalContext().getRequestParameterMap().containsKey(possibleClientId))
         {
             possibleClientId = (String) context.getExternalContext()
                                             .getRequestParameterMap().get("affectedAjaxComponent");
@@ -350,18 +347,21 @@ public class AjaxDecodePhaseListener
                 });
             }
 
-            if (ajaxComponent == component)
-            {
-                return context.getExternalContext().getRequestParameterMap().get(possibleClientId);
-            }
-            else
+            if (ajaxComponent != component)
             {
                 log.error("No value found for this component : " + possibleClientId);
                 return null;
             }
         }
-    }
 
+        Object encodedValue = context.getExternalContext().getRequestParameterMap().get(possibleClientId);
+
+        if (encodedValue instanceof String)
+        {
+            return URIComponentUtils.decodeURIComponent((String) encodedValue);
+        }
+        else return encodedValue;
+    }
 
     public void afterPhase(PhaseEvent event)
     {
