@@ -2,16 +2,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.myfaces.tomahawk</groupId>
-  <artifactId>tomahawk-project</artifactId>
-  <packaging>pom</packaging>
-  <name>Tomahawk Project</name>
-  <url>http://myfaces.apache.org/tomahawk</url> <!-- TODO which url has tomahawk? -->
-  <version>1.1.5-SNAPSHOT</version>	 
-  <description>Apache MyFaces Tomahawk is a sub-project of Apache MyFaces which provides an extensive sets
-  of custom components for use in your JSF-projects. Additionally, Tomahawk includes many custom
-  features helping you to implement JSF-projects more easily.
-  </description>
   
   <parent>
     <groupId>org.apache.myfaces.maven</groupId>
@@ -19,6 +9,17 @@
 		<version>1.0.6-SNAPSHOT</version>	  
   </parent>
 
+  <groupId>org.apache.myfaces.tomahawk</groupId>
+  <artifactId>tomahawk-project</artifactId>
+  <packaging>pom</packaging>
+  <name>Tomahawk Project</name>
+  <url>http://myfaces.apache.org/tomahawk</url>
+  <version>1.1.5-SNAPSHOT</version>	 
+  <description>Apache MyFaces Tomahawk is a sub-project of Apache MyFaces which provides an extensive sets
+  of custom components for use in your JSF-projects. Additionally, Tomahawk includes many custom
+  features helping you to implement JSF-projects more easily.
+  </description>
+  
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk</developerConnection>
