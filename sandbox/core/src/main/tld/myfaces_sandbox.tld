@@ -1291,7 +1291,6 @@ Sandbox-related entities.
 			<name>stateUpdate</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-			<type>java.lang.Boolean</type>
             <description>If set to false, there will be no stateUpdate on server side due to the partialPage refresh. 
                          Default: true
             </description>
