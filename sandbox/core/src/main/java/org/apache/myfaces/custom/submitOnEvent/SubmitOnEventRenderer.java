@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UICommand;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * Attach an event handler to an input element or use a global event handler to
@@ -74,7 +75,11 @@ public class SubmitOnEventRenderer extends HtmlRenderer
             }
 
             forComponent = uiComponent.findComponent(forComponentId);
-            if (forComponent == null)
+			if (forComponent == null)
+			{
+				forComponent = findComponentAggressive(facesContext.getViewRoot(), forComponentId);
+			}
+			if (forComponent == null)
             {
                 throw new IllegalArgumentException("SubmitOnEvent: can't find 'for'-component '" + forComponentId + "'");
             }
@@ -119,4 +124,30 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         out.writeText(js.toString(), null);
         out.endElement(HTML.SCRIPT_ELEM);
     }
+
+	/**
+	 * deep scan the tree and see if ANY naming container has a component with the
+	 * given id
+	 */
+	private UIComponent findComponentAggressive(UIComponent base, String id)
+	{
+		if (id.equals(base.getId()))
+		{
+			return base;
+		}
+
+		Iterator iter = base.getFacetsAndChildren();
+		while (iter.hasNext())
+		{
+			UIComponent child = (UIComponent) iter.next();
+
+			UIComponent found = findComponentAggressive(child, id);
+			if (found != null)
+			{
+				return found;
+			}
+		}
+
+		return null;
+	}
 }
