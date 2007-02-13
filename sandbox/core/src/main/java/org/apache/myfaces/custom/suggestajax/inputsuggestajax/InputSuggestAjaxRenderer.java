@@ -83,7 +83,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         ResponseWriter out = context.getResponseWriter();
 
-        Object valueObject = inputSuggestAjax.getValue();  //Todo -> Use submitted value rather than value if submitted value != null (RendererUtils.getStringValue)
+        Object valueObject = RendererUtils.getStringValue(context, inputSuggestAjax);
         String label = null;
         String value = null;
 
