@@ -83,7 +83,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         ResponseWriter out = context.getResponseWriter();
 
-        Object valueObject = RendererUtils.getStringValue(context, inputSuggestAjax);
         String label = null;
         String value = null;
 
@@ -94,30 +93,23 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 		/* check if the user supplied a label method */
 		if (inputSuggestAjax.getItemLabelMethod() == null)
 		{
-			if (valueObject instanceof String)
-			{
-				valueToRender = (String) valueObject;
-
-				idToRender = clientId;
-			}
-			else if (valueObject == null)
-			{
-				valueToRender = "";
-
-				idToRender = clientId;
-			}
-		}
+			valueToRender = RendererUtils.getStringValue(context, inputSuggestAjax);
+            value = valueToRender;
+        }
 		else
         {
             MethodBinding labelMethod = inputSuggestAjax.getItemLabelMethod();
 
             if (labelMethod != null)
             {
-				Converter converter = getRequiredConverter(context, inputSuggestAjax);
+                Object valueObject = inputSuggestAjax.getValue();
+
+                Converter converter = getRequiredConverter(context, inputSuggestAjax);
 
                 label = (String) labelMethod.invoke(context, new Object[]{valueObject});
 
 				value = converter.getAsString(context, inputSuggestAjax, valueObject);
+                valueToRender = value;
 
                 idToRender = clientId + "_valueFake";
             }
