@@ -84,17 +84,16 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         ResponseWriter out = context.getResponseWriter();
 
         String label = null;
-        String value = null;
+        String hiddenInputValue = null;
 
-        String valueToRender = null;
+        String mainComponentRenderedValue = null;
         
         String idToRender = null;
 
 		/* check if the user supplied a label method */
 		if (inputSuggestAjax.getItemLabelMethod() == null)
 		{
-			valueToRender = RendererUtils.getStringValue(context, inputSuggestAjax);
-            value = valueToRender;
+			mainComponentRenderedValue = RendererUtils.getStringValue(context, inputSuggestAjax);
         }
 		else
         {
@@ -108,8 +107,8 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
                 label = (String) labelMethod.invoke(context, new Object[]{valueObject});
 
-				value = converter.getAsString(context, inputSuggestAjax, valueObject);
-                valueToRender = value;
+				hiddenInputValue = converter.getAsString(context, inputSuggestAjax, valueObject);
+                mainComponentRenderedValue = hiddenInputValue;
 
                 idToRender = clientId + "_valueFake";
             }
@@ -139,11 +138,11 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         if (label != null)
         {
-            valueToRender = label;
+            mainComponentRenderedValue = label;
         }
-        else if (valueToRender != null)
+        else if (mainComponentRenderedValue != null)
         {
-            valueToRender = escapeQuotes(valueToRender);
+            mainComponentRenderedValue = escapeQuotes(mainComponentRenderedValue);
         }
 
         DojoUtils.renderWidgetInitializationCode(context, component, "ComboBox", attributes);
@@ -155,8 +154,8 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         buffer.append("dojo.addOnLoad(function() {\n")
               .append(inputSuggestComponentVar).append(".textInputNode.name=\"").append(idToRender).append("\";\n")
-              .append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(valueToRender).append("\";\n")
-              .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(valueToRender).append("\";\n")
+              .append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(mainComponentRenderedValue).append("\";\n")
+              .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(mainComponentRenderedValue).append("\";\n")
               .append(inputSuggestComponentVar).append(".onResize();\n")
               .append("});\n");
 
@@ -164,13 +163,13 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         out.endElement(HTML.SCRIPT_ELEM);
 
-        if (value != null)
+        if (hiddenInputValue != null)
         {
             out.startElement(HTML.INPUT_ELEM, inputSuggestAjax);
             out.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
             out.writeAttribute(HTML.ID_ATTR, clientId, null);
             out.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            out.writeAttribute(HTML.VALUE_ATTR, value, null);
+            out.writeAttribute(HTML.VALUE_ATTR, hiddenInputValue, null);
             out.endElement(HTML.INPUT_ELEM);
 
             out.startElement(HTML.SCRIPT_ELEM, null);
