@@ -94,6 +94,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 		if (inputSuggestAjax.getItemLabelMethod() == null)
 		{
 			mainComponentRenderedValue = RendererUtils.getStringValue(context, inputSuggestAjax);
+            idToRender = clientId;
         }
 		else
         {
