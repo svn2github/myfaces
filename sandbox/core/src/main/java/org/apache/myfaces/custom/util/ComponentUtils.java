@@ -19,11 +19,10 @@
 
 package org.apache.myfaces.custom.util;
 
-import java.util.Iterator;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlMessages;
 import javax.faces.context.FacesContext;
+import java.util.Iterator;
 
 /**
  * User: treeder
@@ -32,9 +31,9 @@ import javax.faces.context.FacesContext;
  */
 public final class ComponentUtils
 {
-	
+
 	private ComponentUtils(){
-		
+
 	}
 
     /**
@@ -94,7 +93,33 @@ public final class ComponentUtils
     }
 
 
-    public static UIComponent findFirstMessagesComponent(FacesContext context, UIComponent base)
+	/**
+	 * deep scan the tree and see if ANY naming container has a component with the
+	 * given id
+	 */
+	public static UIComponent findDeepComponentById(UIComponent base, String id)
+	{
+		if (id.equals(base.getId()))
+		{
+			return base;
+		}
+
+		Iterator iter = base.getFacetsAndChildren();
+		while (iter.hasNext())
+		{
+			UIComponent child = (UIComponent) iter.next();
+
+			UIComponent found = findDeepComponentById(child, id);
+			if (found != null)
+			{
+				return found;
+			}
+		}
+
+		return null;
+	}
+
+	public static UIComponent findFirstMessagesComponent(FacesContext context, UIComponent base)
     {
         if (base == null)
         {
@@ -121,5 +146,5 @@ public final class ComponentUtils
         return null;
     }
 
-   
+
 }

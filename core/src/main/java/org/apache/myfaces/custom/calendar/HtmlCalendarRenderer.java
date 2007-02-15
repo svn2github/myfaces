@@ -375,7 +375,7 @@ public class HtmlCalendarRenderer
             if(inputCalendar.getPopupTodayDateFormat()!=null)
                 setStringVariable(script, popupCalendarVariable+".initData.todayDateFormat",inputCalendar.getPopupTodayDateFormat());
             else if(inputCalendar.getPopupDateFormat() != null)
-                setStringVariable(script, popupCalendarVariable+".initData.todayDateFormat",inputCalendar.getPopupDateFormat());                
+                setStringVariable(script, popupCalendarVariable+".initData.todayDateFormat",inputCalendar.getPopupDateFormat());
             if(inputCalendar.getPopupWeekString()!=null)
                 setStringVariable(script, popupCalendarVariable+".initData.weekString",inputCalendar.getPopupWeekString());
             if(inputCalendar.getPopupScrollLeftMessage()!=null)
@@ -917,7 +917,7 @@ public class HtmlCalendarRenderer
             {
                 String popupDateFormat = ((HtmlInputCalendar) uiComponent).getPopupDateFormat();
 
-                dateFormat = new SimpleDateFormat(createJSPopupFormat(facesContext, popupDateFormat));
+                dateFormat = new SimpleDateFormat(createJSPopupFormat(facesContext, popupDateFormat), facesContext.getViewRoot().getLocale());
             }
             else
             {
@@ -968,7 +968,7 @@ public class HtmlCalendarRenderer
             {
                 String popupDateFormat = ((HtmlInputCalendar) uiComponent).getPopupDateFormat();
 
-                dateFormat = new SimpleDateFormat(createJSPopupFormat(facesContext, popupDateFormat));
+                dateFormat = new SimpleDateFormat(createJSPopupFormat(facesContext, popupDateFormat), facesContext.getViewRoot().getLocale());
             }
             else
             {
@@ -989,7 +989,7 @@ public class HtmlCalendarRenderer
             if(dateFormat instanceof SimpleDateFormat)
                 return (SimpleDateFormat) dateFormat;
             else
-                return new SimpleDateFormat("dd.MM.yyyy");
+                return new SimpleDateFormat("dd.MM.yyyy", facesContext.getViewRoot().getLocale());
         }
 
     }

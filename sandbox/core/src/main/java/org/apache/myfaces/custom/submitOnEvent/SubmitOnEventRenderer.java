@@ -23,6 +23,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.ResourcePosition;
+import org.apache.myfaces.custom.util.ComponentUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -77,7 +78,7 @@ public class SubmitOnEventRenderer extends HtmlRenderer
             forComponent = uiComponent.findComponent(forComponentId);
 			if (forComponent == null)
 			{
-				forComponent = findComponentAggressive(facesContext.getViewRoot(), forComponentId);
+				forComponent = ComponentUtils.findDeepComponentById(facesContext.getViewRoot(), forComponentId);
 			}
 			if (forComponent == null)
             {
@@ -124,30 +125,4 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         out.writeText(js.toString(), null);
         out.endElement(HTML.SCRIPT_ELEM);
     }
-
-	/**
-	 * deep scan the tree and see if ANY naming container has a component with the
-	 * given id
-	 */
-	private UIComponent findComponentAggressive(UIComponent base, String id)
-	{
-		if (id.equals(base.getId()))
-		{
-			return base;
-		}
-
-		Iterator iter = base.getFacetsAndChildren();
-		while (iter.hasNext())
-		{
-			UIComponent child = (UIComponent) iter.next();
-
-			UIComponent found = findComponentAggressive(child, id);
-			if (found != null)
-			{
-				return found;
-			}
-		}
-
-		return null;
-	}
 }

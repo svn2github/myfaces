@@ -309,6 +309,21 @@ public class ConversationManager implements Serializable
 	}
 
 	/**
+	 * Find the conversation which holds the given instance
+	 *
+	 * @return null if no conversation context is active or if the conversation did not exist.
+	 */
+	public Conversation findConversation(Object instance)
+	{
+		ConversationContext conversationContext = getConversationContext();
+		if (conversationContext == null)
+		{
+			return null;
+		}
+		return conversationContext.findConversation(instance);
+	}
+
+	/**
 	 * check if the given conversation is active
 	 */
 	public boolean hasConversation(String name)

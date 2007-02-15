@@ -75,7 +75,7 @@ public class HtmlFocusRenderer extends Renderer
 
             writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-            writer.writeText("setTimeout(\"document.getElementById('" + clientId + "').focus()\", 0)", null);
+            writer.writeText("setTimeout(\"document.getElementById('" + clientId + "').focus()\", 100)", null);
             writer.endElement(HTML.SCRIPT_ELEM);
 
 			if (focus.isRememberClientFocus())

@@ -20,6 +20,7 @@ package org.apache.myfaces.custom.focus;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.util.ComponentUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -86,6 +87,10 @@ public class HtmlFocus extends UIInput
 		}
 
 		UIComponent forComp = findComponent(forStr);
+		if (forComp == null)
+		{
+			forComp = ComponentUtils.findDeepComponentById(getFacesContext().getViewRoot(), forStr);
+		}
 		if (forComp == null)
 		{
 			log.warn("could not find UIComponent referenced by attribute focus@for = '"

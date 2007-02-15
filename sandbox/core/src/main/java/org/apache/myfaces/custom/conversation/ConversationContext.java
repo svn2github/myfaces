@@ -211,6 +211,27 @@ public class ConversationContext
 	}
 
 	/**
+	 * find the conversation which holds the given instance
+	 */
+	public Conversation findConversation(Object instance)
+	{
+		synchronized (mutex)
+		{
+			touch();
+			Iterator iterConversations = conversations.values().iterator();
+			while (iterConversations.hasNext())
+			{
+				Conversation conversation = (Conversation) iterConversations.next();
+				if (conversation.hasBean(instance))
+				{
+					return conversation;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * inject all beans from the conversation context to their configured scope
 	protected void injectConversationBeans(FacesContext context)
 	{

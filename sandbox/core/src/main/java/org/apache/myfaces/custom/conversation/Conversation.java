@@ -18,15 +18,13 @@
  */
 package org.apache.myfaces.custom.conversation;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.faces.context.FacesContext;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * handle conversation related stuff like beans
@@ -156,7 +154,7 @@ public class Conversation
 	 */
 	public boolean isPersistence()
 	{
-		return persistence;
+		return persistence || persistenceManager != null;
 	}
 
 	public PersistenceManager getPersistenceManager()
@@ -167,5 +165,13 @@ public class Conversation
 		}
 
 		return persistenceManager;
+	}
+
+	/**
+	 * returns true if we hold the given instance
+	 */
+	public boolean hasBean(Object instance)
+	{
+		return beans.containsValue(instance);
 	}
 }
