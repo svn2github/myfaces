@@ -77,10 +77,6 @@ public class SubmitOnEventRenderer extends HtmlRenderer
 
             forComponent = uiComponent.findComponent(forComponentId);
 			if (forComponent == null)
-			{
-				forComponent = ComponentUtils.findDeepComponentById(facesContext.getViewRoot(), forComponentId);
-			}
-			if (forComponent == null)
             {
                 throw new IllegalArgumentException("SubmitOnEvent: can't find 'for'-component '" + forComponentId + "'");
             }
