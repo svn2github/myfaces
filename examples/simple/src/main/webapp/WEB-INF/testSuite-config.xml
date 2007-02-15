@@ -70,10 +70,6 @@
 			<to-view-id>/testSuite/tOutputText.jsp</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>tPanelNavigation</from-outcome>
-			<to-view-id>/tPanelNavigation.jsp</to-view-id>
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>tPanelNavigation2</from-outcome>
 			<to-view-id>/testSuite/tPanelNavigation2.jsp</to-view-id>
 		</navigation-case>
