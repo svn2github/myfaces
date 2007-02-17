@@ -16,32 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-tomahawk.LengthValidator = function(min,max) {
+tomahawk.IntegerConverter = function() {
 		
-	this.MAXIMUM_MESSAGE_ID = "javax.faces.validator.LengthValidator.MAXIMUM";
-	this.MINIMUM_MESSAGE_ID = "javax.faces.validator.LengthValidator.MINIMUM";
-		
-	this.validateValue = function(facesContext,uiinput,value) {
+	this.CONVERSION_MESSAGE_ID = "javax.faces.convert.IntegerConverter.CONVERSION";
 
-		if( value == null )
-			return;
+	this.getAsObject = function(context,uiinput,value) {
 		
-			var length = value.length;
-				
-			if(min != null) {
-				if(length < min) {
-					var args = new Array(min, uiinput.id);
-					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.MINIMUM_MESSAGE_ID,args);
-					throw new tomahawk.ValidatorException( facesMessage );
+		if( value != null ) {
+			//TODO trim
+			if( value.length > 0)  {
+				var integerRegExp = /(^-?\d\d*$)/;
+				var isInteger = integerRegExp.test(value);						
+				if( !isInteger ) {
+					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+					throw new tomahawk.ConverterException( facesMessage );
+				}
+				else {
+					var convertedValue = parseInt( value );
+					return convertedValue;
 				}
 			}
-			
-			if(max != null) {
-				if(length> max) {
-					var args = new Array(max, uiinput.id);
-					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.MAXIMUM_MESSAGE_ID,args);
-					throw new tomahawk.ValidatorException( facesMessage );
-				}
-			}
+		}
+		return null;
 	}
 }
