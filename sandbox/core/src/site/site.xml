@@ -42,7 +42,8 @@
       <item name="Picklist" href="selectManyPicklist.html"/>
       <item name="Dynamic Image" href="graphicImageDynamic.html"/>  
       <item name="FishEye Navigation Menu" href="fisheye.html"/> 
-	  <item name="ExcelExport" href="excelexport.html"/> 
+	  <item name="ExcelExport" href="excelexport.html"/>
+	  <item name="SecurityContext" href="securityContext.html"/>
     </menu>    
     
     <menu name="Validators">
