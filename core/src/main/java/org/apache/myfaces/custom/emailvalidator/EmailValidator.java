@@ -64,7 +64,7 @@ public class EmailValidator extends ValidatorBase {
 			{
 				return;
 			}
-			if (!GenericValidator.isEmail(value.toString())) {
+			if (!GenericValidator.isEmail(value.toString().trim())) {
 				Object[] args = {value.toString()};
 	            throw new ValidatorException(getFacesMessage(EMAIL_MESSAGE_ID, args));
 			}
