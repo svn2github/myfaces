@@ -97,11 +97,15 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         if (getChildren(tableSuggestAjax) != null
                 && !getChildren(tableSuggestAjax).isEmpty())
         {
-            out.startElement(HTML.DIV_ELEM, component);
-            out.writeAttribute(HTML.ID_ATTR, clientId , null);
-            out.endElement(HTML.DIV_ELEM);
+            StringBuffer divId = new StringBuffer();
+            divId.append(clientId).append(":::div");
 
-            String tableSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
+            out.startElement(HTML.DIV_ELEM, component);
+            out.writeAttribute(HTML.ID_ATTR, divId , null);
+
+            super.encodeEnd(context, tableSuggestAjax);
+
+            String tableSuggestComponentVar = DojoUtils.calculateWidgetVarName(divId.toString());
 
             Map attributes = new HashedMap();
             String betweenKeyUp = "";
@@ -179,7 +183,10 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                 attributes.put("hoverRowStyleClass", tableSuggestAjax.getHoverRowStyleClass());
             }
 
-            DojoUtils.renderWidgetInitializationCode(context, component, "extensions:TableSuggest", attributes);
+            //textInputId
+            attributes.put("textInputId", clientId);
+
+            DojoUtils.renderWidgetInitializationCode(context.getResponseWriter(), component, "extensions:TableSuggest", attributes, divId.toString(), true);
 
             out.startElement(HTML.SCRIPT_ELEM, null);
             out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
@@ -187,8 +194,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             StringBuffer buffer = new StringBuffer();
 
             buffer.append("dojo.addOnLoad(function() {\n")
-                  .append(tableSuggestComponentVar).append(".textInputNode.id=\"").append(clientId).append("\";\n")
-                  .append(tableSuggestComponentVar).append(".textInputNode.value = \"").append(valueToRender).append("\";\n")
                   .append(tableSuggestComponentVar).append(".comboBoxValue.value = \"").append(valueToRender).append("\";\n")
                   .append(tableSuggestComponentVar).append(".onResize();\n")
                   .append("});\n");
@@ -196,6 +201,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             out.write(buffer.toString());
 
             out.endElement(HTML.SCRIPT_ELEM);
+            out.endElement(HTML.DIV_ELEM);
         }
     }
 
@@ -376,4 +382,5 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     }
 
 }
+
 

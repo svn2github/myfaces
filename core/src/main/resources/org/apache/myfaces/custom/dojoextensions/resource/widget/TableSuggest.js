@@ -7,7 +7,8 @@ dojo.widget.defineWidget(
 	"extensions.widget.TableSuggest",
 	dojo.widget.ComboBox,
 	{
-		templateCssPath: dojo.uri.dojoUri("../dojoextensions.ResourceLoader/templates/TableSuggest.css"),
+        templatePath: dojo.uri.dojoUri("../dojoextensions.ResourceLoader/templates/TableSuggest.html"),
+        templateCssPath: dojo.uri.dojoUri("../dojoextensions.ResourceLoader/templates/TableSuggest.css"),
         startRequest: 1,
         popupId: null,
         popupStyleClass: "dojoPopupContainer dojoComboBoxOptions",
@@ -17,15 +18,33 @@ dojo.widget.defineWidget(
 		evenRowStyleClass: "dojoComboBoxItemEven",
 		oddRowStyleClass: "dojoComboBoxItemOdd",
 		hoverRowStyleClass: "dojoComboBoxItemHighlight",
+        textInputId: "",
 
         fillInTemplate: function(args, frag) {
-			dojo.widget.ComboBox.prototype.fillInTemplate.call(this, args, frag);
-			if (this.popupId) {
+            //Insert the textInputNode
+            this.textInputNode = dojo.byId(this.textInputId);
+            this.textInputNode.parentNode.removeChild(this.textInputNode);
+            this.domNode.insertBefore(this.textInputNode, this.downArrowNode);
+
+            //Super...
+            dojo.widget.ComboBox.prototype.fillInTemplate.call(this, args, frag);
+
+            //Connect Events
+            var that = this;
+            dojo.event.browser.addListener(this.textInputNode, "key", function(evt){ that["_handleKeyEvents"](dojo.event.browser.fixEvent(evt, this)) }, false, true);
+            dojo.event.browser.addListener(this.textInputNode, "keyUp", function(evt){ that["onKeyUp"](dojo.event.browser.fixEvent(evt, this)) }, false, true);
+            dojo.event.browser.addListener(this.textInputNode, "compositionEnd", function(evt){ that["compositionEnd"](dojo.event.browser.fixEvent(evt, this)) }, false, true);
+            dojo.event.browser.addListener(this.textInputNode, "onResize", function(evt){ that["onResize"](dojo.event.browser.fixEvent(evt, this)) }, false, true);
+
+            if (this.popupId) {
 				this.popupWidget.domNode.id = this.popupId;
 			}
             this.popupWidget.domNode.className = this.popupStyleClass;
             this.textInputNode.className = this.comboBoxStyleClass;
             this.downArrowNode.className = this.comboBoxStyleClass;
+            if (this.textInputNode.disabled == true) {
+                this.disable();
+            }
         },
 
         _openResultList: function(results) {
@@ -216,13 +235,20 @@ dojo.widget.defineWidget(
                 if (column.forText) {
 					if (column.forText === this.textInputNode.id) {
 						this.setAllValues(column.label, column.label);
-					}
+                        if (this.textInputNode.onchange) {
+                            this.textInputNode.onchange();
+                        }
+                    }
 					else {
 						var element = dojo.byId(column.forText);
 						if (element) {
 							if (element.tagName === "INPUT") {
 								element.value = column.label;
-							}
+                                if (element.onchange)
+                                {
+                                    element.onchange();
+                                }
+                            }
 							else {
 								element.innerHTML = column.label;
 							}
