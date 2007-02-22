@@ -8,7 +8,7 @@
 
 <faces-config>
 	<navigation-rule>
-    <from-view-id>/testSuite/*</from-view-id>
+		<from-view-id>/testSuite/*</from-view-id>
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/testSuite/home.jsp</to-view-id>
@@ -68,6 +68,10 @@
 		<navigation-case>
 			<from-outcome>tOutputText</from-outcome>
 			<to-view-id>/testSuite/tOutputText.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>tPanelNavigation</from-outcome>
+			<to-view-id>/testSuite/tPanelNavigation.jsp</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>tPanelNavigation2</from-outcome>
