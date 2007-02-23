@@ -61,7 +61,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
         DojoUtils.addRequire(context, component, "extensions.FacesIO");
-        DojoUtils.addRequire(context, component, "dojo.widget.ComboBox");
+        DojoUtils.addRequire(context, component, "extensions.widget.InputSuggestAjax");
         DojoUtils.addRequire(context, component, "dojo.event.*");
     }
 
@@ -115,8 +115,9 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             }
         }
 
+        String placeHolderId = context.getViewRoot().createUniqueId(); 
         out.startElement(HTML.DIV_ELEM, component);
-        out.writeAttribute(HTML.ID_ATTR, clientId , null);
+        out.writeAttribute(HTML.ID_ATTR, placeHolderId , null);
         if(inputSuggestAjax.getStyle() != null)
         {
             out.writeAttribute(HTML.STYLE_ATTR, inputSuggestAjax.getStyle(), null);
@@ -126,13 +127,15 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             out.writeAttribute(HTML.CLASS_ATTR, inputSuggestAjax.getStyleClass(), null);
         }
         out.endElement(HTML.DIV_ELEM);
+        super.encodeEnd(context, inputSuggestAjax);
 
-        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(clientId);
+        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(placeHolderId);
 
         Map attributes = new HashedMap();
 
         attributes.put("dataUrl", ajaxUrl);
         attributes.put("mode", "remote");
+        attributes.put("textInputId", clientId);
 
         String autoComplete = inputSuggestAjax.getAutoComplete().booleanValue()?"true":"false";
         attributes.put("autoComplete", autoComplete);
@@ -146,7 +149,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             mainComponentRenderedValue = escapeQuotes(mainComponentRenderedValue);
         }
 
-        DojoUtils.renderWidgetInitializationCode(context, component, "ComboBox", attributes);
+        DojoUtils.renderWidgetInitializationCode(context.getResponseWriter(), component, "extensions:InputSuggestAjax", attributes, placeHolderId.toString(), true);
 
         out.startElement(HTML.SCRIPT_ELEM, null);
         out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
@@ -154,8 +157,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("dojo.addOnLoad(function() {\n")
-              .append(inputSuggestComponentVar).append(".textInputNode.name=\"").append(idToRender).append("\";\n")
-              .append(inputSuggestComponentVar).append(".textInputNode.value = \"").append(mainComponentRenderedValue).append("\";\n")
               .append(inputSuggestComponentVar).append(".comboBoxValue.value = \"").append(mainComponentRenderedValue).append("\";\n")
               .append(inputSuggestComponentVar).append(".onResize();\n")
               .append("});\n");
