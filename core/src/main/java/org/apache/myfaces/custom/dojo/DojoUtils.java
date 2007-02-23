@@ -110,12 +110,16 @@ public final class DojoUtils {
         for (int cnt = 0; cnt < attributeNames.length; cnt++) {
             try {
                 String attributeName = attributeNames[cnt];
-                String getterMethod = "get" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                String getterMethod = attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
                 if (attributeName.equals("id") || attributeName.equals("widgetId")) {
                     String calculatedId = DojoUtils.calculateWidgetId(facesContext, component);
                     returnMap.put("id", calculatedId);
                 } else {
-                    Method m = componentClass.getDeclaredMethod(getterMethod, null);
+                    Method m = componentClass.getDeclaredMethod("get" + getterMethod, null);
+                    if (m == null) {
+                        // try alternative method name for dealing with Booleans
+                    	m = componentClass.getDeclaredMethod("is" + getterMethod, null);
+                    }
                     if (m != null) {
                         Object execRetval = m.invoke(component, null);
                         if (execRetval != null)
