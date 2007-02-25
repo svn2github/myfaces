@@ -14,7 +14,7 @@
     <description>State saving method: "client" or "server" (= default)
             See JSF Specification 2.5.3</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
+    <param-value>client</param-value>
   </context-param>
   <context-param>
     <description>Only applicable if state saving method is "server" (= default).
@@ -119,6 +119,24 @@
     <param-name>org.apache.myfaces.RESOURCE_VIRTUAL_PATH</param-name>
     <param-value>/faces/extensionResource</param-value>
   </context-param>
+
+    <context-param>
+      <description>
+          This parameter enables partial state saving.
+      </description>
+      <param-name>javax.faces.PARTIAL_STATE_SAVING_METHOD</param-name>
+      <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+      <description>
+          If true every time a page is rendered, the corresponding JSP is dispatched also.
+          This is very usefull if Scriptlets are used inside the JSP.
+      </description>
+      <param-name>javax.faces.PARTIAL_STATE_SAVING_DISPATCH_EVERY_TIME</param-name>
+      <param-value>true</param-value>
+    </context-param>
+
 
   <filter>
     <filter-name>extensionsFilter</filter-name>
