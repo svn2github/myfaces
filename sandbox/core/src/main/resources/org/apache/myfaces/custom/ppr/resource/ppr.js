@@ -347,7 +347,8 @@ org.apache.myfaces.PPRCtrl.prototype.buttonOnClickHandler = function (_event)
 {
     if(this.onclick_orig.type != "undefined")
     {
-        this.onclick_orig();
+        if(this.onclick_orig() == false)
+		return false;
     }
     return this.myFacesPPRCtrl.ajaxSubmitFunction(this);
 }
