@@ -35,7 +35,9 @@ dojo.widget.defineWidget(
         setAllValues: function(a, b) {
             //Super...
             dojo.widget.ComboBox.prototype.setAllValues.call(this, a, b);
-            this.textInputNode.onchange();
+            if (this.textInputNode.onchange) {
+                this.textInputNode.onchange();
+            }
         }
     }
 );
