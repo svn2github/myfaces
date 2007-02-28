@@ -64,6 +64,9 @@ public class FilterTableRenderer extends HtmlRenderer {
         DojoUtils.addRequire(context, component, "dojo.widget.FilteringTable");
 
         writer.write("<table dojoType=\"filteringTable\" id=\"" + component.getClientId(context) +  "\" ");
+        if (table.getStyleClass() != null) {
+             writer.write("class=\"" + table.getStyleClass() + "\" " );
+        }
         if (table.getHeadClass() != null) {
             writer.write("headClass=\"" + table.getHeadClass() + "\" " );
         } else {
@@ -127,6 +130,18 @@ public class FilterTableRenderer extends HtmlRenderer {
                 } else {
                     writer.writeAttribute("dataType", "String", null);
                 }
+                if (col.getSort() != null) {
+                     writer.writeAttribute("sort", col.getSort(), null);
+                 }
+                 if (col.getAlign() != null) {
+                     writer.writeAttribute("align", col.getAlign(), null);
+                 }
+                 if (col.getValign() != null) {
+                     writer.writeAttribute("valign", col.getValign(), null);
+                 }
+                 if (col.getFormat() != null) {
+                     writer.writeAttribute("format", col.getFormat(), null);
+                 }
                 Boolean escape = col.getEscape();
                 if (escape == null || escape.booleanValue())  {
                     writer.writeText(col.getText(), JSFAttr.VALUE_ATTR);
