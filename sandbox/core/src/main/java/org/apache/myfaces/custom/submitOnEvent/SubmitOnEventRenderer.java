@@ -30,8 +30,15 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UICommand;
+import javax.faces.component.UISelectBoolean;
+import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectMany;
+import javax.faces.component.UISelectOne;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  * Attach an event handler to an input element or use a global event handler to
@@ -41,7 +48,14 @@ import java.util.Iterator;
  */
 public class SubmitOnEventRenderer extends HtmlRenderer
 {
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
+	private final static Set ON_CHANGE_FAMILY = new TreeSet(Arrays.asList(new String[]
+	{
+		UISelectBoolean.COMPONENT_FAMILY,
+		UISelectMany.COMPONENT_FAMILY,
+		UISelectOne.COMPONENT_FAMILY
+	}));
+
+	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
         SubmitOnEvent submitOnEvent = (SubmitOnEvent) uiComponent;
 
@@ -95,8 +109,17 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         }
         else
         {
-            js.append("keypress");
-        }
+			if (forComponent != null
+				&& forComponent.getFamily() != null
+				&& ON_CHANGE_FAMILY.contains(forComponent.getFamily()))
+			{
+				js.append("change");
+			}
+			else
+			{
+				js.append("keypress");
+			}
+		}
         js.append("','");
         if (submitOnEvent.getCallback() != null)
         {
