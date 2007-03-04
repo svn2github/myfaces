@@ -55,12 +55,14 @@ components.
         <section name="Usage">
             
             <source xml:space="preserve">
-&lt;t:datatable value="#{rows}" var="row"&gt;
+&lt;t:dataTable value="#{rows}" var="row"&gt;
     &lt;t:columns value="#{cols}" var="column"&gt;
-        &lt;f:facet name="header" value="#{column.name}"/&gt;
+        &lt;f:facet name="header"&gt;
+            &lt;h:outputText value="#{column.name}"/&gt;
+        &lt;/f:facet&gt;
         &lt;h:outputText value="#{row.columnValue}"/&gt;
     &lt;/t:columns&gt;
-&lt;/t:datatable&gt;
+&lt;/t:dataTable&gt;
             </source>
         </section>
         <!-- Syntax -->
