@@ -10,7 +10,7 @@
             
             <p>
                 Renders a Javascript Menu based on the excellent
-                <a href="http://www.cs.ucla.edu/~heng/JSCookMenu">JSCookMenu</a>
+                <a href="http://jscook.sourceforge.net/JSCookMenu">JSCookMenu</a>
                 by Heng Yuan, the nested NavigationMenuItem(s) are rendered as Javascript Menu.
             </p>
         </section>
