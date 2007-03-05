@@ -47,6 +47,9 @@ components.
         <section name="Usage">
             
             <source xml:space="preserve">
+&lt;h:inputText id="equal"
+                value="#{validateForm.equal}"
+                required="true"/&gt;
 &lt;h:inputText id="equal2"
                 value="#{validateForm.equal2}"
                 required="true"&gt;
