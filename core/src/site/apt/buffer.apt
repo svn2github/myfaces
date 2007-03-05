@@ -4,8 +4,8 @@
 
 Description
 
-	This component allows you to render a part of the
-	page to a buffer, and then use the buffer later.
+	This component allows you to render part of the
+	page to a newly-created String-holding EL variable for later use.
 
 Screen Shot
             
