@@ -44,7 +44,7 @@ import java.util.TreeSet;
  * Attach an event handler to an input element or use a global event handler to
  * submit a form by "clicking" on a link or button
  *
- * @author Mario Ivankovits (imario -at - apache.org)
+ * @version $Id$
  */
 public class SubmitOnEventRenderer extends HtmlRenderer
 {
@@ -109,9 +109,9 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         }
         else
         {
-			if (forComponent != null
-				&& forComponent.getFamily() != null
-				&& ON_CHANGE_FAMILY.contains(forComponent.getFamily()))
+			if (triggerComponent != null
+				&& triggerComponent.getFamily() != null
+				&& ON_CHANGE_FAMILY.contains(triggerComponent.getFamily()))
 			{
 				js.append("change");
 			}
