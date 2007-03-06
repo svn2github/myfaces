@@ -40,3 +40,28 @@ tomahawk.IntegerConverter = function() {
 		return null;
 	}
 }
+
+tomahawk.DoubleConverter = function() {
+		
+	this.CONVERSION_MESSAGE_ID = "javax.faces.convert.DoubleConverter.CONVERSION";
+
+	this.getAsObject = function(context,uiinput,value) {
+		
+		if( value != null ) {
+			//TODO trim
+			if( value.length > 0)  {
+				var doubleRegExp = /^(-?\d+\.?\d*)$/;
+				var isDouble = doubleRegExp.test(value);						
+				if( !isDouble ) {
+					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+					throw new tomahawk.ConverterException( facesMessage );
+				}
+				else {
+					var convertedValue = parseFloat( value );
+					return convertedValue;
+				}
+			}
+		}
+		return null;
+	}
+}
