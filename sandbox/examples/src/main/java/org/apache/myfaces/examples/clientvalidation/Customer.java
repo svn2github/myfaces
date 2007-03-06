@@ -31,6 +31,7 @@ public class Customer implements Serializable{
 	private String _surname;
 	private Integer _age;
 	private String _address;
+	private Double _salary;
 	
 	public Integer getId() {
 		return _id;
@@ -65,5 +66,11 @@ public class Customer implements Serializable{
 	}
 	public void setAddress(String _address) {
 		this._address = _address;
+	}
+	public Double getSalary() {
+		return _salary;
+	}
+	public void setSalary(Double _salary) {
+		this._salary = _salary;
 	}
 }
