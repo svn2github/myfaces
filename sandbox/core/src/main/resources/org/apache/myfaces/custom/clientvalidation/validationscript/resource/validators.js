@@ -45,3 +45,44 @@ tomahawk.LengthValidator = function(min,max) {
 			}
 	}
 }
+
+tomahawk.LongRangeValidator = function(min,max) {
+
+	this.MAXIMUM_MESSAGE_ID = "javax.faces.validator.LongRangeValidator.MAXIMUM";
+	this.MINIMUM_MESSAGE_ID = "javax.faces.validator.LongRangeValidator.MINIMUM";
+	this.NOT_IN_RANGE_MESSAGE_ID = "javax.faces.validator.NOT_IN_RANGE";
+	this.TYPE_MESSAGE_ID = "javax.faces.validator.LongRangeValidator.TYPE";
+		
+	this.validateValue = function(facesContext,uiinput,value) {
+		if(value == null)
+			return;
+			
+		if (min != null && max != null)
+        {
+            if (value < min || value > max)
+            {
+            	var args = new Array(min,max,uiinput.id);
+	            var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.NOT_IN_RANGE_MESSAGE_ID,args);
+	            throw new tomahawk.ValidatorException(facesMessage);
+            }
+        }
+        else if (min != null)
+        {
+            if (value < min)
+            {
+				var args = new Array(min,uiinput.id);
+	            var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.MINIMUM_MESSAGE_ID,args);
+	            throw new tomahawk.ValidatorException(facesMessage);
+            }
+        }
+        else if (max != null)
+        {
+            if (value > max)
+            {
+                var args = new Array(max,uiinput.id);
+	            var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.MAXIMUM_MESSAGE_ID,args);
+	            throw new tomahawk.ValidatorException(facesMessage);
+            }
+        }
+	}
+}
