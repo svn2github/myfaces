@@ -633,6 +633,15 @@
 		<converter-for-class>java.lang.Integer</converter-for-class>
 		<converter-class>org.apache.myfaces.convert.ex.IntegerConverter</converter-class>
 	</converter>
+	<converter>
+        <converter-id>javax.faces.Double</converter-id>
+        <converter-class>org.apache.myfaces.convert.ex.DoubleConverter</converter-class>
+    </converter>
+	<converter>
+        <converter-for-class>java.lang.Double</converter-for-class>
+        <converter-class>org.apache.myfaces.convert.ex.DoubleConverter</converter-class>
+    </converter>
+    
 	<validator>
 		<validator-id>javax.faces.Length</validator-id>
 		<validator-class>org.apache.myfaces.validator.ex.LengthValidator</validator-class>
