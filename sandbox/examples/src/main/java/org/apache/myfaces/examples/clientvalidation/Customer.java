@@ -26,10 +26,18 @@ import java.io.Serializable;
  */
 public class Customer implements Serializable{
 
+	private Integer _id;
 	private String _name;
 	private String _surname;
 	private Integer _age;
 	private String _address;
+	
+	public Integer getId() {
+		return _id;
+	}
+	public void setId(Integer _id) {
+		this._id = _id;
+	}
 
 	public String getName() {
 		return _name;

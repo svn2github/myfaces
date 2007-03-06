@@ -37,6 +37,10 @@
 		<t:messages forceSpan="true" layout="list" />
 
 		<h:panelGrid columns="3">
+			<h:outputText id="lbl_id" value="Id *"></h:outputText>
+			<h:inputText id="txt_id" value="#{customerCreateBean.customer.id}" required="true"></h:inputText>
+			<t:message for="txt_id" forceSpan="true" />
+		
 			<h:outputText id="lbl_name" value="Name *"></h:outputText>
 			<h:inputText id="txt_name" value="#{customerCreateBean.customer.name}" required="true"></h:inputText>
 			<t:message for="txt_name" forceSpan="true" />
@@ -46,7 +50,9 @@
 			<t:message for="txt_surname" forceSpan="true" />
 
 			<h:outputText id="lbl_age" value="Age"></h:outputText>
-			<h:inputText id="txt_age" value="#{customerCreateBean.customer.age}"></h:inputText>
+			<h:inputText id="txt_age" value="#{customerCreateBean.customer.age}">
+				<f:validateLongRange minimum="18" maximum="50" />
+			</h:inputText>
 			<t:message for="txt_age" forceSpan="true" />
 			
 			<h:outputText id="lbl_address" value="Adress"></h:outputText>
