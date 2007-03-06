@@ -60,6 +60,11 @@
 				<f:validateLength minimum="2" maximum="5"/>
 			</h:inputText>
 			<t:message for="txt_address" forceSpan="true" />
+			
+			<h:outputText id="lbl_salary" value="Salary"></h:outputText>
+			<h:inputText id="txt_salary" value="#{customerCreateBean.customer.salary}">
+			</h:inputText>
+			<t:message for="txt_salary" forceSpan="true" />
 		</h:panelGrid>
 
 		<h:commandButton id="btn_save" value="Create" action=""/>
