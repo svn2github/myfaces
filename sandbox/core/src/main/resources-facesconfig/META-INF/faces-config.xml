@@ -650,5 +650,9 @@
 		<validator-id>javax.faces.LongRange</validator-id>
 		<validator-class>org.apache.myfaces.validator.ex.LongRangeValidator</validator-class>
 	</validator>
+	<validator>
+		<validator-id>javax.faces.DoubleRange</validator-id>
+		<validator-class>org.apache.myfaces.validator.ex.DoubleRangeValidator</validator-class>
+	</validator>
 
 </faces-config>
