@@ -163,8 +163,10 @@ public class CVUtils {
 		
 		HtmlMessages htmlMessages = (HtmlMessages) ComponentUtils.findFirstMessagesComponent( facesContext, facesContext.getViewRoot() );
 		
-		if(htmlMessages != null)
-		writer.write("\t\t tomahawk.RendererUtils.renderMessages(facesContext,'" + htmlMessages.getClientId( facesContext ) + "', '" + htmlMessages.getLayout() + "'); \n"); 
+		if(htmlMessages != null) {
+			writer.write("\t\t var uimessages = new tomahawk.UIMessages('" + htmlMessages.getClientId(facesContext) + "','" + htmlMessages.getLayout() + "'," + htmlMessages.isShowSummary() + "," + htmlMessages.isShowDetail() + ");\n");
+			writer.write("\t\t tomahawk.RendererUtils.renderMessages(facesContext,uimessages); \n");
+		}
 		
 		writer.write("\t\t viewRoot = facesContext.viewRoot;\n");
 		writer.write("\t\t for(var i = 0; i < viewRoot.children.length ; i ++) { \n");

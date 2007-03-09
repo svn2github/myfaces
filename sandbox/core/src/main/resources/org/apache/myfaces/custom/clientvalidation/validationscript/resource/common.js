@@ -59,11 +59,11 @@ tomahawk.RendererUtils = new function() {
 			}
 		}
 	
-		this.renderMessages = function(facesContext,messagesComponentClientId,layout) {
-			var messagesComponent = document.getElementById(messagesComponentClientId);	
+		this.renderMessages = function(facesContext,uimessages) {
+			var messagesComponent = document.getElementById(uimessages.clientId);	
 			this.clean(messagesComponent);
 			
-			if(layout == "list")
+			if(uimessages.layout == "list")
 				root = document.createElement("ul");		
 			else {
 				root = document.createElement("table");		
@@ -72,7 +72,7 @@ tomahawk.RendererUtils = new function() {
 		
 			for(var i = 0 ; i < facesContext.messages.length ; i++ ) { 
 				var message =  facesContext.messages[i];
-				this.addRow(layout,root,message.summary);
+				this.addRow(uimessages,root,message);
 			}
 			messagesComponent.appendChild(root);
 		}
@@ -81,19 +81,30 @@ tomahawk.RendererUtils = new function() {
 			while(root.firstChild) root.removeChild(root.firstChild);
 		}
 	
-		this.addRow = function(layout,root,messageSummary) {
-			if(layout == "list") {
+		this.addRow = function(uimessages,root,message) {
+			if(uimessages.layout == "list") {
 				row = document.createElement("li");
-				row.appendChild(document.createTextNode(messageSummary));
+				row.appendChild(document.createTextNode(this.getMessageText(uimessages,message)));
 				root.appendChild(row);
 			}
 			else {			
 				row = document.createElement("tr");
 				column = document.createElement("td");
-				column.appendChild(document.createTextNode(messageSummary));
+				column.appendChild(document.createTextNode(this.getMessageText(uimessages,message)));
 				row.appendChild(column);
 				root.firstChild.appendChild(row);
 			}
+		}
+		
+		this.getMessageText = function(uimessages,facesMessage) {
+			var messageText = "";
+			if(uimessages.showSummary == true)
+				messageText = messageText + facesMessage.summary;
+			if(uimessages.showDetail == true) {
+				messageText = messageText + " " + facesMessage.detail;
+			}
+		
+			return messageText;			
 		}
 }
 		
@@ -184,6 +195,16 @@ tomahawk.ConverterException = function(facesMessage) {
 
 tomahawk.ValidatorException = function(facesMessage) {
 	this.facesMessage = facesMessage;
+}
+
+/**
+* UIMessages Component
+**/
+tomahawk.UIMessages = function(clientId,layout,showSummary,showDetail) {
+	this.clientId = clientId;
+	this.layout = layout;
+	this.showSummary = showSummary;
+	this.showDetail = showDetail;
 }
 	
 /**
