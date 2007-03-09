@@ -34,7 +34,7 @@
 
   <s:form id="carForm">
 
-		<t:messages forceSpan="true" layout="list" />
+		<t:messages forceSpan="true" layout="list" showDetail="true"/>
 
 		<h:panelGrid columns="3">
 			<h:outputText id="lbl_id" value="Id *"></h:outputText>

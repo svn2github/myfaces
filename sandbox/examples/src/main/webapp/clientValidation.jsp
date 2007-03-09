@@ -34,7 +34,7 @@
 
   <h:form id="carForm" onsubmit="return tomahawk.executeClientLifeCycle();">
 
-		<t:messages forceSpan="true" layout="list" />
+		<t:messages forceSpan="true" layout="list" showDetail="true" showSummary="false"/>
 
 		<h:panelGrid columns="3">
 			<h:outputText id="lbl_id" value="Id *"></h:outputText>
