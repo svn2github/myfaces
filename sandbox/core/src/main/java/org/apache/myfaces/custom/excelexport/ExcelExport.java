@@ -22,7 +22,7 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 /**
  * @author cagatay (latest modification by $Author$)
@@ -54,7 +54,7 @@ public class ExcelExport extends UIComponentBase {
 			return _for;
 
 		ValueBinding vb = getValueBinding("for");
-		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
 	}
 
 	public void setFor(String forValue) {
