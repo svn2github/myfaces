@@ -110,15 +110,28 @@ public final class DojoUtils {
         for (int cnt = 0; cnt < attributeNames.length; cnt++) {
             try {
                 String attributeName = attributeNames[cnt];
-                String getterMethod = attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                //the dojo attributes deal with different ids than the rest
                 if (attributeName.equals("id") || attributeName.equals("widgetId")) {
                     String calculatedId = DojoUtils.calculateWidgetId(facesContext, component);
                     returnMap.put("id", calculatedId);
                 } else {
-                    Method m = componentClass.getDeclaredMethod("get" + getterMethod, null);
-                    if (m == null) {
-                        // try alternative method name for dealing with Booleans
-                    	m = componentClass.getDeclaredMethod("is" + getterMethod, null);
+                    String attributeCasedName = attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                    String getForm = "get" + attributeCasedName; // to prevent multiple creating in finding
+                    String isForm = "is" + attributeCasedName; // to prevent multiple creating in finding
+                    Method m = null;
+                    // finding getter in hiearchy: try current class for "get" and "is" form, if NOT found, try superclass
+                    // doesn't use getMethod() to avoid walking whole hiearchy for wrong form in case of "is"
+                    // and getMethod() uses getSuperClass() anyway, so no performance hit this way + ability to invoke protected methods
+                    while ((componentClass != null) && (m == null)) {
+                        m = componentClass.getDeclaredMethod(getForm, null);
+                        if (m == null) {
+                            // try alternative method name for dealing with Booleans
+                         m = componentClass.getDeclaredMethod(isForm, null);
+                        }
+                        if (m == null) {
+                            // load superclass
+                            componentClass = componentClass.getSuperclass(); // null in case of componentClass == Object
+                        }
                     }
                     if (m != null) {
                         Object execRetval = m.invoke(component, null);
