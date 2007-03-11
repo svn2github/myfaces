@@ -19,8 +19,6 @@
 
 package org.apache.myfaces.custom.toggle;
 
-import javax.faces.component.UIComponent;
-
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlPanelGroupTagBase;
 
 public class ToggleGroupTag extends HtmlPanelGroupTagBase {

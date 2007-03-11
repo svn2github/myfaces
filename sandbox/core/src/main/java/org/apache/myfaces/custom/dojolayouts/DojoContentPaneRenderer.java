@@ -20,10 +20,8 @@
 package org.apache.myfaces.custom.dojolayouts;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 

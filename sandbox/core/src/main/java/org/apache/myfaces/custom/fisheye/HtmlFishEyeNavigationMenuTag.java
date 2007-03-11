@@ -18,11 +18,7 @@
  */
 package org.apache.myfaces.custom.fisheye;
 
-import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
-import org.apache.myfaces.custom.div.DivTag;
 import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 
 /**

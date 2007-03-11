@@ -18,27 +18,24 @@
  */
 package org.apache.myfaces.custom.submitOnEvent;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.ResourcePosition;
-import org.apache.myfaces.custom.util.ComponentUtils;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.UICommand;
 import javax.faces.component.UISelectBoolean;
-import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectMany;
 import javax.faces.component.UISelectOne;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Arrays;
-import java.util.TreeSet;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * Attach an event handler to an input element or use a global event handler to

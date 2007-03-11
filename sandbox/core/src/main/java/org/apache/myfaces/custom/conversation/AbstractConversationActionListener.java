@@ -18,13 +18,11 @@
  */
 package org.apache.myfaces.custom.conversation;
 
-import java.io.Serializable;
-
+import javax.faces.component.StateHolder;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import javax.faces.component.StateHolder;
-import javax.faces.context.FacesContext;
 
 /**
  * base class to handle actions events

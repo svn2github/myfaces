@@ -88,13 +88,10 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         String mainComponentRenderedValue = null;
         
-        String idToRender = null;
-
 		/* check if the user supplied a label method */
 		if (inputSuggestAjax.getItemLabelMethod() == null)
 		{
 			mainComponentRenderedValue = RendererUtils.getStringValue(context, inputSuggestAjax);
-            idToRender = clientId;
         }
 		else
         {
@@ -111,7 +108,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 				hiddenInputValue = converter.getAsString(context, inputSuggestAjax, valueObject);
                 mainComponentRenderedValue = hiddenInputValue;
 
-                idToRender = clientId + "_valueFake";
             }
         }
 

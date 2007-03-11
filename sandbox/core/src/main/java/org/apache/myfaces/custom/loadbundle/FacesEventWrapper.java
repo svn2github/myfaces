@@ -18,9 +18,6 @@
  */
 package org.apache.myfaces.custom.loadbundle;
 
-import org.apache.myfaces.custom.aliasbean.AliasBeansScope;
-import org.apache.myfaces.custom.aliasbean.AliasBean;
-
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.FacesListener;

@@ -20,13 +20,11 @@
 package org.apache.myfaces.custom.urlvalidator;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.validator.GenericValidator;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 /**
  *

@@ -21,10 +21,6 @@ package org.apache.myfaces.custom.dojolayouts;
 
 import javax.faces.component.UIComponent;
 
-import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlOutputTextTagBase;
-
-
-
 /**
  * FloatingPane Tag class
  */
