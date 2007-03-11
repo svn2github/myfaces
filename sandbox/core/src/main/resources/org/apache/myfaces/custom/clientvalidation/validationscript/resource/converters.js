@@ -25,7 +25,7 @@ tomahawk.IntegerConverter = function() {
 		if( value != null ) {
 			//TODO trim
 			if( value.length > 0)  {
-				var integerRegExp = /(^-?\d\d*$)/;
+				var integerRegExp = /^(\+|-)?\d+$/;
 				var isInteger = integerRegExp.test(value);						
 				if( !isInteger ) {
 					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
@@ -50,7 +50,7 @@ tomahawk.DoubleConverter = function() {
 		if( value != null ) {
 			//TODO trim
 			if( value.length > 0)  {
-				var doubleRegExp = /^(-?\d+\.?\d*)$/;
+				var doubleRegExp = /^(\+|-)?\d*\.?\d*([eE]\d+)?[dD]?$/;
 				var isDouble = doubleRegExp.test(value);						
 				if( !isDouble ) {
 					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
