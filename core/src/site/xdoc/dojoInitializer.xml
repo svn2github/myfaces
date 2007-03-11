@@ -73,7 +73,7 @@
 		<section name="Usage">
 
 			<source xml:space="preserve">
-			&lt;s:dojoInitializer
+			&lt;t:dojoInitializer
 			&gt;
 			[rendered="true|false"]
 			[allowQueryConfig="true|false"]
@@ -94,7 +94,7 @@
 			[searchIds="&lt;some id of an existing defined container &gt;"]
 			[development="true|false"]
 
-			&lt;/s:dojoInitializer&gt;
+			&lt;/t:dojoInitializer&gt;
 			</source>
 		</section>
 
