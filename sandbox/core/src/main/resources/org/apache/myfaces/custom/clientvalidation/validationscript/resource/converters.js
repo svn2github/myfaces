@@ -65,3 +65,28 @@ tomahawk.DoubleConverter = function() {
 		return null;
 	}
 }
+
+tomahawk.FloatConverter = function() {
+		
+	this.CONVERSION_MESSAGE_ID = "javax.faces.convert.FloatConverter.CONVERSION";
+
+	this.getAsObject = function(context,uiinput,value) {
+		
+		if( value != null ) {
+			//TODO trim
+			if( value.length > 0)  {
+				var floatRegExp = /^(\+|-)?\d*\.?\d*([eE]\d+)?[fF]?$/;
+				var isFloat = floatRegExp.test(value);						
+				if( !isFloat ) {
+					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+					throw new tomahawk.ConverterException( facesMessage );
+				}
+				else {
+					var convertedValue = parseFloat( value );
+					return convertedValue;
+				}
+			}
+		}
+		return null;
+	}
+}
