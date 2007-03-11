@@ -32,6 +32,7 @@ public class Customer implements Serializable{
 	private Integer _age;
 	private String _address;
 	private Double _salary;
+	private Float _salaryBonus;
 	
 	public Integer getId() {
 		return _id;
@@ -72,5 +73,11 @@ public class Customer implements Serializable{
 	}
 	public void setSalary(Double _salary) {
 		this._salary = _salary;
+	}
+	public Float getSalaryBonus() {
+		return _salaryBonus;
+	}
+	public void setSalaryBonus(Float bonus) {
+		_salaryBonus = bonus;
 	}
 }

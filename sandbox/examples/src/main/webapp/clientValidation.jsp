@@ -66,6 +66,11 @@
 				<f:validateDoubleRange minimum="1000" maximum="5000" />
 			</h:inputText>
 			<t:message for="txt_salary" forceSpan="true" />
+			
+			<h:outputText id="lbl_salaryBonus" value="Salary Bonus"></h:outputText>
+			<h:inputText id="txt_salaryBonus" value="#{customerCreateBean.customer.salaryBonus}">
+			</h:inputText>
+			<t:message for="txt_salaryBonus" forceSpan="true" />
 		</h:panelGrid>
 
 		<h:commandButton id="btn_save" value="Create" action=""/>
