@@ -326,7 +326,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
         }
         
         private boolean isDateSubmitted(boolean usesAmpm, String type) {
-        	boolean isDateSubmitted = ! (StringUtils.isEmpty(getDay()) && getMonth().equals("-1") && StringUtils.isEmpty(getYear()));
+        	boolean isDateSubmitted = ! (StringUtils.isEmpty(getDay()) && ((getMonth() == null) || getMonth().equals("-1")) && StringUtils.isEmpty(getYear()));
         	if(usesAmpm)
         		isDateSubmitted = isDateSubmitted || isAmpmSubmitted();
         	return isDateSubmitted;
