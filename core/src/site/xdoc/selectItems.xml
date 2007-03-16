@@ -27,25 +27,29 @@ components.
         <section name="API">
             
             <table>
+				<tr>
+                    <td colspan="1" rowspan="1">since</td>
+                    <td colspan="1" rowspan="1">1.1.5</td>
+                </tr>
                 <tr>
                     <td colspan="1" rowspan="1">component-family</td>
-		    <td colspan="1" rowspan="1">javax.faces.SelectItems</td>
+					<td colspan="1" rowspan="1">javax.faces.SelectItems</td>
                 </tr>
                 <tr>
                     <td colspan="1" rowspan="1">renderer-type</td>
-		    <td colspan="1" rowspan="1">-</td>
+					<td colspan="1" rowspan="1">-</td>
                 </tr>
                 <tr>
                     <td colspan="1" rowspan="1">component-class</td>
-		    <td colspan="1" rowspan="1">org.apache.myfaces.custom.selectitems.UISelectItems</td>
+					<td colspan="1" rowspan="1">org.apache.myfaces.custom.selectitems.UISelectItems</td>
                 </tr>
                 <tr>
                     <td colspan="1" rowspan="1">renderer-class</td>
-		    <td colspan="1" rowspan="1">-</td>
+					<td colspan="1" rowspan="1">-</td>
                 </tr>
                 <tr>
                     <td colspan="1" rowspan="1">tag-class</td>
-		    <td colspan="1" rowspan="1">org.apache.myfaces.custom.selectitems.SelectItemsTag</td>
+					<td colspan="1" rowspan="1">org.apache.myfaces.custom.selectitems.SelectItemsTag</td>
                 </tr>
             </table>
         </section>
