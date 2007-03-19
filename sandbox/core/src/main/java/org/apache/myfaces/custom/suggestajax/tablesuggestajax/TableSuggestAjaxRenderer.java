@@ -102,7 +102,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
             out.startElement(HTML.DIV_ELEM, component);
             out.writeAttribute(HTML.ID_ATTR, divId , null);
-
+            out.endElement(HTML.DIV_ELEM);
             super.encodeEnd(context, tableSuggestAjax);
 
             String tableSuggestComponentVar = DojoUtils.calculateWidgetVarName(divId.toString());
@@ -201,7 +201,6 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             out.write(buffer.toString());
 
             out.endElement(HTML.SCRIPT_ELEM);
-            out.endElement(HTML.DIV_ELEM);
         }
     }
 
