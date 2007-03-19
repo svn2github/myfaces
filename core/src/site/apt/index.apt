@@ -10,7 +10,9 @@ MyFaces Tomahawk
 	MyFaces provides a series of JSF components that go beyond the JSF specification.  These components are 100% compatible
 	with the Sun JSF 1.1 Reference Implementation (RI) or any other JSF 1.1 compatible implementation.  Of course the custom
 	components can also be used with the Apache MyFaces JSF implementation.
-
+	
+	See also the {{{http://wiki.apache.org/myfaces/CompatibilityMatrix}compatibility matrix}}.
+	
 Extended Components and Other "Goodies"
 
 	In addition to custom components not found in the JSF specification, the MyFaces components bundle also includes an
