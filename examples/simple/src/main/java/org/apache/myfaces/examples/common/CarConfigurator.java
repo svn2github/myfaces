@@ -104,20 +104,20 @@ public class CarConfigurator
     private Color _color = new Color("color_blue");
     private List _interiorColors = null;
     private boolean _salesTax = false;
-    private int _doors = 4;
+    private Long _doors = new Long(4);
 
     public CarConfigurator()
     {
     }
 
 
-    public int getDoors()
+    public Long getDoors()
     {
         return _doors;
     }
 
 
-    public void setDoors(int doors)
+    public void setDoors(Long doors)
     {
         this._doors = doors;
     }
