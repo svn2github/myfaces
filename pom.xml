@@ -13,7 +13,8 @@
   <name>Tomahawk Project</name>
   <url>http://myfaces.apache.org/tomahawk</url>
   <version>1.1.6-SNAPSHOT</version>	 
-  <description>Apache MyFaces Tomahawk is a sub-project of Apache MyFaces which provides an extensive sets
+  <description>
+  Apache MyFaces Tomahawk is a sub-project of Apache MyFaces which provides an extensive sets
   of custom components for use in your JSF-projects. Additionally, Tomahawk includes many custom
   features helping you to implement JSF-projects more easily.
   </description>
