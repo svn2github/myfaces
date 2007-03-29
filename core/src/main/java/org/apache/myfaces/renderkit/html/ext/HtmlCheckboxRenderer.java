@@ -363,7 +363,7 @@ public class HtmlCheckboxRenderer
         return layoutWidth;
     }
 
-    private void renderSingleCheckbox(FacesContext facesContext, HtmlCheckbox checkbox) throws IOException
+    protected void renderSingleCheckbox(FacesContext facesContext, HtmlCheckbox checkbox) throws IOException
     {
         String forAttr = checkbox.getFor();
         if (forAttr == null)
