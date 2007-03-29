@@ -1209,10 +1209,21 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     public String getRowStyleClass()
     {
-        if (_rowStyleClass != null)
-            return _rowStyleClass;
-        ValueBinding vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+	if (_rowStyleClass != null)
+	    return _rowStyleClass;
+
+	// TODO: temporarily support fully-qualified ext. dataTable attribute names.
+	ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLECLASS");
+	if (vb != null)
+	    log.warn("org.apache.myfaces.dataTable.ROW_STYLECLASS is deprecated. Please use rowStyleClass instead.");
+	else
+	    vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
+	if(vb == null)
+	    return null;
+	String bindingValue = (String) vb.getValue(getFacesContext());
+	if(bindingValue == "")
+	    return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
+	return bindingValue;
     }
 
     public void setRowStyleClass(String rowStyleClass)
@@ -1224,8 +1235,19 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         if (_rowStyle != null)
             return _rowStyle;
-        ValueBinding vb = getValueBinding(JSFAttr.ROW_STYLE_ATTR);
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+	
+	// TODO: temporarily support fully-qualified ext. dataTable attribute names.
+        ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLE");
+	if (vb != null)
+	    log.warn("org.apache.myfaces.dataTable.ROW_STYLE is deprecated. Please use rowStyle instead.");
+	else
+	    vb = getValueBinding(JSFAttr.ROW_STYLE_ATTR);
+	if(vb == null)
+	    return null;
+	String bindingValue = (String) vb.getValue(getFacesContext());
+	if(bindingValue == "")
+	    return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
+	return bindingValue;
     }
 
     public void setRowStyle(String rowStyle)
