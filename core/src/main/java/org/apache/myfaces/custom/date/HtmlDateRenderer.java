@@ -55,7 +55,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
 	 */
 	public static final String DATE_MESSAGE_ID = "org.apache.myfaces.Date.INVALID";
 
-    private static final String ID_DAY_POSTFIX = ".day";
+	private static final String ID_DAY_POSTFIX = ".day";
     private static final String ID_MONTH_POSTFIX = ".month";
     private static final String ID_YEAR_POSTFIX = ".year";
     private static final String ID_HOURS_POSTFIX = ".hours";
@@ -63,6 +63,11 @@ public class HtmlDateRenderer extends HtmlRenderer {
     private static final String ID_SECONDS_POSTFIX = ".seconds";
     private static final String ID_AMPM_POSTFIX = ".ampm";
 
+    static public String getClientIdForDaySubcomponent(String clientId)
+    {
+    	return clientId + ID_DAY_POSTFIX;
+    }
+    
     protected boolean isDisabled(FacesContext facesContext, HtmlInputDate inputDate) {
         if( !UserRoleUtils.isEnabledOnUserRole(inputDate) )
             return false;
@@ -146,7 +151,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
     protected void encodeInputDay(UIComponent uiComponent, ResponseWriter writer, String clientId,
 			UserData userData, boolean disabled, boolean readonly) throws IOException {
-        encodeInputField(uiComponent, writer, clientId + ID_DAY_POSTFIX, userData.getDay(), 2, disabled, readonly);
+        encodeInputField(uiComponent, writer, getClientIdForDaySubcomponent(clientId), userData.getDay(), 2, disabled, readonly);
     }
 
     protected void encodeInputMonth(UIComponent uiComponent, ResponseWriter writer, String clientId, UserData userData, Locale currentLocale,
@@ -335,7 +340,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
 
         if( ! (type.equals( "time" ) || type.equals( "short_time" )) ){
-            userData.setDay( (String) requestMap.get(clientId + ID_DAY_POSTFIX) );
+            userData.setDay( (String) requestMap.get(getClientIdForDaySubcomponent(clientId)) );
             userData.setMonth( (String) requestMap.get(clientId + ID_MONTH_POSTFIX) );
             userData.setYear( (String) requestMap.get(clientId + ID_YEAR_POSTFIX) );
         }
