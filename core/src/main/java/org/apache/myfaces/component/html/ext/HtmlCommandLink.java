@@ -51,7 +51,7 @@ public class HtmlCommandLink
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCommandLink";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Link";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Link";
 
     private String _target = null;
     private String _enabledOnUserRole = null;

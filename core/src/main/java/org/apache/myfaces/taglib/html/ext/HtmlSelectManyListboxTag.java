@@ -40,7 +40,7 @@ public class HtmlSelectManyListboxTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Listbox";
+        return HtmlSelectManyListbox.DEFAULT_RENDERER_TYPE;
     }
 
     private String _escape;

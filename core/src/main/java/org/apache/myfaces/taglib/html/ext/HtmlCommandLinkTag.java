@@ -40,7 +40,7 @@ public class HtmlCommandLinkTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Link";
+        return HtmlCommandLink.DEFAULT_RENDERER_TYPE;
     }
 
 

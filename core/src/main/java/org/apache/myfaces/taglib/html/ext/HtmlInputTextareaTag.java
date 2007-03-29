@@ -33,8 +33,6 @@ import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlInputTextareaTagBase;
 public class HtmlInputTextareaTag
         extends HtmlInputTextareaTagBase
 {
-    private static final String TEXTAREA_RENDERER = "org.apache.myfaces.Textarea";
-
     public String getComponentType()
     {
         return HtmlInputTextarea.COMPONENT_TYPE;
@@ -42,7 +40,7 @@ public class HtmlInputTextareaTag
 
     public String getRendererType()
     {
-        return TEXTAREA_RENDERER;
+        return HtmlInputTextarea.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

@@ -50,6 +50,7 @@ public class HtmlInputSecret
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputSecret";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Secret";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
     private String _enabledOnUserRole = null;
@@ -60,6 +61,7 @@ public class HtmlInputSecret
 
     public HtmlInputSecret()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

@@ -46,7 +46,7 @@ public class HtmlMessage
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlMessage";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Message";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Message";
 
     private String _summaryFormat = null;
     private String _detailFormat = null;

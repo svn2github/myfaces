@@ -38,7 +38,7 @@ public class HtmlOutputLabelTag
 
     public String getRendererType()
     {
-        return "javax.faces.Label";
+        return HtmlOutputLabel.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

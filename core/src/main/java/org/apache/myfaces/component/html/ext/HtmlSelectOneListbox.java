@@ -50,6 +50,7 @@ public class HtmlSelectOneListbox
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectOneListbox";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Listbox";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
     private String _enabledOnUserRole = null;
@@ -60,6 +61,7 @@ public class HtmlSelectOneListbox
 
     public HtmlSelectOneListbox()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

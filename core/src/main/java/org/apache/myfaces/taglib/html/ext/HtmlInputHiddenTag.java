@@ -33,4 +33,9 @@ public class HtmlInputHiddenTag
     {
         return HtmlInputHidden.COMPONENT_TYPE;
     }
+
+    public String getRendererType()
+    {
+        return HtmlInputHidden.DEFAULT_RENDERER_TYPE;
+    }
 }

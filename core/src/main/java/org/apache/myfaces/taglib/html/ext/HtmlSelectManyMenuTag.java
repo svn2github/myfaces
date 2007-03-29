@@ -40,7 +40,7 @@ public class HtmlSelectManyMenuTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Menu";
+        return HtmlSelectManyMenu.DEFAULT_RENDERER_TYPE;
     }
 
     private String _escape;

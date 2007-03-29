@@ -53,6 +53,7 @@ public class HtmlPanelGroup
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlPanelGroup";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Group";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
     
     public static final String BLOCK_LAYOUT = "block";
@@ -67,6 +68,7 @@ public class HtmlPanelGroup
 
     public HtmlPanelGroup()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

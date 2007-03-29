@@ -50,6 +50,7 @@ public class HtmlSelectOneMenu
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectOneMenu";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Menu";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
     private String _enabledOnUserRole = null;
@@ -60,6 +61,7 @@ public class HtmlSelectOneMenu
 
     public HtmlSelectOneMenu()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

@@ -49,6 +49,7 @@ public class HtmlCommandButton
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCommandButton";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Button";
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
@@ -56,6 +57,7 @@ public class HtmlCommandButton
 
     public HtmlCommandButton()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

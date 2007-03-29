@@ -41,7 +41,7 @@ public class HtmlSelectManyCheckboxTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Checkbox";
+        return HtmlSelectManyCheckbox.DEFAULT_RENDERER_TYPE;
     }
 
     private String _escape;

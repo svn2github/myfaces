@@ -39,7 +39,7 @@ public class HtmlPanelGridTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Grid";
+        return HtmlPanelGrid.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

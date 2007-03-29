@@ -39,7 +39,7 @@ public class HtmlGraphicImageTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Image";
+        return HtmlGraphicImage.DEFAULT_RENDERER_TYPE;
     }
 
     private String _align;

@@ -40,7 +40,7 @@ public class HtmlMessageTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Message";
+        return HtmlMessage.DEFAULT_RENDERER_TYPE;
     }
 
     private String _summaryFormat;

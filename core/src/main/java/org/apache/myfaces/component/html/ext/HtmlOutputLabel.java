@@ -49,12 +49,14 @@ public class HtmlOutputLabel
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlOutputLabel";
+    public static final String DEFAULT_RENDERER_TYPE = "javax.faces.Label";
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
 
     public HtmlOutputLabel()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

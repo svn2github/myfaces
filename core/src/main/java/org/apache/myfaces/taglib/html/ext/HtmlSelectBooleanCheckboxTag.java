@@ -40,7 +40,7 @@ public class HtmlSelectBooleanCheckboxTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Checkbox";
+        return HtmlSelectBooleanCheckbox.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

@@ -41,7 +41,7 @@ public class HtmlPanelGroupTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Group";
+        return HtmlPanelGroup.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

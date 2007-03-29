@@ -40,7 +40,7 @@ public class HtmlInputSecretTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Secret";
+        return HtmlInputSecret.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

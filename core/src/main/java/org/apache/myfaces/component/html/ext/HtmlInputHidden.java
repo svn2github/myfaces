@@ -33,7 +33,13 @@ public class HtmlInputHidden
     extends javax.faces.component.html.HtmlInputHidden
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputHidden";
+    public static final String DEFAULT_RENDERER_TYPE = "javax.faces.Hidden";
 
+    public HtmlInputHidden()
+    {
+        setRendererType(DEFAULT_RENDERER_TYPE);
+    }
+    
     public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);

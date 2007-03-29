@@ -38,7 +38,7 @@ public class HtmlCommandButtonTag
 
     public String getRendererType()
     {
-        return "org.apache.myfaces.Button";
+        return HtmlCommandButton.DEFAULT_RENDERER_TYPE;
     }
 
     private String _enabledOnUserRole;

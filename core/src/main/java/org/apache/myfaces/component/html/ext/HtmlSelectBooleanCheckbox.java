@@ -52,6 +52,7 @@ public class HtmlSelectBooleanCheckbox
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectBooleanCheckbox";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Checkbox";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
     private static final boolean DEFAULT_ESCAPE = true;
 
@@ -64,6 +65,7 @@ public class HtmlSelectBooleanCheckbox
 
     public HtmlSelectBooleanCheckbox()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

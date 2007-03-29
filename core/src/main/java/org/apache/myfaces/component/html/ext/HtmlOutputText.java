@@ -48,12 +48,14 @@ public class HtmlOutputText
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlOutputText";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Text";
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
 
     public HtmlOutputText()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 

@@ -53,6 +53,7 @@ public class HtmlSelectManyCheckbox
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectManyCheckbox";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Checkbox";
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
 
     private String _layoutWidth = null;
@@ -64,6 +65,7 @@ public class HtmlSelectManyCheckbox
 
     public HtmlSelectManyCheckbox()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
     public void setLayoutWidth(String layoutWidth)

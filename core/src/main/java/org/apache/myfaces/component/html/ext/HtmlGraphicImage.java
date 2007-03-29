@@ -48,12 +48,14 @@ public class HtmlGraphicImage
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlGraphicImage";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Image";
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
 
     public HtmlGraphicImage()
     {
+        setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
 
