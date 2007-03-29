@@ -65,6 +65,7 @@ public class HtmlTabbedPaneRenderer
     private static final String DEFAULT_BG_COLOR = "white";
 
     private static final String AUTO_FORM_SUFFIX = ".autoform";
+    private static final String TAB_DIV_SUFFIX = ".content";
 
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
@@ -129,7 +130,7 @@ public class HtmlTabbedPaneRenderer
                 UIComponent child = getUIComponent((UIComponent)children.get(i));
                 if (child instanceof HtmlPanelTab && child.isRendered()){
                     HtmlPanelTab tab = (HtmlPanelTab) child;
-                    tabIDs.add( child.getClientId(facesContext) );
+                    tabIDs.add( child.getClientId(facesContext) + TAB_DIV_SUFFIX);
                     if( ! isDisabled(facesContext, tab) )
                         headerIDs.add( getHeaderCellID(tab, facesContext) );
                 }
@@ -444,7 +445,7 @@ public class HtmlTabbedPaneRenderer
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
                                       "return myFaces_showPanelTab("
                                       +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
-                                      +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext)+"',"
+                                      +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
                                       +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
                                       + (activeUserClass==null ? "null" : '\''+activeUserClass+'\'')+','+ (inactiveUserClass==null ? "null" : '\''+inactiveUserClass+'\'')+','
                                       + (activeSubStyleUserClass==null ? "null" : '\''+activeSubStyleUserClass+'\'')+','+ (inactiveSubStyleUserClass==null ? "null" : '\''+inactiveSubStyleUserClass+'\'')+");",
@@ -540,7 +541,7 @@ public class HtmlTabbedPaneRenderer
 
                 HtmlPanelTab tab = (HtmlPanelTab)child;
                 writer.startElement(HTML.DIV_ELEM, tabbedPane);
-                writer.writeAttribute(HTML.ID_ATTR, tab.getClientId(facesContext), null);
+               writer.writeAttribute(HTML.ID_ATTR, tab.getClientId(facesContext) + TAB_DIV_SUFFIX, null);
                 // the inactive tabs are hidden with a div-tag
                 if (tabIdx != selectedIndex) {
                     writer.writeAttribute(HTML.STYLE_ATTR, "display:none", null);
