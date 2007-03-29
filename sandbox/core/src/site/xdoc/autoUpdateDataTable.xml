@@ -15,10 +15,7 @@ components.
 				This allows you to do frequency controlled update via asynchronous
 				server requests - Ajax.  <br/><br/>
 				<code>
-				Note, this control is experimental and it is currently
-				located in the MyFaces sandbox and can be subject to
-				alteration in the immediate future.
-				Therefore use it with care.
+				Note: This component is deprecated; Use pprPeriodicalUpdate instead!
             	</code>
             </p>
         </section>
