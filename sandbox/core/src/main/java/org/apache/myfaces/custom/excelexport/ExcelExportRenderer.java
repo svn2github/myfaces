@@ -67,8 +67,10 @@ public class ExcelExportRenderer extends HtmlRenderer {
 	
 	private String getJSCall(FacesContext facesContext, String tableId) {
 		String viewId = StringUtils.split( facesContext.getViewRoot().getViewId() , "\\.")[0];
-		String contextPath = facesContext.getExternalContext().getRequestContextPath();
-		return "window.open('" + contextPath + viewId + ".jsf?excelExportTableId=" + tableId + "');return false;";
+		return "window.open('"
+				+ facesContext.getApplication().getViewHandler().getActionURL(
+						facesContext, viewId) + "?excelExportTableId="
+				+ tableId + "');return false;";
 	}
 
 	
