@@ -28,6 +28,8 @@ import javax.faces.render.Renderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.custom.date.HtmlDateRenderer;
+import org.apache.myfaces.custom.date.HtmlInputDate;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 
@@ -70,7 +72,10 @@ public class HtmlFocusRenderer extends Renderer
 			}
 
 			String clientId = targetComponent.getClientId(facesContext);
-
+            if(targetComponent instanceof HtmlInputDate)
+            {
+                clientId = HtmlDateRenderer.getClientIdForDaySubcomponent(clientId);
+            }
             ResponseWriter writer = facesContext.getResponseWriter();
 
             writer.startElement(HTML.SCRIPT_ELEM, uiComponent);
