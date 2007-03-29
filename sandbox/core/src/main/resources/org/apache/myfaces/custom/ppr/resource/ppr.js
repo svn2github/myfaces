@@ -210,12 +210,12 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
         }
         else
         {
-            this.form.submit_orig();
+            this.form.submit_orig(triggerElement);
         }
     }
     else
     {
-        this.form.submit_orig();
+        this.form.submit_orig(triggerElement);
     }
 }
 

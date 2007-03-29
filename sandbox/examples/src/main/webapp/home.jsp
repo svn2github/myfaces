@@ -37,8 +37,13 @@
             <f:verbatim><a name="partialPageRendering" /></f:verbatim>
             <h:outputText value="Partial Page Rendering"/>
             <h:panelGrid style="padding-left:25px">
-	            <h:outputLink value="pprPanelGroup.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting manually refreshed by AJAX-Calls</f:verbatim></h:outputLink>
-                <h:outputLink value="pprScroller.jsf" ><f:verbatim>PPRPanelGroup - another example where a scrollable table gets refreshed</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupPartialTriggers.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting manually refreshed by AJAX-Calls (basic partial Trigger example)</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupMultiple.jsf" ><f:verbatim>PPRPanelGroup - using multiple pprPanelGroups and triggering Components</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupPartialTriggerPattern.jsf" ><f:verbatim>PPRPanelGroup - update components which ids match a regular expression</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupCommandLink.jsf" ><f:verbatim>PPRPanelGroup - using a command Link for triggering an action via AJAX</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupLoadingMessage.jsf" ><f:verbatim>PPRPanelGroup - displaying an inline Loading Message during AJAX requests</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupOnChange.jsf" ><f:verbatim>PPRPanelGroup - using PPR with drop-down and checkbox onChange handlers</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupDataScroller.jsf" ><f:verbatim>PPRPanelGroup - ajaxifying a datatable using PPR with partialTriggerPattern</f:verbatim></h:outputLink>
                 <h:outputLink value="pprPanelGroupPeriodicalUpdate.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting automatically refreshed by AJAX-Calls (through periodic intervals)</f:verbatim></h:outputLink>
             </h:panelGrid>
             <h:outputText value="Resource Serving"/>

@@ -22,8 +22,9 @@ package org.apache.myfaces.examples.ppr;
 import org.apache.myfaces.examples.inputSuggestAjax.Address;
 
 import javax.faces.event.ValueChangeEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Ernst Fastl
@@ -31,14 +32,26 @@ import java.util.ArrayList;
 public class PPRExampleBean
 {
     private String _textField;
-    
+
     private String _message;
-    
-    private Boolean _partialUpdateConfiguredButton;
-    
-    private Boolean _partialChangeCheckBox=Boolean.FALSE;
-    
-    private String _partialChangeDropDown;
+
+    private Boolean _checkBoxValue =Boolean.FALSE;
+
+    private String _dropDownValue;
+
+    private List _names;
+
+    public List getNames()
+    {
+        if(_names == null)
+            _names = getListMasterData();
+        return _names;
+    }
+
+    public void setNames(List names)
+    {
+        _names = names;
+    }
 
     public String getTextField()
     {
@@ -50,29 +63,31 @@ public class PPRExampleBean
         this._textField = textField;
     }
 
-	public Boolean getPartialUpdateConfiguredButton() {
-		return _partialUpdateConfiguredButton;
-	}
-
-	public void setPartialUpdateConfiguredButton(
-			Boolean partialUpdateConfiguredButton) {
-		this._partialUpdateConfiguredButton = partialUpdateConfiguredButton;
-	}
-    
-	public String testAction() {
-		setMessage("testAction called");
-		return "test";
-	}
+    public String searchNames() {
+        List _names = getListMasterData();
+        for (Iterator iterator = _names.iterator(); iterator.hasNext();)
+        {
+            Object o = iterator.next();
+            String currentName = (String) o;
+            if( _textField != null &&
+                !_textField.equals("") &&
+                ! currentName.contains(_textField))
+            {
+                iterator.remove();
+            }
+        }
+        return null;
+    }
 
     public String doTimeConsumingStuff()
     {
         try
         {
-            Thread.sleep(7000L);
+            Thread.sleep(4000L);
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();  
+            e.printStackTrace();
         }
         return null;
     }
@@ -91,38 +106,57 @@ public class PPRExampleBean
         return refreshList;
     }
 
+    private List getListMasterData()
+    {
+        List refreshList = new ArrayList();
+
+        refreshList.add("robert johnson");
+        refreshList.add("alpha romeo");
+        refreshList.add("bernd billinger");
+        refreshList.add("alfred wine");
+        refreshList.add("gino lamberti");
+        refreshList.add("michael jackson");
+        refreshList.add("michael jordon");
+        refreshList.add("arnold schwarzenegger");
+        refreshList.add("richard gere");
+        refreshList.add("scooby doo");
+        refreshList.add("spider man");
+
+        return refreshList;
+    }
+
     public void testValueChangeListener(ValueChangeEvent event){
-		
-		_message = "Value Change to: ";
-		if(event.getNewValue()!=null)
-		{
-			_message += event.getNewValue().toString();
-		}
-	}
 
-	public Boolean getPartialChangeCheckBox() {
-		return _partialChangeCheckBox;
-	}
+        _message = "Value Change to: ";
+        if(event.getNewValue()!=null)
+        {
+            _message += event.getNewValue().toString();
+        }
+    }
 
-	public void setPartialChangeCheckBox(Boolean changeCheckBox) {
-		_partialChangeCheckBox = changeCheckBox;
-	}
+    public Boolean getCheckBoxValue() {
+        return _checkBoxValue;
+    }
 
-	public String getPartialChangeDropDown() {
-		return _partialChangeDropDown;
-	}
+    public void setCheckBoxValue(Boolean changeCheckBox) {
+        _checkBoxValue = changeCheckBox;
+    }
 
-	public void setPartialChangeDropDown(String changeDropDown) {
-		_partialChangeDropDown = changeDropDown;
-	}
+    public String getDropDownValue() {
+        return _dropDownValue;
+    }
 
-	public String getMessage() {
-		return _message;
-	}
+    public void setDropDownValue(String changeDropDown) {
+        _dropDownValue = changeDropDown;
+    }
 
-	public void setMessage(String message) {
-		this._message = message;
-	}
-    
-	
+    public String getMessage() {
+        return _message;
+    }
+
+    public void setMessage(String message) {
+        this._message = message;
+    }
+
+
 }
