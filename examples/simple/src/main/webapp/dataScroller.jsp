@@ -35,6 +35,9 @@
 
     <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
+    <h:outputText value="Rows to show"/>
+    <h:inputText value="#{scrollerList.rowCount}" />
+
     <h:panelGroup id="body">
     
         <t:dataTable id="data"
