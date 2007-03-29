@@ -1332,7 +1332,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
 
             editor.setSubmittedValue( htmlText );
         } else {
-            log.warn("There should always be a submitted value for an inputHtml if it is rendered, its form is submitted, and it is not read-only. Component : "+
+            log.warn(HtmlRendererUtils.NON_SUBMITTED_VALUE_WARNING + " Component : "+
                      RendererUtils.getPathToComponent( editor ));
         }
     }

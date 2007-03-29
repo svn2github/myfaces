@@ -864,10 +864,8 @@ public class HtmlCalendarRenderer
         }
         else
         {
-            log.warn(
-                "There should always be a submitted value for an input if it"
-                + " is rendered, its form is submitted, and it is not disabled"
-                + " or read-only. Component : "+
+            log.warn(HtmlRendererUtils.NON_SUBMITTED_VALUE_WARNING +
+                " Component : "+
                 RendererUtils.getPathToComponent(component));
         }
 
