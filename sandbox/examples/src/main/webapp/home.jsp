@@ -26,12 +26,7 @@
                 <f:verbatim><a href="#imageLoop">Image loop - slide show component</a></f:verbatim>
                 <f:verbatim><a href="#partialPageRendering">Partial Page Rendering</a></f:verbatim>
                 <f:verbatim><a href="#filterTable">Filter Table</a></f:verbatim>
-                <h:outputText value="Client Side Validation"/>
-	            <h:panelGrid style="padding-left:25px">
-   		            <h:outputLink value="clientValidationWithStandardForm.jsf"><f:verbatim>Conversion&Validation with Standart Form</f:verbatim></h:outputLink>
- 		            <h:outputLink value="clientValidationWithExtForm.jsf"><f:verbatim>Conversion&Validation with Extended Form</f:verbatim></h:outputLink>
-	            	<h:outputLink value="clientValidation.jsf"><f:verbatim>Conversion&Validation with ValidationScript Component</f:verbatim></h:outputLink>
-	            </h:panelGrid>
+                <f:verbatim><a href="#ClientSideValidation">Client-Side Validation</a></f:verbatim>
             </h:panelGrid>
 
             <f:verbatim><a name="partialPageRendering" /></f:verbatim>
@@ -60,9 +55,15 @@
             	<h:outputLink value="stateChangedNotifier.jsf"><f:verbatim>stateChangedNotifier - Shows a confirmation message if some of the fields in the form have changed</f:verbatim></h:outputLink>
             	<h:outputLink value="timedNotifier.jsf"><f:verbatim>timedNotifier - Shows a time triggered notification dialog</f:verbatim></h:outputLink>
 
-	            <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>DateTimeConverter - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
 	            <h:outputLink value="valueChangeNotifier.jsf"><f:verbatim>valueChangeNotifier - Calls a custom valueChangeEvent method during MODEL_UPDATE Phase of the Faces Lifecycle</f:verbatim></h:outputLink>
 	            <h:outputLink value="form.jsf"><f:verbatim>Form component. Standard form vs. Tomahawk/Sandbox form</f:verbatim></h:outputLink>
+
+	            <h:outputText value="Conversion"/>
+	            <h:panelGrid style="padding-left:25px">
+	                <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>convertDateTime - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
+                    <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>convertNumber - automatically convert the number to the correct type</f:verbatim></h:outputLink>
+	                <h:outputLink value="convertStringUtils.jsf"><f:verbatim>convertStringUtils - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
+	            </h:panelGrid>
 
 	            <h:outputText value="Validation"/>
 	            <h:panelGrid style="padding-left:25px">
@@ -70,6 +71,14 @@
 	            	<h:outputLink value="validateCompareTo.jsf" ><f:verbatim>validateCompareTo - Compare values on two different components</f:verbatim></h:outputLink>
 	            	<h:outputLink value="subForm.jsf"><f:verbatim>SubForm - Partial validation and model update with SubForms</f:verbatim></h:outputLink>
 	            	<h:outputLink value="validateCSV.jsf"><f:verbatim>CSVValidator - validate comma separated values with a given (sub)validator</f:verbatim></h:outputLink>
+	                
+            		<f:verbatim><a name="ClientSideValidation" /></f:verbatim>
+	                <h:outputText value="Client Side Validation"/>
+		            <h:panelGrid style="padding-left:25px">
+	   		            <h:outputLink value="clientValidationWithStandardForm.jsf"><f:verbatim>Conversion&Validation with Standart Form</f:verbatim></h:outputLink>
+	 		            <h:outputLink value="clientValidationWithExtForm.jsf"><f:verbatim>Conversion&Validation with Extended Form</f:verbatim></h:outputLink>
+		            	<h:outputLink value="clientValidation.jsf"><f:verbatim>Conversion&Validation with ValidationScript Component</f:verbatim></h:outputLink>
+		            </h:panelGrid>
 	            </h:panelGrid>
 
             </h:panelGrid>
@@ -121,7 +130,6 @@
            		<h:outputLink value="effect.jsf" ><f:verbatim>Effect - DOJO and script.aculo.us effects</f:verbatim></h:outputLink>
                 <f:verbatim><a name="imageLoop" /></f:verbatim><h:outputLink value="imageloop.jsf" ><f:verbatim>Image loop/slide show with fading effects based on Dojo</f:verbatim></h:outputLink>
 	            <h:outputLink value="killSession.jsf"><f:verbatim>Kill Session - refreshes state</f:verbatim></h:outputLink>
-                <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>automatically convert the number to the correct type</f:verbatim></h:outputLink>
 
             </h:panelGrid>
             <h:panelGrid style="padding-left:25px">

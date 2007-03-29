@@ -12,6 +12,14 @@
        <!--<phase-listener>org.apache.myfaces.examples.debug.DebugPhaseListener</phase-listener>
     --></lifecycle>
 
+    <!-- managed bean for convertStringUtils -->
+
+    <managed-bean>
+        <managed-bean-name>convertStringUtilsBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.convertStringUtils.ConvertStringUtilsBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
     <!-- managed bean for notifierBean-->
 
     <managed-bean>
