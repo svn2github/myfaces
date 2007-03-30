@@ -71,7 +71,7 @@ public class PPRExampleBean
             String currentName = (String) o;
             if( _textField != null &&
                 !_textField.equals("") &&
-                ! currentName.contains(_textField))
+                (-1 == currentName.indexOf(_textField)))
             {
                 iterator.remove();
             }
