@@ -69,7 +69,7 @@
         </h:form>
 
         <t:panelStack id="stack" selectedPanel="#{stackState.selected}">
-        <h:panelGroup id="treePanel">
+        <h:panelGroup id="treePanel1">
             <h:form>
                 <t:tree id="tree" value="#{treeModel}"
                     styleClass="tree"
@@ -80,7 +80,7 @@
              </h:form>   
             <f:verbatim><br></f:verbatim>
         </h:panelGroup>
-        <h:panelGroup id="treePanel">
+        <h:panelGroup id="treePanel2">
             <h:form>
             <t:tree id="tree" value="#{treeModel}"
                     styleClass="tree"
@@ -107,7 +107,7 @@
                 </h:selectOneListbox>
 
                 <h:outputLabel for="selone_menu_colors" value="#{example_messages['label_colors']}" />
-                <h:selectOneMenu id="selone_menu_colors" value="#{carconf.color}" styleClass="selectOneMenu">
+                <h:selectOneMenu id="selone_menu_colors" value="#{carconf.color}" styleClass="selectOneMenu" converter="#{carconf.colorConverter}">
                     <f:selectItem itemValue="" itemLabel="#{example_messages['empty_selitem']}" />
                     <f:selectItems value="#{carconf.colors}" />
                 </h:selectOneMenu>
@@ -154,9 +154,9 @@
 
                 <h:outputLabel for="doors" value="#{example_messages['doors']}" />
                 <h:selectOneMenu id="doors" value="#{carconf.doors}">
-                        <f:selectItem itemValue="2" itemLabel="2" />
-                        <f:selectItem itemValue="4" itemLabel="4" />
-                        <f:selectItem itemValue="7" itemLabel="7" />
+                        <f:selectItem itemValue="#{2}" itemLabel="2" />
+                        <f:selectItem itemValue="#{4}" itemLabel="4" />
+                        <f:selectItem itemValue="#{7}" itemLabel="7" />
                 </h:selectOneMenu>
 
                 <h:outputLabel for="selboolean" value="#{example_messages['sales_tax']}" />
