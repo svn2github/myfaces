@@ -21,8 +21,6 @@
 
 dojo.provide("org.apache.myfaces");
 
-dojo.require("dojo.dom.*");
-
 //Define the Partial Page Rendering Controller Class
 
 org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
