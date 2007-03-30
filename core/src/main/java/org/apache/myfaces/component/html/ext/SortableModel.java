@@ -19,11 +19,8 @@
 
 package org.apache.myfaces.component.html.ext;
 
-import java.sql.ResultSet;
 import java.text.CollationKey;
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -31,34 +28,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
-import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.faces.model.ResultDataModel;
-import javax.faces.model.ResultSetDataModel;
-import javax.faces.model.ScalarDataModel;
-import javax.servlet.jsp.jstl.sql.Result;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- *
- */
-public final class SortableModel extends DataModel
+public final class SortableModel extends BaseSortableModel
 {    
     private static final Log log = LogFactory.getLog(SortableModel.class);
     
     private SortCriterion _sortCriterion = null;
-    
-    private DataModel _model = null;
-    private Object _wrappedData = null;
-    
-    private IntList _sortedIndicesList = null,  // from baseIndex to sortedIndex
-                    _baseIndicesList = null;    // from sortedIndex to baseIndex
-    
-    private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
     
     /**
      * Create a new SortableModel from the given instance.
@@ -67,7 +47,7 @@ public final class SortableModel extends DataModel
      */
     public SortableModel(Object model) 
     {
-        setWrappedData(model);
+        super(model);
     }
     
     /**
@@ -76,21 +56,6 @@ public final class SortableModel extends DataModel
      */
     public SortableModel(){}
     
-    public Object getRowData() 
-    {
-        return _model.getRowData();
-    }
-    
-    public Object getWrappedData() 
-    {
-        return _wrappedData;
-    }
-    
-    public boolean isRowAvailable() 
-    {
-        return _model.isRowAvailable();
-    }
-    
     /**
      * Sets the underlying data being managed by this instance.
      * @param data This Object will be converted into a
@@ -98,66 +63,9 @@ public final class SortableModel extends DataModel
      */
     public void setWrappedData(Object data) 
     {
-        _baseIndicesList = null;
-        _model = toDataModel(data);
-        _sortCriterion = null;
-        _sortedIndicesList = null;
-        _wrappedData = data;
+        super.setWrappedData(data);
+        setSortCriteria(null);
     }
-    
-    protected DataModel toDataModel(Object data) 
-    {
-        if (data == null)
-        {
-            return EMPTY_DATA_MODEL;
-        }
-        else if (data instanceof DataModel)
-        {
-            return (DataModel) data;
-        }
-        else if (data instanceof List)
-        {
-            return new ListDataModel((List) data);
-        }
-        // accept a Collection is not supported in the Spec
-        else if (data instanceof Collection)
-        {
-            return new ListDataModel(new ArrayList((Collection) data));
-        }
-        else if (OBJECT_ARRAY_CLASS.isAssignableFrom(data.getClass()))
-        {
-            return new ArrayDataModel((Object[]) data);
-        }
-        else if (data instanceof ResultSet)
-        {
-            return new ResultSetDataModel((ResultSet) data);
-        }
-        else if (data instanceof Result)
-        {
-            return new ResultDataModel((Result) data);
-        }
-        else
-        {
-            return new ScalarDataModel(data);
-        }
-    }
-    
-    public int getRowCount() 
-    {
-        return _model.getRowCount();
-    }
-    
-    public void setRowIndex(int rowIndex) 
-    {
-        int baseIndex = _toBaseIndex(rowIndex);
-        _model.setRowIndex(baseIndex);
-    }
-    
-    public int getRowIndex() 
-    {
-        int baseIndex = _model.getRowIndex();
-        return _toSortedIndex(baseIndex);
-    }       
     
     /**
      * Checks to see if the underlying collection is sortable by the given property.
@@ -210,8 +118,7 @@ public final class SortableModel extends DataModel
         if ((criteria == null) || (criteria.isEmpty())) 
         {
             _sortCriterion = null;
-            // restore unsorted order:
-            _baseIndicesList = _sortedIndicesList = null;
+            setComparator(null);
         } 
         else 
         {
@@ -219,7 +126,21 @@ public final class SortableModel extends DataModel
             if ((_sortCriterion == null) || (!_sortCriterion.equals(sc))) 
             {
                 _sortCriterion = sc;
-                _sort(_sortCriterion.getProperty(), _sortCriterion.isAscending());
+                
+                /*
+                 * Sorts the underlying collection by the given property, in the
+                 * given direction.
+                 * @param property The name of the property to sort by. The value of this
+                 * property must implement java.lang.Comparable.
+                 * @param isAscending true if the collection is to be sorted in
+                 * ascending order.
+                 * @todo support -1 for rowCount
+                 */
+               Comparator comp = new Comp(_sortCriterion.getProperty());                       
+                
+                if (!_sortCriterion.isAscending())
+                    comp = new Inverter(comp);
+                setComparator(comp);
             }
         }
     }
@@ -227,96 +148,6 @@ public final class SortableModel extends DataModel
     public String toString() 
     {
         return "SortableModel[" + _model + "]";
-    }
-    
-    /**
-     * Sorts the underlying collection by the given property, in the
-     * given direction.
-     * @param property The name of the property to sort by. The value of this
-     * property must implement java.lang.Comparable.
-     * @param isAscending true if the collection is to be sorted in
-     * ascending order.
-     * @todo support -1 for rowCount
-     */
-    private void _sort(String property, boolean isAscending) 
-    {
-        //TODO: support -1 for rowCount:
-        int sz = getRowCount();
-        if ((_baseIndicesList == null) || (_baseIndicesList.size() != sz)) 
-        {
-            // we do not want to mutate the original data.
-            // however, instead of copying the data and sorting the copy,
-            // we will create a list of indices into the original data, and
-            // sort the indices. This way, when certain rows are made current
-            // in this Collection, we can make them current in the underlying
-            // DataModel as well.            
-            _baseIndicesList = new IntList(sz);
-        }
-        
-        final int rowIndex = _model.getRowIndex();
-        
-        _model.setRowIndex(0);
-        // Make sure the model has that row 0! (It could be empty.)
-        if (_model.isRowAvailable()) 
-        {            
-            Comparator comp = new Comp(property);                       
-            
-            if (!isAscending)
-                comp = new Inverter(comp);
-            
-            Collections.sort(_baseIndicesList, comp);
-            
-            _sortedIndicesList = null;
-        }
-        
-        _model.setRowIndex(rowIndex);
-    }
-    
-    private int _toSortedIndex(int baseIndex) 
-    {
-        if ((_sortedIndicesList == null) && (_baseIndicesList != null)) 
-        {
-            _sortedIndicesList = (IntList) _baseIndicesList.clone();
-            for(int i=0; i<_baseIndicesList.size(); i++) 
-            {
-                Integer base = (Integer) _baseIndicesList.get(i);
-                _sortedIndicesList.set(base.intValue(), new Integer(i));
-            }
-        }
-        
-        return _convertIndex(baseIndex, _sortedIndicesList);
-    }
-    
-    private int _toBaseIndex(int sortedIndex) 
-    {
-        return _convertIndex(sortedIndex, _baseIndicesList);
-    }
-    
-    private int _convertIndex(int index, List indices) 
-    {
-        if (index < 0) // -1 is special
-            return index;
-        
-        if ((indices != null) && (indices.size() > index)) 
-        {
-            index = ((Integer) indices.get(index)).intValue();
-        }
-        return index;
-    }              
-    
-    private static final class IntList extends ArrayList implements Cloneable 
-    {
-        public IntList(int size) 
-        {
-            super(size);
-            _expandToSize(size);
-        }
-        
-        private void _expandToSize(int desiredSize) 
-        {
-            for(int i=0; i<desiredSize; i++) 
-                add(new Integer(i));            
-        }
     }
     
     private final class Comp implements Comparator 
@@ -336,17 +167,11 @@ public final class SortableModel extends DataModel
         
         public int compare(Object o1, Object o2) 
         {
-            int index1 = ((Integer) o1).intValue();
-            int index2 = ((Integer) o2).intValue();
-            
             Object value1 = null;
             Object value2 = null;
             try {
-            	_model.setRowIndex(index1);
-            	value1 = PropertyUtils.getProperty(_model.getRowData(),_prop);  
-            	
-            	_model.setRowIndex(index2);
-            	value2 = PropertyUtils.getProperty(_model.getRowData(),_prop);  
+            	value1 = PropertyUtils.getProperty(o1,_prop);  
+            	value2 = PropertyUtils.getProperty(o2,_prop);  
             }
             catch (Exception exc) {	
             	log.error(exc);
@@ -409,48 +234,4 @@ public final class SortableModel extends DataModel
             return _comp.compare(o2, o1);
         }              
     }      
-    /**
-     *
-     */
-    private static final DataModel EMPTY_DATA_MODEL = new _SerializableDataModel()
-    {
-        public boolean isRowAvailable()
-        {
-            return false;
-        }
-
-        public int getRowCount()
-        {
-            return 0;
-        }
-
-        public Object getRowData()
-        {
-            throw new IllegalArgumentException();
-        }
-
-        public int getRowIndex()
-        {
-            return -1;
-        }
-
-        public void setRowIndex(int i)
-        {
-            if (i < -1)
-                throw new IndexOutOfBoundsException("Index < 0 : " + i);
-        }
-
-        public Object getWrappedData()
-        {
-            return null;
-        }
-
-        public void setWrappedData(Object obj)
-        {
-            if (obj == null)
-                return; //Clearing is allowed
-            throw new UnsupportedOperationException(this.getClass().getName()
-                            + " UnsupportedOperationException");
-        }
-    };               
 }
