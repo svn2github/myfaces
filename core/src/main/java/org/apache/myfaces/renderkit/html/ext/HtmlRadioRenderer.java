@@ -80,7 +80,7 @@ public class HtmlRadioRenderer
         }
     }
 
-    private void renderRadio(FacesContext facesContext, HtmlRadio radio) throws IOException
+    protected void renderRadio(FacesContext facesContext, HtmlRadio radio) throws IOException
     {
         String forAttr = radio.getFor();
         if (forAttr == null)
