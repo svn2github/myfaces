@@ -52,11 +52,11 @@ public class RedirectTrackerManager implements Serializable
 
 	private final String redirectTrackerPolicy;
 	private final int redirects;
-	private final Map requestBeanMap = new TreeMap();
+	private transient final Map requestBeanMap = new TreeMap();
 
-	private transient Map redirectEntryMap;
-	private transient List redirectEntryList;
-	private long requests = 0;
+	private Map redirectEntryMap;
+	private List redirectEntryList;
+	private long requests;
 
 	static class Entry implements Serializable
 	{

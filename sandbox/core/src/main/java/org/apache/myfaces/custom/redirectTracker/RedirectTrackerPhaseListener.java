@@ -41,6 +41,14 @@ public class RedirectTrackerPhaseListener implements PhaseListener
 
 	public void beforePhase(PhaseEvent event)
 	{
+		if (event.getPhaseId().equals(PhaseId.RESTORE_VIEW))
+		{
+			RedirectTrackerManager manager = RedirectTrackerManager.getInstance(event.getFacesContext());
+			if (manager != null)
+			{
+				manager.clearSaveStateBean();
+			}
+		}
 	}
 
 	public PhaseId getPhaseId()
