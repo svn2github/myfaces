@@ -165,10 +165,14 @@ public class SubForm extends UIComponentBase
             _submitted = true;
         }
 
-        // This idea is taken from ADF faces - my approach didn't go as far
-        // as necessary - I still believe this to be a hack as well.
+        // This idea is taken from ADF faces - my approach of checking for instanceof ActionEvent
+        // didn't go as far as necessary for dataTables.
+        // In the dataTable case, the ActionEvent is wrapped in an EventWrapper
+        //
+        // I still believe the second part of the if condition is a hack:
         // If the event is being queued for anything *after* APPLY_REQUEST_VALUES,
-        // then this subform is active.
+        // then this subform is active - IMHO there might be other events not relating
+        // to the action system which are queued after this phase.
         if (PhaseId.APPLY_REQUEST_VALUES.compareTo(event.getPhaseId()) < 0)
         {
             setSubmitted(true);
