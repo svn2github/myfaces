@@ -52,7 +52,7 @@ public class RedirectTrackerManager implements Serializable
 
 	private final String redirectTrackerPolicy;
 	private final int redirects;
-	private transient final Map requestBeanMap = new TreeMap();
+	private transient Map requestBeanMap;
 
 	private Map redirectEntryMap;
 	private List redirectEntryList;
@@ -286,7 +286,10 @@ public class RedirectTrackerManager implements Serializable
 
 	protected void saveBeans(Entry entry)
 	{
-		entry.beanMap.putAll(requestBeanMap);
+		if (requestBeanMap != null)
+		{
+			entry.beanMap.putAll(requestBeanMap);
+		}
 	}
 
 	protected void saveBean(Entry entry, String name, Object value)
@@ -303,7 +306,18 @@ public class RedirectTrackerManager implements Serializable
 		{
 			log.debug("addSaveStateBean: " + expressionString + " value=" + value);
 		}
-		requestBeanMap.put(expressionString, value);
+
+		getRequestBeanMap().put(expressionString, value);
+	}
+
+	protected Map getRequestBeanMap()
+	{
+		if (requestBeanMap == null)
+		{
+			requestBeanMap = new TreeMap();
+		}
+
+		return requestBeanMap;
 	}
 
 	/**
@@ -311,7 +325,10 @@ public class RedirectTrackerManager implements Serializable
 	 */
 	public void clearSaveStateBean()
 	{
-		requestBeanMap.clear();
+		if (requestBeanMap != null)
+		{
+			requestBeanMap.clear();
+		}
 	}
 
 	protected void saveMessages(FacesContext facesContext, Entry entry)
