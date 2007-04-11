@@ -78,6 +78,7 @@ components.
       <source xml:space="preserve"><![CDATA[
 <t:dataTable [ all standard dataTable attributes allowed ]
                 [ preserveDataModel="{true|false}" ]
+                [ preserveRowStates="{true|false}" ]
                 [ forceIdIndexFormula="value-binding" ]
                 [ sortColumn="value-binding" ]
                 [ sortAscending="value-binding" ]
@@ -115,7 +116,20 @@ components.
     <section name="Syntax">
       <blockquote><h3>&lt;t:dataTable&gt;</h3> <code>all standard dataTable
       attributes allowed</code><br />
-      <code>preserveDataModel="{true|false}"</code><br />
+      <code>preserveDataModel="{true|false}"</code> - Indicates whether the state for each row
+		  should not be discarded before the datatable is rendered again.
+		  Setting this to true might be hepful if an input component inside the datatable
+		  has no valuebinding and the value entered in there should be displayed again,
+		  or if the input component model is not updated.  For example,
+		  during validation failure, immediate flag short-circuiting, or subForms.
+		  This will only work reliable if the datamodel of the datatable did not change
+		  either by sorting, removing or inserting rows.
+		  You can use HtmlDataTable.clearRowStates() or
+		  HtmlDataTable.deleteRowStateForRow(int deletedIndex)
+		  to programically modify the saved row states.
+		  Default: false
+		<br />
+      <code>preserveRowStates="{true|false}"</code><br />
       <code>forceIdIndexFormula="value-binding"</code><br />
       <code>sortColumn="value-binding"</code><br />
       <code>sortAscending="value-binding"</code><br />
@@ -153,7 +167,7 @@ components.
       <code>rowOnKeyPress="javascript"</code><br />
       <code>rowOnKeyDown="javascript"</code><br />
       <code>rowOnKeyUp="javascript"</code><br /></blockquote>
-
+		
       <br />
 
       <br />

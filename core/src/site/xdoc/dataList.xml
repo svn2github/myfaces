@@ -95,6 +95,19 @@
                                   in request scope similar to the var parameter.
                 </code>
                 <br/>
+      <code>preserveDataModel="{true|false}"</code> - Indicates whether the state for each row
+		  should not be discarded before the datalist is rendered again.
+		  Setting this to true might be hepful if an input component inside the datalist
+		  has no valuebinding and the value entered in there should be displayed again,
+		  or if the input component model is not updated.  For example,
+		  during validation failure, immediate flag short-circuiting, or subForms.
+		  This will only work reliable if the datamodel of the datalist did not change
+		  either by sorting, removing or inserting rows.
+		  You can use HtmlDataList.clearRowStates() or
+		  HtmlDataList.deleteRowStateForRow(int deletedIndex)
+		  to programically modify the saved row states.
+		  Default: false
+		<br />
             </blockquote>
         </section>
         <!-- Instructions -->

@@ -577,4 +577,51 @@ public abstract class HtmlDataTableHack extends
         return defaultValue;
     }
 
+    /**
+     * Remove all preserved row state for the dataTable
+     */
+    public void clearRowStates()
+    {
+    	_rowStates.clear();
+    }
+    
+    /**
+     * Remove preserved row state for deleted row and adjust row state to reflect deleted row.
+     * @param deletedIndex index of row to delete
+     */
+    public void deleteRowStateForRow(int deletedIndex)
+    {
+    	// save row index
+    	int savedRowIndex = getRowIndex();
+    	
+    	FacesContext facesContext = FacesContext.getCurrentInstance();
+     	setRowIndex(deletedIndex);
+    	String currentRowStateKey = getClientId(facesContext);
+
+    	// copy next rowstate to current row for each row from deleted row onward.
+    	int rowCount = getRowCount();
+    	for (int index = deletedIndex + 1; index < rowCount; ++index)
+    	{
+        	setRowIndex(index);
+        	String nextRowStateKey = getClientId(facesContext);
+
+            Object nextRowState = _rowStates.get(nextRowStateKey);
+            if (nextRowState == null)
+            {
+            	_rowStates.remove(currentRowStateKey);
+            }
+            else
+            {
+            	_rowStates.put(currentRowStateKey, nextRowState);
+            }
+        	currentRowStateKey = nextRowStateKey;
+    	}
+
+    	// Remove last row
+    	_rowStates.remove(currentRowStateKey);
+
+    	// restore saved row index
+    	setRowIndex(savedRowIndex);
+    }
+    
 }
