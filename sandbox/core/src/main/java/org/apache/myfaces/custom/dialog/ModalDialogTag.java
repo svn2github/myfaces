@@ -28,31 +28,28 @@ import javax.faces.component.UIComponent;
  * @version 02.09.2006 12:04:26
  */
 public class ModalDialogTag extends HtmlComponentTagBase {
+
     private static final String TAG_PARAM_DIALOG_ATTR = "dialogAttr";
-
     private static final String TAG_PARAM_DIALOG_ID   = "dialogId";
-
     private static final String TAG_PARAM_DIALOG_VAR  = "dialogVar";
-
     private static final String TAG_PARAM_HIDER_IDS   = "hiderIds";
-
-    public static final String  TAG_PARAM_WidgetId    = "widgetId";
-
-    public static final String  TAG_PARAM_WidgetVar   = "widgetVar";
+    private static final String TAG_PARAM_WIDGET_ID = "widgetId";
+    private static final String TAG_PARAM_WIDGET_VAR = "widgetVar";
+	private static final String TAG_PARAM_VIEW_ID = "viewId";
+	private static final String TAG_PARAM_DIALOG_TITLE = "dialogTitle";
+	private static final String TAG_PARAM_CLOSE_BUTTON = "closeButton";
 
     private String              _dialogAttr;
-
     private String              _dialogId;
-
     private String              _dialogVar;
-
     private String              _hiderIds;
+    private String              _widgetId;
+    private String              _widgetVar;
+	private String				_viewId;
+	private String				_dialogTitle;
+	private String				_closeButton;
 
-    private String              _widgetId             = null;
-
-    private String              _widgetVar            = null;
-
-    public String getComponentType() {
+	public String getComponentType() {
         return ModalDialog.COMPONENT_TYPE;
     }
 
@@ -68,8 +65,10 @@ public class ModalDialogTag extends HtmlComponentTagBase {
         _hiderIds = null;
         _widgetVar = null;
         _widgetId = null;
-
-    }
+		_viewId = null;
+		_dialogTitle = null;
+		_closeButton = null;
+	}
 
     public void setDialogAttr(String dialogAttr) {
         _dialogAttr = dialogAttr;
@@ -95,16 +94,47 @@ public class ModalDialogTag extends HtmlComponentTagBase {
         _widgetVar = widgetVar;
     }
 
-    
-    protected void setProperties(UIComponent uiComponent) {
+	public String getViewId()
+	{
+		return _viewId;
+	}
+
+	public void setViewId(String viewId)
+	{
+		this._viewId = viewId;
+	}
+
+	public String getDialogTitle()
+	{
+		return _dialogTitle;
+	}
+
+	public void setDialogTitle(String dialogTitle)
+	{
+		this._dialogTitle = dialogTitle;
+	}
+
+	public String getCloseButton()
+	{
+		return _closeButton;
+	}
+
+	public void setCloseButton(String closeButton)
+	{
+		this._closeButton = closeButton;
+	}
+
+	protected void setProperties(UIComponent uiComponent) {
         super.setProperties(uiComponent);
         super.setStringProperty(uiComponent, TAG_PARAM_DIALOG_VAR, _dialogVar);
         super.setStringProperty(uiComponent, TAG_PARAM_DIALOG_ID, _dialogId);
         super.setStringProperty(uiComponent, TAG_PARAM_DIALOG_ATTR, _dialogAttr);
         super.setStringProperty(uiComponent, TAG_PARAM_HIDER_IDS, _hiderIds);
-        super.setStringProperty(uiComponent, TAG_PARAM_WidgetVar, _widgetVar);
-        super.setStringProperty(uiComponent, TAG_PARAM_WidgetId, _widgetId);
-
-    }
+        super.setStringProperty(uiComponent, TAG_PARAM_WIDGET_VAR, _widgetVar);
+        super.setStringProperty(uiComponent, TAG_PARAM_WIDGET_ID, _widgetId);
+		super.setStringProperty(uiComponent, TAG_PARAM_VIEW_ID, _viewId);
+		super.setStringProperty(uiComponent, TAG_PARAM_DIALOG_TITLE, _dialogTitle);
+		super.setBooleanProperty(uiComponent, TAG_PARAM_CLOSE_BUTTON, _closeButton);
+	}
 
 }

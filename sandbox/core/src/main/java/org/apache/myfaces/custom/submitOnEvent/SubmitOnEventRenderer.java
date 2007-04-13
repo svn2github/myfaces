@@ -18,10 +18,11 @@
  */
 package org.apache.myfaces.custom.submitOnEvent;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.custom.dialog.ModalDialog;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -31,11 +32,10 @@ import javax.faces.component.UISelectMany;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Attach an event handler to an input element or use a global event handler to
@@ -62,7 +62,9 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         UIComponent parent = uiComponent.getParent();
         if (parent != null)
         {
-            if (UIInput.COMPONENT_FAMILY.equals(parent.getFamily()) || parent instanceof UIInput)
+            if (UIInput.COMPONENT_FAMILY.equals(parent.getFamily())
+				|| parent instanceof UIInput
+				|| parent instanceof ModalDialog)
             {
                 triggerComponent = parent;
             }
@@ -70,7 +72,7 @@ public class SubmitOnEventRenderer extends HtmlRenderer
             {
                 forComponent = parent;
             }
-        }
+		}
 
 		if (triggerComponent != null && !triggerComponent.isRendered())
 		{
@@ -125,8 +127,15 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         js.append("','");
         if (triggerComponent != null)
         {
-            js.append(triggerComponent.getClientId(facesContext));
-        }
+			if (triggerComponent instanceof ModalDialog)
+			{
+				js.append(((ModalDialog) triggerComponent).getDialogVar());
+			}
+			else
+			{
+				js.append(triggerComponent.getClientId(facesContext));
+			}
+		}
         js.append("','");
         js.append(forComponent.getClientId(facesContext));
         // js.append("');");

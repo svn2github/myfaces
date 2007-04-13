@@ -21,8 +21,15 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
 {
 	// alert("eventType:" + eventType + " callback:" + callbackFunction + " input:" + inputComponentId + " click:" + clickComponentId);
 
-    var inputComponents = [];
-    if (inputComponentId != null && inputComponentId != '')
+	var dojoWidget = false;
+
+	var inputComponents = [];
+	if (eventType == "dialogok")
+	{
+		inputComponents = [ eval(inputComponentId) ];
+		dojoWidget = true;
+	}
+	else if (inputComponentId != null && inputComponentId != '')
     {
         inputComponents = document.getElementsByName(inputComponentId);
 	}
@@ -74,7 +81,21 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
             return orgApacheMyfacesSubmitOnEventSetEvent(event, orgApacheMyfacesSubmitOnEventKeypress(event, clickComponentId));
         };
     }
-    else
+	else if (eventType == "dialogok")
+	{
+		var dialog = eval(inputComponentId);
+		if (dialog)
+		{
+			handler=function()
+			{
+				if (dialog._myfaces_ok)
+				{
+					orgApacheMyfacesSubmitOnEventGeneral(clickComponentId);
+				}
+			}
+		}
+	}
+	else
     {
         handler=function(event)
         {
@@ -85,7 +106,7 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
 	for (var cmpNum = 0; cmpNum < inputComponents.length; cmpNum++)
 	{
 		var inputComponent = inputComponents[cmpNum];
-		if (!orgApacheMyfacesSubmitOnEventIsFormElement(inputComponent))
+		if (!dojoWidget && !orgApacheMyfacesSubmitOnEventIsFormElement(inputComponent))
 		{
 			continue;
 		}
@@ -156,7 +177,16 @@ function orgApacheMyfacesSubmitOnEventAttachEvent(component, components, eventTy
 		setupHandler = handler;
 	}
 
-	if (component.addEventListener)
+	if (eventType == "dialogok")
+	{
+		component._myfaces_submitOnEvent_onHide=component.onHide;
+		component.onHide=function()
+		{
+			this._myfaces_submitOnEvent_onHide();
+			setupHandler();
+		}
+	}
+	else if (component.addEventListener)
 	{
 		component.addEventListener(eventType, setupHandler, false);
 	}

@@ -17,13 +17,34 @@
 	            /*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
 	            position:absolute;
 	            left: -800px;
-	            top:-800px;
+	            top: -800px;
 	        }
-    	</style>
+
+			.viewDialog {
+				background : #eee;
+				border : 1px solid #999;
+				-moz-border-radius : 5px;
+				padding : 4px;
+				/*positioning outside of the visible scope to prevent some ui glitches visibility hidden does not work*/
+				position:absolute;
+				left: -800px;
+				top: -800px;
+			}
+
+			.viewDialogDecoration {
+				width: 600px;
+			}
+
+			.viewDialogContent {
+				width: 600px;
+				height: 500px;
+			}
+
+		</style>
 	</head>
 	<body>
 		<f:view>
-		
+
 			<h:panelGrid columns="2" style="width:700px;">
 				<h:outputLabel value="Email" for="email1" styleClass="label" />
 				<h:panelGrid columns="4" width="180">
@@ -65,6 +86,21 @@
 				</h:panelGrid>
 			</h:panelGrid>
 
+			<h:panelGrid columns="3">
+
+				<t:outputText value="Show dialog using another view in its content" />
+
+				<h:outputLink value="#"
+					onclick="viewDialog.show();">
+					<h:outputText value="open dialog" />
+				</h:outputLink>
+
+				<h:form>
+					<h:commandButton id="dismissAction" value="action after dismiss" />
+				</h:form>
+
+			</h:panelGrid>
+
 			<s:modalDialog dialogId="DialogContent" dialogVar="dojoDialog"
 				dialogAttr="bgColor='white' bgOpacity='0.5' toggle='fade' toggleDuration='250'"
 				hiderIds="cancel1,cancel2,cancel3" styleClass="dojoDialog">
@@ -89,7 +125,7 @@
 
 			<s:modalDialog dialogId="FormDialog" dialogVar="dojoDialogOuterform"
 				dialogAttr="bgColor='white' bgOpacity='0.5' toggle='fade' toggleDuration='250'"
-				hiderIds="cancel1x,cancel2x,cancel3x" styleClass="dojoDialog">
+				styleClass="dojoDialog">
 				<h:form id="dialogform">
 
 					<h:panelGrid columns="1">
@@ -116,10 +152,22 @@
 						</h:commandLink>
 					</h:panelGrid>
 				</h:form>
+			</s:modalDialog>
+
+
+			<s:modalDialog
+				dialogId="viewDialog"
+				dialogVar="viewDialog"
+				styleClass="viewDialog"
+				dialogTitle="ViewId Dialog"
+				closeButton="true"
+				viewId="dojo/dojoDialogView.jsf">
+
+				<s:submitOnEvent event="dialogok" for="dismissAction" />
 
 			</s:modalDialog>
-      
-      <%@ include file="../inc/page_footer.jsp"%>
+
+	  <%@ include file="../inc/page_footer.jsp"%>
 
 		</f:view>
 	</body>

@@ -19,18 +19,23 @@
 
 package org.apache.myfaces.custom.dialog;
 
-import java.io.IOException;
-import java.util.StringTokenizer;
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.apache.myfaces.custom.dojo.DojoUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import java.io.IOException;
+import java.util.StringTokenizer;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ModalDialogRenderer extends HtmlRenderer {
     public static final String RENDERER_TYPE = "org.apache.myfaces.ModalDialog";
@@ -45,28 +50,46 @@ public class ModalDialogRenderer extends HtmlRenderer {
                                  DojoUtils.getDjConfigInstance(context));
         DojoUtils.addRequire(context, component, "dojo.widget.Dialog");
 
-        writeModalDialogBegin((ModalDialog) component, context.getResponseWriter());
+        writeModalDialogBegin(context, (ModalDialog) component, context.getResponseWriter());
     }
 
     //@Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        StringBuffer buf = new StringBuffer();
+		ModalDialog dlg = (ModalDialog) component;
+
+		StringBuffer buf = new StringBuffer();
 
         buf.append("</div>");
 
-        context.getResponseWriter().write(buf.toString());
+		writeDialogLoader(context, dlg, buf);
+
+		context.getResponseWriter().write(buf.toString());
+
+		if (dlg.getViewId() != null)
+		{
+			RendererUtils.renderChildren(context, component);
+        	HtmlRendererUtils.writePrettyLineSeparator(context);
+		}
     }
 
-    private void appendHiderIds(StringBuffer buf, ModalDialog dlg) {
-        String[] hiders = null;
-        if (dlg.getHiderIds() != null) {
-            hiders = dlg.getHiderIds().split(",");
-        }
+    private void appendHiderIds(StringBuffer buf, ModalDialog dlg)
+	{
+		List hiders = new ArrayList();
 
-        for (int i = 0; i < hiders.length; i++) {
+		if (dlg.getHiderIds() != null)
+		{
+            hiders.addAll(Arrays.asList(dlg.getHiderIds().split(",")));
+        }
+		if (dlg.getCloseButton() && dlg.getDialogTitle() != null)
+		{
+			hiders.add(dlg.getDialogVar() + "Closer");
+		}
+
+		for (int i = 0; i < hiders.size(); i++)
+		{
             String varName = "btn" + i;
             buf.append("var ").append(varName).append(" = document.getElementById(\"")
-            .append(hiders[i].trim()).append("\");")
+            .append(((String) hiders.get(i)).trim()).append("\");")
             .append(dlg.getDialogVar()).append(".setCloseControl(").append(varName).append(");");
         }
     }
@@ -87,33 +110,16 @@ public class ModalDialogRenderer extends HtmlRenderer {
             catch(NumberFormatException e) {
                 value = new StringBuffer("\"").append(value).append("\"").toString();
             }
-            buf.append(attribute).append(":").append(value).append(", ");
+            buf.append(", ").append(attribute).append(":").append(value);
         }
-        buf.setLength(buf.length() - 2);
     }
 
-    private void writeModalDialogBegin(ModalDialog dlg, ResponseWriter writer) throws IOException {
+    private void writeModalDialogBegin(FacesContext context, ModalDialog dlg, ResponseWriter writer) throws IOException {
         StringBuffer buf = new StringBuffer();
-        buf.append("<script type=\"text/javascript\">")
-        .append("var ").append(dlg.getDialogVar()).append(";")
-        .append("function "+dlg.getDialogVar()+"_loader(e) {").append(dlg.getDialogVar())
-        .append(" = dojo.widget.createWidget(\"dialog\", {id:")
-        .append("\"").append(dlg.getDialogId()).append("\", ");
 
-        appendDialogAttributes(buf, dlg);
+		// writeDialogLoader(context, dlg, buf);
 
-        String dlgId = dlg.getId() != null ?
-                       dlg.getId() :
-                       new StringBuffer(dlg.getDialogId()).append(DIV_ID_PREFIX).toString();
-        buf.append("}, dojo.byId(\"")
-        .append(dlgId).append("\"));");
-
-        appendHiderIds(buf, dlg);
-
-        buf.append("}")
-        .append("setTimeout('"+dlg.getDialogVar()+"_loader();',500);")
-        .append("</script>");
-
+		String dlgId = getDialogId(dlg);
         buf.append("<div id=\"").append(dlgId).append("\"");
         if(dlg.getStyle() != null)
             buf.append(" style=\"").append(dlg.getStyle()).append("\"");
@@ -123,8 +129,72 @@ public class ModalDialogRenderer extends HtmlRenderer {
 
         writer.write(buf.toString());
     }
-    
-    public boolean getRendersChildren()
+
+	private String getDialogId(ModalDialog dlg)
+	{
+		String dlgId = dlg.getId() != null ?
+					   dlg.getId() :
+					   new StringBuffer(dlg.getDialogId()).append(DIV_ID_PREFIX).toString();
+		return dlgId;
+	}
+
+	private String writeDialogLoader(FacesContext context, ModalDialog dlg, StringBuffer buf)
+	{
+		String dlgId = getDialogId(dlg);
+		buf.append("<script type=\"text/javascript\">")
+        .append("var ").append(dlg.getDialogVar()).append(";")
+        .append("function "+dlg.getDialogVar()+"_loader(e) {").append(dlg.getDialogVar())
+        .append(" = dojo.widget.createWidget(\"dialog\", {id:")
+        .append("\"").append(dlg.getDialogId()).append("\"");
+
+		appendDialogAttributes(buf, dlg);
+
+		buf.append("}, dojo.byId(\"").append(dlgId).append("\"));");
+
+		appendHiderIds(buf, dlg);
+
+		if (dlg.getViewId() != null)
+		{
+			appendShowHideView(context, buf, dlg);
+		}
+
+		buf.append("}")
+        // .append("setTimeout('"+dlg.getDialogVar()+"_loader();',500);")
+		.append(dlg.getDialogVar()+"_loader();")
+        .append("</script>");
+		return dlgId;
+	}
+
+	private void appendShowHideView(FacesContext context, StringBuffer buf, ModalDialog dlg)
+	{
+		buf.append(dlg.getDialogVar())
+			.append(".onShow = function() {")
+			.append("var content = document.getElementById(\"modalDialogContent")
+			.append(dlg.getDialogVar())
+			.append("\"); ")
+			.append("window._myfaces_currentModal=")
+			.append(dlg.getDialogVar())
+			.append("; ")
+			.append(dlg.getDialogVar())
+			.append("._myfaces_ok=false; ")
+			.append("content.contentWindow.location.replace('")
+			.append(context.getExternalContext().getRequestContextPath())
+			.append("/")
+			.append(dlg.getViewId())
+			.append("'); ")
+			.append("}; ");
+
+		buf.append(dlg.getDialogVar())
+			.append(".onHide = function() {")
+			.append("window._myfaces_currentModal=null;")
+			.append("var content = document.getElementById(\"modalDialogContent")
+			.append(dlg.getDialogVar())
+			.append("\"); ")
+			.append("content.contentWindow.location.replace('javascript:false;'); ")
+			.append("}; ");
+	}
+
+	public boolean getRendersChildren()
     {
         return true;
     }
@@ -136,9 +206,78 @@ public class ModalDialogRenderer extends HtmlRenderer {
      */
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
+		ModalDialog dlg = (ModalDialog) uiComponent;
+		ResponseWriter writer = facesContext.getResponseWriter();
 
-        RendererUtils.renderChildren(facesContext, uiComponent);
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
-    }
-    
+		UIComponent titleFacet = dlg.getFacet("titleBar");
+		if (titleFacet != null)
+		{
+			RendererUtils.renderChild(facesContext, titleFacet);
+		}
+		else if (dlg.getDialogTitle() != null)
+		{
+			AddResourceFactory.getInstance(facesContext).addStyleSheet(facesContext, AddResource.HEADER_BEGIN,  ModalDialog.class, "modalDialog.css");
+
+			writer.startElement(HTML.TABLE_ELEM, dlg);
+			writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogDecoration " + getStyleName(dlg, "Decoration") , null);
+			writer.writeAttribute(HTML.CELLPADDING_ATTR, "2", null);
+			writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
+
+			writer.startElement(HTML.TR_ELEM, dlg);
+			writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogTitle " + getStyleName(dlg, "Title"), null);
+
+			writer.startElement(HTML.TD_ELEM, dlg);
+			writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogTitleLeft " + getStyleName(dlg, "TitleLeft"), null);
+			writer.writeText(dlg.getDialogTitle(), null);
+			writer.endElement(HTML.TD_ELEM);
+
+			writer.startElement(HTML.TD_ELEM, dlg);
+			writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogTitleRight " + getStyleName(dlg, "TitleRight"), null);
+			if (dlg.getCloseButton())
+			{
+				String imageUri = AddResourceFactory.getInstance(facesContext).getResourceUri(facesContext, ModalDialog.class, "close.gif");
+				writer.startElement(HTML.IMG_ELEM, dlg);
+				writer.writeAttribute(HTML.ID_ATTR, dlg.getDialogVar() + "Closer", null);
+				writer.writeAttribute(HTML.SRC_ATTR, imageUri, null);
+				writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogCloser " + getStyleName(dlg, "Closer"), null);
+				writer.endElement(HTML.IMG_ELEM);
+			}
+			writer.endElement(HTML.TD_ELEM);
+
+			writer.endElement(HTML.TR_ELEM);
+			writer.endElement(HTML.TABLE_ELEM);
+		}
+
+		if (dlg.getViewId() != null)
+		{
+			renderDialogViewFrame(facesContext, dlg);
+		}
+		else
+		{
+			RendererUtils.renderChildren(facesContext, uiComponent);
+        	HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+		}
+	}
+
+	private String getStyleName(ModalDialog dlg, String suffix)
+	{
+		if (dlg.getStyleClass() != null)
+		{
+			return dlg.getStyleClass() + suffix;
+		}
+
+		return "";
+	}
+
+	private void renderDialogViewFrame(FacesContext facesContext, ModalDialog dlg) throws IOException
+	{
+		ResponseWriter writer = facesContext.getResponseWriter();
+
+		writer.startElement(HTML.IFRAME_ELEM, dlg);
+		writer.writeAttribute(HTML.ID_ATTR, "modalDialogContent" + dlg.getDialogVar(), null);
+		writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogContent " + getStyleName(dlg, "Content"), null);
+		writer.writeAttribute(HTML.SCROLLING_ATTR, "auto", null);
+		writer.writeAttribute(HTML.FRAMEBORDER_ATTR, "0", null);
+		writer.endElement(HTML.IFRAME_ELEM);
+	}
 }
