@@ -113,12 +113,12 @@ public class ModalDialog extends UIPanel implements DojoWidget {
         return vb != null ? (String)vb.getValue(getFacesContext()) : null;
     }
 
-	public boolean getCloseButton()
+	public Boolean getCloseButton()
     {
-        if (_closeButton != null) return _closeButton.booleanValue();
+        if (_closeButton != null) return _closeButton;
 
 		ValueBinding vb = getValueBinding("closeButton");
-        return vb != null ? Boolean.TRUE.equals(vb.getValue(getFacesContext())) : false;
+        return (Boolean) (vb != null ? vb.getValue(getFacesContext()) : null);
     }
 
 	public String getWidgetVar() {
@@ -200,9 +200,9 @@ public class ModalDialog extends UIPanel implements DojoWidget {
 		this._dialogTitle = dialogTitle;
 	}
 
-	public void setCloseButton(boolean closeButton)
+	public void setCloseButton(Boolean closeButton)
 	{
-		this._closeButton = closeButton?Boolean.TRUE:Boolean.FALSE;
+		this._closeButton = closeButton;
 	}
 
 	public void setWidgetVar(String widgetVar) {

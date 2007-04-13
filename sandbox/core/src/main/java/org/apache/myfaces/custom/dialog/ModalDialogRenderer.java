@@ -80,7 +80,7 @@ public class ModalDialogRenderer extends HtmlRenderer {
 		{
             hiders.addAll(Arrays.asList(dlg.getHiderIds().split(",")));
         }
-		if (dlg.getCloseButton() && dlg.getDialogTitle() != null)
+		if (isRenderCloseButton(dlg) && dlg.getDialogTitle() != null)
 		{
 			hiders.add(dlg.getDialogVar() + "Closer");
 		}
@@ -233,7 +233,7 @@ public class ModalDialogRenderer extends HtmlRenderer {
 
 			writer.startElement(HTML.TD_ELEM, dlg);
 			writer.writeAttribute(HTML.CLASS_ATTR, "modalDialogTitleRight " + getStyleName(dlg, "TitleRight"), null);
-			if (dlg.getCloseButton())
+			if (isRenderCloseButton(dlg))
 			{
 				String imageUri = AddResourceFactory.getInstance(facesContext).getResourceUri(facesContext, ModalDialog.class, "close.gif");
 				writer.startElement(HTML.IMG_ELEM, dlg);
@@ -257,6 +257,11 @@ public class ModalDialogRenderer extends HtmlRenderer {
 			RendererUtils.renderChildren(facesContext, uiComponent);
         	HtmlRendererUtils.writePrettyLineSeparator(facesContext);
 		}
+	}
+
+	protected boolean isRenderCloseButton(ModalDialog dlg)
+	{
+		return !Boolean.FALSE.equals(dlg.getCloseButton());
 	}
 
 	private String getStyleName(ModalDialog dlg, String suffix)
