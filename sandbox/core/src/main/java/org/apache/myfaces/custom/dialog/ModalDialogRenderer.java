@@ -32,10 +32,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.StringTokenizer;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class ModalDialogRenderer extends HtmlRenderer {
     public static final String RENDERER_TYPE = "org.apache.myfaces.ModalDialog";
@@ -159,9 +159,15 @@ public class ModalDialogRenderer extends HtmlRenderer {
 		}
 
 		buf.append("}")
-        // .append("setTimeout('"+dlg.getDialogVar()+"_loader();',500);")
-		.append(dlg.getDialogVar()+"_loader();")
-        .append("</script>");
+
+		// do not user timout, else you'll break the submitOnEvent component
+		// .append("setTimeout('"+dlg.getDialogVar()+"_loader();', 50);")
+		// do not user direct loading, else you'll break IE sometimes (always?)
+		// .append(dlg.getDialogVar()+"_loader();")
+		// looks like this works best for now
+		.append("dojo.addOnLoad(function() {"+dlg.getDialogVar()+"_loader();});")
+
+		.append("</script>");
 		return dlgId;
 	}
 
