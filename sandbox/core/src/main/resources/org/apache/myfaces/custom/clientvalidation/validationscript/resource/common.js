@@ -48,12 +48,14 @@ tomahawk.CVUtils = new function() {
 		
 tomahawk.RendererUtils = new function() {
 
-	this.renderMessage = function(facesContext,clientId) {
+		this.renderMessage = function(facesContext,clientId) {
 			var messageComponent = 	document.getElementById(clientId + "_msgFor");
+			if( messageComponent == undefined || messageComponent == null)
+				return;
+			
 			this.clean(messageComponent); // clean first
 
 			var message = tomahawk.MessageUtils.findMessage(facesContext,clientId);
-
 			if(message != null) {
 				messageComponent.appendChild(document.createTextNode(message.detail));
 			}
