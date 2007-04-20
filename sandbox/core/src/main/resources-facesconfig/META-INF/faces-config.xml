@@ -649,6 +649,22 @@
 		<converter-for-class>java.lang.Float</converter-for-class>
 		<converter-class>org.apache.myfaces.convert.ex.FloatConverter</converter-class>
 	</converter>
+    <converter>
+		<converter-id>javax.faces.Long</converter-id>
+		<converter-class>org.apache.myfaces.convert.ex.LongConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>java.lang.Long</converter-for-class>
+		<converter-class>org.apache.myfaces.convert.ex.LongConverter</converter-class>
+	</converter>
+	    <converter>
+		<converter-id>javax.faces.Short</converter-id>
+		<converter-class>org.apache.myfaces.convert.ex.ShortConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-for-class>java.lang.Short</converter-for-class>
+		<converter-class>org.apache.myfaces.convert.ex.ShortConverter</converter-class>
+	</converter>
     
 	<validator>
 		<validator-id>javax.faces.Length</validator-id>

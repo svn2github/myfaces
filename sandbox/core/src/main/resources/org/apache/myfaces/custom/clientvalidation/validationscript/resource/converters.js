@@ -90,3 +90,53 @@ tomahawk.FloatConverter = function() {
 		return null;
 	}
 }
+
+tomahawk.LongConverter = function() {
+		
+	this.CONVERSION_MESSAGE_ID = "javax.faces.convert.LongConverter.CONVERSION";
+
+	this.getAsObject = function(context,uiinput,value) {
+		
+		if( value != null ) {
+			//TODO trim
+			if( value.length > 0)  {
+				var integerRegExp = /^(\+|-)?\d+$/;
+				var isInteger = integerRegExp.test(value);						
+				if( !isInteger ) {
+					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+					throw new tomahawk.ConverterException( facesMessage );
+				}
+				else {
+					var convertedValue = parseInt( value );
+					return convertedValue;
+				}
+			}
+		}
+		return null;
+	}
+}
+
+tomahawk.ShortConverter = function() {
+		
+	this.CONVERSION_MESSAGE_ID = "javax.faces.convert.ShortConverter.CONVERSION";
+
+	this.getAsObject = function(context,uiinput,value) {
+		
+		if( value != null ) {
+			//TODO trim
+			if( value.length > 0)  {
+				var integerRegExp = /^(\+|-)?\d+$/;
+				var isInteger = integerRegExp.test(value);						
+				if( !isInteger ) {
+					var facesMessage = tomahawk.MessageUtils.getMessage(tomahawk.FacesMessage.SEVERITY_ERROR,this.CONVERSION_MESSAGE_ID,new Array(uiinput.id,value))
+					throw new tomahawk.ConverterException( facesMessage );
+				}
+				else {
+					var convertedValue = parseInt( value );
+					return convertedValue;
+				}
+			}
+		}
+		return null;
+	}
+}
