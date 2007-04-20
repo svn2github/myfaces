@@ -57,10 +57,9 @@ seconds since last page refresh.
         <f:verbatim><br /></f:verbatim>
         <f:verbatim><br /></f:verbatim>
 
-        <s:pprPanelGroup id="nameList" partialTriggers="serachLink">
+        <s:pprPanelGroup id="nameList" partialTriggers="searchLink">
             <t:dataList var="name" value="#{pprExampleBean.names}" layout="list">
-                <h:outputText value="#{name}" />
-                <f:verbatim><br /></f:verbatim>
+                <h:outputText value="#{name}<br />" escape="false"/>
             </t:dataList>
         </s:pprPanelGroup>
 
@@ -82,4 +81,5 @@ seconds since last page refresh.
 </body>
 
 </html>
+
 

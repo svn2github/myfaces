@@ -78,7 +78,9 @@ tomahawk.RendererUtils = new function() {
 		}
 		
 		this.clean = function(root) {
-			while(root.firstChild) root.removeChild(root.firstChild);
+            if(root === undefined || root == null)
+                return;
+            while(root.firstChild) root.removeChild(root.firstChild);
 		}
 	
 		this.addRow = function(uimessages,root,message) {

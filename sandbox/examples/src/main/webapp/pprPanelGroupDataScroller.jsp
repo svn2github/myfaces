@@ -32,6 +32,18 @@
 
 <body>
 <h1>PPR Example - ajaxifying a datatable using PPR with partialTriggerPattern</h1>
+
+<span id="cnt">0</span>
+seconds since last page refresh.
+<script>
+    var sec=0;
+    function counter(){
+        setTimeout("counter();",1000);
+        document.getElementById("cnt").innerHTML = sec++;
+    }
+    counter();
+</script>
+
 <f:view>
 
 	<h:form id="mainform">
@@ -141,4 +153,5 @@
 </body>
 
 </html>
+
 

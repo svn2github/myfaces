@@ -19,12 +19,14 @@
 
 package org.apache.myfaces.examples.inputSuggestAjax;
 
+import java.io.Serializable;
+
 /**
  * @author Gerald Muellan
  *         Date: 12.02.2006
  *         Time: 23:30:40
  */
-public class Address
+public class Address implements Serializable
 {
     private int _streetNumber;
     private String _streetName;
@@ -38,7 +40,7 @@ public class Address
                    String city,
                    long zip,String state)
     {
-        _streetNumber = streetNumber;      
+        _streetNumber = streetNumber;
         _streetName = streetName;
         _city = city;
         _state = state;

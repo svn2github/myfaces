@@ -64,14 +64,16 @@ public class PPRExampleBean
     }
 
     public String searchNames() {
-        List _names = getListMasterData();
+        _names = getListMasterData();
+
+        if(_textField == null || _textField.equals(""))
+            return null;
+
         for (Iterator iterator = _names.iterator(); iterator.hasNext();)
         {
             Object o = iterator.next();
             String currentName = (String) o;
-            if( _textField != null &&
-                !_textField.equals("") &&
-                (-1 == currentName.indexOf(_textField)))
+            if(-1 == currentName.toLowerCase().indexOf(_textField.toLowerCase()))
             {
                 iterator.remove();
             }

@@ -52,15 +52,17 @@ seconds since last page refresh.
 			<h:outputText value="Enter the value for update:" />
 			<h:inputText value="#{pprExampleBean.textField}" />
 			
-			<h:outputText value="partial update button:" />
+            <h:outputText value="partial update button:" />
 			<h:commandButton id="pprSubmitButton" value="PPR Submit" />
 
-			<h:outputText value="PPRPanelGroup:" />
+			<h:outputText value="Entered text will appear here:" />
 			<s:pprPanelGroup id="ppr1"
 				partialTriggers="pprSubmitButton">
 				<h:outputText value="#{pprExampleBean.textField}" />
 			</s:pprPanelGroup>
-		</h:panelGrid>
+
+
+        </h:panelGrid>
         <s:fieldset legend="about this example">
             <f:verbatim>
                 <br />
@@ -83,4 +85,5 @@ seconds since last page refresh.
 </body>
 
 </html>
+
 
