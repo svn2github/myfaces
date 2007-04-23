@@ -33,9 +33,11 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -61,7 +63,12 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
 
 	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException {
-		if (facesContext.getExternalContext().getRequestMap().containsKey(PPR_RESPONSE)) {
+		
+		final ExternalContext externalContext = facesContext.getExternalContext();
+		
+		final Map requestMap = externalContext.getRequestMap();
+		
+		if (requestMap.containsKey(PPR_RESPONSE)) {
 			return;
 		}
 
@@ -70,8 +77,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 			throw new FacesException("PPRPanelGroup must be embedded in a form.");
 		}
 
-		if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED)) {
-			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED, Boolean.TRUE);
+		if (!requestMap.containsKey(PPR_INITIALIZED)) {
+			requestMap.put(PPR_INITIALIZED, Boolean.TRUE);
 
 			String javascriptLocation = (String) pprGroup.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
 			AddResource addResource = AddResourceFactory.getInstance(facesContext);
@@ -84,12 +91,14 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		}
 
 		StringBuffer script = new StringBuffer();
-		String pprCtrlReference = "dojo.byId('" + fi.getFormName() + "').myFacesPPRCtrl";
+		final String formName = fi.getFormName();
+		
+		String pprCtrlReference = "dojo.byId('" + formName + "').myFacesPPRCtrl";
 
-		if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED + "." + fi.getFormName())) {
-			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED + "." + fi.getFormName(), Boolean.TRUE);
+		if (!requestMap.containsKey(PPR_INITIALIZED + "." + formName)) {
+			requestMap.put(PPR_INITIALIZED + "." + formName, Boolean.TRUE);
 
-			script.append(pprCtrlReference + "=" + MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"
+			script.append(pprCtrlReference + "=" + MY_FACES_PPR_INIT_CODE + "('" + formName + "',"
 					+ pprGroup.getShowDebugMessages().booleanValue() + "," + pprGroup.getStateUpdate().booleanValue() + ");\n");
 
 			if (pprGroup.getPeriodicalUpdate() != null) {
@@ -114,7 +123,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		UIComponent partialTriggerComponent;
 
 		String partialTriggers = pprGroup.getPartialTriggers();
-
+		
 		String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
 		if (partialTriggerPattern != null && partialTriggerPattern.trim().length() > 0) {
 			script = new StringBuffer();
@@ -141,7 +150,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 				partialTriggerId = st.nextToken();
 				partialTriggerComponent = pprGroup.findComponent(partialTriggerId);
 				if (partialTriggerComponent == null) {
-					partialTriggerComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent(partialTriggerId);
+					partialTriggerComponent = facesContext.getViewRoot().findComponent(partialTriggerId);
 				}
 				if (partialTriggerComponent != null) {
 					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
@@ -172,8 +181,11 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		if (uiComponent instanceof PPRPanelGroup) {
 			PPRPanelGroup pprGroup = (PPRPanelGroup) uiComponent;
 
-			if ((pprGroup.getPartialTriggers() != null && pprGroup.getPartialTriggers().length() > 0)
-					|| (pprGroup.getPartialTriggerPattern() != null && pprGroup.getPartialTriggerPattern().length() > 0)
+			final String triggers = pprGroup.getPartialTriggers();
+			final String triggerPattern = pprGroup.getPartialTriggerPattern();
+			
+			if ((triggers != null && triggers.length() > 0)
+					|| (triggerPattern != null && triggerPattern.length() > 0)
 					|| pprGroup.getPeriodicalUpdate() != null) {
 				encodeJavaScript(facesContext, pprGroup);
 			}

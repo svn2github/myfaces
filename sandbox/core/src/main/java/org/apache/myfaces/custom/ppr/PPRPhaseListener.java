@@ -28,6 +28,7 @@ import javax.faces.FacesException;
 import javax.faces.application.StateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -60,33 +61,40 @@ public class PPRPhaseListener implements PhaseListener {
 		}
 
 		FacesContext context = event.getFacesContext();
-		Map externalRequestMap = context.getExternalContext().getRequestParameterMap();
+		final ExternalContext externalContext = context.getExternalContext();
+		Map externalRequestMap = externalContext.getRequestParameterMap();
 
 		if (externalRequestMap.containsKey(PPR_PARAMETER)) {
-			context.getExternalContext().getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
-
-			ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
-			ServletRequest request = (ServletRequest) context.getExternalContext().getRequest();
-
-			UIViewRoot viewRoot = context.getViewRoot();
-			String contentType = getContentType("text/xml", request.getCharacterEncoding());
-			response.setContentType(contentType);
-			response.setLocale(viewRoot.getLocale());
-			String triggeredComponents = (String) externalRequestMap.get(TRIGGERED_COMPONENTS_PARAMETER);
-			try {
-				PrintWriter out = response.getWriter();
-				context.setResponseWriter(new HtmlResponseWriterImpl(out, contentType, request.getCharacterEncoding()));
-				out.print(XML_HEADER);
-				out.print("<response>\n");
-				encodeTriggeredComponents(out, triggeredComponents, viewRoot, context);
-				out.print("</response>");
-				out.flush();
-			} catch (IOException e) {
-				throw new FacesException(e);
-			}
-
-			context.responseComplete();
+			processPartialPageRequest(context, externalContext, externalRequestMap);
 		}
+	}
+
+	private void processPartialPageRequest(FacesContext context, final ExternalContext externalContext, Map externalRequestMap) {
+		externalContext.getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
+
+		ServletResponse response = (ServletResponse) externalContext.getResponse();
+		ServletRequest request = (ServletRequest) externalContext.getRequest();
+
+		UIViewRoot viewRoot = context.getViewRoot();
+		final String characterEncoding = request.getCharacterEncoding();
+		String contentType = getContentType("text/xml", characterEncoding);
+		response.setContentType(contentType);
+		response.setLocale(viewRoot.getLocale());
+		String triggeredComponents = (String) externalRequestMap.get(TRIGGERED_COMPONENTS_PARAMETER);
+		
+		try {
+			PrintWriter out = response.getWriter();
+			context.setResponseWriter(new HtmlResponseWriterImpl(out, contentType, characterEncoding));
+			out.print(XML_HEADER);
+			out.print("<response>\n");
+			encodeTriggeredComponents(out, triggeredComponents, viewRoot, context);
+			out.print("</response>");
+			out.flush();
+		} catch (IOException e) {
+			throw new FacesException(e);
+		}
+
+		context.responseComplete();
 	}
 
 	private String getContentType(String contentType, String charset) {
