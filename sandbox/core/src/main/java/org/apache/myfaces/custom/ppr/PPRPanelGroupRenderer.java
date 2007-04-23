@@ -41,36 +41,36 @@ import java.util.StringTokenizer;
 /**
  * @author Ernst Fastl
  */
-public class PPRPanelGroupRenderer extends HtmlGroupRenderer
-{
+public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	public static final String PPR_INITIALIZED = "org.apache.myfaces.ppr.INITIALIZED";
+
 	public static final String PPR_RESPONSE = "org.apache.myfaces.ppr.RESPONSE";
 
 	private static Log log = LogFactory.getLog(PPRPanelGroupRenderer.class);
 
 	private static final String MY_FACES_PPR_INITIALIZED = "/*MyFaces PPR initialized*/";
+
 	private static final String ADD_PARTIAL_TRIGGER_FUNCTION = "addPartialTrigger";
+
 	private static final String ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION = "addPartialTriggerPattern";
+
 	private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
+
 	private static final String PPR_JS_FILE = "ppr.js";
 
 	private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
 
-	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException
-	{
-		if (facesContext.getExternalContext().getRequestMap().containsKey(PPR_RESPONSE))
-		{
+	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException {
+		if (facesContext.getExternalContext().getRequestMap().containsKey(PPR_RESPONSE)) {
 			return;
 		}
 
 		FormInfo fi = RendererUtils.findNestingForm(pprGroup, facesContext);
-		if (fi == null)
-		{
+		if (fi == null) {
 			throw new FacesException("PPRPanelGroup must be embedded in a form.");
 		}
 
-		if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED))
-		{
+		if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED)) {
 			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED, Boolean.TRUE);
 
 			String javascriptLocation = (String) pprGroup.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
@@ -80,142 +80,121 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 			DojoUtils.addRequire(facesContext, pprGroup, "dojo.event.*");
 			addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, MY_FACES_PPR_INITIALIZED);
 
-			addResource.addJavaScriptAtPosition(facesContext,
-				AddResource.HEADER_BEGIN,
-				PPRPanelGroup.class,
-				PPR_JS_FILE);
-        }
+			addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PPRPanelGroup.class, PPR_JS_FILE);
+		}
 
-        StringBuffer script = new StringBuffer();
-        String pprCtrlReference = "dojo.byId('"+ fi.getFormName() + "').myFacesPPRCtrl";
-        
-        if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED  +
-                    "." +
-                    fi.getFormName()))
-		{
-			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED  +
-                    "." +
-                    fi.getFormName(),
-                    Boolean.TRUE);
+		StringBuffer script = new StringBuffer();
+		String pprCtrlReference = "dojo.byId('" + fi.getFormName() + "').myFacesPPRCtrl";
 
-            script.append(pprCtrlReference + "=" +
-                    MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"+ pprGroup.getShowDebugMessages().booleanValue()
-                                                                     + ","+ pprGroup.getStateUpdate().booleanValue()+");\n");
+		if (!facesContext.getExternalContext().getRequestMap().containsKey(PPR_INITIALIZED + "." + fi.getFormName())) {
+			facesContext.getExternalContext().getRequestMap().put(PPR_INITIALIZED + "." + fi.getFormName(), Boolean.TRUE);
 
-            if (pprGroup.getPeriodicalUpdate() != null)
-            {
-                script.append(pprCtrlReference + ".registerOnSubmitInterceptor();");
-            }
+			script.append(pprCtrlReference + "=" + MY_FACES_PPR_INIT_CODE + "('" + fi.getFormName() + "',"
+					+ pprGroup.getShowDebugMessages().booleanValue() + "," + pprGroup.getStateUpdate().booleanValue() + ");\n");
 
-            renderInlineScript(facesContext, pprGroup, script.toString());
-        }
+			if (pprGroup.getPeriodicalUpdate() != null) {
+				script.append(pprCtrlReference + ".registerOnSubmitInterceptor();");
+			}
 
-        String clientId = pprGroup.getClientId(facesContext);
+			renderInlineScript(facesContext, pprGroup, script.toString());
+		}
 
-        if (pprGroup.getPeriodicalUpdate() != null)
-        {
-            script = new StringBuffer();
-            script.append(pprCtrlReference + ".startPeriodicalUpdate("+ pprGroup.getPeriodicalUpdate() +",'"+ clientId +"');");
+		String clientId = pprGroup.getClientId(facesContext);
 
-            renderInlineScript(facesContext, pprGroup, script.toString());
-        }
+		if (pprGroup.getPeriodicalUpdate() != null) {
+			script = new StringBuffer();
+			script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId
+					+ "');");
 
-        String partialTriggerId;
+			renderInlineScript(facesContext, pprGroup, script.toString());
+		}
+
+		String partialTriggerId;
 		String partialTriggerClientId;
 		UIComponent partialTriggerComponent;
-		
+
 		String partialTriggers = pprGroup.getPartialTriggers();
 
 		String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
-		if(partialTriggerPattern != null && partialTriggerPattern.trim().length()>0) 
-		{
-            script = new StringBuffer();
-            script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION +
-						    "('" + partialTriggerPattern + "','" + clientId + "');");
+		if (partialTriggerPattern != null && partialTriggerPattern.trim().length() > 0) {
+			script = new StringBuffer();
+			script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION + "('" + partialTriggerPattern
+					+ "','" + clientId + "');");
 
-            renderInlineScript(facesContext, pprGroup, script.toString());
+			renderInlineScript(facesContext, pprGroup, script.toString());
 		}
-		
+
 		String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
-		
-		if(inlineLoadingMessage!= null && inlineLoadingMessage.trim().length()>0)
-		{
-            script = new StringBuffer();
-            script.append(pprCtrlReference + "." + ADD_INLINE_LOADING_MESSAGE_FUNCTION +
-						        "('" + inlineLoadingMessage + "','" + clientId + "');");
 
-            renderInlineScript(facesContext, pprGroup, script.toString());
+		if (inlineLoadingMessage != null && inlineLoadingMessage.trim().length() > 0) {
+			script = new StringBuffer();
+			script.append(pprCtrlReference + "." + ADD_INLINE_LOADING_MESSAGE_FUNCTION + "('" + inlineLoadingMessage + "','"
+					+ clientId + "');");
+
+			renderInlineScript(facesContext, pprGroup, script.toString());
 
 		}
-		
-		if(partialTriggers!= null && partialTriggers.trim().length()>0)
-		{
+
+		if (partialTriggers != null && partialTriggers.trim().length() > 0) {
 			StringTokenizer st = new StringTokenizer(partialTriggers, ",; ", false);
-			while (st.hasMoreTokens())
-			{
+			while (st.hasMoreTokens()) {
 				partialTriggerId = st.nextToken();
 				partialTriggerComponent = pprGroup.findComponent(partialTriggerId);
-				if(partialTriggerComponent == null)
-				{
+				if (partialTriggerComponent == null) {
 					partialTriggerComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent(partialTriggerId);
 				}
-				if (partialTriggerComponent != null)
-				{
+				if (partialTriggerComponent != null) {
 					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
-                    script = new StringBuffer();
-                    script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION +
-							            "('" + partialTriggerClientId + "','" + clientId + "');");
+					script = new StringBuffer();
+					script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION + "('" + partialTriggerClientId + "','"
+							+ clientId + "');");
 
-                    renderInlineScript(facesContext, pprGroup, script.toString());
+					renderInlineScript(facesContext, pprGroup, script.toString());
 
-				}
-				else
-				{
-					if (log.isDebugEnabled())
-					{
+				} else {
+					if (log.isDebugEnabled()) {
 						log.debug("PPRPanelGroupRenderer Component with id " + partialTriggerId + " not found!");
 					}
 				}
 			}
 		}
-    }
+	}
 
-	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
-	{
-		if (uiComponent.getId() == null || uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
-		{
+	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+		if (uiComponent.getId() == null || uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
 			throw new IllegalArgumentException("'id' is a required attribute for the PPRPanelGroup");
 		}
 		super.encodeBegin(facesContext, uiComponent);
 	}
 
-	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
-	{
+	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 		super.encodeEnd(facesContext, uiComponent);
-		if (uiComponent instanceof PPRPanelGroup)
-		{
+		if (uiComponent instanceof PPRPanelGroup) {
 			PPRPanelGroup pprGroup = (PPRPanelGroup) uiComponent;
 
 			if ((pprGroup.getPartialTriggers() != null && pprGroup.getPartialTriggers().length() > 0)
-                 || (pprGroup.getPartialTriggerPattern() != null && pprGroup.getPartialTriggerPattern().length() > 0)
-                 ||  pprGroup.getPeriodicalUpdate() != null)
-			{
+					|| (pprGroup.getPartialTriggerPattern() != null && pprGroup.getPartialTriggerPattern().length() > 0)
+					|| pprGroup.getPeriodicalUpdate() != null) {
 				encodeJavaScript(facesContext, pprGroup);
 			}
 		}
 	}
 
 	/**
-	 * Helper to write an inline javascript at the
-	 * exact resource location of the call.
-	 *
-	 * @param facesContext The current faces-context.
-	 * @param component The component for which the script is written.
-	 * @param script The script to be written.
-	 * @throws IOException A forwarded exception from the underlying renderer.
+	 * Helper to write an inline javascript at the exact resource location of the
+	 * call.
+	 * 
+	 * @param facesContext
+	 *          The current faces-context.
+	 * @param component
+	 *          The component for which the script is written.
+	 * @param script
+	 *          The script to be written.
+	 * @throws IOException
+	 *           A forwarded exception from the underlying renderer.
 	 */
-	private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException
-	{
+	private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script)
+			throws IOException {
 		ResponseWriter writer = facesContext.getResponseWriter();
 		writer.startElement(HTML.SCRIPT_ELEM, component);
 		writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
