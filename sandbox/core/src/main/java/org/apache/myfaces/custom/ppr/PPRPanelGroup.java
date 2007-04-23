@@ -27,133 +27,121 @@ import javax.faces.el.ValueBinding;
 /**
  * @author Ernst Fastl
  */
-public class PPRPanelGroup extends HtmlPanelGroup
-{
+public class PPRPanelGroup extends HtmlPanelGroup {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.PPRPanelGroup";
+
 	public static final String COMPONENT_FAMILY = "org.apache.myfaces.PPRPanelGroup";
+
 	public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRPanelGroup";
 
 	private String _partialTriggers;
-    private Integer _periodicalUpdate;
 
-    private String _partialTriggerPattern;
-	
+	private Integer _periodicalUpdate;
+
+	private String _partialTriggerPattern;
+
 	private String _inlineLoadingMessage;
 
-    private Boolean _showDebugMessages = new Boolean(false);
-    private Boolean _stateUpdate = new Boolean(true);
+	private Boolean _showDebugMessages = new Boolean(false);
 
-    public PPRPanelGroup()
-	{
+	private Boolean _stateUpdate = new Boolean(true);
+
+	public PPRPanelGroup() {
 		setRendererType(DEFAULT_RENDERER_TYPE);
 	}
 
-	public String getFamily()
-	{
+	public String getFamily() {
 		return COMPONENT_FAMILY;
 	}
 
-	public String getPartialTriggers()
-	{
-		if (_partialTriggers != null) return _partialTriggers;
-        ValueBinding vb = getValueBinding("partialTriggers");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+	public String getPartialTriggers() {
+		if (_partialTriggers != null)
+			return _partialTriggers;
+		ValueBinding vb = getValueBinding("partialTriggers");
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
 	}
 
-	public void setPartialTriggers(String partialTriggers)
-	{
+	public void setPartialTriggers(String partialTriggers) {
 		this._partialTriggers = partialTriggers;
 	}
 
-    public Integer getPeriodicalUpdate() 
-    {
-        if (_periodicalUpdate != null) return _periodicalUpdate;
-        ValueBinding vb = getValueBinding("periodicalUpdate");
-        return (vb != null) ? (Integer) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setPeriodicalUpdate(Integer periodicalUpdate)
-    {
-        _periodicalUpdate = periodicalUpdate;
-    }
-
-    public String getPartialTriggerPattern()
-	{
-		if (_partialTriggerPattern != null) return _partialTriggerPattern;
-        ValueBinding vb = getValueBinding("partialTriggerPattern");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+	public Integer getPeriodicalUpdate() {
+		if (_periodicalUpdate != null)
+			return _periodicalUpdate;
+		ValueBinding vb = getValueBinding("periodicalUpdate");
+		return (vb != null) ? (Integer) vb.getValue(getFacesContext()) : null;
 	}
 
-	public void setPartialTriggerPattern(String partialTriggerPattern)
-	{
+	public void setPeriodicalUpdate(Integer periodicalUpdate) {
+		_periodicalUpdate = periodicalUpdate;
+	}
+
+	public String getPartialTriggerPattern() {
+		if (_partialTriggerPattern != null)
+			return _partialTriggerPattern;
+		ValueBinding vb = getValueBinding("partialTriggerPattern");
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+	}
+
+	public void setPartialTriggerPattern(String partialTriggerPattern) {
 		this._partialTriggerPattern = partialTriggerPattern;
 	}
-	
-	public String getInlineLoadingMessage()
-	{
-		if (_inlineLoadingMessage != null) return _inlineLoadingMessage;
-        ValueBinding vb = getValueBinding("inlineLoadingMessage");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
+
+	public String getInlineLoadingMessage() {
+		if (_inlineLoadingMessage != null)
+			return _inlineLoadingMessage;
+		ValueBinding vb = getValueBinding("inlineLoadingMessage");
+		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
 	}
 
-	public void setInlineLoadingMessage(String inlineLoadingMessage)
-	{
+	public void setInlineLoadingMessage(String inlineLoadingMessage) {
 		this._inlineLoadingMessage = inlineLoadingMessage;
 	}
 
-    public Boolean getShowDebugMessages()
-    {
-         if (_showDebugMessages != null)
-        {
-            return _showDebugMessages;
-        }
-        ValueBinding vb = getValueBinding("showDebugMessages");
-        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-    }
+	public Boolean getShowDebugMessages() {
+		if (_showDebugMessages != null) {
+			return _showDebugMessages;
+		}
+		ValueBinding vb = getValueBinding("showDebugMessages");
+		return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+	}
 
-    public void setShowDebugMessages(Boolean showDebugMessages)
-    {
-        _showDebugMessages = showDebugMessages;
-    }
+	public void setShowDebugMessages(Boolean showDebugMessages) {
+		_showDebugMessages = showDebugMessages;
+	}
 
+	public Boolean getStateUpdate() {
+		if (_stateUpdate != null) {
+			return _stateUpdate;
+		}
+		ValueBinding vb = getValueBinding("stateUpdate");
+		return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+	}
 
-    public Boolean getStateUpdate()
-    {
-         if (_stateUpdate != null)
-        {
-            return _stateUpdate;
-        }
-        ValueBinding vb = getValueBinding("stateUpdate");
-        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-    }
+	public void setStateUpdate(Boolean stateUpdate) {
+		_stateUpdate = stateUpdate;
+	}
 
-    public void setStateUpdate(Boolean stateUpdate)
-    {
-        _stateUpdate = stateUpdate;
-    }
-
-    public void restoreState(FacesContext context, Object state)
-	{
+	public void restoreState(FacesContext context, Object state) {
 
 		Object[] values = (Object[]) state;
 		super.restoreState(context, values[0]);
 		_partialTriggers = (String) values[1];
 		_partialTriggerPattern = (String) values[2];
-        _periodicalUpdate = (Integer) values[3];
-        _showDebugMessages = (Boolean) values[4];
-        _stateUpdate = (Boolean) values[5];
+		_periodicalUpdate = (Integer) values[3];
+		_showDebugMessages = (Boolean) values[4];
+		_stateUpdate = (Boolean) values[5];
 
-    }
+	}
 
-	public Object saveState(FacesContext context)
-	{
+	public Object saveState(FacesContext context) {
 		Object[] values = new Object[6];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
 		values[2] = _partialTriggerPattern;
-        values[3] = _periodicalUpdate;
-        values[4] = _showDebugMessages;
-        values[5] = _stateUpdate;
-        return values;
+		values[3] = _periodicalUpdate;
+		values[4] = _showDebugMessages;
+		values[5] = _stateUpdate;
+		return values;
 	}
 }

@@ -42,121 +42,98 @@ import java.util.StringTokenizer;
 /**
  * @author Ernst Fastl
  */
-public class PPRPhaseListener implements PhaseListener
-{
+public class PPRPhaseListener implements PhaseListener {
 	private static Log log = LogFactory.getLog(PPRPhaseListener.class);
+
 	private static final String PPR_PARAMETER = "org.apache.myfaces.PPRCtrl.ajaxRequest";
+
 	private static final String TRIGGERED_COMPONENTS_PARAMETER = "org.apache.myfaces.PPRCtrl.triggeredComponents";
+
 	private static final String XML_HEADER = "<?xml version=\"1.0\"?>\n";
 
-	public void afterPhase(PhaseEvent phaseEvent)
-	{
+	public void afterPhase(PhaseEvent phaseEvent) {
 	}
 
-	public void beforePhase(PhaseEvent event)
-	{
-		if (log.isDebugEnabled())
-		{
+	public void beforePhase(PhaseEvent event) {
+		if (log.isDebugEnabled()) {
 			log.debug("In PPRPhaseListener beforePhase");
 		}
 
 		FacesContext context = event.getFacesContext();
 		Map externalRequestMap = context.getExternalContext().getRequestParameterMap();
 
-		if (externalRequestMap.containsKey(PPR_PARAMETER))
-		{
+		if (externalRequestMap.containsKey(PPR_PARAMETER)) {
 			context.getExternalContext().getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
 
-			ServletResponse response =
-				(ServletResponse) context.getExternalContext().getResponse();
-			ServletRequest request =
-				(ServletRequest) context.getExternalContext().getRequest();
+			ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
+			ServletRequest request = (ServletRequest) context.getExternalContext().getRequest();
 
 			UIViewRoot viewRoot = context.getViewRoot();
-            String contentType = getContentType("text/xml",request.getCharacterEncoding());
-            response.setContentType(contentType);
+			String contentType = getContentType("text/xml", request.getCharacterEncoding());
+			response.setContentType(contentType);
 			response.setLocale(viewRoot.getLocale());
 			String triggeredComponents = (String) externalRequestMap.get(TRIGGERED_COMPONENTS_PARAMETER);
-			try
-			{
+			try {
 				PrintWriter out = response.getWriter();
-				context.setResponseWriter(new HtmlResponseWriterImpl(out,
-					contentType,
-					request.getCharacterEncoding()));
+				context.setResponseWriter(new HtmlResponseWriterImpl(out, contentType, request.getCharacterEncoding()));
 				out.print(XML_HEADER);
 				out.print("<response>\n");
 				encodeTriggeredComponents(out, triggeredComponents, viewRoot, context);
 				out.print("</response>");
 				out.flush();
-			}
-			catch (IOException e)
-			{
+			} catch (IOException e) {
 				throw new FacesException(e);
 			}
 
 			context.responseComplete();
-		}                                          
+		}
 	}
 
-    private String getContentType(String contentType, String charset)
-    {
-        if (charset == null || charset.trim().length() == 0)
-            return contentType;
-        else
-            return contentType + ";charset=" + charset;
-    }
+	private String getContentType(String contentType, String charset) {
+		if (charset == null || charset.trim().length() == 0)
+			return contentType;
+		else
+			return contentType + ";charset=" + charset;
+	}
 
-    private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot, FacesContext context)
-	{
+	private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot,
+			FacesContext context) {
 		StringTokenizer st = new StringTokenizer(triggeredComponents, ",", false);
 		String clientId;
 		UIComponent component;
-		while (st.hasMoreTokens())
-		{
+		while (st.hasMoreTokens()) {
 			clientId = st.nextToken();
 			component = viewRoot.findComponent(clientId);
-			if(component!=null) {
-				out.print("<component id=\"" +
-					component.getClientId(context) +
-					"\"><![CDATA[");
-                boolean oldValue = HtmlRendererUtils.isAllowedCdataSection(context);
-                HtmlRendererUtils.allowCdataSection(context, false);
-                try
-				{
+			if (component != null) {
+				out.print("<component id=\"" + component.getClientId(context) + "\"><![CDATA[");
+				boolean oldValue = HtmlRendererUtils.isAllowedCdataSection(context);
+				HtmlRendererUtils.allowCdataSection(context, false);
+				try {
 					RendererUtils.renderChildren(context, component);
-				}
-				catch (IOException e)
-				{
+				} catch (IOException e) {
 					throw new FacesException(e);
 				}
-                HtmlRendererUtils.allowCdataSection(context, oldValue);
-                out.print("]]></component>");
-			}
-			else
-			{
+				HtmlRendererUtils.allowCdataSection(context, oldValue);
+				out.print("]]></component>");
+			} else {
 				log.debug("PPRPhaseListener component with id" + clientId + "not found!");
 			}
 		}
-        out.print("<state>");
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                StateManager stateManager = facesContext.getApplication().getStateManager();
-                StateManager.SerializedView serializedView
-                        = stateManager.saveSerializedView(facesContext);
-                try
-                {
-                    stateManager.writeState(facesContext, serializedView);
-                }
-                catch (IOException e)
-                {
-                    throw new FacesException(e);
-                }
+		out.print("<state>");
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		StateManager stateManager = facesContext.getApplication().getStateManager();
+		StateManager.SerializedView serializedView = stateManager.saveSerializedView(facesContext);
+		try {
+			stateManager.writeState(facesContext, serializedView);
+		} catch (IOException e) {
+			throw new FacesException(e);
+		}
 
-        out.print("</state>");
+		out.print("</state>");
 
-    }
+	}
 
-	public PhaseId getPhaseId()
-	{
+	public PhaseId getPhaseId() {
 		return PhaseId.RENDER_RESPONSE;
 	}
 }

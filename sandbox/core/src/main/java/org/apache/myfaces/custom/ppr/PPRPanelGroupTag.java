@@ -25,58 +25,51 @@ import javax.faces.component.UIComponent;
 /**
  * @author Ernst Fastl
  */
-public class PPRPanelGroupTag extends HtmlPanelGroupTag
-{
+public class PPRPanelGroupTag extends HtmlPanelGroupTag {
 	private String _partialTriggers;
-	
+
 	private String _partialTriggerPattern;
-	
+
 	private String _inlineLoadingMessage;
 
-    private String _periodicalUpdate;
+	private String _periodicalUpdate;
 
-    private String _showDebugMessages;
+	private String _showDebugMessages;
 
-    private String _stateUpdate;
+	private String _stateUpdate;
 
-    public String getComponentType()
-	{
+	public String getComponentType() {
 		return PPRPanelGroup.COMPONENT_TYPE;
 	}
 
-	public String getRendererType()
-	{
+	public String getRendererType() {
 		return PPRPanelGroup.DEFAULT_RENDERER_TYPE;
 	}
 
-	public void release()
-	{
+	public void release() {
 		super.release();
 		_partialTriggers = null;
-        _periodicalUpdate = null;
-        _showDebugMessages = null;
-        _stateUpdate = null;
-    }
+		_periodicalUpdate = null;
+		_showDebugMessages = null;
+		_stateUpdate = null;
+	}
 
-	protected void setProperties(UIComponent component)
-	{
+	protected void setProperties(UIComponent component) {
 		super.setProperties(component);
 
 		setStringProperty(component, "partialTriggers", _partialTriggers);
 		setStringProperty(component, "partialTriggerPattern", _partialTriggerPattern);
 		setStringProperty(component, "inlineLoadingMessage", _inlineLoadingMessage);
-        setIntegerProperty(component,"periodicalUpdate", _periodicalUpdate);
-        setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
-        setBooleanProperty(component, "stateUpdate", _stateUpdate);
-    }
+		setIntegerProperty(component, "periodicalUpdate", _periodicalUpdate);
+		setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
+		setBooleanProperty(component, "stateUpdate", _stateUpdate);
+	}
 
-	public String getPartialTriggers()
-	{
+	public String getPartialTriggers() {
 		return _partialTriggers;
 	}
 
-	public void setPartialTriggers(String partialTriggers)
-	{
+	public void setPartialTriggers(String partialTriggers) {
 		this._partialTriggers = partialTriggers;
 	}
 
@@ -96,18 +89,15 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 		_inlineLoadingMessage = loadingMessage;
 	}
 
-    public void setPeriodicalUpdate(String periodicalUpdate)
-    {
-        _periodicalUpdate = periodicalUpdate;
-    }
+	public void setPeriodicalUpdate(String periodicalUpdate) {
+		_periodicalUpdate = periodicalUpdate;
+	}
 
-    public void setShowDebugMessages(String showDebugMessages)
-    {
-        _showDebugMessages = showDebugMessages;
-    }
+	public void setShowDebugMessages(String showDebugMessages) {
+		_showDebugMessages = showDebugMessages;
+	}
 
-    public void setStateUpdate(String stateUpdate)
-    {
-        _stateUpdate = stateUpdate;
-    }
+	public void setStateUpdate(String stateUpdate) {
+		_stateUpdate = stateUpdate;
+	}
 }
