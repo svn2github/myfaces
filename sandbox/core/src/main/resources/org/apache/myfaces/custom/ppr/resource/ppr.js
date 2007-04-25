@@ -28,7 +28,7 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     this.blockPeriodicalUpdateDuringPost = false;
     this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
-                                
+
     if(typeof window.myFacesPartialTriggers == "undefined")
 	{
     	window.myFacesPartialTriggers = new Array;
@@ -62,7 +62,7 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
 //Method for JSF Components to register their Partial Triggers
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, refreshZoneId)
-{             
+{
     if (window.myFacesPartialTriggers[inputElementId] === undefined)
     {
         window.myFacesPartialTriggers[inputElementId] = refreshZoneId;
@@ -112,7 +112,7 @@ org.apache.myfaces.PPRCtrl.prototype.doBlockPeriodicalUpdateDuringPost = functio
 //Callback Method which handles the AJAX Response
 
 org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
-{      
+{
     if(type == "load" && !this.blockPeriodicalUpdateDuringPost)
     {
 	    var componentUpdates = data.getElementsByTagName("component");
@@ -120,7 +120,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    var domElement = null;
 		for (var i = 0; i < componentUpdates.length; i++)
 		{
-			componentUpdate = componentUpdates[i];           
+			componentUpdate = componentUpdates[i];
 			domElement = dojo.byId(componentUpdate.getAttribute("id"));
 			//todo - doesn't work with tables in IE
 			domElement.innerHTML = componentUpdate.firstChild.data;
@@ -128,7 +128,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();
 
-        if (this.stateUpdate)
+        if (this.formNode.myFacesPPRCtrl.stateUpdate)
         {
             var stateElem = data.getElementsByTagName("state")[0];
             var stateUpdate = dojo.dom.firstElement(stateElem, 'INPUT');
@@ -149,7 +149,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
                             domElement.value = stateUpdate.getAttribute('value');
                     }
                 }
-                else if (stateUpdateId != 'jsf_tree' && this.showDebugMessages)
+                else if (this.showDebugMessages)
                     alert("server didn't return appropriate element for state-update. returned element-id: " +
                           stateUpdate.getAttribute('id') + ", value : " + stateUpdate.getAttribute('value'));
             }
@@ -176,7 +176,7 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     if(typeof triggerElement != "undefined" ||
     	typeof this.form.elements[formName +':'+'_idcl'] != "undefined")
     {
-		var triggerId;    
+		var triggerId;
     	var content=new Array;
     	if(typeof triggerElement != "undefined")
     	{
@@ -194,11 +194,11 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
         		oamSetHiddenInput(formName,formName +':'+'_idcl',triggerElement.id);
         	}
     	}
-    	else 
+    	else
     	{
     		triggerId=this.form.elements[formName +':'+'_idcl'].value;
     	}
-    	
+
         var triggeredComponents = this.getTriggeredComponents(triggerId);
         if(triggeredComponents !=null)
         {
@@ -218,8 +218,8 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
 }
 
 org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId)
-{   
-	var ppr = this;  
+{
+	var ppr = this;
     var requestUri = "";
     var formAction = this.form.attributes["action"];
     if(formAction == null)
@@ -274,7 +274,7 @@ org.apache.myfaces.PPRCtrl.prototype.displayInlineLoadingMessages = function(com
 			{
 				domElement.innerHTML = window.myFacesInlineLoadingMessage[componentIds[index]];
 			}
-		}	
+		}
 	}
 }
 
@@ -333,7 +333,7 @@ org.apache.myfaces.PPRCtrl.prototype.addButtonOnClickHandlers = function()
                 button.onclick = this.buttonOnClickHandler;
                 button.myFacesPPRCtrl=this;
             }
-            
+
         }
 
 }
@@ -356,7 +356,7 @@ org.apache.myfaces.PPRCtrl.prototype.buttonOnClickHandler = function (_event)
 
 
 org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId)
-{	
+{
     if (typeof triggerId != "undefined")
     {
     var retval = null;
@@ -364,7 +364,7 @@ org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId
         {
             retval = window.myFacesPartialTriggers[triggerId];
         }
-        
+
 		for (refreshZoneId in window.myFacesPartialTriggerPatterns)
 		{
 			if(this.isMatchingPattern(window.myFacesPartialTriggerPatterns[refreshZoneId],triggerId) &&
@@ -377,14 +377,14 @@ org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId
 				{
 					retval += "," + refreshZoneId;
 				}
-		}	
-	return retval;        
+		}
+	return retval;
     }
     return null;
 };
 
 org.apache.myfaces.PPRCtrl.prototype.isMatchingPattern = function(pattern,stringToMatch)
-{	
+{
 	if(typeof pattern != "string")
 	{
 		return false;
