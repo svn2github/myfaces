@@ -21,13 +21,13 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
 {
 	// alert("eventType:" + eventType + " callback:" + callbackFunction + " input:" + inputComponentId + " click:" + clickComponentId);
 
-	var dojoWidget = false;
+	var forceEventAttach = false;
 
 	var inputComponents = [];
 	if (eventType == "dialogok")
 	{
 		inputComponents = [ eval(inputComponentId) ];
-		dojoWidget = true;
+		forceEventAttach = true;
 	}
 	else if (inputComponentId != null && inputComponentId != '')
     {
@@ -35,6 +35,7 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
 	}
     else
     {
+		forceEventAttach = true;
         inputComponents = [ document ];
     }
 
@@ -106,7 +107,7 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
 	for (var cmpNum = 0; cmpNum < inputComponents.length; cmpNum++)
 	{
 		var inputComponent = inputComponents[cmpNum];
-		if (!dojoWidget && !orgApacheMyfacesSubmitOnEventIsFormElement(inputComponent))
+		if (!forceEventAttach && !orgApacheMyfacesSubmitOnEventIsFormElement(inputComponent))
 		{
 			continue;
 		}
