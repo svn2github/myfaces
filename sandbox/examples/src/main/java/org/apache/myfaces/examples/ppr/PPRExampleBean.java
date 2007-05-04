@@ -64,15 +64,15 @@ public class PPRExampleBean
         this._textField = textField;
     }
 
+	public String testExceptionAction() {
+		throw new FacesException("Test PPR Exception Handling");
+	}    
+
     public String searchNames() {
         _names = getListMasterData();
 
         if(_textField == null || _textField.equals(""))
             return null;
-	
-	public String testExceptionAction() {
-		throw new FacesException("Test PPR Exception Handling");
-	}
 
         for (Iterator iterator = _names.iterator(); iterator.hasNext();)
         {
