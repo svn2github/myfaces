@@ -21,6 +21,7 @@ package org.apache.myfaces.examples.ppr;
 
 import org.apache.myfaces.examples.inputSuggestAjax.Address;
 
+import javax.faces.FacesException;
 import javax.faces.event.ValueChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -68,6 +69,10 @@ public class PPRExampleBean
 
         if(_textField == null || _textField.equals(""))
             return null;
+	
+	public String testExceptionAction() {
+		throw new FacesException("Test PPR Exception Handling");
+	}
 
         for (Iterator iterator = _names.iterator(); iterator.hasNext();)
         {

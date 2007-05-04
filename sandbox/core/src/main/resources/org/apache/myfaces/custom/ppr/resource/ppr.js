@@ -47,12 +47,14 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     this.addButtonOnClickHandlers();
 }
 
-//Method for JSF Components to register Regular Expressions for partial update triggering
+//Method to register individual HTML to be displayed instead of the component during loading
 
 org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, refreshZoneId)
 {
         window.myFacesInlineLoadingMessage[refreshZoneId] = message;
 };
+
+//Method for JSF Components to register Regular Expressions for partial update triggering
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern, refreshZoneId)
 {
@@ -116,6 +118,14 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
     if(type == "load" && !this.blockPeriodicalUpdateDuringPost)
     {
 	    var componentUpdates = data.getElementsByTagName("component");
+	    
+	    //In case no componentUpdates are returned the response is considered 
+	    //invalid - do a normal submit to get the corresponding error page
+	    if(componentUpdates == null || componentUpdates.length == 0) {
+	    	this.formNode.myFacesPPRCtrl.callbackErrorHandler();
+	    	return;	
+	    }
+	    
 	    var componentUpdate = null;
 	    var domElement = null;
 		for (var i = 0; i < componentUpdates.length; i++)
@@ -157,8 +167,43 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
     }
     else if(this.showDebugMessages)
     {
-        alert("an Error occured during the ajax-request " + data.message);
+    // In case of an error during the AJAX Request do a normal form submit
+    // to enable showing a proper error page
+    this.formNode.myFacesPPRCtrl.callbackErrorHandler();
     }
+}
+
+org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
+	if(typeof this.lastSubmittedElement == "undefined") {
+		alert("An unexpected error occured during an ajax-request - page has been fully submitted!");
+		this.form.submit_orig();
+	}
+	
+	var formName = this.form.id;
+
+    if(typeof formName == "undefined")
+    {
+        formName = this.form.name;
+    }
+	
+	var triggerElement = this.lastSubmittedElement;
+	
+	if (triggerElement.tagName.toLowerCase() == "input" &&
+                (triggerElement.type.toLowerCase() == "submit" ||
+                 triggerElement.type.toLowerCase() == "image")
+                )
+            {
+            	var hiddenInputName = triggerElement.name;
+            	//Rename the button that we can insert a hidden input
+            	//that simulates a click of the submit-button
+            	triggerElement.name = "changed" + triggerElement.name;
+            	oamSetHiddenInput(formName,hiddenInputName,triggerElement.value);
+            }
+            else
+            {
+        		oamSetHiddenInput(formName,formName +':'+'_idcl',triggerElement.id);
+        	} 
+	this.form.submit_orig();
 }
 
 //This Method checks if an AJAX Call is to be done instead of submitting the form
@@ -181,6 +226,8 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     	if(typeof triggerElement != "undefined")
     	{
     		triggerId=triggerElement.id;
+    		
+    		this.lastSubmittedElement=triggerElement;
 
             if (triggerElement.tagName.toLowerCase() == "input" &&
                 (triggerElement.type.toLowerCase() == "submit" ||
