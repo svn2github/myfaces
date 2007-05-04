@@ -19,27 +19,16 @@
 
 package org.apache.myfaces.renderkit.html.ext;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.component.NewspaperTable;
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import org.apache.myfaces.custom.crosstable.UIColumns;
 import org.apache.myfaces.renderkit.html.util.ColumnInfo;
 import org.apache.myfaces.renderkit.html.util.RowInfo;
 import org.apache.myfaces.renderkit.html.util.TableContext;
-//import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase.Styles;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -47,13 +36,22 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
 import org.apache.myfaces.shared_tomahawk.util.ArrayUtils;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.ValueHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
-import java.util.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Renderer for the Tomahawk extended HtmlDataTable component.
- * 
+ *
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -108,7 +106,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     /**
      * @param component dataTable
-     * @return if the orientation of the has newspaper columns is horizontal 
+     * @return if the orientation of the has newspaper columns is horizontal
      */
     protected boolean isNewspaperHorizontalOrientation(UIComponent component) {
         if (component instanceof NewspaperTable)
@@ -192,7 +190,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             super.encodeChildren(facesContext, component);
         }
     }
-    
+
     private boolean isGroupedTable(UIData uiData)
     {
         if(uiData instanceof HtmlDataTable)
@@ -265,7 +263,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
         boolean groupEndReached = false;
 
-        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
+		for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
         {
             htmlDataTable.setRowIndex(rowIndex);
             rowInfo = new RowInfo();
@@ -366,32 +364,37 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             tableContext.getRowInfos().add(rowInfo);
             currentRowInfoIndex++;
         }
-        for (int j = 0, size = nChildren; j < size; j++)
-        {
-            if(groupHashTable.containsKey(new Integer(j)))  // Column is groupBy
-            {
-                ((ColumnInfo)
-                    ((RowInfo)
-                        tableContext.getRowInfos().get(currentRowInfoIndex-currentRowSpan)).
-                        getColumnInfos().get(j)).
-                    setRowSpan(currentRowSpan+1);
-            }
-            else    // Column  is not group by
-            {
-                ((ColumnInfo)
-                    ((RowInfo)
-                        tableContext.getRowInfos().get(currentRowInfoIndex)).
-                        getColumnInfos().get(j)).
-                    setStyle(htmlDataTable.getRowGroupStyle());
-                ((ColumnInfo)
-                    ((RowInfo)
-                        tableContext.getRowInfos().get(currentRowInfoIndex)).
-                        getColumnInfos().get(j)).
-                    setStyleClass(htmlDataTable.getRowGroupStyleClass());
-            }
-        }
 
-        htmlDataTable.setRowIndex(-1);
+		// do further processing if we've found at least one row
+		if (currentRowInfoIndex > -1)
+		{
+			for (int j = 0, size = nChildren; j < size; j++)
+			{
+				if(groupHashTable.containsKey(new Integer(j)))  // Column is groupBy
+				{
+					((ColumnInfo)
+						((RowInfo)
+							tableContext.getRowInfos().get(currentRowInfoIndex-currentRowSpan)).
+							getColumnInfos().get(j)).
+						setRowSpan(currentRowSpan+1);
+				}
+				else    // Column  is not group by
+				{
+					((ColumnInfo)
+						((RowInfo)
+							tableContext.getRowInfos().get(currentRowInfoIndex)).
+							getColumnInfos().get(j)).
+						setStyle(htmlDataTable.getRowGroupStyle());
+					((ColumnInfo)
+						((RowInfo)
+							tableContext.getRowInfos().get(currentRowInfoIndex)).
+							getColumnInfos().get(j)).
+						setStyleClass(htmlDataTable.getRowGroupStyleClass());
+				}
+			}
+		}
+
+		htmlDataTable.setRowIndex(-1);
     }
 
 
@@ -405,7 +408,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
             if (htmlDataTable.isRenderedIfEmpty() || htmlDataTable.getRowCount() > 0)
             {
-                super.encodeEnd(facesContext, uiComponent);                               
+                super.encodeEnd(facesContext, uiComponent);
             }
         }
         else
@@ -474,7 +477,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         {
             writer.writeAttribute(htmlAttribute, value, null);
         }
-    }       
+    }
 
     /**
      * Render the specified column object using the current row data.
@@ -487,7 +490,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * <pre>
      * For each dynamic column in that UIColumns child:
      *   * Select the column (which sets variable named by the var attribute
-     *     to refer to the current column object) 
+     *     to refer to the current column object)
      *   * Call this.renderColumnBody passing the UIColumns object.
      * </pre>
      * The renderColumnBody method eventually:
@@ -500,8 +503,8 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * </ul>
      * If the children of the UIColumns access the variable named by the var
      * attribute on the UIColumns object, then they end up rendering content
-     * that is extracted from the current column object.  
-     * 
+     * that is extracted from the current column object.
+     *
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#encodeColumnChild(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, java.util.Iterator)
      */
     protected void encodeColumnChild(FacesContext facesContext,
@@ -521,7 +524,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                                 styles, columnStyleIndex);
             }
             columns.setRowIndex(-1);
-        }               
+        }
     }
 
     /**
@@ -549,8 +552,12 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             if (component instanceof HtmlColumn && amISpannedOver(null, component))
                 return;
             writer.startElement(HTML.TD_ELEM, uiData);
-            String styleClass = ((HtmlColumn) component).getStyleClass();
-            if(columnInfo.getStyleClass()!= null)
+            String styleClass = null;
+			if (component instanceof HtmlColumn)
+			{
+				styleClass = ((HtmlColumn) component).getStyleClass();
+			}
+			if(columnInfo.getStyleClass()!= null)
             {
                 styleClass = columnInfo.getStyleClass();
             }
@@ -626,14 +633,14 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * <pre>
      * For each dynamic column in that UIColumns child:
      *   * Select the column (which sets variable named by the var attribute
-     *     to refer to the current column object) 
+     *     to refer to the current column object)
      *   * Call this.renderColumnHeaderCell or this.renderColumnFooterCell
      *     passing the header or footer facet of the UIColumns object.
      * </pre>
      * If the facet of the UIColumns accesses the variable named by the var
      * attribute on the UIColumns object, then it ends up rendering content
      * that is extracted from the current column object.
-     *   
+     *
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnChildHeaderOrFooterRow(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIComponent, java.lang.String, boolean)
      */
     protected void renderColumnChildHeaderOrFooterRow(
@@ -773,7 +780,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * For normal components, use the inherited implementation.
      * For UIColumns children, return the number of dynamic columns rendered
      * by that child.
-     * 
+     *
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase
      *   #determineChildColSpan(javax.faces.component.UIComponent)
      */
@@ -790,7 +797,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     /**
      * Return true if the specified component has a facet that needs to be
      * rendered in a THEAD or TFOOT section.
-     * 
+     *
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#hasFacet(boolean, javax.faces.component.UIComponent)
      */
     protected boolean hasFacet(boolean header, UIComponent uiComponent)
@@ -808,7 +815,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     /**
      * Renders the column footer.
-     * Rendering will be supressed if all of the facets have rendered="false"   
+     * Rendering will be supressed if all of the facets have rendered="false"
      */
     protected void renderColumnFooterRow(FacesContext facesContext, ResponseWriter writer, UIComponent component, String footerStyleClass) throws IOException
     {
@@ -820,7 +827,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
     /**
      * Renders the column header.
-     * Rendering will be supressed if all of the facets have rendered="false"   
+     * Rendering will be supressed if all of the facets have rendered="false"
      */
     protected void renderColumnHeaderRow(FacesContext facesContext, ResponseWriter writer, UIComponent component, String headerStyleClass) throws IOException
     {
@@ -852,38 +859,38 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 
         return false;
     }
-    
+
     protected void beforeColumn(FacesContext facesContext, UIData uiData, int columnIndex) throws IOException
-    {        
+    {
         super.beforeColumn(facesContext, uiData, columnIndex);
-        
+
         if (uiData instanceof HtmlDataTable)
         {
             HtmlDataTable dataTable = (HtmlDataTable)uiData;
-            
+
             putSortedReqScopeParam(facesContext, dataTable, columnIndex);
         }
     }
-    
+
     protected void beforeColumnHeaderOrFooter(FacesContext facesContext, UIData uiData, boolean header, int columnIndex) throws IOException
-    {        
+    {
         super.beforeColumnHeaderOrFooter(facesContext, uiData, header, columnIndex);
-        
+
         if (header && uiData instanceof HtmlDataTable)
         {
             HtmlDataTable dataTable = (HtmlDataTable)uiData;
-            
+
             putSortedReqScopeParam(facesContext, dataTable, columnIndex);
         }
     }
-    
+
     protected void putSortedReqScopeParam(FacesContext facesContext, HtmlDataTable dataTable, int columnIndex)
     {
         String sortedColumnVar = dataTable.getSortedColumnVar();
         Map requestMap = facesContext.getExternalContext().getRequestMap();
 
         if (columnIndex == dataTable.getSortColumnIndex())
-        {                
+        {
             if (sortedColumnVar != null)
                 requestMap.put(sortedColumnVar, Boolean.TRUE);
         }
@@ -894,7 +901,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
     /**
      * specify if the header, footer or <td> is spanned over (not shown) because
      * of a colspan in a cell in a previous column
-     * 
+     *
      * @param prefix header, footer or null
      * @param uiComponent
      */
