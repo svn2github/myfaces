@@ -139,8 +139,16 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         Map reqParams = facesContext.getExternalContext().getRequestParameterMap();
 
         String togglingIndicated = (String) reqParams.get(HtmlRendererUtils
-            .getHiddenCommandLinkFieldName(
-            DummyFormUtils.findNestingForm(collapsiblePanel, facesContext)));
+                .getHiddenCommandLinkFieldName(
+                DummyFormUtils.findNestingForm(collapsiblePanel, facesContext)));
+        // if togglingIndicated is null this application could be running within the RI.
+        // The RI denotes link activation by adding a hidden field with the name
+        // and value of the link client ID.
+        if (togglingIndicated == null
+                && reqParams.containsKey(collapsiblePanel.getClientId(facesContext) + LINK_ID)) {
+            togglingIndicated = collapsiblePanel.getClientId(facesContext) + LINK_ID;
+        }
+
         String reqValue = (String) reqParams.get(
             collapsiblePanel.getClientId(facesContext) + COLLAPSED_STATE_ID);
 
