@@ -48,68 +48,70 @@ tomahawk.CVUtils = new function() {
 		
 tomahawk.RendererUtils = new function() {
 
-		this.renderMessage = function(facesContext,clientId) {
-			var messageComponent = 	document.getElementById(clientId + "_msgFor");
-			if( messageComponent == undefined || messageComponent == null)
-				return;
-			
-			this.clean(messageComponent); // clean first
+	this.renderMessage = function(facesContext,clientId) {
+		var messageComponent = 	document.getElementById(clientId + "_msgFor");
+		if( messageComponent == undefined || messageComponent == null)
+			return;
+		
+		this.clean(messageComponent); // clean first
 
-			var message = tomahawk.MessageUtils.findMessage(facesContext,clientId);
-			if(message != null) {
-				messageComponent.appendChild(document.createTextNode(message.detail));
-			}
+		var message = tomahawk.MessageUtils.findMessage(facesContext,clientId);
+		if(message != null) {
+			messageComponent.appendChild(document.createTextNode(message.detail));
 		}
+	}
 	
-		this.renderMessages = function(facesContext,uimessages) {
-			var messagesComponent = document.getElementById(uimessages.clientId);	
-			this.clean(messagesComponent);
+	this.renderMessages = function(facesContext,uimessages) {
+		var messagesComponent = document.getElementById(uimessages.clientId);	
+		this.clean(messagesComponent);
 			
-			if(uimessages.layout == "list")
-				root = document.createElement("ul");		
-			else {
-				root = document.createElement("table");		
-				root.appendChild(document.createElement("tbody"));		// tbody for IE
-			}
-		
-			for(var i = 0 ; i < facesContext.messages.length ; i++ ) { 
-				var message =  facesContext.messages[i];
-				this.addRow(uimessages,root,message);
-			}
-			messagesComponent.appendChild(root);
+		if(uimessages.layout == "list")
+			root = document.createElement("ul");		
+		else {
+			root = document.createElement("table");		
+			root.appendChild(document.createElement("tbody"));		// tbody for IE
 		}
 		
-		this.clean = function(root) {
-            if(root === undefined || root == null)
-                return;
-            while(root.firstChild) root.removeChild(root.firstChild);
+		for(var i = 0 ; i < facesContext.messages.length ; i++ ) { 
+			var message =  facesContext.messages[i];
+			this.addRow(uimessages,root,message);
+		}
+		messagesComponent.appendChild(root);
+	}
+		
+	this.clean = function(root) {
+			if(root === undefined || root == null)
+				return;
+				
+			while(root.firstChild) 
+				root.removeChild(root.firstChild);
+	}
+	
+	this.addRow = function(uimessages,root,message) {
+		if(uimessages.layout == "list") {
+			row = document.createElement("li");
+			row.appendChild(document.createTextNode(this.getMessageText(uimessages,message)));
+			root.appendChild(row);
+		}
+		else {			
+			row = document.createElement("tr");
+			column = document.createElement("td");
+			column.appendChild(document.createTextNode(this.getMessageText(uimessages,message)));
+			row.appendChild(column);
+			root.firstChild.appendChild(row);
+		}
+	}
+		
+	this.getMessageText = function(uimessages,facesMessage) {
+		var messageText = "";
+		if(uimessages.showSummary == true)
+			messageText = messageText + facesMessage.summary;
+		if(uimessages.showDetail == true) {
+			messageText = messageText + " " + facesMessage.detail;
 		}
 	
-		this.addRow = function(uimessages,root,message) {
-			if(uimessages.layout == "list") {
-				row = document.createElement("li");
-				row.appendChild(document.createTextNode(this.getMessageText(uimessages,message)));
-				root.appendChild(row);
-			}
-			else {			
-				row = document.createElement("tr");
-				column = document.createElement("td");
-				column.appendChild(document.createTextNode(this.getMessageText(uimessages,message)));
-				row.appendChild(column);
-				root.firstChild.appendChild(row);
-			}
-		}
-		
-		this.getMessageText = function(uimessages,facesMessage) {
-			var messageText = "";
-			if(uimessages.showSummary == true)
-				messageText = messageText + facesMessage.summary;
-			if(uimessages.showDetail == true) {
-				messageText = messageText + " " + facesMessage.detail;
-			}
-		
-			return messageText;			
-		}
+		return messageText;			
+	}
 }
 		
 tomahawk.MessageUtils = new function() {
