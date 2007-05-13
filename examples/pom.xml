@@ -1,21 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <name>Tomahawk Examples Project</name>
     <groupId>org.apache.myfaces.tomahawk</groupId>
     <artifactId>tomahawk-examples-project</artifactId>
-  
+
     <parent>
         <groupId>org.apache.myfaces.tomahawk</groupId>
         <artifactId>tomahawk-project</artifactId>
         <version>1.1.6-SNAPSHOT</version>
     </parent>
-  
+
     <scm>
         <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/examples</developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/examples</url>
-    </scm>   
+    </scm>
 
     <modules>
         <module>blank</module>
@@ -86,11 +87,60 @@
             </dependencies>
 
             <properties>
-                <jsf_implementation>MyFaces</jsf_implementation>
+                <jsf_implementation>MyFaces 1.1</jsf_implementation>
             </properties>
         </profile>
 
-        <!-- To use the examples using the Sun's JSF Reference Implementation: -Djsf=ri -->
+        <!-- To use the examples using MyFaces 1.2: -Djsf=12 -->
+        <profile>
+            <id>myfaces-1.2</id>
+            <activation>
+                <property>
+                    <name>jsf</name>
+                    <value>12</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>1.2.0-SNAPSHOT</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>1.2.0-SNAPSHOT</version>
+                    <!-- Tomahawk examples must only have runtime dependency to myfaces-impl
+                 so that it will be automatically added to war. But there must not be
+                 any compile dependency on impl so that is is always possible to use
+                 other JSF implementations. -->
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>jstl</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>taglibs</groupId>
+                    <artifactId>standard</artifactId>
+                    <version>1.1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-el_1.0_spec</artifactId>
+                    <version>1.0-M1</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <properties>
+                <jsf_implementation>MyFaces 1.2</jsf_implementation>
+            </properties>
+        </profile>
+
+        <!-- To use the examples using the Sun's JSF Reference Implementation 1.1: -Djsf=ri -->
         <profile>
             <id>jsfri</id>
             <activation>
@@ -105,18 +155,18 @@
                     <artifactId>jsf-api</artifactId>
                     <version>1.1_02</version>
                     <exclusions>
-                      <exclusion>
-                        <groupId>java.servlet.servlet.jsp</groupId>
-                        <artifactId>jsp-api</artifactId>
-                      </exclusion>
-                      <exclusion>
-                        <groupId>javax.servlet.jsp</groupId>
-                        <artifactId>jsp-api</artifactId>
-                      </exclusion>
-                      <exclusion>
-                        <groupId>javax.servlet.jsp.jstl</groupId>
-                        <artifactId>jstl</artifactId>
-                      </exclusion>
+                        <exclusion>
+                            <groupId>java.servlet.servlet.jsp</groupId>
+                            <artifactId>jsp-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>javax.servlet.jsp</groupId>
+                            <artifactId>jsp-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>javax.servlet.jsp.jstl</groupId>
+                            <artifactId>jstl</artifactId>
+                        </exclusion>
                     </exclusions>
                 </dependency>
                 <dependency>
@@ -125,22 +175,22 @@
                     <version>1.1_02</version>
                     <scope>runtime</scope>
                     <exclusions>
-                      <exclusion>
-                        <groupId>java.servlet.servlet.jsp</groupId>
-                        <artifactId>jsp-api</artifactId>
-                      </exclusion>
-                      <exclusion>
-                        <groupId>javax.servlet.jsp</groupId>
-                        <artifactId>jsp-api</artifactId>
-                      </exclusion>
-                      <exclusion>
-                        <groupId>javax.servlet.jsp.jstl</groupId>
-                        <artifactId>jstl</artifactId>
-                      </exclusion>
+                        <exclusion>
+                            <groupId>java.servlet.servlet.jsp</groupId>
+                            <artifactId>jsp-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>javax.servlet.jsp</groupId>
+                            <artifactId>jsp-api</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>javax.servlet.jsp.jstl</groupId>
+                            <artifactId>jstl</artifactId>
+                        </exclusion>
                     </exclusions>
                 </dependency>
 
-               <dependency>
+                <dependency>
                     <groupId>javax.servlet.jsp</groupId>
                     <artifactId>jsp-api</artifactId>
                     <version>1.2.0</version>
@@ -168,6 +218,48 @@
             </properties>
         </profile>
 
+        <!-- To use the examples using the Sun's JSF Reference Implementation 1.2 : -Djsf=ri12 -->
+        <profile>
+            <id>jsfri</id>
+            <activation>
+                <property>
+                    <name>jsf</name>
+                    <value>ri12</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.faces</groupId>
+                    <artifactId>jsf-api</artifactId>
+                    <version>1.2_04</version>
+                </dependency>
+                <dependency>
+                    <groupId>javax.faces</groupId>
+                    <artifactId>jsf-impl</artifactId>
+                    <version>1.2_04</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-el_1.0_spec</artifactId>
+                    <version>1.0-M1</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <repositories>
+                <repository>
+                    <id>java.net</id>
+                    <name>java.net Maven 1 Repository</name>
+                    <url>https://maven-repository.dev.java.net/nonav/repository</url>
+                    <layout>legacy</layout>
+                </repository>
+            </repositories>
+
+            <properties>
+                <jsf_implementation>JSF-RI 1.2</jsf_implementation>
+            </properties>
+        </profile>
+
         <!-- Profile to run jetty, so the tomcat jars are included in the bundle. They are not included by default -->
         <profile>
             <id>jettyConfig</id>
@@ -176,49 +268,13 @@
                     <plugin>
                         <groupId>org.mortbay.jetty</groupId>
                         <artifactId>maven-jetty-plugin</artifactId>
+                        <version>6.1.2rc0</version>
                         <configuration>
                             <scanIntervalSeconds>10</scanIntervalSeconds>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
-
-            <dependencies>
-                <dependency>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>jsp-api</artifactId>
-                    <version>2.0</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>tomcat</groupId>
-                    <artifactId>jasper-compiler</artifactId>
-                    <version>5.5.9</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>tomcat</groupId>
-                    <artifactId>jasper-runtime</artifactId>
-                    <version>5.5.9</version>
-                    <scope>compile</scope>
-                </dependency>
-                <dependency>
-                    <groupId>tomcat</groupId>
-                    <artifactId>jasper-compiler-jdt</artifactId>
-                    <version>5.5.9</version>
-                    <scope>compile</scope>
-                </dependency>
-            </dependencies>
-
-            <pluginRepositories>
-                <!-- Repository to get the jetty plugin -->
-                <pluginRepository>
-                    <id>mortbay-repo</id>
-                    <name>mortbay-repo</name>
-                    <url>http://www.mortbay.org/maven2/snapshot</url>
-                </pluginRepository>
-            </pluginRepositories>
-
         </profile>
 
         <!-- See http://myfaces.apache.org/tomahawk/testing/selenium.html -->
@@ -330,11 +386,18 @@
                                 </goals>
                                 <configuration>
                                     <tasks>
-                                        <taskdef resource="hostedqatasks" classpathref="maven.plugin.classpath" />
-                                        <upload file="${project.build.directory}/${project.build.finalName}.war" account="myfaces" email="${myfaces.hostedqa.email}" password="${myfaces.hostedqa.password}" resourceId="${hostedqa.resourceId}" />
+                                        <taskdef resource="hostedqatasks" classpathref="maven.plugin.classpath"/>
+                                        <upload file="${project.build.directory}/${project.build.finalName}.war"
+                                                account="myfaces" email="${myfaces.hostedqa.email}"
+                                                password="${myfaces.hostedqa.password}"
+                                                resourceId="${hostedqa.resourceId}"/>
 
-                                        <playsuite clientConfigs="${hostedqa.clientConfigs}" appConfigs="${hostedqa.appConfigs}" account="myfaces" email="${myfaces.hostedqa.email}" password="${myfaces.hostedqa.password}">
-                                            <fileSet dir="${basedir}/src/test/selenium" excludes="TestSuite*.html,*FireFox.html" />
+                                        <playsuite clientConfigs="${hostedqa.clientConfigs}"
+                                                   appConfigs="${hostedqa.appConfigs}" account="myfaces"
+                                                   email="${myfaces.hostedqa.email}"
+                                                   password="${myfaces.hostedqa.password}">
+                                            <fileSet dir="${basedir}/src/test/selenium"
+                                                     excludes="TestSuite*.html,*FireFox.html"/>
                                         </playsuite>
                                     </tasks>
                                 </configuration>
