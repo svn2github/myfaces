@@ -39,6 +39,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -214,22 +215,15 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
     {
         DateFormat format;
         String pattern = getHeaderDateFormat(component);
+        Locale viewLocale = context.getViewRoot().getLocale();
 
         if ((pattern != null) && (pattern.length() > 0))
         {
-            format = new SimpleDateFormat(pattern);
+        	format = new SimpleDateFormat(pattern, viewLocale);
         }
         else
         {
-            if (context.getApplication().getDefaultLocale() != null)
-            {
-                format = DateFormat.getDateInstance(DateFormat.MEDIUM, context
-                        .getApplication().getDefaultLocale());
-            }
-            else
-            {
-                format = DateFormat.getDateInstance(DateFormat.MEDIUM);
-            }
+        	format = DateFormat.getDateInstance(DateFormat.MEDIUM, viewLocale);
         }
 
         return format.format(date);
