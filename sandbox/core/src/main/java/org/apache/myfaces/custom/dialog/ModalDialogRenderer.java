@@ -173,8 +173,10 @@ public class ModalDialogRenderer extends HtmlRenderer {
 
 	private void appendShowHideView(FacesContext context, StringBuffer buf, ModalDialog dlg)
 	{
-		buf.append(dlg.getDialogVar())
+                buf.append(dlg.getDialogVar()).append(".oldOnShow=").append(dlg.getDialogVar()).append(".onShow;")
+                   .append(dlg.getDialogVar())
 			.append(".onShow = function() {")
+                        .append("this.oldOnShow();")
 			.append("var content = document.getElementById(\"modalDialogContent")
 			.append(dlg.getDialogVar())
 			.append("\"); ")
@@ -190,8 +192,10 @@ public class ModalDialogRenderer extends HtmlRenderer {
 			.append("'); ")
 			.append("}; ");
 
-		buf.append(dlg.getDialogVar())
+                buf.append(dlg.getDialogVar()).append(".oldOnHide=").append(dlg.getDialogVar()).append(".onHide;")
+                   .append(dlg.getDialogVar())
 			.append(".onHide = function() {")
+                        .append("this.oldOnHide();")
 			.append("window._myfaces_currentModal=null;")
 			.append("var content = document.getElementById(\"modalDialogContent")
 			.append(dlg.getDialogVar())
