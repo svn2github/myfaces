@@ -118,6 +118,37 @@ public final class ComponentUtils
 
         return null;
     }
-
+	
+	
+	private static boolean isDecorated(UIComponent component, String attribute, String value) {
+		String attributeValue = (String) component.getAttributes().get(attribute);
+		
+		if(attributeValue == null || attributeValue.indexOf(value) == -1)
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+     * Changes the event attributes like onclick by appending the given value 
+     * 
+     * @param 	component 	UIComponent instance that the attribute belongs to
+     * @param 	attribute 	Attribute to be changed
+     * @param 	value 		Value to be appended
+     */
+	public static void decorateEventAttribute(UIComponent component, String attribute, String value) {
+		if(isDecorated(component, attribute, value))
+			return;
+			
+		String attributeValue = (String) component.getAttributes().get(attribute);
+		
+		if(attributeValue == null)
+			component.getAttributes().put(attribute, value);
+		else
+			if( attributeValue.endsWith(";"))
+				component.getAttributes().put(attribute, attributeValue + value);
+			else
+				component.getAttributes().put(attribute, attributeValue + ";" + value);
+	}
 
 }
