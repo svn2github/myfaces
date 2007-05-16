@@ -39,11 +39,11 @@ public abstract class SecurityContext {
 	
 	public abstract boolean ifGranted(String role);
 	
-	public boolean ifSingleGranted() {
+	boolean ifSingleGranted() {
 		return ifGranted(roles[0]);
 	}
 	
-	public boolean ifAllGranted() {
+	boolean ifAllGranted() {
 		boolean isAuthorized = false;
 		for (int i = 0; i < roles.length; i++) {
 			String role = roles[i];
@@ -57,7 +57,7 @@ public abstract class SecurityContext {
 		return isAuthorized;
 	}
 	
-	public boolean ifAnyGranted() {
+	boolean ifAnyGranted() {
 		boolean isAuthorized = false;
 		for (int i = 0; i < roles.length; i++) {
 			String role = roles[i];
@@ -69,7 +69,7 @@ public abstract class SecurityContext {
 		return isAuthorized;
 	}
 	
-	public boolean ifNotGranted() {
+	boolean ifNotGranted() {
 		boolean isAuthorized = false;
 		for (int i = 0; i < roles.length; i++) {
 			String role = roles[i];
@@ -83,21 +83,21 @@ public abstract class SecurityContext {
 		return isAuthorized;
 	}
 	
-	public boolean inAuthMode() {
+	boolean inAuthMode() {
 		return authMode != AUTH_MODE_NONE;
 	}
 	
-	public int getAuthMode() {
+	int getAuthMode() {
 		return authMode;
 	}
-	public void setAuthMode(int authMode) {
+	void setAuthMode(int authMode) {
 		this.authMode = authMode;
 	}
 
-	public String[] getRoles() {
+	String[] getRoles() {
 		return roles;
 	}
-	public void setRoles(String[] roles) {
+	void setRoles(String[] roles) {
 		this.roles = roles;
 	}
 }
