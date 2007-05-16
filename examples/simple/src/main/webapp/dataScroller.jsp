@@ -37,6 +37,7 @@
 
     <h:outputText value="Rows to show"/>
     <h:inputText value="#{scrollerList.rowCount}" />
+    <h:commandButton value="set rowCount"/>
 
     <h:panelGroup id="body">
     
@@ -49,7 +50,7 @@
                 var="car"
                 value="#{scrollerList.list}"
                 preserveDataModel="false"
-                rows="10"
+                rows="#{scrollerList.rowCount}"
            >
            <h:column>
                <f:facet name="header">
