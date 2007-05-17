@@ -406,7 +406,8 @@ public class ReducedHTMLParser
             if (_offset <= lastOffset)
             {
                 // throw new RuntimeException("Infinite loop detected in ReducedHTMLParser");
-                log.error("Infinite loop detected in ReducedHTMLParser; parsing skipped");
+                log.error("Infinite loop detected in ReducedHTMLParser; parsing skipped."+
+                          " Surroundings: '" + getTagSurroundings() +"'.");
                 //return;
             }
             lastOffset = _offset;
@@ -430,7 +431,8 @@ public class ReducedHTMLParser
                     // Start of a "marked section", eg "<![CDATA" or
                     // "<![INCLUDE" or "<![IGNORE". These always terminate
                     // with "]]>"
-                    log.debug("Marked section found at line " + getCurrentLineNumber());
+                    log.debug("Marked section found at line " + getCurrentLineNumber()+". "+
+                              "Surroundings: '" + getTagSurroundings() +"'.");
                     state = STATE_IN_MARKED_SECTION;
                 }
                 else if (consumeMatch("<!DOCTYPE"))
@@ -474,7 +476,8 @@ public class ReducedHTMLParser
                     if (currentTagName == null)
                     {
                         log.warn("Invalid HTML; bare lessthan sign found at line "
-                                 + getCurrentLineNumber());
+                                 + getCurrentLineNumber() + ". "+
+                                 "Surroundings: '" + getTagSurroundings() +"'.");
                         // remain in STATE_READY; this isn't really the start of
                         // an xml element.
                     }
@@ -564,7 +567,8 @@ public class ReducedHTMLParser
                         // for "/>", though that does risk us misinterpreting the
                         // contents of an attribute's associated string value.
                         log.warn("Invalid tag found: unexpected input while looking for attr name or '/>'"
-                                 + " at line " + getCurrentLineNumber());
+                                 + " at line " + getCurrentLineNumber()+". "+
+                                 "Surroundings: '" + getTagSurroundings() +"'.");
                         state = STATE_EXPECTING_ETAGO;
                         // and consume one character
                         ++_offset;
@@ -636,6 +640,21 @@ public class ReducedHTMLParser
     }
 
     /**
+     * Get details about malformed HTML tag.
+     *
+     * @return Tag surroundings.
+     */
+    private String getTagSurroundings()
+    {
+        int maxLength = 30;
+        int end = _seq.length();
+        if (end - _offset > maxLength) {
+		    end = _offset + maxLength;
+        }
+        return _seq.subSequence(_offset, end).toString();
+    }
+
+    /**
      * Invoked when "&lt;/" has been seen in the input, this method
      * handles the parsing of the end tag and the invocation of the
      * appropriate callback method.
@@ -650,8 +669,9 @@ public class ReducedHTMLParser
         consumeWhitespace();
         if (!consumeMatch(">"))
         {
-            log.error("Malformed end tag at line " + getCurrentLineNumber()
-                      + "; skipping parsing");
+            // log details about malformed end tag
+            log.error("Malformed end tag '" + tagName + "' at line " + getCurrentLineNumber()
+                      + "; skipping parsing. Surroundings: '" + getTagSurroundings() +"'.");
             return false;
         }
 
