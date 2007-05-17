@@ -256,6 +256,7 @@ public class HtmlCalendarRenderer
 
             writer.endElement(HTML.TABLE_ELEM);
         }
+        component.getChildren().removeAll(component.getChildren());
     }
 
     private HtmlInputTextHelp getOrCreateInputTextChild(HtmlInputCalendar inputCalendar, Application application)
