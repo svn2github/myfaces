@@ -58,9 +58,9 @@ public class ExcelExportPhaseListener implements PhaseListener {
 			try {
 				Object contextResponse = facesContext.getExternalContext().getResponse();
 				if(contextResponse instanceof HttpServletResponse)
-					writeExcelOutput(generatedExcel,(HttpServletResponse)contextResponse);
+					writeExcelOutput(generatedExcel,(HttpServletResponse)contextResponse, tableId);
 				else if(contextResponse instanceof RenderResponse)
-					writeExcelOutput(generatedExcel,(RenderResponse)contextResponse);
+					writeExcelOutput(generatedExcel,(RenderResponse)contextResponse, tableId);
 				
 				facesContext.getApplication().getStateManager().saveSerializedView(facesContext);
 				facesContext.responseComplete();
@@ -78,13 +78,23 @@ public class ExcelExportPhaseListener implements PhaseListener {
 		return PhaseId.RESTORE_VIEW;
 	}
 	
-	private void writeExcelOutput(HSSFWorkbook workBook, HttpServletResponse response) throws IOException{
+	private void writeExcelOutput(HSSFWorkbook workBook, HttpServletResponse response, String tableId) throws IOException{
 		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Expires", "0");
+	    response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+	    response.setHeader("Pragma", "public");
+	    response.setHeader("Content-disposition", "attachment;filename=" + tableId + ".xls");
+
 		workBook.write(response.getOutputStream());
 	}
 	
-	private void writeExcelOutput(HSSFWorkbook workBook, RenderResponse response) throws IOException{
+	private void writeExcelOutput(HSSFWorkbook workBook, RenderResponse response, String tableId) throws IOException{
 		response.setContentType("application/vnd.ms-excel");
+		response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
+	    response.setProperty("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+	    response.setProperty("Pragma", "public");
+	    response.setProperty("Content-disposition", "attachment;filename=" + tableId + ".xls");
+		
 		workBook.write(response.getPortletOutputStream());
 	}
 	
@@ -140,5 +150,4 @@ public class ExcelExportPhaseListener implements PhaseListener {
 			}
 		}
 	}
-
 }
