@@ -51,7 +51,7 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 public class HtmlDateRenderer extends HtmlRenderer {
 	/**
 	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the creditcard check fails.</p>
+	 * the input is not a valid date.</p>
 	 */
 	public static final String DATE_MESSAGE_ID = "org.apache.myfaces.Date.INVALID";
 
