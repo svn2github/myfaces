@@ -35,6 +35,7 @@ public class ExcelExport extends UIComponentBase {
 	private static final String DEFAULT_RENDERER = "org.apache.myfaces.ExcelExportRenderer";
 
 	private String _for;
+	private String _filename;
 
 	public ExcelExport() {
 		setRendererType(DEFAULT_RENDERER);
@@ -60,11 +61,24 @@ public class ExcelExport extends UIComponentBase {
 	public void setFor(String forValue) {
 		_for = forValue;
 	}
+	
+	public String getFilename() {
+		if (_filename != null)
+			return _filename;
+
+		ValueBinding vb = getValueBinding("filename");
+		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : getFor();
+	}
+
+	public void setFilename(String filename) {
+		this._filename = filename;
+	}
 
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[2];
+		Object values[] = new Object[3];
 		values[0] = super.saveState(context);
 		values[1] = _for;
+		values[2] = _filename;
 		return ((Object) (values));
 	}
 
@@ -72,6 +86,6 @@ public class ExcelExport extends UIComponentBase {
 		Object values[] = (Object[]) state;
 		super.restoreState(context, values[0]);
 		_for = (String) values[1];
+		_filename = (String) values[2];
 	}
-
 }

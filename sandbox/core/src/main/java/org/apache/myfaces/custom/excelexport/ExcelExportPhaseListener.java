@@ -53,14 +53,16 @@ public class ExcelExportPhaseListener implements PhaseListener {
 
 		if(map.containsKey("excelExportTableId")) {
 			String tableId = (String) map.get("excelExportTableId");
+			String filename = (String) map.get("excelExportFileName");
+			
 			HtmlDataTable dataTable = (HtmlDataTable) ComponentUtils.findComponentById( facesContext, facesContext.getViewRoot(), tableId );
 			HSSFWorkbook generatedExcel = generateExcel( facesContext, dataTable );
 			try {
 				Object contextResponse = facesContext.getExternalContext().getResponse();
 				if(contextResponse instanceof HttpServletResponse)
-					writeExcelOutput(generatedExcel,(HttpServletResponse)contextResponse, tableId);
+					writeExcelOutput(generatedExcel,(HttpServletResponse)contextResponse, filename);
 				else if(contextResponse instanceof RenderResponse)
-					writeExcelOutput(generatedExcel,(RenderResponse)contextResponse, tableId);
+					writeExcelOutput(generatedExcel,(RenderResponse)contextResponse, filename);
 				
 				facesContext.getApplication().getStateManager().saveSerializedView(facesContext);
 				facesContext.responseComplete();
@@ -78,22 +80,22 @@ public class ExcelExportPhaseListener implements PhaseListener {
 		return PhaseId.RESTORE_VIEW;
 	}
 	
-	private void writeExcelOutput(HSSFWorkbook workBook, HttpServletResponse response, String tableId) throws IOException{
+	private void writeExcelOutput(HSSFWorkbook workBook, HttpServletResponse response, String filename) throws IOException{
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Expires", "0");
 	    response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 	    response.setHeader("Pragma", "public");
-	    response.setHeader("Content-disposition", "attachment;filename=" + tableId + ".xls");
+	    response.setHeader("Content-disposition", "attachment;filename=" + filename + ".xls");
 
 		workBook.write(response.getOutputStream());
 	}
 	
-	private void writeExcelOutput(HSSFWorkbook workBook, RenderResponse response, String tableId) throws IOException{
+	private void writeExcelOutput(HSSFWorkbook workBook, RenderResponse response, String filename) throws IOException{
 		response.setContentType("application/vnd.ms-excel");
 		response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
 	    response.setProperty("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 	    response.setProperty("Pragma", "public");
-	    response.setProperty("Content-disposition", "attachment;filename=" + tableId + ".xls");
+	    response.setProperty("Content-disposition", "attachment;filename=" + filename + ".xls");
 		
 		workBook.write(response.getPortletOutputStream());
 	}

@@ -29,16 +29,19 @@ import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
 public class ExcelExportTag extends UIComponentTagBase {
 
 	private String _for;
+	private String _filename;
 
 	public void release() {
 		super.release();
 		_for = null;
+		_filename = null;
 	}
 
 	protected void setProperties(UIComponent component) {
 		super.setProperties(component);
 
 		setStringProperty(component, "for", _for);
+		setStringProperty(component, "filename", _filename);
 	}
 
 	public String getComponentType() {
@@ -52,9 +55,16 @@ public class ExcelExportTag extends UIComponentTagBase {
 	public String getFor() {
 		return _for;
 	}
-
+	
 	public void setFor(String aFor) {
 		_for = aFor;
 	}
 
+	public String getFilename() {
+		return _filename;
+	}
+	
+	public void setFilename(String filename) {
+		this._filename = filename;
+	}
 }

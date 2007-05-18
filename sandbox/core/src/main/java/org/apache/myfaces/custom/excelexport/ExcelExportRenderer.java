@@ -37,18 +37,18 @@ public class ExcelExportRenderer extends HtmlRenderer {
 		if(component.getChildCount() == 0)
 			return ;
 		
-		String tableId = ((ExcelExport) component).getFor();
+		ExcelExport excelexport = (ExcelExport) component;
 		UIComponent child = (UIComponent) component.getChildren().get( 0 );
 		
-		if( !isDecorated(facesContext, child, tableId) )
-			decorateOnClick(facesContext, child, tableId);
+		if( !isDecorated(facesContext, child, excelexport) )
+			decorateOnClick(facesContext, child, excelexport);
 		
 		RendererUtils.renderChildren(facesContext, component);
 	}
 	
-	private boolean isDecorated(FacesContext facesContext, UIComponent child, String tableId) {
+	private boolean isDecorated(FacesContext facesContext, UIComponent child, ExcelExport excelExport) {
 		String onClick = (String) child.getAttributes().get("onclick");
-		String jsCall = getJSCall(facesContext, tableId);
+		String jsCall = getJSCall(facesContext, excelExport);
 		
 		if(onClick == null || onClick.indexOf(jsCall) == -1)
 			return false;
@@ -56,8 +56,8 @@ public class ExcelExportRenderer extends HtmlRenderer {
 			return true;
 	}
 	
-	private void decorateOnClick(FacesContext facesContext, UIComponent child, String tableId) {
-		String jsCall = getJSCall(facesContext, tableId);
+	private void decorateOnClick(FacesContext facesContext, UIComponent child, ExcelExport excelExport) {
+		String jsCall = getJSCall(facesContext, excelExport);
 		String onclickEvent = (String) child.getAttributes().get("onclick");
 		if(onclickEvent == null)
 			child.getAttributes().put("onclick", jsCall);
@@ -65,13 +65,11 @@ public class ExcelExportRenderer extends HtmlRenderer {
 			child.getAttributes().put("onclick", onclickEvent + ";" + jsCall);
 	}
 	
-	private String getJSCall(FacesContext facesContext, String tableId) {
+	private String getJSCall(FacesContext facesContext, ExcelExport excelExport) {
 		String viewId = StringUtils.split( facesContext.getViewRoot().getViewId() , "\\.")[0];
 		return "window.open('"
 				+ facesContext.getApplication().getViewHandler().getActionURL(
 						facesContext, viewId) + "?excelExportTableId="
-				+ tableId + "');return false;";
+				+ excelExport.getFor() + "&excelExportFileName=" + excelExport.getFilename() + "');return false;";
 	}
-
-	
 }
