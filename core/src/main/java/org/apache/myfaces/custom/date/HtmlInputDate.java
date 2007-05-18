@@ -296,7 +296,7 @@ public class HtmlInputDate extends UIInput implements UserRoleAware {
 	            	}
             		tempCalendar.set(Calendar.MINUTE,Integer.parseInt(minutes));
             		
-            		if (type.equals("full") || type.equals("time")) {
+            		if (type.equals("full") || type.equals("time") || type.equals("short_time")) {
 	            		tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
             		}
             	}
