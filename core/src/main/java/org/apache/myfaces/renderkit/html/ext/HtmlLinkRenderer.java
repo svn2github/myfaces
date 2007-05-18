@@ -121,7 +121,6 @@ public class HtmlLinkRenderer
 
         HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ID_ATTR, HTML.ID_ATTR, clientId);
 
-        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         HtmlRendererUtils.renderHTMLAttributes(writer, component,
                                                spanAttrsToRender);
         HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_ATTR, HTML.STYLE_ATTR,
