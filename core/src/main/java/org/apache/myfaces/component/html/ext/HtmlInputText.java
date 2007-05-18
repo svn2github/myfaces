@@ -172,7 +172,7 @@ public class HtmlInputText
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[7];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
@@ -180,6 +180,7 @@ public class HtmlInputText
         values[4] = _displayValueOnlyStyle;
         values[5] = _displayValueOnlyStyleClass;
         values[6] = _disabledOnClientSide;
+        values[7] = _autocomplete;
         return values;
     }
 
@@ -193,6 +194,7 @@ public class HtmlInputText
         _displayValueOnlyStyle = (String)values[4];
         _displayValueOnlyStyleClass = (String)values[5];
         _disabledOnClientSide = (Boolean)values[6];
+        _autocomplete = (String)values[7];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }
