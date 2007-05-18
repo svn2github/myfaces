@@ -163,8 +163,8 @@ public abstract class AbstractTagLibTestCase extends TestCase {
 
 				Object object = TldTestUtils.makeTagClassInstance(tag,
 						filename, classLoader);
-
-				assertSetters(tag, filename, object);
+                log.debug("filename = " + filename + " ; tag = " + tag.getName());
+                assertSetters(tag, filename, object);
 
 			} // end for tag
 		} // end for lib
