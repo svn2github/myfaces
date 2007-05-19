@@ -49,78 +49,6 @@
             </build>
         </profile>
 
-        <!-- By default the war examples use myfaces! :) -->
-        <profile>
-            <id>myfaces</id>
-            <activation>
-                <property>
-                    <name>!jsf</name>
-                </property>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.myfaces.core</groupId>
-                    <artifactId>myfaces-impl</artifactId>
-                    <!-- Sandbox examples must only have runtime dependency to myfaces-impl
-                 so that it will be automatically added to war. But there must not be
-                 any compile dependency on impl so that is is always possible to use
-                 other JSF implementations. -->
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
-
-            <properties>
-                <jsf_implementation>MyFaces</jsf_implementation>
-            </properties>
-        </profile>
-
-        <!-- To use the examples using the Sun's JSF Reference Implementation -->
-        <profile>
-            <id>jsfri</id>
-            <activation>
-                <property>
-                    <name>jsf</name>
-                    <value>ri</value>
-                </property>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>javax.faces</groupId>
-                    <artifactId>jsf-api</artifactId>
-                    <version>1.1_02</version>
-                </dependency>
-                <dependency>
-                    <groupId>javax.faces</groupId>
-                    <artifactId>jsf-impl</artifactId>
-                    <version>1.1_02</version>
-                    <scope>runtime</scope>
-                </dependency>
-
-               <dependency>
-                    <groupId>jstl</groupId>
-                    <artifactId>jstl</artifactId>
-                    <version>1.1.0</version>
-                    <scope>compile</scope>
-                </dependency>
-            </dependencies>
-
-            <repositories>
-                <repository>
-                    <id>java.net</id>
-                    <name>java.net Maven 1 Repository</name>
-                    <url>https://maven-repository.dev.java.net/nonav/repository</url>
-                    <layout>legacy</layout>
-                </repository>
-            </repositories>
-
-            <properties>
-                <jsf_implementation>JSF-RI</jsf_implementation>
-            </properties>
-        </profile>
 
         <!-- Profile to run jetty, so the tomcat jars are included in the bundle. They are not included by default -->
         <profile>
@@ -208,5 +136,13 @@
         </resources>
 
     </build>
+
+  <properties>
+     <!-- Tomahawk examples must only have runtime dependency to the imlementation
+          so that it will be automatically added to war. But there must not be
+          any compile dependency on impl so that is is always possible to use
+          other JSF implementations. -->
+     <jsf-impl.scope>runtime</jsf-impl.scope>
+  </properties>
 
 </project>

@@ -113,6 +113,118 @@
       </build>
     </profile>
      
+    <!-- By default the war examples use myfaces! :) -->
+    <profile>
+      <id>myfaces</id>
+      <activation>
+        <property>
+          <name>!jsf</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.myfaces.core</groupId>
+          <artifactId>myfaces-api</artifactId>
+          <version>${myfaces.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.myfaces.core</groupId>
+          <artifactId>myfaces-impl</artifactId>
+          <version>${myfaces.version}</version>
+          <scope>${jsf-impl.scope}</scope>
+        </dependency>
+      </dependencies>
+
+      <properties>
+        <jsf_implementation>MyFaces ${myfaces.version}</jsf_implementation>
+      </properties>
+    </profile>
+
+    <!-- To use the examples using the Sun's JSF Reference Implementation 1.1: -Djsf=ri -->
+    <profile>
+      <id>jsfri</id>
+      <activation>
+        <property>
+          <name>jsf</name>
+          <value>ri</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>javax.faces</groupId>
+          <artifactId>jsf-api</artifactId>
+          <version>1.1_02</version>
+          <exclusions>
+            <exclusion>
+              <groupId>java.servlet.servlet.jsp</groupId>
+              <artifactId>jsp-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>javax.servlet</groupId>
+              <artifactId>servlet-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>javax.servlet.jsp</groupId>
+              <artifactId>jsp-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>javax.servlet.jsp.jstl</groupId>
+              <artifactId>jstl</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>javax.faces</groupId>
+          <artifactId>jsf-impl</artifactId>
+          <version>1.1_02</version>
+          <scope>${jsf-impl.scope}</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>java.servlet.servlet.jsp</groupId>
+              <artifactId>jsp-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>javax.servlet</groupId>
+              <artifactId>servlet-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>javax.servlet.jsp</groupId>
+              <artifactId>jsp-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>javax.servlet.jsp.jstl</groupId>
+              <artifactId>jstl</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+
+        <dependency>
+          <groupId>javax.servlet.jsp</groupId>
+          <artifactId>jsp-api</artifactId>
+          <version>1.2.0</version>
+          <scope>compile</scope>
+        </dependency>
+        <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>jstl</artifactId>
+          <version>1.1.0</version>
+          <scope>${jsf-impl.scope}</scope>
+        </dependency>
+      </dependencies>
+
+      <repositories>
+        <repository>
+          <id>java.net</id>
+          <name>java.net Maven 1 Repository</name>
+          <url>https://maven-repository.dev.java.net/nonav/repository</url>
+          <layout>legacy</layout>
+        </repository>
+      </repositories>
+
+      <properties>
+        <jsf_implementation>JSF-RI</jsf_implementation>
+      </properties>
+    </profile>
   </profiles>
 
   <modules>
@@ -136,6 +248,7 @@
   <properties>
     <myfaces.version>1.1.6-SNAPSHOT</myfaces.version>
     <myfaces-shared.version>2.0.6-SNAPSHOT</myfaces-shared.version>
+    <jsf-impl.scope>test</jsf-impl.scope>
   </properties>
 
 </project>
