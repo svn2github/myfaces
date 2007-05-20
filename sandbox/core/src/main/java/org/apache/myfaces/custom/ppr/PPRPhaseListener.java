@@ -70,7 +70,10 @@ public class PPRPhaseListener implements PhaseListener {
 	}
 
 	private void processPartialPageRequest(FacesContext context, final ExternalContext externalContext, Map externalRequestMap) {
-		externalContext.getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
+        //If the PhaseListener is invoked the second time do nothing
+        if(externalContext.getRequestMap().containsKey(PPRPanelGroupRenderer.PPR_RESPONSE))
+            return;
+        externalContext.getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
 
 		ServletResponse response = (ServletResponse) externalContext.getResponse();
 		ServletRequest request = (ServletRequest) externalContext.getRequest();

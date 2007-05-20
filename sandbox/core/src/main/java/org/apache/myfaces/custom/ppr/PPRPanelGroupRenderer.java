@@ -50,8 +50,6 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 
 	private static Log log = LogFactory.getLog(PPRPanelGroupRenderer.class);
 
-	private static final String MY_FACES_PPR_INITIALIZED = "/*MyFaces PPR initialized*/";
-
 	private static final String ADD_PARTIAL_TRIGGER_FUNCTION = "addPartialTrigger";
 
 	private static final String ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION = "addPartialTriggerPattern";
@@ -67,8 +65,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		final ExternalContext externalContext = facesContext.getExternalContext();
 		
 		final Map requestMap = externalContext.getRequestMap();
-		
-		if (requestMap.containsKey(PPR_RESPONSE)) {
+
+        //Do not render the JavaScript if answering to a PPR response
+        if (requestMap.containsKey(PPR_RESPONSE)) {
 			return;
 		}
 
@@ -85,13 +84,18 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 			DojoUtils.addMainInclude(facesContext, pprGroup, javascriptLocation, new DojoConfig());
 			DojoUtils.addRequire(facesContext, pprGroup, "dojo.io.*");
 			DojoUtils.addRequire(facesContext, pprGroup, "dojo.event.*");
-			addResource.addInlineScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, MY_FACES_PPR_INITIALIZED);
-
 			addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PPRPanelGroup.class, PPR_JS_FILE);
 		}
 
 		StringBuffer script = new StringBuffer();
-		final String formName = fi.getFormName();
+
+        // all JS is put inside a function passed to dojoOnLoad
+        //this is necessary in order to be able to replace all button onClick handlers
+
+        script.append("dojo.addOnLoad( function(){ ");
+
+
+        final String formName = fi.getFormName();
 		
 		String pprCtrlReference = "dojo.byId('" + formName + "').myFacesPPRCtrl";
 
@@ -105,17 +109,13 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 				script.append(pprCtrlReference + ".registerOnSubmitInterceptor();");
 			}
 
-			renderInlineScript(facesContext, pprGroup, script.toString());
 		}
 
 		String clientId = pprGroup.getClientId(facesContext);
 
 		if (pprGroup.getPeriodicalUpdate() != null) {
-			script = new StringBuffer();
 			script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId
 					+ "');");
-
-			renderInlineScript(facesContext, pprGroup, script.toString());
 		}
 
 		String partialTriggerId;
@@ -126,22 +126,15 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		
 		String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
 		if (partialTriggerPattern != null && partialTriggerPattern.trim().length() > 0) {
-			script = new StringBuffer();
 			script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION + "('" + partialTriggerPattern
 					+ "','" + clientId + "');");
-
-			renderInlineScript(facesContext, pprGroup, script.toString());
 		}
 
 		String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
 
 		if (inlineLoadingMessage != null && inlineLoadingMessage.trim().length() > 0) {
-			script = new StringBuffer();
 			script.append(pprCtrlReference + "." + ADD_INLINE_LOADING_MESSAGE_FUNCTION + "('" + inlineLoadingMessage + "','"
 					+ clientId + "');");
-
-			renderInlineScript(facesContext, pprGroup, script.toString());
-
 		}
 
 		if (partialTriggers != null && partialTriggers.trim().length() > 0) {
@@ -154,12 +147,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 				}
 				if (partialTriggerComponent != null) {
 					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
-					script = new StringBuffer();
 					script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION + "('" + partialTriggerClientId + "','"
 							+ clientId + "');");
-
-					renderInlineScript(facesContext, pprGroup, script.toString());
-
 				} else {
 					if (log.isDebugEnabled()) {
 						log.debug("PPRPanelGroupRenderer Component with id " + partialTriggerId + " not found!");
@@ -167,7 +156,11 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 				}
 			}
 		}
-	}
+
+        //closing the dojo.addOnLoad call
+        script.append("});");
+        renderInlineScript(facesContext, pprGroup, script.toString());
+    }
 
 	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 		if (uiComponent.getId() == null || uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
