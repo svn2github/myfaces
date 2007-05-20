@@ -64,6 +64,7 @@ components.
             
             <blockquote><h3>&lt;s:excelExport&gt;</h3>
                 <code>for="Id of the datatable"</code><br/>
+				<code>filename="Optional attribute to specify the filename of the exported excel file"</code><br/>
             </blockquote>
         </section>
 
