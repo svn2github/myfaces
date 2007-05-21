@@ -442,8 +442,11 @@ public class HtmlTabbedPaneRenderer
                 String inactiveUserClass = tabbedPane.getInactiveTabStyleClass();
                 String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();
                 String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
+                String onclickEvent = tab.getAttributes().get(HTML.ONCLICK_ATTR) != null ? (String) tab.getAttributes().get(HTML.ONCLICK_ATTR) : "";
+                
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
-                                      "return myFaces_showPanelTab("
+                					  onclickEvent
+                					  + "return myFaces_showPanelTab("
                                       +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
                                       +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
                                       +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
