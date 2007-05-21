@@ -41,8 +41,8 @@ import javax.faces.component.UIData;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.Converter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -256,7 +256,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                 currentColumn = (HtmlSimpleColumn) child;
                 if(currentColumn.isGroupBy())
                 {
-                    groupHashTable.put(new Integer(j),"");
+                    groupHashTable.put(new Integer(j), null);
                 }
             }
         }
@@ -272,30 +272,28 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
                 break;
 
             Set groupIndexList = groupHashTable.keySet();
-            StringBuffer currentColumnContent = null;
+            List currentColumnContent = null;
             for(Iterator it = groupIndexList.iterator(); it.hasNext(); )
             {
-                currentColumnContent = new StringBuffer();
+                currentColumnContent = new ArrayList();
                 Integer currentIndex=(Integer) it.next();
                 currentColumn = (HtmlSimpleColumn) children.get(currentIndex.intValue());
-                List currentColumnChildren = currentColumn.getChildren();
-                for (int j = 0, size = currentColumnChildren.size(); j < size; j++)
-                {
-                    UIComponent currentColumnChild = (UIComponent) currentColumnChildren.get(j);
-                    if (currentColumnChild.isRendered() && currentColumnChild instanceof ValueHolder)
-                    {
-                        Object value = ((ValueHolder) currentColumnChild).getValue();
-                        if (value != null) {
-                            Converter converter =
-                                HtmlRendererUtils.findUIOutputConverterFailSafe(facesContext, currentColumnChild);
-                            currentColumnContent.append(
-                                RendererUtils.getConvertedStringValue(facesContext, currentColumnChild,
-                                                                      converter, value)); // TODO converter
-                        }
-                    }
-                }
-                if (currentColumnContent.toString().compareTo(
-                    (groupHashTable.get(currentIndex)).toString())!=0 &&
+
+				if (currentColumn.isGroupByValueSet())
+				{
+					currentColumnContent.add(currentColumn.getGroupByValue());
+				}
+				else
+				{
+					// iterate the children - this avoids to add the column facet too
+					List currentColumnChildren = currentColumn.getChildren();
+					if (currentColumnChildren != null)
+					{
+						collectChildrenValues(currentColumnContent, currentColumnChildren.iterator());
+					}
+				}
+
+				if (!isListEqual(currentColumnContent, (List) groupHashTable.get(currentIndex)) &&
                     currentRowInfoIndex > -1)
                 {
                     groupEndReached = true;
@@ -397,8 +395,61 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
 		htmlDataTable.setRowIndex(-1);
     }
 
+	protected void collectChildrenValues(List container, Iterator iterChildren)
+	{
+		while (iterChildren.hasNext())
+		{
+			UIComponent child = (UIComponent) iterChildren.next();
+			if (child.isRendered())
+			{
+				if (child instanceof ValueHolder)
+				{
+					Object value = ((ValueHolder) child).getValue();
+					container.add(value);
+				}
 
-    /**
+				// we lave the column ... now iterate the facets too
+				collectChildrenValues(container, child.getFacetsAndChildren());
+			}
+		}
+	}
+
+	/**
+	 * checks if the contenta of both lists are the same.<br />
+	 * <b>Notice:</b> In case both lists are null or empty they are
+	 * considered NOT being equal
+	 */
+	protected boolean isListEqual(List list1, List list2)
+	{
+		if (list1 == list2)
+		{
+			return list1 != null && list1.size() > 0;
+		}
+		if (list1 == null || list2 == null || list1.size() != list2.size())
+		{
+			return false;
+		}
+
+		for (int i = 0; i<list1.size(); i++)
+		{
+			Object o1 = list1.get(i);
+			Object o2 = list2.get(i);
+
+			if (o1 != null && !o1.equals(o2))
+			{
+				return false;
+			}
+			if (o2 != null && !o2.equals(o1))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	/**
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
@@ -903,7 +954,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
      * of a colspan in a cell in a previous column
      *
      * @param prefix header, footer or null
-     * @param uiComponent
+     * @param component
      */
     protected boolean amISpannedOver(String prefix, UIComponent component) {
         UIComponent table = component.getParent();

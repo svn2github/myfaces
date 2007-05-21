@@ -18,10 +18,10 @@
  */
 package org.apache.myfaces.custom.crosstable;
 
+import org.apache.myfaces.custom.column.HtmlColumn;
+
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-
-import org.apache.myfaces.custom.column.HtmlColumn;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -77,7 +77,7 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
     private String _styleClass;
     private String _title;
 
-    //HTML event handler attributes for 
+    //HTML event handler attributes for
     private String _onclick;
     private String _ondblclick;
     private String _onkeydown;
@@ -90,13 +90,14 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
     private String _onmouseup;
 
     private Boolean _groupBy;
+	private String _groupByValue;
     private Boolean _defaultSorted;
     private Boolean _sortable;
     private String _sortPropertyName;
 
 
     /**
-     * 
+     *
      */
     public HtmlColumns() {
         setRendererType(null);
@@ -515,7 +516,17 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
         _groupBy = groupBy;
     }
 
-    public boolean isDefaultSorted() {
+	public Object getGroupByValue() {
+		if (_groupByValue != null) return _groupByValue;
+		ValueBinding vb = getValueBinding("groupByValue");
+		return vb != null ? vb.getValue(getFacesContext()) : null;
+	}
+
+	public void setGroupByValue(String groupByValue) {
+		_groupByValue = groupByValue;
+	}
+
+	public boolean isDefaultSorted() {
         if (_defaultSorted != null) return _defaultSorted.booleanValue();
         ValueBinding vb = getValueBinding("defaultSorted");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
@@ -557,63 +568,67 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
      * @see javax.faces.component.UIData#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[51];
-        values[0] = super.saveState(context);
+        Object[] values = new Object[]
+		{
+			super.saveState(context),
 
-        values[1] = _headerdir;
-        values[2] = _headerlang;
-        values[3] = _headerstyle;
-        values[4] = _headerstyleClass;
-        values[5] = _headertitle;
-        values[6] = _headeronclick;
-        values[7] = _headerondblclick;
-        values[8] = _headeronkeydown;
-        values[9] = _headeronkeypress;
-        values[10] = _headeronkeyup;
-        values[11] = _headeronmousedown;
-        values[12] = _headeronmousemove;
-        values[13] = _headeronmouseout;
-        values[14] = _headeronmouseover;
-        values[15] = _headeronmouseup;
+			_headerdir,
+			_headerlang,
+			_headerstyle,
+			_headerstyleClass,
+			_headertitle,
+			_headeronclick,
+			_headerondblclick,
+			_headeronkeydown,
+			_headeronkeypress,
+			_headeronkeyup,
+			_headeronmousedown,
+			_headeronmousemove,
+			_headeronmouseout,
+			_headeronmouseover,
+			_headeronmouseup,
 
-        values[16] = _footerdir;
-        values[17] = _footerlang;
-        values[18] = _footerstyle;
-        values[19] = _footerstyleClass;
-        values[20] = _footertitle;
-        values[21] = _footeronclick;
-        values[22] = _footerondblclick;
-        values[23] = _footeronkeydown;
-        values[24] = _footeronkeypress;
-        values[25] = _footeronkeyup;
-        values[26] = _footeronmousedown;
-        values[27] = _footeronmousemove;
-        values[28] = _footeronmouseout;
-        values[29] = _footeronmouseover;
-        values[30] = _footeronmouseup;
+			_footerdir,
+			_footerlang,
+			_footerstyle,
+			_footerstyleClass,
+			_footertitle,
+			_footeronclick,
+			_footerondblclick,
+			_footeronkeydown,
+			_footeronkeypress,
+			_footeronkeyup,
+			_footeronmousedown,
+			_footeronmousemove,
+			_footeronmouseout,
+			_footeronmouseover,
+			_footeronmouseup,
 
-        values[31] = _dir;
-        values[32] = _lang;
-        values[33] = _style;
-        values[34] = _styleClass;
-        values[35] = _title;
-        values[36] = _onclick;
-        values[37] = _ondblclick;
-        values[38] = _onkeydown;
-        values[39] = _onkeypress;
-        values[40] = _onkeyup;
-        values[41] = _onmousedown;
-        values[42] = _onmousemove;
-        values[43] = _onmouseout;
-        values[44] = _onmouseover;
-        values[45] = _onmouseup;
+			_dir,
+			_lang,
+			_style,
+			_styleClass,
+			_title,
+			_onclick,
+			_ondblclick,
+			_onkeydown,
+			_onkeypress,
+			_onkeyup,
+			_onmousedown,
+			_onmousemove,
+			_onmouseout,
+			_onmouseover,
+			_onmouseup,
 
-        values[46] = _width;
-        values[47] = _groupBy;
-        values[48] = _defaultSorted;
-        values[49] = _sortable;
-        values[50] = _sortPropertyName;
-        return values;
+			_width,
+			_groupBy,
+			_groupByValue,
+			_defaultSorted,
+			_sortable,
+			_sortPropertyName,
+		};
+
+		return values;
     }
 
     /**
@@ -673,8 +688,9 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
 
         _width = (String) values[46];
         _groupBy = (Boolean) values[47];
-        _defaultSorted = (Boolean) values[48];
-        _sortable = (Boolean) values[49];
-        _sortPropertyName = (String) values[50];
+		_groupByValue = (String) values[48];
+        _defaultSorted = (Boolean) values[49];
+        _sortable = (Boolean) values[50];
+        _sortPropertyName = (String) values[51];
     }
 }

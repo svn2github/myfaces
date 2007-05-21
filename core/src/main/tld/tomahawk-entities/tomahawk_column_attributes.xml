@@ -62,12 +62,18 @@
             <rtexprvalue>false</rtexprvalue>
             <description>This attribute tells the datatable to group by data in this column</description>
         </attribute>
+		<attribute>
+			<name>groupByValue</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>Optional - Allows you configure where to get the value to check for the group change condition. Default: all children of the column cell will be checked</description>
+		</attribute>
         <attribute>
             <name>defaultSorted</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                This attribute tells the datatable to make this column the default sorted, when 
+                This attribute tells the datatable to make this column the default sorted, when
                 sortable=true
             </description>
         </attribute>

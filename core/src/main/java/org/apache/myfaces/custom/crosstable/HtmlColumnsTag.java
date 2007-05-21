@@ -18,11 +18,11 @@
  */
 package org.apache.myfaces.custom.crosstable;
 
-import javax.faces.component.UIComponent;
-
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlComponentBodyTagBase;
+
+import javax.faces.component.UIComponent;
 
 /**
  * @author Mathias Broekelmann (latest modification by $Author$)
@@ -71,7 +71,9 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
     private String _footeronmouseup;
 
     private String _groupBy;
-    //sort related attributes
+	private String _groupByValue;
+
+	//sort related attributes
     private String _defaultSorted;
     private String _sortable;
     private String _sortPropertyName;
@@ -80,7 +82,7 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
 	private String footercolspan;
 	private String footerstyleClass;
 	private String colspan;
-	
+
     /**
      * @see javax.faces.webapp.UIComponentTag#getComponentType()
      */
@@ -142,11 +144,12 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, "footeronkeyup", _footeronkeyup);
 
         setBooleanProperty(component, "groupBy", _groupBy);
+		setStringProperty(component, "groupByValue", _groupByValue);
 
         setBooleanProperty(component, "defaultSorted", _defaultSorted);
         setBooleanProperty(component, "sortable", _sortable);
         setStringProperty(component, "sortPropertyName", _sortPropertyName);
-		
+
 		setStringProperty(component, "colspan", colspan);
 		setStringProperty(component, "footerstyleClass", footerstyleClass);
 		setStringProperty(component, "footercolspan", footercolspan);
@@ -195,6 +198,7 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
         _footeronmouseover = null;
         _footeronmouseup = null;
         _groupBy = null;
+		_groupByValue = null;
         _defaultSorted = null;
         _sortable = null;
         _sortPropertyName = null;
@@ -329,7 +333,11 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
         _groupBy = groupBy;
     }
 
-    public void setDefaultSorted(String defaultSorted) {
+	public void setGroupByValue(String groupByValue) {
+		_groupByValue = groupByValue;
+	}
+
+	public void setDefaultSorted(String defaultSorted) {
         _defaultSorted = defaultSorted;
     }
 

@@ -70,6 +70,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
     private String _width;
     private String _colspan;
     private String _groupBy;
+	private String _groupByValue;
 
     //sort related attributes
     private String _defaultSorted;
@@ -123,6 +124,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _width = null;
         _colspan = null;
         _groupBy = null;
+		_groupByValue = null;
 
         _defaultSorted = null;
         _sortable = null;
@@ -168,6 +170,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, "width", _width);
         setStringProperty(component, "colspan", _colspan);
         setBooleanProperty(component, "groupBy", _groupBy);
+		setStringProperty(component, "groupByValue", _groupByValue);
 
         setBooleanProperty(component, "defaultSorted", _defaultSorted);
         setBooleanProperty(component, "sortable", _sortable);
@@ -317,7 +320,11 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _groupBy = groupBy;
     }
 
-    public void setDefaultSorted(String defaultSorted) {
+	public void setGroupByValue(String groupByValue) {
+		this._groupByValue = groupByValue;
+	}
+
+	public void setDefaultSorted(String defaultSorted) {
         _defaultSorted = defaultSorted;
     }
 
