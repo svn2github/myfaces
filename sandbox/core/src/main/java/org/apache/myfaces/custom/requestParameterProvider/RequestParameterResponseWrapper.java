@@ -20,9 +20,9 @@
 package org.apache.myfaces.custom.requestParameterProvider;
 
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
@@ -34,7 +34,7 @@ import java.util.Locale;
 public class RequestParameterResponseWrapper implements HttpServletResponse
 {
     protected HttpServletResponse original;
-
+    private String contentType;
 
     public RequestParameterResponseWrapper(HttpServletResponse httpServletResponse)
     {
@@ -185,6 +185,7 @@ public class RequestParameterResponseWrapper implements HttpServletResponse
 
     public void setContentType(String string)
     {
+        this.contentType = string;
         this.original.setContentType(string);
     }
 
@@ -226,5 +227,10 @@ public class RequestParameterResponseWrapper implements HttpServletResponse
     public Locale getLocale()
     {
         return this.original.getLocale();
+    }
+
+    public String getContentType()
+    {
+        return contentType;
     }
 }
