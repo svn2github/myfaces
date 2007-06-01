@@ -18,12 +18,14 @@
  */
 package org.apache.myfaces.custom.submitOnEvent;
 
+import org.apache.myfaces.custom.dialog.ModalDialog;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.custom.dialog.ModalDialog;
 
+import javax.faces.component.ActionSource;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -64,11 +66,14 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         {
             if (UIInput.COMPONENT_FAMILY.equals(parent.getFamily())
 				|| parent instanceof UIInput
-				|| parent instanceof ModalDialog)
+				|| parent instanceof ModalDialog
+				|| parent instanceof EditableValueHolder)
             {
                 triggerComponent = parent;
             }
-            else if (UICommand.COMPONENT_FAMILY.equals(parent.getFamily()) || parent instanceof UICommand)
+            else if (UICommand.COMPONENT_FAMILY.equals(parent.getFamily())
+				|| parent instanceof UICommand
+				|| parent instanceof ActionSource)
             {
                 forComponent = parent;
             }
