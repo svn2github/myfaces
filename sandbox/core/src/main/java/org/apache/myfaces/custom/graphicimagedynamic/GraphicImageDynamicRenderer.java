@@ -19,11 +19,17 @@
 
 package org.apache.myfaces.custom.graphicimagedynamic;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.util.ParameterResourceHandler;
+import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -34,24 +40,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
+import javax.faces.el.ValueBinding;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.util.ParameterResourceHandler;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.ResourceLoader;
-import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * @author Sylvain Vieujot
@@ -127,6 +127,7 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
     }
 
     private static final String RENDERER_PARAM = "_renderer";
+	private static final String VALUE_PARAM = "_value";
     private static final String WIDTH_PARAM = "_width";
     private static final String HEIGHT_PARAM = "_height";
 
@@ -157,16 +158,22 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
         }
 
         Class imageRendererClass = graphicImageDynamic.getImageRendererClass();
-        if (imageRendererClass == null)
+        if (imageRendererClass != null)
         {
-            throw new FacesException("No imageRendererClass defined for component "
-                                     + component.getId());
+			params.put(RENDERER_PARAM, imageRendererClass.getName());
         }
-        params.put(RENDERER_PARAM, imageRendererClass.getName());
 
-        AddResource addResource = AddResourceFactory.getInstance(context);
-        String url = addResource.getResourceUri(context, new ParameterResourceHandler(this
-                .getClass(), params));
+		ValueBinding imageRendererValueBinding = graphicImageDynamic.getValueBinding("value");
+		if (imageRendererValueBinding != null)
+		{
+			params.put(VALUE_PARAM, imageRendererValueBinding.getExpressionString());
+		}
+
+		AddResource addResource = AddResourceFactory.getInstance(context);
+        String url =
+			context.getExternalContext().encodeResourceURL(
+				addResource.getResourceUri(context, new ParameterResourceHandler(this
+					.getClass(), params)));
         writer.writeAttribute(HTML.SRC_ATTR, url, null);
 
         writer.endElement(HTML.IMG_ELEM);
@@ -213,46 +220,39 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
         facesContext.setResponseStream(new ImageResponseStream(response.getOutputStream()));
         try
         {
-            Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+			ImageRenderer imageRenderer = null;
+
+			Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
             Object rendererValue = requestMap.get(RENDERER_PARAM);
-            if (rendererValue == null)
-            {
-                throw new FacesException("no image renderer defined.");
-            }
-            try
-            {
-                Class rendererClass = ClassUtils.classForName(rendererValue.toString());
-                if (!ImageRenderer.class.isAssignableFrom(rendererClass))
-                {
-                    throw new FacesException("Image renderer class [" + rendererValue
-                                             + "] does not implement " + ImageRenderer.class.getName());
-                }
-                try
-                {
-                    ImageRenderer imageRenderer = (ImageRenderer) rendererClass.newInstance();
-                    renderImage(imageRenderer, facesContext);
-                }
-                catch (InstantiationException e)
-                {
-                    throw new FacesException("could not instantiate image renderer class "
-                                             + rendererValue + " : " + e.getMessage(), e);
-                }
-                catch (IllegalAccessException e)
-                {
-                    throw new FacesException("could not instantiate image renderer class "
-                                             + rendererValue + " : " + e.getMessage(), e);
-                }
-                catch (Exception e)
-                {
-                    throw new FacesException("could not renderer image "
-                                             + rendererValue + " : " + e.getMessage(), e);
-                }
-            }
-            catch (ClassNotFoundException e)
-            {
-                throw new FacesException("image renderer class not found: " + e.getMessage(), e);
-            }
-            facesContext.getResponseStream().close();
+			if (rendererValue != null)
+			{
+				imageRenderer = getImageRendererFromClassName(rendererValue.toString());
+			}
+			else
+			{
+				Object rendererValueBinding = requestMap.get(VALUE_PARAM);
+				if (rendererValueBinding != null)
+				{
+					imageRenderer = getImageRendererFromValueBinding(facesContext, rendererValueBinding.toString());
+				}
+			}
+
+
+			if (imageRenderer == null)
+			{
+				throw new FacesException("no image renderer defined.");
+			}
+
+			try
+			{
+				renderImage(imageRenderer, facesContext);
+			}
+			catch (Exception e)
+			{
+				throw new FacesException("could not renderer image "
+										 + rendererValue + " : " + e.getMessage(), e);
+			}
+			facesContext.getResponseStream().close();
         }
         finally
         {
@@ -260,7 +260,45 @@ public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements Re
         }
     }
 
-    protected void renderImage(ImageRenderer imageRenderer, FacesContext facesContext)
+	protected ImageRenderer getImageRendererFromValueBinding(FacesContext facesContext, String rendererValueBinding)
+	{
+		return (ImageRenderer) facesContext.getApplication().createValueBinding(rendererValueBinding.toString()).getValue(facesContext);
+	}
+
+	protected ImageRenderer getImageRendererFromClassName(String imageRendererClassName)
+	{
+		ImageRenderer imageRenderer;
+		try
+				{
+					Class rendererClass = ClassUtils.classForName(imageRendererClassName.toString());
+			if (!ImageRenderer.class.isAssignableFrom(rendererClass))
+			{
+				throw new FacesException("Image renderer class [" + imageRendererClassName
+										 + "] does not implement " + ImageRenderer.class.getName());
+			}
+			try
+			{
+				imageRenderer = (ImageRenderer) rendererClass.newInstance();
+			}
+			catch (InstantiationException e)
+			{
+				throw new FacesException("could not instantiate image renderer class "
+										 + imageRendererClassName + " : " + e.getMessage(), e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new FacesException("could not instantiate image renderer class "
+										 + imageRendererClassName + " : " + e.getMessage(), e);
+			}
+		}
+		catch (ClassNotFoundException e)
+		{
+			throw new FacesException("image renderer class not found: " + e.getMessage(), e);
+		}
+		return imageRenderer;
+	}
+
+	protected void renderImage(ImageRenderer imageRenderer, FacesContext facesContext)
             throws Exception
     {
             ImageContext imageContext = createImageContext(facesContext);
