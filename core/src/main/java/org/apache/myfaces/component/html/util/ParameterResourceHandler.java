@@ -88,7 +88,7 @@ public class ParameterResourceHandler implements ResourceHandler
 					}
 					catch (UnsupportedEncodingException e)
 					{
-						throw new FacesException(e.getLocalizedMessage(), e);
+						throw new FacesException(e);
 					}
 				}
 				if (iter.hasNext())
