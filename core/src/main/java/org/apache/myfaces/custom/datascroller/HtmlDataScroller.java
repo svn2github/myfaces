@@ -191,7 +191,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                         fastStep = 1;
                     int next = uiData.getFirst() + uiData.getRows() * fastStep;
                     int rowcount = uiData.getRowCount();
-                    if (next > rowcount)
+                    if (next >= rowcount)
                         next = (rowcount - 1) - ((rowcount - 1) % uiData.getRows());
                     setFirst(uiData, next);
                 }
