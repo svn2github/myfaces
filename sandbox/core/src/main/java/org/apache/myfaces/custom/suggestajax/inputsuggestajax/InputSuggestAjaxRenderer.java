@@ -87,7 +87,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         String hiddenInputValue = null;
 
         String mainComponentRenderedValue = null;
-        
+
 		/* check if the user supplied a label method */
 		if (inputSuggestAjax.getItemLabelMethod() == null)
 		{
@@ -111,7 +111,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             }
         }
 
-        String placeHolderId = context.getViewRoot().createUniqueId(); 
+        String placeHolderId = context.getViewRoot().createUniqueId();
         out.startElement(HTML.DIV_ELEM, component);
         out.writeAttribute(HTML.ID_ATTR, placeHolderId , null);
         if(inputSuggestAjax.getStyle() != null)
@@ -123,15 +123,43 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
             out.writeAttribute(HTML.CLASS_ATTR, inputSuggestAjax.getStyleClass(), null);
         }
         out.endElement(HTML.DIV_ELEM);
-        super.encodeEnd(context, inputSuggestAjax);
 
-        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(placeHolderId);
+		String textInputId = inputSuggestAjax.getId();
+		if (label != null)
+		{
+			// whe have a label method and thus a hidden input field holding the real value
+			// now fake the component id to have the rendered input component use another id
+			// than the one we render later for the real value
+			String oriId = inputSuggestAjax.getId();
+			try
+			{
+				// fake the label
+				inputSuggestAjax.setId(oriId + "_fake");
+
+				// fake a submitted value so we have it rendered
+				inputSuggestAjax.setSubmittedValue(label);
+
+				textInputId = inputSuggestAjax.getClientId(context);
+				super.encodeEnd(context, inputSuggestAjax);
+			}
+			finally
+			{
+				inputSuggestAjax.setSubmittedValue(null);
+				inputSuggestAjax.setId(oriId);
+			}
+		}
+		else
+		{
+			super.encodeEnd(context, inputSuggestAjax);
+		}
+
+		String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(placeHolderId);
 
         Map attributes = new HashedMap();
 
         attributes.put("dataUrl", ajaxUrl);
         attributes.put("mode", "remote");
-        attributes.put("textInputId", clientId);
+        attributes.put("textInputId", textInputId);
 
         String autoComplete = inputSuggestAjax.getAutoComplete().booleanValue()?"true":"false";
         attributes.put("autoComplete", autoComplete);
@@ -191,7 +219,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 		{
 			return converter;
 		}
-		
+
 		Class type = inputSuggestAjax.getValueBinding("value").getType(context);
 		if (type != null)
 		{
