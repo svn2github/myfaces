@@ -279,6 +279,10 @@ tomahawk.processValidations = function(facesContext) {
 }
 	
 tomahawk.executeClientLifeCycle = function() {
+	var bypassClientValidationElement = document.getElementById('tomahawk.bypassClientValidation');
+	if( bypassClientValidationElement != null && bypassClientValidationElement.value == "true")
+		return true;	//skip client validation
+	
 	var facesContext = new tomahawk.FacesClientContext();
 	tomahawk.createView(facesContext);
 	tomahawk.processValidations(facesContext);
