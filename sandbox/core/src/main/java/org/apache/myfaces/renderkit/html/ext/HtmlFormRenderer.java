@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.custom.clientvalidation.common.CVUtils;
 import org.apache.myfaces.custom.util.ComponentUtils;
@@ -44,6 +45,10 @@ public class HtmlFormRenderer extends HtmlFormRendererBase{
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+    	if(CVUtils.isCVEnabled()) {
+    		encodeBypassCVField(facesContext, component);
+    	}
+    	
     	super.encodeEnd(facesContext, component);
     	
     	if(CVUtils.isCVEnabled()) {
@@ -52,4 +57,16 @@ public class HtmlFormRenderer extends HtmlFormRendererBase{
 			CVUtils.encodeValidationScript(facesContext);
     	}
     }
+
+    //Renders a hidden input field that will act as a flag to bypass client validation or not
+	private void encodeBypassCVField(FacesContext facesContext, UIComponent component) throws IOException{
+		ResponseWriter writer = facesContext.getResponseWriter();
+		
+		writer.startElement("input", component);
+		writer.writeAttribute("type", "hidden", null);
+		writer.writeAttribute("id", CVUtils.BYPASS_CLIENT_VALIDATION_FIELD, null);
+		writer.writeAttribute("name", CVUtils.BYPASS_CLIENT_VALIDATION_FIELD, null);
+		writer.writeAttribute("value", "false", null);				//immediate command components make this value true when they're clicked 
+		writer.endElement("input");
+	}
 }
