@@ -74,6 +74,7 @@
 		</h:panelGrid>
 
 		<h:commandButton id="btn_save" value="Create" action=""/>
+		<t:commandButton id="btn_cancel" value="Cancel" immediate="true"></t:commandButton>
 
 	</h:form>
 	
