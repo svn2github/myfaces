@@ -42,6 +42,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  * @version $Revision$ $Date$
  */
 public class CVUtils {
+	
+	public final static String BYPASS_CLIENT_VALIDATION_FIELD = "tomahawk.bypassClientValidation";
 
 	private CVUtils() {
 		// nope
