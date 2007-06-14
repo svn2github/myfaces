@@ -587,7 +587,12 @@
     	<renderer-class>org.apache.myfaces.custom.clientvalidation.validationscript.ValidationScriptRenderer</renderer-class>
     </renderer>
     
-
+	<renderer>
+            <component-family>javax.faces.Command</component-family>
+            <renderer-type>org.apache.myfaces.Button</renderer-type>
+            <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlButtonExRenderer</renderer-class>
+	</renderer>
+    
   </render-kit>
 
   <lifecycle>
