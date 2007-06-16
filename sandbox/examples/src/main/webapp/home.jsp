@@ -167,7 +167,14 @@
             </h:panelGrid>
 
         </h:panelGrid>
-    
+
+        <h:outputText value="Limit Rendered"/>
+        <h:panelGrid style="padding-left:25px">
+            <h:outputLink value="limitRendered.jsf" >
+                <f:verbatim>Limit Rendered - limit the number of child components to render</f:verbatim>
+            </h:outputLink>
+        </h:panelGrid>
+        
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
     </f:view>

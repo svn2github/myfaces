@@ -279,6 +279,10 @@
   	<component-class>org.apache.myfaces.custom.clientvalidation.validationscript.ValidationScript</component-class>
   </component>
 
+  <component>
+    <component-type>org.apache.myfaces.UILimitRendered</component-type>
+    <component-class>org.apache.myfaces.custom.limitrendered.UILimitRendered</component-class>
+  </component>
 
   <!-- sandbox converters -->
 

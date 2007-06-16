@@ -528,6 +528,13 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   
+    <!-- managed bean for limitRendered -->
+    <managed-bean>
+        <managed-bean-name>limitRendered</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.limitrendered.LimitRenderedBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+  
 	<!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>
