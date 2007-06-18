@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,7 +25,6 @@ import java.io.Serializable;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 

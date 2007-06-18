@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,7 +26,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleModel;
 
 /**
@@ -110,6 +109,14 @@ public class ScheduleDelegatingRenderer extends Renderer implements Serializable
         default:
             return dayDelegate;
         }
+    }
+
+    /**
+     * @see javax.faces.render.Renderer#getRendersChildren()
+     */
+    public boolean getRendersChildren()
+    {
+        return true;
     }
 }
 //The End

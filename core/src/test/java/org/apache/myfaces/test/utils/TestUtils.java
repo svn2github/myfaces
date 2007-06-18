@@ -363,7 +363,7 @@ public final class TestUtils
 
         addRenderer(facesContext, "javax.faces.Panel",
                 "org.apache.myfaces.Schedule",
-                "org.apache.myfaces.custom.schedule.renderer.ScheduleDelegatingRenderer");
+                "org.apache.myfaces.custom.schedule.ScheduleDelegatingRenderer");
 
         addRenderer(facesContext, "javax.faces.Data",
                 "org.apache.myfaces.Table",

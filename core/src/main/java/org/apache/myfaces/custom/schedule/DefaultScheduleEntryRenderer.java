@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,7 +30,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
 
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -47,7 +46,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
     private static final long serialVersionUID = 4987926168243581739L;
 
     /**
-     * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#renderContent(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleDay, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean, boolean)
+     * @see org.apache.myfaces.custom.schedule.ScheduleEntryRenderer#renderContent(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleDay, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean, boolean)
      */
     public void renderContent(FacesContext context, ResponseWriter writer,
                               HtmlSchedule schedule, ScheduleDay day, ScheduleEntry entry,
@@ -144,7 +143,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
     }
     
     /**
-     * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#getColor(javax.faces.context.FacesContext, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
+     * @see org.apache.myfaces.custom.schedule.ScheduleEntryRenderer#getColor(javax.faces.context.FacesContext, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
      */
     public String getColor(FacesContext context, HtmlSchedule schedule,
                            ScheduleEntry entry, boolean selected)
@@ -153,7 +152,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
     }
 
     /**
-     * @see org.apache.myfaces.custom.schedule.renderer.ScheduleEntryRenderer#renderToolTip(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
+     * @see org.apache.myfaces.custom.schedule.ScheduleEntryRenderer#renderToolTip(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry, boolean)
      */
     public void renderToolTip(FacesContext context, ResponseWriter writer,
                               HtmlSchedule schedule, ScheduleEntry entry, boolean selected)

@@ -1579,6 +1579,7 @@ h        </description>
 		<display-name>Schedule component</display-name>
 		<description>A schedule component similar to the ones found in Outlook or Evolution</description>
 		&ui_command_attributes;
+        &user_role_attributes;
 		&tomahawk_ui_schedule_attributes;
 		&tomahawk_html_schedule_attributes;
 	</tag>

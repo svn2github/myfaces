@@ -16,17 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package org.apache.myfaces.custom.schedule;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.faces.component.ActionSource;
-import javax.faces.component.UIComponentBase;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -36,24 +33,17 @@ import javax.faces.event.PhaseId;
 
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
-import org.apache.myfaces.custom.schedule.model.ScheduleModel;
-import org.apache.myfaces.custom.schedule.model.SimpleScheduleModel;
-import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
 /**
- * <p>
- * A schedule component similar to the ones found in Outlook or Evolution
- * </p>
- *
- * @author Jurgen Lust (latest modification by $Author: jlust $)
- * @author Bruno Aranda (adaptation of Jurgen code to myfaces)
- * @version $Revision: 392301 $
+ * This class contains all 'interactive' stuff for the Schedule component, meaning
+ * actions and actionListeners.
+ * 
+ * @author Jurgen Lust
+ * @version $Revision$
  */
-public class UISchedule extends UIComponentBase implements ValueHolder,
+public class UISchedule extends UIScheduleBase implements
         Serializable, ActionSource
 {
-    private static final long serialVersionUID = 3440822180568539483L;
-
     private class ScheduleActionListener implements ActionListener
     {
         //~ Methods ------------------------------------------------------------
@@ -76,76 +66,68 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
             }
         }
     }
-    public static final String COMPONENT_FAMILY = "javax.faces.Panel";
-    //~ Static fields/initializers ---------------------------------------------
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.Schedule";
+    
+    private static final long serialVersionUID = -8333458172939036755L;
+    private MethodBinding _action;
+    private MethodBinding _actionListener;
+    private ScheduleActionListener _scheduleListener;
+    private ScheduleEntry _submittedEntry;
+    private Date _lastClickedDateAndTime = null;
+    
 
-    //~ Instance fields --------------------------------------------------------
+    private MethodBinding _mouseListener = null;
 
-    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Schedule";
-    private MethodBinding actionBinding;
-    private MethodBinding actionListenerBinding;
-    private Converter converter;
-    private Boolean immediate;
-    private Boolean readonly;
-    private ScheduleActionListener scheduleListener;
-    private ScheduleEntry submittedEntry;
-    private Object value;
-    private Integer visibleEndHour;
-    private Integer visibleStartHour;
-    private Integer workingEndHour;
-
-    //~ Constructors -----------------------------------------------------------
-
-    private Integer workingStartHour;
-
-    //~ Methods ----------------------------------------------------------------
-
-    /**
-     * Creates a new UISchedule object.
-     */
     public UISchedule()
     {
         super();
-        setRendererType(DEFAULT_RENDERER_TYPE);
-        scheduleListener = new ScheduleActionListener();
-        addActionListener(scheduleListener); 
+        _scheduleListener = new ScheduleActionListener();
+        addActionListener(_scheduleListener); 
     }
 
-    /**
-     * @see javax.faces.component.ActionSource#addActionListener(javax.faces.event.ActionListener)
-     */
     public void addActionListener(ActionListener listener)
     {
         addFacesListener(listener);
     }
 
+    
     /**
      * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
      */
     public void broadcast(FacesEvent event) throws AbortProcessingException
     {
+        FacesContext context = getFacesContext();
+        //invoke the mouselistener first
+        if (event instanceof ScheduleMouseEvent)
+        {
+            ScheduleMouseEvent mouseEvent = (ScheduleMouseEvent) event;
+            MethodBinding mouseListener = getMouseListener();
+
+            if (mouseListener != null)
+            {
+                mouseListener.invoke(context,
+                        new Object[] { mouseEvent });
+            }
+        }
+
+        //then invode any other listeners
         super.broadcast(event);
 
-        FacesContext context = getFacesContext();
-        MethodBinding actionListenerBinding = getActionListener();
+        MethodBinding actionListener = getActionListener();
 
-        if (actionListenerBinding != null)
+        if (actionListener != null)
         {
-            actionListenerBinding.invoke(context, new Object[] { event });
+            actionListener.invoke(context, new Object[] { event });
         }
     }
 
     /**
-     * <p>
      * Find the entry with the given id
-     * </p>
      *
      * @param id the id
      *
      * @return the entry
      */
-    public ScheduleEntry findEntry(String id)
+    protected ScheduleEntry findEntry(String id)
     {
         if (id == null)
         {
@@ -171,173 +153,46 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
         return null;
     }
 
-    /**
-     * @see javax.faces.component.ActionSource#getAction()
-     */
     public MethodBinding getAction()
     {
-        return actionBinding;
+        return _action;
     }
 
-    /**
-     * @see javax.faces.component.ActionSource#getActionListener()
-     */
     public MethodBinding getActionListener()
     {
-        return actionListenerBinding;
+        return _actionListener;
     }
 
-    /**
-     * @see javax.faces.component.ActionSource#getActionListeners()
-     */
     public ActionListener[] getActionListeners()
     {
         return (ActionListener[]) getFacesListeners(ActionListener.class);
     }
 
     /**
-     * @see javax.faces.component.ValueHolder#getConverter()
+     * The last date and time of day that was clicked. This is set when
+     * submitOnClick is true, and the schedule is clicked by the user.
+     * 
+     * @return the last clicked date and time
      */
-    public Converter getConverter()
+    public Date getLastClickedDateAndTime()
     {
-        return converter;
+        return _lastClickedDateAndTime;
     }
 
     /**
-     * @see javax.faces.component.UIComponent#getFamily()
+     * @return the method binding to the mouse listener method
      */
-    public String getFamily()
+    public MethodBinding getMouseListener()
     {
-        return COMPONENT_FAMILY;
+        return _mouseListener;
     }
 
     /**
-     * @see javax.faces.component.ValueHolder#getLocalValue()
+     * @return the submittedEntry
      */
-    public Object getLocalValue()
+    protected ScheduleEntry getSubmittedEntry()
     {
-        return value;
-    }
-
-    /**
-     * <p>
-     * The underlying model
-     * </p>
-     *
-     * @return Returns the model.
-     */
-    public ScheduleModel getModel()
-    {
-        if (getValue() instanceof ScheduleModel)
-        {
-            return (ScheduleModel) getValue();
-        }
-        else
-        {
-            return new SimpleScheduleModel();
-        }
-    }
-
-    /**
-     * @see javax.faces.component.UIComponent#getRendersChildren()
-     */
-    public boolean getRendersChildren()
-    {
-        return true;
-    }
-
-    /**
-     * <p>
-     * The entry that was submitted on the last request
-     * </p>
-     *
-     * @return Returns the submittedEntry.
-     */
-    public ScheduleEntry getSubmittedEntry()
-    {
-        return submittedEntry;
-    }
-
-    /**
-     * @see javax.faces.component.ValueHolder#getValue()
-     */
-    public Object getValue()
-    {
-        return ScheduleUtil.getObjectProperty(this, value, "value", value);
-    }
-
-    /**
-     * <p>
-     * The last visible hour of the day
-     * </p>
-     *
-     * @return Returns the visibleEndHour.
-     */
-    public int getVisibleEndHour()
-    {
-        return ScheduleUtil.getIntegerProperty(this, visibleEndHour,
-                "visibleEndHour", 22);
-    }
-
-    /**
-     * <p>
-     * The first visible hour of the day
-     * </p>
-     *
-     * @return Returns the visibleStartHour.
-     */
-    public int getVisibleStartHour()
-    {
-        return ScheduleUtil.getIntegerProperty(this, visibleStartHour,
-                "visibleStartHour", 8);
-    }
-
-    /**
-     * <p>
-     * The last hour of the working day
-     * </p>
-     *
-     * @return Returns the workingEndHour.
-     */
-    public int getWorkingEndHour()
-    {
-        return ScheduleUtil.getIntegerProperty(this, workingEndHour,
-                "workingEndHour", 17);
-    }
-
-    /**
-     * <p>
-     * The first hour of the working day
-     * </p>
-     *
-     * @return Returns the workingStartHour.
-     */
-    public int getWorkingStartHour()
-    {
-        return ScheduleUtil.getIntegerProperty(this, workingStartHour,
-                "workingStartHour", 9);
-    }
-
-    /**
-     * @see javax.faces.component.ActionSource#isImmediate()
-     */
-    public boolean isImmediate()
-    {
-        return ScheduleUtil.getBooleanProperty(this, immediate, "immediate",
-                false);
-    }
-
-    /**
-     * <p>
-     * is this component read-only?
-     * </p>
-     *
-     * @return is this component read-only
-     */
-    public boolean isReadonly()
-    {
-        return ScheduleUtil.getBooleanProperty(this, readonly, "readonly",
-                false);
+        return _submittedEntry;
     }
 
     /**
@@ -345,7 +200,7 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
      */
     public void queueEvent(FacesEvent event)
     {
-        if (event instanceof ActionEvent)
+        if (event instanceof ActionEvent || event instanceof ScheduleMouseEvent)
         {
             if (isImmediate())
             {
@@ -360,194 +215,93 @@ public class UISchedule extends UIComponentBase implements ValueHolder,
         super.queueEvent(event);
     }
 
-    /**
-     * @see javax.faces.component.ActionSource#removeActionListener(javax.faces.event.ActionListener)
-     */
     public void removeActionListener(ActionListener listener)
     {
         removeFacesListener(listener);
     }
 
     /**
-     * @see javax.faces.component.StateHolder#restoreState(javax.faces.context.FacesContext,
-     *      java.lang.Object)
+     * This method is invoked at the beginning of the restore view phase,
+     * resetting all mouse event variables that were left from the previous
+     * request
+     */
+    protected void resetMouseEvents()
+    {
+        this._lastClickedDateAndTime = null;
+    }
+
+    /**
+     * @see org.apache.myfaces.custom.schedule.UIScheduleBase#restoreState(javax.faces.context.FacesContext, java.lang.Object)
      */
     public void restoreState(FacesContext context, Object state)
     {
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        visibleStartHour = (Integer) values[1];
-        visibleEndHour = (Integer) values[2];
-        workingStartHour = (Integer) values[3];
-        workingEndHour = (Integer) values[4];
-
-        Boolean immediateState = (Boolean) values[5];
-
-        if (immediateState != null)
-        {
-            setImmediate(immediateState.booleanValue());
-        }
-
-        Boolean readonlyState = (Boolean) values[6];
-
-        if (readonlyState != null)
-        {
-            setReadonly(readonlyState.booleanValue());
-        }
-
-        value = values[7];
-        actionListenerBinding = (MethodBinding) restoreAttachedState(context,
-                values[8]);
-        actionBinding = (MethodBinding) restoreAttachedState(context, values[9]);
-        addActionListener(scheduleListener);
+        _lastClickedDateAndTime = (Date) values[1];
+        _actionListener = (MethodBinding) restoreAttachedState(context,
+                values[2]);
+        _action = (MethodBinding) restoreAttachedState(context, values[3]);
+        _mouseListener = (MethodBinding) restoreAttachedState(context, values[4]);
+        addActionListener(_scheduleListener);
     }
-
+    
     /**
-     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
+     * @see org.apache.myfaces.custom.schedule.UIScheduleBase#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context)
     {
-        removeActionListener(scheduleListener);
+        removeActionListener(_scheduleListener);
 
-        Object[] values = new Object[10];
+        Object[] values = new Object[5];
         values[0] = super.saveState(context);
-        values[1] = visibleStartHour;
-        values[2] = visibleEndHour;
-        values[3] = workingStartHour;
-        values[4] = workingEndHour;
-        values[5] = immediate;
-        values[6] = readonly;
-        values[7] = value;
-        values[8] = saveAttachedState(context, actionListenerBinding);
-        values[9] = saveAttachedState(context, actionBinding);
-
+        values[1] = _lastClickedDateAndTime;
+        values[2] = saveAttachedState(context, _actionListener);
+        values[3] = saveAttachedState(context, _action);
+        values[4] = saveAttachedState(context, _mouseListener);
+        
         return values;
     }
 
-    /**
-     * @see javax.faces.component.ActionSource#setAction(javax.faces.el.MethodBinding)
-     */
+    
+
     public void setAction(MethodBinding action)
     {
-        this.actionBinding = action;
+        this._action = action;
+    }
+
+    public void setActionListener(MethodBinding actionListener)
+    {
+        this._actionListener = actionListener;
+    }
+
+    
+    
+    /**
+     * The last date and time of day that was clicked. This is set when
+     * submitOnClick is true, and the schedule is clicked by the user.
+     * 
+     * @return the last clicked date and time
+     */
+    protected void setLastClickedDateAndTime(Date lastClickedDateAndTime)
+    {
+        this._lastClickedDateAndTime = lastClickedDateAndTime;
+    }
+
+
+    /**
+     * @param listener the method binding to the mouse listener method
+     */
+    public void setMouseListener(MethodBinding listener)
+    {
+        _mouseListener = listener;
     }
 
     /**
-     * @see javax.faces.component.ActionSource#setActionListener(javax.faces.el.MethodBinding)
+     * @param submittedEntry the submittedEntry to set
      */
-    public void setActionListener(MethodBinding listener)
+    protected void setSubmittedEntry(ScheduleEntry submittedEntry)
     {
-        this.actionListenerBinding = listener;
+        this._submittedEntry = submittedEntry;
     }
-
-    /**
-     * @see javax.faces.component.ValueHolder#setConverter(javax.faces.convert.Converter)
-     */
-    public void setConverter(Converter converter)
-    {
-        this.converter = converter;
-    }
-
-    /**
-     * @see javax.faces.component.ActionSource#setImmediate(boolean)
-     */
-    public void setImmediate(boolean immediate)
-    {
-        this.immediate = Boolean.valueOf(immediate);
-    }
-
-    /**
-     * <p>
-     * The underlying model
-     * </p>
-     *
-     * @param model The model to set.
-     */
-    public void setModel(ScheduleModel model)
-    {
-        setValue(model);
-    }
-
-    /**
-     * <p>
-     * is this component read-only?
-     * </p>
-     *
-     * @param readonly is this component read-only
-     */
-    public void setReadonly(boolean readonly)
-    {
-        this.readonly = Boolean.valueOf(readonly);
-    }
-
-    /**
-     * <p>
-     * The entry that was submitted on the last request
-     * </p>
-     *
-     * @param submittedEntry The submittedEntry to set.
-     */
-    public void setSubmittedEntry(ScheduleEntry submittedEntry)
-    {
-        this.submittedEntry = submittedEntry;
-    }
-
-    /**
-     * @see javax.faces.component.ValueHolder#setValue(java.lang.Object)
-     */
-    public void setValue(Object value)
-    {
-        this.value = value;
-    }
-
-    /**
-     * <p>
-     * The last visible hour of the day
-     * </p>
-     *
-     * @param visibleEndHour The visibleEndHour to set.
-     */
-    public void setVisibleEndHour(int visibleEndHour)
-    {
-        this.visibleEndHour = new Integer(visibleEndHour);
-    }
-
-    /**
-     * <p>
-     * The first visible hour of the day
-     * </p>
-     *
-     * @param visibleStartHour The visibleStartHour to set.
-     */
-    public void setVisibleStartHour(int visibleStartHour)
-    {
-        this.visibleStartHour = new Integer(visibleStartHour);
-    }
-
-    /**
-     * <p>
-     * The last hour of the working day
-     * </p>
-     *
-     * @param workingEndHour The workingEndHour to set.
-     */
-    public void setWorkingEndHour(int workingEndHour)
-    {
-        this.workingEndHour = new Integer(workingEndHour);
-    }
-
-    //~ Inner Classes ----------------------------------------------------------
-
-    /**
-     * <p>
-     * The first hour of the working day
-     * </p>
-     *
-     * @param workingStartHour The workingStartHour to set.
-     */
-    public void setWorkingStartHour(int workingStartHour)
-    {
-        this.workingStartHour = new Integer(workingStartHour);
-    }
+    
 }
-//The End

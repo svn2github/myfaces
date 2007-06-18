@@ -797,7 +797,7 @@
         	<component-family>javax.faces.Panel</component-family>
         	<renderer-type>org.apache.myfaces.Schedule</renderer-type>
         	<renderer-class>
-        		org.apache.myfaces.custom.schedule.renderer.ScheduleDelegatingRenderer
+        		org.apache.myfaces.custom.schedule.ScheduleDelegatingRenderer
         	</renderer-class>
         </renderer>
 

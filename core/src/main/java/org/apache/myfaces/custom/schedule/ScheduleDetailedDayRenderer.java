@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
@@ -32,7 +31,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.el.ValueBinding;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -74,7 +72,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
-        int rowHeight = getRowHeight(schedule.getAttributes());
+        int rowHeight = getRowHeight(schedule);
 
         //the number of rows in the grid is the number of half hours between
         //visible start hour and visible end hour, plus 1 for the header
@@ -87,7 +85,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         //container div for the schedule grid
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR, "schedule-detailed-"
-                + getTheme(schedule), null);
+                + schedule.getTheme(), null);
         writer.writeAttribute(HTML.STYLE_ATTR, "height: "
                 + String.valueOf(gridHeight) + "px; overflow: hidden;", null);
         writeBackground(context, schedule, writer);
@@ -105,7 +103,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         {
             return;
         }
-
+        
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = schedule.getClientId(context);
@@ -250,7 +248,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     protected void writeBackground(FacesContext context, HtmlSchedule schedule,
                                  ResponseWriter writer) throws IOException
     {
-        final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
+        final int rowHeight = getRowHeight(schedule) - 1;
         final int headerHeight = rowHeight + 10;
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
@@ -462,13 +460,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         final String clientId = schedule.getClientId(context);
         FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
         String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
-
+        
         TreeSet entrySet = new TreeSet();
-
+        
         for (Iterator entryIterator = day.iterator(); entryIterator.hasNext();)
         {
-            entrySet.add(new EntryWrapper((ScheduleEntry) entryIterator.next(),
-                    day));
+            ScheduleEntry entry = (ScheduleEntry) entryIterator.next();
+            entrySet.add(new EntryWrapper(entry, day));
         }
 
         EntryWrapper[] entries = (EntryWrapper[]) entrySet
@@ -522,7 +520,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                         null);
 
                 //draw the tooltip
-                if (showTooltip(schedule))
+                if (schedule.isTooltip())
                 {
                     getEntryRenderer(schedule).renderToolTip(context, writer,
                             schedule, wrapper.entry, selected);
@@ -541,7 +539,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                         schedule.isReadonly() ? HTML.DIV_ELEM : HTML.ANCHOR_ELEM, schedule);
 
                 //draw the tooltip
-                if (showTooltip(schedule))
+                if (schedule.isTooltip())
                 {
                     getEntryRenderer(schedule).renderToolTip(context, writer,
                             schedule, wrapper.entry, selected);
@@ -585,7 +583,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     protected void writeForegroundStart(FacesContext context,
                                       HtmlSchedule schedule, ResponseWriter writer) throws IOException
     {
-        final int rowHeight = getRowHeight(schedule.getAttributes()) - 1;
+        final int rowHeight = getRowHeight(schedule) - 1;
         final int headerHeight = rowHeight + 10;
         final String clientId = schedule.getClientId(context);
         FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
@@ -664,11 +662,6 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
     //~ Inner Classes ----------------------------------------------------------
 
-    protected String getRowHeightProperty()
-    {
-        return "detailedRowHeight";
-    }
-
     protected int getDefaultRowHeight()
     {
         return defaultRowHeightInPixels;
@@ -689,7 +682,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         //OK, we have the date, let's determine the time
         try {
             int y = Integer.parseInt(yPos);
-            int halfHourHeight = getRowHeight(schedule.getAttributes());
+            int halfHourHeight = getRowHeight(schedule);
             int minutes = y * 30 / halfHourHeight;
             cal.add(Calendar.MINUTE, minutes);
         } catch (NumberFormatException nfe) {
@@ -709,23 +702,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
      * @return whether or not zero length entries should be rendered
      */
     protected boolean renderZeroLengthEntries(UIComponent component) {
-        //first check if the renderZeroLengthEntries property is a value binding expression
-        ValueBinding binding = component.getValueBinding("renderZeroLengthEntries");
-        if (binding != null)
+        if (component instanceof UIScheduleBase)
         {
-            Boolean value = (Boolean) binding.getValue(FacesContext
-                    .getCurrentInstance());
-
-            if (value != null)
-            {
-                return value.booleanValue();
-            }
+            UIScheduleBase schedule = (UIScheduleBase) component;
+            return schedule.isRenderZeroLengthEntries();
+        } else {
+            return false;
         }
-        //it's not a value binding expression, so check for the string value
-        //in the attributes
-        Map attributes = component.getAttributes();
-        return Boolean.valueOf((String) attributes.get("renderZeroLengthEntries"))
-                .booleanValue();
     }
 
     /**
@@ -738,23 +721,12 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
      * @return whether or not zero length entries should be rendered
      */
     protected boolean expandToFitEntries(UIComponent component) {
-        //first check if the expandToFitEntries property is a value binding expression
-        ValueBinding binding = component.getValueBinding("expandToFitEntries");
-        if (binding != null)
+        if (component instanceof HtmlSchedule)
         {
-            Boolean value = (Boolean) binding.getValue(FacesContext
-                    .getCurrentInstance());
-
-            if (value != null)
-            {
-                return value.booleanValue();
-            }
-        }
-        //it's not a value binding expression, so check for the string value
-        //in the attributes
-        Map attributes = component.getAttributes();
-        return Boolean.valueOf((String) attributes.get("expandToFitEntries"))
-                .booleanValue();
+            HtmlSchedule schedule = (HtmlSchedule) component;
+            return schedule.isExpandToFitEntries();
+        } 
+        return false;
     }
 
 
@@ -844,7 +816,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
          */
         String getBounds(HtmlSchedule schedule, float columnWidth)
         {
-            int rowHeight = getRowHeight(schedule.getAttributes());
+            int rowHeight = getRowHeight(schedule);
             float width = (columnWidth * colspan) - 0.5f;
             float left = column * columnWidth;
             Calendar cal = GregorianCalendar.getInstance();
@@ -978,6 +950,16 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
             return returnboolean;
         }
+    }
+
+
+    protected int getRowHeight(UIScheduleBase schedule)
+    {
+        if (schedule != null) {
+            int height = schedule.getDetailedRowHeight();
+            return height <= 0 ? getDefaultRowHeight() : height;
+        }
+        return getDefaultRowHeight();
     }
 }
 //The End

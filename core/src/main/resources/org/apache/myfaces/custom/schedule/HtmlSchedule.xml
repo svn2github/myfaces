@@ -4,7 +4,7 @@
   "http://myfaces.apache.org/dtd/Component.dtd">
 <component>
     <component-class>org.apache.myfaces.custom.schedule.HtmlSchedule</component-class>
-    <base-class>org.apache.myfaces.custom.schedule.UISchedule</base-class>
+    <base-class>org.apache.myfaces.custom.schedule.UIScheduleBase</base-class>
     <component-type>org.apache.myfaces.Schedule</component-type>
     <component-family>javax.faces.Panel</component-family>
     <renderer-type>org.apache.myfaces.Schedule</renderer-type>

@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
@@ -79,38 +78,6 @@ public abstract class AbstractCompactScheduleRenderer extends
     protected abstract int getDefaultRowHeight();
 
     /**
-     * @return The name of the property that determines the row height
-     */
-    protected abstract String getRowHeightProperty();
-
-    /**
-     * @param attributes
-     *            The attributes
-     * 
-     * @return The row height, in pixels
-     */
-    protected int getRowHeight(Map attributes)
-    {
-        int rowHeight = 0;
-
-        try
-        {
-            rowHeight = Integer.valueOf(
-                    (String) attributes.get(getRowHeightProperty())).intValue();
-        } catch (Exception e)
-        {
-            rowHeight = 0;
-        }
-
-        if (rowHeight == 0)
-        {
-            rowHeight = getDefaultRowHeight();
-        }
-
-        return rowHeight;
-    }
-
-    /**
      * <p>
      * Draw one day in the schedule
      * </p>
@@ -162,7 +129,7 @@ public abstract class AbstractCompactScheduleRenderer extends
         // determine the height of the day in pixels
         StringBuffer styleBuffer = new StringBuffer();
 
-        int rowHeight = getRowHeight(attributes);
+        int rowHeight = getRowHeight(schedule);
         String myRowHeight = "height: ";
         String myContentHeight = "height: ";
 
@@ -346,7 +313,7 @@ public abstract class AbstractCompactScheduleRenderer extends
             writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(), null);
 
             // draw the tooltip
-            if (showTooltip(schedule))
+            if (schedule.isTooltip())
             {
                 getEntryRenderer(schedule).renderToolTip(context, writer,
                                                          schedule, entry, isSelected(schedule, entry));

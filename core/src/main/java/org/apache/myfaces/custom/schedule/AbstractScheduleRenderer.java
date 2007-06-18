@@ -17,10 +17,8 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
-import org.apache.myfaces.custom.schedule.ScheduleMouseEvent;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
@@ -156,7 +154,7 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         //add needed CSS and Javascript files to the header 
 
         AddResource addResource = AddResourceFactory.getInstance(context);
-        String theme = getTheme(schedule);
+        String theme = schedule.getTheme();
         //The default css file is only loaded if the theme is one of the provided
         //themes.
         if (DEFAULT_THEME.equals(theme) || OUTLOOK_THEME.equals(theme)
@@ -205,60 +203,28 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
      * </p>
      *
      * @param context the FacesContext
-     * @param component the component
+     * @param schedule the component
      * @param date the date
      *
      * @return the date string
      */
-    protected String getDateString(FacesContext context, UIComponent component,
+    protected String getDateString(FacesContext context, UIScheduleBase schedule,
             Date date)
     {
         DateFormat format;
-        String pattern = getHeaderDateFormat(component);
+        String pattern = schedule.getHeaderDateFormat();
         Locale viewLocale = context.getViewRoot().getLocale();
-
+        
         if ((pattern != null) && (pattern.length() > 0))
         {
-        	format = new SimpleDateFormat(pattern, viewLocale);
+            format = new SimpleDateFormat(pattern, viewLocale);
         }
         else
         {
-        	format = DateFormat.getDateInstance(DateFormat.MEDIUM, viewLocale);
+            format = DateFormat.getDateInstance(DateFormat.MEDIUM, viewLocale);
         }
 
         return format.format(date);
-    }
-
-    /**
-     * <p>
-     * The theme used when rendering the schedule
-     * </p>
-     * 
-     * @param component the component
-     * 
-     * @return the theme
-     */
-    protected String getTheme(UIComponent component)
-    {
-        //first check if the theme property is a value binding expression
-        ValueBinding binding = component.getValueBinding("theme");
-        if (binding != null)
-        {
-            String value = (String) binding.getValue(FacesContext
-                    .getCurrentInstance());
-
-            if (value != null)
-            {
-                return value;
-            }
-        }
-        //it's not a value binding expression, so check for the string value
-        //in the attributes
-        Map attributes = component.getAttributes();
-        String theme = (String) attributes.get("theme");
-        if (theme == null || theme.length() < 1)
-            theme = "default";
-        return theme;
     }
 
     /**
@@ -292,66 +258,6 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
     }
 
     /**
-     * <p>
-     * The date format that is used in the schedule header
-     * </p>
-     *
-     * @param component the component
-     *
-     * @return Returns the headerDateFormat.
-     */
-    protected String getHeaderDateFormat(UIComponent component)
-    {
-        //first check if the headerDateFormat property is a value binding expression
-        ValueBinding binding = component.getValueBinding("headerDateFormat");
-        if (binding != null)
-        {
-            String value = (String) binding.getValue(FacesContext
-                    .getCurrentInstance());
-
-            if (value != null)
-            {
-                return value;
-            }
-        }
-        //it's not a value binding expression, so check for the string value
-        //in the attributes
-        Map attributes = component.getAttributes();
-        return (String) attributes.get("headerDateFormat");
-    }
-
-
-    /**
-     * <p>
-     * Should the tooltip be made visible?
-     * </p>
-     *
-     * @param component the component
-     *
-     * @return whether or not tooltips should be rendered
-     */
-    protected boolean showTooltip(UIComponent component)
-    {
-        //first check if the tooltip property is a value binding expression
-        ValueBinding binding = component.getValueBinding("tooltip");
-        if (binding != null)
-        {
-            Boolean value = (Boolean) binding.getValue(FacesContext
-                    .getCurrentInstance());
-
-            if (value != null)
-            {
-                return value.booleanValue();
-            }
-        }
-        //it's not a value binding expression, so check for the string value
-        //in the attributes
-        Map attributes = component.getAttributes();
-        return Boolean.valueOf((String) attributes.get("tooltip"))
-                .booleanValue();
-    }
-
-    /**
      * The user of the Schedule component can customize the look and feel
      * by specifying a custom implementation of the ScheduleEntryRenderer.
      * This method gets an instance of the specified class, or if none
@@ -360,18 +266,15 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
      * @param component the Schedule component
      * @return a ScheduleEntryRenderer instance
      */
-    protected ScheduleEntryRenderer getEntryRenderer(UIComponent component)
+    protected ScheduleEntryRenderer getEntryRenderer(HtmlSchedule schedule)
     {
-        Object entryRendererObject = ScheduleUtil.getObjectProperty(component,
-                null, "entryRenderer", null);
-        if (entryRendererObject instanceof ScheduleEntryRenderer)
-        {
-            return (ScheduleEntryRenderer) entryRendererObject;
-        }
-        else
-        {
-            return new DefaultScheduleEntryRenderer();
-        }
+            Object entryRenderer = schedule.getEntryRenderer();
+            if (entryRenderer instanceof ScheduleEntryRenderer)
+            {
+                return (ScheduleEntryRenderer) entryRenderer;
+            } else {
+                return new DefaultScheduleEntryRenderer();
+            }
     }
 
     /**
@@ -380,38 +283,12 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
     protected abstract int getDefaultRowHeight();
 
     /**
-     * @return The name of the property that determines the row height
-     */
-    protected abstract String getRowHeightProperty();
-
-    /**
-     * @param attributes
-     *            The attributes
+     * @param schedule
+     *            The schedule
      * 
      * @return The row height, in pixels
      */
-    protected int getRowHeight(Map attributes)
-    {
-        int rowHeight = 0;
-
-        try
-        {
-            Integer rowHeightObject = (Integer) attributes
-                    .get(getRowHeightProperty());
-            rowHeight = rowHeightObject.intValue();
-        }
-        catch (Exception e)
-        {
-            rowHeight = 0;
-        }
-
-        if (rowHeight <= 0)
-        {
-            rowHeight = getDefaultRowHeight();
-        }
-
-        return rowHeight;
-    }
+    protected abstract int getRowHeight(UIScheduleBase schedule);
 
     /**
      * Determine the last clicked date
@@ -422,5 +299,13 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
      */
     protected abstract Date determineLastClickedDate(HtmlSchedule schedule,
             String dateId, String yPos);
+
+    /**
+     * @see javax.faces.render.Renderer#getRendersChildren()
+     */
+    public boolean getRendersChildren()
+    {
+        return true;
+    }
 }
 //The End

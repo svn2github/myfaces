@@ -17,40 +17,37 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.schedule.renderer;
+package org.apache.myfaces.custom.schedule;
 
 
+import org.apache.myfaces.custom.schedule.model.ScheduleDay;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import org.apache.myfaces.custom.schedule.HtmlSchedule;
-import org.apache.myfaces.custom.schedule.model.ScheduleDay;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-
 
 /**
  * <p>
- * Renderer for the month view of the Schedule component
+ * Renderer for the week view of the UISchedule component
  * </p>
  *
  * @author Jurgen Lust (latest modification by $Author: schof $)
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 382051 $
  */
-public class ScheduleCompactMonthRenderer
+public class ScheduleCompactWeekRenderer
     extends AbstractCompactScheduleRenderer
     implements Serializable
 {
+    private static final long serialVersionUID = 5504081783797695487L;
 
-    private static final long serialVersionUID = 2926607881214603314L;
-    
     //~ Methods ----------------------------------------------------------------
 
     /**
@@ -74,13 +71,13 @@ public class ScheduleCompactMonthRenderer
 
         //container div for the schedule grid
         writer.startElement(HTML.DIV_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, "schedule-compact-" + getTheme(schedule), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, "schedule-compact-" + schedule.getTheme(), null);
         writer.writeAttribute(
             HTML.STYLE_ATTR, "border-style: none; overflow: hidden;", null
         );
 
         writer.startElement(HTML.TABLE_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "month"), null);
+        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "week"), null);
         writer.writeAttribute(
             HTML.STYLE_ATTR, "position: relative; left: 0px; top: 0px; width: 100%;",
             null
@@ -92,30 +89,42 @@ public class ScheduleCompactMonthRenderer
         writer.startElement(HTML.TBODY_ELEM, schedule);
 
         Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(schedule.getModel().getSelectedDate());
-        int selectedMonth = cal.get(Calendar.MONTH);
 
         for (
             Iterator dayIterator = schedule.getModel().iterator();
-            dayIterator.hasNext();
+                dayIterator.hasNext();
         ) {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
             cal.setTime(day.getDate());
 
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            int currentMonth = cal.get(Calendar.MONTH);
             boolean isWeekend =
                 (dayOfWeek == Calendar.SATURDAY) ||
                 (dayOfWeek == Calendar.SUNDAY);
 
-            cal.setTime(day.getDate());
+            if (
+                (dayOfWeek == Calendar.MONDAY) ||
+                    (dayOfWeek == Calendar.WEDNESDAY) ||
+                    (dayOfWeek == Calendar.FRIDAY) ||
+                    (dayOfWeek == Calendar.SUNDAY)
+            ) {
+                writer.startElement(HTML.TR_ELEM, schedule);
+            }
 
             writeDayCell(
-                context, writer, schedule, day, dayOfWeek, dayOfMonth, isWeekend,
-                currentMonth == selectedMonth, isWeekend ? 1 : 2
+                context, writer, schedule, day, 50f, dayOfWeek, dayOfMonth,
+                isWeekend, true, (dayOfWeek == Calendar.FRIDAY) ? 2 : 1
             );
 
+            if (
+                (dayOfWeek == Calendar.TUESDAY) ||
+                    (dayOfWeek == Calendar.THURSDAY) ||
+                    (dayOfWeek == Calendar.SATURDAY) ||
+                    (dayOfWeek == Calendar.SUNDAY)
+            ) {
+                writer.endElement(HTML.TR_ELEM);
+            }
         }
 
         writer.endElement(HTML.TBODY_ELEM);
@@ -125,48 +134,21 @@ public class ScheduleCompactMonthRenderer
     }
 
     /**
-     * @see AbstractCompactScheduleRenderer#getDefaultRowHeight()
+     * @see org.apache.myfaces.custom.schedule.AbstractCompactScheduleRenderer#getDefaultRowHeight()
      */
     protected int getDefaultRowHeight()
     {
-        return 120;
+        return 200;
     }
 
-    /**
-     * @see AbstractCompactScheduleRenderer#getRowHeightProperty()
-     */
-    protected String getRowHeightProperty()
+    protected int getRowHeight(UIScheduleBase schedule)
     {
-        return "compactMonthRowHeight";
+        if (schedule != null) {
+            int height = schedule.getCompactWeekRowHeight();
+            return height <= 0 ? getDefaultRowHeight() : height;
+        }
+        return getDefaultRowHeight();
     }
 
-    /**
-     */
-    protected void writeDayCell(
-        FacesContext context,
-        ResponseWriter writer,
-        HtmlSchedule schedule,
-        ScheduleDay day,
-        int dayOfWeek,
-        int dayOfMonth,
-        boolean isWeekend,
-        boolean isCurrentMonth,
-        int rowspan
-    )
-        throws IOException
-    {
-        if ((dayOfWeek == Calendar.MONDAY) || (dayOfWeek == Calendar.SUNDAY)) {
-            writer.startElement(HTML.TR_ELEM, schedule);
-        }
-
-        super.writeDayCell(
-            context, writer, schedule, day, 100f / 6, dayOfWeek, dayOfMonth,
-            isWeekend, isCurrentMonth, rowspan
-        );
-
-        if ((dayOfWeek == Calendar.SATURDAY) || (dayOfWeek == Calendar.SUNDAY)) {
-            writer.endElement(HTML.TR_ELEM);
-        }
-    }
 }
 //The End
