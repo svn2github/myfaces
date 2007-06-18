@@ -170,12 +170,24 @@ public class HtmlCommandNavigationItem extends HtmlCommandLink {
 
             //open all parents (to be sure) and search HtmlPanelNavigation
             UIComponent p = parent;
+            HtmlCommandNavigationItem rootItem = null;
             while (p != null && !(p instanceof HtmlPanelNavigationMenu)) {
                 if (p instanceof HtmlCommandNavigationItem) {
-                    ((HtmlCommandNavigationItem) p).setOpen(true);
+                    rootItem = (HtmlCommandNavigationItem) p;
+                    rootItem.setOpen(true);
                 }
                 p = p.getParent();
             }
+            if (rootItem != null) {
+                List children = menu.getChildren();
+                for (int i = 0, sizei = children.size(); i < sizei; i++) {
+                    Object obj = children.get(i);
+                    if (obj != rootItem && obj instanceof HtmlCommandNavigationItem) {
+                        ((HtmlCommandNavigationItem)obj).setOpen(false);
+                    }
+                }
+            }
+
             // p is now the HtmlPanelNavigation
             if (!(p instanceof HtmlPanelNavigationMenu)) {
                 log.error("HtmlCommandNavigation without parent HtmlPanelNavigation ?!");
