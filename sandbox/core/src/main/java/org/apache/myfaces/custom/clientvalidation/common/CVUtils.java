@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlMessages;
 import javax.faces.context.ExternalContext;
@@ -92,18 +93,25 @@ public class CVUtils {
 			return Boolean.valueOf(context.getInitParameter("org.apache.myfaces.ENABLE_CLIENT_SIDE_VALIDATION")).booleanValue();
 	}
 
-    //todo: This won't work - there is no way to traverse the component tree properly!
-    //Traverses the component tree recursively, queues validation calls starting from the root
+	//Traverses the component tree recursively, queues validation calls starting from the root
 	public static void queueCVCalls(UIComponent root) {
-	/*	if( root.getChildCount() > 0 ) {
-			for( int i = 0; i< root.getChildCount() ; i++ ) 
-				queueCVCalls( (UIComponent) root.getChildren().get( i ) );
+		if( !root.isRendered() )
+			return;
+		
+		if( root.getChildCount() > 0 ) {
+			for( int i = 0; i< root.getChildCount() ; i++ ) {
+				UIComponent component = (UIComponent) root.getChildren().get( i );
+				
+				if( ! (component instanceof UIData) )
+					queueCVCalls( component);
+			}
 		} else {
+			//TODO: Replace uiinput with editablevalueholder
 			if( root instanceof UIInput ) {
 				UIInput input = (UIInput) root;
 				addCVCall( createCVCall( input ) );
 			}
-		} */
+		}
 	}
 	
 	public static void encodeValidationScript(FacesContext facesContext) throws IOException{
