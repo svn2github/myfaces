@@ -168,11 +168,18 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 			throw new IllegalArgumentException("'id' is a required attribute for the PPRPanelGroup");
 		}
 
+        //todo: in 1.2, better use a combo of invokeComponent/RendererUtils.renderChildren() instead
         uiComponent.getAttributes().put(DISABLE_RENDER_CHILDREN,Boolean.TRUE);
 
         super.encodeBegin(facesContext, uiComponent);
 	}
 
+    /** todo: in 1.2, better use a combo of invokeComponent/RendererUtils.renderChildren() instead
+     *
+     * @param context
+     * @param component
+     * @throws IOException
+     */
     public void encodeChildren(FacesContext context, UIComponent component)
         throws IOException
     {
@@ -197,6 +204,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 			}
 		}
 
+        //todo: in 1.2, better use a combo of invokeComponent/RendererUtils.renderChildren() instead
         uiComponent.getAttributes().put(DISABLE_RENDER_CHILDREN,Boolean.FALSE);
     }
 
