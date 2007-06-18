@@ -73,6 +73,7 @@ public class BindingScheduleExampleHandler extends ScheduleExampleHandler
 
     public void scheduleClicked(ScheduleMouseEvent event)
     {
+        log.info("scheduleClicked!!!" + event.getEventType());
         StringBuffer buffer = new StringBuffer();
         switch (event.getEventType())
         {

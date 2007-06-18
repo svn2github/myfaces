@@ -218,4 +218,12 @@ public class ScheduleSettings implements Serializable
     {
         this.expandToFitEntries = expandToFitEntries;
     }
+    
+    public String getMode() {
+        return String.valueOf(getModel().getMode());
+    }
+    
+    public void setMode(String mode) {
+        getModel().setMode(Integer.valueOf(mode).intValue());
+    }
 }

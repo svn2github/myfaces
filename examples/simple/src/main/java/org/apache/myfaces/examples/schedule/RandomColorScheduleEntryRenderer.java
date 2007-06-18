@@ -24,9 +24,9 @@ import java.util.Random;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.custom.schedule.DefaultScheduleEntryRenderer;
 import org.apache.myfaces.custom.schedule.HtmlSchedule;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
-import org.apache.myfaces.custom.schedule.renderer.DefaultScheduleEntryRenderer;
 
 /**
  * An example ScheduleEntryRenderer that assigns a random color to each
