@@ -91,10 +91,11 @@ public class CVUtils {
 		else
 			return Boolean.valueOf(context.getInitParameter("org.apache.myfaces.ENABLE_CLIENT_SIDE_VALIDATION")).booleanValue();
 	}
-	
-	//Traverses the component tree recursively, queues validation calls starting from the root
+
+    //todo: This won't work - there is no way to traverse the component tree properly!
+    //Traverses the component tree recursively, queues validation calls starting from the root
 	public static void queueCVCalls(UIComponent root) {
-		if( root.getChildCount() > 0 ) {
+	/*	if( root.getChildCount() > 0 ) {
 			for( int i = 0; i< root.getChildCount() ; i++ ) 
 				queueCVCalls( (UIComponent) root.getChildren().get( i ) );
 		} else {
@@ -102,7 +103,7 @@ public class CVUtils {
 				UIInput input = (UIInput) root;
 				addCVCall( createCVCall( input ) );
 			}
-		}
+		} */
 	}
 	
 	public static void encodeValidationScript(FacesContext facesContext) throws IOException{
