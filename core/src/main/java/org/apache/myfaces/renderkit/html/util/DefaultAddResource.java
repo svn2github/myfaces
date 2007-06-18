@@ -34,6 +34,7 @@ import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
@@ -89,7 +90,7 @@ public class DefaultAddResource implements AddResource
 
     protected String _contextPath;
 
-    private StringBuffer originalResponse;
+    protected StringBuffer originalResponse;
 
     private Set headerBeginInfo;
     private Set bodyEndInfo;
