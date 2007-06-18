@@ -22,6 +22,7 @@ package org.apache.myfaces.examples.ppr;
 import org.apache.myfaces.examples.inputSuggestAjax.Address;
 
 import javax.faces.FacesException;
+import javax.faces.component.UIData;
 import javax.faces.event.ValueChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,6 +42,57 @@ public class PPRExampleBean
     private String _dropDownValue;
 
     private List _names;
+
+    private List _simpleCarList;
+
+    private UIData _carTable;
+
+
+    public UIData getCarTable() {
+        return _carTable;
+    }
+
+    public void setCarTable(UIData carTable) {
+        _carTable = carTable;
+    }
+
+    public List getSimpleCarList() {
+
+        if(_simpleCarList == null) {
+            _simpleCarList = new ArrayList();
+            _simpleCarList.add(new SimpleCar(1,"Mazda","blue"));
+            _simpleCarList.add(new SimpleCar(2,"Renault","green"));
+            _simpleCarList.add(new SimpleCar(3,"Nissan","red"));
+            _simpleCarList.add(new SimpleCar(4,"BMW","yellow"));
+            _simpleCarList.add(new SimpleCar(5,"Mercedes","cyan"));
+            _simpleCarList.add(new SimpleCar(6,"Daimler-Chrysler","pink"));
+            _simpleCarList.add(new SimpleCar(7,"Volvo","white"));
+        }
+
+        return _simpleCarList;
+    }
+
+    public void setSimpleCarList(List simpleCarList) {
+        _simpleCarList = simpleCarList;
+    }
+
+    public void idChanged(ValueChangeEvent evt) {
+        Integer id = (Integer) evt.getNewValue();
+        SimpleCar car = (SimpleCar) _carTable.getRowData();
+        car.setId(id==null?0:id.intValue());
+    }
+
+    public void typeChanged(ValueChangeEvent evt) {
+        String type = (String) evt.getNewValue();
+        SimpleCar car = (SimpleCar) _carTable.getRowData();
+        car.setType(type);
+    }
+
+    public void colorChanged(ValueChangeEvent evt) {
+        String color = (String) evt.getNewValue();
+        SimpleCar car = (SimpleCar) _carTable.getRowData();
+        car.setColor(color);
+    }
 
     public List getNames()
     {
@@ -164,6 +216,5 @@ public class PPRExampleBean
     public void setMessage(String message) {
         this._message = message;
     }
-
 
 }

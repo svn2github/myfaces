@@ -120,7 +120,7 @@ public class PPRPhaseListener implements PhaseListener {
 				boolean oldValue = HtmlRendererUtils.isAllowedCdataSection(context);
 				HtmlRendererUtils.allowCdataSection(context, false);
 				try {
-					RendererUtils.renderChildren(context, component);
+                    component.encodeChildren(context);                    
 				} catch (IOException e) {
 					throw new FacesException(e);
 				}

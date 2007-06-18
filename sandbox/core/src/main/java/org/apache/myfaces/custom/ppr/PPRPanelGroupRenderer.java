@@ -59,8 +59,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	private static final String PPR_JS_FILE = "ppr.js";
 
 	private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
+    private static final String DISABLE_RENDER_CHILDREN = "org.apache.myfaces.PPRPanelGroup.disableRenderChildren";
 
-	public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException {
+    public void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException {
 		
 		final ExternalContext externalContext = facesContext.getExternalContext();
 		
@@ -166,10 +167,22 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		if (uiComponent.getId() == null || uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
 			throw new IllegalArgumentException("'id' is a required attribute for the PPRPanelGroup");
 		}
-		super.encodeBegin(facesContext, uiComponent);
+
+        uiComponent.getAttributes().put(DISABLE_RENDER_CHILDREN,Boolean.TRUE);
+
+        super.encodeBegin(facesContext, uiComponent);
 	}
 
-	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component)
+        throws IOException
+    {
+        Boolean disableRenderChildren = (Boolean) component.getAttributes().get(DISABLE_RENDER_CHILDREN);
+
+        if(disableRenderChildren!=null && disableRenderChildren.booleanValue()==false)
+          RendererUtils.renderChildren(context, component);
+    }
+
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 		super.encodeEnd(facesContext, uiComponent);
 		if (uiComponent instanceof PPRPanelGroup) {
 			PPRPanelGroup pprGroup = (PPRPanelGroup) uiComponent;
@@ -183,7 +196,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 				encodeJavaScript(facesContext, pprGroup);
 			}
 		}
-	}
+
+        uiComponent.getAttributes().put(DISABLE_RENDER_CHILDREN,Boolean.FALSE);
+    }
 
 	/**
 	 * Helper to write an inline javascript at the exact resource location of the
