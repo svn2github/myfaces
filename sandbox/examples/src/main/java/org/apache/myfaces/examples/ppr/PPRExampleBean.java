@@ -22,6 +22,7 @@ package org.apache.myfaces.examples.ppr;
 import org.apache.myfaces.examples.inputSuggestAjax.Address;
 
 import javax.faces.FacesException;
+import javax.faces.model.SelectItem;
 import javax.faces.component.UIData;
 import javax.faces.event.ValueChangeEvent;
 import java.util.ArrayList;
@@ -54,6 +55,19 @@ public class PPRExampleBean
 
     public void setCarTable(UIData carTable) {
         _carTable = carTable;
+    }
+
+    public List getTypeList() {
+        List li = new ArrayList();
+
+        List simpleCarList = getSimpleCarList();
+
+        for (Object aSimpleCarList : simpleCarList) {
+            SimpleCar simpleCar = (SimpleCar) aSimpleCarList;
+            li.add(new SelectItem(simpleCar.getType(),simpleCar.getType(),null));
+        }
+
+        return li;
     }
 
     public List getSimpleCarList() {

@@ -58,17 +58,19 @@ seconds since last page refresh.
                 <f:facet name="header">
                     <h:outputText value="Type"/>
                 </f:facet>
-                <h:inputText value="#{carDetail.type}" immediate="true" valueChangeListener="#{pprExampleBean.typeChanged}"/>
+                <h:selectOneMenu id="type" value="#{carDetail.type}" immediate="true" valueChangeListener="#{pprExampleBean.typeChanged}">
+                    <f:selectItems value="#{pprExampleBean.typeList}"/>
+                </h:selectOneMenu>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     <h:outputText value="Color"/>
                 </f:facet>
-                <h:inputText value="#{carDetail.color}" immediate="true" valueChangeListener="#{pprExampleBean.colorChanged}"/>
+                <h:inputText value="#{carDetail.color}" id="color" immediate="true" valueChangeListener="#{pprExampleBean.colorChanged}"/>
             </h:column>
             <h:column>
                 <h:commandButton id="update"/>
-                <s:pprPanelGroup id="carEntryUpdate" partialTriggers="update">
+                <s:pprPanelGroup id="carEntryUpdate" partialTriggers="update,type,color">
                     <h:panelGrid columns="2">
                       <h:outputText value="Id"/>
                       <h:outputText value="#{carDetail.id}"/>

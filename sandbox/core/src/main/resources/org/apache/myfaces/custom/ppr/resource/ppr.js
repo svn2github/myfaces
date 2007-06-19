@@ -29,13 +29,13 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
 
-    if(typeof window.myFacesPartialTriggers == "undefined")
+    if(typeof window.oamPartialTriggersToZoneIds == "undefined")
 	{
-    	window.myFacesPartialTriggers = new Array;
+    	window.oamPartialTriggersToZoneIds = new Array;
     }
-    if(typeof window.myFacesPartialTriggerPatterns == "undefined")
+    if(typeof window.oamZoneIdsToPartialTriggerPatterns == "undefined")
 	{
-    	window.myFacesPartialTriggerPatterns = new Array;
+    	window.oamZoneIdsToPartialTriggerPatterns = new Array;
     }
     if(typeof window.myFacesInlineLoadingMessage == "undefined")
 	{
@@ -44,7 +44,7 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 
     this.replaceFormSubmitFunction(formId);
 
-    this.addButtonOnClickHandlers();
+    this.addElementEventHandler();
 }
 
 //Method to register individual HTML to be displayed instead of the component during loading
@@ -58,24 +58,26 @@ org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, 
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern, refreshZoneId)
 {
-        window.myFacesPartialTriggerPatterns[refreshZoneId] = pattern;
+        window.oamZoneIdsToPartialTriggerPatterns[refreshZoneId] = pattern;
 };
 
 //Method for JSF Components to register their Partial Triggers
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, refreshZoneId)
 {
-    if (window.myFacesPartialTriggers[inputElementId] === undefined)
+    if (window.oamPartialTriggersToZoneIds[inputElementId] === undefined)
     {
-        window.myFacesPartialTriggers[inputElementId] = refreshZoneId;
+        window.oamPartialTriggersToZoneIds[inputElementId] = refreshZoneId;
     }
     else
     {
-        window.myFacesPartialTriggers[inputElementId] =
-        window.myFacesPartialTriggers[inputElementId] +
+        window.oamPartialTriggersToZoneIds[inputElementId] =
+        window.oamPartialTriggersToZoneIds[inputElementId] +
         "," +
         refreshZoneId;
     }
+
+    this._addEventHandler(dojo.byId(inputElementId));
 };
 
 // registering a function (called before submit) on each form to block periodical refresh during request-response cycle
@@ -136,7 +138,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 			domElement.innerHTML = componentUpdate.firstChild.data;
 		}
 	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
-	    this.formNode.myFacesPPRCtrl.addButtonOnClickHandlers();
+	    this.formNode.myFacesPPRCtrl.addElementEventHandler();
 
         if (this.formNode.myFacesPPRCtrl.stateUpdate)
         {
@@ -352,48 +354,88 @@ org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId
 //TODO: event connect
 //This Method defines joinpoints for all inputs of either type submit or image
 
-org.apache.myfaces.PPRCtrl.prototype.addButtonOnClickHandlers = function()
+org.apache.myfaces.PPRCtrl.prototype.addElementEventHandler = function()
 {
     if (typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
     {
         return;
     }
 
-        formButtons = new Array();
-        for (var i = 0; i < this.form.elements.length; i++)
-        {
-            if (this.form.elements[i].tagName.toLowerCase() == "input" &&
-                (this.form.elements[i].type.toLowerCase() == "submit" ||
-                 this.form.elements[i].type.toLowerCase() == "image")
-                )
-            {
-            formButtons.push(this.form.elements[i]);
-            }
+    for (var i = 0; i < this.form.elements.length; i++)
+    {
+        var formElement = this.form.elements[i];
+        if(this._isButton(formElement)) {
+            this._addEventHandler(formElement);
         }
+    }
+}
 
-        for (var i = 0; i < formButtons.length; i++)
-        {
-            var button = formButtons[i];
-            if(typeof button.onclick_orig == "undefined")
-            {
-                button.onclick_orig = button.onclick;
-                button.onclick = this.buttonOnClickHandler;
-                button.myFacesPPRCtrl=this;
-            }
+org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement) {
+    if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
+        this._addOnClickHandler(formElement);
+    }
+    else if(this._isText(formElement) || this._isDropdown(formElement)) {
+        this._addOnChangeHandler(formElement);
+    }
+}
 
-        }
+org.apache.myfaces.PPRCtrl.prototype._isDropdown = function (formElement) {
+    return formElement.tagName.toLowerCase() == "select";
+}
+
+org.apache.myfaces.PPRCtrl.prototype._isButton = function (formElement) {
+    return formElement.tagName.toLowerCase() == "input" &&
+                (formElement.type.toLowerCase() == "submit" ||
+                 formElement.type.toLowerCase() == "image");
+}
+
+org.apache.myfaces.PPRCtrl.prototype._isText = function (formElement) {
+    return formElement.tagName.toLowerCase() == "input" &&
+                (formElement.type.toLowerCase() == "text" );
+}
+
+org.apache.myfaces.PPRCtrl.prototype._isCheckbox = function (formElement) {
+    return formElement.tagName.toLowerCase() == "input" &&
+                (formElement.type.toLowerCase() == "checkbox" );
+}
+
+org.apache.myfaces.PPRCtrl.prototype._isRadio = function (formElement) {
+    return formElement.tagName.toLowerCase() == "input" &&
+                (formElement.type.toLowerCase() == "radio" );
+}
+
+org.apache.myfaces.PPRCtrl.prototype._addOnClickHandler = function (formElement) {
+
+    if(typeof formElement.oam_onevent_orig == "undefined")
+    {
+        formElement.oam_onevent_orig = formElement.onclick;
+        formElement.onclick = this.elementOnEventHandler;
+        formElement.myFacesPPRCtrl=this;
+    }
 
 }
+
+org.apache.myfaces.PPRCtrl.prototype._addOnChangeHandler = function (formElement) {
+
+    if(typeof formElement.oam_onevent_orig == "undefined")
+    {
+        formElement.oam_onevent_orig = formElement.onchange;
+        formElement.onchange = this.elementOnEventHandler;
+        formElement.myFacesPPRCtrl=this;
+    }
+
+}
+
 
 //PointCutAdvisor which invokes the AJAX Submit Method of the PPR Controller after custom
 //onclick-handlers for submit-buttons and submit-images
 
-org.apache.myfaces.PPRCtrl.prototype.buttonOnClickHandler = function (_event)
+org.apache.myfaces.PPRCtrl.prototype.elementOnEventHandler = function (_event)
 {
-    if(this.onclick_orig.type != "undefined")
+    if(typeof this.oam_onevent_orig != "undefined")
     {
-        if(this.onclick_orig() == false)
-		return false;
+        if(this.oam_onevent_orig()==false)
+		    return false;
     }
     return this.myFacesPPRCtrl.ajaxSubmitFunction(this);
 }
@@ -407,14 +449,14 @@ org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId
     if (typeof triggerId != "undefined")
     {
     var retval = null;
-        if (typeof window.myFacesPartialTriggers[triggerId] != "undefined")
+        if (typeof window.oamPartialTriggersToZoneIds[triggerId] != "undefined")
         {
-            retval = window.myFacesPartialTriggers[triggerId];
+            retval = window.oamPartialTriggersToZoneIds[triggerId];
         }
 
-		for (refreshZoneId in window.myFacesPartialTriggerPatterns)
+		for (refreshZoneId in window.oamZoneIdsToPartialTriggerPatterns)
 		{
-			if(this.isMatchingPattern(window.myFacesPartialTriggerPatterns[refreshZoneId],triggerId) &&
+			if(this.isMatchingPattern(window.oamZoneIdsToPartialTriggerPatterns[refreshZoneId],triggerId) &&
 				typeof refreshZoneId == "string" )
 				if(retval == null || retval == "")
 				{
