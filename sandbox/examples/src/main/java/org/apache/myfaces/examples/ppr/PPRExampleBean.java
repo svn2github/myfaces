@@ -62,9 +62,10 @@ public class PPRExampleBean
 
         List simpleCarList = getSimpleCarList();
 
-        for (Object aSimpleCarList : simpleCarList) {
-            SimpleCar simpleCar = (SimpleCar) aSimpleCarList;
+        for (int i = 0; i < simpleCarList.size(); i++) {
+            SimpleCar simpleCar = (SimpleCar) simpleCarList.get(i);
             li.add(new SelectItem(simpleCar.getType(),simpleCar.getType(),null));
+
         }
 
         return li;
