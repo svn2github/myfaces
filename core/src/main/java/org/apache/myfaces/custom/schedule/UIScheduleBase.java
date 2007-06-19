@@ -64,6 +64,8 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     protected static final String DEFAULT_ENABLED_ON_USER_ROLE = null;
     protected static final boolean DEFAULT_SUBMIT_ON_CLICK = false;
     protected static final String DEFAULT_VISIBLE_ON_USER_ROLE = null;
+    protected static final String HOUR_NOTATION_24 = "24";
+    protected static final String HOUR_NOTATION_12 = "12";
     
     private Integer _compactMonthRowHeight;
     private Integer _compactWeekRowHeight;
@@ -82,6 +84,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     private Integer _workingEndHour;
     private Integer _workingStartHour;
     private Boolean _submitOnClick = null;
+    private String _hourNotation;
 
     /**
      * Should the parent form of this schedule be submitted when the user
@@ -293,6 +296,18 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     }
 
     /**
+     * <p>
+     * Show dates in 24 hour notation or 12 hour notation.
+     * </p>
+     * 
+     * @return "12", "24" or null for the renderer default
+     */
+    public String getHourNotation()
+    {
+    	return ScheduleUtil.getStringProperty(this, _hourNotation, "hourNotation", null);
+    }
+    
+    /**
      * @see javax.faces.component.UIComponentBase#restoreState(javax.faces.context.FacesContext, java.lang.Object)
      */
     public void restoreState(FacesContext context, Object state)
@@ -315,6 +330,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
         _workingEndHour = (Integer)values[14];
         _workingStartHour = (Integer)values[15];
         _submitOnClick = (Boolean)values[16];
+        _hourNotation = (String) values[17];
     }
 
     /**
@@ -322,7 +338,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[17];
+        Object[] values = new Object[18];
         values[0] = super.saveState(context);
         values[1] = _compactMonthRowHeight;
         values[2] = _compactWeekRowHeight;
@@ -340,6 +356,8 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
         values[14] = _workingEndHour;
         values[15] = _workingStartHour;
         values[16] = _submitOnClick;
+        values[17] = _hourNotation;
+        
         return values;
     }
 
@@ -480,7 +498,17 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     {
         this._workingStartHour = Integer.valueOf(workingStartHour);
     }
-
     
-
+    /**
+     * <p>
+     * Show dates in 24 hour notation or 12 hour notation.
+     * </p>
+     * 
+     * @param hourNotation 12 for 12 hour notation and 24 for 24 hour notation
+     */
+    public void setHourNotation(String hourNotation)
+    {
+    	this._hourNotation = hourNotation;
+    }
+    
 }

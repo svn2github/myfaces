@@ -47,6 +47,7 @@ public class ScheduleTag extends HtmlComponentTagBase
     private String _workingEndHour;
     private String _workingStartHour;
     private String _submitOnClick;
+    private String _hourNotation;
     //UISchedule properties
     private String _action;
     private String _actionListener;
@@ -251,6 +252,13 @@ public class ScheduleTag extends HtmlComponentTagBase
         return _workingStartHour;
     }
 
+    /**
+     * @return the hourNotation
+     */
+    public String getHourNotation() {
+		return _hourNotation;
+	}
+    
     public void release() {
         super.release();
         //UIScheduleBase properties
@@ -269,6 +277,7 @@ public class ScheduleTag extends HtmlComponentTagBase
         _workingEndHour = null;
         _workingStartHour = null;
         _submitOnClick = null;
+        _hourNotation = null;
         //UISchedule properties
         _action = null;
         _actionListener = null;
@@ -407,6 +416,7 @@ public class ScheduleTag extends HtmlComponentTagBase
           setIntegerProperty(component, "workingEndHour", _workingEndHour);
           setIntegerProperty(component, "workingStartHour", _workingStartHour);
           setBooleanProperty(component, "submitOnClick", _submitOnClick);
+          setStringProperty(component, "hourNotation", _hourNotation);
           //UISchedule properties
           setActionProperty(component, _action);
           setActionListenerProperty(component, _actionListener);
@@ -538,6 +548,14 @@ public class ScheduleTag extends HtmlComponentTagBase
     public void setWorkingStartHour(String workingStartHour)
     {
         this._workingStartHour = workingStartHour;
+    }
+
+    /**
+     * @param hourNotation the workingStartHour to set
+     */
+    public void setHourNotation(String hourNotation)
+    {
+        this._hourNotation = hourNotation;
     }
 
     /**
