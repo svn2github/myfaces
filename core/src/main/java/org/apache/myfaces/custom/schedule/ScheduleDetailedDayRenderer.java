@@ -19,21 +19,29 @@
 
 package org.apache.myfaces.custom.schedule;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.TreeSet;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.schedule.model.HalfHourInterval;
+import org.apache.myfaces.custom.schedule.model.Interval;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * <p>
@@ -103,7 +111,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         {
             return;
         }
-        
+
         HtmlSchedule schedule = (HtmlSchedule) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = schedule.getClientId(context);
@@ -163,11 +171,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer.endElement(HTML.DIV_ELEM);
     }
 
-    protected String getCellClass(HtmlSchedule schedule, int column, int row, int hour)
+    protected String getCellClass(HtmlSchedule schedule, ScheduleDay day, boolean even, int hour)
     {
         String cellClass = "free";
-        ScheduleDay day = (ScheduleDay) schedule.getModel().get(column);
-
         if (!day.isWorkingDay())
         {
             return getStyleClass(schedule, cellClass);
@@ -176,7 +182,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         if (hour >= schedule.getWorkingStartHour()
                 && hour < schedule.getWorkingEndHour())
         {
-            cellClass = ((row % 2) == 0) ? "even" : "uneven";
+            cellClass = even ? "even" : "uneven";
         }
 
         return getStyleClass(schedule, cellClass);
@@ -246,172 +252,248 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     }
 
     protected void writeBackground(FacesContext context, HtmlSchedule schedule,
-                                 ResponseWriter writer) throws IOException
-    {
-        final int rowHeight = getRowHeight(schedule) - 1;
-        final int headerHeight = rowHeight + 10;
-        writer.startElement(HTML.DIV_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                "background"), null);
-        writer
-                .writeAttribute(
-                        HTML.STYLE_ATTR,
-                        "position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 0;",
-                        null);
+    		ResponseWriter writer) throws IOException
+    		{
+    	final int rowHeight = getRowHeight(schedule);
+    	final int headerHeight = rowHeight + 9;
+    	writer.startElement(HTML.DIV_ELEM, schedule);
+    	writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    			"background"), null);
+    	writer
+    			.writeAttribute(
+    					HTML.STYLE_ATTR,
+    					"position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 0;",
+    					null);
 
-        //background table for the schedule grid
-        writer.startElement(HTML.TABLE_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                "background"), null);
-        writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
-        writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
-        writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%",
-                null);
-        writer.startElement(HTML.TBODY_ELEM, schedule);
+    	//background table for the schedule grid
+    	writer.startElement(HTML.TABLE_ELEM, schedule);
+    	writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    			"background"), null);
+    	writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
+    	writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
+    	writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%",
+    			null);
+    	writer.startElement(HTML.TBODY_ELEM, schedule);
+    	writer.startElement(HTML.TR_ELEM, schedule);
 
-        //header row, containing the column names
-        writer.startElement(HTML.TR_ELEM, schedule);
-        writer.startElement(HTML.TD_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR,
-                getStyleClass(schedule, "gutter"), null);
-        writer
-                .writeAttribute(
-                        HTML.STYLE_ATTR,
-                        "height: "
-                                + rowHeight
-                                + "px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
-                        null);
-        writer.startElement(HTML.DIV_ELEM, schedule);
-        writer
-                .writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: 56px",
-                        null);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.TD_ELEM);
+    	float columnWidth = (schedule.getModel().size() == 0) ? 100
+    			: (100 / schedule.getModel().size());
 
-        float columnWidth = (schedule.getModel().size() == 0) ? 100
-                : (100 / schedule.getModel().size());
+    	int startHour = getRenderedStartHour(schedule);
+    	int endHour = getRenderedEndHour(schedule);
 
-        for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator
-                .hasNext();)
-        {
-            ScheduleDay day = (ScheduleDay) dayIterator.next();
-            writer.startElement(HTML.TD_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                    "header"), null);
-            writer
-                    .writeAttribute(
-                            HTML.STYLE_ATTR,
-                            "height: " + headerHeight + "px; border-style: none; border-width: 0px; overflow: hidden;",
-                            null);
-            writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
-                    + "%", null);
-            writer.startElement(HTML.DIV_ELEM, schedule);
-            writer
-                    .writeAttribute(
-                            HTML.STYLE_ATTR,
-                            "position: relative; left: 0px; top: 0px; width: 100%; height: 100%;",
-                            null);
+    	SimpleDateFormat hourFormater = new SimpleDateFormat(HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "hh" : "HH");
+    	SimpleDateFormat minuteFormater = new SimpleDateFormat("mm");        
 
-            //write the date
-            writer.startElement(HTML.SPAN_ELEM, schedule);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                    "date"), null);
-            writer
-                    .writeAttribute(
-                            HTML.STYLE_ATTR,
-                            "position: absolute; left: 0px; top: 0px; height: 15px; width: 100%; vertical-align: top; overflow: hidden; white-space: nowrap;",
-                            null);
-            writer.writeText(getDateString(context, schedule, day.getDate()),
-                    null);
-            writer.endElement(HTML.SPAN_ELEM);
+    	// When firstDay is true, render the gutter
+    	boolean firstDay = true;
+    	ScheduleDay day = null;
 
-            //write the name of the holiday, if there is one
-            if ((day.getSpecialDayName() != null)
-                    && (day.getSpecialDayName().length() > 0))
-            {
-                writer.startElement(HTML.SPAN_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "holiday"), null);
-                writer
-                        .writeAttribute(
-                                HTML.STYLE_ATTR,
-                                "position: absolute; left: 0px; top: 15px; width: 100%; vertical-align: top; overflow: hidden; white-space: nowrap;",
-                                null);
-                writer.writeText(day.getSpecialDayName(), null);
-                writer.endElement(HTML.SPAN_ELEM);
-            }
+    	for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext() || (firstDay && day != null);)
+    	{
+    		writer.startElement(HTML.TD_ELEM, schedule);
 
-            writer.endElement(HTML.DIV_ELEM);
-            writer.endElement(HTML.TD_ELEM);
-        }
+			writer.writeAttribute(HTML.STYLE_ATTR, "width: " + (firstDay && day == null ? "56px" : String.valueOf(columnWidth)+ "%"), null);
+    		
+    		if (firstDay && day != null)
+    		{
+    			// Render the intervals
+    			firstDay = false;
+    		}
+    		else
+    		{
+    			day = (ScheduleDay) dayIterator.next();
+    		}
 
-        writer.endElement(HTML.TR_ELEM);
+    		writer.startElement(HTML.TABLE_ELEM, schedule);
+    		writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
+    		writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
+    		writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%",
+    				null);
+    		writer.startElement(HTML.TBODY_ELEM, schedule);
 
-        int startHour = getRenderedStartHour(schedule);
-        int endHour = getRenderedEndHour(schedule);
-        int numberOfRows = (endHour - startHour) * 2;
+    		writer.startElement(HTML.TR_ELEM, schedule);
 
-        for (int row = 0; row < numberOfRows; row++)
-        {
-            writer.startElement(HTML.TR_ELEM, schedule);
+    		if (firstDay) 
+    		{
+    			// the header gutter
+    			writer.startElement(HTML.TD_ELEM, schedule);
+    			writer.writeAttribute(HTML.CLASS_ATTR,
+    					getStyleClass(schedule, "gutter"), null);
+    			writer.writeAttribute(
+    					HTML.STYLE_ATTR,
+    					"height: "
+    					+ headerHeight
+    					+ "px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
+    					null);
+    	        writer.startElement(HTML.DIV_ELEM, schedule);
+    	        writer.writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: 56px", null);
+    	        writer.endElement(HTML.DIV_ELEM);
+    	        writer.endElement(HTML.TD_ELEM);
+    		}
+    		else
+    		{
+    			// the header
+    			writer.startElement(HTML.TD_ELEM, schedule);
+    			writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    			"header"), null);
+    			writer
+    			.writeAttribute(
+    					HTML.STYLE_ATTR,
+    					"height: " + headerHeight + "px; border-style: none; border-width: 0px; overflow: hidden;",
+    					null);
+    			writer.startElement(HTML.DIV_ELEM, schedule);
+    			writer
+    			.writeAttribute(
+    					HTML.STYLE_ATTR,
+    					"position: relative; left: 0px; top: 0px; width: 100%; height: 100%;",
+    					null);
 
-            //write the hours of the day on the left
-            //this only happens on even rows, or every hour
-            if ((row % 2) == 0)
-            {
-                writer.startElement(HTML.TD_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "gutter"), null);
-                writer
-                        .writeAttribute(
-                                HTML.STYLE_ATTR,
-                                "height: "
-                                        + rowHeight
-                                        + "px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
-                                null);
-                writer.writeAttribute("rowspan", "2", null);
-                writer.startElement(HTML.SPAN_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "hours"), null);
-                writer.writeAttribute(HTML.STYLE_ATTR,
-                        "vertical-align: top; height: 100%; padding: 0px;",
-                        null);
-                writer.writeText(String.valueOf(startHour + (row / 2)), null);
-                writer.endElement(HTML.SPAN_ELEM);
-                writer.startElement(HTML.SPAN_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "minutes"), null);
-                writer.writeAttribute(HTML.STYLE_ATTR,
-                        "vertical-align: top; height: 100%; padding: 0px;",
-                        null);
-                writer.writeText("00", null);
-                writer.endElement(HTML.SPAN_ELEM);
-                writer.endElement(HTML.TD_ELEM);
-            }
+    			// write the date
+    			writer.startElement(HTML.SPAN_ELEM, schedule);
+    			writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    			"date"), null);
+    			writer
+    			.writeAttribute(
+    					HTML.STYLE_ATTR,
+    					"position: absolute; left: 0px; top: 0px; height: 15px; width: 100%; vertical-align: top; overflow: hidden; white-space: nowrap;",
+    					null);
+    			writer.writeText(getDateString(context, schedule, day.getDate()),
+    					null);
+    			writer.endElement(HTML.SPAN_ELEM);
 
-            //write the cells of the day columns on this row
-            for (int column = 0; column < schedule.getModel().size(); column++)
-            {
-                writer.startElement(HTML.TD_ELEM, schedule);
-                writer.writeAttribute(HTML.CLASS_ATTR, getCellClass(schedule,
-                        column, row, startHour + (row / 2)), null);
-                writer.writeAttribute(HTML.STYLE_ATTR,
-                        "overflow: hidden; height: " + rowHeight + "px;", null);
-                writer.writeAttribute(HTML.WIDTH_ATTR, String
-                        .valueOf(columnWidth)
-                        + "%", null);
-                writer.write(HTML.NBSP_ENTITY);
-                writer.endElement(HTML.TD_ELEM);
-            }
+    			// write the name of the holiday, if there is one
+    			if ((day.getSpecialDayName() != null)
+    					&& (day.getSpecialDayName().length() > 0))
+    			{
+    				writer.startElement(HTML.SPAN_ELEM, schedule);
+    				writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    				"holiday"), null);
+    				writer
+    				.writeAttribute(
+    						HTML.STYLE_ATTR,
+    						"position: absolute; left: 0px; top: 15px; width: 100%; vertical-align: top; overflow: hidden; white-space: nowrap;",
+    						null);
+    				writer.writeText(day.getSpecialDayName(), null);
+    				writer.endElement(HTML.SPAN_ELEM);
+    			}
 
-            writer.endElement(HTML.TR_ELEM);
-        }
+    			writer.endElement(HTML.DIV_ELEM);
+    			writer.endElement(HTML.TD_ELEM);
+    		}
+			writer.endElement(HTML.TR_ELEM);
 
-        writer.endElement(HTML.TBODY_ELEM);
-        writer.endElement(HTML.TABLE_ELEM);
-        writer.endElement(HTML.DIV_ELEM);
+    		// the intervals
+    		Iterator intervalIt = day.getIntervals(startHour, endHour).iterator();
+    		Interval nextInterval = intervalIt.hasNext() ? (Interval) intervalIt.next() : null;
+
+    		boolean renderGutter = true;
+
+    		while (intervalIt.hasNext() || nextInterval != null)
+    		{
+    			Interval interval = nextInterval;
+    			nextInterval = intervalIt.hasNext() ? (Interval) intervalIt.next() : null;
+    			int intervalHeight = calcRowHeight(rowHeight, interval.getDuration()) - 1;
+
+    			// Don't render rows where the timespan is too small
+    			if (intervalHeight <= 0)
+    			{
+    				continue;
+    			}
+
+    			if (!renderGutter)
+    			{
+    				renderGutter = true;
+    				continue;
+    			}
+    			
+    			writer.startElement(HTML.TR_ELEM, schedule);
+
+    			if (firstDay)
+    			{
+    				int gutterHeight = intervalHeight;
+
+    				if (day.getIntervals() == null && interval.getStartMinutes() == 0)
+    				{
+    					gutterHeight = (gutterHeight * 2) + 1;
+    					renderGutter = false;
+    				}    				
+
+    				//write the hours of the day on the left
+    				//this only happens on even rows, or every hour
+    				writer.startElement(HTML.TD_ELEM, schedule);
+    				writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    				"gutter"), null);
+    				writer
+    				.writeAttribute(
+    						HTML.STYLE_ATTR,
+    						"height: " + gutterHeight
+    						+ "px; border-style: none; border-width: 0px; overflow: hidden; padding: 0px",
+    						null);
+    				if (interval.getDuration() >= HalfHourInterval.HALF_HOUR)
+    				{
+    					writer.startElement(HTML.SPAN_ELEM, schedule);
+    					writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    							renderGutter ? "minutes" : "hours"), null);
+    					writer.writeAttribute(HTML.STYLE_ATTR,
+    							"vertical-align: top; height: 100%; padding: 0px;",
+    							null);
+    					writer.writeText(hourFormater.format(interval.getStartTime()), null);
+    					writer.endElement(HTML.SPAN_ELEM);
+    					writer.startElement(HTML.SPAN_ELEM, schedule);
+    					writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    							"minutes"), null);
+    					writer.writeAttribute(HTML.STYLE_ATTR,
+    							"vertical-align: top; height: 100%; padding: 0px;",
+    							null);
+    					writer.writeText(minuteFormater.format(interval.getStartTime()), null);
+    					writer.endElement(HTML.SPAN_ELEM);
+    				}
+    				writer.endElement(HTML.TD_ELEM);
+    			}
+    			else
+    			{
+    				writer.startElement(HTML.TD_ELEM, schedule);
+    				writer.writeAttribute(HTML.CLASS_ATTR, getCellClass(schedule,
+    						day, renderGutter, interval.getStartHours()), null);
+    				writer.writeAttribute(HTML.STYLE_ATTR,
+    						"overflow: hidden; height: " + intervalHeight + "px;", null);
+    				if (interval.getLabel() != null)
+    				{
+    					writer.write(interval.getLabel());
+    				}
+    				writer.endElement(HTML.TD_ELEM);
+    			}
+
+    			writer.endElement(HTML.TR_ELEM);
+    		}
+
+    		writer.endElement(HTML.TBODY_ELEM);
+    		writer.endElement(HTML.TABLE_ELEM);            
+
+    		writer.endElement(HTML.TD_ELEM);
+    	}
+
+    	writer.endElement(HTML.TR_ELEM);
+    	writer.endElement(HTML.TBODY_ELEM);
+    	writer.endElement(HTML.TABLE_ELEM);
+
+    	writer.endElement(HTML.DIV_ELEM);
     }
 
+    /**
+     * Calculate an actual row height, given a specified height for a half hour duration.
+     * 
+     * @param halfHourHeight The height for a half hour duration
+     * @param duration The actual interval duration
+     * @return The height for the actual interval duration
+     */
+    private int calcRowHeight(int halfHourHeight, long duration) {
+    	
+    	return duration == HalfHourInterval.HALF_HOUR ? halfHourHeight : 
+			(int)((halfHourHeight / (float)(30 * 60 * 1000)) * duration);
+    }
+    
     protected int getRenderedStartHour(HtmlSchedule schedule)
     {
         int startHour = schedule.getVisibleStartHour();
@@ -460,13 +542,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         final String clientId = schedule.getClientId(context);
         FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
         String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
-        
+
         TreeSet entrySet = new TreeSet();
-        
+
         for (Iterator entryIterator = day.iterator(); entryIterator.hasNext();)
         {
-            ScheduleEntry entry = (ScheduleEntry) entryIterator.next();
-            entrySet.add(new EntryWrapper(entry, day));
+            entrySet.add(new EntryWrapper((ScheduleEntry) entryIterator.next(),
+                    day));
         }
 
         EntryWrapper[] entries = (EntryWrapper[]) entrySet
@@ -568,7 +650,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 getEntryRenderer(schedule).renderContent(context, writer,
                         schedule, day, wrapper.entry, false, selected);
 
-                writer.endElement(schedule.isReadonly() ? HTML.DIV_ELEM : "a");
+                writer.endElement(schedule.isReadonly() ? HTML.DIV_ELEM : HTML.ANCHOR_ELEM);
             }
         }
     }
@@ -862,11 +944,18 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 buffer.append("visibility: hidden; ");
             }
             buffer.append("position: absolute; height: ");
-            if (height > 0) {
+            if (height > 2)
+            {
+            	// Adjust for the width of the border
+                buffer.append((height - 2) + "px");
+            } else if (height > 0)
+            {
                 buffer.append(height + "px");
-            } else if (entryVisible) {
+            } else if (entryVisible)
+            {
                 buffer.append("auto");
-            } else {
+            } else
+            {
                 buffer.append("0px");
             }
             buffer.append("; top: ");

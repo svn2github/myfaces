@@ -60,22 +60,20 @@ div.schedule-detailed-default table.background td.uneven,
 div.schedule-detailed-default table.background td.free {
     font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 10px;
-    text-align: center;
+    text-align: left;
+    color: rgb(0,0,0);
 }
 
 div.schedule-detailed-default table.background td.uneven {
     background-color: rgb(240,240,240);
-    color: rgb(240,240,240);
 }
 
 div.schedule-detailed-default table.background td.even {
     background-color: rgb(235,235,235);
-    color: rgb(235,235,235);
 }
 
 div.schedule-detailed-default table.background td.free {
 	background-color: rgb(221,221,221);
-	color: rgb(221,221,221);
 }
 
 div.schedule-detailed-default .entry, div.schedule-detailed-default div.entry-selected {
@@ -243,22 +241,20 @@ div.schedule-detailed-evolution table.background td.uneven,
 div.schedule-detailed-evolution table.background td.free {
     font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 10px;
-    text-align: center;
+    text-align: left;
+    color: rgb(0,0,0);
 }
 
 div.schedule-detailed-evolution table.background td.uneven {
     background-color: rgb(255,255,255);
-    color: rgb(255,255,255);
 }
 
 div.schedule-detailed-evolution table.background td.even {
     background-color: rgb(255,255,255);
-    color: rgb(255,255,255);
 }
 
 div.schedule-detailed-evolution table.background td.free {
 	background-color: rgb(217,217,217);
-	color: rgb(217,217,217);
 }
 
 div.schedule-detailed-evolution .entry, div.schedule-detailed-evolution div.entry-selected {
@@ -427,22 +423,21 @@ div.schedule-detailed-outlookxp table.background td.uneven,
 div.schedule-detailed-outlookxp table.background td.free {
     font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 10px;
-    text-align: center;
+    text-align: left;
+    color: rgb(128,128,128);
+    vertical-align: top;
 }
 
 div.schedule-detailed-outlookxp table.background td.uneven {
     background-color: rgb(255,255,143);
-    color: rgb(255,255,143);
 }
 
 div.schedule-detailed-outlookxp table.background td.even {
     background-color: rgb(255,255,143);
-    color: rgb(255,255,143);
 }
 
 div.schedule-detailed-outlookxp table.background td.free {
     background-color: rgb(239,240,112);
-    color: rgb(239,240,112);
 }
 
 div.schedule-detailed-outlookxp .entry, div.schedule-detailed-outlookxp div.entry-selected {

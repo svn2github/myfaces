@@ -20,9 +20,13 @@ package org.apache.myfaces.custom.schedule;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
+
+import org.apache.myfaces.custom.schedule.model.Interval;
+import org.apache.myfaces.custom.schedule.model.ScheduleDay;
 
 /**
  * An event that is fired when the schedule is clicked, and the submitOnClick
@@ -58,6 +62,22 @@ public class ScheduleMouseEvent extends FacesEvent implements Serializable
     public Date getClickedTime()
     {
         return getSchedule().getLastClickedDateAndTime();
+    }
+   
+    public Interval getClickedInterval()
+    {
+    	Date clickedDate = getClickedDate();
+    	
+    	for (Iterator intervalIt = getSchedule().getModel().iterator(); intervalIt.hasNext(); ) {
+            ScheduleDay day = (ScheduleDay) intervalIt.next();
+
+            if (day.equalsDate(clickedDate))
+            {
+                return day.getInterval(clickedDate);
+            }
+    	}
+    	
+    	return null;
     }
 
     public int getEventType()

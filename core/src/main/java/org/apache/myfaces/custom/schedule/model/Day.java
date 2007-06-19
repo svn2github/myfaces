@@ -23,8 +23,10 @@ package org.apache.myfaces.custom.schedule.model;
 import java.io.Serializable;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TreeSet;
 
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
@@ -51,6 +53,7 @@ public class Day
     private final Date dayStart;
     private String specialDayName;
     private boolean workingDay;
+    private TreeSet intervals;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -164,6 +167,40 @@ public class Day
         return workingDay;
     }
 
+    /**
+     * 
+     * @return A chronologically ordered set of intervals.
+     */
+    public TreeSet getIntervals() {
+		return intervals;
+	}
+    
+    /**
+     * Set user defined intervals during the day.
+     * 
+     * @param intervals A Collection<Interval> of intervals during the day
+     */
+    public void setIntervals(Collection intervals)
+    {
+    	if (intervals instanceof TreeSet)
+    	{
+    		this.intervals = (TreeSet) intervals;
+    	}
+    	else
+    	{	
+    		this.intervals = new TreeSet(intervals);
+    	}
+	}
+    
+    public void addInterval(String label, Date startTime, Date endTime)
+    {
+    	if (intervals == null)
+    	{
+    		intervals = new TreeSet();
+    	}
+    	intervals.add(new Interval(label, startTime, endTime));
+    }
+    
     /**
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */

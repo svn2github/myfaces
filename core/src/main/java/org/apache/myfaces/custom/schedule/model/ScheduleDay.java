@@ -22,10 +22,12 @@ package org.apache.myfaces.custom.schedule.model;
 
 import java.io.Serializable;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
@@ -217,6 +219,118 @@ public class ScheduleDay
     	}
 
     	return equalsDate(startTime.getTime()) ? startTime.get(Calendar.HOUR_OF_DAY) : 0;
+    }
+
+    public Interval getInterval(Date clickedDate) {
+    	if (getIntervals() != null)
+    	{
+    		for (Iterator intervalIt = getIntervals().iterator(); intervalIt.hasNext(); )
+    		{
+    			Interval interval = (Interval) intervalIt.next();
+
+    			if (interval.containsDate(clickedDate)) {
+
+    				return interval;
+    			}
+    		}
+    	}
+
+    	return null;
+    }
+	
+    /**
+     * Get an chronologically ordered list of intervals during the day. 
+     * These will consist of user defined intervals, packed with half 
+     * hour intervals to ensure contiguous intervals between the start 
+     * and end hour.
+     *  
+     * @param startHour The first hour
+     * @param endHour The last hour
+     * @return A List<Interval> of intervals covering the day
+     */
+    public List getIntervals(int startHour, int endHour) {
+    	Date endTime = initDate(getDate(), endHour);
+    	ArrayList intervals = new ArrayList();
+    	Interval last = null;
+    	
+    	// Iterate over the custom intervals, adding half hour intervals in any gaps
+    	if (getIntervals() != null)
+    	{
+    		for (Iterator intervalIt = getIntervals().iterator(); intervalIt.hasNext(); )
+    		{
+    			Interval interval = (Interval) intervalIt.next();
+    		
+    			if (last != null)
+    			{
+    				if (!interval.getEndTime().after(last.getEndTime()))
+    				{
+            			// Skip if the interval if entirely overlapped by the previous interval
+    					continue;
+    				}
+    				else if (interval.getStartTime().before(last.getEndTime()))
+    				{
+    	    			// Truncate the beginning of the interval, to remove overlap
+        				interval.setStartTime(last.getEndTime());
+    				}
+    			}
+    			
+    			// Don't add any intervals beyond the end time
+    			if (interval.getStartTime().after(endTime)) 
+    			{
+    				break;
+    			}
+    		
+    			if (last == null) 
+    			{
+    				// Calculate the first interval of the day
+    				last = new HalfHourInterval(initDate(getDate(), startHour), interval.getStartTime());
+    			} 
+    			else 
+    			{
+    				// Calculate a half hour interval following the last user defined interval
+    				last = HalfHourInterval.next(last, interval.getStartTime());    			
+    			}
+    			// Add half hours up to the current interval
+    			while (last != null && interval.after(last))
+    			{
+    				intervals.add(last);
+    				last = HalfHourInterval.next(last, interval.getStartTime());
+    			}
+    			intervals.add(interval);
+				last = interval;
+    		}
+    	}
+
+    	if (last == null)
+    	{
+    		// There are no user defined intervals, so start at the beginning of the day
+    		last = new HalfHourInterval(initDate(getDate(), startHour), endTime);    		
+    	}
+		else 
+		{
+	    	// Move on to the next interval after the last user defined one
+			last = HalfHourInterval.next(last, endTime);    			
+		}
+    	
+    	// Add half hour intervals up to the end time
+    	while(last != null)
+    	{
+			intervals.add(last);
+        	last = HalfHourInterval.next(last, endTime);
+    	}
+    	
+		return intervals;
+	}
+
+    private Date initDate(Date date, int hour) {
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, hour);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+		return calendar.getTime();
     }
 }
 //The End
