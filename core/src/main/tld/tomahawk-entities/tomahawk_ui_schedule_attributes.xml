@@ -82,6 +82,12 @@
 	<rtexprvalue>false</rtexprvalue>
 	<type>java.lang.String</type>
 </attribute>
+<attribute>
+	<name>hourNotation</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+</attribute>
 
 <attribute>
 	<name>mouseListener</name>
