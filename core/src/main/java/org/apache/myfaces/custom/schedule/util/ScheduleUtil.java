@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -43,7 +44,7 @@ import javax.faces.el.ValueBinding;
 public class ScheduleUtil
 {
     //~ Class Variables --------------------------------------------------------
-    private final static SimpleDateFormat DATE_ID_FORMATTER = new SimpleDateFormat("yyyyMMdd");
+    private final static String DATE_ID_PATTERN = "yyyyMMdd";
     
     //~ Constructors -----------------------------------------------------------
     /**
@@ -190,14 +191,13 @@ public class ScheduleUtil
      *
      * @return the hashCode of the truncated date
      */
-    public static int getHashCodeForDay(Date date)
+    public static int getHashCodeForDay(Date date,TimeZone tz)
     {
-    	Calendar calendar = Calendar.getInstance();
-    	calendar.setTime(date);
-    	
-    	return new Integer(calendar.get(Calendar.ERA)).hashCode() ^ 
-    		new Integer(calendar.get(Calendar.YEAR)).hashCode() ^
-    		new Integer(calendar.get(Calendar.DAY_OF_YEAR)).hashCode();
+      Calendar calendar = getCalendarInstance(date, tz);
+
+      return new Integer(calendar.get(Calendar.ERA)).hashCode() ^
+        new Integer(calendar.get(Calendar.YEAR)).hashCode() ^
+        new Integer(calendar.get(Calendar.DAY_OF_YEAR)).hashCode();
     }
 
     /**
@@ -287,22 +287,20 @@ public class ScheduleUtil
      */
     public static boolean isSameDay(
         Date date1,
-        Date date2
+        Date date2,
+        TimeZone tz
     )
     {
         if ((date1 == null) || (date2 == null)) {
             return false;
         }
-        
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.setTime(date1);
-        
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.setTime(date2);
-        
+
+        Calendar calendar1 = getCalendarInstance(date1, tz);
+        Calendar calendar2 = getCalendarInstance(date2, tz);
+
         return (calendar1.get(Calendar.ERA) == calendar2.get(Calendar.ERA) &&
-        		calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
-        		calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR));
+            calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+            calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR));
     }
 
     /**
@@ -372,7 +370,8 @@ public class ScheduleUtil
      */
     public static int compareDays(
         Date date1,
-        Date date2
+        Date date2,
+        TimeZone tz
     )
     {
         if (date1 == null) {
@@ -382,20 +381,20 @@ public class ScheduleUtil
         if (date2 == null) {
             return 1;
         }
-        
-        return truncate(date1).compareTo(truncate(date2));
+
+        return truncate(date1,tz).compareTo(truncate(date2,tz));
     }
-    
+
     /**
      * truncate the given Date to 00:00:00 that same day
-     * 
+     *
      * @param date the date that should be truncated
      * @return the truncated date
      */
-    public static Date truncate(Date date) {
+    public static Date truncate(Date date, TimeZone tz)
+    {
         if (date == null) return null;
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
+        Calendar cal = getCalendarInstance(date, tz);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
@@ -409,9 +408,10 @@ public class ScheduleUtil
      * @param date the date
      * @return the identifier for this date
      */
-    public static String getDateId(Date date) {
+    public static String getDateId(Date date, TimeZone timeZone)
+    {
         if (date == null) return "NULL";
-        return DATE_ID_FORMATTER.format(date);
+        return getDateIdFormater(timeZone).format(date);
     }
     
     /**
@@ -420,16 +420,36 @@ public class ScheduleUtil
      * @param id the date ID
      * @return the date
      */
-    public static Date getDateFromId(String id) {
+    public static Date getDateFromId(String id, TimeZone timeZone)
+    {
         if (id == null || id.length() == 0 || "null".equals(id)) return null;
         try
         {
-            return DATE_ID_FORMATTER.parse(id);
+            return getDateIdFormater(timeZone).parse(id);
         }
         catch (ParseException e)
         {
             return null;
         }
+    }
+    
+    public static Calendar getCalendarInstance(Date date, TimeZone timeZone)
+    {
+        Calendar cal = GregorianCalendar.getInstance(
+        		timeZone != null ? timeZone : TimeZone.getDefault());
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.setTime(date);
+
+        return cal;
+    }
+    
+    private static SimpleDateFormat getDateIdFormater(TimeZone timeZone)
+    {
+    	SimpleDateFormat format = new SimpleDateFormat(DATE_ID_PATTERN);
+    	
+    	format.setTimeZone(timeZone);
+    	
+    	return format;
     }
 }
 //The End

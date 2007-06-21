@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
@@ -54,6 +54,7 @@ public class Day
     private String specialDayName;
     private boolean workingDay;
     private TreeSet intervals;
+    private final TimeZone timeZone;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -66,15 +67,26 @@ public class Day
      */
     public Day(Date date)
     {
-        super();
+        this(date, TimeZone.getDefault());
+    }
+
+    /**
+     * Creates a new Day object.
+     *
+     * @param date the date
+     * @param timeZone The timezone
+     *
+     * @throws NullPointerException when the date is null
+     */
+    public Day(Date date, TimeZone timeZone)
+    {
         this.date = date;
+        this.timeZone = timeZone;
 
         if (date == null) {
             throw new NullPointerException("date should not be null");
         }
-
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
+        Calendar cal = getCalendarInstance(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
@@ -83,9 +95,14 @@ public class Day
         cal.add(Calendar.DATE, 1);
         this.dayEnd = cal.getTime();
     }
-
+    
     //~ Methods ----------------------------------------------------------------
 
+    protected Calendar getCalendarInstance(Date date) {
+
+        return ScheduleUtil.getCalendarInstance(date, timeZone);
+    }
+    
     /**
      * @return Returns the date.
      */
@@ -155,8 +172,7 @@ public class Day
      */
     public boolean isWorkingDay()
     {
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
+        Calendar cal = getCalendarInstance(date);
 
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 
@@ -171,7 +187,8 @@ public class Day
      * 
      * @return A chronologically ordered set of intervals.
      */
-    public TreeSet getIntervals() {
+    public TreeSet getIntervals()
+    {
 		return intervals;
 	}
     
@@ -209,7 +226,7 @@ public class Day
         if (o instanceof Day) {
             Day other = (Day) o;
 
-            int returnint = ScheduleUtil.compareDays(date, other.getDate());
+            int returnint = ScheduleUtil.compareDays(date, other.getDate(), timeZone);
 
             return returnint;
         }
@@ -225,7 +242,7 @@ public class Day
         if (o instanceof Day) {
             Day other = (Day) o;
 
-            return ScheduleUtil.isSameDay(date, other.getDate());
+            return ScheduleUtil.isSameDay(date, other.getDate(), timeZone);
         }
 
         return false;
@@ -246,7 +263,7 @@ public class Day
             return false;
         }
 
-        return ScheduleUtil.isSameDay(date, this.date);
+        return ScheduleUtil.isSameDay(date, this.date, timeZone);
     }
 
     /**
@@ -254,7 +271,7 @@ public class Day
      */
     public int hashCode()
     {
-        return ScheduleUtil.getHashCodeForDay(date);
+        return ScheduleUtil.getHashCodeForDay(date, timeZone);
     }
 }
 //The End

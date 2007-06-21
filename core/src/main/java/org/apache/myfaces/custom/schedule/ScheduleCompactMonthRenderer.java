@@ -23,7 +23,6 @@ package org.apache.myfaces.custom.schedule;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
@@ -90,8 +89,7 @@ public class ScheduleCompactMonthRenderer
         writer.writeAttribute(HTML.WIDTH_ATTR, "100%", null);
         writer.startElement(HTML.TBODY_ELEM, schedule);
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(schedule.getModel().getSelectedDate());
+        Calendar cal = getCalendarInstance(schedule, schedule.getModel().getSelectedDate());
         int selectedMonth = cal.get(Calendar.MONTH);
 
         for (

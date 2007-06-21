@@ -21,7 +21,7 @@ package org.apache.myfaces.custom.schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -106,8 +106,9 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
 
         if (!entry.isAllDay())
         {
-            SimpleDateFormat format = new SimpleDateFormat(HtmlSchedule.HOUR_NOTATION_24.equals(schedule.getHourNotation()) ? "HH:mm" : "h:mma");
-
+            DateFormat format = AbstractScheduleRenderer.getDateFormat(context, schedule, 
+            		HtmlSchedule.HOUR_NOTATION_24.equals(schedule.getHourNotation()) ? "HH:mm" : "h:mma");
+            
         	text.append(format.format(startTime));
         	if (!startTime.equals(endTime)) {
         		text.append("-");

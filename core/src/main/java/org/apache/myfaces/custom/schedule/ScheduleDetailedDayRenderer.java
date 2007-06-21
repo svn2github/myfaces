@@ -21,11 +21,11 @@ package org.apache.myfaces.custom.schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
@@ -122,7 +122,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 .hasNext();)
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
-            String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate());
+            String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
             writer.startElement(HTML.TD_ELEM, schedule);
             writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                     "column"), null);
@@ -282,8 +282,8 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     	int startHour = getRenderedStartHour(schedule);
     	int endHour = getRenderedEndHour(schedule);
 
-    	SimpleDateFormat hourFormater = new SimpleDateFormat(HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "hh" : "HH");
-    	SimpleDateFormat minuteFormater = new SimpleDateFormat("mm");        
+    	DateFormat hourFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "hh" : "HH");
+    	DateFormat minuteFormater = getDateFormat(context, schedule, "mm");        
 
     	// When firstDay is true, render the gutter
     	boolean firstDay = true;
@@ -413,7 +413,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     			{
     				int gutterHeight = intervalHeight;
 
-    				if (day.getIntervals() == null && interval.getStartMinutes() == 0)
+    				if (day.getIntervals() == null && interval.getStartMinutes(getTimeZone(schedule)) == 0)
     				{
     					gutterHeight = (gutterHeight * 2) + 1;
     					renderGutter = false;
@@ -455,7 +455,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     			{
     				writer.startElement(HTML.TD_ELEM, schedule);
     				writer.writeAttribute(HTML.CLASS_ATTR, getCellClass(schedule,
-    						day, renderGutter, interval.getStartHours()), null);
+    						day, renderGutter, interval.getStartHours(getTimeZone(schedule))), null);
     				writer.writeAttribute(HTML.STYLE_ATTR,
     						"overflow: hidden; height: " + intervalHeight + "px;", null);
     				if (interval.getLabel() != null)
@@ -703,7 +703,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 .hasNext();)
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
-            final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate());
+            final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
             writer.startElement(HTML.TD_ELEM, schedule);
             writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
             writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
@@ -754,12 +754,11 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
      * into account when determining the last clicked date.
      */
     protected Date determineLastClickedDate(HtmlSchedule schedule, String dateId, String yPos) {
-        Calendar cal = GregorianCalendar.getInstance();
-        //the dateId is the schedule client id + "_" + yyyyMMdd 
+        //the dateId is the schedule client id + "_" + yyyyMMdd
         String day = dateId.substring(dateId.lastIndexOf("_") + 1);
-        Date date = ScheduleUtil.getDateFromId(day);
+        Date date = ScheduleUtil.getDateFromId(day, schedule.getModel().getTimeZone());
 
-        if (date != null) cal.setTime(date);
+        Calendar cal = getCalendarInstance(schedule, date != null ? date : new Date());
         cal.set(Calendar.HOUR_OF_DAY, getRenderedStartHour(schedule));
         //OK, we have the date, let's determine the time
         try {
@@ -796,9 +795,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     /**
      * <p>
      * When the start- and endtime of an entry are the same, should the entry
-     * be rendered, fitting the entry box to the text? 
+     * be rendered, fitting the entry box to the text?
      * </p>
-     * 
+     *
      * @param component the component
      * @return whether or not zero length entries should be rendered
      */
@@ -901,8 +900,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             int rowHeight = getRowHeight(schedule);
             float width = (columnWidth * colspan) - 0.5f;
             float left = column * columnWidth;
-            Calendar cal = GregorianCalendar.getInstance();
-            cal.setTime(day.getDate());
+            Calendar cal = getCalendarInstance(schedule, day.getDate());
 
             int curyear = cal.get(Calendar.YEAR);
             int curmonth = cal.get(Calendar.MONTH);
@@ -1049,6 +1047,14 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             return height <= 0 ? getDefaultRowHeight() : height;
         }
         return getDefaultRowHeight();
+    }
+    
+    private TimeZone getTimeZone(UIScheduleBase schedule)
+    {
+    	
+    	return schedule != null && schedule.getModel().getTimeZone() != null ? 
+    			schedule.getModel().getTimeZone() 
+    			: TimeZone.getDefault();
     }
 }
 //The End

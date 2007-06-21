@@ -21,6 +21,7 @@ package org.apache.myfaces.custom.schedule.model;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 
 /**
@@ -140,5 +141,10 @@ public interface ScheduleModel
      * Reload the entries for the currently selected period
      */
     public abstract void refresh();
+    
+    /**
+     * @return The timezone for which the model should be built
+     */
+    public abstract TimeZone getTimeZone();
 }
 //The End

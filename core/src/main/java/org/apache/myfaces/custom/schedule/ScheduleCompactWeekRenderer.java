@@ -29,7 +29,6 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 
@@ -88,14 +87,12 @@ public class ScheduleCompactWeekRenderer
         writer.writeAttribute(HTML.WIDTH_ATTR, "100%", null);
         writer.startElement(HTML.TBODY_ELEM, schedule);
 
-        Calendar cal = GregorianCalendar.getInstance();
-
         for (
             Iterator dayIterator = schedule.getModel().iterator();
                 dayIterator.hasNext();
         ) {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
-            cal.setTime(day.getDate());
+            Calendar cal = getCalendarInstance(schedule, day.getDate());
 
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);

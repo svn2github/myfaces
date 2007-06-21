@@ -25,9 +25,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.TreeSet;
 
 import org.apache.myfaces.custom.schedule.util.ScheduleEntryComparator;
@@ -62,7 +62,17 @@ public class ScheduleDay
      */
     public ScheduleDay(Date date)
     {
-        super(date);
+        this(date, TimeZone.getDefault());
+    }
+
+    /**
+     * Creates a new ScheduleDay object.
+     *
+     * @param date the date
+     */
+    public ScheduleDay(Date date, TimeZone tz)
+    {
+        super(date, tz);
         this.entries = new TreeSet(new ScheduleEntryComparator());
     }
 
@@ -94,8 +104,7 @@ public class ScheduleDay
             return false;
         }
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(entry.getEndTime());
+        Calendar cal = getCalendarInstance(entry.getEndTime());
         cal.add(Calendar.DATE, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -166,8 +175,6 @@ public class ScheduleDay
      */
     public int getLastEventHour()
     {
-    	Calendar endTime = GregorianCalendar.getInstance();
-
     	// Check all events, as the last to finish may not be the last to begin
     	Date lastEnd = null;
     	
@@ -183,7 +190,7 @@ public class ScheduleDay
     		return 0;
     	}
     	
-    	endTime.setTime(lastEnd);
+    	Calendar endTime = getCalendarInstance(lastEnd);
     	
     	if (endTime.get(Calendar.MINUTE) > 0){
     		// Round up to next hour
@@ -207,8 +214,7 @@ public class ScheduleDay
     		ScheduleEntry next = (ScheduleEntry) it.next();
     		
     		if (!next.isAllDay()) {
-    			startTime = GregorianCalendar.getInstance();
-    			startTime.setTime(next.getStartTime());
+    			startTime = getCalendarInstance(next.getStartTime());
     			break;
     		}
     	}
@@ -323,8 +329,7 @@ public class ScheduleDay
 	}
 
     private Date initDate(Date date, int hour) {
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(date);
+		Calendar calendar = getCalendarInstance(date);
 		calendar.set(Calendar.HOUR_OF_DAY, hour);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);

@@ -23,9 +23,11 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.TimeZone;
 import java.util.TreeSet;
+
+import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
 /**
  * <p>
@@ -49,6 +51,8 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
     private int mode;
 
+    protected final TimeZone timeZone;
+
     // ~ Constructors
     // -----------------------------------------------------------
 
@@ -57,11 +61,24 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     public AbstractScheduleModel()
     {
-        this.days = new TreeSet();
+        this(TimeZone.getDefault());
+    }
+
+    public AbstractScheduleModel(TimeZone timeZone)
+    {
+      this.days = new TreeSet();
+      this.timeZone = timeZone;
     }
 
     // ~ Methods
     // ----------------------------------------------------------------
+
+    /**
+     * Returns the timezone setting for this model
+     */
+    public TimeZone getTimeZone () {
+      return this.timeZone;
+    }
 
     /**
      * @see org.apache.myfaces.custom.schedule.model.ScheduleModel#isEmpty()
@@ -242,9 +259,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
         clear();
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
-        cal.setTime(date);
+        Calendar cal = getCalendarInstance(date);
 
         // go back to the first day of the month;
         cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DAY_OF_MONTH));
@@ -299,8 +314,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
         clear();
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
+        Calendar cal = getCalendarInstance(date);
 
         // go back to the monday of this week
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -341,8 +355,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
         clear();
 
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
+        Calendar cal = getCalendarInstance(date);
 
         // go back to the monday of this week
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -383,7 +396,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
             return null;
         }
 
-        ScheduleDay day = new ScheduleDay(date);
+        ScheduleDay day = new ScheduleDay(date, getTimeZone());
         loadDayAttributes(day);
         days.add(day);
 
@@ -454,6 +467,11 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
                 day.addEntry(entry);
             }
         }
+    }
+    
+    protected Calendar getCalendarInstance(Date date) {
+
+        return ScheduleUtil.getCalendarInstance(date, getTimeZone());
     }
 }
 // The End

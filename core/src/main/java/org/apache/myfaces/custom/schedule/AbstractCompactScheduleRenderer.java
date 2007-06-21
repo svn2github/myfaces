@@ -19,6 +19,17 @@
 
 package org.apache.myfaces.custom.schedule;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.TreeSet;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
@@ -27,13 +38,6 @@ import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * <p>
@@ -112,11 +116,10 @@ public abstract class AbstractCompactScheduleRenderer extends
                                 boolean isCurrentMonth, int rowspan) throws IOException
     {
         final String clientId = schedule.getClientId(context);
-        final Map attributes = schedule.getAttributes();
         final FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
         final String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
-        final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate());
-        final String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate());
+        final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
+        final String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
         writer.startElement(HTML.TD_ELEM, schedule);
 
         writer.writeAttribute("rowspan", String.valueOf(rowspan), null);
@@ -226,7 +229,7 @@ public abstract class AbstractCompactScheduleRenderer extends
                 null);
 
         writer.writeAttribute(HTML.ID_ATTR, dayBodyId, null);
-        
+		
         //register an onclick event listener to a day cell which will capture
         //the date
         if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
@@ -365,12 +368,11 @@ public abstract class AbstractCompactScheduleRenderer extends
      * into account when determining the last clicked date.
      */
     protected Date determineLastClickedDate(HtmlSchedule schedule, String dateId, String yPos) {
-        Calendar cal = GregorianCalendar.getInstance();
-        //the dateId is the schedule client id + "_" + yyyyMMdd 
+		//the dateId is the schedule client id + "_" + yyyyMMdd
         String day = dateId.substring(dateId.lastIndexOf("_") + 1);
-        Date date = ScheduleUtil.getDateFromId(day);
+        Date date = ScheduleUtil.getDateFromId(day, schedule.getModel().getTimeZone());
 
-        if (date != null) cal.setTime(date);
+        Calendar cal = getCalendarInstance(schedule, date != null ? date : new Date());
         cal.set(Calendar.HOUR_OF_DAY, schedule.getVisibleStartHour());
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);

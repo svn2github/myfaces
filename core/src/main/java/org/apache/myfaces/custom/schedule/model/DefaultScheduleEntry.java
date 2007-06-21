@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
@@ -52,8 +52,26 @@ public class DefaultScheduleEntry
     private String subtitle;
     private String title;
     private boolean allDay;
+    private TimeZone timeZone;
 
     //~ Methods ----------------------------------------------------------------
+
+    /**
+     * @return the current timezone
+     */
+    public TimeZone getTimeZone ()
+    {
+      return this.timeZone;
+    }
+
+    /**
+     * Set current timezone
+     * @param timeZone the timezone
+     */
+    public void setTimeZone (TimeZone timeZone)
+    {
+      this.timeZone = timeZone;
+    }
 
     /**
      * @param description The description to set.
@@ -84,18 +102,17 @@ public class DefaultScheduleEntry
      */
     public Date getEndTime()
     {
-    	if (endTime == null) endTime = new Date();
-    	if (isAllDay()) {
-    		Calendar cal = GregorianCalendar.getInstance();
-    		Date truncated = ScheduleUtil.truncate(endTime);
-    		cal.setTime(truncated);
-    		cal.add(Calendar.MILLISECOND, -1);
-    		truncated = cal.getTime();
-    		if (!truncated.equals(endTime)) {
-    			cal.add(Calendar.DATE, 1);
-    		}
-    		return cal.getTime();
-    	}
+      if (endTime == null) endTime = new Date();
+      if (isAllDay()) {
+        Date truncated = ScheduleUtil.truncate(endTime, getTimeZone());
+        Calendar cal = ScheduleUtil.getCalendarInstance(truncated, getTimeZone());
+        cal.add(Calendar.MILLISECOND, -1);
+        truncated = cal.getTime();
+        if (!truncated.equals(endTime)) {
+          cal.add(Calendar.DATE, 1);
+        }
+        return cal.getTime();
+      }
         return endTime;
     }
 
@@ -128,12 +145,12 @@ public class DefaultScheduleEntry
      */
     public Date getStartTime()
     {
-    	if (startTime == null) startTime = new Date();
-    	if (isAllDay()) {
-    		return ScheduleUtil.truncate(startTime);
-    	} else {
+      if (startTime == null) startTime = new Date();
+      if (isAllDay()) {
+        return ScheduleUtil.truncate(startTime, getTimeZone());
+      } else {
             return startTime;
-    	}
+      }
     }
 
     /**

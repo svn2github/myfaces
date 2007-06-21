@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -211,22 +212,22 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
     protected String getDateString(FacesContext context, UIScheduleBase schedule,
             Date date)
     {
-        DateFormat format;
-        String pattern = schedule.getHeaderDateFormat();
-        Locale viewLocale = context.getViewRoot().getLocale();
-        
-        if ((pattern != null) && (pattern.length() > 0))
-        {
-            format = new SimpleDateFormat(pattern, viewLocale);
-        }
-        else
-        {
-            format = DateFormat.getDateInstance(DateFormat.MEDIUM, viewLocale);
-        }
 
-        return format.format(date);
+        return getDateFormat(context, schedule, schedule.getHeaderDateFormat()).format(date);
     }
 
+    protected static DateFormat getDateFormat(FacesContext context, UIScheduleBase schedule, String pattern)
+    {
+        Locale viewLocale = context.getViewRoot().getLocale();
+        DateFormat format = (pattern != null && pattern.length() > 0) ? 
+        		new SimpleDateFormat(pattern, viewLocale) :
+        		DateFormat.getDateInstance(DateFormat.MEDIUM, viewLocale);
+        
+        format.setTimeZone(schedule.getModel().getTimeZone());
+        
+        return format;
+    }
+    
     /**
      * <p>
      * Allow the developer to specify custom CSS classnames for the schedule
@@ -306,6 +307,11 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
     public boolean getRendersChildren()
     {
         return true;
+    }
+    
+    protected Calendar getCalendarInstance(HtmlSchedule schedule, Date date)
+    {   	
+    	return ScheduleUtil.getCalendarInstance(date, schedule.getModel().getTimeZone());
     }
 }
 //The End

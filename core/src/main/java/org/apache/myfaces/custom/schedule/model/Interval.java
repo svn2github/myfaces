@@ -22,7 +22,9 @@ package org.apache.myfaces.custom.schedule.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 
 /**
  * <p>
@@ -96,19 +98,16 @@ public class Interval implements Serializable, Comparable
 		return !startTime.before(last.getEndTime());
 	}
 
-	public int getStartHours()
+	public int getStartHours(TimeZone timeZone)
 	{
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(getStartTime());
 		
-		return calendar.get(Calendar.HOUR_OF_DAY);
+		return ScheduleUtil.getCalendarInstance(getStartTime(), timeZone).get(Calendar.HOUR_OF_DAY);
 	}
 
-	public int getStartMinutes() {
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(getStartTime());
+	public int getStartMinutes(TimeZone timeZone)
+	{
 		
-		return calendar.get(Calendar.MINUTE);
+		return ScheduleUtil.getCalendarInstance(getStartTime(), timeZone).get(Calendar.MINUTE);
 	}
 	
 	public long getDuration()
