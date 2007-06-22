@@ -375,7 +375,7 @@ org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement) {
         this._addOnClickHandler(formElement);
     }
     else if(this._isText(formElement) || this._isDropdown(formElement)) {
-        this._addOnChangeHandler(formElement);
+        this._addOnBlurHandler(formElement);
     }
 }
 
@@ -415,12 +415,12 @@ org.apache.myfaces.PPRCtrl.prototype._addOnClickHandler = function (formElement)
 
 }
 
-org.apache.myfaces.PPRCtrl.prototype._addOnChangeHandler = function (formElement) {
+org.apache.myfaces.PPRCtrl.prototype._addOnBlurHandler = function (formElement) {
 
     if(typeof formElement.oam_onevent_orig == "undefined")
     {
-        formElement.oam_onevent_orig = formElement.onchange;
-        formElement.onchange = this.elementOnEventHandler;
+        formElement.oam_onevent_orig = formElement.onblur;
+        formElement.onblur = this.elementOnEventHandler;
         formElement.myFacesPPRCtrl=this;
     }
 
