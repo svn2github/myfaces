@@ -372,9 +372,12 @@ org.apache.myfaces.PPRCtrl.prototype.addElementEventHandler = function()
 
 org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement) {
     if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
+        //for these element-types, onclick is appropriate
         this._addOnClickHandler(formElement);
     }
     else if(this._isText(formElement) || this._isDropdown(formElement)) {
+        //for these element-types, onblur will be working.
+        //attention: onchange won't work properly in IE6 at least (field will never loose focus)
         this._addOnBlurHandler(formElement);
     }
 }
