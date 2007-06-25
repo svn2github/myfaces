@@ -39,7 +39,7 @@ public class HtmlButtonExRenderer extends HtmlButtonRenderer{
 		HtmlCommandButton button = (HtmlCommandButton) component;
 		
 		if(CVUtils.isCVEnabled() && button.isImmediate()) {
-			String bypassCVScript = "document.getElementById('" + CVUtils.BYPASS_CLIENT_VALIDATION_FIELD + " ').value = true;";
+			String bypassCVScript = "document.getElementById('" + CVUtils.BYPASS_CLIENT_VALIDATION_FIELD + "').value = true;";
 			ComponentUtils.decorateEventAttribute(component, "onclick", bypassCVScript);
 		}
 		
