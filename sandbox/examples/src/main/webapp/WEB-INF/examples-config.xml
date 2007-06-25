@@ -34,6 +34,15 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+
+    <!-- managed bean for singleRowSelectList-->
+
+    <managed-bean>
+        <managed-bean-name>dojoDialogBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.dojodialog.DojoDialogBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
     <!-- managed bean for singleRowSelectList-->
 
     <managed-bean>

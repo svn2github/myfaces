@@ -34,7 +34,9 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag {
 
 	private String _periodicalUpdate;
 
-	private String _showDebugMessages;
+    private String _periodicalTriggers;
+
+    private String _showDebugMessages;
 
 	private String _stateUpdate;
 
@@ -50,7 +52,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag {
 		super.release();
 		_partialTriggers = null;
 		_periodicalUpdate = null;
-		_showDebugMessages = null;
+        _periodicalTriggers = null;
+        _showDebugMessages = null;
 		_stateUpdate = null;
 	}
 
@@ -61,7 +64,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag {
 		setStringProperty(component, "partialTriggerPattern", _partialTriggerPattern);
 		setStringProperty(component, "inlineLoadingMessage", _inlineLoadingMessage);
 		setIntegerProperty(component, "periodicalUpdate", _periodicalUpdate);
-		setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
+        setStringProperty(component, "periodicalTriggers", _periodicalTriggers);
+        setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
 		setBooleanProperty(component, "stateUpdate", _stateUpdate);
 	}
 
@@ -93,7 +97,15 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag {
 		_periodicalUpdate = periodicalUpdate;
 	}
 
-	public void setShowDebugMessages(String showDebugMessages) {
+    public String getPeriodicalTriggers() {
+		return _periodicalTriggers;
+	}
+
+    public void setPeriodicalTriggers(String periodicalTriggers) {
+		_periodicalTriggers = periodicalTriggers;
+	}
+
+    public void setShowDebugMessages(String showDebugMessages) {
 		_showDebugMessages = showDebugMessages;
 	}
 

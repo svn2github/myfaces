@@ -41,6 +41,10 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 	{
     	window.myFacesInlineLoadingMessage = new Array;
     }
+    if(typeof window.oamRefreshTimeoutForZoneId == "undefined")
+	{
+    	window.oamRefreshTimeoutForZoneId = new Array;
+    }
 
     this.replaceFormSubmitFunction(formId);
 
@@ -78,6 +82,29 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId,
     }
 
     this._addEventHandler(dojo.byId(inputElementId));
+};
+
+//Method for JSF Components to register their Periodical Triggers
+
+org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElementId, refreshZoneId, refreshTimeout)
+{
+    if (window.oamPartialTriggersToZoneIds[inputElementId] === undefined)
+    {
+        window.oamPartialTriggersToZoneIds[inputElementId] = refreshZoneId;
+    }
+    else
+    {
+        window.oamPartialTriggersToZoneIds[inputElementId] =
+        window.oamPartialTriggersToZoneIds[inputElementId] +
+        "," +
+        refreshZoneId;
+    }
+
+    if (window.oamRefreshTimeoutForZoneId[refreshZoneId] === undefined) {
+        window.oamRefreshTimeoutForZoneId[refreshZoneId] = refreshTimeout;
+    }
+
+    this._addPeriodicalEventHandler(dojo.byId(inputElementId));
 };
 
 // registering a function (called before submit) on each form to block periodical refresh during request-response cycle
@@ -429,6 +456,25 @@ org.apache.myfaces.PPRCtrl.prototype._addOnBlurHandler = function (formElement) 
 
 }
 
+org.apache.myfaces.PPRCtrl.prototype._addPeriodicalEventHandler = function(formElement) {
+    var eventHandler = null;
+    if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
+        //for these element-types, onclick is appropriate
+        eventHandler = "onclick";
+    }
+    else if(this._isText(formElement) || this._isDropdown(formElement)) {
+        //for these element-types, onblur will be working.
+        //attention: onchange won't work properly in IE6 at least (field will never loose focus)
+        eventHandler = "onblur";
+    }
+
+    if (!eventHandler) {
+        return;
+    }
+
+    dojo.event.connect(formElement, eventHandler, this, "elementOnPeriodicalEventHandler");
+}
+
 
 //PointCutAdvisor which invokes the AJAX Submit Method of the PPR Controller after custom
 //onclick-handlers for submit-buttons and submit-images
@@ -441,6 +487,25 @@ org.apache.myfaces.PPRCtrl.prototype.elementOnEventHandler = function (_event)
 		    return false;
     }
     return this.myFacesPPRCtrl.ajaxSubmitFunction(this);
+}
+
+org.apache.myfaces.PPRCtrl.prototype.elementOnPeriodicalEventHandler = function(_event) {
+    if (_event.target.oam_periodicalStarted) {
+        return false;
+    }
+    else {
+        var zoneIds = window.oamPartialTriggersToZoneIds[_event.target.id];
+        if (!zoneIds) return false;
+
+        var zones = zoneIds.split(",");
+        for (var i = 0; i < zones.length; i++) {
+            var zoneId = zones[i];
+            var timeout = window.oamRefreshTimeoutForZoneId[zoneId];
+            if (!timeout) return false;
+            this.startPeriodicalUpdate(timeout, zoneId);
+            _event.target.oam_periodicalStarted = true;
+        }
+    }
 }
 
 //Based on the Component which triggerd the submit this Method returns a comma-seperated

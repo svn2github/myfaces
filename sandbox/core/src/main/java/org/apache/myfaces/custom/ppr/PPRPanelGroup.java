@@ -38,7 +38,9 @@ public class PPRPanelGroup extends HtmlPanelGroup {
 
 	private Integer _periodicalUpdate;
 
-	private String _partialTriggerPattern;
+    private String _periodicalTriggers;
+
+    private String _partialTriggerPattern;
 
 	private String _inlineLoadingMessage;
 
@@ -76,7 +78,18 @@ public class PPRPanelGroup extends HtmlPanelGroup {
 		_periodicalUpdate = periodicalUpdate;
 	}
 
-	public String getPartialTriggerPattern() {
+    public String getPeriodicalTriggers() {
+		if (_periodicalTriggers != null)
+			return _periodicalTriggers;
+		ValueBinding vb = getValueBinding("periodicalTriggers");
+		return (vb != null) ? (String) vb.getValue(getFacesContext()) : null;
+	}
+
+	public void setPeriodicalTriggers(String periodicalTriggers) {
+		_periodicalTriggers = periodicalTriggers;
+	}
+
+    public String getPartialTriggerPattern() {
 		if (_partialTriggerPattern != null)
 			return _partialTriggerPattern;
 		ValueBinding vb = getValueBinding("partialTriggerPattern");
@@ -129,19 +142,21 @@ public class PPRPanelGroup extends HtmlPanelGroup {
 		_partialTriggers = (String) values[1];
 		_partialTriggerPattern = (String) values[2];
 		_periodicalUpdate = (Integer) values[3];
-		_showDebugMessages = (Boolean) values[4];
-		_stateUpdate = (Boolean) values[5];
+        _periodicalTriggers = (String) values[4];
+        _showDebugMessages = (Boolean) values[5];
+		_stateUpdate = (Boolean) values[6];
 
 	}
 
 	public Object saveState(FacesContext context) {
-		Object[] values = new Object[6];
+		Object[] values = new Object[7];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
 		values[2] = _partialTriggerPattern;
 		values[3] = _periodicalUpdate;
-		values[4] = _showDebugMessages;
-		values[5] = _stateUpdate;
+        values[4] = _periodicalTriggers;
+        values[5] = _showDebugMessages;
+		values[6] = _stateUpdate;
 		return values;
 	}
 }

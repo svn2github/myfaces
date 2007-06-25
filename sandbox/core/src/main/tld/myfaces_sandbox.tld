@@ -1289,6 +1289,14 @@ Sandbox-related entities.
             </description>
         </attribute>
         <attribute>
+			<name>periodicalTriggers</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>If a periodicalUpdate is set this trigger starts the periodical requests.
+                         No partialTriggers are needed.
+            </description>
+        </attribute>
+        <attribute>
 			<name>showDebugMessages</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>

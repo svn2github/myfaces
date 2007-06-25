@@ -52,7 +52,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 
 	private static final String ADD_PARTIAL_TRIGGER_FUNCTION = "addPartialTrigger";
 
-	private static final String ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION = "addPartialTriggerPattern";
+    private static final String ADD_PERIODICAL_TRIGGER_FUNCTION = "addPeriodicalTrigger";
+
+    private static final String ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION = "addPartialTriggerPattern";
 
 	private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
 
@@ -115,8 +117,38 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		String clientId = pprGroup.getClientId(facesContext);
 
 		if (pprGroup.getPeriodicalUpdate() != null) {
-			script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId
+            String periodicalTriggers = pprGroup.getPeriodicalTriggers();
+            //If no periodicalTriggers are set just start the periodical update
+            if (periodicalTriggers == null || periodicalTriggers.trim().length() <= 0) {
+                script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId
 					+ "');");
+            }
+            //Otherwise start it when the trigger happens
+            else {
+                StringTokenizer st = new StringTokenizer(periodicalTriggers, ",; ", false);
+                String periodicalTriggerId;
+                String periodicalTriggerClientId;
+                UIComponent periodicalTriggerComponent;
+                while (st.hasMoreTokens()) {
+                    periodicalTriggerId = st.nextToken();
+                    periodicalTriggerComponent = pprGroup.findComponent(periodicalTriggerId);
+                    if (periodicalTriggerComponent == null) {
+                        periodicalTriggerComponent = facesContext.getViewRoot().findComponent(periodicalTriggerId);
+                    }
+
+                    //Component found
+                    if (periodicalTriggerComponent != null) {
+                        periodicalTriggerClientId = periodicalTriggerComponent.getClientId(facesContext);
+                        script.append(pprCtrlReference + "." + ADD_PERIODICAL_TRIGGER_FUNCTION + "('" + periodicalTriggerClientId + "','"
+                                + clientId + "', " + pprGroup.getPeriodicalUpdate() + ");");
+                    //Component missing
+                    } else {
+                        if (log.isDebugEnabled()) {
+                            log.debug("PPRPanelGroupRenderer Component with id " + periodicalTriggerId + " not found!");
+                        }
+                    }
+                }
+            }
 		}
 
 		String partialTriggerId;
