@@ -328,6 +328,12 @@
 
     <!-- extended standard renderers -->
      <renderer>
+     	<component-family>javax.faces.Output</component-family>
+     	<renderer-type>javax.faces.Text</renderer-type>
+     	<renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlOutputTextRenderer</renderer-class>
+     </renderer>
+    
+     <renderer>
          <component-family>javax.faces.Form</component-family>
          <renderer-type>javax.faces.Form</renderer-type>
          <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlFormRenderer</renderer-class>
