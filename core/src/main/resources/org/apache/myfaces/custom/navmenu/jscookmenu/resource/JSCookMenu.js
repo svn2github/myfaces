@@ -192,7 +192,7 @@ function cmDrawSubMenu (subMenu, prefix, id, orient, nodeProperties)
 		else
 			str += hasChild ? nodeProperties.folderLeft : nodeProperties.itemLeft;
 
-		str += '<td class="' + classStr + 'Text">' + item[1];
+		str += '</td><td class="' + classStr + 'Text">' + item[1] + "</td>";
 
 		str += '<td class="' + classStr + 'Right">';
 
