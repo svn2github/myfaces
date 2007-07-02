@@ -29,19 +29,19 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
 
-    if(typeof window.oamPartialTriggersToZoneIds == "undefined")
+    if(!window.oamPartialTriggersToZoneIds)
 	{
-    	window.oamPartialTriggersToZoneIds = new Array;
+    	window.oamPartialTriggersToZoneIds = new Array();
     }
-    if(typeof window.oamZoneIdsToPartialTriggerPatterns == "undefined")
+    if(!window.oamZoneIdsToPartialTriggerPatterns)
 	{
-    	window.oamZoneIdsToPartialTriggerPatterns = new Array;
+    	window.oamZoneIdsToPartialTriggerPatterns = new Array();
     }
-    if(typeof window.myFacesInlineLoadingMessage == "undefined")
+    if(!window.oamInlineLoadingMessage)
 	{
-    	window.myFacesInlineLoadingMessage = new Array;
+    	window.oamInlineLoadingMessage = new Array();
     }
-    if(typeof window.oamRefreshTimeoutForZoneId == "undefined")
+    if(!window.oamRefreshTimeoutForZoneId)
 	{
     	window.oamRefreshTimeoutForZoneId = new Array;
     }
@@ -55,7 +55,7 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 
 org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, refreshZoneId)
 {
-        window.myFacesInlineLoadingMessage[refreshZoneId] = message;
+        window.oamInlineLoadingMessage[refreshZoneId] = message;
 };
 
 //Method for JSF Components to register Regular Expressions for partial update triggering
@@ -67,8 +67,10 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
 
 //Method for JSF Components to register their Partial Triggers
 
-org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, refreshZoneId)
+org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, eventHookArr, refreshZoneId)
 {
+    this._addEventHandlerForId(inputElementId,eventHookArr,"elementOnEventHandler");
+
     if (window.oamPartialTriggersToZoneIds[inputElementId] === undefined)
     {
         window.oamPartialTriggersToZoneIds[inputElementId] = refreshZoneId;
@@ -81,13 +83,15 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId,
         refreshZoneId;
     }
 
-    this._addEventHandler(dojo.byId(inputElementId));
 };
 
 //Method for JSF Components to register their Periodical Triggers
 
-org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElementId, refreshZoneId, refreshTimeout)
+org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElementId, eventHookArr, refreshZoneId, refreshTimeout)
 {
+
+    this._addEventHandlerForId(inputElementId,eventHookArr,"elementOnPeriodicalEventHandler");
+
     if (window.oamPartialTriggersToZoneIds[inputElementId] === undefined)
     {
         window.oamPartialTriggersToZoneIds[inputElementId] = refreshZoneId;
@@ -103,8 +107,6 @@ org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElemen
     if (window.oamRefreshTimeoutForZoneId[refreshZoneId] === undefined) {
         window.oamRefreshTimeoutForZoneId[refreshZoneId] = refreshTimeout;
     }
-
-    this._addPeriodicalEventHandler(dojo.byId(inputElementId));
 };
 
 // registering a function (called before submit) on each form to block periodical refresh during request-response cycle
@@ -129,7 +131,7 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
 {
     var content = new Array;
     content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
-    this.doAjaxSubmit(content, refreshTimeout, refreshZoneId);
+    this.doAjaxSubmit(content, refreshTimeout, refreshZoneId, null);
 };
 
 // blocking periodical update and refreshing viewState
@@ -203,14 +205,14 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 }
 
 org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
-	if(typeof this.lastSubmittedElement == "undefined") {
+	if(!this.lastSubmittedElement) {
 		alert("An unexpected error occured during an ajax-request - page has been fully submitted!");
 		this.form.submit_orig();
 	}
 	
 	var formName = this.form.id;
 
-    if(typeof formName == "undefined")
+    if(!formName)
     {
         formName = this.form.name;
     }
@@ -238,21 +240,21 @@ org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
 //This Method checks if an AJAX Call is to be done instead of submitting the form
 //as usual. If so it uses dojo.bind to submit the mainform via AJAX
 
-org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElement)
+org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElement, event)
 {
     var formName = this.form.id;
 
-    if(typeof formName == "undefined")
+    if(!formName)
     {
         formName = this.form.name;
     }
 
-    if(typeof triggerElement != "undefined" ||
-    	typeof this.form.elements[formName +':'+'_idcl'] != "undefined")
+    if(triggerElement ||
+    	this.form.elements[formName +':'+'_idcl'])
     {
 		var triggerId;
     	var content=new Array;
-    	if(typeof triggerElement != "undefined")
+    	if(triggerElement)
     	{
     		triggerId=triggerElement.id;
     		
@@ -280,7 +282,7 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
         {
         	this.displayInlineLoadingMessages(triggeredComponents);
             content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
-            return this.doAjaxSubmit(content, null, null)
+            return this.doAjaxSubmit(content, null, null, event)
         }
         else
         {
@@ -293,7 +295,7 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     }
 }
 
-org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId)
+org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId, event)
 {
 	var ppr = this;
     var requestUri = "";
@@ -327,7 +329,8 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         }, refreshTimeout)
     }
 
-    return false;
+    if(event && (this._isButton(event.target) || this._isLink(event.target)))
+        dojo.event.browser.stopEvent(event);
 };
 
 //This Method replaces the content of the PPRPanelGroups which have
@@ -341,14 +344,14 @@ org.apache.myfaces.PPRCtrl.prototype.displayInlineLoadingMessages = function(com
 	}
 	var componentIds = components.split(',');
 	var domElement = null;
-	for (index in componentIds)
+	for (var i=0,length=componentIds.length;i<length; i++)
 	{
-		if(typeof window.myFacesInlineLoadingMessage[componentIds[index]] != "undefined")
+		if(window.oamInlineLoadingMessage[componentIds[i]])
 		{
-			domElement = dojo.byId(componentIds[index]);
+			domElement = dojo.byId(componentIds[i]);
 			if(domElement != null)
 			{
-				domElement.innerHTML = window.myFacesInlineLoadingMessage[componentIds[index]];
+				domElement.innerHTML = window.oamInlineLoadingMessage[componentIds[i]];
 			}
 		}
 	}
@@ -392,22 +395,47 @@ org.apache.myfaces.PPRCtrl.prototype.addElementEventHandler = function()
     {
         var formElement = this.form.elements[i];
         if(this._isButton(formElement)) {
-            this._addEventHandler(formElement);
+            this._addEventHandler(formElement,null,"elementOnEventHandler");
         }
     }
 }
 
-org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement) {
-    if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
-        //for these element-types, onclick is appropriate
-        this._addOnClickHandler(formElement);
+org.apache.myfaces.PPRCtrl.prototype._addEventHandlerForId = function (formElementId, connectToEventArr, eventHandler) {
+    var formElement = dojo.byId(formElementId);
+
+    if(formElement)
+        this._addEventHandler(formElement, connectToEventArr, eventHandler);
+    else
+        log.error("Input element with id : "+formElementId +" not found.");
+}
+
+org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement, connectToEventArr, eventHandler) {
+
+    if(!connectToEventArr || connectToEventArr.length==0) {
+        connectToEventArr = new Array();
+        if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
+            //for these element-types, onclick is appropriate
+            connectToEventArr.push("onclick");
+        }
+        else if(this._isText(formElement) || this._isDropdown(formElement)) {
+            //for these element-types, onblur will be working.
+            //attention: onchange won't work properly in IE6 at least (field will never loose focus)
+            connectToEventArr.push("onblur");
+        }
     }
-    else if(this._isText(formElement) || this._isDropdown(formElement)) {
-        //for these element-types, onblur will be working.
-        //attention: onchange won't work properly in IE6 at least (field will never loose focus)
-        this._addOnBlurHandler(formElement);
+
+    for(var i=0; i<connectToEventArr.length; i++) {
+
+        dojo.event.kwConnect({
+            srcObj:     formElement,
+            srcFunc:    connectToEventArr[i],
+            targetObj:  this,
+            targetFunc: eventHandler,
+            once:       true
+        });
     }
 }
+
 
 org.apache.myfaces.PPRCtrl.prototype._isDropdown = function (formElement) {
     return formElement.tagName.toLowerCase() == "select";
@@ -417,6 +445,10 @@ org.apache.myfaces.PPRCtrl.prototype._isButton = function (formElement) {
     return formElement.tagName.toLowerCase() == "input" &&
                 (formElement.type.toLowerCase() == "submit" ||
                  formElement.type.toLowerCase() == "image");
+}
+
+org.apache.myfaces.PPRCtrl.prototype._isLink = function (formElement) {
+    return formElement.tagName.toLowerCase() == "a";
 }
 
 org.apache.myfaces.PPRCtrl.prototype._isText = function (formElement) {
@@ -434,59 +466,13 @@ org.apache.myfaces.PPRCtrl.prototype._isRadio = function (formElement) {
                 (formElement.type.toLowerCase() == "radio" );
 }
 
-org.apache.myfaces.PPRCtrl.prototype._addOnClickHandler = function (formElement) {
-
-    if(typeof formElement.oam_onevent_orig == "undefined")
-    {
-        formElement.oam_onevent_orig = formElement.onclick;
-        formElement.onclick = this.elementOnEventHandler;
-        formElement.myFacesPPRCtrl=this;
-    }
-
-}
-
-org.apache.myfaces.PPRCtrl.prototype._addOnBlurHandler = function (formElement) {
-
-    if(typeof formElement.oam_onevent_orig == "undefined")
-    {
-        formElement.oam_onevent_orig = formElement.onblur;
-        formElement.onblur = this.elementOnEventHandler;
-        formElement.myFacesPPRCtrl=this;
-    }
-
-}
-
-org.apache.myfaces.PPRCtrl.prototype._addPeriodicalEventHandler = function(formElement) {
-    var eventHandler = null;
-    if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
-        //for these element-types, onclick is appropriate
-        eventHandler = "onclick";
-    }
-    else if(this._isText(formElement) || this._isDropdown(formElement)) {
-        //for these element-types, onblur will be working.
-        //attention: onchange won't work properly in IE6 at least (field will never loose focus)
-        eventHandler = "onblur";
-    }
-
-    if (!eventHandler) {
-        return;
-    }
-
-    dojo.event.connect(formElement, eventHandler, this, "elementOnPeriodicalEventHandler");
-}
-
 
 //PointCutAdvisor which invokes the AJAX Submit Method of the PPR Controller after custom
 //onclick-handlers for submit-buttons and submit-images
 
 org.apache.myfaces.PPRCtrl.prototype.elementOnEventHandler = function (_event)
 {
-    if(typeof this.oam_onevent_orig != "undefined")
-    {
-        if(this.oam_onevent_orig()==false)
-		    return false;
-    }
-    return this.myFacesPPRCtrl.ajaxSubmitFunction(this);
+    return this.ajaxSubmitFunction(_event.target, _event);
 }
 
 org.apache.myfaces.PPRCtrl.prototype.elementOnPeriodicalEventHandler = function(_event) {

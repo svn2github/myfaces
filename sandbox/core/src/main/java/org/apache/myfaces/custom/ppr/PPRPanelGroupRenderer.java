@@ -37,8 +37,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * @author Ernst Fastl
@@ -125,12 +124,13 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
             }
             //Otherwise start it when the trigger happens
             else {
-                StringTokenizer st = new StringTokenizer(periodicalTriggers, ",; ", false);
+                List partialTriggers = (new PartialTriggerParser()).parse(periodicalTriggers);
                 String periodicalTriggerId;
                 String periodicalTriggerClientId;
                 UIComponent periodicalTriggerComponent;
-                while (st.hasMoreTokens()) {
-                    periodicalTriggerId = st.nextToken();
+                for (int i=0; i<partialTriggers.size();i++) {
+                    PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) partialTriggers.get(i);
+                    periodicalTriggerId = trigger.getPartialTriggerId();
                     periodicalTriggerComponent = pprGroup.findComponent(periodicalTriggerId);
                     if (periodicalTriggerComponent == null) {
                         periodicalTriggerComponent = facesContext.getViewRoot().findComponent(periodicalTriggerId);
@@ -139,8 +139,11 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
                     //Component found
                     if (periodicalTriggerComponent != null) {
                         periodicalTriggerClientId = periodicalTriggerComponent.getClientId(facesContext);
-                        script.append(pprCtrlReference + "." + ADD_PERIODICAL_TRIGGER_FUNCTION + "('" + periodicalTriggerClientId + "','"
+                        script.append(pprCtrlReference + "." + ADD_PERIODICAL_TRIGGER_FUNCTION + "('" + periodicalTriggerClientId + "',"+
+                                encodeArray(trigger.getEventHooks())+",'"
                                 + clientId + "', " + pprGroup.getPeriodicalUpdate() + ");");
+
+
                     //Component missing
                     } else {
                         if (log.isDebugEnabled()) {
@@ -171,16 +174,17 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 		}
 
 		if (partialTriggers != null && partialTriggers.trim().length() > 0) {
-			StringTokenizer st = new StringTokenizer(partialTriggers, ",; ", false);
-			while (st.hasMoreTokens()) {
-				partialTriggerId = st.nextToken();
+            List partialTriggerIds = (new PartialTriggerParser()).parse(partialTriggers);
+            for (int i=0; i<partialTriggerIds.size();i++) {
+                PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) partialTriggerIds.get(i);
+                partialTriggerId = trigger.getPartialTriggerId();
 				partialTriggerComponent = pprGroup.findComponent(partialTriggerId);
 				if (partialTriggerComponent == null) {
 					partialTriggerComponent = facesContext.getViewRoot().findComponent(partialTriggerId);
 				}
 				if (partialTriggerComponent != null) {
 					partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
-					script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION + "('" + partialTriggerClientId + "','"
+					script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION + "('" + partialTriggerClientId + "',"+encodeArray(trigger.getEventHooks())+",'"
 							+ clientId + "');");
 				} else {
 					if (log.isDebugEnabled()) {
@@ -195,7 +199,29 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
         renderInlineScript(facesContext, pprGroup, script.toString());
     }
 
-	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    private String encodeArray(List eventHooks) {
+        if(eventHooks==null || eventHooks.size()==0) {
+            return "null";
+        }
+        else{
+            StringBuffer buf = new StringBuffer();
+            buf.append("[");
+
+            for (int i = 0; i < eventHooks.size(); i++) {
+                if(i>0)
+                    buf.append(",");
+                String eventHook = (String) eventHooks.get(i);
+                buf.append("'");
+                buf.append(eventHook);
+                buf.append("'");
+            }
+            buf.append("]");
+
+            return buf.toString();
+        }
+    }
+
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
 		if (uiComponent.getId() == null || uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
 			throw new IllegalArgumentException("'id' is a required attribute for the PPRPanelGroup");
 		}

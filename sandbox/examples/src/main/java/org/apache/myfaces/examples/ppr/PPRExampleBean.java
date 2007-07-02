@@ -232,4 +232,12 @@ public class PPRExampleBean
         this._message = message;
     }
 
+    public void checkBoxChanged(ValueChangeEvent evt) {
+        _checkBoxValue = (Boolean) evt.getNewValue();
+    }
+
+    public void dropDownChanged(ValueChangeEvent evt) {
+        _dropDownValue = (String) evt.getNewValue();
+    }
+
 }

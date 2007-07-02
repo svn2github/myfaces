@@ -51,11 +51,10 @@ seconds since last page refresh.
 
 			<h:outputText value="update group by checking:" />
 			<h:selectBooleanCheckbox id="checkbox"
-                    value="#{pprExampleBean.checkBoxValue}"
-			        onclick="submit(this);"/>
+                    value="#{pprExampleBean.checkBoxValue}" valueChangeListener="#{pprExampleBean.checkBoxChanged}"/>
 			
 			<h:outputText value="update group by changing the value:" />
-			<h:selectOneMenu id="dropDown" onchange="submit(this);"
+			<h:selectOneMenu id="dropDown"
 				value="#{pprExampleBean.dropDownValue}"	>
 				<f:selectItem itemLabel="test1" itemValue="value1"/>
 				<f:selectItem itemLabel="test2" itemValue="value2"/>
@@ -64,13 +63,13 @@ seconds since last page refresh.
 			
 			<h:outputText value="Checkbox is:" />
 			<s:pprPanelGroup id="pprCheckBoxValue"
-				partialTriggers="checkbox">
+				partialTriggers="checkbox(onclick,onchange)">
 				<h:outputText value="#{pprExampleBean.checkBoxValue ? 'checked' : 'not checked'}" />
 			</s:pprPanelGroup>
 
             <h:outputText value="Drop Down value is:" />
 			<s:pprPanelGroup id="dropDownPPR"
-				partialTriggers="dropDown">
+				partialTriggers="dropDown(onchange)">
 				<h:outputText value="#{pprExampleBean.dropDownValue}" />
 			</s:pprPanelGroup>
         </h:panelGrid>
@@ -81,9 +80,9 @@ seconds since last page refresh.
              <br />
             This example shows how onClick-Handlers of checkboxes or dropdowns <br />
             can be used to update page regions via AJAX.<br />
-            It is vital, that the this element is included as parameter in the call <br />
+            It is vital, that this element is included as a parameter in the call <br />
             of the submit function so the PPRCtrl knows which element tries to submit <br />
-            and therefore is able to determine wheather or not matching partialTriggers <br />
+            and therefore is able to determine whether or not matching partialTriggers <br />
             and/or partialTriggerPatterns are present.
         </f:verbatim>
     </s:fieldset>

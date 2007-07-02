@@ -65,8 +65,7 @@
                     <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>convertNumber - automatically convert the number to the correct type</f:verbatim></h:outputLink>
 	                <h:outputLink value="convertStringUtils.jsf"><f:verbatim>convertStringUtils - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
 	            </h:panelGrid>
-
-	            <h:outputText value="Validation"/>
+                <h:outputText value="Validation"/>
 	            <h:panelGrid style="padding-left:25px">
 	            	<h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
 	            	<h:outputLink value="validateCompareTo.jsf" ><f:verbatim>validateCompareTo - Compare values on two different components</f:verbatim></h:outputLink>

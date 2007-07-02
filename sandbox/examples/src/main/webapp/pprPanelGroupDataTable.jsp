@@ -70,7 +70,7 @@ seconds since last page refresh.
             </h:column>
             <h:column>
                 <h:commandButton id="update"/>
-                <s:pprPanelGroup id="carEntryUpdate" partialTriggers="update,type,color">
+                <s:pprPanelGroup id="carEntryUpdate" partialTriggers="update,type(onclick),color(onkeyup)">
                     <h:panelGrid columns="2">
                       <h:outputText value="Id"/>
                       <h:outputText value="#{carDetail.id}"/>
