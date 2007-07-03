@@ -50,18 +50,22 @@ seconds since last page refresh.
 		<h:panelGrid columns="2">
 
 			<h:outputText value="update group by checking:" />
-			<h:selectBooleanCheckbox id="checkbox"
-                    value="#{pprExampleBean.checkBoxValue}" valueChangeListener="#{pprExampleBean.checkBoxChanged}"/>
+			<h:selectBooleanCheckbox id="checkbox" immediate="true"
+                    value="#{pprExampleBean.checkBoxValue}" valueChangeListener="#{pprExampleBean.checkBoxChanged}" required="true"/>
 			
 			<h:outputText value="update group by changing the value:" />
-			<h:selectOneMenu id="dropDown"
-				value="#{pprExampleBean.dropDownValue}"	>
+			<h:selectOneMenu id="dropDown" immediate="true"
+				value="#{pprExampleBean.dropDownValue}"	valueChangeListener="#{pprExampleBean.dropDownChanged}" required="true">
 				<f:selectItem itemLabel="test1" itemValue="value1"/>
 				<f:selectItem itemLabel="test2" itemValue="value2"/>
 				<f:selectItem itemLabel="test3" itemValue="value3"/>
 			</h:selectOneMenu>
-			
-			<h:outputText value="Checkbox is:" />
+
+			<h:outputText value="update group by changing the value:" />
+            <h:inputText id="inputText" immediate="true"
+                         value="#{pprExampleBean.inputTextValue}" valueChangeListener="#{pprExampleBean.inputTextChanged}" required="true"/>
+
+            <h:outputText value="Checkbox is:" />
 			<s:pprPanelGroup id="pprCheckBoxValue"
 				partialTriggers="checkbox(onclick,onchange)">
 				<h:outputText value="#{pprExampleBean.checkBoxValue ? 'checked' : 'not checked'}" />
@@ -72,18 +76,26 @@ seconds since last page refresh.
 				partialTriggers="dropDown(onchange)">
 				<h:outputText value="#{pprExampleBean.dropDownValue}" />
 			</s:pprPanelGroup>
+
+            <h:outputText value="Input text value is:" />
+			<s:pprPanelGroup id="inputTextPPR"
+				partialTriggers="inputText(onkeyup)">
+				<h:outputText value="#{pprExampleBean.inputTextValue}" />
+			</s:pprPanelGroup>            
         </h:panelGrid>
 
         <s:fieldset legend="about this example">
          <f:verbatim>
              <br />
              <br />
-            This example shows how onClick-Handlers of checkboxes or dropdowns <br />
+            This example shows how event-handlers of input-fields (such as text-inputs, checkboxes or dropdowns) <br />
             can be used to update page regions via AJAX.<br />
-            It is vital, that this element is included as a parameter in the call <br />
-            of the submit function so the PPRCtrl knows which element tries to submit <br />
-            and therefore is able to determine whether or not matching partialTriggers <br />
-            and/or partialTriggerPatterns are present.
+            For this, use the special feature of pprPanelGroup to supply desired-event-handlers in the partialTriggers
+            section of a component. e.g.: componentId1(onkeyup) or componentId2(onclick,onchange).
+            This example also shows that in the general case, you need to set immediate=true and a valueChangeListener
+            on components to make sure that this very component is processed ahead of the pack for conversion
+            and validation, so that a failed conversion or validation won't hinder the AJAXified part of the
+            page to redisplay.
         </f:verbatim>
     </s:fieldset>
 

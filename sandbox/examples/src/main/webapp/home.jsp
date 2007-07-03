@@ -37,10 +37,10 @@
 	            <h:outputLink value="pprPanelGroupPartialTriggerPattern.jsf" ><f:verbatim>PPRPanelGroup - update components which ids match a regular expression</f:verbatim></h:outputLink>
 	            <h:outputLink value="pprPanelGroupCommandLink.jsf" ><f:verbatim>PPRPanelGroup - using a command Link for triggering an action via AJAX</f:verbatim></h:outputLink>
 	            <h:outputLink value="pprPanelGroupLoadingMessage.jsf" ><f:verbatim>PPRPanelGroup - displaying an inline Loading Message during AJAX requests</f:verbatim></h:outputLink>
-	            <h:outputLink value="pprPanelGroupOnChange.jsf" ><f:verbatim>PPRPanelGroup - using PPR with drop-down and checkbox onChange handlers</f:verbatim></h:outputLink>
+	            <h:outputLink value="pprPanelGroupOnChange.jsf" ><f:verbatim>PPRPanelGroup - using PPR with input-fields and event handlers (e.g. onclick, onchange, onkeyup)</f:verbatim></h:outputLink>
 	            <h:outputLink value="pprPanelGroupDataScroller.jsf" ><f:verbatim>PPRPanelGroup - ajaxifying a datatable using PPR with partialTriggerPattern</f:verbatim></h:outputLink>
                 <h:outputLink value="pprPanelGroupPeriodicalUpdate.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting automatically refreshed by AJAX-Calls (through periodic intervals)</f:verbatim></h:outputLink>
-                <h:outputLink value="pprPanelGroupDataTable.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting manually refreshed in a dataTable</f:verbatim></h:outputLink>
+                <h:outputLink value="pprPanelGroupDataTable.jsf" ><f:verbatim>PPRPanelGroup - dataTable example, server-side requested refresh example </f:verbatim></h:outputLink>
             </h:panelGrid>
             <h:outputText value="Resource Serving"/>
             <h:panelGrid style="padding-left:25px">

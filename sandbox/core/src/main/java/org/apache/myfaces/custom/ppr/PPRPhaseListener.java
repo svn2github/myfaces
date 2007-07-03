@@ -60,20 +60,22 @@ public class PPRPhaseListener implements PhaseListener {
 			log.debug("In PPRPhaseListener beforePhase");
 		}
 
-		FacesContext context = event.getFacesContext();
+		final FacesContext context = event.getFacesContext();
 		final ExternalContext externalContext = context.getExternalContext();
 		Map externalRequestMap = externalContext.getRequestParameterMap();
 
-		if (externalRequestMap.containsKey(PPR_PARAMETER)) {
-			processPartialPageRequest(context, externalContext, externalRequestMap);
+        Map requestMap = externalContext.getRequestMap();
+
+        if (externalRequestMap.containsKey(PPR_PARAMETER)) {
+			processPartialPageRequest(context, externalContext, requestMap);
 		}
 	}
 
-	private void processPartialPageRequest(FacesContext context, final ExternalContext externalContext, Map externalRequestMap) {
+	private void processPartialPageRequest(FacesContext context, final ExternalContext externalContext, Map requestMap) {
         //If the PhaseListener is invoked the second time do nothing
-        if(externalContext.getRequestMap().containsKey(PPRPanelGroupRenderer.PPR_RESPONSE))
+        if(requestMap.containsKey(PPRPanelGroupRenderer.PPR_RESPONSE))
             return;
-        externalContext.getRequestMap().put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
+        requestMap.put(PPRPanelGroupRenderer.PPR_RESPONSE, Boolean.TRUE);
 
 		ServletResponse response = (ServletResponse) externalContext.getResponse();
 		ServletRequest request = (ServletRequest) externalContext.getRequest();
@@ -83,7 +85,7 @@ public class PPRPhaseListener implements PhaseListener {
 		String contentType = getContentType("text/xml", characterEncoding);
 		response.setContentType(contentType);
 		response.setLocale(viewRoot.getLocale());
-		String triggeredComponents = (String) externalRequestMap.get(TRIGGERED_COMPONENTS_PARAMETER);
+		String triggeredComponents = getTriggeredComponents(context);
 		
 		try {
 			PrintWriter out = response.getWriter();
@@ -100,7 +102,32 @@ public class PPRPhaseListener implements PhaseListener {
 		context.responseComplete();
 	}
 
-	private String getContentType(String contentType, String charset) {
+    private static String getTriggeredComponents(FacesContext fc) {
+        String triggeredComponents = (String) fc.getExternalContext().getRequestMap().get(TRIGGERED_COMPONENTS_PARAMETER);
+
+        if(triggeredComponents == null) {
+            triggeredComponents = (String) fc.getExternalContext().getRequestParameterMap().get(TRIGGERED_COMPONENTS_PARAMETER);
+        }
+
+        return triggeredComponents;
+    }
+
+    public static void addTriggeredComponent(FacesContext fc, String triggeredComponentClientId) {
+        String triggeredComponents = getTriggeredComponents(fc);
+
+        if(triggeredComponents == null || triggeredComponents.trim().length()==0) {
+            triggeredComponents = new String();
+        }
+        else {
+            triggeredComponents = triggeredComponents+",";
+        }
+
+        triggeredComponents = triggeredComponents+triggeredComponentClientId;
+
+        fc.getExternalContext().getRequestMap().put(TRIGGERED_COMPONENTS_PARAMETER, triggeredComponents);
+    }
+
+    private String getContentType(String contentType, String charset) {
 		if (charset == null || charset.trim().length() == 0)
 			return contentType;
 		else

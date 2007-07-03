@@ -52,7 +52,7 @@ seconds since last page refresh.
                 <f:facet name="header">
                     <h:outputText value="Id"/>
                 </f:facet>
-                <h:inputText value="#{carDetail.id}" immediate="true" valueChangeListener="#{pprExampleBean.idChanged}"/>
+                <h:inputText id="id" value="#{carDetail.id}" immediate="true" valueChangeListener="#{pprExampleBean.idChanged}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
@@ -70,7 +70,7 @@ seconds since last page refresh.
             </h:column>
             <h:column>
                 <h:commandButton id="update"/>
-                <s:pprPanelGroup id="carEntryUpdate" partialTriggers="update,type(onclick),color(onkeyup)">
+                <s:pprPanelGroup id="carEntryUpdate" partialTriggers="update,id(onkeyup),type(onchange),color(onkeyup)">
                     <h:panelGrid columns="2">
                       <h:outputText value="Id"/>
                       <h:outputText value="#{carDetail.id}"/>
@@ -81,13 +81,23 @@ seconds since last page refresh.
                     </h:panelGrid>
                 </s:pprPanelGroup>
             </h:column>
+            <f:facet name="footer">
+                <h:panelGroup>
+                    <h:outputText value="Sum of Ids: "/>
+                    <s:pprPanelGroup id="sum">
+                        <h:outputText value="#{pprExampleBean.sumIds}"/>
+                    </s:pprPanelGroup>
+                </h:panelGroup>
+            </f:facet>
         </t:dataTable>
 
         <s:fieldset legend="about this example">
             <f:verbatim>
                  <br />
                  <br />
-                This example demonstrates if and how tables can be used together with the pprPanelGroup.
+                This example demonstrates how tables can be used together with the pprPanelGroup. It also shows
+                (in the table footer) how a component not easily reachable via id-references can be manually
+                added to the list of refreshed components on the server.
             </f:verbatim>
         </s:fieldset>
     </h:form>

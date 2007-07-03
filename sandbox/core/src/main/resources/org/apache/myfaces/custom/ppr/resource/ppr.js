@@ -278,16 +278,10 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     	}
 
         var triggeredComponents = this.getTriggeredComponents(triggerId);
-        if(triggeredComponents !=null)
-        {
-        	this.displayInlineLoadingMessages(triggeredComponents);
-            content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
-            return this.doAjaxSubmit(content, null, null, event)
-        }
-        else
-        {
-            this.form.submit_orig(triggerElement);
-        }
+        
+        this.displayInlineLoadingMessages(triggeredComponents);
+        content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
+        return this.doAjaxSubmit(content, null, null, event)
     }
     else
     {
@@ -338,7 +332,7 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
 
 org.apache.myfaces.PPRCtrl.prototype.displayInlineLoadingMessages = function(components)
 {
-	if(typeof components != "string")
+	if(!components)
 	{
 		return;
 	}

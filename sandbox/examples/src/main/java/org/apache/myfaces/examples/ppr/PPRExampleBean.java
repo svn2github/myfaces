@@ -20,10 +20,13 @@
 package org.apache.myfaces.examples.ppr;
 
 import org.apache.myfaces.examples.inputSuggestAjax.Address;
+import org.apache.myfaces.custom.ppr.PPRPhaseListener;
 
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.component.UIData;
+import javax.faces.component.UIComponent;
 import javax.faces.event.ValueChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,6 +44,8 @@ public class PPRExampleBean
     private Boolean _checkBoxValue =Boolean.FALSE;
 
     private String _dropDownValue;
+
+    private String _inputTextValue;
 
     private List _names;
 
@@ -87,6 +92,19 @@ public class PPRExampleBean
         return _simpleCarList;
     }
 
+    public Integer getSumIds() {
+        List li = getSimpleCarList();
+
+        int sum = 0;
+
+        for (int i = 0; i < li.size(); i++) {
+            SimpleCar simpleCar = (SimpleCar) li.get(i);
+            sum+=simpleCar.getId();
+        }
+
+        return new Integer(sum);
+    }
+
     public void setSimpleCarList(List simpleCarList) {
         _simpleCarList = simpleCarList;
     }
@@ -95,6 +113,24 @@ public class PPRExampleBean
         Integer id = (Integer) evt.getNewValue();
         SimpleCar car = (SimpleCar) _carTable.getRowData();
         car.setId(id==null?0:id.intValue());
+
+
+        UIData parentUIData = searchParentUIData(evt.getComponent());
+
+        UIComponent comp = parentUIData.findComponent("sum");
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+
+        PPRPhaseListener.addTriggeredComponent(fc,comp.getClientId(fc));
+    }
+
+    private UIData searchParentUIData(UIComponent comp) {
+        if(comp == null)
+            return null;
+        else if(comp.getParent() instanceof UIData)
+            return (UIData) comp.getParent();
+
+        return searchParentUIData(comp.getParent());
     }
 
     public void typeChanged(ValueChangeEvent evt) {
@@ -224,6 +260,15 @@ public class PPRExampleBean
         _dropDownValue = changeDropDown;
     }
 
+
+    public String getInputTextValue() {
+        return _inputTextValue;
+    }
+
+    public void setInputTextValue(String inputTextValue) {
+        _inputTextValue = inputTextValue;
+    }
+
     public String getMessage() {
         return _message;
     }
@@ -238,6 +283,10 @@ public class PPRExampleBean
 
     public void dropDownChanged(ValueChangeEvent evt) {
         _dropDownValue = (String) evt.getNewValue();
+    }
+
+    public void inputTextChanged(ValueChangeEvent evt) {
+        _inputTextValue = (String) evt.getNewValue();
     }
 
 }
