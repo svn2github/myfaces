@@ -366,7 +366,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setCompactMonthRowHeight(int compactMonthRowHeight)
     {
-        this._compactMonthRowHeight = Integer.valueOf(compactMonthRowHeight);
+        this._compactMonthRowHeight = new Integer(compactMonthRowHeight);
     }
 
     /**
@@ -374,7 +374,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setCompactWeekRowHeight(int compactWeekRowHeight)
     {
-        this._compactWeekRowHeight = Integer.valueOf(compactWeekRowHeight);
+        this._compactWeekRowHeight = new Integer(compactWeekRowHeight);
     }
 
     /**
@@ -390,7 +390,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setDetailedRowHeight(int detailedRowHeight)
     {
-        this._detailedRowHeight = Integer.valueOf(detailedRowHeight);
+        this._detailedRowHeight = new Integer(detailedRowHeight);
     }
 
     /**
@@ -472,7 +472,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setVisibleEndHour(int visibleEndHour)
     {
-        this._visibleEndHour = Integer.valueOf(visibleEndHour);
+        this._visibleEndHour = new Integer(visibleEndHour);
     }
 
     /**
@@ -480,7 +480,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setVisibleStartHour(int visibleStartHour)
     {
-        this._visibleStartHour = Integer.valueOf(visibleStartHour);
+        this._visibleStartHour = new Integer(visibleStartHour);
     }
     
     /**
@@ -488,7 +488,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setWorkingEndHour(int workingEndHour)
     {
-        this._workingEndHour = Integer.valueOf(workingEndHour);
+        this._workingEndHour = new Integer(workingEndHour);
     }
 
     /**
@@ -496,7 +496,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public void setWorkingStartHour(int workingStartHour)
     {
-        this._workingStartHour = Integer.valueOf(workingStartHour);
+        this._workingStartHour = new Integer(workingStartHour);
     }
     
     /**
