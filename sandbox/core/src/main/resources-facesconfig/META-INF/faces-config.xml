@@ -284,6 +284,11 @@
     <component-class>org.apache.myfaces.custom.limitrendered.UILimitRendered</component-class>
   </component>
 
+  <component>
+    <component-type>org.apache.myfaces.HtmlRoundedDiv</component-type>
+    <component-class>org.apache.myfaces.custom.roundeddiv.HtmlRoundedDiv</component-class>
+  </component>
+
   <!-- sandbox converters -->
 
   <converter>
@@ -602,6 +607,12 @@
             <renderer-type>org.apache.myfaces.Button</renderer-type>
             <renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlButtonExRenderer</renderer-class>
 	</renderer>
+  
+    <renderer>
+      <component-family>javax.faces.Output</component-family>
+      <renderer-type>org.apache.myfaces.HtmlRoundedDiv</renderer-type>
+      <renderer-class>org.apache.myfaces.custom.roundeddiv.HtmlRoundedDivRenderer</renderer-class>
+    </renderer>
     
   </render-kit>
 

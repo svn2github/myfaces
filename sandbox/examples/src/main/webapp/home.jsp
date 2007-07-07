@@ -175,6 +175,14 @@
             </h:outputLink>
         </h:panelGrid>
         
+        <h:outputText value="Rounded DIV"/>
+        <h:panelGrid style="padding-left:25px">
+            <h:outputLink value="roundedDiv.jsf" >
+                <f:verbatim>Rounded DIV - DIV with rounded corners</f:verbatim>
+            </h:outputLink>
+        </h:panelGrid>
+        
+        
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
     </f:view>

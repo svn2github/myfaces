@@ -45,6 +45,7 @@
 		  <item name="ExcelExport" href="excelexport.html"/>
 		  <item name="SecurityContext" href="securityContext.html"/>
 		  <item name="Limit Rendered" href="limitRendered.html"/>
+      <item name="Rounded DIV" href="roundedDiv.html"/>
     </menu>    
     
     <menu name="Converters">

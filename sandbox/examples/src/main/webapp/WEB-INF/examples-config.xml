@@ -544,6 +544,13 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
   
+    <!-- managed bean for roundedDiv -->
+    <managed-bean>
+        <managed-bean-name>roundedDiv</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.roundeddiv.RoundedDivBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+  
 	<!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>
