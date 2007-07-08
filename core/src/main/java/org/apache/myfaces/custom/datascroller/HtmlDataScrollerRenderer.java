@@ -18,9 +18,11 @@
  */
 package org.apache.myfaces.custom.datascroller;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -29,11 +31,9 @@ import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Renderer for the HtmlDataScroller component.
@@ -62,7 +62,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         RendererUtils.checkParamValidity(context, component, HtmlDataScroller.class);
 
         Map parameter = context.getExternalContext().getRequestParameterMap();
-        String param = (String) parameter.get(component.getClientId(context));
+        String param = (String) parameter.get(calculateHiddenFieldId(context, (HtmlDataScroller)component));
         if (param != null && param.length() > 0)
         {
             if (param.startsWith(PAGE_NAVIGATION))
@@ -200,8 +200,82 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             return;
         }
 
+        renderSubmitFunction(facesContext, scroller);
+        renderHiddenField(facesContext, scroller);
+        renderInvisibleSubmitButton(facesContext, scroller);
+
         renderScroller(facesContext, scroller);
         removeVariables(facesContext, scroller);
+    }
+
+    protected void renderSubmitFunction(FacesContext facesContext, HtmlDataScroller scroller)
+        throws IOException {
+        HtmlRendererUtils.ScriptContext scriptContext = new HtmlRendererUtils.ScriptContext();
+        scriptContext.append("function ");
+        scriptContext.append(calculateSubmitFunctionName(facesContext, scroller));
+        scriptContext.append("(paramValue) {").prettyLine();
+        scriptContext.increaseIndent();
+
+        scriptContext.append("var hidden = document.getElementById('");
+        scriptContext.append(calculateHiddenFieldId(facesContext, scroller));
+        scriptContext.append("');");
+        scriptContext.prettyLine();
+        scriptContext.append("hidden.value = paramValue;");
+        scriptContext.prettyLine();
+
+        scriptContext.append("var submitBtn = document.getElementById('");
+        scriptContext.append(calculateInvisibleButtonId(facesContext, scroller));
+        scriptContext.append("');");
+        scriptContext.prettyLine();
+        scriptContext.append("submitBtn.click()");
+        scriptContext.prettyLine();
+
+        scriptContext.decreaseIndent();
+        scriptContext.append("}");
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.SCRIPT_ELEM, scroller);
+        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        writer.writeText(scriptContext.toString(), null);
+        writer.endElement(HTML.SCRIPT_ELEM);
+    }
+
+    protected String calculateSubmitFunctionName(FacesContext facesContext, HtmlDataScroller scroller) {
+        String clientId = scroller.getClientId(facesContext);
+        return clientId.replaceAll(":", "_")+"_submit";
+    }
+
+    protected void renderHiddenField(FacesContext facesContext, HtmlDataScroller scroller)
+        throws IOException {
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement(HTML.INPUT_ELEM, scroller);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
+        String id = calculateHiddenFieldId(facesContext, scroller);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.endElement(HTML.INPUT_ELEM);
+    }
+
+    protected String calculateHiddenFieldId(FacesContext facesContext, HtmlDataScroller scroller) {
+        return scroller.getClientId(facesContext)+"_hidden";
+    }
+
+    protected void renderInvisibleSubmitButton(FacesContext facesContext, HtmlDataScroller scroller)
+        throws IOException {
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement(HTML.INPUT_ELEM, scroller);
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_SUBMIT, null);
+        writer.writeAttribute(HTML.ID_ATTR, calculateInvisibleButtonId(facesContext, scroller), null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "display:none;", null);
+        writer.endElement(HTML.INPUT_ELEM);
+    }
+
+    protected String calculateInvisibleButtonId(FacesContext facesContext, HtmlDataScroller scroller) {
+        return scroller.getId()+"_submitButton";
     }
 
     protected void renderScroller(FacesContext facesContext, HtmlDataScroller scroller)
@@ -325,27 +399,51 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         writer.startElement(isListLayout(scroller)?HTML.UL_ELEM:HTML.TABLE_ELEM, scroller);
     }
 
+
     protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
                                UIComponent facetComp, String facetName) throws IOException
     {
-    	String onclick = scroller.getOnclick();
-    	String ondblclick = scroller.getOndblclick();
+        renderLinkStart(facesContext, scroller, facetName);
 
-    	HtmlCommandLink link = getLink(facesContext, scroller, facetName);
-        if(onclick != null){
-        	link.setOnclick(onclick);
-        }
-        if(ondblclick != null){
-        	link.setOndblclick(ondblclick);
-        }
-    	
-        link.encodeBegin(facesContext);
         facetComp.encodeBegin(facesContext);
         if (facetComp.getRendersChildren())
             facetComp.encodeChildren(facesContext);
         facetComp.encodeEnd(facesContext);
-        link.encodeEnd(facesContext);
+
+        renderLinkEnd(facesContext);
     }
+
+    protected void renderLinkStart(FacesContext facesContext, HtmlDataScroller scroller,
+                               String paramValue) throws IOException
+    {
+        String onclick = scroller.getOnclick();
+        String ondblclick = scroller.getOndblclick();
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement(HTML.ANCHOR_ELEM, scroller);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+
+        StringBuffer onclickJavascript = new StringBuffer();
+        if (onclick != null) {
+            onclickJavascript.append(onclick).append(";");
+        }
+        onclickJavascript.append(calculateSubmitFunctionName(facesContext, scroller));
+        onclickJavascript.append("('"+paramValue+"')");
+
+        writer.writeAttribute(HTML.ONCLICK_ATTR, onclickJavascript.toString(), null);
+
+        if (ondblclick != null) {
+            writer.writeAttribute(HTML.ONDBLCLICK_ATTR, ondblclick, null);
+        }
+    }
+
+    protected void renderLinkEnd(FacesContext facesContext) throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement(HTML.ANCHOR_ELEM);
+    }
+
+    
 
     /**
      * The "paginator" is a sequence of page numbers which the user can click
@@ -438,17 +536,9 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             }
             else
             {
-                HtmlCommandLink link = getLink(facesContext, scroller, Integer.toString(idx), idx);
-                if(onclick != null){
-                    link.setOnclick(onclick);
-                }
-                if(ondblclick != null){
-                    link.setOndblclick(ondblclick);
-                }
-
-                link.encodeBegin(facesContext);
-                link.encodeChildren(facesContext);
-                link.encodeEnd(facesContext);
+                renderLinkStart(facesContext, scroller, PAGE_NAVIGATION+Integer.toString(idx));
+                writer.write(Integer.toString(idx));
+                renderLinkEnd(facesContext);
             }
 
             writePaginatorElementEnd(writer, scroller);
@@ -483,6 +573,12 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
     protected void writePaginatorStart(ResponseWriter writer, HtmlDataScroller scroller) throws IOException {
         writer.startElement(isListLayout(scroller)?HTML.UL_ELEM:HTML.TABLE_ELEM, scroller);
+    }
+
+    protected String getParameterValue(FacesContext facesContext, HtmlDataScroller scroller,
+                                      String text, int pageIndex) {
+        String id = HtmlDataScrollerRenderer.PAGE_NAVIGATION + Integer.toString(pageIndex);
+        return id;
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlDataScroller scroller,
@@ -530,6 +626,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         parameter.setTransient(true);
         parameter.setName(scroller.getClientId(facesContext));
         parameter.setValue(facetName);
+        System.out.println("\t\tWith param: id: "+parameter.getId()+" name:" +parameter.getName()+" / "+parameter.getValue());
         List children = link.getChildren();
         children.add(parameter);
         scroller.getChildren().add(link);
