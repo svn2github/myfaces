@@ -1690,4 +1690,31 @@ Sandbox-related entities.
         &user_role_attributes;
         &html_roundeddiv_attributes;
     </tag>
+    
+    <tag>
+    <name>passwordStrength</name>
+    <tag-class>org.apache.myfaces.custom.passwordStrength.PasswordStrengthTag</tag-class>
+	&standard_input_text_attributes;
+      <attribute> 
+         <name>preferredPasswordLength</name>    
+	  <required>true</required>          
+          <rtexprvalue>true</rtexprvalue>
+	  <type>java.lang.String</type>
+	  <description>The prefered length of the password</description>         
+      </attribute>
+      <attribute> 
+         <name>textStrengthDescriptions</name>    
+	  <required>false</required>          
+          <rtexprvalue>true</rtexprvalue>
+	  <type>java.lang.String</type>
+	  <description>The text strength descriptions</description>         
+      </attribute>      
+      <attribute> 
+         <name>prefixText</name>    
+	  <required>false</required>          
+          <rtexprvalue>true</rtexprvalue>
+	  <type>java.lang.String</type>
+	  <description>The prefix of the component message</description>         
+      </attribute>                  
+  </tag>
 </taglib>

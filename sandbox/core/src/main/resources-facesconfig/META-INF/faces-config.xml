@@ -288,6 +288,11 @@
     <component-type>org.apache.myfaces.HtmlRoundedDiv</component-type>
     <component-class>org.apache.myfaces.custom.roundeddiv.HtmlRoundedDiv</component-class>
   </component>
+  
+  <component>
+	 <component-type>org.apache.myfaces.PasswordStrength</component-type>
+	 <component-class>org.apache.myfaces.custom.passwordStrength.PasswordStrengthComponent</component-class>
+  </component> 
 
   <!-- sandbox converters -->
 
@@ -614,6 +619,11 @@
       <renderer-class>org.apache.myfaces.custom.roundeddiv.HtmlRoundedDivRenderer</renderer-class>
     </renderer>
     
+  	<renderer>
+  		<component-family>org.apache.myfaces.PasswordStrength</component-family>
+  		<renderer-type>org.apache.myfaces.PasswordStrength</renderer-type>
+  		<renderer-class>org.apache.myfaces.custom.passwordStrength.PasswordStrengthRenderer</renderer-class>
+  	</renderer>
   </render-kit>
 
   <lifecycle>

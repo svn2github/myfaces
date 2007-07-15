@@ -165,7 +165,7 @@
                 <h:outputLink value="submitOnEventGlobal.jsf" ><f:verbatim>submit on a global event</f:verbatim></h:outputLink>
                 <h:outputLink value="submitOnEventLink.jsf" ><f:verbatim>submit on a global event as child of a commandLink</f:verbatim></h:outputLink>
             </h:panelGrid>
-
+            
         </h:panelGrid>
 
         <h:outputText value="Limit Rendered"/>
@@ -182,6 +182,12 @@
             </h:outputLink>
         </h:panelGrid>
         
+         <h:outputText value="Password Strength"/>
+         <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="passwordStrength.jsf" >
+	                <f:verbatim>Password Strength - component to check whether the password is strong or not</f:verbatim>
+	            </h:outputLink>
+         </h:panelGrid>
         
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
