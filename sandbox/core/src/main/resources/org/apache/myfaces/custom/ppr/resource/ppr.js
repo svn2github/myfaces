@@ -33,9 +33,9 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 	{
     	window.oamPartialTriggersToZoneIds = new Array();
     }
-    if(!window.oamZoneIdsToPartialTriggerPatterns)
+    if(!window.oamEventHandlerToInputIds)
 	{
-    	window.oamZoneIdsToPartialTriggerPatterns = new Array();
+    	window.oamEventHandlerToInputIds = new Array();
     }
     if(!window.oamInlineLoadingMessage)
 	{
@@ -43,12 +43,12 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     }
     if(!window.oamRefreshTimeoutForZoneId)
 	{
-    	window.oamRefreshTimeoutForZoneId = new Array;
+    	window.oamRefreshTimeoutForZoneId = new Array();
     }
 
     this.replaceFormSubmitFunction(formId);
 
-    this.addElementEventHandler();
+	this.reConnectEventHandlers();
 }
 
 //Method to register individual HTML to be displayed instead of the component during loading
@@ -62,16 +62,31 @@ org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, 
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern, refreshZoneId)
 {
-        
-
-        window.oamZoneIdsToPartialTriggerPatterns[refreshZoneId] = pattern;
+	//Register partial triggers for all matching buttons and links
+	for (var f = 0; f < document.forms.length; f++)
+	{
+		var currentForm = document.forms[f];
+		//search all buttons by iterating all inputs
+		for (var i = 0; i < currentForm.elements.length; i++)
+    	{
+	        var formElement = this.form.elements[i];
+	        if(this.isMatchingPattern(pattern,formElement.id) )
+					this.addPartialTrigger(formElement.id , null , refreshZoneId);
+		}
+		//search all links
+		var links = currentForm.getElementsByTagName("a");
+		for (var i = 0; i < links.length; i++) {
+			if(this.isMatchingPattern(pattern,links[i].id) )
+				this.addPartialTrigger(links[i].id , null , refreshZoneId);
+		}
+	}
 };
 
 //Method for ppr-panel-groups to register their partial triggers
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, eventHookArr, refreshZoneId)
 {
-    this._addEventHandlerForId(inputElementId,eventHookArr,"elementOnEventHandler");
+    this._cachingAddEventHandlerForId(inputElementId,eventHookArr,"elementOnEventHandler");
 
     this._addInputAndZone(window.oamPartialTriggersToZoneIds, inputElementId, refreshZoneId);
 };
@@ -94,7 +109,7 @@ org.apache.myfaces.PPRCtrl.prototype._addInputAndZone = function(arr, inputEleme
 org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElementId, eventHookArr, refreshZoneId, refreshTimeout)
 {
 
-    this._addEventHandlerForId(inputElementId,eventHookArr,"elementOnPeriodicalEventHandler");
+    this._cachingAddEventHandlerForId(inputElementId,eventHookArr,"elementOnPeriodicalEventHandler");
 
     this._addInputAndZone(window.oamPartialTriggersToZoneIds, inputElementId, refreshZoneId);
 
@@ -159,11 +174,11 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 		{
 			componentUpdate = componentUpdates[i];
 			domElement = dojo.byId(componentUpdate.getAttribute("id"));
-			//todo - doesn't work with tables in IE
+			//todo - doesn't work with tables in IE (not used for tables at the moment)
 			domElement.innerHTML = componentUpdate.firstChild.data;
 		}
 	    //ensure that new buttons in the PartialUpdate also have onclick-handlers
-	    this.formNode.myFacesPPRCtrl.addElementEventHandler();
+	    this.formNode.myFacesPPRCtrl.reConnectEventHandlers();
 
         if (this.formNode.myFacesPPRCtrl.stateUpdate)
         {
@@ -354,24 +369,6 @@ org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId
     );
 }
 
-//This Method defines joinpoints for all inputs of either type submit or image
-org.apache.myfaces.PPRCtrl.prototype.addElementEventHandler = function()
-{
-    /* TODO: rethink the pattern approach
-    if (typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
-    {
-        return;
-    }
-
-    for (var i = 0; i < this.form.elements.length; i++)
-    {
-        var formElement = this.form.elements[i];
-        if(this._isButton(formElement)) {
-            this._addEventHandler(formElement,null,"elementOnEventHandler");
-        }
-    }            */
-}
-
 org.apache.myfaces.PPRCtrl.prototype._addEventHandlerForId = function (formElementId, connectToEventArr, eventHandler) {
     var formElement = dojo.byId(formElementId);
 
@@ -379,6 +376,45 @@ org.apache.myfaces.PPRCtrl.prototype._addEventHandlerForId = function (formEleme
         this._addEventHandler(formElement, connectToEventArr, eventHandler);
     else
         log.error("Input element with id : "+formElementId +" not found.");
+}
+
+//Really connect all deffered event handlers
+//Also has to be done after a Response has been processed
+org.apache.myfaces.PPRCtrl.prototype.reConnectEventHandlers= function() {
+	for (var e = 0; e < window.oamEventHandlerToInputIds.length; e++) {
+		var elem = window.oamEventHandlerToInputIds[e];
+		this._addEventHandlerForId(elem['formElementId'],elem['connectToEventArr'],elem['eventHandler']);
+	}
+}
+
+//Store the information about to be connected event-handlers for connecting 
+//them initially and after each PPR Response
+org.apache.myfaces.PPRCtrl.prototype._cachingAddEventHandlerForId = function (formElementId, connectToEventArr, eventHandler) {
+		var element = new Array();
+		element['formElementId'] = formElementId;
+		element['eventHandler'] = eventHandler;
+		element['connectToEventArr'] = connectToEventArr;
+		window.oamEventHandlerToInputIds.push(element);
+		this._addEventHandlerForId(formElementId, connectToEventArr, eventHandler);
+}
+//combine 2 arrays ensuring that every element is only present once
+org.apache.myfaces.PPRCtrl.prototype._combineArrays = function (array1,array2) {
+	var retval = new Array();
+	for (var i = 0; i < array1.length; i++) {
+		retval.push(array1[i]);
+	}
+	for (var i = 0; i < array2.length; i++) {
+		if(!this._contains(retval,array2[i]))
+			retval.push(array2[i]);
+	}
+}
+
+org.apache.myfaces.PPRCtrl.prototype._contains = function (array,element) {
+	for (var i = 0; i < array.length; i++) {
+		if(array[i] == element)
+			return true;
+	}
+	return false;
 }
 
 org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement, connectToEventArr, eventHandler) {
@@ -484,19 +520,6 @@ org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId
             retval = window.oamPartialTriggersToZoneIds[triggerId];
         }
 
-		for (refreshZoneId in window.oamZoneIdsToPartialTriggerPatterns)
-		{
-			if(this.isMatchingPattern(window.oamZoneIdsToPartialTriggerPatterns[refreshZoneId],triggerId) &&
-				typeof refreshZoneId == "string" )
-				if(retval == null || retval == "")
-				{
-					retval = refreshZoneId;
-				}
-				else
-				{
-					retval += "," + refreshZoneId;
-				}
-		}
 	return retval;
     }
     return null;
