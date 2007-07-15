@@ -49,7 +49,10 @@ seconds since last page refresh.
 
 
 		<h:panelGrid columns="2">
-			<h:outputText value="Enter the value for update:" />
+            <f:facet name="header">
+                <h:outputText value="Examples showing the pprPanelGroup in action"/>
+            </f:facet>
+            <h:outputText value="Enter the value for update:" />
 			<h:inputText value="#{pprExampleBean.textField}" />
             
 			<h:outputText value="Entered text will appear here:" />
@@ -61,6 +64,24 @@ seconds since last page refresh.
             <h:outputText value="partial update button:" />
 			<h:commandButton id="pprSubmitButton" value="PPR Submit" />
 
+        </h:panelGrid>
+
+        <h:panelGrid columns="2">
+            <f:facet name="header">
+                <h:outputText value="Crosstest - normal submits should still work"/>
+            </f:facet>
+            <h:outputText value="normal submit button:" />
+            <h:commandButton id="normalSubmitButton" value="Normal Submit"/>
+
+            <h:outputText value="normal submit button going home:" />
+            <h:commandButton id="normalSubmitButtonGoingHome" value="Normal Submit going home" action="home"/>
+
+            <h:outputText value="normal update link:" />
+            <h:commandLink id="normalLink" value="Normal Submit with Link"/>
+
+            <h:outputText value="normal update link going home:" />
+            <h:commandLink id="normalLinkGoingHome" value="Normal Submit with Link going home" action="home"/>
+                        
         </h:panelGrid>
         <s:fieldset legend="about this example">
             <f:verbatim>

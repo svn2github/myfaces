@@ -58,32 +58,36 @@ org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, 
         window.oamInlineLoadingMessage[refreshZoneId] = message;
 };
 
-//Method for JSF Components to register Regular Expressions for partial update triggering
+//Method for ppr-panel-groups to register regular expressions for partial update triggering
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern, refreshZoneId)
 {
+        
+
         window.oamZoneIdsToPartialTriggerPatterns[refreshZoneId] = pattern;
 };
 
-//Method for JSF Components to register their Partial Triggers
+//Method for ppr-panel-groups to register their partial triggers
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, eventHookArr, refreshZoneId)
 {
     this._addEventHandlerForId(inputElementId,eventHookArr,"elementOnEventHandler");
 
-    if (window.oamPartialTriggersToZoneIds[inputElementId] === undefined)
-    {
-        window.oamPartialTriggersToZoneIds[inputElementId] = refreshZoneId;
+    this._addInputAndZone(window.oamPartialTriggersToZoneIds, inputElementId, refreshZoneId);
+};
+
+org.apache.myfaces.PPRCtrl.prototype._addInputAndZone = function(arr, inputElementId, refreshZoneId) {
+
+    if (arr[inputElementId] === undefined){
+        arr[inputElementId] = refreshZoneId;
     }
-    else
-    {
-        window.oamPartialTriggersToZoneIds[inputElementId] =
-        window.oamPartialTriggersToZoneIds[inputElementId] +
+    else{
+        arr[inputElementId] =
+        arr[inputElementId] +
         "," +
         refreshZoneId;
     }
-
-};
+}
 
 //Method for JSF Components to register their Periodical Triggers
 
@@ -92,17 +96,7 @@ org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElemen
 
     this._addEventHandlerForId(inputElementId,eventHookArr,"elementOnPeriodicalEventHandler");
 
-    if (window.oamPartialTriggersToZoneIds[inputElementId] === undefined)
-    {
-        window.oamPartialTriggersToZoneIds[inputElementId] = refreshZoneId;
-    }
-    else
-    {
-        window.oamPartialTriggersToZoneIds[inputElementId] =
-        window.oamPartialTriggersToZoneIds[inputElementId] +
-        "," +
-        refreshZoneId;
-    }
+    this._addInputAndZone(window.oamPartialTriggersToZoneIds, inputElementId, refreshZoneId);
 
     if (window.oamRefreshTimeoutForZoneId[refreshZoneId] === undefined) {
         window.oamRefreshTimeoutForZoneId[refreshZoneId] = refreshTimeout;
@@ -111,16 +105,18 @@ org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElemen
 
 // registering a function (called before submit) on each form to block periodical refresh during request-response cycle
 
-org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
-{
+org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function() {
     var ppr = this;
 
-   for(var i = 0; i < document.forms.length; i++)
-    {
+    for(var i = 0; i < document.forms.length; i++) {
         var form = document.forms[i];
-        dojo.event.connect(form, "onsubmit", function(evt) {
+        dojo.event.kwConnect({
+                adviceType: "before",
+                srcObj: form,
+                srcFunc: "onsubmit",
+                targetFunc: function(evt) {
             ppr.doBlockPeriodicalUpdateDuringPost();
-        });
+        }});
     }
 };
 
@@ -166,7 +162,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 			//todo - doesn't work with tables in IE
 			domElement.innerHTML = componentUpdate.firstChild.data;
 		}
-	    //ensure that new buttons in the ParitalUpdate also have onclick-handlers
+	    //ensure that new buttons in the PartialUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.addElementEventHandler();
 
         if (this.formNode.myFacesPPRCtrl.stateUpdate)
@@ -205,9 +201,10 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 }
 
 org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
-	if(!this.lastSubmittedElement) {
+
+    if(!this.lastSubmittedElement) {
 		alert("An unexpected error occured during an ajax-request - page has been fully submitted!");
-		this.form.submit_orig();
+		this.form.submit();
 	}
 	
 	var formName = this.form.id;
@@ -234,13 +231,13 @@ org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
             {
         		oamSetHiddenInput(formName,formName +':'+'_idcl',triggerElement.id);
         	} 
-	this.form.submit_orig();
+	this.form.submit();
 }
 
 //This Method checks if an AJAX Call is to be done instead of submitting the form
 //as usual. If so it uses dojo.bind to submit the mainform via AJAX
 
-org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElement, event)
+org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElement)
 {
     var formName = this.form.id;
 
@@ -249,57 +246,30 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
         formName = this.form.name;
     }
 
-    if(triggerElement ||
-    	this.form.elements[formName +':'+'_idcl'])
-    {
-		var triggerId;
-    	var content=new Array;
-    	if(triggerElement)
-    	{
-    		triggerId=triggerElement.id;
-    		
-    		this.lastSubmittedElement=triggerElement;
+    this.lastSubmittedElement=triggerElement;
 
-            if (triggerElement.tagName.toLowerCase() == "input" &&
-                (triggerElement.type.toLowerCase() == "submit" ||
-                 triggerElement.type.toLowerCase() == "image")
-                )
-            {
-            	content[triggerElement.name]=triggerElement.value;
-            }
-            else
-            {
-        		oamSetHiddenInput(formName,formName +':'+'_idcl',triggerElement.id);
-        	}
-    	}
-    	else
-    	{
-    		triggerId=this.form.elements[formName +':'+'_idcl'].value;
-    	}
+    var triggeredComponents = this.getTriggeredComponents(triggerElement.id);
+    this.displayInlineLoadingMessages(triggeredComponents);
 
-        var triggeredComponents = this.getTriggeredComponents(triggerId);
-        
-        this.displayInlineLoadingMessages(triggeredComponents);
-        content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
-        return this.doAjaxSubmit(content, null, null, event)
-    }
-    else
-    {
-        this.form.submit_orig(triggerElement);
-    }
+    var content=new Array();
+    content["org.apache.myfaces.PPRCtrl.triggeredComponents"]=triggeredComponents;
+
+    //todo: check why this is necessary - it shouldn't be necessary, a button should be submitted just the same as everything else
+    if(this._isButton(triggerElement))
+        content[triggerElement.id]=triggerElement.id;
+
+    this.doAjaxSubmit(content, null, null)
 }
 
-org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId, event)
+org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId)
 {
 	var ppr = this;
     var requestUri = "";
     var formAction = this.form.attributes["action"];
-    if(formAction == null)
-    {
+    if(formAction == null) {
         requestUri = location.href;
     }
-    else
-    {
+    else {
         requestUri = formAction.nodeValue;
     }
 
@@ -322,9 +292,6 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
             ppr.startPeriodicalUpdate(refreshTimeout, refreshZoneId);
         }, refreshTimeout)
     }
-
-    if(event && (this._isButton(event.target) || this._isLink(event.target)))
-        dojo.event.browser.stopEvent(event);
 };
 
 //This Method replaces the content of the PPRPanelGroups which have
@@ -351,35 +318,46 @@ org.apache.myfaces.PPRCtrl.prototype.displayInlineLoadingMessages = function(com
 	}
 }
 
-//This Method replaces the mainform Submitfunciton to call AJAX submit
-
-org.apache.myfaces.PPRCtrl.prototype.formSubmitReplacement = function(triggeredElement)
-{
-    this.myFacesPPRCtrl.ajaxSubmitFunction(triggeredElement);
+//this method replaces the mainform submit-function to call AJAX-submit
+org.apache.myfaces.PPRCtrl.prototype.formSubmitReplacement = function(invocation) {
+    if(this.triggeredElement) {
+        this.ajaxSubmitFunction(this.triggeredElement);
+        this.triggeredElement=null;
+        return false;
+    }
+    else {
+        return invocation.proceed();
+    }
 }
 
-//The submit Function of the mainform is replaced with the AJAX submit method
-//This Method is called during the initailisation of a PPR Controller
+//The submit function of the mainform is replaced with the AJAX submit method
+//This method is called during the initialization of a PPR Controller
 
-org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId)
-{
-    this.form = dojo.byId(formId);
-    if( (typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
+org.apache.myfaces.PPRCtrl.prototype.replaceFormSubmitFunction = function(formId) {
+    var form = dojo.byId(formId);
+    if( (typeof form == "undefined" || form.tagName.toLowerCase() != "form")
             && this.showDebugMessages)
     {
         alert("MyFaces PPR Engine: Form with id:" + formId + " not found!");
         return;
     }
-    this.form.submit_orig = this.form.submit;
-    this.form.myFacesPPRCtrl = this;
-    this.form.submit = this.formSubmitReplacement;
+
+    this.form=form;
+    form.myFacesPPRCtrl = this;
+
+    dojo.event.kwConnect({
+            adviceType: "around",
+            srcObj: form,
+            srcFunc: "onsubmit",
+            targetObj: this,
+            targetFunc: "formSubmitReplacement"}
+    );
 }
 
-//TODO: event connect
 //This Method defines joinpoints for all inputs of either type submit or image
-
 org.apache.myfaces.PPRCtrl.prototype.addElementEventHandler = function()
 {
+    /* TODO: rethink the pattern approach
     if (typeof this.form == "undefined" || this.form.tagName.toLowerCase() != "form")
     {
         return;
@@ -391,7 +369,7 @@ org.apache.myfaces.PPRCtrl.prototype.addElementEventHandler = function()
         if(this._isButton(formElement)) {
             this._addEventHandler(formElement,null,"elementOnEventHandler");
         }
-    }
+    }            */
 }
 
 org.apache.myfaces.PPRCtrl.prototype._addEventHandlerForId = function (formElementId, connectToEventArr, eventHandler) {
@@ -407,7 +385,7 @@ org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement, c
 
     if(!connectToEventArr || connectToEventArr.length==0) {
         connectToEventArr = new Array();
-        if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement)) {
+        if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement) || this._isLink(formElement)) {
             //for these element-types, onclick is appropriate
             connectToEventArr.push("onclick");
         }
@@ -421,6 +399,7 @@ org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement, c
     for(var i=0; i<connectToEventArr.length; i++) {
 
         dojo.event.kwConnect({
+            adviceType: "before",
             srcObj:     formElement,
             srcFunc:    connectToEventArr[i],
             targetObj:  this,
@@ -464,17 +443,20 @@ org.apache.myfaces.PPRCtrl.prototype._isRadio = function (formElement) {
 //PointCutAdvisor which invokes the AJAX Submit Method of the PPR Controller after custom
 //onclick-handlers for submit-buttons and submit-images
 
-org.apache.myfaces.PPRCtrl.prototype.elementOnEventHandler = function (_event)
-{
-    return this.ajaxSubmitFunction(_event.target, _event);
+org.apache.myfaces.PPRCtrl.prototype.elementOnEventHandler = function (event) {
+    this.triggeredElement = event.target;
+
+    if(!(this._isButton(this.triggeredElement) || this._isLink(this.triggeredElement))) {
+        this.formSubmitReplacement();
+    }
 }
 
-org.apache.myfaces.PPRCtrl.prototype.elementOnPeriodicalEventHandler = function(_event) {
-    if (_event.target.oam_periodicalStarted) {
+org.apache.myfaces.PPRCtrl.prototype.elementOnPeriodicalEventHandler = function(event) {
+    if (event.target.oam_periodicalStarted) {
         return false;
     }
     else {
-        var zoneIds = window.oamPartialTriggersToZoneIds[_event.target.id];
+        var zoneIds = window.oamPartialTriggersToZoneIds[event.target.id];
         if (!zoneIds) return false;
 
         var zones = zoneIds.split(",");
@@ -483,7 +465,7 @@ org.apache.myfaces.PPRCtrl.prototype.elementOnPeriodicalEventHandler = function(
             var timeout = window.oamRefreshTimeoutForZoneId[zoneId];
             if (!timeout) return false;
             this.startPeriodicalUpdate(timeout, zoneId);
-            _event.target.oam_periodicalStarted = true;
+            event.target.oam_periodicalStarted = true;
         }
     }
 }
@@ -520,16 +502,13 @@ org.apache.myfaces.PPRCtrl.prototype.getTriggeredComponents = function(triggerId
     return null;
 };
 
-org.apache.myfaces.PPRCtrl.prototype.isMatchingPattern = function(pattern,stringToMatch)
-{
-	if(typeof pattern != "string")
-	{
+org.apache.myfaces.PPRCtrl.prototype.isMatchingPattern = function(pattern,stringToMatch){
+	if(typeof pattern != "string"){
 		return false;
 	}
-	if(typeof stringToMatch != "string")
-	{
+	if(typeof stringToMatch != "string") {
 		return false;
 	}
 	var expr =  new RegExp(pattern);
 	return expr.test(stringToMatch);
-}
+};
