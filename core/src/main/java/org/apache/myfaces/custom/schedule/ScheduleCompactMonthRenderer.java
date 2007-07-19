@@ -110,7 +110,7 @@ public class ScheduleCompactMonthRenderer
 
             writeDayCell(
                 context, writer, schedule, day, dayOfWeek, dayOfMonth, isWeekend,
-                currentMonth == selectedMonth, isWeekend ? 1 : 2
+                currentMonth == selectedMonth, (!isWeekend && schedule.isSplitWeekend() ? 2 : 1)
             );
 
         }
@@ -145,16 +145,16 @@ public class ScheduleCompactMonthRenderer
     )
         throws IOException
     {
-        if ((dayOfWeek == Calendar.MONDAY) || (dayOfWeek == Calendar.SUNDAY)) {
+        if ((dayOfWeek == Calendar.MONDAY) || (schedule.isSplitWeekend() && dayOfWeek == Calendar.SUNDAY)) {
             writer.startElement(HTML.TR_ELEM, schedule);
         }
 
         super.writeDayCell(
-            context, writer, schedule, day, 100f / 6, dayOfWeek, dayOfMonth,
+            context, writer, schedule, day, 100f / (schedule.isSplitWeekend() ? 6 : 7), dayOfWeek, dayOfMonth,
             isWeekend, isCurrentMonth, rowspan
         );
 
-        if ((dayOfWeek == Calendar.SATURDAY) || (dayOfWeek == Calendar.SUNDAY)) {
+        if ((schedule.isSplitWeekend() && dayOfWeek == Calendar.SATURDAY) || (dayOfWeek == Calendar.SUNDAY)) {
             writer.endElement(HTML.TR_ELEM);
         }
     }

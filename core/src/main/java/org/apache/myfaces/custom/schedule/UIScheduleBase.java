@@ -47,6 +47,9 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Schedule";
     public static final String RENDERER_TYPE = "org.apache.myfaces.Schedule";
 
+    protected static final String HOUR_NOTATION_24 = "24";
+    protected static final String HOUR_NOTATION_12 = "12";
+
     protected static final int DEFAULT_COMPACT_MONTH_ROWHEIGHT = 120;
     protected static final int DEFAULT_COMPACT_WEEK_ROWHEIGHT = 200;
     protected static final int DEFAULT_DETAILED_ROWHEIGHT = 22;
@@ -64,8 +67,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     protected static final String DEFAULT_ENABLED_ON_USER_ROLE = null;
     protected static final boolean DEFAULT_SUBMIT_ON_CLICK = false;
     protected static final String DEFAULT_VISIBLE_ON_USER_ROLE = null;
-    protected static final String HOUR_NOTATION_24 = "24";
-    protected static final String HOUR_NOTATION_12 = "12";
+	protected static final boolean DEFAULT_SPLIT_WEEKEND = true;
     
     private Integer _compactMonthRowHeight;
     private Integer _compactWeekRowHeight;
@@ -85,7 +87,18 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     private Integer _workingStartHour;
     private Boolean _submitOnClick = null;
     private String _hourNotation;
+	private Boolean _splitWeekend;
 
+	public boolean isSplitWeekend()
+	{
+		return ScheduleUtil.getBooleanProperty(this, _splitWeekend, "splitWeekend", DEFAULT_SPLIT_WEEKEND);
+	}
+	
+	public void setSplitWeekend(boolean splitWeekend)
+	{
+		_splitWeekend = Boolean.valueOf(splitWeekend);
+	}
+	
     /**
      * Should the parent form of this schedule be submitted when the user
      * clicks on a day? Note that this will only work when the readonly
@@ -331,6 +344,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
         _workingStartHour = (Integer)values[15];
         _submitOnClick = (Boolean)values[16];
         _hourNotation = (String) values[17];
+		_splitWeekend = (Boolean)values[18];
     }
 
     /**
@@ -338,7 +352,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[18];
+        Object[] values = new Object[19];
         values[0] = super.saveState(context);
         values[1] = _compactMonthRowHeight;
         values[2] = _compactWeekRowHeight;
@@ -357,6 +371,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
         values[15] = _workingStartHour;
         values[16] = _submitOnClick;
         values[17] = _hourNotation;
+		values[18] = _splitWeekend;
         
         return values;
     }

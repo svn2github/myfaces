@@ -138,15 +138,15 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         if (rowHeight > 0)
         {
-            if (isWeekend)
+            if (isWeekend && schedule.isSplitWeekend())
             {
                 myRowHeight += (rowHeight / 2) + "px;";
                 myContentHeight += ((rowHeight / 2) - 19) + "px;";
             }
             else
             {
-                myRowHeight += (rowHeight + 1) + "px;"; //need to add 1 to get the weekends right
-                myContentHeight += ((rowHeight + 1) - 18) + "px;"; //18 instead of 19, to get the weekends right
+                myRowHeight += (rowHeight + (schedule.isSplitWeekend() ? 1 : 0)) + "px;"; //need to add 1 to get the weekends right
+                myContentHeight += ((rowHeight + (schedule.isSplitWeekend() ? 1 : 0)) - 18) + "px;"; //18 instead of 19, to get the weekends right
             }
          }
         else

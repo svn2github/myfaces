@@ -79,8 +79,12 @@ public class ScheduleTag extends HtmlComponentTagBase
     private String _titleClass;
     private String _unevenClass;
     private String _weekClass;
+	private String _splitWeekend;
     
-    
+    public String getSplitWeekend()
+	{
+		return _splitWeekend;
+	}
 
     /**
      * @return the action
@@ -309,9 +313,15 @@ public class ScheduleTag extends HtmlComponentTagBase
         _titleClass = null;
         _unevenClass = null;
         _weekClass = null;
+		_splitWeekend = null;
         
     }
 
+	public void setSplitWeekend(String splitWeekend)
+	{
+		this._splitWeekend = splitWeekend;
+	}
+	
     /**
      * @param action the action to set
      */
@@ -401,6 +411,7 @@ public class ScheduleTag extends HtmlComponentTagBase
           FacesContext context = FacesContext.getCurrentInstance();
           Application app = context.getApplication();
           //UIScheduleBase properties
+		  setBooleanProperty(component, "splitWeekend", _splitWeekend);
           setIntegerProperty(component, "compactMonthRowHeight", _compactMonthRowHeight);
           setIntegerProperty(component, "compactWeekRowHeight", _compactWeekRowHeight);
           setIntegerProperty(component, "detailedRowHeight", _detailedRowHeight);
