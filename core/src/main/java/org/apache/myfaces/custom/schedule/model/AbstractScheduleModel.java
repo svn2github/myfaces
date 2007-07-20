@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.SortedSet;
 import java.util.TimeZone;
 import java.util.TreeSet;
 
@@ -43,7 +44,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
     // ~ Instance fields
     // --------------------------------------------------------
 
-    protected final TreeSet days;
+    private TreeSet days;
 
     private Date selectedDate = new Date();
 
@@ -66,7 +67,6 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
     public AbstractScheduleModel(TimeZone timeZone)
     {
-      this.days = new TreeSet();
       this.timeZone = timeZone;
     }
 
@@ -74,9 +74,50 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
     // ----------------------------------------------------------------
 
     /**
+     * Get the set of days. Initialise on first call.
+     * 
+     */
+    protected SortedSet getDays()
+    {
+    	if (days == null)
+    	{
+    		days = new TreeSet();
+    		
+            switch (mode)
+            {
+            case DAY:
+                setDay(this.selectedDate);
+
+                break;
+
+            case WORKWEEK:
+                setWorkWeek(this.selectedDate);
+
+                break;
+
+            case WEEK:
+                setWeek(this.selectedDate);
+
+                break;
+
+            case MONTH:
+                setMonth(this.selectedDate);
+
+                break;
+
+            default:
+                setDay(this.selectedDate);
+            }    	
+    	}
+    	
+    	return days;
+    }
+    
+    /**
      * Returns the timezone setting for this model
      */
-    public TimeZone getTimeZone () {
+    public TimeZone getTimeZone ()
+    {
       return this.timeZone;
     }
 
@@ -85,7 +126,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     public boolean isEmpty()
     {
-        return days.isEmpty();
+        return getDays().isEmpty();
     }
 
     /**
@@ -116,32 +157,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
         }
 
         this.selectedDate = date;
-
-        switch (mode)
-        {
-        case DAY:
-            setDay(this.selectedDate);
-
-            break;
-
-        case WORKWEEK:
-            setWorkWeek(this.selectedDate);
-
-            break;
-
-        case WEEK:
-            setWeek(this.selectedDate);
-
-            break;
-
-        case MONTH:
-            setMonth(this.selectedDate);
-
-            break;
-
-        default:
-            setDay(this.selectedDate);
-        }
+        this.days = null;
     }
 
     /**
@@ -198,7 +214,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     public Object get(int index)
     {
-        Object[] dayArray = days.toArray();
+        Object[] dayArray = getDays().toArray();
 
         Object returnObject = dayArray[index];
 
@@ -210,7 +226,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     public Iterator iterator()
     {
-        return days.iterator();
+        return getDays().iterator();
     }
 
     /**
@@ -218,7 +234,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     public int size()
     {
-        return days.size();
+        return getDays().size();
     }
 
     /**
@@ -398,7 +414,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
         ScheduleDay day = new ScheduleDay(date, getTimeZone());
         loadDayAttributes(day);
-        days.add(day);
+        getDays().add(day);
 
         return day;
     }
@@ -410,13 +426,16 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     protected void clear()
     {
-        for (Iterator dayIterator = days.iterator(); dayIterator.hasNext();)
-        {
-            ScheduleDay day = (ScheduleDay) dayIterator.next();
-            day.clear();
-        }
+    	if (days != null)
+    	{
+    		for (Iterator dayIterator = days.iterator(); dayIterator.hasNext();)
+    		{
+    			ScheduleDay day = (ScheduleDay) dayIterator.next();
+    			day.clear();
+    		}
 
-        days.clear();
+    		days.clear();
+    	}
     }
 
     /**
@@ -460,7 +479,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
         {
             ScheduleEntry entry = (ScheduleEntry) entryIterator.next();
 
-            for (Iterator dayIterator = days.iterator(); dayIterator.hasNext();)
+            for (Iterator dayIterator = getDays().iterator(); dayIterator.hasNext();)
             {
                 ScheduleDay day = (ScheduleDay) dayIterator.next();
 
