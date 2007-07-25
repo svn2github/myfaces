@@ -111,7 +111,7 @@ public class ScheduleCompactWeekRenderer
 
             writeDayCell(
                 context, writer, schedule, day, 50f, dayOfWeek, dayOfMonth,
-                isWeekend, true, (dayOfWeek == Calendar.FRIDAY) ? 2 : 1
+                isWeekend, true, (dayOfWeek == Calendar.FRIDAY) ? (schedule.isSplitWeekend() ? 2 : 1) : 1
             );
 
             if (
