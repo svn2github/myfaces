@@ -235,6 +235,8 @@ public class UISchedule extends UIScheduleBase implements
      */
     public void restoreState(FacesContext context, Object state)
     {
+        removeActionListener(_scheduleListener);
+
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         _lastClickedDateAndTime = (Date) values[1];
