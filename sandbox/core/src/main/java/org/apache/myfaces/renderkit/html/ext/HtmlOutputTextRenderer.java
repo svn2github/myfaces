@@ -7,10 +7,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.renderkit.freemarker.FreemarkerRenderer;
+import org.apache.myfaces.renderkit.freemarker.TemplateRenderer;
 
-public class HtmlOutputTextRenderer extends FreemarkerRenderer
-{
+public class HtmlOutputTextRenderer extends TemplateRenderer {
 
     protected Object getDatamodel(FacesContext context, UIComponent component)
     {

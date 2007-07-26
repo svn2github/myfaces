@@ -1,0 +1,80 @@
+package org.apache.myfaces.renderkit.freemarker;
+
+import java.io.IOException;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.render.Renderer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+public abstract class TemplateRenderer extends Renderer
+{
+    private static final Log log = LogFactory.getLog(TemplateRenderer.class);
+
+    private static final String TEMPLATE_ENCODER = "org.apache.myfaces.tomahawk.TemplateEncoder";
+    private static final String TEMPLATE_ENCODER_ENCODER_CLASS = "org.apache.myfaces.tomahawk.templateEncoder.ENCODER_CLASS";
+
+    /**
+     * @see javax.faces.render.Renderer#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
+    {
+        if (!component.isRendered()) return;
+        encodeTemplate(context, component, getTemplateName(context, component) + "_begin.ftl");
+    }
+
+    /**
+     * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException
+    {
+        if (!component.isRendered()) return;
+        if (!getRendersChildren()) return;
+        encodeTemplate(context, component, getTemplateName(context, component) + "_children.ftl");
+    }
+
+    /**
+     * @see javax.faces.render.Renderer#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    {
+        if (!component.isRendered()) return;
+        encodeTemplate(context, component, getTemplateName(context, component) + "_end.ftl");
+    }
+
+    protected void encodeTemplate(FacesContext context, UIComponent component, String template) throws IOException {
+        TemplateEncoder templateEncoder =
+                (TemplateEncoder) context.getExternalContext().getApplicationMap().get(TEMPLATE_ENCODER);
+
+        if(templateEncoder == null) {
+
+            String className =
+                    context.getExternalContext().getInitParameter(TEMPLATE_ENCODER_ENCODER_CLASS);
+
+            if(className == null) {
+                className = "org.apache.myfaces.renderkit.freemarker.DefaultTemplateEncoder";
+            }
+
+            try {
+                templateEncoder = (TemplateEncoder) Class.forName(className).newInstance();
+                context.getExternalContext().getApplicationMap().put(TEMPLATE_ENCODER, templateEncoder);
+            } catch (ClassNotFoundException e) {
+                log.error("Template encoder class : "+className+" not found. Alternative classed defined in web-xml parameter : "+TEMPLATE_ENCODER_ENCODER_CLASS);
+            } catch (IllegalAccessException e) {
+                log.error("Constructor of template encoder class : " + className + " could not be accessed. Alternative classes may be defined in web-xml parameter : "+TEMPLATE_ENCODER_ENCODER_CLASS);
+            } catch (InstantiationException e) {
+                log.error("Instance of template encoder class : " + className + " could not be instantiated. Alternative classes may be defined in web-xml parameter : "+TEMPLATE_ENCODER_ENCODER_CLASS);
+            }
+        }
+
+        templateEncoder.encodeTemplate(context, component, template);
+    }
+    
+    protected abstract Object getDatamodel(FacesContext context, UIComponent component);
+    protected abstract String getTemplateName(FacesContext context, UIComponent component);
+    
+    
+}
