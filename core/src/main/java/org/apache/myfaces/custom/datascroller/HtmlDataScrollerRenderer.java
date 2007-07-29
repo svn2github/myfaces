@@ -406,7 +406,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         renderLinkStart(facesContext, scroller, facetName);
 
         facetComp.encodeBegin(facesContext);
-        if (facetComp.getRendersChildren())
+        if (!facetComp.getRendersChildren())
             facetComp.encodeChildren(facesContext);
         facetComp.encodeEnd(facesContext);
 
