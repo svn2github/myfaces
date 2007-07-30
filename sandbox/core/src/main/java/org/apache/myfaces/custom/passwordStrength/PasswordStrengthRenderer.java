@@ -29,10 +29,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.custom.accordion.HtmlAccordionPanelRenderer;
-import org.apache.myfaces.custom.excelexport.ExcelExport;
-import org.apache.myfaces.custom.inputAjax.HtmlInputTextAjax;
-import org.apache.myfaces.custom.statechangednotifier.StateChangedNotifierRenderer;
+import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -43,11 +40,11 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 public class PasswordStrengthRenderer extends Renderer {
 
-	// This private method is used for including all the related resources ...
-	private void includeResources(FacesContext context, UIComponent component,
+	private void addResources(FacesContext context, UIComponent component,
 			ResponseWriter writer) throws IOException {
-		// Load the resources ...
+		PasswordStrengthComponent passwordStrength = (PasswordStrengthComponent) component;				
 		AddResource addResource = AddResourceFactory.getInstance(context);
+		
 		// Load the css style ...
 		String styleLocation = (String) component.getAttributes().get(
 				JSFAttr.STYLE_LOCATION);
@@ -58,11 +55,11 @@ public class PasswordStrengthRenderer extends Renderer {
 			addResource.addStyleSheet(context, AddResource.HEADER_BEGIN,
 					PasswordStrengthRenderer.class, "css/passwordStrength.css");
 		}
+		
 		// Load the JS file ...
 		String javascriptLocation = (String) component.getAttributes().get(
 				JSFAttr.JAVASCRIPT_LOCATION);
 		if (javascriptLocation != null) {
-			// add user defined javascripts
 			addResource.addJavaScriptAtPosition(context,
 					AddResource.HEADER_BEGIN, javascriptLocation
 							+ "/passwordStrength.js");
@@ -71,6 +68,41 @@ public class PasswordStrengthRenderer extends Renderer {
 					AddResource.HEADER_BEGIN, PasswordStrengthRenderer.class,
 					"passwordStrength.js");
 		}
+		
+		//Add Dojo stuff for progress bar ...
+		addDojoStuff(context, component);
+		
+		//Add Initialization stuff ...
+		String messageId = getMessageID(context, passwordStrength);
+		writer.write("<script type=\"text/javascript\">");	
+		String addOnStartUP = "dojo.addOnLoad(function() {"
+				+ "startUpPasswordStrength('"
+				+ messageId
+				+ "'); });";
+		writer.write( addOnStartUP );
+		writer.write("</script>");
+	}
+	
+	private String getMessageID(FacesContext context,
+			PasswordStrengthComponent passwordStrength) {
+		String clientID = passwordStrength.getClientId(context);		
+		String messageId = "";
+		if (TextIndicatorType.TEXT
+				.equalsIgnoreCase(getStrengthIndicatorTypeValue(passwordStrength))) {
+			messageId = getIndicatorMessageId(clientID);
+		} else {
+			messageId = getProgressBarContainerID(clientID);
+		}
+		return messageId;
+	}
+	
+	private void addDojoStuff(FacesContext context, UIComponent component)
+			throws IOException {
+		String javascriptLocation = (String) component.getAttributes().get(
+				JSFAttr.JAVASCRIPT_LOCATION);
+		DojoUtils.addMainInclude(context, component, javascriptLocation,
+				DojoUtils.getDjConfigInstance(context));
+		DojoUtils.addRequire(context, component, "dojo.widget.ProgressBar");
 	}
 
 	private void renderStartDiv(UIComponent component, ResponseWriter writer)
@@ -100,6 +132,10 @@ public class PasswordStrengthRenderer extends Renderer {
 				"org.apache.myfaces.custom.passwordStrength.DESC", null)
 				.getDetail();
 	}
+	
+	private String getDefaultShowDetails() {
+		return "true";
+	}
 
 	private String getDefaultPrefix() {
 		return MessageUtils.getMessage(BUNDLE_BASE_NAME,
@@ -107,25 +143,26 @@ public class PasswordStrengthRenderer extends Renderer {
 				"org.apache.myfaces.custom.passwordStrength.PREFIX", null)
 				.getDetail();
 	}
+	
+	private String getDefaultStrengthIndicatorType() {
+		return TextIndicatorType.TEXT;
+	}	
 
 	private void createTextSpan(PasswordStrengthComponent passwordStrength,
 			FacesContext context, String clientID) throws IOException {
 		ResponseWriter writer = context.getResponseWriter();
 
 		String preferredLength = passwordStrength.getPreferredPasswordLength();
-		String prefixText = passwordStrength.getPrefixText();
-		String textStrengthDescriptions = passwordStrength
-				.getTextStrengthDescriptions();
-		String txtName = "'" + clientID + "'";
-
-		// Set default values for optional attributes ...
-
-		prefixText = (prefixText == null) ? "'" + getDefaultPrefix() + "'"
-				: "'" + prefixText + "'";
-
-		textStrengthDescriptions = (textStrengthDescriptions == null) ? "'"
-				+ getDefaultTextDesc() + "'" : "'" + textStrengthDescriptions
-				+ "'";
+		String prefixText = (passwordStrength.getPrefixText() == null) ? "'" + getDefaultPrefix() + "'"
+				: "'" + passwordStrength.getPrefixText() + "'";
+		String textStrengthDescriptions = (passwordStrength
+				.getTextStrengthDescriptions() == null) ? "'"
+				+ getDefaultTextDesc() + "'" : "'"
+				+ passwordStrength.getTextStrengthDescriptions() + "'";
+		String textID = "'" + clientID + "'";
+		String showDetails = (passwordStrength.getShowDetails() == null) ? "'"
+				+ getDefaultShowDetails() + "'" : "'"
+				+ passwordStrength.getShowDetails() + "'";
 
 		writer.startElement(HTML.SPAN_ELEM, passwordStrength);
 
@@ -141,26 +178,44 @@ public class PasswordStrengthRenderer extends Renderer {
 		}
 		writer.writeAttribute("value", value, "value");
 
-		writer.writeAttribute("onkeyup", createOnKeyUpString(txtName,
-				preferredLength, prefixText, textStrengthDescriptions, true),
-				"onkeyup");
-		writer.writeAttribute("onblur", ON_BLUR_STRING, "onblur");
+		writer.writeAttribute("onkeyup", createOnKeyUpString(context,
+				passwordStrength, textID, preferredLength, prefixText,
+				textStrengthDescriptions, true, showDetails), "onkeyup");
+		writer.writeAttribute("onblur", getOnBlurString(context, passwordStrength), "onblur");
 
 		writer.endElement(HTML.INPUT_ELEM);
 
 		writer.endElement(HTML.SPAN_ELEM);
 	}
 
+	
+	private void createTextIndicatorMessage(UIComponent component,
+			FacesContext context, ResponseWriter writer) throws IOException {
+		String clientID = component.getClientId(context);
+		
+		writer.startElement(HTML.SPAN_ELEM, component);
+		writer.writeAttribute(HTML.ID_ATTR, getIndicatorMessageId( clientID ),
+				HTML.ID_ATTR);
+		writer.writeAttribute(HTML.CLASS_ATTR, "indicatorMessage",
+				HTML.CLASS_ATTR);
+		writer.endElement(HTML.SPAN_ELEM);		
+	}
+	
 	private void createIndicatorSpan(UIComponent component,
-			ResponseWriter writer) throws IOException {
+			FacesContext context, ResponseWriter writer) throws IOException {
+		PasswordStrengthComponent passwordStrength = (PasswordStrengthComponent) component;
+	
+		String clientID = passwordStrength.getClientId(context);
+		String strengthIndicatorType = 	getStrengthIndicatorTypeValue(passwordStrength);
+
 		writer.endElement(HTML.TD_ELEM);
 		writer.startElement(HTML.TD_ELEM, component);
 
-		writer.startElement(HTML.SPAN_ELEM, component);
-		writer.writeAttribute(HTML.ID_ATTR, "indicatorMessage", HTML.ID_ATTR);
-		writer.writeAttribute(HTML.CLASS_ATTR, "indicatorMessage",
-				HTML.CLASS_ATTR);
-		writer.endElement(HTML.SPAN_ELEM);
+		if(TextIndicatorType.TEXT.equalsIgnoreCase( strengthIndicatorType )) { //It is a text ...
+			createTextIndicatorMessage(component, context, writer);
+		} else { //It is a progressbar ... 	
+			createProgressBarSpan(component, context, writer);
+		}
 
 		writer.endElement(HTML.TD_ELEM);
 		writer.endElement("TR");
@@ -169,8 +224,40 @@ public class PasswordStrengthRenderer extends Renderer {
 		writer.startElement(HTML.TD_ELEM, component);
 
 		writer.startElement("div", component);
-		writer.writeAttribute("id", "leftCharsMessage", "id");
+		writer.writeAttribute("id", getleftCharsMessageId(clientID), "id");
 		writer.endElement("div");
+	}
+	
+	private String getStrengthIndicatorType(
+			PasswordStrengthComponent passwordStrength) {
+		return (passwordStrength.getStrengthIndicatorType() == null) ? "'"
+				+ getDefaultStrengthIndicatorType() + "'" : "'"
+				+ passwordStrength.getStrengthIndicatorType() + "'";
+	}
+
+	private String getStrengthIndicatorTypeValue(
+			PasswordStrengthComponent passwordStrength) {
+		return (passwordStrength.getStrengthIndicatorType() == null) ? getDefaultStrengthIndicatorType()
+				: passwordStrength.getStrengthIndicatorType();
+	}	
+	
+	private void createProgressBarSpan(UIComponent component,
+			FacesContext context, ResponseWriter writer) throws IOException {
+		String clientID = component.getClientId(context);
+
+		writer.startElement(HTML.SPAN_ELEM, component);		
+		writer.writeAttribute("id", getProgressBarContainerID(clientID), "id");	
+		
+		writer.startElement(HTML.SPAN_ELEM, component);
+		writer.writeAttribute("width", DEFAULT_PROGRESSBAR_WIDTH, "width");
+		writer.writeAttribute("height", DEFAULT_PROGRESSBAR_HEIGHT, "height");
+		writer.writeAttribute("progressValue", DEFAULT_PROGRESSBAR_VALUE, "progressValue");				
+		//writer.writeAttribute("hasText", "true", "hasText");
+		writer.writeAttribute("dojoType", "ProgressBar", "dojoType");		
+		writer.writeAttribute("id", getProgressBarID(clientID), "id");		
+		writer.endElement(HTML.SPAN_ELEM);
+		
+		writer.endElement(HTML.SPAN_ELEM);				
 	}
 
 	private void createHTMLComponents(FacesContext facesContext,
@@ -182,7 +269,7 @@ public class PasswordStrengthRenderer extends Renderer {
 
 		createTextSpan(passwordStrength, facesContext, clientID);
 
-		createIndicatorSpan(component, writer);
+		createIndicatorSpan(component, facesContext, writer);
 
 		renderEndDiv(component, writer);
 	}
@@ -202,7 +289,7 @@ public class PasswordStrengthRenderer extends Renderer {
 
 		ResponseWriter writer = context.getResponseWriter();
 
-		includeResources(context, component, writer);
+		addResources(context, component, writer);
 
 		createHTMLComponents(context, component, writer, clientID);
 	}
@@ -231,20 +318,75 @@ public class PasswordStrengthRenderer extends Renderer {
 		}
 	}
 
-	private String createOnKeyUpString(String txtName, String preferredLength,
+	private String createOnKeyUpString(FacesContext context,
+			UIComponent component, String textID, String preferredLength,
 			String prefix, String textStrengthDescriptions,
-			boolean showMessageIndicator) {
+			boolean showMessageIndicator, String showDetails) {
+		PasswordStrengthComponent passwordStrength = (PasswordStrengthComponent) component;		
+		
+		String clientID = component.getClientId(context);
 		String showMessageIndicatorString = "";
-		if (showMessageIndicator == true)
-			showMessageIndicatorString = "show('indicatorMessage')";
-		return "updateStatusValue( " + txtName + "," + preferredLength + ", "
-				+ prefix + ", " + textStrengthDescriptions + ", " + "'true');"
+		String strengthIndicatorType = getStrengthIndicatorType(passwordStrength);
+		String progressBarId = "'" + getProgressBarID(clientID) + "'";
+		String indicatorMessageID = "'" + getIndicatorMessageId(clientID) + "'";
+		String leftCharsMessageID = "'" + getleftCharsMessageId(clientID) + "'";
+
+		if (showMessageIndicator == true) {
+			showMessageIndicatorString = "show('"
+					+ getMessageID(context, passwordStrength) + "');";
+		}
+		
+		return updateStatusValue(textID, preferredLength, 
+								 prefix, textStrengthDescriptions, 
+								 indicatorMessageID, leftCharsMessageID,
+								 showMessageIndicatorString, 
+								 strengthIndicatorType, progressBarId,
+								 showDetails);
+	}
+	
+	private String updateStatusValue(String textID, String preferredLength,
+									 String prefix, String textStrengthDescriptions,
+									 String indicatorMessageID, String leftCharsMessageID,									 
+									 String showMessageIndicatorString, 
+									 String strengthIndicatorType, String progressBarId, 
+									 String showDetails) {
+		return "updateStatusValue(" 
+				+ textID + "," + preferredLength + ", "
+				+ prefix + ", " + textStrengthDescriptions + ", " 
+				+ indicatorMessageID + ", " + leftCharsMessageID + ", "				
+				+ strengthIndicatorType + ", " + progressBarId + ", " 				
+				+ showDetails + ");"
 				+ showMessageIndicatorString;
 	}
+	
+	private String getIndicatorMessageId(String clientID) {	
+		return clientID + "indicatorMessage";
+	}
+	
+	private String getleftCharsMessageId(String clientID) {	
+		return clientID + "leftCharsMessage";
+	}	
 
-	// The constants ...
-	final String ON_BLUR_STRING = "hide('indicatorMessage');"
-			+ "hide('leftCharsMessage');";
+	private String getProgressBarID(String clientID) {	
+		return clientID + PROGRESSBAR_SUFFIX;
+	}
+	
+	private String getProgressBarContainerID(String clientID) {	
+		return getProgressBarID(clientID) + PROGRESSBAR_CONTAINER_SUFFIX;
+	}			
+	
+	private String getOnBlurString(FacesContext context, UIComponent component) {
+		PasswordStrengthComponent passwordStrength = (PasswordStrengthComponent) component;		
+		String clientID = passwordStrength.getClientId(context);		
+		
+		return "hide('" + getMessageID(context, passwordStrength) + "');" + "hide('"
+				+ getleftCharsMessageId(clientID) + "');";
+	}
 
 	final String BUNDLE_BASE_NAME = "org.apache.myfaces.custom.passwordStrength.resource.PasswordStrength";
+	final String DEFAULT_PROGRESSBAR_WIDTH = "150";
+	final String DEFAULT_PROGRESSBAR_HEIGHT = "20";	
+	final String PROGRESSBAR_SUFFIX = "_PROGRESSBAR";
+	final String PROGRESSBAR_CONTAINER_SUFFIX = "_CONTAINER";	
+	final String DEFAULT_PROGRESSBAR_VALUE = "20";
 }

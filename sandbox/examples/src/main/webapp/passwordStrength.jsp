@@ -32,12 +32,31 @@
 <f:view>
 
 	<h:form>
+	   
+	    <table>
+		
+		<tr><td>
 		<h:outputText
-			value="Enter your password here. the preferred length is 10" />
-
-		<s:passwordStrength id="txtName" preferredPasswordLength="10"
+			value="Enter your password" /> 
+		</td></tr>
+		
+		<tr><td>
+		<h:outputText value="Text Mode" />
+		</td><td>
+		<s:passwordStrength id="txtPwdText" preferredPasswordLength="10"
 			value="#{passwordStrengthBean.password}" prefixText="Strength : "
-			textStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent" />
+			textStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent" strengthIndicatorType="text"/> 
+		</td></tr>
+
+		<tr><td>
+		<h:outputText value="ProgressBar Mode" />
+		</td><td>		
+		<s:passwordStrength id="txtPrgBarText" preferredPasswordLength="10"
+			value="#{passwordStrengthBean.password}" prefixText="Strength : "
+			textStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent" strengthIndicatorType="bar"/>
+		</td></tr>			
+			
+	    </table>			
 	</h:form>
 
 	<%@include file="inc/page_footer.jsp"%>
@@ -47,4 +66,5 @@
 </body>
 
 </html>
+
 

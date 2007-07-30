@@ -19,9 +19,6 @@
 package org.apache.myfaces.custom.passwordStrength;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.webapp.UIComponentTag;
 
 import org.apache.myfaces.taglib.html.ext.HtmlInputTextTag;
 
@@ -46,20 +43,22 @@ public class PasswordStrengthTag extends HtmlInputTextTag {
 	 */
 	public void release() {
 		super.release();
-		//_text = null;
 		_preferredPasswordLength = null;
 		_prefixText = null;
 		_textStrengthDescriptions = null;
+		_showDetails = null;
+		_strengthIndicatorType = null;
 	}
 
 	protected void setProperties(UIComponent component) {
 		super.setProperties(component);
-	//	setStringProperty(component, "text", _text);
 		setStringProperty(component, "preferredPasswordLength",
 				_preferredPasswordLength);
 		setStringProperty(component, "textStrengthDescriptions",
 				_textStrengthDescriptions);
 		setStringProperty(component, "prefixText", _prefixText);
+		setStringProperty(component, "showDetails", _showDetails);
+		setStringProperty(component, "strengthIndicatorType", _strengthIndicatorType);			
 	}
 
 	//Getters & Setters ...
@@ -88,8 +87,26 @@ public class PasswordStrengthTag extends HtmlInputTextTag {
 		_textStrengthDescriptions = strengthDescriptions;
 	}	
 	
+	public String getShowDetails() {
+		return _showDetails;
+	}
+
+	public void setShowDetails(String showDetails) {
+		this._showDetails = showDetails;
+	}
+
+	public String getStrengthIndicatorType() {
+		return _strengthIndicatorType;
+	}
+
+	public void setStrengthIndicatorType(String strengthIndicatorType) {
+		this._strengthIndicatorType = strengthIndicatorType;
+	}	
+	
 	//Attributes ...
 	private String _preferredPasswordLength;
 	private String _textStrengthDescriptions;
 	private String _prefixText;
+	private String _showDetails;
+	private String _strengthIndicatorType;
 }

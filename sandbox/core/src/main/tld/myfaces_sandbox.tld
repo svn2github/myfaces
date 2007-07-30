@@ -1697,24 +1697,38 @@ Sandbox-related entities.
 	&standard_input_text_attributes;
       <attribute> 
          <name>preferredPasswordLength</name>    
-	  <required>true</required>          
-          <rtexprvalue>true</rtexprvalue>
-	  <type>java.lang.String</type>
-	  <description>The prefered length of the password</description>         
+	     <required>true</required>          
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	     <description>The prefered length of the password</description>         
       </attribute>
       <attribute> 
          <name>textStrengthDescriptions</name>    
-	  <required>false</required>          
-          <rtexprvalue>true</rtexprvalue>
-	  <type>java.lang.String</type>
-	  <description>The text strength descriptions</description>         
+	     <required>false</required>          
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	     <description>The text strength descriptions</description>         
       </attribute>      
       <attribute> 
          <name>prefixText</name>    
-	  <required>false</required>          
-          <rtexprvalue>true</rtexprvalue>
-	  <type>java.lang.String</type>
-	  <description>The prefix of the component message</description>         
-      </attribute>                  
+	  	 <required>false</required>          
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	     <description>The prefix of the component message</description>         
+      </attribute>
+      <attribute> 
+         <name>showDetails</name>    
+	  	 <required>false</required>          
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	      <description>This flag {true | false} determines whether to show the details (left characters). default is true</description>         
+      </attribute>  
+      <attribute> 
+         <name>strengthIndicatorType</name>    
+	  	 <required>false</required>          
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	      <description>This flag determines the indicator type. It can be {text or bar}. Default is text</description>         
+      </attribute>                               
   </tag>
 </taglib>
