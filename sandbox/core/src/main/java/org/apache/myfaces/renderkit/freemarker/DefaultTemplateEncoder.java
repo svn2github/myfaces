@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.render.Renderer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,10 +41,10 @@ public class DefaultTemplateEncoder implements TemplateEncoder {
 
     private static final Log log = LogFactory.getLog(DefaultTemplateEncoder.class);
 
-    public void encodeTemplate(FacesContext context, UIComponent component, String template, Object dataModel) throws IOException {
+    public void encodeTemplate(FacesContext context, UIComponent component, Renderer renderer, String template, Object dataModel) throws IOException {
             Configuration cfg = new Configuration();
         log.info("Encoding template : " + getClass().getResource(template));
-        TemplateLoader templateLoader = new ClassTemplateLoader(getClass(), template);
+        TemplateLoader templateLoader = new ClassTemplateLoader(renderer.getClass(), template);
         cfg.setTemplateLoader(templateLoader);
         cfg.setObjectWrapper(new DefaultObjectWrapper());
         Template temp = cfg.getTemplate(template);

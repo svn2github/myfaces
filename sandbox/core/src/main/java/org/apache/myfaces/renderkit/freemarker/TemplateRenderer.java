@@ -88,7 +88,7 @@ public abstract class TemplateRenderer extends Renderer
             }
         }
 
-        templateEncoder.encodeTemplate(context, component, template, getDatamodel(context, component));
+        templateEncoder.encodeTemplate(context, component, this, template, getDatamodel(context, component));
     }
     
     protected abstract Object getDatamodel(FacesContext context, UIComponent component);
