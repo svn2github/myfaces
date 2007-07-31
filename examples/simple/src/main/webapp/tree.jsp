@@ -30,38 +30,10 @@
 <%@include file="inc/head.inc" %>
 
 <body>
-
-<%
-   if (pageContext.getAttribute("treeModel", PageContext.SESSION_SCOPE) == null) {
-      DefaultMutableTreeNode root = new DefaultMutableTreeNode("XY");
-      DefaultMutableTreeNode a = new DefaultMutableTreeNode("A");
-      root.insert(a);
-      DefaultMutableTreeNode b = new DefaultMutableTreeNode("B");
-      root.insert(b);
-      DefaultMutableTreeNode c = new DefaultMutableTreeNode("C");
-      root.insert(c);
-
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode("a1");
-      a.insert(node);
-      node = new DefaultMutableTreeNode("a2 ");
-      a.insert(node);
-      node = new DefaultMutableTreeNode("b ");
-      b.insert(node);
-
-      a = node;
-      node = new DefaultMutableTreeNode("x1");
-      a.insert(node);
-      node = new DefaultMutableTreeNode("x2");
-      a.insert(node);
-
-      pageContext.setAttribute("treeModel", new DefaultTreeModel(root), PageContext.SESSION_SCOPE);
-   }
-%>
-
 <f:view>
 
     <h:form>
-        <t:tree id="tree" value="#{treeModel}"
+        <t:tree id="tree" value="#{tree1Backer.treeModel}"
             styleClass="tree"
             nodeClass="treenode"
             selectedNodeClass="treenodeSelected"
