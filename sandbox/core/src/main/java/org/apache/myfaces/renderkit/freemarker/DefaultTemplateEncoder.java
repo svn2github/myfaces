@@ -44,7 +44,8 @@ public class DefaultTemplateEncoder implements TemplateEncoder {
 
     public void encodeTemplate(FacesContext context, UIComponent component, Renderer renderer, String template, Object dataModel) throws IOException {
             Configuration cfg = new Configuration();
-        log.info("Encoding template : " + renderer.getClass().getResource(TEMPLATE_DIRECTORY+"/"+template));
+        if(log.isDebugEnabled())
+            log.debug("Encoding template : " + renderer.getClass().getResource(TEMPLATE_DIRECTORY+"/"+template));
         TemplateLoader templateLoader = new ClassTemplateLoader(renderer.getClass(), TEMPLATE_DIRECTORY);
         cfg.setTemplateLoader(templateLoader);
         cfg.setObjectWrapper(new DefaultObjectWrapper());
