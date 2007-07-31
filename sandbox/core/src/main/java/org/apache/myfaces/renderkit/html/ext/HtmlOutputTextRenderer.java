@@ -25,7 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.renderkit.freemarker.TemplateRenderer;
+import org.apache.myfaces.renderkit.template.TemplateRenderer;
 
 public class HtmlOutputTextRenderer extends TemplateRenderer {
 

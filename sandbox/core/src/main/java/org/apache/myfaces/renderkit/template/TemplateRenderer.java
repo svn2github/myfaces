@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.renderkit.freemarker;
+package org.apache.myfaces.renderkit.template;
 
 import java.io.IOException;
 
@@ -73,7 +73,7 @@ public abstract class TemplateRenderer extends Renderer
                     context.getExternalContext().getInitParameter(TEMPLATE_ENCODER_ENCODER_CLASS);
 
             if(className == null) {
-                className = "org.apache.myfaces.renderkit.freemarker.DefaultTemplateEncoder";
+                className = "org.apache.myfaces.renderkit.template.DefaultTemplateEncoder";
             }
 
             try {
