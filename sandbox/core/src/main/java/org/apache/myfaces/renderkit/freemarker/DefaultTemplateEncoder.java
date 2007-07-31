@@ -40,12 +40,12 @@ import freemarker.template.TemplateException;
 public class DefaultTemplateEncoder implements TemplateEncoder {
 
     private static final Log log = LogFactory.getLog(DefaultTemplateEncoder.class);
-    private static final String TEMPLATE_DIRECTORY = "template/";
+    private static final String TEMPLATE_DIRECTORY = "template";
 
     public void encodeTemplate(FacesContext context, UIComponent component, Renderer renderer, String template, Object dataModel) throws IOException {
             Configuration cfg = new Configuration();
-        log.info("Encoding template : " + getClass().getResource(template));
-        TemplateLoader templateLoader = new ClassTemplateLoader(renderer.getClass(), TEMPLATE_DIRECTORY +template);
+        log.info("Encoding template : " + renderer.getClass().getResource(TEMPLATE_DIRECTORY+"/"+template));
+        TemplateLoader templateLoader = new ClassTemplateLoader(renderer.getClass(), TEMPLATE_DIRECTORY);
         cfg.setTemplateLoader(templateLoader);
         cfg.setObjectWrapper(new DefaultObjectWrapper());
         Template temp = cfg.getTemplate(template);
