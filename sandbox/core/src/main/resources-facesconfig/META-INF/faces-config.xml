@@ -337,11 +337,12 @@
     <render-kit-id>HTML_BASIC</render-kit-id>
 
     <!-- extended standard renderers -->
-     <renderer>
+     <!-- todo: reenable this on purpose - I don't want freemarker in by default for all outputText's...
+     renderer>
      	<component-family>javax.faces.Output</component-family>
      	<renderer-type>javax.faces.Text</renderer-type>
      	<renderer-class>org.apache.myfaces.renderkit.html.ext.HtmlOutputTextRenderer</renderer-class>
-     </renderer>
+     </renderer-->
     
      <renderer>
          <component-family>javax.faces.Form</component-family>
