@@ -124,7 +124,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
         out.endElement(HTML.DIV_ELEM);
 
-		String textInputId = inputSuggestAjax.getId();
+        String textInputId = inputSuggestAjax.getClientId(context);
 		if (label != null)
 		{
 			// whe have a label method and thus a hidden input field holding the real value
@@ -139,7 +139,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 				// fake a submitted value so we have it rendered
 				inputSuggestAjax.setSubmittedValue(label);
 
-				textInputId = inputSuggestAjax.getClientId(context);
 				super.encodeEnd(context, inputSuggestAjax);
 			}
 			finally
