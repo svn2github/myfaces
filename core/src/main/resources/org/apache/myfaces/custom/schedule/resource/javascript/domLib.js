@@ -509,22 +509,40 @@ function domLib_clearTimeout(in_id)
 // }}}
 // {{{ domLib_getEventPosition()
 
+/**Keep track of the scroll values for IE outside of the mouseposition
+ * method, as calling doc.scrollLeft and doc.scrollTop will interfear with the css :hover and 
+ * will invalidate :hover for a split second causing a flicker. Now doc.scrollLeft and doc.scrollTop
+ * will only be called on a scroll fixing almost all situations in which this flicker will occur
+ */
+var domLib_IE_scrollLeft = 0;
+var domLib_IE_scrollTop = 0;
+if (domLib_isIE)
+{
+	window.onscroll = function(in_event)
+	{
+		if (typeof(in_event) == 'undefined')
+        	{
+            		in_event = event;
+        	}
+		var doc = (domLib_standardsMode ? document.documentElement : document.body);
+		domLib_IE_scrollLeft = doc.scrollLeft;
+		domLib_IE_scrollTop = doc.scrollTop;
+	}
+}
+
 function domLib_getEventPosition(in_eventObj)
 {
+	if(event.type != 'mousemove')
+		alert('event.type: ' + in_eventObj.type);
 	var eventPosition = new Hash('x', 0, 'y', 0, 'scrollX', 0, 'scrollY', 0);
-
 	// IE varies depending on standard compliance mode
 	if (domLib_isIE)
 	{
-		var doc = (domLib_standardsMode ? document.documentElement : document.body);
 		// NOTE: events may fire before the body has been loaded
-		if (doc)
-		{
-			eventPosition.set('x', in_eventObj.clientX + doc.scrollLeft);
-			eventPosition.set('y', in_eventObj.clientY + doc.scrollTop);
-			eventPosition.set('scrollX', doc.scrollLeft);
-			eventPosition.set('scrollY', doc.scrollTop);
-		}
+		eventPosition.set('x', in_eventObj.clientX + domLib_IE_scrollLeft);
+		eventPosition.set('y', in_eventObj.clientY + domLib_IE_scrollTop);
+		eventPosition.set('scrollX', domLib_IE_scrollLeft);
+		eventPosition.set('scrollY', domLib_IE_scrollTop);
 	}
 	else
 	{
@@ -533,7 +551,6 @@ function domLib_getEventPosition(in_eventObj)
 		eventPosition.set('scrollX', in_eventObj.pageX - in_eventObj.clientX);
 		eventPosition.set('scrollY', in_eventObj.pageY - in_eventObj.clientY);
 	}
-
 	return eventPosition;
 }
 
