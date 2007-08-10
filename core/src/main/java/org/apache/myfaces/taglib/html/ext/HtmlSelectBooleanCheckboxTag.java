@@ -19,6 +19,7 @@
 package org.apache.myfaces.taglib.html.ext;
 
 import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlSelectBooleanCheckboxTagBase;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.html.ext.HtmlSelectBooleanCheckbox;
@@ -49,6 +50,8 @@ public class HtmlSelectBooleanCheckboxTag
     private String _displayValueOnly;
 	private String _displayValueOnlyStyle;
 	private String _displayValueOnlyStyleClass;
+	
+	private String _escape;
 
     public void release() {
         super.release();
@@ -58,6 +61,7 @@ public class HtmlSelectBooleanCheckboxTag
         _displayValueOnly=null;
         _displayValueOnlyStyle=null;
         _displayValueOnlyStyleClass=null;
+        _escape = null;
    }
 
     protected void setProperties(UIComponent component)
@@ -69,6 +73,12 @@ public class HtmlSelectBooleanCheckboxTag
         setBooleanProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_ATTR, _displayValueOnly);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_ATTR, _displayValueOnlyStyle);
         setStringProperty(component, DisplayValueOnlyCapable.DISPLAY_VALUE_ONLY_STYLE_CLASS_ATTR, _displayValueOnlyStyleClass);
+        setBooleanProperty(component, JSFAttr.ESCAPE_ATTR, _escape);
+    }
+
+    public void setEscape(String escape)
+    {
+        _escape = escape;
     }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)

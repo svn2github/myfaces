@@ -21,6 +21,7 @@ package org.apache.myfaces.custom.newspaper;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.el.ValueBinding;
 
 /**
  * Model for a table in multiple balanced columns.
@@ -38,8 +39,10 @@ public class HtmlNewspaperTable
     public static final String NEWSPAPER_COLUMNS_PROPERTY = "newspaperColumns";
     public static final String SPACER_FACET_NAME = "spacer";
     
+    private static final Integer DEFAULT_NEWSPAPER_COLUMNS = new Integer(1);
+
     /** the value of the column count property */
-    private int newspaperColumns = 1;
+    private Integer newspaperColumns = null;
 
     public HtmlNewspaperTable() {
         setRendererType(RENDERER_TYPE);
@@ -49,10 +52,14 @@ public class HtmlNewspaperTable
      * Set the number of columns the table will be divided over.
      */
     public int getNewspaperColumns() {
-        return newspaperColumns;
+        if (newspaperColumns != null) return newspaperColumns.intValue();
+        ValueBinding vb = getValueBinding(NEWSPAPER_COLUMNS_PROPERTY);
+		Integer v = vb != null ? (Integer)vb.getValue(getFacesContext()) : DEFAULT_NEWSPAPER_COLUMNS;
+		return v.intValue();
     }
+
     public void setNewspaperColumns(int newspaperColumns) {
-        this.newspaperColumns = newspaperColumns;
+        this.newspaperColumns = new Integer(newspaperColumns);
     }
     
     /**
@@ -68,13 +75,13 @@ public class HtmlNewspaperTable
     public Object saveState(FacesContext context) {
         Object values[] = new Object[2];
         values[0] = super.saveState(context);
-        values[1] = new Integer(newspaperColumns);
+        values[1] = newspaperColumns;
         return values;
     }
     
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        newspaperColumns = ((Integer)values[1]).intValue();
+        newspaperColumns = (Integer)values[1];
     }
 }

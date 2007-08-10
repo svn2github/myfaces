@@ -53,7 +53,6 @@ public class HtmlCommandLink
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCommandLink";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Link";
 
-    private String _target = null;
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private String _actionFor = null;
@@ -66,18 +65,6 @@ public class HtmlCommandLink
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-
-    public void setTarget(String target)
-    {
-        _target = target;
-    }
-
-    public String getTarget()
-    {
-        if (_target != null) return _target;
-        ValueBinding vb = getValueBinding("target");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
 
     public void setEnabledOnUserRole(String enabledOnUserRole)
     {
@@ -160,15 +147,14 @@ public class HtmlCommandLink
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[8];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
-        values[1] = _target;
-        values[2] = _enabledOnUserRole;
-        values[3] = _visibleOnUserRole;
-        values[4] = _actionFor;
-        values[5] = _disabled;
-        values[6] = _disabledStyle;
-        values[7] = _disabledStyleClass;
+        values[1] = _enabledOnUserRole;
+        values[2] = _visibleOnUserRole;
+        values[3] = _actionFor;
+        values[4] = _disabled;
+        values[5] = _disabledStyle;
+        values[6] = _disabledStyleClass;
         return values;
     }
 
@@ -176,13 +162,12 @@ public class HtmlCommandLink
     {
         Object values[] = (Object[])state;
         super.restoreState(context, values[0]);
-        _target = (String)values[1];
-        _enabledOnUserRole = (String)values[2];
-        _visibleOnUserRole = (String)values[3];
-        _actionFor = (String)values[4];
-        _disabled = (Boolean) values[5];
-        _disabledStyle = (String) values[6];
-        _disabledStyleClass = (String) values[7];
+        _enabledOnUserRole = (String)values[1];
+        _visibleOnUserRole = (String)values[2];
+        _actionFor = (String)values[3];
+        _disabled = (Boolean) values[4];
+        _disabledStyle = (String) values[5];
+        _disabledStyleClass = (String) values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

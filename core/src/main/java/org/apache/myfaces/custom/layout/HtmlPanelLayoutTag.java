@@ -121,7 +121,7 @@ public class HtmlPanelLayoutTag
 
         setStringProperty(component, HTML.ALIGN_ATTR, _align);
         setStringProperty(component, HTML.BGCOLOR_ATTR, _bgcolor);
-        setStringProperty(component, HTML.BORDER_ATTR, _border);
+        setIntegerProperty(component, HTML.BORDER_ATTR, _border);
         setStringProperty(component, HTML.CELLPADDING_ATTR, _cellpadding);
         setStringProperty(component, HTML.CELLSPACING_ATTR, _cellspacing);
         setStringProperty(component, HTML.DATAFLD_ATTR, _datafld);

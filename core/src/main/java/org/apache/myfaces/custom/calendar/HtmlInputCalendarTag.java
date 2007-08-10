@@ -34,14 +34,8 @@ public class HtmlInputCalendarTag
     private String _accesskey;
     private String _align;
     private String _alt;
-    private String _disabled;
     private String _maxlength;
-    private String _onblur;
-    private String _onchange;
-    private String _onfocus;
-    private String _onselect;
     private String _size;
-    private String _tabindex;
     //private static final Log log = LogFactory.getLog(HtmlInputCalendarTag.class);
 
     public String getComponentType()
@@ -135,14 +129,8 @@ public class HtmlInputCalendarTag
         setStringProperty(component, HTML.ACCESSKEY_ATTR, _accesskey);
         setStringProperty(component, HTML.ALIGN_ATTR, _align);
         setStringProperty(component, HTML.ALT_ATTR, _alt);
-        setBooleanProperty(component, HTML.DISABLED_ATTR, _disabled);
         setIntegerProperty(component, HTML.MAXLENGTH_ATTR, _maxlength);
-        setStringProperty(component, HTML.ONBLUR_ATTR, _onblur);
-        setStringProperty(component, HTML.ONCHANGE_ATTR, _onchange);
-        setStringProperty(component, HTML.ONFOCUS_ATTR, _onfocus);
-        setStringProperty(component, HTML.ONSELECT_ATTR, _onselect);
         setIntegerProperty(component, HTML.SIZE_ATTR, _size);
-        setStringProperty(component, HTML.TABINDEX_ATTR, _tabindex);
 
 
         setStringProperty(component, "monthYearRowClass", _monthYearRowClass);
@@ -320,34 +308,9 @@ public class HtmlInputCalendarTag
         _alt = alt;
     }
 
-    public void setDisabled(String disabled)
-    {
-        _disabled = disabled;
-    }
-
     public void setMaxlength(String maxlength)
     {
         _maxlength = maxlength;
-    }
-
-    public void setOnblur(String onblur)
-    {
-        _onblur = onblur;
-    }
-
-    public void setOnchange(String onchange)
-    {
-        _onchange = onchange;
-    }
-
-    public void setOnfocus(String onfocus)
-    {
-        _onfocus = onfocus;
-    }
-
-    public void setOnselect(String onselect)
-    {
-        _onselect = onselect;
     }
 
     public void setSize(String size)
@@ -355,8 +318,4 @@ public class HtmlInputCalendarTag
         _size = size;
     }
 
-    public void setTabindex(String tabindex)
-    {
-        _tabindex = tabindex;
-    }
 }

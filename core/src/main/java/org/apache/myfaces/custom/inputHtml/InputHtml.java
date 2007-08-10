@@ -41,9 +41,6 @@ public class InputHtml extends HtmlInputText {
 
     private static final Log log = LogFactory.getLog(HtmlInputText.class);
 
-    private String _style;
-    private String _styleClass;
-
 	private String _fallback;
     private String _type;
 
@@ -64,27 +61,21 @@ public class InputHtml extends HtmlInputText {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[5];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
-
-        String[] display = new String[2];
-        display[0] = _style;
-        display[1] = _styleClass;
-
-        values[1] = display;
 
 		String[] types = new String[2];
 		types[0] = _fallback;
 		types[1] = _type;
 
-        values[2] = types;
+        values[1] = types;
 
         Boolean toolBarButtons[] = new Boolean[3];
         toolBarButtons[0] = _allowEditSource;
         toolBarButtons[1] = _allowExternalLinks;
         toolBarButtons[2] = _addKupuLogo;
 
-        values[3] = toolBarButtons;
+        values[2] = toolBarButtons;
 
         Boolean toolBoxes[] = new Boolean[7];
 		toolBoxes[0] = _showAllToolBoxes;
@@ -95,7 +86,7 @@ public class InputHtml extends HtmlInputText {
 		toolBoxes[5] = _showCleanupExpressionsToolBox;
         toolBoxes[6] = _showDebugToolBox;
 
-        values[4] = toolBoxes;
+        values[3] = toolBoxes;
 
         return values;
     }
@@ -104,20 +95,16 @@ public class InputHtml extends HtmlInputText {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
 
-        String[] display = (String[]) values[1];
-        _style = display[0];
-        _styleClass = display[1];
-
-		String[] types = (String[]) values[2];
+		String[] types = (String[]) values[1];
 		_fallback = types[0];
         _type = types[1];
 
-        Boolean[] toolBarButtons = (Boolean[]) values[3];
+        Boolean[] toolBarButtons = (Boolean[]) values[2];
         _allowEditSource = toolBarButtons[0];
         _allowExternalLinks = toolBarButtons[1];
         _addKupuLogo = toolBarButtons[2];
 
-        Boolean[] toolBoxes = (Boolean[]) values[4];
+        Boolean[] toolBoxes = (Boolean[]) values[3];
 		_showAllToolBoxes = toolBoxes[0];
         _showPropertiesToolBox = toolBoxes[1];
         _showLinksToolBox = toolBoxes[2];
@@ -125,26 +112,6 @@ public class InputHtml extends HtmlInputText {
         _showTablesToolBox = toolBoxes[4];
 		_showCleanupExpressionsToolBox = toolBoxes[5];
         _showDebugToolBox = toolBoxes[6];
-    }
-
-    public String getStyle(){
-   		if (_style != null)
-   		    return _style;
-    	ValueBinding vb = getValueBinding("style");
-   		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
-    public void setStyle(String style){
-   		this._style = style;
-    }
-
-    public String getStyleClass(){
-   		if (_styleClass != null)
-   		    return _styleClass;
-    	ValueBinding vb = getValueBinding("styleClass");
-   		return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
-    public void setStyleClass(String styleClass){
-   		this._styleClass = styleClass;
     }
 
     public String getFallback(){

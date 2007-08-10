@@ -265,11 +265,13 @@ public class HtmlCollapsiblePanel extends UIInput
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[4];
+        Object values[] = new Object[6];
         values[0] = super.saveState(context);
         values[1] = _title;
         values[2] = _var;
         values[3] = _titleVar;
+        values[4] = _style;
+        values[5] = _styleClass;
         return ((Object) (values));
     }
 
@@ -280,6 +282,8 @@ public class HtmlCollapsiblePanel extends UIInput
         _title = (String)values[1];
         _var = (String)values[2];
         _titleVar = (String) values[3];
+        _style = (String)values[4];
+        _styleClass = (String)values[5];
     }
 
     public void setCurrentlyCollapsed(boolean collapsed)

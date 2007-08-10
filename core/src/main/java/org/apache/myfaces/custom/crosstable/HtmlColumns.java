@@ -104,7 +104,7 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
     }
 
     public String getWidth() {
-        return _width;
+    	return (String) getLocalOrValueBindingValue(_width, "width");
     }
 
     public void setWidth(String width) {

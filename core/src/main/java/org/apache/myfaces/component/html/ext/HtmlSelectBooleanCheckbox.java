@@ -151,13 +151,14 @@ public class HtmlSelectBooleanCheckbox
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
         values[3] = _displayValueOnly;
         values[4] = _displayValueOnlyStyle;
         values[5] = _displayValueOnlyStyleClass;
+        values[6] = _escape;
         return ((Object) (values));
     }
 
@@ -170,6 +171,7 @@ public class HtmlSelectBooleanCheckbox
         _displayValueOnly = (Boolean)values[3];
         _displayValueOnlyStyle = (String)values[4];
         _displayValueOnlyStyleClass = (String)values[5];
+        _escape = (Boolean)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

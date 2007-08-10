@@ -53,6 +53,9 @@ public class HtmlPanelGridTag
         super.release();
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _displayValueOnly = null;
+        _displayValueOnlyStyle = null;
+        _displayValueOnlyStyleClass = null;
    }
 
     protected void setProperties(UIComponent component)

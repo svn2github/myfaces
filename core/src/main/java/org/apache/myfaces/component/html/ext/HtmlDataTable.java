@@ -57,6 +57,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     private static final boolean DEFAULT_SORTABLE = false;
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
+    private static final Integer DEFAULT_NEWSPAPER_COLUMNS = new Integer(1);
+    private static final String DEFAULT_NEWSPAPER_ORIENTATION = "vertical";
+
     /**
      * the property names
      */
@@ -67,7 +70,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     /**
      * the value of the column count property
      */
-    private int _newspaperColumns = 1;
+    private Integer _newspaperColumns = null;
     /**
      * the value of the newspaper orientation property
      */
@@ -817,7 +820,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         values[30] = _sortedColumnVar;
         values[31] = new Integer(_sortColumnIndex);
 
-        values[32] = new Integer(_newspaperColumns);
+        values[32] = _newspaperColumns;
         values[33] = _newspaperOrientation;
         values[34] = _bodyStyle;
         values[35] = _bodyStyleClass;
@@ -949,7 +952,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         _rowGroupStyleClass = (String) values[29];
         _sortedColumnVar = (String) values[30];
         _sortColumnIndex = values[31] != null ? ((Integer) values[31]).intValue() : -1;
-        _newspaperColumns = ((Integer) values[32]).intValue();
+        _newspaperColumns = (Integer) values[32];
         _newspaperOrientation = (String) values[33];
         _bodyStyle = (String) values[34];
         _bodyStyleClass = (String) values[35];
@@ -1327,7 +1330,10 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     public String getVarDetailToggler()
     {
-        return _varDetailToggler;
+        if (_varDetailToggler != null)
+            return _varDetailToggler;
+        ValueBinding vb = getValueBinding("varDetailToggler");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     public String getRowGroupStyle()
@@ -1433,14 +1439,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     /**
      * Set the number of columns the table will be divided over.
      */
-    public int getNewspaperColumns()
-    {
-        return _newspaperColumns;
+    public int getNewspaperColumns() {
+        if (_newspaperColumns != null) return _newspaperColumns.intValue();
+        ValueBinding vb = getValueBinding(NEWSPAPER_COLUMNS_PROPERTY);
+		Integer v = vb != null ? (Integer)vb.getValue(getFacesContext()) : DEFAULT_NEWSPAPER_COLUMNS;
+		return v.intValue();
     }
 
     public void setNewspaperColumns(int newspaperColumns)
     {
-        this._newspaperColumns = newspaperColumns;
+        this._newspaperColumns = new Integer(newspaperColumns);
     }
 
     /**
@@ -1451,10 +1459,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         this._newspaperOrientation = newspaperOrientation;
     }
 
-    public String getNewspaperOrientation()
-    {
-        return _newspaperOrientation;
-    }
+	public String getNewspaperOrientation() {
+		if(_newspaperOrientation != null)
+			return _newspaperOrientation;
+		
+		ValueBinding vb = getValueBinding(NEWSPAPER_ORIENTATION_PROPERTY);
+		String v = vb != null ? (String)vb.getValue(getFacesContext()) : DEFAULT_NEWSPAPER_ORIENTATION;
+		return v;
+	}
 
     /**
      * Gets the spacer facet, between each pair of newspaper columns.

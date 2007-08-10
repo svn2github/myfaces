@@ -63,6 +63,12 @@ public class HtmlNavigationMenuItemTag extends SelectItemTagBase
         _enabledOnUserRole= null;
         _visibleOnUserRole= null;
         _activeOnViewIds = null;
+        _actionListener = null;
+        _immediate = null;
+        _target = null;
+        _disabled = null;
+        _disabledStyle = null;
+        _disabledStyleClass = null;
     }
 
     public String getComponentType()

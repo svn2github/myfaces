@@ -202,12 +202,14 @@ public class HtmlSelectOneRadio
     public static final String DEFAULT_RENDERER_TYPE ="org.apache.myfaces.Radio";
 
     private static final boolean DEFAULT_DISPLAYVALUEONLY = false;
+    private static final boolean DEFAULT_ESCAPE = true;
 
     private String _enabledOnUserRole = null;
     private String _visibleOnUserRole = null;
     private Boolean _displayValueOnly = null;
     private String _displayValueOnlyStyle = null;
     private String _displayValueOnlyStyleClass = null;
+    private Boolean _escape = null;
 
     public HtmlSelectOneRadio()
     {
@@ -277,6 +279,19 @@ public class HtmlSelectOneRadio
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
 
+    public void setEscape(boolean escape)
+    {
+        _escape = Boolean.valueOf(escape);
+    }
+
+    public boolean isEscape()
+    {
+        if (_escape != null) return _escape.booleanValue();
+        ValueBinding vb = getValueBinding("escape");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_ESCAPE;
+    }
+
     public boolean isRendered()
     {
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
@@ -285,13 +300,14 @@ public class HtmlSelectOneRadio
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
         values[3] = _displayValueOnly;
         values[4] = _displayValueOnlyStyle;
         values[5] = _displayValueOnlyStyleClass;
+        values[6] = _escape;
         return ((Object) (values));
     }
 
@@ -304,6 +320,7 @@ public class HtmlSelectOneRadio
         _displayValueOnly = (Boolean)values[3];
         _displayValueOnlyStyle = (String)values[4];
         _displayValueOnlyStyleClass = (String)values[5];
+        _escape = (Boolean)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

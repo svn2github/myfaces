@@ -44,6 +44,8 @@ public class HtmlPanelNavigation
 {
     private static final Log log = LogFactory.getLog(HtmlPanelNavigation.class);
 
+    private static final int DEFAULT_BORDER = Integer.MIN_VALUE;
+
     private static final String PREVIOUS_VIEW_ROOT = HtmlPanelNavigation.class.getName() + ".PREVIOUS_VIEW_ROOT";
     private boolean _itemOpenActiveStatesRestored = false;
 
@@ -119,6 +121,32 @@ public class HtmlPanelNavigation
             }
         }
     }
+
+    // HTML table attributes
+    private String _align;
+    private String _bgcolor;
+    private Integer _border;
+    private String _cellpadding;
+    private String _cellspacing;
+    private String _frame;
+    private String _rules;
+    private String _summary;
+    private String _width;
+
+    // HTML standard attributes
+    private String _dir = null;
+    private String _lang = null;
+    private String _onclick = null;
+    private String _ondblclick = null;
+    private String _onkeydown = null;
+    private String _onkeypress = null;
+    private String _onkeyup = null;
+    private String _onmousedown = null;
+    private String _onmousemove = null;
+    private String _onmouseout = null;
+    private String _onmouseover = null;
+    private String _onmouseup = null;
+    private String _title = null;
 
     //------------------ GENERATED CODE BEGIN (do not modify!) --------------------
 
@@ -244,7 +272,7 @@ public class HtmlPanelNavigation
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[9];
+        Object values[] = new Object[31];
         values[0] = super.saveState(context);
         values[1] = _itemClass;
         values[2] = _openItemClass;
@@ -254,6 +282,28 @@ public class HtmlPanelNavigation
         values[6] = _openItemStyle;
         values[7] = _activeItemStyle;
         values[8] = _separatorStyle;
+        values[9] = _title;
+        values[10] = _align;
+        values[11] = _bgcolor;
+        values[12] = _border;
+        values[13] = _cellpadding;
+        values[14] = _cellspacing;
+        values[15] = _frame;
+        values[16] = _rules;
+        values[17] = _summary;
+        values[18] = _width;
+        values[19] = _dir;
+        values[20] = _lang;
+        values[21] = _onclick;
+        values[22] = _ondblclick;
+        values[23] = _onkeydown;
+        values[24] = _onkeypress;
+        values[25] = _onkeyup;
+        values[26] = _onmousedown;
+        values[27] = _onmousemove;
+        values[28] = _onmouseout;
+        values[29] = _onmouseover;
+        values[30] = _onmouseup;
         return ((Object) (values));
     }
 
@@ -269,6 +319,293 @@ public class HtmlPanelNavigation
         _openItemStyle = (String)values[6];
         _activeItemStyle = (String)values[7];
         _separatorStyle = (String)values[8];
+        _title = (String)values[9];
+        _align = (String)values[10];
+        _bgcolor = (String)values[11];
+        _border = (Integer)values[12];
+        _cellpadding = (String)values[13];
+        _cellspacing = (String)values[14];
+        _frame = (String)values[15];
+        _rules = (String)values[16];
+        _summary = (String)values[17];
+        _width = (String)values[18];
+        _dir = (String)values[19];
+        _lang = (String)values[20];
+        _onclick = (String)values[21];
+        _ondblclick = (String)values[22];
+        _onkeydown = (String)values[23];
+        _onkeypress = (String)values[24];
+        _onkeyup = (String)values[25];
+        _onmousedown = (String)values[26];
+        _onmousemove = (String)values[27];
+        _onmouseout = (String)values[28];
+        _onmouseover = (String)values[29];
+        _onmouseup = (String)values[30];
     }
     //------------------ GENERATED CODE END ---------------------------------------
+    public void setAlign(String align)
+    {
+        _align = align;
+    }
+
+    public String getAlign()
+    {
+        if (_align != null) return _align;
+        ValueBinding vb = getValueBinding("align");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setBgcolor(String bgcolor)
+    {
+        _bgcolor = bgcolor;
+    }
+
+    public String getBgcolor()
+    {
+        if (_bgcolor != null) return _bgcolor;
+        ValueBinding vb = getValueBinding("bgcolor");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setBorder(int border)
+    {
+        _border = new Integer(border);
+    }
+
+    public int getBorder()
+    {
+        if (_border != null) return _border.intValue();
+        ValueBinding vb = getValueBinding("border");
+        Number v = vb != null ? (Number)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.intValue() : DEFAULT_BORDER;
+    }
+
+    public void setCellpadding(String cellpadding)
+    {
+        _cellpadding = cellpadding;
+    }
+
+    public String getCellpadding()
+    {
+        if (_cellpadding != null) return _cellpadding;
+        ValueBinding vb = getValueBinding("cellpadding");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setCellspacing(String cellspacing)
+    {
+        _cellspacing = cellspacing;
+    }
+
+    public String getCellspacing()
+    {
+        if (_cellspacing != null) return _cellspacing;
+        ValueBinding vb = getValueBinding("cellspacing");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setDir(String dir)
+    {
+        _dir = dir;
+    }
+
+    public String getDir()
+    {
+        if (_dir != null) return _dir;
+        ValueBinding vb = getValueBinding("dir");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setFrame(String frame)
+    {
+        _frame = frame;
+    }
+
+    public String getFrame()
+    {
+        if (_frame != null) return _frame;
+        ValueBinding vb = getValueBinding("frame");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setLang(String lang)
+    {
+        _lang = lang;
+    }
+
+    public String getLang()
+    {
+        if (_lang != null) return _lang;
+        ValueBinding vb = getValueBinding("lang");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnclick(String onclick)
+    {
+        _onclick = onclick;
+    }
+
+    public String getOnclick()
+    {
+        if (_onclick != null) return _onclick;
+        ValueBinding vb = getValueBinding("onclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOndblclick(String ondblclick)
+    {
+        _ondblclick = ondblclick;
+    }
+
+    public String getOndblclick()
+    {
+        if (_ondblclick != null) return _ondblclick;
+        ValueBinding vb = getValueBinding("ondblclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnkeydown(String onkeydown)
+    {
+        _onkeydown = onkeydown;
+    }
+
+    public String getOnkeydown()
+    {
+        if (_onkeydown != null) return _onkeydown;
+        ValueBinding vb = getValueBinding("onkeydown");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnkeypress(String onkeypress)
+    {
+        _onkeypress = onkeypress;
+    }
+
+    public String getOnkeypress()
+    {
+        if (_onkeypress != null) return _onkeypress;
+        ValueBinding vb = getValueBinding("onkeypress");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnkeyup(String onkeyup)
+    {
+        _onkeyup = onkeyup;
+    }
+
+    public String getOnkeyup()
+    {
+        if (_onkeyup != null) return _onkeyup;
+        ValueBinding vb = getValueBinding("onkeyup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnmousedown(String onmousedown)
+    {
+        _onmousedown = onmousedown;
+    }
+
+    public String getOnmousedown()
+    {
+        if (_onmousedown != null) return _onmousedown;
+        ValueBinding vb = getValueBinding("onmousedown");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnmousemove(String onmousemove)
+    {
+        _onmousemove = onmousemove;
+    }
+
+    public String getOnmousemove()
+    {
+        if (_onmousemove != null) return _onmousemove;
+        ValueBinding vb = getValueBinding("onmousemove");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnmouseout(String onmouseout)
+    {
+        _onmouseout = onmouseout;
+    }
+
+    public String getOnmouseout()
+    {
+        if (_onmouseout != null) return _onmouseout;
+        ValueBinding vb = getValueBinding("onmouseout");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnmouseover(String onmouseover)
+    {
+        _onmouseover = onmouseover;
+    }
+
+    public String getOnmouseover()
+    {
+        if (_onmouseover != null) return _onmouseover;
+        ValueBinding vb = getValueBinding("onmouseover");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setOnmouseup(String onmouseup)
+    {
+        _onmouseup = onmouseup;
+    }
+
+    public String getOnmouseup()
+    {
+        if (_onmouseup != null) return _onmouseup;
+        ValueBinding vb = getValueBinding("onmouseup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setRules(String rules)
+    {
+        _rules = rules;
+    }
+
+    public String getRules()
+    {
+        if (_rules != null) return _rules;
+        ValueBinding vb = getValueBinding("rules");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setSummary(String summary)
+    {
+        _summary = summary;
+    }
+
+    public String getSummary()
+    {
+        if (_summary != null) return _summary;
+        ValueBinding vb = getValueBinding("summary");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setTitle(String title)
+    {
+        _title = title;
+    }
+
+    public String getTitle()
+    {
+        if (_title != null) return _title;
+        ValueBinding vb = getValueBinding("title");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setWidth(String width)
+    {
+        _width = width;
+    }
+
+    public String getWidth()
+    {
+        if (_width != null) return _width;
+        ValueBinding vb = getValueBinding("width");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
 }

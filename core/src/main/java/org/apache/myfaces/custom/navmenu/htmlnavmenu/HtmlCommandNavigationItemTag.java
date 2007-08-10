@@ -45,7 +45,16 @@ public class HtmlCommandNavigationItemTag extends HtmlCommandLinkTag {
         return HtmlNavigationMenuRenderer.RENDERER_TYPE;
     }
 
-    protected void setProperties(UIComponent component) {
+    
+	public void release() {
+		super.release();
+		_open = null;
+		_active = null;
+		_activeOnViewIds = null;
+		_externalLink = null;
+	}
+
+	protected void setProperties(UIComponent component) {
         super.setProperties(component);
 
         setBooleanProperty(component, OPEN_ATTR, _open);

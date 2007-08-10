@@ -392,6 +392,7 @@ public class TreeTag extends UIComponentTagBase {
         selectedNodeClass = null;
         iconClass = null;
         expandRoot = false;
+        expireListeners = null;
     }
 
     /**

@@ -39,6 +39,7 @@ public class HtmlNewspaperTableTag
     public void release() {
         super.release();
         newspaperColumns = null;
+        newspaperOrientation = null;
     }
     
     public String getComponentType() {

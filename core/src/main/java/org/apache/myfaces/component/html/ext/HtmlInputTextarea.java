@@ -99,13 +99,14 @@ public class HtmlInputTextarea
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[6];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = _enabledOnUserRole;
         values[2] = _visibleOnUserRole;
         values[3] = _displayValueOnly;
         values[4] = _displayValueOnlyStyle;
         values[5] = _displayValueOnlyStyleClass;
+        values[6] = _wrap;
         return ((Object) (values));
     }
 
@@ -118,6 +119,7 @@ public class HtmlInputTextarea
         _displayValueOnly = (Boolean)values[3];
         _displayValueOnlyStyle = (String)values[4];
         _displayValueOnlyStyleClass = (String)values[5];
+        _wrap = (String)values[6];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 
@@ -159,11 +161,12 @@ public class HtmlInputTextarea
         _displayValueOnlyStyleClass = displayValueOnlyStyleClass;
     }
 
-
     public String getWrap() {
-        return _wrap;
+        if (_wrap != null) return _wrap;
+        ValueBinding vb = getValueBinding("wrap");
+		String v = vb != null ? (String)vb.getValue(getFacesContext()) : null;
+		return v;
     }
-
 
     public void setWrap(String wrap) {
         _wrap = wrap;

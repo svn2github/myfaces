@@ -61,6 +61,9 @@ public class HtmlPanelGroupTag
         _visibleOnUserRole=null;
         _colspan=null;
         _layout = null;
+        _displayValueOnly = null;
+        _displayValueOnlyStyle = null;
+        _displayValueOnlyStyleClass = null;
    }
 
     protected void setProperties(UIComponent component)

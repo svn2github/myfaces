@@ -51,6 +51,7 @@ public class HtmlJSCookMenuTag
         _theme=null;
       	_enabledOnUserRole=null;
         _visibleOnUserRole=null;
+        _immediate = null;
     }
     
     public String getComponentType()

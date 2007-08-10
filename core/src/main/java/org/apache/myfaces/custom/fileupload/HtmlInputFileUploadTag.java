@@ -64,7 +64,6 @@ public class HtmlInputFileUploadTag
     private String _onchange;
     private String _onfocus;
     private String _onselect;
-    private String _readonly;
     private String _size;
     private String _tabindex;
 
@@ -97,7 +96,6 @@ public class HtmlInputFileUploadTag
         _onchange=null;
         _onfocus=null;
         _onselect=null;
-        _readonly=null;
         _size=null;
         _tabindex=null;
         _accept=null;
@@ -122,7 +120,6 @@ public class HtmlInputFileUploadTag
         setStringProperty(component, HTML.ONCHANGE_ATTR, _onchange);
         setStringProperty(component, HTML.ONFOCUS_ATTR, _onfocus);
         setStringProperty(component, HTML.ONSELECT_ATTR, _onselect);
-        setBooleanProperty(component, HTML.READONLY_ATTR, _readonly);
         setIntegerProperty(component, HTML.SIZE_ATTR, _size);
         setStringProperty(component, HTML.TABINDEX_ATTR, _tabindex);
 
@@ -196,11 +193,6 @@ public class HtmlInputFileUploadTag
     public void setOnselect(String onselect)
     {
         _onselect = onselect;
-    }
-
-    public void setReadonly(String readonly)
-    {
-        _readonly = readonly;
     }
 
     public void setSize(String size)

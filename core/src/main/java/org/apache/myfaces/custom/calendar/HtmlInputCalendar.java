@@ -401,7 +401,7 @@ public class HtmlInputCalendar
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[26];
+        Object values[] = new Object[27];
         values[0] = super.saveState(context);
         values[1] = _monthYearRowClass;
         values[2] = _weekRowClass;
@@ -428,6 +428,7 @@ public class HtmlInputCalendar
         values[23] = _popupButtonImageUrl;
         values[24] = _helpText;
         values[25] = _popupLeft;
+        values[26] = _popupTodayDateFormat;
         return ((Object) (values));
     }
 
@@ -460,6 +461,7 @@ public class HtmlInputCalendar
         _popupButtonImageUrl = (String)values[23];
         _helpText = (String)values[24];
         _popupLeft = (Boolean)values[25];
+        _popupTodayDateFormat = (String)values[26];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

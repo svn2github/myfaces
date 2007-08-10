@@ -59,6 +59,9 @@ public class HtmlCommandLinkTag
         _enabledOnUserRole=null;
         _visibleOnUserRole=null;
         _actionFor = null;
+        _disabled = null;
+        _disabledStyle = null;
+        _disabledStyleClass = null;
     }
 
     protected void setProperties(UIComponent component)

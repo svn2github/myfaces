@@ -442,7 +442,7 @@ public class HtmlDataList
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[17];
+        Object values[] = new Object[18];
         values[0] = super.saveState(context);
         values[1] = _layout;
         values[2] = _rowIndexVar;
@@ -460,6 +460,7 @@ public class HtmlDataList
         values[14] = _style;
         values[15] = _styleClass;
         values[16] = _title;
+        values[17] = _itemStyleClass;
         return values;
     }
 
@@ -483,6 +484,7 @@ public class HtmlDataList
         _style = (String)values[14];
         _styleClass = (String)values[15];
         _title = (String)values[16];
+        _itemStyleClass = (String)values[17];
     }
     //------------------ GENERATED CODE END ---------------------------------------
 }

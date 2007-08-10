@@ -70,7 +70,6 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     private IconProvider iconProvider;
     private boolean itemStatesRestored = false;
     private String var;
-    private String styleClass;
     private String nodeClass;
     private String rowClasses;
     private String columnClasses;
@@ -151,7 +150,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
      */
     public String getVar()
     {
-        return var;
+        return getStringValue(var, "var");
     }
 
 
@@ -333,18 +332,6 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     public void setIconNodeCloseLast(String iconNodeCloseLast)
     {
         this.iconNodeCloseLast = iconNodeCloseLast;
-    }
-
-
-    public String getStyleClass()
-    {
-        return getStringValue(styleClass, "styleClass");
-    }
-
-
-    public void setStyleClass(String styleClass)
-    {
-        this.styleClass = styleClass;
     }
 
 
@@ -587,7 +574,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
 
     public Object saveState(FacesContext context)
     {
-        Object values[] = new Object[25];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = iconChildFirst;
         values[2] = iconChildMiddle;
@@ -602,7 +589,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         values[11] = iconNodeOpenLast;
         values[12] = iconNodeOpenMiddle;
         values[13] = iconNoline;
-        values[14] = styleClass;
+        values[14] = var;
         values[15] = nodeClass;
         values[16] = selectedNodeClass;
         values[17] = new Integer(uniqueIdCounter);
@@ -612,7 +599,6 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         values[21] = expireListeners;
         values[22] = rowClasses;
         values[23] = columnClasses;
-        values[24] = var;
         return ((Object) (values));
     }
 
@@ -634,7 +620,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         iconNodeOpenLast = (String) values[11];
         iconNodeOpenMiddle = (String) values[12];
         iconNoline = (String) values[13];
-        styleClass = (String) values[14];
+        var = (String) values[14];
         nodeClass = (String) values[15];
         selectedNodeClass = (String) values[16];
         uniqueIdCounter = ((Integer) values[17]).intValue();
@@ -644,7 +630,6 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         expireListeners = (Long) values[21];
         rowClasses = (String) values[22];
         columnClasses = (String) values[23];
-        var = (String) values[24];
         addToModelListeners();
     }
 
