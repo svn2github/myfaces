@@ -170,13 +170,15 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 	    
 	    var componentUpdate = null;
 	    var domElement = null;
-		for (var i = 0; i < componentUpdates.length; i++)
-		{
-			componentUpdate = componentUpdates[i];
-			domElement = dojo.byId(componentUpdate.getAttribute("id"));
-			//todo - doesn't work with tables in IE (not used for tables at the moment)
-			domElement.innerHTML = componentUpdate.firstChild.data;
-		}
+		
+      for (var i = 0; i < componentUpdates.length; i++)
+		  {
+  			componentUpdate = componentUpdates[i];
+  			domElement = dojo.byId(componentUpdate.getAttribute("id"));
+  			//todo - doesn't work with tables in IE (not used for tables at the moment)
+  			domElement.innerHTML = componentUpdate.firstChild.data;
+  		}
+  		
 	    //ensure that new buttons in the PartialUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.reConnectEventHandlers();
 
@@ -207,18 +209,22 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
             }
         }
     }
-    else if(this.showDebugMessages)
+    else
     {
-    // In case of an error during the AJAX Request do a normal form submit
-    // to enable showing a proper error page
-    this.formNode.myFacesPPRCtrl.callbackErrorHandler();
+       // In case of an error during the AJAX Request do a normal form submit
+       // to enable showing a proper error page
+       this.formNode.myFacesPPRCtrl.callbackErrorHandler();
     }
 }
 
 org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
 
-    if(!this.lastSubmittedElement) {
-		alert("An unexpected error occured during an ajax-request - page has been fully submitted!");
+    if(!this.lastSubmittedElement) 
+    {
+      if(this.showDebugMessages)
+		  { 
+          alert("An unexpected error occured during an ajax-request - page has been fully submitted!");
+      }
 		this.form.submit();
 	}
 	
