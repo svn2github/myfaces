@@ -1308,6 +1308,29 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function
     }
 }
 
+org_apache_myfaces_PopupCalendar.prototype._getStyle = function(ctl, property)
+{
+	var value = null;
+	
+	// local style
+	if (ctl.style[property]) {
+       value = ctl.style[property];
+    }
+    // IE syntax
+    else if (ctl.currentStyle && ctl.currentStyle[property]) {
+       value = ctl.currentStyle[property];
+    }
+    // DOM syntax
+    else if ( document.defaultView && document.defaultView.getComputedStyle ) {
+       var computed = document.defaultView.getComputedStyle(ctl, '');
+       
+       if (computed && computed.getPropertyValue(property)) {
+          value = computed.getPropertyValue(property);
+       }
+    }			
+	return value;
+}
+
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
 {
     this.saveSelectedDate.date = this.selectedDate.date;
@@ -1318,6 +1341,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     var toppos = 0;
 
     var aTag = ctl;
+    var aCSSPosition = null;
     var aTagPositioningisAbsolute = false;
     // Added try-catch to the next loop (MYFACES-870)
     try
@@ -1326,9 +1350,10 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
             aTag = aTag.offsetParent;
             leftpos += aTag.offsetLeft;
             toppos += aTag.offsetTop;
-            aTagPositioningisAbsolute = (aTag.style.position == "absolute")
+            aCSSPosition = this._getStyle(aTag, 'position');
+            aTagPositioningisAbsolute = (aCSSPosition == "absolute" || aCSSPosition == "relative")
         }
-        while ((aTag.tagName != "BODY") && (aTag.tagName != "DIV") && (!aTagPositioningisAbsolute));
+        while ((aTag.offsetParent) && (!aTagPositioningisAbsolute));
     }
     catch (ex)
     {
@@ -1345,9 +1370,10 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
         do {
             leftScrollOffset += aTag.scrollLeft;
             topScrollOffset += aTag.scrollTop;
+            aCSSPosition = this._getStyle(aTag, 'position');
             aTag = aTag.parentNode;
         }
-        while ((aTag.tagName != "BODY") && (aTag.tagName != "DIV") && (aTag.style.position != "absolute"));
+        while ((aTag.tagName.toUpperCase() != "BODY") && (aTag.tagName.toUpperCase() != "HTML") && (aCSSPosition != "absolute" || aCSSPosition == "relative"));
     }
     catch (ex)
     {
