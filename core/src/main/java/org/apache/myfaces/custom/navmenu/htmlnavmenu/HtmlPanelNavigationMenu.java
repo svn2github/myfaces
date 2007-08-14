@@ -89,9 +89,12 @@ public class HtmlPanelNavigationMenu extends HtmlPanelGroup implements NamingCon
         for (Iterator it = children.iterator(); it.hasNext(); )
         {
             UIComponent child = (UIComponent)it.next();
-            if (child instanceof HtmlCommandNavigationItem)
+            UIComponent prevItem = (UIComponent)previousRoot.findComponent(child.getClientId(facesContext));
+            
+            if (prevItem instanceof HtmlCommandNavigationItem &&
+            		child instanceof HtmlCommandNavigationItem)
             {
-                HtmlCommandNavigationItem previousItem = (HtmlCommandNavigationItem)previousRoot.findComponent(child.getClientId(facesContext));
+                HtmlCommandNavigationItem previousItem = (HtmlCommandNavigationItem)prevItem;
                 if (previousItem != null)
                 {
                     ((HtmlCommandNavigationItem)child).setOpen(previousItem.isOpen());
