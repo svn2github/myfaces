@@ -26,7 +26,7 @@ function updateStatusValue(textID, preferredLength,
 						   prefixText, passwordDesc, 
 						   indicatorMessageID, leftCharsMessageID, 
 						   strengthIndicatorType, progressBarId, 
-						   showDetails) {				   
+						   showDetails, leftCharactersString) {				   
     //Get the current message content ...
     var content = document.getElementById(textID).value;
     var currentStatus = prefixText;
@@ -39,6 +39,7 @@ function updateStatusValue(textID, preferredLength,
 	    //Check the contents ...   
 	    var tokens = passwordDesc.split(";");
 	    var length = tokens.length;
+	    //Here we will calc the password strength ratio based on length + custom rule work ...
 	    //Calc the delta of char changes : diff = preferredLength / tokens;
 	    var delta = preferredLength / length;
 	    var change = delta;
@@ -74,7 +75,7 @@ function updateStatusValue(textID, preferredLength,
     } else if(showDetails == "true" && content.length < preferredLength) {
         show(leftCharsMessageID);
 	diff = (preferredLength - content.length);
-	var charLeft = diff + " characters are left";
+	var charLeft = diff + " " + leftCharactersString;
       if(document.all) { 
              document.getElementById(leftCharsMessageID).innerText = charLeft;
       } else {

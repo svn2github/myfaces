@@ -144,6 +144,13 @@ public class PasswordStrengthRenderer extends Renderer {
 				.getDetail();
 	}
 	
+	private String getLeftCharactersString() {
+		return "'" + MessageUtils.getMessage(BUNDLE_BASE_NAME,
+				MessageUtils.getCurrentLocale(),
+				"org.apache.myfaces.custom.passwordStrength.LEFT_CHARS", null)
+				.getDetail() + "'";		
+	}
+	
 	private String getDefaultStrengthIndicatorType() {
 		return TextIndicatorType.TEXT;
 	}	
@@ -341,7 +348,7 @@ public class PasswordStrengthRenderer extends Renderer {
 								 indicatorMessageID, leftCharsMessageID,
 								 showMessageIndicatorString, 
 								 strengthIndicatorType, progressBarId,
-								 showDetails);
+								 showDetails, getLeftCharactersString());
 	}
 	
 	private String updateStatusValue(String textID, String preferredLength,
@@ -349,13 +356,14 @@ public class PasswordStrengthRenderer extends Renderer {
 									 String indicatorMessageID, String leftCharsMessageID,									 
 									 String showMessageIndicatorString, 
 									 String strengthIndicatorType, String progressBarId, 
-									 String showDetails) {
+									 String showDetails, String leftCharactersString) {
 		return "updateStatusValue(" 
 				+ textID + "," + preferredLength + ", "
 				+ prefix + ", " + textStrengthDescriptions + ", " 
 				+ indicatorMessageID + ", " + leftCharsMessageID + ", "				
 				+ strengthIndicatorType + ", " + progressBarId + ", " 				
-				+ showDetails + ");"
+				+ showDetails + ", "
+				+ leftCharactersString + ");"			
 				+ showMessageIndicatorString;
 	}
 	
