@@ -346,8 +346,18 @@ public class HtmlCalendarRenderer
             throw new IllegalStateException("Week may only start with sunday or monday.");
 
         StringBuffer script = new StringBuffer();
-        setStringVariable(script,popupCalendarVariable +".initData.imgDir",(JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
-                .getResourceUri(facesContext, HtmlCalendarRenderer.class, "DB/"))));
+        String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
+        if(imageLocation == null) {
+            setStringVariable(script,popupCalendarVariable +".initData.imgDir",
+                              (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
+                                                            .getResourceUri(facesContext, HtmlCalendarRenderer.class, "DB/"))));
+        }
+        else {
+            setStringVariable(script, popupCalendarVariable +".initData.imgDir",
+                              (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
+                                                            .getResourceUri(facesContext, imageLocation+"/"))) );
+        }
+
         defineStringArray(script, popupCalendarVariable +".initData.monthName", mapMonths(symbols));
         defineStringArray(script, popupCalendarVariable +".initData.dayName", weekDays);
         setIntegerVariable(script, popupCalendarVariable +".initData.startAt",realFirstDayOfWeek);
