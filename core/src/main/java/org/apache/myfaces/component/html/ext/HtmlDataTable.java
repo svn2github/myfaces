@@ -780,7 +780,8 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
         if (isPreserveDataModel())
         {
-            values[2] = saveAttachedState(context, getSerializableDataModel());
+            _preservedDataModel = getSerializableDataModel();
+            values[2] = saveAttachedState(context, _preservedDataModel);
         }
         else
         {
