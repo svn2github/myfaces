@@ -72,11 +72,17 @@ public class IfMessage extends UIComponentBase {
 	}
 	
 	public void encodeChildren(FacesContext context) throws IOException {
-		StringTokenizer tokenizer = new StringTokenizer(getFor(), ",");
-		while(tokenizer.hasMoreTokens()) {
-			if(isMessageForId(tokenizer.nextToken().trim())) {
+		if(getFor() != null) {
+			StringTokenizer tokenizer = new StringTokenizer(getFor(), ",");
+			while(tokenizer.hasMoreTokens()) {
+			    if(isMessageForId(tokenizer.nextToken().trim())) {
+					super.encodeChildren(context);
+					break;
+				}
+			}
+		} else {
+			if(FacesContext.getCurrentInstance().getMessages().hasNext()) {
 				super.encodeChildren(context);
-				break;
 			}
 		}
 	}
