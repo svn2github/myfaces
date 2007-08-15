@@ -36,6 +36,8 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -197,9 +199,19 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	{
 	    requestMap.put(PPR_INITIALIZED, Boolean.TRUE);
 
+	    String encoding = "UTF-8" ; // Hardcoded default
+	    if(externalContext.getRequest() instanceof HttpServletRequest){
+		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+		if(request.getCharacterEncoding() != null)
+		    encoding = request.getCharacterEncoding();
+	    }
+	    
+	    DojoConfig currentConfig = DojoUtils.getDjConfigInstance(facesContext);
+	    currentConfig.setBindEncoding(encoding);
+	    
 	    String javascriptLocation = (String) pprGroup.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
 	    AddResource addResource = AddResourceFactory.getInstance(facesContext);
-	    DojoUtils.addMainInclude(facesContext, pprGroup, javascriptLocation, new DojoConfig());
+	    DojoUtils.addMainInclude(facesContext, pprGroup, javascriptLocation, currentConfig);
 	    DojoUtils.addRequire(facesContext, pprGroup, "dojo.io.*");
 	    DojoUtils.addRequire(facesContext, pprGroup, "dojo.event.*");
 	    addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PPRPanelGroup.class,
