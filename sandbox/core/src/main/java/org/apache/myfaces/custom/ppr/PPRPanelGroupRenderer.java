@@ -214,6 +214,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	    DojoUtils.addMainInclude(facesContext, pprGroup, javascriptLocation, currentConfig);
 	    DojoUtils.addRequire(facesContext, pprGroup, "dojo.io.*");
 	    DojoUtils.addRequire(facesContext, pprGroup, "dojo.event.*");
+	    DojoUtils.addRequire(facesContext, pprGroup, "dojo.xml.*");
 	    addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PPRPanelGroup.class,
 		    PPR_JS_FILE);
 	}

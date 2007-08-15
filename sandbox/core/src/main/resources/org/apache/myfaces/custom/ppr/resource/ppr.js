@@ -67,7 +67,8 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
 	{
 		var currentForm = document.forms[f];
 		//search all buttons by iterating all inputs
-		for (var i = 0; i < currentForm.elements.length; i++)
+		var buttons = currentForm.getElementsByTagName("input");
+		for (var i = 0; i < buttons.length; i++)
     	{
 	        var formElement = this.form.elements[i];
 	        if(this.isMatchingPattern(pattern,formElement.id) )
@@ -177,6 +178,14 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
   			domElement = dojo.byId(componentUpdate.getAttribute("id"));
   			//todo - doesn't work with tables in IE (not used for tables at the moment)
   			domElement.innerHTML = componentUpdate.firstChild.data;
+  			//parse the new DOM element for script tags and execute them
+  			var regex = /<script([^>]*)>([\s\S]*?)<\/script>/i;
+  			var s = domElement.innerHTML;
+  			while(match = regex.exec(s)){
+  				var script = match[2];
+  				eval(script);
+  				s = s.substr(0, match.index) + s.substr(match.index + match[0].length);
+  			}
   		}
   		
 	    //ensure that new buttons in the PartialUpdate also have onclick-handlers
@@ -486,7 +495,10 @@ org.apache.myfaces.PPRCtrl.prototype._isRadio = function (formElement) {
 //onclick-handlers for submit-buttons and submit-images
 
 org.apache.myfaces.PPRCtrl.prototype.elementOnEventHandler = function (event) {
-    this.triggeredElement = event.target;
+	if (event.currentTarget === undefined)
+		this.triggeredElement = event.srcElement;
+    else
+		this.triggeredElement = event.currentTarget;
 
     if(!(this._isButton(this.triggeredElement) || this._isLink(this.triggeredElement))) {
         this.formSubmitReplacement();
