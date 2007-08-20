@@ -532,8 +532,6 @@ if (domLib_isIE)
 
 function domLib_getEventPosition(in_eventObj)
 {
-	if(event.type != 'mousemove')
-		alert('event.type: ' + in_eventObj.type);
 	var eventPosition = new Hash('x', 0, 'y', 0, 'scrollX', 0, 'scrollY', 0);
 	// IE varies depending on standard compliance mode
 	if (domLib_isIE)
