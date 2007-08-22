@@ -26,9 +26,12 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,11 +43,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.util.ParameterResourceHandler;
 import org.apache.myfaces.custom.htmlTag.HtmlTagRenderer;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
@@ -56,6 +62,15 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         ResourceLoader
 {
+    private final static Log log = LogFactory
+            .getLog(HtmlRoundedDivRenderer.class);
+    private static Map imageCache = Collections.synchronizedMap(new HashMap());
+    private static List cacheQueue = Collections
+            .synchronizedList(new ArrayList());
+    private static Integer cacheSize;
+
+    private final static int DEFAULT_CACHE_SIZE = 20;
+    private final static String CACHE_SIZE_KEY = "org.apache.myfaces.ROUNDED_DIV_CACHE_SIZE";
     public final static String RENDERER_TYPE = "org.apache.myfaces.HtmlRoundedDiv";
 
     /**
@@ -67,42 +82,32 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
             HttpServletRequest request, HttpServletResponse response,
             String resourceUri) throws IOException
     {
-        Color foregroundColor = Color.decode(request.getParameter("c"));
+        initCache(context);
+        boolean useCache = cacheSize.intValue() > 0;
 
-        String param;
-        Color backgroundColor = null, borderColor = null;
-        if ((param = request.getParameter("bgc")) != null)
+        String cacheKey = null;
+        RoundedBorderGenerator borderGen = null;
+        if (useCache)
         {
-            backgroundColor = Color.decode(param);
-        }
-        if ((param = request.getParameter("bc")) != null)
-        {
-            borderColor = Color.decode(param);
+            cacheKey = getCacheKey(request.getQueryString());
+            borderGen = (RoundedBorderGenerator) imageCache.get(cacheKey);
         }
 
-        int borderWidth = Integer.parseInt(request.getParameter("bw"));
-        int radius = Integer.parseInt(request.getParameter("r"));
-
-        Dimension size = null;
-        if ((param = request.getParameter("s")) != null)
+        if (borderGen == null)
         {
-            int i = param.indexOf('x');
-            size = new Dimension(Integer.parseInt(param.substring(0, i)),
-                    Integer.parseInt(param.substring(i + 1)));
+            if (useCache)
+            {
+                borderGen = initCachedGenerator(request, cacheKey);
+            }
+            else
+            {
+                borderGen = buildGenerator(request);
+            }
         }
+
         String area = request.getParameter("a");
-
-        boolean inverse = "t".equals(request.getParameter("i"));
-
-        RoundedBorderGenerator borderGen;
         BufferedImage img;
-
-        // TODO: caching support of images to improve performance
-
-        borderGen = new RoundedBorderGenerator(borderColor, borderWidth,
-                radius, foregroundColor, backgroundColor, size, inverse);
-
-        if (size != null)
+        if (request.getParameter("s") != null)
         {
             img = borderGen.createImage();
         }
@@ -111,7 +116,10 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
             img = borderGen.createImageSection(getAreaAsSection(area));
         }
 
-        borderGen.dispose();
+        if (cacheSize.intValue() == 0)
+        {
+            borderGen.dispose();
+        }
 
         response.setContentType("image/png");
 
@@ -133,6 +141,67 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
     }
 
     /**
+     * @param request
+     * @param cacheKey
+     * @return
+     */
+    protected RoundedBorderGenerator initCachedGenerator(
+            HttpServletRequest request, String cacheKey)
+    {
+        RoundedBorderGenerator borderGen;
+
+        synchronized (imageCache)
+        {
+            borderGen = buildGenerator(request);
+
+            imageCache.put(cacheKey, borderGen);
+            cacheQueue.add(cacheKey);
+
+            while (cacheQueue.size() > cacheSize.intValue())
+            {
+                RoundedBorderGenerator gen = (RoundedBorderGenerator) imageCache
+                        .remove(cacheQueue.remove(0));
+                gen.dispose();
+            }
+        }
+        return borderGen;
+    }
+
+    protected RoundedBorderGenerator buildGenerator(HttpServletRequest request)
+    {
+        RoundedBorderGenerator borderGen;
+        String param;
+        Color foregroundColor = Color.decode("#" + request.getParameter("c"));
+
+        Dimension size = null;
+        if ((param = request.getParameter("s")) != null)
+        {
+            int i = param.indexOf('x');
+            size = new Dimension(Integer.parseInt(param.substring(0, i)),
+                    Integer.parseInt(param.substring(i + 1)));
+        }
+
+        Color backgroundColor = null, borderColor = null;
+        if ((param = request.getParameter("bgc")) != null)
+        {
+            backgroundColor = Color.decode("#" + param);
+        }
+        if ((param = request.getParameter("bc")) != null)
+        {
+            borderColor = Color.decode("#" + param);
+        }
+
+        int borderWidth = Integer.parseInt(request.getParameter("bw"));
+        int radius = Integer.parseInt(request.getParameter("r"));
+
+        boolean inverse = "t".equals(request.getParameter("i"));
+
+        borderGen = new RoundedBorderGenerator(borderColor, borderWidth,
+                radius, foregroundColor, backgroundColor, size, inverse);
+        return borderGen;
+    }
+
+    /**
      * @see org.apache.myfaces.custom.htmlTag.HtmlTagRenderer#encodeBegin(
      * javax.faces.context.FacesContext, javax.faces.component.UIComponent)
      */
@@ -149,13 +218,31 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         ResponseWriter writer = context.getResponseWriter();
         Set areas = null;
 
+        if (div.getSize() == null)
+        {
+            areas = getAreasToRender(context, div);
+        }
+
+        if ("table".equals(div.getValue()))
+        {
+            encodeTable(context, ie, div, writer, areas);
+        }
+        else
+        {
+            encodeDivBegin(context, ie, div, writer, areas);
+        }
+    }
+
+    protected void encodeDivBegin(FacesContext context, boolean ie,
+            HtmlRoundedDiv div, ResponseWriter writer, Set areas)
+            throws IOException
+    {
         if (div.getSize() != null)
         {
             addImage(writer, context, div, null, null, ie);
         }
         else
         {
-            areas = getAreasToRender(context, div);
             for (Iterator iter = areas.iterator(); iter.hasNext();)
             {
                 String area = (String) iter.next();
@@ -164,11 +251,73 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         }
 
         // create a DIV for the contents
-        writer.startElement(HTML.DIV_ELEM, component);
+        writer.startElement(HTML.DIV_ELEM, div);
+
         StringBuffer style = new StringBuffer("position: relative; z-index: 1;");
         addPadding(Math.max(div.getBorderWidth().intValue(), div.getRadius()
                 .intValue()), style, areas);
+
+        String val;
+        if ((val = div.getContentStyle()) != null)
+        {
+            style.append(val);
+        }
+
         writer.writeAttribute(HTML.STYLE_ATTR, style, null);
+        if ((val = div.getContentStyleClass()) != null)
+        {
+            writer.writeAttribute(HTML.CLASS_ATTR, val, null);
+        }
+    }
+
+    protected void encodeTable(FacesContext context, boolean ie,
+            HtmlRoundedDiv div, ResponseWriter writer, Set areas)
+            throws IOException
+    {
+        int padding = Math.max(div.getBorderWidth().intValue(), div.getRadius()
+                .intValue());
+
+        writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
+        writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
+
+        writer.startElement(HTML.TBODY_ELEM, div);
+
+        writer.startElement(HTML.TR_ELEM, div);
+        encodeImageColumn(writer, context, div, "topleft", areas, padding, ie);
+        encodeImageColumn(writer, context, div, "top", areas, padding, ie);
+        encodeImageColumn(writer, context, div, "topright", areas, padding, ie);
+        writer.endElement(HTML.TR_ELEM);
+        writer.startElement(HTML.TR_ELEM, div);
+        encodeImageColumn(writer, context, div, "left", areas, padding, ie);
+        encodeContentColumn(writer, context, div, areas, ie);
+        encodeImageColumn(writer, context, div, "right", areas, padding, ie);
+        writer.endElement(HTML.TR_ELEM);
+        writer.startElement(HTML.TR_ELEM, div);
+        encodeImageColumn(writer, context, div, "bottomleft", areas, padding,
+                ie);
+        encodeImageColumn(writer, context, div, "bottom", areas, padding, ie);
+        encodeImageColumn(writer, context, div, "bottomright", areas, padding,
+                ie);
+        writer.endElement(HTML.TR_ELEM);
+
+        writer.endElement(HTML.TBODY_ELEM);
+    }
+
+    /**
+     * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
+     */
+    public void encodeChildren(FacesContext context, UIComponent component)
+            throws IOException
+    {
+        if (!component.isRendered())
+        {
+            return;
+        }
+        HtmlRoundedDiv div = (HtmlRoundedDiv) component;
+        if ("div".equals(div.getValue()))
+        {
+            RendererUtils.renderChildren(context, component);
+        }
     }
 
     /**
@@ -182,11 +331,23 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         {
             return;
         }
-        context.getResponseWriter().endElement(HTML.DIV_ELEM);
+        HtmlRoundedDiv div = (HtmlRoundedDiv) component;
+        if ("div".equals(div.getValue()))
+        {
+            context.getResponseWriter().endElement(HTML.DIV_ELEM);
+        }
     }
 
     /**
-     * Convert the string area to one of the integer contants from
+     * @see javax.faces.render.Renderer#getRendersChildren()
+     */
+    public boolean getRendersChildren()
+    {
+        return true;
+    }
+
+    /**
+     * Convert the string area to one of the integer constants from
      * {@link RoundedBorderGenerator}
      * 
      * @param area the area as a string
@@ -325,17 +486,17 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
 
         if (ie)
         {
-// NOT CURRENTLY WORKING:
-//            // IE transparency fix
-//            if (component.getBackgroundColor() == null
-//                    && ("topright".equals(area) || "topleft".equals(area)
-//                            || "bottomright".equals(area) || "bottomleft"
-//                            .equals(area)) && isIE6(context))
-//            {
-//                setIESrcForCorner(context, component, url, style, padding);
-//                url = AddResourceFactory.getInstance(context).getResourceUri(
-//                        context, HtmlRoundedDiv.class, "blank.gif");
-//            }
+            // NOT CURRENTLY WORKING:
+            //            // IE transparency fix
+            //            if (component.getBackgroundColor() == null
+            //                    && ("topright".equals(area) || "topleft".equals(area)
+            //                            || "bottomright".equals(area) || "bottomleft"
+            //                            .equals(area)) && isIE6(context))
+            //            {
+            //                setIESrcForCorner(context, component, url, style, padding);
+            //                url = AddResourceFactory.getInstance(context).getResourceUri(
+            //                        context, HtmlRoundedDiv.class, "blank.gif");
+            //            }
 
             if (areas != null)
             {
@@ -494,27 +655,80 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         }
     }
 
-// NOT CURRENTLY WORKING:
-//    /**
-//     * Set the CSS style for IE6 to work-around the IE6 PNG alpha-transparency
-//     * bug
-//     * 
-//     * @param context The faces context
-//     * @param component The component
-//     * @param url The URL of the image
-//     * @param style The current style
-//     */
-//    protected void setIESrcForCorner(FacesContext context,
-//            HtmlRoundedDiv component, String url, StringBuffer style,
-//            int imageSize)
-//    {
-//        style
-//                .append(
-//                        " filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='")
-//                .append(url).append("', sizingMethod='image', enabled=true);").append(
-//                        "height: ").append(imageSize).append("px; width: ")
-//                .append(imageSize).append("px;");
-//    }
+    protected void encodeContentColumn(ResponseWriter writer,
+            FacesContext context, HtmlRoundedDiv component, Set areas,
+            boolean ie) throws IOException
+    {
+        writer.startElement(HTML.TD_ELEM, component);
+        String val;
+        StringBuffer style = new StringBuffer();
+
+        if ((val = component.getContentStyle()) != null)
+        {
+            style.append(val).append(';');
+        }
+        style.append("background-image: url('").append(
+                getImageSource(context, component, "center")).append("');");
+        writer.writeAttribute(HTML.STYLE_ATTR, style, null);
+
+        if ((val = component.getContentStyleClass()) != null)
+        {
+            writer.writeAttribute(HTML.CLASS_ATTR, val, null);
+        }
+
+        RendererUtils.renderChildren(context, component);
+
+        writer.endElement(HTML.TD_ELEM);
+    }
+
+    protected void encodeImageColumn(ResponseWriter writer,
+            FacesContext context, HtmlRoundedDiv component, String area,
+            Set areas, int padding, boolean ie) throws IOException
+    {
+        writer.startElement(HTML.TD_ELEM, component);
+        writer.writeAttribute(HTML.CLASS_ATTR, area, null);
+        if (areas.contains(area))
+        {
+            writer.startElement(HTML.IMG_ELEM, component);
+            writer.writeAttribute(HTML.SRC_ATTR, getImageSource(context,
+                    component, area), null);
+            if ("left".equals(area) || "right".equals(area))
+            {
+                writer.writeAttribute(HTML.HEIGHT_ATTR, "100%", null);
+                writer.writeAttribute(HTML.WIDTH_ATTR, padding + "px", null);
+            }
+            else if ("top".equals(area) || "bottom".equals(area))
+            {
+                writer.writeAttribute(HTML.WIDTH_ATTR, "100%", null);
+                writer.writeAttribute(HTML.HEIGHT_ATTR, padding + "px", null);
+            }
+
+            writer.endElement(HTML.IMG_ELEM);
+        }
+        writer.endElement(HTML.TD_ELEM);
+    }
+
+    // NOT CURRENTLY WORKING:
+    //    /**
+    //     * Set the CSS style for IE6 to work-around the IE6 PNG alpha-transparency
+    //     * bug
+    //     * 
+    //     * @param context The faces context
+    //     * @param component The component
+    //     * @param url The URL of the image
+    //     * @param style The current style
+    //     */
+    //    protected void setIESrcForCorner(FacesContext context,
+    //            HtmlRoundedDiv component, String url, StringBuffer style,
+    //            int imageSize)
+    //    {
+    //        style
+    //                .append(
+    //                        " filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='")
+    //                .append(url).append("', sizingMethod='image', enabled=true);").append(
+    //                        "height: ").append(imageSize).append("px; width: ")
+    //                .append(imageSize).append("px;");
+    //    }
 
     /**
      * Set the CSS position using CSS2 attributes
@@ -686,7 +900,7 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
     }
 
     /**
-     * Convert a color to an HTML style color (i.e. #FFFFFF)
+     * Convert a color to an HTML style color (i.e. FFFFFF)
      * 
      * @param c The color
      * @return Color as hexidemal representation
@@ -698,7 +912,7 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
                 Integer.toHexString((rbg >> 8) & 0xFF),
                 Integer.toHexString(rbg & 0xFF) };
 
-        StringBuffer sb = new StringBuffer("#");
+        StringBuffer sb = new StringBuffer();
         for (int i = 0; i < strs.length; i++)
         {
             if (strs[i].length() == 1)
@@ -731,26 +945,68 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
             return false;
         }
     }
-    
-//    /**
-//     * Check if the user is using IE6
-//     * 
-//     * @param context Faces context
-//     * @return True if IE
-//     */
-//    protected boolean isIE6(FacesContext context)
-//    {
-//        try
-//        {
-//            String userAgent = context.getExternalContext()
-//                    .getRequestHeaderMap().get("User-Agent").toString();
-//
-//            return userAgent.toUpperCase().indexOf("MSIE 6") >= 0;
-//        }
-//        catch (NullPointerException ex)
-//        {
-//            // should never happen, but just in case
-//            return false;
-//        }
-//    }
+
+    private void initCache(ServletContext context)
+    {
+        if (cacheSize != null)
+        {
+            return;
+        }
+        synchronized (imageCache)
+        {
+            if (cacheSize != null)
+            {
+                return;
+            }
+
+            String param = context.getInitParameter(CACHE_SIZE_KEY);
+            if (cacheSize == null)
+            {
+                cacheSize = new Integer(DEFAULT_CACHE_SIZE);
+            }
+            else
+            {
+                try
+                {
+                    cacheSize = new Integer(Integer.parseInt(param));
+                }
+                catch (NumberFormatException ex)
+                {
+                    log.error("Unabled to parse cache size, using default", ex);
+                    cacheSize = new Integer(DEFAULT_CACHE_SIZE);
+                }
+            }
+            log.debug("Using a cache of size: " + cacheSize);
+        }
+    }
+
+    protected String getCacheKey(String queryString)
+    {
+        int from = queryString.indexOf("&a=");
+        int to = queryString.indexOf('&', from + 1);
+        return to == -1 ? queryString.substring(from) : queryString.substring(
+                from, to);
+    }
+
+    //    /**
+    //     * Check if the user is using IE6
+    //     * 
+    //     * @param context Faces context
+    //     * @return True if IE
+    //     */
+    //    protected boolean isIE6(FacesContext context)
+    //    {
+    //        try
+    //        {
+    //            String userAgent = context.getExternalContext()
+    //                    .getRequestHeaderMap().get("User-Agent").toString();
+    //
+    //            return userAgent.toUpperCase().indexOf("MSIE 6") >= 0;
+    //        }
+    //        catch (NullPointerException ex)
+    //        {
+    //            // should never happen, but just in case
+    //            return false;
+    //        }
+    //    }
 }

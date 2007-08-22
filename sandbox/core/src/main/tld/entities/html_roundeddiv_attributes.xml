@@ -91,3 +91,29 @@
         Flips the lightening/darkening effect for 3D borders. (Default: false)
     </description>
 </attribute>
+<attribute>
+    <name>layout</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <description>
+        Either "table" or "div". Specifies how the output should be rendered.
+        Size must be null if using "table" (if it is not, a div will be rendered).
+        (Default: div)
+    </description>
+</attribute>
+<attribute>
+    <name>contentStyle</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <description>
+        The CSS style to give to the content DIV or TD (based on layout)
+    </description>
+</attribute>
+<attribute>
+    <name>contentStyleClass</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <description>
+        The CSS style class to give to the content DIV or TD (based on layout)
+    </description>
+</attribute>

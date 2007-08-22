@@ -42,7 +42,10 @@ Usage
   radius="Integer"
   size="Dimension|String"
   corners="String"
-  inverse="Boolean">
+  inverse="Boolean"
+  layout="table|div"
+  contentStyle="String"
+  contentStyleClass="String">
   ...Contents...
 </s:roundedDiv>
 +--------+
@@ -86,3 +89,12 @@ Syntax
 	
 	<<<inverse>>> - Flips the lightening/darkening effect for 3D borders. 
 	(Default: false)
+	
+	<<<layout>>> - Either "table" or "div". Specifies how the output should be rendered.
+  Size must be null if using "table" (if it is not, a div will be rendered).
+  (Default: div)
+  
+  <<<contentStyle>>> - The CSS style to give to the content DIV or TD (based on layout)
+  
+  <<<contentStyleClass>>> - The CSS style class to give to the content DIV or TD (based on layout)
+  

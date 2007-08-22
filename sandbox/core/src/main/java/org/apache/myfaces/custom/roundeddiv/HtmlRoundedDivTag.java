@@ -44,7 +44,10 @@ public class HtmlRoundedDivTag extends DivTag
     private String size;
     private String corners;
     private String inverse;
-    
+    private String layout;
+    private String contentStyle;
+    private String contentStyleClass;
+
     /**
      * @see org.apache.myfaces.custom.htmlTag.HtmlTagTag#getRendererType()
      */
@@ -52,7 +55,7 @@ public class HtmlRoundedDivTag extends DivTag
     {
         return HtmlRoundedDivRenderer.RENDERER_TYPE;
     }
-    
+
     /**
      * @see org.apache.myfaces.custom.div.DivTag#getComponentType()
      */
@@ -68,7 +71,7 @@ public class HtmlRoundedDivTag extends DivTag
     {
         this.inverse = inverse;
     }
-    
+
     /**
      * @param backgroundColor the backgroundColor to set
      */
@@ -124,7 +127,31 @@ public class HtmlRoundedDivTag extends DivTag
     {
         this.size = size;
     }
-    
+
+    /**
+     * @param layout the layout to set
+     */
+    public void setLayout(String layout)
+    {
+        this.layout = layout;
+    }
+
+    /**
+     * @param contentStyle the contentStyle to set
+     */
+    public void setContentStyle(String contentStyle)
+    {
+        this.contentStyle = contentStyle;
+    }
+
+    /**
+     * @param contentStyleClass the contentStyleClass to set
+     */
+    public void setContentStyleClass(String contentStyleClass)
+    {
+        this.contentStyleClass = contentStyleClass;
+    }
+
     /**
      * @see org.apache.myfaces.custom.div.DivTag#setProperties(javax.faces.component.UIComponent)
      */
@@ -138,24 +165,30 @@ public class HtmlRoundedDivTag extends DivTag
         setIntegerProperty(component, "radius", this.radius);
         setStringProperty(component, "size", this.size);
         setStringProperty(component, "corners", this.corners);
+        setStringProperty(component, "contentStyle", this.contentStyle);
+        setStringProperty(component, "contentStyleClass", this.contentStyleClass);
+        setStringProperty(component, "layout", this.layout);
         setBooleanProperty(component, "inverse", this.inverse);
     }
-    
-    protected void setColorProperty(UIComponent component, String propName, String value)
+
+    protected void setColorProperty(UIComponent component, String propName,
+            String value)
     {
         if (value != null)
         {
-            if (isValueReference(value)) 
+            if (isValueReference(value))
             {
-                ValueBinding vb = getFacesContext().getApplication().createValueBinding(value);
+                ValueBinding vb = getFacesContext().getApplication()
+                        .createValueBinding(value);
                 component.setValueBinding(propName, vb);
-            } 
-            else {
+            }
+            else
+            {
                 component.getAttributes().put(propName, Color.decode(value));
             }
         }
     }
-    
+
     /**
      * @see org.apache.myfaces.custom.htmlTag.HtmlTagTag#release()
      */
@@ -169,5 +202,8 @@ public class HtmlRoundedDivTag extends DivTag
         size = null;
         corners = null;
         inverse = null;
+        layout = null;
+        contentStyle = null;
+        contentStyleClass = null;
     }
 }

@@ -51,6 +51,9 @@ public class HtmlRoundedDiv extends Div
     private Dimension size;
     private String corners;
     private Boolean inverse;
+    private String layout;
+    private String contentStyle;
+    private String contentStyleClass;
 
     /**
      * Default constructor
@@ -61,20 +64,78 @@ public class HtmlRoundedDiv extends Div
     }
 
     /**
+     * @return the contentStyle
+     */
+    public String getContentStyle()
+    {
+        if (this.contentStyle != null)
+            return this.contentStyle;
+        ValueBinding vb = getValueBinding("contentStyle");
+        return vb == null ? null : RendererUtils.getStringValue(
+                getFacesContext(), vb);
+    }
+
+    /**
+     * @param contentStyle the contentStyle to set
+     */
+    public void setContentStyle(String contentStyle)
+    {
+        this.contentStyle = contentStyle;
+    }
+
+    /**
+     * @return the contentStyleClass
+     */
+    public String getContentStyleClass()
+    {
+        if (this.contentStyleClass != null)
+            return this.contentStyleClass;
+        ValueBinding vb = getValueBinding("contentStyleClass");
+        return vb == null ? null : RendererUtils.getStringValue(
+                getFacesContext(), vb);
+    }
+
+    /**
+     * @param contentStyleClass the contentStyleClass to set
+     */
+    public void setContentStyleClass(String contentStyleClass)
+    {
+        this.contentStyleClass = contentStyleClass;
+    }
+
+    public String getLayout()
+    {
+        if (this.layout != null)
+            return this.layout;
+        ValueBinding vb = getValueBinding("layout");
+        String value = vb == null ? null : RendererUtils.getStringValue(
+                getFacesContext(), vb);
+        return value == null ? "div" : value;
+    }
+
+    public void setLayout(String layout)
+    {
+        this.layout = layout;
+    }
+
+    /**
      * @see org.apache.myfaces.custom.htmlTag.HtmlTag#getStyle()
      */
     public String getStyle()
     {
         String style = super.getStyle();
-        if (style == null)
+        StringBuffer sb = (style == null) ? new StringBuffer() : new StringBuffer(style).append(';');
+        
+        if (style == null || style.indexOf("position:") < 0)
         {
-            style = "position: relative;";
+            sb.append("position: relative;");
         }
-        else if (style.indexOf("position:") < 0)
+        if ("table".equals(getValue()))
         {
-            style = "position: relative;" + style;
+            sb.append("border-collapse: collapse;");
         }
-        return style;
+        
+        return sb.toString();
     }
 
     /**
@@ -153,7 +214,7 @@ public class HtmlRoundedDiv extends Div
         {
             value = new Integer(value.toString());
         }
-        return (Integer)value;
+        return (Integer) value;
     }
 
     /**
@@ -221,7 +282,7 @@ public class HtmlRoundedDiv extends Div
         {
             value = new Integer(value.toString());
         }
-        return (Integer)value;
+        return (Integer) value;
     }
 
     /**
@@ -275,12 +336,25 @@ public class HtmlRoundedDiv extends Div
     }
 
     /**
+     * @see org.apache.myfaces.custom.div.Div#getValue()
+     */
+    public Object getValue()
+    {
+        if ("table".equalsIgnoreCase(getLayout()) && getSize() == null)
+        {
+            return "table";
+        }
+        return "div";
+    }
+    
+    /**
      * @see org.apache.myfaces.custom.htmlTag.HtmlTag#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context)
     {
         return new Object[] { super.saveState(context), color, backgroundColor,
-                borderColor, borderWidth, radius, size, corners, inverse };
+                borderColor, borderWidth, radius, size, corners, inverse,
+                layout, contentStyle, contentStyleClass };
     }
 
     /**
@@ -299,6 +373,9 @@ public class HtmlRoundedDiv extends Div
         this.size = (Dimension) arr[++index];
         this.corners = (String) arr[++index];
         this.inverse = (Boolean) arr[++index];
+        this.layout = (String) arr[++index];
+        this.contentStyle = (String) arr[++index];
+        this.contentStyleClass = (String) arr[++index];
     }
 
     private Color asColor(Object value)

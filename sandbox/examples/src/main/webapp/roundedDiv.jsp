@@ -93,19 +93,43 @@
                         fatalStyle="color: red;" replaceIdWithLabel="true"
                         tooltip="true" warnStyle="color: orange;" />
                 </h:panelGroup>
-                <h:outputText value="DIV width:" />
+                <h:outputText value="Style:" />
                 <h:panelGroup>
-                    <h:inputText id="Width"
-                        value="#{roundedDiv.width}" />
-                    <t:message for="Width" errorStyle="color: red;" 
+                    <h:inputText id="Style"
+                        value="#{roundedDiv.style}" />
+                    <t:message for="Style" errorStyle="color: red;" 
                         fatalStyle="color: red;" replaceIdWithLabel="true"
                         tooltip="true" warnStyle="color: orange;" />
                 </h:panelGroup>
-                <h:outputText value="DIV height:" />
+                <h:outputText value="Style class:" />
                 <h:panelGroup>
-                    <h:inputText id="Height"
-                        value="#{roundedDiv.height}" />
-                    <t:message for="Height" errorStyle="color: red;" 
+                    <h:inputText id="StyleClass"
+                        value="#{roundedDiv.styleClass}" />
+                    <t:message for="StyleClass" errorStyle="color: red;" 
+                        fatalStyle="color: red;" replaceIdWithLabel="true"
+                        tooltip="true" warnStyle="color: orange;" />
+                </h:panelGroup>
+                <h:outputText value="Content style:" />
+                <h:panelGroup>
+                    <h:inputText id="ContentStyle"
+                        value="#{roundedDiv.contentStyle}" />
+                    <t:message for="ContentStyle" errorStyle="color: red;" 
+                        fatalStyle="color: red;" replaceIdWithLabel="true"
+                        tooltip="true" warnStyle="color: orange;" />
+                </h:panelGroup>
+                <h:outputText value="Content style class:" />
+                <h:panelGroup>
+                    <h:inputText id="ContentStyleClass"
+                        value="#{roundedDiv.contentStyleClass}" />
+                    <t:message for="ContentStyleClass" errorStyle="color: red;" 
+                        fatalStyle="color: red;" replaceIdWithLabel="true"
+                        tooltip="true" warnStyle="color: orange;" />
+                </h:panelGroup>
+                <h:outputText value="Layout:" />
+                <h:panelGroup>
+                    <h:inputText id="Layout"
+                        value="#{roundedDiv.layout}" />
+                    <t:message for="Layout" errorStyle="color: red;" 
                         fatalStyle="color: red;" replaceIdWithLabel="true"
                         tooltip="true" warnStyle="color: orange;" />
                 </h:panelGroup>
@@ -124,7 +148,11 @@
                 corners="#{roundedDiv.corners}"
                 radius="#{roundedDiv.radius}"
                 size="#{roundedDiv.size}"
-                style="height: #{roundedDiv.height}; width: #{roundedDiv.width};">
+                style="#{roundedDiv.style}"
+                styleClass="#{roundedDiv.styleClass}"
+                contentStyle="#{roundedDiv.contentStyle}"
+                contentStyleClass="#{roundedDiv.contentStyleClass}"
+                layout="#{roundedDiv.layout}">
                 <h:outputText value="Contents" />
             </s:roundedDiv>
         </h:panelGrid>

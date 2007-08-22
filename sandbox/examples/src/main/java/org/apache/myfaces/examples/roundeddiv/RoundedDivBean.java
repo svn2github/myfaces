@@ -39,27 +39,74 @@ public class RoundedDivBean implements Serializable
     private String color = "#CCCCCC";
     private String corners = null;
     private String size = null;
-    private String height = "100px";
-    private String width = "200px";
+    private String layout = "div";
+    private String style = null;
+    private String styleClass = null;
+    private String contentStyle = null;
+    private String contentStyleClass = null;
 
-    public String getHeight()
+    /**
+     * @return the style
+     */
+    public String getStyle()
     {
-        return this.height;
+        return this.style;
     }
 
-    public void setHeight(String height)
+    /**
+     * @param style the style to set
+     */
+    public void setStyle(String style)
     {
-        this.height = height;
+        this.style = blankToNull(style);
     }
 
-    public String getWidth()
+    /**
+     * @return the styleClass
+     */
+    public String getStyleClass()
     {
-        return this.width;
+        return this.styleClass;
     }
 
-    public void setWidth(String width)
+    /**
+     * @param styleClass the styleClass to set
+     */
+    public void setStyleClass(String styleClass)
     {
-        this.width = width;
+        this.styleClass = blankToNull(styleClass);
+    }
+
+    /**
+     * @return the contentStyle
+     */
+    public String getContentStyle()
+    {
+        return this.contentStyle;
+    }
+
+    /**
+     * @param contentStyle the contentStyle to set
+     */
+    public void setContentStyle(String contentStyle)
+    {
+        this.contentStyle = blankToNull(contentStyle);
+    }
+
+    /**
+     * @return the contentStyleClass
+     */
+    public String getContentStyleClass()
+    {
+        return this.contentStyleClass;
+    }
+
+    /**
+     * @param contentStyleClass the contentStyleClass to set
+     */
+    public void setContentStyleClass(String contentStyleClass)
+    {
+        this.contentStyleClass = blankToNull(contentStyleClass);
     }
 
     public String getBackgroundColor()
@@ -69,7 +116,7 @@ public class RoundedDivBean implements Serializable
 
     public void setBackgroundColor(String backgroundColor)
     {
-        this.backgroundColor = backgroundColor;
+        this.backgroundColor = blankToNull(backgroundColor);
     }
 
     public String getBorderColor()
@@ -79,7 +126,7 @@ public class RoundedDivBean implements Serializable
 
     public void setBorderColor(String borderColor)
     {
-        this.borderColor = borderColor;
+        this.borderColor = blankToNull(borderColor);
     }
 
     public String getBorderWidth()
@@ -89,7 +136,7 @@ public class RoundedDivBean implements Serializable
 
     public void setBorderWidth(String borderWidth)
     {
-        this.borderWidth = borderWidth;
+        this.borderWidth = blankToNull(borderWidth);
     }
 
     public String getColor()
@@ -109,7 +156,7 @@ public class RoundedDivBean implements Serializable
 
     public void setCorners(String corners)
     {
-        this.corners = corners;
+        this.corners = blankToNull(corners);
     }
 
     public String getRadius()
@@ -119,7 +166,7 @@ public class RoundedDivBean implements Serializable
 
     public void setRadius(String radius)
     {
-        this.radius = radius;
+        this.radius = blankToNull(radius);
     }
 
     public String getSize()
@@ -129,11 +176,33 @@ public class RoundedDivBean implements Serializable
 
     public void setSize(String size)
     {
-        if ("".equals(size))
+        this.size = blankToNull(size);
+    }
+
+    /**
+     * @return the layout
+     */
+    public String getLayout()
+    {
+        return this.layout;
+    }
+
+    /**
+     * @param layout the layout to set
+     */
+    public void setLayout(String layout)
+    {
+        layout = blankToNull(layout);
+        if (layout != null
+                && ("table".equalsIgnoreCase(layout) || "div"
+                        .equalsIgnoreCase(layout)))
         {
-            size = null;
+            this.layout = layout.toLowerCase();
         }
-        this.size = size;
+        else if (layout == null)
+        {
+            this.layout = null;
+        }
     }
 
     public void reset(ActionEvent evt)
@@ -145,5 +214,15 @@ public class RoundedDivBean implements Serializable
         color = "#CCCCCC";
         corners = null;
         size = null;
+        layout = "div";
+        style = null;
+        styleClass = null;
+        contentStyle = null;
+        contentStyleClass = null;
+    }
+
+    private String blankToNull(String value)
+    {
+        return (value == null || value.length() == 0) ? null : value;
     }
 }
