@@ -982,10 +982,17 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
 
     protected String getCacheKey(String queryString)
     {
-        int from = queryString.indexOf("&a=");
+        int from = queryString.indexOf("&a=") + 1;
+        
+        if (from == -1)
+        {
+            return queryString;
+        }
+        
         int to = queryString.indexOf('&', from + 1);
-        return to == -1 ? queryString.substring(from) : queryString.substring(
-                from, to);
+        
+        return to == -1 ? queryString.substring(0, from) : queryString.substring(
+                0, from) + queryString.substring(to);
     }
 
     //    /**
