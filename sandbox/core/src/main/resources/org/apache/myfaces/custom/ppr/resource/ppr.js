@@ -70,7 +70,7 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
 		var buttons = currentForm.getElementsByTagName("input");
 		for (var i = 0; i < buttons.length; i++)
     	{
-	        var formElement = this.form.elements[i];
+	        var formElement = buttons[i];
 	        if(this.isMatchingPattern(pattern,formElement.id) )
 					this.addPartialTrigger(formElement.id , null , refreshZoneId);
 		}
