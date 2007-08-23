@@ -18,6 +18,18 @@
  */
 package org.apache.myfaces.custom.ppr;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.dojo.DojoConfig;
@@ -29,17 +41,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.servlet.http.HttpServletRequest;
-
-import java.io.IOException;
-import java.util.*;
 
 /**
  * @author Ernst Fastl
@@ -200,11 +201,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	    requestMap.put(PPR_INITIALIZED, Boolean.TRUE);
 
 	    String encoding = "UTF-8" ; // Hardcoded default
-	    if(externalContext.getRequest() instanceof HttpServletRequest){
-		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-		if(request.getCharacterEncoding() != null)
-		    encoding = request.getCharacterEncoding();
-	    }
+	    if(facesContext.getResponseWriter().getCharacterEncoding() != null)
+		encoding = facesContext.getResponseWriter().getCharacterEncoding();
 	    
 	    DojoConfig currentConfig = DojoUtils.getDjConfigInstance(facesContext);
 	    currentConfig.setBindEncoding(encoding);
