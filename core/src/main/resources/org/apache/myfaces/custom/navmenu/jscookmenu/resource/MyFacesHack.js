@@ -27,7 +27,7 @@ function cmItemMouseUp (obj, index)
             // Link is a JSF action
             var dummyForm = document.forms[target];
             dummyForm.elements['jscook_action'].value = link;
-            if (submitForm === undefined) {
+            if (typeof submitForm == "undefined") {
                 //No Trinidad
                 dummyForm.submit();
             } else {
