@@ -119,20 +119,36 @@ org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElemen
     }
 };
 
-// registering a function (called before submit) on each form to block periodical refresh during request-response cycle
+// registering an interceptor onsubmit function on each form to block periodical refresh
+// and updating the dom if a page submit occurs
+// this blocking should only occur if onsubmit() returns true, otherwise not.
 
 org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function() {
+
     var ppr = this;
 
-    for(var i = 0; i < document.forms.length; i++) {
+    for (var i = 0; i < document.forms.length; i++)
+    {
         var form = document.forms[i];
-        dojo.event.kwConnect({
-                adviceType: "before",
-                srcObj: form,
-                srcFunc: "onsubmit",
-                targetFunc: function(evt) {
-            ppr.doBlockPeriodicalUpdateDuringPost();
-        }});
+        var origOnsubmit = form.onsubmit;
+        form.onsubmit = function()
+        {
+            if(typeof origOnsubmit != "undefined")
+            {
+               var doSubmit = origOnsubmit();
+               if(doSubmit || typeof doSubmit == "undefined")
+               {
+                   ppr.blockPeriodicalUpdateDuringPost = true;
+                   return true;
+               }
+               return false;
+            }
+            else
+            {
+                ppr.blockPeriodicalUpdateDuringPost = true;
+                return true;
+            }
+        }
     }
 };
 
@@ -146,19 +162,11 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
     this.doAjaxSubmit(content, refreshTimeout, refreshZoneId, null);
 };
 
-// blocking periodical update and refreshing viewState
-
-org.apache.myfaces.PPRCtrl.prototype.doBlockPeriodicalUpdateDuringPost = function()
-{
-    this.blockPeriodicalUpdateDuringPost = true;
-};
-
-
 //Callback Method which handles the AJAX Response
 
 org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 {
-    if(type == "load" && !this.blockPeriodicalUpdateDuringPost)
+    if(type == "load" && !this.formNode.myFacesPPRCtrl.blockPeriodicalUpdateDuringPost)
     {
 	    var componentUpdates = data.getElementsByTagName("component");
 	    
@@ -212,13 +220,13 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
                             domElement.value = stateUpdate.getAttribute('value');
                     }
                 }
-                else if (this.showDebugMessages)
+                else if (this.formNode.myFacesPPRCtrl.showDebugMessages)
                     alert("server didn't return appropriate element for state-update. returned element-id: " +
                           stateUpdate.getAttribute('id') + ", value : " + stateUpdate.getAttribute('value'));
             }
         }
     }
-    else
+    else if(!this.formNode.myFacesPPRCtrl.blockPeriodicalUpdateDuringPost)
     {
        // In case of an error during the AJAX Request do a normal form submit
        // to enable showing a proper error page
