@@ -133,7 +133,7 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function() {
         var origOnsubmit = form.onsubmit;
         form.onsubmit = function()
         {
-            if(typeof origOnsubmit != "undefined")
+            if(null != origOnsubmit && typeof origOnsubmit != "undefined")
             {
                var doSubmit = origOnsubmit();
                if(doSubmit || typeof doSubmit == "undefined")
