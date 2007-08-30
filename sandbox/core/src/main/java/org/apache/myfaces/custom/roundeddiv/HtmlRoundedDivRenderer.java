@@ -689,21 +689,26 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         writer.writeAttribute(HTML.CLASS_ATTR, area, null);
         if (areas.contains(area))
         {
-            writer.startElement(HTML.IMG_ELEM, component);
-            writer.writeAttribute(HTML.SRC_ATTR, getImageSource(context,
-                    component, area), null);
+            StringBuffer style = new StringBuffer("font-size: 1px; background-image: url('")
+                .append(getImageSource(context,
+                    component, area)).append("');")
+                .append("background-position: top left;");
+            
             if ("left".equals(area) || "right".equals(area))
             {
-                writer.writeAttribute(HTML.HEIGHT_ATTR, "100%", null);
-                writer.writeAttribute(HTML.WIDTH_ATTR, padding + "px", null);
+                style.append("background-repeat: repeat-y; width: ")
+                    .append(padding).append("px;");
             }
             else if ("top".equals(area) || "bottom".equals(area))
             {
-                writer.writeAttribute(HTML.WIDTH_ATTR, "100%", null);
-                writer.writeAttribute(HTML.HEIGHT_ATTR, padding + "px", null);
+                style.append("background-repeat: repeat-x; height: ")
+                    .append(padding).append("px;");
             }
+            
+            writer.writeAttribute(HTML.STYLE_ATTR, style, null);
 
-            writer.endElement(HTML.IMG_ELEM);
+            // force the browser to allocate this column in rendering
+            writer.write("&#160;");
         }
         writer.endElement(HTML.TD_ELEM);
     }
