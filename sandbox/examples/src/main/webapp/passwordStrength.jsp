@@ -38,7 +38,11 @@
 		<tr><td>
 		<h:outputText
 			value="Enter your password" /> 
-		</td></tr>
+		</td>
+		<td>
+			[Preferred password length is 10 Without custom rules]
+		</td>
+		</tr>
 		
 		<tr><td>
 		<h:outputText value="Text Mode" />
@@ -57,6 +61,49 @@
 		</td></tr>			
 			
 	    </table>			
+	    
+	    <br/><br/><br/>
+	    
+	    
+	    <table>
+		
+		<tr><td>
+		<h:outputText
+			value="Enter your password" /> 
+		</td>
+		<td>
+			[Preferred password length is 10 With custom rules (A3S2N3A2)] <br/>
+			Note that (A3S2N3A2) means the password should be : <br/>
+			3 or more Alphabets followed by			 <br/>
+			2 or more Symbols followed by			 <br/> 
+			3 or more Numbers followed by			 <br/>				
+			2 or more Alphabets followed by			 <br/>	
+		</td>
+		</tr>
+		
+		<tr><td>
+		<h:outputText value="Text Mode" />
+		</td><td>
+		<s:passwordStrength id="txtCustomPwdText" preferredPasswordLength="10"
+			value="#{passwordStrengthBean.password}" prefixText="Strength : "
+			textStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent" 
+			strengthIndicatorType="text" useCustomSecurity="true"
+			customSecurityExpression="A3S2N3A2" penaltyRatio="50"/> 
+		</td></tr>
+
+		<tr><td>
+		<h:outputText value="ProgressBar Mode" />
+		</td><td>		
+		<s:passwordStrength id="txtCustomPrgBarText" preferredPasswordLength="10"
+			value="#{passwordStrengthBean.password}" prefixText="Strength : "
+			textStrengthDescriptions="Very Poor;Weak;Average;Strong;Excellent" 
+			strengthIndicatorType="bar"  useCustomSecurity="true"
+			customSecurityExpression="A3S2N3A2" penaltyRatio="50"/>
+		</td></tr>			
+			
+	    </table>			
+	    
+	    
 	</h:form>
 
 	<%@include file="inc/page_footer.jsp"%>
@@ -66,5 +113,6 @@
 </body>
 
 </html>
+
 
 

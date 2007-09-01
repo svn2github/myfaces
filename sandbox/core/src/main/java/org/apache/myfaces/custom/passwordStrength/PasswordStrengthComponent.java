@@ -36,7 +36,10 @@ public class PasswordStrengthComponent extends UIInput {
 	private String _prefixText;
 	private String _showDetails;
 	private String _strengthIndicatorType;	
-
+	private String _useCustomSecurity;
+	private String _customSecurityExpression;	
+	private String _penaltyRatio;
+	
 	public String getFamily() {
 		return "org.apache.myfaces.PasswordStrength";
 	}
@@ -85,7 +88,45 @@ public class PasswordStrengthComponent extends UIInput {
 		ValueBinding vb = getValueBinding("textStrengthDescriptions");
 		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb)
 				: null;
+	}
+	
+	
+	public String getCustomSecurityExpression() {
+		if (_customSecurityExpression != null)
+			return _customSecurityExpression;
+
+		ValueBinding vb = getValueBinding("customSecurityExpression");
+		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb)
+				: null;		
+	}
+
+
+	public String getUseCustomSecurity() {
+		if (_useCustomSecurity != null)
+			return _useCustomSecurity;
+
+		ValueBinding vb = getValueBinding("useCustomSecurity");
+		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb)
+				: null;				
+	}
+	
+	public String getPenaltyRatio() {
+		if (_penaltyRatio != null)
+			return _penaltyRatio;
+
+		ValueBinding vb = getValueBinding("penaltyRatio");
+		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb)
+				: null;
+	}		
+
+	
+	public void setCustomSecurityExpression(String securityExpression) {
+		_customSecurityExpression = securityExpression;
 	}	
+	
+	public void setUseCustomSecurity(String customSecurity) {
+		_useCustomSecurity = customSecurity;
+	}		
 
 	public void setPreferredPasswordLength(String preferredPasswordLength) {
 		_preferredPasswordLength = preferredPasswordLength;
@@ -107,15 +148,22 @@ public class PasswordStrengthComponent extends UIInput {
 	public void setStrengthIndicatorType(String strengthIndicatorType) {
 		_strengthIndicatorType = strengthIndicatorType;
 	}	
+	
+	public void setPenaltyRatio(String penaltyRatio) {
+		this._penaltyRatio = penaltyRatio;
+	}	
 
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[6];
+		Object values[] = new Object[9];
 		values[0] = super.saveState(context);
 		values[1] = _preferredPasswordLength;
 		values[2] = _prefixText;
 		values[3] = _textStrengthDescriptions;
 		values[4] = _showDetails;	
-		values[5] = _strengthIndicatorType;			
+		values[5] = _strengthIndicatorType;
+		values[6] = _useCustomSecurity;		
+		values[7] = _customSecurityExpression;
+		values[8] = _penaltyRatio;			
 		return ((Object) (values));
 	}
 
@@ -127,5 +175,8 @@ public class PasswordStrengthComponent extends UIInput {
 		_textStrengthDescriptions = (String) values[3];
 		_showDetails =  (String) values[4];
 		_strengthIndicatorType = (String) values[5];
+		_useCustomSecurity = (String) values[6];
+		_customSecurityExpression = (String) values[7];
+		_penaltyRatio =  (String) values[8];
 	}	
 }

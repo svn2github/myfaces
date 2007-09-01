@@ -137,6 +137,18 @@ public class PasswordStrengthRenderer extends Renderer {
 		return "true";
 	}
 
+	private String getDefaultUseCustomSecurity() {
+		return "false";
+	}	
+
+	private String getDefaultCustomSecurityRule() {
+		return "A1";
+	}
+	
+	private String getDefaultPenaltyRatio() {
+		return "50";
+	}			
+	
 	private String getDefaultPrefix() {
 		return MessageUtils.getMessage(BUNDLE_BASE_NAME,
 				MessageUtils.getCurrentLocale(),
@@ -169,7 +181,23 @@ public class PasswordStrengthRenderer extends Renderer {
 		String textID = "'" + clientID + "'";
 		String showDetails = (passwordStrength.getShowDetails() == null) ? "'"
 				+ getDefaultShowDetails() + "'" : "'"
-				+ passwordStrength.getShowDetails() + "'";
+				+ passwordStrength.getShowDetails().toLowerCase() + "'";
+		
+		String useCustomSecurity = (passwordStrength.getUseCustomSecurity() == null) ? "'"
+				+ getDefaultUseCustomSecurity() + "'"
+				: "'" + passwordStrength.getUseCustomSecurity().toLowerCase()
+						+ "'";
+
+		String customSecurityExpression = (passwordStrength
+				.getCustomSecurityExpression() == null) ? "'"
+				+ getDefaultCustomSecurityRule() + "'" : "'"
+				+ passwordStrength.getCustomSecurityExpression() + "'";		
+				
+				
+		String 	penaltyRatio = (passwordStrength
+				.getPenaltyRatio() == null) ? "'"
+				+ getDefaultPenaltyRatio() + "'" : "'"
+				+ passwordStrength.getPenaltyRatio() + "'";					
 
 		writer.startElement(HTML.SPAN_ELEM, passwordStrength);
 
@@ -187,7 +215,8 @@ public class PasswordStrengthRenderer extends Renderer {
 
 		writer.writeAttribute("onkeyup", createOnKeyUpString(context,
 				passwordStrength, textID, preferredLength, prefixText,
-				textStrengthDescriptions, true, showDetails), "onkeyup");
+				textStrengthDescriptions, true, showDetails, useCustomSecurity,
+				customSecurityExpression, penaltyRatio), "onkeyup");
 		writer.writeAttribute("onblur", getOnBlurString(context, passwordStrength), "onblur");
 
 		writer.endElement(HTML.INPUT_ELEM);
@@ -328,9 +357,12 @@ public class PasswordStrengthRenderer extends Renderer {
 	private String createOnKeyUpString(FacesContext context,
 			UIComponent component, String textID, String preferredLength,
 			String prefix, String textStrengthDescriptions,
-			boolean showMessageIndicator, String showDetails) {
-		PasswordStrengthComponent passwordStrength = (PasswordStrengthComponent) component;		
+			boolean showMessageIndicator, String showDetails,
+			String useCustomSecurity, String customSecurityExpression,
+			String penaltyRatio) {
 		
+		PasswordStrengthComponent passwordStrength = (PasswordStrengthComponent) component;
+
 		String clientID = component.getClientId(context);
 		String showMessageIndicatorString = "";
 		String strengthIndicatorType = getStrengthIndicatorType(passwordStrength);
@@ -342,13 +374,13 @@ public class PasswordStrengthRenderer extends Renderer {
 			showMessageIndicatorString = "show('"
 					+ getMessageID(context, passwordStrength) + "');";
 		}
-		
-		return updateStatusValue(textID, preferredLength, 
-								 prefix, textStrengthDescriptions, 
-								 indicatorMessageID, leftCharsMessageID,
-								 showMessageIndicatorString, 
-								 strengthIndicatorType, progressBarId,
-								 showDetails, getLeftCharactersString());
+
+		return updateStatusValue(textID, preferredLength, prefix,
+				textStrengthDescriptions, indicatorMessageID,
+				leftCharsMessageID, showMessageIndicatorString,
+				strengthIndicatorType, progressBarId, showDetails,
+				getLeftCharactersString(), useCustomSecurity,
+				customSecurityExpression, penaltyRatio);
 	}
 	
 	private String updateStatusValue(String textID, String preferredLength,
@@ -356,14 +388,18 @@ public class PasswordStrengthRenderer extends Renderer {
 									 String indicatorMessageID, String leftCharsMessageID,									 
 									 String showMessageIndicatorString, 
 									 String strengthIndicatorType, String progressBarId, 
-									 String showDetails, String leftCharactersString) {
+									 String showDetails, String leftCharactersString,
+									 String useCustomSecurity, String customSecurityExpression,
+									 String penaltyRatio) {
 		return "updateStatusValue(" 
 				+ textID + "," + preferredLength + ", "
 				+ prefix + ", " + textStrengthDescriptions + ", " 
 				+ indicatorMessageID + ", " + leftCharsMessageID + ", "				
 				+ strengthIndicatorType + ", " + progressBarId + ", " 				
-				+ showDetails + ", "
-				+ leftCharactersString + ");"			
+				+ showDetails + ", " + leftCharactersString + ", " 	
+				+ useCustomSecurity + ", " + customSecurityExpression + ", "
+				+ penaltyRatio
+				+ ");"			
 				+ showMessageIndicatorString;
 	}
 	

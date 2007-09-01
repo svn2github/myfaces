@@ -48,6 +48,9 @@ public class PasswordStrengthTag extends HtmlInputTextTag {
 		_textStrengthDescriptions = null;
 		_showDetails = null;
 		_strengthIndicatorType = null;
+		_useCustomSecurity = null;
+		_customSecurityExpression = null;
+		_penaltyRatio = null;
 	}
 
 	protected void setProperties(UIComponent component) {
@@ -58,7 +61,10 @@ public class PasswordStrengthTag extends HtmlInputTextTag {
 				_textStrengthDescriptions);
 		setStringProperty(component, "prefixText", _prefixText);
 		setStringProperty(component, "showDetails", _showDetails);
-		setStringProperty(component, "strengthIndicatorType", _strengthIndicatorType);			
+		setStringProperty(component, "strengthIndicatorType", _strengthIndicatorType);
+		setStringProperty(component, "useCustomSecurity", _useCustomSecurity);	
+		setStringProperty(component, "customSecurityExpression", _customSecurityExpression);			
+		setStringProperty(component, "penaltyRatio", _penaltyRatio);		
 	}
 
 	//Getters & Setters ...
@@ -103,10 +109,38 @@ public class PasswordStrengthTag extends HtmlInputTextTag {
 		this._strengthIndicatorType = strengthIndicatorType;
 	}	
 	
+	public String getCustomSecurityExpression() {
+		return _customSecurityExpression;
+	}
+
+	public void setCustomSecurityExpression(String securityExpression) {
+		_customSecurityExpression = securityExpression;
+	}
+
+	public String getUseCustomSecurity() {
+		return _useCustomSecurity;
+	}
+
+	public void setUseCustomSecurity(String customSecurity) {
+		_useCustomSecurity = customSecurity;
+	}	
+	
+	
+	public String getPenaltyRatio() {
+		return _penaltyRatio;
+	}
+
+	public void setPenaltyRatio(String penaltyRatio) {
+		this._penaltyRatio = penaltyRatio;
+	}	
+	
 	//Attributes ...
 	private String _preferredPasswordLength;
 	private String _textStrengthDescriptions;
 	private String _prefixText;
 	private String _showDetails;
 	private String _strengthIndicatorType;
+	private String _useCustomSecurity;
+	private String _customSecurityExpression;	
+	private String _penaltyRatio;
 }
