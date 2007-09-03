@@ -19,6 +19,7 @@
 package org.apache.myfaces.custom.submitOnEvent;
 
 import org.apache.myfaces.custom.dialog.ModalDialog;
+import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
@@ -104,9 +105,24 @@ public class SubmitOnEventRenderer extends HtmlRenderer
 				facesContext, AddResource.HEADER_BEGIN, SubmitOnEventRenderer.class,
 				"submitOnEvent.js");
 
-        StringBuffer js = new StringBuffer(80);
-        js.append("setTimeout(\"");
-        js.append("orgApacheMyfacesSubmitOnEventRegister('");
+		// If the dojo library will be loaded, use it to attach to the onLoad handler.
+		// Do NOT use dojo if no other component requires it, this avoids loading of this
+		// heavy-weight javascript-library for just the simple submitOnEvent use-case.
+		// We do this for better integration with dojo widget (e.g. our ModalDialog)
+		// where using the timeout stuff is not appropriate.
+		boolean useDojoForInit = DojoUtils.isDojoInitialized(facesContext);
+
+		StringBuffer js = new StringBuffer(80);
+
+		if (useDojoForInit)
+		{
+			js.append("dojo.addOnLoad(function() {");
+		}
+		else
+		{
+			js.append("setTimeout(\"");
+		}
+		js.append("orgApacheMyfacesSubmitOnEventRegister('");
         if (submitOnEvent.getEvent() != null)
         {
             js.append(submitOnEvent.getEvent().toLowerCase());
@@ -143,8 +159,16 @@ public class SubmitOnEventRenderer extends HtmlRenderer
 		}
         js.append("','");
         js.append(forComponent.getClientId(facesContext));
+		js.append("');");
         // js.append("');");
-        js.append("');\", 50)");
+		if (useDojoForInit)
+		{
+			js.append("});");
+		}
+		else
+		{
+			js.append("\", 100)");
+		}
 
         // AddResourceFactory.getInstance(facesContext).addInlineScriptAtPosition(facesContext, AddResource.BODY_END, js.toString());
 

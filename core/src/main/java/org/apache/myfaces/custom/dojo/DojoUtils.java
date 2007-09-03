@@ -41,7 +41,7 @@ import java.util.Map.Entry;
  * mechanisms note this class uses its own double entries filter due to the fact
  * that we can mix and match header and body scripts as needed (we do not want
  * to lose portal functionality do we?)
- * 
+ *
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date: 2006-09-08 20:56:28 +0000 (Fri, 08 Sep
  *          2006) $
@@ -93,7 +93,7 @@ public final class DojoUtils {
 
     /**
      * creates a dojoed attribute map upon the given array of attribute names
-     * 
+     *
      * @param facesContext
      *            standard faces context used internally
      * @param attributeNames
@@ -154,7 +154,7 @@ public final class DojoUtils {
      * system a debug:true is required for this to work properly it will not be
      * set by this method (due to the avoidance of unwanted automatisms causing
      * sideefects)
-     * 
+     *
      * @param facesContext
      * @param component
      * @return
@@ -189,7 +189,15 @@ public final class DojoUtils {
         renderWidgetInitializationCode(writer, component, DEBUG_CONSOLE_TYPE, attributeMap, MYFACES_DOJO_DEBUGCONSOLE_ID, true);
     }
 
-    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, DojoConfig config) throws IOException {
+	/**
+	 * check if dojo is going to be used 
+	 */
+	public static boolean isDojoInitialized(FacesContext facesContext)
+	{
+		return isInlineScriptCheck(facesContext, DJCONFIG_INITKEY);
+	}
+
+	public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, DojoConfig config) throws IOException {
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
 
@@ -209,13 +217,13 @@ public final class DojoUtils {
                 /*
                  * ResponseWriter writer = facesContext.getResponseWriter();
                  * writer.startElement(HTML.SCRIPT_ELEM,component);
-                 * 
+                 *
                  * MyFacesResourceHandler handler = new
                  * MyFacesResourceHandler(DojoResourceLoader.class, dojofile);
                  * String uri = handler.getResourceUri(facesContext); uri =
                  * uri.replaceAll("dojo\\.js\\;jsessionid(.)*\\\"","dojo.js");
                  * writer.writeAttribute(HTML.SRC_ATTR, uri, null);
-                 * 
+                 *
                  * writer.endElement(HTML.SCRIPT_ELEM);
                  * addResource.addJavaScriptAtPosition(facesContext,
                  * AddResource.HEADER_BEGIN, DojoResourceLoader.class,
@@ -230,7 +238,7 @@ public final class DojoUtils {
 
     /**
      * adds a new namespace location to the mix
-     * 
+     *
      * @param facesContext
      *            the faces context which is used internally
      * @param component
@@ -253,7 +261,7 @@ public final class DojoUtils {
 
     /**
      * adds a dojo provide to the current list of definitions within the header
-     * 
+     *
      * @param context
      *            the faces context for accessing the resources internally
      * @param provided
@@ -275,7 +283,7 @@ public final class DojoUtils {
 
     /**
      * adds a dojo provide
-     * 
+     *
      * @param facesContext
      * @param component
      * @param provided
@@ -306,7 +314,7 @@ public final class DojoUtils {
 
     /**
      * adds a dojo require include to our mix of stuff used
-     * 
+     *
      * @param facesContext
      * @param required
      */
@@ -321,7 +329,7 @@ public final class DojoUtils {
 
     /**
      * creates a debug statement for the debug console
-     * 
+     *
      * @param stmnt
      *            the debug message displayed by the debug console
      * @return javaScriptcode String
@@ -332,7 +340,7 @@ public final class DojoUtils {
 
     /**
      * creates a debug statement and a corresponding value for the debug console
-     * 
+     *
      * @param stmnt
      *            the debug message displayed and given value by the debug
      *            console
@@ -344,7 +352,7 @@ public final class DojoUtils {
 
     /**
      * helper method which does the proper dojo provide script creation
-     * 
+     *
      * @param provided
      *            the provided class name
      * @return dojoProvide String
@@ -361,7 +369,7 @@ public final class DojoUtils {
 
     /**
      * helper method for the proper dojo require script creation
-     * 
+     *
      * @param required
      *            the creation package for the require functionality
      * @return dojoRequire String
@@ -377,7 +385,7 @@ public final class DojoUtils {
 
     /**
      * Request singleton getter method for the djConfig object
-     * 
+     *
      * @param context
      * @return
      */
@@ -398,7 +406,7 @@ public final class DojoUtils {
 
     /**
      * getter for the expanded flat
-     * 
+     *
      * @param facesContext
      * @return
      */
@@ -416,7 +424,7 @@ public final class DojoUtils {
 
     /**
      * Inline script set
-     * 
+     *
      * @param context
      *            standard faces context
      * @param inlineScript
@@ -438,14 +446,26 @@ public final class DojoUtils {
         return true;
     }
 
-    /**
+	/**
+	 * check if the script with the given inlineScript-name has been added
+	 */
+	public static boolean isInlineScriptCheck(FacesContext context, String inlineScript)
+	{
+		// TODO move this non neutral code into the resource handler
+		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		Set set = getBodyScriptInfos(request);
+
+		return set.contains(inlineScript);
+	}
+
+	/**
      * please, instead of using standard dojo taglib mechanisms use this code
      * for initialisation it will render a clean and proper javascript
      * initialisation instead. There are issues with ADF and the dojo taglib
      * mechanisms and also (Alex Russel wont like to hear this) the dojo taglib
      * initialisation fails on W3C validations. returns the name of the
      * javascript var for further processing
-     * 
+     *
      * @param facesContext
      *            standard faces context
      * @param component
@@ -463,7 +483,7 @@ public final class DojoUtils {
     /**
      * convenience method to render the widget init code automatically
      * for a given component and a set of attribute names
-     * 
+     *
      * @param facesContext
      * @param component
      * @param dojoType
@@ -479,7 +499,7 @@ public final class DojoUtils {
 
     /**
      * same for a given neutral id...
-     * 
+     *
      * @param dojoType
      * @param paramMap
      * @param clientId
@@ -500,7 +520,7 @@ public final class DojoUtils {
         String javascriptVar = (String) paramMap.get("widgetVar");
         if (StringUtils.isBlank(javascriptVar))
             javascriptVar = calculateWidgetVarName(clientId);
-        
+
         Iterator it = paramMap.entrySet().iterator();
 
         writer.write("var ");
@@ -524,7 +544,7 @@ public final class DojoUtils {
                 					// ambersants, dojo req
                 boolean isString = value instanceof String;
                 if (isString)
-                {                      
+                {
                     if( value.equals("true")
                         || value.equals("false") )
                         isString = false;
@@ -553,7 +573,7 @@ public final class DojoUtils {
     /**
      * helper method to centralize the widget variable name calculation for our
      * dojo javascript widget init code
-     * 
+     *
      * @param clientId
      *            the client id upon which the var name has to be generated
      * @return the javascript widget var name for the given client id
@@ -563,7 +583,7 @@ public final class DojoUtils {
     }
 
     /**
-     * 
+     *
      * @return
      */
     public static String calculateWidgetId(FacesContext context, UIComponent widget) {
@@ -577,9 +597,9 @@ public final class DojoUtils {
         return widgetVarName;
     }
 
-    
+
     /**
-     * 
+     *
      * @return
      */
     public static String calculateWidgetVarName(FacesContext context, UIComponent widget) {
@@ -598,7 +618,7 @@ public final class DojoUtils {
      * is that an existing entry is overwritten if a new config entry is set
      * make sure that this is not called too often due to the fact that we do
      * heavy reflection in here
-     * 
+     *
      * @param context
      * @param config
      */
@@ -655,7 +675,7 @@ public final class DojoUtils {
     /**
      * if this flag is set to true somewhere before the rendering, the expanded
      * version is loaded otherwise the nonexpanded version is loaded
-     * 
+     *
      * @param facesContext
      *            context because we again have a full request singleton here
      * @param expanded
@@ -670,7 +690,7 @@ public final class DojoUtils {
     /**
      * helper to write out debug statements this is only a convenience method to
      * reduce the code bloat
-     * 
+     *
      * @param writer
      * @param stmnt
      * @return
@@ -684,12 +704,12 @@ public final class DojoUtils {
     /**
      * dojo namespace definition method allows the definition of a new namespace
      * within the parameters of the dojo namespacing system
-     * 
+     *
      * @param namespace
      *            the dojo namespace
      * @param location
      *            the exaclt script location (can be a relative location)
-     * 
+     *
      * @return the namespace script which has to be printed / executed
      */
     private static String createNamespaceScript(String namespace, String location) {
@@ -719,7 +739,7 @@ public final class DojoUtils {
     /**
      * helper to write an inline javascript at the exact resource location of
      * the call
-     * 
+     *
      * @param facesContext
      * @param component
      * @param script

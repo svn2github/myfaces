@@ -180,11 +180,14 @@ function orgApacheMyfacesSubmitOnEventAttachEvent(component, components, eventTy
 
 	if (eventType == "dialogok")
 	{
-		component._myfaces_submitOnEvent_onHide=component.onHide;
-		component.onHide=function()
+		if (!component._myfaces_submitOnEvent_onHide)
 		{
-			this._myfaces_submitOnEvent_onHide();
-			setupHandler();
+			component._myfaces_submitOnEvent_onHide=component.onHide;
+			component.onHide=function()
+			{
+				this._myfaces_submitOnEvent_onHide();
+				setupHandler();
+			}
 		}
 	}
 	else if (component.addEventListener)
