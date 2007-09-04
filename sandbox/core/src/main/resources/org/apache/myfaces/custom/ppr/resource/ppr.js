@@ -157,6 +157,14 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function() {
 
 org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
 {
+    var ppr = this;
+    setTimeout(function(){ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId)}, refreshTimeout);
+};
+
+// periodically called when updating automatically 
+
+org.apache.myfaces.PPRCtrl.prototype.doPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
+{
     var content = new Array;
     content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
     this.doAjaxSubmit(content, refreshTimeout, refreshZoneId, null);
@@ -327,7 +335,7 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
     if(refreshTimeout && !this.blockPeriodicalUpdateDuringPost)
     {
         window.setTimeout(function() {
-            ppr.startPeriodicalUpdate(refreshTimeout, refreshZoneId);
+            ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId);
         }, refreshTimeout)
     }
 };
@@ -526,7 +534,7 @@ org.apache.myfaces.PPRCtrl.prototype.elementOnPeriodicalEventHandler = function(
             var zoneId = zones[i];
             var timeout = window.oamRefreshTimeoutForZoneId[zoneId];
             if (!timeout) return false;
-            this.startPeriodicalUpdate(timeout, zoneId);
+            this.doPeriodicalUpdate(timeout, zoneId);
             event.target.oam_periodicalStarted = true;
         }
     }
