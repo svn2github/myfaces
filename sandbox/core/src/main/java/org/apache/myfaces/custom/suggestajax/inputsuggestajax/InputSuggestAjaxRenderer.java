@@ -136,6 +136,8 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 				// fake the label
 				inputSuggestAjax.setId(oriId + "_fake");
 
+				textInputId = inputSuggestAjax.getClientId(context);
+
 				// fake a submitted value so we have it rendered
 				inputSuggestAjax.setSubmittedValue(label);
 
