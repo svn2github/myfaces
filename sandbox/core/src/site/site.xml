@@ -46,6 +46,7 @@
 		  <item name="SecurityContext" href="securityContext.html"/>
 		  <item name="Limit Rendered" href="limitRendered.html"/>
       <item name="Rounded DIV" href="roundedDiv.html"/>
+      <item name="PasswordStrength" href="passwordStrength.html"/> 
     </menu>    
     
     <menu name="Converters">
