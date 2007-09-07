@@ -165,9 +165,12 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
 
 org.apache.myfaces.PPRCtrl.prototype.doPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
 {
-    var content = new Array;
-    content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
-    this.doAjaxSubmit(content, refreshTimeout, refreshZoneId, null);
+    if(!this.blockPeriodicalUpdateDuringPost) 
+    {
+       var content = new Array;
+       content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
+       this.doAjaxSubmit(content, refreshTimeout, refreshZoneId, null);
+    }
 };
 
 //Callback Method which handles the AJAX Response
