@@ -18,7 +18,7 @@ function startUpPasswordStrength(objID) {
 function increaseProgressBar(progressBarID, degree){
 	var currentValue = degree * 10;
 	dojo.widget.byId(progressBarID).setMaxProgressValue(10, true);
-	dojo.widget.byId(progressBarID).setProgressValue(currentValue, true);
+	dojo.widget.byId(progressBarID).setProgressValue(currentValue, true);	
 	dojo.widget.byId(progressBarID).render();
 }
 
@@ -45,7 +45,6 @@ function isNumeric(sText) {
    var ValidChars = "0123456789";
    var IsNumber=true;
    var Char;
-
    for (i = 0; i < sText.length && IsNumber == true; i++) {
       Char = sText.charAt(i);
       if (ValidChars.indexOf(Char) == -1) {
@@ -68,9 +67,9 @@ function isSymbol(sText) {
 
 function trimString(s) {
 	var l=0; var r=s.length -1;
-	while(l < s.length && s[l] == ' ')
+	while(l < s.length && s.charAt(l) == ' ')
 	{	l++; }
-	while(r > l && s[r] == ' ')
+	while(r > l && s.charAt(r) == ' ')
 	{	r-=1;	}
 	return s.substring(l, r+1);
 }
@@ -133,12 +132,12 @@ function validSymbolSequence(count, passwordString, currentCharacterIndex) {
 		//Consume symbol characters ...
 		for(j = 0; j < count; ++j) {
 			if(!isValidRange(passwordString, currentCharacterIndex)) {return -1;}
-			if(!isSymbol( passwordString[currentCharacterIndex++] ))
+			if(!isSymbol( passwordString.charAt(currentCharacterIndex++) ))
 				return -1;
 		}
 		//Check whether there are more character of this type ...
 		while(currentCharacterIndex < passwordString.length) {
-			if(isSymbol( passwordString[currentCharacterIndex] ) ) {
+			if(isSymbol( passwordString.charAt(currentCharacterIndex) ) ) {
 				currentCharacterIndex++;
 			} else {
 				break;
@@ -160,12 +159,12 @@ function validSymbolSequence(count, passwordString, currentCharacterIndex) {
 function validNumberSequence(count, passwordString, currentCharacterIndex) {
 		for(j = 0; j < count; ++j) {
 			if(!isValidRange(passwordString, currentCharacterIndex)) {return -1;}
-			if(!isNumeric( passwordString[currentCharacterIndex++] ))
+			if(!isNumeric( passwordString.charAt(currentCharacterIndex++) ))
 				return -1;
 		}
 		//Check whether there are more character of this type ...
 		while(currentCharacterIndex < passwordString.length) {
-			if(isNumeric( passwordString[currentCharacterIndex] ) ) {
+			if(isNumeric( passwordString.charAt(currentCharacterIndex) ) ) {
 				currentCharacterIndex++;
 			} else {
 				break;
@@ -187,12 +186,12 @@ function validNumberSequence(count, passwordString, currentCharacterIndex) {
 function validAlphaSequence(count, passwordString, currentCharacterIndex) {
 		for(j = 0; j < count; ++j) {
 			if(!isValidRange(passwordString, currentCharacterIndex)) {return -1;}
-			if(!isAlpha( passwordString[currentCharacterIndex++] ))
+			if(!isAlpha( passwordString.charAt(currentCharacterIndex++) ))
 				return -1;
 		}
 		//Check whether there are more character of this type ...
 		while(currentCharacterIndex < passwordString.length) {
-			if(isAlpha( passwordString[currentCharacterIndex] ) ) {
+			if(isAlpha( passwordString.charAt(currentCharacterIndex) ) ) {
 				currentCharacterIndex++;
 			} else {
 				break;
@@ -232,9 +231,9 @@ function checkPattern(passwordString, patternString) {
 	}
 
 	for(var i = 0; i < patternLength; i += 2) {
-		var character = patternString[i];
-		var count = patternString[i+1];
-		var retval;
+		var character = patternString.charAt(i);
+		var count = patternString.charAt(i+1);
+		var retval;	
 
 		//Check pattern format ...
 		if(!isNumeric(count)) {
@@ -344,6 +343,7 @@ function updateStatusValue(textID, preferredLength,
         hide(leftCharsMessageID);
     }						   						   
 }
+
 
 
 
