@@ -171,7 +171,7 @@ public class HtmlCheckboxRenderer
             }
         }
         int totalItems = items.size();
-        int totalCols = totalCols = (totalItems / totalRows);
+        int totalCols = (totalItems / totalRows);
         if (totalItems % totalRows != 0)
         {
             totalCols++;
