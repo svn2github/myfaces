@@ -423,6 +423,20 @@
         <converter-class>org.apache.myfaces.custom.fileupload.UploadedFileConverter</converter-class>
     </converter>
 
+    <converter>
+        <converter-for-class>java.util.concurrent.atomic.AtomicBoolean</converter-for-class>
+        <converter-class>org.apache.myfaces.convert.AtomicBooleanConverter</converter-class>
+    </converter>
+
+    <converter>
+        <converter-for-class>java.util.concurrent.atomic.AtomicInteger</converter-for-class>
+        <converter-class>org.apache.myfaces.convert.AtomicIntegerConverter</converter-class>
+    </converter>
+    
+    <converter>
+        <converter-for-class>java.util.concurrent.atomic.AtomicLong</converter-for-class>
+        <converter-class>org.apache.myfaces.convert.AtomicLongConverter</converter-class>
+    </converter>
 
     <!-- MyFaces Renderkit Extensions -->
 

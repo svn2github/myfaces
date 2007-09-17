@@ -76,7 +76,8 @@
 	  <menu name="Other Goodies">
 	    <item name="Extensions filter" href="extensionsFilter.html"/>  
 	    <item name="forceId" href="forceId.html"/>
-	    <item name="Tiles Support" href="tiles.html"/>  
+	    <item name="Tiles Support" href="tiles.html"/>
+	    <item name="Atomic Conversion" href="atomicConversion.html"/> 
 	  </menu>    
 	
       <menu name="Testing">

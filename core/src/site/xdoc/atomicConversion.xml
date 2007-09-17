@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN" "http://maven.apache.org/dtd/maven-xdoc.dtd">
+      
+<document>
+
+    <body>
+        <section name="Description">
+            <p>
+                Converters for :
+              	<ul>
+              		<li>java.util.concurrent.atomic.AtomicBoolean</li>
+              		<li>java.util.concurrent.atomic.AtomicInteger</li>
+              		<li>java.util.concurrent.atomic.AtomicLong</li>
+              	</ul>
+            </p>
+        </section>
+
+        <section name="API">
+            
+            <table>
+                <tr>
+                    <td colspan="1" rowspan="1">since</td>
+                    <td colspan="1" rowspan="1">1.1.7</td>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1">author</td>
+                    <td colspan="1" rowspan="1">Dennis Byrne</td>
+                </tr>
+            </table>
+        </section>
+
+        <section name="Usage">
+            <source xml:space="preserve">
+&lt;h:inputText value="#{managedBean.propertyOfTypeAtomicBoolean}"/&gt;
+&lt;h:inputText value="#{managedBean.propertyOfTypeAtomicInteger}"/&gt;
+&lt;h:inputText value="#{managedBean.propertyOfTypeAtomicLong}"/&gt;
+            </source>
+        </section>
+        
+        <section name="Instructions">
+            <p>
+				No configuration required.  The Converters are registered at startup simply by using MyFaces Tomahawk.
+            </p>
+        </section>
+    </body>
+    
+
+</document>
