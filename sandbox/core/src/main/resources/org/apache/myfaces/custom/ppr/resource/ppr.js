@@ -161,11 +161,11 @@ org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTim
     setTimeout(function(){ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId)}, refreshTimeout);
 };
 
-// periodically called when updating automatically 
+// periodically called when updating automatically
 
 org.apache.myfaces.PPRCtrl.prototype.doPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
 {
-    if(!this.blockPeriodicalUpdateDuringPost) 
+    if(!this.blockPeriodicalUpdateDuringPost)
     {
        var content = new Array;
        content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
@@ -180,17 +180,17 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
     if(type == "load" && !this.formNode.myFacesPPRCtrl.blockPeriodicalUpdateDuringPost)
     {
 	    var componentUpdates = data.getElementsByTagName("component");
-	    
-	    //In case no componentUpdates are returned the response is considered 
+
+	    //In case no componentUpdates are returned the response is considered
 	    //invalid - do a normal submit to get the corresponding error page
 	    if(componentUpdates == null || componentUpdates.length == 0) {
 	    	this.formNode.myFacesPPRCtrl.callbackErrorHandler();
-	    	return;	
+	    	return;
 	    }
-	    
+
 	    var componentUpdate = null;
 	    var domElement = null;
-		
+
       for (var i = 0; i < componentUpdates.length; i++)
 		  {
   			componentUpdate = componentUpdates[i];
@@ -206,7 +206,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
   				s = s.substr(0, match.index) + s.substr(match.index + match[0].length);
   			}
   		}
-  		
+
 	    //ensure that new buttons in the PartialUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.reConnectEventHandlers();
 
@@ -247,24 +247,24 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 
 org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
 
-    if(!this.lastSubmittedElement) 
+    if(!this.lastSubmittedElement)
     {
       if(this.showDebugMessages)
-		  { 
+		  {
           alert("An unexpected error occured during an ajax-request - page has been fully submitted!");
       }
 		this.form.submit();
 	}
-	
+
 	var formName = this.form.id;
 
     if(!formName)
     {
         formName = this.form.name;
     }
-	
+
 	var triggerElement = this.lastSubmittedElement;
-	
+
 	if (triggerElement.tagName.toLowerCase() == "input" &&
                 (triggerElement.type.toLowerCase() == "submit" ||
                  triggerElement.type.toLowerCase() == "image")
@@ -279,7 +279,7 @@ org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {
             else
             {
         		oamSetHiddenInput(formName,formName +':'+'_idcl',triggerElement.id);
-        	} 
+        	}
 	this.form.submit();
 }
 
@@ -408,8 +408,10 @@ org.apache.myfaces.PPRCtrl.prototype._addEventHandlerForId = function (formEleme
 
     if(formElement)
         this._addEventHandler(formElement, connectToEventArr, eventHandler);
-    else
+	/* where is the log?
+	else
         log.error("Input element with id : "+formElementId +" not found.");
+    */
 }
 
 //Really connect all deffered event handlers
@@ -421,7 +423,7 @@ org.apache.myfaces.PPRCtrl.prototype.reConnectEventHandlers= function() {
 	}
 }
 
-//Store the information about to be connected event-handlers for connecting 
+//Store the information about to be connected event-handlers for connecting
 //them initially and after each PPR Response
 org.apache.myfaces.PPRCtrl.prototype._cachingAddEventHandlerForId = function (formElementId, connectToEventArr, eventHandler) {
 		var element = new Array();
