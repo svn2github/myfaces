@@ -29,7 +29,9 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
 
-    if(!window.oamPartialTriggersToZoneIds)
+	this.subFormId = null;
+
+	if(!window.oamPartialTriggersToZoneIds)
 	{
     	window.oamPartialTriggersToZoneIds = new Array();
     }
@@ -50,6 +52,12 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 
 	this.reConnectEventHandlers();
 }
+
+// set the subform id this ppr belongs to
+org.apache.myfaces.PPRCtrl.prototype.setSubFormId= function(subFormId)
+{
+	this.subFormId = subFormId;
+};
 
 //Method to register individual HTML to be displayed instead of the component during loading
 
@@ -322,7 +330,11 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         requestUri = formAction.nodeValue;
     }
 
-    content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
+	if (this.subFormId != null)
+	{
+		content["org.apache.myfaces.custom.subform.submittedId"]=this.subFormId;
+	}
+	content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
 
     dojo.io.bind({
         url		: requestUri,
@@ -333,7 +345,7 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         mimetype: "text/xml",
         transport: "XMLHTTPTransport",
         formNode: this.form
-    });
+	});
 
     if(refreshTimeout && !this.blockPeriodicalUpdateDuringPost)
     {

@@ -18,22 +18,11 @@
  */
 package org.apache.myfaces.custom.ppr;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.custom.subform.SubForm;
 import org.apache.myfaces.renderkit.html.ext.HtmlGroupRenderer;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
@@ -41,6 +30,17 @@ import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ernst Fastl
@@ -56,7 +56,9 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 
     private static final String ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION = "addPartialTriggerPattern";
 
-    private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
+	private static final String SET_SUBFORM_ID_FUNCTION = "setSubFormId";
+
+	private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
 
     private static final String PPR_JS_FILE = "ppr.js";
 
@@ -72,7 +74,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
          * components are marked with the TRANSIENT_MARKER_ATTRIBUTE so the
          * {@link PPRPhaseListener} can reset them to transient in the next
          * non-PPR Request
-         * 
+         *
          * @param facesContext
          *                the current {@link FacesContext}
          * @param uiComponent
@@ -109,7 +111,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
     /**
          * todo: in 1.2, better use a combo of
          * invokeComponent/RendererUtils.renderChildren() instead
-         * 
+         *
          * @param context
          * @param component
          * @throws IOException
@@ -126,7 +128,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
          * Encodes the end of the span-element and afterwards the inline
          * JavaScript for the client side initialization of the
          * {@link PPRPanelGroup}.
-         * 
+         *
          * @param facesContext
          *                the current {@link FacesContext}
          * @param uiComponent
@@ -167,7 +169,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
          * <li>Starting periodical updates</li>
          * <li>Registering inline Loading messages</li>
          * </ul>
-         * 
+         *
          * @param facesContext
          *                the current {@link FacesContext}
          * @param pprGroup
@@ -203,10 +205,10 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	    String encoding = "UTF-8" ; // Hardcoded default
 	    if(facesContext.getResponseWriter().getCharacterEncoding() != null)
 		encoding = facesContext.getResponseWriter().getCharacterEncoding();
-	    
+
 	    DojoConfig currentConfig = DojoUtils.getDjConfigInstance(facesContext);
 	    currentConfig.setBindEncoding(encoding);
-	    
+
 	    String javascriptLocation = (String) pprGroup.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
 	    AddResource addResource = AddResourceFactory.getInstance(facesContext);
 	    DojoUtils.addMainInclude(facesContext, pprGroup, javascriptLocation, currentConfig);
@@ -303,12 +305,18 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	String partialTriggers = pprGroup.getPartialTriggers();
 
 	String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
-	
+
 	//handle partial trigger patterns
 	if (partialTriggerPattern != null && partialTriggerPattern.trim().length() > 0)
 	{
 	    script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION + "('" + partialTriggerPattern
 		    + "','" + clientId + "');");
+	}
+
+	SubForm subFormParent = findParentSubForm(pprGroup);
+	if (subFormParent != null)
+	{
+		script.append(pprCtrlReference + "." + SET_SUBFORM_ID_FUNCTION + "('" + subFormParent.getId() + "');");
 	}
 
 	String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
@@ -351,12 +359,27 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 
 	// closing the dojo.addOnLoad call
 	script.append("});");
-	
+
 	//Really render the script
 	renderInlineScript(facesContext, pprGroup, script.toString());
     }
 
-    private String encodeArray(List eventHooks)
+	private SubForm findParentSubForm(UIComponent base)
+	{
+		if (base == null)
+		{
+			return null;
+		}
+
+		if (base instanceof SubForm)
+		{
+			return (SubForm) base;
+		}
+
+		return findParentSubForm(base.getParent());
+	}
+
+	private String encodeArray(List eventHooks)
     {
 	if (eventHooks == null || eventHooks.size() == 0)
 	{
@@ -384,7 +407,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
     /**
          * Helper to write an inline javascript at the exact resource location
          * of the call.
-         * 
+         *
          * @param facesContext
          *                The current faces-context.
          * @param component
