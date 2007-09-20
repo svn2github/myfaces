@@ -35,10 +35,12 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 	{
     	window.oamPartialTriggersToZoneIds = new Array();
     }
-    if(!window.oamEventHandlerToInputIds)
+	/* new reconnect
+	if(!window.oamEventHandlerToInputIds)
 	{
     	window.oamEventHandlerToInputIds = new Array();
     }
+    */
     if(!window.oamInlineLoadingMessage)
 	{
     	window.oamInlineLoadingMessage = new Array();
@@ -47,8 +49,16 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 	{
     	window.oamRefreshTimeoutForZoneId = new Array();
     }
+	if(!this.triggerPatternConfig)
+	{
+		this.triggerPatternConfig = new Array();
+	}
+	if(!this.triggerConfig)
+	{
+		this.triggerConfig= new Array();
+	}
 
-    this.replaceFormSubmitFunction(formId);
+	this.replaceFormSubmitFunction(formId);
 
 	this.reConnectEventHandlers();
 }
@@ -70,6 +80,16 @@ org.apache.myfaces.PPRCtrl.prototype.addInlineLoadingMessage= function(message, 
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern, refreshZoneId)
 {
+	var triggerPatternStruct = new Object();
+	triggerPatternStruct["pattern"]=pattern;
+	triggerPatternStruct["refreshZoneId"]=refreshZoneId;
+	this.triggerPatternConfig.push(triggerPatternStruct);
+
+	this._addPartialTriggerPattern(pattern, refreshZoneId);
+}
+
+org.apache.myfaces.PPRCtrl.prototype._addPartialTriggerPattern= function(pattern, refreshZoneId)
+{
 	//Register partial triggers for all matching buttons and links
 	for (var f = 0; f < document.forms.length; f++)
 	{
@@ -80,13 +100,13 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
     	{
 	        var formElement = buttons[i];
 	        if(this.isMatchingPattern(pattern,formElement.id) )
-					this.addPartialTrigger(formElement.id , null , refreshZoneId);
+					this._addPartialTrigger(formElement.id , null , refreshZoneId);
 		}
 		//search all links
 		var links = currentForm.getElementsByTagName("a");
 		for (var i = 0; i < links.length; i++) {
 			if(this.isMatchingPattern(pattern,links[i].id) )
-				this.addPartialTrigger(links[i].id , null , refreshZoneId);
+				this._addPartialTrigger(links[i].id , null , refreshZoneId);
 		}
 	}
 };
@@ -95,18 +115,52 @@ org.apache.myfaces.PPRCtrl.prototype.addPartialTriggerPattern= function(pattern,
 
 org.apache.myfaces.PPRCtrl.prototype.addPartialTrigger= function(inputElementId, eventHookArr, refreshZoneId)
 {
-    this._cachingAddEventHandlerForId(inputElementId,eventHookArr,"elementOnEventHandler");
+	var triggerStruct = new Object();
+	triggerStruct["inputElementId"]=inputElementId;
+	triggerStruct["eventHookArr"]=eventHookArr;
+	triggerStruct["refreshZoneId"]=refreshZoneId;
+	this.triggerConfig.push(triggerStruct);
+
+	this._addPartialTrigger(inputElementId, eventHookArr, refreshZoneId);
+}
+
+org.apache.myfaces.PPRCtrl.prototype._addPartialTrigger= function(inputElementId, eventHookArr, refreshZoneId)
+{
+
+	this._cachingAddEventHandlerForId(inputElementId,eventHookArr,"elementOnEventHandler");
 
     this._addInputAndZone(window.oamPartialTriggersToZoneIds, inputElementId, refreshZoneId);
 };
 
 org.apache.myfaces.PPRCtrl.prototype._addInputAndZone = function(arr, inputElementId, refreshZoneId) {
 
-    if (arr[inputElementId] === undefined){
+	if (arr["_oam_ppr_seen"] === undefined)
+	{
+		arr["_oam_ppr_seen"] = new Object();
+	}
+
+	if (arr[inputElementId] === undefined)
+	{
         arr[inputElementId] = refreshZoneId;
-    }
-    else{
-        arr[inputElementId] =
+
+		var seenArray = new Array();
+		seenArray.push(refreshZoneId);
+		arr["_oam_ppr_seen"][inputElementId] = seenArray;
+	}
+    else
+	{
+		var seenArray = arr["_oam_ppr_seen"][inputElementId];
+		for (var i = 0; i<seenArray.length; i++)
+		{
+			if (seenArray[i] == refreshZoneId)
+			{
+				// already added
+				return;
+			}
+		}
+		seenArray.push(refreshZoneId);
+
+		arr[inputElementId] =
         arr[inputElementId] +
         "," +
         refreshZoneId;
@@ -431,20 +485,40 @@ org.apache.myfaces.PPRCtrl.prototype._addEventHandlerForId = function (formEleme
 //Really connect all deffered event handlers
 //Also has to be done after a Response has been processed
 org.apache.myfaces.PPRCtrl.prototype.reConnectEventHandlers= function() {
+
+	for (var i = 0; i<this.triggerPatternConfig.length; i++) {
+		var struct = this.triggerPatternConfig[i];
+		this._addPartialTriggerPattern(
+			struct["pattern"],
+			struct["refreshZoneId"]);
+	}
+
+	for (var i = 0; i<this.triggerConfig.length; i++) {
+		var struct = this.triggerConfig[i];
+		this._addPartialTrigger(
+			struct["inputElementId"],
+			struct["eventHookArr"],
+			struct["refreshZoneId"]);
+	}
+
+	/* new reconnect
 	for (var e = 0; e < window.oamEventHandlerToInputIds.length; e++) {
 		var elem = window.oamEventHandlerToInputIds[e];
 		this._addEventHandlerForId(elem['formElementId'],elem['connectToEventArr'],elem['eventHandler']);
 	}
+	*/
 }
 
 //Store the information about to be connected event-handlers for connecting
 //them initially and after each PPR Response
 org.apache.myfaces.PPRCtrl.prototype._cachingAddEventHandlerForId = function (formElementId, connectToEventArr, eventHandler) {
+/* new reconnect
 		var element = new Array();
 		element['formElementId'] = formElementId;
 		element['eventHandler'] = eventHandler;
 		element['connectToEventArr'] = connectToEventArr;
 		window.oamEventHandlerToInputIds.push(element);
+*/
 		this._addEventHandlerForId(formElementId, connectToEventArr, eventHandler);
 }
 //combine 2 arrays ensuring that every element is only present once
@@ -469,7 +543,7 @@ org.apache.myfaces.PPRCtrl.prototype._contains = function (array,element) {
 
 org.apache.myfaces.PPRCtrl.prototype._addEventHandler = function (formElement, connectToEventArr, eventHandler) {
 
-    if(!connectToEventArr || connectToEventArr.length==0) {
+	if(!connectToEventArr || connectToEventArr.length==0) {
         connectToEventArr = new Array();
         if (this._isButton(formElement) || this._isCheckbox(formElement) || this._isRadio(formElement) || this._isLink(formElement)) {
             //for these element-types, onclick is appropriate
