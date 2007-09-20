@@ -37,9 +37,10 @@ import java.util.Map;
  */
 public class SubFormRenderer extends HtmlRenderer
 {
-    private static final String SUBMIT_FUNCTION_SUFFIX = "_submit";
+    // private static final String SUBMIT_FUNCTION_SUFFIX = "_submit";
     private static final String HIDDEN_PARAM_NAME = "org.apache.myfaces.custom.subform.submittedId";
 
+	/*
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
         super.encodeBegin(context, component);
@@ -50,7 +51,7 @@ public class SubFormRenderer extends HtmlRenderer
         writer.startElement(HTML.SCRIPT_ELEM, null);
         writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_ATTR, org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-        FormInfo parentFormInfo = RendererUtils.findNestingForm(component,context);
+		FormInfo parentFormInfo = RendererUtils.findNestingForm(component,context);
         if(parentFormInfo!=null)
         {
             writer.writeText(createPartialSubmitJS(component.getId(), parentFormInfo.getFormName()), null);
@@ -59,6 +60,7 @@ public class SubFormRenderer extends HtmlRenderer
         writer.endElement(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_ELEM);
         HtmlRendererUtils.writePrettyLineSeparator(context);
     }
+    */
 
     public void decode(FacesContext context, UIComponent component)
     {
@@ -72,9 +74,7 @@ public class SubFormRenderer extends HtmlRenderer
         }
     }
 
-    /**
-     *
-     */
+    /*
     protected String createPartialSubmitJS(String subFormId, String parentFormClientId)
     {
         StringBuffer script = new StringBuffer();
@@ -92,5 +92,6 @@ public class SubFormRenderer extends HtmlRenderer
 
         return script.toString();
     }
+     */
 
 }
