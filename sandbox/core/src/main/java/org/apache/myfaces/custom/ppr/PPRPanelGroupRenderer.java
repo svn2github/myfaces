@@ -316,7 +316,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
 	SubForm subFormParent = findParentSubForm(pprGroup);
 	if (subFormParent != null)
 	{
-		script.append(pprCtrlReference + "." + SET_SUBFORM_ID_FUNCTION + "('" + subFormParent.getId() + "');");
+		script.append(pprCtrlReference + "." + SET_SUBFORM_ID_FUNCTION + "('" + subFormParent.getId()
+			+ "','" + clientId + "');");
 	}
 
 	String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();

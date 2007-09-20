@@ -29,7 +29,7 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
     this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
 
-	this.subFormId = null;
+	this.subFormId = new Array();
 
 	if(!window.oamPartialTriggersToZoneIds)
 	{
@@ -54,9 +54,9 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 }
 
 // set the subform id this ppr belongs to
-org.apache.myfaces.PPRCtrl.prototype.setSubFormId= function(subFormId)
+org.apache.myfaces.PPRCtrl.prototype.setSubFormId= function(subFormId, refreshZoneId)
 {
-	this.subFormId = subFormId;
+	this.subFormId[refreshZoneId] = subFormId;
 };
 
 //Method to register individual HTML to be displayed instead of the component during loading
@@ -177,7 +177,7 @@ org.apache.myfaces.PPRCtrl.prototype.doPeriodicalUpdate = function(refreshTimeou
     {
        var content = new Array;
        content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
-       this.doAjaxSubmit(content, refreshTimeout, refreshZoneId, null);
+       this.doAjaxSubmit(content, refreshTimeout, refreshZoneId);
     }
 };
 
@@ -305,7 +305,9 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
 
     this.lastSubmittedElement=triggerElement;
 
-    var triggeredComponents = this.getTriggeredComponents(triggerElement.id);
+	var refreshZoneId = window.oamPartialTriggersToZoneIds[triggerElement.id];
+
+	var triggeredComponents = this.getTriggeredComponents(triggerElement.id);
     this.displayInlineLoadingMessages(triggeredComponents);
 
     var content=new Array();
@@ -315,7 +317,7 @@ org.apache.myfaces.PPRCtrl.prototype.ajaxSubmitFunction = function(triggerElemen
     if(this._isButton(triggerElement))
         content[triggerElement.id]=triggerElement.id;
 
-    this.doAjaxSubmit(content, null, null)
+    this.doAjaxSubmit(content, null, refreshZoneId)
 }
 
 org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTimeout, refreshZoneId)
@@ -330,9 +332,9 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         requestUri = formAction.nodeValue;
     }
 
-	if (this.subFormId != null)
+	if (this.subFormId[refreshZoneId])
 	{
-		content["org.apache.myfaces.custom.subform.submittedId"]=this.subFormId;
+		content["org.apache.myfaces.custom.subform.submittedId"]=this.subFormId[refreshZoneId];
 	}
 	content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
 
