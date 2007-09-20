@@ -89,11 +89,12 @@
                  place scripts and css on the right position in your HTML document.
               Default: "org.apache.myfaces.shared.renderkit.html.util.DefaultAddResource"
               Follow the description on the MyFaces-Wiki-Performance page to enable
-              StreamingAddResource instead of DefaultAddResource if you want to
+              StreamingAddResource or DojoAddResource instead of DefaultAddResource if you want to
               gain performance.
       </description>
       <param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
-      <param-value>org.apache.myfaces.renderkit.html.util.DefaultAddResource</param-value>
+		<param-value>org.apache.myfaces.renderkit.html.util.DefaultAddResource</param-value>
+	<!--<param-value>org.apache.myfaces.custom.dojoaddresource.DojoAddResource</param-value>-->
       <!--param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value-->
     </context-param>
 
@@ -119,7 +120,7 @@
     <param-name>org.apache.myfaces.redirectTracker.POLICY</param-name>
     <param-value>org.apache.myfaces.custom.redirectTracker.policy.FullRedirectTrackPolicy</param-value>
   </context-param>
-  
+
     <context-param>
 	     <description>Turns on/off Conversion/Validation at Client Side</description>
 		<param-name>org.apache.myfaces.ENABLE_CLIENT_SIDE_VALIDATION</param-name>
