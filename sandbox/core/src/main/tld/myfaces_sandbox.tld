@@ -692,7 +692,7 @@ Sandbox-related entities.
 			<rtexprvalue>false</rtexprvalue>
 			<type>java.lang.String</type>
 			<description>
-				A value binding which will be called to get the instance of an org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer. 
+				A value binding which will be called to get the instance of an org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer.
 			</description>
 		</attribute>
 
@@ -1061,6 +1061,15 @@ Sandbox-related entities.
 			of this subform.
 		</description>
 		&ui_form_attributes;
+		<attribute>
+			<name>preserveSubmittedValues</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>
+				true|false - set to false if you submit other subforms and would like to have your subform
+				reflecting any model update. Default: true
+			</description>
+		</attribute>
 	</tag>
 
 	<!-- selectOneRow -->
@@ -1668,7 +1677,7 @@ Sandbox-related entities.
         </description>
         &ui_component_attributes;
      </tag>
-     
+
     <tag>
         <name>limitRendered</name>
         <tag-class>org.apache.myfaces.custom.limitrendered.UILimitRenderedTag</tag-class>
@@ -1677,7 +1686,7 @@ Sandbox-related entities.
         &ui_component_attributes;
         &ui_limitRendered_attributes;
     </tag>
-    
+
     <tag>
         <name>roundedDiv</name>
         <tag-class>org.apache.myfaces.custom.roundeddiv.HtmlRoundedDivTag</tag-class>
@@ -1690,98 +1699,98 @@ Sandbox-related entities.
         &user_role_attributes;
         &html_roundeddiv_attributes;
     </tag>
-    
+
     <tag>
     <name>passwordStrength</name>
     <tag-class>org.apache.myfaces.custom.passwordStrength.PasswordStrengthTag</tag-class>
 	&standard_input_text_attributes;
-      <attribute> 
-         <name>preferredPasswordLength</name>    
-	     <required>true</required>          
+      <attribute>
+         <name>preferredPasswordLength</name>
+	     <required>true</required>
          <rtexprvalue>true</rtexprvalue>
 	     <type>java.lang.String</type>
-	     <description>The prefered length of the password</description>         
+	     <description>The prefered length of the password</description>
       </attribute>
-      <attribute> 
-         <name>textStrengthDescriptions</name>    
-	     <required>false</required>          
+      <attribute>
+         <name>textStrengthDescriptions</name>
+	     <required>false</required>
          <rtexprvalue>true</rtexprvalue>
 	     <type>java.lang.String</type>
-	     <description>The text strength descriptions</description>         
-      </attribute>      
-      <attribute> 
-         <name>prefixText</name>    
-	  	 <required>false</required>          
-         <rtexprvalue>true</rtexprvalue>
-	     <type>java.lang.String</type>
-	     <description>The prefix of the component message</description>         
+	     <description>The text strength descriptions</description>
       </attribute>
-      <attribute> 
-         <name>showDetails</name>    
-	  	 <required>false</required>          
+      <attribute>
+         <name>prefixText</name>
+	  	 <required>false</required>
          <rtexprvalue>true</rtexprvalue>
 	     <type>java.lang.String</type>
-	      <description>This flag {true | false} determines whether to show the details (left characters). default is true</description>         
-      </attribute>  
-      <attribute> 
-         <name>strengthIndicatorType</name>    
-	  	 <required>false</required>          
+	     <description>The prefix of the component message</description>
+      </attribute>
+      <attribute>
+         <name>showDetails</name>
+	  	 <required>false</required>
          <rtexprvalue>true</rtexprvalue>
 	     <type>java.lang.String</type>
-	      <description>This flag determines the indicator type. It can be {text or bar}. Default is text</description>         
-      </attribute>          
+	      <description>This flag {true | false} determines whether to show the details (left characters). default is true</description>
+      </attribute>
+      <attribute>
+         <name>strengthIndicatorType</name>
+	  	 <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	      <description>This flag determines the indicator type. It can be {text or bar}. Default is text</description>
+      </attribute>
 
 
-      <attribute> 
-         <name>useCustomSecurity</name>    
-	  	 <required>false</required>          
+      <attribute>
+         <name>useCustomSecurity</name>
+	  	 <required>false</required>
          <rtexprvalue>true</rtexprvalue>
-	     <type>java.lang.String</type>     
+	     <type>java.lang.String</type>
 	      <description>
-	      	This flag determines whether to user custom security rules instead 
+	      	This flag determines whether to user custom security rules instead
 	      	of just depending on the password length. The default is false.
-	      </description>	         
+	      </description>
       </attribute>
-      
-      <attribute> 
-         <name>customSecurityExpression</name>    
-	  	 <required>false</required>          
+
+      <attribute>
+         <name>customSecurityExpression</name>
+	  	 <required>false</required>
          <rtexprvalue>true</rtexprvalue>
 	     <type>java.lang.String</type>
 	      <description>
 	      		This string determines the expression of the custom security rule of the password
 				Note that the expression has the following format :
-				******************************************************* 
+				*******************************************************
 				S (Number)  N (Number) A (Number)
 				Where S stands for Symbols
 				Where N stands for Numbers
 				Where A stands for Alphabets
-				******************************************************* 
+				*******************************************************
 				For example) A4N2S3A2
 				Means that the password will be as following :
 				4 or more Alphabets followed by
 				2 or more Numbers followed by
 				3 or more Symbols followed by
 				2 or more Alphabets
-				******************************************************* 
-				Note also that the useCustomSecurity should be set to true.  		
-	      </description>         
-      </attribute>       
-      
-      
-      <attribute> 
-         <name>penaltyRatio</name>    
-	  	 <required>false</required>          
+				*******************************************************
+				Note also that the useCustomSecurity should be set to true.
+	      </description>
+      </attribute>
+
+
+      <attribute>
+         <name>penaltyRatio</name>
+	  	 <required>false</required>
          <rtexprvalue>true</rtexprvalue>
-	     <type>java.lang.String</type>     
+	     <type>java.lang.String</type>
 	      <description>
-	      	This attribute determines the penalty ratio that will decrease the password 
+	      	This attribute determines the penalty ratio that will decrease the password
 	      	Strength if the custom security expression is not met.
 			Note also that the useCustomSecurity should be set to true to apply this flag.
 			Possible values from 0 to 100.
 			Default value is 50.
-	      </description>	         
-      </attribute>        
-                           
+	      </description>
+      </attribute>
+
   </tag>
 </taglib>

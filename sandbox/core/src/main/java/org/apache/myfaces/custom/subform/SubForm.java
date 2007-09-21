@@ -20,12 +20,14 @@ package org.apache.myfaces.custom.subform;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import javax.faces.event.FacesEvent;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import java.util.Iterator;
 import java.util.List;
@@ -61,8 +63,9 @@ public class SubForm extends UIComponentBase
     private static final String PARTIAL_ENABLED = "org.apache.myfaces.IsPartialPhaseExecutionEnabled";
     private boolean _submitted;
 
+	private Boolean preserveSubmittedValues;
 
-    public SubForm()
+	public SubForm()
     {
         super.setRendererType(DEFAULT_RENDERER_TYPE);
     }
@@ -82,25 +85,75 @@ public class SubForm extends UIComponentBase
         _submitted = submitted;
     }
 
-    public void processValidators(FacesContext context)
+	public Boolean getPreserveSubmittedValues()
+	{
+		if (preserveSubmittedValues != null)
+		{
+			return preserveSubmittedValues;
+		}
+
+		ValueBinding vb = getValueBinding("preserveSubmittedValues");
+
+		return (Boolean) ((vb != null) ? vb.getValue(getFacesContext()) : null);
+	}
+
+	public void setPreserveSubmittedValues(Boolean preserveSubmittedValues)
+	{
+		this.preserveSubmittedValues = preserveSubmittedValues;
+	}
+
+	public Object saveState(FacesContext context)
+	{
+		return new Object[]
+		{
+			super.saveState(context),
+			preserveSubmittedValues
+		};
+	}
+
+	public void restoreState(FacesContext context, Object state)
+	{
+		Object[] states = (Object[]) state;
+
+		super.restoreState(context, states[0]);
+		preserveSubmittedValues=(Boolean)states[1];
+	}
+
+
+	public void processDecodes(FacesContext context)
+	{
+		super.processDecodes(context);
+		if (!isRendered()) return;
+
+		if (!_submitted && Boolean.FALSE.equals(getPreserveSubmittedValues()))
+		{
+			// didn't find any better way as we do not know if we are submitted before the
+			// decode phase, but then all the other components have the submitted value
+			// set already.
+			// so lets reset them again ... boring hack.
+			resetSubmittedValues(this, context);
+		}
+	}
+
+	public void processValidators(FacesContext context)
     {
-        if (context == null) throw new NullPointerException("context");
-        if (!isRendered()) return;
+		if (context == null) throw new NullPointerException("context");
+		if (!isRendered()) return;
 
-        boolean partialEnabled = isPartialEnabled(context, PhaseId.PROCESS_VALIDATIONS);
+		boolean partialEnabled = isPartialEnabled(context, PhaseId.PROCESS_VALIDATIONS);
 
-        if(partialEnabled || (_submitted && isEmptyList(context)))
-        {
-            for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
-            {
-                UIComponent childOrFacet = (UIComponent)it.next();
-                childOrFacet.processValidators(context);
-            }
-        }
-        else
-        {
-            processSubFormValidators(this,context);
-        }
+		if(partialEnabled || (_submitted && isEmptyList(context)))
+		{
+			for (Iterator it = getFacetsAndChildren(); it.hasNext(); )
+			{
+				UIComponent childOrFacet = (UIComponent)it.next();
+				childOrFacet.processValidators(context);
+			}
+		}
+		else
+		{
+			processSubFormValidators(this,context);
+		}
     }
 
     public void processUpdates(FacesContext context)
@@ -124,7 +177,27 @@ public class SubForm extends UIComponentBase
         }
     }
 
-    private static void processSubFormUpdates(UIComponent comp, FacesContext context)
+	private static void resetSubmittedValues(UIComponent comp, FacesContext context)
+	{
+		for (Iterator it = comp.getFacetsAndChildren(); it.hasNext(); )
+		{
+			UIComponent childOrFacet = (UIComponent)it.next();
+			if (childOrFacet instanceof SubForm)
+			{
+				// we are not responsible for this subForm, are we?
+				continue;
+			}
+
+			if (childOrFacet instanceof EditableValueHolder)
+			{
+				((EditableValueHolder) childOrFacet).setSubmittedValue(null);
+			}
+
+			resetSubmittedValues(childOrFacet, context);
+		}
+	}
+
+	private static void processSubFormUpdates(UIComponent comp, FacesContext context)
     {
         for (Iterator it = comp.getFacetsAndChildren(); it.hasNext(); )
         {

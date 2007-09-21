@@ -69,11 +69,17 @@ components.
    </s:subForm>
    <t:commandButton value="Submit subForm" actionFor="subFormId"/>
 </h:form>]]></source>Submit from inside the subForm:<source
-    xml:space="preserve"><![CDATA[<h:form> 
-   <s:subForm id="subFormId"> 
+    xml:space="preserve"><![CDATA[<h:form>
+   <s:subForm id="subFormId">
        <h:inputText value="#{bean.value}" />
-       <t:commandButton value="Submit subForm"/> 
-   </s:subForm> 
+       <t:commandButton value="Submit subForm"/>
+   </s:subForm>
+</h:form>]]></source>Do not keep any entered value if submitted another subform<source
+    xml:space="preserve"><![CDATA[<h:form>
+   <s:subForm id="subFormId" preserveSubmittedValues="false">
+       <h:inputText value="#{bean.value}" />
+       <t:commandButton value="Submit subForm"/>
+   </s:subForm>
 </h:form>]]></source></section>
 
     <!-- Syntax -->

@@ -18,16 +18,10 @@
  */
 package org.apache.myfaces.custom.subform;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
 import java.util.Map;
 
 /**

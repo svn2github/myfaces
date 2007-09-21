@@ -18,16 +18,20 @@
  */
 package org.apache.myfaces.custom.subform;
 
-import javax.faces.webapp.UIComponentTag;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentTagBase;
+
+import javax.faces.component.UIComponent;
 
 /**
  * @author Gerald Muellan
  *         Date: 19.01.2006
  *         Time: 14:01:07
  */
-public class SubFormTag extends UIComponentTag
+public class SubFormTag extends UIComponentTagBase
 {
-    public String getComponentType()
+	private String preserveSubmittedValues;
+
+	public String getComponentType()
     {
         return SubForm.COMPONENT_TYPE;
     }
@@ -36,4 +40,31 @@ public class SubFormTag extends UIComponentTag
     {
         return SubForm.DEFAULT_RENDERER_TYPE;
     }
+
+	public void release()
+	{
+		super.release();
+
+		preserveSubmittedValues = null;
+	}
+
+	protected void setProperties(UIComponent component)
+	{
+		super.setProperties(component);
+
+		if (preserveSubmittedValues != null)
+		{
+			setBooleanProperty(component, "preserveSubmittedValues", preserveSubmittedValues);
+		}
+	}
+
+	public String getPreserveSubmittedValues()
+	{
+		return preserveSubmittedValues;
+	}
+
+	public void setPreserveSubmittedValues(String preserveSubmittedValues)
+	{
+		this.preserveSubmittedValues = preserveSubmittedValues;
+	}
 }
