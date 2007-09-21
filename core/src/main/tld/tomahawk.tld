@@ -379,6 +379,16 @@
 
             Unless otherwise specified, all attributes accept static values or EL expressions.
         </description>
+		<attribute>
+		   <name>autocomplete</name>
+		   <required>false</required>
+		   <rtexprvalue>false</rtexprvalue>
+		   <type>java.lang.String</type>
+		   <description>
+			   Non HTML standard attribute to disable browser's autocomplete
+			   function.
+		   </description>
+	   </attribute>
         &standard_input_text_attributes;
         &user_role_attributes;
         &ext_forceId_attribute;
