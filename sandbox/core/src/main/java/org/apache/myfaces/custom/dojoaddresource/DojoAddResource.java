@@ -829,11 +829,14 @@ public class DojoAddResource implements AddResource
 			// the DojoInitializer component before any other component (right after f:view)
 			DojoUtils.addMainInclude(context, null, null, DojoUtils.getDjConfigInstance(context));
 
+			addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoAddResource.class, "dojoaddresource.js");
+
 			writer.startElement(HTML.SCRIPT_ELEM, null);
 			writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, HTML.SCRIPT_LANGUAGE_JAVASCRIPT, null);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-			writer.write("dojo.html.insertCssFile('");
+			// writer.write("dojo.html.insertCssFile('");
+			writer.write("oamInsertCssFile('");
 			writer.write(context.getExternalContext().encodeActionURL(this.getResourceUri()));
 			writer.write("');");
 
