@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -162,9 +163,10 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
                 }
                 catch (ParseException e)
                 {
-                    throw new ConverterException(MessageUtils.getMessage(facesContext,
-                                                                               CONVERSION_MESSAGE_ID,
-                                                                               new Object[]{uiComponent.getId(),value}), e);
+                	FacesMessage message = MessageUtils.getMessage(facesContext, CONVERSION_MESSAGE_ID, new Object[]{uiComponent.getId(),value});
+                	message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                	
+                    throw new ConverterException(message, e);
                 }
             }
         }
