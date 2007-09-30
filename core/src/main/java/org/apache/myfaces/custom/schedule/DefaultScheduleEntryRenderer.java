@@ -228,7 +228,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
         // it's not a value binding expression, so check for the string value
         // in the attributes
         Map attributes = component.getAttributes();
-        String returnValue = (String) attributes.get(className);
+        String returnValue = (String) attributes.get(className + "Class");
         return returnValue == null ? className : returnValue;
     }
 
