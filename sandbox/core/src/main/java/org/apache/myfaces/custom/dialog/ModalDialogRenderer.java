@@ -173,7 +173,13 @@ public class ModalDialogRenderer extends HtmlRenderer {
 
 	private void appendShowHideView(FacesContext context, StringBuffer buf, ModalDialog dlg)
 	{
-                buf.append(dlg.getDialogVar()).append(".oldOnShow=").append(dlg.getDialogVar()).append(".onShow;")
+		StringBuffer sbUrl = new StringBuffer();
+		sbUrl.append(context.getExternalContext().getRequestContextPath());
+		sbUrl.append("/");
+		sbUrl.append(dlg.getViewId());
+		String encodedUrl = context.getExternalContext().encodeActionURL(sbUrl.toString());
+
+		 buf.append(dlg.getDialogVar()).append(".oldOnShow=").append(dlg.getDialogVar()).append(".onShow;")
                    .append(dlg.getDialogVar())
 			.append(".onShow = function() {")
                         .append("this.oldOnShow();")
@@ -186,9 +192,7 @@ public class ModalDialogRenderer extends HtmlRenderer {
 			.append(dlg.getDialogVar())
 			.append("._myfaces_ok=false; ")
 			.append("content.contentWindow.location.replace('")
-			.append(context.getExternalContext().getRequestContextPath())
-			.append("/")
-			.append(dlg.getViewId())
+			.append(encodedUrl)
 			.append("'); ")
 			.append("}; ");
 
