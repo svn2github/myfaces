@@ -228,7 +228,7 @@ public class HtmlDataScroller extends HtmlPanelGroup implements ActionSource
                 {
                     pageindex = pageCount;
                 }
-                else if (pageindex <= 0)
+                if (pageindex <= 0)
                 {
                     pageindex = 1;
                 }
