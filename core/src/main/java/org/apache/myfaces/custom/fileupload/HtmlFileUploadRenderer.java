@@ -178,7 +178,7 @@ public class HtmlFileUploadRenderer
         {
             UploadedFile file = (UploadedFile) submittedValue;
 
-            if(file.getName()!=null && file.getName().length()>0)
+            if(file.getSize()>0 && file.getName()!=null && file.getName().length()>0)
             {
                 return file;
             }
