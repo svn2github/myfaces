@@ -264,14 +264,9 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
         else
         {
-            int suggestedCount=0;
-
             //writing the suggested list
-            for (Iterator suggestedItem = suggesteds.iterator() ; suggestedItem.hasNext() ; suggestedCount++)
+            for (Iterator suggestedItem = suggesteds.iterator(); suggestedItem.hasNext() ;)
             {
-                if( suggestedCount > DEFAULT_MAX_SUGGESTED_ITEMS)
-                    break;
-
                 Object item = suggestedItem.next();
 
                 String prefix = escapeQuotes(encodeSuggestString(item.toString()).substring(0, 1)).toUpperCase();
