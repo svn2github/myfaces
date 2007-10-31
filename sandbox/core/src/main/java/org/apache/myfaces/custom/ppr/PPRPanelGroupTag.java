@@ -25,7 +25,8 @@ import javax.faces.component.UIComponent;
 /**
  * @author Ernst Fastl
  */
-public class PPRPanelGroupTag extends HtmlPanelGroupTag {
+public class PPRPanelGroupTag extends HtmlPanelGroupTag
+{
 	private String _partialTriggers;
 
 	private String _partialTriggerPattern;
@@ -34,82 +35,97 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag {
 
 	private String _periodicalUpdate;
 
-    private String _periodicalTriggers;
+	private String _periodicalTriggers;
 
-    private String _showDebugMessages;
+	private String _showDebugMessages;
 
 	private String _stateUpdate;
 
-	public String getComponentType() {
+	public String getComponentType()
+	{
 		return PPRPanelGroup.COMPONENT_TYPE;
 	}
 
-	public String getRendererType() {
+	public String getRendererType()
+	{
 		return PPRPanelGroup.DEFAULT_RENDERER_TYPE;
 	}
 
-	public void release() {
+	public void release()
+	{
 		super.release();
 		_partialTriggers = null;
 		_periodicalUpdate = null;
-        _periodicalTriggers = null;
-        _showDebugMessages = null;
+		_periodicalTriggers = null;
+		_showDebugMessages = null;
 		_stateUpdate = null;
 	}
 
-	protected void setProperties(UIComponent component) {
+	protected void setProperties(UIComponent component)
+	{
 		super.setProperties(component);
 
 		setStringProperty(component, "partialTriggers", _partialTriggers);
 		setStringProperty(component, "partialTriggerPattern", _partialTriggerPattern);
 		setStringProperty(component, "inlineLoadingMessage", _inlineLoadingMessage);
 		setIntegerProperty(component, "periodicalUpdate", _periodicalUpdate);
-        setStringProperty(component, "periodicalTriggers", _periodicalTriggers);
-        setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
+		setStringProperty(component, "periodicalTriggers", _periodicalTriggers);
+		setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
 		setBooleanProperty(component, "stateUpdate", _stateUpdate);
 	}
 
-	public String getPartialTriggers() {
+	public String getPartialTriggers()
+	{
 		return _partialTriggers;
 	}
 
-	public void setPartialTriggers(String partialTriggers) {
+	public void setPartialTriggers(String partialTriggers)
+	{
 		this._partialTriggers = partialTriggers;
 	}
 
-	public String getPartialTriggerPattern() {
+	public String getPartialTriggerPattern()
+	{
 		return _partialTriggerPattern;
 	}
 
-	public void setPartialTriggerPattern(String triggerPattern) {
+	public void setPartialTriggerPattern(String triggerPattern)
+	{
 		_partialTriggerPattern = triggerPattern;
 	}
 
-	public String getInlineLoadingMessage() {
+	public String getInlineLoadingMessage()
+	{
 		return _inlineLoadingMessage;
 	}
 
-	public void setInlineLoadingMessage(String loadingMessage) {
+	public void setInlineLoadingMessage(String loadingMessage)
+	{
 		_inlineLoadingMessage = loadingMessage;
 	}
 
-	public void setPeriodicalUpdate(String periodicalUpdate) {
+	public void setPeriodicalUpdate(String periodicalUpdate)
+	{
 		_periodicalUpdate = periodicalUpdate;
 	}
 
-    public String getPeriodicalTriggers() {
+	public String getPeriodicalTriggers()
+	{
 		return _periodicalTriggers;
 	}
 
-    public void setPeriodicalTriggers(String periodicalTriggers) {
+	public void setPeriodicalTriggers(String periodicalTriggers)
+	{
 		_periodicalTriggers = periodicalTriggers;
 	}
 
-    public void setShowDebugMessages(String showDebugMessages) {
+	public void setShowDebugMessages(String showDebugMessages)
+	{
 		_showDebugMessages = showDebugMessages;
 	}
 
-	public void setStateUpdate(String stateUpdate) {
+	public void setStateUpdate(String stateUpdate)
+	{
 		_stateUpdate = stateUpdate;
 	}
 }
