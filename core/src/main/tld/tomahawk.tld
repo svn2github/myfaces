@@ -213,8 +213,6 @@
 	  SYSTEM "tomahawk-entities/tomahawk_ui_schedule_attributes.xml">
 <!ENTITY tomahawk_html_schedule_attributes
       SYSTEM "tomahawk-entities/tomahawk_html_schedule_attributes.xml">
-<!ENTITY tomahawk_panel_group_attributes
-      SYSTEM "tomahawk-entities/tomahawk_panel_group_attributes.xml">
 <!ENTITY tomahawk_dojo_intializer_attributes
       SYSTEM "tomahawk-entities/tomahawk_dojo_initializer_attributes.xml">
 <!ENTITY tomahawk_select_items_attributes
