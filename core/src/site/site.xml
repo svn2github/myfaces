@@ -22,6 +22,8 @@
       <item name="Tomahawk" href="index.html"/>
       <item name="Sandbox" href="../sandbox/index.html"/>
       <item name="Tobago" href="http://myfaces.apache.org/tobago"/>
+      <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
+      <item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
     </links>
   
     <menu name="MyFaces Projects">
@@ -30,6 +32,9 @@
       <item name="Impl" href="../impl/index.html"/>
       <item name="Tomahawk" href="index.html"/>
       <item name="Sandbox" href="../sandbox/index.html"/>
+      <item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
+      <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
+      <item name="Orchestra" href="http://myfaces.apache.orgorchestra/index.html"/>
     </menu>
 	    
 	  <menu name="Components">
@@ -60,9 +65,9 @@
 	    <item name="UI Save State" href="uiSaveState.html"/> 
 	    <item name="Columns" href="columns.html"/> 
 	    <item name="Column" href="column.html"/>   
-        <item name="Schedule" href="schedule.html"/>
+      <item name="Schedule" href="schedule.html"/>
 	    <item name="Dojo Initializer" href="dojoInitializer.html"/>
-		<item name="SelectItems" href="selectItems.html"/> 
+		  <item name="SelectItems" href="selectItems.html"/>
 	  </menu>    
 	  
 	  <menu name="Validators">
@@ -79,11 +84,18 @@
 	    <item name="Tiles Support" href="tiles.html"/>
 	  </menu>    
 	
-      <menu name="Testing">
-        <item name="OpenQA Selenium" href="/testing/selenium.html"/>
-        <item name="Autoriginate HostedQA" href="/testing/hostedqa.html"/>
-      </menu>
-	  ${reports}
+    <menu name="Testing">
+      <item name="OpenQA Selenium" href="/testing/selenium.html"/>
+      <item name="Autoriginate HostedQA" href="/testing/hostedqa.html"/>
+    </menu>
+
+    ${reports}
+
+    <menu name="Foundation">
+      <item name="ASF" href="http://apache.org/" />
+      <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
+      <item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
+    </menu>
     
   </body>
 </project>
