@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
-    <groupId>org.apache.myfaces.maven</groupId>
-    <artifactId>myfaces-master</artifactId>
-		<version>1.0.7-SNAPSHOT</version>	  
+      <groupId>org.apache.myfaces</groupId>
+      <artifactId>myfaces</artifactId>
+      <version>2</version>
   </parent>
 
   <groupId>org.apache.myfaces.tomahawk</groupId>
@@ -51,18 +51,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <repositories>
-    <repository>
-      <id>apache-maven-snapshots</id>
-      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
 
     <repository>
       <id>myfaces-staging</id>
@@ -199,18 +187,6 @@
     <module>examples</module>
     <module>sandbox</module>
   </modules>
-
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.0-alpha-3</version>
-          </plugin>
-        </plugins>
-    </pluginManagement>
-  </build>
 
   <properties>
     <myfaces.version>1.1.6-SNAPSHOT</myfaces.version>
