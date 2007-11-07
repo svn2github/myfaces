@@ -52,6 +52,7 @@
     </dependencies>
   </dependencyManagement>
 
+  <repositories>
     <repository>
       <id>myfaces-staging</id>
       <url>http://people.apache.org/builds/myfaces/m2-staging-repository</url>
