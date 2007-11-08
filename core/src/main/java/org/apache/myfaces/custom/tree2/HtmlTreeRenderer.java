@@ -340,12 +340,13 @@ public class HtmlTreeRenderer extends Renderer
             out.startElement(HTML.TD_ELEM, tree);
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
             out.writeAttribute(HTML.HEIGHT_ATTR, "100%", null);
-            out.writeURIAttribute("background", lineSrc, null);
+            out.writeAttribute(HTML.STYLE_ATTR, "background-image:" + lineSrc + ";", null); //we use "style" because "background" is no valid xhtml attribute for td
             out.startElement(HTML.IMG_ELEM, tree);
             out.writeURIAttribute(HTML.SRC_ATTR, lineSrc, null);
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
             out.writeAttribute(HTML.HEIGHT_ATTR, "18", null);
             out.writeAttribute(HTML.BORDER_ATTR, "0", null);
+            out.writeAttribute(HTML.ALT_ATTR, "", null); // "alt" is a mandatory xhtml attribute
             out.endElement(HTML.IMG_ELEM);
             out.endElement(HTML.TD_ELEM);
         }
