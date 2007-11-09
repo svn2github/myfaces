@@ -65,6 +65,15 @@
     </repository>
   </repositories>
 
+  <distributionManagement>
+    <site>
+      <id>apache-site</id>
+      <name>Apache Website</name>
+      <url>scpexe://minotaur.apache.org/www/myfaces.apache.org/tomahawk-project/</url>
+    </site>
+  </distributionManagement>
+
+
   <profiles>
     <profile>
       <activation>
