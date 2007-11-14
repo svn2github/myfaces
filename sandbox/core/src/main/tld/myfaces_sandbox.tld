@@ -1306,7 +1306,16 @@ Sandbox-related entities.
                          No partialTriggers are needed.
             </description>
         </attribute>
-        <attribute>
+		<attribute>
+			<name>excludeFromStoppingPeriodicalUpdate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>Regular expression of link-client-ids for which the periodical update should not be stopped.
+						 Normally when a link is clicked during periodical update, the update is stopped in order to prevent the server from getting
+						 unexpected requests. This behaviour may be unwanted e.g. in case of opening new windows with a link.
+			</description>
+        </attribute>
+		<attribute>
 			<name>showDebugMessages</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
@@ -1776,7 +1785,6 @@ Sandbox-related entities.
 				Note also that the useCustomSecurity should be set to true.
 	      </description>
       </attribute>
-
 
       <attribute>
          <name>penaltyRatio</name>

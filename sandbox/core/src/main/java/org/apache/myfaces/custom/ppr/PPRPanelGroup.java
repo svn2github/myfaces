@@ -44,6 +44,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
 	private String _periodicalTriggers;
 
+	private String _excludeFromStoppingPeriodicalUpdate;
+
 	private String _partialTriggerPattern;
 
 	private String _inlineLoadingMessage;
@@ -122,6 +124,21 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		this._partialTriggerPattern = partialTriggerPattern;
 	}
 
+	public String getExcludeFromStoppingPeriodicalUpdate()
+	{
+		if(_excludeFromStoppingPeriodicalUpdate != null)
+		{
+			return _excludeFromStoppingPeriodicalUpdate;
+		}
+		ValueBinding vb = getValueBinding("excludeFromStoppingPeriodicalUpdate");
+		return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
+	}
+
+	public void setExcludeFromStoppingPeriodicalUpdate(String excludeFromStoppingPeriodicalUpdate)
+	{
+		_excludeFromStoppingPeriodicalUpdate = excludeFromStoppingPeriodicalUpdate;
+	}
+
 	public String getInlineLoadingMessage()
 	{
 		if(_inlineLoadingMessage != null)
@@ -169,7 +186,6 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
 	public void restoreState(FacesContext context, Object state)
 	{
-
 		Object[] values = (Object[]) state;
 		super.restoreState(context, values[0]);
 		_partialTriggers = (String) values[1];
@@ -178,12 +194,12 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		_periodicalTriggers = (String) values[4];
 		_showDebugMessages = (Boolean) values[5];
 		_stateUpdate = (Boolean) values[6];
-
+		_excludeFromStoppingPeriodicalUpdate = (String) values[7];
 	}
 
 	public Object saveState(FacesContext context)
 	{
-		Object[] values = new Object[7];
+		Object[] values = new Object[8];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
 		values[2] = _partialTriggerPattern;
@@ -191,6 +207,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		values[4] = _periodicalTriggers;
 		values[5] = _showDebugMessages;
 		values[6] = _stateUpdate;
+		values[7] = _excludeFromStoppingPeriodicalUpdate;
 		return values;
 	}
 }

@@ -37,6 +37,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 
 	private String _periodicalTriggers;
 
+	private String _excludeFromStoppingPeriodicalUpdate;
+
 	private String _showDebugMessages;
 
 	private String _stateUpdate;
@@ -59,6 +61,7 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 		_periodicalTriggers = null;
 		_showDebugMessages = null;
 		_stateUpdate = null;
+		_excludeFromStoppingPeriodicalUpdate = null;
 	}
 
 	protected void setProperties(UIComponent component)
@@ -70,6 +73,7 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 		setStringProperty(component, "inlineLoadingMessage", _inlineLoadingMessage);
 		setIntegerProperty(component, "periodicalUpdate", _periodicalUpdate);
 		setStringProperty(component, "periodicalTriggers", _periodicalTriggers);
+		setStringProperty(component, "excludeFromStoppingPeriodicalUpdate", _excludeFromStoppingPeriodicalUpdate);
 		setBooleanProperty(component, "showDebugMessages", _showDebugMessages);
 		setBooleanProperty(component, "stateUpdate", _stateUpdate);
 	}
@@ -127,5 +131,10 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 	public void setStateUpdate(String stateUpdate)
 	{
 		_stateUpdate = stateUpdate;
+	}
+
+	public void setExcludeFromStoppingPeriodicalUpdate(String excludeFromStoppingPeriodicalUpdate)
+	{
+		_excludeFromStoppingPeriodicalUpdate = excludeFromStoppingPeriodicalUpdate;
 	}
 }

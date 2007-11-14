@@ -26,8 +26,9 @@ dojo.provide("org.apache.myfaces");
 org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 {
     this.blockPeriodicalUpdateDuringPost = false;
-    this.showDebugMessages = showDebugMessages;
+	this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
+	this.linkIdRegexToExclude = '';
 
 	this.subFormId = new Array();
 
@@ -181,12 +182,13 @@ org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElemen
     }
 };
 
-// registering an interceptor onsubmit function on each form to block periodical refresh
-// and updating the dom if a page submit occurs
-// this blocking should only occur if onsubmit() returns true, otherwise not.
+// registering an interceptor onsubmit function on each form to block
+// periodical refresh and updating the dom if a page submit occurs.
+// Blocking should only occur if onsubmit() returns true, otherwise not
+// and not for links which are excluded via a regex pattern. 
 
-org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function() {
-
+org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
+{
     var ppr = this;
 
     for (var i = 0; i < document.forms.length; i++)
@@ -195,25 +197,56 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function() {
         var origOnsubmit = form.onsubmit;
         form.onsubmit = function()
         {
-            if(null != origOnsubmit && typeof origOnsubmit != "undefined")
+			var returnValue = false;
+
+			if(null != origOnsubmit && typeof origOnsubmit != "undefined")
             {
                var doSubmit = origOnsubmit();
                if(doSubmit || typeof doSubmit == "undefined")
                {
-                   ppr.blockPeriodicalUpdateDuringPost = true;
-                   return true;
+				   returnValue = true;
                }
-               return false;
             }
             else
             {
-                ppr.blockPeriodicalUpdateDuringPost = true;
-                return true;
+                returnValue = true;
             }
-        }
+
+			var linkFound = false;
+
+			if(ppr.linkIdRegexToExclude != '')
+			{
+				for(var i = 0; i < document.forms.length; i++)
+				{
+					var form = document.forms[i];
+					var linkName = form.id + ':_idcl';
+					var clickedLink = form.elements[linkName];
+
+					if(clickedLink && clickedLink.value.match(ppr.linkIdRegexToExclude))
+					{
+						ppr.blockPeriodicalUpdateDuringPost = false;
+						linkFound = true;
+						break;
+					}
+				}
+			}
+
+			if(!linkFound)
+			{
+				ppr.blockPeriodicalUpdateDuringPost = true;
+			}
+
+			return returnValue;
+		}
     }
 };
 
+// registering link-regex which pattern should not block the periodical update when being clicked
+
+org.apache.myfaces.PPRCtrl.prototype.excludeFromStoppingPeriodicalUpdate = function(idRegex)
+{
+	this.linkIdRegexToExclude = idRegex;
+};
 
 // init function of automatically partial page refresh
 

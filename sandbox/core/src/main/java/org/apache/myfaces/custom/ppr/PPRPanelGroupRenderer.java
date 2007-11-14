@@ -288,6 +288,13 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 					}
 				}
 			}
+
+			String idRegex = pprGroup.getExcludeFromStoppingPeriodicalUpdate();
+
+			if(idRegex != null)
+			{
+				script.append(pprCtrlReference + ".excludeFromStoppingPeriodicalUpdate('" + idRegex + "');");
+			}
 		}
 
 		String partialTriggerId;
