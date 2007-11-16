@@ -254,9 +254,9 @@ public class PasswordStrengthRenderer extends Renderer {
 		}
 
 		writer.endElement(HTML.TD_ELEM);
-		writer.endElement("TR");
+		writer.endElement(HTML.TR_ELEM);
 
-		writer.startElement("TR", component);
+		writer.startElement(HTML.TR_ELEM, component);
 		writer.startElement(HTML.TD_ELEM, component);
 
 		writer.startElement("div", component);
