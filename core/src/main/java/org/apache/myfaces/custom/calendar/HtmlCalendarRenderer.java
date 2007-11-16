@@ -324,6 +324,8 @@ public class HtmlCalendarRenderer
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
+    
+    
 
     public static String getLocalizedLanguageScript(FacesContext facesContext, DateFormatSymbols symbols,
                                                     int firstDayOfWeek, UIComponent uiComponent,
@@ -342,6 +344,10 @@ public class HtmlCalendarRenderer
         {
             weekDays = mapShortWeekdays(symbols);
         }
+        else if(realFirstDayOfWeek==-1)
+        {
+        	weekDays = mapShortWeekdaysStartingWithSaturday(symbols);
+        }         
         else
             throw new IllegalStateException("Week may only start with sunday or monday.");
 
@@ -779,6 +785,24 @@ public class HtmlCalendarRenderer
         return weekdays;
     }
 
+    
+    private static String[] mapShortWeekdaysStartingWithSaturday(DateFormatSymbols symbols) 
+    {
+		String[] weekdays = new String[7];
+
+		String[] localeWeekdays = symbols.getShortWeekdays();
+
+		weekdays[0] = localeWeekdays[Calendar.SATURDAY];
+		weekdays[1] = localeWeekdays[Calendar.SUNDAY];
+		weekdays[2] = localeWeekdays[Calendar.MONDAY];
+		weekdays[3] = localeWeekdays[Calendar.TUESDAY];
+		weekdays[4] = localeWeekdays[Calendar.WEDNESDAY];
+		weekdays[5] = localeWeekdays[Calendar.THURSDAY];
+		weekdays[6] = localeWeekdays[Calendar.FRIDAY];
+
+		return weekdays;
+	}    
+    
     private static String[] mapWeekdaysStartingWithSunday(DateFormatSymbols symbols)
     {
         String[] weekdays = new String[7];
