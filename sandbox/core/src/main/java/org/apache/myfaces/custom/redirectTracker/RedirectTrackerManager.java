@@ -25,6 +25,7 @@ import org.apache.myfaces.custom.redirectTracker.policy.NoopRedirectTrackPolicy;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.FacesException;
 import java.io.Serializable;
@@ -164,9 +165,12 @@ public class RedirectTrackerManager implements Serializable
 	 * access the redirect tracker
 	 */
 	public static RedirectTrackerManager getInstance(FacesContext facesContext)
-	{
-		Map sessionMap = facesContext.getExternalContext().getSessionMap();
-		if (sessionMap == null)
+	{	
+		ExternalContext exCtx = facesContext.getExternalContext();
+		Map sessionMap = exCtx.getSessionMap();
+		Object session = exCtx.getSession(false);
+
+		if (session == null || sessionMap == null)
 		{
 			return null;
 		}
