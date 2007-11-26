@@ -26,6 +26,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * A helper bean used by both AliasBean and AliasBeansScope components.
+ * <p>
+ * An Alias instance represents a single mapping from a "temporary" bean name
+ * to the real bean that temporary name should reference. When this alias
+ * is "activated" the temporary name is registered and when the alias is
+ * "deactivated" the temporary name is removed.
+ *
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -43,11 +50,22 @@ class Alias {
 	Alias(AliasBean aliasComponent){
 		this._aliasComponent = aliasComponent;
 	}
-	
+
+	/**
+	 * Define the temporary/transient name that will exist while this alias
+	 * is "active" (in scope). This is usually a constant string.
+	 */
 	void setAliasBeanExpression(String aliasBeanExpression){
 		this._aliasBeanExpression = aliasBeanExpression;
 	}
 	
+	/**
+	 * Define the object that will be referenced by the temporary/transient
+	 * name while it exists.
+	 * <p>
+	 * This can be a constant, but is more usually an EL expression. The value is
+	 * recalculated each time this alias is "activated".
+	 */
 	void setValueExpression(String valueExpression){
 		this._valueExpression = valueExpression;
 	}
@@ -91,7 +109,10 @@ class Alias {
 			evaluatedExpression = valueVB.getValue(facesContext);
         }
 	}
-	
+
+	/**
+	 * Activate this alias (ie create the temporary name).
+	 */
 	void make(FacesContext facesContext){
 		if( _active )
 			return;
@@ -116,6 +137,9 @@ class Alias {
         log.debug("makeAlias: " + _valueExpression + " = " + _aliasBeanExpression);
 	}
 	
+	/**
+	 * Deactivate this alias (ie remove the temporary name).
+	 */
 	void remove(FacesContext facesContext){
         _active = false;
 		if( evaluatedExpression == null )

@@ -41,20 +41,28 @@ import javax.faces.event.FacesEvent;
 /**
  * The aliasBean tag allows you to create a temporary name for a real bean.
  * The temporary name exists (is visible) only to the children of the aliasBean.
- * <p/>
- * Suppose you have a block of components you use often but with
- * different beans. The aliasBean allows you to create a separate JSP
- * page (or equivalent) containing these beans, where the value-bindings
- * refer to some fictive bean name. Wherever you wish to use this block
- * you then declare an alias component mapping the fictive name to whatever
- * bean you really want to apply the block to, then use jsp:include
- * (or equivalent) to include the reusable block of components. This makes
- * it possible to have a library of reusable generic subforms.
- * <p/>
+ * <p>
+ * One use of this feature is to pass "parameters" from an including page to an
+ * included one. The included page can use any name it desires for beans it needs to
+ * reference, and the including page can then use aliasBean to make those names
+ * refer to the beans it wishes to "pass" as parameters.
+ * <p>
+ * Suppose you have a block of components you use often but with different beans. You
+ * can create a separate JSP page (or equivalent) containing these beans, where the
+ * value-bindings refer to some fictive bean name. Document these names as the required
+ * "parameters" for this JSP page. Wherever you wish to use this block you then declare
+ * an alias component mapping each of these "parameters" to whatever beans (or literal
+ * values) you really want to apply the block to, then use jsp:include (or equivalent)
+ * to include the reusable block of components.
+ * <p>
  * Note, however, that AliasBean does not work for component bindings; JSF1.1
  * just has no mechanism available to set up the alias during the "restore view"
  * phase while the bindings of its children are being re-established, and then
  * remove the alias after the child bindings are done.
+ * <p>
+ * As a special case, if this component's direct parent is an AliasBeansScope
+ * then the alias (temporary name) is active until the end of the parent
+ * component, rather than the end of this component.
  *
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -67,7 +75,11 @@ public class AliasBean extends UIComponentBase implements BindingAware
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
 
     private Alias alias;
+    
+    // Indicates whether withinScope has been initialised or not.
     private boolean scopeSearched = false;
+    
+    // True if this is a direct child of an AliasBeansScope component.
     private boolean withinScope;
 
     private transient FacesContext _context = null;
@@ -103,6 +115,11 @@ public class AliasBean extends UIComponentBase implements BindingAware
         String valueExpression = alias.getValueExpression();
         if (valueExpression != null)
             return valueExpression;
+
+        // Normally, this component will have no value, because the setValue method always
+        // passes that data on to the alias instead. However it is possible for someone
+        // to use f:attribute (or other mechanism?) to set the value instead. So when the
+        // alias has no value, look for it there.
         ValueBinding vb = getValueBinding("value");
         return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
     }

@@ -1361,18 +1361,26 @@ h        </description>
         <body-content>JSP</body-content>
         <description><![CDATA[
             <p>
-            A tag that defines a new bean (alias) with a given value. This
-            allows you to design a subform with a generic (fictive) bean and
-            to include it in all the pages where you use it. You just need to
-            make an alias mapping the fictive bean name to the real bean before
-            including the subform.
+            Defines a new temporary name for an existing bean (or other object). The name
+            is visible only to the children of this tag.
             </p>
             <p>
-            When used within an aliasBeansScope tag, this tag adds the alias to the aliasBeansScope.
-            This makes configuration with multiple aliasBeans easier to write.
+            One use of this feature is to pass "parameters" from an including page to an
+            included one. The included page can use any name it desires for beans it needs to
+            reference, and the including page can then use aliasBean to make those names
+            refer to the beans it wishes to "pass" as parameters.
+            </p>
+            <p>
+            When used within an aliasBeansScope tag, this tag adds the alias to the aliasBeansScope;
+            the temporary name then lasts until the end of the parent aliasBeansScope tag rather
+            than just to the end of the aliasBean tag. This makes configuration with multiple
+            aliasBeans easier to write.
             </p>
             <p>
             Unless otherwise specified, all attributes accept static values or EL expressions.
+            </p>
+            <p>
+            See class org.apache.myfaces.custom.aliasbean.AliasBean for further details.
             </p>
             ]]>
         </description>
@@ -1383,13 +1391,25 @@ h        </description>
         <name>aliasBeansScope</name>
         <tag-class>org.apache.myfaces.custom.aliasbean.AliasBeansScopeTag</tag-class>
         <body-content>JSP</body-content>
-        <description>
-            This is like an aliasBean tag, but instead of the alias/value attributes, you configure the aliases
-            by adding aliasBean tags in the body.
-
-            The aliasBeans should be declared right after this tag.
-
-        Unless otherwise specified, all attributes accept static values or EL expressions.
+        <description><![CDATA[
+            <p>Extends the scope of an AliasBean component.</p> 
+            <p>
+            The aliasBean tag must enclose all the components that are within the scope
+            of the alias. When multiple aliasas are defined, this makes the page structure
+            very clumsy; for example defining 5 aliases means the content must be nested
+            5 indentation levels deep. This tag instead allows the content block to be
+            wrapped in just one AliasBeansScope tag, and then have AliasBean tags with
+            empty bodies added as direct children of this component. The scope of the AliasBean
+            tag still starts when the tag begins, but instead of ending when the tag ends
+            the scope of the nested AliasBean tags extends to the end of this component.
+            </p>
+            <p>
+            Unless otherwise specified, all attributes accept static values or EL expressions.
+            </p>
+            <p>
+            See org.apache.myfaces.custom.aliasbean.AliasBeansScopeTag for further details.
+            </p>
+            ]]>
         </description>
         &faces_id_optional_attribute;
     </tag>
@@ -1399,9 +1419,29 @@ h        </description>
         <name>buffer</name>
         <tag-class>org.apache.myfaces.custom.buffer.BufferTag</tag-class>
         <body-content>JSP</body-content>
-        <description>
-
-            Unless otherwise specified, all attributes accept static values or EL expressions.
+        <description><![CDATA[
+          <p>
+          Renders its child components into an in-memory buffer rather than render them directly to the
+          response stream.
+          </p>
+          <p>
+          Typically, an h:outputText tag is then used later in the same page to output the buffer contents.
+          </p>
+          <p>
+          This can be useful with JSF1.1/JSP2.0 to work around the well-known problem where
+          on first render of a page, a component "A" cannot reference a component "B" which is
+          defined later in the page because it has not yet been created. A solution is to define
+          "B" before "A", but wrapped in a Buffer component. Component A can then be rendered
+          and successfully reference "B" because it now exists. And later in the page, the buffer
+          contents can then be output, preserving the original layout.
+          </p>
+          <p>
+          This can also be useful when rendering the same data block multiple times within a page.
+          For example, a datatable can be rendered with a datascroller both before and after it;
+          first render the table into a buffer B1, then render the datascroller into a buffer B2,
+          then output buffers B2,B1,B2.
+          </p>
+          ]]>
         </description>
         &tomahawk_buffer_attributes;
     </tag>

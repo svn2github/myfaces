@@ -38,6 +38,15 @@ import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 
 /**
  * Holds several aliases that are configured by aliasBean tags.
+ * <p>
+ * The aliasBean tag must enclose all the components that are within the scope
+ * of the alias. When multiple aliasas are defined, this makes the page structure
+ * very clumsy; for example defining 5 aliases means the content must be nested
+ * 5 indentation levels deep. This tag instead allows the content block to be
+ * wrapped in just one AliasBeansScope tag, and then have AliasBean tags with
+ * empty bodies added as direct children of this component. The scope of the AliasBean
+ * tag still starts when the tag begins, but instead of ending when the tag ends
+ * the scope of the nested AliasBean tags extends to the end of this component.
  *
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
