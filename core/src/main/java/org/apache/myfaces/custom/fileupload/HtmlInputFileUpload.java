@@ -20,8 +20,10 @@ package org.apache.myfaces.custom.fileupload;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -34,6 +36,9 @@ public class HtmlInputFileUpload
         extends HtmlInputText
         implements UserRoleAware
 {
+    private static final String SIZE_LIMIT_EXCEEDED = "sizeLimitExceeded";
+    private static final String FILEUPLOAD_MAX_SIZE = "org.apache.myfaces.custom.fileupload.maxSize";
+    private static final String FILEUPLOAD_EXCEPTION = "org.apache.myfaces.custom.fileupload.exception";
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputFileUpload";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FileUpload";
     public static final String SIZE_LIMIT_MESSAGE_ID = "org.apache.myfaces.FileUpload.SIZE_LIMIT";
@@ -113,22 +118,29 @@ public class HtmlInputFileUpload
         return super.isRendered();
     }
     
-//    protected void validateValue(FacesContext context, Object convertedValue)
-//    {
-//        super.validateValue(context, convertedValue);
-//        if (isValid())
-//        {
-//            UploadedFile file = (UploadedFile) convertedValue;
-//            if(file != null && file.getSize() > getMaxlength())
-//            {
-//                MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
-//                        SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
-//                                new Integer(getMaxlength()) },
-//                        getClientId(context), context);
-//                setValid(false);
-//            }
-//        }
-//    }
+    protected void validateValue(FacesContext context, Object convertedValue)
+    {
+        super.validateValue(context, convertedValue);
+        
+        if (isValid())
+        {
+              String exception =
+                (String) context.getExternalContext().getRequestMap().get(FILEUPLOAD_EXCEPTION);
+              
+              if(exception != null && exception.equals(SIZE_LIMIT_EXCEEDED)) {
+                Integer maxSize =
+                  (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
+                MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+                            SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
+                                    maxSize},
+                            getClientId(context), context);
+                    setValid(false);
+             }
+             else {
+               throw new IllegalStateException("other exceptions not handled yet.");
+             }
+         }
+     }
     
     public Object saveState(FacesContext context)
     {

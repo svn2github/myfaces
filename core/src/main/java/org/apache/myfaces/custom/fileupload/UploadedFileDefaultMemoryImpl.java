@@ -33,22 +33,23 @@ public class UploadedFileDefaultMemoryImpl extends UploadedFileDefaultImplBase
 {
     private static final long serialVersionUID = -6006333070975059090L;
     private byte[] bytes;
+    private StorageStrategy storageStrategy;
 
 
-    public UploadedFileDefaultMemoryImpl(FileItem fileItem) throws IOException
+    public UploadedFileDefaultMemoryImpl(final FileItem fileItem) throws IOException
     {
         super(fileItem.getName(), fileItem.getContentType());
         int sizeInBytes = (int)fileItem.getSize();
     	bytes = new byte[sizeInBytes];
     	fileItem.getInputStream().read(bytes);
+      this.storageStrategy = new StorageStrategy() {
 
-        /*
-        TODO/manolito: what was the reason for this if?
-    	if (bytes.length != 0) {
-    		_name = fileItem.getName();
-    		_contentType = fileItem.getContentType();
-    	}
-        */
+        public void deleteFileContents() {
+          fileItem.delete();
+          bytes = null;
+        }
+        
+      };
     }
 
 
@@ -84,4 +85,11 @@ public class UploadedFileDefaultMemoryImpl extends UploadedFileDefaultImplBase
     		return 0;
     	return bytes.length;
     }
+
+
+    public StorageStrategy getStorageStrategy() {
+      return storageStrategy;
+    }
+    
+    
 }

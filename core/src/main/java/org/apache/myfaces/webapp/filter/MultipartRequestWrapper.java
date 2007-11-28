@@ -85,11 +85,11 @@ public class MultipartRequestWrapper
             requestParameters = fileUpload.parseRequest(request);
         } catch (FileUploadBase.SizeLimitExceededException e) {
 
-            // TODO: find a way to notify the user about the fact that the uploaded file exceeded size limit
-
-            if(log.isInfoEnabled())
-                log.info("user tried to upload a file that exceeded file-size limitations.",e);
-
+            request.setAttribute(
+                "org.apache.myfaces.custom.fileupload.exception","sizeLimitExceeded");
+            request.setAttribute("org.apache.myfaces.custom.fileupload.maxSize",
+                new Integer(maxSize));
+            
             requestParameters = Collections.EMPTY_LIST;
 
         }catch(FileUploadException fue){

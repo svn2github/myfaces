@@ -18,9 +18,11 @@
  */
 package org.apache.myfaces.custom.fileupload;
 
+import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -32,20 +34,24 @@ import java.io.InputStream;
 public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
 {
   private static final long serialVersionUID = -6401426361519246443L;
-  private transient FileItem fileItem = null;
+  private transient DefaultFileItem fileItem = null;
+  private StorageStrategy storageStrategy;
 
-    /*
-    TODO/manolito: Do we need an empty constructor?!
-    public UploadedFileDefaultFileImpl()
-    {
-    }
-    */
-
-
-    public UploadedFileDefaultFileImpl(FileItem fileItem) throws IOException
+    public UploadedFileDefaultFileImpl(final FileItem fileItem) throws IOException
     {
         super(fileItem.getName(), fileItem.getContentType());
-    	this.fileItem = fileItem;
+    	this.fileItem = (DefaultFileItem) fileItem;
+      storageStrategy = new DiskStorageStrategy() {
+
+        public File getTempFile() {
+          return UploadedFileDefaultFileImpl.this.fileItem.getStoreLocation();
+        }
+
+        public void deleteFileContents() {
+          UploadedFileDefaultFileImpl.this.fileItem.delete();
+        }
+        
+      };
     }
 
 
@@ -83,5 +89,10 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
     public long getSize()
     {
     	return fileItem != null ? fileItem.getSize() : 0;
+    }
+
+
+    public StorageStrategy getStorageStrategy() {
+      return storageStrategy;
     }
 }

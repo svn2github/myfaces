@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ExternalContext;
 import javax.faces.convert.ConverterException;
@@ -126,7 +127,7 @@ public class HtmlFileUploadRenderer
                     ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
                     ((HtmlInputFileUpload)uiComponent).setValid(true);
                 }catch(IOException ioe){
-                    log.error(ioe);
+                    throw new FacesException("Exception while processing file upload for file-input : " + uiComponent.getClientId(facesContext),ioe);
                 }
             }
             return;
@@ -165,7 +166,7 @@ public class HtmlFileUploadRenderer
                         ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
                         ((HtmlInputFileUpload)uiComponent).setValid(true);
                     }catch(IOException ioe){
-                        log.error(ioe);
+                      throw new FacesException("Exception while processing file upload for file-input : " + uiComponent.getClientId(facesContext),ioe);
                     }
                 }
             }

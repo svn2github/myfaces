@@ -50,21 +50,28 @@ public interface UploadedFile extends Serializable
 
 
     /**
-     * @return Returns the _contentType.
+     * @return Returns the contentType.
      */
     String getContentType();
 
 
 
     /**
-     * @return Returns the _name.
+     * @return Returns the name.
      */
     String getName();
 
 
     /**
-     * Answer the size of this file.
+     * Returns the size of this file.
      * @return long
      */
     long getSize();
+    
+    /**Allows to get more information/interact more with the file, depending
+     * on where it is stored
+     * 
+     * @return StorageStrategy the storage strategy of this file, 
+     */
+    StorageStrategy getStorageStrategy();
 }
