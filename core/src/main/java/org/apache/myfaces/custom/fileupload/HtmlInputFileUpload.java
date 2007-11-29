@@ -127,17 +127,18 @@ public class HtmlInputFileUpload
               String exception =
                 (String) context.getExternalContext().getRequestMap().get(FILEUPLOAD_EXCEPTION);
               
-              if(exception != null && exception.equals(SIZE_LIMIT_EXCEEDED)) {
-                Integer maxSize =
-                  (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
-                MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
-                            SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
-                                    maxSize},
-                            getClientId(context), context);
-                    setValid(false);
-             }
-             else {
-               throw new IllegalStateException("other exceptions not handled yet.");
+              if(exception != null ) {
+                if(exception.equals(SIZE_LIMIT_EXCEEDED)) {
+                  Integer maxSize =
+                    (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
+                  MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+                              SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
+                                      maxSize},
+                              getClientId(context), context);
+                  setValid(false);
+                }else {
+                  throw new IllegalStateException("other exceptions not handled yet, exception : "+exception);
+                }
              }
          }
      }
