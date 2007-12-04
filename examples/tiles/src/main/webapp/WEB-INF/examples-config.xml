@@ -7,7 +7,7 @@
 
 <faces-config>
     <application>
-        <view-handler>org.apache.myfaces.tomahawk.application.jsp.JspTilesViewHandlerImpl</view-handler>
+        <view-handler>org.apache.myfaces.tomahawk.application.jsp.JspTilesTwoViewHandlerImpl</view-handler>
     </application>
 
 	    <managed-bean>
