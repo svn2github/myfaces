@@ -88,25 +88,29 @@ public class JspTilesTwoViewHandlerImpl
             //propagate our new view-id to wherever it makes sense
             setViewId(viewToRender, viewId, facesContext);
 
-            handleCharacterEncoding(viewId, externalContext, viewToRender);
-
-            container.startContext(requestObjects);
-            try {
-                container.render(tilesId,requestObjects);
-            } catch (TilesException e) {
-                throw new FacesException(e);
-            }
-            finally {
-                container.endContext(requestObjects);
-            }
-
-            handleCharacterEncodingPostDispatch(externalContext);
+            renderTilesView(externalContext, requestObjects, container, viewToRender, viewId, tilesId);
         }
         else {
             //we're not using tiles as no valid definition has been found
             //just call the delegate view-handler to let it do its thing
             _viewHandler.renderView(facesContext, viewToRender);
         }
+    }
+
+    private void renderTilesView(ExternalContext externalContext, Object[] requestObjects, TilesContainer container, UIViewRoot viewToRender, String viewId, String tilesId) {
+        handleCharacterEncoding(viewId, externalContext, viewToRender);
+
+        container.startContext(requestObjects);
+        try {
+            container.render(tilesId,requestObjects);
+        } catch (TilesException e) {
+            throw new FacesException(e);
+        }
+        finally {
+            container.endContext(requestObjects);
+        }
+
+        handleCharacterEncodingPostDispatch(externalContext);
     }
 
     private void setViewId(UIViewRoot viewToRender, String viewId, FacesContext facesContext) {
