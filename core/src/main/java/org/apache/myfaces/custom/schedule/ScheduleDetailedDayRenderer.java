@@ -282,8 +282,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     	int startHour = getRenderedStartHour(schedule);
     	int endHour = getRenderedEndHour(schedule);
 
-    	DateFormat hourFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "hh" : "HH");
-    	DateFormat minuteFormater = getDateFormat(context, schedule, "mm");        
+    	DateFormat hourFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "h" : "HH");
+    	DateFormat minuteFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "':'mma" : "mm");        
+    	DateFormat shortMinuteFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "a" : "mm");        
 
     	// When firstDay is true, render the gutter
     	boolean firstDay = true;
@@ -446,7 +447,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     					writer.writeAttribute(HTML.STYLE_ATTR,
     							"vertical-align: top; height: 100%; padding: 0px;",
     							null);
-    					writer.writeText(minuteFormater.format(interval.getStartTime()), null);
+    					writer.writeText((renderGutter ? minuteFormater : shortMinuteFormater).format(interval.getStartTime()), null);
     					writer.endElement(HTML.SPAN_ELEM);
     				}
     				writer.endElement(HTML.TD_ELEM);
