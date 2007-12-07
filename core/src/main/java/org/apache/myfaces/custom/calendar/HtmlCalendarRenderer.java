@@ -734,19 +734,28 @@ public class HtmlCalendarRenderer
             throws IOException
     {
         Converter converter = getConverter(component);
-
         Application application = facesContext.getApplication();
-        HtmlCommandLink link
-                = (HtmlCommandLink)application.createComponent(HtmlCommandLink.COMPONENT_TYPE);
-        link.setId(component.getId() + "_" + valueForLink.getTime() + "_link");
-        link.setTransient(true);
-        link.setImmediate(component.isImmediate());
 
         HtmlOutputText text
                 = (HtmlOutputText)application.createComponent(HtmlOutputText.COMPONENT_TYPE);
         text.setValue(content);
         text.setId(component.getId() + "_" + valueForLink.getTime() + "_text");
         text.setTransient(true);
+
+        HtmlInputCalendar calendar = (HtmlInputCalendar)component;
+        if (calendar.isDisabled() || calendar.isReadonly())
+        {
+            component.getChildren().add(text);
+
+            RendererUtils.renderChild(facesContext, text);
+            return;
+        }
+
+        HtmlCommandLink link
+                = (HtmlCommandLink)application.createComponent(HtmlCommandLink.COMPONENT_TYPE);
+        link.setId(component.getId() + "_" + valueForLink.getTime() + "_link");
+        link.setTransient(true);
+        link.setImmediate(component.isImmediate());
 
         UIParameter parameter
                 = (UIParameter)application.createComponent(UIParameter.COMPONENT_TYPE);
@@ -755,23 +764,11 @@ public class HtmlCalendarRenderer
         parameter.setName(component.getClientId(facesContext));
         parameter.setValue(converter.getAsString(facesContext, component, valueForLink));
 
-        HtmlInputCalendar calendar = (HtmlInputCalendar)component;
-        if (calendar.isDisabled() || calendar.isReadonly())
-        {
-        	// In this case, it appears that the link and parameter components are not
-        	// used .. so why bother creating them above?
-            component.getChildren().add(text);
+        RendererUtils.addOrReplaceChild(component,link);
+        link.getChildren().add(parameter);
+        link.getChildren().add(text);
 
-            RendererUtils.renderChild(facesContext, text);
-        }
-        else
-        {
-            RendererUtils.addOrReplaceChild(component,link);
-            link.getChildren().add(parameter);
-            link.getChildren().add(text);
-
-            RendererUtils.renderChild(facesContext, link);
-        }
+        RendererUtils.renderChild(facesContext, link);
     }
 
     private Converter getConverter(UIInput component)
