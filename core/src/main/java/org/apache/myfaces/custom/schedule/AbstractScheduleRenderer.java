@@ -213,12 +213,12 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
             Date date)
     {
 
-        return getDateFormat(context, schedule, schedule.getHeaderDateFormat()).format(date);
+        return getDateFormat(context, schedule, schedule.getHeaderDateFormat(), date).format(date);
     }
 
     protected static DateFormat getDateFormat(FacesContext context, UIScheduleBase schedule, String pattern)
     {
-        Locale viewLocale = context.getViewRoot().getLocale();
+        Locale viewLocale = context.getViewRoot().getLocale();   	        
         DateFormat format = (pattern != null && pattern.length() > 0) ? 
         		new SimpleDateFormat(pattern, viewLocale) :
         		DateFormat.getDateInstance(DateFormat.MEDIUM, viewLocale);
@@ -226,6 +226,51 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         format.setTimeZone(schedule.getModel().getTimeZone());
         
         return format;
+    }
+    
+    protected static DateFormat getDateFormat(FacesContext context, UIScheduleBase schedule, String pattern, Date date)
+    {
+        Locale viewLocale = context.getViewRoot().getLocale();
+        
+        if (pattern != null && pattern.indexOf("d'th'") >= 0)
+        {
+        	pattern = pattern.replace("d'th'", "d'" + daySuffix(schedule, date, viewLocale) + "'");
+        }
+        
+        return getDateFormat(context, schedule, pattern);
+    }
+    
+    private static String daySuffix(UIScheduleBase schedule, Date date, Locale locale) {
+    	String language = locale.getLanguage();
+    	Calendar calendar = ScheduleUtil.getCalendarInstance(date, schedule.getModel().getTimeZone());
+
+    	int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+    	if (Locale.ENGLISH.getLanguage().equals(language))
+    	{
+    		switch(dayOfMonth) {
+    		case 1:
+    		case 21:
+    		case 31:
+    			return "st";
+    		case 2:
+    		case 22:
+    			return "nd";
+    		case 3:
+    		case 23:
+    			return "rd";
+    		default:
+    			return "th";
+    		}
+    	}
+    	else if (Locale.GERMAN.getLanguage().equals(language))
+    	{
+    		return ".";
+    	}
+    	else
+    	{
+    		return "";
+    	}
     }
     
     /**
@@ -309,7 +354,7 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         return true;
     }
     
-    protected Calendar getCalendarInstance(HtmlSchedule schedule, Date date)
+    protected Calendar getCalendarInstance(UIScheduleBase schedule, Date date)
     {   	
     	return ScheduleUtil.getCalendarInstance(date, schedule.getModel().getTimeZone());
     }
