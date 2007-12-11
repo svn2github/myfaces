@@ -254,6 +254,10 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     protected void writeBackground(FacesContext context, HtmlSchedule schedule,
     		ResponseWriter writer) throws IOException
     		{
+        final String clientId = schedule.getClientId(context);
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
+        String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
+
     	final int rowHeight = getRowHeight(schedule);
     	final int headerHeight = rowHeight + 9;
     	writer.startElement(HTML.DIV_ELEM, schedule);
@@ -318,7 +322,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     		if (firstDay) 
     		{
     			// the header gutter
-    			writer.startElement(HTML.TD_ELEM, schedule);
+    			writer.startElement(HTML.TH_ELEM, schedule);
     			writer.writeAttribute(HTML.CLASS_ATTR,
     					getStyleClass(schedule, "gutter"), null);
     			writer.writeAttribute(
@@ -330,38 +334,49 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     	        writer.startElement(HTML.DIV_ELEM, schedule);
     	        writer.writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: 56px", null);
     	        writer.endElement(HTML.DIV_ELEM);
-    	        writer.endElement(HTML.TD_ELEM);
+    	        writer.endElement(HTML.TH_ELEM);
     		}
     		else
     		{
-    			// the header
-    			writer.startElement(HTML.TD_ELEM, schedule);
+                // the header
+    	        final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
+
+    	        writer.startElement(HTML.TH_ELEM, schedule);  			
     			writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
     			"header"), null);
     			writer
     			.writeAttribute(
     					HTML.STYLE_ATTR,
-    					"height: " + headerHeight + "px; border-style: none; border-width: 0px; overflow: hidden;",
-    					null);
-    			writer.startElement(HTML.DIV_ELEM, schedule);
-    			writer
-    			.writeAttribute(
-    					HTML.STYLE_ATTR,
-    					"position: relative; left: 0px; top: 0px; width: 100%; height: 100%;",
+    					"height: " + headerHeight + "px; vertical-align: top; border-style: none; border-width: 0px; overflow: hidden;",
     					null);
 
     			// write the date
-    			writer.startElement(HTML.SPAN_ELEM, schedule);
+    			writer.startElement(HTML.ANCHOR_ELEM, schedule);
+                writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
+                writer.writeAttribute(HTML.HREF_ATTR, "#", null);
     			writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-    			"date"), null);
+    					"date"), null);
     			writer
     			.writeAttribute(
     					HTML.STYLE_ATTR,
-    					"position: absolute; left: 0px; top: 0px; height: 15px; width: 100%; vertical-align: top; overflow: hidden; white-space: nowrap;",
+    					"display: block; height: 50%; width: 100%; overflow: hidden; white-space: nowrap;",
     					null);
+
+    			//register an onclick event listener to a column header which will
+                //be used to determine the date
+                if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
+                    writer.writeAttribute(
+                            HTML.ONCLICK_ATTR,
+                            "fireScheduleDateClicked(this, event, '"
+                            + formId + "', '"
+                            + clientId
+                            + "');",
+                            null);
+                }
+
     			writer.writeText(getDateString(context, schedule, day.getDate()),
     					null);
-    			writer.endElement(HTML.SPAN_ELEM);
+    			writer.endElement(HTML.ANCHOR_ELEM);
 
     			// write the name of the holiday, if there is one
     			if ((day.getSpecialDayName() != null)
@@ -373,14 +388,13 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     				writer
     				.writeAttribute(
     						HTML.STYLE_ATTR,
-    						"position: absolute; left: 0px; top: 15px; width: 100%; vertical-align: top; overflow: hidden; white-space: nowrap;",
+    						"height: 50%; width: 100%; overflow: hidden; white-space: nowrap;",
     						null);
     				writer.writeText(day.getSpecialDayName(), null);
     				writer.endElement(HTML.SPAN_ELEM);
     			}
 
-    			writer.endElement(HTML.DIV_ELEM);
-    			writer.endElement(HTML.TD_ELEM);
+    			writer.endElement(HTML.TH_ELEM);
     		}
 			writer.endElement(HTML.TR_ELEM);
 
@@ -630,10 +644,10 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
                 if (!schedule.isReadonly())
                 {
-                    writer.writeAttribute("href", "#", null);
+                    writer.writeAttribute(HTML.HREF_ATTR, "#", null);
 
                     writer.writeAttribute(
-                            HTML.ONMOUSEUP_ATTR,
+                            HTML.ONCLICK_ATTR,
                             "fireEntrySelected('"
                             + formId + "', '"
                             + clientId + "', '"
@@ -668,9 +682,6 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     {
         final int rowHeight = getRowHeight(schedule) - 1;
         final int headerHeight = rowHeight + 10;
-        final String clientId = schedule.getClientId(context);
-        FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
-        String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
 
         writer.startElement(HTML.DIV_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
@@ -678,7 +689,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer
                 .writeAttribute(
                         HTML.STYLE_ATTR,
-                        "position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;	z-index: 2;",
+                        "position: absolute; left: 0px; top: " + headerHeight + "px; width: 100%; height: 100%;	z-index: 2;",
                         null);
 
         writer.startElement(HTML.TABLE_ELEM, schedule);
@@ -688,14 +699,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%; height: 100%",
                 null);
-        writer.startElement(HTML.TR_ELEM, schedule);
-        writer.startElement(HTML.TD_ELEM, schedule);
-        writer.startElement(HTML.DIV_ELEM, schedule);
-        writer
-                .writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: 56px",
-                        null);
-        writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.TD_ELEM);
+        writer.startElement("col", schedule);
+        writer.writeAttribute(HTML.STYLE_ATTR, "width: 56px", null);
+        writer.endElement("col");
 
         float columnWidth = (schedule.getModel().size() == 0) ? 100
                 : (100 / schedule.getModel().size());
@@ -703,42 +709,18 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator
                 .hasNext();)
         {
-            ScheduleDay day = (ScheduleDay) dayIterator.next();
-            final String dayHeaderId = clientId + "_header_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
-            writer.startElement(HTML.TD_ELEM, schedule);
-            writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
-            writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                    "header"), null);
-            writer
-                    .writeAttribute(
-                            HTML.STYLE_ATTR,
-                            "height: " + headerHeight + "px; border-style: none; border-width: 0px; overflow: hidden;",
-                            null);
-            writer.writeAttribute(HTML.WIDTH_ATTR, String.valueOf(columnWidth)
-                    + "%", null);
-            //register an onclick event listener to a column header which will
-            //be used to determine the date
-            if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
-                writer.writeAttribute(
-                        HTML.ONMOUSEUP_ATTR,
-                        "fireScheduleDateClicked(this, event, '"
-                        + formId + "', '"
-                        + clientId
-                        + "');",
-                        null);
-            }
+        	dayIterator.next();
+            writer.startElement("col", schedule);
 
-            writer.endElement(HTML.TD_ELEM);
+            writer.writeAttribute(HTML.STYLE_ATTR, 
+            		"width: " + String.valueOf(columnWidth) + "%;", null);
+            writer.endElement("col");
         }
-
-        writer.endElement(HTML.TR_ELEM);
 
         writer.startElement(HTML.TR_ELEM, schedule);
         writer.startElement(HTML.TD_ELEM, schedule);
         writer.startElement(HTML.DIV_ELEM, schedule);
-        writer
-                .writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: 56px",
-                        null);
+        writer.writeAttribute(HTML.STYLE_ATTR, "height: 1px; width: 56px", null);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.TD_ELEM);
     }

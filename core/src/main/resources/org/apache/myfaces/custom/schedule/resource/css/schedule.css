@@ -25,7 +25,7 @@ div.schedule-detailed-default td.gutter {
     vertical-align: top;
 }
 
-div.schedule-detailed-default table.background td.header, div.schedule-detailed-default table.foreground td.header {
+div.schedule-detailed-default table.background th.header {
     font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 10px;
     color: rgb(0,0,0);
@@ -33,18 +33,19 @@ div.schedule-detailed-default table.background td.header, div.schedule-detailed-
     vertical-align: middle;
 }
 
-div.schedule-detailed-default table.background td.header {
+div.schedule-detailed-default table.background th.header {
     background-color: rgb(181,200,207);
 }
 
-div.schedule-detailed-default td.header span.date, div.schedule-detailed-default td.header span.holiday {
+div.schedule-detailed-default th.header .date, div.schedule-detailed-default th.header .holiday {
   text-align: center;
 }
 
-div.schedule-detailed-default td.header span.date {
+div.schedule-detailed-default th.header .date {
+	text-decoration: none;
 }
 
-div.schedule-detailed-default td.header span.holiday {
+div.schedule-detailed-default th.header .holiday {
 }
 
 div.schedule-detailed-default td.gutter span.hours {
@@ -62,6 +63,7 @@ div.schedule-detailed-default table.background td.free {
     font-size: 10px;
     text-align: left;
     color: rgb(0,0,0);
+    vertical-align: top;
 }
 
 div.schedule-detailed-default table.background td.uneven {
@@ -120,7 +122,7 @@ div.schedule-compact-default table.day {
   background-color: rgb(255,255,255);
 }
 
-div.schedule-compact-default table.day td.header {
+div.schedule-compact-default table.day th.header {
   background-color: rgb(181,200,207);
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
@@ -174,7 +176,7 @@ div.schedule-compact-default td.inactive-day td.content td.selected {
   color: rgb(255,255,255);
 }
 
-div.schedule-compact-default td.inactive-day td.header {
+div.schedule-compact-default td.inactive-day th.header {
   background-color: rgb(221,221,221);
   visibility: visible;
 }
@@ -206,7 +208,7 @@ div.schedule-detailed-evolution td.gutter {
     vertical-align: top;
 }
 
-div.schedule-detailed-evolution table.background td.header, div.schedule-detailed-evolution table.foreground td.header {
+div.schedule-detailed-evolution table.background th.header, div.schedule-detailed-evolution table.foreground th.header {
     font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 10px;
     color: rgb(0,0,0);
@@ -214,18 +216,19 @@ div.schedule-detailed-evolution table.background td.header, div.schedule-detaile
     vertical-align: middle;
 }
 
-div.schedule-detailed-evolution table.background td.header {
+div.schedule-detailed-evolution table.background th.header {
     background-color: rgb(246,246,246);
 }
 
-div.schedule-detailed-evolution td.header span.date, div.schedule-detailed-evolution td.header span.holiday {
+div.schedule-detailed-evolution th.header .date, div.schedule-detailed-evolution th.header .holiday {
   text-align: center;
 }
 
-div.schedule-detailed-evolution td.header span.date {
+div.schedule-detailed-evolution th.header .date {
+	text-decoration: none;
 }
 
-div.schedule-detailed-evolution td.header span.holiday {
+div.schedule-detailed-evolution th.header .holiday {
 }
 
 div.schedule-detailed-evolution td.gutter span.hours {
@@ -243,6 +246,7 @@ div.schedule-detailed-evolution table.background td.free {
     font-size: 10px;
     text-align: left;
     color: rgb(0,0,0);
+    vertical-align: top;
 }
 
 div.schedule-detailed-evolution table.background td.uneven {
@@ -301,7 +305,7 @@ div.schedule-compact-evolution table.day {
   background-color: rgb(255,255,255);
 }
 
-div.schedule-compact-evolution table.day td.header {
+div.schedule-compact-evolution table.day th.header {
   background-color: rgb(255,255,255);
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
@@ -356,7 +360,7 @@ div.schedule-compact-evolution td.inactive-day td.content td.selected {
   border-color: rgb(190,206,221);
 }
 
-div.schedule-compact-evolution td.inactive-day td.header {
+div.schedule-compact-evolution td.inactive-day th.header {
   background-color: rgb(238,235,231);
   visibility: visible;
 }
@@ -388,7 +392,7 @@ div.schedule-detailed-outlookxp td.gutter {
     vertical-align: top;
 }
 
-div.schedule-detailed-outlookxp table.background td.header, div.schedule-detailed-outlookxp table.foreground td.header {
+div.schedule-detailed-outlookxp table.background th.header, div.schedule-detailed-outlookxp table.foreground th.header {
     font-family: Verdana, Arial, Helvetica, Sans-Serif;
     font-size: 10px;
     color: rgb(0,0,0);
@@ -396,18 +400,19 @@ div.schedule-detailed-outlookxp table.background td.header, div.schedule-detaile
     vertical-align: middle;
 }
 
-div.schedule-detailed-outlookxp table.background td.header {
+div.schedule-detailed-outlookxp table.background th.header {
     background-color: rgb(219,216,209);
 }
 
-div.schedule-detailed-outlookxp td.header span.date, div.schedule-detailed-outlookxp td.header span.holiday {
+div.schedule-detailed-outlookxp th.header .date, div.schedule-detailed-outlookxp th.header .holiday {
   text-align: center;
 }
 
-div.schedule-detailed-outlookxp td.header span.date {
+div.schedule-detailed-outlookxp th.header .date {
+	text-decoration: none;
 }
 
-div.schedule-detailed-outlookxp td.header span.holiday {
+div.schedule-detailed-outlookxp th.header .holiday {
 }
 
 div.schedule-detailed-outlookxp td.gutter span.hours {
@@ -484,7 +489,7 @@ div.schedule-compact-outlookxp table.day {
   background-color: rgb(255,255,255);
 }
 
-div.schedule-compact-outlookxp table.day td.header {
+div.schedule-compact-outlookxp table.day th.header {
   background-color: rgb(219,216,209);
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
@@ -539,7 +544,7 @@ div.schedule-compact-outlookxp td.inactive-day td.content td.selected {
 }
 
 
-div.schedule-compact-outlookxp td.inactive-day td.header {
+div.schedule-compact-outlookxp td.inactive-day th.header {
   background-color: rgb(219,216,209);
   visibility: visible;
 }

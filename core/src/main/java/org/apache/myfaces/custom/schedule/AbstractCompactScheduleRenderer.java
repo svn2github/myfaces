@@ -124,8 +124,10 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         writer.writeAttribute("rowspan", String.valueOf(rowspan), null);
 
+        boolean isToday = ScheduleUtil.isSameDay(day.getDate(), new Date(), schedule.getModel().getTimeZone());
+        
         String dayClass = getStyleClass(schedule, isCurrentMonth ? "day" : "inactive-day") + 
-        		" " + getStyleClass(schedule, isWeekend ? "weekend" : "workday");
+        		" " + getStyleClass(schedule, isWeekend ? "weekend" : "workday") + " " + (isToday ? getStyleClass(schedule, "today") : "");
         
         writer.writeAttribute(HTML.CLASS_ATTR, dayClass, null);
 
@@ -172,17 +174,21 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         // day header
         writer.startElement(HTML.TR_ELEM, schedule);
-        writer.startElement(HTML.TD_ELEM, schedule);
+        writer.startElement(HTML.TH_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR,
                               getStyleClass(schedule, "header"), null);
         writer.writeAttribute(HTML.STYLE_ATTR,
                               "height: 18px; width: 100%; overflow: hidden", null);
+
+        writer.startElement(HTML.ANCHOR_ELEM, schedule);
         writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
+        writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+
         //register an onclick event listener to a day header which will capture
         //the date
         if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
             writer.writeAttribute(
-                    HTML.ONMOUSEUP_ATTR,
+                    HTML.ONCLICK_ATTR,
                     "fireScheduleDateClicked(this, event, '"
                     + formId + "', '"
                     + clientId
@@ -190,10 +196,10 @@ public abstract class AbstractCompactScheduleRenderer extends
                     null);
         }
 
-
-
         writer.writeText(getDateString(context, schedule, day.getDate()), null);
-        writer.endElement(HTML.TD_ELEM);
+
+        writer.endElement(HTML.ANCHOR_ELEM);
+        writer.endElement(HTML.TH_ELEM);
         writer.endElement(HTML.TR_ELEM);
 
         // day content
@@ -234,7 +240,7 @@ public abstract class AbstractCompactScheduleRenderer extends
         //the date
         if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
             writer.writeAttribute(
-                    HTML.ONMOUSEUP_ATTR,
+                    HTML.ONCLICK_ATTR,
                     "fireScheduleTimeClicked(this, event, '"
                     + formId + "', '"
                     + clientId
@@ -324,11 +330,11 @@ public abstract class AbstractCompactScheduleRenderer extends
 
             if (!isSelected(schedule, entry) && !schedule.isReadonly())
             {
-                writer.startElement("a", schedule);
-                writer.writeAttribute("href", "#", null);
+                writer.startElement(HTML.ANCHOR_ELEM, schedule);
+                writer.writeAttribute(HTML.HREF_ATTR, "#", null);
 
                 writer.writeAttribute(
-                        HTML.ONMOUSEUP_ATTR,
+                        HTML.ONCLICK_ATTR,
                         "fireEntrySelected('"
                         + formId + "', '"
                         + clientId + "', '"
@@ -343,7 +349,7 @@ public abstract class AbstractCompactScheduleRenderer extends
 
             if (!isSelected(schedule, entry) && !schedule.isReadonly())
             {
-                writer.endElement("a");
+                writer.endElement(HTML.ANCHOR_ELEM);
             }
 
             writer.endElement(HTML.TD_ELEM);
