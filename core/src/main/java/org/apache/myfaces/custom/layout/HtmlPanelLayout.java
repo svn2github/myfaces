@@ -18,8 +18,6 @@
  */
 package org.apache.myfaces.custom.layout;
 
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
