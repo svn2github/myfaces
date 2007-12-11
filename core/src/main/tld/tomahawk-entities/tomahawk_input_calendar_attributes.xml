@@ -180,4 +180,21 @@
             <rtexprvalue>false</rtexprvalue>
             <description>The text that will be rendered in the field - helping the user to find the right format to enter into the field.</description>
         </attribute>
+        <attribute>
+            <name>selectMode</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description><![CDATA[
+            <p>
+              May be "day", "week", "month" or "none":
+              <ul>
+              <li>day (default): allow the user to select a day.</li>
+              <li>week: only allow the user to select a week.</li>
+              <li>month: only allow the user to select a month.</li> 
+              <li>none: equivalent to "readonly".</li> 
+              </ul>
+            </p>
+              ]]>
+            </description>
+        </attribute>
 

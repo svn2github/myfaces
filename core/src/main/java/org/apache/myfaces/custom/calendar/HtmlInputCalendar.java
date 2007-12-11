@@ -65,6 +65,7 @@ public class HtmlInputCalendar
     private String _popupTheme = null;
     private String _popupButtonImageUrl = null;
     private String _helpText = null;
+    private String _selectMode = null;
 
     public HtmlInputCalendar()
     {
@@ -473,10 +474,13 @@ public class HtmlInputCalendar
     		return "none";
     	}
     	
-    	Object mode = getAttributes().get("selectionMode");
-    	if (mode == null)
-    		return "day";
-    	else
-    		return mode.toString();
+        if (_selectMode != null) return _selectMode;
+        ValueBinding vb = getValueBinding("selectMode");
+        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : "day";
+    }
+
+    public void setSelectMode(String selectMode)
+    {
+        _selectMode = selectMode;
     }
 }
