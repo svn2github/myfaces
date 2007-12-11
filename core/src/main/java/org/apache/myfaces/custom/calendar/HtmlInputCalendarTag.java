@@ -85,7 +85,7 @@ public class HtmlInputCalendarTag
     private String _popupTheme = null;
     private String _popupButtonImageUrl = null;
     private String _helpText;
-    private String _selectMode;
+    private String _popupSelectMode;
 
     // User Role support
     private String _enabledOnUserRole;
@@ -120,7 +120,7 @@ public class HtmlInputCalendarTag
         _popupTheme=null;
         _popupButtonImageUrl=null;
         _helpText = null;
-        _selectMode = null;
+        _popupSelectMode = null;
     }
 
 
@@ -159,7 +159,7 @@ public class HtmlInputCalendarTag
         setStringProperty(component,"popupTheme",_popupTheme);
         setStringProperty(component,"popupButtonImageUrl",_popupButtonImageUrl);
         setStringProperty(component,"helpText",_helpText);
-        setStringProperty(component,"selectMode",_selectMode);
+        setStringProperty(component,"popupSelectMode",_popupSelectMode);
 
         setStringProperty(component, UserRoleAware.ENABLED_ON_USER_ROLE_ATTR, _enabledOnUserRole);
         setStringProperty(component, UserRoleAware.VISIBLE_ON_USER_ROLE_ATTR, _visibleOnUserRole);
@@ -296,9 +296,9 @@ public class HtmlInputCalendarTag
         _helpText = helpText;
     }
 
-    public void setSelectMode(String selectMode)
+    public void setPopupSelectMode(String popupSelectMode)
     {
-    	_selectMode = selectMode;
+    	_popupSelectMode = popupSelectMode;
     }
 
     public void setAccesskey(String accesskey)

@@ -702,7 +702,19 @@
           required for the popup window.
           </p>
           <p>
-          Note that the appearance of the calendar can be controlled via attributes
+          The two forms of calendar are unfortunately not well integrated; this component is
+          effectively two components that happen to use the same component class. Some
+          attributes on the component are applicable only to the inline form while others
+          are applicable only to the popup form.
+          </p>
+          <p>
+          The appearance of the inline calendar can be controlled via attributes
+          such as currentDayCellClass, dayCellClass, weekRowClass, monthYearRowClass. 
+          Attributes "styleLocation", "javascriptLocation", "imageLocation" and all
+          attributes starting with "popup" have no effect on an inline calendar.
+          <ul>
+          <p>
+          The appearance of the popup calendar can be controlled via attributes
           popupTheme, styleLocation, javascriptLocation and imageLocation:
           <ul>
             <li>popupTheme: When styleLocation is not overridden then this selects one of the
@@ -724,6 +736,7 @@
                defined. Defaults to a reference to a location within the tomahawk jarfile which
                varies depending on popupTheme.</li>
           </ul>
+          Other styling attributes (eg dayCellClass, weekRowClass) are ignored for the popup calendar.
           </p>
           <p>
           Unless otherwise specified, all attributes accept static values or EL expressions.

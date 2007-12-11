@@ -218,7 +218,7 @@ public class HtmlCalendarRenderer
                                                         timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
             // pass the selectMode attribute
             StringBuffer script = new StringBuffer();
-            setStringVariable(script, calendarVar +".initData.selectMode",inputCalendar.getSelectMode());
+            setStringVariable(script, calendarVar +".initData.selectMode",inputCalendar.getPopupSelectMode());
             writer.writeText(script.toString(), null);
 
             writer.writeText(calendarVar+".init(document.getElementById('"+

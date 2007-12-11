@@ -181,7 +181,7 @@
             <description>The text that will be rendered in the field - helping the user to find the right format to enter into the field.</description>
         </attribute>
         <attribute>
-            <name>selectMode</name>
+            <name>popupSelectMode</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description><![CDATA[
