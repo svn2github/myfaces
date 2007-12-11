@@ -37,6 +37,7 @@ org_apache_myfaces_CalendarInitData = function()
     this.monthName = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
     this.dayName = this.startAt == 0 ? new Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat") : new Array("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun");
 
+    this.selectMode = "day";
 }
 
 org_apache_myfaces_DateParts = function(sec, min, hour, date, month, year)
@@ -96,6 +97,7 @@ org_apache_myfaces_PopupCalendar = function()
     this.todaySpan = null;
     this.captionSpan = null;
     this.contentSpan = null;
+    this.acceptMonthSpan = null;
     this.closeCalendarSpan = null;
     this.monthSpan = null;
     this.yearSpan = null
@@ -111,6 +113,8 @@ org_apache_myfaces_PopupCalendar = function()
     this.myFacesCtlType = "x:inputCalendar";
     this.inputDateClientId;
 }
+
+org_apache_myfaces_PopupCalendar.prototype._MSECS_PER_DAY = 24*60*60*1000;
 
 org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
 {
@@ -200,6 +204,21 @@ org_apache_myfaces_PopupCalendar.prototype._clickhandler = function()
     this.bClickOnCalendar = false;
 }
 
+org_apache_myfaces_PopupCalendar.prototype._isDaySelectable = function()
+{
+  return (this.initData.selectMode == "day");
+}
+
+org_apache_myfaces_PopupCalendar.prototype._isWeekSelectable = function()
+{
+  return (this.initData.selectMode == "week");
+}
+
+org_apache_myfaces_PopupCalendar.prototype._isMonthSelectable = function()
+{
+  return (this.initData.selectMode == "month");
+}
+
 org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 {
     if (this.dom)
@@ -259,6 +278,28 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 
             this.captionSpan = document.createElement("span");
             captionCell.appendChild(this.captionSpan);
+
+            if (this._isMonthSelectable())
+            {
+                var acceptMonthCell = document.createElement("td");
+                acceptMonthCell.setAttribute("style", "text-align:right;");
+                headerRow.appendChild(acceptMonthCell);
+    
+                var acceptMonthLink = document.createElement("a");
+                acceptMonthLink.setAttribute("href", "#");
+                Event.observe(acceptMonthLink, "click", function(event)
+                {
+                    this.selectedDate.date = 1; // force first of the selected month
+                    this._closeCalendar();
+                    Event.stop(event);
+                }.bindAsEventListener(this), false);
+    
+                acceptMonthCell.appendChild(acceptMonthLink);
+                this.acceptMonthSpan = document.createElement("span");
+                this.acceptMonthSpan.appendChild(document.createTextNode("Y"));
+    
+                acceptMonthLink.appendChild(this.acceptMonthSpan);
+            }
 
             var closeButtonCell = document.createElement("td");
             closeButtonCell.setAttribute("style", "text-align:right;");
@@ -556,7 +597,7 @@ org_apache_myfaces_PopupCalendar.prototype._closeCalendar = function()
     }
 }
 
-/*** Month Pulldown	***/
+/*** Month Pulldown ***/
 
 org_apache_myfaces_PopupCalendar.prototype._startDecMonth = function()
 {
@@ -826,7 +867,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
         }.bindAsEventListener(this), false);
 
 
-        //sHTML =	"<tr><td align='center'	onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='clearInterval(this.intervalID1); this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onmousedown='clearInterval(this.intervalID1);this.intervalID1=setInterval(\"_decYear()\",30)' onmouseup='clearInterval(this.intervalID1)'>-</td></tr>";
+        //sHTML = "<tr><td align='center' onmouseover='this.className=\""+this.initData.themePrefix+"-dropdown-select-style\"' onmouseout='clearInterval(this.intervalID1); this.className=\""+this.initData.themePrefix+"-dropdown-normal-style\"' onmousedown='clearInterval(this.intervalID1);this.intervalID1=setInterval(\"_decYear()\",30)' onmouseup='clearInterval(this.intervalID1)'>-</td></tr>";
 
         this.nStartingYear = this.selectedDate.year - 3;
         var j = 0;
@@ -1054,18 +1095,109 @@ org_apache_myfaces_PopupCalendar.prototype._getHolidayHint = function(datePointe
 }
 
 
+org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, startDate, weekSelectable,
+    sNormalStyle, sSelectStyle)
+{
+    var cell = document.createElement("td");
+    cell.setAttribute("style", "text-align:right;");
+
+    var weekNumber = this._weekNbr(startDate) + " ";
+    if (weekSelectable)
+    {
+        var link = document.createElement("a");
+        link.className = sNormalStyle;
+        link.sNormalStyle = sNormalStyle;
+        link.sSelectStyle = sSelectStyle;
+        link.setAttribute("href", "#");
+        link.appendChild(document.createTextNode(weekNumber));
+
+        // The day on which the week starts is simply the first day of the year + week*7
+        // Note that this might not match the first day on the same calendar row as the
+        // selected weeknumber. However it does ensure that week N is exactly seven days
+        // different from week N+1, and also that the first week of the year starts on
+        // the first day of the year.
+        //
+        // Note that this does mean that when clicking on the last week in a month, the
+        // selected date might be the first day in the following month.
+        var yearStart;
+        if ((this.selectedDate.month==11) && (weekNumber==1))
+        {
+            // handle corner case where we are displaying December of a year, and the user
+            // clicks on the last week entry, which is actually week1 of the following year.
+            //
+            // Todo: maybe this is a bug, and this should be "week53" of the previous year.
+            // But in that case, the concrete date we would return for "week53 of 2000"
+            // would be "2001.01.01", which also feels wrong.
+            yearStart = new Date(this.selectedDate.year + 1, 0, 1);
+        }
+        else if ((this.selectedDate.month==0) && (weekNumber>50))
+        {
+            yearStart = new Date(this.selectedDate.year - 1, 0, 1);
+        }
+        else
+        {
+            yearStart = new Date(this.selectedDate.year, 0, 1);
+        }
+        var msecs = yearStart.getTime() + this._MSECS_PER_DAY*7*(weekNumber-1);
+        link.dateObj = new Date();
+        link.dateObj.setTime(msecs);
+
+        cell.appendChild(link);
+
+        Event.observe(link, "mousemove", function(event)
+        {
+            window.status = this.initData.selectDateMessage.replace(
+                "[date]",
+                this._constructDate(link.date));
+        }.bindAsEventListener(this), false);
+
+        Event.observe(link, "mouseout", function(event)
+        {
+            var elem = Event.element(event);
+            elem.className = elem.sNormalStyle;
+            window.status = "";
+        }.bindAsEventListener(this), false);
+
+        Event.observe(link, "click", function(event)
+        {
+            var elem = Event.element(event);
+            this.selectedDate.year = elem.dateObj.getFullYear();
+            this.selectedDate.month = elem.dateObj.getMonth();
+            this.selectedDate.date = elem.dateObj.getDate();
+            this._closeCalendar();
+            Event.stop(event);
+        }.bindAsEventListener(this), false);
+
+        Event.observe(link, "mouseover", function(event)
+        {
+            var elem = Event.element(event);
+            elem.className = elem.sSelectStyle;
+        }.bindAsEventListener(this), false);
+    }
+    else
+    {
+        var span = document.createElement("span");
+        span.className=sNormalStyle;
+        span.appendChild(document.createTextNode(weekNumber));
+        cell.appendChild(span);
+    }
+
+    currentRow.appendChild(cell);
+}
+
 org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 {
     var aNumDays = Array(31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
     var dateMessage;
-    var startDate = new    Date (this.selectedDate.year, this.selectedDate.month, 1);
-    var endDate;
+    var startDate = new Date(this.selectedDate.year, this.selectedDate.month, 1);
 
     if (this.selectedDate.month == 1)
     {
-        endDate = new Date (this.selectedDate.year, this.selectedDate.month + 1, 1);
-        endDate = new Date (endDate - (24 * 60 * 60 * 1000));
+        // to compute the number of days in february, select first day of march,
+        // subtract 24 hours then query the day-of-the-month.
+        var msecs = new Date (this.selectedDate.year, this.selectedDate.month + 1, 1).getTime();
+        var endDate = new Date (msecs - this._MSECS_PER_DAY);
         numDaysInMonth = endDate.getDate();
     }
     else
@@ -1127,9 +1259,13 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     var currentRow = document.createElement("tr");
     contentBody.appendChild(currentRow);
 
+    var weekSelectable = this._isWeekSelectable();
+    var sWeekNormalStyle = this.initData.themePrefix + "-normal-week-style";
+    var sWeekSelectStyle = sWeekNormalStyle + " " + this.initData.themePrefix + "-would-be-selected-week-style";
+
     if (this.initData.showWeekNumber == 1)
     {
-        this._appendCell(currentRow, this._weekNbr(startDate) + " ");
+        this._addWeekCell(currentRow, startDate, weekSelectable, sWeekNormalStyle, sWeekSelectStyle);
     }
 
     for (var i = 1; i <= dayPointer; i++)
@@ -1151,43 +1287,56 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
         var sSelectStyle = sStyle + " " + this.initData.themePrefix + "-would-be-selected-day-style";
         var sNormalStyle = sStyle;
 
-        var dateLink = document.createElement("a");
-        dateLink.className = sStyle;
-        dateLink.setAttribute("href", "#");
-        dateLink.setAttribute("title", sHint);
-
-        dateLink.sNormalStyle = sNormalStyle;
-        dateLink.sSelectStyle = sSelectStyle;
-        dateLink.datePointer = datePointer;
-
-        dateCell.appendChild(dateLink);
-
-        Event.observe(dateLink, "mousemove", function(event)
+        if (this._isDaySelectable())
         {
-            window.status = this.initData.selectDateMessage.replace("[date]", this._constructDate(datePointer, this.selectedDate.month, this.selectedDate.year));
-        }.bindAsEventListener(this), false);
-        Event.observe(dateLink, "mouseout", function(event)
-        {
-            var elem = Event.element(event);
-            elem.className = elem.sNormalStyle;
-            window.status = "";
-        }.bindAsEventListener(this), false);
-        Event.observe(dateLink, "click", function(event)
-        {
-            var elem = Event.element(event);
-            this.selectedDate.date = elem.datePointer;
-            this._closeCalendar();
-            Event.stop(event);
-        }.bindAsEventListener(this), false);
-        Event.observe(dateLink, "mouseover", function(event)
-        {
-            var elem = Event.element(event);
-            elem.className = elem.sSelectStyle;
-        }.bindAsEventListener(this), false);
 
-        this._appendNbsp(dateLink);
-        dateLink.appendChild(document.createTextNode(datePointer));
-        this._appendNbsp(dateLink);
+            var dateLink = document.createElement("a");
+            dateLink.className = sStyle;
+            dateLink.setAttribute("href", "#");
+            dateLink.setAttribute("title", sHint);
+
+            dateLink.sNormalStyle = sNormalStyle;
+            dateLink.sSelectStyle = sSelectStyle;
+            dateLink.datePointer = datePointer;
+
+            dateCell.appendChild(dateLink);
+
+            Event.observe(dateLink, "mousemove", function(event)
+            {
+                window.status = this.initData.selectDateMessage.replace("[date]", this._constructDate(datePointer, this.selectedDate.month, this.selectedDate.year));
+            }.bindAsEventListener(this), false);
+            Event.observe(dateLink, "mouseout", function(event)
+            {
+                var elem = Event.element(event);
+                elem.className = elem.sNormalStyle;
+                window.status = "";
+            }.bindAsEventListener(this), false);
+            Event.observe(dateLink, "click", function(event)
+            {
+                var elem = Event.element(event);
+                this.selectedDate.date = elem.datePointer;
+                this._closeCalendar();
+                Event.stop(event);
+            }.bindAsEventListener(this), false);
+            Event.observe(dateLink, "mouseover", function(event)
+            {
+                var elem = Event.element(event);
+                elem.className = elem.sSelectStyle;
+            }.bindAsEventListener(this), false);
+
+            this._appendNbsp(dateLink);
+            dateLink.appendChild(document.createTextNode(datePointer));
+            this._appendNbsp(dateLink);
+        }
+        else
+        {
+            var dateSpan = document.createElement("span");
+            dateCell.appendChild(dateSpan);
+
+            dateSpan.appendChild(document.createTextNode(datePointer));
+            dateSpan.className = sStyle;
+            dateSpan.setAttribute("title", sHint);
+        }
 
         if ((dayPointer + this.initData.startAt) % 7 == this.initData.startAt)
         {
@@ -1196,9 +1345,9 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
             if ((this.initData.showWeekNumber == 1) && (datePointer < numDaysInMonth))
             {
-                this._appendCell(currentRow, this._weekNbr(new Date(this.selectedDate.year, this.selectedDate.month, datePointer + 1)) + " ");
+                var startDate = new Date(this.selectedDate.year, this.selectedDate.month, datePointer + 1);
+                this._addWeekCell(currentRow, startDate, weekSelectable, sWeekNormalStyle, sWeekSelectStyle);
             }
-
         }
     }
 
@@ -1216,29 +1365,39 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
     this.monthSpan.appendChild(this.changeMonthImg);
 
+    // Year dropdown list (YYYY plus dropdown icon)
     this._removeAllChildren(this.yearSpan);
-
     this._appendNbsp(this.yearSpan);
     this.yearSpan.appendChild(document.createTextNode(this.selectedDate.year));
     this._appendNbsp(this.yearSpan);
-
     this.changeYearImg = document.createElement("img");
     this.changeYearImg.setAttribute("src", this.initData.imgDir + "drop1.gif");
     this.changeYearImg.setAttribute("width","12px");
     this.changeYearImg.setAttribute("height","10px");
     this.changeYearImg.setAttribute("style", "border:0px;");
-
     this.yearSpan.appendChild(this.changeYearImg);
 
-    this._removeAllChildren(this.closeCalendarSpan);
+    // Accept Month icon
+    if (this.acceptMonthSpan)
+    {
+      this._removeAllChildren(this.acceptMonthSpan);
+      var acceptMonthImg = document.createElement("img");
+      acceptMonthImg.setAttribute("src", this.initData.imgDir + "accept.gif");
+      acceptMonthImg.setAttribute("width","15px");
+      acceptMonthImg.setAttribute("height","13px");
+      acceptMonthImg.setAttribute("style", "border:0px;");
+      acceptMonthImg.setAttribute("alt", "Accept the current month selection");
+      this.acceptMonthSpan.appendChild(acceptMonthImg);
+    }
 
+    // Close Popup icon
+    this._removeAllChildren(this.closeCalendarSpan);
     var closeButtonImg = document.createElement("img");
     closeButtonImg.setAttribute("src", this.initData.imgDir + "close.gif");
     closeButtonImg.setAttribute("width","15px");
     closeButtonImg.setAttribute("height","13px");
     closeButtonImg.setAttribute("style", "border:0px;");
     closeButtonImg.setAttribute("alt", "Close the calendar");
-
     this.closeCalendarSpan.appendChild(closeButtonImg);
 
     this._recalculateElement(this.calendarDiv);
@@ -1327,7 +1486,7 @@ org_apache_myfaces_PopupCalendar.prototype._getStyle = function(ctl, property)
        if (computed && computed.getPropertyValue(property)) {
           value = computed.getPropertyValue(property);
        }
-    }			
+    }
 	return value;
 }
 

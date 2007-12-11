@@ -148,8 +148,16 @@
             <name>popupTheme</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>
-                Set the theme-prefix for this component.
+            <description><![CDATA[
+              <p>
+              When styleLocation is not overridden then this selects one of the
+              built-in themes ("WH" or "DB"); the default is "DB".
+              </p>
+              <p>
+              This also selects the prefix used for the names of style classes attached
+              to generated dom elements; all style names are of form "jscalendar-{popupTheme}-*".
+              </p>
+              ]]>
             </description>
         </attribute>
         <attribute>

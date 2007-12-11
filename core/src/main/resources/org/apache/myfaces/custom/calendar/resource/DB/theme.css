@@ -142,3 +142,14 @@
 	background-color: #d0d0d0;
 	padding: 0px;
 }
+
+/* Attributes of week labels in calendar. */
+.jscalendar-DB-normal-week-style {
+	color: black;
+	text-decoration: none;
+}
+
+.jscalendar-DB-would-be-selected-week-style {
+	background-color: #EEEEEE;
+}
+

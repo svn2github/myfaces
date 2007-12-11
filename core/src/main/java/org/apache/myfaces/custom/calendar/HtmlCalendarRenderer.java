@@ -86,7 +86,10 @@ public class HtmlCalendarRenderer
 
     private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.calendar.JAVASCRIPT_ENCODED";
 
-    public void encodeEnd(FacesContext facesContext, UIComponent component)
+    // TODO: move this to HtmlRendererUtils in shared
+	private static final String RESOURCE_NONE = "none";
+
+	public void encodeEnd(FacesContext facesContext, UIComponent component)
             throws IOException
     {
         RendererUtils.checkParamValidity(facesContext, component, HtmlInputCalendar.class);
@@ -124,22 +127,22 @@ public class HtmlCalendarRenderer
 
         if(inputCalendar.isRenderAsPopup())
         {
-        	renderPopup(facesContext, inputCalendar, value, timeKeeper, symbols);
+            renderPopup(facesContext, inputCalendar, value, timeKeeper, symbols);
         }
         else
         {
-        	renderInline(facesContext, inputCalendar, value, timeKeeper, symbols);
+            renderInline(facesContext, inputCalendar, value, timeKeeper, symbols);
         }
 
         component.getChildren().removeAll(component.getChildren());
     }
 
     private void renderPopup(
-    		FacesContext facesContext, 
-    		HtmlInputCalendar inputCalendar,
-    		Date value,
-    		Calendar timeKeeper,
-    		DateFormatSymbols symbols) throws IOException
+            FacesContext facesContext, 
+            HtmlInputCalendar inputCalendar,
+            Date value,
+            Calendar timeKeeper,
+            DateFormatSymbols symbols) throws IOException
     {
         if(inputCalendar.isAddResources())
             addScriptAndCSSResources(facesContext, inputCalendar);
@@ -213,6 +216,11 @@ public class HtmlCalendarRenderer
             writer.writeText(calendarVar+"=new org_apache_myfaces_PopupCalendar();\n",null);
             writer.writeText(getLocalizedLanguageScript(facesContext,symbols,
                                                         timeKeeper.getFirstDayOfWeek(),inputCalendar,calendarVar)+"\n",null);
+            // pass the selectMode attribute
+            StringBuffer script = new StringBuffer();
+            setStringVariable(script, calendarVar +".initData.selectMode",inputCalendar.getSelectMode());
+            writer.writeText(script.toString(), null);
+
             writer.writeText(calendarVar+".init(document.getElementById('"+
                              inputCalendar.getClientId(facesContext)+"Span"+"'));\n",null);
             writer.endElement(HTML.SCRIPT_ELEM);
@@ -234,11 +242,11 @@ public class HtmlCalendarRenderer
     }
 
     private void renderInline(
-    		FacesContext facesContext, 
-    		HtmlInputCalendar inputCalendar,
-    		Date value,
-    		Calendar timeKeeper,
-    		DateFormatSymbols symbols) throws IOException
+            FacesContext facesContext, 
+            HtmlInputCalendar inputCalendar,
+            Date value,
+            Calendar timeKeeper,
+            DateFormatSymbols symbols) throws IOException
     {
         String[] weekdays = mapShortWeekdays(symbols);
         String[] months = mapMonths(symbols);
@@ -327,11 +335,16 @@ public class HtmlCalendarRenderer
      * Used by the x:inputDate renderer : HTMLDateRenderer
      */
     static public void addScriptAndCSSResources(FacesContext facesContext, UIComponent component){
-        // check to see if javascript has already been written (which could happen if more than one calendar on the same page)
+        // Check to see if javascript has already been written (which could happen if more than one calendar
+    	// on the same page). Note that this means that if two calendar controls in the same page have
+    	// different styleLocation or scriptLocation settings then all but the first one get ignored.
+    	// Having different settings for calendars on the same page would be unusual, so ignore this
+    	// for now..
         if (facesContext.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
         {
             return;
         }
+
         AddResource addresource = AddResourceFactory.getInstance(facesContext);
         // Add the javascript and CSS pages
 
@@ -342,9 +355,13 @@ public class HtmlCalendarRenderer
             addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "WH/theme.css");
             addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "DB/theme.css");
         }
-        else
+        else if (!RESOURCE_NONE.equals(styleLocation))
         {
             addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, styleLocation+"/theme.css");
+        }
+        else
+        {
+        	// output nothing; presumably the page directly references the necessary stylesheet
         }
 
         String javascriptLocation = HtmlRendererUtils.getJavascriptLocation(component);
@@ -355,22 +372,31 @@ public class HtmlCalendarRenderer
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
         }
-        else
+        else if (!RESOURCE_NONE.equals(javascriptLocation))
         {
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/prototype.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/date.js");
             addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/popcalendar.js");
+        }
+        else
+        {
+        	// output nothing; presumably the page directly references the necessary javascript
         }
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
     }
     
     
-
+    /**
+     * Creates and returns a String which contains the initialisation data for the popup calendar
+     * control as a sequence of javascript commands that assign values to properties of a javascript
+     * object whose name is in parameter popupCalendarVariable.
+     */
     public static String getLocalizedLanguageScript(FacesContext facesContext, DateFormatSymbols symbols,
                                                     int firstDayOfWeek, UIComponent uiComponent,
                                                     String popupCalendarVariable)
     {
+        HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
 
         int realFirstDayOfWeek = firstDayOfWeek-1;//Java has different starting-point;
 
@@ -386,19 +412,33 @@ public class HtmlCalendarRenderer
         }
         else if(realFirstDayOfWeek==-1)
         {
-        	weekDays = mapShortWeekdaysStartingWithSaturday(symbols);
+            weekDays = mapShortWeekdaysStartingWithSaturday(symbols);
         }         
         else
             throw new IllegalStateException("Week may only start with sunday or monday.");
 
+
         StringBuffer script = new StringBuffer();
-        String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
-        if(imageLocation == null) {
-            setStringVariable(script,popupCalendarVariable +".initData.imgDir",
-                              (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
-                                                            .getResourceUri(facesContext, HtmlCalendarRenderer.class, "DB/"))));
+        AddResource ar = AddResourceFactory.getInstance(facesContext);
+
+        // Set the themePrefix variable
+        String popupTheme = calendar.getPopupTheme();
+        if (popupTheme == null)
+        {
+            popupTheme = "DB";
         }
-        else {
+        setStringVariable(script,popupCalendarVariable + ".initData.themePrefix", "jscalendar-" + popupTheme);
+
+        // specify the URL for the directory in which all the .gif images can be found
+        String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
+        if(imageLocation == null)
+        {
+            String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme + "/");
+            setStringVariable(script,popupCalendarVariable + ".initData.imgDir",
+                              JavascriptUtils.encodeString(uri));
+        }
+        else
+        {
             setStringVariable(script, popupCalendarVariable +".initData.imgDir",
                               (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
                                                             .getResourceUri(facesContext, imageLocation+"/"))) );
@@ -421,7 +461,8 @@ public class HtmlCalendarRenderer
         defineStringArray(script,popupCalendarVariable+".dateFormatSymbols.ampms",
                           symbols.getAmPmStrings());
 
-        if( uiComponent instanceof HtmlInputCalendar ){
+        if( uiComponent instanceof HtmlInputCalendar )
+        {
 
             HtmlInputCalendar inputCalendar = (HtmlInputCalendar) uiComponent;
 
@@ -840,20 +881,20 @@ public class HtmlCalendarRenderer
     
     private static String[] mapShortWeekdaysStartingWithSaturday(DateFormatSymbols symbols) 
     {
-		String[] weekdays = new String[7];
+        String[] weekdays = new String[7];
 
-		String[] localeWeekdays = symbols.getShortWeekdays();
+        String[] localeWeekdays = symbols.getShortWeekdays();
 
-		weekdays[0] = localeWeekdays[Calendar.SATURDAY];
-		weekdays[1] = localeWeekdays[Calendar.SUNDAY];
-		weekdays[2] = localeWeekdays[Calendar.MONDAY];
-		weekdays[3] = localeWeekdays[Calendar.TUESDAY];
-		weekdays[4] = localeWeekdays[Calendar.WEDNESDAY];
-		weekdays[5] = localeWeekdays[Calendar.THURSDAY];
-		weekdays[6] = localeWeekdays[Calendar.FRIDAY];
+        weekdays[0] = localeWeekdays[Calendar.SATURDAY];
+        weekdays[1] = localeWeekdays[Calendar.SUNDAY];
+        weekdays[2] = localeWeekdays[Calendar.MONDAY];
+        weekdays[3] = localeWeekdays[Calendar.TUESDAY];
+        weekdays[4] = localeWeekdays[Calendar.WEDNESDAY];
+        weekdays[5] = localeWeekdays[Calendar.THURSDAY];
+        weekdays[6] = localeWeekdays[Calendar.FRIDAY];
 
-		return weekdays;
-	}    
+        return weekdays;
+    }    
     
     private static String[] mapWeekdaysStartingWithSunday(DateFormatSymbols symbols)
     {

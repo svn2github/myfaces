@@ -464,4 +464,19 @@ public class HtmlInputCalendar
         _popupTodayDateFormat = (String)values[26];
     }
     //------------------ GENERATED CODE END ---------------------------------------
+
+    
+    public String getSelectMode()
+    {
+    	if (isDisabled() || isReadonly())
+    	{
+    		return "none";
+    	}
+    	
+    	Object mode = getAttributes().get("selectionMode");
+    	if (mode == null)
+    		return "day";
+    	else
+    		return mode.toString();
+    }
 }
