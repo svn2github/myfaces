@@ -48,6 +48,7 @@ public class ScheduleTag extends HtmlComponentTagBase
     private String _workingStartHour;
     private String _submitOnClick;
     private String _hourNotation;
+    private String _compactMonthDayOfWeekDateFormat;
     //UISchedule properties
     private String _action;
     private String _actionListener;
@@ -259,11 +260,21 @@ public class ScheduleTag extends HtmlComponentTagBase
     /**
      * @return the hourNotation
      */
-    public String getHourNotation() {
+    public String getHourNotation()
+    {
 		return _hourNotation;
 	}
     
-    public void release() {
+    /**
+     * @return the compactMonthDayOfWeekDateFormat
+     */
+    public String getcompactMonthDayOfWeekDateFormat()
+    {
+		return _compactMonthDayOfWeekDateFormat;
+	}
+    
+    public void release()
+    {
         super.release();
         //UIScheduleBase properties
         _compactMonthRowHeight = null;
@@ -282,6 +293,7 @@ public class ScheduleTag extends HtmlComponentTagBase
         _workingStartHour = null;
         _submitOnClick = null;
         _hourNotation = null;
+        _compactMonthDayOfWeekDateFormat = null;
         //UISchedule properties
         _action = null;
         _actionListener = null;
@@ -428,6 +440,7 @@ public class ScheduleTag extends HtmlComponentTagBase
           setIntegerProperty(component, "workingStartHour", _workingStartHour);
           setBooleanProperty(component, "submitOnClick", _submitOnClick);
           setStringProperty(component, "hourNotation", _hourNotation);
+          setStringProperty(component, "compactMonthDayOfWeekDateFormat", _compactMonthDayOfWeekDateFormat);
           //UISchedule properties
           setActionProperty(component, _action);
           setActionListenerProperty(component, _actionListener);
@@ -562,13 +575,21 @@ public class ScheduleTag extends HtmlComponentTagBase
     }
 
     /**
-     * @param hourNotation the workingStartHour to set
+     * @param hourNotation the hourNotation to set
      */
     public void setHourNotation(String hourNotation)
     {
         this._hourNotation = hourNotation;
     }
 
+    /**
+     * @param hourNotation the monthDayOfWeekDateFormat to set
+     */
+    public void setCompactMonthDayOfWeekDateFormat(String monthDayOfWeekDateFormat)
+    {
+		_compactMonthDayOfWeekDateFormat = monthDayOfWeekDateFormat;
+	}
+    
     /**
      * @return the backgroundClass
      */

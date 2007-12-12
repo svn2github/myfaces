@@ -118,13 +118,17 @@ div.schedule-compact-default {
 	background-color: rgb(153,153,153);
 }
 
+div.schedule-compact-default table.month th.header {
+    background-color: rgb(181,200,207);	
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+}
+
 div.schedule-compact-default table.day {
   background-color: rgb(255,255,255);
 }
 
 div.schedule-compact-default table.day th.header {
   background-color: rgb(181,200,207);
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
   color: rgb(0,0,0);
   text-align: left;
@@ -301,13 +305,17 @@ div.schedule-compact-evolution {
     background-color: rgb(172,172,172);
 }
 
+div.schedule-compact-evolution table.month th.header {
+    background-color: rgb(246,246,246);
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
+}
+
 div.schedule-compact-evolution table.day {
   background-color: rgb(255,255,255);
 }
 
 div.schedule-compact-evolution table.day th.header {
   background-color: rgb(255,255,255);
-  font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
   color: rgb(0,0,0);
   text-align: left;
@@ -483,6 +491,11 @@ div.schedule-compact-outlookxp {
     width: 100%;
     left: 0px;
     background-color: rgb(128,128,128);
+}
+
+div.schedule-compact-outlookxp table.month th.header {
+    background-color: rgb(219,216,209);
+	font-family: Verdana, Arial, Helvetica, Sans-Serif;
 }
 
 div.schedule-compact-outlookxp table.day {

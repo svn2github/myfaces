@@ -22,6 +22,7 @@ package org.apache.myfaces.custom.schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -80,16 +81,48 @@ public class ScheduleCompactMonthRenderer
         writer.startElement(HTML.TABLE_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "month"), null);
         writer.writeAttribute(
-            HTML.STYLE_ATTR, "position: relative; left: 0px; top: 0px; width: 100%;",
+            HTML.STYLE_ATTR, "width: 100%;",
             null
         );
         writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "1", null);
-        writer.writeAttribute("border", "0", null);
-        writer.writeAttribute(HTML.WIDTH_ATTR, "100%", null);
-        writer.startElement(HTML.TBODY_ELEM, schedule);
 
         Calendar cal = getCalendarInstance(schedule, schedule.getModel().getSelectedDate());
+
+        String dayOfWeekDateFormat = schedule.getCompactMonthDayOfWeekDateFormat();
+
+        if (dayOfWeekDateFormat != null && dayOfWeekDateFormat.length() > 0) {
+        	DateFormat dayOfWeekFormater = getDateFormat(context, schedule, dayOfWeekDateFormat);
+        	writer.startElement(HTML.THEAD_ELEM, schedule);
+        	writer.startElement(HTML.TR_ELEM, schedule);
+
+        	for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();) {
+        		ScheduleDay day = (ScheduleDay) dayIterator.next();
+        		cal.setTime(day.getDate());
+
+        		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+        		writer.startElement(HTML.TH_ELEM, schedule);
+        		writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "header"), null);
+
+        		if (schedule.isSplitWeekend() && dayOfWeek == Calendar.SATURDAY) {
+            		// Don't label the weekend
+        			writer.endElement(HTML.TH_ELEM);
+        			break;
+        		} else {
+            		writer.writeText(dayOfWeekFormater.format(day.getDate()), null);
+            		writer.endElement(HTML.TH_ELEM);        			
+        		}
+        		if (dayOfWeek == Calendar.SUNDAY) {
+        			break;
+        		}
+        	}
+        	writer.endElement(HTML.TR_ELEM);
+        	writer.endElement(HTML.THEAD_ELEM);
+        }
+
+        writer.startElement(HTML.TBODY_ELEM, schedule);
+
         int selectedMonth = cal.get(Calendar.MONTH);
 
         for (

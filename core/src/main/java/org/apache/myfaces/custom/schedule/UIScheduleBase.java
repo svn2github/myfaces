@@ -87,6 +87,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     private Integer _workingStartHour;
     private Boolean _submitOnClick = null;
     private String _hourNotation;
+    private String _compactMonthDayOfWeekDateFormat;
 	private Boolean _splitWeekend;
 
 	public boolean isSplitWeekend()
@@ -319,6 +320,15 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     {
     	return ScheduleUtil.getStringProperty(this, _hourNotation, "hourNotation", null);
     }
+
+    /**
+     * @return the headerDateFormat
+     */
+    public String getCompactMonthDayOfWeekDateFormat()
+    {
+        return ScheduleUtil.getStringProperty(this, _compactMonthDayOfWeekDateFormat,
+                "compactMonthDayOfWeekDateFormat", null);
+    }
     
     /**
      * @see javax.faces.component.UIComponentBase#restoreState(javax.faces.context.FacesContext, java.lang.Object)
@@ -345,6 +355,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
         _submitOnClick = (Boolean)values[16];
         _hourNotation = (String) values[17];
 		_splitWeekend = (Boolean)values[18];
+		_compactMonthDayOfWeekDateFormat = (String)values[19];
     }
 
     /**
@@ -352,7 +363,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
      */
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[19];
+        Object[] values = new Object[20];
         values[0] = super.saveState(context);
         values[1] = _compactMonthRowHeight;
         values[2] = _compactWeekRowHeight;
@@ -372,6 +383,7 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
         values[16] = _submitOnClick;
         values[17] = _hourNotation;
 		values[18] = _splitWeekend;
+		values[19] = _compactMonthDayOfWeekDateFormat;
         
         return values;
     }
@@ -526,4 +538,15 @@ public class UIScheduleBase extends UIComponentBase implements ValueHolder,
     	this._hourNotation = hourNotation;
     }
     
+    /**
+     * <p>
+     * Date format to use for days of the week headers in the month view.
+     * e.g. EEEE = Monday, Tuesday,  etc.
+     * </p>
+     * 
+     * @param compactMonthDayOfWeekDateFormat Date format for day of the week header, or null for no header
+     */
+    public void setCompactMonthDayOfWeekDateFormat(String compactMonthDayOfWeekDateFormat) {
+		_compactMonthDayOfWeekDateFormat = compactMonthDayOfWeekDateFormat;
+	}
 }

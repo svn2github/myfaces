@@ -89,6 +89,12 @@
 	<type>java.lang.String</type>
 </attribute>
 <attribute>
+	<name>compactMonthDayOfWeekDateFormat</name>
+	<required>false</required>
+	<rtexprvalue>false</rtexprvalue>
+	<type>java.lang.String</type>
+</attribute>
+<attribute>
 	<name>splitWeekend</name>
 	<required>false</required>
 	<rtexprvalue>false</rtexprvalue>
