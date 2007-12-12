@@ -27,13 +27,10 @@
 // into dates, and format dates into strings.
 //
 // Note that there is one difference from SimpleDateFormat in the formatting
-// string pattern; this code adopts the JODA "xxxx" pattern for weekYear. If
-// the date 01/01/2010 is output using format "ww/xxxx" then the result is
-// "53/2007", because that date is actually in the last week 2007 is the year
-// in which week01 of 2008 starts. The alternative is to implement the
-// java.text.SimpleDateFormat approach where what "yyyy" displays varies
-// depending on whether "ww" is also present in the pattern. Yecch. That
-// also makes patterns like "xxxx-ww  yyyy-mm-dd" impossible.
+// string pattern; this code also supports the JODA "xxxx" pattern for weekYear.
+// If this is used, then the ugly java.text.SimpleDateFormat mangling of the
+// purpose of the "yyyy" pattern is disabled, allowing formatting patterns like
+// "xxxx-ww  yyyy-mm-dd" to behave correctly.
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
@@ -143,6 +140,59 @@ function org_apache_myfaces_SimpleDateFormat_weekNbr(n)
 }
 
 //----------------------------------------------------------------------------
+// Create a new date using "week in year" rather than "month in year".
+// Weeks always begin on a monday (ISO-8601).
+//
+// This functions like
+//   new Date(year,month,day,hour,min,sec)
+// except that week (1..53) is used in place of month, and day is (1..7), not 
+// 1..31.
+//----------------------------------------------------------------------------
+org_apache_myfaces_SimpleDateFormat_newDateByWeekYear = function(year, week, day, hour, min, sec)
+{
+    var MSECS_PER_DAY = 24*60*60*1000;
+    
+    var date = new Date(
+        year, 0, 1,
+        hour, min, sec);
+    
+    // Nudge date to the nearest Monday from the start of the year;
+    // weeks always start on a monday. Note that it might be in the
+    // previous year. The actual date for the start of the first week
+    // in the year is guaranteed to be in the range (29dec-4jan)
+    var dow = date.getDay();
+    var daysOffset;
+    if (dow == 1)
+    {
+      // first day of year is monday, so no offset needed.
+      daysOffset = 0;
+    }
+    else if (dow <= 4)
+    {
+      // first day-of-year is tue, wed, thurs so the nearest monday is
+      // earlier (in the previous year). The offset will be negative.
+      daysOffset = 1 - dow;
+    }
+    else
+    {
+      // first day-of-year is fri,sat,sun so the nearest monday
+      // is later..
+      daysOffset = 8 - dow;
+    }
+    
+    // now add week*7 days
+    daysOffset += (week - 1) * 7 + (day - 1);
+
+    // do arithmetic
+    var msecsBase = date.getTime();
+    var msecsOffset = daysOffset * MSECS_PER_DAY;
+
+    var finalDate = new Date();
+    finalDate.setTime(msecsBase + msecsOffset);
+    return finalDate;
+}
+
+//----------------------------------------------------------------------------
 // Constructor for a simple object that contains locale-specific constants
 // used for date parsing and formatting.
 //----------------------------------------------------------------------------
@@ -188,6 +238,7 @@ org_apache_myfaces_SimpleDateFormatParserContext = function()
 
         this.weekYear=0;
         this.weekOfWeekYear=0;
+        this.yearIsWeekYear=false;
 }
 
 //----------------------------------------------------------------------------
@@ -347,55 +398,20 @@ org_apache_myfaces_SimpleDateFormat.prototype.parse = function(dateStr)
 //----------------------------------------------------------------------------
 org_apache_myfaces_SimpleDateFormat.prototype._createDateFromContext=function(context)
     {
+        var date;
         if (context.weekOfWeekYear != 0)
         {
-            var MSECS_PER_DAY = 24*60*60*1000;
-
-            var date = new Date(
-                context.weekYear, 0, 1,
-                context.hour,context.min,context.sec);
-
-            // Nudge date to the nearest Monday from the start of the year;
-            // weeks always start on a monday. Note that it might be in the
-            // previous year. The actual date for the start of the first week
-            // in the year is guaranteed to be in the range (29dec-4jan)
-            var dow = date.getDay();
-            var daysOffset;
-            if (dow == 1)
-            {
-              // first day of year is monday, so no offset needed.
-              daysOffset = 0;
-            }
-            else if (dow <= 4)
-            {
-              // first day-of-year is tue, wed, thurs so the nearest monday is
-              // earlier (in the previous year). The offset will be negative.
-              daysOffset = 1 - dow;
-            }
-            else
-            {
-              // first day-of-year is fri,sat,sun so the nearest monday
-              // is later..
-              daysOffset = 8 - dow;
-            }
-           
-            // now add week*7 days
-            daysOffset += (context.weekOfWeekYear - 1) * 7;
-
-            // do arithmetic
-            var msecsBase = date.getTime();
-            var msecsOffset = daysOffset * MSECS_PER_DAY;
-
-            var finalDate = new Date();
-            finalDate.setTime(msecsBase + msecsOffset);
-            return finalDate;
+            date = org_apache_myfaces_SimpleDateFormat_newDateByWeekYear(
+                context.weekYear, context.weekOfWeekYear, context.day,
+                context.hour, context.min, context.sec);
         }
         else
         {
-            return new Date(
+            date = new Date(
                 context.year, context.month, context.day,
                 context.hour,context.min,context.sec);
         }
+        return date;
     };
 
 //----------------------------------------------------------------------------
@@ -486,10 +502,16 @@ org_apache_myfaces_SimpleDateFormat.prototype._handlePatternSub = function(conte
                 {
                     context.year = context.retValue;
                 }
+                
+                if (context.yearIsWeekYear)
+                    context.weekYear = context.year;
             }
             else
             {
-                this._formatNum(context,context.year,patternSub.length <= 3 ? 2 : 4,true);
+                if (context.yearIsWeekYear)
+                    this._formatNum(context,context.year,patternSub.length <= 3 ? 2 : 4,true);
+                else
+                    this._formatNum(context,context.weekYear,patternSub.length <= 3 ? 2 : 4,true);
             }
         }
         else if(patternSub.charAt(0)=='x')
