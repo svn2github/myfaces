@@ -257,9 +257,15 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         }
         if (scroller.isPaginator())
         {
-            writeScrollerElementStart(writer, scroller);
+        	if(!scroller.isSingleElementLayout())
+        	{
+        		writeScrollerElementStart(writer, scroller);
+        	}
             renderPaginator(facesContext, scroller);
-            writeScrollerElementEnd(writer, scroller);
+        	if(!scroller.isSingleElementLayout())
+        	{
+        		writeScrollerElementEnd(writer, scroller);
+        	}
         }
         facetComp = scroller.getNext();
         if (facetComp != null)
