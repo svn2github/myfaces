@@ -263,12 +263,16 @@ org_apache_myfaces_SimpleDateFormat = function(pattern, dateFormatSymbols)
 org_apache_myfaces_SimpleDateFormat.prototype._handle = function(dateStr, date, parse)
     {
         var patternIndex = 0;
-        var dateIndex = 0;
         var commentMode = false;
         var lastChar = 0;
         var currentChar=0;
         var nextChar=0;
         var patternSub = null;
+        var ops = [];
+        var i;
+        var controls="yxMdEHhmsaw";
+        var wwPresent = false;
+        var xxPresent = false;
 
         var context = new org_apache_myfaces_SimpleDateFormatParserContext();
 
@@ -291,9 +295,9 @@ org_apache_myfaces_SimpleDateFormat.prototype._handle = function(dateStr, date, 
                 context.weekYear = context.year;
         }
 
-        // Walk through the date pattern char by char. Gather together runs of identical
-        // chars, and when the char changes then invoke _handlePatternSub passing the
-        // current run of chars.
+
+        // Walk through the date pattern char by char, splitting it up into
+        // "comment segments", "pattern segments" and "literal segments". 
         while (patternIndex < this.pattern.length)
         {
             currentChar = this.pattern.charAt(patternIndex);
@@ -310,75 +314,150 @@ org_apache_myfaces_SimpleDateFormat.prototype._handle = function(dateStr, date, 
 
             if (currentChar == '\'' && lastChar!='\\')
             {
+                if (patternSub != null)
+                {
+                    this._append(ops, patternSub);
+                    patternSub = null;
+                }
                 commentMode = !commentMode;
-                patternIndex++;
+            }
+            else if (commentMode)
+            {
+                if (patternSub == null)
+                {
+                    patternSub = "c:";
+                }
+                patternSub += currentChar;
             }
             else
             {
-                if(!commentMode)
+                if (currentChar == '\\' && lastChar!='\\')
                 {
-                    if (currentChar == '\\' && lastChar!='\\')
-                    {
-                        patternIndex++;
-                    }
-                    else
-                    {
-                        if(patternSub == null)
-                            patternSub = "";
-
-                        patternSub+=currentChar;
-
-                        if(currentChar != nextChar)
-                        {
-                            this._handlePatternSub(context, patternSub,
-                                    dateStr, dateIndex, parse);
-
-                            patternSub = null;
-
-                            if(context.newIndex<0)
-                                break;
-
-                            dateIndex = context.newIndex;
-                        }
-
-                        patternIndex++;
-                    }
                 }
-                else // we are processing an escaped character
+                else
                 {
-                    if(parse)
+                    if(patternSub == null)
                     {
-                        // input string being parsed must exactly match the corresponding char
-                        // in the pattern.
-                        if(this.pattern.charAt(patternIndex)!=dateStr.charAt(dateIndex))
-                        {
-                            //invalid character in dateString
-                            return null;
-                        }
+                        if (controls.indexOf(currentChar)<0)
+                            patternSub = "l:";
+                        else
+                            patternSub = "f:";
                     }
-                    else
+                    patternSub+=currentChar;
+                    if(currentChar != nextChar)
                     {
-                        // just output the escaped char literally into the result
-                        context.dateStr+=this.pattern.charAt(patternIndex);
+                        this._append(ops, patternSub);
+                        patternSub = null;
                     }
 
-                    patternIndex++;
-                    dateIndex++;
                 }
             }
 
+            patternIndex++;
             lastChar = currentChar;
         }
 
-        this._handlePatternSub(context, patternSub,
-                dateStr, dateIndex, parse);
+        if (patternSub != null)
+            this._append(ops, patternSub);
+
+        // Ugly hack to make the "yyyy" formatter behave differently if the
+        // "ww" formatter is also present in the pattern. This is what
+        // java.text.SimpleDateFormat does. The JODA library implements
+        // an "xxxx" formatter instead, and allows "yyyy" to behave normally;
+        // this is nicer so support that if formatter "xx" is present.
+        for(i=0;i<ops.length;++i)
+        {
+            var s = ops[i];
+            wwPresent = wwPresent || ("f:ww" == s.substr(0,4));
+            xxPresent = xxPresent || ("f:xx" == s.substr(0,4));
+        }
+        context.yearIsWeekYear = wwPresent && !xxPresent;
+
+        if (parse)
+            context = this._parseOps(context, ops, dateStr);
+        else
+            context = this._formatOps(context, ops);
 
         return context;
     };
 
+org_apache_myfaces_SimpleDateFormat.prototype._parseOps = function(context, ops, dateStr)
+{
+    var dateIndex = 0;
+    var i;
+    for(i=0;i<ops.length;++i)
+    {
+        var op = ops[i];
+        var optype = op.substr(0,2);
+        var opval = op.substr(2);
+        if (optype == "f:")
+        {
+            this._handlePatternSub(context, opval,
+                dateStr, dateIndex, true);
+
+            if(context.newIndex<0)
+                 break;
+
+            dateIndex = context.newIndex;
+        }
+        else if (optype == "l:")
+        {
+            // Just skip over the equivalent number of chars. This is what the previous
+            // parsing implementation did...
+            dateIndex += opval.length;
+        }
+        else if (optype == "c:")
+        {
+            // verify that opval matches the next chars in dateStr, then
+            // advance dateIndex by the length.
+            var s = dateStr.substr(dateIndex, opval.length);
+            if (s != opval)
+            {
+                context.retValue = -1;
+                break;
+            }
+            dateIndex += opval.length;
+        }
+    }
+    
+    return context;
+}
+
+org_apache_myfaces_SimpleDateFormat.prototype._formatOps = function(context, ops)
+{
+    var dateIndex = 0; // not used on formatting, only on parsing
+    var dateStr = ""; // not used on formatting, only on parsing
+    var i;
+    for(i=0;i<ops.length;++i)
+    {
+        var op = ops[i];
+        var optype = op.substr(0,2);
+        var opval = op.substr(2);
+        if (optype == "f:")
+        {
+            this._handlePatternSub(context, opval,
+                dateStr, dateIndex, false);
+        }
+        else if (optype == "l:")
+        {
+            // just output the literal sequence into the result
+            context.dateStr += opval;
+        }
+        else if (optype == "c:")
+        {
+            // just output the literal sequence into the result
+            context.dateStr += opval;
+        }
+    }
+    
+    return context;
+}
+
 //----------------------------------------------------------------------------
 // Parse a string using the configured pattern, and return a normal javascript
 // Date object.
+//
+// Returns null if parsing failed.
 //----------------------------------------------------------------------------
 org_apache_myfaces_SimpleDateFormat.prototype.parse = function(dateStr)
     {
@@ -509,9 +588,9 @@ org_apache_myfaces_SimpleDateFormat.prototype._handlePatternSub = function(conte
             else
             {
                 if (context.yearIsWeekYear)
-                    this._formatNum(context,context.year,patternSub.length <= 3 ? 2 : 4,true);
-                else
                     this._formatNum(context,context.weekYear,patternSub.length <= 3 ? 2 : 4,true);
+                else
+                    this._formatNum(context,context.year,patternSub.length <= 3 ? 2 : 4,true);
             }
         }
         else if(patternSub.charAt(0)=='x')
@@ -676,10 +755,12 @@ org_apache_myfaces_SimpleDateFormat.prototype._handlePatternSub = function(conte
         {
             if(parse)
             {
+                // just skip over it
                 context.newIndex=dateIndex+patternSub.length;
             }
             else
             {
+                // just copy it to the output
                 context.dateStr+=patternSub;
             }
 
@@ -772,7 +853,13 @@ org_apache_myfaces_SimpleDateFormat.prototype._adjustTwoDigitYear = function(con
         }
     };
 
+org_apache_myfaces_SimpleDateFormat.prototype._append = function(array, obj)
+    {
+        array[array.length] = obj;
+    };
+
 //----------------------------------------------------------------------------
 // Make static method callable via short name
 //----------------------------------------------------------------------------
 org_apache_myfaces_SimpleDateFormat.prototype._weekNbr=org_apache_myfaces_SimpleDateFormat_weekNbr;
+
