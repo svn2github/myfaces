@@ -1,27 +1,15 @@
 package org.apache.myfaces.dateformat;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
-
-import org.joda.time.DateTime;
 
 import junit.framework.TestCase;
 
+import org.joda.time.DateTime;
+
 public class TestSimpleDateFormatter extends TestCase
 {
-    /**
-     * Define a "callback" interface for a test that can be invoked with various dates.
-     */
-    public interface DateTest
-    {
-        public void test(int year, int month, int day) throws Exception;
-    }
-
     // test just the very basics of date formatting
     public void testFormatSimple()
     {
@@ -273,21 +261,45 @@ public class TestSimpleDateFormatter extends TestCase
         }
     }
 
-    // for a wide range of dates, compare the output of
-    //   SimpleDateFormatter.getIsoWeekNumber
-    //   SimpleDateFormatter.getJavaWeekNumber (with firstOfWeek=monday)
-    //   Joda DateTime class
-    //
-    // Of course this comparison can ONLY be done for firstDayOfWeek=monday.
     public void testWeekFormatAgainstJoda() throws Exception
     {
-        applyTests(new DateTest()
-        {
-            public void test(int year, int month, int day)
-            {
-                checkWeekFormatAgainstJoda(year, month, day);
-            }
-        });
+        // for every year from 2000-2010, test:
+        //   1-8 jan jan
+        //   29,30 may,
+        //   1-8 june
+        //   23-31 dec
+         for(int year = 2000; year < 2020; ++year)
+         {
+        	 checkWeekFormatAgainstJoda(year, 0, 1);
+        	 checkWeekFormatAgainstJoda(year, 0, 2);
+        	 checkWeekFormatAgainstJoda(year, 0, 3);
+        	 checkWeekFormatAgainstJoda(year, 0, 4);
+        	 checkWeekFormatAgainstJoda(year, 0, 5);
+        	 checkWeekFormatAgainstJoda(year, 0, 6);
+        	 checkWeekFormatAgainstJoda(year, 0, 7);
+        	 checkWeekFormatAgainstJoda(year, 0, 8);
+
+        	 checkWeekFormatAgainstJoda(year, 4, 29);
+        	 checkWeekFormatAgainstJoda(year, 4, 30);
+        	 checkWeekFormatAgainstJoda(year, 5, 1);
+        	 checkWeekFormatAgainstJoda(year, 5, 2);
+        	 checkWeekFormatAgainstJoda(year, 5, 3);
+        	 checkWeekFormatAgainstJoda(year, 5, 4);
+        	 checkWeekFormatAgainstJoda(year, 5, 5);
+        	 checkWeekFormatAgainstJoda(year, 5, 6);
+        	 checkWeekFormatAgainstJoda(year, 5, 7);
+        	 checkWeekFormatAgainstJoda(year, 5, 8);
+
+        	 checkWeekFormatAgainstJoda(year, 11, 23);
+        	 checkWeekFormatAgainstJoda(year, 11, 24);
+        	 checkWeekFormatAgainstJoda(year, 11, 25);
+        	 checkWeekFormatAgainstJoda(year, 11, 26);
+        	 checkWeekFormatAgainstJoda(year, 11, 27);
+        	 checkWeekFormatAgainstJoda(year, 11, 28);
+        	 checkWeekFormatAgainstJoda(year, 11, 29);
+        	 checkWeekFormatAgainstJoda(year, 11, 30);
+        	 checkWeekFormatAgainstJoda(year, 11, 31);
+         }
     }
 
     private void checkWeekFormatAgainstJoda(int year, int month, int day)
@@ -304,140 +316,17 @@ public class TestSimpleDateFormatter extends TestCase
         SimpleDateFormatter.WeekDate jwd = SimpleDateFormatter.getJavaWeekNumber(date, firstDayOfWeek);
 
         String ds = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        /*
         System.out.println(
             ds + ":"
             + "(" + jodaWeekyear + "-" + jodaWeekOfWeekyear + ")"
             + ",(" + iwd.year + "-" + iwd.week + ")"
             + ",(" + jwd.year + "-" + jwd.week + ")"
             );
+            */
         assertEquals(jodaWeekyear, iwd.year);
         assertEquals(jodaWeekOfWeekyear, iwd.week);
         assertEquals(jodaWeekyear, jwd.year);
         assertEquals(jodaWeekOfWeekyear, jwd.week);
-    }
-
-    /**
-     * Execute the specified test against a range of dates selected to
-     * find problems. The dates around the beginning and end of each year
-     * are verified, plus a few in the middle.
-     */
-    private void applyTests(DateTest dt) throws Exception
-    {
-        // for every year from 2000-2010, test:
-        //   1-8 jan jan
-        //   29,30 may,
-        //   1-8 june
-        //   23-31 dec
-         for(int year = 2000; year < 2020; ++year)
-         {
-             dt.test(year, 0, 1);
-             dt.test(year, 0, 2);
-             dt.test(year, 0, 3);
-             dt.test(year, 0, 4);
-             dt.test(year, 0, 5);
-             dt.test(year, 0, 6);
-             dt.test(year, 0, 7);
-             dt.test(year, 0, 8);
-
-             dt.test(year, 4, 29);
-             dt.test(year, 4, 30);
-             dt.test(year, 5, 1);
-             dt.test(year, 5, 2);
-             dt.test(year, 5, 3);
-             dt.test(year, 5, 4);
-             dt.test(year, 5, 5);
-             dt.test(year, 5, 6);
-             dt.test(year, 5, 7);
-             dt.test(year, 5, 8);
-
-             dt.test(year, 11, 23);
-             dt.test(year, 11, 24);
-             dt.test(year, 11, 25);
-             dt.test(year, 11, 26);
-             dt.test(year, 11, 27);
-             dt.test(year, 11, 28);
-             dt.test(year, 11, 29);
-             dt.test(year, 11, 30);
-             dt.test(year, 11, 31);
-         }
-    }
-
-    public void xtestWeekFormatSimple()
-    {
-        // get the supported ids for UTC
-         String[] ids = TimeZone.getAvailableIDs(0);
-         // if no ids were returned, something is wrong. get out.
-         if (ids.length == 0)
-             System.exit(0);
-
-         // create a Pacific Standard Time time zone
-         SimpleTimeZone pdt = new SimpleTimeZone(0, ids[0]);
-
-         GregorianCalendar calendar = new GregorianCalendar(pdt);
-         calendar.setFirstDayOfWeek(2); // 1=sunday, 2=monday, 7=saturday
-         calendar.setMinimalDaysInFirstWeek(4);
-        
-         for(int year = 2000; year < 2020; ++year)
-         {
-             tryDate(calendar, year, 0, 1);
-             tryDate(calendar, year, 0, 2);
-             tryDate(calendar, year, 0, 3);
-             tryDate(calendar, year, 0, 4);
-             tryDate(calendar, year, 0, 5);
-             tryDate(calendar, year, 0, 6);
-             tryDate(calendar, year, 0, 7);
-             tryDate(calendar, year, 0, 8);
-
-             tryDate(calendar, year, 5, 1);
-
-             tryDate(calendar, year, 11, 23);
-             tryDate(calendar, year, 11, 24);
-             tryDate(calendar, year, 11, 25);
-             tryDate(calendar, year, 11, 26);
-             tryDate(calendar, year, 11, 27);
-             tryDate(calendar, year, 11, 28);
-             tryDate(calendar, year, 11, 29);
-             tryDate(calendar, year, 11, 30);
-             tryDate(calendar, year, 11, 31);
-         }
-    }
-    
-    private void tryDate(GregorianCalendar cal, int year, int month, int day)
-    {
-        cal.set(year, month, day);
-        Date date = cal.getTime();
-
-        int javaWeekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-
-        // aargh, JODA does not support firstDayOfWeek functionality; it only
-        // supports the ISO standard which is first-day=monday
-        DateTime jdt = new DateTime(date.getTime());
-        int jodaWeekOfYear = jdt.getWeekOfWeekyear();
-
-        // aargh, Date.getDay uses 0=sun,1=mon,6=sat
-        // but Calendar.getFirstDayOfWeek uses 1=sun, 2=mon, 7=sat
-        int firstDayOfWeek = cal.getFirstDayOfWeek() - 1;
-        SimpleDateFormatter.WeekDate wd = SimpleDateFormatter.getJavaWeekNumber(date, firstDayOfWeek);
-
-        String ds = new SimpleDateFormat("yyyy-MM-dd").format(date);
-        System.out.println(ds + ":" + javaWeekOfYear + ":" + jodaWeekOfYear + ":" + wd.week);
-        // assertEquals(javaWeekOfYear, myWeekOfYear);
-    }
-
-    // test sanity of java.text.Calendar: convert a date to "ww/yyyy" format, then
-    // parse it back again and ensure the year is correct.
-    private void tryDate3(GregorianCalendar cal, int year, int month, int day) throws Exception
-    {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-ww-E");
-
-        Date d = new Date(year - 1900, month, day);
-        String s1 = df.format(d);
-        Date d2 = df.parse(s1);
-
-        SimpleDateFormat df2 = new SimpleDateFormat("yyyy/MM/dd");
-        String dstr = df2.format(d);
-        String d2str =df2.format(d2);
-        
-        System.out.println(dstr + ":" + s1 + ":" + d2str + ":");
     }
 }
