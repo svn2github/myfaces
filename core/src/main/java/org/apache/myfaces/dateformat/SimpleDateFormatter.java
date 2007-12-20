@@ -838,7 +838,7 @@ public class SimpleDateFormatter
 
     private static void formatPattern(DateFormatSymbols symbols, ParserContext context, String patternSub, boolean yearIsWeekYear, StringBuffer out)
     {
-        if ((patternSub == null) || (patternSub.isEmpty()))
+        if ((patternSub == null) || (patternSub.length() == 0))
         {
             return;
         }
@@ -1137,7 +1137,7 @@ public class SimpleDateFormatter
 
     public Date parse(String dateStr)
     {
-        if ((dateStr==null) || dateStr.isEmpty())
+        if ((dateStr==null) || (dateStr.length() == 0))
             return null;
 
         ParserContext context = parseOps(symbols, yearIsWeekYear, firstDayOfWeek, ops, dateStr);
