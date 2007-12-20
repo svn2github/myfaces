@@ -142,7 +142,6 @@ public class TestSimpleDateFormatter extends TestCase
             SimpleDateFormatter sdf = new SimpleDateFormatter(pattern, null);
         
             Date d2 = sdf.parse(expected);
-            int year = d2.getYear();
             SimpleDateFormat sf = new SimpleDateFormat(pattern, locale);
             String s2 = sf.format(d2);
             assertEquals(pattern, expected, s2);
@@ -315,8 +314,8 @@ public class TestSimpleDateFormatter extends TestCase
         int firstDayOfWeek = 1;
         SimpleDateFormatter.WeekDate jwd = SimpleDateFormatter.getJavaWeekNumber(date, firstDayOfWeek);
 
-        String ds = new SimpleDateFormat("yyyy-MM-dd").format(date);
         /*
+        String ds = new SimpleDateFormat("yyyy-MM-dd").format(date);
         System.out.println(
             ds + ":"
             + "(" + jodaWeekyear + "-" + jodaWeekOfWeekyear + ")"
