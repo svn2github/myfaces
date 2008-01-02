@@ -178,14 +178,25 @@
             <name>helpText</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
-            <description>The text that will be rendered in the field - helping the user to find the right format to enter into the field.</description>
+            <description><![CDATA[
+              <p>
+              A string that will be rendered into the input text field associated with a popup
+              when there is no date currently selected. This string typically describes the
+              expected date format that should be entered into this field (either directly
+              by the user, or by selecting an entry in the popup calendar).
+              </p>
+              <p>
+              This property has no effect for an inline calendar.
+              </p>
+              ]]>
+            </description>
         </attribute>
         <attribute>
             <name>popupSelectMode</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description><![CDATA[
-            <p>
+              <p>
               May be "day", "week", "month" or "none":
               <ul>
               <li>day (default): allow the user to select a day.</li>
@@ -193,7 +204,7 @@
               <li>month: only allow the user to select a month.</li> 
               <li>none: equivalent to "readonly".</li> 
               </ul>
-            </p>
+              </p>
               ]]>
             </description>
         </attribute>
