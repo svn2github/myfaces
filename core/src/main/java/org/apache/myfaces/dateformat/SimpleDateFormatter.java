@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.myfaces.dateformat;
 
 import java.util.Date;
@@ -114,7 +132,7 @@ public class SimpleDateFormatter
      * That means that asking for the week# of 01/01/yyyy might return 52 or 53,
      * and asking for the week# of 31/12/yyyy might return 1.
      */
-    public static WeekDate getIsoWeekNumber(Date date)
+    public static WeekDate getIsoWeekDate(Date date)
     {
         int year = fullYearFromDate(date.getYear());
         int month = date.getMonth() + 1;
@@ -227,7 +245,7 @@ public class SimpleDateFormatter
      * convention used by java.util.Date. NOTE: java.util.Calendar uses
      * 1=sunday, 2=monday, 7=saturday.
      */
-    public static WeekDate getJavaWeekNumber(Date date, int firstDayOfWeek)
+    public static WeekDate getJavaWeekDate(Date date, int firstDayOfWeek)
     {
         int year = fullYearFromDate(date.getYear());
         int month = date.getMonth() + 1;
@@ -796,7 +814,7 @@ public class SimpleDateFormatter
         // 00 --> 12am, 01->1am, 12 --> 12pm, 13 -> 1pm, 23->11pm
         context.ampm = (context.hour < 12) ? 0 : 1;
 
-        WeekDate weekDate = getJavaWeekNumber(date, firstDayOfWeek);
+        WeekDate weekDate = getJavaWeekDate(date, firstDayOfWeek);
         context.weekYear = weekDate.getYear();
         context.weekOfWeekYear = weekDate.getWeek();
 
@@ -1147,5 +1165,10 @@ public class SimpleDateFormatter
     public String format(Date date)
     {
         return formatOps(symbols, yearIsWeekYear, firstDayOfWeek, ops, date);
+    }
+    
+    public WeekDate getWeekDate(Date date)
+    {
+    	return getJavaWeekDate(date, this.firstDayOfWeek);
     }
 }
