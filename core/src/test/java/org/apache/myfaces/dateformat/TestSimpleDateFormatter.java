@@ -308,11 +308,11 @@ public class TestSimpleDateFormatter extends TestCase
         int jodaWeekOfWeekyear = jdt.getWeekOfWeekyear();
         int jodaWeekyear = jdt.getWeekyear();
 
-        SimpleDateFormatter.WeekDate iwd = SimpleDateFormatter.getIsoWeekNumber(date);
+        WeekDate iwd = SimpleDateFormatter.getIsoWeekNumber(date);
 
         // the java.util.Date convention is that 1 = monday
         int firstDayOfWeek = 1;
-        SimpleDateFormatter.WeekDate jwd = SimpleDateFormatter.getJavaWeekNumber(date, firstDayOfWeek);
+        WeekDate jwd = SimpleDateFormatter.getJavaWeekNumber(date, firstDayOfWeek);
 
         /*
         String ds = new SimpleDateFormat("yyyy-MM-dd").format(date);
@@ -323,9 +323,9 @@ public class TestSimpleDateFormatter extends TestCase
             + ",(" + jwd.year + "-" + jwd.week + ")"
             );
             */
-        assertEquals(jodaWeekyear, iwd.year);
-        assertEquals(jodaWeekOfWeekyear, iwd.week);
-        assertEquals(jodaWeekyear, jwd.year);
-        assertEquals(jodaWeekOfWeekyear, jwd.week);
+        assertEquals(jodaWeekyear, iwd.getYear());
+        assertEquals(jodaWeekOfWeekyear, iwd.getWeek());
+        assertEquals(jodaWeekyear, jwd.getYear());
+        assertEquals(jodaWeekOfWeekyear, jwd.getWeek());
     }
 }

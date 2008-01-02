@@ -50,16 +50,6 @@ public class SimpleDateFormatter
     // Static Week-handling Methods
     // ======================================================================
 
-    public static class WeekDate
-    {
-        int year, week;
-        public WeekDate(int y, int w)
-        {
-            year = y;
-            week = w;
-        }
-    }
-
     /**
      * Cumulative sum of the number of days in the year up to the first
      * day of each month.
@@ -802,8 +792,8 @@ public class SimpleDateFormatter
         context.ampm = (context.hour < 12) ? 0 : 1;
 
         WeekDate weekDate = getJavaWeekNumber(date, firstDayOfWeek);
-        context.weekYear = weekDate.year;
-        context.weekOfWeekYear = weekDate.week;
+        context.weekYear = weekDate.getYear();
+        context.weekOfWeekYear = weekDate.getWeek();
 
         StringBuffer str = new StringBuffer();
         for(int i=0; i<ops.length; ++i)
@@ -838,11 +828,6 @@ public class SimpleDateFormatter
 
     private static void formatPattern(DateFormatSymbols symbols, ParserContext context, String patternSub, boolean yearIsWeekYear, StringBuffer out)
     {
-        if ((patternSub == null) || (patternSub.length() == 0))
-        {
-            return;
-        }
-
         char c = patternSub.charAt(0);
         int patlen = patternSub.length();
 
@@ -878,7 +863,7 @@ public class SimpleDateFormatter
         }
         else if (c == 'E')
         {
-            if (patlen < 3)
+            if (patlen <= 3)
             {
                 out.append(symbols.shortWeekdays[context.dayOfWeek]);
             }
@@ -1091,7 +1076,6 @@ public class SimpleDateFormatter
      */
     private static boolean hasWeekPattern(String[] ops)
     {
-
         boolean wwPresent = false;
         boolean xxPresent = false;
         for(int i=0; i<ops.length; ++i)
@@ -1127,6 +1111,9 @@ public class SimpleDateFormatter
 
         this.ops = analysePattern(pattern);
         this.yearIsWeekYear = hasWeekPattern(ops);
+
+        // Set the default behaviour: first day is monday. 
+        // Users can override this with method setFirstDayOfWeek.
         this.firstDayOfWeek = 1;
     }
 

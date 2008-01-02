@@ -28,9 +28,10 @@ public class ParserContext
 	 * return values for getDay). Note that java.util.Calendar uses
 	 * 1=sunday, 2=monday, 7=saturday.
 	 * <p>
-	 * Defaults to monday (the ISO standard).
+	 * This value is a mandatory parameter to the constructor of 
+	 * this class. Normally, callers will pass 1 (the ISO standard).
 	 */
-	int firstDayOfWeek = 1;
+	int firstDayOfWeek;
 
 	/**
 	 * Set to true if the input string had a year specifier of less
@@ -84,7 +85,7 @@ public class ParserContext
 	/** seconds in range 0-59 */
 	int sec;
 	
-	/** 0 = am, 1 = pm */
+	/** 0 = am, 1 = pm (index into ampm strings in symbols class) */
 	int ampm;
 
 	/**
