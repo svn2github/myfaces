@@ -341,9 +341,8 @@ public class SimpleDateFormatter
      */
     private static long getStartOfWeekYear(int year, int firstDayOfWeek)
     {
-        // Create a new date on the 1st. Use 4am, not midnight, in order to
-        // avoid any problems with leap seconds, rounding errors, etc.
-        Date d1 = new Date(shortYearFromDate(year), 0, 1, 4, 0, 0);
+        // Create a new date on the 1st.
+        Date d1 = new Date(shortYearFromDate(year), 0, 1, 0, 0, 0);
 
         // adjust forward or backwards to the nearest firstDayOfWeek
         int firstDayOfYear = d1.getDay(); // 0 = sunday
@@ -381,7 +380,7 @@ public class SimpleDateFormatter
         long msecsBase = getStartOfWeekYear(year, firstDayOfWeek);
 
         long msecsOffset = (week - 1) * MSECS_PER_WEEK;
-        msecsOffset += day * MSECS_PER_DAY;
+        msecsOffset += (day-1) * MSECS_PER_DAY;
         msecsOffset += hour * MSECS_PER_HOUR;
         msecsOffset += min * MSECS_PER_MIN;
         msecsOffset += sec * MSECS_PER_SEC;
@@ -1122,7 +1121,12 @@ public class SimpleDateFormatter
     boolean yearIsWeekYear;
     int firstDayOfWeek;
 
-    public SimpleDateFormatter(String pattern, DateFormatSymbols symbols)
+    /**
+     * Constructor.
+     * 
+     * @param firstDayOfWeek uses java.util.Date convention, ie 0=sun, 1=mon, 6=sat.
+     */
+    public SimpleDateFormatter(String pattern, DateFormatSymbols symbols, int firstDayOfWeek)
     {
         if (symbols == null)
         {
@@ -1136,9 +1140,15 @@ public class SimpleDateFormatter
         this.ops = analysePattern(pattern);
         this.yearIsWeekYear = hasWeekPattern(ops);
 
-        // Set the default behaviour: first day is monday. 
-        // Users can override this with method setFirstDayOfWeek.
-        this.firstDayOfWeek = 1;
+        this.firstDayOfWeek = firstDayOfWeek;
+    }
+
+    /**
+     * Constructor that sets the firstDayOfWeek to the ISO standard (1=monday).
+     */
+    public SimpleDateFormatter(String pattern, DateFormatSymbols symbols)
+    {
+    	this(pattern, symbols, 1);
     }
 
     public void setFirstDayOfWeek(int dow)

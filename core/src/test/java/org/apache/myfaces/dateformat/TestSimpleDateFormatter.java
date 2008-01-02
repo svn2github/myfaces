@@ -278,6 +278,21 @@ public class TestSimpleDateFormatter extends TestCase
         }
     }
 
+    // test just the very basics of date parsing
+    public void testWeekParseSimple()
+    {
+        SimpleDateFormatter sdf = new SimpleDateFormatter("xxxx-ww", null);
+        Date d = sdf.parse("2009-06");
+
+        assertNotNull(d);
+        assertEquals(2009, d.getYear() + 1900);
+        assertEquals(2, d.getMonth() + 1);
+        assertEquals(2, d.getDate());
+        assertEquals(0, d.getHours());
+        assertEquals(0, d.getMinutes());
+        assertEquals(0, d.getSeconds());
+    }
+    
     public void testWeekFormatAgainstJoda() throws Exception
     {
         // for every year from 2000-2010, test:
