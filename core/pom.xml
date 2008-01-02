@@ -151,6 +151,13 @@
     </dependency>
 
     <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.5.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>cactus</groupId>
       <artifactId>cactus</artifactId>
       <version>13-1.7.1</version>
