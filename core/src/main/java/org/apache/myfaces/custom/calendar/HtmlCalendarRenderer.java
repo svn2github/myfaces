@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
+import org.apache.myfaces.dateformat.SimpleDateFormatter;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -391,6 +392,8 @@ public class HtmlCalendarRenderer
      * Creates and returns a String which contains the initialisation data for the popup calendar
      * control as a sequence of javascript commands that assign values to properties of a javascript
      * object whose name is in parameter popupCalendarVariable.
+     * <p>
+     * @param firstDayOfWeek is in java.util.Calendar form, ie Sun=1, Mon=2, Sat=7
      */
     public static String getLocalizedLanguageScript(FacesContext facesContext, DateFormatSymbols symbols,
                                                     int firstDayOfWeek, UIComponent uiComponent,
@@ -398,7 +401,9 @@ public class HtmlCalendarRenderer
     {
         HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
 
-        int realFirstDayOfWeek = firstDayOfWeek-1;//Java has different starting-point;
+        // Convert day value to java.util.Date convention (Sun=0, Mon=1, Sat=6). This is
+        // the convention that javascript Date objects use.
+        int realFirstDayOfWeek = firstDayOfWeek-1;
 
         String[] weekDays;
 
@@ -1037,30 +1042,40 @@ public class HtmlCalendarRenderer
             if(s==null || s.trim().length()==0 || s.equals(getHelperString(uiComponent)))
                 return null;
 
-            DateFormat dateFormat;
-
             if(uiComponent instanceof HtmlInputCalendar && ((HtmlInputCalendar) uiComponent).isRenderAsPopup())
             {
-                String popupDateFormat = ((HtmlInputCalendar) uiComponent).getPopupDateFormat();
-
-                dateFormat = new SimpleDateFormat(createJSPopupFormat(facesContext, popupDateFormat), facesContext.getViewRoot().getLocale());
+            	HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
+                String popupDateFormat = calendar.getPopupDateFormat();
+                String formatStr = createJSPopupFormat(facesContext, popupDateFormat);
+                Locale locale = facesContext.getViewRoot().getLocale();
+                Calendar timeKeeper = Calendar.getInstance(locale);
+                int firstDayOfWeek = timeKeeper.getFirstDayOfWeek() - 1;
+                org.apache.myfaces.dateformat.DateFormatSymbols symbols = new org.apache.myfaces.dateformat.DateFormatSymbols(locale);
+                SimpleDateFormatter dateFormat = new SimpleDateFormatter(formatStr, symbols, firstDayOfWeek);
+                
+            	Date date = dateFormat.parse(s); 
+            	if (date != null) {
+                    return date;
+                }
+                FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
+                        uiComponent.getId(),s});
+                throw new ConverterException(msg);
             }
             else
             {
-                dateFormat = createStandardDateFormat(facesContext);
-            }
-
-            dateFormat.setLenient(false);
-
-            try
-            {
-                return dateFormat.parse(s);
-            }
-            catch (ParseException e)
-            {
-                FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
-                        uiComponent.getId(),s});
-                throw new ConverterException(msg,e);
+            	DateFormat dateFormat = createStandardDateFormat(facesContext);
+                dateFormat.setLenient(false);
+                try
+                {
+                	Date date = dateFormat.parse(s); 
+                    return date;
+                }
+                catch (ParseException e)
+                {
+                    FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
+                            uiComponent.getId(),s});
+                    throw new ConverterException(msg,e);
+                }
             }
         }
 
@@ -1088,22 +1103,25 @@ public class HtmlCalendarRenderer
             if(date==null)
                 return getHelperString(uiComponent);
 
-            DateFormat dateFormat;
-
             if(uiComponent instanceof HtmlInputCalendar && ((HtmlInputCalendar) uiComponent).isRenderAsPopup())
             {
-                String popupDateFormat = ((HtmlInputCalendar) uiComponent).getPopupDateFormat();
+            	HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
+                String popupDateFormat = calendar.getPopupDateFormat();
+                String formatStr = createJSPopupFormat(facesContext, popupDateFormat);
+                Locale locale = facesContext.getViewRoot().getLocale();
+                Calendar timeKeeper = Calendar.getInstance(locale);
+                int firstDayOfWeek = timeKeeper.getFirstDayOfWeek() - 1;
+                org.apache.myfaces.dateformat.DateFormatSymbols symbols = new org.apache.myfaces.dateformat.DateFormatSymbols(locale);
 
-                dateFormat = new SimpleDateFormat(createJSPopupFormat(facesContext, popupDateFormat), facesContext.getViewRoot().getLocale());
+                SimpleDateFormatter dateFormat = new SimpleDateFormatter(formatStr, symbols, firstDayOfWeek);
+                return dateFormat.format(date);
             }
             else
             {
-                dateFormat = createStandardDateFormat(facesContext);
+                DateFormat dateFormat = createStandardDateFormat(facesContext);
+                dateFormat.setLenient(false);
+                return dateFormat.format(date);
             }
-
-            dateFormat.setLenient(false);
-
-            return dateFormat.format(date);
         }
 
         private static SimpleDateFormat createStandardDateFormat(FacesContext facesContext)
