@@ -8,18 +8,24 @@
 
 org_apache_myfaces_CalendarInitData = function()
 {
-    this.fixedX = -1;
     // x position (-1 if to appear below control)
-    this.fixedY = -1;
+    this.fixedX = -1;
+
     // y position (-1 if to appear below control)
+    this.fixedY = -1;
+
+    // 0 - sunday ; 1 - monday (aka firstDayOfWeek)
     this.startAt = 1;
-    // 0 - sunday ; 1 - monday
+
+    // 0 - don't show; 1 - show
     this.showWeekNumber = 1;
+
     // 0 - don't show; 1 - show
     this.showToday = 1;
-    // 0 - don't show; 1 - show
-    this.imgDir = "images/";
+
     // directory for images ... e.g. this.imgDir="/img/"
+    this.imgDir = "images/";
+
     this.themePrefix = "jscalendar-DB";
 
     this.gotoString = "Go To Current Month";
@@ -80,7 +86,7 @@ org_apache_myfaces_PopupCalendar = function()
     this.ie = document.all;
     this.dom = document.getElementById;
     this.ns4 = document.layers;
-    this.dateFormatSymbols = new org_apache_myfaces_DateFormatSymbols();
+    this.dateFormatSymbols = new org_apache_myfaces_dateformat_DateFormatSymbols();
     this.initData = new org_apache_myfaces_CalendarInitData();
     this.today = new Date();
     this.dateNow = this.today.getDate();
@@ -373,6 +379,12 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 
         if (this.initData.showToday == 1)
         {
+            // TODO this.dateFormatSymbols is probably never set at this point.
+    		this.todayDateFormatter = new org_apache_myfaces_dateformat_SimpleDateFormatter(
+    		    this.initData.todayDateFormat? this.initData.todayDateFormat:this.dateFormat,
+                this.dateFormatSymbols,
+                this.initData.startAt);
+
             this.todaySpan.appendChild(document.createTextNode(this.initData.todayString + " "))
 
             var todayLink = document.createElement("a");
@@ -539,12 +551,10 @@ org_apache_myfaces_PopupCalendar.prototype._appendNbsp = function(element)
     if (element)
         element.appendChild(document.createTextNode(String.fromCharCode(160)));
 }
+
 org_apache_myfaces_PopupCalendar.prototype._todayIsDate = function()
 {
-    var format = new org_apache_myfaces_SimpleDateFormat(this.initData.todayDateFormat?
-                                                         this.initData.todayDateFormat:this.dateFormat,
-                                                         this.dateFormatSymbols);
-    return format.format(this.today);
+    return this.todayDateFormatter.format(this.today);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._hideCalendar = function()
@@ -572,8 +582,8 @@ org_apache_myfaces_PopupCalendar.prototype._padZero = function(num)
 
 org_apache_myfaces_PopupCalendar.prototype._constructDate = function(d, m, y)
 {
-    var format = new org_apache_myfaces_SimpleDateFormat(this.dateFormat, this.dateFormatSymbols);
-    return format.format(new Date(y, m, d, this.selectedDate.hour, this.selectedDate.min, this.selectedDate.sec));
+    var date = new Date(y, m, d, this.selectedDate.hour, this.selectedDate.min, this.selectedDate.sec);
+    return this.stdDateFormatter.format(date);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._closeCalendar = function()
@@ -988,41 +998,6 @@ org_apache_myfaces_PopupCalendar.prototype._popUpYear = function()
     this._hideElement(this.selectYearDiv);
 }
 
-/*** calendar ***/
-org_apache_myfaces_PopupCalendar.prototype._weekNbr = function(n)
-{
-    // Algorithm used:
-    // From Klaus Tondering's Calendar document (The Authority/Guru)
-    // hhtp://www.tondering.dk/claus/calendar.html
-    // a = (14-month) / 12
-    // y = year + 4800 - a
-    // m = month + 12a - 3
-    // J = day + (153m + 2) / 5 + 365y + y / 4 - y / 100 + y / 400 - 32045
-    // d4 = (J + 31741 - (J mod 7)) mod 146097 mod 36524 mod 1461
-    // L = d4 / 1460
-    // d1 = ((d4 - L) mod 365) + L
-    // WeekNumber = d1 / 7 + 1
-
-    year = n.getFullYear();
-    month = n.getMonth() + 1;
-    if (this.initData.startAt == 0)
-        day = n.getDate() + 1;
-    else
-        day = n.getDate();
-
-    a = Math.floor((14 - month) / 12);
-    y = year + 4800 - a;
-    m = month + 12 * a - 3;
-    b = Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400);
-    J = day + Math.floor((153 * m + 2) / 5) + 365 * y + b - 32045;
-    d4 = (((J + 31741 - (J % 7)) % 146097) % 36524) % 1461;
-    L = Math.floor(d4 / 1460);
-    d1 = ((d4 - L) % 365) + L;
-    week = Math.floor(d1 / 7) + 1;
-
-    return week;
-}
-
 org_apache_myfaces_PopupCalendar.prototype._appendCell = function(parentElement, value)
 {
     var cell = document.createElement("td");
@@ -1101,7 +1076,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
     var cell = document.createElement("td");
     cell.setAttribute("style", "text-align:right;");
 
-    var weekNumber = this._weekNbr(startDate) + " ";
+    var weekNumber = this.stdDateFormatter.getWeekDate(startDate).week;
     if (weekSelectable)
     {
         var link = document.createElement("a");
@@ -1109,7 +1084,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
         link.sNormalStyle = sNormalStyle;
         link.sSelectStyle = sSelectStyle;
         link.setAttribute("href", "#");
-        link.appendChild(document.createTextNode(weekNumber));
+        link.appendChild(document.createTextNode(weekNumber + " "));
 
         // The day on which the week starts is simply the first day of the year + week*7
         // Note that this might not match the first day on the same calendar row as the
@@ -1148,7 +1123,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
         {
             window.status = this.initData.selectDateMessage.replace(
                 "[date]",
-                this._constructDate(link.date));
+                this._constructDate(link.dateObj));
         }.bindAsEventListener(this), false);
 
         Event.observe(link, "mouseout", function(event)
@@ -1178,7 +1153,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
     {
         var span = document.createElement("span");
         span.className=sNormalStyle;
-        span.appendChild(document.createTextNode(weekNumber));
+        span.appendChild(document.createTextNode(weekNumber + " "));
         cell.appendChild(span);
     }
 
@@ -1405,50 +1380,57 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendar = function(ctl, ctl2, format)
 {
-    if (this.bPageLoaded)
+    if (!this.bPageLoaded)
     {
-        if (this.calendarDiv.style.visibility == "hidden")
+        // The user has clicked a button before the initialisation of this
+        // class has completed. Just ignore the click.. 
+        return;
+    }
+    
+    if (this.calendarDiv.style.visibility == "hidden")
+    {
+        this.ctlToPlaceValue = ctl2;
+        this.dateFormat = format;
+
+        this.stdDateFormatter = new org_apache_myfaces_dateformat_SimpleDateFormatter(
+            this.dateFormat, this.dateFormatSymbols, this.initData.startAt);
+        var dateSelected = this.stdDateFormatter.parse(ctl2.value);
+
+        if (dateSelected)
         {
-            this.ctlToPlaceValue = ctl2;
-            this.dateFormat = format;
+            this.selectedDate.sec = dateSelected.getSeconds();
+            this.selectedDate.min = dateSelected.getMinutes();
+            this.selectedDate.hour = dateSelected.getHours();
+            this.selectedDate.date = dateSelected.getDate();
+            this.selectedDate.month = dateSelected.getMonth();
 
-            var simpleDateFormat = new org_apache_myfaces_SimpleDateFormat(this.dateFormat, this.dateFormatSymbols);
-            var dateSelected = simpleDateFormat.parse(ctl2.value);
+            var yearStr = dateSelected.getYear() + "";
 
-            if (dateSelected)
+            if (yearStr.length < 4)
             {
-                this.selectedDate.sec = dateSelected.getSeconds();
-                this.selectedDate.min = dateSelected.getMinutes();
-                this.selectedDate.hour = dateSelected.getHours();
-                this.selectedDate.date = dateSelected.getDate();
-                this.selectedDate.month = dateSelected.getMonth();
-
-                var yearStr = dateSelected.getYear() + "";
-
-                if (yearStr.length < 4)
-                {
-                    yearStr = (parseInt(yearStr, 10) + 1900) + "";
-                }
-
-                this.selectedDate.year = parseInt(yearStr, 10);
-            }
-            else
-            {
-                this.selectedDate.date = this.dateNow;
-                this.selectedDate.month = this.monthNow;
-                this.selectedDate.year = this.yearNow;
+                yearStr = (parseInt(yearStr, 10) + 1900) + "";
             }
 
-            this._popUpCalendar_Show(ctl);
+            this.selectedDate.year = parseInt(yearStr, 10);
         }
         else
         {
-            this._hideCalendar();
-            if (this.ctlNow != ctl)
-                this._popUpCalendar(ctl, ctl2, format);
+            this.selectedDate.date = this.dateNow;
+            this.selectedDate.month = this.monthNow;
+            this.selectedDate.year = this.yearNow;
         }
-        this.ctlNow = ctl;
+
+        this._popUpCalendar_Show(ctl);
     }
+    else
+    {
+        this._hideCalendar();
+        if (this.ctlNow != ctl)
+        {
+            this._popUpCalendar(ctl, ctl2, format);
+        }
+    }
+    this.ctlNow = ctl;
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function(clientId, format)
