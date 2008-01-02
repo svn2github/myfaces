@@ -181,6 +181,10 @@ public class SimpleDateFormatter
      * Note that java.util.Calendar uses 1=sun, 7=sat.
      * <p>
      * This algorithm is documented as part of the RFC3339 specification.
+     * 
+     * @param year is full year value (eg 2007).
+     * @param month is 1..12
+     * @param day is 1..31
      */
     private static int dayOfWeek(int year, int month, int day)
     {
@@ -495,7 +499,8 @@ public class SimpleDateFormatter
     /**
      * Handle parsing of a single property, eg "yyyy" or "EEE".
      */
-    private static void parsePattern(DateFormatSymbols symbols, boolean yearIsWeekYear, ParserContext context, String patternSub,
+    private static void parsePattern(DateFormatSymbols symbols, boolean yearIsWeekYear, 
+            ParserContext context, String patternSub,
             String dateStr, int dateIndex)
     {
 
@@ -826,7 +831,8 @@ public class SimpleDateFormatter
             return str.toString();
     }
 
-    private static void formatPattern(DateFormatSymbols symbols, ParserContext context, String patternSub, boolean yearIsWeekYear, StringBuffer out)
+    private static void formatPattern(DateFormatSymbols symbols, ParserContext context, 
+            String patternSub, boolean yearIsWeekYear, StringBuffer out)
     {
         char c = patternSub.charAt(0);
         int patlen = patternSub.length();
