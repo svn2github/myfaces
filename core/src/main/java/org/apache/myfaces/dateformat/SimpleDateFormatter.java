@@ -55,6 +55,28 @@ import java.util.List;
  * <p>
  * At the current time, the following format options are NOT supported:
  * <code>DFkKSzZ</code>.
+ * <p>
+ * <h2>Week Based Calendars</h2>
+ * <p>
+ * ISO standard ISO-8601 defines a calendaring system based not upon
+ * year/month/day_in_month but instead year/week/day_in_week. This is
+ * particularly popular in embedded systems as date arithmetic is
+ * much simpler; there are no irregular month lengths to handle.
+ * <p>
+ * The only tricky part is mapping to and from year/month/day formats.
+ * Unfortunately, while java.text.SimpleDateFormat does support a "ww"
+ * week format character, it has a number of flaws.
+ * <p>
+ * Weeks are always complete and discrete, ie week yyyy-ww always has
+ * 7 days in it, and never "shares" days with yyyy-(ww+1). However to
+ * achieve this, the last week of a year might include a few days of
+ * the next year, or the last few days of a year might be counted as
+ * part of the first week of the following year. The decision is made
+ * depending on which year the "majority" of days in that week belong to.
+ * <p>
+ * With ISO-8601, a week always starts on a monday. However many countries
+ * use a different convention, starting weeks on saturday, sunday or monday.
+ * This class supports setting the firstDayOfWeek.
  */
 public class SimpleDateFormatter
 {
