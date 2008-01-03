@@ -77,6 +77,17 @@ import java.util.*;
  * obvious reasons the appearance of the two calendars should be similar, so if a
  * feature is added in one place it is recommended that the other be updated also. 
  * <p>
+ * The behaviour of both of the Calendar objects varies depending upon the 
+ * "current locale". This is derived from getViewRoot().getLocale(), which is
+ * normally set according to the browser preferences; users whose browsers
+ * have "english" as the preferred language will get the "en" locale, while
+ * users with "deutsch" as the preferred language will get the "de" locale.
+ * One specific example is the "first day of week" (ie the day displayed at
+ * the left of each week row); this is "sunday" for the english locale, and
+ * "monday" for the german locale. There is currently no way for the
+ * calendar component to be configured to force a specific firstDayOfWeek
+ * to be used for all users.
+ * <p>
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -98,7 +109,7 @@ public class HtmlCalendarRenderer
         HtmlInputCalendar inputCalendar = (HtmlInputCalendar) component;
 
         Locale currentLocale = facesContext.getViewRoot().getLocale();
-
+        log.debug("current locale:" + currentLocale.toString());
 
         Date value;
 
