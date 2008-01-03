@@ -80,7 +80,7 @@ public class DateFormatSymbols
 
 	public DateFormatSymbols(Locale l)
 	{
-		java.text.DateFormatSymbols src = java.text.DateFormatSymbols.getInstance(l);
+		java.text.DateFormatSymbols src = new java.text.DateFormatSymbols(l);
 		this.eras = src.getEras();
 		this.months = src.getMonths();
 		this.shortMonths = src.getShortMonths();
