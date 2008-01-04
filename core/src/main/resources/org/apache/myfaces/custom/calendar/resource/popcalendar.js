@@ -1207,7 +1207,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
         var dividerCell = document.createElement("td");
         dividerCell.setAttribute("style", "width:1px;")
-        dividerCell.setAttribute("rowSpan", "7");
+        dividerCell.setAttribute("rowspan", "7");
         dividerCell.className = this.initData.themePrefix + "-weeknumber-div-style";
 
         contentRow.appendChild(dividerCell);
