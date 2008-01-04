@@ -267,7 +267,7 @@ public class SimpleDateFormatter
      * convention used by java.util.Date. NOTE: java.util.Calendar uses
      * 1=sunday, 2=monday, 7=saturday.
      */
-    public static WeekDate getJavaWeekDate(Date date, int firstDayOfWeek)
+    public static WeekDate getWeekDate(Date date, int firstDayOfWeek)
     {
         int year = fullYearFromDate(date.getYear());
         int month = date.getMonth() + 1;
@@ -394,7 +394,8 @@ public class SimpleDateFormatter
     /**
      * This is the inverse of method getJavaWeekNumber.
      */
-    public static Date newJavaDateByWeekYear(
+    private static Date getDateForWeekDate
+    (
             int year, int week, int day,
             int hour, int min, int sec,
             int firstDayOfWeek)
@@ -445,7 +446,7 @@ public class SimpleDateFormatter
         Date date;
         if (context.weekOfWeekYear != 0)
         {
-            date = newJavaDateByWeekYear(
+            date = getDateForWeekDate(
                     context.weekYear, context.weekOfWeekYear, context.day,
                     context.hour, context.min, context.sec,
                     context.firstDayOfWeek);
@@ -835,7 +836,7 @@ public class SimpleDateFormatter
         // 00 --> 12am, 01->1am, 12 --> 12pm, 13 -> 1pm, 23->11pm
         context.ampm = (context.hour < 12) ? 0 : 1;
 
-        WeekDate weekDate = getJavaWeekDate(date, firstDayOfWeek);
+        WeekDate weekDate = getWeekDate(date, firstDayOfWeek);
         context.weekYear = weekDate.getYear();
         context.weekOfWeekYear = weekDate.getWeek();
 
@@ -1170,7 +1171,7 @@ public class SimpleDateFormatter
      */
     public SimpleDateFormatter(String pattern, DateFormatSymbols symbols)
     {
-    	this(pattern, symbols, 1);
+        this(pattern, symbols, 1);
     }
 
     public void setFirstDayOfWeek(int dow)
@@ -1201,6 +1202,14 @@ public class SimpleDateFormatter
     
     public WeekDate getWeekDate(Date date)
     {
-    	return getJavaWeekDate(date, this.firstDayOfWeek);
+        return getWeekDate(date, this.firstDayOfWeek);
+    }
+    
+    public Date getDateForWeekDate(WeekDate wdate)
+    {
+        return getDateForWeekDate(
+            wdate.getYear(), wdate.getWeek(), 1,
+            0, 0, 0,
+            this.firstDayOfWeek);
     }
 }

@@ -345,7 +345,7 @@ public class TestSimpleDateFormatter extends TestCase
 
         // the java.util.Date convention is that 1 = monday
         int firstDayOfWeek = 1;
-        WeekDate jwd = SimpleDateFormatter.getJavaWeekDate(date, firstDayOfWeek);
+        WeekDate jwd = SimpleDateFormatter.getWeekDate(date, firstDayOfWeek);
 
         /*
         String ds = new SimpleDateFormat("yyyy-MM-dd").format(date);
