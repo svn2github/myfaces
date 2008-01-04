@@ -1076,7 +1076,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
     var cell = document.createElement("td");
     cell.setAttribute("style", "text-align:right;");
 
-    var weekNumber = this.stdDateFormatter.getWeekDate(startDate).week;
+    var weekDate = this.stdDateFormatter.getWeekDate(startDate);
     if (weekSelectable)
     {
         var link = document.createElement("a");
@@ -1084,38 +1084,9 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
         link.sNormalStyle = sNormalStyle;
         link.sSelectStyle = sSelectStyle;
         link.setAttribute("href", "#");
-        link.appendChild(document.createTextNode(weekNumber + " "));
+        link.appendChild(document.createTextNode(weekDate.week + " "));
 
-        // The day on which the week starts is simply the first day of the year + week*7
-        // Note that this might not match the first day on the same calendar row as the
-        // selected weeknumber. However it does ensure that week N is exactly seven days
-        // different from week N+1, and also that the first week of the year starts on
-        // the first day of the year.
-        //
-        // Note that this does mean that when clicking on the last week in a month, the
-        // selected date might be the first day in the following month.
-        var yearStart;
-        if ((this.selectedDate.month==11) && (weekNumber==1))
-        {
-            // handle corner case where we are displaying December of a year, and the user
-            // clicks on the last week entry, which is actually week1 of the following year.
-            //
-            // Todo: maybe this is a bug, and this should be "week53" of the previous year.
-            // But in that case, the concrete date we would return for "week53 of 2000"
-            // would be "2001.01.01", which also feels wrong.
-            yearStart = new Date(this.selectedDate.year + 1, 0, 1);
-        }
-        else if ((this.selectedDate.month==0) && (weekNumber>50))
-        {
-            yearStart = new Date(this.selectedDate.year - 1, 0, 1);
-        }
-        else
-        {
-            yearStart = new Date(this.selectedDate.year, 0, 1);
-        }
-        var msecs = yearStart.getTime() + this._MSECS_PER_DAY*7*(weekNumber-1);
-        link.dateObj = new Date();
-        link.dateObj.setTime(msecs);
+        link.dateObj = this.stdDateFormatter.getDateForWeekDate(weekDate);
 
         cell.appendChild(link);
 
@@ -1153,7 +1124,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
     {
         var span = document.createElement("span");
         span.className=sNormalStyle;
-        span.appendChild(document.createTextNode(weekNumber + " "));
+        span.appendChild(document.createTextNode(weekDate.week + " "));
         cell.appendChild(span);
     }
 
