@@ -225,7 +225,7 @@ proto._dayOfWeek = function(year, month, day)
   return dow;  
 }
 
-proto._getJavaWeekDate = function(date, firstDayOfWeek)
+proto._getWeekDate = function(date, firstDayOfWeek)
 {
   var year = date.getFullYear();
   var month = date.getMonth() + 1;
@@ -304,7 +304,7 @@ proto._getStartOfWeekYear = function(year, firstDayOfWeek)
   return weekYearStartMsecs;
 }
 
-proto._newJavaDateByWeekYear = function(
+proto._getDateForWeekDate = function(
   year, week, day,
   hour, min, sec,
   firstDayOfWeek)
@@ -338,7 +338,7 @@ proto._createDateFromContext = function(context)
   var date;
   if (context.weekOfWeekYear != 0)
   {
-    date = this._newJavaDateByWeekYear(
+    date = this._getDateForWeekDate(
       context.weekYear, context.weekOfWeekYear, context.day,
       context.hour, context.min, context.sec,
       context.firstDayOfWeek);
@@ -636,7 +636,7 @@ proto._formatOps = function(symbols, yearIsWeekYear, firstDayOfWeek, ops, date)
   
   context.ampm = (context.hour < 12) ? 0 : 1;
   
-  var weekDate = this._getJavaWeekDate(date, firstDayOfWeek);
+  var weekDate = this._getWeekDate(date, firstDayOfWeek);
   context.weekYear = weekDate.year;
   context.weekOfWeekYear = weekDate.week;
   
@@ -932,7 +932,12 @@ proto.format = function(date)
 
 proto.getWeekDate = function(date)
 {
-  return this._getJavaWeekDate(date, this.firstDayOfWeek);
+  return this._getWeekDate(date, this.firstDayOfWeek);
+}
+
+proto.getDateForWeekDate = function(wdate)
+{
+  return this._getDateForWeekDate(wdate.year, wdate.week, 1, 0, 0, 0, this.firstDayOfWeek);
 }
 
 } // end of static init block for SimpleDateFormatter class
