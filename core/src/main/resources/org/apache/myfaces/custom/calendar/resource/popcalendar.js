@@ -127,43 +127,52 @@ org_apache_myfaces_PopupCalendar = function()
 
 org_apache_myfaces_PopupCalendar.prototype._MSECS_PER_DAY = 24*60*60*1000;
 
+// IE bug workaround: hide background controls under the specified div.
 org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
 {
-
-    if (document.all)
+    if (this.ie)
     {
+        // The iframe created here is a hack to work around an IE bug. In IE,
+        // "windowws controls" (esp selectboxes) do not respect the z-index
+        // setting of "non-windowed controls", meaning they will be drawn on
+        // top of components that they should theoretically be underneath.
+        // However a selectbox will NOT be drawn on top of an iframe, so the
+        // workaround is to create an iframe is created with no content, then
+        // in function _recalculateElement position the iframe under the
+        // "popup" div. 
         var iframe = document.getElementById(overDiv.id + "_IFRAME");
 
         if (iframe == null)
         {
-            if (this.ie)
-            {
-              var cmd = "<iframe src='javascript:false;' id='" + overDiv.id + "_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>";
-              iframe = document.createElement(cmd);
-            }
-            else
-            {
-              iframe = document.createElement("iframe");
-              iframe.id = overDiv.id + "_IFRAME";
-              iframe.style="visibility:hidden; position:absolute; top:0px; left:0px;"
-            }
-
+            // the source attribute is to avoid a IE error message about non secure content on https connections
+            iframe = document.createElement(
+              "<iframe"
+              + " src='javascript:false;'"
+              + " id='" + overDiv.id + "_IFRAME'"
+              + " style='visibility:hidden; position: absolute; top:0px;left:0px;'"
+              + "/>");
             this.containerCtl.appendChild(iframe);
         }
 
+        // now put the iframe at the appropriate location, and make it visible.
         this._recalculateElement(overDiv);
     }
 }
 
+// IE bug workaround: hide background controls under the specified div; see _hideElement.
+// This should be called whenever a popup div is moved.
 org_apache_myfaces_PopupCalendar.prototype._recalculateElement = function(overDiv)
 {
-
-    if (document.all)
+    if (this.ie)
     {
         var iframe = document.getElementById(overDiv.id + "_IFRAME");
 
         if (iframe)
         {
+            // ok, there is a "masking iframe" associated with this div, so make its
+            // size and position match the div exactly, and set its z-index to just
+            // below the div. This hack blocks IE selectboxes from being drawn on top
+            // of the div. 
             var popup = overDiv;
 
             popup.style.zIndex = 98;
@@ -180,14 +189,15 @@ org_apache_myfaces_PopupCalendar.prototype._recalculateElement = function(overDi
     }
 }
 
+// IE bug workaround: unhide background controls that are beneath the specified div; see _hideElement.
+// Note that although this is called _showeElement, it is called when the popup is being *hidden*,
+// in order to *show* the underlying controls again.
 org_apache_myfaces_PopupCalendar.prototype._showElement = function(overDiv)
 {
-
-    var iframe = document.getElementById(overDiv.id + "_IFRAME");
-
-    if (document.all && iframe)
+    if (this.ie)
     {
-        iframe.style.display = "none";
+        var iframe = document.getElementById(overDiv.id + "_IFRAME");
+        if (iframe) iframe.style.display = "none";
     }
 }
 
