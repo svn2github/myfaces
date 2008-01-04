@@ -83,7 +83,12 @@ org_apache_myfaces_PopupCalendar = function()
     this.dateFormat="MM/dd/yyyy";
     this.nStartingYear;
     this.bPageLoaded = false;
-    this.ie = document.all;
+
+    // Detect whether the browser is Microsoft Internet Explorer.
+    // Testing for the presence of document.all is not sufficient, as Opera provides that.
+    // However hopefully nothing but IE implements ActiveX..
+    this.ie = window.ActiveXObject ? true : false;
+
     this.dom = document.getElementById;
     this.ns4 = document.layers;
     this.dateFormatSymbols = new org_apache_myfaces_dateformat_DateFormatSymbols();
@@ -131,8 +136,18 @@ org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
 
         if (iframe == null)
         {
-            // the source attribute is to avoid a IE error message about non secure content on https connections
-            iframe = document.createElement("<iframe src='javascript:false;' id='" + overDiv.id + "_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>");
+            if (this.ie)
+            {
+              var cmd = "<iframe src='javascript:false;' id='" + overDiv.id + "_IFRAME' style='visibility:hidden; position: absolute; top:0px;left:0px;'/>";
+              iframe = document.createElement(cmd);
+            }
+            else
+            {
+              iframe = document.createElement("iframe");
+              iframe.id = overDiv.id + "_IFRAME";
+              iframe.style="visibility:hidden; position:absolute; top:0px; left:0px;"
+            }
+
             this.containerCtl.appendChild(iframe);
         }
 
