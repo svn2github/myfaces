@@ -2,7 +2,7 @@
 .jscalendar-WH-table-style {
     font-family:arial;
     font-size:11px;
-    border-width:1;
+    border-width:1px;
     border-style:solid;
     border-color:#000000;
     color:#000000;
@@ -44,7 +44,7 @@
 /* Moused-over (selected) appearance of controls in calendar title. */
 .jscalendar-WH-title-control-select-style {
 	border-style: solid;
-	border-width: 1;
+	border-width: 1px;
 	border-color: #FFFFFF;
 	cursor: pointer;
 }
