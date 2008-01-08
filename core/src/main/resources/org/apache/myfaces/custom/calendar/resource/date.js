@@ -599,6 +599,7 @@ proto._parsePostProcess = function(symbols, context)
 {
   if (context.ambiguousYear)
   {
+    context.year += 1900;
     var date = this._createDateFromContext(context);
     var threshold = symbols.twoDigitYearStart;
     if (date.getTime() < threshold.getTime())

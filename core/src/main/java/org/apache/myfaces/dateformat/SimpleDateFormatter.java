@@ -789,6 +789,8 @@ public class SimpleDateFormatter
         if (context.ambiguousYear)
         {
             // TODO: maybe this adjustment could be made while parsing?
+
+        	context.year += 1900;
             Date date = createDateFromContext(context);
             Date threshold = symbols.twoDigitYearStart;
             if (date.getTime() < threshold.getTime())

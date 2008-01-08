@@ -189,6 +189,15 @@ public class TestSimpleDateFormatter extends TestCase
             
             // test mismatched quoted text
             "yyyy'year'MM'month'dd", "2003yexr04month06", null,
+            
+            // test short year format with no century wraparound
+            "yy-MM-dd", "99-04-06", new Date(1999-1900, 03, 06),
+            
+            // test short year format with century wraparound
+            "yy-MM-dd", "03-04-06", new Date(2003-1900, 03, 06),
+            
+            // test short year format with no century wraparound
+            "yy-MM-dd", "33-04-06", new Date(1933-1900, 03, 06),
         };
 
         Locale locale = Locale.ENGLISH;
