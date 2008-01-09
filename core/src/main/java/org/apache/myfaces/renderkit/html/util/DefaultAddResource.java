@@ -608,6 +608,10 @@ public class DefaultAddResource implements AddResource
                     response, resourceUri);
             response.flushBuffer();
         }
+        catch (ResourceLoader.ClosedSocketException e)
+        {
+        	// the client closed the socket on us; just ignore.
+        }
         catch (ClassNotFoundException e)
         {
             log.error("Could not find class for name: " + className, e);

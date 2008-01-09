@@ -103,7 +103,8 @@ public class MyFacesResourceLoader implements ResourceLoader
      *     javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
-            HttpServletResponse response, String resourceUri) throws IOException
+            HttpServletResponse response, String resourceUri)
+    	throws IOException, ResourceLoader.ClosedSocketException
     {
 		String[] uriParts = resourceUri.split("/", 2);
 
@@ -228,7 +229,8 @@ public class MyFacesResourceLoader implements ResourceLoader
      * Copy the content of the specified input stream to the servlet response.
      */
     protected void writeResource(HttpServletRequest request, HttpServletResponse response,
-            InputStream in) throws IOException
+            InputStream in)
+        throws IOException, ResourceLoader.ClosedSocketException
     {
         ServletOutputStream out = response.getOutputStream();
         try
@@ -238,11 +240,33 @@ public class MyFacesResourceLoader implements ResourceLoader
             {
                 out.write(buffer, 0, size);
             }
+    		out.close();
         }
-        finally
+        catch(IOException e)
         {
-            out.close();
+        	// This happens sometimes with Microsft Internet Explorer. It would
+        	// appear (guess) that when javascript creates multiple dom nodes
+        	// referring to the same remote resource then IE stupidly opens 
+        	// multiple sockets and requests that resource multiple times. But
+        	// when the first request completes, it then realises its stupidity
+        	// and forcibly closes all the other sockets. But here we are trying
+        	// to service those requests, and so get a "broken pipe" failure 
+        	// on write. The only thing to do here is to silently ignore the issue,
+        	// ie suppress the exception.
+
+        	try
+        	{
+        		out.close();
+        	}
+        	catch(Exception e2)
+        	{
+        		// Ignore; nothing we can do about this.
+        	}
+
+        	log.debug("Unable to send resource data to client", e);
+        	throw new ResourceLoader.ClosedSocketException();
         }
+        response.flushBuffer();
     }
 
     /**

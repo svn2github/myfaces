@@ -33,7 +33,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ResourceLoader
 {
-    /**
+	/**
+	 * Define an exception for reporting when a client requests a resource, but
+	 * then closes its socket before we finish sending it. In this case, the normal
+	 * behaviour is to not report an error; there is nothing wrong on this end. 
+	 */
+	public static class ClosedSocketException extends Exception
+	{
+	}
+
+	/**
      * Called by AddResource to render external resource data 
      * @param context TODO
      * @param request the request 
@@ -44,5 +53,6 @@ public interface ResourceLoader
      * @throws IOException
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
-            HttpServletResponse response, String resourceUri) throws IOException;
+            HttpServletResponse response, String resourceUri)
+    throws IOException, ClosedSocketException;
 }
