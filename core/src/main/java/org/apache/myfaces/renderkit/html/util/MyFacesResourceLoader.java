@@ -103,8 +103,7 @@ public class MyFacesResourceLoader implements ResourceLoader
      *     javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
-            HttpServletResponse response, String resourceUri)
-    	throws IOException, ResourceLoader.ClosedSocketException
+            HttpServletResponse response, String resourceUri) throws IOException
     {
 		String[] uriParts = resourceUri.split("/", 2);
 
@@ -140,9 +139,6 @@ public class MyFacesResourceLoader implements ResourceLoader
 
         try
         {
-			// is = componentClass.getResourceAsStream(resource);
-			//if (is == null)
-
 			ResourceProvider resourceProvider;
 			if (ResourceProvider.class.isAssignableFrom(componentClass))
 			{
@@ -220,8 +216,7 @@ public class MyFacesResourceLoader implements ResourceLoader
         }
         finally
         {
-            if(is!=null)
-                is.close();
+        	// nothing to do here..
         }
     }
 
@@ -229,8 +224,7 @@ public class MyFacesResourceLoader implements ResourceLoader
      * Copy the content of the specified input stream to the servlet response.
      */
     protected void writeResource(HttpServletRequest request, HttpServletResponse response,
-            InputStream in)
-        throws IOException, ResourceLoader.ClosedSocketException
+            InputStream in) throws IOException
     {
         ServletOutputStream out = response.getOutputStream();
         try
@@ -240,7 +234,7 @@ public class MyFacesResourceLoader implements ResourceLoader
             {
                 out.write(buffer, 0, size);
             }
-    		out.close();
+    		out.flush();
         }
         catch(IOException e)
         {
@@ -252,21 +246,17 @@ public class MyFacesResourceLoader implements ResourceLoader
         	// and forcibly closes all the other sockets. But here we are trying
         	// to service those requests, and so get a "broken pipe" failure 
         	// on write. The only thing to do here is to silently ignore the issue,
-        	// ie suppress the exception.
-
-        	try
-        	{
-        		out.close();
-        	}
-        	catch(Exception e2)
-        	{
-        		// Ignore; nothing we can do about this.
-        	}
-
+        	// ie suppress the exception. Note that it is also possible for the
+        	// above code to succeed (ie this exception clause is not run) but
+        	// for a later flush to get the "broken pipe"; this is either due
+        	// just to timing, or possibly IE is closing sockets after receiving
+        	// a complete file for some types (gif?) rather than waiting for the
+        	// server to close it. We throw a special exception here to inform
+        	// callers that they should NOT flush anything - though that is
+        	// dangerous no matter what IOException subclass is thrown.
         	log.debug("Unable to send resource data to client", e);
         	throw new ResourceLoader.ClosedSocketException();
         }
-        response.flushBuffer();
     }
 
     /**

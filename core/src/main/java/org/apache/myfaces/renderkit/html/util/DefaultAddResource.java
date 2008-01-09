@@ -606,11 +606,21 @@ public class DefaultAddResource implements AddResource
             validateResourceLoader(resourceLoader);
             ((ResourceLoader) resourceLoader.newInstance()).serveResource(context, request,
                     response, resourceUri);
-            response.flushBuffer();
+
+            // Do not call response.flushBuffer buffer here. There is no point, as if there
+            // ever were header data to write, this would fail as we have already written
+            // the response body. The only point would be to flush the output stream, but
+            // that will happen anyway when the servlet container closes the socket.
+            //
+            // In addition, flushing could fail here; it appears that Microsoft IE
+            // hasthe habit of hard-closing its socket as soon as it has received a complete
+            // gif file, rather than letting the server close it. The container will hopefully
+            // silently ignore exceptions on close.
         }
         catch (ResourceLoader.ClosedSocketException e)
         {
-        	// the client closed the socket on us; just ignore.
+        	// The ResourceLoader was unable to send the data because the client closed
+        	// the socket on us; just ignore.
         }
         catch (ClassNotFoundException e)
         {

@@ -38,7 +38,7 @@ public interface ResourceLoader
 	 * then closes its socket before we finish sending it. In this case, the normal
 	 * behaviour is to not report an error; there is nothing wrong on this end. 
 	 */
-	public static class ClosedSocketException extends Exception
+	public static class ClosedSocketException extends IOException
 	{
 	}
 
@@ -53,6 +53,5 @@ public interface ResourceLoader
      * @throws IOException
      */
     public void serveResource(ServletContext context, HttpServletRequest request,
-            HttpServletResponse response, String resourceUri)
-    throws IOException, ClosedSocketException;
+            HttpServletResponse response, String resourceUri) throws IOException;
 }
