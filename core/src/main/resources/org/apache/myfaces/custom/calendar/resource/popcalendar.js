@@ -97,6 +97,8 @@ org_apache_myfaces_PopupCalendar = function()
     this.dateNow = this.today.getDate();
     this.monthNow = this.today.getMonth();
     this.yearNow = this.today.getYear();
+    
+    // list of images to be preloaded from the server
     this.imgSrc = new Array("drop1.gif", "drop2.gif", "left1.gif", "left2.gif", "right1.gif", "right2.gif");
     this.img = new Array();
 
@@ -257,8 +259,13 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 
         if (!this.calendarDiv)
         {
-            for (i = 0; i < this.imgSrc.length; i++)
+            for (var i = 0; i < this.imgSrc.length; i++)
+            {
+                // force preload of all images, so that when DOM nodes have their src set to
+                // the name of this image, it has already been loaded from the server.
                 this.img[i] = new Image;
+                this.img[i].src = this.initData.imgDir + this.imgSrc[i];
+            }
 
             this.containerCtl = containerCtl;
 
