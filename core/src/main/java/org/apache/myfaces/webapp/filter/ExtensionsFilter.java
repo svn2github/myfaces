@@ -30,10 +30,89 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * This filters is mandatory for the use of many components.
- * It handles the Multipart requests (for file upload)
- * It's used by the components that need javascript libraries
+ * This filter is mandatory for the use of many tomahawk components.
  *
+ * <h2>Response Buffering</h2>
+ * 
+ * When the request is for a JSF page, and the configured "resource manager"
+ * requires response buffering then a response wrapper is created which
+ * buffers the entire output from the current request in memory.
+ * <p>
+ * Tomahawk provides at least two "resource managers":
+ * <ul>
+ * <li> DefaultAddResources (the default) does require response buffering
+ * <li> StreamingAddResources does not, but only provides a subset of the
+ * features of DefaultAddResources and therefore does not work with all
+ * Tomahawk components.
+ * </ul>
+ * <p>
+ * Only one "resource manager" may be configured for a webapp. See class
+ * AddResourceFactory for further details on configuring this.
+ * <p>
+ * When DefaultAddResources is enabled (default behaviour), the resulting
+ * response buffering does cause some unnecessary memory and performance
+ * impact for pages where no component in the page actually registers a
+ * resource that needs to be inserted into the page - but whether a page
+ * does that or not cannot be known until after the page has been rendered.
+ * In the rare case where a request to a JSF page generates non-html
+ * output (eg a PDF is generated as a response to a submit of a jsf page),
+ * the data is unfortunately buffered. However it is not post-processed,
+ * because its http content-type header will not be "text/html" (see other
+ * documentation for this class).
+ *
+ * <h2>Inserting Resources into HTML responses (DefaultAddResources)</h2>
+ * 
+ * After the response has been completely generated (and cached in memory),
+ * this filter checks the http content-type header. If it is not html or xhtml,
+ * then the data is simply send to the response stream without further processing.
+ * 
+ * For html or xhtml responses, this filter canses the data to be post-processed
+ * to insert any "resources" registered via the AddResources framework. This
+ * allows jsf components (and other code if it wants) to register data that
+ * should be output into an HTML page, particularly into places like an html
+ * "head" section, even when the component occurs after that part of the
+ * response has been generated.
+ * <p>
+ * The default "resource manager" (DefaultAddResources) supports inserting
+ * resources into any part of the generated page. The alternate class
+ * StreamingAddResources does not; it does not buffer output and therefore
+ * can only insert resources for a jsf component  into the page after the
+ * point at which that component is rendered. In particular, this means that
+ * components that use external javascript files will not work with that
+ * "resource manager" as [script href=...] only works in the head section
+ * of an html page.
+ *
+ * <h2>Serving Resources from the Classpath</h2>
+ * 
+ * Exactly what text gets inserted into an HTML page via a "resource"
+ * (see above) is managed by the AddResources class, not this one. However
+ * often it is useful for jsf components to be able to refer to resources
+ * that are on the classpath, and in particular when the resource is in the
+ * same jar as the component code. Servlet engines do not support serving
+ * resources from the classpath. However the AddResources framework can be
+ * used to generate a special url prefix that this filter can be mapped to,
+ * allowing this to be done. In particular, many Tomahawk components use
+ * this to bundle their necessary resources within the tomahawk jarfile.
+ * <p>
+ * When a request to such a url is found by this filter, the actual resource
+ * is located and streamed back to the user (no buffering required). See the
+ * AddResource class documentation for further details.
+ *
+ * <h2>Handling File Uploads</h2>
+ * 
+ * Sometimes an application needs to allow a user to send a file of data
+ * to the web application. The html page needs only to include an input
+ * tag with type=file; clicking on this will prompt the user for a file
+ * to send. The browser will then send an http request to the server
+ * which is marked as a "mime multipart request" with normal http post
+ * parameters in one mime part, and the file contents in another mime part.
+ * <p>
+ * This filter also handles such requests, using the Apache HttpClient
+ * library to save the file into a configurable local directory before
+ * allowing the normal processing for the url that the post request
+ * refers to. A number of configuration properties on this filter control
+ * maximum file upload sizes and various other useful settings. 
+ * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
