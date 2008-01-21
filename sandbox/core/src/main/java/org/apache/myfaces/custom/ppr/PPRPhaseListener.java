@@ -261,6 +261,7 @@ public class PPRPhaseListener implements PhaseListener
 		StringTokenizer st = new StringTokenizer(triggeredComponents, ",", false);
 		String clientId;
 		UIComponent component;
+		boolean handleState = true;
 		// Iterate over the individual client IDs
 		while(st.hasMoreTokens())
 		{
@@ -268,6 +269,14 @@ public class PPRPhaseListener implements PhaseListener
 			component = viewRoot.findComponent(clientId);
 			if(component != null)
 			{
+				//get info about state writing/rendering
+				//if at least one ppr does not update the state
+				//the response will not include state information
+				PPRPanelGroup ppr = (PPRPanelGroup) component;
+				if(ppr.getStateUpdate().booleanValue() == false)
+				{
+					handleState = false;
+				}
 				// Write a component tag which contains a CDATA section whith
 				// the rendered HTML
 				// of the component children
@@ -290,21 +299,24 @@ public class PPRPhaseListener implements PhaseListener
 				log.debug("PPRPhaseListener component with id" + clientId + "not found!");
 			}
 		}
-		// Write the serialized state into a separate XML element
-		out.print("<state>");
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		StateManager stateManager = facesContext.getApplication().getStateManager();
-		StateManager.SerializedView serializedView = stateManager.saveSerializedView(facesContext);
-		try
-		{
-			stateManager.writeState(facesContext, serializedView);
-		}
-		catch(IOException e)
-		{
-			throw new FacesException(e);
-		}
 
-		out.print("</state>");
+		if(handleState)
+		{
+			// Write the serialized state into a separate XML element
+			out.print("<state>");
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			StateManager stateManager = facesContext.getApplication().getStateManager();
+			StateManager.SerializedView serializedView = stateManager.saveSerializedView(facesContext);
+			try
+			{
+				stateManager.writeState(facesContext, serializedView);
+			}
+			catch(IOException e)
+			{
+				throw new FacesException(e);
+			}
+			out.print("</state>");
+		}
 
 	}
 
