@@ -1310,9 +1310,26 @@ Sandbox-related entities.
 			<name>excludeFromStoppingPeriodicalUpdate</name>
 			<required>false</required>
 			<rtexprvalue>false</rtexprvalue>
-            <description>Regular expression of link-client-ids for which the periodical update should not be stopped.
-						 Normally when a link is clicked during periodical update, the update is stopped in order to prevent the server from getting
-						 unexpected requests. This behaviour may be unwanted e.g. in case of opening new windows with a link.
+            <description>Normally when a link is clicked during periodical update, the update is stopped in order to prevent the server from getting
+						 unexpected requests. For any POST-request this is the wanted behaviour because the screen is completely refreshed and periodical
+					     updating starts again after the response.
+						 However, this behaviour may be unwanted e.g. in case of opening a new window with a link where the main screen should stay refreshed.
+						 This attribute takes a regular expression of link-client-ids for which the periodical update should not be stopped.
+
+						 If this value is given, there will be a default timeout of 2000 milliseconds before any periodical
+						 update will start again. This is done as mentioned before in order to prevent the server from getting unexpected requests.   
+						 This timeout can be influenced via the waitBeforePeriodicalUpdate attribute.
+			</description>
+        </attribute>
+		<attribute>
+			<name>waitBeforePeriodicalUpdate</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>This attribute only works in combination with the excludeFromStoppingPeriodicalUpdate attribute. The value
+						 in milliseconds tells the periodical update mechanism to stop for the given amount of time after clicking a link, specified by
+						 the excludeFromStoppingPeriodicalUpdate attribute.
+
+						 The default value is 2000 milliseconds.
 			</description>
         </attribute>
 		<attribute>

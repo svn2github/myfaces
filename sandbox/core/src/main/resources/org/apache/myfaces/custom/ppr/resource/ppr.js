@@ -29,6 +29,8 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 	this.showDebugMessages = showDebugMessages;
     this.stateUpdate = stateUpdate;
 	this.linkIdRegexToExclude = '';
+	this.waitBeforePeriodicalUpdate = null;
+	this.periodicalRegexLinkFound = false;
 
 	this.subFormId = new Array();
 
@@ -212,8 +214,6 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
                 returnValue = true;
             }
 
-			var linkFound = false;
-
 			if(ppr.linkIdRegexToExclude != '')
 			{
 				for(var i = 0; i < document.forms.length; i++)
@@ -224,18 +224,12 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
 
 					if(clickedLink && clickedLink.value.match(ppr.linkIdRegexToExclude))
 					{
-						ppr.blockPeriodicalUpdateDuringPost = false;
-						linkFound = true;
+						ppr.periodicalRegexLinkFound = true;
 						break;
 					}
 				}
 			}
-
-			if(!linkFound)
-			{
-				ppr.blockPeriodicalUpdateDuringPost = true;
-			}
-
+			ppr.blockPeriodicalUpdateDuringPost = true;
 			return returnValue;
 		}
     }
@@ -250,22 +244,33 @@ org.apache.myfaces.PPRCtrl.prototype.excludeFromStoppingPeriodicalUpdate = funct
 
 // init function of automatically partial page refresh
 
-org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
+org.apache.myfaces.PPRCtrl.prototype.startPeriodicalUpdate = function(refreshTimeout, refreshZoneId, waitBeforeUpdate)
 {
     var ppr = this;
-    setTimeout(function(){ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId)}, refreshTimeout);
+	ppr.waitBeforePeriodicalUpdate = waitBeforeUpdate;
+	setTimeout(function(){ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId)}, refreshTimeout);
 };
 
 // periodically called when updating automatically
 
 org.apache.myfaces.PPRCtrl.prototype.doPeriodicalUpdate = function(refreshTimeout, refreshZoneId)
 {
-    if(!this.blockPeriodicalUpdateDuringPost)
+	var content = new Array;
+    content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
+
+	if(!this.blockPeriodicalUpdateDuringPost)
     {
-       var content = new Array;
-       content["org.apache.myfaces.PPRCtrl.triggeredComponents"] = refreshZoneId;
        this.doAjaxSubmit(content, refreshTimeout, refreshZoneId);
     }
+	else if(this.periodicalRegexLinkFound)
+	{
+		var ppr = this;
+		setTimeout(function() {
+			ppr.blockPeriodicalUpdateDuringPost = false;
+			ppr.periodicalRegexLinkFound = false;
+			ppr.doAjaxSubmit(content, refreshTimeout, refreshZoneId);
+		}, ppr.waitBeforePeriodicalUpdate)
+	}
 };
 
 //Callback Method which handles the AJAX Response
@@ -425,7 +430,7 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
 	}
 	content["org.apache.myfaces.PPRCtrl.ajaxRequest"]="true";
 
-    dojo.io.bind({
+	dojo.io.bind({
         url		: requestUri,
         method	: "post",
         useCache: false,
@@ -436,11 +441,12 @@ org.apache.myfaces.PPRCtrl.prototype.doAjaxSubmit = function(content, refreshTim
         formNode: this.form
 	});
 
-    if(refreshTimeout && !this.blockPeriodicalUpdateDuringPost)
+	if(refreshTimeout)
     {
-        window.setTimeout(function() {
-            ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId);
-        }, refreshTimeout)
+		if(!this.blockPeriodicalUpdateDuringPost || !this.periodicalRegexLinkFound)
+		{
+			setTimeout(function() { ppr.doPeriodicalUpdate(refreshTimeout, refreshZoneId); }, refreshTimeout);
+		}
     }
 };
 

@@ -46,6 +46,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
 	private String _excludeFromStoppingPeriodicalUpdate;
 
+	private Integer _waitBeforePeriodicalUpdate = new Integer(2000);
+
 	private String _partialTriggerPattern;
 
 	private String _inlineLoadingMessage;
@@ -139,6 +141,21 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		_excludeFromStoppingPeriodicalUpdate = excludeFromStoppingPeriodicalUpdate;
 	}
 
+	public Integer getWaitBeforePeriodicalUpdate()
+	{
+		if(_waitBeforePeriodicalUpdate != null)
+		{
+			return _waitBeforePeriodicalUpdate;
+		}
+		ValueBinding vb = getValueBinding("waitBeforePeriodicalUpdate");
+		return (vb != null) ? (Integer) vb.getValue(getFacesContext()) : null;
+	}
+
+	public void setWaitBeforePeriodicalUpdate(Integer waitBeforePeriodicalUpdate)
+	{
+		_waitBeforePeriodicalUpdate = waitBeforePeriodicalUpdate;
+	}
+
 	public String getInlineLoadingMessage()
 	{
 		if(_inlineLoadingMessage != null)
@@ -195,11 +212,12 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		_showDebugMessages = (Boolean) values[5];
 		_stateUpdate = (Boolean) values[6];
 		_excludeFromStoppingPeriodicalUpdate = (String) values[7];
+		_waitBeforePeriodicalUpdate = (Integer) values[8];
 	}
 
 	public Object saveState(FacesContext context)
 	{
-		Object[] values = new Object[8];
+		Object[] values = new Object[9];
 		values[0] = super.saveState(context);
 		values[1] = _partialTriggers;
 		values[2] = _partialTriggerPattern;
@@ -208,6 +226,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		values[5] = _showDebugMessages;
 		values[6] = _stateUpdate;
 		values[7] = _excludeFromStoppingPeriodicalUpdate;
+		values[8] = _waitBeforePeriodicalUpdate;
 		return values;
 	}
 }

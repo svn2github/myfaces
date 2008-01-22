@@ -251,7 +251,12 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 			// update
 			if(periodicalTriggers == null || periodicalTriggers.trim().length() <= 0)
 			{
-				script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId + "');");
+				Integer wait =  null;
+				if(pprGroup.getExcludeFromStoppingPeriodicalUpdate() != null)
+				{
+					wait = pprGroup.getWaitBeforePeriodicalUpdate();
+				}
+				script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId + "', " + wait + ");");
 			}
 			// Otherwise start it when the trigger happens
 			else
