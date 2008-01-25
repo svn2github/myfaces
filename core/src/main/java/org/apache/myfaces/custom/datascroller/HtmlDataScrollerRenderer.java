@@ -344,7 +344,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         if(ondblclick != null){
         	link.setOndblclick(ondblclick);
         }
-    	
+
         link.encodeBegin(facesContext);
         facetComp.encodeBegin(facesContext);
         if (!facetComp.getRendersChildren())
@@ -412,7 +412,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
         String onclick = scroller.getOnclick();
    	    String ondblclick = scroller.getOndblclick();
-        
+
         for (int i = start, size = start + pages; i < size; i++)
         {
             int idx = i + 1;
@@ -495,10 +495,13 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
                                       String text, int pageIndex)
     {
         String id = HtmlDataScrollerRenderer.PAGE_NAVIGATION + Integer.toString(pageIndex);
+
         Application application = facesContext.getApplication();
 
-        HtmlCommandLink link = (HtmlCommandLink) application
-                        .createComponent(HtmlCommandLink.COMPONENT_TYPE);
+	    // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
+        //     and http://issues.apache.org/jira/browse/MYFACES-1809
+        HtmlCommandLink link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
+
         link.setId(scroller.getId() + id);
         link.setTransient(true);
         UIParameter parameter = (UIParameter) application
@@ -526,8 +529,10 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     {
         Application application = facesContext.getApplication();
 
-        HtmlCommandLink link = (HtmlCommandLink) application
-                        .createComponent(HtmlCommandLink.COMPONENT_TYPE);
+	    // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
+        //     and http://issues.apache.org/jira/browse/MYFACES-1809
+        HtmlCommandLink link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
+
         link.setId(scroller.getId() + facetName);
         link.setTransient(true);
         UIParameter parameter = (UIParameter) application
