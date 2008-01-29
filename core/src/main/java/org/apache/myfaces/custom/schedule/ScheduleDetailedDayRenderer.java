@@ -285,6 +285,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
     	int startHour = getRenderedStartHour(schedule);
     	int endHour = getRenderedEndHour(schedule);
+    	boolean repeatedIntervals = schedule.getModel().containsRepeatedIntervals();
 
     	DateFormat hourFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "h" : "HH");
     	DateFormat minuteFormater = getDateFormat(context, schedule, HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "':'mma" : "mm");        
@@ -350,12 +351,14 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     					"height: " + headerHeight + "px; vertical-align: top; border-style: none; border-width: 0px; overflow: hidden;",
     					null);
 
+    	        boolean isToday = ScheduleUtil.isSameDay(day.getDate(), new Date(), schedule.getModel().getTimeZone());
+
     			// write the date
     			writer.startElement(HTML.ANCHOR_ELEM, schedule);
                 writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
                 writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-    			writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-    					"date"), null);
+    			writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "date") 
+    					+ (isToday ? " today" : ""), null);
     			writer
     			.writeAttribute(
     					HTML.STYLE_ATTR,
@@ -447,21 +450,31 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     						null);
     				if (interval.getDuration() >= HalfHourInterval.HALF_HOUR)
     				{
-    					writer.startElement(HTML.SPAN_ELEM, schedule);
-    					writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-    							renderGutter ? "minutes" : "hours"), null);
-    					writer.writeAttribute(HTML.STYLE_ATTR,
-    							"vertical-align: top; height: 100%; padding: 0px;",
-    							null);
-    					writer.writeText(hourFormater.format(interval.getStartTime()), null);
-    					writer.endElement(HTML.SPAN_ELEM);
+    					if (!repeatedIntervals || interval.getLabel() == null)
+    					{
+    						writer.startElement(HTML.SPAN_ELEM, schedule);
+    						writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+    								renderGutter ? "minutes" : "hours"), null);
+    						writer.writeAttribute(HTML.STYLE_ATTR,
+    								"vertical-align: top; height: 100%; padding: 0px;",
+    								null);
+    						writer.writeText(hourFormater.format(interval.getStartTime()), null);
+    						writer.endElement(HTML.SPAN_ELEM);
+    					}
     					writer.startElement(HTML.SPAN_ELEM, schedule);
     					writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
     							"minutes"), null);
     					writer.writeAttribute(HTML.STYLE_ATTR,
     							"vertical-align: top; height: 100%; padding: 0px;",
     							null);
-    					writer.writeText((renderGutter ? minuteFormater : shortMinuteFormater).format(interval.getStartTime()), null);
+    					if (repeatedIntervals && interval.getLabel() != null)
+    					{
+    						writer.writeText(interval.getLabel(), null);
+    					}
+    					else
+    					{
+    						writer.writeText((renderGutter ? minuteFormater : shortMinuteFormater).format(interval.getStartTime()), null);
+    					}
     					writer.endElement(HTML.SPAN_ELEM);
     				}
     				writer.endElement(HTML.TD_ELEM);
@@ -473,7 +486,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
     						day, renderGutter, interval.getStartHours(getTimeZone(schedule))), null);
     				writer.writeAttribute(HTML.STYLE_ATTR,
     						"overflow: hidden; height: " + intervalHeight + "px;", null);
-    				if (interval.getLabel() != null)
+    				if (!repeatedIntervals && interval.getLabel() != null)
     				{
     					writer.write(interval.getLabel());
     				}

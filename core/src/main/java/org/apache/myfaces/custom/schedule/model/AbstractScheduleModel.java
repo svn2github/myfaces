@@ -470,6 +470,41 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     protected abstract void loadDayAttributes(Day day);
 
+    /**
+     * @return true, if each day contains the same set of intervals
+     */
+    public boolean containsRepeatedIntervals() {
+    	boolean firstDay = true;
+    	TreeSet firstDayIntervals = null;
+    	
+    	for (Iterator dayIterator = iterator(); dayIterator.hasNext(); )
+    	{
+    		Day day = (Day) dayIterator.next();
+    		
+    		if (firstDay)
+    		{
+    			firstDayIntervals = day.getIntervals();
+    			firstDay = false;
+    		}
+    		else
+    		{
+    			if (firstDayIntervals == null || firstDayIntervals.size() == 0) {
+    				if (day.getIntervals() != null && day.getIntervals().size() > 0)
+    				{
+    					return false;
+    				}
+    			}
+    			else if (!ScheduleUtil.areEquivalentIntervals(firstDayIntervals, day.getIntervals()))
+    			{
+    				
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	return true;
+    }
+    
     private void load(Date startDate, Date endDate)
     {
         Collection entries = loadEntries(startDate, endDate);

@@ -116,6 +116,42 @@ public class Interval implements Serializable, Comparable
 		return getEndTime().getTime() - getStartTime().getTime();
 	}
 	
+    /**
+     * <p>
+     * Intervals are equivalent if their label is the same and they begin and end
+     * at the same time of day.
+     * </p>
+     *
+     * @param other the interval to compare with
+     *
+     * @return true, if this interval is equivalent to the given interval
+     */
+	public boolean isEquivalent(Interval other)
+	{
+			
+		return label.equals(other.label) 
+				&& ScheduleUtil.isSameTime(startTime, other.startTime) 
+				&& ScheduleUtil.isSameTime(endTime, other.endTime);
+	}
+	
+	public int hashCode() {
+
+		return label.hashCode() + startTime.hashCode() + endTime.hashCode();
+	}
+	
+	public boolean equals(Object obj)
+	{
+		if (obj != null && obj instanceof Interval) {
+			Interval other = (Interval) obj;
+			
+			return label.equals(other.label) 
+					&& startTime.equals(other.startTime) 
+					&& endTime.equals(other.endTime);
+		}
+		
+		return false;
+	}
+	
 	public String toString()
 	{
 		

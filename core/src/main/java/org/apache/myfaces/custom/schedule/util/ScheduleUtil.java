@@ -24,11 +24,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.TimeZone;
+import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.custom.schedule.model.Interval;
 
 
 /**
@@ -303,6 +307,71 @@ public class ScheduleUtil
             calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR));
     }
 
+    /**
+     * <p>
+     * Check if the 2 dates are at the same time of day.
+     * </p>
+     *
+     * @param date1 the first date
+     * @param date2 the second date
+     *
+     * @return whether the dates are at the same time of day
+     */
+    public static boolean isSameTime(Date date1, Date date2)
+    {
+        if ((date1 == null) || (date2 == null))
+        {
+            return false;
+        }
+
+        Calendar calendar1 = getCalendarInstance(date1, null);
+        Calendar calendar2 = getCalendarInstance(date2, null);
+
+        return (calendar1.get(Calendar.HOUR_OF_DAY) == calendar2.get(Calendar.HOUR_OF_DAY) &&
+        		calendar1.get(Calendar.MINUTE) == calendar2.get(Calendar.MINUTE) &&
+        		calendar1.get(Calendar.SECOND) == calendar2.get(Calendar.SECOND));
+    }
+
+
+    /**
+     * <p>
+     * Check if two sets of intervals are equivalent.
+     * Intervals are equivalent if their label is the same and they begin and end
+     * at the same time of day.
+     * </p>
+     *
+     * @param intervals1 the first set of intervals
+     * @param intervals2 the second set of intervals
+     *
+     * @return whether the dates are at the same time of day
+     */
+    public static boolean areEquivalentIntervals(TreeSet intervals1, TreeSet intervals2)
+    {
+    	if (intervals1 == null || intervals2 == null)
+    	{
+    		return !(intervals1 != null || intervals2 != null);
+    	}
+    	
+    	if (intervals1.size() == intervals2.size())
+    	{
+    		Iterator it1 = intervals1.iterator();
+    		Iterator it2 = intervals2.iterator();
+    		
+    		while (it1.hasNext())
+    		{
+    			if (!((Interval) it1.next()).isEquivalent(((Interval) it2.next()))) {
+    				return false;
+    			}
+    		}
+    		
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+    
     /**
      * <p>
      * Get the String value of a UIComponent, even if it is a value

@@ -146,5 +146,10 @@ public interface ScheduleModel
      * @return The timezone for which the model should be built
      */
     public abstract TimeZone getTimeZone();
+    
+    /**
+     * @return true, if each day contains the same set of intervals
+     */
+    public abstract boolean containsRepeatedIntervals();
 }
 //The End
