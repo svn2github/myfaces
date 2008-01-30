@@ -234,7 +234,7 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         
         if (pattern != null && pattern.indexOf("d'th'") >= 0)
         {
-        	pattern = pattern.replace("d'th'", "d'" + daySuffix(schedule, date, viewLocale) + "'");
+        	pattern = pattern.replaceAll("d'th'", "d'" + daySuffix(schedule, date, viewLocale) + "'");
         }
         
         return getDateFormat(context, schedule, pattern);
