@@ -200,6 +200,14 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
     }
 
     /**
+     * @see org.apache.myfaces.custom.schedule.ScheduleEntryRenderer#getEntryClass(org.apache.myfaces.custom.schedule.HtmlSchedule, org.apache.myfaces.custom.schedule.model.ScheduleEntry)
+     */
+    public String getEntryClass(HtmlSchedule schedule, ScheduleEntry entry)
+    {
+    	return getStyleClass(schedule, "entry");
+    }
+    
+    /**
      * <p>
      * Allow the developer to specify custom CSS classnames for the schedule
      * component.

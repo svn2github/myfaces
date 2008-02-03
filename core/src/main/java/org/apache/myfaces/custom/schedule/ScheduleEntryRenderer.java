@@ -111,4 +111,15 @@ public interface ScheduleEntryRenderer extends Serializable
     public void renderToolTip(FacesContext context, ResponseWriter writer,
             HtmlSchedule schedule, ScheduleEntry entry, boolean selected)
             throws IOException;
+
+    /**
+     * Get the class for the entry container. Overriding this allows the 
+     * class to vary based on the entry being displayed. 
+     * 
+     * @param schedule
+     *            the Schedule component
+     * @param entry
+     *            the entry
+     */
+	public String getEntryClass(HtmlSchedule schedule, ScheduleEntry entry);
 }

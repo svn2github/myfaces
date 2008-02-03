@@ -669,8 +669,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                             null);
                 }
 
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                        "entry"), null);
+                writer.writeAttribute(HTML.CLASS_ATTR, getEntryRenderer(schedule).getEntryClass(schedule, wrapper.entry), null);
                 writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(),
                         null);
 
