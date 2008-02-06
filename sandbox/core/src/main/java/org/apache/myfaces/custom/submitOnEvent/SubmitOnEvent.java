@@ -107,9 +107,9 @@ public class SubmitOnEvent extends UIComponentBase
         return new Object[]
             {
                 super.saveState(context),
-                getFor(),
-                getEvent(),
-                getCallback()
+                forComponent,
+                event,
+                callback
             };
     }
 
