@@ -119,11 +119,97 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         return super.isNewspaperHorizontalOrientation(component);
     }
 
-    protected void afterRow(FacesContext facesContext, UIData uiData) throws IOException {
+	protected void startTable(FacesContext facesContext, UIComponent uiComponent) throws IOException
+	{
+		boolean embedded = isEmbeddedTable(uiComponent);
+
+		if (!embedded)
+		{
+			super.startTable(facesContext, uiComponent);
+		}
+	}
+
+	protected String determineHeaderFooterTag(FacesContext facesContext, UIComponent component, boolean header)
+	{
+		if (isEmbeddedTable(component))
+		{
+			// we are embedded, so do not render the tfoot/thead stuff
+			return null;
+		}
+
+		return super.determineHeaderFooterTag(facesContext, component, header);
+	}
+
+	protected String determineHeaderCellTag(FacesContext facesContext, UIComponent component)
+	{
+		if (isEmbeddedTable(component))
+		{
+			return HTML.TD_ELEM;
+		}
+
+		return HTML.TH_ELEM;
+	}
+
+	protected void renderTableHeaderOrFooterRow(FacesContext facesContext, ResponseWriter writer, UIComponent component, UIComponent facet, String styleClass, String colElementName, int colspan) throws IOException
+	{
+		if (isEmbeddedTable(component))
+		{
+			// embedded tables render the header/footer stuff using TD only
+			colElementName = HTML.TD_ELEM;
+		}
+
+		super.renderTableHeaderOrFooterRow(facesContext, writer, component, facet, styleClass, colElementName, colspan);
+	}
+
+	protected boolean isEmbeddedTable(UIComponent uiComponent)
+	{
+		boolean embedded = false;
+		if (uiComponent instanceof HtmlDataTable)
+		{
+			HtmlDataTable table = (HtmlDataTable) uiComponent;
+			embedded = table.isEmbedded();
+		}
+		return embedded;
+	}
+
+	protected boolean isDetailStampAfterRow(UIComponent uiComponent)
+	{
+		if (uiComponent instanceof HtmlDataTable)
+		{
+			return "after".equals(((HtmlDataTable) uiComponent).getDetailStampLocation());
+		}
+
+		return true;
+	}
+
+	protected void endTable(FacesContext facesContext, UIComponent uiComponent) throws IOException
+	{
+		boolean embedded = isEmbeddedTable(uiComponent);
+
+		if (!embedded)
+		{
+			super.endTable(facesContext, uiComponent);
+		}
+	}
+
+	protected void beforeRow(FacesContext facesContext, UIData uiData) throws IOException
+	{
+		super.beforeRow(facesContext, uiData);
+
+		if (!isDetailStampAfterRow(uiData))
+		{
+			renderDetailRow(facesContext, uiData);
+		}
+	}
+
+	protected void afterRow(FacesContext facesContext, UIData uiData) throws IOException {
         super.afterRow(facesContext, uiData);
 
-        renderDetailRow(facesContext, uiData);
-    }
+		if (isDetailStampAfterRow(uiData))
+		{
+			renderDetailRow(facesContext, uiData);
+		}
+	}
 
     /**
      *
@@ -138,18 +224,32 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             HtmlDataTable htmlDataTable = (HtmlDataTable)uiData;
 
             if(htmlDataTable.isCurrentDetailExpanded()){
-                ResponseWriter writer = facesContext.getResponseWriter();
-                writer.startElement(HTML.TR_ELEM,uiData);
-                writer.startElement(HTML.TD_ELEM,uiData);
-                writer.writeAttribute(HTML.COLSPAN_ATTR,new Integer(uiData.getChildren().size()) ,null);
 
-                if(detailStampFacet!=null){
+				boolean embedded = false;
+				if (detailStampFacet != null)
+				{
+					embedded = isEmbeddedTable(detailStampFacet);
+				}
+
+				ResponseWriter writer = facesContext.getResponseWriter();
+
+				if (!embedded)
+				{
+					writer.startElement(HTML.TR_ELEM,uiData);
+					writer.startElement(HTML.TD_ELEM,uiData);
+					writer.writeAttribute(HTML.COLSPAN_ATTR,new Integer(uiData.getChildren().size()) ,null);
+				}
+
+				if(detailStampFacet!=null){
                     RendererUtils.renderChild(facesContext, detailStampFacet);
                 }
 
-                writer.endElement(HTML.TD_ELEM);
-                writer.endElement(HTML.TR_ELEM);
-            }
+				if (!embedded)
+				{
+	                writer.endElement(HTML.TD_ELEM);
+	                writer.endElement(HTML.TR_ELEM);
+				}
+			}
         }
     }
 
@@ -734,7 +834,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
         {
             if (amISpannedOver("header", uiComponent))
                 return;
-            writer.startElement(HTML.TH_ELEM, uiComponent);
+            writer.startElement(determineHeaderCellTag(facesContext, uiComponent.getParent()), uiComponent);
             if (colspan > 1)
             {
                 writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(colspan),
@@ -755,7 +855,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase
             {
                 RendererUtils.renderChild(facesContext, facet);
             }
-            writer.endElement(HTML.TH_ELEM);
+            writer.endElement(determineHeaderCellTag(facesContext, uiComponent.getParent()));
         }
         else
         {

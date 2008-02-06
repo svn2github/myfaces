@@ -23,22 +23,32 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.NewspaperTable;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import org.apache.myfaces.custom.crosstable.UIColumns;
 import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
 import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
 import org.apache.myfaces.renderkit.html.util.TableContext;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
+import javax.faces.application.Application;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.*;
-import javax.faces.application.Application;
-import javax.faces.component.*;
-
-import org.apache.myfaces.custom.column.HtmlSimpleColumn;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * @author Thomas Spiegl (latest modification by $Author$)
@@ -55,10 +65,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     private static final boolean DEFAULT_SORTASCENDING = true;
     private static final boolean DEFAULT_SORTABLE = false;
-    private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+	private static final boolean DEFAULT_EMBEDDED = false;
+	private static final boolean DEFAULT_DETAILSTAMP_EXPANDED = false;
+	private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
     private static final Integer DEFAULT_NEWSPAPER_COLUMNS = new Integer(1);
     private static final String DEFAULT_NEWSPAPER_ORIENTATION = "vertical";
+	private static final String DEFAULT_DETAILSTAMP_LOCATION = "after";
 
     /**
      * the property names
@@ -83,6 +96,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     private Boolean _sortAscending = null;
     private String _sortProperty = null;
     private Boolean _sortable = null;
+	private Boolean _embedded = null;
+	private Boolean _detailStampExpandedDefault = null;
+	private String _detailStampLocation = null;
     private String _rowOnClick = null;
     private String _rowOnDblClick = null;
     private String _rowOnMouseDown = null;
@@ -105,7 +121,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     private boolean _isValidChildren = true;
 
-    private Set _expandedNodes = new HashSet();
+    private Map _expandedNodes = new HashMap();
 
     private Map _detailRowStates = new HashMap();
 
@@ -774,7 +790,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         boolean preserveSort = isPreserveSort();
 
-        Object values[] = new Object[36];
+        Object values[] = new Object[39];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
 
@@ -825,6 +841,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         values[33] = _newspaperOrientation;
         values[34] = _bodyStyle;
         values[35] = _bodyStyleClass;
+		values[36] = _embedded;
+		values[37] = _detailStampLocation;
+		values[38] = _detailStampExpandedDefault;
 
         return values;
     }
@@ -948,7 +967,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         }
 
         _varDetailToggler = (String) values[26];
-        _expandedNodes = (Set) values[27];
+        _expandedNodes = (Map) values[27];
         _rowGroupStyle = (String) values[28];
         _rowGroupStyleClass = (String) values[29];
         _sortedColumnVar = (String) values[30];
@@ -957,6 +976,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         _newspaperOrientation = (String) values[33];
         _bodyStyle = (String) values[34];
         _bodyStyleClass = (String) values[35];
+		_embedded = (Boolean) values[36];
+		_detailStampLocation = (String) values[37];
+		_detailStampExpandedDefault = (Boolean) values[38];
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -1120,7 +1142,46 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         return v != null ? v.booleanValue() : DEFAULT_SORTABLE;
     }
 
-    public void setRowOnMouseOver(String rowOnMouseOver)
+	public void setEmbedded(boolean embedded)
+	{
+		_embedded = embedded ? Boolean.TRUE : Boolean.FALSE;
+	}
+
+	public boolean isEmbedded()
+	{
+		if (_embedded != null) return _embedded.booleanValue();
+		ValueBinding vb = getValueBinding("embedded");
+		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+		return v != null ? v.booleanValue() : DEFAULT_EMBEDDED;
+	}
+
+	public void setDetailStampExpandedDefault(boolean detailStampExpandedDefault)
+	{
+		_detailStampExpandedDefault = detailStampExpandedDefault ? Boolean.TRUE : Boolean.FALSE;
+	}
+
+	public boolean isDetailStampExpandedDefault()
+	{
+		if (_detailStampExpandedDefault != null) return _detailStampExpandedDefault.booleanValue();
+		ValueBinding vb = getValueBinding("detailStampExpandedDefault");
+		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+		return v != null ? v.booleanValue() : DEFAULT_DETAILSTAMP_EXPANDED;
+	}
+
+	public void setEmbedded(String detailStampLocation)
+	{
+		_detailStampLocation = detailStampLocation;
+	}
+
+	public String getDetailStampLocation()
+	{
+		if (_detailStampLocation != null) return _detailStampLocation;
+		ValueBinding vb = getValueBinding("detailStampLocation");
+		String v = vb != null ? (String) vb.getValue(getFacesContext()) : null;
+		return v != null ? v : DEFAULT_DETAILSTAMP_LOCATION;
+	}
+
+	public void setRowOnMouseOver(String rowOnMouseOver)
     {
         _rowOnMouseOver = rowOnMouseOver;
     }
@@ -1239,7 +1300,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         if (_rowStyle != null)
             return _rowStyle;
-	
+
 	// TODO: temporarily support fully-qualified ext. dataTable attribute names.
         ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLE");
 	if (vb != null)
@@ -1321,7 +1382,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     public boolean isCurrentDetailExpanded()
     {
-        return _expandedNodes.contains(new Integer(getRowIndex()));
+		Boolean expanded = (Boolean) _expandedNodes.get(new Integer(getRowIndex()));
+		if (expanded != null)
+		{
+			return expanded.booleanValue();
+		}
+
+		return isDetailStampExpandedDefault();
     }
 
     public void setVarDetailToggler(String varDetailToggler)
@@ -1402,14 +1469,38 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         Integer rowIndex = new Integer(getRowIndex());
 
-        if (_expandedNodes.contains(rowIndex))
+		// get the current expanded state of the row
+		boolean expanded = isDetailExpanded();
+		if (expanded)
         {
-            _expandedNodes.remove(rowIndex);
-        }
+			// toggle to "collapsed"
+
+			if (isDetailStampExpandedDefault())
+			{
+				// if default is expanded we have to override with FALSE here
+				_expandedNodes.put(rowIndex, Boolean.FALSE);
+			}
+			else
+			{
+				// if default is collapsed we can fallback to this default
+				_expandedNodes.remove(rowIndex);
+			}
+		}
         else
         {
-            _expandedNodes.add(rowIndex);
-        }
+			// toggle to "expanded"
+
+			if (isDetailStampExpandedDefault())
+			{
+				// if default is expanded we can fallback to this default
+				_expandedNodes.remove(rowIndex);
+			}
+			else
+			{
+				// if default is collapsed we have to override with TRUE
+				_expandedNodes.put(rowIndex, Boolean.TRUE);
+			}
+		}
     }
 
     /**
@@ -1421,8 +1512,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         Integer rowIndex = new Integer(getRowIndex());
 
-        return _expandedNodes.contains(rowIndex);
-    }
+        Boolean expanded = (Boolean) _expandedNodes.get(rowIndex);
+		if (expanded == null)
+		{
+			return isDetailStampExpandedDefault();
+		}
+
+		return expanded.booleanValue();
+	}
 
     public int getSortColumnIndex()
     {
@@ -1463,7 +1560,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 	public String getNewspaperOrientation() {
 		if(_newspaperOrientation != null)
 			return _newspaperOrientation;
-		
+
 		ValueBinding vb = getValueBinding(NEWSPAPER_ORIENTATION_PROPERTY);
 		String v = vb != null ? (String)vb.getValue(getFacesContext()) : DEFAULT_NEWSPAPER_ORIENTATION;
 		return v;
@@ -1492,7 +1589,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         _expandedNodes.clear();
         for (int row = 0; row < rowCount; row++)
         {
-            _expandedNodes.add(new Integer(row));
+            _expandedNodes.put(new Integer(row), Boolean.TRUE);
         }
     }
 

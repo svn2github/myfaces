@@ -5,15 +5,15 @@
             <description>
                 Indicates whether the state of the whole DataModel should be saved and
                 restored. When set to false, the value-binding for the "value" attribute
-                of this table is executed each time the page is rendered. When set to 
+                of this table is executed each time the page is rendered. When set to
                 true, that value-binding is only executed when the component is first
                 created, and the DataModel state is thereafter saved/restored automatically
                 by the component.
-                
+
                 When column sorting is used for a table this property needs to be false
                 so that the DataModel can be updated to reflect any changes in the
                 sort criteria.
-                
+
                 Default: false
             </description>
         </attribute>
@@ -22,14 +22,14 @@
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <description>
-                Indicates whether the state for each row should not be discarded before 
+                Indicates whether the state for each row should not be discarded before
                 the datatable is rendered again. Setting this to true might be hepful if
                 an input component inside the datatable has no valuebinding and the value
-                entered in there should be displayed again. 
+                entered in there should be displayed again.
                 This will only work reliable if the datamodel of the datatable did not change
                 either by sorting, removing or adding rows.
-                                
-                Default: false 
+
+                Default: false
             </description>
         </attribute>
         <attribute>
@@ -67,11 +67,11 @@
                 used) is expected to use this property to determine how to sort the DataModel's
                 contents.
             </description>
-        </attribute>        
+        </attribute>
          <attribute>
             <name>sortable</name>
             <required>false</required>
-            <rtexprvalue>false</rtexprvalue>            
+            <rtexprvalue>false</rtexprvalue>
             <description></description>
         </attribute>
         <attribute>
@@ -272,4 +272,24 @@
             <rtexprvalue>false</rtexprvalue>
             <description>Corresponds to the HTML style attribute for the table body tag.</description>
         </attribute>
-      
+		<attribute>
+		   <name>embedded</name>
+		   <required>false</required>
+		   <rtexprvalue>false</rtexprvalue>
+		   <description>Avoids rendering the html table tags, thus, giving you a table rendering just rows.
+		   You can use this together with the detailStamp faces of the parent datatable to render
+		   child-tables using the same layout as the parent. Notice: You have to ensure both tables do have
+		   the same number of columns. Using the colspan attribute of the column tag might help alot.</description>
+	   </attribute>
+		<attribute>
+		   <name>detailStampLocation</name>
+		   <required>false</required>
+		   <rtexprvalue>false</rtexprvalue>
+		   <description>before|after - where to render the detailStamp, before the actual row or after it. default: after</description>
+	   </attribute>
+		<attribute>
+		   <name>detailStampExpandedDefault</name>
+		   <required>false</required>
+		   <rtexprvalue>false</rtexprvalue>
+		   <description>true|false - true if the detailStamp should be expanded by default. default: false</description>
+	   </attribute>

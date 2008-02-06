@@ -48,7 +48,7 @@ public class HtmlDataTableTag
     private String _preserveRowStates;
     private String _forceIdIndexFormula;
     private String _sortColumn;
-    private String _sortAscending;    
+    private String _sortAscending;
     private String _sortable;
     private String _preserveSort;
     private String _enabledOnUserRole;
@@ -70,7 +70,7 @@ public class HtmlDataTableTag
     private String _rowOnKeyUp;
     private String _rowId;
     private String _varDetailToggler;
-    
+
     private String _rowStyleClass;
     private String _rowStyle;
     private String _rowGroupStyle;
@@ -83,8 +83,12 @@ public class HtmlDataTableTag
     private String _newspaperColumns = null;
     /** the orientation of the newspaper table - horizontal/vertical */
     private String _newspaperOrientation = null;
-    
-    public void release() 
+
+	private String _embedded = null;
+	private String _detailStampExpandedDefault = null;
+	private String _detailStampLocation = null;
+
+	public void release()
     {
         super.release();
 
@@ -92,7 +96,7 @@ public class HtmlDataTableTag
         _preserveRowStates = null;
         _forceIdIndexFormula=null;
         _sortColumn=null;
-        _sortAscending=null;        
+        _sortAscending=null;
         _sortable=null;
         _preserveSort=null;
         _enabledOnUserRole=null;
@@ -119,13 +123,17 @@ public class HtmlDataTableTag
         _rowStyle = null;
         _rowGroupStyle = null;
         _rowGroupStyleClass = null;
-        
+
         _newspaperColumns = null;
         _newspaperOrientation = null;
 
         _bodyStyle = null;
         _bodyStyleClass = null;
-    }
+
+		_embedded = null;
+		_detailStampExpandedDefault = null;
+		_detailStampLocation = null;
+	}
 
     protected void setProperties(UIComponent component)
     {
@@ -155,9 +163,9 @@ public class HtmlDataTableTag
         setStringProperty(component, "rowOnKeyPress", _rowOnKeyPress);
         setStringProperty(component, "rowOnKeyDown", _rowOnKeyDown);
         setStringProperty(component, "rowOnKeyUp", _rowOnKeyUp);
-        setStringProperty(component, JSFAttr.ROW_ID, _rowId);        
+        setStringProperty(component, JSFAttr.ROW_ID, _rowId);
         setStringProperty(component,"varDetailToggler",_varDetailToggler);
-        
+
         setStringProperty(component, JSFAttr.ROW_STYLECLASS_ATTR, _rowStyleClass);
         setStringProperty(component, JSFAttr.ROW_STYLE_ATTR, _rowStyle);
         setStringProperty(component, "rowGroupStyle", _rowGroupStyle);
@@ -168,6 +176,10 @@ public class HtmlDataTableTag
 
         setIntegerProperty(component, HtmlDataTable.NEWSPAPER_COLUMNS_PROPERTY, _newspaperColumns);
         setStringProperty(component, HtmlDataTable.NEWSPAPER_ORIENTATION_PROPERTY, _newspaperOrientation);
+
+		setBooleanProperty(component, "embedded", _embedded);
+		setBooleanProperty(component, "detailStampExpandedDefault", _detailStampExpandedDefault);
+		setStringProperty(component, "detailStampLocation", _detailStampLocation);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -184,7 +196,7 @@ public class HtmlDataTableTag
     {
         _forceIdIndexFormula = forceIdIndexFormula;
     }
-    
+
     public void setSortColumn(String sortColumn)
     {
         _sortColumn = sortColumn;
@@ -194,7 +206,7 @@ public class HtmlDataTableTag
     {
         _sortAscending = sortAscending;
     }
-      
+
     public void setSortable(String sortable)
     {
         _sortable = sortable;
@@ -234,7 +246,7 @@ public class HtmlDataTableTag
     {
         _previousRowDataVar = previousRowDataVar;
     }
-    
+
     public void setSortedColumnVar(String sortedColumnVar)
     {
         _sortedColumnVar = sortedColumnVar;
@@ -254,22 +266,22 @@ public class HtmlDataTableTag
     {
       _rowOnClick = rowOnClick;
     }
-    
+
     public void setRowOnDblClick(String rowOnDblClick)
     {
       _rowOnDblClick = rowOnDblClick;
     }
-    
+
     public void setRowOnKeyDown(String rowOnKeyDown)
     {
       _rowOnKeyDown = rowOnKeyDown;
     }
-    
+
     public void setRowOnKeyPress(String rowOnKeyPress)
     {
       _rowOnKeyPress = rowOnKeyPress;
     }
-    
+
     public void setRowOnKeyUp(String rowOnKeyUp)
     {
       _rowOnKeyUp = rowOnKeyUp;
@@ -289,17 +301,17 @@ public class HtmlDataTableTag
     {
       _rowOnMouseUp = rowOnMouseUp;
     }
-    
+
     public void setRowId(String rowId)
     {
       _rowId = rowId;
     }
-    
+
     public void setRowStyleClass(String rowStyleClass)
     {
       _rowStyleClass = rowStyleClass;
     }
-    
+
     public void setRowStyle(String rowStyle)
     {
       _rowStyle = rowStyle;
@@ -322,11 +334,11 @@ public class HtmlDataTableTag
 	public void setVarDetailToggler(String varDetailToggler) {
 		_varDetailToggler = varDetailToggler;
 	}
-    
+
     public void setNewspaperColumns(String newspaperColumns) {
         this._newspaperColumns = newspaperColumns;
     }
-    
+
     public void setNewspaperOrientation(String newspaperOrientation) {
         this._newspaperOrientation = newspaperOrientation;
     }
@@ -345,5 +357,35 @@ public class HtmlDataTableTag
 
     public void setBodyStyleClass(String bodyStyleClass) {
         _bodyStyleClass = bodyStyleClass;
+	}
+
+	public String getEmbedded()
+	{
+		return _embedded;
+	}
+
+	public void setEmbedded(String embedded)
+	{
+		this._embedded = embedded;
+	}
+
+	public String getDetailStampExpandedDefault()
+	{
+		return _detailStampExpandedDefault;
+	}
+
+	public void setDetailStampExpandedDefault(String detailStampExpandedDefault)
+	{
+		this._detailStampExpandedDefault = detailStampExpandedDefault;
+	}
+
+	public String getDetailStampLocation()
+	{
+		return _detailStampLocation;
+	}
+
+	public void setDetailStampLocation(String detailStampLocation)
+	{
+		this._detailStampLocation = detailStampLocation;
 	}
 }
