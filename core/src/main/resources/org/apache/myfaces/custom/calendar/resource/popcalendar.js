@@ -6,6 +6,7 @@
 // @author Martin Marinschek
 // @author Sylvain Vieujot
 
+
 org_apache_myfaces_CalendarInitData = function()
 {
     // x position (-1 if to appear below control)
@@ -129,9 +130,22 @@ org_apache_myfaces_PopupCalendar = function()
 
 org_apache_myfaces_PopupCalendar.prototype._MSECS_PER_DAY = 24*60*60*1000;
 
+/**
+popups always have to be
+at the dom level nowhere else
+*/
+org_apache_myfaces_PopupCalendar.prototype._fixPopupDomOrder = function(overDiv) {
+	if(document.body != overDiv.parentNode) {
+		overDiv.parentNode.removeChild(overDiv);
+		document.body.appendChild(overDiv);
+	}	
+};
+
 // IE bug workaround: hide background controls under the specified div.
-org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
+org_apache_myfaces_PopupCalendar.prototype._showPopupPostProcess = function(overDiv)
 {
+	
+
     if (this.ie)
     {
         // The iframe created here is a hack to work around an IE bug. In IE,
@@ -153,7 +167,8 @@ org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
               + " id='" + overDiv.id + "_IFRAME'"
               + " style='visibility:hidden; position: absolute; top:0px;left:0px;'"
               + "/>");
-            this.containerCtl.appendChild(iframe);
+            //we can append it lazily since we are late here anyway and everything is rendered
+            document.appendChild(iframe);
         }
 
         // now put the iframe at the appropriate location, and make it visible.
@@ -161,7 +176,7 @@ org_apache_myfaces_PopupCalendar.prototype._hideElement = function(overDiv)
     }
 }
 
-// IE bug workaround: hide background controls under the specified div; see _hideElement.
+// IE bug workaround: hide background controls under the specified div; see _showPopupPostProcess.
 // This should be called whenever a popup div is moved.
 org_apache_myfaces_PopupCalendar.prototype._recalculateElement = function(overDiv)
 {
@@ -191,11 +206,14 @@ org_apache_myfaces_PopupCalendar.prototype._recalculateElement = function(overDi
     }
 }
 
-// IE bug workaround: unhide background controls that are beneath the specified div; see _hideElement.
+// IE bug workaround: unhide background controls that are beneath the specified div; see _showPopupPostProcess.
 // Note that although this is called _showeElement, it is called when the popup is being *hidden*,
 // in order to *show* the underlying controls again.
-org_apache_myfaces_PopupCalendar.prototype._showElement = function(overDiv)
+// we also reallign the floating div 
+org_apache_myfaces_PopupCalendar.prototype._hidePopupPostProcess = function(overDiv)
 {
+	
+
     if (this.ie)
     {
         var iframe = document.getElementById(overDiv.id + "_IFRAME");
@@ -602,9 +620,9 @@ org_apache_myfaces_PopupCalendar.prototype._hideCalendar = function()
         this.selectYearDiv.style.visibility = "hidden";
     }
 
-    this._showElement(this.selectMonthDiv);
-    this._showElement(this.selectYearDiv);
-    this._showElement(this.calendarDiv);
+    this._hidePopupPostProcess(this.selectMonthDiv);
+    this._hidePopupPostProcess(this.selectYearDiv);
+    this._hidePopupPostProcess(this.calendarDiv);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._padZero = function(num)
@@ -773,17 +791,18 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
 org_apache_myfaces_PopupCalendar.prototype._popUpMonth = function()
 {
     this._constructMonth()
+    this._fixPopupDomOrder(this.selectMonthDiv);
     this.selectMonthDiv.style.visibility = (this.dom || this.ie)? "visible"    : "show"
     this.selectMonthDiv.style.left = parseInt(this._formatInt(this.calendarDiv.style.left), 10) + 50 + "px";
     this.selectMonthDiv.style.top = parseInt(this._formatInt(this.calendarDiv.style.top), 10) + 26 + "px";
 
-    this._hideElement(this.selectMonthDiv);
+    this._showPopupPostProcess(this.selectMonthDiv);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popDownMonth = function()
 {
     this.selectMonthDiv.style.visibility = "hidden";
-    this._showElement(this.selectMonthDiv);
+    this._hidePopupPostProcess(this.selectMonthDiv);
 }
 
 /*** Year Pulldown ***/
@@ -1012,13 +1031,13 @@ org_apache_myfaces_PopupCalendar.prototype._popDownYear = function()
     clearInterval(this.intervalID2);
     clearTimeout(this.timeoutID2);
     this.selectYearDiv.style.visibility = "hidden";
-    this._showElement(this.selectYearDiv);
+    this._hidePopupPostProcess(this.selectYearDiv);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._popUpYear = function()
 {
     var leftOffset;
-
+	this._fixPopupDomOrder(this.selectYearDiv);
     this._constructYear();
     this.selectYearDiv.style.visibility = (this.dom || this.ie) ? "visible" : "show";
     leftOffset = parseInt(this._formatInt(this.calendarDiv.style.left), 10) + this.yearSpan.offsetLeft;
@@ -1027,7 +1046,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpYear = function()
     this.selectYearDiv.style.left = leftOffset + "px";
     this.selectYearDiv.style.top = parseInt(this._formatInt(this.calendarDiv.style.top), 10) + 26 + "px";
 
-    this._hideElement(this.selectYearDiv);
+    this._showPopupPostProcess(this.selectYearDiv);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._appendCell = function(parentElement, value)
@@ -1214,7 +1233,10 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
         var dividerCell = document.createElement("td");
         dividerCell.setAttribute("style", "width:1px;")
-        dividerCell.setAttribute("rowspan", "7");
+        if(this.ie) //fix for https://issues.apache.org/jira/browse/TOMAHAWK-1184
+        	dividerCell.setAttribute("rowSpan", "7");
+        else	
+        	dividerCell.setAttribute("rowspan", "7");
         dividerCell.className = this.initData.themePrefix + "-weeknumber-div-style";
 
         contentRow.appendChild(dividerCell);
@@ -1490,14 +1512,13 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     // Added try-catch to the next loop (MYFACES-870)
     try
     {
+     
         do {
-            aTag = aTag.offsetParent;
-            leftpos += aTag.offsetLeft;
-            toppos += aTag.offsetTop;
-            aCSSPosition = this._getStyle(aTag, 'position');
-            aTagPositioningisAbsolute = (aCSSPosition == "absolute" || aCSSPosition == "relative")
+	    	 aTag = aTag.offsetParent;
+	         leftpos += aTag.offsetLeft;
+	         toppos += aTag.offsetTop;
         }
-        while ((aTag.offsetParent) && (!aTagPositioningisAbsolute));
+        while ((null != aTag.offsetParent ) && ('undefined' !=  aTag.offsetParent ) );
     }
     catch (ex)
     {
@@ -1512,31 +1533,28 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     try
     {
         do {
-            leftScrollOffset += aTag.scrollLeft;
-            topScrollOffset += aTag.scrollTop;
-            aCSSPosition = this._getStyle(aTag, 'position');
+        	if('undefined' != typeof(aTag.scrollLeft) && null != aTag.scrollLeft)
+            	leftScrollOffset += parseInt(aTag.scrollLeft);
+        	if('undefined' != typeof(aTag.scrollTop) && null != aTag.scrollTop)
+ 	           topScrollOffset += parseInt(aTag.scrollTop);
+            
             aTag = aTag.parentNode;
         }
-        while ((aTag.tagName.toUpperCase() != "BODY") && (aTag.tagName.toUpperCase() != "HTML") && (aCSSPosition != "absolute" || aCSSPosition == "relative"));
+        while((aTag.tagName.toUpperCase() != "BODY") && (aTag.tagName.toUpperCase() != "HTML"));
+        //while ('undefined' != typeof(aTag) && null != aTag);
     }
     catch (ex)
     {
         // ignore
     }
-
     var bodyRect = this._getVisibleBodyRectangle();
     var cal = this.calendarDiv;
     
     var top = 0;
     var left = 0
-    if (aTagPositioningisAbsolute) {    
-        top = ctl.offsetTop - topScrollOffset + ctl.offsetHeight + 2;
-        left = ctl.offsetLeft - leftScrollOffset;
-    }
-    else {
-        top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight + 2;
-        left = ctl.offsetLeft + leftpos - leftScrollOffset;
-    }
+ 
+    top = ctl.offsetTop + toppos - topScrollOffset + ctl.offsetHeight + 2;
+    left = ctl.offsetLeft + leftpos - leftScrollOffset;
 
     if(this.initData.popupLeft)
     {
@@ -1559,6 +1577,12 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
     {
         top = bodyRect.top;
     }
+    
+	/*we have to remap the popup so that we can handle the positioning in a neutral way*/
+    if(this.calendarDiv.parentNode != document.body) {
+		this.calendarDiv.parentNode.removeChild(this.calendarDiv);
+		document.body.appendChild(this.calendarDiv);
+	}
 
     this.calendarDiv.style.left = this.initData.fixedX == -1 ? left + "px": this.initData.fixedX;
     this.calendarDiv.style.top = this.initData.fixedY == -1 ? top + "px": this.initData.fixedY;
@@ -1569,10 +1593,10 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendar_Show = function(ctl)
 
     setTimeout((function()
     {
-        this._hideElement(this.calendarDiv);
+        this._showPopupPostProcess(this.calendarDiv);
     }).bind(this), 200);
 
-    this._hideElement(this.calendarDiv);
+    this._showPopupPostProcess(this.calendarDiv);
 
     this.bClickOnCalendar = true;
 }
@@ -1645,5 +1669,6 @@ org_apache_myfaces_PopupCalendar.prototype._formatInt = function(str)
     return str;
 
 }
+
 
 
