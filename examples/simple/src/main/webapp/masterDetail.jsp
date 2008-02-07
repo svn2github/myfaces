@@ -116,7 +116,7 @@
 
 					<t:dataTable id="data2" styleClass="standardTable" detailStampExpandedDefault="true" headerClass="standardTable_Header" footerClass="standardTable_Header" rowClasses="standardTable_Row1,standardTable_Row2"
 						columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column" var="currentCountry" value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler">
-						<h:column>
+						<t:column>
 							<f:facet name="header">
 								<h:outputText value="#{example_messages['label_country_name']}" />
 							</f:facet>
@@ -126,16 +126,21 @@
 								<!-- you don't have to implement a custom action! -->
 								<t:updateActionListener property="#{countryForm.id}" value="#{currentCountry.id}" />
 							</t:commandLink>
-						</h:column>
-
-						<h:column>
+						</t:column>
+						<t:column>
+							<f:facet name="header">
+								<h:outputText value="useles column" />
+							</f:facet>
+							<h:outputText value="-" />
+						</t:column>
+						<t:column>
 							<f:facet name="header">
 								<h:outputText value="#{example_messages['label_country_iso']}" />
 							</f:facet>
 							<h:outputText value="#{currentCountry.isoCode}" />
-						</h:column>
+						</t:column>
 
-						<h:column>
+						<t:column>
 							<f:facet name="header">
 								<h:outputText value="#{example_messages['label_country_cities']}" />
 							</f:facet>
@@ -145,28 +150,29 @@
 							<h:commandLink rendered="#{!detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
 								<h:outputText value="Show" />
 							</h:commandLink>
-						</h:column>
+						</t:column>
 
 						<f:facet name="detailStamp">
 							<t:dataTable id="cities2" embedded="true" var="city" value="#{currentCountry.cities}">
-								<h:column>
+								<t:column colspan="2" headercolspan="2">
 									<f:facet name="header">
 										<h:outputText value="city" />
 									</f:facet>
 									<h:outputText value="#{city}" style="font-size: 11px" />
-								</h:column>
-								<h:column>
+								</t:column>
+								<t:column></t:column>
+								<t:column>
 									<f:facet name="header">
 										<h:outputText value="selected" />
 									</f:facet>
 									<h:selectBooleanCheckbox value="#{city.selected}"></h:selectBooleanCheckbox>
-								</h:column>
-								<h:column>
+								</t:column>
+								<t:column>
 									<f:facet name="header">
 										<h:outputText value="unselect" />
 									</f:facet>
 									<h:commandLink action="#{city.unselect}" value="Unselect"/>
-								</h:column>
+								</t:column>
 							</t:dataTable>
 						</f:facet>
 					</t:dataTable>
