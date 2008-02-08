@@ -93,4 +93,13 @@
                 This attribute tells row object's property by which sorting will be performed on this column
             </description>
         </attribute>
+        <attribute>
+            <name>columnId</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <description>
+                The columnId which will be used as id for the column header. Notice: As the rowId on t:datatable this
+                will not add any namespace to the id. The id will be rendered exactly as you provide it.
+            </description>
+        </attribute>
 

@@ -220,4 +220,7 @@ public interface HtmlColumn
 
     void setFootercolspan(String footercolspan);
 
+    String getColumnId();
+
+    void setColumnId(String columnId);
 }

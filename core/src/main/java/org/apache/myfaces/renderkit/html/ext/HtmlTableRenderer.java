@@ -731,10 +731,21 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
                                           UIComponent facet, String headerStyleClass, int colspan)
         throws IOException {
         if (uiComponent instanceof HtmlColumn) {
+
+            HtmlColumn column = (HtmlColumn) uiComponent;
+
             if (amISpannedOver("header", uiComponent)) {
                 return;
             }
+
             writer.startElement(determineHeaderCellTag(facesContext, uiComponent.getParent()), uiComponent);
+
+            String columnId = column.getColumnId();
+            if (columnId != null)
+            {
+                writer.writeAttribute(HTML.ID_ATTR, columnId, null);
+            }
+
             if (colspan > 1) {
                 writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(colspan),
                     null);

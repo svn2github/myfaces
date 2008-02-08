@@ -83,6 +83,7 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
 	private String footerstyleClass;
 	private String colspan;
 
+    private String _columnId;
     /**
      * @see javax.faces.webapp.UIComponentTag#getComponentType()
      */
@@ -154,6 +155,8 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
 		setStringProperty(component, "footerstyleClass", footerstyleClass);
 		setStringProperty(component, "footercolspan", footercolspan);
 		setStringProperty(component, "headercolspan", headercolspan);
+
+        setStringProperty(component, "columnId", _columnId);
     }
 
     /**
@@ -202,7 +205,7 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
         _defaultSorted = null;
         _sortable = null;
         _sortPropertyName = null;
-
+        _columnId= null;
     }
 
     public void setFooterdir(String footerdir) {
@@ -365,4 +368,11 @@ public class HtmlColumnsTag extends HtmlComponentBodyTagBase {
 		this.headercolspan = headercolspan;
 	}
 
+    public String getColumnId() {
+        return _columnId;
+    }
+
+    public void setColumnId(String columnId) {
+        this._columnId = columnId;
+    }
 }

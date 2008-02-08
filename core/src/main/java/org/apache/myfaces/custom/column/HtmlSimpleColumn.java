@@ -96,6 +96,8 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
     private Boolean _sortable;
     private String _sortPropertyName;
 
+    private String _columnId;
+
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlColumn";
 
     /**
@@ -981,6 +983,16 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _sortPropertyName = sortPropertyName;
     }
 
+    public String getColumnId()
+    {
+        return (String) getLocalOrValueBindingValue(_columnId, "columnId");
+    }
+
+    public void setColumnId(String columnId)
+    {
+        _columnId = columnId;
+    }
+
     /**
      * @see javax.faces.component.UIComponentBase#saveState(javax.faces.context.FacesContext)
      */
@@ -1047,8 +1059,9 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
 			_sortPropertyName,
 			_headercolspan,
 			_footercolspan,
-			_colspan
-		};
+			_colspan,
+            _columnId
+        };
 
 		return values;
     }
@@ -1119,5 +1132,6 @@ public class HtmlSimpleColumn extends UIColumn implements HtmlColumn
         _headercolspan = (String) values[52];
         _footercolspan = (String) values[53];
         _colspan = (String) values[54];
+        _columnId = (String) values[55];
     }
 }

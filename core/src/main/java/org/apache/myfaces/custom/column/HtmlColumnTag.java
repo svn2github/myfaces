@@ -70,12 +70,14 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
     private String _width;
     private String _colspan;
     private String _groupBy;
-	private String _groupByValue;
+    private String _groupByValue;
 
     //sort related attributes
     private String _defaultSorted;
     private String _sortable;
     private String _sortPropertyName;
+
+    private String _columnId;
 
     public String getComponentType() {
         return HtmlSimpleColumn.COMPONENT_TYPE;
@@ -124,11 +126,13 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _width = null;
         _colspan = null;
         _groupBy = null;
-		_groupByValue = null;
+        _groupByValue = null;
 
         _defaultSorted = null;
         _sortable = null;
         _sortPropertyName = null;
+
+        _columnId = null;
     }
 
     protected void setProperties(UIComponent component) {
@@ -170,11 +174,13 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         setStringProperty(component, "width", _width);
         setStringProperty(component, "colspan", _colspan);
         setBooleanProperty(component, "groupBy", _groupBy);
-		setStringProperty(component, "groupByValue", _groupByValue);
+        setStringProperty(component, "groupByValue", _groupByValue);
 
         setBooleanProperty(component, "defaultSorted", _defaultSorted);
         setBooleanProperty(component, "sortable", _sortable);
         setStringProperty(component, "sortPropertyName", _sortPropertyName);
+
+        setStringProperty(component, "columnId", _columnId);
     }
 
     public void setFooterdir(String footerdir) {
@@ -233,8 +239,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _footerstyleClass = footerstyleClass;
     }
 
-    public void setFootercolspan(String footercolspan)
-    {
+    public void setFootercolspan(String footercolspan) {
         _footercolspan = footercolspan;
     }
 
@@ -302,8 +307,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _headertitle = headertitle;
     }
 
-    public void setHeadercolspan(String headercolspan)
-    {
+    public void setHeadercolspan(String headercolspan) {
         _headercolspan = headercolspan;
     }
 
@@ -311,8 +315,7 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _width = width;
     }
 
-    public void setColspan(String colspan)
-    {
+    public void setColspan(String colspan) {
         _colspan = colspan;
     }
 
@@ -320,11 +323,11 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
         _groupBy = groupBy;
     }
 
-	public void setGroupByValue(String groupByValue) {
-		this._groupByValue = groupByValue;
-	}
+    public void setGroupByValue(String groupByValue) {
+        this._groupByValue = groupByValue;
+    }
 
-	public void setDefaultSorted(String defaultSorted) {
+    public void setDefaultSorted(String defaultSorted) {
         _defaultSorted = defaultSorted;
     }
 
@@ -334,5 +337,13 @@ public class HtmlColumnTag extends HtmlComponentBodyTagBase {
 
     public void setSortPropertyName(String sortPropertyName) {
         _sortPropertyName = sortPropertyName;
+    }
+
+    public String getColumnId() {
+        return _columnId;
+    }
+
+    public void setColumnId(String columnId) {
+        this._columnId = columnId;
     }
 }

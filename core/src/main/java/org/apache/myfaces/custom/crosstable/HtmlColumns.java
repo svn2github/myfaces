@@ -564,6 +564,13 @@ public class HtmlColumns extends UIColumns implements HtmlColumn {
     public String getFootercolspan() {return null;}
     public void setFootercolspan(String footercolspan) {}
 
+    public String getColumnId() {
+        return null;
+    }
+
+    public void setColumnId(String columnId) {
+    }
+
     /**
      * @see javax.faces.component.UIData#saveState(javax.faces.context.FacesContext)
      */

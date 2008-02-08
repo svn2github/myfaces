@@ -790,7 +790,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         boolean preserveSort = isPreserveSort();
 
-        Object values[] = new Object[39];
+        Object[] values = new Object[39];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
 
@@ -911,7 +911,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     public void restoreState(FacesContext context, Object state)
     {
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         _preserveDataModel = (Boolean) values[1];
         if (isPreserveDataModel())

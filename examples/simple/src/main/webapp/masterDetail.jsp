@@ -116,11 +116,14 @@
     <br/>
 </f:verbatim>
 
-<t:dataTable id="data2" styleClass="standardTable" detailStampExpandedDefault="true" headerClass="standardTable_Header"
+<t:dataTable id="data2" styleClass="standardTable" detailStampExpandedDefault="true"
+             headerClass="standardTable_Header"
              footerClass="standardTable_Header" rowClasses="standardTable_Row1,standardTable_Row2"
-             columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column" var="currentCountry"
-             value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler">
-    <t:column>
+             columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+             var="currentCountry"
+             value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler"
+    rowId="#{currentCountry.isoCode}">
+    <t:column columnId="countryName">
         <f:facet name="header">
             <h:outputText value="#{example_messages['label_country_name']}"/>
         </f:facet>
@@ -131,20 +134,20 @@
             <t:updateActionListener property="#{countryForm.id}" value="#{currentCountry.id}"/>
         </t:commandLink>
     </t:column>
-    <t:column>
+    <t:column columnId="uselesColumn">
         <f:facet name="header">
             <h:outputText value="useles column"/>
         </f:facet>
         <h:outputText value="-"/>
     </t:column>
-    <t:column>
+    <t:column columnId="countryIso">
         <f:facet name="header">
             <h:outputText value="#{example_messages['label_country_iso']}"/>
         </f:facet>
         <h:outputText value="#{currentCountry.isoCode}"/>
     </t:column>
 
-    <t:column>
+    <t:column columnId="countryCities">
         <f:facet name="header">
             <h:outputText value="#{example_messages['label_country_cities']}"/>
         </f:facet>
@@ -157,7 +160,8 @@
     </t:column>
 
     <f:facet name="detailStamp">
-        <t:dataTable id="cities2" embedded="true" var="city" value="#{currentCountry.cities}">
+        <t:dataTable id="cities2" embedded="true" var="city" value="#{currentCountry.cities}"
+            rowId="#{city.name}">
             <t:column colspan="2" headercolspan="2">
                 <f:facet name="header">
                     <h:outputText value="city"/>
