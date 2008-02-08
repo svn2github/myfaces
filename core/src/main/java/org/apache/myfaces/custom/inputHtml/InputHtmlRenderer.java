@@ -100,11 +100,11 @@ public class InputHtmlRenderer extends HtmlRenderer {
     }
 
     static private boolean hasThisPageAlreadyRenderedAnInputHtml(FacesContext context){
-            return context.getExternalContext().getRequestMap().containsKey( InputHtmlRenderer.class );
+            return context.getExternalContext().getRequestMap().containsKey( InputHtmlRenderer.class.getName() );
     }
 
     static private void setThisPageAlreadyRenderedAnInputHtml(FacesContext context){
-        context.getExternalContext().getRequestMap().put(InputHtmlRenderer.class, Boolean.TRUE);
+        context.getExternalContext().getRequestMap().put(InputHtmlRenderer.class.getName(), Boolean.TRUE);
     }
 
     /**
