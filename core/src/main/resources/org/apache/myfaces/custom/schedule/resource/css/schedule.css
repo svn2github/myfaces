@@ -8,10 +8,7 @@ div.schedule-detailed-default {
  	border-style: solid;
 	border-width: 1px;
 	border-color: rgb(153,153,153);
-	position: relative;
 	width: 100%;
-	left: 0px;
-    right: 0px;
 }
 
 div.schedule-detailed-default table.background {
@@ -112,9 +109,7 @@ div.schedule-detailed-default .entry-selected span.title {
 
 /* PART II: Compact Renderer */
 div.schedule-compact-default {
-	position: relative;
 	width: 100%;
-	left: 0px;
 	background-color: rgb(153,153,153);
 }
 
@@ -123,11 +118,11 @@ div.schedule-compact-default table.month th.header {
 	font-family: Verdana, Arial, Helvetica, Sans-Serif;
 }
 
-div.schedule-compact-default table.day {
+div.schedule-compact-default .day {
   background-color: rgb(255,255,255);
 }
 
-div.schedule-compact-default table.day th.header {
+div.schedule-compact-default .day .header {
   background-color: rgb(181,200,207);
   font-size: 10px;
   color: rgb(0,0,0);
@@ -135,10 +130,7 @@ div.schedule-compact-default table.day th.header {
   vertical-align: middle;
 }
 
-div.schedule-compact-default td.content div {
-}
-
-div.schedule-compact-default td.content td {
+div.schedule-compact-default .content td {
   background-color: rgb(255,255,255);
   color: rgb(0,0,0);
   text-align: left;
@@ -158,29 +150,29 @@ div.schedule-compact-default a {
   font-size: 11px;
 }
 
-div.schedule-compact-default td.content td.selected {
+div.schedule-compact-default .content td.selected {
   background-color: rgb(153,0,0);
   border-color: rgb(153,0,0);
   color: rgb(255,255,255);
 }
 
-div.schedule-compact-default td.inactive-day td.content {
+div.schedule-compact-default td.inactive-day .content {
   background-color: rgb(221,221,221);
   visibility: visible;
 }
 
-div.schedule-compact-default td.inactive-day td.content td {
+div.schedule-compact-default td.inactive-day .content td {
   background-color: rgb(221,221,221);
   border-color: rgb(221,221,221);
 }
 
-div.schedule-compact-default td.inactive-day td.content td.selected {
+div.schedule-compact-default td.inactive-day .content td.selected {
   background-color: rgb(153,0,0);
   border-color: rgb(153,0,0);
   color: rgb(255,255,255);
 }
 
-div.schedule-compact-default td.inactive-day th.header {
+div.schedule-compact-default td.inactive-day .header {
   background-color: rgb(221,221,221);
   visibility: visible;
 }
@@ -195,10 +187,7 @@ div.schedule-detailed-evolution {
  	border-style: solid;
 	border-width: 1px;
 	border-color: rgb(255,255,255);
-	position: relative;
 	width: 100%;
-	left: 0px;
-    right: 0px;
 }
 
 div.schedule-detailed-evolution table.background {
@@ -299,22 +288,20 @@ div.schedule-detailed-evolution .entry-selected span.title {
 
 /* PART II: Compact Renderer */
 div.schedule-compact-evolution {
-	position: relative;
 	width: 100%;
-	left: 0px;
     background-color: rgb(172,172,172);
 }
 
-div.schedule-compact-evolution table.month th.header {
+div.schedule-compact-evolution table.month .header {
     background-color: rgb(246,246,246);
 	font-family: Verdana, Arial, Helvetica, Sans-Serif;
 }
 
-div.schedule-compact-evolution table.day {
+div.schedule-compact-evolution .day {
   background-color: rgb(255,255,255);
 }
 
-div.schedule-compact-evolution table.day th.header {
+div.schedule-compact-evolution .day .header {
   background-color: rgb(255,255,255);
   font-size: 10px;
   color: rgb(0,0,0);
@@ -325,10 +312,7 @@ div.schedule-compact-evolution table.day th.header {
   border-bottom-width: 1px;
 }
 
-div.schedule-compact-evolution td.content div {
-}
-
-div.schedule-compact-evolution td.content td {
+div.schedule-compact-evolution .content td {
   background-color: rgb(255,255,255);
   color: rgb(0,0,0);
   text-align: left;
@@ -348,27 +332,27 @@ div.schedule-compact-evolution a {
   font-size: 11px;
 }
 
-div.schedule-compact-evolution td.content td.selected {
+div.schedule-compact-evolution .content td.selected {
   background-color: rgb(190,206,221);
   border-color: rgb(190,206,221);
 }
 
-div.schedule-compact-evolution td.inactive-day td.content {
+div.schedule-compact-evolution td.inactive-day .content {
   background-color: rgb(238,235,231);
   visibility: visible;
 }
 
-div.schedule-compact-evolution td.inactive-day td.content td {
+div.schedule-compact-evolution td.inactive-day .content td {
   background-color: rgb(238,235,231);
   border-color: rgb(238,235,231);
 }
 
-div.schedule-compact-evolution td.inactive-day td.content td.selected {
+div.schedule-compact-evolution td.inactive-day .content td.selected {
   background-color: rgb(190,206,221);
   border-color: rgb(190,206,221);
 }
 
-div.schedule-compact-evolution td.inactive-day th.header {
+div.schedule-compact-evolution td.inactive-day .header {
   background-color: rgb(238,235,231);
   visibility: visible;
 }
@@ -383,10 +367,7 @@ div.schedule-detailed-outlookxp {
     border-style: solid;
     border-width: 1px;
     border-color: rgb(128,128,128);
-    position: relative;
     width: 100%;
-    left: 0px;
-    right: 0px;
 }
 
 div.schedule-detailed-outlookxp table.background {
@@ -487,22 +468,20 @@ div.schedule-detailed-outlookxp .entry-selected span.title {
 
 /* PART II: Compact Renderer */
 div.schedule-compact-outlookxp {
-    position: relative;
     width: 100%;
-    left: 0px;
     background-color: rgb(128,128,128);
 }
 
-div.schedule-compact-outlookxp table.month th.header {
+div.schedule-compact-outlookxp table.month .header {
     background-color: rgb(219,216,209);
 	font-family: Verdana, Arial, Helvetica, Sans-Serif;
 }
 
-div.schedule-compact-outlookxp table.day {
+div.schedule-compact-outlookxp .day {
   background-color: rgb(255,255,255);
 }
 
-div.schedule-compact-outlookxp table.day th.header {
+div.schedule-compact-outlookxp .day .header {
   background-color: rgb(219,216,209);
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 10px;
@@ -511,10 +490,7 @@ div.schedule-compact-outlookxp table.day th.header {
   vertical-align: middle;
 }
 
-div.schedule-compact-outlookxp td.content div {
-}
-
-div.schedule-compact-outlookxp td.content td {
+div.schedule-compact-outlookxp .content td {
   background-color: rgb(255,255,255);
   color: rgb(0,0,0);
   text-align: left;
@@ -534,30 +510,30 @@ div.schedule-compact-outlookxp a {
   font-size: 11px;
 }
 
-div.schedule-compact-outlookxp td.content td.selected {
+div.schedule-compact-outlookxp .content td.selected {
   background-color: rgb(1,2,217);
   border-color: rgb(1,2,217);
   color: rgb(255,255,255);
 }
 
-div.schedule-compact-outlookxp td.inactive-day td.content {
+div.schedule-compact-outlookxp td.inactive-day .content {
   background-color: rgb(219,216,209);
   visibility: visible;
 }
 
-div.schedule-compact-outlookxp td.inactive-day td.content td {
+div.schedule-compact-outlookxp td.inactive-day .content td {
   background-color: rgb(219,216,209);
   border-color: rgb(219,216,209);
 }
 
-div.schedule-compact-outlookxp td.inactive-day td.content td.selected {
+div.schedule-compact-outlookxp td.inactive-day .content td.selected {
   background-color: rgb(1,2,217);
   border-color: rgb(1,2,217);
   color: rgb(255,255,255);
 }
 
 
-div.schedule-compact-outlookxp td.inactive-day th.header {
+div.schedule-compact-outlookxp td.inactive-day .header {
   background-color: rgb(219,216,209);
   visibility: visible;
 }

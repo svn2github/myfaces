@@ -162,23 +162,17 @@ public abstract class AbstractCompactScheduleRenderer extends
         writer.writeAttribute(HTML.STYLE_ATTR, styleBuffer.toString()
                                                + " width: " + cellWidth + "%;", null);
 
-        writer.startElement(HTML.TABLE_ELEM, schedule);
+        writer.startElement(HTML.DIV_ELEM, schedule);
 
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "day"),
                               null);
-        writer.writeAttribute(HTML.STYLE_ATTR, styleBuffer.toString()
-                                               + " width: 100%;", null);
-
-        writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
-        writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
 
         // day header
-        writer.startElement(HTML.TR_ELEM, schedule);
-        writer.startElement(HTML.TH_ELEM, schedule);
+        writer.startElement(HTML.DIV_ELEM, schedule);
         writer.writeAttribute(HTML.CLASS_ATTR,
                               getStyleClass(schedule, "header"), null);
         writer.writeAttribute(HTML.STYLE_ATTR,
-                              "height: 18px; width: 100%; overflow: hidden", null);
+                              "height: 18px; overflow: hidden", null);
 
         writer.startElement(HTML.ANCHOR_ELEM, schedule);
         writer.writeAttribute(HTML.ID_ATTR, dayHeaderId, null);
@@ -199,31 +193,16 @@ public abstract class AbstractCompactScheduleRenderer extends
         writer.writeText(getDateString(context, schedule, day.getDate()), null);
 
         writer.endElement(HTML.ANCHOR_ELEM);
-        writer.endElement(HTML.TH_ELEM);
-        writer.endElement(HTML.TR_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
 
         // day content
-        writer.startElement(HTML.TR_ELEM, schedule);
-        writer.startElement(HTML.TD_ELEM, schedule);
+        writer.startElement(HTML.DIV_ELEM, schedule);
 
         writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
                                                              "content"), null);
 
         // determine the height of the day content in pixels
-        StringBuffer contentStyleBuffer = new StringBuffer();
-        contentStyleBuffer.append(myContentHeight);
-        contentStyleBuffer.append(" width: 100%;");
-        writer.writeAttribute(HTML.STYLE_ATTR, contentStyleBuffer.toString(),
-                              null);
-
-        writer.startElement(HTML.DIV_ELEM, schedule);
-        writer.writeAttribute(HTML.CLASS_ATTR, 
-        		getStyleClass(schedule, "contentview"), null);
-        writer
-                .writeAttribute(
-                        HTML.STYLE_ATTR,
-                        "width: 100%; height: 100%; overflow: auto; vertical-align: top;",
-                        null);
+        writer.writeAttribute(HTML.STYLE_ATTR, myContentHeight + " overflow: auto; vertical-align: top;", null);
 
         //this extra div is required, because when a scrollbar is visible and
         //it is clicked, the fireScheduleTimeClicked() method is fired.
@@ -248,17 +227,11 @@ public abstract class AbstractCompactScheduleRenderer extends
                     null);
         }
 
-        writer.startElement(HTML.TABLE_ELEM, schedule);
-        writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%;", null);
-
         writeEntries(context, schedule, day, writer);
 
-        writer.endElement(HTML.TABLE_ELEM);
         writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.DIV_ELEM);
-        writer.endElement(HTML.TD_ELEM);
-        writer.endElement(HTML.TR_ELEM);
-        writer.endElement(HTML.TABLE_ELEM);
+        writer.endElement(HTML.DIV_ELEM);
         writer.endElement(HTML.TD_ELEM);
     }
 
@@ -280,7 +253,7 @@ public abstract class AbstractCompactScheduleRenderer extends
      *             when the entries could not be drawn
      */
     protected void writeEntries(FacesContext context, HtmlSchedule schedule,
-                                ScheduleDay day, ResponseWriter writer) throws IOException
+            ScheduleDay day, ResponseWriter writer) throws IOException
     {
         final String clientId = schedule.getClientId(context);
         final FormInfo parentFormInfo = RendererUtils.findNestingForm(schedule, context);
@@ -293,71 +266,80 @@ public abstract class AbstractCompactScheduleRenderer extends
             entrySet.add(entry);
         }
 
-        for (Iterator entryIterator = entrySet.iterator(); entryIterator
-                .hasNext();)
+        if (entrySet.size() > 0)
         {
-            ScheduleEntry entry = (ScheduleEntry) entryIterator.next();
-            writer.startElement(HTML.TR_ELEM, schedule);
-            writer.startElement(HTML.TD_ELEM, schedule);
+        	writer.startElement(HTML.TABLE_ELEM, schedule);
+            writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
+            writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
+            writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%;", null);           
 
-            if (isSelected(schedule, entry))
+            for (Iterator entryIterator = entrySet.iterator(); entryIterator
+            .hasNext();)
             {
-                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
-                                                                     "selected"), null);
+                ScheduleEntry entry = (ScheduleEntry) entryIterator.next();
+                writer.startElement(HTML.TR_ELEM, schedule);
+                writer.startElement(HTML.TD_ELEM, schedule);
+
+                if (isSelected(schedule, entry))
+                {
+                    writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule,
+                            "selected"), null);
+                }
+
+                //compose the CSS style for the entry box
+                StringBuffer entryStyle = new StringBuffer();
+                entryStyle.append("width: 100%;");
+                String entryColor = getEntryRenderer(schedule).getColor(context, schedule, entry, isSelected(schedule, entry));
+                if (isSelected(schedule, entry) && entryColor != null) {
+                    entryStyle.append(" background-color: ");
+                    entryStyle.append(entryColor);
+                    entryStyle.append(";");
+                    entryStyle.append(" border-color: ");
+                    entryStyle.append(entryColor);
+                    entryStyle.append(";");
+                }
+
+                writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(), null);
+
+                // draw the tooltip
+                if (schedule.isTooltip())
+                {
+                    getEntryRenderer(schedule).renderToolTip(context, writer,
+                            schedule, entry, isSelected(schedule, entry));
+                }
+
+                if (!isSelected(schedule, entry) && !schedule.isReadonly())
+                {
+                    writer.startElement(HTML.ANCHOR_ELEM, schedule);
+                    writer.writeAttribute(HTML.HREF_ATTR, "#", null);
+
+                    writer.writeAttribute(
+                            HTML.ONCLICK_ATTR,
+                            "fireEntrySelected('"
+                            + formId + "', '"
+                            + clientId + "', '"
+                            + entry.getId()
+                            + "');",
+                            null);
+                }
+
+                // draw the content
+                getEntryRenderer(schedule).renderContent(context, writer, schedule,
+                        day, entry, true, isSelected(schedule, entry));
+
+                if (!isSelected(schedule, entry) && !schedule.isReadonly())
+                {
+                    writer.endElement(HTML.ANCHOR_ELEM);
+                }
+
+                writer.endElement(HTML.TD_ELEM);
+                writer.endElement(HTML.TR_ELEM);
             }
-
-            //compose the CSS style for the entry box
-            StringBuffer entryStyle = new StringBuffer();
-            entryStyle.append("width: 100%;");
-            String entryColor = getEntryRenderer(schedule).getColor(context, schedule, entry, isSelected(schedule, entry));
-            if (isSelected(schedule, entry) && entryColor != null) {
-                entryStyle.append(" background-color: ");
-                entryStyle.append(entryColor);
-                entryStyle.append(";");
-                entryStyle.append(" border-color: ");
-                entryStyle.append(entryColor);
-                entryStyle.append(";");
-            }
-
-            writer.writeAttribute(HTML.STYLE_ATTR, entryStyle.toString(), null);
-
-            // draw the tooltip
-            if (schedule.isTooltip())
-            {
-                getEntryRenderer(schedule).renderToolTip(context, writer,
-                                                         schedule, entry, isSelected(schedule, entry));
-            }
-
-            if (!isSelected(schedule, entry) && !schedule.isReadonly())
-            {
-                writer.startElement(HTML.ANCHOR_ELEM, schedule);
-                writer.writeAttribute(HTML.HREF_ATTR, "#", null);
-
-                writer.writeAttribute(
-                        HTML.ONCLICK_ATTR,
-                        "fireEntrySelected('"
-                        + formId + "', '"
-                        + clientId + "', '"
-                        + entry.getId()
-                        + "');",
-                        null);
-            }
-
-            // draw the content
-            getEntryRenderer(schedule).renderContent(context, writer, schedule,
-                                                     day, entry, true, isSelected(schedule, entry));
-
-            if (!isSelected(schedule, entry) && !schedule.isReadonly())
-            {
-                writer.endElement(HTML.ANCHOR_ELEM);
-            }
-
-            writer.endElement(HTML.TD_ELEM);
-            writer.endElement(HTML.TR_ELEM);
+            writer.endElement(HTML.TABLE_ELEM);
         }
     }
 
-    private boolean isSelected(HtmlSchedule schedule, ScheduleEntry entry)
+    protected boolean isSelected(HtmlSchedule schedule, ScheduleEntry entry)
     {
         ScheduleEntry selectedEntry = schedule.getModel().getSelectedEntry();
 
