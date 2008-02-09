@@ -166,15 +166,19 @@ public abstract class AbstractScheduleRenderer extends Renderer implements
         }
         addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
                 HtmlSchedule.class, "javascript/schedule.js");
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlSchedule.class, "javascript/alphaAPI.js");
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlSchedule.class, "javascript/domLib.js");
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlSchedule.class, "javascript/domTT.js");
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
-                HtmlSchedule.class, "javascript/fadomatic.js");
-
+        
+        if (schedule.isTooltip())
+        {
+        	addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
+        			HtmlSchedule.class, "javascript/alphaAPI.js");
+        	addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
+        			HtmlSchedule.class, "javascript/domLib.js");
+        	addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
+        			HtmlSchedule.class, "javascript/domTT.js");
+        	addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN,
+        			HtmlSchedule.class, "javascript/fadomatic.js");
+        }
+        
         //hidden input field containing the id of the selected entry
         writer.startElement(HTML.INPUT_ELEM, schedule);
         writer.writeAttribute(HTML.TYPE_ATTR, "hidden", null);
