@@ -477,6 +477,11 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
     	boolean firstDay = true;
     	TreeSet firstDayIntervals = null;
     	
+    	if (mode == DAY)
+    	{
+    		return true;
+    	}
+    	
     	for (Iterator dayIterator = iterator(); dayIterator.hasNext(); )
     	{
     		Day day = (Day) dayIterator.next();
