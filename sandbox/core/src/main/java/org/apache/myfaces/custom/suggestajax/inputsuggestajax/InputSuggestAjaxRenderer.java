@@ -85,6 +85,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         String label = null;
         String hiddenInputValue = null;
+        boolean hasLabelMethod = false;
 
         String mainComponentRenderedValue = null;
 
@@ -99,6 +100,8 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
             if (labelMethod != null)
             {
+                hasLabelMethod = true;
+
                 Object valueObject = inputSuggestAjax.getValue();
 
                 Converter converter = getRequiredConverter(context, inputSuggestAjax);
@@ -107,7 +110,6 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
 				hiddenInputValue = converter.getAsString(context, inputSuggestAjax, valueObject);
                 mainComponentRenderedValue = hiddenInputValue;
-
             }
         }
 
@@ -190,13 +192,13 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         out.endElement(HTML.SCRIPT_ELEM);
 
-        if (hiddenInputValue != null)
+        if (hasLabelMethod)
         {
             out.startElement(HTML.INPUT_ELEM, inputSuggestAjax);
             out.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN, null);
             out.writeAttribute(HTML.ID_ATTR, clientId, null);
             out.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            out.writeAttribute(HTML.VALUE_ATTR, hiddenInputValue, null);
+            out.writeAttribute(HTML.VALUE_ATTR, hiddenInputValue!=null?hiddenInputValue:"", null);
             out.endElement(HTML.INPUT_ELEM);
 
             out.startElement(HTML.SCRIPT_ELEM, null);
