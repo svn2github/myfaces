@@ -30,6 +30,7 @@ import junit.framework.TestSuite;
 
 import java.io.*;
 import java.net.URL;
+import java.net.URI;
 
 /**
  * Test case for XmlTemplate
@@ -95,10 +96,10 @@ public class XmlTemplateTest extends AbstractJsfTestCase
         URL url = loader.getResource(PETS_CONTENT);
         try
         {
-            contentStream = new FileInputStream(new File(url.getFile()));
+            contentStream = new FileInputStream(new File(URI.create(url.toString())));
 
             // now also populate the String variable for certain test cases
-            FileInputStream cs = new FileInputStream(new File(url.getFile()));
+            FileInputStream cs = new FileInputStream(new File(URI.create(url.toString())));
             int x= cs.available();
             byte b[]= new byte[x];
             //noinspection ResultOfMethodCallIgnored
@@ -112,10 +113,10 @@ public class XmlTemplateTest extends AbstractJsfTestCase
         url = loader.getResource(PETS_STYLESHEET);
         try
         {
-            styleStream = new FileInputStream(new File(url.getFile()));
+            styleStream = new FileInputStream(new File(URI.create(url.toString())));
 
             // now also populate the String variable for certain test cases
-            FileInputStream ss = new FileInputStream(new File(url.getFile()));
+            FileInputStream ss = new FileInputStream(new File(URI.create(url.toString())));
             int x= ss.available();
             byte b[]= new byte[x];
             //noinspection ResultOfMethodCallIgnored

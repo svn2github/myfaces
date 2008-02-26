@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * Backing bean for template examples.  Used to demonstrate how you can provide both the
@@ -46,12 +47,12 @@ public class TemplateBacker
     public InputStream getContentStream() throws IOException
     {
         URL url = loader.getResource("org/apache/myfaces/examples/template/foo.xml");
-        return new FileInputStream(new File(url.getFile()));
+        return new FileInputStream(new File(URI.create(url.toString())));
     }
 
     public InputStream getStyleStream() throws IOException
     {
         URL url = loader.getResource("org/apache/myfaces/examples/template/foo.xsl");
-        return new FileInputStream(new File(url.getFile()));
+        return new FileInputStream(new File(URI.create(url.toString())));
     }
 }

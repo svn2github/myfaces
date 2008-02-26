@@ -28,6 +28,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.net.URL;
+import java.net.URI;
 
 /**
  * Used to transform XML (from either a String or URL) using either XSLT or
@@ -80,7 +81,7 @@ public class XmlTemplate extends UIComponentBase
             }
 
             URL url = loader.getResource(xmlLocation);
-            xmlStream = new FileInputStream(new File(url.getFile()));
+            xmlStream = new FileInputStream(new File(URI.create(url.toString())));
         }
 
         if (xslLocation != null)
@@ -92,7 +93,7 @@ public class XmlTemplate extends UIComponentBase
             }
 
             URL url = loader.getResource(xslLocation);
-            xslStream = new FileInputStream(new File(url.getFile()));
+            xslStream = new FileInputStream(new File(URI.create(url.toString())));
         }
 
         if (xml != null)
