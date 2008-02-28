@@ -119,7 +119,7 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 	{
 		Boolean disableRenderChildren = (Boolean) component.getAttributes().get(DISABLE_RENDER_CHILDREN);
 
-		if(disableRenderChildren != null && disableRenderChildren.booleanValue() == false)
+		if(disableRenderChildren == null || disableRenderChildren.booleanValue() == false)
 		{
 			RendererUtils.renderChildren(context, component);
 		}
