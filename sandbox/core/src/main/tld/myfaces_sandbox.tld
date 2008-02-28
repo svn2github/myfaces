@@ -1351,6 +1351,13 @@ Sandbox-related entities.
         </attribute>
     </tag>
 
+    <tag>
+        <name>pprSubmit</name>
+        <tag-class>org.apache.myfaces.custom.ppr.PPRSubmitTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>PPRSubmitTag can be attached to command components, enabling PPR-request inside UIData components</description>
+    </tag>
+
 	<tag>
 		<name>layoutingContentPane</name>
 		<tag-class>org.apache.myfaces.custom.dojolayouts.DojoContentPaneTag</tag-class>

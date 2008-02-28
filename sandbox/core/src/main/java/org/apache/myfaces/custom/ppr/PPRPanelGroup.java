@@ -20,9 +20,14 @@ package org.apache.myfaces.custom.ppr;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.component.UIComponent;
 
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.custom.subform.SubForm;
+
+import java.util.List;
+import java.util.Collections;
 
 /**
  * AJAX component which supports updating its children via AJAX calls. These
@@ -56,7 +61,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
 	private Boolean _stateUpdate = new Boolean(true);
 
-	public PPRPanelGroup()
+    public PPRPanelGroup()
 	{
 		setRendererType(DEFAULT_RENDERER_TYPE);
 	}
@@ -229,4 +234,35 @@ public class PPRPanelGroup extends HtmlPanelGroup
 		values[8] = _waitBeforePeriodicalUpdate;
 		return values;
 	}
+
+
+    /**
+     * @return {@link PartialTriggerParser.PartialTrigger}
+     */
+    public List parsePartialTriggers () {
+        List list;
+            String partialTriggers = getPartialTriggers();
+            //handle partial triggers
+            if(partialTriggers != null && partialTriggers.trim().length() > 0) {
+                list = (new PartialTriggerParser()).parse(partialTriggers);
+            } else {
+                list = Collections.emptyList();
+            }
+        return list;
+    }
+
+    /**
+     * @return {@link PartialTriggerParser.PartialTrigger}
+     */
+    public List parsePeriodicalTriggers() {
+        List list;
+        String periodicalTriggers = getPeriodicalTriggers();
+        if(periodicalTriggers != null && periodicalTriggers.trim().length() <= 0) {
+            list = (new PartialTriggerParser()).parse(periodicalTriggers);
+        } else {
+            list = Collections.emptyList();
+        }
+        return list;
+    }
+
 }
