@@ -298,6 +298,11 @@
 	 <component-type>org.apache.myfaces.PasswordStrength</component-type>
 	 <component-class>org.apache.myfaces.custom.passwordStrength.PasswordStrengthComponent</component-class>
   </component> 
+  
+  <component>
+	 <component-type>org.apache.myfaces.CAPTCHA</component-type>
+	 <component-class>org.apache.myfaces.custom.captcha.CAPTCHAComponent</component-class>
+  </component>   
 
   <!-- sandbox converters -->
 
@@ -636,6 +641,13 @@
   		<renderer-type>org.apache.myfaces.PasswordStrength</renderer-type>
   		<renderer-class>org.apache.myfaces.custom.passwordStrength.PasswordStrengthRenderer</renderer-class>
   	</renderer>
+  	
+  	<renderer>
+  		<component-family>org.apache.myfaces.CAPTCHA</component-family>
+  		<renderer-type>org.apache.myfaces.CAPTCHA</renderer-type>
+  		<renderer-class>org.apache.myfaces.custom.captcha.CAPTCHARenderer</renderer-class>
+  	</renderer>  	
+  	
   </render-kit>
 
   <lifecycle>

@@ -189,6 +189,13 @@
 	            </h:outputLink>
          </h:panelGrid>
         
+         <h:outputText value="CAPTCHA"/>
+         <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="captcha.jsf" >
+	                <f:verbatim>CAPTCHA - component to generate random text images for security purposes</f:verbatim>
+	            </h:outputLink>
+         </h:panelGrid>
+        
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
     </f:view>

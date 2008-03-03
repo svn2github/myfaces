@@ -1825,4 +1825,25 @@ Sandbox-related entities.
       </attribute>
 
   </tag>
+
+
+
+    <tag>
+        <name>captcha</name>
+        <tag-class>org.apache.myfaces.custom.captcha.CAPTCHATag</tag-class>
+        <body-content>JSP</body-content>
+        &ui_component_attributes;
+        &user_role_attributes;
+      <attribute>
+         <name>captchaSessionKeyName</name>
+         <required>true</required>
+         <rtexprvalue>true</rtexprvalue>
+	     <type>java.lang.String</type>
+	      <description>
+		Determines the CAPTCHA session key name.
+	      </description>
+      </attribute>
+    </tag>
+
+
 </taglib>

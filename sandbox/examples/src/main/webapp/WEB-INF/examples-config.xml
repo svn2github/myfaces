@@ -556,6 +556,13 @@
 		  <managed-bean-class>org.apache.myfaces.examples.passwordStrength.PasswordStrengthBean</managed-bean-class>
 		  <managed-bean-scope>request</managed-bean-scope>
 	 </managed-bean> 
+
+    <!-- managed bean for captcha -->	 
+	 <managed-bean>
+ 		<managed-bean-name>captchaBean</managed-bean-name>
+ 		<managed-bean-class>org.apache.myfaces.examples.captcha.CaptchaBean</managed-bean-class>
+ 		<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>
   
 	<!-- navigation rules -->
     <navigation-rule>
