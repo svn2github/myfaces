@@ -17,8 +17,6 @@
  * under the License.
  */
 package org.apache.myfaces.custom.captcha.util;
-import org.apache.batik.ext.awt.image.codec.*;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -27,10 +25,12 @@ import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.batik.ext.awt.image.codec.PNGEncodeParam;
+import org.apache.batik.ext.awt.image.codec.PNGImageEncoder;
 
 
 /**
