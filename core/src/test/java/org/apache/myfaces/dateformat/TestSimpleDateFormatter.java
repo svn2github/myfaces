@@ -58,7 +58,29 @@ public class TestSimpleDateFormatter extends TestCase
         assertEquals(23, d.getMinutes());
         assertEquals(59, d.getSeconds());
     }
-    
+
+    /**
+     * Check the parsing of dates with months that use names.
+     */
+    public void testParseNamedMonth()
+    {
+    	Locale locale = Locale.ENGLISH;
+        org.apache.myfaces.dateformat.DateFormatSymbols symbols = 
+        	new org.apache.myfaces.dateformat.DateFormatSymbols(locale);
+        int firstDayOfWeek = 0;
+        SimpleDateFormatter sdf = new SimpleDateFormatter(
+        		"dd-MMM-yyyy", symbols, firstDayOfWeek);
+        
+        Date d = sdf.parse("12-Mar-2008");
+        assertNotNull(d);
+        assertEquals(2008, d.getYear() + 1900);
+        assertEquals(2, d.getMonth());
+        assertEquals(12, d.getDate());
+        assertEquals(0, d.getHours());
+        assertEquals(0, d.getMinutes());
+        assertEquals(0, d.getSeconds());
+    }
+
     // test every possible formatter in date formatting
     public void testFormatAll()
     {

@@ -546,6 +546,7 @@ public class SimpleDateFormatter
 
         char c = patternSub.charAt(0);
         int patlen = patternSub.length();
+        context.newIndex = dateIndex;
 
         if (c == 'y')
         {
