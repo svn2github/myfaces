@@ -70,6 +70,7 @@ public class HtmlTreeRenderer extends Renderer
     private static final int EXPANDED = 2;
     private static final int LINES = 4;
     private static final int LAST = 8;
+    private int counter = 0;
 
     // see superclass for documentation
     public boolean getRendersChildren()
@@ -497,7 +498,8 @@ public class HtmlTreeRenderer extends Renderer
 
 //      add the appropriate image for the nav control
         UIGraphic image = new UIGraphic();
-        image.setId(IMAGE_PREFIX);
+        String imageId = IMAGE_PREFIX+(counter++);
+        image.setId(imageId);
         image.setUrl(navSrcUrl);
         Map imageAttrs = image.getAttributes();
         imageAttrs.put(HTML.WIDTH_ATTR, "19");
@@ -521,7 +523,7 @@ public class HtmlTreeRenderer extends Renderer
                 expandImgSrc = context.getApplication().getViewHandler().getResourceURL(context, expandImg.getUrl());
                 if (expandImg.isRendered())
                 {
-                    expandImg.setId(IMAGE_PREFIX + NODE_STATE_EXPANDED);
+                    expandImg.setId(imageId + NODE_STATE_EXPANDED);
                     expandImg.setParent(tree);
                     nodeImageId = expandImg.getClientId(context);
                     nodeImgFacet = expandFacet;
@@ -535,7 +537,7 @@ public class HtmlTreeRenderer extends Renderer
                 collapseImgSrc = context.getApplication().getViewHandler().getResourceURL(context, collapseImg.getUrl());
                 if (collapseImg.isRendered())
                 {
-                    collapseImg.setId(IMAGE_PREFIX + NODE_STATE_CLOSED);
+                    collapseImg.setId(imageId + NODE_STATE_CLOSED);
                     collapseImg.setParent(tree);
                     nodeImageId = collapseImg.getClientId(context);
                     nodeImgFacet = collapseFacet;
