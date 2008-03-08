@@ -1465,6 +1465,10 @@ org_apache_myfaces_PopupCalendar.prototype._popUpCalendarForInputDate = function
         this.myFacesCtlType = "x:inputDate";
         this.myFacesInputDateClientId = clientId;
         this.dateFormat = format;
+        
+        //Init stdDateFormatter
+        this.stdDateFormatter = new org_apache_myfaces_dateformat_SimpleDateFormatter(
+            this.dateFormat, this.dateFormatSymbols, this.initData.startAt);
 
         this.selectedDate.date = document.getElementById(clientId + ".day").value != "" ? parseInt(this._formatInt(document.getElementById(clientId + ".day").value), 10) : this.dateNow;
         this.selectedDate.month = document.getElementById(clientId + ".month").value != "-1" ? parseInt(this._formatInt(document.getElementById(clientId + ".month").value), 10) - 1 : this.monthNow;
