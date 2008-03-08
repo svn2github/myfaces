@@ -99,9 +99,9 @@ public class HtmlCalendarRenderer
     private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.calendar.JAVASCRIPT_ENCODED";
 
     // TODO: move this to HtmlRendererUtils in shared
-	private static final String RESOURCE_NONE = "none";
+    private static final String RESOURCE_NONE = "none";
 
-	public void encodeEnd(FacesContext facesContext, UIComponent component)
+    public void encodeEnd(FacesContext facesContext, UIComponent component)
             throws IOException
     {
         RendererUtils.checkParamValidity(facesContext, component, HtmlInputCalendar.class);
@@ -348,10 +348,10 @@ public class HtmlCalendarRenderer
      */
     static public void addScriptAndCSSResources(FacesContext facesContext, UIComponent component){
         // Check to see if javascript has already been written (which could happen if more than one calendar
-    	// on the same page). Note that this means that if two calendar controls in the same page have
-    	// different styleLocation or scriptLocation settings then all but the first one get ignored.
-    	// Having different settings for calendars on the same page would be unusual, so ignore this
-    	// for now..
+        // on the same page). Note that this means that if two calendar controls in the same page have
+        // different styleLocation or scriptLocation settings then all but the first one get ignored.
+        // Having different settings for calendars on the same page would be unusual, so ignore this
+        // for now..
         if (facesContext.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
         {
             return;
@@ -373,7 +373,7 @@ public class HtmlCalendarRenderer
         }
         else
         {
-        	// output nothing; presumably the page directly references the necessary stylesheet
+            // output nothing; presumably the page directly references the necessary stylesheet
         }
 
         String javascriptLocation = HtmlRendererUtils.getJavascriptLocation(component);
@@ -392,7 +392,7 @@ public class HtmlCalendarRenderer
         }
         else
         {
-        	// output nothing; presumably the page directly references the necessary javascript
+            // output nothing; presumably the page directly references the necessary javascript
         }
 
         facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
@@ -976,6 +976,12 @@ public class HtmlCalendarRenderer
 
     public void decode(FacesContext facesContext, UIComponent component)
     {
+        if(HtmlRendererUtils.isDisabledOrReadOnly(component))
+        {
+            // nothing to do here
+            return;
+        }
+
         RendererUtils.checkParamValidity(facesContext, component, HtmlInputCalendar.class);
 
         String helperString = getHelperString(component);
@@ -989,13 +995,9 @@ public class HtmlCalendarRenderer
                 .getRequestParameterMap();
         String clientId = component.getClientId(facesContext);
 
-        if(HtmlRendererUtils.isDisabledOrReadOnly(component))
-            return;
-
         if(paramMap.containsKey(clientId))
         {
-            String value = (String) paramMap
-                    .get(clientId);
+            String value = (String) paramMap.get(clientId);
 
             if(!value.equalsIgnoreCase(helperString))
             {
@@ -1003,6 +1005,12 @@ public class HtmlCalendarRenderer
             }
             else
             {
+                // The field was initially filled with the "helper string", and has
+                // not been altered by the user so treat this as if null had been
+                // passed by the user.
+                //
+                // TODO: does this mean the target date is set to todays date?
+                // And how does this affect the "required" property?
                 ((EditableValueHolder) component).setSubmittedValue("");
             }
         }
@@ -1024,7 +1032,9 @@ public class HtmlCalendarRenderer
         Converter converter = uiInput.getConverter();
 
         if(converter==null)
+        {
             converter = new CalendarDateTimeConverter();
+        }
 
         if (submittedValue != null && !(submittedValue instanceof String))
         {
@@ -1055,7 +1065,7 @@ public class HtmlCalendarRenderer
 
             if(uiComponent instanceof HtmlInputCalendar && ((HtmlInputCalendar) uiComponent).isRenderAsPopup())
             {
-            	HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
+                HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
                 String popupDateFormat = calendar.getPopupDateFormat();
                 String formatStr = createJSPopupFormat(facesContext, popupDateFormat);
                 Locale locale = facesContext.getViewRoot().getLocale();
@@ -1064,8 +1074,8 @@ public class HtmlCalendarRenderer
                 org.apache.myfaces.dateformat.DateFormatSymbols symbols = new org.apache.myfaces.dateformat.DateFormatSymbols(locale);
                 SimpleDateFormatter dateFormat = new SimpleDateFormatter(formatStr, symbols, firstDayOfWeek);
                 
-            	Date date = dateFormat.parse(s); 
-            	if (date != null) {
+                Date date = dateFormat.parse(s); 
+                if (date != null) {
                     return date;
                 }
                 FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
@@ -1074,11 +1084,11 @@ public class HtmlCalendarRenderer
             }
             else
             {
-            	DateFormat dateFormat = createStandardDateFormat(facesContext);
+                DateFormat dateFormat = createStandardDateFormat(facesContext);
                 dateFormat.setLenient(false);
                 try
                 {
-                	Date date = dateFormat.parse(s); 
+                    Date date = dateFormat.parse(s); 
                     return date;
                 }
                 catch (ParseException e)
@@ -1116,7 +1126,7 @@ public class HtmlCalendarRenderer
 
             if(uiComponent instanceof HtmlInputCalendar && ((HtmlInputCalendar) uiComponent).isRenderAsPopup())
             {
-            	HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
+                HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
                 String popupDateFormat = calendar.getPopupDateFormat();
                 String formatStr = createJSPopupFormat(facesContext, popupDateFormat);
                 Locale locale = facesContext.getViewRoot().getLocale();
@@ -1146,15 +1156,5 @@ public class HtmlCalendarRenderer
             else
                 return new SimpleDateFormat("dd.MM.yyyy", facesContext.getViewRoot().getLocale());
         }
-
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        SimpleDateFormat format = new SimpleDateFormat("M/d/yy h:mm a");
-
-        System.out.println(format.get2DigitYearStart());
-
-        System.out.println(format.format(format.parse("10/10/2005 6:00 AM")));
     }
 }
