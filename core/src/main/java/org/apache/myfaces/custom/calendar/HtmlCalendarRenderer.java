@@ -410,7 +410,6 @@ public class HtmlCalendarRenderer
                                                     int firstDayOfWeek, UIComponent uiComponent,
                                                     String popupCalendarVariable)
     {
-        HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
 
         // Convert day value to java.util.Date convention (Sun=0, Mon=1, Sat=6). This is
         // the convention that javascript Date objects use.
@@ -437,29 +436,43 @@ public class HtmlCalendarRenderer
         StringBuffer script = new StringBuffer();
         AddResource ar = AddResourceFactory.getInstance(facesContext);
 
-        // Set the themePrefix variable
-        String popupTheme = calendar.getPopupTheme();
-        if (popupTheme == null)
+        if (uiComponent instanceof HtmlInputCalendar)
         {
-            popupTheme = "DB";
-        }
-        setStringVariable(script,popupCalendarVariable + ".initData.themePrefix", "jscalendar-" + popupTheme);
+            HtmlInputCalendar calendar = (HtmlInputCalendar) uiComponent;
+            // Set the themePrefix variable
+            String popupTheme = calendar.getPopupTheme();
+            if (popupTheme == null)
+            {
+                popupTheme = "DB";
+            }
+            setStringVariable(script,popupCalendarVariable + ".initData.themePrefix", "jscalendar-" + popupTheme);
 
-        // specify the URL for the directory in which all the .gif images can be found
-        String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
-        if(imageLocation == null)
-        {
-            String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme + "/");
-            setStringVariable(script,popupCalendarVariable + ".initData.imgDir",
+        
+            // specify the URL for the directory in which all the .gif images can be found
+            String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
+            if(imageLocation == null)
+            {
+                String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme + "/");
+                setStringVariable(script,popupCalendarVariable + ".initData.imgDir",
                               JavascriptUtils.encodeString(uri));
+            }
+            else
+            {
+                setStringVariable(script, popupCalendarVariable +".initData.imgDir",
+                              (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
+                                                            .getResourceUri(facesContext, imageLocation+"/"))) );
+            }
         }
         else
         {
-            setStringVariable(script, popupCalendarVariable +".initData.imgDir",
-                              (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
-                                                            .getResourceUri(facesContext, imageLocation+"/"))) );
+            String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
+            if (imageLocation != null)
+            {
+                setStringVariable(script, popupCalendarVariable +".initData.imgDir",
+                        (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
+                                                      .getResourceUri(facesContext, imageLocation+"/"))) );                
+            }
         }
-
         defineStringArray(script, popupCalendarVariable +".initData.monthName", mapMonths(symbols));
         defineStringArray(script, popupCalendarVariable +".initData.dayName", weekDays);
         setIntegerVariable(script, popupCalendarVariable +".initData.startAt",realFirstDayOfWeek);
