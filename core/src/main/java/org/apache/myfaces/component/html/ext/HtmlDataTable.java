@@ -1168,7 +1168,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 		return v != null ? v.booleanValue() : DEFAULT_DETAILSTAMP_EXPANDED;
 	}
 
-	public void setEmbedded(String detailStampLocation)
+	public void setDetailStampLocation(String detailStampLocation)
 	{
 		_detailStampLocation = detailStampLocation;
 	}
