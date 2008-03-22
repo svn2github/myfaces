@@ -3,7 +3,7 @@
     <artifactId>tomahawk-sandbox</artifactId>
     <packaging>jar</packaging>
     <name>Sandbox Core</name>
-    <url>http://myfaces.apache.org</url>
+    <url>http://myfaces.apache.org/sandbox</url>
     <description>
         This is the Sandbox Subproject Description [INSERT MORE STUFF HERE]
     </description>
