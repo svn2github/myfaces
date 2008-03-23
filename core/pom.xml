@@ -25,7 +25,7 @@
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
+      <version>1.1.1</version>
       <scope>compile</scope>
     </dependency>
     
@@ -107,12 +107,14 @@
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-api</artifactId>
+      <version>1.1.5</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.myfaces.shared</groupId>
       <artifactId>myfaces-shared-tomahawk</artifactId>
+      <version>2.0.8-SNAPSHOT</version>
       <scope>provided</scope> <!-- because we add all classes to the jar directly -->
     </dependency>
 
@@ -142,6 +144,7 @@
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-impl</artifactId>
+      <version>1.1.5</version>
       <!--
         Since Tomahawk must stay compatible to other JSF implementations we
         must not have any (compile time) dependency on myfaces-impl other than
@@ -246,8 +249,8 @@
     <plugins>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.4.2</version>
         <configuration>
           <excludes>
             <exclude>**/Abstract*.java</exclude>
@@ -277,8 +280,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>dependency-maven-plugin</artifactId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.0</version>
         <executions>
           <execution>
             <id>unpack-shared-tomahawk</id>
@@ -321,6 +324,7 @@
       <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>build-helper-maven-plugin</artifactId>
+            <version>1.0</version>
             <executions>
                 <execution>
                     <id>add-source</id>
@@ -338,6 +342,7 @@
       </plugin>
 		<plugin>
 			<artifactId>maven-source-plugin</artifactId>
+			<version>2.0.4</version>
 			<executions>
 				<execution>
 					<id>attach-source</id>
@@ -356,9 +361,8 @@
     <plugins>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>changelog-maven-plugin</artifactId>
-        <version>2.0-beta-1</version>
+        <artifactId>maven-changelog-plugin</artifactId>
+        <version>2.1</version>
         <reportSets>
           <reportSet>
             <id>dual-report</id>
@@ -376,14 +380,13 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.0-beta-3</version>
+        <version>2.4</version>
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jxr-maven-plugin</artifactId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
       </plugin>
 
       <plugin>
@@ -393,8 +396,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>surefire-report-maven-plugin</artifactId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.4</version>
       </plugin>
 
     </plugins>
@@ -495,8 +498,8 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.4</version>
             <executions>
               <execution>
                 <id>attach-javadoc</id>
@@ -519,7 +522,6 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
             <executions>
               <execution>
