@@ -4,12 +4,12 @@
 
 Description
 
-	This component allows you to render part of the
-	page to a newly-created String-holding EL variable for later use.
+  This component allows you to render part of the
+  page to a newly-created String-holding EL variable for later use.
 
 Screen Shot
             
-	Not available at this time.
+  Not available at this time.
 ~~<!-- replace with either a figure or Not Available -->
 ~~<figure src="jscookmenu.png" alt="jscookmenu"/>
 
@@ -41,10 +41,10 @@ Syntax
 
 * \<t:buffer\>
 
-	<<<into>>> - The JSP variable that will store the buffered content.
+  <<<into>>> - The JSP variable that will store the buffered content.
 
 Instructions
             
-	Just nest elements to buffer into a \<t:buffer\> element.
+  Just nest elements to buffer into a \<t:buffer\> element.
 
-	See examples/buffer.jsp for an example!
+  See examples/buffer.jsp for an example!

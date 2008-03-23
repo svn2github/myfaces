@@ -17,67 +17,67 @@
 -->
 <project name="MyFaces Tomahawk">
 
-  	<bannerLeft>
-        <name>Apache MyFaces Tomahawk</name>
-        <src>img/banners/MyFaces_logo.jpg</src>
-        <href>http://myfaces.apache.org/</href>
-    </bannerLeft>
+  <bannerLeft>
+    <name>Apache MyFaces Tomahawk</name>
+    <src>img/banners/MyFaces_logo.jpg</src>
+    <href>http://myfaces.apache.org/</href>
+  </bannerLeft>
     
-    <bannerRight>
-        <name>Apache Banner</name>
-        <src>img/banners/apache_banner.png</src>
-        <href>http://myfaces.apache.org/</href>
-    </bannerRight>
+  <bannerRight>
+    <name>Apache Banner</name>
+    <src>img/banners/apache_banner.png</src>
+    <href>http://myfaces.apache.org/</href>
+  </bannerRight>
     
-    <publishDate format="dd MMM yyyy" />
+  <publishDate format="dd MMM yyyy" />
     
-    <skin>
-      <groupId>org.apache.myfaces.maven</groupId>
-      <artifactId>myfaces-site-skin</artifactId>
-      <version>1-SNAPSHOT</version>
-    </skin>
+  <skin>
+    <groupId>org.apache.myfaces.maven</groupId>
+    <artifactId>myfaces-site-skin</artifactId>
+    <version>1-SNAPSHOT</version>
+  </skin>
 
-  	<body>
-	    <links>
-	      	<item name="Apache" href="http://www.apache.org/"/>
-	      	<item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
-	   	</links>
-	  
-	    <menu name="MyFaces Projects">
-	      	<item name="Overview" href="http://myfaces.apache.org/index.html"/>
-            <item name="Core JSF-1.1"   href="http://myfaces.apache.org/core11/index.html" collapse="true">
-              <item name="dummy"        href="dummy"/>
-            </item>
-            <item name="Core JSF-1.2"   href="http://myfaces.apache.org/core12/index.html" collapse="true">
-              <item name="dummy"        href="dummy"/>
-            </item>
-            <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
-	      	<item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
-            <item name="Tomahawk" href="http://myfaces.apache.org/tomahawk/index.html"/>
-            <item name="Sandbox" href="http://myfaces.apache.org/sandbox/index.html"/>
-	      	<item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
-            <item name="Portlet Bridge" href="http://myfaces.apache.org/portlet-bridge/index.html"/>
-	    </menu>
-		    
-		<menu name="Documentation">
-		    <item name="Tag Library" href="tlddoc/index.html"/>
-		    <item name="Extended Docs" href="extendedDocs.html"/>  
-			<item name="Extensions filter" href="extensionsFilter.html"/>  
-		    <item name="forceId" href="forceId.html"/>
-		    <item name="Tiles Support" href="tiles.html"/>
-		</menu>    
-		
-	    <menu name="Testing">
-	      	<item name="OpenQA Selenium" href="/testing/selenium.html"/>
-	      	<item name="Autoriginate HostedQA" href="/testing/hostedqa.html"/>
-	    </menu>
-	
-	    <menu ref="reports" inherit="top"/>
-	
-	    <menu name="Foundation">
-	      	<item name="ASF" href="http://apache.org/" />
-	     	<item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
-	      	<item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
-	    </menu>
-  	</body>
+  <body>
+    <links>
+      <item name="Apache" href="http://www.apache.org/"/>
+      <item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
+     </links>
+    
+    <menu name="MyFaces Projects">
+      <item name="Overview" href="http://myfaces.apache.org/index.html"/>
+      <item name="Core JSF-1.1"   href="http://myfaces.apache.org/core11/index.html" collapse="true">
+        <item name="dummy"        href="dummy"/>
+      </item>
+      <item name="Core JSF-1.2"   href="http://myfaces.apache.org/core12/index.html" collapse="true">
+        <item name="dummy"        href="dummy"/>
+      </item>
+      <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
+      <item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
+      <item name="Tomahawk" href="http://myfaces.apache.org/tomahawk/index.html"/>
+      <item name="Sandbox" href="http://myfaces.apache.org/sandbox/index.html"/>
+      <item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
+      <item name="Portlet Bridge" href="http://myfaces.apache.org/portlet-bridge/index.html"/>
+    </menu>
+        
+    <menu name="Documentation">
+      <item name="Tag Library" href="tlddoc/index.html"/>
+      <item name="Extended Docs" href="extendedDocs.html"/>  
+      <item name="Extensions filter" href="extensionsFilter.html"/>  
+      <item name="forceId" href="forceId.html"/>
+      <item name="Tiles Support" href="tiles.html"/>
+    </menu>    
+    
+    <menu name="Testing">
+      <item name="OpenQA Selenium" href="/testing/selenium.html"/>
+      <item name="Autoriginate HostedQA" href="/testing/hostedqa.html"/>
+    </menu>
+  
+    <menu ref="reports" inherit="top"/>
+  
+    <menu name="Foundation">
+      <item name="ASF" href="http://apache.org/" />
+      <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
+      <item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
+    </menu>
+  </body>
 </project>

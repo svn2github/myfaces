@@ -60,11 +60,11 @@
     </dependency>
 
     <dependency>
-        <groupId>org.apache.tiles</groupId>
-        <artifactId>tiles-core</artifactId>
-        <version>2.0.5</version>
-        <scope>compile</scope>
-        <optional>true</optional>        
+      <groupId>org.apache.tiles</groupId>
+      <artifactId>tiles-core</artifactId>
+      <version>2.0.5</version>
+      <scope>compile</scope>
+      <optional>true</optional>        
     </dependency>
 
     <dependency>
@@ -88,19 +88,19 @@
       <scope>compile</scope>
     </dependency>
 
-      <dependency>
-          <groupId>commons-lang</groupId>
-          <artifactId>commons-lang</artifactId>
-          <version>2.1</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+      <scope>compile</scope>
+    </dependency>
 
-      <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>jstl</artifactId>
-          <version>1.1.0</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
 
     <!-- provided dependencies -->
 
@@ -322,36 +322,36 @@
       <!-- the following will add the unpacked shared sources directory as source directory into the pom,
            so also the shared sources are automaticaly included by the attach source plugin -->
       <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <version>1.0</version>
-            <executions>
-                <execution>
-                    <id>add-source</id>
-                    <phase>process-sources</phase>
-                    <goals>
-                        <goal>add-source</goal>
-                    </goals>
-                    <configuration>
-                        <sources>
-                            <source>${project.build.directory}/shared_sources</source>
-                        </sources>
-                    </configuration>
-                </execution>
-            </executions>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/shared_sources</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
-		<plugin>
-			<artifactId>maven-source-plugin</artifactId>
-			<version>2.0.4</version>
-			<executions>
-				<execution>
-					<id>attach-source</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-			</executions>
-		</plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.0.4</version>
+        <executions>
+          <execution>
+            <id>attach-source</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
   </build>
@@ -405,7 +405,7 @@
   </reporting>
 
   <profiles>
-      <profile>
+    <profile>
       <id>generate-site</id>
       <build>
         <plugins>
