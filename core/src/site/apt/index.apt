@@ -4,15 +4,16 @@
 
 MyFaces Tomahawk
 
-	See also the component section of our {{{http://wiki.apache.org/myfaces/MyFacesComponents}WIKI}}
-	(might be more complete than the information here).
-
 	MyFaces provides a series of JSF components that go beyond the JSF specification.  These components are 100% compatible
 	with the Sun JSF 1.1 Reference Implementation (RI) or any other JSF 1.1 compatible implementation.  Of course the custom
 	components can also be used with the Apache MyFaces JSF implementation.
 	
-	See also the {{{http://wiki.apache.org/myfaces/CompatibilityMatrix}compatibility matrix}}.
-	
+	Although we try to make Tomahawk as "portable" as possible, not all Tomahawk releases are compatible with all
+	MyFaces or Sun Mojarra (formerly RI) releases. A Tomahawk release is always compatible with the latest MyFaces
+	Core release available at the time that Tomahawk version was released. For further information on compatibility
+	between Tomahawk and other frameworks/libraries, please see the 
+	{{{http://wiki.apache.org/myfaces/CompatibilityMatrix}relevant wiki page}}.
+
 Extended Components and Other "Goodies"
 
 	In addition to custom components not found in the JSF specification, the MyFaces components bundle also includes an
@@ -39,23 +40,12 @@ Requirements and Setup
 	* Put the <<<tomahawk.jar>>> in your <<<WEB-INF/lib>>> directory (or in the classpath of your
 	application server.)
 
-	[]
-
-* Note
-
-	If you are using the MyFaces implementation you can choose to use the <<<myfaces-all.jar>>> instead.  It is basically
-	a single jar file containing the JSF 1.1 API, JSF 1.1 Implementation and the MyFaces custom components.
-
-	* Install the {{{extensionsFilter.html}MyFaces Extensions filter}}
-
-	[]
+	* Configure the {{{extensionsFilter.html}MyFaces Extensions filter}} in your <<<WEB-INF/web.xml>>> file.
 
 	* Add the following to your JSP page in order to use one of the MyFaces custom components:\
 	<<<\<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %\>>>>
 
+	* That's it! You're good to go.
+	
 	[]
-
-	* That's it! You're good to go. Please see additional documentation for specific issues regarding the MyFaces API and
-	implementation packages.
-
-	[]
+	

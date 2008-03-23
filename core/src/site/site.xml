@@ -59,50 +59,12 @@
 	      	<item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
 	      	<item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
 	      	<item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
+            <item name="Portlet Bridge" href="http://myfaces.apache.org/portlet-bridge/index.html"/>
 	    </menu>
 		    
-		<menu name="Components">
-		    <item name="JSCook Menu" href="jscookmenu.html"/>
-		    <item name="Tree2" href="tree2.html"/>  
-		    <item name="Newspaper Table" href="newspaperTable.html"/>  
-		    <item name="Alias Bean" href="aliasBean.html"/>
-		    <item name="Buffer" href="buffer.html"/>  
-		    <item name="File Upload" href="fileUpload.html"/>  
-		    <item name="TabbedPane" href="tabbedPane.html"/>
-		    <item name="Calendar" href="calendar.html"/>  
-		    <item name="Popup" href="popup.html"/>  
-		    <item name="Javascript Listener" href="javascriptListener.html"/>  
-		    <item name="Date" href="inputDate.html"/>  
-		    <item name="Html Editor" href="htmlEditor.html"/>  
-		    <item name="Html Tag" href="htmlTag.html"/>  
-		    <item name="Data List" href="dataList.html"/>  
-		    <item name="Tree" href="tree.html"/>  
-		    <item name="Tree2" href="tree2.html"/>  
-		    <item name="Tree Table" href="treeTable.html"/>  
-		    <item name="Panel Stack" href="panelStack.html"/>  
-		    <item name="Style Sheet" href="stylesheet.html"/>  
-		    <item name="Sort Header" href="commandSortHeader.html"/>  
-		    <item name="Data Scroller" href="dataScroller.html"/>  
-		    <item name="Extended Data Table" href="extDataTable.html"/>
-		    <item name="Panel Navigation" href="panelNavigation.html"/> 
-		    <item name="Panel Navigation 2" href="panelNavigation2"/> 
-		    <item name="UI Save State" href="uiSaveState.html"/> 
-		    <item name="Columns" href="columns.html"/> 
-		    <item name="Column" href="column.html"/>   
-	     	<item name="Schedule" href="schedule.html"/>
-		    <item name="Dojo Initializer" href="dojoInitializer.html"/>
-			<item name="SelectItems" href="selectItems.html"/>
-	  	</menu>    
-		  
-		<menu name="Validators">
-		    <item name="validateCreditCard" href="validateCreditCard.html"/>
-		    <item name="validateUrl" href="validateUrl.html"/>  
-		    <item name="validateEmail" href="validateEmail.html"/>  
-		    <item name="validateEqual" href="validateEqual.html"/>
-		    <item name="validateRegExpr" href="validateRegExpr.html"/>  
-		</menu>    
-		  
-		<menu name="Other Goodies">
+		<menu name="Documentation">
+		    <item name="Tag Library" href="tlddoc/index.html"/>
+		    <item name="Extended Docs" href="extendedDocs.html"/>  
 			<item name="Extensions filter" href="extensionsFilter.html"/>  
 		    <item name="forceId" href="forceId.html"/>
 		    <item name="Tiles Support" href="tiles.html"/>
@@ -113,7 +75,7 @@
 	      	<item name="Autoriginate HostedQA" href="/testing/hostedqa.html"/>
 	    </menu>
 	
-	    ${reports}
+	    <menu ref="reports" inherit="top"/>
 	
 	    <menu name="Foundation">
 	      	<item name="ASF" href="http://apache.org/" />
