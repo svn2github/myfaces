@@ -37,54 +37,32 @@
     </skin> 
 
   	<body>
-	    <links>
-	      	<item name="Apache" href="http://www.apache.org/"/>
-	      	<item name="MyFaces" href="../index.html"/>
-	      	<item name="API" href="../api/index.html"/>
-	      	<item name="Impl" href="../impl/index.html"/>
-	      	<item name="Tomahawk" href="../tomahawk/index.html"/>
-	      	<item name="Sandbox" href="index.html"/>
-	      	<item name="Tobago" href="../tobago/index.html"/>
-	      	<item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
-	      	<item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
-	    </links>
+        <links>
+            <item name="Apache" href="http://www.apache.org/"/>
+            <item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
+        </links>
+      
+        <menu name="MyFaces Projects">
+            <item name="Overview" href="http://myfaces.apache.org/index.html"/>
+            <item name="Core JSF-1.1"   href="http://myfaces.apache.org/core11/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="Core JSF-1.2"   href="http://myfaces.apache.org/core12/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
+            <item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
+            <item name="Tomahawk" href="http://myfaces.apache.org/tomahawk/index.html"/>
+            <item name="Sandbox" href="http://myfaces.apache.org/sandbox/index.html"/>
+            <item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
+            <item name="Portlet Bridge" href="http://myfaces.apache.org/portlet-bridge/index.html"/>
+        </menu>
 	
-	    <menu name="MyFaces Projects">
-	      	<item name="Overview" href="../index.html"/>    
-	      	<item name="API" href="../api/index.html"/>
-	      	<item name="Impl" href="../impl/index.html"/>
-	      	<item name="Tomahawk" href="../tomahawk/index.html"/>
-	      	<item name="Sandbox" href="index.html"/>
-	      	<item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
-	      	<item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
-	      	<item name="Orchestra" href="http://myfaces.apache.orgorchestra/index.html"/>
-	    </menu>
-	
-		<menu name="Components">
-	      	<item name="Input Suggest Ajax Menu" href="inputSuggestAjax.html"/>
-	      	<item name="Auto Update DataTable" href="autoUpdateDataTable.html"/>  
-	      	<item name="Input Suggest" href="inputSuggest.html"/>  
-	      	<item name="Focus" href="focus.html"/>  
-	      	<item name="Form" href="form.html"/>  
-	      	<item name="SubForm" href="subForm.html"/> 	
-	      	<item name="Picklist" href="selectManyPicklist.html"/>
-	      	<item name="Dynamic Image" href="graphicImageDynamic.html"/>  
-	      	<item name="FishEye Navigation Menu" href="fisheye.html"/> 
-			<item name="ExcelExport" href="excelexport.html"/>
-			<item name="SecurityContext" href="securityContext.html"/>
-			<item name="Limit Rendered" href="limitRendered.html"/>
-	     	<item name="Rounded DIV" href="roundedDiv.html"/>
-	      	<item name="PasswordStrength" href="passwordStrength.html"/> 
-	    </menu>    
-	    
-	    <menu name="Converters">
-	      	<item name="convertStringUtils" href="convertStringUtils.html"/>
-	    </menu>    
-	
-	    <menu name="Validators">
-	     	<item name="validateCompareTo" href="validateCompareTo.html"/>
-	      	<item name="validateCSV" href="validateCSV.html"/>
-	    </menu>    
+        
+    <menu name="Documentation">
+      <item name="Tag Library" href="tlddoc/index.html"/>
+      <item name="Extended Docs" href="extendedDocs.html"/>  
+    </menu>    
 		
 	  	${reports}
 	
