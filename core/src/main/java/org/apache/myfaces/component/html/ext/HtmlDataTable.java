@@ -344,14 +344,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
             {
                 setRowIndex(rowIndex);
 
+                //scrolled past the last row
+                if (!isRowAvailable())
+                {
+                    break;
+                }
+
                 if (!isCurrentDetailExpanded())
                 {
                     continue;
                 }
-
-                //scrolled past the last row
-                if (!isRowAvailable())
-                    break;
 
                 // If we are in the decode phase, the values restored into our
                 // facet in setRowIndex() may be incorrect. This will happen
