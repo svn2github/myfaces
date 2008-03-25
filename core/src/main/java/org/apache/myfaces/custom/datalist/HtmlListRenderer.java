@@ -54,10 +54,12 @@ public class HtmlListRenderer
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent, UIData.class);
         ResponseWriter writer = facesContext.getResponseWriter();
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         String layout = getLayout(uiComponent);
         if (layout != null)
         {
+            if (! layout.equals(LAYOUT_SIMPLE)) {
+                HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            }
             if (layout.equals(LAYOUT_UL))
             {
                 writer.startElement(HTML.UL_ELEM, uiComponent);
@@ -151,9 +153,11 @@ public class HtmlListRenderer
                 }
                 */
 
-                HtmlRendererUtils.writePrettyLineSeparator(facesContext);
                 if (layout != null)
                 {
+                    if (! layout.equals(LAYOUT_SIMPLE)) {
+                        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+                    }
                     if (layout.equals(LAYOUT_UL) || (layout.equals(LAYOUT_OL)))
                     {
                         writer.startElement(HTML.LI_ELEM, component);
@@ -205,10 +209,12 @@ public class HtmlListRenderer
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent, UIData.class);
         ResponseWriter writer = facesContext.getResponseWriter();
-        HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         String layout = getLayout(uiComponent);
         if (layout != null)
         {
+            if (! layout.equals(LAYOUT_SIMPLE)) {
+                HtmlRendererUtils.writePrettyLineSeparator(facesContext);
+            }
             if (layout.equals(LAYOUT_UL))
             {
                 writer.endElement(HTML.UL_ELEM);
