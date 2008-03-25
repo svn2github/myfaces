@@ -260,6 +260,9 @@ public class UIColumns extends UIData {
     }
 
     protected void setDataModel(DataModel dataModel) {
+        if (dataModel == null && getParent() == null) {
+            return;
+        }
         UIComponent parent = getParentUIData().getParent();
         String clientID = "";
         if (parent != null) {
