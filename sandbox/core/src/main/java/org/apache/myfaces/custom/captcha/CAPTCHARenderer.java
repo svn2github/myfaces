@@ -19,22 +19,40 @@
 package org.apache.myfaces.custom.captcha;
 
 import java.io.IOException;
+import java.util.Map;
 
+import javax.faces.FacesException;
+import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextFactory;
+import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.render.Renderer;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class CAPTCHARenderer extends Renderer {
-	
-	private static final String CAPTCHA_SERVLET_NAME = "apache_captcha_servlet_url";
+import org.apache.myfaces.component.html.util.ParameterResourceHandler;
+import org.apache.myfaces.custom.captcha.util.CAPTCHAImageGenerator;
+import org.apache.myfaces.custom.captcha.util.CAPTCHAResponseStream;
+import org.apache.myfaces.custom.captcha.util.CAPTCHATextGenerator;
+import org.apache.myfaces.custom.util.ComponentUtils;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+
+public class CAPTCHARenderer extends Renderer implements ResourceLoader {
 
 	public void encodeBegin(FacesContext context, UIComponent component)
 			throws IOException {
 
 		CAPTCHAComponent captchaComponent = (CAPTCHAComponent) component;
 		
-		renderCAPTCHA(context, captchaComponent);
+		generateImageTag(context, captchaComponent);
 	}
 	
 	public void encodeEnd(FacesContext context, UIComponent component)
@@ -43,25 +61,104 @@ public class CAPTCHARenderer extends Renderer {
 	}
 
 	/*
-	 * This helper method renders the img tag that will
-	 * call the CAPTCHAServlet to render the CAPTCHA image. 
+	 * This helper method is used for generating the img tag that will
+	 * use the (AddResource) to generate the url of the generated image.
 	 */
-	private void renderCAPTCHA(FacesContext context, CAPTCHAComponent component)
+	private void generateImageTag(FacesContext context, CAPTCHAComponent component)
 			throws IOException {
+		
+        AddResource addResource = null;
+        String url = null;
+		CAPTCHAComponent captchaComponent = (CAPTCHAComponent) component;
 		ResponseWriter writer = context.getResponseWriter();
+        Map params = ComponentUtils.getParameterMap(component);
+        String captchaSessionKeyName = captchaComponent.getCaptchaSessionKeyName();
+        
+        writer.startElement(HTML.IMG_ELEM, captchaComponent);
 
-		writer.startElement("img", component);
-		writer.writeAttribute("src", CAPTCHA_SERVLET_NAME + "?"
-				+ appendParameters(component), "src");
-		writer.endElement("img");
+        if (captchaSessionKeyName != null) {
+			params.put(CAPTCHAComponent.ATTRIBUTE_CAPTCHASESSIONKEYNAME,
+					captchaSessionKeyName);
+		}
+
+		addResource = AddResourceFactory.getInstance(context);
+        
+		url = context.getExternalContext().encodeResourceURL(
+				addResource.getResourceUri(context,
+						new ParameterResourceHandler(this.getClass(), params)));
+        
+        writer.writeAttribute(HTML.SRC_ATTR, url, null);
+
+        writer.endElement(HTML.IMG_ELEM);		
 	}
 
+	
+    /*
+     * This method is implemented to be called from the (AddResource).
+     * It wraps the CAPTCHA image generation.
+     */
+	public void serveResource(ServletContext servletContext,
+			HttpServletRequest request, HttpServletResponse response,
+			String resourceUri) throws IOException {
+		
+		// get the FacesContext from the ServletContext.
+		FacesContextFactory facesContextFactory = (FacesContextFactory) FactoryFinder
+				.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
+		LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder
+				.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+		Lifecycle lifecycle = lifecycleFactory.getLifecycle(ComponentUtils
+				.getLifecycleId(servletContext));
+		FacesContext facesContext = facesContextFactory.getFacesContext(
+				servletContext, request, response, lifecycle);
+		facesContext.setResponseStream(new CAPTCHAResponseStream(response
+				.getOutputStream()));
+		
+		// render the CAPTCHA.
+		try {
+			try {
+				renderCAPTCHA(facesContext);
+			} catch (IOException e) {
+				throw new FacesException("Could not render the CAPTCHA : "
+						+ e.getMessage(), e);
+			}
+			facesContext.getResponseStream().close();
+		} finally {
+			facesContext.release();
+		}
+	}
+	    
 	/*
-	 * This helper method is used for appending the parameters to the
-	 * CAPTCHA servlet.
+	 * This method is used for rendering the CAPTCHA component.
 	 */
-	private String appendParameters(CAPTCHAComponent component) {
-		return CAPTCHAComponent.ATTRIBUTE_CAPTCHASESSIONKEYNAME + "="
-				+ component.getCaptchaSessionKeyName();
-	}
+	protected void renderCAPTCHA(FacesContext facesContext) throws IOException{
+		
+		// Initialize the CAPTCHA world.
+		HttpServletResponse response = (HttpServletResponse) facesContext
+				.getExternalContext().getResponse();
+		ResponseStream out = facesContext.getResponseStream();
+		final Map requestMap = facesContext.getExternalContext()
+				.getRequestParameterMap();
+		HttpServletRequest request = (HttpServletRequest) facesContext
+				.getExternalContext().getRequest();
+		String captchaText = null;
+		CAPTCHAImageGenerator captchaImageGenerator = new CAPTCHAImageGenerator();
+		String captchaSessionKeyName = requestMap.get(
+				CAPTCHAComponent.ATTRIBUTE_CAPTCHASESSIONKEYNAME).toString();
+		
+		try {			
+			
+			// Generate random CAPTCHA text.
+			captchaText = CAPTCHATextGenerator.generateRandomText();
+
+			// Generate the image.
+			captchaImageGenerator.generateImage(response, captchaText);
+
+			// Set the generated text in the user session.
+			request.getSession().setAttribute(captchaSessionKeyName, captchaText);						
+			
+		} finally {
+			out.close();
+			facesContext.responseComplete();
+		}
+	}      
 }

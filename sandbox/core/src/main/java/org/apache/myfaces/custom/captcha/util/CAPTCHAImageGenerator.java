@@ -35,16 +35,10 @@ import org.apache.batik.ext.awt.image.codec.PNGImageEncoder;
 
 
 /**
- * This class is responsible for generating the
- * CAPTCHA image.
+ * This class is responsible for generating the CAPTCHA image.
  */
 public class CAPTCHAImageGenerator {
-
-	private static final int CAPTCHA_WIDTH = 290;
-	private static final int CAPTCHA_HEIGHT = 81;
-	private static final double PI = 3.1415926535897932384626433832795;
-	private static final int TEXT_X_COORDINATE = 50;
-	private static final int TEXT_Y_COORDINATE = 60;
+	
 	private static final Color startingColor = new Color(150, 50, 150);
 	private static final Color endingColor = new Color(255, 255, 255);
 
@@ -52,8 +46,6 @@ public class CAPTCHAImageGenerator {
 	 * A helper method to draw the captcha text on the generated image.
 	 */
 	private void drawTextOnImage(Graphics2D graphics, String captchaText) {
-
-
 
 		Font font = null;
 		TextLayout textLayout = null;
@@ -71,7 +63,8 @@ public class CAPTCHAImageGenerator {
 		textLayout = new TextLayout(captchaText, font, graphics
 				.getFontRenderContext());
 
-		textLayout.draw(graphics, TEXT_X_COORDINATE, TEXT_Y_COORDINATE);
+		textLayout.draw(graphics, CAPTCHAConstants.TEXT_X_COORDINATE,
+				CAPTCHAConstants.TEXT_Y_COORDINATE);
 	}
 
 	/*
@@ -116,8 +109,9 @@ public class CAPTCHAImageGenerator {
 
 
 		// Create the CAPTCHA Image.
-		bufferedImage = new BufferedImage(CAPTCHA_WIDTH,
-				CAPTCHA_HEIGHT, BufferedImage.TYPE_BYTE_INDEXED);
+		bufferedImage = new BufferedImage(CAPTCHAConstants.CAPTCHA_WIDTH,
+				CAPTCHAConstants.CAPTCHA_HEIGHT,
+				BufferedImage.TYPE_BYTE_INDEXED);
 
 		// Setup the graphics object.
 		graphics = bufferedImage.createGraphics();
@@ -200,20 +194,21 @@ public class CAPTCHAImageGenerator {
 		Random random = new Random();
 
 		// Random Y Points.
-		yPoint1 = random.nextInt(CAPTCHA_HEIGHT);
-		yPoint2 = random.nextInt(CAPTCHA_HEIGHT);
-		yPoint3 = CAPTCHA_HEIGHT / 2;
-		yPoint4 = random.nextInt(CAPTCHA_HEIGHT);
-		yPoint5 = random.nextInt(CAPTCHA_HEIGHT);
+		yPoint1 = random.nextInt(CAPTCHAConstants.CAPTCHA_HEIGHT);
+		yPoint2 = random.nextInt(CAPTCHAConstants.CAPTCHA_HEIGHT);
+		yPoint3 = CAPTCHAConstants.CAPTCHA_HEIGHT / 2;
+		yPoint4 = random.nextInt(CAPTCHAConstants.CAPTCHA_HEIGHT);
+		yPoint5 = random.nextInt(CAPTCHAConstants.CAPTCHA_HEIGHT);
 
 		// Draw the random broken line.
-		drawThickLineOnImage(graphics, 0, yPoint1, CAPTCHA_WIDTH / 4, yPoint2);
-		drawThickLineOnImage(graphics, CAPTCHA_WIDTH / 4, yPoint2,
-				CAPTCHA_WIDTH / 2, yPoint3);
-		drawThickLineOnImage(graphics, CAPTCHA_WIDTH / 2, yPoint3,
-				3 * CAPTCHA_WIDTH / 4, yPoint4);
-		drawThickLineOnImage(graphics, 3 * CAPTCHA_WIDTH / 4, yPoint4,
-				CAPTCHA_WIDTH, yPoint5);
+		drawThickLineOnImage(graphics, 0, yPoint1,
+				CAPTCHAConstants.CAPTCHA_WIDTH / 4, yPoint2);
+		drawThickLineOnImage(graphics, CAPTCHAConstants.CAPTCHA_WIDTH / 4,
+				yPoint2, CAPTCHAConstants.CAPTCHA_WIDTH / 2, yPoint3);
+		drawThickLineOnImage(graphics, CAPTCHAConstants.CAPTCHA_WIDTH / 2,
+				yPoint3, 3 * CAPTCHAConstants.CAPTCHA_WIDTH / 4, yPoint4);
+		drawThickLineOnImage(graphics, 3 * CAPTCHAConstants.CAPTCHA_WIDTH / 4,
+				yPoint4, CAPTCHAConstants.CAPTCHA_WIDTH, yPoint5);
 	}
 
 	/*
@@ -223,7 +218,8 @@ public class CAPTCHAImageGenerator {
 	private double getDelta(int period, double i, double phase, double frames) {
 		return (double) (period / 2)
 				* Math.sin((double) i / (double) period
-						+ (2 * PI * (double) phase) / (double) frames);
+						+ (2 * CAPTCHAConstants.PI * (double) phase)
+						/ (double) frames);
 	}
 
 	/*
