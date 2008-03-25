@@ -47,8 +47,8 @@ public class CAPTCHAImageGenerator {
 	 */
 	private void drawTextOnImage(Graphics2D graphics, String captchaText) {
 
-		Font font = null;
-		TextLayout textLayout = null;
+		Font font;
+		TextLayout textLayout;
 		double currentFontStatus = Math.random();
 
 		// Generate random font status.
@@ -102,10 +102,10 @@ public class CAPTCHAImageGenerator {
 	public void generateImage(HttpServletResponse response, String captchaText)
 			throws IOException {
 
-		BufferedImage bufferedImage = null;
-		Graphics2D graphics = null;
-		PNGEncodeParam param = null;
-		PNGImageEncoder captchaPNGImage = null;
+		BufferedImage bufferedImage;
+		Graphics2D graphics;
+		PNGEncodeParam param;
+		PNGImageEncoder captchaPNGImage;
 
 
 		// Create the CAPTCHA Image.
@@ -186,11 +186,11 @@ public class CAPTCHAImageGenerator {
 	 */
 	private void drawBrokenLineOnImage(Graphics2D graphics) {
 
-		int yPoint1 = 0;
-		int yPoint2 = 0;
-		int yPoint3 = 0;
-		int yPoint4 = 0;
-		int yPoint5 = 0;
+		int yPoint1;
+		int yPoint2;
+		int yPoint3;
+		int yPoint4;
+		int yPoint5;
 		Random random = new Random();
 
 		// Random Y Points.
@@ -217,9 +217,9 @@ public class CAPTCHAImageGenerator {
 	 */
 	private double getDelta(int period, double i, double phase, double frames) {
 		return (double) (period / 2)
-				* Math.sin((double) i / (double) period
-						+ (2 * CAPTCHAConstants.PI * (double) phase)
-						/ (double) frames);
+				* Math.sin(i / (double) period
+						+ (2 * CAPTCHAConstants.PI * phase)
+						/ frames);
 	}
 
 	/*
@@ -231,8 +231,8 @@ public class CAPTCHAImageGenerator {
 		int periodValue = 20;
 		int numberOfFrames = 15;
 		int phaseNumber = 7;
-		double deltaX = 0;
-		double deltaY = 0;
+		double deltaX;
+		double deltaY;
 
 		applyCurrentGradientPaint(graphics, bufferedImageWidth,
 				bufferedImageHeight);

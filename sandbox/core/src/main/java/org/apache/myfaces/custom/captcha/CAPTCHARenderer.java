@@ -67,14 +67,13 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
 	private void generateImageTag(FacesContext context, CAPTCHAComponent component)
 			throws IOException {
 		
-        AddResource addResource = null;
-        String url = null;
-		CAPTCHAComponent captchaComponent = (CAPTCHAComponent) component;
-		ResponseWriter writer = context.getResponseWriter();
+        AddResource addResource;
+        String url;
+        ResponseWriter writer = context.getResponseWriter();
         Map params = ComponentUtils.getParameterMap(component);
-        String captchaSessionKeyName = captchaComponent.getCaptchaSessionKeyName();
+        String captchaSessionKeyName = component.getCaptchaSessionKeyName();
         
-        writer.startElement(HTML.IMG_ELEM, captchaComponent);
+        writer.startElement(HTML.IMG_ELEM, component);
 
         if (captchaSessionKeyName != null) {
 			params.put(CAPTCHAComponent.ATTRIBUTE_CAPTCHASESSIONKEYNAME,
@@ -140,7 +139,7 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
 				.getRequestParameterMap();
 		HttpServletRequest request = (HttpServletRequest) facesContext
 				.getExternalContext().getRequest();
-		String captchaText = null;
+		String captchaText;
 		CAPTCHAImageGenerator captchaImageGenerator = new CAPTCHAImageGenerator();
 		String captchaSessionKeyName = requestMap.get(
 				CAPTCHAComponent.ATTRIBUTE_CAPTCHASESSIONKEYNAME).toString();

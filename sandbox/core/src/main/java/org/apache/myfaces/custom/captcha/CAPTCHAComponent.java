@@ -49,7 +49,7 @@ public class CAPTCHAComponent extends UIComponentBase {
 		Object values[] = new Object[2];
 		values[0] = super.saveState(context);
 		values[1] = _captchaSessionKeyName;	
-		return ((Object) (values));
+		return ((values));
 	}
 
 	public void restoreState(FacesContext context, Object state) {
