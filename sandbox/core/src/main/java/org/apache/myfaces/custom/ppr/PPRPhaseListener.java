@@ -327,7 +327,7 @@ public class PPRPhaseListener implements PhaseListener
 			}
 		}
 
-        boolean handleFacesMessages = !toAppendMessagesComponents.isEmpty();
+        boolean handleFacesMessages = !toAppendMessagesComponents.isEmpty() || !toReplaceMessagesComponents.isEmpty();
 
         if(handleFacesMessages)
         {   //encode all facesMessages into  xml-elements

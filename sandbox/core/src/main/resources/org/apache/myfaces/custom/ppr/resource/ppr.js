@@ -342,7 +342,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
         //clear all to replace messages components
         for (var i = 0; i < clearElements.length; i++)
         {
-            this.clearElement(clearElements[i]);
+            this.formNode.myFacesPPRCtrl.clearElement(clearElements[i]);
         }
         //insert the messages into all messages-components which shall be updated
         for (var i = 0; i < appendMessagesToElements.length; i++)
@@ -405,7 +405,7 @@ org.apache.myfaces.PPRCtrl.prototype.clearElement = function (element)
 
 org.apache.myfaces.PPRCtrl.prototype.removeAllChildNodes = function (node)
 {
-    while (node.hasChildNodes)
+    while (node.firstChild != null)
     {
         node.removeChild(node.firstChild);
     }
