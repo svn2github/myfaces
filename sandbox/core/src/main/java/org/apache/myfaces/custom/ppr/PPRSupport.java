@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.custom.ppr;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.subform.SubForm;
@@ -25,10 +27,8 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -36,8 +36,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ernst Fastl
@@ -74,12 +74,11 @@ public class PPRSupport {
      * </ul>
      *
      * @param facesContext the current {@link javax.faces.context.FacesContext}
-     * @param uiComponent	 the currently rendered {@link PPRPanelGroup}
+     * @param uiComponent  the currently rendered {@link PPRPanelGroup}
      * @throws java.io.IOException if the underlying Layer throws an {@link java.io.IOException}
-     *                     it is passed through
+     *                             it is passed through
      */
-    public static void initPPR(FacesContext facesContext, UIComponent uiComponent) throws IOException
-    {
+    public static void initPPR(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         //if(isPartialRequest(facesContext)) {
         //    return;
         //}
@@ -88,15 +87,12 @@ public class PPRSupport {
 
         // Do not render the JavaScript if answering to a PPR response
 
-
         //Initialize the client side PPR engine
-        if(!requestMap.containsKey(PPR_INITIALIZED))
-        {
+        if (!requestMap.containsKey(PPR_INITIALIZED)) {
             requestMap.put(PPR_INITIALIZED, Boolean.TRUE);
 
             String encoding = "UTF-8"; // Hardcoded default
-            if(facesContext.getResponseWriter().getCharacterEncoding() != null)
-            {
+            if (facesContext.getResponseWriter().getCharacterEncoding() != null) {
                 encoding = facesContext.getResponseWriter().getCharacterEncoding();
             }
 
@@ -124,12 +120,11 @@ public class PPRSupport {
      * </ul>
      *
      * @param facesContext the current {@link FacesContext}
-     * @param pprGroup	 the currently rendered {@link PPRPanelGroup}
+     * @param pprGroup     the currently rendered {@link PPRPanelGroup}
      * @throws IOException if the underlying Layer throws an {@link IOException}
      *                     it is passed through
      */
-    public static void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException
-    {
+    public static void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException {
         StringBuffer script = new StringBuffer();
 
         // all JS is put inside a function passed to dojoOnLoad
@@ -179,19 +174,15 @@ public class PPRSupport {
                                              PartialTriggerParser.PartialTrigger trigger) {
         String partialTriggerClientId;
         String partialTriggerId = trigger.getPartialTriggerId();
-        if(partialTriggerComponent == null)
-        {
+        if (partialTriggerComponent == null) {
             partialTriggerComponent = facesContext.getViewRoot().findComponent(partialTriggerId);
         }
-        if(partialTriggerComponent != null)
-        {
+        if (partialTriggerComponent != null) {
             partialTriggerClientId = partialTriggerComponent.getClientId(facesContext);
             script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_FUNCTION + "('" + partialTriggerClientId + "'," + encodeArray(trigger.getEventHooks()) + ",'" + clientId + "');");
         }
-        else
-        {
-            if(log.isDebugEnabled())
-            {
+        else {
+            if (log.isDebugEnabled()) {
                 log.debug("PPRPanelGroupRenderer Component with id " + partialTriggerId + " not found!");
             }
         }
@@ -202,8 +193,7 @@ public class PPRSupport {
         UIComponent partialTriggerComponent;
 
         List partialTriggerIds = pprGroup.parsePartialTriggers();
-        for(int i = 0; i < partialTriggerIds.size(); i++)
-        {
+        for (int i = 0; i < partialTriggerIds.size(); i++) {
             PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) partialTriggerIds
                     .get(i);
             partialTriggerComponent = pprGroup.findComponent(trigger.getPartialTriggerId());
@@ -217,8 +207,7 @@ public class PPRSupport {
         String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
 
         //handle partial trigger patterns
-        if(partialTriggerPattern != null && partialTriggerPattern.trim().length() > 0)
-        {
+        if (partialTriggerPattern != null && partialTriggerPattern.trim().length() > 0) {
             script.append(pprCtrlReference + "." + ADD_PARTIAL_TRIGGER_PATTERN_FUNCTION + "('" + partialTriggerPattern + "','" + clientId + "');");
         }
 
@@ -229,8 +218,7 @@ public class PPRSupport {
         String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
 
         //handle inline loading messages
-        if(inlineLoadingMessage != null && inlineLoadingMessage.trim().length() > 0)
-        {
+        if (inlineLoadingMessage != null && inlineLoadingMessage.trim().length() > 0) {
             script.append(pprCtrlReference + "." + ADD_INLINE_LOADING_MESSAGE_FUNCTION + "('" + inlineLoadingMessage + "','" + clientId + "');");
         }
     }
@@ -238,8 +226,7 @@ public class PPRSupport {
     private static void encodeSubFormFunction(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference) {
         String clientId = pprGroup.getClientId(context);
         SubForm subFormParent = findParentSubForm(pprGroup);
-        if(subFormParent != null)
-        {
+        if (subFormParent != null) {
             script.append(pprCtrlReference + "." + SET_SUBFORM_ID_FUNCTION + "('" + subFormParent.getId() + "','" + clientId + "');");
         }
     }
@@ -248,34 +235,30 @@ public class PPRSupport {
         String clientId = pprGroup.getClientId(facesContext);
 
         //Handle periodical updates
-        if(pprGroup.getPeriodicalUpdate() != null)
-        {
+        if (pprGroup.getPeriodicalUpdate() != null) {
             List partialTriggers = pprGroup.parsePeriodicalTriggers();
             if (partialTriggers.size() == 0) {
-                Integer wait =  null;
-                if(pprGroup.getExcludeFromStoppingPeriodicalUpdate() != null)
-                {
+                Integer wait = null;
+                if (pprGroup.getExcludeFromStoppingPeriodicalUpdate() != null) {
                     wait = pprGroup.getWaitBeforePeriodicalUpdate();
                 }
                 script.append(pprCtrlReference + ".startPeriodicalUpdate(" + pprGroup.getPeriodicalUpdate() + ",'" + clientId + "', " + wait + ");");
-            } else {
+            }
+            else {
                 String periodicalTriggerId;
                 String periodicalTriggerClientId;
                 UIComponent periodicalTriggerComponent;
-                for(int i = 0; i < partialTriggers.size(); i++)
-                {
+                for (int i = 0; i < partialTriggers.size(); i++) {
                     PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) partialTriggers
                             .get(i);
                     periodicalTriggerId = trigger.getPartialTriggerId();
                     periodicalTriggerComponent = pprGroup.findComponent(periodicalTriggerId);
-                    if(periodicalTriggerComponent == null)
-                    {
+                    if (periodicalTriggerComponent == null) {
                         periodicalTriggerComponent = facesContext.getViewRoot().findComponent(periodicalTriggerId);
                     }
 
                     // Component found
-                    if(periodicalTriggerComponent != null)
-                    {
+                    if (periodicalTriggerComponent != null) {
                         periodicalTriggerClientId = periodicalTriggerComponent.getClientId(facesContext);
                         script.append(pprCtrlReference + "." + ADD_PERIODICAL_TRIGGER_FUNCTION +
                                 "('" + periodicalTriggerClientId + "'," +
@@ -284,10 +267,8 @@ public class PPRSupport {
 
                         // Component missing
                     }
-                    else
-                    {
-                        if(log.isDebugEnabled())
-                        {
+                    else {
+                        if (log.isDebugEnabled()) {
                             log.debug("PPRPanelGroupRenderer Component with id " + periodicalTriggerId + " not found!");
                         }
                     }
@@ -296,8 +277,7 @@ public class PPRSupport {
 
             String idRegex = pprGroup.getExcludeFromStoppingPeriodicalUpdate();
 
-            if(idRegex != null)
-            {
+            if (idRegex != null) {
                 script.append(pprCtrlReference + ".excludeFromStoppingPeriodicalUpdate('" + idRegex + "');");
             }
         }
@@ -305,8 +285,7 @@ public class PPRSupport {
 
     private static String initPPRFormControl(FacesContext facesContext, PPRPanelGroup pprGroup, StringBuffer script) {
         FormInfo fi = RendererUtils.findNestingForm(pprGroup, facesContext);
-        if(fi == null)
-        {
+        if (fi == null) {
             throw new FacesException("PPRPanelGroup must be embedded in a form.");
         }
         final ExternalContext externalContext = facesContext.getExternalContext();
@@ -316,46 +295,38 @@ public class PPRSupport {
         String pprCtrlReference = "dojo.byId('" + formName + "').myFacesPPRCtrl";
 
         //Each form containing PPRPanelGroups has its own PPRCtrl
-        if(!requestMap.containsKey(PPR_INITIALIZED + "." + formName))
-        {
+        if (!requestMap.containsKey(PPR_INITIALIZED + "." + formName)) {
             requestMap.put(PPR_INITIALIZED + "." + formName, Boolean.TRUE);
 
             script.append(pprCtrlReference + "=" + MY_FACES_PPR_INIT_CODE + "('" + formName + "'," + pprGroup.getShowDebugMessages().booleanValue() + "," + pprGroup.getStateUpdate().booleanValue() + ");\n");
 
-            if(pprGroup.getPeriodicalUpdate() != null)
-            {
+            if (pprGroup.getPeriodicalUpdate() != null) {
                 script.append(pprCtrlReference + ".registerOnSubmitInterceptor();");
             }
         }
         return pprCtrlReference;
     }
 
-    public static SubForm findParentSubForm(UIComponent base)
-    {
-        if(base == null) {
+    public static SubForm findParentSubForm(UIComponent base) {
+        if (base == null) {
             return null;
         }
-        if(base instanceof SubForm) {
+        if (base instanceof SubForm) {
             return (SubForm) base;
         }
         return findParentSubForm(base.getParent());
     }
 
-    private static String encodeArray(List eventHooks)
-    {
-        if(eventHooks == null || eventHooks.size() == 0)
-        {
+    private static String encodeArray(List eventHooks) {
+        if (eventHooks == null || eventHooks.size() == 0) {
             return "null";
         }
-        else
-        {
+        else {
             StringBuffer buf = new StringBuffer();
             buf.append("[");
 
-            for(int i = 0; i < eventHooks.size(); i++)
-            {
-                if(i > 0)
-                {
+            for (int i = 0; i < eventHooks.size(); i++) {
+                if (i > 0) {
                     buf.append(",");
                 }
                 String eventHook = (String) eventHooks.get(i);
@@ -374,12 +345,11 @@ public class PPRSupport {
      * of the call.
      *
      * @param facesContext The current faces-context.
-     * @param component	The component for which the script is written.
-     * @param script	   The script to be written.
+     * @param component    The component for which the script is written.
+     * @param script       The script to be written.
      * @throws IOException A forwarded exception from the underlying renderer.
      */
-    private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException
-    {
+    private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);

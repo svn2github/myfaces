@@ -1,12 +1,12 @@
 package org.apache.myfaces.custom.ppr;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Martin Marinschek
-*/
+ */
 public class PartialTriggerParser {
 
     public List parse(String partialTriggerString) {
@@ -17,42 +17,43 @@ public class PartialTriggerParser {
         List partialTriggers = new ArrayList();
         PartialTrigger currentTrigger = null;
 
-        for(int i=0, length = partialTriggerString.length(); i<=length; i++) {
+        for (int i = 0, length = partialTriggerString.length(); i <= length; i++) {
             boolean newTokenMode = false;
             boolean endTopLevelMode = false;
             boolean endSubLevelMode = false;
 
-            if(!(i==partialTriggerString.length())) {
+            if (!(i == partialTriggerString.length())) {
                 char c = partialTriggerString.charAt(i);
 
-                if(c==',' || c==';' || c==' ') {
+                if (c == ',' || c == ';' || c == ' ') {
                     newTokenMode = true;
                 }
-                else if(c=='(') {
+                else if (c == '(') {
                     newTokenMode = true;
                     subLevelMode = true;
                     endTopLevelMode = true;
                 }
-                else if(c==')') {
+                else if (c == ')') {
                     newTokenMode = true;
                     subLevelMode = false;
                     endSubLevelMode = true;
                 }
-            } else {
+            }
+            else {
                 newTokenMode = true;
             }
 
-            if(newTokenMode) {
-                if(((!subLevelMode && !endSubLevelMode) || endTopLevelMode ) && i>lastTokenEnd) {
+            if (newTokenMode) {
+                if (((!subLevelMode && !endSubLevelMode) || endTopLevelMode) && i > lastTokenEnd) {
                     currentTrigger = new PartialTrigger();
                     partialTriggers.add(currentTrigger);
-                    currentTrigger.setPartialTriggerId(partialTriggerString.substring(lastTokenEnd,i));
+                    currentTrigger.setPartialTriggerId(partialTriggerString.substring(lastTokenEnd, i));
                 }
-                else if((subLevelMode || endSubLevelMode) && i>lastTokenEnd){
-                    currentTrigger.addEventHook(partialTriggerString.substring(lastTokenEnd,i));
+                else if ((subLevelMode || endSubLevelMode) && i > lastTokenEnd) {
+                    currentTrigger.addEventHook(partialTriggerString.substring(lastTokenEnd, i));
                 }
 
-                lastTokenEnd = i+1;
+                lastTokenEnd = i + 1;
             }
         }
 
@@ -65,7 +66,7 @@ public class PartialTriggerParser {
         private List eventHooks;
 
         public void addEventHook(String eventHook) {
-            if(eventHooks == null) {
+            if (eventHooks == null) {
                 eventHooks = new ArrayList();
             }
             eventHooks.add(eventHook);
@@ -80,8 +81,9 @@ public class PartialTriggerParser {
         }
 
         public List getEventHooks() {
-            if(eventHooks==null)
+            if (eventHooks == null) {
                 return Collections.EMPTY_LIST;
+            }
 
             return eventHooks;
         }

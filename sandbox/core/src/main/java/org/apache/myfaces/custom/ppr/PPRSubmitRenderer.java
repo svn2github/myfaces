@@ -27,9 +27,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 import java.io.IOException;
-import java.util.List;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Thomas Spiegl
@@ -45,8 +45,7 @@ public class PPRSubmitRenderer extends Renderer {
         UIComponent parent = component.getParent();
         if (parent instanceof UICommand) {
             FormInfo fi = RendererUtils.findNestingForm(component, context);
-            if(fi == null)
-            {
+            if (fi == null) {
                 throw new FacesException("PPRPanelGroup must be embedded in a form.");
             }
             PPRSupport.initPPR(context, component);
@@ -63,13 +62,14 @@ public class PPRSubmitRenderer extends Renderer {
                     }
                 }
             }
-        } else {
+        }
+        else {
             // TODO warning
         }
     }
 
     public void addPPRPanelGroupComponents(UIComponent component, List list) {
-        for (Iterator it = component.getChildren().iterator(); it.hasNext(); ) {
+        for (Iterator it = component.getChildren().iterator(); it.hasNext();) {
             UIComponent c = (UIComponent) it.next();
             if (c instanceof PPRPanelGroup) {
                 list.add(c);
