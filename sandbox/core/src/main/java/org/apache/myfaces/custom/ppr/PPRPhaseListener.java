@@ -46,7 +46,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlResponseWriterImpl;
+import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 import org.apache.myfaces.component.html.ext.HtmlMessages;
+import org.apache.myfaces.component.html.ext.UIComponentPerspective;
 
 /**
  * Before RenderResponse PhaseListener for processing Ajax requests from
@@ -280,13 +282,40 @@ public class PPRPhaseListener implements PhaseListener
 		{
 			clientId = st.nextToken();
 			component = viewRoot.findComponent(clientId);
-			if(component != null)
+            if(component != null)
 			{
 				//get info about state writing/rendering
 				//if at least one ppr does not update the state
 				//the response will not include state information
-				PPRPanelGroup ppr = (PPRPanelGroup) component;
-				if(ppr.getStateUpdate().booleanValue() == false)
+                PPRPanelGroup ppr = null;
+                int oldIndex = 0;
+                if (component instanceof UIComponentPerspective)
+                {
+                    UIComponentPerspective uiComponentPerspective = (UIComponentPerspective) component;
+                    ExecuteOnCallback getComponentCallback = new ExecuteOnCallback()
+                    {
+                        public Object execute(FacesContext context, UIComponent component) {
+                            return component;
+                        }
+                    };
+                    Object retval = uiComponentPerspective.executeOn(context, getComponentCallback);
+                    if(retval instanceof PPRPanelGroup)
+                    {
+                        ppr = (PPRPanelGroup) retval;
+                    } else {
+                         throw new IllegalArgumentException("Expect PPRPanelGroup or UiComponentPerspective");
+                    }
+                    //setup perspective
+                    oldIndex = uiComponentPerspective.getUiData().getRowIndex();
+                    uiComponentPerspective.getUiData().setRowIndex(uiComponentPerspective.getRowIndex());
+                }
+                else if( component instanceof PPRPanelGroup)
+                {
+                    ppr = (PPRPanelGroup) component;
+                }  else {
+                    throw new IllegalArgumentException("Expect PPRPanelGroup or UiComponentPerspective");
+                }
+                if(ppr.getStateUpdate().booleanValue() == false)
 				{
 					handleState = false;
 				}
@@ -320,7 +349,14 @@ public class PPRPhaseListener implements PhaseListener
 				}
 				HtmlRendererUtils.allowCdataSection(context, oldValue);
 				out.print("]]></component>");
-			}
+
+                //tear down perspective
+                if (component instanceof UIComponentPerspective)
+                {
+                    UIComponentPerspective uiComponentPerspective = (UIComponentPerspective) component;
+                    uiComponentPerspective.getUiData().setRowIndex(oldIndex);
+                }
+            }
 			else
 			{
 				log.debug("PPRPhaseListener component with id" + clientId + "not found!");
