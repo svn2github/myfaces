@@ -47,16 +47,18 @@ seconds since last page refresh.
 
 	<h:form id="mainform">
 
+        <t:messages id="messages" showDetail="true" showSummary="true" layout="list"/>
 
-		<h:panelGrid columns="2">
+        <h:panelGrid columns="2">
             <f:facet name="header">
                 <h:outputText value="Examples showing the pprPanelGroup in action"/>
             </f:facet>
             <h:outputText value="Enter the value for update:" />
-			<h:inputText value="#{pprExampleBean.textField}" />
+			<h:inputText id="textField" 
+                    value="#{pprExampleBean.textField}" required="true" />
             
 			<h:outputText value="Entered text will appear here:" />
-			<s:pprPanelGroup id="ppr1"
+			<s:pprPanelGroup id="ppr1" appendMessages="messages"
 				partialTriggers="pprSubmitButton">
 				<h:outputText value="#{pprExampleBean.textField}" />
 			</s:pprPanelGroup>

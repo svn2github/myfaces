@@ -307,7 +307,53 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
   			}
   		}
 
-	    //ensure that new buttons in the PartialUpdate also have onclick-handlers
+        var currentElement = null;
+        var messageTexts = new Array();
+        var appendMessagesToElements = new Array();
+        var clearElements = new Array();
+        var messages = data.getElementsByTagName("message");
+
+        for (var i = 0; i < messages.length; i++)
+		{
+  		  messageTexts.push(messages[i].firstChild.data);
+        }
+
+        var appends = data.getElementsByTagName("append");
+
+        for (var i = 0; i < appends.length; i++)
+		{
+            currentElement = dojo.byId(appends[i].getAttribute("id"));
+            if(typeof currentElement != "undefined")
+                appendMessagesToElements.push(currentElement);
+        }
+
+        var replaces = data.getElementsByTagName("replace");
+
+        for (var i = 0; i < replaces.length; i++)
+		{
+  		  currentElement = dojo.byId(replaces[i].getAttribute("id"));
+            if(typeof currentElement != "undefined")
+            {
+                appendMessagesToElements.push(currentElement);
+                clearElements.push(currentElement);
+            }
+        }
+
+        //clear all to replace messages components
+        for (var i = 0; i < clearElements.length; i++)
+        {
+            this.clearElement(clearElements[i]);
+        }
+        //insert the messages into all messages-components which shall be updated
+        for (var i = 0; i < appendMessagesToElements.length; i++)
+        {
+            for (var m = 0; m < messageTexts.length; m++)
+            {
+                this.formNode.myFacesPPRCtrl.displayMessage(messageTexts[m],appendMessagesToElements[i]);   
+            }
+        }
+
+        //ensure that new buttons in the PartialUpdate also have onclick-handlers
 	    this.formNode.myFacesPPRCtrl.reConnectEventHandlers();
 
         if (this.formNode.myFacesPPRCtrl.stateUpdate)
@@ -343,6 +389,60 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
        // to enable showing a proper error page
        this.formNode.myFacesPPRCtrl.callbackErrorHandler();
     }
+}
+
+org.apache.myfaces.PPRCtrl.prototype.clearElement = function (element)
+{
+    if(element.nodeName.toLowerCase()  == "table")
+    {
+        this.removeAllChildNodes(element.firstChild);
+    }
+    else if (element.nodeName.toLowerCase()  == "ul")
+    {
+        this.removeAllChildNodes(element);
+    }
+}
+
+org.apache.myfaces.PPRCtrl.prototype.removeAllChildNodes = function (node)
+{
+    while (node.hasChildNodes)
+    {
+        node.removeChild(node.firstChild);
+    }
+}
+
+org.apache.myfaces.PPRCtrl.prototype.displayMessage = function (message, messageElement)
+{
+    if(typeof messageElement == "undefined")
+        return;
+    if(messageElement.nodeName.toLowerCase()  == "table")
+    {
+        this.appendMessageToTable(messageElement,message);
+    }
+    else if (messageElement.nodeName.toLowerCase()  == "ul")
+    {
+        this.appendMessageToList(messageElement,message);
+    }
+}
+
+org.apache.myfaces.PPRCtrl.prototype.appendMessageToTable = function (table,message)
+{
+    var tr =document.createElement("tr");
+    var td =document.createElement("td");
+    var textNode = document.createTextNode(message);
+    td.appendChild(textNode);
+    tr.appendChild(td);
+    table.firstChild.appendChild(tr);    
+}
+
+org.apache.myfaces.PPRCtrl.prototype.appendMessageToList = function (list,message)
+{
+    var li =document.createElement("li");
+    var span =document.createElement("span");
+    var textNode = document.createTextNode(message);
+    span.appendChild(textNode);
+    li.appendChild(span);
+    list.appendChild(li);
 }
 
 org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function() {

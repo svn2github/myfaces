@@ -1349,6 +1349,22 @@ Sandbox-related entities.
                          Default: true
             </description>
         </attribute>
+        <attribute>
+			<name>appendMessages</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>comma separated List of client Ids that specify the messages components
+                in the page to which messages are appended by this PPRPanelGroup
+            </description>
+        </attribute>
+        <attribute>
+			<name>replaceMessages</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>comma separated List of client Ids that specify the messages components
+                in the page which messages are replaced by this PPRPanelGroup
+            </description>
+        </attribute>
     </tag>
 
     <tag>
