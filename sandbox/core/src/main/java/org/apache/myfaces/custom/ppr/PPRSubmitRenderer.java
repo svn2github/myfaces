@@ -39,7 +39,8 @@ public class PPRSubmitRenderer extends Renderer
 
     public static final String TRANSIENT_MARKER_ATTRIBUTE = "org.apache.myfaces.PPRPanelGroup.transientComponent";
 
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    {
         //if(PPRSupport.isPartialRequest(context)) {
         //    return;
         //}
@@ -69,7 +70,8 @@ public class PPRSubmitRenderer extends Renderer
         }
     }
 
-    public void addPPRPanelGroupComponents(UIComponent component, List list) {
+    public void addPPRPanelGroupComponents(UIComponent component, List list)
+    {
         for (Iterator it = component.getChildren().iterator(); it.hasNext();) {
             UIComponent c = (UIComponent) it.next();
             if (c instanceof PPRPanelGroup) {

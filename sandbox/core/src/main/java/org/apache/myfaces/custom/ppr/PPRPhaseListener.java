@@ -75,7 +75,8 @@ public class PPRPhaseListener implements PhaseListener
 
     private static final String XML_HEADER = "<?xml version=\"1.0\"?>\n";
 
-    public void afterPhase(PhaseEvent phaseEvent) {
+    public void afterPhase(PhaseEvent phaseEvent)
+    {
     }
 
     /**
@@ -86,7 +87,8 @@ public class PPRPhaseListener implements PhaseListener
      * previously been marked not transient by the
      * {@link PPRPanelGroupRenderer} are set to transient again
      */
-    public void beforePhase(PhaseEvent event) {
+    public void beforePhase(PhaseEvent event)
+    {
         if (log.isDebugEnabled()) {
             log.debug("In PPRPhaseListener beforePhase");
         }
@@ -112,7 +114,8 @@ public class PPRPhaseListener implements PhaseListener
      *
      * @param comp the component to reset
      */
-    private void resetTransientComponents(UIComponent comp) {
+    private void resetTransientComponents(UIComponent comp)
+    {
         if (comp.getAttributes().containsKey(PPRPanelGroupRenderer.TRANSIENT_MARKER_ATTRIBUTE)) {
             comp.setTransient(true);
         }
@@ -129,7 +132,8 @@ public class PPRPhaseListener implements PhaseListener
      * @param context the current {@link FacesContext}
      * @return true if a PPR request is being processed , false otherwise
      */
-    public static boolean isPartialRequest(FacesContext context) {
+    public static boolean isPartialRequest(FacesContext context)
+    {
         return context.getExternalContext().getRequestParameterMap().containsKey(PPR_PARAMETER);
     }
 
@@ -144,7 +148,8 @@ public class PPRPhaseListener implements PhaseListener
      * @param externalContext the current {@link ExternalContext}
      * @param requestMap      Map containing the request attributes
      */
-    private void processPartialPageRequest(FacesContext context, final ExternalContext externalContext, Map requestMap) {
+    private void processPartialPageRequest(FacesContext context, final ExternalContext externalContext, Map requestMap)
+    {
 
         ServletResponse response = (ServletResponse) externalContext.getResponse();
         ServletRequest request = (ServletRequest) externalContext.getRequest();
@@ -187,7 +192,8 @@ public class PPRPhaseListener implements PhaseListener
      * @return a comma separated list of component IDs of the components
      *         which are to be updated
      */
-    private static String getTriggeredComponents(FacesContext fc) {
+    private static String getTriggeredComponents(FacesContext fc)
+    {
         String triggeredComponents = (String) fc.getExternalContext().getRequestMap().get(TRIGGERED_COMPONENTS_PARAMETER);
 
         if (triggeredComponents == null) {
@@ -204,7 +210,8 @@ public class PPRPhaseListener implements PhaseListener
      * @param triggeredComponentClientId client ID of the component which is to be updated in
      *                                   case of a PPR Response
      */
-    public static void addTriggeredComponent(FacesContext fc, String triggeredComponentClientId) {
+    public static void addTriggeredComponent(FacesContext fc, String triggeredComponentClientId)
+    {
         String triggeredComponents = getTriggeredComponents(fc);
 
         if (triggeredComponents == null || triggeredComponents.trim().length() == 0) {
@@ -227,7 +234,8 @@ public class PPRPhaseListener implements PhaseListener
      * @param charset     the character set
      * @return the content-type String to be used in an HTTP response
      */
-    private String getContentType(String contentType, String charset) {
+    private String getContentType(String contentType, String charset)
+    {
         if (charset == null || charset.trim().length() == 0) {
             return contentType;
         }
@@ -246,7 +254,8 @@ public class PPRPhaseListener implements PhaseListener
      * @param viewRoot            the current ViewRoot
      * @param context             the current {@link FacesContext}
      */
-    private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot, FacesContext context) {
+    private void encodeTriggeredComponents(PrintWriter out, String triggeredComponents, UIViewRoot viewRoot, FacesContext context)
+    {
         StringTokenizer st = new StringTokenizer(triggeredComponents, ",", false);
         String clientId;
         UIComponent component;
@@ -270,7 +279,8 @@ public class PPRPhaseListener implements PhaseListener
                     UIComponentPerspective uiComponentPerspective = (UIComponentPerspective) component;
                     ExecuteOnCallback getComponentCallback = new ExecuteOnCallback()
                     {
-                        public Object execute(FacesContext context, UIComponent component) {
+                        public Object execute(FacesContext context, UIComponent component)
+                        {
                             return component;
                         }
                     };
@@ -388,7 +398,8 @@ public class PPRPhaseListener implements PhaseListener
 
     }
 
-    private List getComponentsByCommaSeparatedIdList(FacesContext context, UIComponent comp, String idList, Class desiredType) {
+    private List getComponentsByCommaSeparatedIdList(FacesContext context, UIComponent comp, String idList, Class desiredType)
+    {
         List retval = new ArrayList();
         UIComponent currentComponent = null;
         String[] ids = StringUtils.split(idList, ',');
@@ -408,11 +419,13 @@ public class PPRPhaseListener implements PhaseListener
         return retval;
     }
 
-    private boolean nullSafeCheckComponentType(Class desiredType, UIComponent currentComponent) {
+    private boolean nullSafeCheckComponentType(Class desiredType, UIComponent currentComponent)
+    {
         return currentComponent != null && (desiredType == null || desiredType.isAssignableFrom(currentComponent.getClass()));
     }
 
-    private static List getComponentsByCommaSeparatedList(FacesContext context, UIComponent comp, String commaSeparatedIdList, Class componentType) {
+    private static List getComponentsByCommaSeparatedList(FacesContext context, UIComponent comp, String commaSeparatedIdList, Class componentType)
+    {
         List retval = new ArrayList();
         UIComponent currentComponent = null;
         String[] componentIds = StringUtils.split(commaSeparatedIdList, ',');
@@ -423,7 +436,8 @@ public class PPRPhaseListener implements PhaseListener
         return retval;
     }
 
-    public PhaseId getPhaseId() {
+    public PhaseId getPhaseId()
+    {
         return PhaseId.RENDER_RESPONSE;
     }
 }

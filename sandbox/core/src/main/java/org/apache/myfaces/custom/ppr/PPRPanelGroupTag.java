@@ -49,15 +49,18 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 
     private String _replaceMessages;
 
-    public String getComponentType() {
+    public String getComponentType()
+    {
         return PPRPanelGroup.COMPONENT_TYPE;
     }
 
-    public String getRendererType() {
+    public String getRendererType()
+    {
         return PPRPanelGroup.DEFAULT_RENDERER_TYPE;
     }
 
-    public void release() {
+    public void release()
+    {
         super.release();
         _partialTriggers = null;
         _periodicalUpdate = null;
@@ -70,7 +73,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
         _replaceMessages = null;
     }
 
-    protected void setProperties(UIComponent component) {
+    protected void setProperties(UIComponent component)
+    {
         super.setProperties(component);
 
         setStringProperty(component, "partialTriggers", _partialTriggers);
@@ -86,71 +90,88 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
         setStringProperty(component, "replaceMessages", _replaceMessages);
     }
 
-    public String getPartialTriggers() {
+    public String getPartialTriggers()
+    {
         return _partialTriggers;
     }
 
-    public void setPartialTriggers(String partialTriggers) {
+    public void setPartialTriggers(String partialTriggers)
+    {
         this._partialTriggers = partialTriggers;
     }
 
-    public String getPartialTriggerPattern() {
+    public String getPartialTriggerPattern()
+    {
         return _partialTriggerPattern;
     }
 
-    public void setPartialTriggerPattern(String triggerPattern) {
+    public void setPartialTriggerPattern(String triggerPattern)
+    {
         _partialTriggerPattern = triggerPattern;
     }
 
-    public String getInlineLoadingMessage() {
+    public String getInlineLoadingMessage()
+    {
         return _inlineLoadingMessage;
     }
 
-    public void setInlineLoadingMessage(String loadingMessage) {
+    public void setInlineLoadingMessage(String loadingMessage)
+    {
         _inlineLoadingMessage = loadingMessage;
     }
 
-    public void setPeriodicalUpdate(String periodicalUpdate) {
+    public void setPeriodicalUpdate(String periodicalUpdate)
+    {
         _periodicalUpdate = periodicalUpdate;
     }
 
-    public String getPeriodicalTriggers() {
+    public String getPeriodicalTriggers()
+    {
         return _periodicalTriggers;
     }
 
-    public void setPeriodicalTriggers(String periodicalTriggers) {
+    public void setPeriodicalTriggers(String periodicalTriggers)
+    {
         _periodicalTriggers = periodicalTriggers;
     }
 
-    public void setShowDebugMessages(String showDebugMessages) {
+    public void setShowDebugMessages(String showDebugMessages)
+    {
         _showDebugMessages = showDebugMessages;
     }
 
-    public void setStateUpdate(String stateUpdate) {
+    public void setStateUpdate(String stateUpdate)
+    {
         _stateUpdate = stateUpdate;
     }
 
-    public void setExcludeFromStoppingPeriodicalUpdate(String excludeFromStoppingPeriodicalUpdate) {
+    public void setExcludeFromStoppingPeriodicalUpdate(String excludeFromStoppingPeriodicalUpdate)
+    {
         _excludeFromStoppingPeriodicalUpdate = excludeFromStoppingPeriodicalUpdate;
     }
 
-    public void setWaitBeforePeriodicalUpdate(String waitBeforePeriodicalUpdate) {
+    public void setWaitBeforePeriodicalUpdate(String waitBeforePeriodicalUpdate)
+    {
         _waitBeforePeriodicalUpdate = waitBeforePeriodicalUpdate;
     }
 
-    public String getAppendMessages() {
+    public String getAppendMessages()
+    {
         return _appendMessages;
     }
 
-    public void setAppendMessages(String _appendMessages) {
+    public void setAppendMessages(String _appendMessages)
+    {
         this._appendMessages = _appendMessages;
     }
 
-    public String getReplaceMessages() {
+    public String getReplaceMessages()
+    {
         return _replaceMessages;
     }
 
-    public void setReplaceMessages(String _replaceMessages) {
+    public void setReplaceMessages(String _replaceMessages)
+    {
         this._replaceMessages = _replaceMessages;
     }
 }

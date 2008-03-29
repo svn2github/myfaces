@@ -62,15 +62,18 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
     private String _replaceMessages;
 
-    public PPRPanelGroup() {
+    public PPRPanelGroup()
+    {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
-    public String getFamily() {
+    public String getFamily()
+    {
         return COMPONENT_FAMILY;
     }
 
-    public String getPartialTriggers() {
+    public String getPartialTriggers()
+    {
         if (_partialTriggers != null) {
             return _partialTriggers;
         }
@@ -78,11 +81,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setPartialTriggers(String partialTriggers) {
+    public void setPartialTriggers(String partialTriggers)
+    {
         this._partialTriggers = partialTriggers;
     }
 
-    public Integer getPeriodicalUpdate() {
+    public Integer getPeriodicalUpdate()
+    {
         if (_periodicalUpdate != null) {
             return _periodicalUpdate;
         }
@@ -90,11 +95,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return (vb != null) ? (Integer) vb.getValue(getFacesContext()) : null;
     }
 
-    public void setPeriodicalUpdate(Integer periodicalUpdate) {
+    public void setPeriodicalUpdate(Integer periodicalUpdate)
+    {
         _periodicalUpdate = periodicalUpdate;
     }
 
-    public String getPeriodicalTriggers() {
+    public String getPeriodicalTriggers()
+    {
         if (_periodicalTriggers != null) {
             return _periodicalTriggers;
         }
@@ -102,11 +109,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return (vb != null) ? (String) vb.getValue(getFacesContext()) : null;
     }
 
-    public void setPeriodicalTriggers(String periodicalTriggers) {
+    public void setPeriodicalTriggers(String periodicalTriggers)
+    {
         _periodicalTriggers = periodicalTriggers;
     }
 
-    public String getPartialTriggerPattern() {
+    public String getPartialTriggerPattern()
+    {
         if (_partialTriggerPattern != null) {
             return _partialTriggerPattern;
         }
@@ -114,11 +123,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setPartialTriggerPattern(String partialTriggerPattern) {
+    public void setPartialTriggerPattern(String partialTriggerPattern)
+    {
         this._partialTriggerPattern = partialTriggerPattern;
     }
 
-    public String getExcludeFromStoppingPeriodicalUpdate() {
+    public String getExcludeFromStoppingPeriodicalUpdate()
+    {
         if (_excludeFromStoppingPeriodicalUpdate != null) {
             return _excludeFromStoppingPeriodicalUpdate;
         }
@@ -126,11 +137,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setExcludeFromStoppingPeriodicalUpdate(String excludeFromStoppingPeriodicalUpdate) {
+    public void setExcludeFromStoppingPeriodicalUpdate(String excludeFromStoppingPeriodicalUpdate)
+    {
         _excludeFromStoppingPeriodicalUpdate = excludeFromStoppingPeriodicalUpdate;
     }
 
-    public Integer getWaitBeforePeriodicalUpdate() {
+    public Integer getWaitBeforePeriodicalUpdate()
+    {
         if (_waitBeforePeriodicalUpdate != null) {
             return _waitBeforePeriodicalUpdate;
         }
@@ -138,11 +151,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return (vb != null) ? (Integer) vb.getValue(getFacesContext()) : null;
     }
 
-    public void setWaitBeforePeriodicalUpdate(Integer waitBeforePeriodicalUpdate) {
+    public void setWaitBeforePeriodicalUpdate(Integer waitBeforePeriodicalUpdate)
+    {
         _waitBeforePeriodicalUpdate = waitBeforePeriodicalUpdate;
     }
 
-    public String getInlineLoadingMessage() {
+    public String getInlineLoadingMessage()
+    {
         if (_inlineLoadingMessage != null) {
             return _inlineLoadingMessage;
         }
@@ -150,11 +165,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setInlineLoadingMessage(String inlineLoadingMessage) {
+    public void setInlineLoadingMessage(String inlineLoadingMessage)
+    {
         this._inlineLoadingMessage = inlineLoadingMessage;
     }
 
-    public Boolean getShowDebugMessages() {
+    public Boolean getShowDebugMessages()
+    {
         if (_showDebugMessages != null) {
             return _showDebugMessages;
         }
@@ -162,11 +179,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
     }
 
-    public void setShowDebugMessages(Boolean showDebugMessages) {
+    public void setShowDebugMessages(Boolean showDebugMessages)
+    {
         _showDebugMessages = showDebugMessages;
     }
 
-    public Boolean getStateUpdate() {
+    public Boolean getStateUpdate()
+    {
         if (_stateUpdate != null) {
             return _stateUpdate;
         }
@@ -174,11 +193,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
     }
 
-    public void setStateUpdate(Boolean stateUpdate) {
+    public void setStateUpdate(Boolean stateUpdate)
+    {
         _stateUpdate = stateUpdate;
     }
 
-    public String getAppendMessages() {
+    public String getAppendMessages()
+    {
         if (_appendMessages != null) {
             return _appendMessages;
         }
@@ -186,11 +207,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setAppendMessages(String appendMessages) {
+    public void setAppendMessages(String appendMessages)
+    {
         this._appendMessages = appendMessages;
     }
 
-    public String getReplaceMessages() {
+    public String getReplaceMessages()
+    {
         if (_replaceMessages != null) {
             return _replaceMessages;
         }
@@ -198,11 +221,13 @@ public class PPRPanelGroup extends HtmlPanelGroup
         return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
     }
 
-    public void setReplaceMessages(String replaceMessages) {
+    public void setReplaceMessages(String replaceMessages)
+    {
         this._replaceMessages = replaceMessages;
     }
 
-    public void restoreState(FacesContext context, Object state) {
+    public void restoreState(FacesContext context, Object state)
+    {
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         _partialTriggers = (String) values[1];
@@ -217,7 +242,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
         _replaceMessages = (String) values[10];
     }
 
-    public Object saveState(FacesContext context) {
+    public Object saveState(FacesContext context)
+    {
         Object[] values = new Object[11];
         values[0] = super.saveState(context);
         values[1] = _partialTriggers;
@@ -237,7 +263,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
     /**
      * @return {@link PartialTriggerParser.PartialTrigger}
      */
-    public List parsePartialTriggers() {
+    public List parsePartialTriggers()
+    {
         List list;
         String partialTriggers = getPartialTriggers();
         //handle partial triggers
@@ -253,7 +280,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
     /**
      * @return {@link PartialTriggerParser.PartialTrigger}
      */
-    public List parsePeriodicalTriggers() {
+    public List parsePeriodicalTriggers()
+    {
         List list;
         String periodicalTriggers = getPeriodicalTriggers();
         if (periodicalTriggers != null && periodicalTriggers.trim().length() <= 0) {

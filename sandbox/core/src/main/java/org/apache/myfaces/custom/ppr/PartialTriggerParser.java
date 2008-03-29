@@ -10,7 +10,8 @@ import java.util.List;
 public class PartialTriggerParser
 {
 
-    public List parse(String partialTriggerString) {
+    public List parse(String partialTriggerString)
+    {
 
         int lastTokenEnd = 0;
         boolean subLevelMode = false;
@@ -67,22 +68,26 @@ public class PartialTriggerParser
         private String partialTriggerId;
         private List eventHooks;
 
-        public void addEventHook(String eventHook) {
+        public void addEventHook(String eventHook)
+        {
             if (eventHooks == null) {
                 eventHooks = new ArrayList();
             }
             eventHooks.add(eventHook);
         }
 
-        public String getPartialTriggerId() {
+        public String getPartialTriggerId()
+        {
             return partialTriggerId;
         }
 
-        public void setPartialTriggerId(String partialTriggerId) {
+        public void setPartialTriggerId(String partialTriggerId)
+        {
             this.partialTriggerId = partialTriggerId;
         }
 
-        public List getEventHooks() {
+        public List getEventHooks()
+        {
             if (eventHooks == null) {
                 return Collections.EMPTY_LIST;
             }
@@ -91,7 +96,8 @@ public class PartialTriggerParser
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         PartialTriggerParser parser = new PartialTriggerParser();
         List li = parser.parse(/*", ; ,, test1id   (onkeyup,onkeydown,,,test2id test3id;test4id"*/"testid(onchange)");
 

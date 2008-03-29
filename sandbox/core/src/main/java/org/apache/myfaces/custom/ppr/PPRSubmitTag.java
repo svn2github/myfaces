@@ -26,11 +26,13 @@ import javax.faces.webapp.UIComponentBodyTag;
 public class PPRSubmitTag extends UIComponentBodyTag
 {
 
-    public String getComponentType() {
+    public String getComponentType()
+    {
         return PPRSubmit.COMPONENT_TYPE;
     }
 
-    public String getRendererType() {
+    public String getRendererType()
+    {
         return PPRSubmit.DEFAULT_RENDERER_TYPE;
     }
 }

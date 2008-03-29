@@ -63,7 +63,8 @@ public class PPRSupport
 
     private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
 
-    public static boolean isPartialRequest(FacesContext facesContext) {
+    public static boolean isPartialRequest(FacesContext facesContext)
+    {
         return PPRPhaseListener.isPartialRequest(facesContext);
     }
 
@@ -79,7 +80,8 @@ public class PPRSupport
      * @throws java.io.IOException if the underlying Layer throws an {@link java.io.IOException}
      *                             it is passed through
      */
-    public static void initPPR(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    public static void initPPR(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    {
         //if(isPartialRequest(facesContext)) {
         //    return;
         //}
@@ -125,7 +127,8 @@ public class PPRSupport
      * @throws IOException if the underlying Layer throws an {@link IOException}
      *                     it is passed through
      */
-    public static void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException {
+    public static void encodeJavaScript(FacesContext facesContext, PPRPanelGroup pprGroup) throws IOException
+    {
         StringBuffer script = new StringBuffer();
 
         // all JS is put inside a function passed to dojoOnLoad
@@ -154,7 +157,8 @@ public class PPRSupport
     }
 
     public static void encodeJavaScript(FacesContext context, UIComponent uiComponent, PPRPanelGroup pprGroup,
-                                        PartialTriggerParser.PartialTrigger trigger) throws IOException {
+                                        PartialTriggerParser.PartialTrigger trigger) throws IOException
+    {
         StringBuffer script = new StringBuffer();
         script.append("dojo.addOnLoad( function(){ ");
         String pprCtrlReference = initPPRFormControl(context, pprGroup, script);
@@ -172,7 +176,8 @@ public class PPRSupport
                                              String pprCtrlReference,
                                              String clientId,
                                              UIComponent partialTriggerComponent,
-                                             PartialTriggerParser.PartialTrigger trigger) {
+                                             PartialTriggerParser.PartialTrigger trigger)
+    {
         String partialTriggerClientId;
         String partialTriggerId = trigger.getPartialTriggerId();
         if (partialTriggerComponent == null) {
@@ -189,7 +194,8 @@ public class PPRSupport
         }
     }
 
-    private static void encodePartialTriggers(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference) {
+    private static void encodePartialTriggers(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference)
+    {
         String clientId = pprGroup.getClientId(context);
         UIComponent partialTriggerComponent;
 
@@ -202,7 +208,8 @@ public class PPRSupport
         }
     }
 
-    private static void encodePartialTriggerPattern(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference) {
+    private static void encodePartialTriggerPattern(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference)
+    {
         String clientId = pprGroup.getClientId(context);
 
         String partialTriggerPattern = pprGroup.getPartialTriggerPattern();
@@ -214,7 +221,8 @@ public class PPRSupport
 
     }
 
-    private static void encodeInlineLoadMsg(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference) {
+    private static void encodeInlineLoadMsg(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference)
+    {
         String clientId = pprGroup.getClientId(context);
         String inlineLoadingMessage = pprGroup.getInlineLoadingMessage();
 
@@ -224,7 +232,8 @@ public class PPRSupport
         }
     }
 
-    private static void encodeSubFormFunction(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference) {
+    private static void encodeSubFormFunction(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference)
+    {
         String clientId = pprGroup.getClientId(context);
         SubForm subFormParent = findParentSubForm(pprGroup);
         if (subFormParent != null) {
@@ -232,7 +241,8 @@ public class PPRSupport
         }
     }
 
-    private static void encodePeriodicalUpdates(FacesContext facesContext, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference) {
+    private static void encodePeriodicalUpdates(FacesContext facesContext, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference)
+    {
         String clientId = pprGroup.getClientId(facesContext);
 
         //Handle periodical updates
@@ -284,7 +294,8 @@ public class PPRSupport
         }
     }
 
-    private static String initPPRFormControl(FacesContext facesContext, PPRPanelGroup pprGroup, StringBuffer script) {
+    private static String initPPRFormControl(FacesContext facesContext, PPRPanelGroup pprGroup, StringBuffer script)
+    {
         FormInfo fi = RendererUtils.findNestingForm(pprGroup, facesContext);
         if (fi == null) {
             throw new FacesException("PPRPanelGroup must be embedded in a form.");
@@ -308,7 +319,8 @@ public class PPRSupport
         return pprCtrlReference;
     }
 
-    public static SubForm findParentSubForm(UIComponent base) {
+    public static SubForm findParentSubForm(UIComponent base)
+    {
         if (base == null) {
             return null;
         }
@@ -318,7 +330,8 @@ public class PPRSupport
         return findParentSubForm(base.getParent());
     }
 
-    private static String encodeArray(List eventHooks) {
+    private static String encodeArray(List eventHooks)
+    {
         if (eventHooks == null || eventHooks.size() == 0) {
             return "null";
         }
@@ -350,7 +363,8 @@ public class PPRSupport
      * @param script       The script to be written.
      * @throws IOException A forwarded exception from the underlying renderer.
      */
-    private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException {
+    private static void renderInlineScript(FacesContext facesContext, UIComponent component, String script) throws IOException
+    {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(HTML.SCRIPT_ELEM, component);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);

@@ -50,7 +50,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
      * @param facesContext the current {@link FacesContext}
      * @param uiComponent  the {@link PPRPanelGroup} to render
      */
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    {
         if (uiComponent.getId() == null || uiComponent.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) {
             throw new IllegalArgumentException("'id' is a required attribute for the PPRPanelGroup");
         }
@@ -82,7 +83,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
      * @param component
      * @throws IOException
      */
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException
+    {
         Boolean disableRenderChildren = (Boolean) component.getAttributes().get(DISABLE_RENDER_CHILDREN);
 
         if (disableRenderChildren == null || disableRenderChildren.booleanValue() == false) {
@@ -98,7 +100,8 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
      * @param facesContext the current {@link FacesContext}
      * @param uiComponent  the {@link PPRPanelGroup} to render
      */
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    {
         // Render the span end element
         super.encodeEnd(facesContext, uiComponent);
         if (uiComponent instanceof PPRPanelGroup) {

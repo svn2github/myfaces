@@ -31,7 +31,8 @@ public class PPRSubmit extends UIComponentBase
 
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRSubmit";
 
-    public String getFamily() {
+    public String getFamily()
+    {
         return COMPONENT_FAMILY;
     }
 }
