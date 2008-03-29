@@ -34,7 +34,8 @@ import java.util.List;
 /**
  * @author Thomas Spiegl
  */
-public class PPRSubmitRenderer extends Renderer {
+public class PPRSubmitRenderer extends Renderer
+{
 
     public static final String TRANSIENT_MARKER_ATTRIBUTE = "org.apache.myfaces.PPRPanelGroup.transientComponent";
 

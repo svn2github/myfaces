@@ -58,7 +58,8 @@ import java.util.StringTokenizer;
  *
  * @author Ernst Fastl
  */
-public class PPRPhaseListener implements PhaseListener {
+public class PPRPhaseListener implements PhaseListener
+{
     private static Log log = LogFactory.getLog(PPRPhaseListener.class);
 
     /**
@@ -267,7 +268,8 @@ public class PPRPhaseListener implements PhaseListener {
                 int oldIndex = 0;
                 if (component instanceof UIComponentPerspective) {
                     UIComponentPerspective uiComponentPerspective = (UIComponentPerspective) component;
-                    ExecuteOnCallback getComponentCallback = new ExecuteOnCallback() {
+                    ExecuteOnCallback getComponentCallback = new ExecuteOnCallback()
+                    {
                         public Object execute(FacesContext context, UIComponent component) {
                             return component;
                         }

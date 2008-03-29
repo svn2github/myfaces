@@ -23,7 +23,8 @@ import javax.faces.webapp.UIComponentBodyTag;
 /**
  * @author Thomas Spiegl
  */
-public class PPRSubmitTag extends UIComponentBodyTag {
+public class PPRSubmitTag extends UIComponentBodyTag
+{
 
     public String getComponentType() {
         return PPRSubmit.COMPONENT_TYPE;

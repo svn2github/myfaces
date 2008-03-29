@@ -23,7 +23,8 @@ import javax.faces.component.UIComponentBase;
 /**
  * @author Thomas Spiegl
  */
-public class PPRSubmit extends UIComponentBase {
+public class PPRSubmit extends UIComponentBase
+{
     public static final String COMPONENT_TYPE = "org.apache.myfaces.PPRSubmit";
 
     public static final String COMPONENT_FAMILY = "org.apache.myfaces.PPRSubmit";

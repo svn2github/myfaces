@@ -7,7 +7,8 @@ import java.util.List;
 /**
  * @author Martin Marinschek
  */
-public class PartialTriggerParser {
+public class PartialTriggerParser
+{
 
     public List parse(String partialTriggerString) {
 
@@ -61,7 +62,8 @@ public class PartialTriggerParser {
     }
 
 
-    public static class PartialTrigger {
+    public static class PartialTrigger
+    {
         private String partialTriggerId;
         private List eventHooks;
 

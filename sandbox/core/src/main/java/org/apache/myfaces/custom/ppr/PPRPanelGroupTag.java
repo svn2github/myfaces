@@ -25,7 +25,8 @@ import javax.faces.component.UIComponent;
 /**
  * @author Ernst Fastl
  */
-public class PPRPanelGroupTag extends HtmlPanelGroupTag {
+public class PPRPanelGroupTag extends HtmlPanelGroupTag
+{
     private String _partialTriggers;
 
     private String _partialTriggerPattern;

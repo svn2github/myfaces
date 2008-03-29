@@ -32,7 +32,8 @@ import java.util.Iterator;
 /**
  * @author Ernst Fastl
  */
-public class PPRPanelGroupRenderer extends HtmlGroupRenderer {
+public class PPRPanelGroupRenderer extends HtmlGroupRenderer
+{
     private static Log log = LogFactory.getLog(PPRPanelGroupRenderer.class);
 
     private static final String DISABLE_RENDER_CHILDREN = "org.apache.myfaces.PPRPanelGroup.disableRenderChildren";

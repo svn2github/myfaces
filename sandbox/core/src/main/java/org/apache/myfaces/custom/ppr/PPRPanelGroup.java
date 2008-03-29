@@ -32,7 +32,8 @@ import java.util.List;
  *
  * @author Ernst Fastl
  */
-public class PPRPanelGroup extends HtmlPanelGroup {
+public class PPRPanelGroup extends HtmlPanelGroup
+{
     public static final String COMPONENT_TYPE = "org.apache.myfaces.PPRPanelGroup";
 
     public static final String COMPONENT_FAMILY = "org.apache.myfaces.PPRPanelGroup";

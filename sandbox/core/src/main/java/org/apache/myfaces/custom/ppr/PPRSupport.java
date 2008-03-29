@@ -43,7 +43,8 @@ import java.util.Map;
  * @author Ernst Fastl
  * @author Thomas Spiegl
  */
-public class PPRSupport {
+public class PPRSupport
+{
     private static Log log = LogFactory.getLog(PPRSupport.class);
 
     private static final String PPR_INITIALIZED = "org.apache.myfaces.ppr.INITIALIZED";
