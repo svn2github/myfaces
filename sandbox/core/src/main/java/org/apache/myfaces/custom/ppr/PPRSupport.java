@@ -195,7 +195,7 @@ public class PPRSupport {
         List partialTriggerIds = pprGroup.parsePartialTriggers();
         for (int i = 0; i < partialTriggerIds.size(); i++) {
             PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) partialTriggerIds
-                    .get(i);
+                .get(i);
             partialTriggerComponent = pprGroup.findComponent(trigger.getPartialTriggerId());
             encodePartialTrigger(context, script, pprCtrlReference, clientId, partialTriggerComponent, trigger);
         }
@@ -250,7 +250,7 @@ public class PPRSupport {
                 UIComponent periodicalTriggerComponent;
                 for (int i = 0; i < partialTriggers.size(); i++) {
                     PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) partialTriggers
-                            .get(i);
+                        .get(i);
                     periodicalTriggerId = trigger.getPartialTriggerId();
                     periodicalTriggerComponent = pprGroup.findComponent(periodicalTriggerId);
                     if (periodicalTriggerComponent == null) {
@@ -261,9 +261,9 @@ public class PPRSupport {
                     if (periodicalTriggerComponent != null) {
                         periodicalTriggerClientId = periodicalTriggerComponent.getClientId(facesContext);
                         script.append(pprCtrlReference + "." + ADD_PERIODICAL_TRIGGER_FUNCTION +
-                                "('" + periodicalTriggerClientId + "'," +
-                                encodeArray(trigger.getEventHooks()) + ",'" + clientId + "', " +
-                                pprGroup.getPeriodicalUpdate() + ");");
+                            "('" + periodicalTriggerClientId + "'," +
+                            encodeArray(trigger.getEventHooks()) + ",'" + clientId + "', " +
+                            pprGroup.getPeriodicalUpdate() + ");");
 
                         // Component missing
                     }
