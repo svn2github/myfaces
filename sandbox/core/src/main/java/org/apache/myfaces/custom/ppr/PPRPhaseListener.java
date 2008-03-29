@@ -306,13 +306,13 @@ public class PPRPhaseListener implements PhaseListener
                 }
                 //Check which messages components this group wants to append to
                 if (ppr.getAppendMessages() != null) {
-                    List appendMessagesForThisGroup = getComponentsByCommaSeparatedIdList(context, ppr, ppr.getAppendMessages(), HtmlMessages.class);
+                    List appendMessagesForThisGroup = PPRSupport.getComponentsByCommaSeparatedIdList(context, ppr, ppr.getAppendMessages(), HtmlMessages.class);
                     toAppendMessagesComponents.addAll(appendMessagesForThisGroup);
                 }
 
                 //Check which messages components this group should refresh
                 if (ppr.getReplaceMessages() != null) {
-                    List replaceMessagesForThisGroup = getComponentsByCommaSeparatedIdList(context, ppr, ppr.getReplaceMessages(), HtmlMessages.class);
+                    List replaceMessagesForThisGroup = PPRSupport.getComponentsByCommaSeparatedIdList(context, ppr, ppr.getReplaceMessages(), HtmlMessages.class);
                     toReplaceMessagesComponents.addAll(replaceMessagesForThisGroup);
                 }
 
@@ -398,31 +398,6 @@ public class PPRPhaseListener implements PhaseListener
 
     }
 
-    private List getComponentsByCommaSeparatedIdList(FacesContext context, UIComponent comp, String idList, Class desiredType)
-    {
-        List retval = new ArrayList();
-        UIComponent currentComponent = null;
-        String[] ids = StringUtils.split(idList, ',');
-        for (int i = 0; i < ids.length; i++) {
-            String id = StringUtils.trim(ids[i]);
-            currentComponent = comp.findComponent(id);
-            if (nullSafeCheckComponentType(desiredType, currentComponent)) {
-                retval.add(currentComponent);
-            }
-            else {
-                currentComponent = context.getViewRoot().findComponent(id);
-                if (nullSafeCheckComponentType(desiredType, currentComponent)) {
-                    retval.add(currentComponent);
-                }
-            }
-        }
-        return retval;
-    }
-
-    private boolean nullSafeCheckComponentType(Class desiredType, UIComponent currentComponent)
-    {
-        return currentComponent != null && (desiredType == null || desiredType.isAssignableFrom(currentComponent.getClass()));
-    }
 
     private static List getComponentsByCommaSeparatedList(FacesContext context, UIComponent comp, String commaSeparatedIdList, Class componentType)
     {

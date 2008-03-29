@@ -41,6 +41,7 @@
 	            <h:outputLink value="pprPanelGroupDataScroller.jsf" ><f:verbatim>PPRPanelGroup - ajaxifying a datatable using PPR with partialTriggerPattern</f:verbatim></h:outputLink>
                 <h:outputLink value="pprPanelGroupPeriodicalUpdate.jsf" ><f:verbatim>PPRPanelGroup - parts of a page are getting automatically refreshed by AJAX-Calls (through periodic intervals)</f:verbatim></h:outputLink>
                 <h:outputLink value="pprPanelGroupDataTable.jsf" ><f:verbatim>PPRPanelGroup - dataTable example, server-side requested refresh example </f:verbatim></h:outputLink>
+                <h:outputLink value="pprPanelGroupProcessComponents.jsf" ><f:verbatim>PPRPanelGroup - form with validate/upate-model only configured components</f:verbatim></h:outputLink>
             </h:panelGrid>
             <h:outputText value="Resource Serving"/>
             <h:panelGrid style="padding-left:25px">

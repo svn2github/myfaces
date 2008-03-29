@@ -18,7 +18,17 @@
  */
 package org.apache.myfaces.custom.ppr;
 
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+import javax.faces.event.FacesEvent;
+import java.util.Map;
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * @author Thomas Spiegl
@@ -31,8 +41,74 @@ public class PPRSubmit extends UIComponentBase
 
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PPRSubmit";
 
+    private String processComponentIds;
+
     public String getFamily()
     {
         return COMPONENT_FAMILY;
+    }
+
+    public String getProcessComponentIds()
+    {
+        if (processComponentIds != null) {
+            return processComponentIds;
+        }
+        ValueBinding vb = getValueBinding("processComponentIds");
+        return vb != null ? RendererUtils.getStringValue(getFacesContext(), vb) : null;
+    }
+
+    public void setProcessComponentIds(String processComponentIds)
+    {
+        this.processComponentIds = processComponentIds;
+    }
+
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] states = (Object[]) state;
+        super.restoreState(context, states[0]);
+        processComponentIds = (String) states[1];
+    }
+
+    public Object saveState(FacesContext context)
+    {
+        return new Object[]
+            {
+                super.saveState(context),
+                processComponentIds
+            };
+    }
+
+    public void queueEvent(FacesEvent event)
+    {
+        super.queueEvent(event);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        String processComponentIdsString = getProcessComponentIds();
+
+        Map requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        List allProcessComponents = (List) requestMap.get(PPRSupport.PROCESS_COMPONENTS);
+
+        List processComponents = PPRSupport.getComponentsByCommaSeparatedIdList(
+            context,
+            this,
+            processComponentIdsString,
+            null
+        );
+
+        Iterator iterComponents = processComponents.iterator();
+        while (iterComponents.hasNext())
+        {
+            UIComponent component = (UIComponent) iterComponents.next();
+            String clientId = component.getClientId(context);
+
+            if (allProcessComponents == null)
+            {
+                allProcessComponents = new ArrayList();
+                requestMap.put(PPRSupport.PROCESS_COMPONENTS, allProcessComponents);
+            }
+
+            allProcessComponents.add(clientId);
+        }
     }
 }

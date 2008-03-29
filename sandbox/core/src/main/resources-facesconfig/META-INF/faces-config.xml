@@ -665,6 +665,10 @@
 	<property-resolver>org.apache.myfaces.custom.security.SecurityContextPropertyResolver</property-resolver>
   </application>
 
+    <factory>
+        <lifecycle-factory>org.apache.myfaces.custom.ppr.PPRLifecycleFactory</lifecycle-factory>
+    </factory>
+
   <!--custom validators -->
   <validator>
       <validator-id>org.apache.myfaces.validator.Url</validator-id>

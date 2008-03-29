@@ -18,8 +18,7 @@
  */
 package org.apache.myfaces.custom.ppr;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import org.apache.commons.lang.StringUtils;
 
 import javax.faces.FacesException;
 import javax.faces.component.UICommand;
@@ -36,13 +35,46 @@ import java.util.List;
  */
 public class PPRSubmitRenderer extends Renderer
 {
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
+        super.encodeBegin(context, component);
+
+        final PPRSubmit pprSubmit = (PPRSubmit) component;
+        UICommand command = findCommandComponent(false, component);
+        if (!StringUtils.isEmpty(pprSubmit.getProcessComponentIds()) &&
+            (command == null || command.isImmediate())) {
+            throw new FacesException("PPRSubmit must embed a command component with immedate='false'.");
+        }
+
+        /*
         UIComponent parent = component.getParent();
         if (parent instanceof UICommand) {
-            PPRSupport.initPPR(context, component);
+
+            UICommand command = (UICommand) parent;
+
+            if (!StringUtils.isEmpty(pprSubmit.getProcessComponentIds()))
+            {
+                if (!Boolean.TRUE.equals(command.getAttributes().get(PPRSupport.COMMAND_CONFIGURED_MARK)))
+                {
+                    command.getAttributes().put(PPRSupport.COMMAND_CONFIGURED_MARK, Boolean.TRUE);
+                    command.addActionListener(new PPRActionListener());
+                }
+            }
+        }
+        else {
+            throw new FacesException("PPRSubmitRenderer must be embedded in a command component.");
+        }
+        */
+    }
+
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    {
+        UICommand command = findCommandComponent(true, component);
+
+        if (command != null) {
+            PPRSupport.initPPR(context, command);
             List panelGroups = new ArrayList(5);
-            String id = parent.getId();
+            String id = command.getId();
             addPPRPanelGroupComponents(context.getViewRoot(), panelGroups);
             for (int i = 0; i < panelGroups.size(); i++) {
                 PPRPanelGroup pprGroup = (PPRPanelGroup) panelGroups.get(i);
@@ -50,14 +82,33 @@ public class PPRSubmitRenderer extends Renderer
                 for (int j = 0; j < triggers.size(); j++) {
                     PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) triggers.get(j);
                     if (trigger.getPartialTriggerId().equals(id)) {
-                        PPRSupport.encodeJavaScript(context, parent, pprGroup, trigger);
+                        PPRSupport.encodeJavaScript(context, command, pprGroup, trigger);
                     }
                 }
             }
         }
         else {
-            throw new FacesException("PPRSubmitRenderer must be embedded in a command component.");
+            throw new FacesException("PPRSubmitRenderer must be embedded in or embed a command component.");
         }
+    }
+
+    private UICommand findCommandComponent(boolean checkParent, UIComponent component)
+    {
+        if (checkParent) {
+            UIComponent parent = component.getParent();
+            if (parent instanceof UICommand) {
+                return (UICommand) parent;
+            }
+        }
+
+        if (component.getChildCount() > 0) {
+            UIComponent child = (UIComponent) component.getChildren().get(0);
+            if (child instanceof UICommand) {
+                return (UICommand) child;
+            }
+        }
+
+        return null;
     }
 
     public void addPPRPanelGroupComponents(UIComponent component, List list)

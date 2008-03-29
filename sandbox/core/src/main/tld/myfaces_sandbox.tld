@@ -1372,6 +1372,15 @@ Sandbox-related entities.
         <tag-class>org.apache.myfaces.custom.ppr.PPRSubmitTag</tag-class>
         <body-content>JSP</body-content>
         <description>PPRSubmitTag can be attached to command components, enabling PPR-request inside UIData components</description>
+        <attribute>
+			<name>processComponentIds</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>
+                comma separated List of component ids to process. As usual the whole form will be transmitted and
+                rerendered, but only for the components configured validation and update-model will happen.
+            </description>
+        </attribute>
     </tag>
 
 	<tag>

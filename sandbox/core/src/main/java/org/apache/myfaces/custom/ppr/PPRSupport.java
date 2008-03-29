@@ -20,6 +20,7 @@ package org.apache.myfaces.custom.ppr;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.subform.SubForm;
@@ -38,6 +39,7 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * @author Ernst Fastl
@@ -62,6 +64,12 @@ public class PPRSupport
     private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
 
     private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
+
+
+    public final static String COMMAND_CONFIGURED_MARK = PPRSupport.class.getName() + "_CONFIGURED";
+
+    public final static String PROCESS_COMPONENTS = PPRSupport.class.getName() + "PROCESS_COMPONENTS";
+
 
     public static boolean isPartialRequest(FacesContext facesContext)
     {
@@ -370,5 +378,40 @@ public class PPRSupport
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
         writer.write(script);
         writer.endElement(HTML.SCRIPT_ELEM);
+    }
+
+    /**
+     * get all components by given id-string-list ("id1,id2,id3") and appropriate type
+     *
+     * @param context
+     * @param comp
+     * @param idList
+     * @param desiredType
+     * @return
+     */
+    public static List getComponentsByCommaSeparatedIdList(FacesContext context, UIComponent comp, String idList, Class desiredType)
+    {
+        List retval = new ArrayList();
+        UIComponent currentComponent = null;
+        String[] ids = StringUtils.split(idList, ',');
+        for (int i = 0; i < ids.length; i++) {
+            String id = StringUtils.trim(ids[i]);
+            currentComponent = comp.findComponent(id);
+            if (nullSafeCheckComponentType(desiredType, currentComponent)) {
+                retval.add(currentComponent);
+            }
+            else {
+                currentComponent = context.getViewRoot().findComponent(id);
+                if (nullSafeCheckComponentType(desiredType, currentComponent)) {
+                    retval.add(currentComponent);
+                }
+            }
+        }
+        return retval;
+    }
+
+    private static boolean nullSafeCheckComponentType(Class desiredType, UIComponent currentComponent)
+    {
+        return currentComponent != null && (desiredType == null || desiredType.isAssignableFrom(currentComponent.getClass()));
     }
 }

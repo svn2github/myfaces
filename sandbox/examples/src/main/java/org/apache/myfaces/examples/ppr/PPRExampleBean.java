@@ -19,15 +19,15 @@
 
 package org.apache.myfaces.examples.ppr;
 
-import org.apache.myfaces.examples.inputSuggestAjax.Address;
 import org.apache.myfaces.custom.ppr.PPRPhaseListener;
+import org.apache.myfaces.examples.inputSuggestAjax.Address;
 
 import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.faces.component.UIData;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -186,6 +186,11 @@ public class PPRExampleBean
                 iterator.remove();
             }
         }
+        return null;
+    }
+
+    public String doNothingAction()
+    {
         return null;
     }
 

@@ -18,13 +18,16 @@
  */
 package org.apache.myfaces.custom.ppr;
 
-import javax.faces.webapp.UIComponentBodyTag;
+import org.apache.myfaces.shared_tomahawk.taglib.UIComponentBodyTagBase;
+
+import javax.faces.component.UIComponent;
 
 /**
  * @author Thomas Spiegl
  */
-public class PPRSubmitTag extends UIComponentBodyTag
+public class PPRSubmitTag extends UIComponentBodyTagBase
 {
+    private String processComponentIds;
 
     public String getComponentType()
     {
@@ -34,5 +37,29 @@ public class PPRSubmitTag extends UIComponentBodyTag
     public String getRendererType()
     {
         return PPRSubmit.DEFAULT_RENDERER_TYPE;
+    }
+
+    public void release()
+    {
+        super.release();
+
+        processComponentIds=null;
+    }
+
+    protected void setProperties(UIComponent component)
+    {
+        super.setProperties(component);
+
+        setStringProperty(component, "processComponentIds", processComponentIds);
+    }
+
+    public String getProcessComponentIds()
+    {
+        return processComponentIds;
+    }
+
+    public void setProcessComponentIds(String processComponentIds)
+    {
+        this.processComponentIds = processComponentIds;
     }
 }
