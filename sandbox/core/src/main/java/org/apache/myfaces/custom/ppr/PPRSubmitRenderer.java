@@ -36,20 +36,10 @@ import java.util.List;
  */
 public class PPRSubmitRenderer extends Renderer
 {
-
-    public static final String TRANSIENT_MARKER_ATTRIBUTE = "org.apache.myfaces.PPRPanelGroup.transientComponent";
-
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
     {
-        //if(PPRSupport.isPartialRequest(context)) {
-        //    return;
-        //}
         UIComponent parent = component.getParent();
         if (parent instanceof UICommand) {
-            FormInfo fi = RendererUtils.findNestingForm(component, context);
-            if (fi == null) {
-                throw new FacesException("PPRPanelGroup must be embedded in a form.");
-            }
             PPRSupport.initPPR(context, component);
             List panelGroups = new ArrayList(5);
             String id = parent.getId();
@@ -66,7 +56,7 @@ public class PPRSubmitRenderer extends Renderer
             }
         }
         else {
-            // TODO warning
+            throw new FacesException("PPRSubmitRenderer must be embedded in a command component.");
         }
     }
 
