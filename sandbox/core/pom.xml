@@ -20,6 +20,14 @@
         <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/core</url>
     </scm>
 
+    <repositories>
+        <repository>
+          <id>java-net</id>
+          <url>http://download.java.net/maven/1</url>
+          <layout>legacy</layout>
+        </repository>
+    </repositories>
+    
     <dependencies>
   
         <!-- compile -->
@@ -108,7 +116,15 @@
             <version>2.3</version>
             <scope>provided</scope>
         </dependency>
-        
+
+        <dependency>
+          <!-- Needed for JSF1.2 compatibility hacks -->
+          <groupId>javax.el</groupId>
+          <artifactId>el-api</artifactId>
+          <version>1.0</version>
+          <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>

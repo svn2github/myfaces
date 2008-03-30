@@ -18,6 +18,7 @@
 */
 package org.apache.myfaces.custom.ppr;
 
+import javax.el.ELContext;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIViewRoot;
@@ -26,6 +27,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 /**
@@ -41,7 +44,7 @@ class PPRFacesContextWrapper extends FacesContext
     //~ Instance fields -------------------------------------------------------
 
     private final FacesContext _facesContext;
-    // private Method methodGetELContext = null;
+    private Method methodGetELContext = null;
 
     public PPRFacesContextWrapper(FacesContext facesContext)
     {
@@ -175,7 +178,6 @@ class PPRFacesContextWrapper extends FacesContext
      * actually referenced, so in some cases (including Sun Java 1.4-1.6) the
      * el library *can* be omitted from the classpath with JSF1.1.
      */
-    /*
     public final ELContext getELContext()
     {
     	// Here, we cannot call getELContext on FacesContext as it does not
@@ -194,24 +196,17 @@ class PPRFacesContextWrapper extends FacesContext
     	catch(NoSuchMethodException e)
     	{
     		// should never happen
-    		Log log = LogFactory.getLog(this.getClass());
-    		log.error("JSF1.2 method invoked in non-JSF-1.2 environment", e);
-    		throw new IllegalStateException("JSF1.2 method invoked in non-JSF-1.2 environment");
+    		throw (IllegalStateException) new IllegalStateException("JSF1.2 method invoked in non-JSF-1.2 environment").initCause(e);
     	}
     	catch(InvocationTargetException e)
     	{
     		// should never happen
-    		Log log = LogFactory.getLog(this.getClass());
-    		log.error("Method getELContext on wrapped instance threw exception", e);
-    		throw new IllegalStateException("Method getELContext on wrapped instance threw exception");
+    		throw (IllegalStateException) new IllegalStateException("Method getELContext on wrapped instance threw exception").initCause(e);
     	}
     	catch(IllegalAccessException e)
     	{
     		// should never happen
-    		Log log = LogFactory.getLog(this.getClass());
-    		log.error("Method getElContext on wrapped instance is not accessable", e);
-    		throw new IllegalStateException("Method getElContext on wrapped instance is not accessable");
+    		throw (IllegalStateException) new IllegalStateException("Method getElContext on wrapped instance is not accessable").initCause(e);
     	}
     }
-    */
 }
