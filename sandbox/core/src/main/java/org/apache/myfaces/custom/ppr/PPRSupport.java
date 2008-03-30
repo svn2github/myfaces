@@ -88,7 +88,7 @@ public class PPRSupport
      * @throws java.io.IOException if the underlying Layer throws an {@link java.io.IOException}
      *                             it is passed through
      */
-    public static void initPPR(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    public static void initPPR(FacesContext facesContext, PPRPanelGroup uiComponent) throws IOException
     {
         //if(isPartialRequest(facesContext)) {
         //    return;

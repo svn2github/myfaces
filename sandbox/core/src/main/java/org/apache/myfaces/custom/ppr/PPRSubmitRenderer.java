@@ -31,7 +31,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author Thomas Spiegl
+ * If container for a commond component this component allows you to configure which components
+ * to process (validate/update-model) during a ppr request.
+ *
+ * TODO: document why this component helps with UIData too ... why does it?
  */
 public class PPRSubmitRenderer extends Renderer
 {
@@ -45,26 +48,6 @@ public class PPRSubmitRenderer extends Renderer
             (command == null || command.isImmediate())) {
             throw new FacesException("PPRSubmit must embed a command component with immedate='false'.");
         }
-
-        /*
-        UIComponent parent = component.getParent();
-        if (parent instanceof UICommand) {
-
-            UICommand command = (UICommand) parent;
-
-            if (!StringUtils.isEmpty(pprSubmit.getProcessComponentIds()))
-            {
-                if (!Boolean.TRUE.equals(command.getAttributes().get(PPRSupport.COMMAND_CONFIGURED_MARK)))
-                {
-                    command.getAttributes().put(PPRSupport.COMMAND_CONFIGURED_MARK, Boolean.TRUE);
-                    command.addActionListener(new PPRActionListener());
-                }
-            }
-        }
-        else {
-            throw new FacesException("PPRSubmitRenderer must be embedded in a command component.");
-        }
-        */
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
@@ -72,15 +55,20 @@ public class PPRSubmitRenderer extends Renderer
         UICommand command = findCommandComponent(true, component);
 
         if (command != null) {
-            PPRSupport.initPPR(context, command);
             List panelGroups = new ArrayList(5);
             String id = command.getId();
             addPPRPanelGroupComponents(context.getViewRoot(), panelGroups);
             for (int i = 0; i < panelGroups.size(); i++) {
                 PPRPanelGroup pprGroup = (PPRPanelGroup) panelGroups.get(i);
+
+                // will init only once, but initPPR awaits a PPRPanelGroup
+                PPRSupport.initPPR(context, pprGroup);
+
                 List triggers = pprGroup.parsePartialTriggers();
                 for (int j = 0; j < triggers.size(); j++) {
                     PartialTriggerParser.PartialTrigger trigger = (PartialTriggerParser.PartialTrigger) triggers.get(j);
+
+                    // TODO: what about trigger patterns?
                     if (trigger.getPartialTriggerId().equals(id)) {
                         PPRSupport.encodeJavaScript(context, command, pprGroup, trigger);
                     }
@@ -92,6 +80,10 @@ public class PPRSubmitRenderer extends Renderer
         }
     }
 
+    /**
+     * This component can be child of a command component or embed one as child.
+     * Try to find the command component that way.  
+     */
     private UICommand findCommandComponent(boolean checkParent, UIComponent component)
     {
         if (checkParent) {
@@ -113,6 +105,7 @@ public class PPRSubmitRenderer extends Renderer
 
     public void addPPRPanelGroupComponents(UIComponent component, List list)
     {
+        // TODO: what about facets?
         for (Iterator it = component.getChildren().iterator(); it.hasNext();) {
             UIComponent c = (UIComponent) it.next();
             if (c instanceof PPRPanelGroup) {

@@ -54,9 +54,9 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
     private String _inlineLoadingMessage;
 
-    private Boolean _showDebugMessages = new Boolean(false);
+    private Boolean _showDebugMessages = Boolean.FALSE;
 
-    private Boolean _stateUpdate = new Boolean(true);
+    private Boolean _stateUpdate = Boolean.FALSE;
 
     private String _appendMessages;
 

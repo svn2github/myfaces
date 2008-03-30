@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * UIViewRoot wrapper which will process only those components configured using {@link PPRSubmit}.
+ * If this configuration is missing the default process will take place.
+ */
 public class PPRViewRootWrapper extends UIViewRoot
 {
     private final UIViewRoot delegateViewRoot;

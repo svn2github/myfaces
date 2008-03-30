@@ -24,6 +24,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
 
+/**
+ * A lifecycle wrapper which just decorates the lifecycle passed in to the constructor.
+ * On any ppr request this wrapper will wrap the UIViewRoot of the current view to
+ * make it possible to process just those components in question (affected components).
+ */
 public class PPRLifecycleWrapper extends Lifecycle
 {
     private final Lifecycle delegate;

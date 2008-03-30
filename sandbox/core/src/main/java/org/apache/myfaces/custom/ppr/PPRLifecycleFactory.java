@@ -4,6 +4,10 @@ import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.lifecycle.Lifecycle;
 import java.util.Iterator;
 
+/**
+ * A LifecycleFactory which just decorates the lifecycle passed in to the constructor to
+ * allow interception on ppr requests.
+ */
 public class PPRLifecycleFactory extends LifecycleFactory
 {
     private final LifecycleFactory delegate;

@@ -21,6 +21,10 @@ package org.apache.myfaces.custom.ppr;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 
+/**
+ * Interface similar to JSF 1.2 invokeOnComponent to make it easily possible to
+ * migrate to that feature. 
+ */
 interface ContextCallback
 {
     void invokeContextCallback(FacesContext context, UIComponent component);
