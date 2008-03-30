@@ -24,11 +24,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
 
-public class PPRLifecycle extends Lifecycle
+public class PPRLifecycleWrapper extends Lifecycle
 {
     private final Lifecycle delegate;
 
-    public PPRLifecycle(Lifecycle delegate)
+    public PPRLifecycleWrapper(Lifecycle delegate)
     {
         this.delegate = delegate;
     }
@@ -52,7 +52,7 @@ public class PPRLifecycle extends Lifecycle
                         return null;
                     }
 
-                    return new PPRViewRootWrapper(context, viewRoot);
+                    return new PPRViewRootWrapper(viewRoot);
                 }
             };
 

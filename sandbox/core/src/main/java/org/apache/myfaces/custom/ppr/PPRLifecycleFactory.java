@@ -8,13 +8,13 @@ public class PPRLifecycleFactory extends LifecycleFactory
 {
     private final LifecycleFactory delegate;
 
-    private final PPRLifecycle pprLifecycle;
+    private final PPRLifecycleWrapper pprLifecycle;
 
     public PPRLifecycleFactory(LifecycleFactory delegate)
     {
         this.delegate = delegate;
 
-        pprLifecycle = new PPRLifecycle(this.delegate.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE));
+        pprLifecycle = new PPRLifecycleWrapper(this.delegate.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE));
     }
     
     public void addLifecycle(String lifecycleId, Lifecycle lifecycle)

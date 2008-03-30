@@ -36,12 +36,10 @@ import java.util.Map;
 public class PPRViewRootWrapper extends UIViewRoot
 {
     private final UIViewRoot delegateViewRoot;
-    private final FacesContext delegateFacesContext;
 
-    public PPRViewRootWrapper(FacesContext delegateFacesContext, UIViewRoot delegateViewRoot)
+    public PPRViewRootWrapper(UIViewRoot delegateViewRoot)
     {
         this.delegateViewRoot = delegateViewRoot;
-        this.delegateFacesContext = delegateFacesContext;
     }
 
     public boolean getRendersChildren()
@@ -77,16 +75,16 @@ public class PPRViewRootWrapper extends UIViewRoot
 
     public void processDecodes(FacesContext context)
     {
-        delegateViewRoot.processDecodes(delegateFacesContext);
+        delegateViewRoot.processDecodes(context);
     }
 
     public void processValidators(FacesContext context)
     {
-        Map requestMap = delegateFacesContext.getExternalContext().getRequestMap();
+        Map requestMap = context.getExternalContext().getRequestMap();
         List allProcessComponents = (List) requestMap.get(PPRSupport.PROCESS_COMPONENTS);
         if (allProcessComponents != null)
         {
-            invokeOnComponents(delegateFacesContext, allProcessComponents, new ContextCallback()
+            invokeOnComponents(context, allProcessComponents, new ContextCallback()
             {
                 public void invokeContextCallback(FacesContext context, UIComponent target)
                 {
@@ -96,7 +94,7 @@ public class PPRViewRootWrapper extends UIViewRoot
         }
         else
         {
-            delegateViewRoot.processValidators(delegateFacesContext);
+            delegateViewRoot.processValidators(context);
         }
     }
 
@@ -107,7 +105,7 @@ public class PPRViewRootWrapper extends UIViewRoot
         {
             String componentId = (String) iterComponents.next();
 
-            UIComponent component = delegateFacesContext.getViewRoot().findComponent(componentId);
+            UIComponent component = context.getViewRoot().findComponent(componentId);
             if (component instanceof UIComponentPerspective)
             {
                 UIComponentPerspective uiComponentPerspective = (UIComponentPerspective) component;
@@ -115,7 +113,7 @@ public class PPRViewRootWrapper extends UIViewRoot
                 {
                     public Object execute(FacesContext context, UIComponent component)
                     {
-                        contextCallback.invokeContextCallback(delegateFacesContext, component);
+                        contextCallback.invokeContextCallback(context, component);
                         return null;
                     }
                 };
@@ -123,18 +121,18 @@ public class PPRViewRootWrapper extends UIViewRoot
             }
             else
             {
-                contextCallback.invokeContextCallback(delegateFacesContext, component);
+                contextCallback.invokeContextCallback(context, component);
             }
         }
     }
 
     public void processUpdates(FacesContext context)
     {
-        Map requestMap = delegateFacesContext.getExternalContext().getRequestMap();
+        Map requestMap = context.getExternalContext().getRequestMap();
         List allProcessComponents = (List) requestMap.get(PPRSupport.PROCESS_COMPONENTS);
         if (allProcessComponents != null)
         {
-            invokeOnComponents(delegateFacesContext, allProcessComponents, new ContextCallback()
+            invokeOnComponents(context, allProcessComponents, new ContextCallback()
             {
                 public void invokeContextCallback(FacesContext context, UIComponent target)
                 {
@@ -144,19 +142,19 @@ public class PPRViewRootWrapper extends UIViewRoot
         }
         else
         {
-            delegateViewRoot.processUpdates(delegateFacesContext);
+            delegateViewRoot.processUpdates(context);
         }
     }
 
     public void processApplication(FacesContext context)
     {
-        delegateViewRoot.processApplication(delegateFacesContext);
+        delegateViewRoot.processApplication(context);
     }
 
     public void encodeBegin(FacesContext context)
         throws java.io.IOException
     {
-        delegateViewRoot.encodeBegin(delegateFacesContext);
+        delegateViewRoot.encodeBegin(context);
     }
 
     /* Provides a unique id for this component instance.
@@ -199,12 +197,12 @@ public class PPRViewRootWrapper extends UIViewRoot
 
     public Object saveState(FacesContext context)
     {
-        return delegateViewRoot.saveState(delegateFacesContext);
+        return delegateViewRoot.saveState(context);
     }
 
     public void restoreState(FacesContext context, Object state)
     {
-        delegateViewRoot.restoreState(delegateFacesContext, state);
+        delegateViewRoot.restoreState(context, state);
     }
 
     public Map getAttributes()
@@ -224,7 +222,7 @@ public class PPRViewRootWrapper extends UIViewRoot
 
     public String getClientId(FacesContext context)
     {
-        return delegateViewRoot.getClientId(delegateFacesContext);
+        return delegateViewRoot.getClientId(context);
     }
 
     public String getId()
@@ -275,29 +273,29 @@ public class PPRViewRootWrapper extends UIViewRoot
 
     public void decode(FacesContext context)
     {
-        delegateViewRoot.decode(delegateFacesContext);
+        delegateViewRoot.decode(context);
     }
 
     public void encodeChildren(FacesContext context)
         throws IOException
     {
-        delegateViewRoot.encodeChildren(delegateFacesContext);
+        delegateViewRoot.encodeChildren(context);
     }
 
     public void encodeEnd(FacesContext context)
         throws IOException
     {
-        delegateViewRoot.encodeEnd(delegateFacesContext);
+        delegateViewRoot.encodeEnd(context);
     }
 
     public Object processSaveState(FacesContext context)
     {
-        return delegateViewRoot.processSaveState(delegateFacesContext);
+        return delegateViewRoot.processSaveState(context);
     }
 
     public void processRestoreState(FacesContext context, Object state)
     {
-        delegateViewRoot.processRestoreState(delegateFacesContext, state);
+        delegateViewRoot.processRestoreState(context, state);
     }
 
     public boolean isTransient()
