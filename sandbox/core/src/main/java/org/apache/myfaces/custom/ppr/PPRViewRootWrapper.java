@@ -324,6 +324,15 @@ public class PPRViewRootWrapper extends UIViewRoot
 
     public void setRendererType(String rendererType)
     {
+        if (delegateViewRoot == null)
+        {
+            // the MyFaces 1.2 implmemenation of UIViewRoot calls setRendererType(null) from within the
+            // constructor. This breaks the decorator pattern as delegateViewRoot has not been called yet.
+            // Since every instance of UIViewRoot will issue this call it doesn't matter if we just
+            // discard this request.
+            return;
+        }
+
         delegateViewRoot.setRendererType(rendererType);
     }
 
