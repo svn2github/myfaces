@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.myfaces.custom.graphicimagedynamic;
 
 import org.apache.myfaces.taglib.html.ext.HtmlGraphicImageTag;

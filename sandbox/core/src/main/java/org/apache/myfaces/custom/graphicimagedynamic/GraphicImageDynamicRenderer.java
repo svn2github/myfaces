@@ -19,23 +19,12 @@
 
 package org.apache.myfaces.custom.graphicimagedynamic;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.util.ParameterResourceHandler;
-import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.ResourceLoader;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
 import javax.faces.context.ResponseStream;
@@ -43,332 +32,183 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
-import javax.faces.webapp.FacesServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.util.ParameterResourceHandler;
+import org.apache.myfaces.custom.graphicimagedynamic.util.GraphicImageDynamicConstants;
+import org.apache.myfaces.custom.graphicimagedynamic.util.GraphicsImageDynamicHelper;
+import org.apache.myfaces.custom.graphicimagedynamic.util.ImageContext;
+import org.apache.myfaces.custom.graphicimagedynamic.util.ImageRenderer;
+import org.apache.myfaces.custom.graphicimagedynamic.util.ImageResponseStream;
+import org.apache.myfaces.custom.util.ComponentUtils;
+import org.apache.myfaces.renderkit.html.ext.HtmlImageRenderer;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.renderkit.html.util.ResourceLoader;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * @author Sylvain Vieujot
- * @version $Revision$ $Date: 2005-05-23 19:39:37 +0200 (Mon, 23 May 2005) $
  */
-public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements ResourceLoader
-{
-    protected static class SimpleImageContext implements ImageContext
-    {
-        private final Map _params;
-        private final Integer _width;
-        private final Integer _height;
-
-        public SimpleImageContext(Map params, Integer width, Integer height)
-        {
-            _params = params;
-            _width = width;
-            _height = height;
-        }
-
-        public Map getParamters()
-        {
-            return _params;
-        }
-
-        public Integer getWidth()
-        {
-            return _width;
-        }
-
-        public Integer getHeight()
-        {
-            return _height;
-        }
-    }
-
-    private static final Log log = LogFactory.getLog(GraphicImageDynamicRenderer.class);
-
-    private static final class ImageResponseStream extends ResponseStream
-    {
-        private final OutputStream _out;
-
-        private ImageResponseStream(OutputStream out)
-        {
-            _out = out;
-        }
-
-        public void close() throws IOException
-        {
-            _out.flush();
-            _out.close();
-        }
-
-        public void flush() throws IOException
-        {
-            _out.flush();
-        }
-
-        public void write(byte[] b, int off, int len) throws IOException
-        {
-            _out.write(b, off, len);
-        }
-
-        public void write(byte[] b) throws IOException
-        {
-            _out.write(b);
-        }
-
-        public void write(int b) throws IOException
-        {
-            _out.write(b);
-        }
-    }
-
-    private static final String RENDERER_PARAM = "_renderer";
-	private static final String VALUE_PARAM = "_value";
-    private static final String WIDTH_PARAM = "_width";
-    private static final String HEIGHT_PARAM = "_height";
-
+public class GraphicImageDynamicRenderer extends HtmlImageRenderer implements
+		ResourceLoader {
+	
+	private static final Log log = LogFactory
+			.getLog(GraphicImageDynamicRenderer.class);
     public static final String RENDERER_TYPE = "org.apache.myfaces.GraphicImageDynamicRenderer";
 
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
-    {
-        RendererUtils.checkParamValidity(context, component, GraphicImageDynamic.class);
+    public void encodeEnd(FacesContext context, UIComponent component)
+			throws IOException {
 
-        GraphicImageDynamic graphicImageDynamic = (GraphicImageDynamic) component;
-        ResponseWriter writer = context.getResponseWriter();
+		GraphicImageDynamic graphicImageDynamic = (GraphicImageDynamic) component;
+		String width = graphicImageDynamic.getWidth();
+		String height = graphicImageDynamic.getHeight();
+		ResponseWriter writer = context.getResponseWriter();
+		Map params = ComponentUtils.getParameterMap(component);
+		Class imageRendererClass = graphicImageDynamic.getImageRendererClass();
+		ValueBinding imageRendererValueBinding = graphicImageDynamic
+				.getValueBinding("value");
+		AddResource addResource;
+		String url;
 
-        writer.startElement(HTML.IMG_ELEM, graphicImageDynamic);
-        HtmlRendererUtils.writeIdIfNecessary(writer, graphicImageDynamic, context);
-        HtmlRendererUtils.renderHTMLAttributes(writer, graphicImageDynamic,
-                                               HTML.IMG_PASSTHROUGH_ATTRIBUTES);
+		// render the img HTML element.
+		RendererUtils.checkParamValidity(context, component,
+				GraphicImageDynamic.class);
 
-        Map params = getParameterMap(context, component);
-        String width = graphicImageDynamic.getWidth();
-        if (width != null)
-        {
-            params.put(WIDTH_PARAM, width);
-        }
-        String height = graphicImageDynamic.getHeight();
-        if (height != null)
-        {
-            params.put(HEIGHT_PARAM, height);
-        }
+		writer.startElement(HTML.IMG_ELEM, graphicImageDynamic);
 
-        Class imageRendererClass = graphicImageDynamic.getImageRendererClass();
-        if (imageRendererClass != null)
-        {
-			params.put(RENDERER_PARAM, imageRendererClass.getName());
-        }
+		HtmlRendererUtils.writeIdIfNecessary(writer, graphicImageDynamic,
+				context);
+		HtmlRendererUtils.renderHTMLAttributes(writer, graphicImageDynamic,
+				HTML.IMG_PASSTHROUGH_ATTRIBUTES);
 
-		ValueBinding imageRendererValueBinding = graphicImageDynamic.getValueBinding("value");
-		if (imageRendererValueBinding != null)
-		{
-			params.put(VALUE_PARAM, imageRendererValueBinding.getExpressionString());
+		if (width != null) {
+			params.put(GraphicImageDynamic.WIDTH_PARAM, width);
 		}
 
-		AddResource addResource = AddResourceFactory.getInstance(context);
-        String url =
-			context.getExternalContext().encodeResourceURL(
-				addResource.getResourceUri(context, new ParameterResourceHandler(this
-					.getClass(), params)));
-        writer.writeAttribute(HTML.SRC_ATTR, url, null);
+		if (height != null) {
+			params.put(GraphicImageDynamic.HEIGHT_PARAM, height);
+		}
 
-        writer.endElement(HTML.IMG_ELEM);
-    }
+		if (imageRendererClass != null) {
+			params.put(GraphicImageDynamic.RENDERER_PARAM, imageRendererClass
+					.getName());
+		}
 
-    protected Map getParameterMap(FacesContext context, UIComponent component)
-    {
-        Map result = new HashMap();
-        for (Iterator iter = component.getChildren().iterator(); iter.hasNext();)
-        {
-            UIComponent child = (UIComponent) iter.next();
-            if (child instanceof UIParameter)
-            {
-                UIParameter uiparam = (UIParameter) child;
-                Object value = uiparam.getValue();
-                if (value != null)
-                {
-                    result.put(uiparam.getName(), value);
-                }
-            }
-        }
-        return result;
-    }
+		if (imageRendererValueBinding != null) {
+			params.put(GraphicImageDynamic.VALUE_PARAM,
+					imageRendererValueBinding.getExpressionString());
+		}
 
-    public void decode(FacesContext facesContext, UIComponent component)
-    {
-        super.decode(facesContext, component);
-    }
+		addResource = AddResourceFactory.getInstance(context);
+		url = context.getExternalContext().encodeResourceURL(
+				addResource.getResourceUri(context,
+						new ParameterResourceHandler(this.getClass(), params)));
+		writer.writeAttribute(HTML.SRC_ATTR, url, null);
 
-    /**
-     * @throws IOException
-     * @see org.apache.myfaces.renderkit.html.util.ResourceLoader#serveResource(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
-     */
-    public void serveResource(ServletContext context, HttpServletRequest request,
-                              HttpServletResponse response, String resourceUri) throws IOException
-    {
-        FacesContextFactory facesContextFactory = (FacesContextFactory) FactoryFinder
-                .getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
-        LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder
-                .getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-        Lifecycle lifecycle = lifecycleFactory.getLifecycle(getLifecycleId(context));
-        FacesContext facesContext = facesContextFactory.getFacesContext(context, request, response,
-                                                                        lifecycle);
-        facesContext.setResponseStream(new ImageResponseStream(response.getOutputStream()));
-        try
-        {
+		writer.endElement(HTML.IMG_ELEM);
+	}
+
+    public void decode(FacesContext facesContext, UIComponent component) {
+		super.decode(facesContext, component);
+	}
+
+    public void serveResource(ServletContext servletContext,
+			HttpServletRequest request, HttpServletResponse response,
+			String resourceUri) throws IOException {
+
+		// get the facesContext from the servletContext.
+		FacesContextFactory facesContextFactory = (FacesContextFactory) FactoryFinder
+				.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
+		LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder
+				.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+		Lifecycle lifecycle = lifecycleFactory.getLifecycle(ComponentUtils
+				.getLifecycleId(servletContext));
+		FacesContext facesContext = facesContextFactory.getFacesContext(
+				servletContext, request, response, lifecycle);
+
+		facesContext.setResponseStream(new ImageResponseStream(response
+				.getOutputStream()));
+
+		// render the image.
+		try {
+
 			ImageRenderer imageRenderer = null;
+			Map requestMap = facesContext.getExternalContext()
+					.getRequestParameterMap();
+			Object rendererValue = requestMap
+					.get(GraphicImageDynamic.RENDERER_PARAM);
 
-			Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
-            Object rendererValue = requestMap.get(RENDERER_PARAM);
-			if (rendererValue != null)
-			{
-				imageRenderer = getImageRendererFromClassName(rendererValue.toString());
-			}
-			else
-			{
-				Object rendererValueBinding = requestMap.get(VALUE_PARAM);
-				if (rendererValueBinding != null)
-				{
-					imageRenderer = getImageRendererFromValueBinding(facesContext, rendererValueBinding.toString());
+			if (rendererValue != null) {
+				imageRenderer = GraphicsImageDynamicHelper
+						.getImageRendererFromClassName(rendererValue.toString());
+			} else {
+				Object rendererValueBinding = requestMap
+						.get(GraphicImageDynamic.VALUE_PARAM);
+				
+				if (rendererValueBinding != null) {
+					imageRenderer = GraphicsImageDynamicHelper
+							.getImageRendererFromValueBinding(facesContext,
+									rendererValueBinding.toString());
 				}
 			}
 
-
-			if (imageRenderer == null)
-			{
-				throw new FacesException("no image renderer defined.");
+			if (imageRenderer == null) {
+				throw new FacesException(
+						GraphicImageDynamicConstants.NO_IMAGE_RENDERER_DEFINED);
 			}
 
-			try
-			{
+			try {
 				renderImage(imageRenderer, facesContext);
+			} catch (Exception e) {
+				throw new FacesException(
+						GraphicImageDynamicConstants.MSG_COULDNOT_RENDER_IMAGE
+								+ rendererValue + " : " + e.getMessage(), e);
 			}
-			catch (Exception e)
-			{
-				throw new FacesException("could not renderer image "
-										 + rendererValue + " : " + e.getMessage(), e);
-			}
+
 			facesContext.getResponseStream().close();
-        }
-        finally
-        {
-            facesContext.release();
-        }
-    }
-
-	protected ImageRenderer getImageRendererFromValueBinding(FacesContext facesContext, String rendererValueBinding)
-	{
-		return (ImageRenderer) facesContext.getApplication().createValueBinding(rendererValueBinding.toString()).getValue(facesContext);
+		} finally {
+			facesContext.release();
+		}
 	}
 
-	protected ImageRenderer getImageRendererFromClassName(String imageRendererClassName)
-	{
-		ImageRenderer imageRenderer;
-		try
-				{
-					Class rendererClass = ClassUtils.classForName(imageRendererClassName.toString());
-			if (!ImageRenderer.class.isAssignableFrom(rendererClass))
-			{
-				throw new FacesException("Image renderer class [" + imageRendererClassName
-										 + "] does not implement " + ImageRenderer.class.getName());
-			}
-			try
-			{
-				imageRenderer = (ImageRenderer) rendererClass.newInstance();
-			}
-			catch (InstantiationException e)
-			{
-				throw new FacesException("could not instantiate image renderer class "
-										 + imageRendererClassName + " : " + e.getMessage(), e);
-			}
-			catch (IllegalAccessException e)
-			{
-				throw new FacesException("could not instantiate image renderer class "
-										 + imageRendererClassName + " : " + e.getMessage(), e);
-			}
+    /**
+     * This method is used for rendering the image.
+     * @param imageRenderer
+     * @param facesContext
+     * @throws Exception
+     */
+	protected void renderImage(ImageRenderer imageRenderer,
+			FacesContext facesContext) throws Exception {
+
+		ImageContext imageContext = GraphicsImageDynamicHelper
+				.createImageContext(facesContext, log);
+		imageRenderer.setContext(facesContext, imageContext);
+		HttpServletResponse response = (HttpServletResponse) facesContext
+				.getExternalContext().getResponse();
+		int contentLength = imageRenderer.getContentLength();
+		String contentType = imageRenderer.getContentType();
+		ResponseStream out = facesContext.getResponseStream();
+
+		if (contentLength > 0) {
+			response.setContentLength(contentLength);
 		}
-		catch (ClassNotFoundException e)
-		{
-			throw new FacesException("image renderer class not found: " + e.getMessage(), e);
+
+		if (contentType != null && contentType.length() > 0) {
+			response.setContentType(contentType);
 		}
-		return imageRenderer;
+
+		try {
+			imageRenderer.renderResource(out);
+		} finally {
+			out.close();
+			facesContext.responseComplete();
+		}
 	}
-
-	protected void renderImage(ImageRenderer imageRenderer, FacesContext facesContext)
-            throws Exception
-    {
-            ImageContext imageContext = createImageContext(facesContext);
-
-        imageRenderer.setContext(facesContext, imageContext);
-
-        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext()
-                .getResponse();
-
-
-        int contentLength = imageRenderer.getContentLength();
-        if( contentLength >0 )
-        {
-            response.setContentLength(contentLength);
-        }
-
-        String contentType = imageRenderer.getContentType();
-        if (contentType != null && contentType.length() > 0 )
-        {
-            response.setContentType(contentType);
-        }
-
-        ResponseStream out = facesContext.getResponseStream();
-        try
-        {
-                imageRenderer.renderResource( out );
-        }
-        finally
-        {
-            out.close();
-            facesContext.responseComplete();
-        }
-    }
-
-    protected ImageContext createImageContext(FacesContext facesContext)
-    {
-        ExternalContext externalContext = facesContext.getExternalContext();
-        final Map requestMap = externalContext.getRequestParameterMap();
-        Object value = requestMap.get(WIDTH_PARAM);
-        Integer width = null;
-        if (value != null)
-        {
-            try
-            {
-                width = Integer.valueOf(value.toString());
-            }
-            catch (NumberFormatException e)
-            {
-                log.error("Invalid value for image width : " + value + ", " + e.getMessage(), e);
-            }
-        }
-        Integer height = null;
-        value = requestMap.get(HEIGHT_PARAM);
-        if (value != null)
-        {
-            try
-            {
-                height = Integer.valueOf(value.toString());
-            }
-            catch (NumberFormatException e)
-            {
-                log.error("Invalid value for image height : " + value + ", " + e.getMessage(), e);
-            }
-        }
-        return new SimpleImageContext(requestMap, width, height);
-    }
-
-    private String getLifecycleId(ServletContext context)
-    {
-        String lifecycleId = context.getInitParameter(FacesServlet.LIFECYCLE_ID_ATTR);
-        return lifecycleId != null ? lifecycleId : LifecycleFactory.DEFAULT_LIFECYCLE;
-    }
 }

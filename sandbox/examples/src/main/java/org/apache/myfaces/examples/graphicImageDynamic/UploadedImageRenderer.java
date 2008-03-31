@@ -26,7 +26,7 @@ import javax.faces.context.ResponseStream;
 import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.custom.dynamicResources.ResourceContext;
-import org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer;
+import org.apache.myfaces.custom.graphicimagedynamic.util.ImageRenderer;
 
 /**
  * @author Mathias Broekelmann
@@ -65,7 +65,7 @@ public class UploadedImageRenderer implements ImageRenderer
     }
 
     /**
-     * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#renderImage(javax.faces.context.FacesContext, org.apache.myfaces.custom.graphicimagedynamic.ImageContext, java.io.OutputStream)
+     * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#renderResource(javax.faces.context.ResponseStream) 
      */
     public void renderResource(ResponseStream out)
             throws IOException
