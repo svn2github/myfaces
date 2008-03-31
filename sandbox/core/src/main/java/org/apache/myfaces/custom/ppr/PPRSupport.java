@@ -61,6 +61,8 @@ public class PPRSupport
 
     private static final String SET_SUBFORM_ID_FUNCTION = "setSubFormId";
 
+    private static final String SET_COMPONENT_UPDATE_FUNCTION = "setComponentUpdateFunction";
+
     private static final String ADD_INLINE_LOADING_MESSAGE_FUNCTION = "addInlineLoadingMessage";
 
     private static final String MY_FACES_PPR_INIT_CODE = "new org.apache.myfaces.PPRCtrl";
@@ -152,6 +154,8 @@ public class PPRSupport
         encodePartialTriggerPattern(facesContext, pprGroup, script, pprCtrlReference);
 
         encodeSubFormFunction(facesContext, pprGroup, script, pprCtrlReference);
+
+        encodeDomUpdateConfig(facesContext, pprGroup, script, pprCtrlReference);
 
         encodeInlineLoadMsg(facesContext, pprGroup, script, pprCtrlReference);
 
@@ -246,6 +250,14 @@ public class PPRSupport
         SubForm subFormParent = findParentSubForm(pprGroup);
         if (subFormParent != null) {
             script.append(pprCtrlReference + "." + SET_SUBFORM_ID_FUNCTION + "('" + subFormParent.getId() + "','" + clientId + "');");
+        }
+    }
+
+    private static void encodeDomUpdateConfig(FacesContext context, PPRPanelGroup pprGroup, StringBuffer script, String pprCtrlReference)
+    {
+        String componentUpdateFunction = pprGroup.getComponentUpdateFunction();
+        if (!StringUtils.isEmpty(componentUpdateFunction)) {
+            script.append(pprCtrlReference + "." + SET_COMPONENT_UPDATE_FUNCTION+ "('" + componentUpdateFunction + "');");
         }
     }
 

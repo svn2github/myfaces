@@ -1365,6 +1365,14 @@ Sandbox-related entities.
                 in the page which messages are replaced by this PPRPanelGroup
             </description>
         </attribute>
+        <attribute>
+			<name>componentUpdateFunction</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+            <description>client javascript function which will do the actual dom update. function signature:
+                function(formNodeElement, updateTargetElement, pprResponseElement)
+            </description>
+        </attribute>
     </tag>
 
     <tag>

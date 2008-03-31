@@ -62,6 +62,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
     private String _replaceMessages;
 
+    private String _componentUpdateFunction;
+
     public PPRPanelGroup()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -98,6 +100,20 @@ public class PPRPanelGroup extends HtmlPanelGroup
     public void setPeriodicalUpdate(Integer periodicalUpdate)
     {
         _periodicalUpdate = periodicalUpdate;
+    }
+
+    public String getComponentUpdateFunction()
+    {
+        if (_componentUpdateFunction != null) {
+            return _componentUpdateFunction;
+        }
+        ValueBinding vb = getValueBinding("componentUpdateFunction");
+        return (vb != null) ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    public void setComponentUpdateFunction(String componentUpdateFunction)
+    {
+        _componentUpdateFunction = componentUpdateFunction;
     }
 
     public String getPeriodicalTriggers()
@@ -240,11 +256,12 @@ public class PPRPanelGroup extends HtmlPanelGroup
         _waitBeforePeriodicalUpdate = (Integer) values[8];
         _appendMessages = (String) values[9];
         _replaceMessages = (String) values[10];
+        _componentUpdateFunction = (String) values[11];
     }
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[11];
+        Object[] values = new Object[12];
         values[0] = super.saveState(context);
         values[1] = _partialTriggers;
         values[2] = _partialTriggerPattern;
@@ -256,6 +273,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
         values[8] = _waitBeforePeriodicalUpdate;
         values[9] = _appendMessages;
         values[10] = _replaceMessages;
+        values[11] = _componentUpdateFunction;
         return values;
     }
 

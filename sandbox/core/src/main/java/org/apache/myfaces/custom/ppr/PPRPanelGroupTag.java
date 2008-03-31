@@ -49,6 +49,8 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
 
     private String _replaceMessages;
 
+    private String _componentUpdateFunction;
+
     public String getComponentType()
     {
         return PPRPanelGroup.COMPONENT_TYPE;
@@ -71,6 +73,7 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
         _waitBeforePeriodicalUpdate = null;
         _appendMessages = null;
         _replaceMessages = null;
+        _componentUpdateFunction = null;
     }
 
     protected void setProperties(UIComponent component)
@@ -88,6 +91,7 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
         setBooleanProperty(component, "stateUpdate", _stateUpdate);
         setStringProperty(component, "appendMessages", _appendMessages);
         setStringProperty(component, "replaceMessages", _replaceMessages);
+        setStringProperty(component, "componentUpdateFunction", _componentUpdateFunction);
     }
 
     public String getPartialTriggers()
@@ -173,5 +177,15 @@ public class PPRPanelGroupTag extends HtmlPanelGroupTag
     public void setReplaceMessages(String _replaceMessages)
     {
         this._replaceMessages = _replaceMessages;
+    }
+
+    public String getComponentUpdateFunction()
+    {
+        return _componentUpdateFunction;
+    }
+
+    public void setComponentUpdateFunction(String componentUpdateFunction)
+    {
+        this._componentUpdateFunction = componentUpdateFunction;
     }
 }

@@ -72,10 +72,20 @@ seconds since last page refresh.
             <s:pprPanelGroup id="ppr1"
                              partialTriggers="pprSubmitButtonFail,pprSubmitButtonWork"
                              inlineLoadingMessage="Loading..."
-                             replaceMessages="messages">
-                <h:outputText value="#{pprExampleBean.textField}"/>
+                             replaceMessages="messages"
+                             componentUpdateFunction="localDomUpdateFunction">
+                <h:inputText id="pprOut" value="#{pprExampleBean.textField}" readonly="true"/>
             </s:pprPanelGroup>
         </h:panelGrid>
+
+        <f:verbatim>
+<script type="text/javascript">
+function localDomUpdateFunction(formNode, targetNode, responseNode)
+{
+    document.getElementById("mainform:pprOut").value="LDUF:" + responseNode.firstChild.value;
+}
+</script>
+        </f:verbatim>
 
         <s:fieldset legend="about this example">
             <f:verbatim>
@@ -90,6 +100,9 @@ seconds since last page refresh.
                 If you press the first button nothing happens as long as the second textfield has no data.
                 <br />
                 If you press the second button it is sufficient to enter something into the first textfield.
+                <br />
+                Also notice that a user defined java script function is used to read the ppr response and
+                update the dom as required.
             </f:verbatim>
         </s:fieldset>
     </h:form>

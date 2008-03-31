@@ -31,8 +31,9 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 	this.linkIdRegexToExclude = '';
 	this.waitBeforePeriodicalUpdate = null;
 	this.periodicalRegexLinkFound = false;
+    this.componentUpdateFunction = null;
 
-	this.subFormId = new Array();
+    this.subFormId = new Array();
 
 	if(!window.oamPartialTriggersToZoneIds)
 	{
@@ -65,6 +66,14 @@ org.apache.myfaces.PPRCtrl = function(formId, showDebugMessages, stateUpdate)
 
 	this.reConnectEventHandlers();
 }
+
+// set the component update function to use instead of the default
+// provide a function with the signature:
+// function(formNode, destinationElement, pprResponseElement)
+org.apache.myfaces.PPRCtrl.prototype.setComponentUpdateFunction= function(componentUpdateFunction)
+{
+	this.componentUpdateFunction = componentUpdateFunction;
+};
 
 // set the subform id this ppr belongs to
 org.apache.myfaces.PPRCtrl.prototype.setSubFormId= function(subFormId, refreshZoneId)
@@ -295,9 +304,19 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
 		  {
   			componentUpdate = componentUpdates[i];
   			domElement = dojo.byId(componentUpdate.getAttribute("id"));
-  			//todo - doesn't work with tables in IE (not used for tables at the moment)
-  			domElement.innerHTML = componentUpdate.firstChild.data;
-  			//parse the new DOM element for script tags and execute them
+            if (this.formNode.myFacesPPRCtrl.componentUpdateFunction != null)
+            {
+                var componentUpdateDom = document.createElement("div");
+                componentUpdateDom.innerHTML = componentUpdate.firstChild.data;
+                
+                eval(this.formNode.myFacesPPRCtrl.componentUpdateFunction)(this.formNode, domElement, componentUpdateDom);
+            }
+            else
+            {
+                //todo - doesn't work with tables in IE (not used for tables at the moment)
+  			    domElement.innerHTML = componentUpdate.firstChild.data;
+            }
+              //parse the new DOM element for script tags and execute them
   			var regex = /<script([^>]*)>([\s\S]*?)<\/script>/i;
   			var s = domElement.innerHTML;
   			while(match = regex.exec(s)){
