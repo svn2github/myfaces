@@ -98,9 +98,9 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
 	}
 	else
     {
-        handler=function(event)
+        handler=function()
         {
-            return orgApacheMyfacesSubmitOnEventSetEvent(event, orgApacheMyfacesSubmitOnEventGeneral(clickComponentId));
+            orgApacheMyfacesSubmitOnEventGeneral(clickComponentId);
         };
     }
 
@@ -142,7 +142,20 @@ function orgApacheMyfacesSubmitOnEventIsFormElement(component)
 
 function orgApacheMyfacesSubmitOnEventAttachEvent(component, components, eventType, handler, userHandler)
 {
-	var setupHandler;
+    if (!component.oamSOEAttachedHandlers)
+    {
+        component.oamSOEAttachedHandlers=new Object;
+    }
+    if (component.oamSOEAttachedHandlers[eventType])
+    {
+        // handler already attached
+        // do not attach again (which might happen during ppr) as then the event fires twice,
+        // or the browser is crazy afterwards at all
+        return;
+    }
+    component.oamSOEAttachedHandlers[eventType] = true;
+
+    var setupHandler;
 
 	if (document.all && eventType == "change" && !userHandler && component.type && component.type.toLowerCase() == "radio")
 	{
