@@ -317,8 +317,6 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
   			    domElement.innerHTML = componentUpdate.firstChild.data;
             }
               //parse the new DOM element for script tags and execute them
-            var regexCommentStart = /^<!--/;
-            var regexCommentEnd = /-->$/;
   			var regex = /<script([^>]*)>([\s\S]*?)<\/script>/i;
   			var s = domElement.innerHTML;
   			while(match = regex.exec(s)){
