@@ -64,6 +64,8 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
     private String _componentUpdateFunction;
 
+    private Boolean _initializationSent;
+
     public PPRPanelGroup()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -242,6 +244,21 @@ public class PPRPanelGroup extends HtmlPanelGroup
         this._replaceMessages = replaceMessages;
     }
 
+    /**
+     * flag to store the information if the initialization code has been sent to the client
+     * already. This gets state-saved to have it available between requests, e.g. to make it work
+     * within ppr responses too.
+     */
+    public boolean getInitializationSent()
+    {
+        return Boolean.TRUE.equals(_initializationSent);
+    }
+
+    public void setInitializationSent(boolean initializationSent)
+    {
+        this._initializationSent = initializationSent?Boolean.TRUE:Boolean.FALSE;
+    }
+
     public void restoreState(FacesContext context, Object state)
     {
         Object[] values = (Object[]) state;
@@ -257,11 +274,12 @@ public class PPRPanelGroup extends HtmlPanelGroup
         _appendMessages = (String) values[9];
         _replaceMessages = (String) values[10];
         _componentUpdateFunction = (String) values[11];
+        _initializationSent = (Boolean) values[12];
     }
 
     public Object saveState(FacesContext context)
     {
-        Object[] values = new Object[12];
+        Object[] values = new Object[13];
         values[0] = super.saveState(context);
         values[1] = _partialTriggers;
         values[2] = _partialTriggerPattern;
@@ -274,6 +292,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
         values[9] = _appendMessages;
         values[10] = _replaceMessages;
         values[11] = _componentUpdateFunction;
+        values[12] = _initializationSent;
         return values;
     }
 

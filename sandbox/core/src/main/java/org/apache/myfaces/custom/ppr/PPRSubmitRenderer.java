@@ -61,8 +61,9 @@ public class PPRSubmitRenderer extends Renderer
             for (int i = 0; i < panelGroups.size(); i++) {
                 PPRPanelGroup pprGroup = (PPRPanelGroup) panelGroups.get(i);
 
-                // will init only once, but initPPR awaits a PPRPanelGroup
-                PPRSupport.initPPR(context, pprGroup);
+                if (!PPRSupport.isPartialRequest(context)) {
+                    PPRSupport.initPPR(context, pprGroup);
+                }
 
                 List triggers = pprGroup.parsePartialTriggers();
                 for (int j = 0; j < triggers.size(); j++) {
@@ -70,7 +71,7 @@ public class PPRSubmitRenderer extends Renderer
 
                     // TODO: what about trigger patterns?
                     if (trigger.getPartialTriggerId().equals(id)) {
-                        PPRSupport.encodeJavaScript(context, command, pprGroup, trigger);
+                        PPRSupport.encodeJavaScriptTriggerOnly(context, command, pprGroup, trigger);
                     }
                 }
             }
@@ -82,7 +83,7 @@ public class PPRSubmitRenderer extends Renderer
 
     /**
      * This component can be child of a command component or embed one as child.
-     * Try to find the command component that way.  
+     * Try to find the command component that way.
      */
     private UICommand findCommandComponent(boolean checkParent, UIComponent component)
     {

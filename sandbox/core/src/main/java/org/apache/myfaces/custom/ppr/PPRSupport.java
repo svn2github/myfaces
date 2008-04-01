@@ -168,7 +168,7 @@ public class PPRSupport
         renderInlineScript(facesContext, pprGroup, script.toString());
     }
 
-    public static void encodeJavaScript(FacesContext context, UIComponent uiComponent, PPRPanelGroup pprGroup,
+    public static void encodeJavaScriptTriggerOnly(FacesContext context, UIComponent uiComponent, PPRPanelGroup pprGroup,
                                         PartialTriggerParser.PartialTrigger trigger) throws IOException
     {
         StringBuffer script = new StringBuffer();
@@ -320,15 +320,13 @@ public class PPRSupport
         if (fi == null) {
             throw new FacesException("PPRPanelGroup must be embedded in a form.");
         }
-        final ExternalContext externalContext = facesContext.getExternalContext();
-        final Map requestMap = externalContext.getRequestMap();
         final String formName = fi.getFormName();
 
         String pprCtrlReference = "dojo.byId('" + formName + "').myFacesPPRCtrl";
 
         //Each form containing PPRPanelGroups has its own PPRCtrl
-        if (!requestMap.containsKey(PPR_INITIALIZED + "." + formName)) {
-            requestMap.put(PPR_INITIALIZED + "." + formName, Boolean.TRUE);
+        if (!pprGroup.getInitializationSent()) {
+            pprGroup.setInitializationSent(true);
 
             script.append(pprCtrlReference + "=" + MY_FACES_PPR_INIT_CODE + "('" + formName + "'," + pprGroup.getShowDebugMessages().booleanValue() + "," + pprGroup.getStateUpdate().booleanValue() + ");\n");
 
