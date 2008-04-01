@@ -196,7 +196,7 @@ org.apache.myfaces.PPRCtrl.prototype.addPeriodicalTrigger = function(inputElemen
 // registering an interceptor onsubmit function on each form to block
 // periodical refresh and updating the dom if a page submit occurs.
 // Blocking should only occur if onsubmit() returns true, otherwise not
-// and not for links which are excluded via a regex pattern. 
+// and not for links which are excluded via a regex pattern.
 
 org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
 {
@@ -206,9 +206,9 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
     {
         var form = document.forms[i];
         var origOnsubmit = form.onsubmit;
-        form.onsubmit = function()
+        form.onsubmit = function(event)
         {
-			var returnValue = false;
+            var returnValue = false;
 
 			if(null != origOnsubmit && typeof origOnsubmit != "undefined")
             {
@@ -239,7 +239,7 @@ org.apache.myfaces.PPRCtrl.prototype.registerOnSubmitInterceptor = function()
 				}
 			}
 			ppr.blockPeriodicalUpdateDuringPost = true;
-			return returnValue;
+            return returnValue;
 		}
     }
 };
@@ -308,7 +308,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
             {
                 var componentUpdateDom = document.createElement("div");
                 componentUpdateDom.innerHTML = componentUpdate.firstChild.data;
-                
+
                 eval(this.formNode.myFacesPPRCtrl.componentUpdateFunction)(this.formNode, domElement, componentUpdateDom);
             }
             else
@@ -317,11 +317,18 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
   			    domElement.innerHTML = componentUpdate.firstChild.data;
             }
               //parse the new DOM element for script tags and execute them
+            var regexCommentStart = /^<!--/;
+            var regexCommentEnd = /-->$/;
   			var regex = /<script([^>]*)>([\s\S]*?)<\/script>/i;
   			var s = domElement.innerHTML;
   			while(match = regex.exec(s)){
   				var script = match[2];
-  				eval(script);
+                if (script.length > 5 && script.substring(0,4) == "<!--")
+                {
+                    // strip html comment start to make ppr work with ie 5.5
+                    script=script.substring(4);
+                }
+                eval(script);
   				s = s.substr(0, match.index) + s.substr(match.index + match[0].length);
   			}
   		}
@@ -368,7 +375,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
         {
             for (var m = 0; m < messageTexts.length; m++)
             {
-                this.formNode.myFacesPPRCtrl.displayMessage(messageTexts[m],appendMessagesToElements[i]);   
+                this.formNode.myFacesPPRCtrl.displayMessage(messageTexts[m],appendMessagesToElements[i]);
             }
         }
 
@@ -451,7 +458,7 @@ org.apache.myfaces.PPRCtrl.prototype.appendMessageToTable = function (table,mess
     var textNode = document.createTextNode(message);
     td.appendChild(textNode);
     tr.appendChild(td);
-    table.firstChild.appendChild(tr);    
+    table.firstChild.appendChild(tr);
 }
 
 org.apache.myfaces.PPRCtrl.prototype.appendMessageToList = function (list,message)
