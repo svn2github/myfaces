@@ -321,12 +321,29 @@ public class PPRSupport
             throw new FacesException("PPRPanelGroup must be embedded in a form.");
         }
         final String formName = fi.getFormName();
+        Map requestMap = facesContext.getExternalContext().getRequestMap();
 
         String pprCtrlReference = "dojo.byId('" + formName + "').myFacesPPRCtrl";
 
         //Each form containing PPRPanelGroups has its own PPRCtrl
-        if (!pprGroup.getInitializationSent()) {
+
+        // the following complicated stuff should deal with the following use-cases:
+        // 1) normal create ppr on non-ppr-response
+        // 2) create ppr on ppr-response
+        // 3) add triggers to ppr on ppr-response (e.g to commands within uidata)
+        //
+        // get state of the ppr component ...
+        boolean pprInited = pprGroup.getInitializationSent();
+        if (!PPRSupport.isPartialRequest(facesContext))
+        {
+            // ... but override with current request state if we are not within an
+            // ppr request.
+            pprInited = Boolean.TRUE.equals(requestMap.get(PPR_INITIALIZED + "." + formName));
+        }
+
+        if (!pprInited) {
             pprGroup.setInitializationSent(true);
+            requestMap.put(PPR_INITIALIZED + "." + formName, Boolean.TRUE);
 
             script.append(pprCtrlReference + "=" + MY_FACES_PPR_INIT_CODE + "('" + formName + "'," + pprGroup.getShowDebugMessages().booleanValue() + "," + pprGroup.getStateUpdate().booleanValue() + ");\n");
 
