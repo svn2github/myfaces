@@ -318,6 +318,8 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
                 componentUpdateDom.innerHTML = componentUpdate.firstChild.data;
 
                 eval(this.formNode.myFacesPPRCtrl.componentUpdateFunction)(this.formNode, domElement, componentUpdateDom);
+
+                componentUpdateDom.innerHTML=""; // garbage collect
             }
             else
             {
