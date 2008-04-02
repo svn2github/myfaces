@@ -56,7 +56,7 @@ public class PPRPanelGroup extends HtmlPanelGroup
 
     private Boolean _showDebugMessages = Boolean.FALSE;
 
-    private Boolean _stateUpdate = Boolean.FALSE;
+    private Boolean _stateUpdate = Boolean.TRUE;
 
     private String _appendMessages;
 
