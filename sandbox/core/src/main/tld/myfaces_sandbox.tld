@@ -1703,6 +1703,16 @@ Sandbox-related entities.
         &ui_component_attributes;
         &excel_export_attributes;
     </tag>
+    
+    <tag>
+        <name>pdfExport</name>
+        <tag-class>org.apache.myfaces.custom.pdfexport.PDFExportTag</tag-class>
+        <body-content>JSP</body-content>
+        <description>Export datatable contents to a pdf file
+        </description>
+        &ui_component_attributes;
+        &excel_export_attributes;
+    </tag>    
 
 	<tag>
 		<name>floatingPane</name>

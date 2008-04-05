@@ -19,16 +19,20 @@
 
 package org.apache.myfaces.custom.util;
 
+import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlMessages;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.webapp.FacesServlet;
 import javax.servlet.ServletContext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -186,5 +190,23 @@ public final class ComponentUtils
 				.getInitParameter(FacesServlet.LIFECYCLE_ID_ATTR);
 		return lifecycleId != null ? lifecycleId
 				: LifecycleFactory.DEFAULT_LIFECYCLE;
+	}	
+	
+	/**
+	 * This method is used for getting the columns of 
+	 * a specific HTMLDataTable.
+	 * @param table
+	 * @return the List of UIColumns
+	 */
+	public static List getHTMLDataTableColumns(HtmlDataTable table) {
+		List columns = new ArrayList();
+		
+		for (int i = 0; i < table.getChildCount(); i++) {
+			UIComponent child = (UIComponent) table.getChildren().get( i );
+			if (child instanceof UIColumn) {				
+				columns.add( child );
+			}
+		}
+		return columns;
 	}	
 }
