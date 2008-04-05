@@ -108,7 +108,12 @@
 		<groupId>batik</groupId>
 		<artifactId>batik-awt-util</artifactId>
 		<version>1.6-1</version>
-	</dependency>        
+	</dependency>     
+	<dependency>
+		<groupId>com.lowagie</groupId>
+		<artifactId>itext</artifactId>
+		<version>1.4.8</version>
+	</dependency>  		
       </dependencies>
 
       <properties>
@@ -181,11 +186,17 @@
           <scope>${jsf-impl.scope}</scope>
         </dependency>
         
-	<dependency>
+     	<dependency>
 		<groupId>batik</groupId>
 		<artifactId>batik-awt-util</artifactId>
 		<version>1.6-1</version>
-	</dependency>        
+	</dependency>   
+	
+	<dependency>
+		<groupId>com.lowagie</groupId>
+		<artifactId>itext</artifactId>
+		<version>1.4.8</version>
+	</dependency>  	
         
       </dependencies>
 
@@ -203,7 +214,8 @@
           <url>http://repo1.maven.org/maven2</url>
           <layout>legacy</layout>
         </repository>
-      </repositories>
+        
+      </repositories> 
 
       <properties>
         <jsf_implementation>JSF-RI</jsf_implementation>
