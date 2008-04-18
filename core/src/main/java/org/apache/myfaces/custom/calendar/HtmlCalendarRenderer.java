@@ -411,21 +411,24 @@ public class HtmlCalendarRenderer
 			UIComponent uiComponent, String popupCalendarVariable) {
 
 		// Convert day value to java.util.Date convention (Sun=0, Mon=1, Sat=6).
-		// This is
-		// the convention that javascript Date objects use.
+		// This is the convention that javascript Date objects use.
 		int realFirstDayOfWeek = firstDayOfWeek - 1;
 
 		String[] weekDays;
 
 		if (realFirstDayOfWeek == 0) {
+            // Sunday
 			weekDays = mapShortWeekdaysStartingWithSunday(symbols);
 		} else if (realFirstDayOfWeek == 1) {
+		    // Monday
 			weekDays = mapShortWeekdays(symbols);
-		} else if (realFirstDayOfWeek == 6) { /* Arabic case */
+		} else if (realFirstDayOfWeek == 6) {
+            // Saturday. Often used in Arabic countries
 			weekDays = mapShortWeekdaysStartingWithSaturday(symbols);
-		} else
+		} else {
 			throw new IllegalStateException(
-					"Week may only start with sunday or monday.");
+					"Week may only start with saturday, sunday or monday.");
+		}
 
 		StringBuffer script = new StringBuffer();
 		AddResource ar = AddResourceFactory.getInstance(facesContext);
