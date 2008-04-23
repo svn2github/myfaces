@@ -411,13 +411,13 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 
             this.containerCtl.appendChild(this.selectYearDiv);
 
-			// Catch global keypresses and clicks, so that entering data into any field
-			// outside the calendar, or clicking anywhere outside the calendar, will
-			// close it.
-			//
-			// This is ugly, as it's quite a load on the client to check this for every
-			// keystroke/click. It would be nice to find an alternative...maybe register
-			// these listeners only when a calendar is open?
+            // Catch global keypresses and clicks, so that entering data into any field
+            // outside the calendar, or clicking anywhere outside the calendar, will
+            // close it.
+            //
+            // This is ugly, as it's quite a load on the client to check this for every
+            // keystroke/click. It would be nice to find an alternative...maybe register
+            // these listeners only when a calendar is open?
             Event.observe(document, "keypress", this._keypresshandler.bind(this), false);
             Event.observe(document, "click", this._clickhandler.bind(this), false);
         }
