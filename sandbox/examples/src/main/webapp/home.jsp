@@ -1,4 +1,4 @@
-﻿<%@ page session="false" contentType="text/html;charset=utf-8"%>
+<%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 
@@ -88,7 +88,7 @@
             <h:panelGrid style="padding-left:25px">
                 <h:outputLink value="dojo/splitpanejsfonly.jsf" ><f:verbatim>SplitPane - Dojos ContentPane widget to separate a page into panes of belonging content</f:verbatim></h:outputLink>
                 <h:outputLink value="dojo/titlepanejsfonly.jsf" ><f:verbatim>TitlePane - Dojos TitlePane; Displays some data with a title on top. Data can be collapsed leaving only the title shown. </f:verbatim></h:outputLink>
-                <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
+                <h:outputLink value="accordionP nel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
                 <h:outputLink value="hmenu.jsf" ><f:verbatim>Horizontal Menu</f:verbatim></h:outputLink>
 				<h:outputLink value="fieldset.jsf"><f:verbatim>FieldSet</f:verbatim></h:outputLink>
             </h:panelGrid>
@@ -107,8 +107,7 @@
                 <h:outputLink value="filterTable.jsf" ><f:verbatim>Filter Table</f:verbatim></h:outputLink>
             	<h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
             	<h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
-            	<h:outputLink value="excelExport.jsf"><f:verbatim>ExcelExport - Export datatable contents as an excel file</f:verbatim></h:outputLink>
-            	<h:outputLink value="pdfExport.jsf"><f:verbatim>PDFExport - Export datatable contents as a PDF file</f:verbatim></h:outputLink>            	
+			<h:outputLink value="exporter.jsf"><f:verbatim>Exporter - Export datatable contents as an excel file or as a pdf file</f:verbatim></h:outputLink>
             </h:panelGrid>
 
             <h:outputText value="Selection Lists"/>
@@ -142,7 +141,7 @@
 
             <h:outputText value="Conversation"/>
             <h:panelGrid style="padding-left:25px">
-           		<h:outputLink value="conversation/index.jsf" ><f:verbatim>Conversation Tag examples</f:verbatim></h:outputLink>
+           		<h:out utLink value="conversation/index.jsf" ><f:verbatim>Conversation Tag examples</f:verbatim></h:outputLink>
 				<h:outputLink value="springConversation/index.jsf" ><f:verbatim>A new Spring "conversation" scope</f:verbatim></h:outputLink>
             </h:panelGrid>
 
