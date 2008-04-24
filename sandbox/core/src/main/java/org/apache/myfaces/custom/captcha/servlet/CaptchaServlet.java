@@ -41,7 +41,7 @@ public class CaptchaServlet extends HttpServlet {
 		String captchaText = null;
 		CAPTCHAImageGenerator captchaImageGenerator = new CAPTCHAImageGenerator();
 		String captchaSessionKeyName = request
-				.getParameter(CAPTCHAComponent.ATTRIBUTE_CAPTCHASESSIONKEYNAME);
+				.getParameter(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME);
 
 		// Generate random CAPTCHA text.
 		captchaText = CAPTCHATextGenerator.generateRandomText();

@@ -1866,16 +1866,31 @@ Sandbox-related entities.
         <tag-class>org.apache.myfaces.custom.captcha.CAPTCHATag</tag-class>
         <body-content>JSP</body-content>
         &ui_component_attributes;
-        &user_role_attributes;
       <attribute>
          <name>captchaSessionKeyName</name>
          <required>true</required>
          <rtexprvalue>true</rtexprvalue>
 	     <type>java.lang.String</type>
 	      <description>
-		Determines the CAPTCHA session key name.
+			Determines the CAPTCHA session key name.
 	      </description>
       </attribute>
+      <attribute>
+         <name>imageWidth</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue> 
+	      <description>
+			Integer to indicate the CAPTCHA width. default is 290.
+	      </description>
+      </attribute>
+      <attribute>
+         <name>imageHeight</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>    
+	      <description>
+			Integer to indicate the CAPTCHA height. default is 81.
+	      </description>
+      </attribute>                  
     </tag>
 
 
