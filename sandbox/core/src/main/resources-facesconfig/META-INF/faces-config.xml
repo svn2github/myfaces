@@ -304,6 +304,11 @@
 	 <component-class>org.apache.myfaces.custom.captcha.CAPTCHAComponent</component-class>
   </component>   
 
+  <component>
+	 <component-type>org.apache.myfaces.media</component-type>
+	 <component-class>org.apache.myfaces.custom.media.MediaComponent</component-class>
+  </component>   
+
   <!-- sandbox converters -->
 
   <converter>
@@ -647,6 +652,12 @@
   		<renderer-type>org.apache.myfaces.CAPTCHA</renderer-type>
   		<renderer-class>org.apache.myfaces.custom.captcha.CAPTCHARenderer</renderer-class>
   	</renderer>  	
+  	
+  	<renderer>
+  		<component-family>org.apache.myfaces.media</component-family>
+  		<renderer-type>org.apache.myfaces.media</renderer-type>
+  		<renderer-class>org.apache.myfaces.custom.media.MediaRenderer</renderer-class>
+  	</renderer>  	  	
   	
   </render-kit>
 

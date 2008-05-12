@@ -88,7 +88,7 @@
             <h:panelGrid style="padding-left:25px">
                 <h:outputLink value="dojo/splitpanejsfonly.jsf" ><f:verbatim>SplitPane - Dojos ContentPane widget to separate a page into panes of belonging content</f:verbatim></h:outputLink>
                 <h:outputLink value="dojo/titlepanejsfonly.jsf" ><f:verbatim>TitlePane - Dojos TitlePane; Displays some data with a title on top. Data can be collapsed leaving only the title shown. </f:verbatim></h:outputLink>
-                <h:outputLink value="accordionP nel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
+                <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
                 <h:outputLink value="hmenu.jsf" ><f:verbatim>Horizontal Menu</f:verbatim></h:outputLink>
 				<h:outputLink value="fieldset.jsf"><f:verbatim>FieldSet</f:verbatim></h:outputLink>
             </h:panelGrid>
@@ -196,6 +196,13 @@
 	                <f:verbatim>CAPTCHA - component to generate random text images for security purposes</f:verbatim>
 	            </h:outputLink>
          </h:panelGrid>
+         
+         <h:outputText value="Media"/>
+         <h:panelGrid style="padding-left:25px">
+	            <h:outputLink value="media.jsf" >
+	                <f:verbatim>Media - component to display media content, such as audio, video, or image in a player embedded in the user agent.</f:verbatim>
+	            </h:outputLink>
+         </h:panelGrid>         
         
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
