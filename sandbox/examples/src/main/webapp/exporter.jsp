@@ -33,8 +33,7 @@
 <f:view>
 
     <h:form>
-    	<p>This component allows to export the datatable contents to an excel file.</p>
-		<p>Note: Currently the component does not support client side state saving.</p>
+    	<p>This component allows to export the datatable contents to an excel or pdf file.</p>
 		
 		<br>
 		
@@ -73,15 +72,15 @@
 
 		<br>
 		
-		<s:exporter for="tbl_cars" fileType="XLS">
-			<h:commandButton action="" value="Export as excel"/>
-		</s:exporter>
+		<h:commandButton action="" value="Export as excel">
+			<s:exporterActionListener for="tbl_cars" fileType="XLS"/>
+		</h:commandButton>
 		
 		<br>
 		
-		<s:exporter for="tbl_cars" fileType="PDF">
-			<h:commandButton action="" value="Export as pdf"/>
-		</s:exporter>
+		<h:commandButton action="" value="Export as pdf">
+			<s:exporterActionListener for="tbl_cars" fileType="PDF"/>
+		</h:commandButton>
 		
     </h:form>
 </f:view>
