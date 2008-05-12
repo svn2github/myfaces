@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.custom.captcha;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ import org.apache.myfaces.custom.captcha.util.CAPTCHAConstants;
 import org.apache.myfaces.custom.captcha.util.CAPTCHAImageGenerator;
 import org.apache.myfaces.custom.captcha.util.CAPTCHAResponseStream;
 import org.apache.myfaces.custom.captcha.util.CAPTCHATextGenerator;
+import org.apache.myfaces.custom.captcha.util.ColorGenerator;
 import org.apache.myfaces.custom.util.ComponentUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
@@ -176,12 +178,15 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
 	try 
 	{
 	    String captchaText;
+	    Color endingColor = ColorGenerator.generateRandomColor(null);
+	    Color startingColor = ColorGenerator.generateRandomColor(endingColor);
 	    
 	    // Generate random CAPTCHA text.
-	    captchaText = CAPTCHATextGenerator.generateRandomText();
-
-	    // Generate the image.
-	    captchaImageGenerator.generateImage(response, captchaText);
+	    captchaText = CAPTCHATextGenerator.generateRandomText();	    
+	    
+	    // Generate the image, the BG color is randomized from starting to ending colors.
+            captchaImageGenerator.generateImage(response, captchaText,
+		    startingColor, endingColor);
 
 	    // Set the generated text in the user session.
 	    request.getSession().setAttribute(captchaSessionKeyName,

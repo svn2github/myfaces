@@ -39,8 +39,8 @@ import org.apache.batik.ext.awt.image.codec.PNGImageEncoder;
  */
 public class CAPTCHAImageGenerator {
 
-    private static final Color startingColor = new Color(150, 50, 150);
-    private static final Color endingColor = new Color(255, 255, 255);
+    //private static final Color startingColor = new Color(150, 50, 150);
+    //private static final Color endingColor = new Color(255, 255, 255);
 
     /*
     * A helper method to draw the captcha text on the generated image.
@@ -74,10 +74,11 @@ public class CAPTCHAImageGenerator {
     * A helper method to apply noise on the generated image.
     */
     private void applyNoiseOnImage(Graphics2D graphics, int bufferedImageWidth,
-	    int bufferedImageHeight) {
+	    int bufferedImageHeight, Color startingColor, Color endingColor) {
 
 	// Applying shear.
-	applyShear(graphics, bufferedImageWidth, bufferedImageHeight);
+	applyShear(graphics, bufferedImageWidth, bufferedImageHeight,
+		startingColor, endingColor);
 
 	// Drawing a broken line on the image.
 	drawBrokenLineOnImage(graphics);
@@ -88,7 +89,7 @@ public class CAPTCHAImageGenerator {
     * Graphics2D object.
     */
     private static void applyCurrentGradientPaint(Graphics2D graphics,
-	    int width, int height) {
+	    int width, int height, Color startingColor, Color endingColor) {
 
 	GradientPaint gradientPaint = new GradientPaint(0, 0, startingColor,
 		width, height, endingColor);
@@ -96,22 +97,22 @@ public class CAPTCHAImageGenerator {
 	graphics.setPaint(gradientPaint);
     }
 
+    
     /**
-         * This method generates the CAPTCHA image.
-         * 
-         * @param response
-         * @param captchaText
-         * @throws IOException
-         */
-    public void generateImage(HttpServletResponse response, String captchaText)
-	    throws IOException {
+     * This method generates the CAPTCHA image. 
+     * @param response
+     * @param captchaText
+     * @param startingColor
+     * @param endingColor
+     * @throws IOException
+     */
+    public void generateImage(HttpServletResponse response, String captchaText,
+	    Color startingColor, Color endingColor) throws IOException {
 
 	BufferedImage bufferedImage;
 	Graphics2D graphics;
 	PNGEncodeParam param;
 	PNGImageEncoder captchaPNGImage;
-
-	
 	
 	// Create the CAPTCHA Image.
 	bufferedImage = new BufferedImage(CAPTCHAConstants.DEFAULT_CAPTCHA_WIDTH, CAPTCHAConstants.DEFAULT_CAPTCHA_HEIGHT,
@@ -121,7 +122,7 @@ public class CAPTCHAImageGenerator {
 	graphics = bufferedImage.createGraphics();
 
 	applyCurrentGradientPaint(graphics, bufferedImage.getWidth(),
-		bufferedImage.getHeight());
+		bufferedImage.getHeight(), startingColor, endingColor);
 
 	graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage
 		.getHeight());
@@ -133,7 +134,7 @@ public class CAPTCHAImageGenerator {
 
 	// Apply noise on the CAPTCHA image.
 	applyNoiseOnImage(graphics, bufferedImage.getWidth(), bufferedImage
-		.getHeight());
+		.getHeight(), startingColor, endingColor);
 
 	// Draw the image border.
 	drawBorders(graphics, bufferedImage.getWidth(), bufferedImage
@@ -231,7 +232,7 @@ public class CAPTCHAImageGenerator {
     * This helper method is used for applying shear on the image.
     */
     private void applyShear(Graphics2D graphics, int bufferedImageWidth,
-	    int bufferedImageHeight) {
+	    int bufferedImageHeight, Color startingColor, Color endingColor) {
 
 	int periodValue = 20;
 	int numberOfFrames = 15;
@@ -240,7 +241,7 @@ public class CAPTCHAImageGenerator {
 	double deltaY;
 
 	applyCurrentGradientPaint(graphics, bufferedImageWidth,
-		bufferedImageHeight);
+		bufferedImageHeight, startingColor, endingColor);
 
 	for (int i = 0; i < bufferedImageWidth; ++i) 
 	{
