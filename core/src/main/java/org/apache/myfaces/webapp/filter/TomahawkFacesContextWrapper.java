@@ -31,7 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
-import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -248,11 +247,19 @@ public class TomahawkFacesContextWrapper extends FacesContext {
         }
         finally
         {
-            if(addResource!=null)
-                addResource.responseFinished();
+            try
+            {
+                if(addResource!=null)
+                {
+                    addResource.responseFinished();
+                }
+            }
+            finally
+            {
+                delegate.release();
+            }
         }
 
-        delegate.release();
     }
 
     public boolean isValidContentType(String contentType)
