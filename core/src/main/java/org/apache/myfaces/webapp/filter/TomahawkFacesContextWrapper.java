@@ -90,6 +90,13 @@ public class TomahawkFacesContextWrapper extends FacesContext {
         }
     }
 
+    /**
+     * This method uses reflection to call the method of the delegated
+     * FacesContext getELContext, present on 1.2. This should be done
+     * since we need compatibility between 1.1 and 1.2 for tomahawk
+     * 
+     * @return
+     */
     public javax.el.ELContext getELContext() {
         ;
         try
@@ -98,28 +105,33 @@ public class TomahawkFacesContextWrapper extends FacesContext {
         }
         catch (IllegalArgumentException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //If the method is called with jsf 1.2, this should not 
+            //be thrown
+            throw new RuntimeException(e);
         }
         catch (SecurityException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //If the method is called with jsf 1.2, this should not 
+            //be thrown
+            throw new RuntimeException("JSF 1.2 method not implemented: "+e.getMessage());
         }
         catch (IllegalAccessException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //If the method is called with jsf 1.2, this should not 
+            //be thrown
+            throw new RuntimeException("JSF 1.2 method not implemented: "+e.getMessage());
         }
         catch (InvocationTargetException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //If the method is called with jsf 1.2, this should not 
+            //be thrown
+            throw new RuntimeException("JSF 1.2 method not implemented: "+e.getMessage());
         }
         catch (NoSuchMethodException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //If the method is called with jsf 1.2, this should not 
+            //be thrown
+            throw new RuntimeException("JSF 1.2 method not implemented: "+e.getMessage());            
         }
         return null;
     }
