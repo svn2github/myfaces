@@ -1694,16 +1694,6 @@ Sandbox-related entities.
         &submit_on_event_attributes;
     </tag>
 
-    <tag>
-        <name>exporter</name>
-        <tag-class>org.apache.myfaces.custom.exporter.ExporterTag</tag-class>
-        <body-content>JSP</body-content>
-        <description>Export datatable contents to an excel file or a pdf file.
-        </description>
-        &ui_component_attributes;
-        &exporter_attributes;
-    </tag>
-
 	<tag>
 		<name>floatingPane</name>
 		<tag-class>org.apache.myfaces.custom.dojolayouts.FloatingPaneTag</tag-class>
