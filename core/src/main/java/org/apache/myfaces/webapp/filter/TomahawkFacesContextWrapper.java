@@ -133,7 +133,6 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             //be thrown
             throw new RuntimeException("JSF 1.2 method not implemented: "+e.getMessage());            
         }
-        return null;
     }
 
     public Application getApplication() {
