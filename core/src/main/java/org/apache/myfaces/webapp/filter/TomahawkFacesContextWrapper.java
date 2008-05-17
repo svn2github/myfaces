@@ -60,7 +60,9 @@ public class TomahawkFacesContextWrapper extends FacesContext {
 
 	        if (addResource.requiresBuffer())
 	        {
-                throw new IllegalStateException("buffering not supported in the portal environment.");
+                throw new IllegalStateException("buffering not supported in the portal environment. "+
+                        " Use for org.apache.myfaces.ADD_RESOURCE_CLASS the value"+
+                        " org.apache.myfaces.renderkit.html.util.NonBufferingAddResource.");
             }
         }
         else {
