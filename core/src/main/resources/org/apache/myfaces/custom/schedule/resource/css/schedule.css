@@ -129,6 +129,9 @@ div.schedule-compact-default .day .header {
   text-align: left;
   vertical-align: middle;
 }
+div.schedule-compact-default .day .header a {
+	display: block;
+}
 
 div.schedule-compact-default .content td {
   background-color: rgb(255,255,255);
@@ -311,6 +314,9 @@ div.schedule-compact-evolution .day .header {
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
+div.schedule-compact-evolution .day .header a {
+	display: block;
+}
 
 div.schedule-compact-evolution .content td {
   background-color: rgb(255,255,255);
@@ -489,6 +495,9 @@ div.schedule-compact-outlookxp .day .header {
   text-align: left;
   vertical-align: middle;
 }
+div.schedule-compact-outlookxp .day .header a {
+	display: block;
+}
 
 div.schedule-compact-outlookxp .content td {
   background-color: rgb(255,255,255);
@@ -497,9 +506,6 @@ div.schedule-compact-outlookxp .content td {
   font-family: Verdana, Arial, Helvetica, Sans-Serif;
   font-size: 11px;
   padding: 1px;
-  border-color: rgb(255,255,255);
-  border-width: 1.0px;
-  border-style: solid;  
 }
 
 div.schedule-compact-outlookxp a {
