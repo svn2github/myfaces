@@ -142,7 +142,7 @@ public class ScheduleCompactWeekRenderer
     {
         if (schedule != null) {
             int height = schedule.getCompactWeekRowHeight();
-            return height <= 0 ? getDefaultRowHeight() : height;
+            return height == 0 ? getDefaultRowHeight() : height;
         }
         return getDefaultRowHeight();
     }

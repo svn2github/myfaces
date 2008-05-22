@@ -196,7 +196,7 @@ public class ScheduleCompactMonthRenderer
     {
         if (schedule != null) {
             int height = schedule.getCompactMonthRowHeight();
-            return height <= 0 ? getDefaultRowHeight() : height;
+            return height == 0 ? getDefaultRowHeight() : height;
         }
         return getDefaultRowHeight();
     }
