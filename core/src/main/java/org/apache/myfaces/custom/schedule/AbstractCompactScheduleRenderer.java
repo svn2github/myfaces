@@ -158,9 +158,10 @@ public abstract class AbstractCompactScheduleRenderer extends
         }
 
         styleBuffer.append(myRowHeight);
+        styleBuffer.append("width: " + cellWidth + "%;");
+        styleBuffer.append("vertical-align: top;");
 
-        writer.writeAttribute(HTML.STYLE_ATTR, styleBuffer.toString()
-                                               + " width: " + cellWidth + "%;", null);
+        writer.writeAttribute(HTML.STYLE_ATTR, styleBuffer.toString(), null);
 
         writer.startElement(HTML.DIV_ELEM, schedule);
 
@@ -210,7 +211,7 @@ public abstract class AbstractCompactScheduleRenderer extends
         writer
         .writeAttribute(
                 HTML.STYLE_ATTR,
-                "width: 100%; height: 100%; vertical-align: top;",
+                "height: 100%; vertical-align: top;",
                 null);
 
         writer.writeAttribute(HTML.ID_ATTR, dayBodyId, null);
