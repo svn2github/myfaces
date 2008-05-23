@@ -49,12 +49,24 @@ public class EnumConverter implements Converter
 			throw new IllegalArgumentException(value + " do not point to an enum");
 		}
 
-		String clazz = value.substring(0, pos);
+		String className = value.substring(0, pos);
+		Class clazz;
 		int ordinal = Integer.parseInt(value.substring(pos+1), 10);
 
 		try
 		{
-			Enum[] enums = (Enum[]) ClassUtils.classForName(clazz).getEnumConstants();
+			clazz = ClassUtils.classForName(className);
+			// if the clazz is not an enum it might be an enum which is inherited. In this case try to find the superclass.
+			while (clazz != null && !clazz.isEnum())
+			{
+				clazz = clazz.getSuperclass();
+			}
+			if (clazz == null)
+			{
+				throw new IllegalArgumentException("class " + className + " couldn't be treated as enum");
+			}
+
+			Enum[] enums = (Enum[]) clazz.getEnumConstants();
 			if (enums.length >= ordinal)
 			{
 				return enums[ordinal];
