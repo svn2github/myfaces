@@ -31,6 +31,10 @@ import java.util.Collection;
 /**
  * end a conversation
  *
+ * @JSFComponent
+ *   name = "s:endConversation"
+ *   tagClass = "org.apache.myfaces.custom.conversation.EndConversationTag"
+ *   
  * @author imario@apache.org
  */
 public class UIEndConversation extends AbstractConversationComponent
@@ -123,6 +127,14 @@ public class UIEndConversation extends AbstractConversationComponent
 			};
 	}
 
+	/**
+	 * end the conversation only if the action outcome matches the given onOutcome. 
+	 * 
+	 * This can be a comma separated list.
+	 * 
+	 * @JSFProperty
+	 * @return
+	 */
 	public String getOnOutcome()
 	{
 		if (onOutcome != null)
@@ -142,6 +154,12 @@ public class UIEndConversation extends AbstractConversationComponent
 		this.onOutcome = onOutcome;
 	}
 
+	/**
+	 * on exception use the given outcome for further navigation
+	 * 
+	 * @JSFProperty
+	 * @return
+	 */
 	public String getErrorOutcome()
 	{
 		if (errorOutcome != null)
@@ -161,6 +179,12 @@ public class UIEndConversation extends AbstractConversationComponent
 		this.errorOutcome = errorOutcome;
 	}
 
+	/**
+	 * true|false|valueBinding - true if the conversation should be restarted immediately
+	 * 
+	 * @JSFProperty
+	 * @return
+	 */
 	public Boolean getRestart()
 	{
 		if (restart != null)
@@ -180,6 +204,15 @@ public class UIEndConversation extends AbstractConversationComponent
 		this.restart = restart;
 	}
 
+	/**
+	 * the action which should be called in case of a restart
+	 * 
+	 * @JSFProperty
+	 *   methodSignature = "java.lang.String"
+	 *   returnSignature = "void"
+	 *   stateHolder = "true"
+	 * @return
+	 */
 	public MethodBinding getRestartAction()
 	{
 		return restartAction;

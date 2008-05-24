@@ -39,6 +39,8 @@ import org.apache.myfaces.custom.tree.model.TreePath;
 
 
 /**
+ * A tree data component. 
+ * Unless otherwise specified, all attributes accept static values or EL expressions. h
  * <p/>
  * Tree implementation based on javax.swing.JTree.
  * </p>
@@ -52,6 +54,15 @@ import org.apache.myfaces.custom.tree.model.TreePath;
  * <code>rootNode</code>.
  * </p>
  *
+ * @JSFComponent
+ *   name = "t:tree"
+ *   tagClass = "org.apache.myfaces.custom.tree.taglib.TreeTag"
+ *   type = "org.apache.myfaces.HtmlTree"
+ *
+ * @JSFJspProperty name = "headerClass" returnType = "java.lang.String"
+ * @JSFJspProperty name = "footerClass" returnType = "java.lang.String"
+ * @JSFJspProperty name = "expandRoot" returnType = "java.lang.String"
+ * @JSFJspProperty name = "style" tagExcluded = "true"
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller </a>
  * @version $Revision$ $Date$
  */
@@ -105,6 +116,11 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     *   jspName = "value"
+     *   required = "true"
+     */
     public TreeModel getModel(FacesContext context)
     {
         ValueBinding binding = getValueBinding("model");
@@ -146,6 +162,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
 
 
     /**
+     * @JSFProperty
      * @return Returns the var.
      */
     public String getVar()
@@ -180,6 +197,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         return null;
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getIconLine()
     {
         return getStringValue(iconLine, "iconLine");
@@ -190,7 +210,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         this.iconLine = iconLine;
     }
 
-
+    /**
+     * @JSFProperty
+     */
     public String getIconNoline()
     {
         return getStringValue(iconNoline, "iconNoline");
@@ -202,7 +224,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
         this.iconNoline = iconNoline;
     }
 
-
+    /**
+     * @JSFProperty
+     */
     public String getIconChildFirst()
     {
         return getStringValue(iconChildFirst, "iconChildFirst");
@@ -215,6 +239,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconChildMiddle()
     {
         return getStringValue(iconChildMiddle, "iconChildMiddle");
@@ -227,6 +254,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconChildLast()
     {
         return getStringValue(iconChildLast, "iconChildLast");
@@ -239,6 +269,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeOpen()
     {
         return getStringValue(iconNodeOpen, "iconNodeOpen");
@@ -251,6 +284,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeOpenFirst()
     {
         return getStringValue(iconNodeOpenFirst, "iconNodeOpenFirst");
@@ -263,6 +299,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeOpenMiddle()
     {
         return getStringValue(iconNodeOpenMiddle, "iconNodeOpenMiddle");
@@ -275,6 +314,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeOpenLast()
     {
         return getStringValue(iconNodeOpenLast, "iconNodeOpenLast");
@@ -287,6 +329,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeClose()
     {
         return getStringValue(iconNodeClose, "iconNodeClose");
@@ -299,6 +344,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeCloseFirst()
     {
         return getStringValue(iconNodeCloseFirst, "iconNodeCloseFirst");
@@ -311,6 +359,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeCloseMiddle()
     {
         return getStringValue(iconNodeCloseMiddle, "iconNodeCloseMiddle");
@@ -323,6 +374,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconNodeCloseLast()
     {
         return getStringValue(iconNodeCloseLast, "iconNodeCloseLast");
@@ -335,6 +389,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getNodeClass()
     {
         return getStringValue(nodeClass, "nodeClass");
@@ -348,6 +405,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
 
 
     /**
+     * @JSFProperty
      * @return Returns the rowClasses.
      */
     public String getRowClasses()
@@ -366,6 +424,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
 
 
     /**
+     * @JSFProperty
      * @return Returns the columnClasses.
      */
     public String getColumnClasses()
@@ -384,6 +443,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
 
 
     /**
+     * @JSFProperty
      * @return Returns the selectedNodeClass.
      */
     public String getSelectedNodeClass()
@@ -401,6 +461,9 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * @JSFProperty
+     */
     public String getIconClass()
     {
         return getStringValue(iconClass, "iconClass");
@@ -413,6 +476,12 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
     }
 
 
+    /**
+     * Time interval the tree will remain registered as a TreeModelListener 
+     * without being accessed
+     * 
+     * @JSFProperty
+     */
     public long getExpireListeners()
     {
         if(expireListeners != null)

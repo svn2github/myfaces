@@ -21,6 +21,14 @@ package org.apache.myfaces.custom.collapsiblepanel;
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
 
 /**
+ * Extends standard commandLink by user role support and the HTML target attribute. 
+ * 
+ * Unless otherwise specified, all attributes accept static values or EL expressions.
+ * 
+ * @JSFComponent
+ *   name = "t:headerLink"
+ *   tagClass = "org.apache.myfaces.custom.collapsiblepanel.HtmlHeaderLinkTag"
+ * 
  * @author Martin Marinschek (latest modification by $Author: mmarinschek $)
  *
  * @version $Revision: 326564 $ $Date: 2005-10-19 16:03:14 +0200 (Mi, 19 Okt 2005) $

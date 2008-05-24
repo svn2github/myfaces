@@ -44,6 +44,11 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
  * For the fade, we only need a simple renderer and a backend javascript
  * inclusion so that we can serve it out of the jar
  *
+ * @JSFRenderer
+ *   renderKitId = "HTML_BASIC" 
+ *   family = "javax.faces.Output"
+ *   type = "org.apache.myfaces.effect.EffectRenderer"
+ *
  * @author Werner Punz werpu@gmx.at
  * @version $Revision$ $Date$
  */
@@ -52,6 +57,22 @@ public class EffectRenderer extends HtmlRenderer
     private static final String DEFAULT_FADE_COLOR = "red";
     public static final String  RENDERER_TYPE      = "org.apache.myfaces.effect.EffectRenderer";
 
+    public static final String  TAG_PARAM_FADECOLOR     = "fadeColor";
+
+    public static final String  TAG_PARAM_FADE          = "fade";
+
+    public static final String  TAG_PARAM_DURATION      = "duration";
+    
+    public static final String  TAG_PARAM_SQUISH        = "squish";
+
+    public static final String  TAG_PARAM_SCALE         = "scale";
+
+    public static final String  TAG_PARAM_SCALE_SIZE    = "scaleSize";
+
+    public static final String  TAG_PARAM_PUFF          = "puff";
+
+    public static final String  TAG_PARAM_PULSATE       = "pulsate";
+    
     /**
      * Encodes any stand-alone javascript functions that are needed. Uses either
      * the extension filter, or a user-supplied location for the javascript
@@ -70,7 +91,7 @@ public class EffectRenderer extends HtmlRenderer
         // if user has opted for server-side toggle)
         String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         AddResource addResource = AddResourceFactory.getInstance(context);
-        Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
+        Boolean fade = (Boolean) component.getAttributes().get(TAG_PARAM_FADE);
 
         try
         {
@@ -152,12 +173,12 @@ public class EffectRenderer extends HtmlRenderer
     private String getFadeColor(UIComponent component)
     {
 
-        Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
+        Boolean fade = (Boolean) component.getAttributes().get(TAG_PARAM_FADE);
 
         if (fade != null && fade.booleanValue())
         {
 
-            String fadeColor = (String) component.getAttributes().get(EffectTag.TAG_PARAM_FADECOLOR);
+            String fadeColor = (String) component.getAttributes().get(TAG_PARAM_FADECOLOR);
             fadeColor = (fadeColor != null) ? fadeColor : DEFAULT_FADE_COLOR;
             fadeColor = fadeColor.equals("") ? DEFAULT_FADE_COLOR : fadeColor;
             if(fadeColor.trim().matches("^\\\\[(.*\\,)+\\\\]$")) //pattern [col,col,col] roughly
@@ -173,11 +194,11 @@ public class EffectRenderer extends HtmlRenderer
 
         // dump all the parameters which affect us into we dont set a central
         // unchecked here to keep the warning level high
-        Boolean squish = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SQUISH);
-        Boolean puff = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PUFF);
-        Boolean scale = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE);
-        Boolean pulsate = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_PULSATE);
-        Integer scaleSize = (Integer) component.getAttributes().get(EffectTag.TAG_PARAM_SCALE_SIZE);
+        Boolean squish = (Boolean) component.getAttributes().get(TAG_PARAM_SQUISH);
+        Boolean puff = (Boolean) component.getAttributes().get(TAG_PARAM_PUFF);
+        Boolean scale = (Boolean) component.getAttributes().get(TAG_PARAM_SCALE);
+        Boolean pulsate = (Boolean) component.getAttributes().get(TAG_PARAM_PULSATE);
+        Integer scaleSize = (Integer) component.getAttributes().get(TAG_PARAM_SCALE_SIZE);
 
         Div div = (Div) component;
         ResponseWriter writer = context.getResponseWriter();
@@ -267,8 +288,8 @@ public class EffectRenderer extends HtmlRenderer
         if ((rendered != null) && (!rendered.booleanValue()))
             return;
 
-        Boolean fade = (Boolean) component.getAttributes().get(EffectTag.TAG_PARAM_FADE);
-        Integer duration = (Integer) component.getAttributes().get(EffectTag.TAG_PARAM_DURATION);
+        Boolean fade = (Boolean) component.getAttributes().get(TAG_PARAM_FADE);
+        Integer duration = (Integer) component.getAttributes().get(TAG_PARAM_DURATION);
 
         if (fade != null && fade.booleanValue())
         {

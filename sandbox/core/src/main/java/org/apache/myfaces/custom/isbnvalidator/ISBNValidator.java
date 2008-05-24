@@ -27,6 +27,13 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
+ * A custom validator for isbn codes, based upons Jakarta Commons.
+ * 
+ * @JSFValidator
+ *   name = "s:validateISBN"
+ *   tagClass = "org.apache.myfaces.custom.isbnvalidator.ValidateISBNTag"
+ *   
+ * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
  * @author <a href="mailto:matzew@apache.org">Matthias We&szlig;endorf</a> (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

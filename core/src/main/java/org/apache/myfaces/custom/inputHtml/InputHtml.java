@@ -31,6 +31,20 @@ import javax.faces.el.ValueBinding;
  * HTML Editor using the kupu library.
  * http://kupu.oscom.org/
  *
+ * An inline HTML based word processor based on the Kupu library. 
+ * 
+ * See http://kupu.oscom.org 
+ * 
+ * Right now, the support is limited to one editor per page 
+ * (but you can use tabs to have multiple editors, but only 
+ * one rendered at a time). 
+ * 
+ * Unless otherwise specified, all attributes accept static values or EL expressions.
+ *
+ * @JSFComponent
+ *   name = "t:inputHtml"
+ *   tagClass = "org.apache.myfaces.custom.inputHtml.InputHtmlTag"
+ *
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -114,6 +128,13 @@ public class InputHtml extends HtmlInputText {
         _showDebugToolBox = toolBoxes[6];
     }
 
+    /**
+     * Use a text area instead of the javascript HTML editor. 
+     * 
+     * Default is false. Use with caution.
+     * 
+     * @JSFProperty
+     */
     public String getFallback(){
         if (_fallback != null)
             return _fallback;
@@ -124,6 +145,13 @@ public class InputHtml extends HtmlInputText {
         this._fallback = _fallback;
     }
 
+    /**
+     * The type of the value. It can be either fragment for an HTML 
+     * fragment (default) or document for a full HTML document, with 
+     * head, title, body, ... tags.
+     * 
+     * @JSFProperty
+     */
     public String getType(){
         if (_type != null)
             return _type;
@@ -137,6 +165,11 @@ public class InputHtml extends HtmlInputText {
         return getType().equals("document");
     }
 
+    /**
+     * Allows the user to edit the HTML source code. Default is true.
+     * 
+     * @JSFProperty
+     */
     public boolean isAllowEditSource(){
    		if (_allowEditSource != null)
    		    return _allowEditSource.booleanValue();
@@ -147,6 +180,11 @@ public class InputHtml extends HtmlInputText {
         this._allowEditSource = Boolean.valueOf(allowEditSource);
     }
 
+    /**
+     * Allows the user to insert external links. Default is true.
+     * 
+     * @JSFProperty
+     */
     public boolean isAllowExternalLinks(){
         if (_allowExternalLinks != null)
             return _allowExternalLinks.booleanValue();
@@ -157,6 +195,11 @@ public class InputHtml extends HtmlInputText {
         this._allowExternalLinks = Boolean.valueOf(allowExternalLinks);
     }
 
+    /**
+     * Show the Kupu Logo in the buttons bar. Default is true.
+     * 
+     * @JSFProperty
+     */
     public boolean isAddKupuLogo(){
    		if (_addKupuLogo != null)
    		    return _addKupuLogo.booleanValue();
@@ -167,6 +210,11 @@ public class InputHtml extends HtmlInputText {
         this._addKupuLogo = Boolean.valueOf(addKupuLogo);
     }
 
+    /**
+     * Shortcut to avoid setting all the showXXToolBox to true. Default is false.
+     * 
+     * @JSFProperty
+     */
 	public boolean isShowAllToolBoxes(){
    		if (_showAllToolBoxes != null)
    		    return _showAllToolBoxes.booleanValue();
@@ -177,6 +225,11 @@ public class InputHtml extends HtmlInputText {
         this._showAllToolBoxes = Boolean.valueOf(showAllToolBoxes);
     }
 
+    /**
+     * Show the Properties tool box next to the text. Default is false.
+     * 
+     * @JSFProperty
+     */
     public boolean isShowPropertiesToolBox(){
 		if( isShowAllToolBoxes() )
 			return true;
@@ -186,10 +239,16 @@ public class InputHtml extends HtmlInputText {
     	ValueBinding vb = getValueBinding("showPropertiesToolBox");
     	return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
     }
+
     public void setShowPropertiesToolBox(boolean showPropertiesToolBox){
         this._showPropertiesToolBox = Boolean.valueOf(showPropertiesToolBox);
     }
 
+    /**
+     * Show the Links tool box next to the text. Default is false.
+     * 
+     * @JSFProperty
+     */
     public boolean isShowLinksToolBox(){
 		if( isShowAllToolBoxes() )
 			return true;
@@ -199,10 +258,16 @@ public class InputHtml extends HtmlInputText {
     	ValueBinding vb = getValueBinding("showLinksToolBox");
     	return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
     }
+    
     public void setShowLinksToolBox(boolean showLinksToolBox){
         this._showLinksToolBox = Boolean.valueOf(showLinksToolBox);
     }
 
+    /**
+     * Show the Images tool box next to the text. Default is false.
+     * 
+     * @JSFProperty
+     */
     public boolean isShowImagesToolBox(){
 		if( isShowAllToolBoxes() )
 			return true;
@@ -216,6 +281,11 @@ public class InputHtml extends HtmlInputText {
         this._showImagesToolBox = Boolean.valueOf(showImagesToolBox);
     }
 
+    /**
+     * Show the Tables tool box next to the text. Default is false.
+     * 
+     * @JSFProperty
+     */
     public boolean isShowTablesToolBox(){
 		if( isShowAllToolBoxes() )
 			return true;
@@ -229,6 +299,11 @@ public class InputHtml extends HtmlInputText {
         this._showTablesToolBox = Boolean.valueOf(showTablesToolBox);
     }
 
+    /**
+     * Show the Cleanup Expressions tool box next to the text. Default is false.
+     * 
+     * @JSFProperty
+     */
 	public boolean isShowCleanupExpressionsToolBox(){
 		if( isShowAllToolBoxes() )
 			return true;
@@ -242,6 +317,11 @@ public class InputHtml extends HtmlInputText {
         this._showCleanupExpressionsToolBox = Boolean.valueOf(showCleanupExpressionsToolBox);
     }
 
+    /**
+     * Show the Debug tool box next to the text. Default is false.
+     * 
+     * @JSFProperty
+     */
     public boolean isShowDebugToolBox(){
 		if( isShowAllToolBoxes() )
 			return true;

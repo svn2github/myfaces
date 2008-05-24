@@ -37,9 +37,19 @@ import org.apache.commons.beanutils.Converter;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
- * converter which uses either the manually set <code>destType</code> or the value binding to determine the 
+ * Converter which uses either the manually set <code>destType</code> or the value binding to determine the 
  * correct destination type to convert the number to
- *  
+ * 
+ * This tag creates a number formatting converter and associates it with the nearest 
+ * parent UIComponent. It uses either the manually set destType or the value 
+ * binding to determine the correct destination type to convert the number to. 
+ * 
+ * Unless otherwise specified, all attributes accept static values or EL expressions.
+ * 
+ * @JSFConverter
+ *   name = "s:convertNumber"
+ *   tagClass = "org.apache.myfaces.custom.convertNumber.TypedNumberConverterTag" 
+ *   
  * @author imario@apache.org
  */
 public class TypedNumberConverter implements javax.faces.convert.Converter, StateHolder
@@ -102,6 +112,13 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
 		                  };
 	}
 
+    /**
+     * The java class name the value should be converted to. 
+     * 
+     * Default: automatically determined through valueBinding
+     * 
+     * @JSFProperty
+     */
 	public Class getDestType()
 	{
 		return destType;
@@ -322,6 +339,12 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
     }
 
     // GETTER & SETTER
+    
+    /**
+     * ISO 4217 currency code
+     * 
+     * @JSFProperty
+     */
     public String getCurrencyCode()
     {
         return _currencyCode != null ?
@@ -334,6 +357,13 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _currencyCode = currencyCode;
     }
 
+    /**
+     * The currency symbol used to format a currency value. 
+     * 
+     * Defaults to the currency symbol for locale.
+     * 
+     * @JSFProperty
+     */
     public String getCurrencySymbol()
     {
         return _currencySymbol != null ?
@@ -346,6 +376,13 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _currencySymbol = currencySymbol;
     }
 
+    /**
+     * Specifies whether output will contain grouping separators. 
+     * 
+     * Default: true.
+     * 
+     * @JSFProperty
+     */
     public boolean isGroupingUsed()
     {
         return _groupingUsed;
@@ -356,6 +393,13 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _groupingUsed = groupingUsed;
     }
 
+    /**
+     * Specifies whether only the integer part of the input will be parsed. 
+     * 
+     * Default: false.
+     * 
+     * @JSFProperty
+     */
     public boolean isIntegerOnly()
     {
         return _integerOnly;
@@ -366,6 +410,12 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _integerOnly = integerOnly;
     }
 
+    /**
+     * The name of the locale to be used, instead of the default as specified 
+     * in the faces configuration file.
+     * 
+     * @JSFProperty
+     */
     public Locale getLocale()
     {
         if (_locale != null) return _locale;
@@ -378,6 +428,11 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _locale = locale;
     }
 
+    /**
+     * The maximum number of digits in the fractional portion of the number.
+     * 
+     * @JSFProperty
+     */
     public int getMaxFractionDigits()
     {
         return _maxFractionDigits;
@@ -389,6 +444,11 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _maxFractionDigits = maxFractionDigits;
     }
 
+    /**
+     * The maximum number of digits in the integer portion of the number.
+     * 
+     * @JSFProperty
+     */
     public int getMaxIntegerDigits()
     {
         return _maxIntegerDigits;
@@ -400,6 +460,11 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _maxIntegerDigits = maxIntegerDigits;
     }
 
+    /**
+     * The minimum number of digits in the fractional portion of the number.
+     * 
+     * @JSFProperty
+     */
     public int getMinFractionDigits()
     {
         return _minFractionDigits;
@@ -411,6 +476,11 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _minFractionDigits = minFractionDigits;
     }
 
+    /**
+     * The minimum number of digits in the integer portion of the number.
+     * 
+     * @JSFProperty
+     */
     public int getMinIntegerDigits()
     {
         return _minIntegerDigits;
@@ -422,6 +492,11 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _minIntegerDigits = minIntegerDigits;
     }
 
+    /**
+     * A custom Date formatting pattern, in the format used by java.text.SimpleDateFormat.
+     * 
+     * @JSFProperty
+     */
     public String getPattern()
     {
         return _pattern;
@@ -442,6 +517,13 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
         _transient = aTransient;
     }
 
+    /**
+     * The type of formatting/parsing to be performed. 
+     * 
+     * Values include: number, currency, and percentage. Default: number.
+     * 
+     * @JSFProperty
+     */
     public String getType()
     {
         return _type;

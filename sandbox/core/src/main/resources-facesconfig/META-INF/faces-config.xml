@@ -243,6 +243,11 @@
     <component-type>org.apache.myfaces.SubmitOnEvent</component-type>
     <component-class>org.apache.myfaces.custom.submitOnEvent.SubmitOnEvent</component-class>
   </component>
+  
+  <component>
+		<component-type>org.apache.myfaces.Exporter</component-type>
+		<component-class>org.apache.myfaces.custom.exporter.Exporter</component-class>
+  </component>
 
   <component>
   	<component-type>org.apache.myfaces.FloatingPaneBase</component-type>
@@ -586,6 +591,12 @@
     <renderer-type>org.apache.myfaces.SubmitOnEvent</renderer-type>
     <renderer-class>org.apache.myfaces.custom.submitOnEvent.SubmitOnEventRenderer</renderer-class>
   </renderer>
+  
+  <renderer>
+	<component-family>org.apache.myfaces.Export</component-family>
+	<renderer-type>org.apache.myfaces.ExporterRenderer</renderer-type>
+    <renderer-class>org.apache.myfaces.custom.exporter.ExporterRenderer</renderer-class>
+  </renderer>
 
   <renderer>
      <component-family>javax.faces.Output</component-family>
@@ -654,7 +665,8 @@
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
   	  <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
 	  <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
-	  <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener> 
+	  <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener>
+   	  <phase-listener>org.apache.myfaces.custom.exporter.ExporterPhaseListener</phase-listener>	  
   </lifecycle>
 
   <application>

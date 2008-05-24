@@ -39,6 +39,10 @@ import javax.faces.convert.ConverterException;
  * The values are case sensitive.
  * <p/>
  *
+ * @JSFConverter
+ *   name = "s:convertBoolean"
+ *   tagClass = "org.apache.myfaces.custom.convertboolean.ConvertBooleanTag" 
+ *   
  * @author Ken Weiner
  */
 public class BooleanConverter implements Converter, StateHolder
@@ -49,13 +53,18 @@ public class BooleanConverter implements Converter, StateHolder
 
     private boolean isTransient;
 
-    public static final String CONVERTER_ID = BooleanConverter.class.getName();
+    public static final String CONVERTER_ID = "org.apache.myfaces.custom.convertboolean.BooleanConverter";
 
     public BooleanConverter()
     {
         // Default constructor
     }
 
+    /**
+     * Value representing a boolean false, e.g. FALSE, no, 0, etc.
+     * 
+     * @JSFProperty
+     */
     public String getFalseValue()
     {
         return falseValue;
@@ -66,6 +75,11 @@ public class BooleanConverter implements Converter, StateHolder
         this.falseValue = falseValue;
     }
 
+    /**
+     * Value representing a boolean true, e.g. TRUE, yes, 1, etc.
+     * 
+     * @JSFProperty
+     */
     public String getTrueValue()
     {
         return trueValue;

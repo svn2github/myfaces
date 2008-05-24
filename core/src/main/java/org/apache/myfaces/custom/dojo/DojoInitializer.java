@@ -25,14 +25,24 @@ import javax.faces.context.FacesContext;
 
 /**
  * Default component for the dojo intializer
+ * 
+ * Dojo initializer helper tag for debugging and communication flags. 
+ * This tag encapsules the Dojo DjConfig meta configuration and also 
+ * adds the needed dojo required functionality.
  *
+ * @JSFComponent
+ *   name = "t:dojoInitializer"
+ *   tagClass = "org.apache.myfaces.custom.dojo.DojoInitializerTag"
+ *
+ * @JSFJspProperty name = "converter" tagExcluded = "true"
+ * @JSFJspProperty name = "value" tagExcluded = "true"
  * @author Werner Punz (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class DojoInitializer extends UIOutput {
 
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.DojoInitializer";
-    public static final String DEFAULT_RENDERER_TYPE = DojoInitializerRenderer.RENDERER_TYPE;
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DojoInitializerRenderer";
     public static final String COMPONENT_FAMILY      = "javax.faces.Output";
     Boolean                    _debugConsole         = null;
     DojoConfig                 _dojoConfig           = new DojoConfig();
@@ -50,14 +60,23 @@ public class DojoInitializer extends UIOutput {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getAllowQueryConfig() {
         return _dojoConfig.getAllowQueryConfig();
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getBaseScriptUri() {
         return _dojoConfig.getBaseScriptUri();
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getBindEncoding() {
         return _dojoConfig.getBindEncoding();
     }
@@ -66,18 +85,30 @@ public class DojoInitializer extends UIOutput {
         return COMPONENT_TYPE;
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getDebug() {
         return _dojoConfig.getDebug();
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getDebugAtAllCosts() {
         return _dojoConfig.getDebugAtAllCosts();
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getDebugConsole() {
         return _debugConsole;
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getDebugContainerId() {
         return _dojoConfig.getDebugContainerId();
     }
@@ -86,6 +117,9 @@ public class DojoInitializer extends UIOutput {
         return _dojoConfig;
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getExpanded() {
         return _expanded;
     }
@@ -94,22 +128,37 @@ public class DojoInitializer extends UIOutput {
         return COMPONENT_FAMILY;
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getIgnoreClassNames() {
         return _dojoConfig.getIgnoreClassNames();
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getIoSendTransport() {
         return _dojoConfig.getIoSendTransport();
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getParseWidgets() {
         return _dojoConfig.getParseWidgets();
     }
 
+    /**
+     * @JSFProperty
+     */
     public Boolean getPreventBackButtonFix() {
         return _dojoConfig.getPreventBackButtonFix();
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getProvide() {
         return _provide;
     }
@@ -118,12 +167,25 @@ public class DojoInitializer extends UIOutput {
         return DojoInitializerRenderer.RENDERER_TYPE;
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getRequire() {
         return _require;
     }
 
+    /**
+     * @JSFProperty
+     */
     public String getSearchIds() {
         return _dojoConfig.getSearchIds();
+    }
+    
+    /**
+     * @JSFProperty
+     */
+    public Boolean getDevelopment() {
+        return _dojoConfig.getDevelopment();
     }
 
     public Object getValue() {

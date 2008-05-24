@@ -28,6 +28,12 @@ import javax.faces.el.EvaluationException;
 import javax.faces.el.ValueBinding;
 
 /**
+ * Extends standard graphicImage.
+ * 
+ * @JSFComponent
+ *   name = "s:graphicImageDynamic"
+ *   tagClass = "org.apache.myfaces.custom.graphicimagedynamic.GraphicImageDynamicTag"
+ *   
  * @author Sylvain Vieujot (latest modification by $Author$)
  *
  * @version $Revision$ $Date: 2005-05-11 19:57:24 +0200 (Wed, 11 May 2005) $
@@ -47,7 +53,7 @@ public class GraphicImageDynamic extends HtmlGraphicImage
 	public static final String VALUE_PARAM = "_value";
 	public static final String WIDTH_PARAM = "_width";
 	public static final String HEIGHT_PARAM = "_height";    
-    private static final String DEFAULT_RENDERER_TYPE = GraphicImageDynamicRenderer.RENDERER_TYPE;	
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.GraphicImageDynamicRenderer";	
     
 
     public GraphicImageDynamic()
@@ -72,6 +78,19 @@ public class GraphicImageDynamic extends HtmlGraphicImage
         _imageRendererClass = (Class) values[1];
     }
 
+    /**
+     * The class which implements 
+     * org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer. 
+     * The image renderer is responsible for loading the image. 
+     * The class must have a default constructor. 
+     * Any request scoped attribute or managed bean is not available 
+     * when this image renderer is instantiated and used. 
+     * The image renderer must render the binary data for the image by 
+     * using the parameters passed by nested f:param elements and/or 
+     * using session or application scoped beans.
+     * 
+     * @JSFProperty
+     */
     public void setImageRendererClass(Class imageRendererClass)
     {
         if (imageRendererClass != null && !ImageRenderer.class.isAssignableFrom(imageRendererClass))
@@ -124,5 +143,16 @@ public class GraphicImageDynamic extends HtmlGraphicImage
             return clazz;
         }
         return null;
+    }
+
+    /**
+     *  A value binding which will be called to get the instance of an 
+     *  org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer.
+     * 
+     * @JSFProperty
+     */
+    public Object getValue()
+    {
+        return super.getValue();
     }
 }

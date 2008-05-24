@@ -26,8 +26,15 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.validator.GenericValidator;
 import org.apache.myfaces.validator.ValidatorBase;
+
 /**
+ * A custom validator for url format, based upons Jakarta Commons.
+ * 
+ * @JSFValidator
+ *   name = "s:validateUrl"
+ *   tagClass = "org.apache.myfaces.custom.urlvalidator.ValidateUrlTag"
  *
+ * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
  * @author Fabian Frederick
  *
  * @version $Revision: $ $Date: $

@@ -30,6 +30,10 @@ import java.util.List;
 /**
  * start a conversation
  *
+ * @JSFComponent
+ *   name = "s:startConversation"
+ *   tagClass = "org.apache.myfaces.custom.conversation.StartConversationTag"
+ *   
  * @author imario@apache.org
  */
 public class UIStartConversation extends AbstractConversationComponent
@@ -182,6 +186,12 @@ public class UIStartConversation extends AbstractConversationComponent
 		                  };
 	}
 
+	/**
+	 * true|false - if this conversation requires a persistence manager. Default: false
+	 * 
+	 * @JSFProperty
+	 * @return
+	 */
 	public Boolean getPersistence()
 	{
         if (persistence != null)

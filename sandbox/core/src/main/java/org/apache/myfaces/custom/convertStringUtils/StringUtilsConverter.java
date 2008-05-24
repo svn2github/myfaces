@@ -30,6 +30,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 
 /**
+ * Converts the format of a string
+ * 
  * Provides runtime modification of a string. Uses Apache Lang StringUtils and WordUtils
  * to peform operations.
  * <p>
@@ -40,10 +42,15 @@ import org.apache.commons.lang.WordUtils;
  * </h:outputText>
  * </code>
  * <p>
+ * @JSFConverter
+ *   name = "s:convertStringUtils"
+ *   tagClass = "org.apache.myfaces.custom.convertStringUtils.StringUtilsConverterTag" 
+ *   
  * @author Julian Ray
  */
 public class StringUtilsConverter implements Converter, StateHolder {
-    public static final String CONVERTER_ID = org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter.class.getName();
+    
+    public static final String CONVERTER_ID = "org.apache.myfaces.custom.convertStringUtils.StringUtilsConverter";
 
     protected boolean _transient;
     
@@ -133,6 +140,11 @@ public class StringUtilsConverter implements Converter, StateHolder {
         this._transient = _transient;
     }
 
+    /**
+     * Specifies the output case of the string. One of uppercase | lowercase | capitalize
+     * 
+     * @JSFProperty
+     */
     public String getFormat() {
 		return format;
 	}
@@ -141,6 +153,13 @@ public class StringUtilsConverter implements Converter, StateHolder {
 		this.format = format;
 	}
 
+    /**
+     * Integer value for the maximum length of the rendered string. 
+     * Strings longer than maxValue will be truncated at (maxValue - 3) 
+     * and an ellipsis '...' will be appended.
+     * 
+     * @JSFProperty
+     */
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -149,6 +168,12 @@ public class StringUtilsConverter implements Converter, StateHolder {
 		this.maxLength = maxLength;
 	}
 
+    /**
+     * Boolean value determining if data should be truncated with ellipses 
+     * during output conversion. Default = false
+     * 
+     * @JSFProperty
+     */
     public Boolean isAppendEllipsesDuringOutput() {
         return appendEllipsesDuringOutput;
     }
@@ -157,6 +182,12 @@ public class StringUtilsConverter implements Converter, StateHolder {
         this.appendEllipsesDuringOutput = appendEllipsesDuringOutput;
     }
 
+    /**
+     * Boolean value determining if data should be truncated with ellipses 
+     * during input conversion. Default = false
+     * 
+     * @JSFProperty
+     */
     public Boolean isAppendEllipsesDuringInput() {
         return appendEllipsesDuringInput;
     }
@@ -165,6 +196,12 @@ public class StringUtilsConverter implements Converter, StateHolder {
         this.appendEllipsesDuringInput = appendEllipsesDuringInput;
     }
 
+    /**
+     * Boolean value determining is the string should be trimmed before any 
+     * other formatting takes place. Default = false
+     * 
+     * @JSFProperty
+     */
 	public Boolean getTrim() {
 		return trim;
 	}

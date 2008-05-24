@@ -26,6 +26,12 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
+ * Export datatable contents to an excel file or a pdf file.
+ * 
+ * @JSFJspTag
+ *   name="s:exporterActionListener"
+ *   bodyContent="JSP" 
+ * 
  * This class is acting as the tag handler for the Exporter ActionListener.
  */
 public class ExporterActionListenerTag extends TagSupport {
@@ -91,6 +97,11 @@ public class ExporterActionListenerTag extends TagSupport {
         return _fileName;
     }
 
+    /**
+     * Default name of the generated excel or pdf file, if not specified value of the "for" attribute will be used
+     * 
+     * @JSFJspAttribute
+     */
     public void setFilename(String _filename) {
         this._fileName = _filename;
     }
@@ -99,6 +110,11 @@ public class ExporterActionListenerTag extends TagSupport {
         return _fileType;
     }
 
+    /**
+     * "PDF" or "XLS"
+     * 
+     * @JSFJspAttribute
+     */
     public void setFileType(String type) {
         _fileType = type;
     }
@@ -107,6 +123,11 @@ public class ExporterActionListenerTag extends TagSupport {
         return _for;
     }
 
+    /**
+     * Id of the datatable component whose values to be exported
+     * 
+     * @JSFJspAttribute
+     */
     public void setFor(String _for) {
         this._for = _for;
     }    

@@ -21,12 +21,23 @@ package org.apache.myfaces.custom.div;
 import org.apache.myfaces.custom.htmlTag.HtmlTag;
 
 /**
+ * Places a div around its children. Unless otherwise specified, 
+ * all attributes accept static values or EL expressions.
+ * 
+ * @JSFComponent
+ *   name = "t:div"
+ *   tagClass = "org.apache.myfaces.custom.div.DivTag"
+ * 
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class Div extends HtmlTag {
   public static final String COMPONENT_TYPE = "org.apache.myfaces.Div";
 
+  /**
+   * @JSFProperty
+   *   tagExcluded = "true"
+   */
   public Object getValue() {
 	return "div";
   }

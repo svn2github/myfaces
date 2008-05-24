@@ -27,12 +27,17 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
-*
-* @author Lance Frohman
-*
-* @version $Revision: $ $Date: $
-*/
-
+ * Validation by validating comma separated values individually.
+ * 
+ * @JSFValidator
+ *   name = "s:validateCSV"
+ *   tagClass = "org.apache.myfaces.custom.csvvalidator.ValidateCSVTag"
+ *
+ * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
+ * @author Lance Frohman
+ *
+ * @version $Revision: $ $Date: $
+ */
 public class CSVValidator extends ValidatorBase {
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -54,6 +59,7 @@ public class CSVValidator extends ValidatorBase {
 	protected String _separator;
 
 	/**
+	 * @JSFProperty
 	 * @return the VALIDATOR_ID of the actual validator to be used
 	 */
     public String getSubvalidatorId()
@@ -69,6 +75,7 @@ public class CSVValidator extends ValidatorBase {
 	}
 
 	/**
+	 * @JSFProperty
 	 * @return the separator character to separate values
 	 */
 	public String getSeparator() {

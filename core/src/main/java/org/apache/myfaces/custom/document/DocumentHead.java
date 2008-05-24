@@ -23,13 +23,17 @@ package org.apache.myfaces.custom.document;
  * Document to enclose the document head. If not otherwise possible you can use
  * state="start|end" to demarkate the document boundaries
  * 
+ * @JSFComponent
+ *   name = "t:documentHead"
+ *   tagClass = "org.apache.myfaces.custom.document.DocumentHeadTag" 
+ *   
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class DocumentHead extends AbstractDocument
 {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.DocumentHead";
-	private static final String DEFAULT_RENDERER_TYPE = DocumentHeadRenderer.RENDERER_TYPE;
+	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DocumentHead";
 
 	public DocumentHead()
 	{

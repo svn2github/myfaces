@@ -26,6 +26,9 @@ import java.io.IOException;
 
 /**
  * <p>
+ * Ensures a named conversation is running
+ * </p>
+ * <p>
  * check if a conversation is active.
  * </p>
  * <p>
@@ -33,6 +36,12 @@ import java.io.IOException;
  * check this before ANY rendering - and maybe to invoke a navigation then
  * </p>
  *
+ * @JSFComponent
+ *   name = "s:ensureConversation"
+ *   tagClass = "org.apache.myfaces.custom.conversation.EnsureConversationTag"
+ *   
+ * @JSFJspProperty name="action" longDesc = "the action which should be called in case of a not running conversation"
+ *   
  * @author imario@apache.org
  */
 public class UIEnsureConversation extends AbstractConversationComponent
@@ -136,6 +145,12 @@ public class UIEnsureConversation extends AbstractConversationComponent
 		}
 	}
 
+	/**
+	 * redirect to the given view if the conversation is not running
+	 * 
+	 * @JSFProperty
+	 * @return
+	 */
 	public String getRedirectTo()
 	{
 		if (redirectTo != null)
@@ -154,4 +169,31 @@ public class UIEnsureConversation extends AbstractConversationComponent
 	{
 		this.redirectTo = redirectTo;
 	}
+	
+    /**
+     * Delegate the check to the action method at all. The user has to check if 
+     * a conversation is running. A action method is mandatory.
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public Boolean getPreCheck()
+    {
+        if (preCheck != null)
+        {
+            return preCheck;
+        }
+        ValueBinding vb = getValueBinding("preCheck");
+        if (vb == null)
+        {
+            return null;
+        }
+        return (Boolean) vb.getValue(getFacesContext());
+    }
+
+    public void setPreCheck(Boolean preCheck)
+    {
+        this.preCheck = preCheck;
+    }
+
 }

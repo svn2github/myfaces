@@ -29,6 +29,17 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
+ * A custom validator for reg. expr., based upons Jakarta Commons. 
+ * 
+ * Unless otherwise specified, all attributes accept static values or EL expressions.
+ * 
+ * @JSFValidator
+ *   name = "t:validateRegExpr"
+ *   tagClass = "org.apache.myfaces.custom.regexprvalidator.ValidateRegExprTag"
+ * 
+ * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
+ * @JSFJspProperty name = "detailMessage" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
+ * @JSFJspProperty name = "summaryMessage" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -90,6 +101,9 @@ public class RegExprValidator extends ValidatorBase {
 	// -------------------------------------------------------- GETTER & SETTER
 
 	/**
+	 * the pattern, which is the base of the validation
+	 * 
+	 * @JSFProperty
 	 * @return the pattern, on which a value should be validated
 	 */
     public String getPattern()

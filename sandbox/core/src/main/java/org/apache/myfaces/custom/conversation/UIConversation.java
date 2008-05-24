@@ -28,8 +28,14 @@ import javax.faces.el.ValueBinding;
 import javax.faces.component.UIComponent;
 
 /**
+ * puts a bean into the conversation context
+ * 
  * add a bean under context control
  *
+ * @JSFComponent
+ *   name = "s:conversation"
+ *   tagClass = "org.apache.myfaces.custom.conversation.ConversationTag"
+ *   
  * @author imario@apache.org
  */
 public class UIConversation extends AbstractConversationComponent
