@@ -35,10 +35,12 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "t:validateEmail"
  *   tagClass = "org.apache.myfaces.custom.emailvalidator.ValidateEmailTag"
+ *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
+ *   serialuidtag = "6041422002721046221L"
  *   
- * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "detailMessage" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "summaryMessage" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
+ * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
+ * @JSFJspProperty name = "detailMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
+ * @JSFJspProperty name = "summaryMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

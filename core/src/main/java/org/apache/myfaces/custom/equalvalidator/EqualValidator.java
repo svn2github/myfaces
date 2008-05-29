@@ -36,10 +36,12 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "t:validateEqual"
  *   tagClass = "org.apache.myfaces.custom.equalvalidator.ValidateEqualTag"
+ *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
+ *   serialuidtag = "-3249115551944863108L"
  *   
- * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "detailMessage" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "summaryMessage" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
+ * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
+ * @JSFJspProperty name = "detailMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
+ * @JSFJspProperty name = "summaryMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
