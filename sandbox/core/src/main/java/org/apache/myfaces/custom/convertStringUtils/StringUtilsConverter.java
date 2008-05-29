@@ -45,6 +45,7 @@ import org.apache.commons.lang.WordUtils;
  * @JSFConverter
  *   name = "s:convertStringUtils"
  *   tagClass = "org.apache.myfaces.custom.convertStringUtils.StringUtilsConverterTag" 
+ *   serialuidtag = "-8532160892717473339L"
  *   
  * @author Julian Ray
  */

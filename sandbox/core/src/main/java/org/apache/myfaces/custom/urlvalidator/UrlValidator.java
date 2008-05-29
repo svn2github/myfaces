@@ -33,8 +33,10 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "s:validateUrl"
  *   tagClass = "org.apache.myfaces.custom.urlvalidator.ValidateUrlTag"
+ *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
+ *   serialuidtag = "6041422002721046221L"
  *
- * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
+ * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
  * @author Fabian Frederick
  *
  * @version $Revision: $ $Date: $

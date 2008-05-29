@@ -32,8 +32,10 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "s:validateISBN"
  *   tagClass = "org.apache.myfaces.custom.isbnvalidator.ValidateISBNTag"
+ *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
+ *   serialuidtag = "5230653358032218656L"
  *   
- * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
+ * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
  * @author <a href="mailto:matzew@apache.org">Matthias We&szlig;endorf</a> (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

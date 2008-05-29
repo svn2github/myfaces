@@ -229,6 +229,13 @@
 			      </goals>
 			    </execution>
 				<execution>
+				  <id>make_validator_tags_tomahawk</id>
+				  <goals>
+				      <goal>make-validator-tags</goal>
+				      <goal>make-converter-tags</goal>
+				  </goals>
+				</execution>			    
+				<execution>
 				  <id>makesandboxtld</id>
 				  <configuration>
 				      <xmlFile>META-INF/myfaces_sandbox.tld</xmlFile>

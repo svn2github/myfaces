@@ -124,8 +124,10 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "s:validateCompareTo"
  *   tagClass = "org.apache.myfaces.custom.comparetovalidator.ValidateCompareToTag"
+ *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
+ *   serialuidtag = "-8879289182242196266L"
  *   
- * @JSFJspProperty name = "message" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
+ * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
  * 
  * @author Mike Kienenberger (latest modification by $Author$)
  * @version $Revision$ $Date$

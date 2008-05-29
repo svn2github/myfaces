@@ -41,7 +41,8 @@ import javax.faces.convert.ConverterException;
  *
  * @JSFConverter
  *   name = "s:convertBoolean"
- *   tagClass = "org.apache.myfaces.custom.convertboolean.ConvertBooleanTag" 
+ *   tagClass = "org.apache.myfaces.custom.convertboolean.ConvertBooleanTag"
+ *   serialuidtag = "-6004262065580818687L" 
  *   
  * @author Ken Weiner
  */
