@@ -17,8 +17,6 @@
  * under the License.
  */
 package org.apache.myfaces.custom.document;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * Document to enclose the document body. If not otherwise possible you can use

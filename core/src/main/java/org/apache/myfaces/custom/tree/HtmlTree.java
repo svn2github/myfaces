@@ -57,18 +57,22 @@ import org.apache.myfaces.custom.tree.model.TreePath;
  * @JSFComponent
  *   name = "t:tree"
  *   tagClass = "org.apache.myfaces.custom.tree.taglib.TreeTag"
+ *   tagSuperclass = "org.apache.myfaces.custom.tree.taglib.AbstractTreeTag"
  *   type = "org.apache.myfaces.HtmlTree"
  *
  * @JSFJspProperty name = "headerClass" returnType = "java.lang.String"
  * @JSFJspProperty name = "footerClass" returnType = "java.lang.String"
- * @JSFJspProperty name = "expandRoot" returnType = "java.lang.String"
+ * @JSFJspProperty name = "expandRoot" returnType = "boolean" literalOnly="true" inheritedTag="true"
  * @JSFJspProperty name = "style" tagExcluded = "true"
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller </a>
  * @version $Revision$ $Date$
  */
 public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
 {
-
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlTree";
+    public static final String COMPONENT_FAMILY = "org.apache.myfaces.HtmlTree";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlTree";
+    
     public static final long DEFAULT_EXPIRE_LISTENERS = 8 * 60 * 60 * 1000; // 8 hours
     private static final String FACET_ROOTNODE = "rootNode";
     private static final String PREVIOUS_VIEW_ROOT = HtmlTree.class.getName() + ".PREVIOUS_VIEW_ROOT";
@@ -120,6 +124,7 @@ public class HtmlTree extends HtmlPanelGroup implements TreeModelListener
      * @JSFProperty
      *   jspName = "value"
      *   required = "true"
+     *   inheritedTag = "true"
      */
     public TreeModel getModel(FacesContext context)
     {

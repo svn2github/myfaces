@@ -59,15 +59,17 @@ import java.util.StringTokenizer;
  * 
  * @JSFComponent
  *   name = "t:dataTable"
+ *   class = "org.apache.myfaces.component.html.ext.HtmlDataTable"
+ *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlDataTable"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag"
  * 
  * @author Thomas Spiegl (latest modification by $Author$)
  * @author Manfred Geiler
  * @version $Revision$ $Date$
  */
-public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, NewspaperTable
+public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements UserRoleAware, NewspaperTable
 {
-    private static final Log log = LogFactory.getLog(HtmlDataTable.class);
+    private static final Log log = LogFactory.getLog(AbstractHtmlDataTable.class);
 
     private static final int PROCESS_DECODES = 1;
     private static final int PROCESS_VALIDATORS = 2;
@@ -90,42 +92,15 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     public static final String SPACER_FACET_NAME = "spacer";
     public static final String NEWSPAPER_ORIENTATION_PROPERTY = "newspaperOrientation";
 
-    /**
-     * the value of the column count property
-     */
-    private Integer _newspaperColumns = null;
-    /**
-     * the value of the newspaper orientation property
-     */
-    private String _newspaperOrientation = null;
-
     private _SerializableDataModel _preservedDataModel;
 
     private String _forceIdIndexFormula = null;
     private String _sortColumn = null;
     private Boolean _sortAscending = null;
     private String _sortProperty = null;
-    private Boolean _sortable = null;
-	private Boolean _embedded = null;
-	private Boolean _detailStampExpandedDefault = null;
-	private String _detailStampLocation = null;
-    private String _rowOnClick = null;
-    private String _rowOnDblClick = null;
-    private String _rowOnMouseDown = null;
-    private String _rowOnMouseUp = null;
-    private String _rowOnMouseOver = null;
-    private String _rowOnMouseMove = null;
-    private String _rowOnMouseOut = null;
-    private String _rowOnKeyPress = null;
-    private String _rowOnKeyDown = null;
-    private String _rowOnKeyUp = null;
     private String _rowStyleClass = null;
     private String _rowStyle = null;
-    private String _rowGroupStyle = null;
-    private String _rowGroupStyleClass = null;
     private String _varDetailToggler = null;
-    private String _bodyStyleClass = null;
-    private String _bodyStyle = null;
 
     private int _sortColumnIndex = -1;
 
@@ -812,7 +787,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         boolean preserveSort = isPreserveSort();
 
-        Object[] values = new Object[39];
+        Object[] values = new Object[15];
         values[0] = super.saveState(context);
         values[1] = _preserveDataModel;
 
@@ -830,42 +805,16 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         values[5] = _sortColumn;
         values[6] = _sortAscending;
         values[7] = _sortProperty;
-        values[8] = _sortable;
-        values[9] = _renderedIfEmpty;
-        values[10] = _rowCountVar;
-        values[11] = _rowIndexVar;
 
-        values[12] = _rowOnClick;
-        values[13] = _rowOnDblClick;
-        values[14] = _rowOnMouseDown;
-        values[15] = _rowOnMouseUp;
-        values[16] = _rowOnMouseOver;
-        values[17] = _rowOnMouseMove;
-        values[18] = _rowOnMouseOut;
-        values[19] = _rowOnKeyPress;
-        values[20] = _rowOnKeyDown;
-        values[21] = _rowOnKeyUp;
+        values[8] = _rowStyleClass;
+        values[9] = _rowStyle;
 
-        values[22] = _rowStyleClass;
-        values[23] = _rowStyle;
+        values[10] = preserveSort ? getSortColumn() : null;
+        values[11] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
 
-        values[24] = preserveSort ? getSortColumn() : null;
-        values[25] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
-
-        values[26] = _varDetailToggler;
-        values[27] = _expandedNodes;
-        values[28] = _rowGroupStyle;
-        values[29] = _rowGroupStyleClass;
-        values[30] = _sortedColumnVar;
-        values[31] = new Integer(_sortColumnIndex);
-
-        values[32] = _newspaperColumns;
-        values[33] = _newspaperOrientation;
-        values[34] = _bodyStyle;
-        values[35] = _bodyStyleClass;
-		values[36] = _embedded;
-		values[37] = _detailStampLocation;
-		values[38] = _detailStampExpandedDefault;
+        values[12] = _varDetailToggler;
+        values[13] = _expandedNodes;
+        values[14] = new Integer(_sortColumnIndex);
 
         return values;
     }
@@ -949,29 +898,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         _sortColumn = (String) values[5];
         _sortAscending = (Boolean) values[6];
         _sortProperty = (String) values[7];
-        _sortable = (Boolean) values[8];
-        _renderedIfEmpty = (Boolean) values[9];
-        _rowCountVar = (String) values[10];
-        _rowIndexVar = (String) values[11];
 
-        _rowOnClick = (String) values[12];
-        _rowOnDblClick = (String) values[13];
-        _rowOnMouseDown = (String) values[14];
-        _rowOnMouseUp = (String) values[15];
-        _rowOnMouseOver = (String) values[16];
-        _rowOnMouseMove = (String) values[17];
-        _rowOnMouseOut = (String) values[18];
-        _rowOnKeyPress = (String) values[19];
-        _rowOnKeyDown = (String) values[20];
-        _rowOnKeyUp = (String) values[21];
-
-        _rowStyleClass = (String) values[22];
-        _rowStyle = (String) values[23];
+        _rowStyleClass = (String) values[8];
+        _rowStyle = (String) values[9];
 
         if (isPreserveSort())
         {
-            String sortColumn = (String) values[24];
-            Boolean sortAscending = (Boolean) values[25];
+            String sortColumn = (String) values[10];
+            Boolean sortAscending = (Boolean) values[11];
             if (sortColumn != null && sortAscending != null)
             {
                 ValueBinding vb = getValueBinding("sortColumn");
@@ -988,19 +922,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
             }
         }
 
-        _varDetailToggler = (String) values[26];
-        _expandedNodes = (Map) values[27];
-        _rowGroupStyle = (String) values[28];
-        _rowGroupStyleClass = (String) values[29];
-        _sortedColumnVar = (String) values[30];
-        _sortColumnIndex = values[31] != null ? ((Integer) values[31]).intValue() : -1;
-        _newspaperColumns = (Integer) values[32];
-        _newspaperOrientation = (String) values[33];
-        _bodyStyle = (String) values[34];
-        _bodyStyleClass = (String) values[35];
-		_embedded = (Boolean) values[36];
-		_detailStampLocation = (String) values[37];
-		_detailStampExpandedDefault = (Boolean) values[38];
+        _varDetailToggler = (String) values[12];
+        _expandedNodes = (Map) values[13];
+        _sortColumnIndex = values[14] != null ? ((Integer) values[14]).intValue() : -1;
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -1162,6 +1086,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * determine how to sort the DataModel's contents.
      * 
      * @JSFProperty
+     *   defaultValue = "true"
      */
     public boolean isSortAscending()
     {
@@ -1187,29 +1112,13 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         return _sortProperty;
     }
 
-    public void setSortable(boolean sortable)
-    {
-        _sortable = sortable ? Boolean.TRUE : Boolean.FALSE;
-    }
-
     /**
      * Define if the table is sortable or not
      * 
      * @JSFProperty
      *   defaultValue="false"
      */
-    public boolean isSortable()
-    {
-        if (_sortable != null) return _sortable.booleanValue();
-        ValueBinding vb = getValueBinding("sortable");
-        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : DEFAULT_SORTABLE;
-    }
-
-	public void setEmbedded(boolean embedded)
-	{
-		_embedded = embedded ? Boolean.TRUE : Boolean.FALSE;
-	}
+    public abstract boolean isSortable();
 
     /**
      * Avoids rendering the html table tags, thus, giving you a 
@@ -1224,18 +1133,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * @JSFProperty
      *   defaultValue="false"
      */
-	public boolean isEmbedded()
-	{
-		if (_embedded != null) return _embedded.booleanValue();
-		ValueBinding vb = getValueBinding("embedded");
-		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-		return v != null ? v.booleanValue() : DEFAULT_EMBEDDED;
-	}
-
-	public void setDetailStampExpandedDefault(boolean detailStampExpandedDefault)
-	{
-		_detailStampExpandedDefault = detailStampExpandedDefault ? Boolean.TRUE : Boolean.FALSE;
-	}
+	public abstract boolean isEmbedded();
 
     /**
      * true|false - true if the detailStamp should be expanded by default. default: false
@@ -1243,18 +1141,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * @JSFProperty
      *   defaultValue="false"
      */
-	public boolean isDetailStampExpandedDefault()
-	{
-		if (_detailStampExpandedDefault != null) return _detailStampExpandedDefault.booleanValue();
-		ValueBinding vb = getValueBinding("detailStampExpandedDefault");
-		Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-		return v != null ? v.booleanValue() : DEFAULT_DETAILSTAMP_EXPANDED;
-	}
-
-	public void setDetailStampLocation(String detailStampLocation)
-	{
-		_detailStampLocation = detailStampLocation;
-	}
+	public abstract boolean isDetailStampExpandedDefault();
 
     /**
      * before|after - where to render the detailStamp, before the 
@@ -1263,139 +1150,56 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * @JSFProperty
      *   defaultValue="after"
      */
-	public String getDetailStampLocation()
-	{
-		if (_detailStampLocation != null) return _detailStampLocation;
-		ValueBinding vb = getValueBinding("detailStampLocation");
-		String v = vb != null ? (String) vb.getValue(getFacesContext()) : null;
-		return v != null ? v : DEFAULT_DETAILSTAMP_LOCATION;
-	}
-
-	public void setRowOnMouseOver(String rowOnMouseOver)
-    {
-        _rowOnMouseOver = rowOnMouseOver;
-    }
+	public abstract String getDetailStampLocation();
 
     /**
      * Defines a JavaScript onmouseover event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnMouseOver()
-    {
-        if (_rowOnMouseOver != null)
-            return _rowOnMouseOver;
-        ValueBinding vb = getValueBinding("rowOnMouseOver");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnMouseOut(String rowOnMouseOut)
-    {
-        _rowOnMouseOut = rowOnMouseOut;
-    }
+    public abstract String getRowOnMouseOver();
 
     /**
      * Defines a JavaScript onmouseout event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnMouseOut()
-    {
-        if (_rowOnMouseOut != null)
-            return _rowOnMouseOut;
-        ValueBinding vb = getValueBinding("rowOnMouseOut");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnClick(String rowOnClick)
-    {
-        _rowOnClick = rowOnClick;
-    }
+    public abstract String getRowOnMouseOut();
 
     /**
      * Defines a JavaScript onclick event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnClick()
-    {
-        if (_rowOnClick != null)
-            return _rowOnClick;
-        ValueBinding vb = getValueBinding("rowOnClick");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnDblClick(String rowOnDblClick)
-    {
-        _rowOnDblClick = rowOnDblClick;
-    }
+    public abstract String getRowOnClick();
 
     /**
      * Defines a JavaScript ondblclick event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnDblClick()
-    {
-        if (_rowOnDblClick != null)
-            return _rowOnDblClick;
-        ValueBinding vb = getValueBinding("rowOnDblClick");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
+    public abstract String getRowOnDblClick();
 
     /**
      * Defines a JavaScript onkeydown event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnKeyDown()
-    {
-        if (_rowOnKeyDown != null)
-            return _rowOnKeyDown;
-        ValueBinding vb = getValueBinding("rowOnKeyDown");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnKeyDown(String rowOnKeyDown)
-    {
-        _rowOnKeyDown = rowOnKeyDown;
-    }
+    public abstract String getRowOnKeyDown();
 
     /**
      * Defines a JavaScript onkeypress event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnKeyPress()
-    {
-        if (_rowOnKeyPress != null)
-            return _rowOnKeyPress;
-        ValueBinding vb = getValueBinding("rowOnKeyPress");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnKeyPress(String rowOnKeyPress)
-    {
-        _rowOnKeyPress = rowOnKeyPress;
-    }
+    public abstract String getRowOnKeyPress();
 
     /**
      * Defines a JavaScript onkeyup event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnKeyUp()
-    {
-        if (_rowOnKeyUp != null)
-            return _rowOnKeyUp;
-        ValueBinding vb = getValueBinding("rowOnKeyUp");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnKeyUp(String rowOnKeyUp)
-    {
-        _rowOnKeyUp = rowOnKeyUp;
-    }
+    public abstract String getRowOnKeyUp();
 
     /**
      * Corresponds to the HTML class attribute for the row tr tag.
@@ -1460,54 +1264,21 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * 
      * @JSFProperty
      */
-    public String getRowOnMouseDown()
-    {
-        if (_rowOnMouseDown != null)
-            return _rowOnMouseDown;
-        ValueBinding vb = getValueBinding("rowOnMouseDown");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnMouseDown(String rowOnMouseDown)
-    {
-        _rowOnMouseDown = rowOnMouseDown;
-    }
+    public abstract String getRowOnMouseDown();
 
     /**
      * Defines a JavaScript onmousemove event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnMouseMove()
-    {
-        if (_rowOnMouseMove != null)
-            return _rowOnMouseMove;
-        ValueBinding vb = getValueBinding("rowOnMouseMove");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnMouseMove(String rowOnMouseMove)
-    {
-        _rowOnMouseMove = rowOnMouseMove;
-    }
+    public abstract String getRowOnMouseMove();
 
     /**
      * Defines a JavaScript onmouseup event handler for each table row
      * 
      * @JSFProperty
      */
-    public String getRowOnMouseUp()
-    {
-        if (_rowOnMouseUp != null)
-            return _rowOnMouseUp;
-        ValueBinding vb = getValueBinding("rowOnMouseUp");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowOnMouseUp(String rowOnMouseUp)
-    {
-        _rowOnMouseUp = rowOnMouseUp;
-    }
+    public abstract String getRowOnMouseUp();
 
     /**
      * @JSFProperty
@@ -1571,74 +1342,30 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      *  
      * @JSFProperty
      */
-    public String getRowGroupStyle()
-    {
-        if (_rowGroupStyle != null)
-            return _rowGroupStyle;
-        ValueBinding vb = getValueBinding("rowGroupStyle");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowGroupStyle(String rowGroupStyle)
-    {
-        _rowGroupStyle = rowGroupStyle;
-    }
+    public abstract String getRowGroupStyle();
 
     /**
      * StyleClass for grouped rows.
      * 
      * @JSFProperty
      */
-    public String getRowGroupStyleClass()
-    {
-        if (_rowGroupStyleClass != null)
-            return _rowGroupStyleClass;
-        ValueBinding vb = getValueBinding("rowGroupStyleClass");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRowGroupStyleClass(String rowGroupStyleClass)
-    {
-        _rowGroupStyleClass = rowGroupStyleClass;
-    }
+    public abstract String getRowGroupStyleClass();
     
     /**
      * Corresponds to the HTML style attribute for the table body tag
      * 
      * @JSFProperty
      */
-    public String getBodyStyle()
-    {
-        if (_bodyStyle != null)
-            return _bodyStyle;
-        ValueBinding vb = getValueBinding("bodyStyle");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setBodyStyle(String bodyStyle)
-    {
-        _bodyStyle = bodyStyle;
-    }
+    public abstract String getBodyStyle();
 
     /**
      * Corresponds to the HTML class attribute for the table body tag.
      * 
      * @JSFProperty
      */
-    public String getBodyStyleClass()
-    {
-        if (_bodyStyleClass != null)
-            return _bodyStyleClass;
-        ValueBinding vb = getValueBinding("bodyStyleClass");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
+    public abstract String getBodyStyleClass();
 
-    public void setBodyStyleClass(String bodyStyleClass)
-    {
-        _bodyStyleClass = bodyStyleClass;
-    }
-
-    public HtmlDataTable()
+    public AbstractHtmlDataTable()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
@@ -1722,41 +1449,18 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * Set the number of columns the table will be divided over.
      * 
      * @JSFProperty
+     *   defaultValue="1"
      */
-    public int getNewspaperColumns() {
-        if (_newspaperColumns != null) return _newspaperColumns.intValue();
-        ValueBinding vb = getValueBinding(NEWSPAPER_COLUMNS_PROPERTY);
-		Integer v = vb != null ? (Integer)vb.getValue(getFacesContext()) : DEFAULT_NEWSPAPER_COLUMNS;
-		return v.intValue();
-    }
-
-    public void setNewspaperColumns(int newspaperColumns)
-    {
-        this._newspaperColumns = new Integer(newspaperColumns);
-    }
-
-    /**
-     * Set the orientation of the newspaper columns.
-     */
-    public void setNewspaperOrientation(String newspaperOrientation)
-    {
-        this._newspaperOrientation = newspaperOrientation;
-    }
+    public abstract int getNewspaperColumns();
 
     /**
      * The orientation of the newspaper columns in the newspaper 
      * table - "horizontal" or "vertical". Default: vertical
      * 
      * @JSFProperty
+     *   defaultValue = "vertical"
      */
-	public String getNewspaperOrientation() {
-		if(_newspaperOrientation != null)
-			return _newspaperOrientation;
-
-		ValueBinding vb = getValueBinding(NEWSPAPER_ORIENTATION_PROPERTY);
-		String v = vb != null ? (String)vb.getValue(getFacesContext()) : DEFAULT_NEWSPAPER_ORIENTATION;
-		return v;
-	}
+	public abstract String getNewspaperOrientation();
 
     /**
      * Gets the spacer facet, between each pair of newspaper columns.
@@ -1836,13 +1540,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
 
     private Boolean _preserveDataModel = null;
     private Boolean _preserveSort = null;
-    private String _enabledOnUserRole = null;
-    private String _visibleOnUserRole = null;
-    private Boolean _renderedIfEmpty = null;
-    private String _rowIndexVar = null;
-    private String _rowCountVar = null;
-    private String _sortedColumnVar = null;
-    private String _previousRowDataVar = null;
 
     public void setPreserveDataModel(boolean preserveDataModel)
     {
@@ -1876,13 +1573,14 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
     {
         _preserveSort = Boolean.valueOf(preserveSort);
     }
-
+    
     /**
      * Indicates whether the state of the sortColumn and sortAscending 
      * attribute should be saved and restored and written back to the 
      * model during the update model phase. Default: true
      * 
      * @JSFProperty
+     *   defaultValue = "true"
      */
     public boolean isPreserveSort()
     {
@@ -1891,51 +1589,6 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
         ValueBinding vb = getValueBinding("preserveSort");
         Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return v != null ? v.booleanValue() : DEFAULT_PRESERVESORT;
-    }
-
-    public void setEnabledOnUserRole(String enabledOnUserRole)
-    {
-        _enabledOnUserRole = enabledOnUserRole;
-    }
-
-    /**
-     *  If user is in given role, this component will be rendered 
-     *  normally. If not, no hyperlink is rendered but all nested 
-     *  tags (=body) are rendered.
-     * 
-     * @JSFProperty
-     */
-    public String getEnabledOnUserRole()
-    {
-        if (_enabledOnUserRole != null)
-            return _enabledOnUserRole;
-        ValueBinding vb = getValueBinding("enabledOnUserRole");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setVisibleOnUserRole(String visibleOnUserRole)
-    {
-        _visibleOnUserRole = visibleOnUserRole;
-    }
-
-    /**
-     *  If user is in given role, this component will be rendered 
-     *  normally. If not, nothing is rendered and the body of 
-     *  this tag will be skipped.
-     * 
-     * @JSFProperty
-     */
-    public String getVisibleOnUserRole()
-    {
-        if (_visibleOnUserRole != null)
-            return _visibleOnUserRole;
-        ValueBinding vb = getValueBinding("visibleOnUserRole");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setRenderedIfEmpty(boolean renderedIfEmpty)
-    {
-        _renderedIfEmpty = Boolean.valueOf(renderedIfEmpty);
     }
 
     /**
@@ -1951,20 +1604,9 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * per request. Default: true
      * 
      * @JSFProperty
+     *   defaultValue = "true"
      */
-    public boolean isRenderedIfEmpty()
-    {
-        if (_renderedIfEmpty != null)
-            return _renderedIfEmpty.booleanValue();
-        ValueBinding vb = getValueBinding("renderedIfEmpty");
-        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : DEFAULT_RENDEREDIFEMPTY;
-    }
-
-    public void setRowIndexVar(String rowIndexVar)
-    {
-        _rowIndexVar = rowIndexVar;
-    }
+    public abstract boolean isRenderedIfEmpty();
 
     /**
      * A parameter name, under which the current rowIndex is set 
@@ -1972,37 +1614,15 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * 
      * @JSFProperty
      */
-    public String getRowIndexVar()
-    {
-        if (_rowIndexVar != null)
-            return _rowIndexVar;
-        ValueBinding vb = getValueBinding("rowIndexVar");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
+    public abstract String getRowIndexVar();
     
-    public void setRowCountVar(String rowCountVar)
-    {
-        _rowCountVar = rowCountVar;
-    }
-
     /**
      * A parameter name, under which the rowCount is set in 
      * request scope similar to the var parameter.
      * 
      * @JSFProperty
      */
-    public String getRowCountVar()
-    {
-        if (_rowCountVar != null)
-            return _rowCountVar;
-        ValueBinding vb = getValueBinding("rowCountVar");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setPreviousRowDataVar(String previousRowDataVar)
-    {
-        _previousRowDataVar = previousRowDataVar;
-    }
+    public abstract String getRowCountVar();
 
     /**
      * A parameter name, under which the previous RowData Object 
@@ -2013,18 +1633,7 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * 
      * @JSFProperty
      */
-    public String getPreviousRowDataVar()
-    {
-        if (_previousRowDataVar != null)
-            return _previousRowDataVar;
-        ValueBinding vb = getValueBinding("previousRowDataVar");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    public void setSortedColumnVar(String sortedColumnVar)
-    {
-        _sortedColumnVar = sortedColumnVar;
-    }
+    public abstract String getPreviousRowDataVar();
 
     /**
      * A parameter name, under which the a boolean is set in request 
@@ -2033,133 +1642,41 @@ public class HtmlDataTable extends HtmlDataTableHack implements UserRoleAware, N
      * 
      * @JSFProperty
      */
-    public String getSortedColumnVar()
-    {
-        if (_sortedColumnVar != null) return _sortedColumnVar;
-        ValueBinding vb = getValueBinding("sortedColumnVar");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
+    public abstract String getSortedColumnVar();
     
-    //------------------ GENERATED CODE END ---------------------------------------
-    
-    private String _align = null;
-    
-    public void setAlign(String align)
-    {
-        _align = align;
-    }
-
     /**
      * HTML: Specifies the horizontal alignment of this element. 
      * Deprecated in HTML 4.01.
      * 
      * @JSFProperty
      */
-    public String getAlign()
-    {
-        if (_align != null)
-            return _align;
-        ValueBinding vb = getValueBinding("align");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-
-    private String _rowId = null;
-    
-    public void setRowId(String rowId)
-    {
-        _rowId = rowId;
-    }
+    public abstract String getAlign();
 
     /**
      * The id to use for
      * 
      * @JSFProperty
      */
-    public String getRowId()
-    {
-        if (_rowId != null)
-            return _rowId;
-        ValueBinding vb = getValueBinding("rowId");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }
-    
-    // Property: datafld
-    private String _datafld;
+    public abstract String getRowId();
+        
+    /**
+     * Reserved for future use.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getDatafld();
     
     /**
      * Reserved for future use.
      * 
      * @JSFProperty
      */
-    public String getDatafld()
-    {
-        if (_datafld != null)
-        {
-            return _datafld;
-        }
-        ValueBinding vb = getValueBinding("datafld");
-        if (vb != null)
-        {
-            return (String) vb.getValue(getFacesContext());
-        }
-        return null;
-    }
-
-    public void setDatafld(String datafld)
-    {
-        this._datafld = datafld;
-    }
-    // Property: datasrc
-    private String _datasrc;
+    public abstract String getDatasrc();
     
     /**
      * Reserved for future use.
      * 
      * @JSFProperty
      */
-    public String getDatasrc()
-    {
-        if (_datasrc != null)
-        {
-            return _datasrc;
-        }
-        ValueBinding vb = getValueBinding("datasrc");
-        if (vb != null)
-        {
-            return (String) vb.getValue(getFacesContext());
-        }
-        return null;
-    }
-
-    public void setDatasrc(String datasrc)
-    {
-        this._datasrc = datasrc;
-    }
-    // Property: dataformatas
-    private String _dataformatas;
-    
-    /**
-     * Reserved for future use.
-     * 
-     * @JSFProperty
-     */
-    public String getDataformatas()
-    {
-        if (_dataformatas != null)
-        {
-            return _dataformatas;
-        }
-        ValueBinding vb = getValueBinding("dataformatas");
-        if (vb != null)
-        {
-            return (String) vb.getValue(getFacesContext());
-        }
-        return null;
-    }
-
-    public void setDataformatas(String dataformatas)
-    {
-        this._dataformatas = dataformatas;
-    }
-    
+    public abstract String getDataformatas();    
 }

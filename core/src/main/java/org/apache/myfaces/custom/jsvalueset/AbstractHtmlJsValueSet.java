@@ -18,12 +18,9 @@
  */
 package org.apache.myfaces.custom.jsvalueset;
 
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
 import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.component.UserRoleUtils;
 
 /**
  * Setting a value from the model in java-script so that it can be 

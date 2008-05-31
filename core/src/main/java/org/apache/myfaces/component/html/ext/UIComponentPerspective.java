@@ -18,7 +18,10 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -32,10 +35,8 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.validator.Validator;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.myfaces.shared_tomahawk.component.ExecuteOnCallback;
 
 /**
  * @author Martin Marinschek (latest modification by $Author: mmarinschek $)

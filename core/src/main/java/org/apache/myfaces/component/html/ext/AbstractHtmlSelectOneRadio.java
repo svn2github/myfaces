@@ -18,6 +18,18 @@
  */
 package org.apache.myfaces.component.html.ext;
 
+import java.util.Iterator;
+
+import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
+import javax.faces.el.MethodBinding;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.AltProperty;
@@ -28,23 +40,10 @@ import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
 import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.EvaluationException;
-import javax.faces.el.MethodBinding;
-import javax.faces.el.ValueBinding;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-import java.util.Iterator;
 
 /**
  * Implements the standard html selectOneRadio tag, with additional features. 

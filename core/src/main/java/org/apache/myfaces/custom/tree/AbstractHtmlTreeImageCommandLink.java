@@ -19,8 +19,6 @@
 package org.apache.myfaces.custom.tree;
 
 import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 
 /**

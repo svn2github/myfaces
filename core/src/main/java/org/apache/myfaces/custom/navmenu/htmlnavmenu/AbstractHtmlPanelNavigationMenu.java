@@ -22,6 +22,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.AlignProperty;
@@ -30,13 +35,6 @@ import org.apache.myfaces.component.EventAware;
 import org.apache.myfaces.component.PanelProperties;
 import org.apache.myfaces.component.UniversalProperties;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * Renders a vertical menu structure with support for nested menu items. 

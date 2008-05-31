@@ -29,7 +29,6 @@ import java.util.TreeMap;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.html.ext.HtmlSelectOneMenu;

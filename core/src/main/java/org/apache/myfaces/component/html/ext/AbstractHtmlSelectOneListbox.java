@@ -18,9 +18,8 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
-import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import javax.faces.context.FacesContext;
+
 import org.apache.myfaces.component.DataProperties;
 import org.apache.myfaces.component.DisplayValueOnlyAware;
 import org.apache.myfaces.component.EscapeAware;
@@ -28,9 +27,8 @@ import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
+import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
 
 /**
  * Extends standard selectOneListbox with user role support. 
