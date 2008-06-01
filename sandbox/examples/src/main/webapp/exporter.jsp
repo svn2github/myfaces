@@ -72,13 +72,13 @@
 
 		<br>
 		
-		<h:commandButton action="" value="Export as excel">
+		<h:commandButton value="Export as excel">
 			<s:exporterActionListener for="tbl_cars" fileType="XLS"/>
 		</h:commandButton>
 		
 		<br>
 		
-		<h:commandButton action="" value="Export as pdf">
+		<h:commandButton value="Export as pdf">
 			<s:exporterActionListener for="tbl_cars" fileType="PDF"/>
 		</h:commandButton>
 		

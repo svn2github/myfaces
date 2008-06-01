@@ -73,7 +73,7 @@
 			<t:message for="txt_salaryBonus" forceSpan="true" />
 		</h:panelGrid>
 
-		<h:commandButton id="btn_save" value="Create" action=""/>
+		<h:commandButton id="btn_save" value="Create" />
 		
 		<%--
 			Not necessary when h:form or s:form is used, only added just to give an example
