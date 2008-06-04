@@ -19,6 +19,9 @@
 
 package org.apache.myfaces.custom.dojolayouts;
 
+import javax.faces.component.UIOutput;
+
+import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.custom.dojo.DojoWidget;
 
 /**
@@ -28,12 +31,12 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  *   name = "s:floatingPane"
  *   class = "org.apache.myfaces.custom.dojolayouts.FloatingPaneBase"
  *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractFloatingPaneBase"
- *   parent = "javax.faces.component.UIOutput"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.FloatingPaneTag"
  *   
  *
  */
-public abstract class AbstractFloatingPaneBase extends DojoContentPane implements DojoWidget {
+public abstract class AbstractFloatingPaneBase extends UIOutput 
+implements DojoWidget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
 
@@ -132,4 +135,18 @@ public abstract class AbstractFloatingPaneBase extends DojoContentPane implement
      */
     public abstract String getWindowState();
 
+    /**
+     * The CSS class for this element. Corresponds to the HTML 'class' attribute.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getStyle();
+
+    /**
+     *  The CSS class for this element. Corresponds to the HTML 'class' attribute.
+     *  
+     * @JSFProperty
+     */
+    public abstract String getStyleClass();
+    
 }

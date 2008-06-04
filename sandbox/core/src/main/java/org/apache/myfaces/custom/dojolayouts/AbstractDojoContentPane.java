@@ -21,6 +21,7 @@ package org.apache.myfaces.custom.dojolayouts;
 
 import javax.faces.component.UIOutput;
 
+import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.custom.dojo.DojoWidget;
 
 /**
@@ -40,7 +41,9 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  * @author werpu
  * 
  */
-public abstract class AbstractDojoContentPane extends UIOutput implements DojoWidget {
+public abstract class AbstractDojoContentPane extends UIOutput 
+    implements DojoWidget, StyleAware 
+{
 
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
 

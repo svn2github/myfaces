@@ -19,6 +19,9 @@
 
 package org.apache.myfaces.custom.dojolayouts;
 
+import javax.faces.component.UIOutput;
+
+import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.custom.dojo.DojoWidget;
 
 /*
@@ -41,11 +44,12 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  *   name = "s:layoutingTitlePane"
  *   class = "org.apache.myfaces.custom.dojolayouts.TitlePane"
  *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractTitlePane"
- *   parent = "javax.faces.component.UIOutput"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.TitlePaneTag"
  *   
  */
-public abstract class AbstractTitlePane extends DojoContentPane implements DojoWidget {
+public abstract class AbstractTitlePane extends UIOutput 
+    implements DojoWidget, StyleAware 
+{
 
     public static final String COMPONENT_FAMILY      = "javax.faces.Output";
 
@@ -87,5 +91,19 @@ public abstract class AbstractTitlePane extends DojoContentPane implements DojoW
      * @JSFProperty
      */
     public abstract String getLabelNodeClass();
+
+    /**
+     * The CSS class for this element. Corresponds to the HTML 'class' attribute.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getStyle();
+
+    /**
+     *  The CSS class for this element. Corresponds to the HTML 'class' attribute.
+     *  
+     * @JSFProperty
+     */
+    public abstract String getStyleClass();
 
 }

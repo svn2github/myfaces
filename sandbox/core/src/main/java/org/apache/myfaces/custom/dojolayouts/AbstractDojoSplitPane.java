@@ -19,6 +19,9 @@
 
 package org.apache.myfaces.custom.dojolayouts;
 
+import javax.faces.component.UIOutput;
+
+import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.custom.dojo.DojoWidget;
 
 /**
@@ -28,12 +31,12 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  *   name = "s:layoutingSplitPane"
  *   class = "org.apache.myfaces.custom.dojolayouts.DojoSplitPane"
  *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractDojoSplitPane"
- *   parent = "javax.faces.component.UIOutput"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.DojoSplitPaneTag"
  *   
  *
  */
-public abstract class AbstractDojoSplitPane extends DojoContentPane implements DojoWidget {
+public abstract class AbstractDojoSplitPane extends UIOutput 
+implements DojoWidget, StyleAware{
 
     public static final String COMPONENT_TYPE        = "org.apache.myfaces.DojoSplitPane";
 
@@ -102,26 +105,20 @@ public abstract class AbstractDojoSplitPane extends DojoContentPane implements D
      * 
      * @JSFProperty
      */
-    public String getStyle(){
-        return super.getStyle();
-    }
+    public abstract String getStyle();
 
     /**
      *  The CSS class for this element. Corresponds to the HTML 'class' attribute.
      *  
      * @JSFProperty
      */
-    public String getStyleClass(){
-        return super.getStyleClass();
-    }
+    public abstract String getStyleClass();
     
     /**
      * Size share value describing the place the content pane wants from its parent
      * 
      * @JSFProperty
      */
-    public Integer getSizeShare(){
-        return super.getSizeShare();
-    }
+    public abstract Integer getSizeShare();
     
 }

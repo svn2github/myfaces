@@ -25,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.custom.dojo.DojoConfig;
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
@@ -85,7 +86,7 @@ public class DojoContentPaneRenderer extends HtmlRenderer {
         writer.startElement(HTML.DIV_ELEM, component);
         HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
 
-        DojoContentPane pane = (DojoContentPane) component;
+        StyleAware pane = (StyleAware) component;
 
         String styleClass = pane.getStyleClass();
         String style = pane.getStyle();
