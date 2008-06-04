@@ -48,7 +48,9 @@ public class HtmlInputHiddenTest extends AbstractTomahawkViewControllerTestCase
     {
         // Define the component
         UIComponent component = new HtmlInputHidden();
-        component.setParent(new HtmlForm());
+        component.setId("TestComponent");
+        HtmlForm form = new HtmlForm();
+        form.getChildren().add(component);
 
         // Render the component
         try

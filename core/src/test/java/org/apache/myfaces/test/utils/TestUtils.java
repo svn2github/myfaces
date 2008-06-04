@@ -73,6 +73,9 @@ public final class TestUtils
         addRenderer(facesContext, "javax.faces.Input", "javax.faces.Hidden",
                 "org.apache.myfaces.renderkit.html.HtmlHiddenRenderer");
 
+        addRenderer(facesContext, "javax.faces.Input", "org.apache.myfaces.Hidden",
+                "org.apache.myfaces.renderkit.html.ext.HtmlHiddenRenderer");
+        
         addRenderer(facesContext, "javax.faces.Graphic", "javax.faces.Image",
                 "org.apache.myfaces.renderkit.html.HtmlImageRenderer");
 

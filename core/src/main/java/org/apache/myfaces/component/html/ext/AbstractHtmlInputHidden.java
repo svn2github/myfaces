@@ -42,7 +42,7 @@ public abstract class AbstractHtmlInputHidden
     implements ForceIdAware
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlInputHidden";
-    public static final String DEFAULT_RENDERER_TYPE = "javax.faces.Hidden";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Hidden";
 
     public AbstractHtmlInputHidden()
     {
