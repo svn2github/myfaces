@@ -62,7 +62,7 @@ public class HtmlMessageTest extends AbstractTomahawkViewControllerTestCase
         // Define the referenced component
         UIComponent referencedComponent = new HtmlInputText();
         referencedComponent.setId("referencedComponent");
-        referencedComponent.setParent(panelGroup);
+        //referencedComponent.setParent(panelGroup);
         panelGroup.getChildren().add(referencedComponent);
         facesContext.addMessage(referencedComponent.getId(), new FacesMessage(
                 FacesMessage.SEVERITY_ERROR, "summary", "detail"));
