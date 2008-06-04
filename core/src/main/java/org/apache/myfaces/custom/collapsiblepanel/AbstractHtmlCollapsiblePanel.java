@@ -24,6 +24,7 @@ import java.util.Iterator;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
 
 import org.apache.myfaces.component.EventAware;
 import org.apache.myfaces.component.StyleAware;
@@ -40,7 +41,6 @@ import org.apache.myfaces.component.UserRoleAware;
  * @JSFComponent
  *   name = "t:collapsiblePanel"
  *   class = "org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanel"
- *   parent = "javax.faces.component.UIOutput"
  *   superClass = "org.apache.myfaces.custom.collapsiblepanel.AbstractHtmlCollapsiblePanel"    
  *   tagClass = "org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanelTag"
  * 
@@ -229,5 +229,35 @@ public abstract class AbstractHtmlCollapsiblePanel extends UIInput
      */    
     public abstract String getTitleVar();
     
+    /**
+     * @JSFProperty tagExcluded = "true"
+     */
+    public MethodBinding getValidator(){
+        return super.getValidator();
+    }
+    
+    /**
+     * @JSFProperty tagExcluded = "true"
+     */
+    public MethodBinding getValueChangeListener()
+    {
+        return super.getValueChangeListener();
+    }
+    
+    /**
+     * @JSFProperty tagExcluded = "true"
+     */
+    public boolean isImmediate()
+    {
+        return super.isImmediate();
+    }
+    
+    /**
+     * @JSFProperty tagExcluded = "true"
+     */
+    public boolean isRequired()
+    {
+        return super.isRequired();
+    }
     
 }

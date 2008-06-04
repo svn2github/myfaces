@@ -39,12 +39,11 @@ import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
  * actions and actionListeners.
  * 
  * @JSFComponent
- *   parent = "org.apache.myfaces.custom.schedule.UIScheduleBase"
  * 
  * @author Jurgen Lust
  * @version $Revision$
  */
-public class UISchedule extends UIScheduleBase implements
+public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBase implements
         Serializable, ActionSource
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.UISchedule";

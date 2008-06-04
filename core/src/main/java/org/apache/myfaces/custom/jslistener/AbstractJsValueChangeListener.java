@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.custom.jslistener;
 
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIOutput;
 
 /**
@@ -28,14 +29,17 @@ import javax.faces.component.UIOutput;
  * @JSFComponent
  *   name = "t:jsValueChangeListener"
  *   class = "org.apache.myfaces.custom.jslistener.JsValueChangeListener"
- *   parent = "javax.faces.component.UIComponent"
  *   superClass = "org.apache.myfaces.custom.jslistener.AbstractJsValueChangeListener"
  *   tagClass = "org.apache.myfaces.custom.jslistener.JsValueChangeListenerTag"
+ * 
+ * @JSFJspProperty name = "rendered" returnType = "boolean" tagExcluded = "true"
+ * @JSFJspProperty name = "binding" returnType = "java.lang.String" tagExcluded = "true"
+ * @JSFJspProperty name = "id" returnType = "java.lang.String" tagExcluded = "true"
  * 
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public abstract class AbstractJsValueChangeListener extends UIOutput
+public abstract class AbstractJsValueChangeListener extends UIComponentBase
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.JsValueChangeListener";
     public static final String COMPONENT_FAMILY = "javax.faces.Output";

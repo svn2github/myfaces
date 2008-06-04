@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.custom.stylesheet;
 
-import javax.faces.component.UIOutput;
+import javax.faces.component.UIComponentBase;
 
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
@@ -30,14 +30,13 @@ import org.apache.myfaces.component.UserRoleUtils;
  * @JSFComponent
  *   name = "t:stylesheet"
  *   class = "org.apache.myfaces.custom.stylesheet.Stylesheet"
- *   parent = "javax.faces.component.UIComponentBase"
  *   superClass = "org.apache.myfaces.custom.stylesheet.AbstractStylesheet"
  *   tagClass = "org.apache.myfaces.custom.stylesheet.StylesheetTag"
  * 
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public abstract class AbstractStylesheet extends UIOutput
+public abstract class AbstractStylesheet extends UIComponentBase
     implements UserRoleAware    
 {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.Stylesheet";

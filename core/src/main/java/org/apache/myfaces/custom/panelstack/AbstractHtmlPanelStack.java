@@ -18,7 +18,7 @@
  */
 package org.apache.myfaces.custom.panelstack;
 
-import javax.faces.component.html.HtmlPanelGroup;
+import javax.faces.component.UIPanel;
 
 
 /**
@@ -33,14 +33,13 @@ import javax.faces.component.html.HtmlPanelGroup;
  * @JSFComponent
  *   name = "t:panelStack"
  *   class = "org.apache.myfaces.custom.panelstack.HtmlPanelStack"
- *   parent = "javax.faces.component.UIPanel"
  *   superClass = "org.apache.myfaces.custom.panelstack.AbstractHtmlPanelStack"
  *   tagClass = "org.apache.myfaces.custom.panelstack.PanelStackTag"
  *
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$
  */
-public abstract class AbstractHtmlPanelStack extends HtmlPanelGroup
+public abstract class AbstractHtmlPanelStack extends UIPanel
 {
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlPanelStack";
