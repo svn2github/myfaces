@@ -33,7 +33,6 @@ import javax.faces.context.FacesContext;
  * @JSFComponent
  *   name = "s:ifMessage"
  *   class = "org.apache.myfaces.custom.ifmessage.IfMessage"
- *   superClass = "org.apache.myfaces.custom.ifmessage.AbstractIfMessage"
  *   tagClass = "org.apache.myfaces.custom.ifmessage.IfMessageTag"
  *   
  * @author Mike Youngstrom (latest modification by $Author$)

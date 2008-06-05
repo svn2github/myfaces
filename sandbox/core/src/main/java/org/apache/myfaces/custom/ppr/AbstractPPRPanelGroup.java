@@ -30,7 +30,6 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  * @JSFComponent
  *   name = "s:pprPanelGroup"
  *   class = "org.apache.myfaces.custom.ppr.PPRPanelGroup"
- *   superClass = "org.apache.myfaces.custom.ppr.AbstractPPRPanelGroup"
  *   tagClass = "org.apache.myfaces.custom.ppr.PPRPanelGroupTag"
  *   
  * @author Ernst Fastl

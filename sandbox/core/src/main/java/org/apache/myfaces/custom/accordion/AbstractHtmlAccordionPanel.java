@@ -35,7 +35,6 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  * @JSFComponent
  *   name = "s:accordionPanel"
  *   class = "org.apache.myfaces.custom.accordion.HtmlAccordionPanel"
- *   superClass = "org.apache.myfaces.custom.accordion.AbstractHtmlAccordionPanel"
  *   tagClass = "org.apache.myfaces.custom.accordion.HtmlAccordionPanelTag"
  *   
  * @author Martin Marinschek

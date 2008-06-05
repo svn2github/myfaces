@@ -28,7 +28,6 @@ import org.apache.commons.logging.LogFactory;
  * @JSFComponent
  *   name = "s:focus"
  *   class = "org.apache.myfaces.custom.focus.HtmlFocus"
- *   superClass = "org.apache.myfaces.custom.focus.AbstractHtmlFocus"
  *   tagClass = "org.apache.myfaces.custom.focus.HtmlFocusTag"
  *   
  * @author Rogerio Pereira Araujo (latest modification by $Author$)

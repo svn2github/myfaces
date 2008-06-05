@@ -27,7 +27,6 @@ import javax.faces.component.UICommand;
  * @JSFComponent
  *   name = "s:fishEyeCommandLink"
  *   class = "org.apache.myfaces.custom.fisheye.FishEyeCommandLink"
- *   superClass = "org.apache.myfaces.custom.fisheye.AbstractFishEyeCommandLink"
  *   tagClass = "org.apache.myfaces.custom.fisheye.FishEyeCommandLinkTag"
  *   
  * @author Thomas Spiegl

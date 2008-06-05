@@ -28,7 +28,6 @@ import javax.faces.component.UIOutput;
  * @JSFComponent
  *   name = "s:timedNotifier"
  *   class = "org.apache.myfaces.custom.timednotifier.TimedNotifier"
- *   superClass = "org.apache.myfaces.custom.timednotifier.AbstractTimedNotifier"
  *   tagClass = "org.apache.myfaces.custom.timednotifier.TimedNotifierTag"
  *   
  * @author werpu

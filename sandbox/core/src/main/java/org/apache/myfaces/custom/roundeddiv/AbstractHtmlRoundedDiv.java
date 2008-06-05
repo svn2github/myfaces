@@ -31,7 +31,6 @@ import org.apache.myfaces.custom.div.Div;
  * @JSFComponent
  *   name = "s:roundedDiv"
  *   class = "org.apache.myfaces.custom.roundeddiv.HtmlRoundedDiv"
- *   superClass = "org.apache.myfaces.custom.roundeddiv.AbstractHtmlRoundedDiv"
  *   tagClass = "org.apache.myfaces.custom.roundeddiv.HtmlRoundedDivTag"
  *   
  * @author Andrew Robinson (latest modification by $Author$)

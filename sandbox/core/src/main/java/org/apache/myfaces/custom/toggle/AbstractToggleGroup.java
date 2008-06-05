@@ -30,7 +30,6 @@ import javax.faces.component.html.HtmlPanelGroup;
  * @JSFComponent
  *   name = "s:toggleGroup"
  *   class = "org.apache.myfaces.custom.toggle.ToggleGroup"
- *   superClass = "org.apache.myfaces.custom.toggle.AbstractToggleGroup"
  *   tagClass = "org.apache.myfaces.custom.toggle.ToggleGroupTag"
  *   
  * @author Sharath

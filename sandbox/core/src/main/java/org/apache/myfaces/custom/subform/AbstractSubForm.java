@@ -61,7 +61,6 @@ import java.util.List;
  * @JSFComponent
  *   name = "s:subForm"
  *   class = "org.apache.myfaces.custom.subform.SubForm"
- *   superClass = "org.apache.myfaces.custom.subform.AbstractSubForm"
  *   tagClass = "org.apache.myfaces.custom.subform.SubFormTag"
  *   implements = "javax.faces.component.NamingContainer"
  *   

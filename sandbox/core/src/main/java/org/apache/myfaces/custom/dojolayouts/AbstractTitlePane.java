@@ -43,7 +43,6 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  * @JSFComponent
  *   name = "s:layoutingTitlePane"
  *   class = "org.apache.myfaces.custom.dojolayouts.TitlePane"
- *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractTitlePane"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.TitlePaneTag"
  *   
  */

@@ -29,7 +29,6 @@ import org.apache.myfaces.component.LocationAware;
  * @JSFComponent
  *   name = "s:inputSuggest"
  *   class = "org.apache.myfaces.custom.suggest.InputSuggest"
- *   superClass = "org.apache.myfaces.custom.suggest.AbstractInputSuggest"
  *   tagClass = "org.apache.myfaces.custom.suggest.InputSuggestTag"
  */
 public abstract class AbstractInputSuggest extends HtmlInputText

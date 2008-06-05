@@ -26,7 +26,6 @@ import javax.faces.component.UIOutput;
  * @JSFComponent
  *   name = "s:script"
  *   class = "org.apache.myfaces.custom.script.Script"
- *   superClass = "org.apache.myfaces.custom.script.AbstractScript"
  *   tagClass = "org.apache.myfaces.custom.script.ScriptTag"
  * 
  * @JSFJspProperty name="value" tagExcluded = "true"

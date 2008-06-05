@@ -27,7 +27,6 @@ import javax.faces.component.UIComponentBase;
  * @JSFComponent
  *   name = "s:submitOnEvent"
  *   class = "org.apache.myfaces.custom.submitOnEvent.SubmitOnEvent"
- *   superClass = "org.apache.myfaces.custom.submitOnEvent.AbstractSubmitOnEvent"
  *   tagClass = "org.apache.myfaces.custom.submitOnEvent.SubmitOnEventTag"
  *   
  * @author Mario Ivankovits (imario -at - apache.org)

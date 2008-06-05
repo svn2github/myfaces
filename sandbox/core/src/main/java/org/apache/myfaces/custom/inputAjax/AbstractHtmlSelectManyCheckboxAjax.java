@@ -42,7 +42,6 @@ import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
  * @JSFComponent
  *   name = "s:selectManyCheckboxAjax"
  *   class = "org.apache.myfaces.custom.inputAjax.HtmlSelectManyCheckboxAjax"
- *   superClass = "org.apache.myfaces.custom.inputAjax.AbstractHtmlSelectManyCheckboxAjax"
  *   tagClass = "org.apache.myfaces.custom.inputAjax.HtmlSelectManyCheckboxAjaxTag"
  *   
  * @author Travis Reeder (latest modification by $Author$)

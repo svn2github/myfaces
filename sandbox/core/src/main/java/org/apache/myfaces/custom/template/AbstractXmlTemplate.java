@@ -45,7 +45,6 @@ import javax.xml.transform.stream.StreamSource;
  * @JSFComponent
  *   name = "s:xmlTemplate"
  *   class = "org.apache.myfaces.custom.template.XmlTemplate"
- *   superClass = "org.apache.myfaces.custom.template.AbstractXmlTemplate"
  *   tagClass = "org.apache.myfaces.custom.template.XmlTemplateTag"
  *   
  * @author Sean Schofield

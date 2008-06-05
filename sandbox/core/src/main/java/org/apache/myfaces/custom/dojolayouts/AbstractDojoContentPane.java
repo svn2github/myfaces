@@ -35,7 +35,6 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  * @JSFComponent
  *   name = "s:layoutingContentPane"
  *   class = "org.apache.myfaces.custom.dojolayouts.DojoContentPane"
- *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractDojoContentPane"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.DojoContentPaneTag"
  *   
  * @author werpu

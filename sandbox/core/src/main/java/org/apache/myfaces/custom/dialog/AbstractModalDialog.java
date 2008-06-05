@@ -29,7 +29,6 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  * @JSFComponent
  *   name = "s:modalDialog"
  *   class = "org.apache.myfaces.custom.dialog.ModalDialog"
- *   superClass = "org.apache.myfaces.custom.dialog.AbstractModalDialog"
  *   tagClass = "org.apache.myfaces.custom.dialog.ModalDialogTag"
  *   
  */

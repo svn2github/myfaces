@@ -38,7 +38,6 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
  * @JSFComponent
  *   name = "s:ajaxChildComboBox"
  *   class = "org.apache.myfaces.custom.ajaxchildcombobox.AjaxChildComboBox"
- *   superClass = "org.apache.myfaces.custom.ajaxchildcombobox.AbstractAjaxChildComboBox"
  *   tagClass = "org.apache.myfaces.custom.ajaxchildcombobox.AjaxChildComboBoxTag"
  *   
  * @author Sharath Reddy

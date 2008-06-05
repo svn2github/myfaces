@@ -32,7 +32,6 @@ import javax.faces.context.FacesContext;
  * @JSFComponent
  *   name = "s:togglePanel"
  *   class = "org.apache.myfaces.custom.toggle.TogglePanel"
- *   superClass = "org.apache.myfaces.custom.toggle.AbstractTogglePanel"
  *   tagClass = "org.apache.myfaces.custom.toggle.TogglePanelTag"
  *   
  * @author Sharath

@@ -35,7 +35,6 @@ import javax.faces.el.ValueBinding;
  * @JSFComponent
  *   name = "s:fishEyeNavigationMenu"
  *   class = "org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenu"
- *   superClass = "org.apache.myfaces.custom.fisheye.AbstractHtmlFishEyeNavigationMenu"
  *   tagClass = "org.apache.myfaces.custom.fisheye.HtmlFishEyeNavigationMenuTag"
  *   
  * @author Jurgen Lust (latest modification by $Author$)

@@ -36,7 +36,6 @@ import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
  * @JSFComponent
  *   name = "s:commandButtonAjax"
  *   class = "org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjax"
- *   superClass = "org.apache.myfaces.custom.inputAjax.AbstractHtmlCommandButtonAjax"
  *   tagClass = "org.apache.myfaces.custom.inputAjax.HtmlCommandButtonAjaxTag"
  *   
  * User: Travis Reeder

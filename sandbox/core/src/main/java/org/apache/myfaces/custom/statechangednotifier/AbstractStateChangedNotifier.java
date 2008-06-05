@@ -28,7 +28,6 @@ package org.apache.myfaces.custom.statechangednotifier;
  * @JSFComponent
  *   name = "s:stateChangedNotifier"
  *   class = "org.apache.myfaces.custom.statechangednotifier.StateChangedNotifier"
- *   superClass = "org.apache.myfaces.custom.statechangednotifier.AbstractStateChangedNotifier"
  *   tagClass = "org.apache.myfaces.custom.statechangednotifier.StateChangedNotifierTag"
  *   
  * @author Bruno Aranda (latest modification by $Author$)

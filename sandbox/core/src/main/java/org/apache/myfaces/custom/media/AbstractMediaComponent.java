@@ -25,7 +25,6 @@ import javax.faces.component.UIComponentBase;
  * @JSFComponent
  *   name = "s:media"
  *   class = "org.apache.myfaces.custom.media.MediaComponent"
- *   superClass = "org.apache.myfaces.custom.media.AbstractMediaComponent"
  *   tagClass = "org.apache.myfaces.custom.media.MediaTag"
  */
 public abstract class AbstractMediaComponent extends UIComponentBase {

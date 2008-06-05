@@ -24,7 +24,6 @@ import javax.faces.component.UIData;
  * @JSFComponent
  *   name = "s:filterTable"
  *   class = "org.apache.myfaces.custom.table.FilterTable"
- *   superClass = "org.apache.myfaces.custom.table.AbstractFilterTable"
  *   tagClass = "org.apache.myfaces.custom.table.FilterTableTag"
  *   
  * @author Thomas Spiegl

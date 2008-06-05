@@ -26,7 +26,6 @@ import javax.faces.component.UIComponentBase;
  * @JSFComponent
  *   name = "s:imageLoopItems"
  *   class = "org.apache.myfaces.custom.imageloop.ImageLoopItems"
- *   superClass = "org.apache.myfaces.custom.imageloop.AbstractImageLoopItems"
  *   tagClass = "org.apache.myfaces.custom.imageloop.ImageLoopItemsTag"
  *   
  * @author Felix Röthenbacher (latest modification by $Author$)

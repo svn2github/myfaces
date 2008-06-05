@@ -57,7 +57,6 @@ import org.apache.commons.logging.LogFactory;
  * @JSFComponent
  *   name = "s:loadBundle"
  *   class = "org.apache.myfaces.custom.loadbundle.LoadBundle"
- *   superClass = "org.apache.myfaces.custom.loadbundle.AbstractLoadBundle"
  *   tagClass = "org.apache.myfaces.custom.loadbundle.LoadBundleTag"
  *   tagSuperclass = "org.apache.myfaces.custom.loadbundle.AbstractLoadBundleTag"
  *   

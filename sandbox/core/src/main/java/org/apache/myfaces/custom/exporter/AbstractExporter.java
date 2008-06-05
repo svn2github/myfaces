@@ -26,7 +26,6 @@ import javax.faces.component.UIComponentBase;
  * @JSFComponent
  *   name = "s:exporter"
  *   class = "org.apache.myfaces.custom.exporter.Exporter"
- *   superClass = "org.apache.myfaces.custom.exporter.AbstractExporter"
  *   tagClass = "org.apache.myfaces.custom.exporter.ExporterTag"
  *
  */

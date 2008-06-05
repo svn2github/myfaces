@@ -30,7 +30,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "s:form"
  *   class = "org.apache.myfaces.custom.form.HtmlForm"
- *   superClass = "org.apache.myfaces.custom.form.AbstractHtmlForm"
  *   tagClass = "org.apache.myfaces.custom.form.HtmlFormTag"
  *   
  * @author Mathias Broekelmann (latest modification by $Author$)

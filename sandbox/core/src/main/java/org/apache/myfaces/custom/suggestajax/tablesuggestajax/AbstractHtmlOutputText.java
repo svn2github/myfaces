@@ -41,7 +41,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  *   name = "s:outputText"
  *   tagClass = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.HtmlOutputTextTag"
  *   class = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.HtmlOutputText"
- *   superClass = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.AbstractHtmlOutputText"
  *   
  * @author Gerald Muellan
  *         Date: 15.02.2006

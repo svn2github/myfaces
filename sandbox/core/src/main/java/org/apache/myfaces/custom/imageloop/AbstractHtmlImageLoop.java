@@ -41,7 +41,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "s:imageLoop"
  *   class = "org.apache.myfaces.custom.imageloop.HtmlImageLoop"
- *   superClass = "org.apache.myfaces.custom.imageloop.AbstractHtmlImageLoop"
  *   tagClass = "org.apache.myfaces.custom.imageloop.HtmlImageLoopTag"
  *   
  * @author Felix Röthenbacher (latest modification by $Author$)

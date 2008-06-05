@@ -39,7 +39,6 @@ import org.apache.myfaces.custom.ajax.api.DeprecatedAjaxComponent;
  * @JSFComponent
  *   name = "s:selectBooleanCheckboxAjax"
  *   class = "org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjax"
- *   superClass = "org.apache.myfaces.custom.inputAjax.AbstractHtmlSelectBooleanCheckboxAjax"
  *   tagClass = "org.apache.myfaces.custom.inputAjax.HtmlSelectBooleanCheckboxAjaxTag"
  *   
  * User: treeder

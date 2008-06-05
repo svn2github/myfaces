@@ -30,7 +30,6 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  * @JSFComponent
  *   name = "s:floatingPane"
  *   class = "org.apache.myfaces.custom.dojolayouts.FloatingPaneBase"
- *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractFloatingPaneBase"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.FloatingPaneTag"
  *   
  *

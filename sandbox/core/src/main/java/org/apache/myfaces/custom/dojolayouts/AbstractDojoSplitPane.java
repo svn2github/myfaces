@@ -30,7 +30,6 @@ import org.apache.myfaces.custom.dojo.DojoWidget;
  * @JSFComponent
  *   name = "s:layoutingSplitPane"
  *   class = "org.apache.myfaces.custom.dojolayouts.DojoSplitPane"
- *   superClass = "org.apache.myfaces.custom.dojolayouts.AbstractDojoSplitPane"
  *   tagClass = "org.apache.myfaces.custom.dojolayouts.DojoSplitPaneTag"
  *   
  *

@@ -37,7 +37,6 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
  * @JSFComponent
  *   name = "s:autoUpdateDataTable"
  *   class = "org.apache.myfaces.custom.autoupdatedatatable.AutoUpdateDataTable"
- *   superClass = "org.apache.myfaces.custom.autoupdatedatatable.AbstractAutoUpdateDataTable"
  *   tagClass = "org.apache.myfaces.custom.autoupdatedatatable.AutoUpdateDataTableTag"
  *   
  * @author J&ouml;rg Artaker

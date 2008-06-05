@@ -24,7 +24,6 @@ import javax.faces.component.UIColumn;
  * @JSFComponent
  *   name = "s:sortableColumn"
  *   class = "org.apache.myfaces.custom.table.SortableColumn"
- *   superClass = "org.apache.myfaces.custom.table.AbstractSortableColumn"
  *   tagClass = "org.apache.myfaces.custom.table.SortableColumnTag"
  *   
  * @author Thomas Spiegl

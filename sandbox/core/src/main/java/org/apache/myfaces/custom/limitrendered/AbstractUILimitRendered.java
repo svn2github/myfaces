@@ -50,7 +50,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  * @JSFComponent
  *   name = "s:limitRendered"
  *   class = "org.apache.myfaces.custom.limitrendered.UILimitRendered"
- *   superClass = "org.apache.myfaces.custom.limitrendered.AbstractUILimitRendered"
  *   tagClass = "org.apache.myfaces.custom.limitrendered.UILimitRenderedTag"
  *   
  * @author Andrew Robinson (latest modification by $Author$)

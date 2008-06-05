@@ -31,7 +31,6 @@ import javax.faces.component.html.HtmlOutputLink;
  * @JSFComponent
  *   name = "s:toggleLink"
  *   class = "org.apache.myfaces.custom.toggle.ToggleLink"
- *   superClass = "org.apache.myfaces.custom.toggle.AbstractToggleLink"
  *   tagClass = "org.apache.myfaces.custom.toggle.ToggleLinkTag"
  *   
  * @author Sharath Reddy

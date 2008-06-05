@@ -34,7 +34,6 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * @JSFComponent
  *   name = "s:outputLinkDynamic"
  *   class = "org.apache.myfaces.custom.outputlinkdynamic.OutputLinkDynamic"
- *   superClass = "org.apache.myfaces.custom.outputlinkdynamic.AbstractOutputLinkDynamic"
  *   tagClass = "org.apache.myfaces.custom.outputlinkdynamic.OutputLinkDynamicTag"
  *   
  * @author Sylvain Vieujot (latest modification by $Author$)

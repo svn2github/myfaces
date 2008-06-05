@@ -27,7 +27,6 @@ import org.apache.myfaces.custom.div.Div;
  * @JSFComponent
  *   name = "s:effect"
  *   class = "org.apache.myfaces.custom.effect.Effect"
- *   superClass = "org.apache.myfaces.custom.effect.AbstractEffect"
  *   tagClass = "org.apache.myfaces.custom.effect.EffectTag"
  *   
  * @author Leonardo

@@ -28,7 +28,6 @@ import org.apache.myfaces.component.AlignProperty;
  * @JSFComponent
  *   name = "s:selectOneRow"
  *   class = "org.apache.myfaces.custom.selectOneRow.SelectOneRow"
- *   superClass = "org.apache.myfaces.custom.selectOneRow.AbstractSelectOneRow"
  *   tagClass = "org.apache.myfaces.custom.selectOneRow.SelectOneRowTag"
  *
  */

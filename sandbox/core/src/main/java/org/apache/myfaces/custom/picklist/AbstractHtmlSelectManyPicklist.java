@@ -26,7 +26,6 @@ import org.apache.myfaces.component.html.ext.HtmlSelectManyListbox;
  * @JSFComponent
  *   name = "s:selectManyPicklist"
  *   class = "org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist"
- *   superClass = "org.apache.myfaces.custom.picklist.AbstractHtmlSelectManyPicklist"
  *   tagClass = "org.apache.myfaces.custom.picklist.HtmlSelectManyPicklistTag"
  *   
  * @author Bruno Aranda (latest modification by $Author$)

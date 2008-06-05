@@ -32,7 +32,6 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjax;
  * @JSFComponent
  *   name = "s:tableSuggestAjax"
  *   class = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjax"
- *   superClass = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.AbstractTableSuggestAjax"
  *   tagClass = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjaxTag"
  *   
  * @author Gerald Muellan

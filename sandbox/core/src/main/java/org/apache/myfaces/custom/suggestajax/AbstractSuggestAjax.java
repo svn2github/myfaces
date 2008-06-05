@@ -34,7 +34,6 @@ import org.apache.myfaces.custom.ajax.api.AjaxRenderer;
  * @JSFComponent
  *   configExcluded = "true"
  *   class = "org.apache.myfaces.custom.suggestajax.SuggestAjax"
- *   superClass = "org.apache.myfaces.custom.suggestajax.AbstractSuggestAjax"
  *   tagClass = "org.apache.myfaces.custom.suggestajax.SuggestAjaxTag"
  *   tagSuperclass = "org.apache.myfaces.custom.suggestajax.AbstractSuggestAjaxTag"
  * @author Gerald Muellan

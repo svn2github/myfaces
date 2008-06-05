@@ -36,7 +36,6 @@ import org.apache.commons.lang.StringUtils;
  * @JSFComponent
  *   name = "s:pprSubmit"
  *   class = "org.apache.myfaces.custom.ppr.PPRSubmit"
- *   superClass = "org.apache.myfaces.custom.ppr.AbstractPPRSubmit"
  *   tagClass = "org.apache.myfaces.custom.ppr.PPRSubmitTag"
  *   
  * @author Thomas Spiegl

@@ -27,7 +27,6 @@ import org.apache.myfaces.component.AlignProperty;
  * @JSFComponent
  *   name = "s:passwordStrength"
  *   class = "org.apache.myfaces.custom.passwordStrength.PasswordStrengthComponent"
- *   superClass = "org.apache.myfaces.custom.passwordStrength.AbstractPasswordStrengthComponent"
  *   tagClass = "org.apache.myfaces.custom.passwordStrength.PasswordStrengthTag"
  *   
  */
