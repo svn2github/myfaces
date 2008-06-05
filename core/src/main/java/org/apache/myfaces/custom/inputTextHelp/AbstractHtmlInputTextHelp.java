@@ -28,7 +28,6 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  * @JSFComponent
  *   name = "t:inputTextHelp"
  *   class = "org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp"
- *   superClass = "org.apache.myfaces.custom.inputTextHelp.AbstractHtmlInputTextHelp"
  *   tagClass = "org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelpTag"
  * 
  * @author Thomas Obereder

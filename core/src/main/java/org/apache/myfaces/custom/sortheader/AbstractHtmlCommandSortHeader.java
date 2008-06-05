@@ -49,7 +49,6 @@ import org.apache.myfaces.component.html.ext.HtmlDataTable;
  * @JSFComponent
  *   name = "t:commandSortHeader"
  *   class = "org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader"
- *   superClass = "org.apache.myfaces.custom.sortheader.AbstractHtmlCommandSortHeader"
  *   tagClass = "org.apache.myfaces.custom.sortheader.HtmlCommandSortHeaderTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

@@ -38,7 +38,6 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  * @JSFComponent
  *   name = "t:selectManyMenu"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectManyMenu"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlSelectManyMenu"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectManyMenuTag"
  *   
  * @author Martin Marinschek (latest modification by $Author$)

@@ -36,7 +36,6 @@ import org.apache.myfaces.component.UserRoleAware;
  * @JSFComponent
  *   name = "t:checkbox"
  *   class = "org.apache.myfaces.custom.checkbox.HtmlCheckbox"
- *   superClass = "org.apache.myfaces.custom.checkbox.AbstractHtmlCheckbox" 
  *   tagClass = "org.apache.myfaces.custom.checkbox.HtmlCheckboxTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

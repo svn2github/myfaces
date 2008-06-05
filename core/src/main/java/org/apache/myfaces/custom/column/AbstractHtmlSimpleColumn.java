@@ -30,7 +30,6 @@ import javax.faces.component.UIColumn;
  * @JSFComponent
  *   name = "t:column"
  *   class = "org.apache.myfaces.custom.column.HtmlSimpleColumn"
- *   superClass = "org.apache.myfaces.custom.column.AbstractHtmlSimpleColumn"
  *   tagClass = "org.apache.myfaces.custom.column.HtmlColumnTag"
  * 
  * @author Mathias Broekelmann (latest modification by $Author$)

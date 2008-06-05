@@ -38,7 +38,6 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
  * @JSFComponent
  *   name = "t:inputFileUpload"
  *   class = "org.apache.myfaces.custom.fileupload.HtmlInputFileUpload"
- *   superClass = "org.apache.myfaces.custom.fileupload.AbstractHtmlInputFileUpload"
  *   tagClass = "org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

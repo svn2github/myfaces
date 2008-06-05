@@ -29,7 +29,6 @@ import javax.faces.component.UIOutput;
  * @JSFComponent
  *   name = "t:jsValueChangeListener"
  *   class = "org.apache.myfaces.custom.jslistener.JsValueChangeListener"
- *   superClass = "org.apache.myfaces.custom.jslistener.AbstractJsValueChangeListener"
  *   tagClass = "org.apache.myfaces.custom.jslistener.JsValueChangeListenerTag"
  * 
  * @JSFJspProperty name = "rendered" returnType = "boolean" tagExcluded = "true"

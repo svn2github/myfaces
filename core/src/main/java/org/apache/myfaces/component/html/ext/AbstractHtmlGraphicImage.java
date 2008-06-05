@@ -33,7 +33,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:graphicImage"
  *   class = "org.apache.myfaces.component.html.ext.HtmlGraphicImage"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlGraphicImage"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlGraphicImageTag"
  *   
  * @author Bruno Aranda

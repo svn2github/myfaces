@@ -37,7 +37,6 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  * @JSFComponent
  *   name = "t:panelGroup"
  *   class = "org.apache.myfaces.component.html.ext.HtmlPanelGroup"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlPanelGroup"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlPanelGroupTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

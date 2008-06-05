@@ -46,7 +46,6 @@ import org.apache.myfaces.component.UserRoleAware;
  * @JSFComponent
  *   name = "t:panelTabbedPane"
  *   class = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane"
- *   superClass = "org.apache.myfaces.custom.tabbedpane.AbstractHtmlPanelTabbedPane"
  *   tagClass = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPaneTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

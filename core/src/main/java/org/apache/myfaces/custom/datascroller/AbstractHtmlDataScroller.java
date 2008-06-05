@@ -51,7 +51,6 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  * @JSFComponent
  *   name = "t:dataScroller"
  *   class = "org.apache.myfaces.custom.datascroller.HtmlDataScroller"
- *   superClass = "org.apache.myfaces.custom.datascroller.AbstractHtmlDataScroller"
  *   tagClass = "org.apache.myfaces.custom.datascroller.HtmlDataScrollerTag"
  *  
  * @JSFJspProperty name = "onkeydown" tagExcluded = "true"

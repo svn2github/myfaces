@@ -35,7 +35,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:commandLink"
  *   class = "org.apache.myfaces.component.html.ext.HtmlCommandLink"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlCommandLink"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlCommandLinkTag"
  *   
  * @author Thomas Spiegl (latest modification by $Author$)

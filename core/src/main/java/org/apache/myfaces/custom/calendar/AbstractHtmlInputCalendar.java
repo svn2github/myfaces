@@ -74,7 +74,6 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  * @JSFComponent
  *   name = "t:inputCalendar"
  *   class = "org.apache.myfaces.custom.calendar.HtmlInputCalendar"
- *   superClass = "org.apache.myfaces.custom.calendar.AbstractHtmlInputCalendar"
  *   tagClass = "org.apache.myfaces.custom.calendar.HtmlInputCalendarTag"
  * 
  * @author Martin Marinschek (latest modification by $Author$)

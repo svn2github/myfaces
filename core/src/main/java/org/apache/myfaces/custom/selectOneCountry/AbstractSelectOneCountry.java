@@ -47,7 +47,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  * @JSFComponent
  *   name = "t:selectOneCountry"
  *   class = "org.apache.myfaces.custom.selectOneCountry.SelectOneCountry"
- *   superClass = "org.apache.myfaces.custom.selectOneCountry.AbstractSelectOneCountry"
  *   tagClass = "org.apache.myfaces.custom.selectOneCountry.SelectOneCountryTag"
  * 
  * @author Sylvain Vieujot (latest modification by $Author$)

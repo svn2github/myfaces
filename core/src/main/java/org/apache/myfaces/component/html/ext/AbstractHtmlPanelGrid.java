@@ -37,7 +37,6 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  * @JSFComponent
  *   name = "t:panelGrid"
  *   class = "org.apache.myfaces.component.html.ext.HtmlPanelGrid"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlPanelGrid"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlPanelGridTag"
  *   
  * @author Martin Marinschek (latest modification by $Author$)

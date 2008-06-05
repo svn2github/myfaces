@@ -45,7 +45,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:htmlTag"
  *   class = "org.apache.myfaces.custom.htmlTag.HtmlTag"
- *   superClass = "org.apache.myfaces.custom.htmlTag.AbstractHtmlTag"
  *   tagClass = "org.apache.myfaces.custom.htmlTag.HtmlTagTag"
  *   
  * @JSFJspProperty

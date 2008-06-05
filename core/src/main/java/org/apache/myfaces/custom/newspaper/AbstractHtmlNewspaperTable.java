@@ -35,7 +35,6 @@ import org.apache.myfaces.component.DataProperties;
  * @JSFComponent
  *   name = "t:newspaperTable"
  *   class = "org.apache.myfaces.custom.newspaper.HtmlNewspaperTable"
- *   superClass = "org.apache.myfaces.custom.newspaper.AbstractHtmlNewspaperTable"
  *   tagClass = "org.apache.myfaces.custom.newspaper.HtmlNewspaperTableTag"
  *
  * @author <a href="mailto:jesse@odel.on.ca">Jesse Wilson</a>

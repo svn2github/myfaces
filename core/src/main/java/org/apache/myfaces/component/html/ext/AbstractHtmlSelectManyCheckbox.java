@@ -42,7 +42,6 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  * @JSFComponent
  *   name = "t:selectManyCheckbox"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlSelectManyCheckbox"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectManyCheckboxTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

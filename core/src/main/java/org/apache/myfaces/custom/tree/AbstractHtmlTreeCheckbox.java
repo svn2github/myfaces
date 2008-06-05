@@ -36,7 +36,6 @@ import javax.faces.component.UISelectItem;
  * @JSFComponent
  *   name = "t:treeCheckbox"
  *   class = "org.apache.myfaces.custom.tree.HtmlTreeCheckbox"
- *   superClass = "org.apache.myfaces.custom.tree.AbstractHtmlTreeCheckbox"
  *   tagClass = "org.apache.myfaces.custom.tree.taglib.TreeCheckboxTag"
  *   
  * @author <a href="mailto:dlestrat@yahoo.com">David Le Strat</a>

@@ -33,7 +33,6 @@ import org.apache.myfaces.component.UserRoleUtils;
  * @JSFComponent
  *   name = "t:jscookMenu"
  *   class = "org.apache.myfaces.custom.navmenu.jscookmenu.HtmlCommandJSCookMenu"
- *   superClass = "org.apache.myfaces.custom.navmenu.jscookmenu.AbstractHtmlCommandJSCookMenu"
  *   tagClass = "org.apache.myfaces.custom.navmenu.jscookmenu.HtmlJSCookMenuTag"
  * 
  * @JSFJspProperty name = "value" tagExcluded = "true"

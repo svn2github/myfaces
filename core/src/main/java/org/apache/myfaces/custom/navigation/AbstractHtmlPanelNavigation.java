@@ -47,7 +47,6 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  * @JSFComponent
  *   name = "t:panelNavigation"
  *   class = "org.apache.myfaces.custom.navigation.HtmlPanelNavigation"
- *   superClass = "org.apache.myfaces.custom.navigation.AbstractHtmlPanelNavigation"
  *   tagClass = "org.apache.myfaces.custom.navigation.HtmlPanelNavigationTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

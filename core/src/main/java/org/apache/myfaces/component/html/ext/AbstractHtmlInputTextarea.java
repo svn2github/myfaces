@@ -36,7 +36,6 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  * @JSFComponent
  *   name = "t:inputTextarea"
  *   class = "org.apache.myfaces.component.html.ext.HtmlInputTextarea"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlInputTextarea"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlInputTextareaTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

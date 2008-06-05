@@ -50,7 +50,6 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  * @JSFComponent
  *   name = "t:panelNavigation2"
  *   class = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu"
- *   superClass = "org.apache.myfaces.custom.navmenu.htmlnavmenu.AbstractHtmlPanelNavigationMenu"
  *   tagClass = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenuTag"
  * 
  * @author Manfred Geiler

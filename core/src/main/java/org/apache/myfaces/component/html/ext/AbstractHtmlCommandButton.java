@@ -33,7 +33,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:commandButton"
  *   class = "org.apache.myfaces.component.html.ext.HtmlCommandButton"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlCommandButton"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlCommandButtonTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

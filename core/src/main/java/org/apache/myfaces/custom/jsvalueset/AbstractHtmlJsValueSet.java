@@ -32,7 +32,6 @@ import org.apache.myfaces.component.UserRoleUtils;
  * @JSFComponent
  *   name = "t:jsValueSet"
  *   class = "org.apache.myfaces.custom.jsvalueset.HtmlJsValueSet"
- *   superClass = "org.apache.myfaces.custom.jsvalueset.AbstractHtmlJsValueSet"
  *   tagClass = "org.apache.myfaces.custom.jsvalueset.HtmlJsValueSetTag"
  * @JSFJspProperty name = "id" tagExcluded = "true"
  * @JSFJspProperty name = "binding" tagExcluded = "true"

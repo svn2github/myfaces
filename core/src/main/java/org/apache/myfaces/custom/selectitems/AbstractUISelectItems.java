@@ -37,7 +37,6 @@ import javax.faces.model.SelectItemGroup;
  * @JSFComponent
  *   name = "t:selectItems"
  *   class = "org.apache.myfaces.custom.selectitems.UISelectItems"
- *   superClass = "org.apache.myfaces.custom.selectitems.AbstractUISelectItems"
  *   tagClass = "org.apache.myfaces.custom.selectitems.SelectItemsTag"
  * 
  * @author cagatay (latest modification by $Author$)

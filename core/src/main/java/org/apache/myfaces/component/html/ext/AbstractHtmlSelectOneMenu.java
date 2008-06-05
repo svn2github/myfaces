@@ -38,7 +38,6 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  * @JSFComponent
  *   name = "t:selectOneMenu"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectOneMenu"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlSelectOneMenu"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectOneMenuTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

@@ -33,7 +33,6 @@ import javax.faces.component.UIPanel;
  * @JSFComponent
  *   name = "t:panelStack"
  *   class = "org.apache.myfaces.custom.panelstack.HtmlPanelStack"
- *   superClass = "org.apache.myfaces.custom.panelstack.AbstractHtmlPanelStack"
  *   tagClass = "org.apache.myfaces.custom.panelstack.PanelStackTag"
  *
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>

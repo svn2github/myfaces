@@ -35,7 +35,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:outputText"
  *   class = "org.apache.myfaces.component.html.ext.HtmlOutputText"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlOutputText"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlOutputTextTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

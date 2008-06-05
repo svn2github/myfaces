@@ -60,7 +60,6 @@ import java.util.StringTokenizer;
  * @JSFComponent
  *   name = "t:dataTable"
  *   class = "org.apache.myfaces.component.html.ext.HtmlDataTable"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlDataTable"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag"
  * 
  * @author Thomas Spiegl (latest modification by $Author$)

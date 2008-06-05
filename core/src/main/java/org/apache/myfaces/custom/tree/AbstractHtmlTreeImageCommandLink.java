@@ -26,7 +26,6 @@ import javax.faces.component.html.HtmlCommandLink;
  *
  * @JSFComponent
  *   class = "org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink"
- *   superClass = "org.apache.myfaces.custom.tree.AbstractHtmlTreeImageCommandLink"
  *   
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$

@@ -46,7 +46,6 @@ import java.util.Map;
  * @JSFComponent
  *   name = "t:tree2"
  *   class = "org.apache.myfaces.custom.tree2.HtmlTree"
- *   superClass = "org.apache.myfaces.custom.tree2.AbstractHtmlTree"
  *   tagClass = "org.apache.myfaces.custom.tree2.TreeTag"
  *
  * @author Sean Schofield

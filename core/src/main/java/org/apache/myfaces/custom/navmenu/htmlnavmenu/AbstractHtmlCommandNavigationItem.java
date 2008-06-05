@@ -49,7 +49,6 @@ import org.apache.myfaces.component.html.ext.HtmlCommandLink;
  * @JSFComponent
  *   name = "t:commandNavigation2"
  *   class = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItem"
- *   superClass = "org.apache.myfaces.custom.navmenu.htmlnavmenu.AbstractHtmlCommandNavigationItem"
  *   tagClass = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItemTag"
  *    
  * @author Manfred Geiler

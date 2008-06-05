@@ -43,7 +43,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:inputDate"
  *   class = "org.apache.myfaces.custom.date.HtmlInputDate"
- *   superClass = "org.apache.myfaces.custom.date.AbstractHtmlInputDate"
  *   tagClass = "org.apache.myfaces.custom.date.HtmlInputDateTag"
  * 
  * @author Sylvain Vieujot (latest modification by $Author$)

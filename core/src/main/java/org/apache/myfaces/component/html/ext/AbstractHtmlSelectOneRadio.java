@@ -58,7 +58,6 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
  * @JSFComponent
  *   name = "t:selectOneRadio"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectOneRadio"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlSelectOneRadio"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectOneRadioTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

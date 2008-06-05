@@ -39,7 +39,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:dataList"
  *   class = "org.apache.myfaces.custom.datalist.HtmlDataList"
- *   superClass = "org.apache.myfaces.custom.datalist.AbstractHtmlDataList"
  *   tagClass = "org.apache.myfaces.custom.datalist.HtmlDataListTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

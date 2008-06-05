@@ -35,7 +35,6 @@ import org.apache.myfaces.component.UserRoleAware;
  * @JSFComponent
  *   name = "t:radio"
  *   class = "org.apache.myfaces.custom.radio.HtmlRadio"
- *   superClass = "org.apache.myfaces.custom.radio.AbstractHtmlRadio"
  *   tagClass = "org.apache.myfaces.custom.radio.HtmlRadioTag"
  * 
  * @author Thomas Spiegl (latest modification by $Author$)

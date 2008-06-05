@@ -35,7 +35,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:messages"
  *   class = "org.apache.myfaces.component.html.ext.HtmlMessages"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlMessages"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlMessagesTag"
  * 
  * @author Thomas Spiegl (latest modification by $Author$)

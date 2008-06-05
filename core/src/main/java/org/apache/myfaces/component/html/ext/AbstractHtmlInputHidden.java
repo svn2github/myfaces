@@ -31,7 +31,6 @@ import javax.faces.context.FacesContext;
  * @JSFComponent
  *   name = "t:inputHidden"
  *   class = "org.apache.myfaces.component.html.ext.HtmlInputHidden"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlInputHidden"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlInputHiddenTag"
  *
  * @author Sean Schofield

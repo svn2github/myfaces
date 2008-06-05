@@ -37,7 +37,6 @@ import org.apache.myfaces.component.UniversalProperties;
  * @JSFComponent
  *   name = "t:panelLayout"
  *   class = "org.apache.myfaces.custom.layout.HtmlPanelLayout"
- *   superClass = "org.apache.myfaces.custom.layout.AbstractHtmlPanelLayout"
  *   tagClass = "org.apache.myfaces.custom.layout.HtmlPanelLayoutTag"
  * 
  * @author Manfred Geiler (latest modification by $Author$)

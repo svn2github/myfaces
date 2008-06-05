@@ -38,7 +38,6 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  * @JSFComponent
  *   name = "t:selectOneListbox"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectOneListbox"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlSelectOneListbox"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectOneListboxTag"
  *   
  * @author Martin Marinschek (latest modification by $Author$)

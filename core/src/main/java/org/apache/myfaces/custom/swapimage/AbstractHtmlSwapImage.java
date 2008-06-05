@@ -31,7 +31,6 @@ import org.apache.myfaces.component.UserRoleUtils;
  * @JSFComponent
  *   name = "t:swapImage"
  *   class = "org.apache.myfaces.custom.swapimage.HtmlSwapImage"
- *   superClass = "org.apache.myfaces.custom.swapimage.AbstractHtmlSwapImage"
  *   tagClass = "org.apache.myfaces.custom.swapimage.HtmlSwapImageTag"
  * 
  * @author Thomas Spiegl

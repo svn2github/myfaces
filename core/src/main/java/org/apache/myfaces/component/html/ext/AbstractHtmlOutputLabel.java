@@ -33,7 +33,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * @JSFComponent
  *   name = "t:outputLabel"
  *   class = "org.apache.myfaces.component.html.ext.HtmlOutputLabel"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlOutputLabel"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlOutputLabelTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

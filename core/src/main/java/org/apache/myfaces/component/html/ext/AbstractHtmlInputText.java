@@ -37,7 +37,6 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  * @JSFComponent
  *   name = "t:inputText"
  *   class = "org.apache.myfaces.component.html.ext.HtmlInputText"
- *   superClass = "org.apache.myfaces.component.html.ext.AbstractHtmlInputText"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlInputTextTag"
  *   
  * @author Manfred Geiler (latest modification by $Author$)

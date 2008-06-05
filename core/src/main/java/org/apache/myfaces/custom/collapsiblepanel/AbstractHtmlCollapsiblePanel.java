@@ -40,8 +40,7 @@ import org.apache.myfaces.component.UserRoleAware;
  * 
  * @JSFComponent
  *   name = "t:collapsiblePanel"
- *   class = "org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanel"
- *   superClass = "org.apache.myfaces.custom.collapsiblepanel.AbstractHtmlCollapsiblePanel"    
+ *   class = "org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanel"  
  *   tagClass = "org.apache.myfaces.custom.collapsiblepanel.HtmlCollapsiblePanelTag"
  * 
  * @JSFJspProperty name = "converter" tagExcluded = "true" 

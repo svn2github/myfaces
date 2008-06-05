@@ -31,7 +31,6 @@ import org.apache.myfaces.component.UserRoleAware;
  * @JSFComponent
  *   name = "t:schedule"
  *   class = "org.apache.myfaces.custom.schedule.HtmlSchedule"
- *   superClass = "org.apache.myfaces.custom.schedule.AbstractHtmlSchedule"
  *   tagClass = "org.apache.myfaces.custom.schedule.ScheduleTag"
  *   implements = "java.io.Serializable"
  *   serialuid = "5859593107442371656L"

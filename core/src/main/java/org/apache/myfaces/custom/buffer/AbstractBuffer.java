@@ -48,7 +48,6 @@ import javax.faces.el.ValueBinding;
  * @JSFComponent
  *   name = "t:buffer"
  *   class = "org.apache.myfaces.custom.buffer.Buffer"
- *   superClass = "org.apache.myfaces.custom.buffer.AbstractBuffer"
  *   tagClass = "org.apache.myfaces.custom.buffer.BufferTag"
  *   
  * @JSFJspProperty 

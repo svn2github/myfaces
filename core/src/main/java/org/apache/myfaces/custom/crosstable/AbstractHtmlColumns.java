@@ -33,7 +33,6 @@ import org.apache.myfaces.custom.column.HtmlColumn;
  * @JSFComponent
  *   name = "t:columns" 
  *   class = "org.apache.myfaces.custom.crosstable.HtmlColumns"
- *   superClass = "org.apache.myfaces.custom.crosstable.AbstractHtmlColumns"
  *   tagClass = "org.apache.myfaces.custom.crosstable.HtmlColumnsTag"
  *   implements = "org.apache.myfaces.custom.column.HtmlColumn"
  *   defaultRendererType = ""
