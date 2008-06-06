@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.custom.convertDateTime;
 
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -29,14 +30,8 @@ import java.util.TimeZone;
  *
  * @JSFConverter
  *   name = "s:convertDateTime"
- *   tagClass = "org.apache.myfaces.custom.convertDateTime.ConvertDateTimeTag" 
- * 
- * @JSFJspProperty name = "dateStyle" returnType = "java.lang.String" longDesc = "default|short|medium|long|full"
- * @JSFJspProperty name = "locale" returnType = "java.util.Locale" longDesc = "locale"
- * @JSFJspProperty name = "pattern" returnType = "java.lang.String" longDesc = "Custom formatting pattern"
- * @JSFJspProperty name = "timeStyle" returnType = "java.lang.String" longDesc = "default|short|medium|long|full"
- * @JSFJspProperty name = "timeZone" returnType = "java.util.TimeZone" longDesc = "timeZone"
- * @JSFJspProperty name = "type" returnType = "java.lang.String" longDesc = "date|time|both"
+ *   tagClass = "org.apache.myfaces.custom.convertDateTime.ConvertDateTimeTag"
+ *   tagSuperclass = "javax.faces.webapp.ConverterTag" 
  * 
  * User: treeder
  * Date: Oct 28, 2005
@@ -51,4 +46,69 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter
         setTimeZone(TimeZone.getDefault());
     }
 
+    /**
+     * longDesc = "default|short|medium|long|full"
+     * 
+     * @JSFProperty
+     *   inheritedTag = "false"
+     */
+    public String getDateStyle()
+    {
+        return super.getDateStyle();
+    }
+
+    /**
+     * longDesc = "locale"
+     * 
+     * @JSFProperty name = "locale"
+     *   inheritedTag = "false" 
+     */    
+    public Locale getLocale()
+    {
+        return super.getLocale();
+    }
+
+    /**
+     * Custom formatting pattern
+     * 
+     * @JSFProperty
+     *   inheritedTag = "false"
+     */
+    public String getPattern()
+    {
+        return super.getPattern();
+    }
+
+    /**
+     * default|short|medium|long|full
+     * 
+     * @JSFProperty
+     *   inheritedTag = "false"
+     */
+    public String getTimeStyle()
+    {
+        return super.getTimeStyle();
+    }
+
+    /**
+     * timeZome
+     *  
+     * @JSFProperty
+     *   inheritedTag = "false"
+     */
+    public TimeZone getTimeZone()
+    {
+        return super.getTimeZone();
+    }
+
+    /**
+     * date|time|both
+     * 
+     * @JSFProperty 
+     *   inheritedTag = "false"
+     */
+    public String getType()
+    {
+        return super.getType();
+    }
 }

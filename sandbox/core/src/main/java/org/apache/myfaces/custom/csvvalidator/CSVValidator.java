@@ -32,10 +32,8 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "s:validateCSV"
  *   tagClass = "org.apache.myfaces.custom.csvvalidator.ValidateCSVTag"
- *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
  *   serialuidtag = "-8874279182242196266L"
  *
- * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error message format string"
  * @author Lance Frohman
  *
  * @version $Revision: $ $Date: $
