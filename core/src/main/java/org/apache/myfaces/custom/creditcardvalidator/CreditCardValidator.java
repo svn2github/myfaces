@@ -34,12 +34,8 @@ import javax.faces.validator.ValidatorException;
  *   name = "t:validateCreditCard"
  *   bodyContent = "empty"
  *   tagClass = "org.apache.myfaces.custom.creditcardvalidator.ValidateCreditCardTag"
- *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
  *   serialuidtag = "3810660506302799072L"
  * 
- * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "detailMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "summaryMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

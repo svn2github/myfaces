@@ -36,12 +36,8 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @JSFValidator
  *   name = "t:validateRegExpr"
  *   tagClass = "org.apache.myfaces.custom.regexprvalidator.ValidateRegExprTag"
- *   tagSuperclass = "org.apache.myfaces.validator.ValidatorBaseTag"
  *   serialuidtag = "-449945949876262076L"
  * 
- * @JSFJspProperty name = "message" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "detailMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error detail message format string (use 'message' and 'detailMessage' alternatively)"
- * @JSFJspProperty name = "summaryMessage" inheritedTag="true" returnType = "java.lang.String" longDesc = "alternate validation error summary message format string"
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

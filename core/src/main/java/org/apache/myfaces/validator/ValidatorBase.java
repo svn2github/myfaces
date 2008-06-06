@@ -33,6 +33,9 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 /**
  * Base validator implementation for Tomahawk validators.
  *
+ * @JSFValidator
+ *   configExcluded = "true"
+ *   tagClass = "org.apache.myfaces.validator.ValidatorBaseTag"
  */
 public abstract class ValidatorBase implements StateHolder, Validator {
 
@@ -41,7 +44,9 @@ public abstract class ValidatorBase implements StateHolder, Validator {
     private boolean _transient = false;
 
     /**
-     *
+     * alternate validation error summary message format string
+     * 
+     * @JSFProperty
      * @return  The summary message to be displayed
      */
     public String getSummaryMessage()
@@ -52,7 +57,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
     }
 
     /**
-     *
+     * 
      * @param message   The summary message to be displayed.
      */
     public void setSummaryMessage(String message) {
@@ -60,7 +65,10 @@ public abstract class ValidatorBase implements StateHolder, Validator {
     }
 
     /**
-     *
+     * alternate validation error detail message format string 
+     * (use 'message' and 'detailMessage' alternatively)
+     * 
+     * @JSFProperty
      * @return  The message.
      * @deprecated Use getDetailMessage()
      */
@@ -69,7 +77,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
     }
 
     /**
-     *
+     * 
      * @param message  The detail message to be displayed.
      * @deprecated Use setDetailMessage()
      */
@@ -79,7 +87,10 @@ public abstract class ValidatorBase implements StateHolder, Validator {
 
 
     /**
+     * alternate validation error detail message format string 
+     * (use 'message' and 'detailMessage' alternatively)
      *
+     * @JSFProperty
      * @return  The detail message.
      */
     public String getDetailMessage() {
