@@ -56,7 +56,7 @@
 			<s:togglePanel>
 				<s:toggleGroup>
 					<h:outputLabel for="fullName" value="Full Name (click to edit) "/>
-					<s:toggleLink for="editNames">
+					<s:toggleLink for="editNames" onclick="return confirm('do you really want to edit this stuff?')">
 						<h:outputText id="fullName" value="#{toggleBean.firstName} #{toggleBean.lastName}"/>
 					</s:toggleLink>
 				</s:toggleGroup>
