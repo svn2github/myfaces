@@ -28,8 +28,7 @@
       <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
       <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
       <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
-      <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener>
-      <phase-listener>org.apache.myfaces.custom.exporter.ExporterPhaseListener</phase-listener>   
+      <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener>  
   </lifecycle>
 
   <application>
