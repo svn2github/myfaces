@@ -34,7 +34,7 @@ package org.apache.myfaces.custom.document;
 public class Document extends AbstractDocument
 {
 	public static final String COMPONENT_TYPE = "org.apache.myfaces.Document";
-	private static final String DEFAULT_RENDERER_TYPE = DocumentRenderer.RENDERER_TYPE;
+	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Document";
 
 	public Document()
 	{
