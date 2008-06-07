@@ -59,7 +59,7 @@ components.
             
             <blockquote><h3>&lt;s:exporterActionListener&gt;</h3>
 		<code>fileType="Attribute to specify whether to export an excel or a pdf file, possible values are {'XLS', 'PDF'}"</code><br/>            
-                <code>for="Id of the datatable to be exported"</code><br/>
+                <code>for="Id of the Tomahawk dataScroller to be exported"</code><br/>
 		<code>filename="Optional attribute to specify the filename of the exported excel or pdf file"</code><br/>                                            
 		<code>showDisplayedPageOnly="An attribute determines whether to generate only the current displayed dataTable page to the file."</code><br/>                            
             </blockquote>
