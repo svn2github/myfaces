@@ -3,7 +3,7 @@
     <required>true</required>
     <rtexprvalue>false</rtexprvalue>
     <type>java.lang.String</type>
-    <description>Id of the datatable component whose values to be exported</description>
+    <description>Id of the dataScroller component whose values to be exported</description>
 </attribute>
 <attribute>
     <name>filename</name>
@@ -18,4 +18,11 @@
     <rtexprvalue>false</rtexprvalue>
     <type>java.lang.String</type>
     <description>"PDF" or "XLS"</description>
+</attribute>
+<attribute>
+    <name>showDisplayedPageOnly</name>
+    <required>false</required>
+    <rtexprvalue>false</rtexprvalue>
+    <type>java.lang.String</type>
+    <description>This attribute determines whether to generate only the current displayed dataTable page to the file.</description>
 </attribute>
