@@ -19,20 +19,18 @@
 package org.apache.myfaces.custom.exporter;
 
 import javax.faces.component.StateHolder;
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
 import org.apache.myfaces.custom.exporter.util.ExcelExporterUtil;
 import org.apache.myfaces.custom.exporter.util.ExporterConstants;
 import org.apache.myfaces.custom.exporter.util.PDFExporterUtil;
 import org.apache.myfaces.custom.util.ComponentUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * 
@@ -40,90 +38,105 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  */
 public class ExporterActionListener implements ActionListener, StateHolder {
 
-    private static final Log log = LogFactory.getLog(ExporterActionListener.class);    
-    public static final String FILENAME_KEY = "filename";
-    public static final String FILE_TYPE_KEY = "fileType";
-    public static final String FOR_KEY = "for"; 
-    
-    private String _fileType;
-    private String _fileName;
-    private String _for;        
+    private static final Log   log                       = LogFactory
+                                                                 .getLog(ExporterActionListener.class);
+
+    public static final String FILENAME_KEY              = "filename";
+
+    public static final String FILE_TYPE_KEY             = "fileType";
+
+    public static final String FOR_KEY                   = "for";
+
+    public static final String SHOWDISPLAYEDPAGEONLY_KEY = "showDisplayedPageOnly";
+
+    private String             _fileType;
+
+    private String             _fileName;
+
+    private String             _for;
+
+    private String             _showDisplayedPageOnly;
 
     public void processAction(ActionEvent event) {
 
-	FacesContext facesContext = FacesContext.getCurrentInstance();
-	Object response = facesContext.getExternalContext().getResponse();
-	
-	if (!(response instanceof HttpServletResponse)) 
-	{
-	    log.error("ExporteActionListener requires servlet");
-	}
-	else 
-	{
-	    try 
-	    {		
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Object response = facesContext.getExternalContext().getResponse();
 
-		HtmlDataTable dataTable = (HtmlDataTable) ComponentUtils
-			.findComponentById(facesContext, facesContext
-				.getViewRoot(), _for);		
-		
-		/* By default if the fileName is not specified, then use the table id. */
-		if(_fileName == null) 
-		{
-		    _fileName = dataTable.getId();
-		}
-		
-		if (ExporterConstants.EXCEL_FILE_TYPE.equalsIgnoreCase(_fileType)) 
-		{
-		    
-		    /* 
-		     * Excel case.
-		     * Generate the XLS to the response stream. 
-		     */    
-		    HSSFWorkbook generatedExcel = ExcelExporterUtil
-			    .generateExcelTableModel(facesContext, dataTable);
-		    Object contextResponse = facesContext.getExternalContext()
-			    .getResponse();
+        if (!(response instanceof HttpServletResponse)) {
+            log.error("ExporteActionListener requires servlet");
+        }
+        else {
+            try {
 
-		    if (contextResponse instanceof HttpServletResponse)
-		    {
-			ExcelExporterUtil.generateEXCEL(generatedExcel,
-				(HttpServletResponse) contextResponse,
-				_fileName);
-		    }
-		    else if (contextResponse instanceof RenderResponse)
-		    {
-			ExcelExporterUtil.generateEXCEL(generatedExcel,
-				(RenderResponse) contextResponse, _fileName);
-		    }
+                /* get the source dataScroller component */
+                HtmlDataScroller dataScroller = (HtmlDataScroller) ComponentUtils
+                        .findComponentById(facesContext, facesContext
+                                .getViewRoot(), _for);
 
-		}
-		else 
-		{ 
-		    
-		    /* 
-		     * PDF case.
-		     * Generate the PDF to the response stream. 
-		     */
-		    HttpServletResponse httpResponse = (HttpServletResponse) facesContext
-			    .getExternalContext().getResponse();
+                if (!(dataScroller instanceof HtmlDataScroller)) 
+                {
+                    throw new RuntimeException(
+                            "exporterActionListener for attribute should contain a "
+                                    + "dataScroller component id");
+                }
+                
+                /*
+                 * By default if the showDisplayedPageOnly is not specified, then the
+                 * default is false.
+                 */
+                if (_showDisplayedPageOnly == null) 
+                {
+                    _showDisplayedPageOnly = "false";
+                }
+                
+                if (ExporterConstants.EXCEL_FILE_TYPE
+                        .equalsIgnoreCase(_fileType)) 
+                {
 
-		    PDFExporterUtil.generatePDF(facesContext, httpResponse,
-			    _fileName, dataTable);
-		}
+                    /*
+                     * Excel case. Generate the XLS to the response stream.
+                     */
+                    
+                    Object contextResponse = facesContext.getExternalContext()
+                            .getResponse();
 
-		/* save the seralized view and complete the response. */
-		facesContext.getApplication().getStateManager()
-			.saveSerializedView(facesContext);
-		facesContext.responseComplete();
-	    }
-	    catch (Exception exception) {
-		throw new RuntimeException(exception);
-	    }
+                    if (contextResponse instanceof HttpServletResponse) 
+                    {
+                        ExcelExporterUtil.generateEXCEL(facesContext,
+                                (HttpServletResponse) contextResponse,
+                                _fileName, dataScroller, Boolean
+                                        .parseBoolean(_showDisplayedPageOnly)); 
+                    }
 
-	}
+                }
+                else 
+                {
 
-	facesContext.responseComplete();
+                    /*
+                     * PDF case. Generate the PDF to the response stream.
+                     */
+                    HttpServletResponse httpResponse = (HttpServletResponse) facesContext
+                            .getExternalContext().getResponse();
+                    
+
+                    PDFExporterUtil.generatePDF(facesContext, httpResponse,
+                            _fileName, dataScroller, Boolean
+                                    .parseBoolean(_showDisplayedPageOnly));
+                }
+
+                /* save the seralized view and complete the response. */
+                facesContext.getApplication().getStateManager()
+                        .saveSerializedView(facesContext);
+                facesContext.responseComplete();
+            }
+            catch (Exception exception) 
+            {
+                throw new RuntimeException(exception);
+            }
+
+        }
+
+        facesContext.responseComplete();
     }
 
     public String getFilename() {
@@ -149,32 +162,41 @@ public class ExporterActionListener implements ActionListener, StateHolder {
     public void setFor(String _for) {
         this._for = _for;
     }
+    
+    public String getShowDisplayedPageOnly() {
+        return _showDisplayedPageOnly;
+    }
+
+    public void setShowDisplayedPageOnly(String showDisplayedPageOnly) {
+        _showDisplayedPageOnly = showDisplayedPageOnly;
+    }       
 
     public void restoreState(FacesContext context, Object state) {
-	String values[] = (String[])state;
-	
+        String values[] = (String[]) state;
+
         _for = values[0];
         _fileName = values[1];
-        _fileType = values[2];    
-     }
+        _fileType = values[2];
+        _showDisplayedPageOnly = values[3];
+    }
 
     public Object saveState(FacesContext context) {
-        String values[] = new String[3];
-        
+        String values[] = new String[4];
+
         values[0] = _for;
         values[1] = _fileName;
-        values[2] = _fileType;        
+        values[2] = _fileType;
+        values[3] = _showDisplayedPageOnly;
         return ((String[]) values);
     }
 
     public boolean isTransient() {
-	return false;
+        return false;
     }
 
     public void setTransient(boolean newTransientValue) {
-	if (newTransientValue == true)
-	{
-	   throw new IllegalArgumentException();
-	}
+        if (newTransientValue == true) {
+            throw new IllegalArgumentException();
+        }
     }
 }
