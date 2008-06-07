@@ -30,6 +30,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
 import org.apache.myfaces.custom.util.ComponentUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
@@ -41,130 +42,174 @@ import com.lowagie.text.pdf.PdfWriter;
  * This class is a utility class for serving PDF exporting.
  */
 public class PDFExporterUtil {
-	
-	/*
-	 * This method is used for setting the response headers of the pdf.
-	 */
-	private static void setPDFResponseHeaders(HttpServletResponse response,
-			ByteArrayOutputStream byteArrayStream, String fileName)
-			throws IOException {
 
-		// setting response headers.
-		response.setHeader("Expires", "0");
-		response.setHeader("Cache-Control",
-				"must-revalidate, post-check=0, pre-check=0");
-		response.setHeader("Pragma", "public");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ fileName + ".pdf");
+    /*
+     * This method is used for setting the response headers of the pdf.
+     */
+    private static void setPDFResponseHeaders(HttpServletResponse response,
+            ByteArrayOutputStream byteArrayStream, String fileName)
+            throws IOException {
 
-		// setting the content type.
-		response.setContentType("application/pdf");
+        // setting response headers.
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control",
+                "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Content-disposition", "attachment;filename="
+                + fileName + ".pdf");
 
-		// the contentlength is needed for MSIE.
-		response.setContentLength(byteArrayStream.size());
+        // setting the content type.
+        response.setContentType("application/pdf");
 
-		// write ByteArrayOutputStream to the ServletOutputStream.
-		ServletOutputStream outputStream = response.getOutputStream();
+        // the contentlength is needed for MSIE.
+        response.setContentLength(byteArrayStream.size());
 
-		byteArrayStream.writeTo(outputStream);
-		outputStream.flush();
-	}		
-	
-	/*
-	 * This method is used for adding the columns headers to the pdfTable.
-	 */
-	private static void addColumnHeaders(PdfPTable pdfTable, List columns) {
+        // write ByteArrayOutputStream to the ServletOutputStream.
+        ServletOutputStream outputStream = response.getOutputStream();
 
-		for (int i = 0; i < columns.size(); i++) {
-			UIColumn column = (UIColumn) columns.get(i);
-			UIComponent columnHeaderCell = column.getHeader();
-			if (columnHeaderCell instanceof ValueHolder) {
-				String cellValue = RendererUtils.getStringValue(FacesContext
-						.getCurrentInstance(), columnHeaderCell);
-				pdfTable.addCell(cellValue);
-			}
-		}
-	}	
-	
-	/*
-	 * This method is used for adding the columns values to the pdfTable.
-	 */
-	private static void addColumnValues(PdfPTable pdfTable, List columns,
-			HtmlDataTable dataTable) {
-		
-		int numberOfColumns = columns.size();
-		int numberOfRows = dataTable.getRowCount();
-		
-		for (int i = 0; i < numberOfRows; ++i) {
-			dataTable.setRowIndex(i);
-			for (int j = 0; j < numberOfColumns; ++j) {
-				UIComponent valueHolder = (UIComponent) ((UIColumn) columns
-						.get(j)).getChildren().get(0);
-				if (valueHolder instanceof ValueHolder) {
-					String cellValue = RendererUtils.getStringValue(
-							FacesContext.getCurrentInstance(), valueHolder);
-					pdfTable.addCell(cellValue);
-				}
-			}
-		}
-	}	
-	
-	/*
-	 * This method is used for creating the PDFTable model.
-	 */	
-	public static PdfPTable generatePDFTableModel(FacesContext facesContext,
-			HtmlDataTable dataTable) {
+        byteArrayStream.writeTo(outputStream);
+        outputStream.flush();
+    }
 
-		int numberOfColumns;
-		List columns = null;
-		PdfPTable pdfTable = null;
+    /*
+     * This method is used for adding the columns headers to the pdfTable.
+     */
+    private static void generateTableHeader(PdfPTable pdfTable, List columns) {
 
-		// getting the HTMLDataTable Columns.
-		columns = ComponentUtils.getHTMLDataTableColumns(dataTable);
+        for (int i = 0; i < columns.size(); i++) {
+            UIColumn column = (UIColumn) columns.get(i);
+            UIComponent columnHeaderCell = column.getHeader();
+            if (columnHeaderCell instanceof ValueHolder) {
+                String cellValue = RendererUtils.getStringValue(FacesContext
+                        .getCurrentInstance(), columnHeaderCell);
+                pdfTable.addCell(cellValue);
+            }
+        }
+    }
 
-		if (columns.size() == 0) {
-			return null;
-		} else {
-			numberOfColumns = columns.size();
-		}
+    /*
+     * This method is used for adding the columns values to the pdfTable.
+     */
+    private static void generateTableContent(FacesContext facesContext,
+            PdfPTable pdfTable, List columns, HtmlDataScroller dataScroller,
+            boolean selectedPage) {
 
-		// creating the PDF Table.
-		pdfTable = new PdfPTable(numberOfColumns);
+        int numberOfColumns = columns.size();
+        int numberOfRows = dataScroller.getRowCount();
+        int startFrom = 0;
+        int endAt = numberOfRows;
 
-		addColumnHeaders(pdfTable, columns);
+        HtmlDataTable tomahawkDataTable = ExporterUtil
+                .getDataTableFromDataScroller(facesContext, dataScroller);
+        
+        
+        /* if the current page is selected only, then generate only in the report */
+        if (selectedPage) 
+        {
+            startFrom = (dataScroller.getPageIndex() - 1) * dataScroller.getRows();
+            endAt = startFrom + dataScroller.getRows();
+            
+            if(endAt > numberOfRows) 
+            {
+                endAt = numberOfRows;
+            }
+            
+        }  
+        
+        /* fill the table with the data. */
+        for (int i = startFrom; i < endAt; ++i) {
+            tomahawkDataTable.setRowIndex(i);
+            for (int j = 0; j < numberOfColumns; ++j) {
+                UIComponent valueHolder = (UIComponent) ((UIColumn) columns
+                        .get(j)).getChildren().get(0);
+                if (valueHolder instanceof ValueHolder) {
+                    String cellValue = RendererUtils.getStringValue(
+                            FacesContext.getCurrentInstance(), valueHolder);
+                    pdfTable.addCell(cellValue);
+                }
+            }
+        }
+    }
 
-		addColumnValues(pdfTable, columns, dataTable);
+    /*
+     * This method is used for creating the PDFTable model.
+     */
+    public static PdfPTable generatePDFTableModel(FacesContext facesContext,
+            HtmlDataScroller dataScroller, boolean selectedPage) {
 
-		return pdfTable;
-	}	
-	
-	/*
-	 * This method is responsible for writing the PDF to the response stream.
-	 */
-	public static void generatePDF(FacesContext facesContext,
-			HttpServletResponse response, String fileName,
-			HtmlDataTable dataTable) throws Exception {
+        int numberOfColumns;
+        List columns = null;
+        PdfPTable pdfTable = null;
 
-		int currentRowIndex;
-		Document document = new Document();		
-		ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-		PdfWriter.getInstance(document, byteArrayStream);		
-		PdfPTable pdfTable = null;
+        /* get the parent dataTable component */
+        HtmlDataTable tomahawkDataTable = ExporterUtil
+                .getDataTableFromDataScroller(facesContext, dataScroller);
 
-		currentRowIndex = dataTable.getRowIndex();
+        /* getting the HTMLDataTable Columns */
+        columns = ComponentUtils.getHTMLDataTableColumns(tomahawkDataTable);
 
-		// generate the PDF table model.
-		pdfTable = generatePDFTableModel(facesContext, dataTable);
-		
-		// open the document and write the generated PDF.
-		document.open();
-		document.add(pdfTable);
-		document.close();
+        if (columns.size() == 0) {
+            return null;
+        }
+        else {
+            numberOfColumns = columns.size();
+        }
 
-		// write the response headers.
-		setPDFResponseHeaders(response, byteArrayStream, fileName);
+        /* creating the PDF Table */
+        pdfTable = new PdfPTable(numberOfColumns);
 
-		dataTable.setRowIndex(currentRowIndex);
+        generateTableHeader(pdfTable, columns);
 
-	}		
+        generateTableContent(facesContext, pdfTable, columns,
+                dataScroller, selectedPage);
+
+        return pdfTable;
+    }
+    
+    /**
+     * This method is responsible for writing the PDF to the response stream.
+     * @param facesContext
+     * @param response
+     * @param fileName
+     * @param dataScroller
+     */
+    public static void generatePDF(FacesContext facesContext,
+            HttpServletResponse response, String fileName,
+            HtmlDataScroller dataScroller, boolean selectedPage) throws Exception {
+
+        int currentRowIndex;
+        Document document = new Document();
+        ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, byteArrayStream);
+        PdfPTable pdfTable = null;
+
+        /* get the parent dataTable component */
+        HtmlDataTable tomahawkDataTable = ExporterUtil
+                .getDataTableFromDataScroller(facesContext, dataScroller);
+        
+        /*
+         * By default if the fileName is not specified, then use the
+         * table id.
+         */
+        if (fileName == null) 
+        {
+            fileName = tomahawkDataTable.getId();
+        }        
+
+        currentRowIndex = tomahawkDataTable.getRowIndex();
+
+        // generate the PDF table model.
+        pdfTable = generatePDFTableModel(facesContext, dataScroller, selectedPage);
+
+        // open the document and write the generated PDF.
+        document.open();
+        document.add(pdfTable);
+        document.close();
+
+        // write the response headers.
+        setPDFResponseHeaders(response, byteArrayStream, fileName);
+
+        tomahawkDataTable.setRowIndex(currentRowIndex);
+
+    }
 }
