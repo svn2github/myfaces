@@ -42,14 +42,14 @@ public class ExporterBean implements Serializable {
 	
 	private List createCarsList() {
 		List list  = new ArrayList();
-		list.add( new SimpleCar(0, "typeA", "blue"));
-		list.add( new SimpleCar(1, "typeB", "red"));
-		list.add( new SimpleCar(2, "typeC", "orange"));
-		list.add( new SimpleCar(3, "typeD", "gray"));
-		list.add( new SimpleCar(4, "typeE", "white"));
-		list.add( new SimpleCar(5, "typeF", "black"));
-		list.add( new SimpleCar(6, "typeG", "yellow"));
-		list.add( new SimpleCar(6, "typeH", "purple"));
+        
+        for(int i = 0; i < 97; i += 5) {
+    		list.add( new SimpleCar(i, "typeA", "blue"));
+    		list.add( new SimpleCar(i + 1, "typeB", "red"));
+    		list.add( new SimpleCar(i + 2, "typeC", "orange"));
+    		list.add( new SimpleCar(i + 3, "typeD", "gray"));
+    		list.add( new SimpleCar(i + 4, "typeE", "white"));
+        }
 		return list;
 	}
 }
