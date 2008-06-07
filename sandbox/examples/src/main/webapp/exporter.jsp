@@ -45,42 +45,104 @@
                 columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
                 var="car"
                 value="#{exporterBean.carsList}"
-                preserveDataModel="false" 
-           >
-           <h:column>
+                preserveDataModel="false"
+                rows="6">
+           <t:column>
                <f:facet name="header">
                    <h:outputText value="Id" />
                </f:facet>
                <h:outputText value="#{car.id}" />
-           </h:column>
+           </t:column>
 
-           <h:column>
+           <t:column>
                <f:facet name="header">
                   <h:outputText value="Type" />
                </f:facet>
                <h:outputText value="#{car.type}" />
-           </h:column>
+           </t:column>
 
-           <h:column>
+           <t:column>
                <f:facet name="header">
                   <h:outputText value="Color" />
                </f:facet>
                <h:outputText value="#{car.color}" />
-           </h:column>
+           </t:column>
 
         </t:dataTable>
+        
+        <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+            <t:dataScroller id="scroll_1"
+                    for="tbl_cars"
+                    fastStep="10"
+                    pageCountVar="pageCount"
+                    pageIndexVar="pageIndex"
+                    styleClass="scroller"
+                    paginator="true"
+                    paginatorTableClass="paginator"
+                    paginatorActiveColumnStyle="font-weight:bold;"
+                    paginatorMaxPages="10">
+                <f:facet name="first" >
+                    <t:graphicImage url="images/arrow-first.gif" border="1" />
+                </f:facet>
+                <f:facet name="last">
+                    <t:graphicImage url="images/arrow-last.gif" border="1" />
+                </f:facet>
+                <f:facet name="previous">
+                    <t:graphicImage url="images/arrow-previous.gif" border="1" />
+                </f:facet>
+                <f:facet name="next">
+                    <t:graphicImage url="images/arrow-next.gif" border="1" />
+                </f:facet>
+                <f:facet name="fastforward">
+                    <t:graphicImage url="images/arrow-ff.gif" border="1" />
+                </f:facet>
+                <f:facet name="fastrewind">
+                    <t:graphicImage url="images/arrow-fr.gif" border="1" />
+                </f:facet>
+            </t:dataScroller>
+            <t:dataScroller id="scroll_2"
+                    for="tbl_cars"
+                    rowsCountVar="rowsCount"
+                    displayedRowsCountVar="displayedRowsCountVar"
+                    firstRowIndexVar="firstRowIndex"
+                    lastRowIndexVar="lastRowIndex"
+                    pageCountVar="pageCount"
+                    immediate="true"
+                    pageIndexVar="pageIndex">
+                <h:outputFormat value="#{example_messages['dataScroller_pages']}" styleClass="standard" >
+                    <f:param value="#{rowsCount}" />
+                    <f:param value="#{displayedRowsCountVar}" />
+                    <f:param value="#{firstRowIndex}" />
+                    <f:param value="#{lastRowIndex}" />
+                    <f:param value="#{pageIndex}" />
+                    <f:param value="#{pageCount}" />
+                </h:outputFormat>
+            </t:dataScroller>
+        </h:panelGrid>        
 
 		<br>
 		
-		<h:commandButton value="Export as excel">
-			<s:exporterActionListener for="tbl_cars" fileType="XLS"/>
+		<h:commandButton action="" value="Export as excel">
+			<s:exporterActionListener for="scroll_1" fileType="XLS"/>
 		</h:commandButton>
 		
 		<br>
 		
-		<h:commandButton value="Export as pdf">
-			<s:exporterActionListener for="tbl_cars" fileType="PDF"/>
+		<h:commandButton action="" value="Export the current page as an excel file">
+			<s:exporterActionListener for="scroll_1" fileType="XLS" showDisplayedPageOnly="true"/>
+		</h:commandButton>				
+		
+		<br>
+		
+		<h:commandButton action="" value="Export as pdf">
+			<s:exporterActionListener for="scroll_1" fileType="PDF"/>
 		</h:commandButton>
+		
+		<br>
+		
+		<h:commandButton action="" value="Export the current page as a pdf file">
+			<s:exporterActionListener for="scroll_1" fileType="PDF" showDisplayedPageOnly="true"/>
+		</h:commandButton>		
 		
     </h:form>
 </f:view>
