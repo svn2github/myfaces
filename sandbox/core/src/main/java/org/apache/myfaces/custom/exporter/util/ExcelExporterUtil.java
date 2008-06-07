@@ -27,9 +27,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
-import javax.portlet.RenderResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -47,19 +47,6 @@ public class ExcelExporterUtil {
 		for (int i = 0; i < columns.size(); i++) {
 			UIColumn column = (UIColumn) columns.get(i);
 			addColumnValue(rowHeader, column.getHeader(), i);
-		}
-	}
-
-	private static void addColumnValues(HSSFSheet sheet, List columns,
-			HtmlDataTable dataTable) {
-		for (int i = 0; i < dataTable.getRowCount(); i++) {
-			dataTable.setRowIndex(i);
-			HSSFRow row = sheet.createRow(i + 1);
-			for (int j = 0; j < columns.size(); j++) {
-				UIColumn column = (UIColumn) columns.get(j);
-				addColumnValue(row, (UIComponent) column.getChildren().get(0),
-						j);
-			}
 		}
 	}
 
@@ -83,45 +70,140 @@ public class ExcelExporterUtil {
 					.getCurrentInstance(), component);
 			cell.setCellValue(stringValue);
 		}
-	}	
-
-	public static void generateEXCEL(HSSFWorkbook workBook,
-			HttpServletResponse response, String filename) throws IOException {
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Expires", "0");
-		response.setHeader("Cache-Control",
-				"must-revalidate, post-check=0, pre-check=0");
-		response.setHeader("Pragma", "public");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ filename + ".xls");
-
-		workBook.write(response.getOutputStream());
 	}
+    
+    /*
+     * This method is used for adding the columns values to the HSSFSheet.
+     */
+    private static void generateTableContent(FacesContext facesContext,
+            HSSFSheet sheet, List columns, HtmlDataScroller dataScroller,
+            boolean selectedPage) {
 
-	public static void generateEXCEL(HSSFWorkbook workBook,
-			RenderResponse response, String filename) throws IOException {
-		response.setContentType("application/vnd.ms-excel");
-		response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
-		response.setProperty("Cache-Control",
-				"must-revalidate, post-check=0, pre-check=0");
-		response.setProperty("Pragma", "public");
-		response.setProperty("Content-disposition", "attachment;filename="
-				+ filename + ".xls");
+        HtmlDataTable tomahawkDataTable = ExporterUtil
+                .getDataTableFromDataScroller(facesContext, dataScroller);
+        
+        int numberOfColumns = columns.size();
+        int numberOfRows = dataScroller.getRowCount();        
+        int startFrom = 0;
+        int currentIndex = 0;
+        int endAt = numberOfRows;
 
-		workBook.write(response.getPortletOutputStream());
-	}
+        /* if the current page is selected only, then generate only in the report */
+        if (selectedPage) 
+        {
+            startFrom = (dataScroller.getPageIndex() - 1) * dataScroller.getRows();
+            endAt = startFrom + dataScroller.getRows();
+            
+            if(endAt > numberOfRows) 
+            {
+                endAt = numberOfRows;
+            }
+            
+        }          
+    
+        /* fill the table with the data. */
+        for (int i = startFrom; i < endAt; ++i) {
+            tomahawkDataTable.setRowIndex(i);
+            HSSFRow row = sheet.createRow(currentIndex++);
+            for (int j = 0; j < numberOfColumns; ++j) {
+                UIColumn column = (UIColumn) columns.get(j);
+                addColumnValue(row, (UIComponent) column.getChildren().get(0),
+                        j);
+            }
+        }
+    }    
+    
+    /*
+     * This utility method is used for writing the excelModel (generatedExcel)
+     * to the response (response) and uses the (fileName) as the generated file 
+     * name.
+     */
+    private static void writeExcelToResponse(HttpServletResponse response,
+            HSSFWorkbook generatedExcel, String fileName) throws IOException {
 
-	public static HSSFWorkbook generateExcelTableModel(
-			FacesContext facesContext, HtmlDataTable table) {
-		HSSFWorkbook workbook = new HSSFWorkbook();
-		HSSFSheet sheet = workbook.createSheet(table.getId());
-		List columns = getColumns(table);
-		int currentRowIndex = table.getRowIndex();
+        /* write the model to the stream */
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control",
+                "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Content-disposition", "attachment;filename="
+                + fileName + ".xls");
 
-		addColumnHeaders(sheet, columns);
-		addColumnValues(sheet, columns, table);
+        generatedExcel.write(response.getOutputStream());
+    }
+    
+    /*
+     * This utility method is used for generating the (HSSFWorkbook) 
+     * excel table model from the passed (HtmlDataTable).
+     * @param facesContext
+     * @param table the passed (HtmlDataTable).
+     * @return the (HSSFWorkbook) object. 
+     */
+    private static HSSFWorkbook generateExcelTableModel(
+            FacesContext facesContext, HtmlDataScroller dataScroller,
+            boolean selectedPage) {
+  
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HtmlDataTable tomahawkDataTable = ExporterUtil
+                .getDataTableFromDataScroller(facesContext, dataScroller);        
+        HSSFSheet sheet = workbook.createSheet(tomahawkDataTable.getId());
+        List columns = getColumns(tomahawkDataTable);
+        int currentRowIndex = tomahawkDataTable.getRowIndex();
 
-		table.setRowIndex(currentRowIndex);
-		return workbook;
-	}
+        addColumnHeaders(sheet, columns);
+        generateTableContent(facesContext, sheet, columns, dataScroller,
+                selectedPage);
+
+        tomahawkDataTable.setRowIndex(currentRowIndex);
+        return workbook;
+    }    
+
+    /**
+     * This utility method is used for generating the excel 
+     * table to the HttpServletResponse object. 
+     * @param workBook
+     * @param response
+     * @param fileName
+     * @throws IOException
+     */    
+	public static void generateEXCEL(FacesContext facesContext,
+            HttpServletResponse response, String fileName,
+            HtmlDataScroller dataScroller, boolean selectedPage)
+            throws IOException {
+
+        /* get the dataScroller dataTable object */
+        HtmlDataTable tomahawkDataTable = ExporterUtil
+                .getDataTableFromDataScroller(facesContext, dataScroller);
+
+        /*
+         * By default if the fileName is not specified, then use the
+         * table id.
+         */
+        if (fileName == null) 
+        {
+            fileName = tomahawkDataTable.getId();
+        }
+
+        /* generate the excel model */
+        HSSFWorkbook generatedExcel = ExcelExporterUtil
+                .generateExcelTableModel(facesContext, dataScroller,
+                        selectedPage);
+
+        writeExcelToResponse(response, generatedExcel, fileName);
+    }
+
+
+// public static void generateEXCEL(HSSFWorkbook workBook,
+// RenderResponse response, String filename) throws IOException {
+//		response.setContentType("application/vnd.ms-excel");
+//		response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
+//		response.setProperty("Cache-Control",
+//				"must-revalidate, post-check=0, pre-check=0");
+//		response.setProperty("Pragma", "public");
+//		response.setProperty("Content-disposition", "attachment;filename="
+//				+ filename + ".xls");
+//
+//		workBook.write(response.getPortletOutputStream());
+//	}
 }
