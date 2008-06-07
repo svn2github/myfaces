@@ -35,51 +35,57 @@ import javax.servlet.jsp.tagext.TagSupport;
  * This class is acting as the tag handler for the Exporter ActionListener.
  */
 public class ExporterActionListenerTag extends TagSupport {
-    
+
+    private static final long serialVersionUID = -1455677614701939262L;
     private String _fileType;
     private String _fileName;
     private String _for;
+    private String _showDisplayedPageOnly;    
     
     public int doStartTag() throws JspException {
-        
-	// check whether the attributes are not null 
-	if (_for == null)
+
+        // check whether the attributes are not null
+        if (_for == null) 
         {
             throw new JspException("for attribute not set");
         }
-        
-        if (_fileType == null)
+
+        if (_fileType == null) 
         {
             throw new JspException("fileType attribute not set");
         }
 
         // find the parent UIComponentTag which should be an ActionSource.
-        UIComponentTag componentTag = UIComponentTag.getParentUIComponentTag(pageContext);
-        
-        if (componentTag == null)
+        UIComponentTag componentTag = UIComponentTag
+                .getParentUIComponentTag(pageContext);
+
+        if (componentTag == null) 
         {
             throw new JspException("ExporterActionListenerTag has no UIComponentTag ancestor");
         }
 
-        if (componentTag.getCreated())
+        if (componentTag.getCreated()) 
         {
-            
+
             // if the component was just created, so we add the Listener.
             UIComponent component = componentTag.getComponentInstance();
 
-            if (component instanceof ActionSource)
+            if (component instanceof ActionSource) 
             {
                 ExporterActionListener exporterActionListener = new ExporterActionListener();
 
                 exporterActionListener.setFor(_for);
-                exporterActionListener.setFileType(_fileType);   
+                exporterActionListener.setFileType(_fileType);
                 exporterActionListener.setFilename(_fileName);
-                
-                ((ActionSource)component).addActionListener(exporterActionListener);
+                exporterActionListener.setShowDisplayedPageOnly(_showDisplayedPageOnly);
+
+                ((ActionSource) component)
+                        .addActionListener(exporterActionListener);
             }
-            else
+            else 
             {
-                throw new JspException("Component " + component.getId() + " is no ActionSource");
+                throw new JspException("Component " + component.getId()
+                        + " is no ActionSource");
             }
         }
 
@@ -87,10 +93,11 @@ public class ExporterActionListenerTag extends TagSupport {
     }
 
     public void release() {
-	super.release();
-	_fileType = null;
-	_fileName = null;
-	_for = null;
+        super.release();
+        _fileType = null;
+        _fileName = null;
+        _for = null;
+        _showDisplayedPageOnly = null;
     }
     
     public String getFilename() {
@@ -130,5 +137,14 @@ public class ExporterActionListenerTag extends TagSupport {
      */
     public void setFor(String _for) {
         this._for = _for;
-    }    
+    }
+
+    public String getShowDisplayedPageOnly() {
+        return _showDisplayedPageOnly;
+    }
+
+    public void setShowDisplayedPageOnly(String showDisplayedPageOnly) {
+        _showDisplayedPageOnly = showDisplayedPageOnly;
+    }   
+    
 }
