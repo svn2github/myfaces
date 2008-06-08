@@ -143,6 +143,11 @@ public class ExporterActionListenerTag extends TagSupport {
         return _showDisplayedPageOnly;
     }
 
+    /**
+     * This attribute determines whether to generate only the current displayed dataTable page to the file.
+     * 
+     * @JSFJspAttribute
+     */
     public void setShowDisplayedPageOnly(String showDisplayedPageOnly) {
         _showDisplayedPageOnly = showDisplayedPageOnly;
     }   
