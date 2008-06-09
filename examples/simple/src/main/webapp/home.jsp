@@ -122,6 +122,13 @@
                         <f:verbatim>AutoScroll (org.apache.myfaces.AUTO_SCROLL)</f:verbatim>
                     </h:outputLink>
                 </h:panelGrid>
+                
+                <h:outputText value="CAPTCHA" />
+                <h:panelGrid style="padding-left:25px">
+                    <h:outputLink value="captcha.jsf">
+                        <f:verbatim>CAPTCHA - A component allows generating random images that can be placed with webforms to determine whether the user is human.</f:verbatim>
+                    </h:outputLink>
+                </h:panelGrid>                
 
 
         </h:panelGrid>
