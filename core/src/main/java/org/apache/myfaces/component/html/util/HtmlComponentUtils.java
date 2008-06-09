@@ -18,11 +18,19 @@
  */
 package org.apache.myfaces.component.html.util;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
+import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.render.Renderer;
+import javax.faces.webapp.FacesServlet;
+import javax.servlet.ServletContext;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
@@ -140,5 +148,39 @@ public final class HtmlComponentUtils
         return null;
     }
     
+    
+    /**
+     * The getParameterMap() is used for getting the parameters
+     * of a specific component.
+     * @param component
+     * @return the Map of the component.
+     */
+    public static Map getParameterMap(UIComponent component) {
+        Map result = new HashMap();
+        for (Iterator iter = component.getChildren().iterator(); iter.hasNext();) {
+            UIComponent child = (UIComponent) iter.next();
+            if (child instanceof UIParameter) {
+                UIParameter uiparam = (UIParameter) child;
+                Object value = uiparam.getValue();
+                if (value != null) {
+                    result.put(uiparam.getName(), value);
+                }
+            }
+        }
+        return result;
+    }   
+    
+    /**
+     * The getLifecycleId() is used for getting the id of 
+     * the Lifecycle from the ServletContext.
+     * @param context
+     * @return the id of the life cycle.
+     */ 
+    public static String getLifecycleId(ServletContext context) {
+        String lifecycleId = context
+                .getInitParameter(FacesServlet.LIFECYCLE_ID_ATTR);
+        return lifecycleId != null ? lifecycleId
+                : LifecycleFactory.DEFAULT_LIFECYCLE;
+    }       
 
 }
