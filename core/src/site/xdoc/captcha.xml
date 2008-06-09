@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      
+        <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN" "http://maven.apache.org/dtd/maven-xdoc.dtd">
+      
+    <!--
+This is a standard template meant to be used for the documentation of all custom
+components.
+--><document>
+
+    <body>
+        <!-- Description -->
+        <section name="Description">
+            <p>
+                The captcha component allows generating random images that can be placed with 
+                webforms to determine whether the user is human.
+            </p>
+        </section>
+        <!-- screen shot -->
+        <section name="Screen Shot">   
+            <div><img src="images/captcha1.jpg" alt="captcha"/></div>
+            <div><img src="images/captcha2.jpg" alt="captcha"/></div>            
+        </section>
+
+        <!-- API -->
+        <section name="API">
+            <table>
+                <tr>
+                    <td>author</td>
+                    <td>Hazem Saleh</td>
+                </tr>
+                <tr>
+                    <td>component-family</td>
+                    <td>org.apache.myfaces.CAPTCHA</td>
+                </tr>
+                <tr>
+                    <td>renderer-type</td>
+                    <td>org.apache.myfaces.CAPTCHA</td>
+                </tr>
+                <tr>
+                    <td>component-class</td>
+                    <td>org.apache.myfaces.custom.captcha.CAPTCHAComponent</td>
+                </tr>
+                <tr>
+                    <td>renderer-class</td>
+                    <td>org.apache.myfaces.custom.captcha.CAPTCHARenderer</td>
+                </tr>
+                <tr>
+                    <td>tag-class</td>
+                    <td>org.apache.myfaces.custom.captcha.CAPTCHATag</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Usage -->
+	<section name="Usage">
+
+		<source xml:space="preserve">
+			&lt;t:captcha captchaSessionKeyName="#{captchaBean.sessionKeyName}" /&gt;
+		</source>
+
+	</section>
+        
+        <!-- Syntax -->
+        <section name="Syntax">
+            
+            <blockquote><h3>&lt;s:captcha&gt;</h3>
+		<code>captchaSessionKeyName="It determines the CAPTCHA session key name."</code><br/>            
+                <code>imageWidth="An integer to indicate the CAPTCHA width. default is 290."</code><br/>
+		<code>imageHeight="An integer to indicate the CAPTCHA height. default is 81."</code><br/>                            
+            </blockquote>
+        </section>
+        
+        <!-- Additional Information -->
+        <section name="Additional Information">
+            <p>see captcha.jsp in the Tomahawk examples.</p>
+        </section>            
+        
+    </body>
+    
+
+</document>
