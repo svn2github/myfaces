@@ -1,4 +1,4 @@
-﻿<%@ page session="false" contentType="text/html;charset=utf-8"%>
+<%@ page session="false" contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 
@@ -189,14 +189,7 @@
 	                <f:verbatim>Password Strength - component to check whether the password is strong or not</f:verbatim>
 	            </h:outputLink>
          </h:panelGrid>
-        
-         <h:outputText value="CAPTCHA"/>
-         <h:panelGrid style="padding-left:25px">
-	            <h:outputLink value="captcha.jsf" >
-	                <f:verbatim>CAPTCHA - component to generate random text images for security purposes</f:verbatim>
-	            </h:outputLink>
-         </h:panelGrid>
-         
+
          <h:outputText value="Media"/>
          <h:panelGrid style="padding-left:25px">
 	            <h:outputLink value="media.jsf" >
