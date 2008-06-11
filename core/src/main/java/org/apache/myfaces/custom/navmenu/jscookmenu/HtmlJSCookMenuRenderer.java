@@ -62,6 +62,8 @@ public class HtmlJSCookMenuRenderer
     private static final String MYFACES_HACK_SCRIPT = "MyFacesHack.js";
 
     private static final String JSCOOK_MENU_SCRIPT = "JSCookMenu.js";
+    
+    private static final String JSCOOK_EFFECT_SCRIPT = "effect.js";    
 
     private static final Log log = LogFactory.getLog(HtmlJSCookMenuRenderer.class);
 
@@ -75,6 +77,7 @@ public class HtmlJSCookMenuRenderer
         builtInThemes.put("ThemeMiniBlack", "ThemeMiniBlack/");
         builtInThemes.put("ThemeIE", "ThemeIE/");
         builtInThemes.put("ThemePanel", "ThemePanel/");
+        builtInThemes.put("ThemeGray", "ThemeGray/");        
     }
 
     public void decode(FacesContext context, UIComponent component) {
@@ -402,10 +405,12 @@ public class HtmlJSCookMenuRenderer
 
         if (javascriptLocation != null) {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_EFFECT_SCRIPT);            
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
         }
         else {
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_EFFECT_SCRIPT);            
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, MYFACES_HACK_SCRIPT);
         }
 

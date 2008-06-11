@@ -1,8 +1,12 @@
 //
 // Overrides the original JSCookMenu function to work with MyFaces
+// action should be taken for mouse button up at a menu item
 //
-function cmItemMouseUp (obj, index)
+function cmItemMouseUp (obj, isMain, idSub, menuID, index)
 {
+	if (_cmItemList[index].isDisabled)
+		return;
+
     var item = _cmItemList[index];
 
     var link = null, target = '_self';
@@ -38,7 +42,8 @@ function cmItemMouseUp (obj, index)
         }
     }
 
-    var prefix = obj.cmPrefix;
+    var menuInfo = _cmMenuList[menuID];
+    var prefix = menuInfo.prefix;
     var thisMenu = cmGetThisMenu (obj, prefix);
 
     var hasChild = (item.length > 5);
@@ -51,7 +56,7 @@ function cmItemMouseUp (obj, index)
             else
                 obj.className = prefix + 'MenuItem';
         }
-        cmHideMenu (thisMenu, null, prefix);
+        cmHideMenu (thisMenu, null, menuInfo);
     }
     else
     {

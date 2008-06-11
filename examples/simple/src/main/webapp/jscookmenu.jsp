@@ -36,7 +36,7 @@
 		basename="org.apache.myfaces.examples.resource.example_messages"
 		var="example_messages" />
     <t:jscookMenu layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
-		<%/* Availaible jscookMenu themes: ThemeIE, ThemeMiniBlack, ThemeOffice, ThemePanel
+		<%/* Availaible jscookMenu themes: ThemeIE, ThemeMiniBlack, ThemeOffice, ThemePanel, ThemeGray
              Availaible jscookMenu layout: hbr, hbl, hur, hul, vbr, vbl, vur, vul
              respect to Heng Yuan http://www.cs.ucla.edu/~heng/JSCookMenu
         */%>
