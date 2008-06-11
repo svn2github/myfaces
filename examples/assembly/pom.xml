@@ -61,20 +61,82 @@
                             <outputDirectory>${project.build.directory}/war</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-src</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>myfaces-example-blank</artifactId>
+                                    <version>${version}</version>
+                                    <type>java-source</type>    
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>myfaces-example-simple</artifactId>
+                                    <version>${version}</version>
+                                    <type>java-source</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>myfaces-example-tiles</artifactId>
+                                    <version>${version}</version>
+                                    <type>java-source</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>myfaces-example-wap</artifactId>
+                                    <version>${version}</version>
+                                    <type>java-source</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/src</outputDirectory>
+                        </configuration>
+                    </execution>                    
                 </executions>
             </plugin>
 
             <plugin>
+                <!-- EXECUTE mvn package to generate assembly files -->
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.0.1</version>
-                <configuration>
-		    <descriptors>	
-	                <descriptor>src/main/assembly/dep.xml</descriptor>
- 		    </descriptors>
-		    <finalName>tomahawk-examples-${version}</finalName>
-                    <outputDirectory>${project.build.directory}/out</outputDirectory>
-                    <workDirectory>${project.build.directory}/work</workDirectory>
-                </configuration>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>make_assembly_src</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>   
+                                <descriptor>src/main/assembly/depsrc.xml</descriptor>
+                            </descriptors>
+                            <finalName>tomahawk-examples-${version}-src</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <outputDirectory>${project.build.directory}/out</outputDirectory>
+                            <workDirectory>${project.build.directory}/work</workDirectory>
+                        </configuration>                
+                    </execution>
+                    <execution>
+                        <id>make_assembly_bin</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+	                    <configuration>
+	                        <descriptors>   
+	                            <descriptor>src/main/assembly/dep.xml</descriptor>
+	                        </descriptors>
+	                        <finalName>tomahawk-examples-${version}</finalName>
+	                        <outputDirectory>${project.build.directory}/out</outputDirectory>
+	                        <workDirectory>${project.build.directory}/work</workDirectory>
+	                    </configuration>                        
+                    </execution>
+                </executions>
             </plugin>
 	    
             <plugin>
