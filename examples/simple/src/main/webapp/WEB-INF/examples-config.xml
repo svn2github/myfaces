@@ -41,6 +41,15 @@
         <managed-bean-class>org.apache.myfaces.examples.validate.ValidateForm</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    
+    
+    <!-- managed bean for subForm-->
+
+    <managed-bean>
+        <managed-bean-name>subFormBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.subform.SubFormBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>    
 
     <managed-bean>
         <managed-bean-name>ucaseForm</managed-bean-name>
