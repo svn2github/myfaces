@@ -35,6 +35,7 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * @JSFJspTag
  *   name="t:tabChangeListener"
  *   bodyContent="empty"
+ *   tagHandler = "org.apache.myfaces.custom.tabbedpane.TabChangeListenerTagHandler"
  *   
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$

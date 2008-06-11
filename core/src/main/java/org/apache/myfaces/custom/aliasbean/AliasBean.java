@@ -67,6 +67,7 @@ import javax.faces.event.FacesEvent;
  * @JSFComponent
  *   name = "t:aliasBean"
  *   tagClass = "org.apache.myfaces.custom.aliasbean.AliasBeanTag"
+ *   tagHandler = "org.apache.myfaces.custom.aliasbean.AliasBeanTagHandler"
  * 
  * @JSFJspProperty 
  *   name = "rendered"

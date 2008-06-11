@@ -132,6 +132,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+           <groupId>com.sun.facelets</groupId>
+           <artifactId>jsf-facelets</artifactId>
+           <scope>provided</scope>
+        </dependency>
+
         <!-- test dependencies -->
 
         <dependency>
@@ -254,7 +260,25 @@
 				  <goals>
 				      <goal>make-config</goal>
 				  </goals>
-				</execution>        
+				</execution>
+				<execution>
+				  <id>makesandboxtaglib</id>
+				  <configuration>
+				      <xmlFile>META-INF/sandbox.taglib.xml</xmlFile>
+				      <xmlBaseFile>src/main/conf/META-INF/facelets-taglib-base.xml</xmlBaseFile>
+				      <templateFile>facelets-taglib.vm</templateFile>
+				      <params>
+                         <shortname>s</shortname>
+                         <uri>http://myfaces.apache.org/sandbox</uri>
+				      </params>
+				      <modelIds>
+				          <modelId>tomahawk-sandbox</modelId>
+				      </modelIds>
+				  </configuration>
+				  <goals>
+				      <goal>make-config</goal>
+				  </goals>
+				</execution>
 			  </executions>
 			</plugin>
 

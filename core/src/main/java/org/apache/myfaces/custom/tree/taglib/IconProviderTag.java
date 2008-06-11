@@ -35,6 +35,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * @JSFJspTag
  *   name="t:iconProvider"
  *   bodyContent="empty"
+ *   tagHandler="org.apache.myfaces.custom.tree.taglib.IconProviderTagHandler"
  *   
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$

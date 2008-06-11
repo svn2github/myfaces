@@ -59,6 +59,7 @@ import org.apache.myfaces.custom.tree.model.TreePath;
  *   tagClass = "org.apache.myfaces.custom.tree.taglib.TreeTag"
  *   tagSuperclass = "org.apache.myfaces.custom.tree.taglib.AbstractTreeTag"
  *   type = "org.apache.myfaces.HtmlTree"
+ *   tagHandler = "org.apache.myfaces.custom.tree.taglib.TreeTagHandler"
  *
  * @JSFJspProperty name = "headerClass" returnType = "java.lang.String"
  * @JSFJspProperty name = "footerClass" returnType = "java.lang.String"

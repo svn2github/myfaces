@@ -51,6 +51,7 @@ import org.apache.myfaces.shared_tomahawk.component.BindingAware;
  * @JSFComponent
  *   name = "t:aliasBeansScope"
  *   tagClass = "org.apache.myfaces.custom.aliasbean.AliasBeansScopeTag"
+ *   tagHandler = "org.apache.myfaces.custom.aliasbean.AliasBeansScopeTagHandler"
  *   
  * @JSFJspProperty 
  *   name = "rendered"

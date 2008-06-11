@@ -139,6 +139,12 @@
       <scope>provided</scope>
     </dependency>
     
+    <dependency>
+      <groupId>com.sun.facelets</groupId>
+      <artifactId>jsf-facelets</artifactId>
+      <scope>provided</scope>
+    </dependency>
+        
     <!-- Required for wrapper of FacesContext (compatible with 1.2) -->
     <dependency>
       <groupId>javax.el</groupId>
@@ -340,6 +346,24 @@
                    <uri>http://myfaces.apache.org/tomahawk</uri>
                    <displayname>Tomahawk tag library.</displayname>
                    <description> MyFaces subproject that contains components and other goodies to be used with any JSF implementation.</description>
+                </params>
+                <modelIds>
+                    <modelId>tomahawk</modelId>
+                </modelIds>
+            </configuration>
+            <goals>
+                <goal>make-config</goal>
+            </goals>
+          </execution>        
+          <execution>
+            <id>maketomahawktaglib</id>
+            <configuration>
+                <xmlFile>META-INF/tomahawk.taglib.xml</xmlFile>
+                <xmlBaseFile>src/main/conf/META-INF/facelets-taglib-base.xml</xmlBaseFile>
+                <templateFile>facelets-taglib.vm</templateFile>
+                <params>
+                   <shortname>t</shortname>
+                   <uri>http://myfaces.apache.org/tomahawk</uri>
                 </params>
                 <modelIds>
                     <modelId>tomahawk</modelId>

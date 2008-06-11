@@ -37,6 +37,7 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * @JSFJspTag
  *   name="t:treeSelectionListener"
  *   bodyContent="empty"
+ *   tagHandler="org.apache.myfaces.custom.tree.taglib.TreeSelectionListenerTagHandler"
  *   
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$

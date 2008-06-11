@@ -47,6 +47,7 @@ import org.apache.myfaces.component.UserRoleAware;
  *   name = "t:panelTabbedPane"
  *   class = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane"
  *   tagClass = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPaneTag"
+ *   tagHandler = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPaneTagHandler"
  * 
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -169,6 +170,17 @@ public abstract class AbstractHtmlPanelTabbedPane
         removeFacesListener(listener);
     }
 
+    /**
+     * TODO: This should be something like this:
+     * 
+     * JSFProperty
+     *   returnSignature = "void"
+     *   methodSignature = "org.apache.myfaces.custom.tabbedpane.TabChangeEvent"
+     * 
+     * And be added on tld. But you can do the same with TabChangeListenerTag. 
+     * 
+     * @return
+     */
     public MethodBinding getTabChangeListener()
     {
         return _tabChangeListener;

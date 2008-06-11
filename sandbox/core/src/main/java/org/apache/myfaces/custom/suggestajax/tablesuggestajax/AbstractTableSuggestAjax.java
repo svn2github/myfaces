@@ -33,6 +33,7 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjax;
  *   name = "s:tableSuggestAjax"
  *   class = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjax"
  *   tagClass = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjaxTag"
+ *   tagHandler = "org.apache.myfaces.custom.suggestajax.tablesuggestajax.TableSuggestAjaxTagHandler"
  *   
  * @author Gerald Muellan
  *         Date: 25.03.2006
