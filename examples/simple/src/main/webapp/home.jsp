@@ -131,6 +131,13 @@
                 </h:panelGrid>                
 
 
+                <h:outputText value="subForm" />
+                <h:panelGrid style="padding-left:25px">
+                    <h:outputLink value="subForm.jsf">
+                        <f:verbatim>SubForm - Partial validation and model update with SubForms.</f:verbatim>
+                    </h:outputLink>
+                </h:panelGrid>                
+
         </h:panelGrid>
 
 		</h:form>
