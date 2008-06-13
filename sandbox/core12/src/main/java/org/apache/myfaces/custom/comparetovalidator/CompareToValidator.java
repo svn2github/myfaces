@@ -26,6 +26,8 @@ import javax.faces.FactoryFinder;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -288,13 +290,36 @@ public class CompareToValidator extends ValidatorBase {
         String operator = getOperatorForString(getOperator());
 
         String alternateOperatorName = getAlternateOperatorName();
-        Object[] args = {
-                uiComponent.getId(),
-                value.toString(),
-                (alternateOperatorName == null) ? nameForOperator(operator) : alternateOperatorName,
-                foreignComponent.getId(),
-                (foreignValue == null) ? foreignComponent.getId() : foreignValue.toString()
-        };
+        Object[] args = new Object[5];
+        args[0] = uiComponent.getId();
+        if (uiComponent instanceof UIInput)
+        {
+          UIInput uiInput = (UIInput) uiComponent;
+          args[1] = uiInput.getSubmittedValue();
+        }
+        else
+        {   
+          args[1] = value.toString();
+        }
+        args[2] = (alternateOperatorName == null) ? nameForOperator(operator) : alternateOperatorName;
+        args[3] = foreignComponent.getId();
+        if (foreignComponent instanceof UIOutput)
+        {
+          UIOutput foreignUIOutpout = (UIOutput) foreignComponent;
+          Converter converter = foreignUIOutpout.getConverter();
+          if (converter!=null)
+          {
+            args[4] = converter.getAsString(facesContext, foreignComponent, foreignUIOutpout.getValue());
+          }
+          else
+          {
+            args[4] = (foreignValue == null) ? foreignComponent.getId() : foreignValue.toString();
+          }
+        }
+        else
+        {
+          args[4] = (foreignValue == null) ? foreignComponent.getId() : foreignValue.toString();
+        }
 
         String message = getMessage();
         if (null == message)  message = COMPARE_TO_MESSAGE_ID;
