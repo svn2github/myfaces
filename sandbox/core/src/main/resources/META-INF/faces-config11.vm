@@ -49,7 +49,9 @@ $baseContent
 #end
 #set ($validatorList = ${model.getValidators()})
 #foreach( $validator in $validatorList )
-#if ($modelIds.contains($validator.modelId))
+#if ($modelIds.contains($validator.modelId) &&
+    !($validator.isConfigExcluded().booleanValue()) &&
+    $validator.validatorId)
   <validator>
     <validator-id>$validator.validatorId</validator-id>
     <validator-class>$validator.className</validator-class>

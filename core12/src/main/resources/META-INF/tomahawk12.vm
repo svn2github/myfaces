@@ -54,12 +54,19 @@ $baseContent
          <required>$property.isRequired()</required>
 #end
 #if ($property.isMethodExpression() || $property.isMethodBinding())
-        <deferred-method>
 #if ($property.getMethodBindingSignature())
+        <deferred-method>
 #set ($sig = $property.getMethodBindingSignature())
             <method-signature>$sig.returnType myMethod( $sig.parameterTypesAsString )</method-signature>
-#end
+
         </deferred-method>
+#else
+## This is a very special case. If a property is MethodBinding or MethodExpression
+## this should have a signature. If not, for allow multiple MethodBinding
+## simulate a ValueExpression and write a custom code like in 
+## org.apache.myfaces.custom.suggestajax.AbstractSuggestAjaxTag
+         <deferred-value/>
+#end
 #elseif ($property.isLiteralOnly())
          <rtexprvalue>false</rtexprvalue>
 #else
