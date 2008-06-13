@@ -504,7 +504,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             {
                 //Assume scalar data model
                 List lst = (List) dm.getWrappedData();
-                if (lst.size() > 0)
+                if (lst!= null && lst.size() > 0)
                 {
                     vb.setValue(context, lst.get(0));
                 }
