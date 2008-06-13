@@ -31,11 +31,52 @@ import org.apache.myfaces.component.html.ext.HtmlSelectManyListbox;
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class AbstractHtmlSelectManyPicklist extends HtmlSelectManyListbox
+public abstract class AbstractHtmlSelectManyPicklist extends HtmlSelectManyListbox
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectManyPicklist";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PicklistRenderer";
     
+    /**
+     * Define the text that goes inside the add button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddButtonText();
+    
+    /**
+     * Define the text that goes inside the remove button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveButtonText();
+    
+    /**
+     * CSS style to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddButtonStyle();
+    
+    /**
+     * CSS style to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveButtonStyle();
+    
+    /**
+     * CSS styleClass to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddButtonStyleClass();
+    
+    /**
+     * CSS styleClass to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveButtonStyleClass();
     
 }
  

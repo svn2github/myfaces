@@ -121,6 +121,20 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
 
         HtmlSelectManyPicklist picklist = (HtmlSelectManyPicklist) uiComponent;
 
+        String addButtonText = picklist.getAddButtonText();
+        String removeButtonText = picklist.getRemoveButtonText();
+        String addButtonStyle = picklist.getAddButtonStyle();
+        String removeButtonStyle = picklist.getRemoveButtonStyle();
+        String addButtonStyleClass = picklist.getAddButtonStyleClass();
+        String removeButtonStyleClass = picklist.getRemoveButtonStyleClass();
+        
+        //Set the default values for addButtonText and removeButtonText
+        if(addButtonText == null || addButtonText.length() == 0)
+            addButtonText = ">";
+		
+        if(removeButtonText == null || removeButtonText.length() == 0)
+            removeButtonText = "<";
+
         encodeJavascript(facesContext, uiComponent);
 
         String availableListClientId = uiComponent.getClientId(facesContext)
@@ -167,13 +181,13 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
                                               + "','" + hiddenFieldCliendId + "')";
 
         encodeSwapButton(facesContext, uiComponent, javascriptAddToSelected,
-                         ">");
+                addButtonText, addButtonStyle, addButtonStyleClass);
 
         writer.startElement(HTML.BR_ELEM, uiComponent);
         writer.endElement(HTML.BR_ELEM);
 
-        encodeSwapButton(facesContext, uiComponent,
-                         javascriptRemoveFromSelected, "<");
+        encodeSwapButton(facesContext, uiComponent, javascriptRemoveFromSelected, 
+                removeButtonText, removeButtonStyle, removeButtonStyleClass);
 
         writer.endElement(HTML.TD_ELEM);
 
@@ -203,12 +217,15 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
     }
 
     private void encodeSwapButton(FacesContext facesContext,
-                                  UIComponent uiComponent, String javaScriptFunction, String text)
+                                  UIComponent uiComponent, String javaScriptFunction,
+                                  String text, String style, String styleClass)
             throws IOException
     {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
+		writer.writeAttribute(HTML.STYLE_ATTR, style, null);
+		writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_BUTTON,
                               JSFAttr.TYPE_ATTR);
         writer.writeAttribute(HTML.ONCLICK_ATTR, javaScriptFunction, null);
