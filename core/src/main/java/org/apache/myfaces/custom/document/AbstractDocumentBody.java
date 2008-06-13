@@ -25,7 +25,6 @@ package org.apache.myfaces.custom.document;
  * @JSFComponent
  *   name = "t:documentBody"
  *   class = "org.apache.myfaces.custom.document.DocumentBody"
- *   superClass = "org.apache.myfaces.custom.document.AbstractDocumentBody"
  *   tagClass = "org.apache.myfaces.custom.document.DocumentBodyTag"
  *   
  * @author Mario Ivankovits (latest modification by $Author$)
