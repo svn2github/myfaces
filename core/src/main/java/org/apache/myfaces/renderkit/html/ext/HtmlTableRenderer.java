@@ -219,7 +219,28 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
                 if (!embedded) {
                     writer.startElement(HTML.TR_ELEM, uiData);
                     writer.startElement(HTML.TD_ELEM, uiData);
-                    writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(uiData.getChildren().size()), null);
+                    //TOMAHAWK-1087 datatable dont renders a detail correct 
+                    //if a UIColumns is used we have to count UIColumns 
+                    //elements as component.getRowCount()
+                    //instead of just get the number of children available,
+                    //so the colspan could be assigned correctly.
+                    int childCount = 0;
+                    for (Iterator childIter = uiData.getChildren().iterator();
+                        childIter.hasNext();)
+                    {
+                        UIComponent childComp = (UIComponent) childIter.next();
+                        if (childComp instanceof UIColumns)
+                        {
+                            UIColumns v = (UIColumns) childComp;
+                            childCount += v.getRowCount();
+                        }
+                        else
+                        {
+                            childCount++;
+                        }
+                    }
+                    writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(
+                            childCount), null);
                 }
 
                 if (detailStampFacet != null) {
