@@ -585,19 +585,51 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
     protected void encodeColumnChild(FacesContext facesContext,
                                      ResponseWriter writer, UIData uiData,
                                      UIComponent component, Styles styles, int columnStyleIndex)
-        throws IOException {
+        throws IOException {        
+        //columnStyleIndex param does not takes into
+        //consideration UIColumns, since it is called from HtmlTableRendererBase.
+        //So we need to recalculate its index taking into account that
+        //UIColumns component count as ((UIColumns) child).getRowCount() instead 1 
+        columnStyleIndex = getColumnStyleIndex(uiData, columnStyleIndex);
         super.encodeColumnChild(facesContext, writer, uiData, component,
             styles, columnStyleIndex);
-        if (component instanceof UIColumns) {
+        if (component instanceof UIColumns)
+        {
             UIColumns columns = (UIColumns) component;
-            for (int k = 0, colSize = columns.getRowCount(); k < colSize; k++) {
+            for (int k = 0, colSize = columns.getRowCount(); k < colSize; k++)
+            {
                 columns.setRowIndex(k);
                 renderColumnBody(facesContext, writer, uiData, component,
-                    styles, columnStyleIndex);
+                    styles, columnStyleIndex + k);
             }
             columns.setRowIndex(-1);
         }
     }
+    
+    /**
+      * This method calculates the correct columnStyleIndex taking the dynamic columns
+      * of <b>UIColumns</b> into consideration
+      * 
+      * @param uiData
+      * @param columnStyleIndex
+      * @return the correct columnStyleIndex 
+      */
+    private int getColumnStyleIndex(UIData uiData, int columnStyleIndex)
+    {
+        int colStyleIndex = 0;
+        for (int i = 0; i < columnStyleIndex; i++)
+        {
+            UIComponent child = (UIComponent) uiData.getChildren().get(i);
+            if (child instanceof UIColumns)
+            {
+                colStyleIndex += ((UIColumns) child).getRowCount();
+                continue;
+            }
+            colStyleIndex++;
+        }
+        return colStyleIndex;
+    }
+    
 
     /**
      * @see org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase#renderColumnBody(javax.faces.context.FacesContext, javax.faces.context.ResponseWriter, javax.faces.component.UIData, javax.faces.component.UIComponent, org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase.Styles, int)
