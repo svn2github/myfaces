@@ -136,7 +136,15 @@
                     <h:outputLink value="subForm.jsf">
                         <f:verbatim>SubForm - Partial validation and model update with SubForms.</f:verbatim>
                     </h:outputLink>
-                </h:panelGrid>                
+                </h:panelGrid>    
+                
+                
+                <h:outputText value="picklist" />
+                <h:panelGrid style="padding-left:25px">
+                    <h:outputLink value="picklist.jsf">
+                        <f:verbatim>selectManyPicklist - A picklist, where you select components from a list and the selected items are displayed in another list.</f:verbatim>
+                    </h:outputLink>
+                </h:panelGrid>                              
 
         </h:panelGrid>
 
