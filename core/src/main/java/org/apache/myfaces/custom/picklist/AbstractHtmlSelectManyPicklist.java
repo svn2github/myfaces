@@ -29,13 +29,54 @@ import org.apache.myfaces.component.html.ext.HtmlSelectManyListbox;
  *   tagClass = "org.apache.myfaces.custom.picklist.HtmlSelectManyPicklistTag"
  *   
  * @author Bruno Aranda (latest modification by $Author: lu4242 $)
- * @version $Revision: 663481 $ $Date: 2008-06-05 10:00:34 +0300 (Thu, 05 Jun 2008) $
+ * @version $Revision: 667663 $ $Date: 2008-06-14 00:53:17 +0300 (Sat, 14 Jun 2008) $
  */
-public class AbstractHtmlSelectManyPicklist extends HtmlSelectManyListbox
+public abstract class AbstractHtmlSelectManyPicklist extends HtmlSelectManyListbox
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectManyPicklist";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PicklistRenderer";
     
+    /**
+     * Define the text that goes inside the add button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddButtonText();
+    
+    /**
+     * Define the text that goes inside the remove button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveButtonText();
+    
+    /**
+     * CSS style to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddButtonStyle();
+    
+    /**
+     * CSS style to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveButtonStyle();
+    
+    /**
+     * CSS styleClass to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddButtonStyleClass();
+    
+    /**
+     * CSS styleClass to be applied to the button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveButtonStyleClass();
     
 }
  
