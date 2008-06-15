@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      
+        <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN" "http://maven.apache.org/dtd/maven-xdoc.dtd">
+      
+    <document>
+
+    <body>
+        <!-- Description -->
+        <section name="Description">
+            
+            <p>
+                Enhancement for a data-table to select one Row with a radio button. 
+                The row-index is stored in the value-binding.
+            </p>
+        </section>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            
+            <div><img src="images/selectOneRow.jpg" alt="selectOneRow"/></div>           
+        </section>
+        <!-- API -->
+        <section name="API">
+            
+            <table>
+                <tr>
+                    <td colspan="1" rowspan="1">component-family</td>
+                    <td colspan="1" rowspan="1">org.apache.myfaces.SelectOneRow</td>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1">renderer-type</td>
+                    <td colspan="1" rowspan="1">org.apache.myfaces.SelectOneRow</td>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1">component-class</td>
+                    <td colspan="1" rowspan="1">org.apache.myfaces.custom.selectOneRow.SelectOneRow</td>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1">renderer-class</td>
+                    <td colspan="1" rowspan="1">org.apache.myfaces.custom.selectOneRow.SelectOneRowRenderer</td>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1">tag-class</td>
+                    <td colspan="1" rowspan="1">org.apache.myfaces.custom.selectOneRow.SelectOneRowTag</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Usage -->
+        <section name="Usage">
+            
+            <source xml:space="preserve">
+            	&lt;t:dataTable ...&gt;
+            	...
+			&lt;h:column&gt;
+			...
+			       &lt;s:selectOneRow  groupName="selection" id="hugo" 
+						value="#{selectOneRowList.selectedRowIndex}"
+						onchange="submit();" immediate="true"
+						valueChangeListener="#{selectOneRowList.processRowSelection}"/&gt;            	
+			&lt;/h:column&gt;
+		...
+		&lt;/t:dataTable>
+            </source>
+        </section>
+        
+        <!-- Instructions -->
+        <section name="Instructions">
+            
+                <code>
+                id - defines the id of the component.
+                </code>
+                <br/>
+                
+                <code>
+		groupName - defines the name of the radio-button-group to use. It is required.
+                </code>
+                <br/>
+                                
+                <code>
+		&html_align_attribute;
+		&html_disabled_attribute;
+		&html_focus_blur_attributes;
+		&html_onchange_attribute;
+		&html_onclick_attribute;
+		&html_onselect_attribute;
+		&html_readonly_attribute;
+		&ui_input_attributes;                
+                </code>
+                <br/>
+                
+        </section>
+        
+        <!-- Additional Information -->
+        <section name="Additional Information">
+            
+            <p>see sandbox/selectOneRow.jsf for an example.</p>
+        </section>        
+
+    </body>
+    
+
+</document>
