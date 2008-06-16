@@ -31,14 +31,15 @@ import org.apache.myfaces.validator.ValidatorBase;
  * 
  * @JSFValidator
  *   name = "s:validateCSV"
+ *   class = "org.apache.myfaces.custom.csvvalidator.CSVValidator"
  *   tagClass = "org.apache.myfaces.custom.csvvalidator.ValidateCSVTag"
  *   serialuidtag = "-8874279182242196266L"
  *
  * @author Lance Frohman
  *
- * @version $Revision: $ $Date: $
+ * @version $Revision$ $Date$
  */
-public class CSVValidator extends ValidatorBase {
+public abstract class AbstractCSVValidator extends ValidatorBase {
 	/**
 	 * <p>The standard converter id for this converter.</p>
 	 */
@@ -52,55 +53,27 @@ public class CSVValidator extends ValidatorBase {
 	public static final String CSV_SUFFIX_MESSAGE_ID = "org.apache.myfaces.csv.SUFFIX";
 	private static final String DEFAULT_SEPARATOR = ",";
 
-	// the VALIDATOR_ID of the actual validator to be used
-	protected String _subvalidatorId;
-
-	// the separator character to separate values
-	protected String _separator;
-
 	/**
 	 * @JSFProperty
 	 * @return the VALIDATOR_ID of the actual validator to be used
 	 */
-    public String getSubvalidatorId()
-    {
-    	return _subvalidatorId;
-    }
+    public abstract String getSubvalidatorId();
 
 	/**
 	 * @param the VALIDATOR_ID of the actual validator to be used
 	 */
-	public void setSubvalidatorId(String subvalidatorId) {
-		this._subvalidatorId = subvalidatorId;
-	}
+	public abstract void setSubvalidatorId(String subvalidatorId);
 
 	/**
 	 * @JSFProperty
 	 * @return the separator character to separate values
 	 */
-	public String getSeparator() {
-		return _separator;
-	}
+	public abstract String getSeparator();
 
 	/**
 	 * @param the separator character to separate values
 	 */
-	public void setSeparator(String separator) {
-		this._separator = separator;
-	}
-
-	public Object saveState(FacesContext context) {
-		Object value[] = new Object[2];
-        value[0] = _subvalidatorId;
-        value[1] = _separator;
-		return value;
-	}
-
-	public void restoreState(FacesContext context, Object state) {
-        Object[] values = (Object[]) state;
-        _subvalidatorId = (String) values[0];
-        _separator = (String) values[1];
-	}
+	public abstract void setSeparator(String separator);
 
 	private FacesMessage addMessage(FacesMessage oldMsg, FacesMessage newMsg, int index, String suffixMessageKey) {
 		if (oldMsg != null && newMsg.getSeverity().getOrdinal() < oldMsg.getSeverity().getOrdinal())
@@ -155,15 +128,15 @@ public class CSVValidator extends ValidatorBase {
 			Object[] args = { value };
             throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, CSV_NOT_STRING_MESSAGE_ID, args));
 		}
-	    Validator validator = facesContext.getApplication().createValidator(_subvalidatorId);
-	    if (_separator == null)
-	    	_separator = DEFAULT_SEPARATOR;
+	    Validator validator = facesContext.getApplication().createValidator(getSubvalidatorId());
+	    if (getSeparator() == null)
+	    	setSeparator(DEFAULT_SEPARATOR);
 	    String[] values = null;
 	    try {
-			values = ((String)value).split(_separator);
+			values = ((String)value).split(getSeparator());
 	    }
 	    catch (PatternSyntaxException e) {
-			Object[] args = { _separator };
+			Object[] args = { getSeparator() };
             throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, CSV_INVALID_SEPARATOR_MESSAGE_ID, args));
 	    }
 		// loop through the separated values and validate each one

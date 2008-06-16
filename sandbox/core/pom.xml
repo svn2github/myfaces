@@ -227,7 +227,13 @@
 			      <goals>
 			        <goal>make-components</goal>
 			      </goals>
-			    </execution>          
+			    </execution>
+				<execution>
+				  <id>makeval</id>
+				  <goals>
+				    <goal>make-validators</goal>
+				  </goals>
+				</execution>
 			    <execution>
 			      <id>maketags</id>
 			      <goals>

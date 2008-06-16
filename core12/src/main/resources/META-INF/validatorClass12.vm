@@ -1,12 +1,10 @@
-## Velocity template used to generate JSF1.1-compatible component classes
-## from component meta-data.
+## Velocity template used to generate JSF1.1-compatible validator classes
+## from validator meta-data.
 ##
-## Note that there are two types of component generation:
+## Note that there are only one type of validator generation:
 ##  * "subclass mode" (use annotated class as a parent class)
-##  * "template mode" (use annotated class as a template)
-## This template file is used for both.
 ##
-## Variable $component refers to a ComponentMeta object to process
+## Variable $validator refers to a ComponentMeta object to process
 ## Variable $utils refers to an instance of MyfacesUtils.
 ##
 ## When "template mode" is being used then variable $innersource
@@ -34,63 +32,31 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package ${component.packageName};
+package ${validator.packageName};
 
-import javax.faces.component.UIComponent;
-import javax.faces.el.ValueBinding;
+import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
-$utils.importTagClasses($component)
+$utils.importTagClasses($validator)
 
-// generated from class $component.classSource
+// generated from class $validator.classSource
 // WARNING: This file was automatically generated. Do not edit it directly,
 //          or you will lose your changes.
-public class ${utils.getClassFromFullClass($component.className)} extends $component.superClassName
-#if ($component.implements)
-    implements $component.implements
+public class ${utils.getClassFromFullClass($validator.className)} extends $validator.superClassName
+#if ($validator.implements)
+    implements $validator.implements
 #end
 {
-#if ($component.serialuid)
-    private static final long serialVersionUID = ${component.serialuid}; 
-#end  
 
-    static public final String COMPONENT_FAMILY =
-        "$component.family";
-    static public final String COMPONENT_TYPE =
-        "$component.type";
-#if ($component.rendererType)
-#if (!($component.rendererType == ""))
-    static public final String DEFAULT_RENDERER_TYPE = 
-        "$component.rendererType";
-#end
+#if ($validator.validatorId)
+    static public final String VALIDATOR_ID = 
+        "$validator.validatorId";
 #end
 
-#if ($innersource)
-    //BEGIN CODE COPIED FROM $component.classSource 
-$innersource
-    //END CODE COPIED FROM $component.classSource
-#end
-
-    public ${utils.getClassFromFullClass($component.className)}()
+    public ${utils.getClassFromFullClass($validator.className)}()
     {
-#if ($component.rendererType)
-#if ($component.rendererType == "")
-        setRendererType(null);
-#else
-        setRendererType("$component.rendererType");
-#end
-#else
-        setRendererType(null);
-#end
-    }
-
-## On myfaces 1.1 the family is inherited, so this could be commented
-## On other this should not be commented    
-    public String getFamily()
-    {
-        return COMPONENT_FAMILY;
     }
     
-#set ($propertyList = ${component.propertyComponentList})
+#set ($propertyList = ${validator.propertyValidatorList})
 
 #foreach( $property in $propertyList )
 #set ($field = $property.fieldName)
@@ -144,21 +110,21 @@ $innersource
         {
             return $field;
         }
-        ValueBinding vb = getValueBinding("$property.name");
+        ValueExpression vb = getValueExpression("$property.name");
         if (vb != null)
         {
 #if ($utils.isPrimitiveClass($type))
-            return ($utils.castIfNecessary($type) vb.getValue(getFacesContext())).${type}Value();
+            return ($utils.castIfNecessary($type) vb.getValue(getFacesContext().getELContext())).${type}Value();
 #else
 #set ($pritype = $utils.getPrimitiveType($property.className))
 #if ($utils.isPrimitiveClass($pritype))
-            Object value = vb == null ? null : vb.getValue(getFacesContext());
+            Object value = vb == null ? null : vb.getValue(getFacesContext().getELContext());
             if (!(value instanceof $type)){
                 value = ${type}.valueOf(value.toString());
             }            
             return $utils.castIfNecessary($type) value;
 #else
-            return $utils.castIfNecessary($type) vb.getValue(getFacesContext());
+            return $utils.castIfNecessary($type) vb.getValue(getFacesContext().getELContext());
 #end
 #end
         }
@@ -201,11 +167,7 @@ $innersource
 #elseif ( $property.isStateHolder() )## || $utils.isConverter($type)
         values[$arrayIndex] = saveAttachedState(facesContext,$field);
 #elseif($utils.isPrimitiveClass($type))
-#if ($type == "boolean")
         values[$arrayIndex] = ${utils.getBoxedClass($type)}.valueOf($field);
-#else
-        values[$arrayIndex] = new ${utils.getBoxedClass($type)}($field);
-#end
 #else
         values[$arrayIndex] = $field;
 #end

@@ -307,7 +307,13 @@
             <goals>
               <goal>make-components</goal>
             </goals>
-          </execution>          
+          </execution>
+          <execution>
+            <id>makeval</id>
+            <goals>
+              <goal>make-validators</goal>
+            </goals>
+          </execution>
           <execution>
             <id>make_tags_myfaces_core</id>
             <configuration>

@@ -65,7 +65,7 @@ managed beans used:
 			
 			<h:outputLabel for="url" value="#{example_messages['validate_url']}" />
 			<h:inputText id="url" value="#{validateForm.url}" required="true">
-				<s:validateUrl />
+				<s:validateUrl schemes="http,https" allow2Slashes="true"/>
 			</h:inputText>
 			<t:message id="urlError" for="url" styleClass="error" />
 			

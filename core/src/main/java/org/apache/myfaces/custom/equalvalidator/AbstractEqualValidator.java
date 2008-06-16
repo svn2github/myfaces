@@ -42,6 +42,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  * 
  * @JSFValidator
  *   name = "t:validateEqual"
+ *   class = "org.apache.myfaces.custom.equalvalidator.EqualValidator"
  *   tagClass = "org.apache.myfaces.custom.equalvalidator.ValidateEqualTag"
  *   serialuidtag = "-3249115551944863108L"
  *   
@@ -49,7 +50,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @version $Revision$ $Date$
  */
 
-public class EqualValidator extends ValidatorBase {
+public abstract class AbstractEqualValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -62,11 +63,8 @@ public class EqualValidator extends ValidatorBase {
 	 */
 	public static final String EQUAL_MESSAGE_ID = "org.apache.myfaces.Equal.INVALID";
 
-	public EqualValidator(){
+	public AbstractEqualValidator(){
 	}
-
-	//the foreign component_id on which the validation is based.
-	private String _for= null;
 
   // -------------------------------------------------------- ValidatorIF
 	public void validate(
@@ -83,9 +81,9 @@ public class EqualValidator extends ValidatorBase {
 		    return;
 		}
 
-        UIComponent foreignComp = uiComponent.getParent().findComponent(_for);
+        UIComponent foreignComp = uiComponent.getParent().findComponent(getFor());
         if(foreignComp==null)
-            throw new FacesException("Unable to find component '" + _for + "' (calling findComponent on component '" + uiComponent.getId() + "')");
+            throw new FacesException("Unable to find component '" + getFor() + "' (calling findComponent on component '" + uiComponent.getId() + "')");
         if(false == foreignComp instanceof EditableValueHolder)
             throw new FacesException("Component '" + foreignComp.getId() + "' does not implement EditableValueHolder");
         EditableValueHolder foreignEditableValueHolder = (EditableValueHolder) foreignComp;
@@ -134,20 +132,6 @@ public class EqualValidator extends ValidatorBase {
         }
 
 	}
-	// -------------------------------------------------------- StateholderIF
-
-	public Object saveState(FacesContext context) {
-		Object[] state = new Object[2];
-		state[0] = super.saveState(context);
-        state[1] =_for;
-		return state;
-	}
-
-    public void restoreState(FacesContext context, Object state) {
-        Object values[] = (Object[])state;
-        super.restoreState(context, values[0]);
-        _for = (String)values[1];
-    }
     
     // ---------------- Borrowed to convert foreign submitted values
 
@@ -238,14 +222,10 @@ public class EqualValidator extends ValidatorBase {
 	 * @JSFProperty
 	 * @return the foreign component_id, on which a value should be validated
 	 */
-	public String getFor() {
-		return _for;
-	}
+	public abstract String getFor();
 
 	/**
 	 * @param string the foreign component_id, on which a value should be validated
 	 */
-	public void setFor(String string) {
-		_for = string;
-	}
+	public abstract void setFor(String string);
 }

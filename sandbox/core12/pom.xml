@@ -305,7 +305,17 @@
 					   <templateComponentName>componentClass12.vm</templateComponentName>
 					   <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
 					</configuration>
-			    </execution>          
+			    </execution>
+				<execution>
+					<id>makeval</id>
+					<goals>
+					  <goal>make-validators</goal>
+					</goals>
+					<configuration>
+					   <jsfVersion>12</jsfVersion>
+					   <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
+					</configuration>
+				</execution>
 			    <execution>
                     <id>maketags</id>
 					<configuration>

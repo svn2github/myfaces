@@ -74,6 +74,15 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #set ($className = $utils.getPrimitiveType($property.className))
         if ($field != null)
         {
+#if ($property.isLiteralOnly())
+#if ($utils.isPrimitiveClass($property.className))
+                validator.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field).${property.className}Value());
+#elseif ($utils.isPrimitiveClass($className))
+                validator.${utils.getPrefixedPropertyName("set",$property.name)}(${utils.getBoxedClass($className)}.valueOf($field));
+#else
+                validator.${utils.getPrefixedPropertyName("set",$property.name)}($field);
+#end
+#else        
             if (!${field}.isLiteralText())
             {
                 validator.setValueExpression("$property.name", $field);
@@ -117,6 +126,7 @@ public class $utils.getClassFromFullClass($validator.tagClass)
                 validator.${utils.getPrefixedPropertyName("set",$property.name)}(($property.className)  ${field}.getValue(facesContext.getELContext()));
 #end
             }
+#end
         }
 #end
     }

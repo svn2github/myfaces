@@ -21,11 +21,9 @@ package org.apache.myfaces.custom.regexprvalidator;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.validator.GenericValidator;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
@@ -35,6 +33,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  * 
  * @JSFValidator
  *   name = "t:validateRegExpr"
+ *   class = "org.apache.myfaces.custom.regexprvalidator.RegExprValidator"
  *   tagClass = "org.apache.myfaces.custom.regexprvalidator.ValidateRegExprTag"
  *   serialuidtag = "-449945949876262076L"
  * 
@@ -42,7 +41,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  * @version $Revision$ $Date$
  */
 
-public class RegExprValidator extends ValidatorBase {
+public abstract class AbstractRegExprValidator extends ValidatorBase {
 	/**
 	 * <p>The standard converter id for this converter.</p>
 	 */
@@ -54,11 +53,8 @@ public class RegExprValidator extends ValidatorBase {
 	 */
 	public static final String REGEXPR_MESSAGE_ID = "org.apache.myfaces.Regexpr.INVALID";
 
-	public RegExprValidator(){
+	public AbstractRegExprValidator(){
 	}
-
-	//the pattern on which the validation is based.
-    protected String _pattern= null;
 
 	public void validate(
 		FacesContext facesContext,
@@ -79,23 +75,6 @@ public class RegExprValidator extends ValidatorBase {
         }
 	}
 
-
-
-	// -------------------------------------------------------- StateholderIF
-
-	public Object saveState(FacesContext context) {
-		Object values[] = new Object[2];
-        values[0] = super.saveState(context);
-        values[1] = _pattern;
-		return values;
-	}
-
-	public void restoreState(FacesContext context, Object state) {
-        Object[] values = (Object[]) state;
-        super.restoreState(context, values[0]);
-        _pattern = (String) values[1];
-	}
-
 	// -------------------------------------------------------- GETTER & SETTER
 
 	/**
@@ -104,18 +83,11 @@ public class RegExprValidator extends ValidatorBase {
 	 * @JSFProperty
 	 * @return the pattern, on which a value should be validated
 	 */
-    public String getPattern()
-    {
-        if (_pattern != null) return _pattern;
-        ValueBinding vb = getValueBinding("pattern");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
+    public abstract String getPattern();
 
 	/**
 	 * @param string the pattern, on which a value should be validated
 	 */
-	public void setPattern(String string) {
-		_pattern = string;
-	}
+	public abstract void setPattern(String string);
 
 }

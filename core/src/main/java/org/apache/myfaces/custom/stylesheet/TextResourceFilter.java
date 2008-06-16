@@ -154,7 +154,10 @@ public class TextResourceFilter implements Serializable
 			return filteredResource;
 		}
 
-		String text = RendererUtils.loadResourceFile(context, path);
+		//Tomcat ASF Bugzilla – Bug 43241
+		//ServletContext.getResourceAsStream() does not follow API spec
+		//ALL resources must start with '/' 
+		String text = RendererUtils.loadResourceFile(context,'/' + path);
 		if (text == null)
 		{
 			// avoid loading the errorneous resource over and over again

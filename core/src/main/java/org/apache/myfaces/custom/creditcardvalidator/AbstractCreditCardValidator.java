@@ -32,6 +32,7 @@ import javax.faces.validator.ValidatorException;
  * 
  * @JSFValidator
  *   name = "t:validateCreditCard"
+ *   class = "org.apache.myfaces.custom.creditcardvalidator.CreditCardValidator"
  *   bodyContent = "empty"
  *   tagClass = "org.apache.myfaces.custom.creditcardvalidator.ValidateCreditCardTag"
  *   serialuidtag = "3810660506302799072L"
@@ -39,7 +40,7 @@ import javax.faces.validator.ValidatorException;
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class CreditCardValidator extends ValidatorBase {
+public abstract class AbstractCreditCardValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -52,23 +53,8 @@ public class CreditCardValidator extends ValidatorBase {
 	 */
 	public static final String CREDITCARD_MESSAGE_ID = "org.apache.myfaces.Creditcard.INVALID";
 
-	//private DEFAULT_VALUES
-	private static final boolean DEFAULT_AMEX = true;
-	private static final boolean DEFAULT_DISCOVER = true;
-	private static final boolean DEFAULT_MASTERCARD = true;
-	private static final boolean DEFAULT_VISA = true;
-	private static final boolean DEFAULT_NONE = false;
-
-
-	public CreditCardValidator(){
+	public AbstractCreditCardValidator(){
 	}
-
-	//Cardtypes, that are supported by Commons-Validator.
-	private Boolean _amex = null;
-	private Boolean _discover = null;
-	private Boolean _mastercard = null;
-	private Boolean _visa = null;
-	private Boolean _none = null;
 
 	//Field, to init the desired Validator
 	private int _initSum = 0;
@@ -140,99 +126,50 @@ public class CreditCardValidator extends ValidatorBase {
 	 * american express cards
 	 * 
 	 * @JSFProperty
+	 *   defaultValue = "true"
 	 */
-	public boolean isAmex() {
-		if (_amex!= null) return _amex.booleanValue();
-		return _amex != null ? _amex.booleanValue() : DEFAULT_AMEX;
-	}
+	public abstract boolean isAmex();
 
     /**
      * validation for discover
      * 
      * @JSFProperty
+     *   defaultValue = "true"
      */
-	public boolean isDiscover() {
-		if (_discover!= null) return _discover.booleanValue();
-		return _discover != null ? _discover.booleanValue() : DEFAULT_DISCOVER;
-	}
+	public abstract boolean isDiscover();
 
     /**
      * validation for mastercard
      * 
      * @JSFProperty
+     *   defaultValue = "true"
      */
-	public boolean isMastercard() {
-		if (_mastercard!= null) return _mastercard.booleanValue();
-		return _mastercard != null ? _mastercard.booleanValue() : DEFAULT_MASTERCARD;
-	}
+	public abstract boolean isMastercard();
 
     /**
      * none of the given cardtypes is allowed.
      * 
      * @JSFProperty
+     *   defaultValue = "false"
      */
-	public boolean isNone() {
-		if (_none!= null) return _none.booleanValue();
-		return _none != null ? _none.booleanValue() : DEFAULT_NONE;
-	}
+	public abstract boolean isNone();
 
     /**
      * validation for visa
      * 
      * @JSFProperty
+     *   defaultValue = "true"
      */
-	public boolean isVisa() {
-		if (_visa!= null) return _visa.booleanValue();
-		return _visa != null ? _visa.booleanValue() : DEFAULT_VISA;
-	}
+	public abstract boolean isVisa();
 
-	public void setAmex(boolean b) {
-		_amex = Boolean.valueOf(b);
-	}
+	public abstract void setAmex(boolean b);
 
-	public void setDiscover(boolean b) {
-		_discover = Boolean.valueOf(b);
-	}
+	public abstract void setDiscover(boolean b);
 
-	public void setMastercard(boolean b) {
-		_mastercard =  Boolean.valueOf(b);
-	}
+	public abstract void setMastercard(boolean b);
 
-	public void setNone(boolean b) {
-		_none =   Boolean.valueOf(b);
-	}
+	public abstract void setNone(boolean b);
 
-	public void setVisa(boolean b) {
-		_visa =   Boolean.valueOf(b);
-	}
+	public abstract void setVisa(boolean b);
 
-
-	// -------------------------------------------------------- StateholderIF
-
-	/* (non-Javadoc)
-	 * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
-	 */
-	public Object saveState(FacesContext context) {
-		Object values[] = new Object[6];
-        values[0] = super.saveState(context);
-		values[1] = _amex;
-		values[2] = _discover;
-		values[3] = _mastercard;
-		values[4] = _visa;
-		values[5] = _none;
-		return values;
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.faces.component.StateHolder#restoreState(javax.faces.context.FacesContext, java.lang.Object)
-	 */
-	public void restoreState(FacesContext context, Object state) {
-		Object values[] = (Object[])state;
-        super.restoreState(context, values[0]);
-		_amex = ((Boolean) values[1]);
-		_discover = ((Boolean) values[2]);
-		_mastercard = ((Boolean) values[3]);
-		_visa = ((Boolean) values[4]);
-		_none = ((Boolean) values[5]);
-	}
 }

@@ -31,14 +31,15 @@ import org.apache.myfaces.validator.ValidatorBase;
  * 
  * @JSFValidator
  *   name = "s:validateUrl"
+ *   class = "org.apache.myfaces.custom.urlvalidator.UrlValidator"
  *   tagClass = "org.apache.myfaces.custom.urlvalidator.ValidateUrlTag"
  *   serialuidtag = "6041422002721046221L"
  *
  * @author Fabian Frederick
  *
- * @version $Revision: $ $Date: $
+ * @version $Revision$ $Date$
  */
-public class UrlValidator extends ValidatorBase {
+public abstract class AbstractUrlValidator extends ValidatorBase {
 
 	/**
 	 * <p>The standard converter id for this converter.</p>
@@ -49,11 +50,9 @@ public class UrlValidator extends ValidatorBase {
 	 * the maximum length check fails.</p>
 	 */
 	public static final String URL_MESSAGE_ID = "org.apache.myfaces.Url.INVALID";
-	
-	private org.apache.commons.validator.UrlValidator _urlValidator;
+	 
+	public AbstractUrlValidator(){
 
-	public UrlValidator(){
-	    _urlValidator = null;
 	}
 
 	/**
@@ -75,44 +74,49 @@ public class UrlValidator extends ValidatorBase {
 				return;
 			}
 			
-			if (_urlValidator == null){
-	            int options = 0;
-	            
-	            if (isAllow2Slashes())
-	            {
-	                options = options | org.apache.commons.validator.UrlValidator.ALLOW_2_SLASHES; 
-	            }
-	            
-	            if (isAllowAllSchemas())
-	            {
-	                options = options | org.apache.commons.validator.UrlValidator.ALLOW_ALL_SCHEMES;
-	            }
-	            
-	            String [] schemesList = getSchemesList(); 
-			    if (schemesList == null){
-			        _urlValidator = new 
-			            org.apache.commons.validator.UrlValidator(options);
-			    }
-			    else
-			    {
-                    _urlValidator = new 
-                        org.apache.commons.validator.UrlValidator(schemesList,options);
-			    }			     
-			}
+			org.apache.commons.validator.UrlValidator urlValidator = initValidator();
 			
-			if (!_urlValidator.isValid(value.toString())) {
+			if (!urlValidator.isValid(value.toString())) {
 				Object[] args = {value.toString()};
 				throw new ValidatorException(getFacesMessage(URL_MESSAGE_ID, args));
             }
 
 	}
 	
+	private org.apache.commons.validator.UrlValidator initValidator()
+	{
+        int options = 0;
+        
+        if (isAllow2Slashes())
+        {
+            options = options | org.apache.commons.validator.UrlValidator.ALLOW_2_SLASHES; 
+        }
+        
+        if (isAllowAllSchemas())
+        {
+            options = options | org.apache.commons.validator.UrlValidator.ALLOW_ALL_SCHEMES;
+        }
+        
+        String [] schemesList = getSchemesList(); 
+        org.apache.commons.validator.UrlValidator urlValidator = null;
+        if (schemesList == null){
+            urlValidator = new 
+                org.apache.commons.validator.UrlValidator(options);
+        }
+        else
+        {
+            urlValidator = new 
+                org.apache.commons.validator.UrlValidator(schemesList,options);
+        }
+        return urlValidator;
+	}
+	
 	private String[] getSchemesList(){
-	    if (_schemes == null)
+	    if (getSchemes() == null)
 	    {
 	        return null;
 	    }
-	    String [] list = _schemes.split(",");
+	    String [] list = getSchemes().split(",");
 	    String [] resp = new String [list.length];
 	    
 	    for (int i = 0; i < list.length; i++)
@@ -121,18 +125,8 @@ public class UrlValidator extends ValidatorBase {
 	    }	    
 	    return resp;	    
 	}
-
-    private String _schemes;
-    
-    private boolean _allow2Slashes = false;
-    
-    private boolean _allowAllSchemas = false;
     	
-	public void setSchemes(String _schemes)
-    {
-        this._schemes = _schemes;
-        _urlValidator =  null;
-    }
+	public abstract void setSchemes(String _schemes);
 
 	/**
 	 *  CSV values that indicates the set of schemes to check this url.
@@ -143,63 +137,27 @@ public class UrlValidator extends ValidatorBase {
 	 * 
 	 * @JSFProperty
 	 */
-    public String getSchemes()
-    {
-        return _schemes;
-    }
+    public abstract String getSchemes();
 
-    public void setAllow2Slashes(boolean _allow2Slashes)
-    {
-        this._allow2Slashes = _allow2Slashes;
-        _urlValidator =  null;
-    }
+    public abstract void setAllow2Slashes(boolean _allow2Slashes);
 
     /**
      *  Allow two slashes in the path component of the URL.
      * 
      * @JSFProperty
+     *   defaultValue = "false"
      */
-    public boolean isAllow2Slashes()
-    {
-        return _allow2Slashes;
-    }
+    public abstract boolean isAllow2Slashes();
 
-    public void setAllowAllSchemas(boolean _allowAllSchemas)
-    {
-        this._allowAllSchemas = _allowAllSchemas;
-        _urlValidator = null;
-    }
+    public abstract void setAllowAllSchemas(boolean _allowAllSchemas);
 
     /**
      *  Allows all validly formatted schemes to pass validation instead of 
      *  supplying a set of valid schemes.
      *  
      * @JSFProperty
+     *   defaultValue = "false"
      */
-    public boolean isAllowAllSchemas()
-    {
-        return _allowAllSchemas;
-    }
-
-    // -------------------------------------------------------- StateholderIF
-
-    public Object saveState(FacesContext context) {
-        Object[] state = new Object[5];
-        state[0] = super.saveState(context);
-        state[1] = _schemes;
-        state[2] = Boolean.valueOf(_allow2Slashes);
-        state[3] = saveAttachedState(context, _urlValidator);
-        state[4] = Boolean.valueOf(_allowAllSchemas);
-        return state;
-    }
-
-    public void restoreState(FacesContext context, Object state) {
-        Object values[] = (Object[])state;
-        super.restoreState(context, values[0]);
-        _schemes = (String)values[1];
-        _allow2Slashes = ((Boolean)values[2]).booleanValue();
-        _urlValidator = (org.apache.commons.validator.UrlValidator) restoreAttachedState(context, values[3]);
-        _allowAllSchemas = ((Boolean)values[4]).booleanValue();
-    }
+    public abstract boolean isAllowAllSchemas();
 
 }

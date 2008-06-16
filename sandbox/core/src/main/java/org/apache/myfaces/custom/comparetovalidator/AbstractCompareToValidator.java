@@ -123,13 +123,14 @@ import org.apache.myfaces.validator.ValidatorBase;
  *   
  * @JSFValidator
  *   name = "s:validateCompareTo"
+ *   class = "org.apache.myfaces.custom.comparetovalidator.CompareToValidator"
  *   tagClass = "org.apache.myfaces.custom.comparetovalidator.ValidateCompareToTag"
  *   serialuidtag = "-8879289182242196266L"
  *   
  * @author Mike Kienenberger (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class CompareToValidator extends ValidatorBase {
+public abstract class AbstractCompareToValidator extends ValidatorBase {
     /**
      * <p>The standard converter id for this converter.</p>
      */
@@ -142,15 +143,9 @@ public class CompareToValidator extends ValidatorBase {
     // public static final String COMPARE_TO_MESSAGE_ID = "org.apache.myfaces.CompareTo.INVALID";
     public static final String COMPARE_TO_MESSAGE_ID = "{0} value <{1}> must be {2} {3} value <{4}>";
 
-    public CompareToValidator(){
+    public AbstractCompareToValidator(){
         super();
     }
-
-    //the foreign component_id on which the validation is based.
-    protected String _foreignComponentName = null;
-    protected String _operator = null;
-    protected Object _comparator = null;
-    protected String _alternateOperatorName = null;
 
     public static final String OPERATOR_EQUALS = "eq";
     public static final String OPERATOR_NOT_EQUALS = "ne";
@@ -381,18 +376,12 @@ public class CompareToValidator extends ValidatorBase {
      * @JSFProperty
      * @return the foreign component_id, on which a value should be validated
      */
-    public String getFor() {
-        if (_foreignComponentName != null) return _foreignComponentName;
-        ValueBinding vb = getValueBinding("for");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
+    public abstract String getFor();
 
     /**
      * @param string the foreign component_id, on which a value should be validated
      */
-    public void setFor(String string) {
-        _foreignComponentName = string;
-    }
+    public abstract void setFor(String string);
 
     /**
      * Operator for comparison: equals: eq, ==, =, not equals: ne, !=, greater than: gt, >, less than: lt, <, greater than or equals: ge, >=, less than or equals: le, <=
@@ -400,17 +389,9 @@ public class CompareToValidator extends ValidatorBase {
      * @JSFProperty
      * @return
      */
-    public String getOperator()
-    {
-        if (_operator != null) return _operator;
-        ValueBinding vb = getValueBinding("operator");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
+    public abstract String getOperator();
 
-    public void setOperator(String operator)
-    {
-        this._operator = operator;
-    }
+    public abstract void setOperator(String operator);
 
     /**
      * Value binding for an alternate java.util.Comparator object if component 
@@ -419,17 +400,9 @@ public class CompareToValidator extends ValidatorBase {
      * @JSFProperty
      * @return
      */
-    public Object getComparator()
-    {
-        if (_comparator != null) return _comparator;
-        ValueBinding vb = getValueBinding("comparator");
-        return vb != null ? (Comparator)vb.getValue(getFacesContext()) : null;
-    }
+    public abstract Object getComparator();
 
-    public void setComparator(Object comparator)
-    {
-        this._comparator = comparator;
-    }
+    public abstract void setComparator(Object comparator);
 
     /**
      * custom operator name in error message (ie "after" instead of "greater than" for dates)
@@ -437,38 +410,9 @@ public class CompareToValidator extends ValidatorBase {
      * @JSFProperty
      * @return
      */
-    public String getAlternateOperatorName()
-    {
-        if (_alternateOperatorName != null) return _alternateOperatorName;
-        ValueBinding vb = getValueBinding("alternateOperatorName");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : null;
-    }
+    public abstract String getAlternateOperatorName();
 
-    public void setAlternateOperatorName(String alternateOperatorName)
-    {
-        this._alternateOperatorName = alternateOperatorName;
-    }
-
-    // -------------------------------------------------------- StateholderIF
-
-    public Object saveState(FacesContext context) {
-        Object values[] = new Object[5];
-        values[0] = super.saveState(context);
-        values[1] = _foreignComponentName;
-        values[2] = _operator;
-        values[3] = _comparator;
-        values[4] = _alternateOperatorName;
-        return values;
-    }
-
-    public void restoreState(FacesContext context, Object state) {
-        Object values[] = (Object[])state;
-        super.restoreState(context, values[0]);
-        _foreignComponentName = (String) values[1];
-        _operator = (String) values[2];
-        _comparator = values[3];
-        _alternateOperatorName = (String) values[4];
-    }
+    public abstract void setAlternateOperatorName(String alternateOperatorName);
 
     // ---------------- Borrowed to convert foreign submitted values
 
