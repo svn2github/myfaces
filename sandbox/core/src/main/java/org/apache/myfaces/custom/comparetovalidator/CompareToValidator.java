@@ -25,8 +25,6 @@ import javax.faces.FactoryFinder;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -276,7 +274,22 @@ public class CompareToValidator extends ValidatorBase {
         }
         else
         {
-            foreignValue = getConvertedValueNonValid(facesContext, foreignComponent);
+            try 
+            {
+                foreignValue = getConvertedValueNonValid(facesContext, foreignComponent);
+            }
+            catch(ConverterException e)
+            {
+                /*
+                 * If the value cannot be converted this should return,
+                 * because does not have sense compare one
+                 * foreign invalid value with other value.
+                 * this force end the validation but do not continue
+                 * with the next phases, because the converter
+                 * of the foreign component fails and show a validation error.
+                 */
+                return;
+            }
         }
 
         // Don't perform validation if the foreign value is null
@@ -288,36 +301,13 @@ public class CompareToValidator extends ValidatorBase {
         String operator = getOperatorForString(getOperator());
 
         String alternateOperatorName = getAlternateOperatorName();
-        Object[] args = new Object[5];
-        args[0] = uiComponent.getId();
-        if (uiComponent instanceof UIInput)
-        {
-          UIInput uiInput = (UIInput) uiComponent;
-          args[1] = uiInput.getSubmittedValue();
-        }
-        else
-        {   
-          args[1] = value.toString();
-        }
-        args[2] = (alternateOperatorName == null) ? nameForOperator(operator) : alternateOperatorName;
-        args[3] = foreignComponent.getId();
-        if (foreignComponent instanceof UIOutput)
-        {
-          UIOutput foreignUIOutpout = (UIOutput) foreignComponent;
-          Converter converter = foreignUIOutpout.getConverter();
-          if (converter!=null)
-          {
-            args[4] = converter.getAsString(facesContext, foreignComponent, foreignUIOutpout.getValue());
-          }
-          else
-          {
-            args[4] = (foreignValue == null) ? foreignComponent.getId() : foreignValue.toString();
-          }
-        }
-        else
-        {
-          args[4] = (foreignValue == null) ? foreignComponent.getId() : foreignValue.toString();
-        }
+        Object[] args = {
+                uiComponent.getId(),
+                value.toString(),
+                (alternateOperatorName == null) ? nameForOperator(operator) : alternateOperatorName,
+                foreignComponent.getId(),
+                (foreignValue == null) ? foreignComponent.getId() : foreignValue.toString()
+        };
 
         String message = getMessage();
         if (null == message)  message = COMPARE_TO_MESSAGE_ID;
@@ -528,6 +518,7 @@ public class CompareToValidator extends ValidatorBase {
     // --------------------- borrowed and modified from UIInput ------------
 
     protected Object getConvertedValueNonValid(FacesContext facesContext, UIComponent component)
+        throws ConverterException
     {
         Object componentValueObject;
         Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
@@ -537,26 +528,25 @@ public class CompareToValidator extends ValidatorBase {
         }
         else
         {
-            try
+            Renderer renderer = getRenderer(facesContext, component);
+            if (renderer != null)
             {
-                Renderer renderer = getRenderer(facesContext, component);
-                if (renderer != null)
-                {
-                    componentValueObject = renderer.getConvertedValue(facesContext, component, submittedValue);
-                }
-                else if (submittedValue instanceof String)
-                {
-                    Converter converter = findUIOutputConverter(facesContext, component);
-                    if (converter != null)
-                    {
-                        componentValueObject = converter.getAsObject(facesContext, component, (String)submittedValue);
-                    }
-                }
+                componentValueObject = renderer.getConvertedValue(facesContext, component, submittedValue);
             }
-            catch (ConverterException e)
+            else if (submittedValue instanceof String)
             {
+                Converter converter = findUIOutputConverter(facesContext, component);
+                if (converter != null)
+                {
+                    componentValueObject = converter.getAsObject(facesContext, component, (String)submittedValue);
+                }
+                else
+                {
+                    componentValueObject = submittedValue;
+                }
+            }else{
+                componentValueObject = submittedValue;
             }
-            componentValueObject = submittedValue;
         }
         return componentValueObject;
     }
