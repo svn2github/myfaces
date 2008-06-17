@@ -52,11 +52,11 @@
 #foreach( $component in $componentList )
 #if ($modelIds.contains($component.modelId) 
     && ($component.name))
-#if ($converter.converterId) 
+#if ($component.converterId) 
     <tag>
         <tag-name>$utils.getTagName($component.name)</tag-name>
         <converter>
-            <converter-id>$converter.converterId</converter-id>
+            <converter-id>$component.converterId</converter-id>
         </converter>
     </tag>
 #end
