@@ -66,6 +66,7 @@ public abstract class AbstractCSVValidator extends ValidatorBase {
 
 	/**
 	 * @JSFProperty
+	 *   literalOnly = "true"
 	 * @return the separator character to separate values
 	 */
 	public abstract String getSeparator();

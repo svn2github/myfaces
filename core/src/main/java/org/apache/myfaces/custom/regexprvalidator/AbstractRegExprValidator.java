@@ -81,6 +81,7 @@ public abstract class AbstractRegExprValidator extends ValidatorBase {
 	 * the pattern, which is the base of the validation
 	 * 
 	 * @JSFProperty
+	 *   literalOnly = "true"
 	 * @return the pattern, on which a value should be validated
 	 */
     public abstract String getPattern();
