@@ -122,6 +122,17 @@ public class $utils.getClassFromFullClass($validator.tagClass)
                     validator.${utils.getPrefixedPropertyName("set",$property.name)}(
                         ($property.className)  ${field}Value.toString());                
                 }
+#elseif ($property.className == "java.lang.String[]")
+                try
+                {
+                    String[] value = org.apache.myfaces.commons.util.TagUtils.getStringArray(${field}.getValue(facesContext.getELContext()));
+                    validator.${utils.getPrefixedPropertyName("set",$property.name)}(value);
+                }
+                catch (java.text.ParseException pe)
+                {
+                  throw new JspException(
+                    pe.getMessage() + ": " + "Position " + pe.getErrorOffset());
+                }
 #else
                 validator.${utils.getPrefixedPropertyName("set",$property.name)}(($property.className)  ${field}.getValue(facesContext.getELContext()));
 #end
