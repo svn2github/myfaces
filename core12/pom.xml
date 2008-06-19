@@ -1,4 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--
+  - Tomahawk code built to use JSF1.2 features.
+  -
+  - Because the JSF1.2 API is mostly backwards-compatible with the JSF1.1 API, Tomahawk can be
+  - compiled for JSF1.1 and run on JSF 1.2. However there are a few JSF1.2-specific features
+  - that this does not take advantage of.
+  -
+  - In particular, JSF1.2 can assume a newer version of JSP is available, and that provides the
+  - following benefits:
+  -  * JSP TLDs can now declare whether attributes support expressions or not. Compile-time
+  -    errors and IDE support are improved.
+  -
+  - Of course JSF1.2 code can take advantage of a lot more (Java1.5 generics, annotations, 
+  - new APIs, etc). However that would require splitting the Tomahawk code into two branches,
+  - and the maintenance issues associated with that are not desirable. So this project mostly
+  - reuses the "core" tomahawk source code (which is written for JSF1.1 and java1.4) then
+  - recreates the associated configuration files (.tld, faces-config.xml, etc). The source
+  - code *is* compiled using java1.5 (while tomahawk 1.1.x releases of course use java1.4).
+  - The "1.2.x" branch of the myfaces shared code is used rather than the "1.1.x" branch.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.myfaces.tomahawk</groupId>
@@ -270,9 +294,16 @@
     </resources>
 
     <plugins>
-      <!-- the following will add the unpacked shared sources directory as source directory into the pom,
-           so also the shared sources are automaticaly included by the attach source plugin -->
       <plugin>
+        <!-- 
+          - Add two new source directories to the compile path. Other plugins will write files into
+          - those directories. Note that when building the source jars, these directories are
+          - automatically used too.
+          -
+          - * shared_sources: contains code from the 1.2.x branch of the myfaces-shared project
+          - * tomahawk11_sources: contains all the source code from the "main" branch of tomahawk,
+          -   which is written to be JSF1.1-compatible.
+          -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
@@ -301,7 +332,7 @@
         <artifactId>myfaces-builder-plugin</artifactId>
         <version>1.0.1-SNAPSHOT</version>
         <executions>
-	      <execution>
+          <execution>
             <id>unpack-tomahawk</id>
             <phase>generate-sources</phase>
             <!-- <phase>process-resources</phase> -->
@@ -536,14 +567,14 @@
         </executions>
       </plugin>
       <plugin>
-      	<artifactId>maven-source-plugin</artifactId>
-      	<executions>
-      		<execution>
-      			<id>attach-source</id>
-      			<goals>
-      				<goal>jar</goal>
-      			</goals>
-      		</execution>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-source</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
       	</executions>
       </plugin>
 
