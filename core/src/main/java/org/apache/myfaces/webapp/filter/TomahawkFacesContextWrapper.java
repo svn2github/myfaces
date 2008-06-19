@@ -38,6 +38,8 @@ import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
+import org.apache.myfaces.webapp.filter.portlet.PortletExternalContextWrapper;
+import org.apache.myfaces.webapp.filter.servlet.ServletExternalContextWrapper;
 
 /**
  * @author Martin Marinschek
@@ -55,6 +57,16 @@ public class TomahawkFacesContextWrapper extends FacesContext {
         //if(delegate.getExternalContext().getResponse() instanceof PortletResponse) {
         if(ExternalContextUtils.getRequestType(delegate.getExternalContext()).isPortlet()) {
             //todo do something here - with the multipart-wrapper. rest should be fine
+            //javax.portlet.PortletRequest portletRequest = (javax.portlet.PortletRequest) delegate.getExternalContext().getRequest();
+            
+            //Object portletResponse = delegate.getExternalContext().getResponse();
+            //Object portletRequest = delegate.getExternalContext().getRequest();
+
+            //Object extendedRequest = portletRequest;
+            //Object extendedResponse = portletResponse;
+            
+            //boolean multipartContent = false;            
+            
             AddResource addResource= AddResourceFactory.getInstance(this);
             addResource.responseStarted();
 
@@ -64,6 +76,9 @@ public class TomahawkFacesContextWrapper extends FacesContext {
                         " Use for org.apache.myfaces.ADD_RESOURCE_CLASS the value"+
                         " org.apache.myfaces.renderkit.html.util.NonBufferingAddResource.");
             }
+	        
+	        //externalContextDelegate = new PortletExternalContextWrapper(
+	        //        delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);
         }
         else {
             HttpServletResponse httpResponse = (HttpServletResponse) delegate.getExternalContext().getResponse();
@@ -73,9 +88,13 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             HttpServletResponse extendedResponse = httpResponse;
 
             // For multipart/form-data requests
+            boolean multipartContent = false;
             if (FileUpload.isMultipartContent(httpRequest)) {
-                extendedRequest = new MultipartRequestWrapper(httpRequest, /*todo _uploadMaxFileSize*/-1,
-                        /*todo _uploadThresholdSize*/-1, /*todo _uploadRepositoryPath*/null);
+                multipartContent = true;
+                ExtensionsFilterConfig config = ExtensionsFilterConfig.
+                    getExtensionsFilterConfig(delegate.getExternalContext());
+                extendedRequest = new MultipartRequestWrapper(httpRequest, config.getUploadMaxFileSize(),
+                        config.getUploadThresholdSize(), config.getUploadRepositoryPath());
             }
 
             AddResource addResource= AddResourceFactory.getInstance(this);
@@ -87,11 +106,11 @@ public class TomahawkFacesContextWrapper extends FacesContext {
 		        extendedResponse = extensionsResponseWrapper;
             }
 
-            externalContextDelegate = new ExternalContextWrapper(
-                    delegate.getExternalContext(), extendedRequest, extendedResponse);
+            externalContextDelegate = new ServletExternalContextWrapper(
+                    delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);            
         }
     }
-
+    
     /**
      * This method uses reflection to call the method of the delegated
      * FacesContext getELContext, present on 1.2. This should be done

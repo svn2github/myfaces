@@ -196,9 +196,10 @@ public class ExtensionsFilter implements Filter {
         HttpServletRequest extendedRequest = httpRequest;
 
         // For multipart/form-data requests
-        if (FileUpload.isMultipartContent(httpRequest)) {
-            extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
-        }
+        // This is done by TomahawkFacesContextWrapper
+        //if (FileUpload.isMultipartContent(httpRequest)) {
+        //    extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
+        //}
 
         // Serve resources
         AddResource addResource;
