@@ -4,7 +4,7 @@
 ## Note that there are only one type of validator generation:
 ##  * "subclass mode" (use annotated class as a parent class)
 ##
-## Variable $validator refers to a ComponentMeta object to process
+## Variable $validator refers to a ValidatorMeta object to process
 ## Variable $utils refers to an instance of MyfacesUtils.
 ##
 ## When "template mode" is being used then variable $innersource
@@ -43,7 +43,7 @@ $utils.importTagClasses($validator)
 #else
 #set ($generatedClassParent = $validator.sourceClassName)
 #end
-// Generated from class ${component.sourceClassName}.
+// Generated from class ${validator.sourceClassName}.
 //
 // WARNING: This file was automatically generated. Do not edit it directly,
 //          or you will lose your changes.
