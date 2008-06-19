@@ -31,7 +31,7 @@ public class $utils.getClassFromFullClass($validator.tagClass)
 #if (${validator.tagSuperclass})
     extends ${validator.tagSuperclass}
 #else
-    extends javax.faces.webapp.ValidatorTag;
+    extends javax.faces.webapp.ValidatorTag
 #end
 {
 #if ($validator.serialuidtag)
