@@ -252,7 +252,8 @@ public class ExtensionsFilterConfig
                 }
             }
             
-            if ("org.apache.myfaces.webapp.filter.ExtensionsFilter".equals(filterClass))
+            if ("org.apache.myfaces.webapp.filter.ExtensionsFilter".equals(filterClass) || 
+                "org.apache.myfaces.component.html.util.ExtensionsFilter".equals(filterClass))
             {
                 //Read extensions filter params
                 String param = (String)initParams.get("uploadMaxFileSize");
