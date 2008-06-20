@@ -37,9 +37,11 @@
     <h:outputText value="test" />
     <t:div id="subnavigation_outer">
     <t:div id="subnavigation">
+    <h:form>
     <t:panelNavigation2 id="nav1" layout="list" itemClass="mypage" activeItemClass="selected" openItemClass="selected" >
         <t:navigationMenuItems value="#{navigationMenu.panelNavigationItems}" />
     </t:panelNavigation2>
+    </h:form>
     </t:div>
     </t:div>
 
