@@ -27,6 +27,7 @@ import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
@@ -239,12 +240,49 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
         return getLocalActiveOnViewIds();
     }
 
+    //START isRendered hack
+    //UISelectItem and UISelectItems does not use rendered 
+    //(inherited from UIComponentBase)
+    //but this components use it, so we need to implement it
+    //here (isInherited hack does not work because custom code 
+    //is added on isRendered, so the variable must be defined
+    //here).
+    
+    private static final boolean DEFAULT_RENDERED = true;
+    
+    private Boolean _rendered = null;
+    
     public boolean isRendered() {
         if (!UserRoleUtils.isVisibleOnUserRole(this))
             return false;
-        return super.isRendered();
+        //return super.isRendered();
+        if (_rendered != null) return _rendered.booleanValue();
+        ValueBinding vb = getValueBinding("rendered");
+        Boolean v = vb != null ? (Boolean)vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : DEFAULT_RENDERED;
+    }
+    
+    public void setRendered(boolean rendered)
+    {
+        _rendered = Boolean.valueOf(rendered);
+    }
+    
+    public Object saveState(FacesContext facesContext)
+    {
+        Object[] values = new Object[2];
+        values[0] = super.saveState(facesContext);
+        values[1] = _rendered;
+        return values; 
     }
 
+    public void restoreState(FacesContext facesContext, Object state)
+    {
+        Object[] values = (Object[])state;
+        super.restoreState(facesContext,values[0]);
+        _rendered = (java.lang.Boolean) values[1];
+    }
+    //END isRendered hack
+    
     public void toggleActive(FacesContext context) {
         StringTokenizer tokenizer = new StringTokenizer(this.getActiveOnViewIdsDirectly(), ";");
         while (tokenizer.hasMoreTokens()) {

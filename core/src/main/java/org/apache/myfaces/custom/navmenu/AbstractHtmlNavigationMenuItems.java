@@ -19,6 +19,10 @@
 package org.apache.myfaces.custom.navmenu;
 
 import javax.faces.component.UISelectItems;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.component.UserRoleUtils;
 
 /**
  * A tree of menu items as returned by a value-expression. 
@@ -27,12 +31,24 @@ import javax.faces.component.UISelectItems;
  * 
  * @JSFComponent
  *   name = "t:navigationMenuItems"
+ *   class = "org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItems"
  *   bodyContent = "JSP"
  *   tagClass = "org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItemsTag" 
  */
-public class HtmlNavigationMenuItems extends UISelectItems
+public abstract class AbstractHtmlNavigationMenuItems extends UISelectItems
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlNavigationMenuItems";
     public static final String COMPONENT_FAMILY = "javax.faces.SelectItems";
 
+    /**
+     * A boolean value that indicates whether this component should be rendered.
+     * Default value: true.
+     * 
+     * @JSFProperty
+     *   inherited= "false"
+     *   tagExcluded= "true"
+     *   defaultValue = "true"
+     */
+    public abstract boolean isRendered();
+    
 }
