@@ -18,14 +18,16 @@
  */
 package org.apache.myfaces.custom.stylesheet;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
+
+import org.apache.myfaces.custom.stylesheet.TextResourceFilter.ResourceInfo;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * @JSFRenderer
@@ -48,6 +50,16 @@ public class StylesheetRenderer extends HtmlRenderer
 		}
 		Stylesheet stylesheet = (Stylesheet) component;
 		ResponseWriter writer = context.getResponseWriter();
+		
+		//A path starting with / or not is the same for this component,
+		//because ctx.getExternalContext().getResourceAsStream(file);
+		//or ServletContext.getResourceAsStream() specifies that
+		//ALL resources must start with '/'
+		String path = stylesheet.getPath(); 
+        if (path.startsWith("/"))
+        {
+            path = path.substring(1);
+        }	
 
 		if (stylesheet.isInline())
 		{
@@ -63,11 +75,12 @@ public class StylesheetRenderer extends HtmlRenderer
 			Object text;
 			if (stylesheet.isFiltered())
 			{
-				text = TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, stylesheet.getPath());
+			    ResourceInfo info = TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path); 
+				text = info.getText();
 			}
 			else
 			{
-				text = RendererUtils.loadResourceFile(context, stylesheet.getPath());
+				text = RendererUtils.loadResourceFile(context,'/'+ path);
 			}
 			if (text != null)
 			{
@@ -90,12 +103,12 @@ public class StylesheetRenderer extends HtmlRenderer
 			String stylesheetPath;
 			if (stylesheet.isFiltered())
 			{
-				TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, stylesheet.getPath());
-				stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(context, TextResourceFilterProvider.class, stylesheet.getPath(), true);
+				TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path);
+				stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(context, TextResourceFilterProvider.class, path, true);
 			}
 			else
 			{
-				stylesheetPath = context.getApplication().getViewHandler().getResourceURL(context, stylesheet.getPath());
+				stylesheetPath = context.getApplication().getViewHandler().getResourceURL(context, path);
 			}
 
 			writer.writeURIAttribute("href", stylesheetPath, "path");
