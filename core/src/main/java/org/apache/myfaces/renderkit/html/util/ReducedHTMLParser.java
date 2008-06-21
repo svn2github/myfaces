@@ -351,21 +351,6 @@ public class ReducedHTMLParser
                 return;
             }
 
-             // Track line number for error messages.
-             if (c == '\r')
-             {
-                 ++_lineNumber;
-                 crSeen = true;
-             }
-             else if ((c == '\n') && !crSeen)
-             {
-                 ++_lineNumber;
-             }
-             else
-             {
-                 crSeen = false;
-             }
-
             // Track line number for error messages.
             if (c == '\r')
             {
