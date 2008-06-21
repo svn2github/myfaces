@@ -280,6 +280,9 @@ public class AddResourceFactory
 		return addResource;
 	}
 
+	/**
+	 * @deprecated use getInstance(HttpServletRequest request, ServletContext servletContext) instead
+	 */
 	public static AddResource getInstance(HttpServletRequest request)
 	{
 		ServletContext servletContext = request
@@ -293,6 +296,19 @@ public class AddResourceFactory
 		// check the environment
 		//
 		return addResource;
+	}
+	
+	public static AddResource getInstance(HttpServletRequest request, ServletContext servletContext)
+	{
+        Map requestMap = new RequestMapWrapper(request);
+        AddResource addResource = getInstance(servletContext, requestMap, request
+            .getContextPath(), MyfacesConfig
+            .getAddResourceClassFromServletContext(servletContext));
+        //
+        // this will be called by the ExtensionsFilter itself, so no need to
+        // check the environment
+        //
+        return addResource;	    
 	}
 
 	/**

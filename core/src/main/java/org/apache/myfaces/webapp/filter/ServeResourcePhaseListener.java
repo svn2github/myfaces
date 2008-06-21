@@ -84,7 +84,7 @@ public class ServeResourcePhaseListener implements PhaseListener {
 
                 try
                 {
-                    addResource= AddResourceFactory.getInstance(request);
+                    addResource= AddResourceFactory.getInstance(request,(ServletContext) fc.getExternalContext().getContext());
                     if( addResource.isResourceUri(context, request ) ){
                         addResource.serveResource(context, request, response);
                         event.getFacesContext().responseComplete();
