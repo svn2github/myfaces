@@ -43,169 +43,169 @@ import java.util.Collections;
  */
 public class TextResourceFilter implements Serializable
 {
-	private static final Log log = LogFactory.getLog(TextResourceFilter.class);
+    private static final Log log = LogFactory.getLog(TextResourceFilter.class);
 
-	private final static String CONTEXT_KEY = TextResourceFilter.class.getName() + ".INSTANCE";
+    private final static String CONTEXT_KEY = TextResourceFilter.class.getName() + ".INSTANCE";
 
-	private final Map filteredResources = Collections.synchronizedMap(new TreeMap());
+    private final Map filteredResources = Collections.synchronizedMap(new TreeMap());
 
-	public static class ResourceInfo
-	{
-		private final long lastModified;
-		private final String text;
+    public static class ResourceInfo
+    {
+        private final long lastModified;
+        private final String text;
 
-		protected ResourceInfo(long lastModified, String text)
-		{
-			this.lastModified = lastModified;
-			this.text = text;
-		}
+        protected ResourceInfo(long lastModified, String text)
+        {
+            this.lastModified = lastModified;
+            this.text = text;
+        }
 
-		public long getLastModified()
-		{
-			return lastModified;
-		}
+        public long getLastModified()
+        {
+            return lastModified;
+        }
 
-		public String getText()
-		{
-			return text;
-		}
+        public String getText()
+        {
+            return text;
+        }
 
-		public int getSize()
-		{
-			return text.length();
-		}
-	}
+        public int getSize()
+        {
+            return text.length();
+        }
+    }
 
-	protected TextResourceFilter()
-	{
-	}
+    protected TextResourceFilter()
+    {
+    }
 
-	protected static TextResourceFilter create()
-	{
-		return new TextResourceFilter();
-	}
+    protected static TextResourceFilter create()
+    {
+        return new TextResourceFilter();
+    }
 
-	/**
-	 * get the application stylesheet filter
-	 */
-	public static TextResourceFilter getInstance(ServletContext context)
-	{
-		TextResourceFilter filterText = (TextResourceFilter) context.getAttribute(CONTEXT_KEY);
-		if (filterText == null)
-		{
-			filterText = create();
-			context.setAttribute(CONTEXT_KEY, filterText);
-		}
+    /**
+     * get the application stylesheet filter
+     */
+    public static TextResourceFilter getInstance(ServletContext context)
+    {
+        TextResourceFilter filterText = (TextResourceFilter) context.getAttribute(CONTEXT_KEY);
+        if (filterText == null)
+        {
+            filterText = create();
+            context.setAttribute(CONTEXT_KEY, filterText);
+        }
 
-		return filterText;
-	}
+        return filterText;
+    }
 
-	/**
-	 * get the application stylesheet filter
-	 */
-	public static TextResourceFilter getInstance(FacesContext context)
-	{
-		TextResourceFilter filterText = (TextResourceFilter) context.getExternalContext().getApplicationMap().get(CONTEXT_KEY);
-		if (filterText == null)
-		{
-			filterText = create();
-			context.getExternalContext().getApplicationMap().put(CONTEXT_KEY, filterText);
-		}
+    /**
+     * get the application stylesheet filter
+     */
+    public static TextResourceFilter getInstance(FacesContext context)
+    {
+        TextResourceFilter filterText = (TextResourceFilter) context.getExternalContext().getApplicationMap().get(CONTEXT_KEY);
+        if (filterText == null)
+        {
+            filterText = create();
+            context.getExternalContext().getApplicationMap().put(CONTEXT_KEY, filterText);
+        }
 
-		return filterText;
-	}
+        return filterText;
+    }
 
-	/**
-	 * gets the filtered content of the resource pointing to with <code>path</code>
-	 *
-	 * This will <b>not</b> filter the resource if its not already done before.
-	 */
-	public ResourceInfo getFilteredResource(String path)
-	{
-		ResourceInfo filteredResource = (ResourceInfo) filteredResources.get(path);
-		if (filteredResource == null)
-		{
-			return null;
-		}
+    /**
+     * gets the filtered content of the resource pointing to with <code>path</code>
+     *
+     * This will <b>not</b> filter the resource if its not already done before.
+     */
+    public ResourceInfo getFilteredResource(String path)
+    {
+        ResourceInfo filteredResource = (ResourceInfo) filteredResources.get(path);
+        if (filteredResource == null)
+        {
+            return null;
+        }
 
-		return filteredResource;
-	}
+        return filteredResource;
+    }
 
-	/**
-	 * <p>
-	 * filteres the resource
-	 * </p>
-	 *
-	 * Notice: This method is not synchronized for performance reasons (the map is)
-	 * the worst case is that we filter a resource twice the first time wich is not
-	 * a problem
-	 */
-	public ResourceInfo getOrCreateFilteredResource(FacesContext context, String path) throws IOException
-	{
-		if (path.startsWith("/"))
-		{
-			// the resource loader do not use the leading "/", so strip it here
-			path = path.substring(1);
-		}
+    /**
+     * <p>
+     * filteres the resource
+     * </p>
+     *
+     * Notice: This method is not synchronized for performance reasons (the map is)
+     * the worst case is that we filter a resource twice the first time wich is not
+     * a problem
+     */
+    public ResourceInfo getOrCreateFilteredResource(FacesContext context, String path) throws IOException
+    {
+        if (path.startsWith("/"))
+        {
+            // the resource loader do not use the leading "/", so strip it here
+            path = path.substring(1);
+        }
 
-		ResourceInfo filteredResource = getFilteredResource(path);
-		if (filteredResource != null)
-		{
-			return filteredResource;
-		}
+        ResourceInfo filteredResource = getFilteredResource(path);
+        if (filteredResource != null)
+        {
+            return filteredResource;
+        }
 
-		//Tomcat ASF Bugzilla – Bug 43241
-		//ServletContext.getResourceAsStream() does not follow API spec
-		//ALL resources must start with '/' 
-		String text = RendererUtils.loadResourceFile(context,'/' + path);
-		if (text == null)
-		{
-			// avoid loading the errorneous resource over and over again
-			text = "";
-		}
+        //Tomcat ASF Bugzilla ï¿½ Bug 43241
+        //ServletContext.getResourceAsStream() does not follow API spec
+        //ALL resources must start with '/' 
+        String text = RendererUtils.loadResourceFile(context,'/' + path);
+        if (text == null)
+        {
+            // avoid loading the errorneous resource over and over again
+            text = "";
+        }
 
-		StringWriter stringWriter = new StringWriter();
-		PrintWriter writer = new PrintWriter(stringWriter);
-		BufferedReader reader = null;
-		try
-		{
-			reader = new BufferedReader(new StringReader(text.toString()));
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        BufferedReader reader = null;
+        try
+        {
+            reader = new BufferedReader(new StringReader(text.toString()));
 
-			String line;
-			while ((line = reader.readLine()) != null)
-			{
-				int pos = line.indexOf("#{");
-				if (pos > -1 && line.indexOf("}", pos) > -1)
-				{
-					line = RendererUtils.getStringValue(context, context.getApplication().createValueBinding(line));
-				}
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                int pos = line.indexOf("#{");
+                if (pos > -1 && line.indexOf("}", pos) > -1)
+                {
+                    line = RendererUtils.getStringValue(context, context.getApplication().createValueBinding(line));
+                }
 
-				if (line != null)
-				{
-					writer.println(line);
-				}
-			}
-		}
-		finally
-		{
-			if (reader != null)
-			{
-				try
-				{
-					reader.close();
-				}
-				catch (IOException e)
-				{
-					log.warn(e.getLocalizedMessage(), e);
-				}
-			}
+                if (line != null)
+                {
+                    writer.println(line);
+                }
+            }
+        }
+        finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                }
+                catch (IOException e)
+                {
+                    log.warn(e.getLocalizedMessage(), e);
+                }
+            }
 
-			writer.close();
-		}
+            writer.close();
+        }
 
-		filteredResource = new ResourceInfo(System.currentTimeMillis(), stringWriter.toString());
-		filteredResources.put(path, filteredResource);
+        filteredResource = new ResourceInfo(System.currentTimeMillis(), stringWriter.toString());
+        filteredResources.put(path, filteredResource);
 
-		return filteredResource;
-	}
+        return filteredResource;
+    }
 }

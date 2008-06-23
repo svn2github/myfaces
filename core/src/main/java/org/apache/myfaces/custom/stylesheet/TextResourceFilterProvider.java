@@ -30,31 +30,31 @@ import java.io.InputStream;
  */
 public class TextResourceFilterProvider implements ResourceProvider
 {
-	public boolean exists(ServletContext context, String resource)
-	{
-		return TextResourceFilter.getInstance(context).getFilteredResource(resource) != null;
-	}
+    public boolean exists(ServletContext context, String resource)
+    {
+        return TextResourceFilter.getInstance(context).getFilteredResource(resource) != null;
+    }
 
-	public int getContentLength(ServletContext context, String resource) throws IOException
-	{
-		return TextResourceFilter.getInstance(context).getFilteredResource(resource).getSize();
-	}
+    public int getContentLength(ServletContext context, String resource) throws IOException
+    {
+        return TextResourceFilter.getInstance(context).getFilteredResource(resource).getSize();
+    }
 
-	public long getLastModified(ServletContext context, String resource) throws IOException
-	{
-		return TextResourceFilter.getInstance(context).getFilteredResource(resource).getLastModified();
-	}
+    public long getLastModified(ServletContext context, String resource) throws IOException
+    {
+        return TextResourceFilter.getInstance(context).getFilteredResource(resource).getLastModified();
+    }
 
-	public InputStream getInputStream(ServletContext context, String resource) throws IOException
-	{
-		return new ByteArrayInputStream(
-			TextResourceFilter.getInstance(context).getFilteredResource(resource).getText().getBytes(
-				getEncoding(context, resource)
-			));
-	}
+    public InputStream getInputStream(ServletContext context, String resource) throws IOException
+    {
+        return new ByteArrayInputStream(
+            TextResourceFilter.getInstance(context).getFilteredResource(resource).getText().getBytes(
+                getEncoding(context, resource)
+            ));
+    }
 
-	public String getEncoding(ServletContext context, String resource) throws IOException
-	{
-		return "UTF-8";
-	}
+    public String getEncoding(ServletContext context, String resource) throws IOException
+    {
+        return "UTF-8";
+    }
 }

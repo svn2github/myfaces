@@ -40,79 +40,79 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
  */
 public class StylesheetRenderer extends HtmlRenderer
 {
-	public void encodeEnd(FacesContext context, UIComponent component)
-		throws IOException
-	{
+    public void encodeEnd(FacesContext context, UIComponent component)
+        throws IOException
+    {
 
-		if ((context == null) || (component == null))
-		{
-			throw new NullPointerException();
-		}
-		Stylesheet stylesheet = (Stylesheet) component;
-		ResponseWriter writer = context.getResponseWriter();
-		
-		//A path starting with / or not is the same for this component,
-		//because ctx.getExternalContext().getResourceAsStream(file);
-		//or ServletContext.getResourceAsStream() specifies that
-		//ALL resources must start with '/'
-		String path = stylesheet.getPath(); 
+        if ((context == null) || (component == null))
+        {
+            throw new NullPointerException();
+        }
+        Stylesheet stylesheet = (Stylesheet) component;
+        ResponseWriter writer = context.getResponseWriter();
+        
+        //A path starting with / or not is the same for this component,
+        //because ctx.getExternalContext().getResourceAsStream(file);
+        //or ServletContext.getResourceAsStream() specifies that
+        //ALL resources must start with '/'
+        String path = stylesheet.getPath(); 
         if (path.startsWith("/"))
         {
             path = path.substring(1);
-        }	
+        }    
 
-		if (stylesheet.isInline())
-		{
-			//include as inline css
-			writer.startElement("style", component);
-			writer.writeAttribute("type", "text/css", null);
-			if (stylesheet.getMedia() != null)
-			{
-				writer.writeAttribute("media", stylesheet.getMedia(), null);
-			}
-			//writer.writeText("<!--\n", null);
+        if (stylesheet.isInline())
+        {
+            //include as inline css
+            writer.startElement("style", component);
+            writer.writeAttribute("type", "text/css", null);
+            if (stylesheet.getMedia() != null)
+            {
+                writer.writeAttribute("media", stylesheet.getMedia(), null);
+            }
+            //writer.writeText("<!--\n", null);
 
-			Object text;
-			if (stylesheet.isFiltered())
-			{
-			    ResourceInfo info = TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path); 
-				text = info.getText();
-			}
-			else
-			{
-				text = RendererUtils.loadResourceFile(context,'/'+ path);
-			}
-			if (text != null)
-			{
-				writer.writeText(text, null);
-			}
-			//writer.writeText("\n-->", null);
-			writer.endElement("style");
-		}
-		else
-		{
-			//refere as link-element
-			writer.startElement("link", component);
-			writer.writeAttribute("rel", "stylesheet", null);
-			writer.writeAttribute("type", "text/css", null);
-			if (stylesheet.getMedia() != null)
-			{
-				writer.writeAttribute("media", stylesheet.getMedia(), null);
-			}
+            Object text;
+            if (stylesheet.isFiltered())
+            {
+                ResourceInfo info = TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path); 
+                text = info.getText();
+            }
+            else
+            {
+                text = RendererUtils.loadResourceFile(context,'/'+ path);
+            }
+            if (text != null)
+            {
+                writer.writeText(text, null);
+            }
+            //writer.writeText("\n-->", null);
+            writer.endElement("style");
+        }
+        else
+        {
+            //refere as link-element
+            writer.startElement("link", component);
+            writer.writeAttribute("rel", "stylesheet", null);
+            writer.writeAttribute("type", "text/css", null);
+            if (stylesheet.getMedia() != null)
+            {
+                writer.writeAttribute("media", stylesheet.getMedia(), null);
+            }
 
-			String stylesheetPath;
-			if (stylesheet.isFiltered())
-			{
-				TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path);
-				stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(context, TextResourceFilterProvider.class, path, true);
-			}
-			else
-			{
-				stylesheetPath = context.getApplication().getViewHandler().getResourceURL(context, path);
-			}
+            String stylesheetPath;
+            if (stylesheet.isFiltered())
+            {
+                TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path);
+                stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(context, TextResourceFilterProvider.class, path, true);
+            }
+            else
+            {
+                stylesheetPath = context.getApplication().getViewHandler().getResourceURL(context, path);
+            }
 
-			writer.writeURIAttribute("href", stylesheetPath, "path");
-			writer.endElement("link");
-		}
-	}
+            writer.writeURIAttribute("href", stylesheetPath, "path");
+            writer.endElement("link");
+        }
+    }
 }

@@ -38,38 +38,38 @@ import org.apache.myfaces.component.UserRoleUtils;
 public abstract class AbstractStylesheet extends UIComponentBase
     implements UserRoleAware    
 {
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.Stylesheet";
-	public static final String COMPONENT_FAMILY = "javax.faces.Output";
-	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Stylesheet";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.Stylesheet";
+    public static final String COMPONENT_FAMILY = "javax.faces.Output";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Stylesheet";
 
-	/**
-	 * URL for CSS-file.
-	 * 
-	 * @JSFProperty
-	 *   required="true"
-	 */
-	public abstract String getPath();
+    /**
+     * URL for CSS-file.
+     * 
+     * @JSFProperty
+     *   required="true"
+     */
+    public abstract String getPath();
 
-	/**
-	 * Inline the stylesheet file content as in contrast to referencing it as .
-	 * 
-	 * @JSFProperty
-	 *   defaultValue = "false"
-	 * @return true if the styles are inlined to the jsp file
-	 */
-	public abstract boolean isInline();
+    /**
+     * Inline the stylesheet file content as in contrast to referencing it as .
+     * 
+     * @JSFProperty
+     *   defaultValue = "false"
+     * @return true if the styles are inlined to the jsp file
+     */
+    public abstract boolean isInline();
 
-	/**
-	 * true|false. When true, any EL expression in the stylesheet will 
-	 * be evaluated and replaced by its string representation on the 
-	 * first access. The stylesheet will be processed only once. 
-	 * Every subsequent request will get a cached view.
-	 * 
-	 * @JSFProperty
-	 *   defaultValue = "false"
-	 * @return true if the stylesheet should be filtered before sending to the browser
-	 */
-	public abstract boolean isFiltered();
+    /**
+     * true|false. When true, any EL expression in the stylesheet will 
+     * be evaluated and replaced by its string representation on the 
+     * first access. The stylesheet will be processed only once. 
+     * Every subsequent request will get a cached view.
+     * 
+     * @JSFProperty
+     *   defaultValue = "false"
+     * @return true if the stylesheet should be filtered before sending to the browser
+     */
+    public abstract boolean isFiltered();
 
     /**
      * Define the target media of the styles:
@@ -103,15 +103,15 @@ public abstract class AbstractStylesheet extends UIComponentBase
      * 
      * @JSFProperty
      */
-	public abstract String getMedia();
+    public abstract String getMedia();
 
-	public boolean isRendered()
-	{
-		if (!UserRoleUtils.isVisibleOnUserRole(this))
-		{
-			return false;
-		}
-		return super.isRendered();
-	}
+    public boolean isRendered()
+    {
+        if (!UserRoleUtils.isVisibleOnUserRole(this))
+        {
+            return false;
+        }
+        return super.isRendered();
+    }
 
 }
