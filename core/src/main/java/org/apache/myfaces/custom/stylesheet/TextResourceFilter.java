@@ -35,9 +35,22 @@ import java.util.TreeMap;
 import java.util.Collections;
 
 /**
- * filters a stylesheet
- * <p/>
- * This will replace any el expressing of the original stylesheet with its evaluated string form
+ * Loads, filters and then caches any resource available to the webapp.
+ * <p>
+ * The resource can then be retrieved from the cache when desired.
+ * <p>
+ * The "filtering" process looks for any strings of form #{...} in the
+ * resource, and executes it as an EL expression. The original expression
+ * is then replaced with the return value of the expression.
+ * <p>
+ * Note that evaluation of EL expressions happens <i>only once</i>, when
+ * the resource is loaded into the cache for the first time. And the EL
+ * expressions are evaluated using the context of whatever faces request
+ * happens to be active at the time. EL expressions in filtered resources
+ * should therefore not reference any request-scoped or session-scoped values
+ * as the cached result would be unpredictable.
+ * <p>
+ * This class is a per-webapp singleton, accessed via the getInstance method.
  *
  * @author imario
  */
@@ -47,6 +60,7 @@ public class TextResourceFilter implements Serializable
 
     private final static String CONTEXT_KEY = TextResourceFilter.class.getName() + ".INSTANCE";
 
+    // A cache of all the resources ever loaded via getOrCreateFilteredResource
     private final Map filteredResources = Collections.synchronizedMap(new TreeMap());
 
     public static class ResourceInfo
@@ -86,39 +100,45 @@ public class TextResourceFilter implements Serializable
     }
 
     /**
-     * get the application stylesheet filter
+     * Return the application-singleton instance of this class.
      */
     public static TextResourceFilter getInstance(ServletContext context)
     {
-        TextResourceFilter filterText = (TextResourceFilter) context.getAttribute(CONTEXT_KEY);
-        if (filterText == null)
+        synchronized(TextResourceFilter.class)
         {
-            filterText = create();
-            context.setAttribute(CONTEXT_KEY, filterText);
+            TextResourceFilter filterText = (TextResourceFilter) context.getAttribute(CONTEXT_KEY);
+            if (filterText == null)
+            {
+                filterText = create();
+                context.setAttribute(CONTEXT_KEY, filterText);
+            }
+            return filterText;
         }
-
-        return filterText;
     }
 
     /**
-     * get the application stylesheet filter
+     * Return the application-singleton instance of this class.
      */
     public static TextResourceFilter getInstance(FacesContext context)
     {
-        TextResourceFilter filterText = (TextResourceFilter) context.getExternalContext().getApplicationMap().get(CONTEXT_KEY);
-        if (filterText == null)
+        Map appMap = context.getExternalContext().getApplicationMap();
+        synchronized(TextResourceFilter.class)
         {
-            filterText = create();
-            context.getExternalContext().getApplicationMap().put(CONTEXT_KEY, filterText);
+            TextResourceFilter filterText = (TextResourceFilter) appMap.get(CONTEXT_KEY);
+            if (filterText == null)
+            {
+                filterText = create();
+                appMap.put(CONTEXT_KEY, filterText);
+            }
+            return filterText;
         }
-
-        return filterText;
     }
 
     /**
-     * gets the filtered content of the resource pointing to with <code>path</code>
-     *
-     * This will <b>not</b> filter the resource if its not already done before.
+     * Return the cached content for the specified resource.
+     * <p>
+     * If the resource is not already in the cache (due to an earlier call to
+     * getOrCreateFilteredResource) then null is returned.
      */
     public ResourceInfo getFilteredResource(String path)
     {
@@ -127,17 +147,14 @@ public class TextResourceFilter implements Serializable
         {
             return null;
         }
-
         return filteredResource;
     }
 
     /**
+     * Load, filter and cache the specified resource (if it isn't already cached).
      * <p>
-     * filteres the resource
-     * </p>
-     *
-     * Notice: This method is not synchronized for performance reasons (the map is)
-     * the worst case is that we filter a resource twice the first time wich is not
+     * Note: This method is not synchronized for performance reasons (the map is).
+     * The worst case is that we filter a resource twice the first time which is not
      * a problem
      */
     public ResourceInfo getOrCreateFilteredResource(FacesContext context, String path) throws IOException
