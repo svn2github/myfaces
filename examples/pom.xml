@@ -372,7 +372,7 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.2rc0</version>
+                <version>6.1.11</version>
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
