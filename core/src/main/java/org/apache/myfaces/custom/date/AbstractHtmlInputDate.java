@@ -27,6 +27,7 @@ import java.util.TimeZone;
 
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.component.AlignProperty;
@@ -333,4 +334,40 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
      */    
     public abstract boolean isDisabled();
 
+    /**
+     * This component converts submitted values to its inner class
+     * UserData, so this method does not allow custom
+     * converters to be defined.
+     * 
+     * @JSFProperty
+     *   tagExcluded = "true"
+     */
+    public Converter getConverter()
+    {
+        return null;
+    }
+    
+    public void setConverter(Converter converter)
+    {
+        throw new UnsupportedOperationException();
+    }
+    
+    /**
+     * This property comes from 1.2 UIInput, but since this
+     * component does not allow a custom converter, this
+     * should return null.
+     * 
+     * @JSFProperty
+     *   tagExcluded = "true"
+     * @return
+     */
+    public String getConverterMessage()
+    {
+        return null;
+    }
+    
+    public void setConverterMessage(String converterMessage)
+    {
+        throw new UnsupportedOperationException();
+    }
 }
