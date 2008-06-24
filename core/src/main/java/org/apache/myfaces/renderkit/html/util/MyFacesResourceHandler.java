@@ -21,8 +21,14 @@ package org.apache.myfaces.renderkit.html.util;
 import javax.faces.context.FacesContext;
 
 /**
- * Class whose instances represent a resource inside the tomahawk jarfile
- * which a custom component needs to tell a browser to fetch.
+ * A ResourceHandler which always generates URLs that trigger the
+ * MyfacesResourceLoader to load resources from the classpath
+ * relative to some Tomahawk class.
+ * <p>
+ * This is intended to support loading of Tomahawk resources only;
+ * applications which wish to use the Tomahawk AddResources framework
+ * for loading resources from elsewhere should implement their own
+ * ResourceHandler class.
  * 
  * @author Mathias Broekelmann
  */
@@ -42,7 +48,8 @@ public class MyFacesResourceHandler implements ResourceHandler
      *   
      * @param resourceName is the name of a file that can be found in dir
      *  "resource/{resourceName} relative to the location of the specified
-     *  component class in the classpath.
+     *  component class in the classpath. Because the resource is always
+     *  relative to a class file, it must never begin with a slash. 
      */
     public MyFacesResourceHandler(Class myfacesCustomComponent, String resourceName)
     {
@@ -103,6 +110,12 @@ public class MyFacesResourceHandler implements ResourceHandler
         sb.append("/");
         if (_resource != null)
         {
+            if (_resource.startsWith("/"))
+            {
+                throw new IllegalArgumentException(
+                    "Tomahawk resources are always relative to the associated class." +
+                    " Absolute resource paths are not allowed: " + _resource);
+            }
             sb.append(_resource);
         }
         return sb.toString();

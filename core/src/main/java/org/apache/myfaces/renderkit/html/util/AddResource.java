@@ -213,16 +213,23 @@ public interface AddResource
             String inlineScript);
 
     /**
-     * Return a URI that can be embedded into an HTML page.
+     * Return a URI that can be embedded into an HTML page to reference a resource
+     * from a Tomahawk jarfile.
      * <p>
-     * When the browser GETs that url, the serveResource method of this class will
-     * be invoked that is expected to write the contents of the specified resource
-     * to the respose stream.
+     * This method is intended for internal use by the Tomahawk project only,
+     * and will not serve resources for other projects (unless a custom
+     * AddResource implementation has been configured). Non-tomahawk code should
+     * use the variants that take an explicit ResourceHandler class.
      * <p>
-     * Parameter myfacesCustomComponent must be an instance of ResourceProvider,
-     * and have a default constructor. When the URL is fetched, an instance of
-     * this class is created and its methods invoked to retrieve info about the
-     * specified resource (including its content).
+     * Parameter myfacesCustomComponent is a tomahawk class that the resource
+     * is associated with. The resource is then expected to be in the classpath
+     * in the same package as the specified class (or a subpackage).
+     * <p>
+     * Parameter resource is a path relative to the .class file of the specified
+     * myfacesCustomComponent class.
+     * 
+     * Param withContextPath controls whether the webapp name is prefixed to
+     * the generated url.
      */
     public String getResourceUri(FacesContext context, Class myfacesCustomComponent,
             String resource, boolean withContextPath);

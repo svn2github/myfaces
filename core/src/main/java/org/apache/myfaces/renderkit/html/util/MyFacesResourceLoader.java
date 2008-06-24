@@ -38,6 +38,10 @@ import java.net.HttpURLConnection;
 /**
  * A ResourceLoader capable of fetching resources from the classpath,
  * but only for classes under package org.apache.myfaces.custom.
+ * <p>
+ * The URI is expected to contain two pieces of information: the
+ * tomahawk class the resource is associated with, and a relative path
+ * from that class to the resource.
  *
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
