@@ -26,7 +26,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * provdes a simple string as utf-8 encoded resource
+ * Allow URLs to return data that is cached by the TextResourceFilter class.
+ * <p>
+ * This implements the Tomahawk ResourceProvider interface which works together
+ * with the Tomahawk AddResourceFactory, ExtensionsFilter and AddResource classes.
+ * The AddResourceFactory can generate a URL which can be embedded in an HTML page.
+ * When invoked, that URL triggers the ExtensionsFilter which invokes AddResource
+ * which then calls back into this class. And this class then retrieves the
+ * requested data from the TextResourceFilter.  
  */
 public class TextResourceFilterProvider implements ResourceProvider
 {
