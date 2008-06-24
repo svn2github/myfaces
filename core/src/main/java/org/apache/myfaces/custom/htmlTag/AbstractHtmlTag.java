@@ -20,6 +20,7 @@ package org.apache.myfaces.custom.htmlTag;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.StyleAware;
@@ -47,11 +48,6 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   class = "org.apache.myfaces.custom.htmlTag.HtmlTag"
  *   tagClass = "org.apache.myfaces.custom.htmlTag.HtmlTagTag"
  *   
- * @JSFJspProperty
- *   name = "converter"
- *   returnType = "javax.faces.convert.Converter"
- *   tagExcluded = "true"
- * 
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -79,5 +75,22 @@ public abstract class AbstractHtmlTag extends UIOutput
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
         return super.isRendered();
     }
-
+    
+    /**
+     * This component converts submitted values to String, so
+     * converter is not needed, not custom conversion necessary.
+     * 
+     * @JSFProperty
+     *   tagExcluded = "true"
+     */
+    public Converter getConverter()
+    {
+        return null;
+    }
+    
+    public void setConverter(Converter converter)
+    {
+        throw new UnsupportedOperationException();
+    }
+    
 }
