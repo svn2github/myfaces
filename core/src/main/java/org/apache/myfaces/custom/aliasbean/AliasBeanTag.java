@@ -47,7 +47,7 @@ public class AliasBeanTag extends UIComponentTagBase {
     protected void setProperties(UIComponent component) {
         super.setProperties(component);
 
-        setStringProperty(component, "alias", _alias);
+        setValueBinding(component, "alias", _alias);
         setStringProperty(component, "value", _valueExpression);
     }
 
