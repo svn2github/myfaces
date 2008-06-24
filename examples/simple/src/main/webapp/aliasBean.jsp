@@ -45,7 +45,7 @@
 
     <h:form>
         <h2>aliasTest1</h2>
-        <t:aliasBean alias="holder" value="#{aliasTest1}">
+        <t:aliasBean alias="#{holder}" value="#{aliasTest1}">
             <f:subview id="simulatedIncludedSubform1">
                 <%-- The next tags could be inserted by an %@ include or jsp:include --%>
                 <h:outputLabel for="name" value="Name :"/>
