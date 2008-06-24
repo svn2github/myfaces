@@ -22,6 +22,8 @@ package org.apache.myfaces.custom.stylesheet;
 import java.io.IOException;
 import java.io.StringWriter;
 
+import javax.faces.FacesException;
+
 import junit.framework.Test;
 
 import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
@@ -69,15 +71,31 @@ public class StylesheetRendererTest extends AbstractTomahawkViewControllerTestCa
      */
     public void testInline() throws IOException
     {
-
         stylesheet.setInline(true);
+        stylesheet.setPath("/styles/test.css");
         stylesheet.encodeEnd(facesContext);
         facesContext.renderResponse();
 
         String output = writer.getWriter().toString();
         
         assertTrue("looking for a <style>", output.trim().startsWith("<style"));
-        
+    }
+
+    /*
+     * Test method for 'org.apache.myfaces.custom.stylesheet.StylesheetRenderer.encodeEnd(FacesContext, UIComponent)'
+     */
+    public void testInlineInvalid() throws IOException
+    {
+        stylesheet.setInline(true);
+        try
+        {
+            stylesheet.encodeEnd(facesContext);
+            fail("No exception was thrown for an invalid stylesheet path");
+        }
+        catch(FacesException e)
+        {
+            // expected
+        }
     }
 
     public void testLink() throws IOException
