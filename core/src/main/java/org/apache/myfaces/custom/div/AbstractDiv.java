@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.custom.div;
 
+import org.apache.myfaces.component.EventAware;
+import org.apache.myfaces.component.UniversalProperties;
 import org.apache.myfaces.custom.htmlTag.HtmlTag;
 
 /**
@@ -26,19 +28,24 @@ import org.apache.myfaces.custom.htmlTag.HtmlTag;
  * 
  * @JSFComponent
  *   name = "t:div"
+ *   class = "org.apache.myfaces.custom.div.Div"
  *   tagClass = "org.apache.myfaces.custom.div.DivTag"
  * 
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class Div extends HtmlTag {
-  public static final String COMPONENT_TYPE = "org.apache.myfaces.Div";
+public abstract class AbstractDiv extends HtmlTag implements EventAware, UniversalProperties
+{
 
-  /**
-   * @JSFProperty
-   *   tagExcluded = "true"
-   */
-  public Object getValue() {
-	return "div";
-  }
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.Div";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DivRenderer";
+
+    /**
+     * @JSFProperty
+     *   tagExcluded = "true"
+     */
+    public Object getValue()
+    {
+        return "div";
+    }
 }
