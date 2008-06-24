@@ -37,23 +37,31 @@ import java.io.InputStream;
  */
 public class TextResourceFilterProvider implements ResourceProvider
 {
+    // Hack note: a slash has to be prefixed to the resource value here because
+    // we are abusing the AddResource API in StylesheetRenderer; see comments
+    // in StylesheetRenderer.encodeEnd for details.
+
     public boolean exists(ServletContext context, String resource)
     {
+        resource = "/" + resource; // hack
         return TextResourceFilter.getInstance(context).getFilteredResource(resource) != null;
     }
 
     public int getContentLength(ServletContext context, String resource) throws IOException
     {
+        resource = "/" + resource; // hack
         return TextResourceFilter.getInstance(context).getFilteredResource(resource).getSize();
     }
 
     public long getLastModified(ServletContext context, String resource) throws IOException
     {
+        resource = "/" + resource; // hack
         return TextResourceFilter.getInstance(context).getFilteredResource(resource).getLastModified();
     }
 
     public InputStream getInputStream(ServletContext context, String resource) throws IOException
     {
+        resource = "/" + resource; // hack
         return new ByteArrayInputStream(
             TextResourceFilter.getInstance(context).getFilteredResource(resource).getText().getBytes(
                 getEncoding(context, resource)

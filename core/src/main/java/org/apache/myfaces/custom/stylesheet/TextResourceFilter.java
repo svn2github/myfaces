@@ -37,7 +37,9 @@ import java.util.Collections;
 /**
  * Loads, filters and then caches any resource available to the webapp.
  * <p>
- * The resource can then be retrieved from the cache when desired.
+ * The resource can then be retrieved from the cache when desired. In
+ * particular, it can be retrieved via a URL that invokes the Tomahawk
+ * ExtensionsFilter and TextResourceFilterProvider classes.
  * <p>
  * The "filtering" process looks for any strings of form #{...} in the
  * resource, and executes it as an EL expression. The original expression
@@ -139,6 +141,9 @@ public class TextResourceFilter implements Serializable
      * <p>
      * If the resource is not already in the cache (due to an earlier call to
      * getOrCreateFilteredResource) then null is returned.
+     * <p>
+     * The path param is a simple key that must match the value passed to
+     * an earlier call to getOrCreateFilteredResource.
      */
     public ResourceInfo getFilteredResource(String path)
     {
@@ -155,14 +160,16 @@ public class TextResourceFilter implements Serializable
      * <p>
      * Note: This method is not synchronized for performance reasons (the map is).
      * The worst case is that we filter a resource twice the first time which is not
-     * a problem
+     * a problem.
+     * <P>
+     * The path param must start with a slash, and is interpreted as a path relative
+     * to the webapp root (not the current page).
      */
     public ResourceInfo getOrCreateFilteredResource(FacesContext context, String path) throws IOException
     {
-        if (path.startsWith("/"))
+        if (!path.startsWith("/"))
         {
-            // the resource loader do not use the leading "/", so strip it here
-            path = path.substring(1);
+            throw new IllegalArgumentException("Path must start with a slash, but was: " + path);
         }
 
         ResourceInfo filteredResource = getFilteredResource(path);
@@ -174,7 +181,7 @@ public class TextResourceFilter implements Serializable
         //Tomcat ASF Bugzilla � Bug 43241
         //ServletContext.getResourceAsStream() does not follow API spec
         //ALL resources must start with '/' 
-        String text = RendererUtils.loadResourceFile(context,'/' + path);
+        String text = RendererUtils.loadResourceFile(context, path);
         if (text == null)
         {
             // avoid loading the errorneous resource over and over again

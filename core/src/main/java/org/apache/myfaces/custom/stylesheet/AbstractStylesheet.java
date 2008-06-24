@@ -44,6 +44,16 @@ public abstract class AbstractStylesheet extends UIComponentBase
 
     /**
      * URL for CSS-file.
+     * <p>
+     * If this path starts with a slash, then the webapp context path will be prepended to it.
+     * This makes it simple to reference stylesheets at an absolute path within the webapp.
+     * A value like "/styles/style.css" becomes "/webappname/styles/style.css".
+     * <p>
+     * If this path does not start with a slash, then it is output unaltered. This supports
+     * absolute urls ("http://host/path/style.css"). It also supports having css files relative
+     * to the current page ("style.css" or "styles/style.css") but this needs to be used with
+     * care as the standard JSF postback/internal-forward navigation style can cause browsers
+     * to use an inappropriate base url when resolving relative references. 
      * 
      * @JSFProperty
      *   required="true"
@@ -51,23 +61,29 @@ public abstract class AbstractStylesheet extends UIComponentBase
     public abstract String getPath();
 
     /**
-     * Inline the stylesheet file content as in contrast to referencing it as .
+     * Inline the stylesheet file content as in contrast to referencing it as a link.
+     * <p>
+     * The file referenced by the path attribute is loaded, and its content is written
+     * to the page wrapped in an &lt;script&gt; tag.
+     * <p>
+     * When this option is enabled, the path property must contain an absolute path
+     * within the current webapp. External urls ("http://*") and paths relative to the
+     * current page are not supported.
      * 
      * @JSFProperty
      *   defaultValue = "false"
-     * @return true if the styles are inlined to the jsp file
      */
     public abstract boolean isInline();
 
     /**
-     * true|false. When true, any EL expression in the stylesheet will 
-     * be evaluated and replaced by its string representation on the 
-     * first access. The stylesheet will be processed only once. 
-     * Every subsequent request will get a cached view.
+     * Cause EL expressions in the stylesheet to be evaluated.
+     * <p>
+     * When true, any EL expression in the stylesheet will be evaluated and replaced
+     * by its string representation on the first access. The stylesheet will be
+     * processed only once. Every subsequent request will get a cached view.
      * 
      * @JSFProperty
      *   defaultValue = "false"
-     * @return true if the stylesheet should be filtered before sending to the browser
      */
     public abstract boolean isFiltered();
 

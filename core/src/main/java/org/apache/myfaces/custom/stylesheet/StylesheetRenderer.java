@@ -20,6 +20,7 @@ package org.apache.myfaces.custom.stylesheet;
 
 import java.io.IOException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -41,7 +42,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 public class StylesheetRenderer extends HtmlRenderer
 {
     public void encodeEnd(FacesContext context, UIComponent component)
-        throws IOException
+        throws IOException, FacesException
     {
 
         if ((context == null) || (component == null))
@@ -50,43 +51,41 @@ public class StylesheetRenderer extends HtmlRenderer
         }
         Stylesheet stylesheet = (Stylesheet) component;
         ResponseWriter writer = context.getResponseWriter();
-        
-        //A path starting with / or not is the same for this component,
-        //because ctx.getExternalContext().getResourceAsStream(file);
-        //or ServletContext.getResourceAsStream() specifies that
-        //ALL resources must start with '/'
-        String path = stylesheet.getPath(); 
-        if (path.startsWith("/"))
-        {
-            path = path.substring(1);
-        }    
+
+        String path = stylesheet.getPath();
 
         if (stylesheet.isInline())
         {
             //include as inline css
+            
+            if (!path.startsWith("/"))
+            {
+                throw new FacesException("Inline stylesheets require absolute resource path");
+            }
+
             writer.startElement("style", component);
             writer.writeAttribute("type", "text/css", null);
             if (stylesheet.getMedia() != null)
             {
                 writer.writeAttribute("media", stylesheet.getMedia(), null);
             }
-            //writer.writeText("<!--\n", null);
 
             Object text;
             if (stylesheet.isFiltered())
             {
+                // Load, filter and cache the resource. Then return the cached data.
                 ResourceInfo info = TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path); 
                 text = info.getText();
             }
             else
             {
-                text = RendererUtils.loadResourceFile(context,'/'+ path);
+                // Just load the data (not cached)
+                text = RendererUtils.loadResourceFile(context, path);
             }
             if (text != null)
             {
                 writer.writeText(text, null);
             }
-            //writer.writeText("\n-->", null);
             writer.endElement("style");
         }
         else
@@ -103,8 +102,32 @@ public class StylesheetRenderer extends HtmlRenderer
             String stylesheetPath;
             if (stylesheet.isFiltered())
             {
+                if (!path.startsWith("/"))
+                {
+                    throw new FacesException("Filtered stylesheets require absolute resource path");
+                }
+
+                // Load, filter and cache the resource
                 TextResourceFilter.getInstance(context).getOrCreateFilteredResource(context, path);
-                stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(context, TextResourceFilterProvider.class, path, true);
+                
+                // Compute a URL that goes via the tomahawk ExtensionsFilter and the
+                // TextResourceFilterProvider to fetch the resource from the cache.
+                //
+                // Unfortunately the getResourceUri(context, Class, String, bool) api below is
+                // really meant for serving resources out of the Tomahawk jarfile, relative to
+                // some class that the resource belongs to. So it only expects to receive
+                // relative paths. We are abusing it here to serve resources out of the
+                // webapp, specified by an absolute path. So here, the leading slash is
+                // stripped off and in the TextResourceFilterProvider a matching hack
+                // puts it back on again. A better solution would be to write a custom
+                // ResourceHandler class and pass that to the getResourceUri method...
+                // TODO: fixme
+                String nastyPathHack = path.substring(1);
+                stylesheetPath = AddResourceFactory.getInstance(context).getResourceUri(
+                        context,
+                        TextResourceFilterProvider.class,
+                        nastyPathHack,
+                        true);
             }
             else
             {
