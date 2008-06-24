@@ -41,7 +41,7 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
 {
 	public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
 	private String BODY_ELEM = "body";
-	private String[] ATTRS = new String[] {"onload", "onunload", "onresize", "onkeypress"};
+	private String[] ATTRS = new String[] {"onload", "onunload", "onresize", "onkeypress", "style", "styleClass", "id"};
 
 	protected String getHtmlTag()
 	{

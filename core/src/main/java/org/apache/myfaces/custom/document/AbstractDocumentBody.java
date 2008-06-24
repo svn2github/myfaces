@@ -18,6 +18,8 @@
  */
 package org.apache.myfaces.custom.document;
 
+import org.apache.myfaces.component.StyleAware;
+
 /**
  * Document to enclose the document body. If not otherwise possible you can use
  * state="start|end" to demarkate the document boundaries
@@ -30,7 +32,7 @@ package org.apache.myfaces.custom.document;
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-abstract class AbstractDocumentBody extends AbstractDocument
+abstract class AbstractDocumentBody extends AbstractDocument implements StyleAware
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.DocumentBody";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
