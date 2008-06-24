@@ -22,6 +22,7 @@ import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
@@ -34,7 +35,14 @@ import javax.faces.event.PhaseId;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
+import org.apache.myfaces.component.DisplayValueOnlyAware;
+import org.apache.myfaces.component.ForceIdAware;
+import org.apache.myfaces.component.StyleAware;
+import org.apache.myfaces.component.UniversalProperties;
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 
 /**
  * Scroller for UIData components eg. dataTable 
@@ -53,24 +61,17 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  *   class = "org.apache.myfaces.custom.datascroller.HtmlDataScroller"
  *   tagClass = "org.apache.myfaces.custom.datascroller.HtmlDataScrollerTag"
  *  
- * @JSFJspProperty name = "onkeydown" tagExcluded = "true"
- * @JSFJspProperty name = "onkeypress" tagExcluded = "true"
- * @JSFJspProperty name = "onkeyup" tagExcluded = "true"
- * @JSFJspProperty name = "onmousedown" tagExcluded = "true"
- * @JSFJspProperty name = "onmousemove" tagExcluded = "true"
- * @JSFJspProperty name = "onmouseout" tagExcluded = "true"
- * @JSFJspProperty name = "onmouseover" tagExcluded = "true"
- * @JSFJspProperty name = "onmouseup" tagExcluded = "true"
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public abstract class AbstractHtmlDataScroller extends HtmlPanelGroup 
-    implements ActionSource
+public abstract class AbstractHtmlDataScroller extends UIPanel 
+    implements ActionSource, UserRoleAware, DisplayValueOnlyCapable,
+    DisplayValueOnlyAware, ForceIdAware, UniversalProperties, StyleAware
 {
     
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataScroller";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DataScroller";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DataScroller";    
     private static final boolean DEFAULT_IMMEDIATE = false;
     
     private static final Log log = LogFactory.getLog(AbstractHtmlDataScroller.class);
@@ -102,7 +103,69 @@ public abstract class AbstractHtmlDataScroller extends HtmlPanelGroup
     private transient Boolean _singleElementLayout;
 
     private MethodBinding _actionListener;
+    
+    public String getClientId(FacesContext context)
+    {
+        String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
+        if (clientId == null)
+        {
+            clientId = super.getClientId(context);
+        }
 
+        return clientId;
+    }
+
+    public boolean isRendered()
+    {
+        if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
+        return super.isRendered();
+    }
+    
+    public boolean isSetDisplayValueOnly(){
+        return getDisplayValueOnly() != null ? true : false;  
+    }
+    
+    public boolean isDisplayValueOnly(){
+        return getDisplayValueOnly() != null ? getDisplayValueOnly().booleanValue() : false;
+    }
+    
+    public void setDisplayValueOnly(boolean displayValueOnly){
+        this.setDisplayValueOnly((Boolean) Boolean.valueOf(displayValueOnly));
+    }
+
+    /**
+     *  The layout this scroller should render with. Default is 'table', 
+     *  'list' is implemented as well. Additionally you can use 
+     *  'singleList' - then the data-scroller will render a list, but 
+     *  not the paginator - same with the value 'singleTable'. 
+     * 
+     * @JSFProperty
+     *   defaultValue = "table"
+     */
+    public abstract String getLayout(); 
+
+    /**
+     * standard html colspan attribute for table cell
+     * 
+     * @JSFProperty
+     *   defaultValue = "Integer.MIN_VALUE"
+     */
+    public abstract int getColspan();
+    
+    /**
+     * HTML: Script to be invoked when the element is clicked.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getOnclick();
+
+    /**
+     * HTML: Script to be invoked when the element is double-clicked.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getOndblclick();
+            
     public boolean isListLayout()
     {
         if(_listLayout == null)
