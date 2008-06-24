@@ -212,6 +212,18 @@ public interface AddResource
     public void addInlineScriptAtPosition(FacesContext context, ResourcePosition position,
             String inlineScript);
 
+    /**
+     * Return a URI that can be embedded into an HTML page.
+     * <p>
+     * When the browser GETs that url, the serveResource method of this class will
+     * be invoked that is expected to write the contents of the specified resource
+     * to the respose stream.
+     * <p>
+     * Parameter myfacesCustomComponent must be an instance of ResourceProvider,
+     * and have a default constructor. When the URL is fetched, an instance of
+     * this class is created and its methods invoked to retrieve info about the
+     * specified resource (including its content).
+     */
     public String getResourceUri(FacesContext context, Class myfacesCustomComponent,
             String resource, boolean withContextPath);
 
