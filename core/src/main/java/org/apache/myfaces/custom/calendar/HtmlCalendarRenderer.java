@@ -481,7 +481,13 @@ public class HtmlCalendarRenderer
         else
         {
             String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
-            if (imageLocation != null)
+            if (imageLocation == null)
+            {
+                String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/");
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
+                        JavascriptUtils.encodeString(uri));
+            }
+            else
             {
                 setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
                         (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
