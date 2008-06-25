@@ -68,7 +68,7 @@ import java.io.IOException;
  * this filter checks the http content-type header. If it is not html or xhtml,
  * then the data is simply send to the response stream without further processing.
  * 
- * For html or xhtml responses, this filter canses the data to be post-processed
+ * For html or xhtml responses, this filter causes the data to be post-processed
  * to insert any "resources" registered via the AddResources framework. This
  * allows jsf components (and other code if it wants) to register data that
  * should be output into an HTML page, particularly into places like an html
@@ -114,6 +114,14 @@ import java.io.IOException;
  * allowing the normal processing for the url that the post request
  * refers to. A number of configuration properties on this filter control
  * maximum file upload sizes and various other useful settings. 
+ * 
+ * <h2>Avoiding Processing</h2>
+ * 
+ * When the ExtensionsFilter is enabled, and the DefaultAddResources
+ * implementation is used then there is no way to avoid having the
+ * response buffered in memory. However as long as the mime-type set
+ * for the response data is <i>not</i> text/html then the data will
+ * be written out without any modifications.
  * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
