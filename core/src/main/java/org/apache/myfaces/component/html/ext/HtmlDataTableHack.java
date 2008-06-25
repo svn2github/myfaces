@@ -144,6 +144,21 @@ public abstract class HtmlDataTableHack extends
             _isValidChilds = false;
         }
     }
+    
+    /**
+     * This method is used when a custom processUpdates and processValidators
+     * is defined, to check if a update model error forces the render 
+     * response for our data, because _isValidChilds is a private field
+     * and is not available on child components that inherits this 
+     * component class like t:dataList. (TOMAHAWK-1225)
+     */
+    protected void checkUpdateModelError(FacesContext context)
+    {
+        if (context.getRenderResponse())
+        {
+            _isValidChilds = false;
+        }        
+    }
 
     /**
      * @see javax.faces.component.UIData#processValidators(javax.faces.context.FacesContext)

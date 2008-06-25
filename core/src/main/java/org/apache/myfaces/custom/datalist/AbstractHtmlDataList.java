@@ -72,6 +72,15 @@ public abstract class AbstractHtmlDataList
         setRowIndex(-1);
         processChildren(context, PROCESS_DECODES);
         setRowIndex(-1);
+        try
+        {
+            decode(context);
+        }
+        catch (RuntimeException e)
+        {
+            context.renderResponse();
+            throw e;
+        }        
     }
 
     public void processUpdates(FacesContext context)
@@ -84,6 +93,7 @@ public abstract class AbstractHtmlDataList
         setRowIndex(-1);
         processChildren(context, PROCESS_UPDATES);
         setRowIndex(-1);
+        checkUpdateModelError(context);
     }
 
     public void processValidators(FacesContext context)
@@ -95,7 +105,9 @@ public abstract class AbstractHtmlDataList
 
         setRowIndex(-1);
         processChildren(context, PROCESS_VALIDATORS);
-        setRowIndex(-1);    }
+        setRowIndex(-1);
+        checkUpdateModelError(context);        
+    }
 
     /**
      * Iterates over all children, processes each according to the specified 
