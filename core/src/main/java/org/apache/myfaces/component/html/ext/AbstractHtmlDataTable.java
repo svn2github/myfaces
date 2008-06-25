@@ -1096,6 +1096,17 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         return v != null ? v.booleanValue() : DEFAULT_SORTASCENDING;
     }
 
+    /**
+     * The name of a javabean property on which the table is sorted.
+     * <p>
+     * The datamodel should contain objects that have this property;
+     * reflection will be used to sort the datamodel on that property
+     * using the default comparator for that type. 
+     * <p>
+     * This value is part of the component state. However it is not
+     * directly settable by users; instead it is set by other components
+     * such as a CommandSortHeader.
+     */
     public void setSortProperty(String sortProperty)
     {
         _sortProperty = sortProperty;
