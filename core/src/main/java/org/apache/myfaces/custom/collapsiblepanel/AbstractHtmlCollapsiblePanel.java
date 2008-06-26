@@ -56,6 +56,10 @@ public abstract class AbstractHtmlCollapsiblePanel extends UIInput
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.CollapsiblePanel";
         
+    private static final String HEADER_FACET_NAME = "header";
+    
+    private static final String CLOSED_CONTENT_FACET_NAME = "closedContent";
+        
     private boolean _currentlyCollapsed;
     
     public void setCurrentlyCollapsed(boolean collapsed)
@@ -66,6 +70,32 @@ public abstract class AbstractHtmlCollapsiblePanel extends UIInput
     public boolean isCurrentlyCollapsed()
     {
         return _currentlyCollapsed;
+    }
+    
+    public void setHeader(UIComponent header)
+    {
+        getFacets().put(HEADER_FACET_NAME, header);
+    }
+
+    /**
+     * @JSFFacet
+     */
+    public UIComponent getHeader()
+    {
+        return (UIComponent) getFacets().get(HEADER_FACET_NAME);
+    }
+    
+    public void setClosedContent(UIComponent closedContent)
+    {
+        getFacets().put(CLOSED_CONTENT_FACET_NAME, closedContent);
+    }
+
+    /**
+     * @JSFFacet
+     */
+    public UIComponent getClosedContent()
+    {
+        return (UIComponent) getFacets().get(CLOSED_CONTENT_FACET_NAME);
     }
     
     //private static final Log log = LogFactory.getLog(HtmlCollapsiblePanel.class);
@@ -96,10 +126,7 @@ public abstract class AbstractHtmlCollapsiblePanel extends UIInput
             {
                 UIComponent child = (UIComponent)it.next();
 
-                if(!(child instanceof HtmlHeaderLink))
-                {
-                    child.processDecodes(context);
-                }
+                child.processDecodes(context);
             }
         }
 

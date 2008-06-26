@@ -36,7 +36,7 @@
     <t:saveState value="#{thirdCollapsiblePanelBean}"/>
 
     <h:form id="form">
-
+        <t:messages/>
         <t:collapsiblePanel id="test1" value="#{firstCollapsiblePanelBean.collapsed}" title="testTitle">
             <h:panelGrid>
                 <h:outputText value="#{firstCollapsiblePanelBean.firstName}"/>
@@ -45,39 +45,42 @@
             </h:panelGrid>
         </t:collapsiblePanel>
 
-        <t:collapsiblePanel id="test2" value="#{secondCollapsiblePanelBean.collapsed}" title="testTitle"
-                            var="test2collapsed">
-            <f:facet name="header">
-                <t:div style="width:500px;background-color:#CCCCCC;">
-                    <h:outputText value="Person"/>
-                    <t:headerLink immediate="true">
-                        <h:outputText value="> Details" rendered="#{test2collapsed}"/>
-                        <h:outputText value="v Overview" rendered="#{!test2collapsed}"/>
-                    </t:headerLink>
-                </t:div>
-            </f:facet>
-            <f:facet name="closedContent">
-                <h:panelGroup>
-                    <h:outputText value="#{secondCollapsiblePanelBean.firstName}"/>
-                    <h:outputText value=" "/>
-                    <h:outputText value="#{secondCollapsiblePanelBean.surName}"/>
-                    <h:outputText value=", born on: "/>
-                    <h:outputText value="#{secondCollapsiblePanelBean.birthDate}"/>
-                </h:panelGroup>
-            </f:facet>
-            <h:panelGrid>
-                <h:outputText value="#{secondCollapsiblePanelBean.firstName}"/>
-                <h:inputText value="#{secondCollapsiblePanelBean.surName}"/>
-                <t:inputCalendar value="#{secondCollapsiblePanelBean.birthDate}" renderAsPopup="true"/>
-            </h:panelGrid>
-        </t:collapsiblePanel>
+        <t:subform id="subform">
+	        <t:collapsiblePanel id="test2" value="#{secondCollapsiblePanelBean.collapsed}" title="testTitle"
+	                            var="test2collapsed">
+	            <f:facet name="header">
+	                <t:div style="width:500px;background-color:#CCCCCC;">
+	                    <h:outputText value="Person"/>
+	                    <t:headerLink immediate="true" actionFor="subform">
+	                        <h:outputText value="> Details" rendered="#{test2collapsed}"/>
+	                        <h:outputText value="v Overview" rendered="#{!test2collapsed}"/>
+	                    </t:headerLink>
+	                </t:div>
+	            </f:facet>
+	            <f:facet name="closedContent">
+	                <h:panelGroup>
+	                    <h:outputText value="#{secondCollapsiblePanelBean.firstName}"/>
+	                    <h:outputText value=" "/>
+	                    <h:outputText value="#{secondCollapsiblePanelBean.surName}"/>
+	                    <h:outputText value=", born on: "/>
+	                    <h:outputText value="#{secondCollapsiblePanelBean.birthDate}"/>
+	                </h:panelGroup>
+	            </f:facet>
+	            <h:panelGrid>
+	                <h:outputText value="#{secondCollapsiblePanelBean.firstName}"/>
+	                <h:inputText value="#{secondCollapsiblePanelBean.surName}"/>
+	                <t:inputCalendar value="#{secondCollapsiblePanelBean.birthDate}" renderAsPopup="true"/>
+	            </h:panelGrid>
+	        </t:collapsiblePanel>
+        </t:subform>
 
         <t:collapsiblePanel id="test3" value="#{thirdCollapsiblePanelBean.collapsed}" title="testTitle"
                             var="test2collapsed">
+            <f:valueChangeListener type="org.apache.myfaces.examples.collapsiblepanel.CollapsiblePanelValueChangeListener" />                            
             <f:facet name="header">
                 <t:div style="width:500px;background-color:#CCCCCC;">
                     <h:outputText value="Person"/>
-                    <t:headerLink immediate="true">
+                    <t:headerLink>
                         <h:outputText value="> Details" rendered="#{test2collapsed}"/>
                         <h:outputText value="v Overview" rendered="#{!test2collapsed}"/>
                     </t:headerLink>

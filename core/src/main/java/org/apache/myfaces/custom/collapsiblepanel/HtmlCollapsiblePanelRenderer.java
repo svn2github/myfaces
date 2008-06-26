@@ -18,14 +18,13 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
-import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.application.ViewHandler;
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
@@ -33,9 +32,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * @JSFRenderer
@@ -61,18 +62,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel) uiComponent;
 
         UIComponent headerComp = collapsiblePanel.getFacet("header");
-        UIComponent linkToReset = null;
-        String resetId = null;
 
-        if (headerComp != null) {
-            linkToReset = RendererUtils.findComponent(headerComp, HtmlHeaderLink.class);
-
-            if (linkToReset != null) {
-                resetId = linkToReset.getId();
-                linkToReset.setId(collapsiblePanel.getId() + LINK_ID);
-            }
-        }
-        else {
+        if (headerComp == null){
             HtmlCommandLink link = getLink(facesContext, collapsiblePanel);
             collapsiblePanel.getChildren().add(link);
 
@@ -109,10 +100,6 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         }
 
         headerComp.setRendered(true);
-
-        if (linkToReset != null) {
-            linkToReset.setId(resetId);
-        }
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -161,15 +148,41 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
 
         if ((collapsiblePanel.getClientId(facesContext) + LINK_ID).equals(togglingIndicated)) {
             if (reqValue != null)
+            {
                 collapsiblePanel.setSubmittedValue("" + !collapsiblePanel.isCurrentlyCollapsed());
+            }
             else
+            {
                 collapsiblePanel.setSubmittedValue("" + !collapsiblePanel.isCollapsed());
+            }
+            
+            UIComponent header = collapsiblePanel.getFacet("header");
+            
+            if (header != null)
+            {
+                UICommand link = (UICommand)RendererUtils.findComponent(header,HtmlHeaderLink.class);
+                
+                if (link != null && link.isImmediate())
+                {
+                    //In this case we need to update the model directly, because
+                    //PROCESS_VALIDATIONS and UPDATE_MODEL phase is not called
+                    //(immediate=true), but we need to reflect the change
+                    //on the collapsed value.
+                    //In this case, no ValueChangeEvent is fired,
+                    //because it is an immediate call.
+                    Object convertedValue = getConvertedValue(facesContext,collapsiblePanel,
+                            collapsiblePanel.getSubmittedValue());
+                    
+                    collapsiblePanel.setValue(convertedValue);
+                    collapsiblePanel.setSubmittedValue(null);
+                    collapsiblePanel.updateModel(facesContext);
+                }
+            }
         }
         else {
             if (reqValue != null)
                 collapsiblePanel.setSubmittedValue("" + collapsiblePanel.isCurrentlyCollapsed());
         }
-
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlCollapsiblePanel collapsiblePanel)
@@ -179,7 +192,6 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         link.setId(collapsiblePanel.getId() + LINK_ID);
         link.setTransient(true);
         link.setImmediate(true);
-        //link.addActionListener(new ChangeCollapsedHandler());
 
         List children = link.getChildren();
         // Create the indicator. You could later make this conditional and render optional images instead
@@ -211,30 +223,4 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
 
         return super.getConvertedValue(context, component, submittedValue);
     }
-
-    // Couldn't get an ActionListner for a link to work properly. With each page submit, one more
-    // event was fired. I assume it is because the link component was set to transparent, and I didn't
-    // know how to get a reference to it back in a new encoding phase
-    /*
-    public static class ChangeCollapsedHandler implements ActionListener {
-    	// Can't make this class anonymous, because it won't work with state saving
-    	// refer to http://forum.java.sun.com/thread.jspa?messageID=2885214&#2885214
-
-		  /* (non-Javadoc)
-		  * @see javax.faces.event.ActionListener#processAction(javax.faces.event.ActionEvent)
-		  */
-    /*
-      public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
-    		log.info("Got action event, processing " + actionEvent.getComponent().getId() + ", phase id " + actionEvent.getPhaseId() );
-    		if (!(actionEvent.getComponent().getParent() instanceof HtmlCollapsiblePanel) )
-    			throw new AbortProcessingException("The parent of the action source was of unexpected type, HtmlCollapsiblePanel was expected");
-    		HtmlCollapsiblePanel collapsiblePanel = (HtmlCollapsiblePanel)actionEvent.getComponent().getParent();
-    		collapsiblePanel.setFirstCollapsed(!collapsiblePanel.isFirstCollapsed() );
-        // Note that we need to remove the listeners here, otherwise they will be fired again for old components,
-        // don't quite understand why
-        ActionListener[] listeners = collapsiblePanel.getLink().getActionListeners();
-        for (int i= 0; i< listeners.length; i++) collapsiblePanel.getLink().removeActionListener(listeners[i]);
-    	}
-		}
-    */
 }

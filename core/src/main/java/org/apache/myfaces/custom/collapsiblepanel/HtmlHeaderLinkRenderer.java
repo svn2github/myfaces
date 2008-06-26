@@ -18,23 +18,18 @@
  */
 package org.apache.myfaces.custom.collapsiblepanel;
 
-import org.apache.myfaces.component.html.ext.HtmlCommandLink;
+import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
 /**
- * Extends standard commandLink by user role support and the HTML target attribute. 
+ * @JSFRenderer
+ *   renderKitId = "HTML_BASIC"
+ *   family = "javax.faces.Command"
+ *   type = "org.apache.myfaces.HeaderLink" 
  * 
- * Unless otherwise specified, all attributes accept static values or EL expressions.
- * 
- * @JSFComponent
- *   name = "t:headerLink"
- *   tagClass = "org.apache.myfaces.custom.collapsiblepanel.HtmlHeaderLinkTag"
- * 
- * @author Martin Marinschek (latest modification by $Author: mmarinschek $)
- *
- * @version $Revision: 326564 $ $Date: 2005-10-19 16:03:14 +0200 (Mi, 19 Okt 2005) $
- *
+ * @author Leonardo Uribe (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
-public class HtmlHeaderLink extends HtmlCommandLink
+public class HtmlHeaderLinkRenderer extends HtmlLinkRenderer
 {
-    public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlHeaderLink";
+    
 }
