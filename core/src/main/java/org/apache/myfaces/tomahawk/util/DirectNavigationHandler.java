@@ -37,7 +37,12 @@ import javax.faces.context.FacesContext;
  * <p>
  * This navigation handler does not work well in combination with other custom
  * navigation handlers, as it never passes any calls down to underlying
- * implementations.
+ * implementations. Having another NavigationHandler decorate this one will
+ * work; having this navigation handler decorate another will not as the
+ * decorated handler will never be invoked. Therefore if multiple navigation
+ * handlers are to be used (eg the Tomahawk RedirectTrackerNavigationHandler
+ * in combination with this one), then this should be listed first in the
+ * faces-config.xml file so that the other handlers decorate this one. 
  */
 public class DirectNavigationHandler extends NavigationHandler
 {
