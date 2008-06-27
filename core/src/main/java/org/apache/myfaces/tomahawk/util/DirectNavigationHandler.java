@@ -25,27 +25,38 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
 /**
- * This is an alternative
- * implementation of the NavigationHandler,
- * directly using the outcome of an action
- * as the name of the page.
+ * An alternative implementation of the standard JSF NavigationHandler API which
+ * directly using the outcome of an action as the name of the page to navigate to.
+ * <p>
+ * This bypasses the "logical navigation" approach of standard JSF, so that pages
+ * can be wired together by using actual urls in command actions and action-method
+ * return values.
+ * <p>
+ * When this navigation-handler is configured, all navigation-rule entries in
+ * faces-config.xml files are ignored completely.
+ * <p>
+ * This navigation handler does not work well in combination with other custom
+ * navigation handlers, as it never passes any calls down to underlying
+ * implementations.
  */
-public class DirectNavigationHandler extends NavigationHandler{
-
-	/**
-	 * Gives the handleNavigation() method an alternative behaviour. Linking
-	 * is now processed directly to the given url (e.g. action="/pages/site.jsp").
+public class DirectNavigationHandler extends NavigationHandler
+{
+    /**
+     * Gives the handleNavigation() method an alternative behaviour. Linking
+     * is now processed directly to the given url (e.g. action="/pages/site.jsp").
      *
-	 * There is no check if the outcome value really points to a valid page.
-	 */
-	public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-
+     * There is no check if the outcome value really points to a valid page.
+     */
+    public void handleNavigation(FacesContext context, String fromAction, String outcome)
+    {
         if(outcome == null || outcome.length()==0)
+        {
             return;
+        }
 
         ViewHandler viewHandler=context.getApplication().getViewHandler();
-		UIViewRoot viewRoot=viewHandler.createView(context,outcome);
-		context.setViewRoot(viewRoot);
-		context.renderResponse();
-	}
+        UIViewRoot viewRoot=viewHandler.createView(context,outcome);
+        context.setViewRoot(viewRoot);
+        context.renderResponse();
+    }
 }
