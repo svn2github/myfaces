@@ -498,7 +498,8 @@ public class HtmlTreeRenderer extends Renderer
 
         if ((bitMask & LINES)!=0 && (bitMask & LAST)==0)
         {
-            out.writeURIAttribute("background", getImageSrc(context, tree, "line-trunk.gif", true), null);
+            //out.writeURIAttribute("background", getImageSrc(context, tree, "line-trunk.gif", true), null);
+            out.writeURIAttribute(HTML.STYLE_ATTR, "background-image:" + getImageSrc(context, tree, "line-trunk.gif", true) + ";", null); 
         }
 
 //      add the appropriate image for the nav control
@@ -506,10 +507,12 @@ public class HtmlTreeRenderer extends Renderer
         String imageId = IMAGE_PREFIX+(counter++);
         image.setId(imageId);
         image.setUrl(navSrcUrl);
+        
         Map imageAttrs = image.getAttributes();
         imageAttrs.put(HTML.WIDTH_ATTR, "19");
         imageAttrs.put(HTML.HEIGHT_ATTR, "18");
         imageAttrs.put(HTML.BORDER_ATTR, "0");
+        imageAttrs.put(HTML.ALT_ATTR, ""); // "alt" is a mandatory xhtml attribute
 
         if (clientSideToggle)
         {
