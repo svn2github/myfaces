@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/popup.png" alt="popup"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:popup styleClass="CSSClass"
+            closePopupOnExitingElement="{true|false}"
+            closePopupOnExitingPopup="{true|false}"
+            displayAtDistanceX="int"
+            displayAtDistanceY="int"&gt;
+    &lt;h:outputText value="String"/&gt;
+    &lt;f:facet name="popup"&gt;
+        &lt;h:panelGroup&gt;
+            &lt;h:panelGrid columns="int"&gt;
+                &lt;h:outputText value="String"/&gt;
+            &lt;/h:panelGrid&gt;
+        &lt;/h:panelGroup&gt;
+    &lt;/f:facet&gt;
+&lt;/t:popup&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see examples/popup.jsp for an example!</p>
+        </section>
+    </body>
+</document>

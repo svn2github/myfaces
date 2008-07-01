@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+        <source xml:space="preserve">&lt;h:selectOneMenu id="menu1" value="#{selectItemsBean.selectedCarColor}"&gt;
+    &lt;t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" /&gt;
+&lt;/h:selectOneMenu&gt;</source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>This component can be used with any selection component. Also it's compatible with RI.</p>
+        </section>
+    </body>
+</document>
