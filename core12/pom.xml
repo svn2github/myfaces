@@ -618,7 +618,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.4</version>
         <configuration>
-            <sourcepath>${basedir}/src/main/java;${basedir}/target/tomahawk11_sources;${basedir}/target/maven-faces-plugin/main/java</sourcepath>
+            <sourcepath>${basedir}/src/main/java;${basedir}/target/tomahawk11_sources;${basedir}/target/myfaces-builder-plugin/main/java</sourcepath>
         </configuration>
         
       </plugin>
