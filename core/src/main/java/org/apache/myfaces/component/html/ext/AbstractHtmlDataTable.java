@@ -51,10 +51,20 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
+ * The MyFacesDataTable extends the standard JSF DataTable by two
+ * important features:
+ * <br/>
+ * <ul>
+ *   <li>Possiblity to save the state of the DataModel.</li>
+ * 
+ *   <li>Support for clickable sort headers (see SortHeader
+ *   component).</li>
+ * </ul>
+ * <br/>
  * Extended data_table that adds some additional features to the 
  * standard data_table action: see attribute descriptions for 
  * preserveDataModel, sortColumn, sortAscending and preserveSort. 
- * 
+ * <br/>
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
  * @JSFComponent

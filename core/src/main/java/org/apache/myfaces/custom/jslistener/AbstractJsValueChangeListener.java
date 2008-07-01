@@ -23,8 +23,16 @@ import javax.faces.component.UIOutput;
 
 /**
  * Value change listener on client side. 
- * 
+ * <p>
+ * This component replicates the 'Value Change Listener' functionality on the client side. It can be used
+ * when the user would like a change in the value of one control to trigger off changes in the states of 
+ * other controls. One or more Javascript Listeners can be nested within the source control (a control 
+ * belonging to the 'javax.faces.Input' family). When the value of the source control is modified, the 
+ * listeners are triggered and the states of the target controls modified.
+ * </p>
+ * <p>
  * Unless otherwise specified, all attributes accept static values or EL expressions.
+ * </p>
  * 
  * @JSFComponent
  *   name = "t:jsValueChangeListener"
@@ -45,25 +53,36 @@ public abstract class AbstractJsValueChangeListener extends UIComponentBase
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.JsValueChangeListener";
 
     /**
+     * for - the id of the target control
+     * 
      * @JSFProperty
      */
     public abstract String getFor();
 
     /**
+     * the javascript expression to evaluate. The keyword '$srcElem' resolves to 
+     * the source control and the keyword '$destElem' resolves to the target control
+     * 
      * @JSFProperty
      *   required="true"
      */
     public abstract String getExpressionValue();
 
     /**
+     * The result of the evaluated expression is assigned to the specified property 
+     * of the target control
+     * 
      * @JSFProperty
      */
     public abstract String getProperty();
 
     /**
-     *  If specified this JavaScript event will be inserted in the 
-     *  body tag. JavaScript code will be the same like it is 
-     *  rendered in the parent component.
+     * Events are triggered by the 'onchange' event of the source control. Here, 
+     * an additional event can be specified (onload?).
+     * 
+     * If specified this JavaScript event will be inserted in the 
+     * body tag. JavaScript code will be the same like it is 
+     * rendered in the parent component.
      * 
      * @JSFProperty
      */

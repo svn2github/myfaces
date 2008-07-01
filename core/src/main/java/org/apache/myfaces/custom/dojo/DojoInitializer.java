@@ -25,7 +25,11 @@ import javax.faces.context.FacesContext;
 
 /**
  * Default component for the dojo intializer
- * 
+ * <br/>
+ * This component is purely non visual, and serves for
+ * quick hacking, and prototyping the dojo toolkit within
+ * verbatimed html.
+ * <br/>
  * Dojo initializer helper tag for debugging and communication flags. 
  * This tag encapsules the Dojo DjConfig meta configuration and also 
  * adds the needed dojo required functionality.
@@ -61,6 +65,11 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo allowQueryConfig as defined
+     * by the <a href="http://dojotoolkit.org/">Dojo Toolkit</a>.
+     * If someone has additional infos about this tag,
+     * please fill in here.
+     * 
      * @JSFProperty
      */
     public Boolean getAllowQueryConfig() {
@@ -68,6 +77,13 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo baseScriptUri as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * <br />
+     * <br />
+     * Allows the alteration of the dojo loading root path
+     * used by require.
+     * 
      * @JSFProperty
      */
     public String getBaseScriptUri() {
@@ -75,6 +91,19 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo bindEncoding as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * 
+     * Although this control most of the times is not
+     * needed one usage in plain jsf applications can be
+     * thought of. The changing of the bind encodings, if
+     * you check the parameter list of the control
+     * <b>ioSendTransport</b>
+     * can be used to change this encoding to any encoding
+     * parameter needed. This can be used to change the
+     * internal ajax request encodings of various controls
+     * in a global manner.
+     * 
      * @JSFProperty
      */
     public String getBindEncoding() {
@@ -86,6 +115,15 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo debug as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * <br />
+     * <br />
+     * Enables the dojo debugging framework. The usage of
+     * dojo.debug causes output to be displayed in either
+     * the current container or a target container, if one
+     * is set.
+     * 
      * @JSFProperty
      */
     public Boolean getDebug() {
@@ -93,6 +131,12 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo debugAtAllCosts as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * <br />
+     * Tries to enforce debugging even if the browser
+     * version does not allow it to work properlys
+     * 
      * @JSFProperty
      */
     public Boolean getDebugAtAllCosts() {
@@ -100,6 +144,17 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo debugConsole as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * <br />
+     * <br />
+     * This flag pops up a separate in frame floating
+     * window which receives the debugging output.
+     * <br />
+     * <br />
+     * Note: This flag only works if debugging is enabled
+     * generally via the debug="true" flag set
+     * 
      * @JSFProperty
      */
     public Boolean getDebugConsole() {
@@ -107,6 +162,23 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo debugContainerId as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * <br />
+     * <br />
+     * This flag notifies the Dojo toolkit about the id
+     * which should receive the debug output. Dojo has a
+     * full debugging framework in it which allows to turn
+     * on debug output via a logging mechanism @see
+     * dojo.debug() for further references.
+     * <br />
+     * <br />
+     * The debugging output is not limited to the current
+     * container triggering the debugging statement any
+     * container can receive the debugging output this flag
+     * is the flag which has to be set for setting a
+     * different target id for the debugging output.
+     * 
      * @JSFProperty
      */
     public String getDebugContainerId() {
@@ -118,6 +190,11 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo development as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * If you can find additional info about this attribute
+     * please fill in here
+     * 
      * @JSFProperty
      */
     public Boolean getExpanded() {
@@ -129,6 +206,19 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo ignoreClassNames as defined
+     * by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * <br />
+     * <br />
+     * This attribute turns on the case insensitive
+     * handling of classnames by require and other Dojo
+     * class loader mechanisms.
+     * <br />
+     * <br />
+     * Case sensitivity is by default turned
+     * <b>on</b>.
+     * 
      * @JSFProperty
      */
     public Boolean getIgnoreClassNames() {
@@ -136,6 +226,14 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Dojo in its underlying architecture allows various
+     * options of server-client side communication. This
+     * setting allows the alteration of the communication
+     * layer to a different protocol. Currently only in
+     * usage is xmlhttprequest, hence setting this encoding
+     * will not change too much. But different encodings
+     * like iframe are planned for the future.
+     * 
      * @JSFProperty
      */
     public String getIoSendTransport() {
@@ -143,6 +241,20 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo parseWidgets as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * 
+     * This parameter is used to turn on or off the dojo
+     * widgeting parsing. The parsing is not used by
+     * MyFaces for various reasons, but can be used by your
+     * own html code.
+     * <br />
+     * <br />
+     * For addititional information regarding the Dojo
+     * Toolkit widget parsing, visit the
+     * <br />
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit Homepage</a>
+     * 
      * @JSFProperty
      */
     public Boolean getParseWidgets() {
@@ -150,6 +262,12 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Dojo uses internally back button blockers to avoid
+     * problems with ajax requests causing the back button,
+     * to move out of the back page navigation order.
+     * Sometimes this behavior is not wanted and can be
+     * turned off with this on a global scale;
+     * 
      * @JSFProperty
      */
     public Boolean getPreventBackButtonFix() {
@@ -157,6 +275,9 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo provide as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * 
      * @JSFProperty
      */
     public String getProvide() {
@@ -168,6 +289,9 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo provide as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * 
      * @JSFProperty
      */
     public String getRequire() {
@@ -175,6 +299,11 @@ public class DojoInitializer extends UIOutput {
     }
 
     /**
+     * Triggers a standard dojo development as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * If you can find additional info about this attribute
+     * please fill in here
+     * 
      * @JSFProperty
      */
     public String getSearchIds() {
@@ -182,6 +311,12 @@ public class DojoInitializer extends UIOutput {
     }
     
     /**
+     * Triggers a standard dojo development as defined by the
+     * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>
+     * If this parameter is set to true. The expanded
+     * debuggable version of dojo is included
+     * if set to false the compressed one is included.
+     * 
      * @JSFProperty
      */
     public Boolean getDevelopment() {

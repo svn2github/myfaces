@@ -32,7 +32,10 @@ import javax.faces.model.SelectItemGroup;
 /**
  * An extended version of the standard UISelectItems. Populates the 
  * SelectItem collection from the given value automatically using 
- * the itemLabel and itemValue attributes.
+ * the itemLabel and itemValue attributes. By using the component 
+ * there is no need to manually create a SelectItem collection 
+ * because component automatically populates SelectItem objects 
+ * from types like Collection, Map and etc..
  * 
  * @JSFComponent
  *   name = "t:selectItems"

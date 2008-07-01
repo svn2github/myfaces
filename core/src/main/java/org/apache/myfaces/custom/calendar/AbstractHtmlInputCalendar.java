@@ -25,7 +25,7 @@ import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
 
 /**
- *   <p>
+ *  <p>
  *  Provides a calendar. The calendar can be "inline", or a button can be rendered
  *  that displays the calendar in a "popup window" when clicked. Javascript is
  *  required for the popup window.
@@ -41,11 +41,12 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *  such as currentDayCellClass, dayCellClass, weekRowClass, monthYearRowClass. 
  *  Attributes "styleLocation", "javascriptLocation", "imageLocation" and all
  *  attributes starting with "popup" have no effect on an inline calendar.
+ *  </p>
  *  <ul>
  *  <p>
  *  The appearance of the popup calendar can be controlled via attributes
  *  popupTheme, styleLocation, javascriptLocation and imageLocation:
- *  <ul>
+ *  </p>
  *    <li>popupTheme: When styleLocation is not overridden then this selects one of the
  *    built-in themes ("WH" or "DB"); the default is "DB". This also selects the prefix
  * used for the names of style classes attached to generated dom elements; all style
@@ -55,7 +56,7 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *  A reference to this theme.css file will automatically be output. Specifying "none" as the
  *  location prevents the generation of this stylesheet reference; it is assumed that the
  *  necessary style rules will be loaded via some other mechanism. Defaults to a reference
- *  to a location within the tomahawk jarfile which varies based on popupTheme.
+ *  to a location within the tomahawk jarfile which varies based on popupTheme.</li>
  * <li>javascriptLocation: specifies the URL of a directory in which all the necessary script
  *   files can be found. A reference to scripts "prototype.js", "date.js" and "popcalendar.js"
  *   will automatically be output. Specifying "none" prevents generation of these references;
@@ -66,7 +67,6 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *       varies depending on popupTheme.</li>
  *  </ul>
  *  Other styling attributes (eg dayCellClass, weekRowClass) are ignored for the popup calendar.
- *  </p>
  *  <p>
  *  Unless otherwise specified, all attributes accept static values or EL expressions.
  *  </p>

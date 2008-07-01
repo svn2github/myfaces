@@ -27,6 +27,12 @@ import org.apache.myfaces.component.UserRoleUtils;
 /**
  * Renders a Javascript Menu. Nested NavigationMenuItem(s) are rendered 
  * as Javascript Menu. 
+ *
+ * <p>
+ * This component is based based on the excellent
+ * <a href="http://jscook.sourceforge.net/JSCookMenu">JSCookMenu</a>
+ * by Heng Yuan.
+ * </p>
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 

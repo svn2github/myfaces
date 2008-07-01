@@ -27,6 +27,11 @@ import org.apache.myfaces.component.DataProperties;
 /**
  * Model for a table in multiple balanced columns.
  * 
+ * The newspaperTable tag allows a long, narrow table to be wrapped
+ * so that it becomes a short, wide table. This allows more information
+ * to be shown on a single screen. This is commonly used to present
+ * checkboxes for a long list of items.
+ *  
  * A data table for rendering long skinny tables as short wide 
  * table by wrapping the table over a specified number of columns. 
  * 

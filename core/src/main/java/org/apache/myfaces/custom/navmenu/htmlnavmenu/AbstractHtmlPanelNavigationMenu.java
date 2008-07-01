@@ -44,7 +44,7 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
- * Many thanks to the guys from Swiss Federal Institute of Intellectual Property & Marc Bouquet
+ * Many thanks to the guys from Swiss Federal Institute of Intellectual Property and Marc Bouquet
  * for helping to develop this component.
  * 
  * @JSFComponent

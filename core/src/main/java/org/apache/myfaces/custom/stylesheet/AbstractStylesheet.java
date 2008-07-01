@@ -48,12 +48,14 @@ public abstract class AbstractStylesheet extends UIComponentBase
      * If this path starts with a slash, then the webapp context path will be prepended to it.
      * This makes it simple to reference stylesheets at an absolute path within the webapp.
      * A value like "/styles/style.css" becomes "/webappname/styles/style.css".
+     * </p>
      * <p>
      * If this path does not start with a slash, then it is output unaltered. This supports
      * absolute urls ("http://host/path/style.css"). It also supports having css files relative
      * to the current page ("style.css" or "styles/style.css") but this needs to be used with
      * care as the standard JSF postback/internal-forward navigation style can cause browsers
-     * to use an inappropriate base url when resolving relative references. 
+     * to use an inappropriate base url when resolving relative references.
+     * </p> 
      * 
      * @JSFProperty
      *   required="true"
@@ -65,10 +67,12 @@ public abstract class AbstractStylesheet extends UIComponentBase
      * <p>
      * The file referenced by the path attribute is loaded, and its content is written
      * to the page wrapped in an &lt;script&gt; tag.
+     * </p>
      * <p>
      * When this option is enabled, the path property must contain an absolute path
      * within the current webapp. External urls ("http://*") and paths relative to the
      * current page are not supported.
+     * </p>
      * 
      * @JSFProperty
      *   defaultValue = "false"
@@ -81,6 +85,7 @@ public abstract class AbstractStylesheet extends UIComponentBase
      * When true, any EL expression in the stylesheet will be evaluated and replaced
      * by its string representation on the first access. The stylesheet will be
      * processed only once. Every subsequent request will get a cached view.
+     * </p>
      * 
      * @JSFProperty
      *   defaultValue = "false"

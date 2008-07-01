@@ -46,6 +46,7 @@ import javax.faces.event.FacesEvent;
  * included one. The included page can use any name it desires for beans it needs to
  * reference, and the including page can then use aliasBean to make those names
  * refer to the beans it wishes to "pass" as parameters.
+ * </p>
  * <p>
  * Suppose you have a block of components you use often but with different beans. You
  * can create a separate JSP page (or equivalent) containing these beans, where the
@@ -54,15 +55,18 @@ import javax.faces.event.FacesEvent;
  * an alias component mapping each of these "parameters" to whatever beans (or literal
  * values) you really want to apply the block to, then use jsp:include (or equivalent)
  * to include the reusable block of components.
+ * </p>
  * <p>
  * Note, however, that AliasBean does not work for component bindings; JSF1.1
  * just has no mechanism available to set up the alias during the "restore view"
  * phase while the bindings of its children are being re-established, and then
  * remove the alias after the child bindings are done.
+ * </p>
  * <p>
  * As a special case, if this component's direct parent is an AliasBeansScope
  * then the alias (temporary name) is active until the end of the parent
  * component, rather than the end of this component.
+ * </p>
  *
  * @JSFComponent
  *   name = "t:aliasBean"

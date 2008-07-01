@@ -25,9 +25,19 @@ import org.apache.myfaces.component.UserRoleAware;
 
 /**
  * A schedule component similar to the ones found in Outlook or Evolution
- * 
+ * <p> 
+ * Renders a schedule component, showing appointments and events
+ * in a day, workweek, week or month view, similar to the schedule
+ * part of MS Outlook or Evolution.
+ * </p><p>
+ * The component is backed by an implementation of the
+ * ScheduleModel interface. Creating a custom model can be easily
+ * achieved by implementing this interface, or by overriding
+ * the AbstractScheduleModel class.
+ * </p><p>
  * AbstractHtmlSchedule class holds all properties specific to the HTML version of the Schedule component.
- *
+ * </p>
+ * 
  * @JSFComponent
  *   name = "t:schedule"
  *   class = "org.apache.myfaces.custom.schedule.HtmlSchedule"
@@ -190,6 +200,8 @@ public abstract class AbstractHtmlSchedule extends UISchedule implements UserRol
     public abstract String getUnevenClass();
 
     /**
+     * the css class of the table representing a week in the compact mode (default: week)
+     * 
      * @JSFProperty
      * @return the weekClass
      */

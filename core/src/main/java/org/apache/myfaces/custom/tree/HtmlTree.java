@@ -40,17 +40,17 @@ import org.apache.myfaces.custom.tree.model.TreePath;
 
 /**
  * A tree data component. 
- * Unless otherwise specified, all attributes accept static values or EL expressions. h
- * <p/>
+ * Unless otherwise specified, all attributes accept static values or EL expressions.
+ * <p>
  * Tree implementation based on javax.swing.JTree.
  * </p>
- * <p/>
+ * <p>
  * The tree model is assigned by using a value binding named <code>model</code>
  * and is not stored in view state.
  * </p>
- * <p/>
+ * <p>
  * A hierarchy of {@link HtmlTreeNode}objects is used to represent the current
- * expanded state of the tree. The root node is held as a faces named
+ * expanded state of the tree. The root node is held as a faces named * 
  * <code>rootNode</code>.
  * </p>
  *

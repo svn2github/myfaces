@@ -22,6 +22,15 @@ import org.apache.myfaces.component.html.ext.HtmlSelectManyListbox;
 
 /**
  * A picklist component that allows to select items from one list to another
+ * <p>
+ * In other words, is a selection component where a set of items 
+ * can be selected from a list that contains all the available items to a list
+ * that contains the selected items.
+ * </p>
+ * <p>
+ * The component is based on the t:selectManyListbox component, so it contains
+ * the same attributes. Soon, more specific attributes will be added.
+ * </p>
  * 
  * @JSFComponent
  *   name = "t:selectManyPicklist"
