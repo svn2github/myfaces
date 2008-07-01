@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">  				
+				&lt;t:inputCalendar id="startDate"/&gt;
+				&lt;t:inputCalendar id="endDate"&gt;
+				    &lt;sandbox:compareToValidator operator="gt" for="startDate" /&gt;
+				    &lt;sandbox:compareToValidator operator="gt" for="startDate" message="Start date must be before end date." /&gt;
+				    &lt;sandbox:compareToValidator operator="gt" for="startDate" message="{0} must be {2} {3}" /&gt;
+				    &lt;sandbox:compareToValidator operator="gt" for="startDate" alternateOperatorName="after" /&gt;
+				    &lt;sandbox:compareToValidator operator="gt" for="startDate" message="{0} must be {2} {3}" alternateOperatorName="after" /&gt;
+				    &lt;sandbox:compareToValidator operator="gt" for="startDate" comparator="#{dateComparator}" /&gt;
+				&lt;t:inputCalendar&gt;                
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                If the comparator attribute is specified, the component values are compared
+                using the specified java.util.Comparator object.  If no comparator is specified, the
+                component values must implement Comparable and are compared using compareTo().
+                If either value or foreign value does not implement Comparable and no Comparator
+                is specified, validation always succeeds.
+            </p>
+            <p>
+                Put this validator on the bottom-most component to insure that
+                the foreign component's value has been converted and validated first.
+                However, this validator will attempt to convert and validate the foreign
+                component's value if this has not already occurred.  This process may not
+                be identical to the standard JSF conversion and validation process.
+            </p>
+            <p>See "myfaces-example-sandbox/validateCompareTo.jsp" for an example.</p>
+        </section>
+        <!-- Additional Information -->
+        <section name="Known issues">
+            
+            <p>
+                The validation error message key is currently hardcoded as
+                "{0} value &lt;{1}&gt; must be {2} {3} value &lt;{4}&gt;"
+                and should be localized.
+            </p>
+            <p>
+                Operator names should be localized.
+            </p>
+            <p>
+                Perhaps an exception should be thrown if the two values are not
+                Comparable and no Comparator is specified.
+            </p>
+        </section>        
+    </body>
+</document>

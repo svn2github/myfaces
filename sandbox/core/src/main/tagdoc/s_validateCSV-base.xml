@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+            &lt;f:verbatim&gt;enter credit card numbers, separated by a period:&lt;/f:verbatim&gt;
+            &lt;h:inputText id="creditCardNumber" value="#{backingBean.creditCardNumbers}" required="true"&gt;
+                &lt;s:validateCSV subvalidatorId="org.apache.myfaces.validator.CreditCard" separator="\\." /&gt;
+            &lt;/h:inputText&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                Use this validator to allow users to enter multiple input values in a single input,
+                separated by a comma, semicolon, or other custom separator. The CSVValidator will
+                separate the input values and call the subvalidator for each of those values.
+            </p>
+            <p>See "myfaces-example-sandbox/validatecsv.jsp" for an example.</p>
+        </section>
+        <!-- Additional Information -->
+        <section name="Known issues">            
+            <p>
+                The separator, if specified, must be a valid regex for separating the input String, eq "\\."
+           </p>
+            <p>
+                Parameters cannot be passed.
+            </p>
+        </section>
+    </body>
+</document>

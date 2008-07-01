@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/inputsuggestajax.jpg" alt="InputSuggestAjax"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">&lt;s:inputSuggestAjax id="id" binding="control binding"
+                            suggestedItemsMethod="backend bean callback method" value="Bean"/&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                Note - This component is different to others, it uses Ajax mechanisms
+                to fetch preview data from the server, thus the backend binding can
+                and will be used outside of the standard JSF lifecycle to deliver the data.
+                
+                <br/><br/>
+                Description of the call order:<br/> 
+                <code>
+                control -&gt; Ajax request -&gt; suggestionMethod in backend bean -&gt; values pushed into the control binding -&gt; result sent back to the client -&gt; control shows suggestion drop down
+                </code>
+                <br/><br/>
+                On the backend side, a callback method - the suggestion method, has to be implemented, 
+                which is called by the Ajax request and
+                fetches the data from a data source. The data then is pushed into the control binding similarly
+                to drop down menus and other controls which use the SelectItem object as data holder.
+                The rest is done automatically. 
+            </p>
+        </section>
+    </body>
+</document>

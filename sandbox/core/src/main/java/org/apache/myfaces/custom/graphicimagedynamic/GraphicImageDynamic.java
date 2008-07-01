@@ -29,6 +29,21 @@ import javax.faces.el.ValueBinding;
 
 /**
  * Extends standard graphicImage.
+ * <p>
+ * This tag renders a html img tag and can be used to render dynamic images.                
+ * </p>
+ * <p>
+ * Embedding images into html pages requires a second request to get the binary data 
+ * stream of the image. The result is that the state of the view including the state of request
+ * scoped beans will not be available when the image is requested.
+ * </p>
+ * <p>
+ * The image data is written by an image renderer which can be defined by the 
+ * imageRendererClass attribute.
+ * </p>
+ * <p>
+ * This component is able to use nested f:param elements to pass parameters to the image renderer.              
+ * </p>
  * 
  * @JSFComponent
  *   name = "s:graphicImageDynamic"

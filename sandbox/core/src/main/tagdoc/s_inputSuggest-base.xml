@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/inputSuggest.png" alt="inputSuggest"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">[TODO]</source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>[TODO]</p>
+        </section>
+    </body>
+</document>

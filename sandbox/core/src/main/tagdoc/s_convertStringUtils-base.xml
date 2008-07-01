@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+                &lt;h:outputText value="#{backingBean.customer.name}"&gt;
+                    &lt;s:convertStringUtils format="capitalize" trim="true"/&gt;
+                &lt;/h:outputText&gt;
+                &lt;h:outputText value="#{backingBean.customer.description}"&gt;
+                    &lt;s:convertStringUtils trim="true" maxLength="64" appendEllipsesDuringOutput="true"/&gt;
+                &lt;/h:outputText&gt;
+                &lt;h:inputText value="#{backingBean.customer.stateCode}"&gt;
+                    &lt;s:convertStringUtils format="uppercase" /&gt;
+                &lt;/h:inputText&gt;
+                
+                &lt;h:outputText value="#{backingBean.customer.name}"&gt;
+                     &lt;t:convertStringUtils format="capitalize" trim="true" maxLength="50"/&gt;
+                &lt;/h:outputText&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>See the convertStringUtils.jsp for an example.</p>
+        </section>
+    </body>
+</document>

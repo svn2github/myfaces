@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;s:graphicImageDynamic imageRendererClass="ImageRendererClass" &gt;
+  &lt;f:param name="param" value="value" /&gt;
+&lt;/s:graphicImageDynamic&gt;              
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see sandbox examples graphicImageDynamic.jsf and graphicImageDynamicText.jsf</p>
+        </section>
+    </body>
+</document>

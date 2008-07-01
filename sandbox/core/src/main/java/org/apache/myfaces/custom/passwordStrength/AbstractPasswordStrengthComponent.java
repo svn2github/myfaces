@@ -23,6 +23,22 @@ import javax.faces.component.html.HtmlInputText;
 import org.apache.myfaces.component.AlignProperty;
 
 /**
+ * The passwordStrength component is needed by the web sites 
+ * which ask the user to enter a powerful password for the 
+ * purpose of the registration stuff. 
+ * <p>
+ * The component enables its user to know the strength of the password 
+ * while (he/she) types it before even submit the form to the server 
+ * [please see the screenshots].            
+ * </p>
+ * <p>
+ * The component enables its user to define his custom security policy
+ * for his password in an easy manner.
+ * </p>
+ * <p>
+ * The component also have 2 types of presenting the password strength.
+ * Till now the strength can be represented as text or progressbar.
+ * </p>
  * 
  * @JSFComponent
  *   name = "s:passwordStrength"
@@ -77,21 +93,39 @@ public abstract class AbstractPasswordStrengthComponent extends HtmlInputText
 	
     /**
      * This string determines the expression of the custom security rule of the password
+     * <p>
      * Note that the expression has the following format :
+     * </p>
+     * <p>
      * *******************************************************
+     * </p>
+     * <p>
      * S (Number)  N (Number) A (Number)
-     * Where S stands for Symbols
-     * Where N stands for Numbers
-     * Where A stands for Alphabets
+     * </p>
+     * <ul>
+     * <li>Where S stands for Symbols</li>
+     * <li>Where N stands for Numbers</li>
+     * <li>Where A stands for Alphabets</li>
+     * </ul>
+     * <p>
      * *******************************************************
+     * </p>
+     * <p>
      * For example) A4N2S3A2
      * Means that the password will be as following :
-     * 4 or more Alphabets followed by
-     * 2 or more Numbers followed by
-     * 3 or more Symbols followed by
-     * 2 or more Alphabets
+     * </p>
+     * <ul>
+     * <li>4 or more Alphabets followed by</li>
+     * <li>2 or more Numbers followed by</li>
+     * <li>3 or more Symbols followed by</li>
+     * <li>2 or more Alphabets</li>
+     * </ul>
+     * <p>
      * *******************************************************
+     * </p>
+     * <p>
      * Note also that the useCustomSecurity should be set to true.
+     * </p>
      * 
      * @JSFProperty
      */

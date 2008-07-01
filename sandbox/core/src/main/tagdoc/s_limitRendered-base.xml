@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;s:limitRendered
+  id="String"
+  binding="EL"
+  rendered="Boolean"
+  type="count|index"
+  value="Object"&gt;
+  &lt;h:outputText /&gt;
+  ...
+&lt;/s:limitRendered&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+        <p>
+          The limitRendered component limits the number of children components
+          that are rendered. It can do this by one of two methods, by index or by count.
+        </p>
+        <p>
+          The component was inspired by the c:choose of JSTL, but has been enhanced for JSF.
+          Like the choose tag, it can render only one child, but that is where the similarity
+          ends. See below for examples and usage.
+        </p>
+        </section>
+        <section name="Examples">
+        <strong>type == count</strong>
+        <p>
+		    Because the defautls are count and 1, if no attributes are specified, only the first
+		    child that is rendered will be rendered. "A" will be rendered:
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered&gt;
+  &lt;h:outputText value="A" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>
+        <p>
+    Only "B" will be rendered:  
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered&gt;
+  &lt;h:outputText value="A" rendered="false" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>
+        <p>
+		    The following example shows that the value with count may exceed the number or rendered
+		    children. In this case, although the count is 3, there are only 2 components that able
+		    to be rendered. "B C" will be rendered:
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered value="3"&gt;
+  &lt;h:outputText value="A" rendered="false" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>
+        <strong>type == index</strong>
+        <p>
+            If the value is null, the component does nothing. So in this example, "A B C" is rendered:
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered type="index"&gt;
+  &lt;h:outputText value="A" rendered="false" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>
+        <p>
+		    If the component is not rendered, and its index is given, nothing is rendered for that index.
+		    In this example, nothing is rendered since index 0 is A and A is not rendered:
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered type="index" value="0"&gt;
+  &lt;h:outputText value="A" rendered="false" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>
+        <p>
+			Negative indexes are also allowed. You may interpret a negative index as {component.getChildren().size() - value)}.
+			In this example "B" is rendered because 3 (the number of components) minus 2 is 1, the index of the second component:
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered type="index" value="-2"&gt;
+  &lt;h:outputText value="A" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>
+        <p>
+			The value doesn't have to be one value with an index, it can be given any index, as long as it is within the
+			size of the children collection. This example renders "A, B, C":
+        </p>
+        <source xml:space="preserve">
+&lt;s:limitRendered type="index" value="0, 1, -1"&gt;
+  &lt;h:outputText value="A" /&gt;
+  &lt;h:outputText value="B" /&gt;
+  &lt;h:outputText value="C" /&gt;
+&lt;/s:limitRendered&gt;
+        </source>  
+        </section>
+        <section name="Valid Input">
+        <p>        
+            The value property can except many types of data.
+        </p>
+<strong>type == count</strong>
+        <p>The value can be:</p>
+<ul>  
+  <li>An instance of "java.lang.Number". The value is taken as "((Number)value).intValue()"</li>
+  
+  <li>An object whose "toString()" is parsable by "Integer.parseInt(String)". So in the above examples,
+  a string of "2" is valid</li>
+  
+  <li>"null" which is treated as "0"</li>
+</ul>
+<strong>type == index</strong>
+        <p>
+			With index, the value must be in the range of the children components. So for example, using a value of 5 or a value
+			of -5 on a component with 4 children will throw an exception. The value needs to be a set of values 
+			that can be coerced into integers. Valid sets are:
+        </p>
+<ul>
+  <li>Instance of "java.util.Collection"</li>
+  
+  <li>Instance of "int[]"</li>
+  
+  <li>Instance of, or castable to, "Object[]"</li>
+  
+  <li>A string with comma-separated numbers (white-space is okay, it is trimmed)</li>
+  
+  <li>"null" which will render all children that can be rendered</li>
+  
+  <li>[]</li>
+</ul>
+        <p>
+			  In the case of a collection or an object array, the items in the collection or array must be "java.lang.Number"
+			  instances or objects whose "toString()" is parsable by "Integer.parseInt(String)".
+        </p>
+        <p>
+			  See the example code for more information.
+        </p>
+        </section>
+    </body>
+</document>

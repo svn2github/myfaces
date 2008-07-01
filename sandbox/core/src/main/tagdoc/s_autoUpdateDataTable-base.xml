@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/autoUpdateDataTable.jpg" alt="autoUpdateDataTable"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+                &lt;s:autoUpdateDataTable [ all standard dataTable attributes allowed ]
+                [ preserveDataModel="{true|false}" ]
+                [ forceIdIndexFormula="value-binding" ]
+                [ sortColumn="value-binding" ]
+                [ sortAscending="value-binding" ]
+                [ preserveSort="{true|false}" ]
+                [ frequency="value-binding" ]&gt;
+                standard dataTable body (&lt;h:column&gt; tags and optional "header" and "footer" facets)
+                &lt;/t:command_sortheader&gt;
+                &lt;s:autoUpdateDataTable&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>THIS COMPONENT IS DEPRECATED!. 
+            </p>
+            <p>
+                <code>
+                frequency - defines the time in seconds between the Ajax-Requests
+                </code>
+            </p>
+            <p>
+                Note - This component is different to others, it uses Ajax mechanisms
+                to fetch data from the server, thus the backend binding can
+                and will be used outside of the standard JSF lifecycle to deliver the data.
+            </p>
+            <p>Use the autoUpdateDataTable tag always within a form tag.</p>
+            <p>
+            It is also not very advisable, to put some input fields 
+            (or checkboxes, radio buttons, etc.) into the dataTable, since after every submit
+            (which happens periodically) all the form data is cleared.
+            </p>
+            <p>see examples/ajaxDataTableSingle.jsp for an example.</p>
+        </section>
+    </body>
+</document>

@@ -397,8 +397,25 @@
                         </executions>
                     </plugin>
                      -->
+					<plugin>
+					    <!-- Generate report content -->
+						<groupId>org.apache.myfaces.buildtools</groupId>
+						<artifactId>myfaces-builder-plugin</artifactId>
+						<version>1.0.1-SNAPSHOT</version>
+						<configuration>
+							<taglibs>
+							    <s>http://myfaces.apache.org/sandbox</s>
+							</taglibs>
+						</configuration>
+						<executions>
+						    <execution>
+						        <goals>
+						          <goal>tagdoc-content</goal>
+						        </goals>
+						    </execution>
+						</executions>
+					</plugin>
                 </plugins>
-
             </build>
             <reporting>
                 <plugins>
@@ -410,6 +427,17 @@
                             <tldDocDir>${basedir}/target/site/tlddoc</tldDocDir>
                         </configuration>
                     </plugin>
+					<plugin>
+						<!-- Generate report index -->
+						<groupId>org.apache.myfaces.buildtools</groupId>
+						<artifactId>myfaces-builder-plugin</artifactId>
+						<version>1.0.1-SNAPSHOT</version>
+						<configuration>
+							<taglibs>
+								<s>http://myfaces.apache.org/sandbox</s>
+							</taglibs>
+						</configuration>
+					</plugin>                    
                 </plugins>
             </reporting>
         </profile>

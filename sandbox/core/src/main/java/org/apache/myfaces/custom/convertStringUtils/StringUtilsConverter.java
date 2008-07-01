@@ -31,17 +31,16 @@ import org.apache.commons.lang.WordUtils;
 
 /**
  * Converts the format of a string
- * 
+ * <p>
+ *     Converter which modifies a string by changing the input text into upper case, lower case, capitalized. The
+ *     input string can be optionally trimmed and truncated at some max length. Ellipses (...) can be added to a 
+ *     truncated string.
+ * </p>
+ * <p>
  * Provides runtime modification of a string. Uses Apache Lang StringUtils and WordUtils
  * to peform operations.
- * <p>
- * Example:
- * <code>
- * <h:outputText value="#{backingBean.customer.name}">
- *     <t:convertStringUtils format="capitalize" trim="true" maxLength="50"/>
- * </h:outputText>
- * </code>
- * <p>
+ * </p>
+ * 
  * @JSFConverter
  *   name = "s:convertStringUtils"
  *   tagClass = "org.apache.myfaces.custom.convertStringUtils.StringUtilsConverterTag" 

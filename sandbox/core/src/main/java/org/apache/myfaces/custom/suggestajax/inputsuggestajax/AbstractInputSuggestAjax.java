@@ -27,6 +27,13 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjax;
 
 /**
  * Provides an input textbox with "suggest" functionality, using an ajax request to the server.
+ * <p>
+ * A tag that defines an autosuggest control complete with Ajax binding.<br/>
+ * This allows you to do real time autocompletion via asynchronous
+ * server requests. Note, this control is experimental and it is currently
+ * located in the MyFaces sandbox and can be subject to
+ * alteration in the immediate future. So use it with care.
+ * </p>
  * 
  * @JSFComponent
  *   name = "s:inputSuggestAjax"

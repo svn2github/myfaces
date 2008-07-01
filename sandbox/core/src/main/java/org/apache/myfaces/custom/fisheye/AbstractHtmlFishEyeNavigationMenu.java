@@ -27,8 +27,17 @@ import javax.faces.el.ValueBinding;
 
 /**
  * Provide a FishEye toolbar component from the DOJO toolkit
- * 
- * A Mac OSX-style toolbar, using the DOJO toolkit.
+ * <p>
+ * A navigation menu/toolbar with a nice mouse-over effect,
+ * similar to the Mac OS X Dock. It is actually a JSF
+ * implementation of the Fisheye List widget from the
+ * <a href="http://dojotoolkit.org/">Dojo Toolkit</a>.
+ * </p>
+ * <p>
+ * The component makes use of the Tomahawk navigation framework,
+ * so the menu items can be added using t:navigationMenuItem
+ * child components.
+ * </p>
  * 
  * @see <a href="http://dojotoolkit.org/">http://dojotoolkit.org/</a>
  * 

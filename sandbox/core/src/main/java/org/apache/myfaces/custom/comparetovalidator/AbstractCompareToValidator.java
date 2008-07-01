@@ -41,85 +41,65 @@ import org.apache.myfaces.validator.ValidatorBase;
 /**
  * 
  * Validates this component against another component.
- * 
+ * <p>
  * Specify the foreign component with the for={foreign-component-id} attribute.
- *
+ * </p>
+ * <p>
  * Valid operator attribute values:
- * 
- *   equals:                  eq, ==, =,
- * 	 not equals:              ne, !=,
- *   greater than:            gt, >,
- *   less than:               lt, <,
- *   greater than or equals:  ge, >=,
- *   less than or equals:     le, <=
- *
+ * </p>
+ * <ul>
+ *   <li>equals:                  eq, ==, =,</li>
+ * 	 <li>not equals:              ne, !=,</li>
+ *   <li>greater than:            gt, &gt;,</li>
+ *   <li>less than:               lt, &lt;,</li>
+ *   <li>greater than or equals:  ge, &gt;=,</li>
+ *   <li>less than or equals:     le, &lt;=</li>
+ * </ul>
+ * <p>
  * If the comparator attribute is specified, the component values are compared
  * using the specified java.util.Comparator object.
  * If no comparator is specified, the component values must implement Comparable
  * and are compared using compareTo().
  * If either value or foreign value does not implement Comparable and no Comparator
  * is specified, validation always succeeds.
- *
+ * </p>
+ * <p>
  * Put this validator on the bottom-most component to insure that
  * the foreign component's value has been converted and validated first.
- * 
+ * </p>
+ * <p>
  * However, this validator will attempt to convert and validate the foreign
  * component's value if this has not already occurred.  This process may not
  * be identical to the standard JSF conversion and validation process.
- * 
+ * </p><p>
  * The validation error message key is currently hardcoded as
- * 
- *     "{0} value <{1}> must be {2} {3} value <{4}>"
- * 
- * where {0} is the parent component id,
- *       {1} is the parent component value,
- *       {2} is the operator name,
- *       {3} is the foreign component id, and
- *       {4} is the foreign component value.
- * 
+ * </p>
+ * <p>
+ *     "{0} value &lt;{1}&gt; must be {2} {3} value &lt;{4}&gt;"
+ * </p>
+ * where
+ * <ul>
+ *       <li>{0} is the parent component id,</li>
+ *       <li>{1} is the parent component value,</li>
+ *       <li>{2} is the operator name,</li>
+ *       <li>{3} is the foreign component id, and</li>
+ *       <li>{4} is the foreign component value.</li>
+ * </ul>
+ * <p>
  * The alternateOperatorName attribute can specify a custom operator name.
  * For example, use "after" instead of "greater than" when comparing dates.
- * 
+ * </p><p>
  * The message attribute can specify an alternate validation error message key.
  * For example, use "{0} must be {2} {3}" to remove values from the message.
- *
- * 
- * faces-config.xml configuration:
- * 
- * 	<validator>
- * 		<description>CompareTo validator</description>
- * 		<validator-id>org.apache.myfaces.validator.CompareTo</validator-id>
- * 		<validator-class>org.apache.myfaces.custom.comparetovalidator.CompareToValidator</validator-class>
- * 	</validator>
- * 
- * 
- * Facelets configuration (inside a taglib.xml file):
- * 
- * <tag>
- *      <tag-name>compareToValidator</tag-name>
- *      <validator>
- *          <validator-id>org.apache.myfaces.validator.CompareTo</validator-id>
- *      </validator>
- *  </tag>
- * 
- * 
- * Example usage:
- * 
- *   <t:inputCalendar id="startDate"/>
- *   <t:inputCalendar id="endDate">
- *       <sandbox:compareToValidator operator="gt" for="startDate" />
- *       <sandbox:compareToValidator operator="gt" for="startDate" message="Start date must be before end date." />
- *       <sandbox:compareToValidator operator="gt" for="startDate" message="{0} must be {2} {3}" />
- *       <sandbox:compareToValidator operator="gt" for="startDate" alternateOperatorName="after" />
- *       <sandbox:compareToValidator operator="gt" for="startDate" message="{0} must be {2} {3}" alternateOperatorName="after" />
- *       <sandbox:compareToValidator operator="gt" for="startDate" comparator="#{dateComparator}" />
- *   <t:inputCalendar>
- * 
- * 
+ * </p>
+ * <p>
  * Known issues:
- *   - Operator names should be localized.
- *   - The default message key should be localized.
- *   - Perhaps an exception should be thrown if the two values are not Comparable and no Comparator is specified.
+ * </p>
+ * <ul>
+ *   <li> Operator names should be localized.</li>
+ *   <li> The default message key should be localized.</li>
+ *   <li> Perhaps an exception should be thrown if the two values are not Comparable and no Comparator is specified.</li>
+ * </ul>
  *   
  * @JSFValidator
  *   name = "s:validateCompareTo"
@@ -384,7 +364,7 @@ public abstract class AbstractCompareToValidator extends ValidatorBase {
     public abstract void setFor(String string);
 
     /**
-     * Operator for comparison: equals: eq, ==, =, not equals: ne, !=, greater than: gt, >, less than: lt, <, greater than or equals: ge, >=, less than or equals: le, <=
+     * Operator for comparison: equals: eq, ==, =, not equals: ne, !=, greater than: gt, &gt;, less than: lt, &lt;, greater than or equals: ge, &gt;=, less than or equals: le, &lt;=
      * 
      * @JSFProperty
      * @return

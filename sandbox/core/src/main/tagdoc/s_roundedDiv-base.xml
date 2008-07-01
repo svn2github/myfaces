@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/roundedDiv.png" alt="roundedDiv"/></div>
+        </section>    
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;s:roundedDiv
+  id="String"
+  binding="EL"
+  rendered="Boolean"
+  backgroundColor="Color|HEX Color String"
+  borderColor="Color|HEX Color String"
+  color="Color|HEX Color String"
+  borderWidth="Integer"
+  radius="Integer"
+  size="Dimension|String"
+  corners="String"
+  inverse="Boolean"
+  layout="table|div"
+  contentStyle="String"
+  contentStyleClass="String"&gt;
+  ...Contents...
+&lt;/s:roundedDiv&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>See the file roundedDiv.jsp for an example.</p>
+        </section>
+    </body>
+</document>

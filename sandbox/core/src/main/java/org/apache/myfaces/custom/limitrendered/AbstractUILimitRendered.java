@@ -36,16 +36,16 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
 /**
  * Tag that allows for selective rendering based on a count or by child index
- * 
+ * <p>
  * Component that only renders a subset of its children components. Provides
  * functionality that the JSTL choose tag has, but leverages the 
  * {@link javax.faces.component.UIComponent#isRendered()} method instead
  * of using when tags with test attributes.
+ * </p>
  * <p>It can either use a filter type of "count" or "index". If count,
  * the given number of children will be rendered (so for example, a value of 2 will cause
  * the first two children that are have a true <tt>isRendered</tt> result
  * to be rendered. If index, it will render the given indexes.</p>
- * <p>See the taglib for more documentation</p>
  * 
  * @JSFComponent
  *   name = "s:limitRendered"

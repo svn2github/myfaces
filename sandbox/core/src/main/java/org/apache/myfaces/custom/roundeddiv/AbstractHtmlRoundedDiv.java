@@ -24,10 +24,15 @@ import org.apache.myfaces.custom.div.Div;
 
 /**
  * Component that allows for a rounded border effect on DIV tags that is supported in CSS2 compatible browsers and IE6.
- * 
+ * <p>
  * Component that generates a DIV tag with rounded corners that may
  * be either 3D or 2D in appearence.
- *
+ * </p><p>
+ * The "roundedDiv" component creates a DIV tag that contains images to
+ * produce rounded corners. The rounded effect can be either 3D with lighting effects
+ * or 2D with a solid color border.
+ * </p>
+ * 
  * @JSFComponent
  *   name = "s:roundedDiv"
  *   class = "org.apache.myfaces.custom.roundeddiv.HtmlRoundedDiv"

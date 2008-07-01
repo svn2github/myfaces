@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">&lt;h:inputText id="textfield" value="#{bean.value}" /&gt;
+&lt;s:focus id="focus" for="textfield" /&gt;</source>
+            <source xml:space="preserve">&lt;s:focus id="focus" for="#{bean.focusedComponentId}" /&gt;</source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+        <p>This component must be placed on the page in such a way that it is rendered
+            after all components to which it might contain a reference.   Generally,
+            the best place for this component is right before the closing form tag.</p>
+        </section>
+    </body>
+</document>
