@@ -144,7 +144,14 @@
                     <h:outputLink value="picklist.jsf">
                         <f:verbatim>selectManyPicklist - A picklist, where you select components from a list and the selected items are displayed in another list.</f:verbatim>
                     </h:outputLink>
-                </h:panelGrid>                              
+                </h:panelGrid>         
+                
+                <h:outputText value="selectOneRow" />
+                <h:panelGrid style="padding-left:25px">                
+                    <h:outputLink value="selectOneRow.jsf">
+                    	<f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim>
+                    </h:outputLink>                     
+                </h:panelGrid>                             
 
         </h:panelGrid>
 
