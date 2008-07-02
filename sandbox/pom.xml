@@ -22,9 +22,7 @@
 
   <modules>
     <module>core</module>
-<!--
     <module>core12</module>
--->
     <module>examples</module>
   </modules>
 
