@@ -52,7 +52,6 @@
       <version>1.1.1</version>
       <scope>compile</scope>
     </dependency>
-    
 
     <dependency>
       <groupId>commons-validator</groupId>
@@ -112,12 +111,24 @@
       <scope>compile</scope>
     </dependency>
 
-      <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>jstl</artifactId>
-          <version>1.1.0</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.1.0</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>batik</groupId>
+      <artifactId>batik-awt-util</artifactId>
+      <version>1.6-1</version>
+    </dependency>   
+
+    <dependency>
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext</artifactId>
+      <version>1.4.8</version>
+    </dependency> 
       
       <!--
       <dependency>
@@ -132,16 +143,14 @@
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-api</artifactId>
-      <version>1.2.4-SNAPSHOT</version>
-      <!-- <version>1.1.6-SNAPSHOT</version> -->
+      <version>${myfaces-core12-version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.myfaces.shared</groupId>
       <artifactId>myfaces-shared-tomahawk</artifactId>
-      <version>3.0.4-SNAPSHOT</version>
-      <!-- <version>2.0.8-SNAPSHOT</version> -->
+      <version>${myfaces-shared12-version}</version>
       <scope>provided</scope> <!-- because we add all classes to the jar directly -->
     </dependency>
         
@@ -184,6 +193,7 @@
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-impl</artifactId>
+      <version>${myfaces-core12-version}</version>
       <!--
         Since Tomahawk must stay compatible to other JSF implementations we
         must not have any (compile time) dependency on myfaces-impl other than
@@ -505,26 +515,6 @@
           </excludes>
         </configuration>
       </plugin>
-      <!-- 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xslt-maven-plugin</artifactId>
-        <version>1.0</version>
-        <configuration>
-          <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-          <srcIncludes>**/*.tld</srcIncludes>
-          <srcDir>src/main/tld</srcDir>
-          <destDir>target/classes/META-INF</destDir>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-       -->
 
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -660,43 +650,6 @@
   <profiles>
     <profile>
       <id>generate-site</id>
-      <build>
-        <plugins>
-          <!-- 
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>xslt-maven-plugin</artifactId>
-            <version>1.0</version>
-            <executions>
-              <execution>
-                <id>generate-tld-for-tlddoc</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/tlddoc-site</destDir>
-                </configuration>
-              </execution>
-              <execution>
-                <id>generate-tld-for-jar</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/classes/META-INF</destDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          -->
-        </plugins>
-      </build>
       <reporting>
         <plugins>
           <plugin>
@@ -720,39 +673,6 @@
       </activation>
       <build>
         <plugins>
-          <!-- 
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>xslt-maven-plugin</artifactId>
-            <version>1.0</version>
-            <executions>
-              <execution>
-                <id>generate-tld-for-tlddoc</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/tlddoc-site</destDir>
-                </configuration>
-              </execution>
-              <execution>
-                <id>generate-tld-for-jar</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/classes/META-INF</destDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-           -->
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.4</version>
