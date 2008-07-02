@@ -100,6 +100,7 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
+            <version>${myfaces-core11-version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -143,15 +144,16 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
+            <version>${myfaces-core11-version}</version>
             <scope>test</scope>
         </dependency>
         
-		<dependency>
-		  <groupId>maven-taglib</groupId>
-		  <artifactId>maven-taglib-plugin</artifactId>
-		  <version>1.4.2</version>
-		  <scope>test</scope>
-		</dependency>        
+        <dependency>
+          <groupId>maven-taglib</groupId>
+          <artifactId>maven-taglib-plugin</artifactId>
+          <version>1.4.2</version>
+          <scope>test</scope>
+        </dependency>        
         
         <dependency>
             <groupId>org.apache.shale</groupId>
@@ -195,120 +197,98 @@
              -->
         </resources>
         <plugins>
-			<plugin>
-			  <groupId>org.apache.myfaces.buildtools</groupId>
-			  <artifactId>myfaces-builder-plugin</artifactId>
-			  <version>1.0.1-SNAPSHOT</version>
-			  <executions>
-			    <execution>
-			      <!-- A hierarchy of different tag classes must be created, 
-			      because this classes are not part of the public api. The
-			      generation of all html package is the same. Please note that
-			      we need only a subset -->
-			      <configuration>
-			          <replacePackagePrefixTagFrom>org.apache.myfaces.taglib</replacePackagePrefixTagFrom>
-			          <replacePackagePrefixTagTo>org.apache.myfaces.shared_tomahawk.taglib</replacePackagePrefixTagTo>
-			      </configuration>
-			      <goals>
-			        <goal>build-metadata</goal>
-			      </goals>
-			    </execution>
-			    <execution>
-			      <id>makefacesconfig</id>
-			      <configuration>
-			          <xmlFile>META-INF/faces-config.xml</xmlFile>
-			      </configuration>
-			      <goals>
-			          <goal>make-config</goal>
-			      </goals>
-			    </execution>
-			    <execution>
-			      <id>makecomp</id>
-			      <goals>
-			        <goal>make-components</goal>
-			      </goals>
-			    </execution>
-				<execution>
-				  <id>makeval</id>
-				  <goals>
-				    <goal>make-validators</goal>
-				  </goals>
-				</execution>
-			    <execution>
-			      <id>maketags</id>
-			      <goals>
-			          <goal>make-tags</goal>
-			      </goals>
-			    </execution>
-				<execution>
-				  <id>make_validator_tags_tomahawk</id>
-				  <goals>
-				      <goal>make-validator-tags</goal>
-				      <goal>make-converter-tags</goal>
-				  </goals>
-				</execution>			    
-				<execution>
-				  <id>makesandboxtld</id>
-				  <configuration>
-				      <xmlFile>META-INF/myfaces_sandbox.tld</xmlFile>
-				      <xmlBaseFile>src/main/conf/META-INF/myfaces_sandbox-base.tld</xmlBaseFile>
-				      <templateFile>tomahawk.vm</templateFile>
-				      <params>
-				         <shortname>s</shortname>
-				         <uri>http://myfaces.apache.org/sandbox</uri>
-				         <displayname>Tomahawk sandbox tag library.</displayname>
-				         <description>Enhanced standard JSP actions and custom MyFaces actions.</description>
-				      </params>
-				      <modelIds>
-				          <modelId>tomahawk-sandbox</modelId>
-				      </modelIds>
-				  </configuration>
-				  <goals>
-				      <goal>make-config</goal>
-				  </goals>
-				</execution>
-				<execution>
-				  <id>makesandboxtaglib</id>
-				  <configuration>
-				      <xmlFile>META-INF/sandbox.taglib.xml</xmlFile>
-				      <xmlBaseFile>src/main/conf/META-INF/facelets-taglib-base.xml</xmlBaseFile>
-				      <templateFile>facelets-taglib.vm</templateFile>
-				      <params>
+            <plugin>
+              <groupId>org.apache.myfaces.buildtools</groupId>
+              <artifactId>myfaces-builder-plugin</artifactId>
+              <version>1.0.1-SNAPSHOT</version>
+              <executions>
+                <execution>
+                  <!-- A hierarchy of different tag classes must be created, 
+                  because this classes are not part of the public api. The
+                  generation of all html package is the same. Please note that
+                  we need only a subset -->
+                  <configuration>
+                      <replacePackagePrefixTagFrom>org.apache.myfaces.taglib</replacePackagePrefixTagFrom>
+                      <replacePackagePrefixTagTo>org.apache.myfaces.shared_tomahawk.taglib</replacePackagePrefixTagTo>
+                  </configuration>
+                  <goals>
+                    <goal>build-metadata</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>makefacesconfig</id>
+                  <configuration>
+                      <xmlFile>META-INF/faces-config.xml</xmlFile>
+                  </configuration>
+                  <goals>
+                      <goal>make-config</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>makecomp</id>
+                  <goals>
+                    <goal>make-components</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>makeval</id>
+                  <goals>
+                    <goal>make-validators</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>maketags</id>
+                  <goals>
+                      <goal>make-tags</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>make_validator_tags_tomahawk</id>
+                  <goals>
+                      <goal>make-validator-tags</goal>
+                      <goal>make-converter-tags</goal>
+                  </goals>
+                </execution>                
+                <execution>
+                  <id>makesandboxtld</id>
+                  <configuration>
+                      <xmlFile>META-INF/myfaces_sandbox.tld</xmlFile>
+                      <xmlBaseFile>src/main/conf/META-INF/myfaces_sandbox-base.tld</xmlBaseFile>
+                      <templateFile>tomahawk.vm</templateFile>
+                      <params>
                          <shortname>s</shortname>
                          <uri>http://myfaces.apache.org/sandbox</uri>
-				      </params>
-				      <modelIds>
-				          <modelId>tomahawk-sandbox</modelId>
-				      </modelIds>
-				  </configuration>
-				  <goals>
-				      <goal>make-config</goal>
-				  </goals>
-				</execution>
-			  </executions>
-			</plugin>
-
-            <!--    
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>xslt-maven-plugin</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                    <srcIncludes>**/*.tld</srcIncludes>
-                    <srcDir>src/main/tld</srcDir>
-                    <destDir>target/classes/META-INF</destDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                         <displayname>Tomahawk sandbox tag library.</displayname>
+                         <description>Enhanced standard JSP actions and custom MyFaces actions.</description>
+                      </params>
+                      <modelIds>
+                          <modelId>tomahawk-sandbox</modelId>
+                      </modelIds>
+                  </configuration>
+                  <goals>
+                      <goal>make-config</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>makesandboxtaglib</id>
+                  <configuration>
+                      <xmlFile>META-INF/sandbox.taglib.xml</xmlFile>
+                      <xmlBaseFile>src/main/conf/META-INF/facelets-taglib-base.xml</xmlBaseFile>
+                      <templateFile>facelets-taglib.vm</templateFile>
+                      <params>
+                         <shortname>s</shortname>
+                         <uri>http://myfaces.apache.org/sandbox</uri>
+                      </params>
+                      <modelIds>
+                          <modelId>tomahawk-sandbox</modelId>
+                      </modelIds>
+                  </configuration>
+                  <goals>
+                      <goal>make-config</goal>
+                  </goals>
+                </execution>
+              </executions>
             </plugin>
-            -->
-            
         </plugins>
     </build>
 
@@ -364,57 +344,24 @@
             <id>generate-site</id>
             <build>
                 <plugins>
-                    <!-- 
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>xslt-maven-plugin</artifactId>
-                        <version>1.0</version>
+                        <!-- Generate report content -->
+                        <groupId>org.apache.myfaces.buildtools</groupId>
+                        <artifactId>myfaces-builder-plugin</artifactId>
+                        <version>1.0.1-SNAPSHOT</version>
+                        <configuration>
+                            <taglibs>
+                                <s>http://myfaces.apache.org/sandbox</s>
+                            </taglibs>
+                        </configuration>
                         <executions>
                             <execution>
-                                <id>generate-tld-for-tlddoc</id>
                                 <goals>
-                                    <goal>transform</goal>
+                                  <goal>tagdoc-content</goal>
                                 </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/tlddoc-site</destDir>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>generate-tld-for-jar</id>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/classes/META-INF</destDir>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
-                     -->
-					<plugin>
-					    <!-- Generate report content -->
-						<groupId>org.apache.myfaces.buildtools</groupId>
-						<artifactId>myfaces-builder-plugin</artifactId>
-						<version>1.0.1-SNAPSHOT</version>
-						<configuration>
-							<taglibs>
-							    <s>http://myfaces.apache.org/sandbox</s>
-							</taglibs>
-						</configuration>
-						<executions>
-						    <execution>
-						        <goals>
-						          <goal>tagdoc-content</goal>
-						        </goals>
-						    </execution>
-						</executions>
-					</plugin>
                 </plugins>
             </build>
             <reporting>
@@ -427,17 +374,17 @@
                             <tldDocDir>${basedir}/target/site/tlddoc</tldDocDir>
                         </configuration>
                     </plugin>
-					<plugin>
-						<!-- Generate report index -->
-						<groupId>org.apache.myfaces.buildtools</groupId>
-						<artifactId>myfaces-builder-plugin</artifactId>
-						<version>1.0.1-SNAPSHOT</version>
-						<configuration>
-							<taglibs>
-								<s>http://myfaces.apache.org/sandbox</s>
-							</taglibs>
-						</configuration>
-					</plugin>                    
+                    <plugin>
+                        <!-- Generate report index -->
+                        <groupId>org.apache.myfaces.buildtools</groupId>
+                        <artifactId>myfaces-builder-plugin</artifactId>
+                        <version>1.0.1-SNAPSHOT</version>
+                        <configuration>
+                            <taglibs>
+                                <s>http://myfaces.apache.org/sandbox</s>
+                            </taglibs>
+                        </configuration>
+                    </plugin>                    
                 </plugins>
             </reporting>
         </profile>
@@ -451,39 +398,6 @@
             </activation>
             <build>
                 <plugins>
-                    <!-- 
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>xslt-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <executions>
-                            <execution>
-                                <id>generate-tld-for-tlddoc</id>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/tlddoc-site</destDir>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>generate-tld-for-jar</id>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/classes/META-INF</destDir>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                     -->
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.4</version>

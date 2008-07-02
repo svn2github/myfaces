@@ -92,6 +92,7 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-api</artifactId>
+            <version>${myfaces-core11-version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -114,6 +115,7 @@
         <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
+            <version>${myfaces-core11-version}</version>
             <scope>test</scope>
         </dependency>
 

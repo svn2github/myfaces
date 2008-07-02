@@ -102,19 +102,31 @@
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>batik</groupId>
+      <artifactId>batik-awt-util</artifactId>
+      <version>1.6-1</version>
+    </dependency>   
+
+    <dependency>
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext</artifactId>
+      <version>1.4.8</version>
+    </dependency> 
+
     <!-- provided dependencies -->
 
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-api</artifactId>
-      <version>1.1.6-SNAPSHOT</version>
+      <version>${myfaces-core11-version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.myfaces.shared</groupId>
       <artifactId>myfaces-shared-tomahawk</artifactId>
-      <version>2.0.8-SNAPSHOT</version>
+      <version>${myfaces-shared11-version}</version>
       <scope>provided</scope> <!-- because we add all classes to the jar directly -->
     </dependency>
 
@@ -158,7 +170,7 @@
     <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-impl</artifactId>
-      <version>1.1.5</version>
+      <version>${myfaces-core11-version}</version>
       <!--
         Since Tomahawk must stay compatible to other JSF implementations we
         must not have any (compile time) dependency on myfaces-impl other than
@@ -392,26 +404,6 @@
           </excludes>
         </configuration>
       </plugin>
-      <!-- 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xslt-maven-plugin</artifactId>
-        <version>1.0</version>
-        <configuration>
-          <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-          <srcIncludes>**/*.tld</srcIncludes>
-          <srcDir>src/main/tld</srcDir>
-          <destDir>target/classes/META-INF</destDir>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-       -->
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.0</version>
@@ -542,55 +534,20 @@
       <id>generate-site</id>
       <build>
         <plugins>
-          <!-- 
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>xslt-maven-plugin</artifactId>
-            <version>1.0</version>
-            <executions>
-              <execution>
-                <id>generate-tld-for-tlddoc</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/tlddoc-site</destDir>
-                </configuration>
-              </execution>
-              <execution>
-                <id>generate-tld-for-jar</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/classes/META-INF</destDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          -->
-          <plugin>
-            <!-- Generate report content -->
+            <!-- Generate content for custom tagdoc report -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
             <version>1.0.1-SNAPSHOT</version>
             <configuration>
-                <taglibs>
-                    <t>http://myfaces.apache.org/tomahawk</t>
-                </taglibs>
+              <taglibs>
+                <t>http://myfaces.apache.org/tomahawk</t>
+              </taglibs>
             </configuration>
             <executions>
-	            <execution>
-		            <goals>
-		              <goal>tagdoc-content</goal>
-		            </goals>
-	            </execution>
+              <execution>
+                <goals><goal>tagdoc-content</goal></goals>
+              </execution>
             </executions>
           </plugin>          
         </plugins>
@@ -606,20 +563,25 @@
             </configuration>
           </plugin>
           <plugin>
-            <!-- Generate report index -->
-          	<groupId>org.apache.myfaces.buildtools</groupId>
-          	<artifactId>myfaces-builder-plugin</artifactId>
-          	<version>1.0.1-SNAPSHOT</version>
-          	<configuration>
-          		<taglibs>
-          			<t>http://myfaces.apache.org/tomahawk</t>
-          		</taglibs>
-          	</configuration>
+            <!-- which goal is run here? -->
+            <groupId>org.apache.myfaces.buildtools</groupId>
+            <artifactId>myfaces-builder-plugin</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <configuration>
+              <taglibs>
+                <t>http://myfaces.apache.org/tomahawk</t>
+              </taglibs>
+            </configuration>
           </plugin>
         </plugins>
       </reporting>
     </profile>
+
     <profile>
+      <!--
+        - Build and install into the repository some additional artifacts that we don't
+        - want to build during normal development because they take too long.
+        -->
       <id>generate-assembly</id>
       <activation>
         <property>
@@ -629,40 +591,8 @@
       </activation>
       <build>
         <plugins>
-          <!-- 
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>xslt-maven-plugin</artifactId>
-            <version>1.0</version>
-            <executions>
-              <execution>
-                <id>generate-tld-for-tlddoc</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/tlddoc-site</destDir>
-                </configuration>
-              </execution>
-              <execution>
-                <id>generate-tld-for-jar</id>
-                <goals>
-                  <goal>transform</goal>
-                </goals>
-                <configuration>
-                  <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                  <srcIncludes>**/*.tld</srcIncludes>
-                  <srcDir>src/main/tld</srcDir>
-                  <destDir>target/classes/META-INF</destDir>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-           -->
-          <plugin>
+            <!-- Install in the repository a "-javadoc.jar" file -->
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.4</version>
             <executions>
@@ -673,6 +603,7 @@
             </executions>
           </plugin>
           <plugin>
+            <!-- Install in the repository a "-tlddoc.jar" file -->
             <groupId>net.sourceforge.maven-taglib</groupId>
             <artifactId>maven-taglib-plugin</artifactId>
             <configuration>
@@ -687,6 +618,7 @@
             </executions>
           </plugin>
           <plugin>
+            <!-- Install in the repository a "-sources.jar" file -->
             <artifactId>maven-source-plugin</artifactId>
             <executions>
               <execution>
