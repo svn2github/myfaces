@@ -57,7 +57,7 @@
 
         <!-- By default the war examples use myfaces! :) -->
         <profile>
-            <id>myfaces</id>
+            <id>myfaces-1.1</id>
             <activation>
                 <property>
                     <name>!jsf</name>
@@ -67,12 +67,12 @@
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-api</artifactId>
-                    <version>${myfaces.version}</version>
+                    <version>${myfaces-core11-version}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.apache.myfaces.core</groupId>
                     <artifactId>myfaces-impl</artifactId>
-                    <version>${myfaces.version}</version>
+                    <version>${myfaces-core11-version}</version>
                     <!-- Tomahawk examples must only have runtime dependency to myfaces-impl
                  so that it will be automatically added to war. But there must not be
                  any compile dependency on impl so that is is always possible to use
