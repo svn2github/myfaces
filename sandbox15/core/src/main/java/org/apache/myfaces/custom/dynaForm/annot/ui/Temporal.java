@@ -32,8 +32,8 @@ import javax.persistence.TemporalType;
 @Retention(value=RetentionPolicy.RUNTIME)
 public @interface Temporal
 {
-	/**
-	 * set to true if you would like to render as disabled control
-	 */
-	TemporalType value() default TemporalType.TIMESTAMP;
+    /**
+     * set to true if you would like to render as disabled control
+     */
+    TemporalType value() default TemporalType.TIMESTAMP;
 }

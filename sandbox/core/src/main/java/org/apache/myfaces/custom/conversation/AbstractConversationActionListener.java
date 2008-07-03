@@ -30,66 +30,66 @@ import javax.faces.event.ActionListener;
  */
 public abstract class AbstractConversationActionListener implements ActionListener, StateHolder
 {
-	private String conversationName;
+    private String conversationName;
 
-	private transient boolean isTransient;
-	
-	public AbstractConversationActionListener()
-	{
-	}
+    private transient boolean isTransient;
+    
+    public AbstractConversationActionListener()
+    {
+    }
 
-	/**
-	 * @return the conversation name this listener is associated to
-	 */
-	public String getConversationName()
-	{
-		return conversationName;
-	}
+    /**
+     * @return the conversation name this listener is associated to
+     */
+    public String getConversationName()
+    {
+        return conversationName;
+    }
 
-	/**
-	 * set the conversation name this listener should be associated to
-	 * 
-	 * @param conversationName
-	 */
-	public void setConversationName(String conversationName)
-	{
-		this.conversationName = conversationName;
-	}
+    /**
+     * set the conversation name this listener should be associated to
+     * 
+     * @param conversationName
+     */
+    public void setConversationName(String conversationName)
+    {
+        this.conversationName = conversationName;
+    }
 
 
-	public Object saveState(FacesContext context)
-	{
-		return new Object[]
-		{
-			conversationName
-		};
-	}
+    public Object saveState(FacesContext context)
+    {
+        return new Object[]
+        {
+            conversationName
+        };
+    }
 
-	public void restoreState(FacesContext context, Object state)
-	{
-		Object[] states = (Object[]) state;
-		conversationName = (String) states[0];
-	}
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] states = (Object[]) state;
+        conversationName = (String) states[0];
+    }
 
-	public boolean isTransient()
-	{
-		return isTransient;
-	}
+    public boolean isTransient()
+    {
+        return isTransient;
+    }
 
-	public void setTransient(boolean newTransientValue)
-	{
-		isTransient = newTransientValue;
-	}
+    public void setTransient(boolean newTransientValue)
+    {
+        isTransient = newTransientValue;
+    }
 
-	public void processAction(ActionEvent actionEvent) throws AbortProcessingException
-	{
-		AbstractConversationComponent startOrEndconversation = ConversationUtils.findStartOrEndConversationComponent(actionEvent.getComponent(), getConversationName());
-		
-		doConversationAction(startOrEndconversation);
-	}
-	
-	/**
-	 * override this to do your conversation action
-	 */
-	public abstract void doConversationAction(AbstractConversationComponent abstractConversationComponent);
+    public void processAction(ActionEvent actionEvent) throws AbortProcessingException
+    {
+        AbstractConversationComponent startOrEndconversation = ConversationUtils.findStartOrEndConversationComponent(actionEvent.getComponent(), getConversationName());
+        
+        doConversationAction(startOrEndconversation);
+    }
+    
+    /**
+     * override this to do your conversation action
+     */
+    public abstract void doConversationAction(AbstractConversationComponent abstractConversationComponent);
 }

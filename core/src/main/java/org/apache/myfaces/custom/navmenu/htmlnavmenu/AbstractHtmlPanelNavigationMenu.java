@@ -112,7 +112,7 @@ public abstract class AbstractHtmlPanelNavigationMenu extends HtmlPanelGroup
             UIComponent prevItem = (UIComponent)previousRoot.findComponent(child.getClientId(facesContext));
             
             if (prevItem instanceof HtmlCommandNavigationItem &&
-            		child instanceof HtmlCommandNavigationItem)
+                    child instanceof HtmlCommandNavigationItem)
             {
                 HtmlCommandNavigationItem previousItem = (HtmlCommandNavigationItem)prevItem;
                 if (previousItem != null)

@@ -91,14 +91,14 @@ public class TimedNotifierRenderer extends HtmlRenderer {
 
         String replacedClientId = notifierClientId.replaceAll(":", "_");
         String dialogVar        = replacedClientId + "Notifier_Dialog";
-        String confirmVar 		= dialogVar + "_Yes";
+        String confirmVar         = dialogVar + "_Yes";
         
-        Integer timeShow			= notifier.getShowDelay();
-        Integer timeHide			= notifier.getHideDelay();
+        Integer timeShow            = notifier.getShowDelay();
+        Integer timeHide            = notifier.getHideDelay();
         
         UIComponent confirmComp = notifier.getConfirm();
        
-        	
+            
        
        
 
@@ -107,14 +107,14 @@ public class TimedNotifierRenderer extends HtmlRenderer {
         StringBuffer sb = new StringBuffer();
         sb.append("function "+replacedClientId+"() {\n");
         if(confirmComp == null)
-        	sb.append("var "+ notifierVar + " = new myfaces_TimedNotifier('" + 
-        		dialogVar + "','" + confirmVar + "','" + notifierClientId + "',"+
-        		timeShow.toString()+","+timeHide.toString()+");\n");
+            sb.append("var "+ notifierVar + " = new myfaces_TimedNotifier('" + 
+                dialogVar + "','" + confirmVar + "','" + notifierClientId + "',"+
+                timeShow.toString()+","+timeHide.toString()+");\n");
         else
-          	sb.append("var "+ notifierVar + " = new myfaces_TimedNotifier('" + 
-            		dialogVar + "',null,'" + notifierClientId + "',"+
-            		timeShow.toString()+","+timeHide.toString()+");\n");
-            	
+              sb.append("var "+ notifierVar + " = new myfaces_TimedNotifier('" + 
+                    dialogVar + "',null,'" + notifierClientId + "',"+
+                    timeShow.toString()+","+timeHide.toString()+");\n");
+                
         sb.append( notifierVar + ".showDialog();\n");
         sb.append("};\n");
         sb.append("dojo.lang.setTimeout("+replacedClientId+","+timeShow.toString()+");");
@@ -172,8 +172,8 @@ public class TimedNotifierRenderer extends HtmlRenderer {
          * value="yes" /> <input type="button"
          * id="form1__idJsp1Notifier_Dialog_No" value="no" /> </div>
          */
-    	TimedNotifier notifier = (TimedNotifier) uiComponent;
-    	
+        TimedNotifier notifier = (TimedNotifier) uiComponent;
+        
         String notifierClientId = uiComponent.getClientId(facesContext);
         String replacedClientId = notifierClientId.replaceAll(":", "_");
         String dialogVar        = replacedClientId + "Notifier_Dialog";
@@ -198,20 +198,20 @@ public class TimedNotifierRenderer extends HtmlRenderer {
         
         UIComponent contentComp = notifier.getContent();
         if(contentComp == null)
-        	writer.write(content);
+            writer.write(content);
         else
-        	RendererUtils.renderChild(facesContext, contentComp);
+            RendererUtils.renderChild(facesContext, contentComp);
         writer.endElement(HTML.DIV_ELEM);
         writer.write(HTML.NBSP_ENTITY);
         UIComponent confirmComp = notifier.getConfirm();
         if(confirmComp != null)
-        	RendererUtils.renderChild(facesContext, confirmComp);
+            RendererUtils.renderChild(facesContext, confirmComp);
         else {
-	        writer.startElement(HTML.INPUT_ELEM, uiComponent);
-	        writer.writeAttribute(HTML.TYPE_ATTR, HTML.BUTTON_ELEM, null);
-	        writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Yes", null);
-	        writer.writeAttribute(HTML.VALUE_ATTR, yesText, null);
-	        writer.endElement(HTML.INPUT_ELEM);
+            writer.startElement(HTML.INPUT_ELEM, uiComponent);
+            writer.writeAttribute(HTML.TYPE_ATTR, HTML.BUTTON_ELEM, null);
+            writer.writeAttribute(HTML.ID_ATTR, dialogVar + "_Yes", null);
+            writer.writeAttribute(HTML.VALUE_ATTR, yesText, null);
+            writer.endElement(HTML.INPUT_ELEM);
         }
         writer.write(HTML.NBSP_ENTITY);
         writer.endElement(HTML.DIV_ELEM);

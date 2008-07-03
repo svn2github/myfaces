@@ -35,11 +35,11 @@ import java.io.IOException;
  */
 public interface AddResource
 {
-	public static final ResourcePosition HEADER_BEGIN = new ResourcePosition(0);
+    public static final ResourcePosition HEADER_BEGIN = new ResourcePosition(0);
 
-	public static final ResourcePosition BODY_END = new ResourcePosition(1);
+    public static final ResourcePosition BODY_END = new ResourcePosition(1);
 
-	public static final ResourcePosition BODY_ONLOAD = new ResourcePosition(2);
+    public static final ResourcePosition BODY_ONLOAD = new ResourcePosition(2);
 
     // Methods to add resources
 
@@ -179,7 +179,7 @@ public interface AddResource
      * @deprecated just to help to workaround a dojo bug
      */
     public void addJavaScriptAtPositionPlain(FacesContext context, ResourcePosition position,
-    		Class myfacesCustomComponent, String resourceName);
+            Class myfacesCustomComponent, String resourceName);
     
     /**
      * Adds the given Style Sheet at the specified document position.
@@ -294,17 +294,17 @@ public interface AddResource
     /**
      * return true if you require the complete response buffered
      */
-	public boolean requiresBuffer();
+    public boolean requiresBuffer();
 
-	/**
-	 * called when the response start
-	 */
-	public void responseStarted();
-	
-	/**
-	 * called when the response has finished
-	 */
-	public void responseFinished();
+    /**
+     * called when the response start
+     */
+    public void responseStarted();
+    
+    /**
+     * called when the response has finished
+     */
+    public void responseFinished();
 
     /**
      * check there is something to write to the header

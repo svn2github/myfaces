@@ -20,21 +20,21 @@ package org.apache.myfaces.examples.testexception;
 
 public class FakesServletException extends RuntimeException
 {
-	private final Throwable cause;
-	
-	public FakesServletException(Throwable cause)
-	{
-		this.cause = cause;
-	}
-	
-	public FakesServletException(String message, Throwable cause)
-	{
-		super(message);
-		this.cause = cause;
-	}
-	
-	public Throwable getRootCause()
-	{
-		return cause;
-	}
+    private final Throwable cause;
+    
+    public FakesServletException(Throwable cause)
+    {
+        this.cause = cause;
+    }
+    
+    public FakesServletException(String message, Throwable cause)
+    {
+        super(message);
+        this.cause = cause;
+    }
+    
+    public Throwable getRootCause()
+    {
+        return cause;
+    }
 }

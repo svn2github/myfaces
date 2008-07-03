@@ -308,15 +308,15 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
      * @JSFProperty
      *   defaultValue = "\"\""
      */ 
-	public abstract String getEmptyMonthSelection();
-		
+    public abstract String getEmptyMonthSelection();
+        
     /**
      * Label to be used when displaying an empty ampm selection
      * 
      * @JSFProperty
      *   defaultValue = "\"\""
-     */	
-	public abstract String getEmptyAmpmSelection();
+     */    
+    public abstract String getEmptyAmpmSelection();
 
     /**
      * HTML: When true, indicates that this component cannot be modified by the user. 

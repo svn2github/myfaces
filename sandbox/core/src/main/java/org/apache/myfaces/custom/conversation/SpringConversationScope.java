@@ -30,109 +30,109 @@ import javax.faces.context.FacesContext;
  */
 public class SpringConversationScope implements Scope
 {
-	private final static Log log = LogFactory.getLog(SpringConversationScope.class);
+    private final static Log log = LogFactory.getLog(SpringConversationScope.class);
 
-	public String getConversationId()
-	{
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ConversationManager manager = ConversationManager.getInstance(facesContext);
-		if (manager.hasConversationContext())
-		{
-			return Long.toString(manager.getConversationContextId().longValue(), 10);
-		}
+    public String getConversationId()
+    {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ConversationManager manager = ConversationManager.getInstance(facesContext);
+        if (manager.hasConversationContext())
+        {
+            return Long.toString(manager.getConversationContextId().longValue(), 10);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * get the conversation bean.<br />
-	 * this will start a new conversation with the same name in case a conversation
-	 * is not existent yet.
-	 */
-	public Object get(String name, ObjectFactory objectFactory)
-	{
-		name = buildBeanName(name);
+    /**
+     * get the conversation bean.<br />
+     * this will start a new conversation with the same name in case a conversation
+     * is not existent yet.
+     */
+    public Object get(String name, ObjectFactory objectFactory)
+    {
+        name = buildBeanName(name);
 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
 
-		ConversationManager manager = ConversationManager.getInstance(facesContext);
+        ConversationManager manager = ConversationManager.getInstance(facesContext);
 
-		Object value = null;
-		boolean created = false;
+        Object value = null;
+        boolean created = false;
 
-		// check if we have a conversation
-		if (!manager.hasConversation(name))
-		{
-			// ... no ... create the object to ...
-			value = objectFactory.getObject();
-			created = true;
+        // check if we have a conversation
+        if (!manager.hasConversation(name))
+        {
+            // ... no ... create the object to ...
+            value = objectFactory.getObject();
+            created = true;
 
-			// ... determine if it should deal with persistence.
-			boolean isPersistent = (value instanceof PersistentConversation);
+            // ... determine if it should deal with persistence.
+            boolean isPersistent = (value instanceof PersistentConversation);
 
-			// start the conversation
-			manager.startConversation(name, isPersistent);
-		}
+            // start the conversation
+            manager.startConversation(name, isPersistent);
+        }
 
-		// get the conversation
-		Conversation conversation = manager.getConversation(name);
-		if (!conversation.hasBean(name))
-		{
-			// create the bean (if not already done)
-			if (!created)
-			{
-				value = objectFactory.getObject();
-			}
+        // get the conversation
+        Conversation conversation = manager.getConversation(name);
+        if (!conversation.hasBean(name))
+        {
+            // create the bean (if not already done)
+            if (!created)
+            {
+                value = objectFactory.getObject();
+            }
 
-			conversation.putBean(facesContext, name, value);
-		}
+            conversation.putBean(facesContext, name, value);
+        }
 
-		// get the bean
-		return conversation.getBean(name);
-	}
+        // get the bean
+        return conversation.getBean(name);
+    }
 
-	/**
-	 * strip off any spring namespace.
-	 * TODO: Is this valid?
-	 */
-	protected String buildBeanName(String name)
-	{
-		if (name == null)
-		{
-			return null;
-		}
+    /**
+     * strip off any spring namespace.
+     * TODO: Is this valid?
+     */
+    protected String buildBeanName(String name)
+    {
+        if (name == null)
+        {
+            return null;
+        }
 
-		int pos = name.lastIndexOf('.');
-		if (pos < 0)
-		{
-			return name;
-		}
+        int pos = name.lastIndexOf('.');
+        if (pos < 0)
+        {
+            return name;
+        }
 
-		return name.substring(pos+1);
-	}
+        return name.substring(pos+1);
+    }
 
-	/**
-	 * remove the bean from the conversation.
-	 * TODO: when will this be called .. and should we close the conversation then?
-	 */
-	public Object remove(String name)
-	{
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+    /**
+     * remove the bean from the conversation.
+     * TODO: when will this be called .. and should we close the conversation then?
+     */
+    public Object remove(String name)
+    {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
 
-		ConversationManager manager = ConversationManager.getInstance(facesContext);
-		if (!manager.hasConversation(name))
-		{
-			return null;
-		}
+        ConversationManager manager = ConversationManager.getInstance(facesContext);
+        if (!manager.hasConversation(name))
+        {
+            return null;
+        }
 
-		return manager.getConversation(name).removeBean(name);
-	}
+        return manager.getConversation(name).removeBean(name);
+    }
 
-	public void registerDestructionCallback(String name, Runnable runnable)
-	{
-		if (log.isWarnEnabled())
-		{
-			log.warn("SpringConversationScope: registerDestructionCallback not yet supported. Name=" + name);
-		}
-	}
+    public void registerDestructionCallback(String name, Runnable runnable)
+    {
+        if (log.isWarnEnabled())
+        {
+            log.warn("SpringConversationScope: registerDestructionCallback not yet supported. Name=" + name);
+        }
+    }
 }

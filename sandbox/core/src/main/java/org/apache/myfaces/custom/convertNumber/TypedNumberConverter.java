@@ -54,63 +54,63 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
  */
 public class TypedNumberConverter implements javax.faces.convert.Converter, StateHolder
 {
-	public static final String CONVERTER_ID = "org.apache.myfaces.custom.convertNumber.TypedNumberConverter";
+    public static final String CONVERTER_ID = "org.apache.myfaces.custom.convertNumber.TypedNumberConverter";
 
-	private Class destType;
+    private Class destType;
 
-	public TypedNumberConverter()
-	{
-	}
-	
-	public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value)
-	{
-		Object convertedValue = _getAsObject(facesContext, uiComponent, value);
-		if (convertedValue == null)
-		{
-			return null;
-		}
+    public TypedNumberConverter()
+    {
+    }
+    
+    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String value)
+    {
+        Object convertedValue = _getAsObject(facesContext, uiComponent, value);
+        if (convertedValue == null)
+        {
+            return null;
+        }
 
-		Class destType = getDestType(); 
-		if (destType == null)
-		{
-			ValueBinding valueBinding = uiComponent.getValueBinding("value");
-			if (valueBinding != null)
-			{
-				destType = valueBinding.getType(facesContext);
-			}
-		}
-		
-		if (destType != null)
-		{
-			Converter converter = ConvertUtils.lookup(destType);
-			if (converter == null)
-			{
-				throw new UnsupportedOperationException("cant deal with " + destType);
-			}
+        Class destType = getDestType(); 
+        if (destType == null)
+        {
+            ValueBinding valueBinding = uiComponent.getValueBinding("value");
+            if (valueBinding != null)
+            {
+                destType = valueBinding.getType(facesContext);
+            }
+        }
+        
+        if (destType != null)
+        {
+            Converter converter = ConvertUtils.lookup(destType);
+            if (converter == null)
+            {
+                throw new UnsupportedOperationException("cant deal with " + destType);
+            }
 
-			// setting type to null, in fact the documentation is wrong here and this type is never used
-			convertedValue = converter.convert(null, convertedValue);
-		}
-		
-		
-		return convertedValue;
-	}
+            // setting type to null, in fact the documentation is wrong here and this type is never used
+            convertedValue = converter.convert(null, convertedValue);
+        }
+        
+        
+        return convertedValue;
+    }
 
-	public void restoreState(FacesContext facesContext, Object state)
-	{
-		Object[] states = (Object[]) state;
-		_restoreState(facesContext, states[0]);
-		destType = (Class) states[1];
-	}
+    public void restoreState(FacesContext facesContext, Object state)
+    {
+        Object[] states = (Object[]) state;
+        _restoreState(facesContext, states[0]);
+        destType = (Class) states[1];
+    }
 
-	public Object saveState(FacesContext facesContext)
-	{
-		return new Object[]
-		                  {
-				_saveState(facesContext),
-				destType
-		                  };
-	}
+    public Object saveState(FacesContext facesContext)
+    {
+        return new Object[]
+                          {
+                _saveState(facesContext),
+                destType
+                          };
+    }
 
     /**
      * The java class name the value should be converted to. 
@@ -119,18 +119,18 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
      * 
      * @JSFProperty
      */
-	public Class getDestType()
-	{
-		return destType;
-	}
+    public Class getDestType()
+    {
+        return destType;
+    }
 
-	public void setDestType(Class destType)
-	{
-		this.destType = destType;
-	}
+    public void setDestType(Class destType)
+    {
+        this.destType = destType;
+    }
 
-	/* ORIGINAL STUFF COPIED FROM javax.faces.convert.NumberConverter */
-	
+    /* ORIGINAL STUFF COPIED FROM javax.faces.convert.NumberConverter */
+    
     // internal constants
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.NumberConverter.CONVERSION";
 
@@ -180,9 +180,9 @@ public class TypedNumberConverter implements javax.faces.convert.Converter, Stat
                 }
                 catch (ParseException e)
                 {
-                	FacesMessage message = MessageUtils.getMessage(facesContext, CONVERSION_MESSAGE_ID, new Object[]{uiComponent.getId(),value});
-                	message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                	
+                    FacesMessage message = MessageUtils.getMessage(facesContext, CONVERSION_MESSAGE_ID, new Object[]{uiComponent.getId(),value});
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    
                     throw new ConverterException(message, e);
                 }
             }

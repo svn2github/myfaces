@@ -189,8 +189,8 @@ public class Day
      */
     public TreeSet getIntervals()
     {
-		return intervals;
-	}
+        return intervals;
+    }
     
     /**
      * Set user defined intervals during the day.
@@ -199,23 +199,23 @@ public class Day
      */
     public void setIntervals(Collection intervals)
     {
-    	if (intervals instanceof TreeSet)
-    	{
-    		this.intervals = (TreeSet) intervals;
-    	}
-    	else
-    	{	
-    		this.intervals = new TreeSet(intervals);
-    	}
-	}
+        if (intervals instanceof TreeSet)
+        {
+            this.intervals = (TreeSet) intervals;
+        }
+        else
+        {    
+            this.intervals = new TreeSet(intervals);
+        }
+    }
     
     public void addInterval(String label, Date startTime, Date endTime)
     {
-    	if (intervals == null)
-    	{
-    		intervals = new TreeSet();
-    	}
-    	intervals.add(new Interval(label, startTime, endTime));
+        if (intervals == null)
+        {
+            intervals = new TreeSet();
+        }
+        intervals.add(new Interval(label, startTime, endTime));
     }
     
     /**

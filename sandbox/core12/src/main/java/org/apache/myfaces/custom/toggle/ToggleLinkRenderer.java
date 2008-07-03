@@ -247,7 +247,7 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
 
         if(((ToggleLink) component).isDisabled())
-        	return;
+            return;
 
         super.encodeEnd(context, component);
     }
@@ -257,19 +257,19 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
 
         ToggleLink toggleLink = (ToggleLink) component;
         if(toggleLink.isDisabled())
-        	return;
+            return;
 
 
         super.encodeBegin(context, component);
     }
     
     private String getToggleJavascriptFunctionName(FacesContext context,ToggleLink toggleLink){
-    	for(UIComponent component = toggleLink.getParent(); component != null; component = component.getParent())
-    		if( component instanceof TogglePanel )
-    			return TogglePanelRenderer.getToggleJavascriptFunctionName( context, (TogglePanel)component );
+        for(UIComponent component = toggleLink.getParent(); component != null; component = component.getParent())
+            if( component instanceof TogglePanel )
+                return TogglePanelRenderer.getToggleJavascriptFunctionName( context, (TogglePanel)component );
 
-    	Log log = LogFactory.getLog(ToggleLinkRenderer.class);
+        Log log = LogFactory.getLog(ToggleLinkRenderer.class);
         log.error("The ToggleLink component with id " + toggleLink.getClientId( context )+" isn't enclosed in a togglePanel.");
-    	return null;
+        return null;
     }
 }

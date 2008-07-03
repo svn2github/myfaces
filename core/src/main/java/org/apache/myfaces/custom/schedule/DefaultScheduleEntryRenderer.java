@@ -107,18 +107,18 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
         if (!entry.isAllDay())
         {
             DateFormat format = AbstractScheduleRenderer.getDateFormat(context, schedule, 
-            		HtmlSchedule.HOUR_NOTATION_24.equals(schedule.getHourNotation()) ? "HH:mm" : "h:mma");
+                    HtmlSchedule.HOUR_NOTATION_24.equals(schedule.getHourNotation()) ? "HH:mm" : "h:mma");
             
-        	text.append(format.format(startTime));
-        	if (!startTime.equals(endTime)) {
-        		text.append("-");
-        		text.append(format.format(endTime));
-        	}
-        	text.append(": ");
+            text.append(format.format(startTime));
+            if (!startTime.equals(endTime)) {
+                text.append("-");
+                text.append(format.format(endTime));
+            }
+            text.append(": ");
         }
         text.append(entry.getTitle());
 
-        writer.writeText(text.toString(), null);    	
+        writer.writeText(text.toString(), null);        
     }
     
     protected void renderDetailedContentText(FacesContext context, ResponseWriter writer,
@@ -142,7 +142,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
                     schedule, "subtitle"), null);
             writer.writeText(entry.getSubtitle(), null);
             writer.endElement(HTML.SPAN_ELEM);
-        }    	
+        }        
     }
     
     /**
@@ -204,7 +204,7 @@ public class DefaultScheduleEntryRenderer implements ScheduleEntryRenderer,
      */
     public String getEntryClass(HtmlSchedule schedule, ScheduleEntry entry)
     {
-    	return getStyleClass(schedule, "entry");
+        return getStyleClass(schedule, "entry");
     }
     
     /**

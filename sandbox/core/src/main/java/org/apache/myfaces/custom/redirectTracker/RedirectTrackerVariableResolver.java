@@ -27,30 +27,30 @@ import javax.faces.context.FacesContext;
  */
 public class RedirectTrackerVariableResolver extends VariableResolver
 {
-	private final VariableResolver original;
+    private final VariableResolver original;
 
-	public RedirectTrackerVariableResolver(VariableResolver original)
-	{
-		this.original = original;
-	}
+    public RedirectTrackerVariableResolver(VariableResolver original)
+    {
+        this.original = original;
+    }
 
-	public Object resolveVariable(FacesContext facesContext, String variable) throws EvaluationException
-	{
-		boolean exists = facesContext.getExternalContext().getRequestMap().containsKey(variable);
+    public Object resolveVariable(FacesContext facesContext, String variable) throws EvaluationException
+    {
+        boolean exists = facesContext.getExternalContext().getRequestMap().containsKey(variable);
 
-		Object value = original.resolveVariable(facesContext, variable);
+        Object value = original.resolveVariable(facesContext, variable);
 
-		if (!exists && facesContext.getExternalContext().getRequestMap().containsKey(variable))
-		{
-			// variable created and put into the request scope
+        if (!exists && facesContext.getExternalContext().getRequestMap().containsKey(variable))
+        {
+            // variable created and put into the request scope
 
-			RedirectTrackerManager manager = RedirectTrackerManager.getInstance(FacesContext.getCurrentInstance());
-			if (manager != null)
-			{
-				manager.addSaveStateBean(variable, value);
-			}
-		}
+            RedirectTrackerManager manager = RedirectTrackerManager.getInstance(FacesContext.getCurrentInstance());
+            if (manager != null)
+            {
+                manager.addSaveStateBean(variable, value);
+            }
+        }
 
-		return value;
-	}
+        return value;
+    }
 }

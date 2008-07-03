@@ -20,37 +20,37 @@ package org.apache.myfaces.custom.dynaForm.metadata.impl.ejb;
 
 public class ClassHelperFactory
 {
-	private static ClassHelper classHelper = null;
-	
-	private ClassHelperFactory()
-	{
-	}
-	
-	public static ClassHelper get()
-	{
-		if (classHelper != null)
-		{
-			return classHelper;
-		}
-		
-		classHelper = create();
-		
-		return classHelper;
-	}
+    private static ClassHelper classHelper = null;
+    
+    private ClassHelperFactory()
+    {
+    }
+    
+    public static ClassHelper get()
+    {
+        if (classHelper != null)
+        {
+            return classHelper;
+        }
+        
+        classHelper = create();
+        
+        return classHelper;
+    }
 
-	private static ClassHelper create()
-	{
-		try
-		{
-			Class.forName("org.apache.bcel.classfile.JavaClass");
-			return new BcelHelper();
-		}
-		catch (ClassNotFoundException e)
-		{
+    private static ClassHelper create()
+    {
+        try
+        {
+            Class.forName("org.apache.bcel.classfile.JavaClass");
+            return new BcelHelper();
+        }
+        catch (ClassNotFoundException e)
+        {
             // bcel not there
         }
-		
-		// last exit
-		return new JavaHelper();
-	}
+        
+        // last exit
+        return new JavaHelper();
+    }
 }

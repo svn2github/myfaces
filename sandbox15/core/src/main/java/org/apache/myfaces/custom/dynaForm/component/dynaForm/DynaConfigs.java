@@ -29,49 +29,49 @@ import java.util.Map;
  */
 public class DynaConfigs extends UIComponentBase
 {
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.dynaForm.DynaConfigs";
-	public static final String COMPONENT_FAMILY = "org.apache.myfaces.dynaForm.DynaConfigs";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.dynaForm.DynaConfigs";
+    public static final String COMPONENT_FAMILY = "org.apache.myfaces.dynaForm.DynaConfigs";
 
-	private transient Map<String, DynaConfig> configMap = null;
+    private transient Map<String, DynaConfig> configMap = null;
 
-	@Override
-	public String getFamily()
-	{
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily()
+    {
+        return COMPONENT_FAMILY;
+    }
 
-	public DynaConfig getConfig(String name)
-	{
-		Map<String, DynaConfig> configMap = getConfigMap();
-		return configMap.get(name);
-	}
+    public DynaConfig getConfig(String name)
+    {
+        Map<String, DynaConfig> configMap = getConfigMap();
+        return configMap.get(name);
+    }
 
-	protected Map<String, DynaConfig> getConfigMap()
-	{
-		if (configMap != null)
-		{
-			return configMap;
-		}
-		configMap = new LinkedHashMap<String, DynaConfig>();
+    protected Map<String, DynaConfig> getConfigMap()
+    {
+        if (configMap != null)
+        {
+            return configMap;
+        }
+        configMap = new LinkedHashMap<String, DynaConfig>();
 
-		for (Object child : getChildren())
-		{
-			if (child instanceof DynaConfig)
-			{
-				DynaConfig dynaConfig = (DynaConfig) child;
-				if (configMap.containsKey(dynaConfig.getFor()))
-				{
-					throw new IllegalStateException("duplicate config for property '" + dynaConfig.getFor() + "'");
-				}
-				configMap.put(dynaConfig.getFor(), dynaConfig);
-			}
-		}
+        for (Object child : getChildren())
+        {
+            if (child instanceof DynaConfig)
+            {
+                DynaConfig dynaConfig = (DynaConfig) child;
+                if (configMap.containsKey(dynaConfig.getFor()))
+                {
+                    throw new IllegalStateException("duplicate config for property '" + dynaConfig.getFor() + "'");
+                }
+                configMap.put(dynaConfig.getFor(), dynaConfig);
+            }
+        }
 
-		return configMap;
-	}
+        return configMap;
+    }
 
-	public Iterator<DynaConfig> iterator()
-	{
-		return getConfigMap().values().iterator();
-	}
+    public Iterator<DynaConfig> iterator()
+    {
+        return getConfigMap().values().iterator();
+    }
 }

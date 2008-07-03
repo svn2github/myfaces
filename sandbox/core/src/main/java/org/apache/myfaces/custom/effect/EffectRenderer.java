@@ -182,7 +182,7 @@ public class EffectRenderer extends HtmlRenderer
             fadeColor = (fadeColor != null) ? fadeColor : DEFAULT_FADE_COLOR;
             fadeColor = fadeColor.equals("") ? DEFAULT_FADE_COLOR : fadeColor;
             if(fadeColor.trim().matches("^\\\\[(.*\\,)+\\\\]$")) //pattern [col,col,col] roughly
-            	return fadeColor;
+                return fadeColor;
             else return "\""+fadeColor+"\"";
             
         }
@@ -209,10 +209,10 @@ public class EffectRenderer extends HtmlRenderer
         if (puff != null && puff.booleanValue())
         {
             //writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:new Effect.Puff(this);", null);
-        	writer.startElement(HTML.SCRIPT_ELEM, component);
-        	writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        	writer.write("var "+component.getClientId(context).replaceAll("\\:","_")+"_fader = new org_apache_myfaces_effects_fader('"+component.getClientId(context)+"',300);");
-        	writer.endElement(HTML.SCRIPT_ELEM);
+            writer.startElement(HTML.SCRIPT_ELEM, component);
+            writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+            writer.write("var "+component.getClientId(context).replaceAll("\\:","_")+"_fader = new org_apache_myfaces_effects_fader('"+component.getClientId(context)+"',300);");
+            writer.endElement(HTML.SCRIPT_ELEM);
         }
   
         writer.startElement(HTML.DIV_ELEM, component);
@@ -238,10 +238,10 @@ public class EffectRenderer extends HtmlRenderer
         if (puff != null && puff.booleanValue())
         {
             writer.writeAttribute(HTML.ONCLICK_ATTR, "javascript:"+component.getClientId(context).replaceAll("\\:","_")+"_fader.fadeOut();", null);
-        	//writer.startElement(HTML.SCRIPT_ELEM, component);
-        	//writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-        	///writer.write("var "+component.getClientId(context).replaceAll("\\:","_")+"_fader = new org_apache_myfaces_effects_fader('"+component.getClientId(context)+"',300);");
-        	//writer.endElement(HTML.SCRIPT_ELEM);
+            //writer.startElement(HTML.SCRIPT_ELEM, component);
+            //writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+            ///writer.write("var "+component.getClientId(context).replaceAll("\\:","_")+"_fader = new org_apache_myfaces_effects_fader('"+component.getClientId(context)+"',300);");
+            //writer.endElement(HTML.SCRIPT_ELEM);
         }
         if (squish != null && squish.booleanValue())
         {
@@ -294,7 +294,7 @@ public class EffectRenderer extends HtmlRenderer
         if (fade != null && fade.booleanValue())
         {
             DojoUtils.addRequire(facesContext,component, "dojo.lfx.*");
-        	writer.startElement(HTML.SCRIPT_ELEM, component);
+            writer.startElement(HTML.SCRIPT_ELEM, component);
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, HTML.SCRIPT_LANGUAGE_JAVASCRIPT, null);
             StringBuffer commandBuffer = new StringBuffer(128);

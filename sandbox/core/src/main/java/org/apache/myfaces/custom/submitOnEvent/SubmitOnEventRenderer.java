@@ -54,45 +54,45 @@ import java.util.TreeSet;
  */
 public class SubmitOnEventRenderer extends HtmlRenderer
 {
-	private final static Set ON_CHANGE_FAMILY = new TreeSet(Arrays.asList(new String[]
-	{
-		UISelectBoolean.COMPONENT_FAMILY,
-		UISelectMany.COMPONENT_FAMILY,
-		UISelectOne.COMPONENT_FAMILY
-	}));
+    private final static Set ON_CHANGE_FAMILY = new TreeSet(Arrays.asList(new String[]
+    {
+        UISelectBoolean.COMPONENT_FAMILY,
+        UISelectMany.COMPONENT_FAMILY,
+        UISelectOne.COMPONENT_FAMILY
+    }));
 
-	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
         SubmitOnEvent submitOnEvent = (SubmitOnEvent) uiComponent;
 
         UIComponent forComponent = null;
 
-		UIComponent triggerComponent = null;
+        UIComponent triggerComponent = null;
         UIComponent parent = uiComponent.getParent();
         if (parent != null)
         {
             if (UIInput.COMPONENT_FAMILY.equals(parent.getFamily())
-				|| parent instanceof UIInput
-				|| parent instanceof ModalDialog
-				|| parent instanceof EditableValueHolder)
+                || parent instanceof UIInput
+                || parent instanceof ModalDialog
+                || parent instanceof EditableValueHolder)
             {
                 triggerComponent = parent;
             }
             else if (UICommand.COMPONENT_FAMILY.equals(parent.getFamily())
-				|| parent instanceof UICommand
-				|| parent instanceof ActionSource)
+                || parent instanceof UICommand
+                || parent instanceof ActionSource)
             {
                 forComponent = parent;
             }
-		}
+        }
 
-		if (triggerComponent != null && !triggerComponent.isRendered())
-		{
-			// the component we are attaced to is not being rendered, so we can quit now ...
-			return;
-		}
+        if (triggerComponent != null && !triggerComponent.isRendered())
+        {
+            // the component we are attaced to is not being rendered, so we can quit now ...
+            return;
+        }
 
-		if (forComponent == null)
+        if (forComponent == null)
         {
             String forComponentId = submitOnEvent.getFor();
             if (forComponentId == null)
@@ -101,51 +101,51 @@ public class SubmitOnEventRenderer extends HtmlRenderer
             }
 
             forComponent = uiComponent.findComponent(forComponentId);
-			if (forComponent == null)
+            if (forComponent == null)
             {
                 throw new IllegalArgumentException("SubmitOnEvent: can't find 'for'-component '" + forComponentId + "'");
             }
         }
 
-		AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(
-				facesContext, AddResource.HEADER_BEGIN, SubmitOnEventRenderer.class,
-				"submitOnEvent.js");
+        AddResourceFactory.getInstance(facesContext).addJavaScriptAtPosition(
+                facesContext, AddResource.HEADER_BEGIN, SubmitOnEventRenderer.class,
+                "submitOnEvent.js");
 
-		// If the dojo library will be loaded, use it to attach to the onLoad handler.
-		// Do NOT use dojo if no other component requires it, this avoids loading of this
-		// heavy-weight javascript-library for just the simple submitOnEvent use-case.
-		// We do this for better integration with dojo widget (e.g. our ModalDialog)
-		// where using the timeout stuff is not appropriate.
-		boolean useDojoForInit = DojoUtils.isDojoInitialized(facesContext);
+        // If the dojo library will be loaded, use it to attach to the onLoad handler.
+        // Do NOT use dojo if no other component requires it, this avoids loading of this
+        // heavy-weight javascript-library for just the simple submitOnEvent use-case.
+        // We do this for better integration with dojo widget (e.g. our ModalDialog)
+        // where using the timeout stuff is not appropriate.
+        boolean useDojoForInit = DojoUtils.isDojoInitialized(facesContext);
 
-		StringBuffer js = new StringBuffer(80);
+        StringBuffer js = new StringBuffer(80);
 
-		if (useDojoForInit)
-		{
-			js.append("dojo.addOnLoad(function() {");
-		}
-		else
-		{
-			js.append("setTimeout(\"");
-		}
-		js.append("orgApacheMyfacesSubmitOnEventRegister('");
+        if (useDojoForInit)
+        {
+            js.append("dojo.addOnLoad(function() {");
+        }
+        else
+        {
+            js.append("setTimeout(\"");
+        }
+        js.append("orgApacheMyfacesSubmitOnEventRegister('");
         if (submitOnEvent.getEvent() != null)
         {
             js.append(submitOnEvent.getEvent().toLowerCase());
         }
         else
         {
-			if (triggerComponent != null
-				&& triggerComponent.getFamily() != null
-				&& ON_CHANGE_FAMILY.contains(triggerComponent.getFamily()))
-			{
-				js.append("change");
-			}
-			else
-			{
-				js.append("keypress");
-			}
-		}
+            if (triggerComponent != null
+                && triggerComponent.getFamily() != null
+                && ON_CHANGE_FAMILY.contains(triggerComponent.getFamily()))
+            {
+                js.append("change");
+            }
+            else
+            {
+                js.append("keypress");
+            }
+        }
         js.append("','");
         if (submitOnEvent.getCallback() != null)
         {
@@ -154,27 +154,27 @@ public class SubmitOnEventRenderer extends HtmlRenderer
         js.append("','");
         if (triggerComponent != null)
         {
-			if (triggerComponent instanceof ModalDialog)
-			{
-				js.append(((ModalDialog) triggerComponent).getDialogVar());
-			}
-			else
-			{
-				js.append(triggerComponent.getClientId(facesContext));
-			}
-		}
+            if (triggerComponent instanceof ModalDialog)
+            {
+                js.append(((ModalDialog) triggerComponent).getDialogVar());
+            }
+            else
+            {
+                js.append(triggerComponent.getClientId(facesContext));
+            }
+        }
         js.append("','");
         js.append(forComponent.getClientId(facesContext));
-		js.append("');");
+        js.append("');");
         // js.append("');");
-		if (useDojoForInit)
-		{
-			js.append("});");
-		}
-		else
-		{
-			js.append("\", 100)");
-		}
+        if (useDojoForInit)
+        {
+            js.append("});");
+        }
+        else
+        {
+            js.append("\", 100)");
+        }
 
         // AddResourceFactory.getInstance(facesContext).addInlineScriptAtPosition(facesContext, AddResource.BODY_END, js.toString());
 

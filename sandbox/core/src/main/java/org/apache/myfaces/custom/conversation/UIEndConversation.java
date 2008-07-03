@@ -39,187 +39,187 @@ import java.util.Collection;
  */
 public class UIEndConversation extends AbstractConversationComponent
 {
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.EndConversation";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.EndConversation";
 
-	private String onOutcome;
-	private String errorOutcome;
-	private Boolean restart;
-	private MethodBinding restartAction;
+    private String onOutcome;
+    private String errorOutcome;
+    private Boolean restart;
+    private MethodBinding restartAction;
 
-	private boolean inited = false;
+    private boolean inited = false;
 
-	/*
-	public static class ConversationEndAction extends AbstractConversationActionListener
-	{
-		public void doConversationAction(AbstractConversationComponent abstractConversationComponent)
-		{
-			ConversationManager.getInstance().registerEndConversation(getConversationName());
-		}
-	}
-	*/
+    /*
+    public static class ConversationEndAction extends AbstractConversationActionListener
+    {
+        public void doConversationAction(AbstractConversationComponent abstractConversationComponent)
+        {
+            ConversationManager.getInstance().registerEndConversation(getConversationName());
+        }
+    }
+    */
 
-	public void encodeBegin(FacesContext context) throws IOException
-	{
-		super.encodeBegin(context);
+    public void encodeBegin(FacesContext context) throws IOException
+    {
+        super.encodeBegin(context);
 
-		UICommand command = ConversationUtils.findParentCommand(this);
-		if (command != null)
-		{
-			if (!inited)
-			{
-				/*
-				ConversationEndAction actionListener = new ConversationEndAction();
-				actionListener.setConversationName(getName());
-				command.addActionListener(actionListener);
-				*/
-				MethodBinding original = command.getAction();
-				command.setAction(new EndConversationMethodBindingFacade(
-					getName(),
-					getOnOutcomes(),
-					original,
-					getErrorOutcome(),
-					getRestart(),
-					getRestartAction()));
-				inited = true;
-			}
-		}
-		else
-		{
-			ConversationUtils.endAndRestartConversation(context,
-				getName(),
-				getRestart(),
-				getRestartAction());
-		}
-	}
+        UICommand command = ConversationUtils.findParentCommand(this);
+        if (command != null)
+        {
+            if (!inited)
+            {
+                /*
+                ConversationEndAction actionListener = new ConversationEndAction();
+                actionListener.setConversationName(getName());
+                command.addActionListener(actionListener);
+                */
+                MethodBinding original = command.getAction();
+                command.setAction(new EndConversationMethodBindingFacade(
+                    getName(),
+                    getOnOutcomes(),
+                    original,
+                    getErrorOutcome(),
+                    getRestart(),
+                    getRestartAction()));
+                inited = true;
+            }
+        }
+        else
+        {
+            ConversationUtils.endAndRestartConversation(context,
+                getName(),
+                getRestart(),
+                getRestartAction());
+        }
+    }
 
-	private Collection getOnOutcomes()
-	{
-		String onOutcome = getOnOutcome();
-		if (onOutcome == null || onOutcome.trim().length() < 1)
-		{
-			return null;
-		}
+    private Collection getOnOutcomes()
+    {
+        String onOutcome = getOnOutcome();
+        if (onOutcome == null || onOutcome.trim().length() < 1)
+        {
+            return null;
+        }
 
-		return Arrays.asList(StringUtils.trim(StringUtils.splitShortString(onOutcome, ',')));
-	}
+        return Arrays.asList(StringUtils.trim(StringUtils.splitShortString(onOutcome, ',')));
+    }
 
-	public void restoreState(FacesContext context, Object state)
-	{
-		Object[] states = (Object[]) state;
-		super.restoreState(context, states[0]);
-		inited = ((Boolean) states[1]).booleanValue();
-		onOutcome = (String) states[2];
-		errorOutcome = (String) states[3];
-		restart = (Boolean) states[4];
-		restartAction = (MethodBinding) restoreAttachedState(context, states[5]);
-	}
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] states = (Object[]) state;
+        super.restoreState(context, states[0]);
+        inited = ((Boolean) states[1]).booleanValue();
+        onOutcome = (String) states[2];
+        errorOutcome = (String) states[3];
+        restart = (Boolean) states[4];
+        restartAction = (MethodBinding) restoreAttachedState(context, states[5]);
+    }
 
-	public Object saveState(FacesContext context)
-	{
-		return new Object[]
-			{
-				super.saveState(context),
-				inited ? Boolean.TRUE : Boolean.FALSE,
-				onOutcome,
-				errorOutcome,
-				restart,
-				saveAttachedState(context, restartAction)
-			};
-	}
+    public Object saveState(FacesContext context)
+    {
+        return new Object[]
+            {
+                super.saveState(context),
+                inited ? Boolean.TRUE : Boolean.FALSE,
+                onOutcome,
+                errorOutcome,
+                restart,
+                saveAttachedState(context, restartAction)
+            };
+    }
 
-	/**
-	 * end the conversation only if the action outcome matches the given onOutcome. 
-	 * 
-	 * This can be a comma separated list.
-	 * 
-	 * @JSFProperty
-	 * @return
-	 */
-	public String getOnOutcome()
-	{
-		if (onOutcome != null)
-		{
-			return onOutcome;
-		}
-		ValueBinding vb = getValueBinding("onOutcome");
-		if (vb == null)
-		{
-			return null;
-		}
-		return (String) vb.getValue(getFacesContext());
-	}
+    /**
+     * end the conversation only if the action outcome matches the given onOutcome. 
+     * 
+     * This can be a comma separated list.
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public String getOnOutcome()
+    {
+        if (onOutcome != null)
+        {
+            return onOutcome;
+        }
+        ValueBinding vb = getValueBinding("onOutcome");
+        if (vb == null)
+        {
+            return null;
+        }
+        return (String) vb.getValue(getFacesContext());
+    }
 
-	public void setOnOutcome(String onOutcome)
-	{
-		this.onOutcome = onOutcome;
-	}
+    public void setOnOutcome(String onOutcome)
+    {
+        this.onOutcome = onOutcome;
+    }
 
-	/**
-	 * on exception use the given outcome for further navigation
-	 * 
-	 * @JSFProperty
-	 * @return
-	 */
-	public String getErrorOutcome()
-	{
-		if (errorOutcome != null)
-		{
-			return errorOutcome;
-		}
-		ValueBinding vb = getValueBinding("errorOutcome");
-		if (vb == null)
-		{
-			return null;
-		}
-		return (String) vb.getValue(getFacesContext());
-	}
+    /**
+     * on exception use the given outcome for further navigation
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public String getErrorOutcome()
+    {
+        if (errorOutcome != null)
+        {
+            return errorOutcome;
+        }
+        ValueBinding vb = getValueBinding("errorOutcome");
+        if (vb == null)
+        {
+            return null;
+        }
+        return (String) vb.getValue(getFacesContext());
+    }
 
-	public void setErrorOutcome(String errorOutcome)
-	{
-		this.errorOutcome = errorOutcome;
-	}
+    public void setErrorOutcome(String errorOutcome)
+    {
+        this.errorOutcome = errorOutcome;
+    }
 
-	/**
-	 * true|false|valueBinding - true if the conversation should be restarted immediately
-	 * 
-	 * @JSFProperty
-	 * @return
-	 */
-	public Boolean getRestart()
-	{
-		if (restart != null)
-		{
-			return restart;
-		}
-		ValueBinding vb = getValueBinding("restart");
-		if (vb == null)
-		{
-			return null;
-		}
-		return (Boolean) vb.getValue(getFacesContext());
-	}
+    /**
+     * true|false|valueBinding - true if the conversation should be restarted immediately
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public Boolean getRestart()
+    {
+        if (restart != null)
+        {
+            return restart;
+        }
+        ValueBinding vb = getValueBinding("restart");
+        if (vb == null)
+        {
+            return null;
+        }
+        return (Boolean) vb.getValue(getFacesContext());
+    }
 
-	public void setRestart(Boolean restart)
-	{
-		this.restart = restart;
-	}
+    public void setRestart(Boolean restart)
+    {
+        this.restart = restart;
+    }
 
-	/**
-	 * the action which should be called in case of a restart
-	 * 
-	 * @JSFProperty
-	 *   methodSignature = "java.lang.String"
-	 *   returnSignature = "void"
-	 *   stateHolder = "true"
-	 * @return
-	 */
-	public MethodBinding getRestartAction()
-	{
-		return restartAction;
-	}
+    /**
+     * the action which should be called in case of a restart
+     * 
+     * @JSFProperty
+     *   methodSignature = "java.lang.String"
+     *   returnSignature = "void"
+     *   stateHolder = "true"
+     * @return
+     */
+    public MethodBinding getRestartAction()
+    {
+        return restartAction;
+    }
 
-	public void setRestartAction(MethodBinding restartAction)
-	{
-		this.restartAction = restartAction;
-	}
+    public void setRestartAction(MethodBinding restartAction)
+    {
+        this.restartAction = restartAction;
+    }
 }

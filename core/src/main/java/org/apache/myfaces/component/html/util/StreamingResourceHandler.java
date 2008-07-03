@@ -71,6 +71,6 @@ public class StreamingResourceHandler implements ResourceHandler
      */
     public String getResourceUri(FacesContext context)
     {
-    	return _resource;
+        return _resource;
     }
 }

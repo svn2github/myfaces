@@ -20,27 +20,27 @@ package org.apache.myfaces.custom.dynaForm.guiBuilder.impl.myfaces;
 
 public class MyFacesCheck
 {
-	private static boolean myFacesAvailable;
-	
-	static
-	{
-		try
-		{
-			Class.forName("org.apache.myfaces.webapp.MyFacesServlet");
-			myFacesAvailable = true;
-		}
-		catch (ClassNotFoundException e)
-		{
-			myFacesAvailable = false;
-		}
-	}
+    private static boolean myFacesAvailable;
+    
+    static
+    {
+        try
+        {
+            Class.forName("org.apache.myfaces.webapp.MyFacesServlet");
+            myFacesAvailable = true;
+        }
+        catch (ClassNotFoundException e)
+        {
+            myFacesAvailable = false;
+        }
+    }
 
-	private MyFacesCheck()
-	{
-	}
-	
-	public static boolean isMyFacesAvailable()
-	{
-		return myFacesAvailable;
-	}
+    private MyFacesCheck()
+    {
+    }
+    
+    public static boolean isMyFacesAvailable()
+    {
+        return myFacesAvailable;
+    }
 }

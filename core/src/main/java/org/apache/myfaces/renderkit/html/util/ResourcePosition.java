@@ -20,8 +20,8 @@ package org.apache.myfaces.renderkit.html.util;
 
 public class ResourcePosition
 {
-	
-	private final int _pos;
+    
+    private final int _pos;
 
     protected ResourcePosition(int pos)
     {

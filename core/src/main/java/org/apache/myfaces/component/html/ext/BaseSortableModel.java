@@ -53,15 +53,15 @@ public class BaseSortableModel extends DataModel
     
 
     public Comparator getComparator() {
-		return _comparator;
-	}
+        return _comparator;
+    }
 
-	public void setComparator(Comparator comparator) {
-		this._comparator = comparator;
-		sort();
-	}
+    public void setComparator(Comparator comparator) {
+        this._comparator = comparator;
+        sort();
+    }
 
-	/**
+    /**
      * Create a new SortableModel from the given instance.
      * @param model This will be converted into a {@link DataModel}
      * @see #setWrappedData
@@ -175,7 +175,7 @@ public class BaseSortableModel extends DataModel
         {
             // restore unsorted order:
             _baseIndicesList = _sortedIndicesList = null;
-        	return;
+            return;
         } 
         
         //TODO: support -1 for rowCount:
@@ -204,7 +204,7 @@ public class BaseSortableModel extends DataModel
         _model.setRowIndex(rowIndex);
     }
     
-	private int _toSortedIndex(int baseIndex) 
+    private int _toSortedIndex(int baseIndex) 
     {
         if ((_sortedIndicesList == null) && (_baseIndicesList != null)) 
         {
@@ -253,25 +253,25 @@ public class BaseSortableModel extends DataModel
     
     protected static class RowDataComparator implements Comparator
     {
-		private Comparator dataComparator = null;
-		private DataModel dataModel = null;
-		
-		public RowDataComparator(Comparator comparator, DataModel model)
-		{
-			this.dataComparator = comparator;
-			this.dataModel = model;
-		}
-		
-		public int compare(Object arg1, Object arg2) {
-			Integer r1 = (Integer)arg1;
-			Integer r2 = (Integer)arg2;
-			dataModel.setRowIndex(r1.intValue());
-	        Object rowData1 = dataModel.getRowData();
-	        dataModel.setRowIndex(r2.intValue());
-	        Object rowData2 = dataModel.getRowData();
-	        
-	        return dataComparator.compare(rowData1, rowData2);
-		}
+        private Comparator dataComparator = null;
+        private DataModel dataModel = null;
+        
+        public RowDataComparator(Comparator comparator, DataModel model)
+        {
+            this.dataComparator = comparator;
+            this.dataModel = model;
+        }
+        
+        public int compare(Object arg1, Object arg2) {
+            Integer r1 = (Integer)arg1;
+            Integer r2 = (Integer)arg2;
+            dataModel.setRowIndex(r1.intValue());
+            Object rowData1 = dataModel.getRowData();
+            dataModel.setRowIndex(r2.intValue());
+            Object rowData2 = dataModel.getRowData();
+            
+            return dataComparator.compare(rowData1, rowData2);
+        }
     }
     
     private static final DataModel EMPTY_DATA_MODEL = new _SerializableDataModel()

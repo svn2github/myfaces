@@ -27,30 +27,30 @@ import javax.faces.context.ResponseStream;
  * response stream.
  */
 public final class CAPTCHAResponseStream extends ResponseStream {
-	private final OutputStream _out;
+    private final OutputStream _out;
 
-	public CAPTCHAResponseStream(OutputStream out) {
-		_out = out;
-	}
+    public CAPTCHAResponseStream(OutputStream out) {
+        _out = out;
+    }
 
-	public void close() throws IOException {
-		_out.flush();
-		_out.close();
-	}
+    public void close() throws IOException {
+        _out.flush();
+        _out.close();
+    }
 
-	public void flush() throws IOException {
-		_out.flush();
-	}
+    public void flush() throws IOException {
+        _out.flush();
+    }
 
-	public void write(byte[] b, int off, int len) throws IOException {
-		_out.write(b, off, len);
-	}
+    public void write(byte[] b, int off, int len) throws IOException {
+        _out.write(b, off, len);
+    }
 
-	public void write(byte[] b) throws IOException {
-		_out.write(b);
-	}
+    public void write(byte[] b) throws IOException {
+        _out.write(b);
+    }
 
-	public void write(int b) throws IOException {
-		_out.write(b);
-	}
+    public void write(int b) throws IOException {
+        _out.write(b);
+    }
 }

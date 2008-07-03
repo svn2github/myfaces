@@ -25,46 +25,46 @@ import javax.faces.context.FacesContext;
  */
 public class RedirectTrackerContext
 {
-	private final RedirectTrackerManager manager;
-	private final RedirectTrackerManager.Entry entry;
-	private final FacesContext context;
+    private final RedirectTrackerManager manager;
+    private final RedirectTrackerManager.Entry entry;
+    private final FacesContext context;
 
-	RedirectTrackerContext(RedirectTrackerManager manager, RedirectTrackerManager.Entry entry, FacesContext context)
-	{
-		this.entry = entry;
-		this.context = context;
-		this.manager = manager;
-	}
+    RedirectTrackerContext(RedirectTrackerManager manager, RedirectTrackerManager.Entry entry, FacesContext context)
+    {
+        this.entry = entry;
+        this.context = context;
+        this.manager = manager;
+    }
 
-	/**
-	 * saves all request beans
-	 */
-	public void saveBeans()
-	{
-		manager.saveBeans(entry);
-	}
+    /**
+     * saves all request beans
+     */
+    public void saveBeans()
+    {
+        manager.saveBeans(entry);
+    }
 
-	/**
-	 * saves the given object with the given name, after the redirect this value will be reinjected into the request.
-	 */
-	public void saveBean(String name, Object value)
-	{
-		manager.saveBean(entry, name, value);
-	}
+    /**
+     * saves the given object with the given name, after the redirect this value will be reinjected into the request.
+     */
+    public void saveBean(String name, Object value)
+    {
+        manager.saveBean(entry, name, value);
+    }
 
-	/**
-	 * saves all messages
-	 */
-	public void saveMessages()
-	{
-		manager.saveMessages(context, entry);
-	}
+    /**
+     * saves all messages
+     */
+    public void saveMessages()
+    {
+        manager.saveMessages(context, entry);
+    }
 
-	/**
-	 * saves the locale information
-	 */
-	public void saveLocale()
-	{
-		manager.saveLocale(context, entry);
-	}
+    /**
+     * saves the locale information
+     */
+    public void saveLocale()
+    {
+        manager.saveLocale(context, entry);
+    }
 }

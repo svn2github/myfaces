@@ -39,11 +39,11 @@ import javax.faces.context.FacesContext;
  * @version $Revision$ $Date$
  */
 public abstract class AbstractIfMessage extends UIComponentBase {
-	
+    
     public static final String COMPONENT_TYPE = "org.apache.myfaces.IfMessage";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.IfMessageRenderer";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
-    	
+        
     /**
      * @JSFProperty
      * @return
@@ -51,33 +51,33 @@ public abstract class AbstractIfMessage extends UIComponentBase {
     public abstract String getFor();
     
     private boolean isMessageForId(String id) {
-    	UIComponent component = findComponent(id); 
-    	if(component != null) {
-        	String clientId = component.getClientId(FacesContext.getCurrentInstance());
-        	return FacesContext.getCurrentInstance().getMessages(clientId).hasNext();
-    	}
-    	return false;
+        UIComponent component = findComponent(id); 
+        if(component != null) {
+            String clientId = component.getClientId(FacesContext.getCurrentInstance());
+            return FacesContext.getCurrentInstance().getMessages(clientId).hasNext();
+        }
+        return false;
     }
     
-	public boolean getRendersChildren() {
-		return true;
-	}
-	
-	public void encodeChildren(FacesContext context) throws IOException {
-		if(getFor() != null) {
-			StringTokenizer tokenizer = new StringTokenizer(getFor(), ",");
-			while(tokenizer.hasMoreTokens()) {
-			    if(isMessageForId(tokenizer.nextToken().trim())) {
-					super.encodeChildren(context);
-					break;
-				}
-			}
-		} else {
-			if(FacesContext.getCurrentInstance().getMessages().hasNext()) {
-				super.encodeChildren(context);
-			}
-		}
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
+    
+    public void encodeChildren(FacesContext context) throws IOException {
+        if(getFor() != null) {
+            StringTokenizer tokenizer = new StringTokenizer(getFor(), ",");
+            while(tokenizer.hasMoreTokens()) {
+                if(isMessageForId(tokenizer.nextToken().trim())) {
+                    super.encodeChildren(context);
+                    break;
+                }
+            }
+        } else {
+            if(FacesContext.getCurrentInstance().getMessages().hasNext()) {
+                super.encodeChildren(context);
+            }
+        }
+    }
     
 }
 

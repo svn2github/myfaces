@@ -33,63 +33,63 @@ import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
  */
 public class UISaveStateTest extends AbstractTomahawkViewControllerTestCase{
 
-	private UISaveState saveState;
-	private SaveStateTestBean saveStateTestBean;
+    private UISaveState saveState;
+    private SaveStateTestBean saveStateTestBean;
 
-	public UISaveStateTest(String name) {
-		super(name);
-	}
+    public UISaveStateTest(String name) {
+        super(name);
+    }
 
-	public static Test suite() {
-		return new TestSuite(UISaveStateTest.class);
-	}
+    public static Test suite() {
+        return new TestSuite(UISaveStateTest.class);
+    }
 
-	public void setUp() throws Exception{
-		super.setUp();
-		saveState = new UISaveState();
-		saveStateTestBean = new SaveStateTestBean();
-		facesContext.getExternalContext().getRequestMap().put("testBean", saveStateTestBean);
-	}
+    public void setUp() throws Exception{
+        super.setUp();
+        saveState = new UISaveState();
+        saveStateTestBean = new SaveStateTestBean();
+        facesContext.getExternalContext().getRequestMap().put("testBean", saveStateTestBean);
+    }
 
-	public void tearDown() throws Exception{
-		saveState = null;
-		saveStateTestBean = null;
-		super.tearDown();
-	}
+    public void tearDown() throws Exception{
+        saveState = null;
+        saveStateTestBean = null;
+        super.tearDown();
+    }
 
-	public void testWorksWithLinkedList() {
-		ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{testBean.linkedList}");
-		saveState.setValueBinding("value", valueBinding);
+    public void testWorksWithLinkedList() {
+        ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{testBean.linkedList}");
+        saveState.setValueBinding("value", valueBinding);
 
-		LinkedList linkedList = (LinkedList) valueBinding.getValue(facesContext);
+        LinkedList linkedList = (LinkedList) valueBinding.getValue(facesContext);
 
-		try {
-			Object state = saveState.saveState(facesContext);
-			Object values[] = (Object[])state;
-			assertEquals(values[2], linkedList);
+        try {
+            Object state = saveState.saveState(facesContext);
+            Object values[] = (Object[])state;
+            assertEquals(values[2], linkedList);
 
-			saveState.restoreState(facesContext, state);
-			
-		}catch(Exception exception) {
-			fail();
-		}
-	}
+            saveState.restoreState(facesContext, state);
+            
+        }catch(Exception exception) {
+            fail();
+        }
+    }
 
-	public void testWorksWithStateHolder() {
-		ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{testBean}");
-		saveState.setValueBinding("value", valueBinding);
+    public void testWorksWithStateHolder() {
+        ValueBinding valueBinding = facesContext.getApplication().createValueBinding("#{testBean}");
+        saveState.setValueBinding("value", valueBinding);
 
-		SaveStateTestBean testBean = (SaveStateTestBean) valueBinding.getValue(facesContext);
+        SaveStateTestBean testBean = (SaveStateTestBean) valueBinding.getValue(facesContext);
 
-		try {
-			Object state = saveState.saveState(facesContext);
-			Object values[] = (Object[])state;
-			assertNotSame(values[2], testBean); //values[2] should be a type of "javax.faces.component._AttachedStateWrapper"
+        try {
+            Object state = saveState.saveState(facesContext);
+            Object values[] = (Object[])state;
+            assertNotSame(values[2], testBean); //values[2] should be a type of "javax.faces.component._AttachedStateWrapper"
 
-			saveState.restoreState(facesContext, state);
-		}catch(Exception exception) {
-			fail();
-		}
-	}
+            saveState.restoreState(facesContext, state);
+        }catch(Exception exception) {
+            fail();
+        }
+    }
 
 }

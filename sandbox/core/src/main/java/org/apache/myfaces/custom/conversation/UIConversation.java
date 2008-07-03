@@ -40,42 +40,42 @@ import javax.faces.component.UIComponent;
  */
 public class UIConversation extends AbstractConversationComponent
 {
-	private final static Log log = LogFactory.getLog(UIConversation.class);
+    private final static Log log = LogFactory.getLog(UIConversation.class);
 
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.Conversation";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.Conversation";
 
-	public void encodeBegin(FacesContext context) throws IOException
-	{
-		super.encodeBegin(context);
+    public void encodeBegin(FacesContext context) throws IOException
+    {
+        super.encodeBegin(context);
 
-		UIComponent cmp = getParent();
-		if (cmp instanceof UIStartConversation)
-		{
-			// start conversation should to the work
-			return;
-		}
+        UIComponent cmp = getParent();
+        if (cmp instanceof UIStartConversation)
+        {
+            // start conversation should to the work
+            return;
+        }
 
-		if (getName() == null)
-		{
-			throw new IllegalArgumentException("conversation name (attribute name=) required if used outside of startConversation tag");
-		}
+        if (getName() == null)
+        {
+            throw new IllegalArgumentException("conversation name (attribute name=) required if used outside of startConversation tag");
+        }
 
-		elevateBean(context, getName(), getBeanBinding());
-	}
+        elevateBean(context, getName(), getBeanBinding());
+    }
 
-	ValueBinding getBeanBinding()
-	{
-		return getValueBinding("value");
-	}
-	
-	public static void elevateBean(FacesContext context, String conversationName, ValueBinding valueBinding)
-	{
-		Conversation conversation = ConversationManager.getInstance().getConversation(conversationName);
-		if (conversation == null)
-		{
-			log.debug("no conversation named '" + conversationName + "' running - can't elevate bean '" + valueBinding.getExpressionString());
-			return;
-		}
-		ConversationManager.getInstance().getConversationBeanElevator().elevateBean(context, conversation, valueBinding);
-	}
+    ValueBinding getBeanBinding()
+    {
+        return getValueBinding("value");
+    }
+    
+    public static void elevateBean(FacesContext context, String conversationName, ValueBinding valueBinding)
+    {
+        Conversation conversation = ConversationManager.getInstance().getConversation(conversationName);
+        if (conversation == null)
+        {
+            log.debug("no conversation named '" + conversationName + "' running - can't elevate bean '" + valueBinding.getExpressionString());
+            return;
+        }
+        ConversationManager.getInstance().getConversationBeanElevator().elevateBean(context, conversation, valueBinding);
+    }
 }

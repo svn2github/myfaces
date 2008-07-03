@@ -38,137 +38,137 @@ import javax.faces.event.ValueChangeEvent;
  */
 public final class ValueChangeManager
 {
-	public final static Class[] SIGNATURE = new Class[]
-                                                    	{ ValueChangeEvent.class };
-	private final static String VCL_MANAGER = "_VCL_MANAGER_"
-			+ ValueChangeNotifierTag.class.getName();
+    public final static Class[] SIGNATURE = new Class[]
+                                                        { ValueChangeEvent.class };
+    private final static String VCL_MANAGER = "_VCL_MANAGER_"
+            + ValueChangeNotifierTag.class.getName();
 
-	private List events = new ArrayList(10);
+    private List events = new ArrayList(10);
 
-	private static class Entry
-	{
-		private final String method;
-		private final ValueChangeEvent event;
-		private final List restoreStateCommands;
+    private static class Entry
+    {
+        private final String method;
+        private final ValueChangeEvent event;
+        private final List restoreStateCommands;
 
-		public Entry(String method,
-				ValueChangeEvent event,
-				List restoreStateCommands)
-		{
-			this.method = method;
-			this.event = event;
-			this.restoreStateCommands = restoreStateCommands;
-		}
-	}
+        public Entry(String method,
+                ValueChangeEvent event,
+                List restoreStateCommands)
+        {
+            this.method = method;
+            this.event = event;
+            this.restoreStateCommands = restoreStateCommands;
+        }
+    }
 
-	private ValueChangeManager()
-	{
-	}
+    private ValueChangeManager()
+    {
+    }
 
-	/**
-	 * add a new event 
-	 */
-	public void addEvent(String method,
-			ValueChangeEvent event,
-			List restoreStateCommands)
-	{
-		events.add(new Entry(method, event, restoreStateCommands));
-	}
+    /**
+     * add a new event 
+     */
+    public void addEvent(String method,
+            ValueChangeEvent event,
+            List restoreStateCommands)
+    {
+        events.add(new Entry(method, event, restoreStateCommands));
+    }
 
-	/**
-	 * walk through list and fire collected events 
-	 */
-	public void fireEvents(FacesContext context)
-	{
-		try
-		{
-			Iterator iterEvents = events.iterator();
-			while (iterEvents.hasNext())
-			{
-				Entry entry = (Entry) iterEvents.next();
+    /**
+     * walk through list and fire collected events 
+     */
+    public void fireEvents(FacesContext context)
+    {
+        try
+        {
+            Iterator iterEvents = events.iterator();
+            while (iterEvents.hasNext())
+            {
+                Entry entry = (Entry) iterEvents.next();
 
-				saveCurrentStates(entry.restoreStateCommands);
-				
-				try
-				{
-					restoreEventStates(entry.restoreStateCommands);
-					
-					MethodBinding mb = context.getApplication().createMethodBinding(entry.method, SIGNATURE);
-					mb.invoke(context, new Object[] { entry.event });
-				}
-				catch (MethodNotFoundException e)
-				{
-					throw new FacesException(e);
-				}
-				catch (AbortProcessingException e)
-				{
-					// ignore any other value change event
-					return;
-				}
-				finally
-				{
-					restoreCurrentStates(entry.restoreStateCommands);
-				}
-			}
-		}
-		finally
-		{
-			events.clear();			
-		}
-	}
+                saveCurrentStates(entry.restoreStateCommands);
+                
+                try
+                {
+                    restoreEventStates(entry.restoreStateCommands);
+                    
+                    MethodBinding mb = context.getApplication().createMethodBinding(entry.method, SIGNATURE);
+                    mb.invoke(context, new Object[] { entry.event });
+                }
+                catch (MethodNotFoundException e)
+                {
+                    throw new FacesException(e);
+                }
+                catch (AbortProcessingException e)
+                {
+                    // ignore any other value change event
+                    return;
+                }
+                finally
+                {
+                    restoreCurrentStates(entry.restoreStateCommands);
+                }
+            }
+        }
+        finally
+        {
+            events.clear();            
+        }
+    }
 
-	protected void saveCurrentStates(List restoreStateCommands)
-	{
-		for (int i = 0; i<restoreStateCommands.size(); i++)
-		{
-			RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
-			cmd.saveCurrentState();
-		}
-	}
-	
-	protected void restoreCurrentStates(List restoreStateCommands)
-	{
-		for (int i = restoreStateCommands.size()-1; i>=0; i--)
-		{
-			RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
-			cmd.restoreCurrentState();
-		}
-	}
+    protected void saveCurrentStates(List restoreStateCommands)
+    {
+        for (int i = 0; i<restoreStateCommands.size(); i++)
+        {
+            RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
+            cmd.saveCurrentState();
+        }
+    }
+    
+    protected void restoreCurrentStates(List restoreStateCommands)
+    {
+        for (int i = restoreStateCommands.size()-1; i>=0; i--)
+        {
+            RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
+            cmd.restoreCurrentState();
+        }
+    }
 
-	protected void restoreEventStates(List restoreStateCommands)
-	{
-		for (int i = restoreStateCommands.size()-1; i>=0; i--)
-		{
-			RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
-			cmd.restoreEventState();
-		}
-	}
+    protected void restoreEventStates(List restoreStateCommands)
+    {
+        for (int i = restoreStateCommands.size()-1; i>=0; i--)
+        {
+            RestoreStateCommand cmd = (RestoreStateCommand) restoreStateCommands.get(i);
+            cmd.restoreEventState();
+        }
+    }
 
-	/**
-	 * check if the current request has a manager.<br />
-	 * The current request has a manager if, and only if it
-	 * collected valueChange events 
-	 */
-	public static boolean hasManager(FacesContext context)
-	{
-		Map requestMap = context.getExternalContext().getRequestMap();
-		return requestMap.get(VCL_MANAGER) != null;
-	}
+    /**
+     * check if the current request has a manager.<br />
+     * The current request has a manager if, and only if it
+     * collected valueChange events 
+     */
+    public static boolean hasManager(FacesContext context)
+    {
+        Map requestMap = context.getExternalContext().getRequestMap();
+        return requestMap.get(VCL_MANAGER) != null;
+    }
 
-	/**
-	 * get the manager for this request. Create one if needed. 
-	 */
-	public static ValueChangeManager getManager(FacesContext context)
-	{
-		Map requestMap = context.getExternalContext().getRequestMap();
-		ValueChangeManager manager = (ValueChangeManager) requestMap
-				.get(VCL_MANAGER);
-		if (manager == null)
-		{
-			manager = new ValueChangeManager();
-			requestMap.put(VCL_MANAGER, manager);
-		}
+    /**
+     * get the manager for this request. Create one if needed. 
+     */
+    public static ValueChangeManager getManager(FacesContext context)
+    {
+        Map requestMap = context.getExternalContext().getRequestMap();
+        ValueChangeManager manager = (ValueChangeManager) requestMap
+                .get(VCL_MANAGER);
+        if (manager == null)
+        {
+            manager = new ValueChangeManager();
+            requestMap.put(VCL_MANAGER, manager);
+        }
 
-		return manager;
-	}
+        return manager;
+    }
 }

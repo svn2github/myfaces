@@ -27,13 +27,13 @@ import javax.faces.context.FacesContext;
  */
 public interface ConversationMessager
 {
-	/**
-	 * exception happened e.g. during endConversation action
-	 */
-	public void setConversationException(FacesContext context, Throwable t);
+    /**
+     * exception happened e.g. during endConversation action
+     */
+    public void setConversationException(FacesContext context, Throwable t);
 
-	/**
-	 * message about a not active conversation (close before the redirect)
-	 */
-	public void setConversationNotActive(FacesContext context, String name);
+    /**
+     * message about a not active conversation (close before the redirect)
+     */
+    public void setConversationNotActive(FacesContext context, String name);
 }

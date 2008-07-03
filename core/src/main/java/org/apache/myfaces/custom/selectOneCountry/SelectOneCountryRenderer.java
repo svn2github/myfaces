@@ -43,7 +43,7 @@ import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
  * @version $Revision$ $Date$
  */
 public class SelectOneCountryRenderer extends HtmlMenuRenderer {
-	
+    
     public void encodeEnd(FacesContext facesContext, UIComponent component)
     throws IOException
     {

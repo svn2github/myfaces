@@ -29,12 +29,12 @@ import javax.faces.event.ActionListener;
 public class DataScrollerActionListener implements ActionListener
 {
 
-	/**
-	 * @see javax.faces.event.ActionListener#processAction(javax.faces.event.ActionEvent)
-	 */
-	public void processAction(ActionEvent actionEvent) throws AbortProcessingException
-	{
-		System.out.println("process dataScroller ActionEvent");
-	}
+    /**
+     * @see javax.faces.event.ActionListener#processAction(javax.faces.event.ActionEvent)
+     */
+    public void processAction(ActionEvent actionEvent) throws AbortProcessingException
+    {
+        System.out.println("process dataScroller ActionEvent");
+    }
 
 }

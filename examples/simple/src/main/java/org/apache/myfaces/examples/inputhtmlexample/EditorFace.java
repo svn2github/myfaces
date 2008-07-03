@@ -32,7 +32,7 @@ public class EditorFace {
     private boolean showLinksToolBox = false;
     private boolean showImagesToolBox = false;
     private boolean showTablesToolBox = false;
-	private boolean showCleanupExpressionsToolBox = false;
+    private boolean showCleanupExpressionsToolBox = false;
     private boolean showDebugToolBox = false;
 
     public String getText() {
@@ -73,12 +73,12 @@ public class EditorFace {
         this.showTablesToolBox = showTablesToolBox;
     }
     public boolean isShowCleanupExpressionsToolBox() {
-		return showCleanupExpressionsToolBox;
-	}
-	public void setShowCleanupExpressionsToolBox(boolean showCleanupExpressionsToolBox) {
-		this.showCleanupExpressionsToolBox = showCleanupExpressionsToolBox;
-	}
-	public boolean isShowDebugToolBox(){
+        return showCleanupExpressionsToolBox;
+    }
+    public void setShowCleanupExpressionsToolBox(boolean showCleanupExpressionsToolBox) {
+        this.showCleanupExpressionsToolBox = showCleanupExpressionsToolBox;
+    }
+    public boolean isShowDebugToolBox(){
         return showDebugToolBox;
     }
     public void setShowDebugToolBox(boolean showDebugToolBox){

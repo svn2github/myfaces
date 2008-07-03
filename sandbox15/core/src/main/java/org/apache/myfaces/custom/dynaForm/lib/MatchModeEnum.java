@@ -20,8 +20,8 @@ package org.apache.myfaces.custom.dynaForm.lib;
 
 public enum MatchModeEnum
 {
-	none,
-	start,
-	end,
-	anywhere
+    none,
+    start,
+    end,
+    anywhere
 }

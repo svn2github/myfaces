@@ -40,57 +40,57 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  */
 public class GraphicImageDynamicTextBean implements ImageRenderer
 {
-	private String _text;
-	
+    private String _text;
+    
     private byte[] bytes = null;
     
     public String getText() {
-		return _text;
-	}
+        return _text;
+    }
 
-	public void setText(String text) {
-		this._text = text;
-	}
+    public void setText(String text) {
+        this._text = text;
+    }
 
-	public void setContext(FacesContext facesContext, ResourceContext resourceContext) throws IOException
+    public void setContext(FacesContext facesContext, ResourceContext resourceContext) throws IOException
     {
-		ImageContext imageContext = (ImageContext) resourceContext;
-	    Object text = imageContext.getParamters().get("text");
-	    if (text == null)
-	    {
-	        text = "";
-	    }
-	    int width = 300;
-	    int height = 30;
-	    Integer widthObj = imageContext.getWidth();
-	    if (widthObj != null)
-	    {
-	        width = widthObj.intValue();
-	    }
-	    Integer heightObj = imageContext.getHeight();
-	    if (heightObj != null)
-	    {
-	        height = heightObj.intValue();
-	    }
-	    BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-	    Graphics graphics = img.getGraphics();
-	    try
-	    {
-	        graphics.setColor(Color.WHITE);
-	        graphics.fillRect(0, 0, width, height);
-	        graphics.setColor(Color.BLUE);
-	        graphics.drawString(text.toString(), 10, 20);
-	        
-	        ByteArrayOutputStream baout = new ByteArrayOutputStream();
-	        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(baout);
-	        encoder.encode(img);
-	        baout.flush();
-	        bytes = baout.toByteArray();
-	    }
-	    finally
-	    {
-	        graphics.dispose();
-	    }	
+        ImageContext imageContext = (ImageContext) resourceContext;
+        Object text = imageContext.getParamters().get("text");
+        if (text == null)
+        {
+            text = "";
+        }
+        int width = 300;
+        int height = 30;
+        Integer widthObj = imageContext.getWidth();
+        if (widthObj != null)
+        {
+            width = widthObj.intValue();
+        }
+        Integer heightObj = imageContext.getHeight();
+        if (heightObj != null)
+        {
+            height = heightObj.intValue();
+        }
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = img.getGraphics();
+        try
+        {
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, width, height);
+            graphics.setColor(Color.BLUE);
+            graphics.drawString(text.toString(), 10, 20);
+            
+            ByteArrayOutputStream baout = new ByteArrayOutputStream();
+            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(baout);
+            encoder.encode(img);
+            baout.flush();
+            bytes = baout.toByteArray();
+        }
+        finally
+        {
+            graphics.dispose();
+        }    
     }
 
     public Class getImageRenderer()

@@ -33,61 +33,61 @@ import javax.faces.el.ValueBinding;
  */
 public class AbstractConversationComponent extends UICommand
 {
-	public static final String COMPONENT_FAMILY = "javax.faces.Component";
+    public static final String COMPONENT_FAMILY = "javax.faces.Component";
 
-	private String name;
+    private String name;
 
-	public AbstractConversationComponent()
-	{
-		setRendererType(null);
-	}
+    public AbstractConversationComponent()
+    {
+        setRendererType(null);
+    }
 
-	public String getFamily()
-	{
-		return COMPONENT_FAMILY;
-	}
+    public String getFamily()
+    {
+        return COMPONENT_FAMILY;
+    }
 
-	public void restoreState(FacesContext context, Object state)
-	{
-		Object[] states = (Object[]) state;
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] states = (Object[]) state;
 
-		super.restoreState(context, states[0]);
-		name = (String) states[1];
-	}
+        super.restoreState(context, states[0]);
+        name = (String) states[1];
+    }
 
-	public Object saveState(FacesContext context)
-	{
-		return new Object[]
-		{
-			super.saveState(context),
-			name
-		};
-	}
+    public Object saveState(FacesContext context)
+    {
+        return new Object[]
+        {
+            super.saveState(context),
+            name
+        };
+    }
 
-	/**
-	 * the name of the conversation. Notice: required if tag not as child of startConversation tag.
-	 * 
-	 * @JSFProperty
-	 */
-	public String getName()
-	{
-		if (name!= null)
-		{
-			return name;
-		}
-		ValueBinding vb = getValueBinding("name");
-		if( vb == null )
-		{
-			return null;
-		}
-		return (String) vb.getValue(getFacesContext());
-	}
+    /**
+     * the name of the conversation. Notice: required if tag not as child of startConversation tag.
+     * 
+     * @JSFProperty
+     */
+    public String getName()
+    {
+        if (name!= null)
+        {
+            return name;
+        }
+        ValueBinding vb = getValueBinding("name");
+        if( vb == null )
+        {
+            return null;
+        }
+        return (String) vb.getValue(getFacesContext());
+    }
 
-	/**
-	 * the conversation name
-	 */
-	public void setName(String name)
-	{
-		this.name = name;
-	}
+    /**
+     * the conversation name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 }

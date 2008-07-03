@@ -31,51 +31,51 @@ import java.io.Serializable;
 
 public class PersonRelation implements Serializable
 {
-	private Person person1;
-	private Person person2;
-	private Date liveTogetherSince;
+    private Person person1;
+    private Person person2;
+    private Date liveTogetherSince;
 
-	@NotNull
-	@ManyToOne
-	@DataProvider(
-		value="#{personProvider.getSearchPersons}",
-		description="#{personProvider.getPersonDescription}"
-	)
-	public Person getPerson1()
-	{
-		return person1;
-	}
+    @NotNull
+    @ManyToOne
+    @DataProvider(
+        value="#{personProvider.getSearchPersons}",
+        description="#{personProvider.getPersonDescription}"
+    )
+    public Person getPerson1()
+    {
+        return person1;
+    }
 
-	public void setPerson1(Person person1)
-	{
-		this.person1 = person1;
-	}
+    public void setPerson1(Person person1)
+    {
+        this.person1 = person1;
+    }
 
-	@NotNull
-	@ManyToOne
-	@UIComponent(type= ComponentEnum.SelectOneMenu)
-	@DataProvider(
-		value="#{personProvider.getSearchPersons}",
-		description="#{personProvider.getPersonDescription}"
-	)
-	public Person getPerson2()
-	{
-		return person2;
-	}
+    @NotNull
+    @ManyToOne
+    @UIComponent(type= ComponentEnum.SelectOneMenu)
+    @DataProvider(
+        value="#{personProvider.getSearchPersons}",
+        description="#{personProvider.getPersonDescription}"
+    )
+    public Person getPerson2()
+    {
+        return person2;
+    }
 
-	public void setPerson2(Person person2)
-	{
-		this.person2 = person2;
-	}
+    public void setPerson2(Person person2)
+    {
+        this.person2 = person2;
+    }
 
-	@Temporal(value=TemporalType.DATE)
-	public Date getLiveTogetherSince()
-	{
-		return liveTogetherSince;
-	}
+    @Temporal(value=TemporalType.DATE)
+    public Date getLiveTogetherSince()
+    {
+        return liveTogetherSince;
+    }
 
-	public void setLiveTogetherSince(Date liveTogetherSince)
-	{
-		this.liveTogetherSince = liveTogetherSince;
-	}
+    public void setLiveTogetherSince(Date liveTogetherSince)
+    {
+        this.liveTogetherSince = liveTogetherSince;
+    }
 }

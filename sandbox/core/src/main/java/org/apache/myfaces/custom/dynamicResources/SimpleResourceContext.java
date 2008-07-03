@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class SimpleResourceContext implements ResourceContext
 {
-	
+    
     private final Map _params;
 
     public SimpleResourceContext(Map params)

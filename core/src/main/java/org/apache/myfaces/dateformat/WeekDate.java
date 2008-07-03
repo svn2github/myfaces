@@ -35,11 +35,11 @@ public class WeekDate
 
     public int getYear() 
     {
-    	return year;
+        return year;
     }
     
     public int getWeek()
     {
-    	return week;
+        return week;
     }
 }

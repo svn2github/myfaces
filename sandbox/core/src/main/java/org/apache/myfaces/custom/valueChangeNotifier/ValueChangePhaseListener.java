@@ -30,25 +30,25 @@ import javax.faces.event.PhaseListener;
  */
 public class ValueChangePhaseListener implements PhaseListener
 {
-	public ValueChangePhaseListener()
-	{
-	}
+    public ValueChangePhaseListener()
+    {
+    }
 
-	public void afterPhase(PhaseEvent event)
-	{
-		if (ValueChangeManager.hasManager(event.getFacesContext()))
-		{
-			ValueChangeManager manager = ValueChangeManager.getManager(event.getFacesContext());
-			manager.fireEvents(event.getFacesContext());
-		}
-	}
+    public void afterPhase(PhaseEvent event)
+    {
+        if (ValueChangeManager.hasManager(event.getFacesContext()))
+        {
+            ValueChangeManager manager = ValueChangeManager.getManager(event.getFacesContext());
+            manager.fireEvents(event.getFacesContext());
+        }
+    }
 
-	public void beforePhase(PhaseEvent event)
-	{
-	}
+    public void beforePhase(PhaseEvent event)
+    {
+    }
 
-	public PhaseId getPhaseId()
-	{
-		return PhaseId.UPDATE_MODEL_VALUES;
-	}
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.UPDATE_MODEL_VALUES;
+    }
 }

@@ -20,6 +20,6 @@ package org.apache.myfaces.custom.dynaForm.lib;
 
 public enum ViewType
 {
-	FORM,
-	LIST
+    FORM,
+    LIST
 }

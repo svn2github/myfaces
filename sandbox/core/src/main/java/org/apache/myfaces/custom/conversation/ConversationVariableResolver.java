@@ -24,26 +24,26 @@ import javax.faces.el.VariableResolver;
 
 public class ConversationVariableResolver extends VariableResolver
 {
-	private final VariableResolver original;
-	
-	public ConversationVariableResolver(VariableResolver original)
-	{
-		this.original = original;
-	}
-	
-	public Object resolveVariable(FacesContext context, String name) throws EvaluationException
-	{
-		ConversationManager conversationManager = ConversationManager.getInstance(context);
-		if (conversationManager.hasConversationContext())
-		{
-			Object bean = conversationManager.getConversationContext().findBean(name);
-			if (bean != null)
-			{
-				return bean;
-			}
-		}
-		
-		return original.resolveVariable(context, name);
-	}
+    private final VariableResolver original;
+    
+    public ConversationVariableResolver(VariableResolver original)
+    {
+        this.original = original;
+    }
+    
+    public Object resolveVariable(FacesContext context, String name) throws EvaluationException
+    {
+        ConversationManager conversationManager = ConversationManager.getInstance(context);
+        if (conversationManager.hasConversationContext())
+        {
+            Object bean = conversationManager.getConversationContext().findBean(name);
+            if (bean != null)
+            {
+                return bean;
+            }
+        }
+        
+        return original.resolveVariable(context, name);
+    }
 
 }

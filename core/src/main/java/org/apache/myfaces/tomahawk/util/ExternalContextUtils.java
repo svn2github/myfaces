@@ -44,156 +44,156 @@ import org.apache.commons.logging.LogFactory;
  */
 public final class ExternalContextUtils
 {
-	// prevent this from being instantiated
-	private ExternalContextUtils()
-	{
-	}
+    // prevent this from being instantiated
+    private ExternalContextUtils()
+    {
+    }
 
-	/**
-	 * Returns the content length or -1 if the unknown.
-	 *
-	 * @param externalContext
-	 *          the ExternalContext
-	 * @return the length or -1
-	 */
-	public static final int getContentLength(ExternalContext externalContext)
-	{
-		RequestType type = getRequestType(externalContext);
-		
-		if(type.isRequestFromClient())
-		{
-			try
-			{
-				Object request = externalContext.getRequest();
-				Method contentLenMethod = request.getClass().getMethod("getContentLength",new Class[]{});
-				return ((Integer) contentLenMethod.invoke(request,new Object[]{})).intValue(); //this will autobox
-			}
-			catch(Exception e)
-			{
-				_LOG.error("Unsupported request type.", e);
-			}
-		}
-			
-		return -1;
-	}
+    /**
+     * Returns the content length or -1 if the unknown.
+     *
+     * @param externalContext
+     *          the ExternalContext
+     * @return the length or -1
+     */
+    public static final int getContentLength(ExternalContext externalContext)
+    {
+        RequestType type = getRequestType(externalContext);
+        
+        if(type.isRequestFromClient())
+        {
+            try
+            {
+                Object request = externalContext.getRequest();
+                Method contentLenMethod = request.getClass().getMethod("getContentLength",new Class[]{});
+                return ((Integer) contentLenMethod.invoke(request,new Object[]{})).intValue(); //this will autobox
+            }
+            catch(Exception e)
+            {
+                _LOG.error("Unsupported request type.", e);
+            }
+        }
+            
+        return -1;
+    }
 
-	/**
-	 * Returns the request input stream if one is available
-	 *
-	 * @param externalContext
-	 * @return
-	 * @throws IOException
-	 */
-	public static final InputStream getRequestInputStream(ExternalContext externalContext)
-			throws IOException
-	{
-		RequestType type = getRequestType(externalContext);
-		
-		if(type.isRequestFromClient())
-		{
-		  try
-			{
-		  	Object request = externalContext.getRequest();
-		  	
-		  	Method method = request.getClass().getMethod(type.isPortlet()?"getPortletInputStream":"getInputStream",new Class[]{});
-  			return (InputStream) method.invoke(request,new Object[]{});
-			}
-			catch (Exception e)
-			{
-				_LOG.error("Unable to get the request input stream because of an error", e);
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Returns the requestType of this ExternalContext.
-	 * 
-	 * @param externalContext the current external context
-	 * @return the appropriate RequestType for this external context
-	 * @see RequestType
-	 */
-	public static final RequestType getRequestType(ExternalContext externalContext)
-	{
-		//Stuff is laid out strangely in this class in order to optimize
-		//performance.  We want to do as few instanceof's as possible so
-		//things are laid out according to the expected frequency of the
-		//various requests occurring.
-		if(_PORTLET_CONTEXT_CLASS != null)
-		{
-			if (_PORTLET_CONTEXT_CLASS.isInstance(externalContext.getContext()))
-			{
-				//We are inside of a portlet container
-				Object request = externalContext.getRequest();
-				
-				if(_PORTLET_RENDER_REQUEST_CLASS.isInstance(request))
-				{
-					return RequestType.RENDER;
-				}
-				
-				if(_PORTLET_RESOURCE_REQUEST_CLASS != null)
-				{
-					if(_PORTLET_ACTION_REQUEST_CLASS.isInstance(request))
-					{
-						return RequestType.ACTION;
-					}
+    /**
+     * Returns the request input stream if one is available
+     *
+     * @param externalContext
+     * @return
+     * @throws IOException
+     */
+    public static final InputStream getRequestInputStream(ExternalContext externalContext)
+            throws IOException
+    {
+        RequestType type = getRequestType(externalContext);
+        
+        if(type.isRequestFromClient())
+        {
+          try
+            {
+              Object request = externalContext.getRequest();
+              
+              Method method = request.getClass().getMethod(type.isPortlet()?"getPortletInputStream":"getInputStream",new Class[]{});
+              return (InputStream) method.invoke(request,new Object[]{});
+            }
+            catch (Exception e)
+            {
+                _LOG.error("Unable to get the request input stream because of an error", e);
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the requestType of this ExternalContext.
+     * 
+     * @param externalContext the current external context
+     * @return the appropriate RequestType for this external context
+     * @see RequestType
+     */
+    public static final RequestType getRequestType(ExternalContext externalContext)
+    {
+        //Stuff is laid out strangely in this class in order to optimize
+        //performance.  We want to do as few instanceof's as possible so
+        //things are laid out according to the expected frequency of the
+        //various requests occurring.
+        if(_PORTLET_CONTEXT_CLASS != null)
+        {
+            if (_PORTLET_CONTEXT_CLASS.isInstance(externalContext.getContext()))
+            {
+                //We are inside of a portlet container
+                Object request = externalContext.getRequest();
+                
+                if(_PORTLET_RENDER_REQUEST_CLASS.isInstance(request))
+                {
+                    return RequestType.RENDER;
+                }
+                
+                if(_PORTLET_RESOURCE_REQUEST_CLASS != null)
+                {
+                    if(_PORTLET_ACTION_REQUEST_CLASS.isInstance(request))
+                    {
+                        return RequestType.ACTION;
+                    }
 
-					//We are in a JSR-286 container
-					if(_PORTLET_RESOURCE_REQUEST_CLASS.isInstance(request))
-					{
-						return RequestType.RESOURCE;
-					}
-					
-					return RequestType.EVENT;
-				}
-				
-				return RequestType.ACTION;
-			}
-		}
-		
-		return RequestType.SERVLET;
-	}
+                    //We are in a JSR-286 container
+                    if(_PORTLET_RESOURCE_REQUEST_CLASS.isInstance(request))
+                    {
+                        return RequestType.RESOURCE;
+                    }
+                    
+                    return RequestType.EVENT;
+                }
+                
+                return RequestType.ACTION;
+            }
+        }
+        
+        return RequestType.SERVLET;
+    }
 
     private static final Log _LOG = LogFactory.getLog(ExternalContextUtils.class);
 
-	private static final Class	_PORTLET_ACTION_REQUEST_CLASS;
-	private static final Class _PORTLET_RENDER_REQUEST_CLASS;
-	private static final Class _PORTLET_RESOURCE_REQUEST_CLASS; //Will be present in JSR-286 containers only
-	private static final Class	_PORTLET_CONTEXT_CLASS;
-	
-	static
-	{
-		Class context;
-		Class actionRequest;
-		Class renderRequest;
-		Class resourceRequest;
-		try
-		{
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			context = loader.loadClass("javax.portlet.PortletContext");
-			actionRequest = loader.loadClass("javax.portlet.ActionRequest");
-			renderRequest = loader.loadClass("javax.portlet.RenderRequest");
-			
-			try
-			{
-				resourceRequest = loader.loadClass("javax.portlet.ResourceRequest");
-			}
-			catch (ClassNotFoundException e)
-			{
-				resourceRequest = null;
-			}
-		}
-		catch (ClassNotFoundException e)
-		{
-			context = null;
-			actionRequest = null;
-			renderRequest = null;
-			resourceRequest = null;
-		}
+    private static final Class    _PORTLET_ACTION_REQUEST_CLASS;
+    private static final Class _PORTLET_RENDER_REQUEST_CLASS;
+    private static final Class _PORTLET_RESOURCE_REQUEST_CLASS; //Will be present in JSR-286 containers only
+    private static final Class    _PORTLET_CONTEXT_CLASS;
+    
+    static
+    {
+        Class context;
+        Class actionRequest;
+        Class renderRequest;
+        Class resourceRequest;
+        try
+        {
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            context = loader.loadClass("javax.portlet.PortletContext");
+            actionRequest = loader.loadClass("javax.portlet.ActionRequest");
+            renderRequest = loader.loadClass("javax.portlet.RenderRequest");
+            
+            try
+            {
+                resourceRequest = loader.loadClass("javax.portlet.ResourceRequest");
+            }
+            catch (ClassNotFoundException e)
+            {
+                resourceRequest = null;
+            }
+        }
+        catch (ClassNotFoundException e)
+        {
+            context = null;
+            actionRequest = null;
+            renderRequest = null;
+            resourceRequest = null;
+        }
 
-		_PORTLET_CONTEXT_CLASS = context;
-		_PORTLET_ACTION_REQUEST_CLASS = actionRequest;
-		_PORTLET_RENDER_REQUEST_CLASS = renderRequest;
-		_PORTLET_RESOURCE_REQUEST_CLASS = resourceRequest;
-	}	
+        _PORTLET_CONTEXT_CLASS = context;
+        _PORTLET_ACTION_REQUEST_CLASS = actionRequest;
+        _PORTLET_RENDER_REQUEST_CLASS = renderRequest;
+        _PORTLET_RESOURCE_REQUEST_CLASS = resourceRequest;
+    }    
 }

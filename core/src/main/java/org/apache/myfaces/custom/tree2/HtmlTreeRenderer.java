@@ -230,7 +230,7 @@ public class HtmlTreeRenderer extends Renderer
             {
                 if (walker.next())
                 {
-                	encodeTree(context, out, tree, walker);
+                    encodeTree(context, out, tree, walker);
                 }
             }
         }
@@ -288,7 +288,7 @@ public class HtmlTreeRenderer extends Renderer
         {
             if (walker.next())
             {
-            	encodeTree(context, out, tree, walker);
+                encodeTree(context, out, tree, walker);
             }
         }
 

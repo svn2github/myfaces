@@ -51,7 +51,7 @@ public abstract class AbstractHtmlDataList
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataList";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.List";
         
-	private static Log log = LogFactory.getLog(AbstractHtmlDataList.class);
+    private static Log log = LogFactory.getLog(AbstractHtmlDataList.class);
     private static final int PROCESS_DECODES = 1;
     private static final int PROCESS_VALIDATORS = 2; // not currently in use
     private static final int PROCESS_UPDATES = 3; // not currently in use

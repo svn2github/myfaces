@@ -53,7 +53,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @version $Revision: 392301 $
  */
 public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
-		implements Serializable
+        implements Serializable
 {
     private static final Log log = LogFactory.getLog(ScheduleDetailedDayRenderer.class);
     private static final long serialVersionUID = -5103791076091317355L;
@@ -69,7 +69,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
      *      javax.faces.component.UIComponent)
      */
     public void encodeBegin(FacesContext context, UIComponent component)
-    		throws IOException
+            throws IOException
     {
         if (!component.isRendered())
         {
@@ -105,7 +105,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
      *      javax.faces.component.UIComponent)
      */
     public void encodeChildren(FacesContext context, UIComponent component)
- 		   throws IOException
+            throws IOException
     {
         if (!component.isRendered())
         {
@@ -119,7 +119,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         String formId = parentFormInfo == null ? null : parentFormInfo.getFormName();
 
         for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator
-        		.hasNext();)
+                .hasNext();)
         {
             ScheduleDay day = (ScheduleDay) dayIterator.next();
             String dayBodyId = clientId + "_body_" + ScheduleUtil.getDateId(day.getDate(), schedule.getModel().getTimeZone());
@@ -157,7 +157,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
      *      javax.faces.component.UIComponent)
      */
     public void encodeEnd(FacesContext context, UIComponent component)
-    		throws IOException
+            throws IOException
     {
         if (!component.isRendered())
         {
@@ -261,11 +261,11 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         int endHour = getRenderedEndHour(schedule);
 
         DateFormat hourFormater = getDateFormat(context, schedule, 
-        		HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "h" : "HH");
+                HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "h" : "HH");
         DateFormat minuteFormater = getDateFormat(context, schedule, 
-        		HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "':'mma" : "mm");        
+                HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "':'mma" : "mm");        
         DateFormat shortMinuteFormater = getDateFormat(context, schedule, 
-        		HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "a" : "mm");        
+                HtmlSchedule.HOUR_NOTATION_12.equals(schedule.getHourNotation()) ? "a" : "mm");        
 
         ScheduleDay day = (ScheduleDay) schedule.getModel().iterator().next();
 
@@ -629,7 +629,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         }
 
         EntryWrapper[] entries = (EntryWrapper[]) entrySet
-        		.toArray(new EntryWrapper[entrySet.size()]);
+                .toArray(new EntryWrapper[entrySet.size()]);
 
         //determine overlaps
         scanEntries(entries, 0);
@@ -638,7 +638,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         int maxColumn = 0;
 
         for (Iterator entryIterator = entrySet.iterator(); entryIterator
-        		.hasNext();)
+                .hasNext();)
         {
             EntryWrapper wrapper = (EntryWrapper) entryIterator.next();
             maxColumn = Math.max(wrapper.column, maxColumn);
@@ -654,7 +654,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
         //and now draw the entries in the columns
         for (Iterator entryIterator = entrySet.iterator(); entryIterator
-        		.hasNext();)
+                .hasNext();)
         {
             EntryWrapper wrapper = (EntryWrapper) entryIterator.next();
             boolean selected = isSelected(schedule, wrapper);
@@ -729,7 +729,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 writer.endElement(schedule.isReadonly() ? HTML.DIV_ELEM : HTML.ANCHOR_ELEM);
             }
         }
-	}
+    }
 
     protected void writeForegroundEnd(ResponseWriter writer) throws IOException
     {
@@ -740,7 +740,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
 
     protected void writeForegroundStart(FacesContext context,
             HtmlSchedule schedule, ResponseWriter writer) throws IOException
-	{
+    {
         final int rowHeight = getRowHeight(schedule) - 1;
         final int headerHeight = rowHeight + 10;
 
@@ -764,7 +764,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 : (100 / schedule.getModel().size());
 
         for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator
-        		.hasNext();)
+                .hasNext();)
         {
             dayIterator.next();
             writer.startElement("col", schedule);
@@ -915,7 +915,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         public int hashCode()
         {
             int returnint = entry.getStartTime().hashCode()
-            		^ entry.getEndTime().hashCode() ^ entry.getId().hashCode();
+                    ^ entry.getEndTime().hashCode() ^ entry.getId().hashCode();
 
             return returnint;
         }
@@ -979,7 +979,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
             buffer.append("position: absolute; height: ");
             if (height > 2)
             {
-            	// Adjust for the width of the border
+                // Adjust for the width of the border
                 buffer.append((height - 2) + "px");
             } else if (height > 0)
             {
@@ -1015,7 +1015,7 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
         boolean canFitInColumn(int column)
         {
             for (Iterator overlapIterator = overlappingEntries.iterator(); overlapIterator
-            		.hasNext();)
+                    .hasNext();)
             {
                 EntryWrapper overlap = (EntryWrapper) overlapIterator.next();
 

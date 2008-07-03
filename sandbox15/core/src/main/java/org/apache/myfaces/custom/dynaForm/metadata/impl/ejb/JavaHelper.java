@@ -28,13 +28,13 @@ import java.lang.reflect.Method;
  */
 public class JavaHelper implements ClassHelper
 {
-	public Field[] getFields(Class clazz)
-	{
-		return clazz.getDeclaredFields();
-	}
+    public Field[] getFields(Class clazz)
+    {
+        return clazz.getDeclaredFields();
+    }
 
-	public Method[] getMethods(Class clazz)
-	{
-		return clazz.getDeclaredMethods();
-	}
+    public Method[] getMethods(Class clazz)
+    {
+        return clazz.getDeclaredMethods();
+    }
 }

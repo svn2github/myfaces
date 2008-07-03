@@ -40,7 +40,7 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
     public UploadedFileDefaultFileImpl(final FileItem fileItem) throws IOException
     {
         super(fileItem.getName(), fileItem.getContentType());
-    	this.fileItem = (DefaultFileItem) fileItem;
+        this.fileItem = (DefaultFileItem) fileItem;
       storageStrategy = new DiskStorageStrategy() {
 
         public File getTempFile() {
@@ -62,7 +62,7 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
      */
     public byte[] getBytes() throws IOException
     {
-    	byte[] bytes = new byte[(int)getSize()];
+        byte[] bytes = new byte[(int)getSize()];
         if (fileItem != null) fileItem.getInputStream().read(bytes);
         return bytes;
     }
@@ -76,7 +76,7 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
      */
     public InputStream getInputStream() throws IOException
     {
-    	return fileItem != null
+        return fileItem != null
                ? fileItem.getInputStream()
                : new ByteArrayInputStream(new byte[0]);
     }
@@ -88,7 +88,7 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
      */
     public long getSize()
     {
-    	return fileItem != null ? fileItem.getSize() : 0;
+        return fileItem != null ? fileItem.getSize() : 0;
     }
 
 

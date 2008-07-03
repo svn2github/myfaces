@@ -28,28 +28,28 @@ import java.util.List;
  */
 public class ExporterBean implements Serializable {
 
-	private List carsList;
+    private List carsList;
 
-	public List getCarsList() {
-		if( carsList == null)
-			carsList = createCarsList();
-		return carsList;
-	}
+    public List getCarsList() {
+        if( carsList == null)
+            carsList = createCarsList();
+        return carsList;
+    }
 
-	public void setCarsList(List carsList) {
-		this.carsList = carsList;
-	}
-	
-	private List createCarsList() {
-		List list  = new ArrayList();
+    public void setCarsList(List carsList) {
+        this.carsList = carsList;
+    }
+    
+    private List createCarsList() {
+        List list  = new ArrayList();
         
         for(int i = 0; i < 97; i += 5) {
-    		list.add( new SimpleCar(i, "typeA", "blue"));
-    		list.add( new SimpleCar(i + 1, "typeB", "red"));
-    		list.add( new SimpleCar(i + 2, "typeC", "orange"));
-    		list.add( new SimpleCar(i + 3, "typeD", "gray"));
-    		list.add( new SimpleCar(i + 4, "typeE", "white"));
+            list.add( new SimpleCar(i, "typeA", "blue"));
+            list.add( new SimpleCar(i + 1, "typeB", "red"));
+            list.add( new SimpleCar(i + 2, "typeC", "orange"));
+            list.add( new SimpleCar(i + 3, "typeD", "gray"));
+            list.add( new SimpleCar(i + 4, "typeE", "white"));
         }
-		return list;
-	}
+        return list;
+    }
 }

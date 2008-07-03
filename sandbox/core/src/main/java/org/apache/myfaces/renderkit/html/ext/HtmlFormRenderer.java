@@ -40,39 +40,39 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlFormRendererBase;
  */
 public class HtmlFormRenderer extends HtmlFormRendererBase{
 
-	private static String CLIENT_VALIDATON_SCRIPT = "return tomahawk.executeClientLifeCycle();";
-	
-	public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
-    	if(CVUtils.isCVEnabled()) {
-    		ComponentUtils.decorateEventAttribute(component, "onsubmit", CLIENT_VALIDATON_SCRIPT);
-    	}
-    	
-    	super.encodeBegin(facesContext, component);
+    private static String CLIENT_VALIDATON_SCRIPT = "return tomahawk.executeClientLifeCycle();";
+    
+    public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
+        if(CVUtils.isCVEnabled()) {
+            ComponentUtils.decorateEventAttribute(component, "onsubmit", CLIENT_VALIDATON_SCRIPT);
+        }
+        
+        super.encodeBegin(facesContext, component);
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-    	if(CVUtils.isCVEnabled()) {
-    		encodeBypassCVField(facesContext, component);
-    	}
-    	
-    	super.encodeEnd(facesContext, component);
-    	
-    	if(CVUtils.isCVEnabled()) {
-    		CVUtils.encodeJavascript(facesContext);
-			CVUtils.queueCVCalls(facesContext.getViewRoot());
-			CVUtils.encodeValidationScript(facesContext);
-    	}
+        if(CVUtils.isCVEnabled()) {
+            encodeBypassCVField(facesContext, component);
+        }
+        
+        super.encodeEnd(facesContext, component);
+        
+        if(CVUtils.isCVEnabled()) {
+            CVUtils.encodeJavascript(facesContext);
+            CVUtils.queueCVCalls(facesContext.getViewRoot());
+            CVUtils.encodeValidationScript(facesContext);
+        }
     }
 
     //Renders a hidden input field that will act as a flag to bypass client validation or not
-	private void encodeBypassCVField(FacesContext facesContext, UIComponent component) throws IOException{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		writer.startElement("input", component);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", CVUtils.BYPASS_CLIENT_VALIDATION_FIELD, null);
-		writer.writeAttribute("name", CVUtils.BYPASS_CLIENT_VALIDATION_FIELD, null);
-		writer.writeAttribute("value", "false", null);				//immediate command components make this value true when they're clicked 
-		writer.endElement("input");
-	}
+    private void encodeBypassCVField(FacesContext facesContext, UIComponent component) throws IOException{
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        writer.startElement("input", component);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", CVUtils.BYPASS_CLIENT_VALIDATION_FIELD, null);
+        writer.writeAttribute("name", CVUtils.BYPASS_CLIENT_VALIDATION_FIELD, null);
+        writer.writeAttribute("value", "false", null);                //immediate command components make this value true when they're clicked 
+        writer.endElement("input");
+    }
 }

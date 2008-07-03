@@ -28,85 +28,85 @@ import javax.faces.context.FacesContext;
 
 public class ConversationUtils
 {
-	private ConversationUtils()
-	{
-	}
+    private ConversationUtils()
+    {
+    }
 
-	/**
-	 * Find the first parent which is a command
-	 */
-	public static UICommand findParentCommand(UIComponent base)
-	{
-		UIComponent parent = base;
-		do
-		{
-			parent = parent.getParent();
-			if (parent instanceof UICommand)
-			{
-				return (UICommand) parent;
-			}
-		}
-		while (parent != null);
+    /**
+     * Find the first parent which is a command
+     */
+    public static UICommand findParentCommand(UIComponent base)
+    {
+        UIComponent parent = base;
+        do
+        {
+            parent = parent.getParent();
+            if (parent instanceof UICommand)
+            {
+                return (UICommand) parent;
+            }
+        }
+        while (parent != null);
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Find a child start or end conversation component for the given conversation name
-	 */
-	public static AbstractConversationComponent findStartOrEndConversationComponent(UIComponent component, String conversationName)
-	{
-		Iterator iterComponents = component.getFacetsAndChildren();
-		while (iterComponents.hasNext())
-		{
-			Object child = iterComponents.next();
-			AbstractConversationComponent conversation;
+    /**
+     * Find a child start or end conversation component for the given conversation name
+     */
+    public static AbstractConversationComponent findStartOrEndConversationComponent(UIComponent component, String conversationName)
+    {
+        Iterator iterComponents = component.getFacetsAndChildren();
+        while (iterComponents.hasNext())
+        {
+            Object child = iterComponents.next();
+            AbstractConversationComponent conversation;
 
-			if (child instanceof UIStartConversation || child instanceof UIEndConversation)
-			{
-				conversation = (AbstractConversationComponent) child;
-				if (conversation.getName().equals(conversationName))
-				{
-					return conversation;
-				}
-			}
-			else if (child instanceof UIComponent)
-			{
-				conversation = findStartOrEndConversationComponent((UIComponent) child, conversationName);
-				if (conversation != null)
-				{
-					return conversation;
-				}
-			}
-		}
+            if (child instanceof UIStartConversation || child instanceof UIEndConversation)
+            {
+                conversation = (AbstractConversationComponent) child;
+                if (conversation.getName().equals(conversationName))
+                {
+                    return conversation;
+                }
+            }
+            else if (child instanceof UIComponent)
+            {
+                conversation = findStartOrEndConversationComponent((UIComponent) child, conversationName);
+                if (conversation != null)
+                {
+                    return conversation;
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public static String extractBeanName(ValueBinding vb)
-	{
-		String valueBinding = vb.getExpressionString();
-		return valueBinding.substring(2, valueBinding.length()-1);
-	}
+    public static String extractBeanName(ValueBinding vb)
+    {
+        String valueBinding = vb.getExpressionString();
+        return valueBinding.substring(2, valueBinding.length()-1);
+    }
 
-	/**
-	 * end and restart a conversation
-	 */
-	static void endAndRestartConversation(FacesContext context, String conversationName, Boolean restart, MethodBinding restartAction)
-	{
-		ConversationManager conversationManager = ConversationManager.getInstance(context);
-		Conversation conversation = conversationManager.getConversation(conversationName);
+    /**
+     * end and restart a conversation
+     */
+    static void endAndRestartConversation(FacesContext context, String conversationName, Boolean restart, MethodBinding restartAction)
+    {
+        ConversationManager conversationManager = ConversationManager.getInstance(context);
+        Conversation conversation = conversationManager.getConversation(conversationName);
 
-		conversationManager.endConversation(conversationName, true);
+        conversationManager.endConversation(conversationName, true);
 
-		if (restart != null && restart.booleanValue() && conversation != null)
-		{
-			conversationManager.startConversation(conversationName, conversation.isPersistence());
+        if (restart != null && restart.booleanValue() && conversation != null)
+        {
+            conversationManager.startConversation(conversationName, conversation.isPersistence());
 
-			if (restartAction != null)
-			{
-				restartAction.invoke(context, null);
-			}
-		}
-	}
+            if (restartAction != null)
+            {
+                restartAction.invoke(context, null);
+            }
+        }
+    }
 }

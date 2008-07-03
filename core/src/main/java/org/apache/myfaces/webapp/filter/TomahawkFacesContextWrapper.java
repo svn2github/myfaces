@@ -70,15 +70,15 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             AddResource addResource= AddResourceFactory.getInstance(this);
             addResource.responseStarted();
 
-	        if (addResource.requiresBuffer())
-	        {
+            if (addResource.requiresBuffer())
+            {
                 throw new IllegalStateException("buffering not supported in the portal environment. "+
                         " Use for org.apache.myfaces.ADD_RESOURCE_CLASS the value"+
                         " org.apache.myfaces.renderkit.html.util.NonBufferingAddResource.");
             }
-	        
-	        //externalContextDelegate = new PortletExternalContextWrapper(
-	        //        delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);
+            
+            //externalContextDelegate = new PortletExternalContextWrapper(
+            //        delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);
         }
         else {
             HttpServletResponse httpResponse = (HttpServletResponse) delegate.getExternalContext().getResponse();
@@ -100,10 +100,10 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             AddResource addResource= AddResourceFactory.getInstance(this);
             addResource.responseStarted();
 
-	        if (addResource.requiresBuffer())
-	        {
+            if (addResource.requiresBuffer())
+            {
                 extensionsResponseWrapper = new ExtensionsResponseWrapper(httpResponse);
-		        extendedResponse = extensionsResponseWrapper;
+                extendedResponse = extensionsResponseWrapper;
             }
 
             externalContextDelegate = new ServletExternalContextWrapper(
@@ -228,51 +228,51 @@ public class TomahawkFacesContextWrapper extends FacesContext {
         {
             addResource= AddResourceFactory.getInstance(this);
             if (addResource.requiresBuffer())
-	        {
+            {
                 if(extensionsResponseWrapper == null) {
                     throw new NullPointerException("When wrapping the faces-context, add-resource told us that no buffer is required, " +
                             "now it is required, and we have a null-extensionsResponseWrapper. Please fix add-resource to be consistent over a single request.");
                 }
                 extensionsResponseWrapper.finishResponse();
 
-		        // write the javascript stuff for myfaces and headerInfo, if needed
-		        HttpServletResponse servletResponse = extensionsResponseWrapper.getDelegate();
+                // write the javascript stuff for myfaces and headerInfo, if needed
+                HttpServletResponse servletResponse = extensionsResponseWrapper.getDelegate();
                 HttpServletRequest servletRequest = (HttpServletRequest) getExternalContext().getRequest();
 
                 // only parse HTML responses
-		        if (extensionsResponseWrapper.getContentType() != null && isValidContentType(extensionsResponseWrapper.getContentType()))
-		        {
-		            addResource.parseResponse(servletRequest, extensionsResponseWrapper.toString(),
-		                    servletResponse);
+                if (extensionsResponseWrapper.getContentType() != null && isValidContentType(extensionsResponseWrapper.getContentType()))
+                {
+                    addResource.parseResponse(servletRequest, extensionsResponseWrapper.toString(),
+                            servletResponse);
 
-		            addResource.writeMyFacesJavascriptBeforeBodyEnd(servletRequest,
-		                    servletResponse);
+                    addResource.writeMyFacesJavascriptBeforeBodyEnd(servletRequest,
+                            servletResponse);
 
-		            if( ! addResource.hasHeaderBeginInfos() ){
-		                // writes the response if no header info is needed
-		                addResource.writeResponse(servletRequest, servletResponse);
-		                return;
-		            }
+                    if( ! addResource.hasHeaderBeginInfos() ){
+                        // writes the response if no header info is needed
+                        addResource.writeResponse(servletRequest, servletResponse);
+                        return;
+                    }
 
-		            // Some headerInfo has to be added
-		            addResource.writeWithFullHeader(servletRequest, servletResponse);
+                    // Some headerInfo has to be added
+                    addResource.writeWithFullHeader(servletRequest, servletResponse);
 
-		            // writes the response
-		            addResource.writeResponse(servletRequest, servletResponse);
-		        }
-		        else
-		        {
+                    // writes the response
+                    addResource.writeResponse(servletRequest, servletResponse);
+                }
+                else
+                {
 
-		        	byte[] responseArray = extensionsResponseWrapper.getBytes();
+                    byte[] responseArray = extensionsResponseWrapper.getBytes();
 
                     if(responseArray.length > 0)
                     {
- 			        	// When not filtering due to not valid content-type, deliver the byte-array instead of a charset-converted string.
- 			        	// Otherwise a binary stream gets corrupted.
- 			            servletResponse.getOutputStream().write(responseArray);
- 		        	}
+                         // When not filtering due to not valid content-type, deliver the byte-array instead of a charset-converted string.
+                         // Otherwise a binary stream gets corrupted.
+                         servletResponse.getOutputStream().write(responseArray);
+                     }
                 }
-	        }
+            }
         }
         catch(Throwable th) {
             throw new FacesException(th);

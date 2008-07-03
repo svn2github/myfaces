@@ -60,6 +60,6 @@ public abstract class AbstractScript extends UIOutput {
      * 
      * @JSFProperty
      */
-	public abstract String getLanguage();
+    public abstract String getLanguage();
 
 }

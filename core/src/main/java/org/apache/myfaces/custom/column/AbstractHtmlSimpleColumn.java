@@ -61,7 +61,7 @@ public abstract class AbstractHtmlSimpleColumn extends UIColumn implements HtmlC
      * 
      * @JSFProperty
      */
-	public abstract Object getGroupByValue();
+    public abstract Object getGroupByValue();
 
     /**
      * This attribute tells the datatable to make this column the 

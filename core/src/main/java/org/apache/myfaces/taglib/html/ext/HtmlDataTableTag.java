@@ -84,11 +84,11 @@ public class HtmlDataTableTag
     /** the orientation of the newspaper table - horizontal/vertical */
     private String _newspaperOrientation = null;
 
-	private String _embedded = null;
-	private String _detailStampExpandedDefault = null;
-	private String _detailStampLocation = null;
+    private String _embedded = null;
+    private String _detailStampExpandedDefault = null;
+    private String _detailStampLocation = null;
 
-	public void release()
+    public void release()
     {
         super.release();
 
@@ -130,10 +130,10 @@ public class HtmlDataTableTag
         _bodyStyle = null;
         _bodyStyleClass = null;
 
-		_embedded = null;
-		_detailStampExpandedDefault = null;
-		_detailStampLocation = null;
-	}
+        _embedded = null;
+        _detailStampExpandedDefault = null;
+        _detailStampLocation = null;
+    }
 
     protected void setProperties(UIComponent component)
     {
@@ -177,9 +177,9 @@ public class HtmlDataTableTag
         setIntegerProperty(component, HtmlDataTable.NEWSPAPER_COLUMNS_PROPERTY, _newspaperColumns);
         setStringProperty(component, HtmlDataTable.NEWSPAPER_ORIENTATION_PROPERTY, _newspaperOrientation);
 
-		setBooleanProperty(component, "embedded", _embedded);
-		setBooleanProperty(component, "detailStampExpandedDefault", _detailStampExpandedDefault);
-		setStringProperty(component, "detailStampLocation", _detailStampLocation);
+        setBooleanProperty(component, "embedded", _embedded);
+        setBooleanProperty(component, "detailStampExpandedDefault", _detailStampExpandedDefault);
+        setStringProperty(component, "detailStampLocation", _detailStampLocation);
     }
 
     public void setPreserveDataModel(String preserveDataModel)
@@ -328,12 +328,12 @@ public class HtmlDataTableTag
     }
 
     public String getVarDetailToggler() {
-		return _varDetailToggler;
-	}
+        return _varDetailToggler;
+    }
 
-	public void setVarDetailToggler(String varDetailToggler) {
-		_varDetailToggler = varDetailToggler;
-	}
+    public void setVarDetailToggler(String varDetailToggler) {
+        _varDetailToggler = varDetailToggler;
+    }
 
     public void setNewspaperColumns(String newspaperColumns) {
         this._newspaperColumns = newspaperColumns;
@@ -344,8 +344,8 @@ public class HtmlDataTableTag
     }
 
     public String getBodyStyle() {
-		return _bodyStyle;
-	}
+        return _bodyStyle;
+    }
 
     public void setBodyStyle(String bodyStyle) {
         _bodyStyle = bodyStyle;
@@ -357,35 +357,35 @@ public class HtmlDataTableTag
 
     public void setBodyStyleClass(String bodyStyleClass) {
         _bodyStyleClass = bodyStyleClass;
-	}
+    }
 
-	public String getEmbedded()
-	{
-		return _embedded;
-	}
+    public String getEmbedded()
+    {
+        return _embedded;
+    }
 
-	public void setEmbedded(String embedded)
-	{
-		this._embedded = embedded;
-	}
+    public void setEmbedded(String embedded)
+    {
+        this._embedded = embedded;
+    }
 
-	public String getDetailStampExpandedDefault()
-	{
-		return _detailStampExpandedDefault;
-	}
+    public String getDetailStampExpandedDefault()
+    {
+        return _detailStampExpandedDefault;
+    }
 
-	public void setDetailStampExpandedDefault(String detailStampExpandedDefault)
-	{
-		this._detailStampExpandedDefault = detailStampExpandedDefault;
-	}
+    public void setDetailStampExpandedDefault(String detailStampExpandedDefault)
+    {
+        this._detailStampExpandedDefault = detailStampExpandedDefault;
+    }
 
-	public String getDetailStampLocation()
-	{
-		return _detailStampLocation;
-	}
+    public String getDetailStampLocation()
+    {
+        return _detailStampLocation;
+    }
 
-	public void setDetailStampLocation(String detailStampLocation)
-	{
-		this._detailStampLocation = detailStampLocation;
-	}
+    public void setDetailStampLocation(String detailStampLocation)
+    {
+        this._detailStampLocation = detailStampLocation;
+    }
 }

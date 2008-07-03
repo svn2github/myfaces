@@ -27,16 +27,16 @@ import javax.faces.context.FacesContext;
  */
 public class FacesUriResolver extends UriResolver
 {
-	@Override
-	protected InputStream findConfig(String config)
-	{
-		InputStream is = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/WEB-INF/" + config);
-		if (is != null)
-		{
-			return is;
-		}
-		
-		return super.findConfig(config);
-	}
-	
+    @Override
+    protected InputStream findConfig(String config)
+    {
+        InputStream is = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/WEB-INF/" + config);
+        if (is != null)
+        {
+            return is;
+        }
+        
+        return super.findConfig(config);
+    }
+    
 }

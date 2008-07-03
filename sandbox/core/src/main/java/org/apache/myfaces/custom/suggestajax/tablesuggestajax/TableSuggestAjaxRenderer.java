@@ -383,7 +383,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
     private String escapeQuotes(String input)
     {
-   	    return input != null ? input.replaceAll("\"", "\\\\\"") : "";
+           return input != null ? input.replaceAll("\"", "\\\\\"") : "";
     }
 
 }

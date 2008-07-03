@@ -39,9 +39,9 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 public class AutoScrollPhaseListener
         implements PhaseListener
 {
-	private static final long serialVersionUID = -1087143949215838058L;
+    private static final long serialVersionUID = -1087143949215838058L;
 
-	public PhaseId getPhaseId()
+    public PhaseId getPhaseId()
     {
         return PhaseId.RESTORE_VIEW;
     }

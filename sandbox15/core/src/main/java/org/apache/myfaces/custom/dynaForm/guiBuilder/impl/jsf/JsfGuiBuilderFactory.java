@@ -29,79 +29,79 @@ import org.apache.myfaces.custom.dynaForm.guiBuilder.impl.myfaces.MyFacesGuiBuil
 
 public class JsfGuiBuilderFactory
 {
-	public final static String CONTEXT_GUI_BUILDER = "org.apache.myfaces.custom.dynaForm.GUI_BUILDER";
-	
-	private JsfGuiBuilderFactory()
-	{
-	}
-	
-	public static JsfGuiBuilder create(final FacesContext facesContext)
-	{
-		JsfGuiBuilder guiBuilder = null;
-		
-		String guiBuilderName = facesContext.getExternalContext().getInitParameter(CONTEXT_GUI_BUILDER);
-		if (guiBuilderName == null)
-		{
-			guiBuilder = createGuiBuilderInternal();
-		}
-		else
-		{
-			try
-			{
-				Class guiBuilderClass = Class.forName(guiBuilderName);
-				try
-				{
-					// try to find a decorator constructor
-					Constructor decoratorConst = guiBuilderClass.getConstructor(new Class[]{JsfGuiBuilder.class});
-					return (JsfGuiBuilder) decoratorConst.newInstance(new Object[]{
-							createGuiBuilderInternal()
-					});
-				}
-				catch (NoSuchMethodException e)
-				{
-					// not - so letz create a plain instance
-					return (JsfGuiBuilder) guiBuilderClass.newInstance();
-				}
-			}
-			catch (IllegalArgumentException e)
-			{
-				throw new FacesException(e);
-			}
-			catch (InvocationTargetException e)
-			{
-				throw new FacesException(e);
-			}
-			catch (SecurityException e)
-			{
-				throw new FacesException(e);
-			}
-			catch (InstantiationException e)
-			{
-				throw new FacesException(e);
-			}
-			catch (IllegalAccessException e)
-			{
-				throw new FacesException(e);
-			}
-			catch (ClassNotFoundException e)
-			{
-				throw new FacesException(e);
-			}
-		}
-		return guiBuilder;
-	}
+    public final static String CONTEXT_GUI_BUILDER = "org.apache.myfaces.custom.dynaForm.GUI_BUILDER";
+    
+    private JsfGuiBuilderFactory()
+    {
+    }
+    
+    public static JsfGuiBuilder create(final FacesContext facesContext)
+    {
+        JsfGuiBuilder guiBuilder = null;
+        
+        String guiBuilderName = facesContext.getExternalContext().getInitParameter(CONTEXT_GUI_BUILDER);
+        if (guiBuilderName == null)
+        {
+            guiBuilder = createGuiBuilderInternal();
+        }
+        else
+        {
+            try
+            {
+                Class guiBuilderClass = Class.forName(guiBuilderName);
+                try
+                {
+                    // try to find a decorator constructor
+                    Constructor decoratorConst = guiBuilderClass.getConstructor(new Class[]{JsfGuiBuilder.class});
+                    return (JsfGuiBuilder) decoratorConst.newInstance(new Object[]{
+                            createGuiBuilderInternal()
+                    });
+                }
+                catch (NoSuchMethodException e)
+                {
+                    // not - so letz create a plain instance
+                    return (JsfGuiBuilder) guiBuilderClass.newInstance();
+                }
+            }
+            catch (IllegalArgumentException e)
+            {
+                throw new FacesException(e);
+            }
+            catch (InvocationTargetException e)
+            {
+                throw new FacesException(e);
+            }
+            catch (SecurityException e)
+            {
+                throw new FacesException(e);
+            }
+            catch (InstantiationException e)
+            {
+                throw new FacesException(e);
+            }
+            catch (IllegalAccessException e)
+            {
+                throw new FacesException(e);
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new FacesException(e);
+            }
+        }
+        return guiBuilder;
+    }
 
-	protected static JsfGuiBuilder createGuiBuilderInternal()
-	{
-		JsfGuiBuilder guiBuilder;
-		if (MyFacesCheck.isMyFacesAvailable())
-		{
-			guiBuilder = new MyFacesGuiBuilder();			
-		}
-		else
-		{
-			guiBuilder = new JsfGuiBuilder();			
-		}
-		return guiBuilder;
-	}
+    protected static JsfGuiBuilder createGuiBuilderInternal()
+    {
+        JsfGuiBuilder guiBuilder;
+        if (MyFacesCheck.isMyFacesAvailable())
+        {
+            guiBuilder = new MyFacesGuiBuilder();            
+        }
+        else
+        {
+            guiBuilder = new JsfGuiBuilder();            
+        }
+        return guiBuilder;
+    }
 }

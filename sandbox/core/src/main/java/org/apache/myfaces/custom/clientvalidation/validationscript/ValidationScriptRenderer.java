@@ -39,14 +39,14 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  */
 public class ValidationScriptRenderer extends Renderer {
 
-	public void encodeEnd(FacesContext context, UIComponent component)throws IOException {
-		RendererUtils.checkParamValidity(context, component,ValidationScript.class);
-		
-		if (CVUtils.isCVEnabled()) {
-			CVUtils.encodeJavascript(context);
-			CVUtils.queueCVCalls(context.getViewRoot());
-			CVUtils.encodeValidationScript(context);
-		}
-	}
-	
+    public void encodeEnd(FacesContext context, UIComponent component)throws IOException {
+        RendererUtils.checkParamValidity(context, component,ValidationScript.class);
+        
+        if (CVUtils.isCVEnabled()) {
+            CVUtils.encodeJavascript(context);
+            CVUtils.queueCVCalls(context.getViewRoot());
+            CVUtils.encodeValidationScript(context);
+        }
+    }
+    
 }

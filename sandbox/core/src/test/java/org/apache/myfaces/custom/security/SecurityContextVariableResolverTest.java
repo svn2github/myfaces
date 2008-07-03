@@ -31,46 +31,46 @@ import org.apache.shale.test.base.AbstractJsfTestCase;
  */
 public class SecurityContextVariableResolverTest extends AbstractJsfTestCase{
 
-	protected SecurityContextVariableResolver resolver;
-	
-	public SecurityContextVariableResolverTest(String testName) {
-		super(testName);
-	}
-	
-	public void setUp() throws Exception{
-		super.setUp();
-		resolver = new SecurityContextVariableResolver(null);
-	}
-	
-	public void tearDown() throws Exception{
-		super.tearDown();
-		resolver = null;
-	}
-	
-	public static Test suite() {
-		return new TestSuite(SecurityContextVariableResolverTest.class);
-	}
-	
-	public void testSecurityContextImplIsDefaultImplWhenNoCustomImplIsConfigured() {
-		SecurityContext securityContext = (SecurityContext)resolver.resolveVariable(facesContext, "securityContext");
-		assertTrue(securityContext instanceof SecurityContextImpl);
-	}
-	
-	public void testSecurityContextImplIsCustomWhenCustomImplIsConfigured() {
-		servletContext.addInitParameter("org.apache.myfaces.SECURITY_CONTEXT", "org.apache.myfaces.custom.security.TestSecurityContextImpl");
-		SecurityContext securityContext = (SecurityContext)resolver.resolveVariable(facesContext, "securityContext");
-		assertFalse(securityContext instanceof SecurityContextImpl);
-		assertTrue(securityContext instanceof TestSecurityContextImpl);
-	}
-	
-	public void testExceptionMustBeThrownWhenAnInvalidImplIsConfigured() {
-		servletContext.addInitParameter("org.apache.myfaces.SECURITY_CONTEXT", "this.class.does.not.exist");
-		try {
-			resolver.resolveVariable(facesContext, "securityContext");
-		}catch(EvaluationException evaluationException) {
-			return;
-		}
-		fail();
-		
-	}
+    protected SecurityContextVariableResolver resolver;
+    
+    public SecurityContextVariableResolverTest(String testName) {
+        super(testName);
+    }
+    
+    public void setUp() throws Exception{
+        super.setUp();
+        resolver = new SecurityContextVariableResolver(null);
+    }
+    
+    public void tearDown() throws Exception{
+        super.tearDown();
+        resolver = null;
+    }
+    
+    public static Test suite() {
+        return new TestSuite(SecurityContextVariableResolverTest.class);
+    }
+    
+    public void testSecurityContextImplIsDefaultImplWhenNoCustomImplIsConfigured() {
+        SecurityContext securityContext = (SecurityContext)resolver.resolveVariable(facesContext, "securityContext");
+        assertTrue(securityContext instanceof SecurityContextImpl);
+    }
+    
+    public void testSecurityContextImplIsCustomWhenCustomImplIsConfigured() {
+        servletContext.addInitParameter("org.apache.myfaces.SECURITY_CONTEXT", "org.apache.myfaces.custom.security.TestSecurityContextImpl");
+        SecurityContext securityContext = (SecurityContext)resolver.resolveVariable(facesContext, "securityContext");
+        assertFalse(securityContext instanceof SecurityContextImpl);
+        assertTrue(securityContext instanceof TestSecurityContextImpl);
+    }
+    
+    public void testExceptionMustBeThrownWhenAnInvalidImplIsConfigured() {
+        servletContext.addInitParameter("org.apache.myfaces.SECURITY_CONTEXT", "this.class.does.not.exist");
+        try {
+            resolver.resolveVariable(facesContext, "securityContext");
+        }catch(EvaluationException evaluationException) {
+            return;
+        }
+        fail();
+        
+    }
 }

@@ -98,7 +98,7 @@ public final class SortableModel extends BaseSortableModel
                 return false;
             }
             catch (Exception e) {
-            	log.warn(e);
+                log.warn(e);
                 return false;
             }
         } 
@@ -170,11 +170,11 @@ public final class SortableModel extends BaseSortableModel
             Object value1 = null;
             Object value2 = null;
             try {
-            	value1 = PropertyUtils.getProperty(o1,_prop);  
-            	value2 = PropertyUtils.getProperty(o2,_prop);  
+                value1 = PropertyUtils.getProperty(o1,_prop);  
+                value2 = PropertyUtils.getProperty(o2,_prop);  
             }
-            catch (Exception exc) {	
-            	log.error(exc);
+            catch (Exception exc) {    
+                log.error(exc);
             }
                                     
             if (value1 == null)
@@ -189,11 +189,11 @@ public final class SortableModel extends BaseSortableModel
             // So test before we cast:
             
             if (value1 instanceof String) {
-            	//if the object is a String we best compare locale-sesitive
-            	CollationKey collationKey1 = getCollationKey((String)value1);
-            	CollationKey collationKey2 = getCollationKey((String)value2);
-            	
-            	return collationKey1.compareTo(collationKey2);
+                //if the object is a String we best compare locale-sesitive
+                CollationKey collationKey1 = getCollationKey((String)value1);
+                CollationKey collationKey2 = getCollationKey((String)value2);
+                
+                return collationKey1.compareTo(collationKey2);
             }
             else if (value1 instanceof Comparable) 
             {
@@ -208,13 +208,13 @@ public final class SortableModel extends BaseSortableModel
         }         
         
         private CollationKey getCollationKey(String propertyValue) {
-        	CollationKey key = (CollationKey)_collationKeys.get(propertyValue);
-        	if (key == null) {
-        		key = _collator.getCollationKey(propertyValue);
-        		_collationKeys.put(propertyValue, key);
-        	}
-        		
-        	return key;
+            CollationKey key = (CollationKey)_collationKeys.get(propertyValue);
+            if (key == null) {
+                key = _collator.getCollationKey(propertyValue);
+                _collationKeys.put(propertyValue, key);
+            }
+                
+            return key;
         }
     }
     /**

@@ -155,13 +155,13 @@ public class InputSuggestAjaxBean
 
     public List getItems(String prefix, Integer maxSize) {
 
-    	List li = new ArrayList();
+        List li = new ArrayList();
 
-    	for(int i = 0; i < maxSize.intValue(); i++) {
-    		li.add(prefix+ " " +(i+1));
-    	}
+        for(int i = 0; i < maxSize.intValue(); i++) {
+            li.add(prefix+ " " +(i+1));
+        }
 
-    	return li;
+        return li;
     }
 
     public List getAddresses(String prefix)

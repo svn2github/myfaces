@@ -20,7 +20,7 @@ package org.apache.myfaces.custom.dynaForm.lib;
 
 public enum SelectionSourceEnum
 {
-	manual,
-	relation,
-	distinct
+    manual,
+    relation,
+    distinct
 }

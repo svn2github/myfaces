@@ -39,136 +39,136 @@ import org.apache.bcel.generic.Type;
  */
 public class BcelHelper implements ClassHelper
 {
-	public Field[] getFields(Class clazz)
-	{
-		JavaClass javaClass = Repository.lookupClass(clazz);
-		org.apache.bcel.classfile.Field[] fields = javaClass.getFields();
-		
-		List<Field> ret = new ArrayList<Field>(fields.length);
-		for (org.apache.bcel.classfile.Field field : fields)
-		{
-			try
-			{
-				ret.add(clazz.getDeclaredField(field.getName()));
-			}
-			catch (SecurityException e)
-			{
-				throw new DynaFormException(e);
-			}
-			catch (NoSuchFieldException e)
-			{
-				throw new DynaFormException(e);
-			}
-		}
-		return ret.toArray(new Field[ret.size()]);
-	}
+    public Field[] getFields(Class clazz)
+    {
+        JavaClass javaClass = Repository.lookupClass(clazz);
+        org.apache.bcel.classfile.Field[] fields = javaClass.getFields();
+        
+        List<Field> ret = new ArrayList<Field>(fields.length);
+        for (org.apache.bcel.classfile.Field field : fields)
+        {
+            try
+            {
+                ret.add(clazz.getDeclaredField(field.getName()));
+            }
+            catch (SecurityException e)
+            {
+                throw new DynaFormException(e);
+            }
+            catch (NoSuchFieldException e)
+            {
+                throw new DynaFormException(e);
+            }
+        }
+        return ret.toArray(new Field[ret.size()]);
+    }
 
-	public Method[] getMethods(Class clazz)
-	{
-		JavaClass javaClass = Repository.lookupClass(clazz);
-		org.apache.bcel.classfile.Method[] methods = javaClass.getMethods();
-		
-		List<Method> ret = new ArrayList<Method>(methods.length);
-		for (org.apache.bcel.classfile.Method method : methods)
-		{
-			if ("<init>".equals(method.getName()))
-			{
-				continue;
-			}
-			if (!method.getName().startsWith("set") && !method.getName().startsWith("get") && !method.getName().startsWith("is"))
-			{
-				continue;
-			}
-			
-			Type[] types = method.getArgumentTypes();
-			Class[] args = new Class[types.length];
-			for (int i = 0; i<types.length; i++)
-			{
-				args[i] = type2Class(types[i]);
-			}
-			
-			try
-			{
-				ret.add(clazz.getDeclaredMethod(method.getName(), args));
-			}
-			catch (SecurityException e)
-			{
-				throw new DynaFormException(e);
-			}
-			catch (NoSuchMethodException e)
-			{
-				throw new DynaFormException(e);
-			}
-		}
-		return ret.toArray(new Method[ret.size()]);
-	}
+    public Method[] getMethods(Class clazz)
+    {
+        JavaClass javaClass = Repository.lookupClass(clazz);
+        org.apache.bcel.classfile.Method[] methods = javaClass.getMethods();
+        
+        List<Method> ret = new ArrayList<Method>(methods.length);
+        for (org.apache.bcel.classfile.Method method : methods)
+        {
+            if ("<init>".equals(method.getName()))
+            {
+                continue;
+            }
+            if (!method.getName().startsWith("set") && !method.getName().startsWith("get") && !method.getName().startsWith("is"))
+            {
+                continue;
+            }
+            
+            Type[] types = method.getArgumentTypes();
+            Class[] args = new Class[types.length];
+            for (int i = 0; i<types.length; i++)
+            {
+                args[i] = type2Class(types[i]);
+            }
+            
+            try
+            {
+                ret.add(clazz.getDeclaredMethod(method.getName(), args));
+            }
+            catch (SecurityException e)
+            {
+                throw new DynaFormException(e);
+            }
+            catch (NoSuchMethodException e)
+            {
+                throw new DynaFormException(e);
+            }
+        }
+        return ret.toArray(new Method[ret.size()]);
+    }
 
-	protected Class type2Class(Type type)
-	{
-		if (type instanceof BasicType)
-		{
-			BasicType basicType = (BasicType) type;
-			if (basicType.getType() == BasicType.BOOLEAN.getType())
-			{
-				return boolean.class;
-			}
-			else if (basicType.getType() == BasicType.BYTE.getType())
-			{
-				return byte.class;
-			}
-			else if (basicType.getType() == BasicType.CHAR.getType())
-			{
-				return char.class;
-			}
-			else if (basicType.getType() == BasicType.DOUBLE.getType())
-			{
-				return double.class;
-			}
-			else if (basicType.getType() == BasicType.FLOAT.getType())
-			{
-				return float.class;
-			}
-			else if (basicType.getType() == BasicType.INT.getType())
-			{
-				return int.class;
-			}
-			else if (basicType.getType() == BasicType.LONG.getType())
-			{
-				return long.class;
-			}
-			else if (basicType.getType() == BasicType.SHORT.getType())
-			{
-				return short.class;
-			}
-			else if (basicType.getType() == BasicType.STRING.getType())
-			{
-				return String.class;
-			}
-			else if (basicType.getType() == BasicType.VOID.getType())
-			{
-				return void.class;
-			}
-			throw new IllegalArgumentException("dont know how to map " + basicType);
-		}
-		else if (type instanceof ObjectType)
-		{
-			ObjectType objectType = (ObjectType) type;
-			try
-			{
-				return Class.forName(objectType.getClassName());
-			}
-			catch (ClassNotFoundException e)
-			{
-				throw new DynaFormException(e);
-			}
-		}
-		else if (type instanceof ArrayType)
-		{
-			Class elementType = type2Class(((ArrayType) type).getElementType());
-			return Array.newInstance(elementType, 0).getClass();
-		}
-		
-		throw new IllegalArgumentException("unkown type " + type);
-	}
+    protected Class type2Class(Type type)
+    {
+        if (type instanceof BasicType)
+        {
+            BasicType basicType = (BasicType) type;
+            if (basicType.getType() == BasicType.BOOLEAN.getType())
+            {
+                return boolean.class;
+            }
+            else if (basicType.getType() == BasicType.BYTE.getType())
+            {
+                return byte.class;
+            }
+            else if (basicType.getType() == BasicType.CHAR.getType())
+            {
+                return char.class;
+            }
+            else if (basicType.getType() == BasicType.DOUBLE.getType())
+            {
+                return double.class;
+            }
+            else if (basicType.getType() == BasicType.FLOAT.getType())
+            {
+                return float.class;
+            }
+            else if (basicType.getType() == BasicType.INT.getType())
+            {
+                return int.class;
+            }
+            else if (basicType.getType() == BasicType.LONG.getType())
+            {
+                return long.class;
+            }
+            else if (basicType.getType() == BasicType.SHORT.getType())
+            {
+                return short.class;
+            }
+            else if (basicType.getType() == BasicType.STRING.getType())
+            {
+                return String.class;
+            }
+            else if (basicType.getType() == BasicType.VOID.getType())
+            {
+                return void.class;
+            }
+            throw new IllegalArgumentException("dont know how to map " + basicType);
+        }
+        else if (type instanceof ObjectType)
+        {
+            ObjectType objectType = (ObjectType) type;
+            try
+            {
+                return Class.forName(objectType.getClassName());
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new DynaFormException(e);
+            }
+        }
+        else if (type instanceof ArrayType)
+        {
+            Class elementType = type2Class(((ArrayType) type).getElementType());
+            return Array.newInstance(elementType, 0).getClass();
+        }
+        
+        throw new IllegalArgumentException("unkown type " + type);
+    }
 
 }

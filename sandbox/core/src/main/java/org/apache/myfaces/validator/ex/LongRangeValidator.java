@@ -26,11 +26,11 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientValidator;
  */
 public class LongRangeValidator extends javax.faces.validator.LongRangeValidator implements ClientValidator{
 
-	public String getScriptFunction() {
-		return "tomahawk.LongRangeValidator(" + getMinimum() + "," + getMaximum() + ")";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.LongRangeValidator(" + getMinimum() + "," + getMaximum() + ")";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 }

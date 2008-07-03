@@ -54,13 +54,13 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
  * @version $Revision$ $Date$
  */
 public class HtmlDateRenderer extends HtmlRenderer {
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the input is not a valid date.</p>
-	 */
-	public static final String DATE_MESSAGE_ID = "org.apache.myfaces.Date.INVALID";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the input is not a valid date.</p>
+     */
+    public static final String DATE_MESSAGE_ID = "org.apache.myfaces.Date.INVALID";
 
-	private static final String ID_DAY_POSTFIX = ".day";
+    private static final String ID_DAY_POSTFIX = ".day";
     private static final String ID_MONTH_POSTFIX = ".month";
     private static final String ID_YEAR_POSTFIX = ".year";
     private static final String ID_HOURS_POSTFIX = ".hours";
@@ -70,7 +70,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
     static public String getClientIdForDaySubcomponent(String clientId)
     {
-    	return clientId + ID_DAY_POSTFIX;
+        return clientId + ID_DAY_POSTFIX;
     }
     
     protected boolean isDisabled(FacesContext facesContext, HtmlInputDate inputDate) {
@@ -93,7 +93,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         String clientId = uiComponent.getClientId(facesContext);
 
         boolean disabled = isDisabled(facesContext, inputDate);
-		boolean readonly = inputDate.isReadonly();
+        boolean readonly = inputDate.isReadonly();
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -103,24 +103,24 @@ public class HtmlDateRenderer extends HtmlRenderer {
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
         if( ! (type.equals("time") || type.equals("short_time"))){
-	        encodeInputDay(inputDate, writer, clientId, userData, disabled, readonly);
-	        encodeInputMonth(inputDate, writer, clientId, userData, currentLocale, disabled, readonly);
-	        encodeInputYear(inputDate, writer, clientId, userData, disabled, readonly);
+            encodeInputDay(inputDate, writer, clientId, userData, disabled, readonly);
+            encodeInputMonth(inputDate, writer, clientId, userData, currentLocale, disabled, readonly);
+            encodeInputYear(inputDate, writer, clientId, userData, disabled, readonly);
 
-	        if( inputDate.isPopupCalendar() && ! disabled && ! readonly )
-	            encodePopupCalendarButton(facesContext, uiComponent, writer, clientId, currentLocale);
+            if( inputDate.isPopupCalendar() && ! disabled && ! readonly )
+                encodePopupCalendarButton(facesContext, uiComponent, writer, clientId, currentLocale);
         }
         if( type.equals("both") || type.equals("full")){
             writer.write(" ");
         }
         if( ! type.equals("date")){
-	        encodeInputHours(uiComponent, writer, clientId, userData, disabled, readonly);
-	        writer.write(":");
-	        encodeInputMinutes(uiComponent, writer, clientId, userData, disabled, readonly);
-	        if (type.equals("full")|| type.equals("time")) {
-						writer.write(":");
-	        	encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
-					}
+            encodeInputHours(uiComponent, writer, clientId, userData, disabled, readonly);
+            writer.write(":");
+            encodeInputMinutes(uiComponent, writer, clientId, userData, disabled, readonly);
+            if (type.equals("full")|| type.equals("time")) {
+                        writer.write(":");
+                encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
+                    }
             if (ampm) {
                 encodeInputAmpm(uiComponent, writer, clientId, userData, disabled, readonly, currentLocale);
             }
@@ -130,32 +130,32 @@ public class HtmlDateRenderer extends HtmlRenderer {
     }
 
     protected void encodeInputField(UIComponent uiComponent, ResponseWriter writer, String id,
-			String value, int size, boolean disabled, boolean readonly)  throws IOException {
+            String value, int size, boolean disabled, boolean readonly)  throws IOException {
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_ATTRIBUTES);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
 
-		if (disabled) {
-		    writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
-		}
-		if( readonly ) {
-			writer.writeAttribute(HTML.READONLY_ATTR, Boolean.TRUE, null);
-		}
+        if (disabled) {
+            writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
+        }
+        if( readonly ) {
+            writer.writeAttribute(HTML.READONLY_ATTR, Boolean.TRUE, null);
+        }
 
-		writer.writeAttribute(HTML.ID_ATTR, id, null);
-		writer.writeAttribute(HTML.NAME_ATTR, id, null);
-		writer.writeAttribute(HTML.SIZE_ATTR, Integer.toString(size), null);
-		writer.writeAttribute(HTML.MAXLENGTH_ATTR, Integer.toString(size), null);
-		if (value != null) {
-		    writer.writeAttribute(HTML.VALUE_ATTR, value, null);
-		}
-		writer.endElement(HTML.INPUT_ELEM);
+        writer.writeAttribute(HTML.ID_ATTR, id, null);
+        writer.writeAttribute(HTML.NAME_ATTR, id, null);
+        writer.writeAttribute(HTML.SIZE_ATTR, Integer.toString(size), null);
+        writer.writeAttribute(HTML.MAXLENGTH_ATTR, Integer.toString(size), null);
+        if (value != null) {
+            writer.writeAttribute(HTML.VALUE_ATTR, value, null);
+        }
+        writer.endElement(HTML.INPUT_ELEM);
     }
 
     protected void encodeInputDay(UIComponent uiComponent, ResponseWriter writer, String clientId,
-			UserData userData, boolean disabled, boolean readonly) throws IOException {
+            UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, getClientIdForDaySubcomponent(clientId), userData.getDay(), 2, disabled, readonly);
     }
 
@@ -202,38 +202,38 @@ public class HtmlDateRenderer extends HtmlRenderer {
     }
 
     protected void encodeEmptyInputMonthSelection(UIComponent component, ResponseWriter writer, int selectedMonth) throws IOException{
-    	 writer.startElement(HTML.OPTION_ELEM, component);
+         writer.startElement(HTML.OPTION_ELEM, component);
          writer.writeAttribute(HTML.VALUE_ATTR, "-1", null);
 
          if(selectedMonth == -1)
-        	 writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
+             writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
 
          writer.writeText(((HtmlInputDate)component).getEmptyMonthSelection(), null);
          writer.endElement(HTML.OPTION_ELEM);
     }
 
     protected void encodeInputYear(UIComponent uiComponent, ResponseWriter writer, String clientId,
-			UserData userData, boolean disabled, boolean readonly) throws IOException {
+            UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_YEAR_POSTFIX, userData.getYear(), 4, disabled, readonly);
     }
 
     protected void encodeInputHours(UIComponent uiComponent, ResponseWriter writer, String clientId,
-			UserData userData, boolean disabled, boolean readonly) throws IOException {
+            UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_HOURS_POSTFIX, userData.getHours(), 2, disabled, readonly);
     }
 
     protected void encodeInputMinutes(UIComponent uiComponent, ResponseWriter writer, String clientId,
-			UserData userData, boolean disabled, boolean readonly) throws IOException {
+            UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_MINUTES_POSTFIX, userData.getMinutes(), 2, disabled, readonly);
     }
 
     protected void encodeInputSeconds(UIComponent uiComponent, ResponseWriter writer, String clientId,
-			UserData userData, boolean disabled, boolean readonly) throws IOException {
+            UserData userData, boolean disabled, boolean readonly) throws IOException {
         encodeInputField(uiComponent, writer, clientId + ID_SECONDS_POSTFIX, userData.getSeconds(), 2, disabled, readonly);
     }
 
     protected void encodeAmpmChoice(DateFormatSymbols symbols, UIComponent uiComponent, ResponseWriter writer, int calendar_ampm, int selected) throws IOException {
-    	String[] ampm_choices = symbols.getAmPmStrings();
+        String[] ampm_choices = symbols.getAmPmStrings();
         writer.write("\t\t");
         writer.startElement(HTML.OPTION_ELEM, uiComponent);
         writer.writeAttribute(HTML.VALUE_ATTR, new Integer(calendar_ampm), null);
@@ -244,7 +244,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
     }
 
     protected void encodeInputAmpm(UIComponent uiComponent, ResponseWriter writer, String clientId,
-			UserData userData, boolean disabled, boolean readonly, Locale currentLocale) throws IOException {
+            UserData userData, boolean disabled, boolean readonly, Locale currentLocale) throws IOException {
         writer.startElement(HTML.SELECT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + ID_AMPM_POSTFIX, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId + ID_AMPM_POSTFIX, null);
@@ -274,11 +274,11 @@ public class HtmlDateRenderer extends HtmlRenderer {
     }
 
     protected void encodeEmtypAmpmChoice(UIComponent component, ResponseWriter writer, int selectedAmpm) throws IOException{
-    	 writer.startElement(HTML.OPTION_ELEM, component);
+         writer.startElement(HTML.OPTION_ELEM, component);
          writer.writeAttribute(HTML.VALUE_ATTR, "-1", null);
 
          if(selectedAmpm == -1)
-        	 writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
+             writer.writeAttribute(HTML.SELECTED_ATTR, HTML.SELECTED_ATTR, null);
 
          writer.writeText(((HtmlInputDate)component).getEmptyAmpmSelection(), null);
          writer.endElement(HTML.OPTION_ELEM);
@@ -295,8 +295,8 @@ public class HtmlDateRenderer extends HtmlRenderer {
         String dateFormat = CalendarDateTimeConverter.createJSPopupFormat(facesContext, null);
 
         String localizedLanguageScript = HtmlCalendarRenderer.getLocalizedLanguageScript(facesContext,
-                							symbols,Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
-                							uiComponent,calendarVar);
+                                            symbols,Calendar.getInstance(currentLocale).getFirstDayOfWeek(),
+                                            uiComponent,calendarVar);
 
         writer.startElement(HTML.SPAN_ELEM,uiComponent);
         writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext)+"Span",
@@ -313,7 +313,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
 
         writer.endElement(HTML.SCRIPT_ELEM);
-	 HtmlCalendarRenderer.getScriptBtn(writer, facesContext, uiComponent,
+     HtmlCalendarRenderer.getScriptBtn(writer, facesContext, uiComponent,
                 dateFormat,"...",new FunctionCallProvider(){
             public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
             {
@@ -354,10 +354,10 @@ public class HtmlDateRenderer extends HtmlRenderer {
             userData.setHours( (String) requestMap.get(clientId + ID_HOURS_POSTFIX) );
             userData.setMinutes( (String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
             if (type.equals("full") || type.equals("time"))
-				userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
+                userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
 
             if (inputDate.isAmpm()) {
-            	userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
+                userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
             }
         }
         inputDate.setSubmittedValue( userData );

@@ -36,60 +36,60 @@ import java.util.Locale;
  */
 public class DateFormatSymbols
 {
-	String[] eras = {"BC", "AD"};
+    String[] eras = {"BC", "AD"};
 
-	String[] months = {
-			"January", "February", "March", "April",
+    String[] months = {
+            "January", "February", "March", "April",
             "May", "June", "July", "August", "September", "October",
             "November", "December", "Undecimber"
     };
 
-	String[] shortMonths = {
-			"Jan", "Feb", "Mar", "Apr",
+    String[] shortMonths = {
+            "Jan", "Feb", "Mar", "Apr",
             "May", "Jun", "Jul", "Aug", "Sep", "Oct",
             "Nov", "Dec", "Und"
     };
 
-	String[] weekdays = {
-			"Sunday", "Monday", "Tuesday",
+    String[] weekdays = {
+            "Sunday", "Monday", "Tuesday",
             "Wednesday", "Thursday", "Friday", "Saturday"
     };
 
-	String[] shortWeekdays = {
-			"Sun", "Mon", "Tue",
+    String[] shortWeekdays = {
+            "Sun", "Mon", "Tue",
             "Wed", "Thu", "Fri", "Sat"
     };
 
-	String[] ampms = { "AM", "PM" };
+    String[] ampms = { "AM", "PM" };
 
-	String[] zoneStrings = {
-			null, "long-name", "short-name"
-	};
+    String[] zoneStrings = {
+            null, "long-name", "short-name"
+    };
 
-	// TODO: move these vars out of this "constant" class.
-	Date threshold;
-	Date twoDigitYearStart;
+    // TODO: move these vars out of this "constant" class.
+    Date threshold;
+    Date twoDigitYearStart;
 
 
-	public DateFormatSymbols()
-	{
+    public DateFormatSymbols()
+    {
         threshold = new Date();
         threshold.setYear(threshold.getYear()-80);
         this.twoDigitYearStart = threshold;
-	}
+    }
 
-	public DateFormatSymbols(Locale l)
-	{
-		this();
+    public DateFormatSymbols(Locale l)
+    {
+        this();
 
-		java.text.DateFormatSymbols src = new java.text.DateFormatSymbols(l);
-		this.eras = src.getEras();
-		this.months = src.getMonths();
-		this.shortMonths = src.getShortMonths();
-		this.weekdays = src.getWeekdays();
-		this.shortWeekdays = src.getShortWeekdays();
-		this.ampms = src.getAmPmStrings();
+        java.text.DateFormatSymbols src = new java.text.DateFormatSymbols(l);
+        this.eras = src.getEras();
+        this.months = src.getMonths();
+        this.shortMonths = src.getShortMonths();
+        this.weekdays = src.getWeekdays();
+        this.shortWeekdays = src.getShortWeekdays();
+        this.ampms = src.getAmPmStrings();
 
-		// zoneStrings ??
-	}
+        // zoneStrings ??
+    }
 }

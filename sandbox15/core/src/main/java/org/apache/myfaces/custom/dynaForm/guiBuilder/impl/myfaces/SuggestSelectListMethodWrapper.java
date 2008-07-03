@@ -35,129 +35,129 @@ import java.util.List;
  */
 public class SuggestSelectListMethodWrapper extends MethodBinding
 {
-	private final MethodBinding original;
-	private final String valueProperty;
-	private final String[] descriptionPropertiesArray;
+    private final MethodBinding original;
+    private final String valueProperty;
+    private final String[] descriptionPropertiesArray;
 
-	SuggestSelectListMethodWrapper(MethodBinding original, String valueProperty, String descriptionProperties)
-	{
-		this.original = original;
-		this.valueProperty = valueProperty;
-		if (descriptionProperties != null)
-		{
-			descriptionPropertiesArray = descriptionProperties.split(",\\s*");
-		}
-		else
-		{
-			descriptionPropertiesArray = new String[]{};
-		}
-	}
+    SuggestSelectListMethodWrapper(MethodBinding original, String valueProperty, String descriptionProperties)
+    {
+        this.original = original;
+        this.valueProperty = valueProperty;
+        if (descriptionProperties != null)
+        {
+            descriptionPropertiesArray = descriptionProperties.split(",\\s*");
+        }
+        else
+        {
+            descriptionPropertiesArray = new String[]{};
+        }
+    }
 
-	@Override
-	public Class getType(FacesContext facesContext) throws MethodNotFoundException
-	{
-		return List.class;
-	}
+    @Override
+    public Class getType(FacesContext facesContext) throws MethodNotFoundException
+    {
+        return List.class;
+    }
 
-	@Override
-	public Object invoke(FacesContext facesContext, Object[] objects) throws EvaluationException
-	{
-		Object items = original.invoke(facesContext, objects);
-		if (items == null)
-		{
-			return items;
-		}
+    @Override
+    public Object invoke(FacesContext facesContext, Object[] objects) throws EvaluationException
+    {
+        Object items = original.invoke(facesContext, objects);
+        if (items == null)
+        {
+            return items;
+        }
 
-		if (!(items instanceof Collection))
-		{
-			throw new UnsupportedOperationException("unknown return type " + items.getClass().getName() + " for " + getExpressionString() + " awaited instanceof java.util.Collection");
-		}
+        if (!(items instanceof Collection))
+        {
+            throw new UnsupportedOperationException("unknown return type " + items.getClass().getName() + " for " + getExpressionString() + " awaited instanceof java.util.Collection");
+        }
 
-		Collection coll = (Collection) items;
+        Collection coll = (Collection) items;
 
-		List<SelectItem> selectItems = new ArrayList<SelectItem>(coll.size());
-		for (Object o : coll)
-		{
-			SelectItem si;
+        List<SelectItem> selectItems = new ArrayList<SelectItem>(coll.size());
+        for (Object o : coll)
+        {
+            SelectItem si;
 
-			if (o instanceof SelectItem)
-			{
-				si = (SelectItem) o;
-			}
-			else
-			{
-				Object value = getValueProperty(o, valueProperty);
-				String description = buildDescription(o, descriptionPropertiesArray);
+            if (o instanceof SelectItem)
+            {
+                si = (SelectItem) o;
+            }
+            else
+            {
+                Object value = getValueProperty(o, valueProperty);
+                String description = buildDescription(o, descriptionPropertiesArray);
 
-				si = new SelectItem(value, description);
-			}
+                si = new SelectItem(value, description);
+            }
 
-			selectItems.add(si);
-		}
+            selectItems.add(si);
+        }
 
-		return selectItems;
-	}
+        return selectItems;
+    }
 
-	protected String buildDescription(Object o, String[] descriptionPropertiesArray)
-	{
-		StringBuffer sb = new StringBuffer(80);
+    protected String buildDescription(Object o, String[] descriptionPropertiesArray)
+    {
+        StringBuffer sb = new StringBuffer(80);
 
-		for (String descriptionProperty : descriptionPropertiesArray)
-		{
-			Object descriptionValue = null;
-			try
-			{
-				descriptionValue = BeanUtils.getProperty(o, descriptionProperty);
-			}
-			catch (IllegalAccessException e)
-			{
-				throw new EvaluationException(e);
-			}
-			catch (InvocationTargetException e)
-			{
-				throw new EvaluationException(e);
-			}
-			catch (NoSuchMethodException e)
-			{
-				throw new EvaluationException(e);
-			}
+        for (String descriptionProperty : descriptionPropertiesArray)
+        {
+            Object descriptionValue = null;
+            try
+            {
+                descriptionValue = BeanUtils.getProperty(o, descriptionProperty);
+            }
+            catch (IllegalAccessException e)
+            {
+                throw new EvaluationException(e);
+            }
+            catch (InvocationTargetException e)
+            {
+                throw new EvaluationException(e);
+            }
+            catch (NoSuchMethodException e)
+            {
+                throw new EvaluationException(e);
+            }
 
-			if (descriptionValue != null)
-			{
-				if (sb.length() > 0)
-				{
-					sb.append(", ");
-				}
+            if (descriptionValue != null)
+            {
+                if (sb.length() > 0)
+                {
+                    sb.append(", ");
+                }
 
-				sb.append(descriptionValue);
-			}
-		}
+                sb.append(descriptionValue);
+            }
+        }
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	protected Object getValueProperty(Object o, String valueProperty)
-	{
-		if (valueProperty == null || valueProperty.trim().length() < 1)
-		{
-			return o;
-		}
+    protected Object getValueProperty(Object o, String valueProperty)
+    {
+        if (valueProperty == null || valueProperty.trim().length() < 1)
+        {
+            return o;
+        }
 
-		try
-		{
-			return BeanUtils.getProperty(o, valueProperty);
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new EvaluationException(e);
-		}
-		catch (InvocationTargetException e)
-		{
-			throw new EvaluationException(e);
-		}
-		catch (NoSuchMethodException e)
-		{
-			throw new EvaluationException(e);
-		}
-	}
+        try
+        {
+            return BeanUtils.getProperty(o, valueProperty);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new EvaluationException(e);
+        }
+        catch (InvocationTargetException e)
+        {
+            throw new EvaluationException(e);
+        }
+        catch (NoSuchMethodException e)
+        {
+            throw new EvaluationException(e);
+        }
+    }
 }

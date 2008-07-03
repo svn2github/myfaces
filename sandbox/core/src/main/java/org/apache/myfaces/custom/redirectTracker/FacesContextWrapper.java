@@ -35,7 +35,7 @@ import java.util.Iterator;
  * @version $Revision$ $Date$
  */
 public class FacesContextWrapper
-	extends FacesContext
+    extends FacesContext
 {
     //~ Instance fields ----------------------------------------------------------------------------
 
@@ -145,8 +145,8 @@ public class FacesContextWrapper
         _facesContext.responseComplete();
     }
 
-	public FacesContext getWrappedFacesContext()
-	{
-		return _facesContext;
-	}
+    public FacesContext getWrappedFacesContext()
+    {
+        return _facesContext;
+    }
 }

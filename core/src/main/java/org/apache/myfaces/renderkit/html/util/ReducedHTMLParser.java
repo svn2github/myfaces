@@ -294,11 +294,11 @@ public class ReducedHTMLParser
             }
             else
             {
-            	if (escaping)
-            	{
+                if (escaping)
+                {
                     stringBuf.append('\\');
-                    escaping = false;            		
-            	}
+                    escaping = false;                    
+                }
 
                 stringBuf.append(c);
             }
@@ -634,7 +634,7 @@ public class ReducedHTMLParser
         int maxLength = 30;
         int end = _seq.length();
         if (end - _offset > maxLength) {
-		    end = _offset + maxLength;
+            end = _offset + maxLength;
         }
         return _seq.subSequence(_offset, end).toString();
     }

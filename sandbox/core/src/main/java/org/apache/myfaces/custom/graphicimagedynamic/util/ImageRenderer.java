@@ -30,14 +30,14 @@ import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
  */
 public interface ImageRenderer extends ResourceRenderer
 {
-	/**
-	 * This method will be called first, to set the contexts.
-	 * 
+    /**
+     * This method will be called first, to set the contexts.
+     * 
      * @param facesContext the faces context
      * @param imageContext the image context width aditional image parameters
-	 *
-	void setContext(FacesContext facesContext, ImageContext imageContext) throws Exception;
-	*/
+     *
+    void setContext(FacesContext facesContext, ImageContext imageContext) throws Exception;
+    */
     /**
      * Called to render the image to the given outputstream.
      * 

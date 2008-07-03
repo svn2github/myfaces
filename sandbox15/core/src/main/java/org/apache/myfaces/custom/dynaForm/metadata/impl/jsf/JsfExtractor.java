@@ -28,12 +28,12 @@ import org.apache.myfaces.custom.dynaForm.metadata.MetaData;
  */
 public class JsfExtractor extends AbstractJsfExtractor
 {
-	public JsfExtractor()
-	{
-	}
+    public JsfExtractor()
+    {
+    }
 
-	protected void initFromConfig(MetaData.FieldImpl field, DynaConfig config)
-	{
-		config.configureMetaData(field);
-	}
+    protected void initFromConfig(MetaData.FieldImpl field, DynaConfig config)
+    {
+        config.configureMetaData(field);
+    }
 }

@@ -20,12 +20,12 @@ package org.apache.myfaces.custom.dynaForm.guiBuilder;
 
 public enum ComponentEnum
 {
-	Automatic,
-	OutputText,
-	InputText,
-	InputDate,
-	SelectOneMenu,
-	// SelectSearchMenu,
-	InputNumber,
-	InputBoolean
+    Automatic,
+    OutputText,
+    InputText,
+    InputDate,
+    SelectOneMenu,
+    // SelectSearchMenu,
+    InputNumber,
+    InputBoolean
 }

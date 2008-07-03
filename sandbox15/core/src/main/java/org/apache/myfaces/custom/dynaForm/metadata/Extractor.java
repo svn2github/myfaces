@@ -23,8 +23,8 @@ package org.apache.myfaces.custom.dynaForm.metadata;
  */
 public interface Extractor
 {
-	/**
-	 * get the metadata for the given entity
-	 */
-	public void getMetaData(MetaData metaData, Object entity);
+    /**
+     * get the metadata for the given entity
+     */
+    public void getMetaData(MetaData metaData, Object entity);
 }

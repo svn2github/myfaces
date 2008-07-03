@@ -79,10 +79,10 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     protected SortedSet getDays()
     {
-    	if (days == null)
-    	{
-    		days = new TreeSet();
-    		
+        if (days == null)
+        {
+            days = new TreeSet();
+            
             switch (mode)
             {
             case DAY:
@@ -107,10 +107,10 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
 
             default:
                 setDay(this.selectedDate);
-            }    	
-    	}
-    	
-    	return days;
+            }        
+        }
+        
+        return days;
     }
     
     /**
@@ -306,7 +306,7 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
             //stop when we are at the last day of the last week
             if (cal.get(Calendar.MONTH) == nextMonth && cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY)
             {
-               	break;
+                   break;
             }
         }
 
@@ -426,16 +426,16 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      */
     protected void clear()
     {
-    	if (days != null)
-    	{
-    		for (Iterator dayIterator = days.iterator(); dayIterator.hasNext();)
-    		{
-    			ScheduleDay day = (ScheduleDay) dayIterator.next();
-    			day.clear();
-    		}
+        if (days != null)
+        {
+            for (Iterator dayIterator = days.iterator(); dayIterator.hasNext();)
+            {
+                ScheduleDay day = (ScheduleDay) dayIterator.next();
+                day.clear();
+            }
 
-    		days.clear();
-    	}
+            days.clear();
+        }
     }
 
     /**
@@ -474,40 +474,40 @@ public abstract class AbstractScheduleModel implements ScheduleModel,
      * @return true, if each day contains the same set of intervals
      */
     public boolean containsRepeatedIntervals() {
-    	boolean firstDay = true;
-    	TreeSet firstDayIntervals = null;
-    	
-    	if (mode == DAY)
-    	{
-    		return true;
-    	}
-    	
-    	for (Iterator dayIterator = iterator(); dayIterator.hasNext(); )
-    	{
-    		Day day = (Day) dayIterator.next();
-    		
-    		if (firstDay)
-    		{
-    			firstDayIntervals = day.getIntervals();
-    			firstDay = false;
-    		}
-    		else
-    		{
-    			if (firstDayIntervals == null || firstDayIntervals.size() == 0) {
-    				if (day.getIntervals() != null && day.getIntervals().size() > 0)
-    				{
-    					return false;
-    				}
-    			}
-    			else if (!ScheduleUtil.areEquivalentIntervals(firstDayIntervals, day.getIntervals()))
-    			{
-    				
-    				return false;
-    			}
-    		}
-    	}
-    	
-    	return true;
+        boolean firstDay = true;
+        TreeSet firstDayIntervals = null;
+        
+        if (mode == DAY)
+        {
+            return true;
+        }
+        
+        for (Iterator dayIterator = iterator(); dayIterator.hasNext(); )
+        {
+            Day day = (Day) dayIterator.next();
+            
+            if (firstDay)
+            {
+                firstDayIntervals = day.getIntervals();
+                firstDay = false;
+            }
+            else
+            {
+                if (firstDayIntervals == null || firstDayIntervals.size() == 0) {
+                    if (day.getIntervals() != null && day.getIntervals().size() > 0)
+                    {
+                        return false;
+                    }
+                }
+                else if (!ScheduleUtil.areEquivalentIntervals(firstDayIntervals, day.getIntervals()))
+                {
+                    
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
     
     private void load(Date startDate, Date endDate)

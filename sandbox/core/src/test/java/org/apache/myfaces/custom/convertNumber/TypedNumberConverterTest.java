@@ -28,45 +28,45 @@ import junit.framework.TestSuite;
 import org.apache.shale.test.base.AbstractJsfTestCase;
 
 /**
- * @author cagatay (latest modification by $Author:$)
+ * @author cagatay (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class TypedNumberConverterTest extends AbstractJsfTestCase{
-	
-	private TypedNumberConverter converter;
-	
-	public TypedNumberConverterTest(String testName) {
-		super(testName);
-	}
-	
-	public void setUp() throws Exception{
-		super.setUp();
-		converter = new TypedNumberConverter();
-	}
-	
-	public void tearDown() throws Exception{
-		super.tearDown();
-		converter = null; 
-	}
-	
-	public static Test suite() {
-		return new TestSuite(TypedNumberConverterTest.class);
-	}
-	
-	public void testSeverityLevelOfMessageShouldBeErrorInCaseConversionFails() {
-		UIInput input = new UIInput();
-		input.setId("txt_test");
-		
-		converter.setIntegerOnly(true);
-		
-		try {
-			converter.getAsObject(facesContext, input, "test_invalid_input");
-			
-			fail();
-		}catch (ConverterException exception) {
-			FacesMessage facesMessage = exception.getFacesMessage();
-			assertEquals(FacesMessage.SEVERITY_ERROR, facesMessage.getSeverity());
-		}
-		
-	}
+    
+    private TypedNumberConverter converter;
+    
+    public TypedNumberConverterTest(String testName) {
+        super(testName);
+    }
+    
+    public void setUp() throws Exception{
+        super.setUp();
+        converter = new TypedNumberConverter();
+    }
+    
+    public void tearDown() throws Exception{
+        super.tearDown();
+        converter = null; 
+    }
+    
+    public static Test suite() {
+        return new TestSuite(TypedNumberConverterTest.class);
+    }
+    
+    public void testSeverityLevelOfMessageShouldBeErrorInCaseConversionFails() {
+        UIInput input = new UIInput();
+        input.setId("txt_test");
+        
+        converter.setIntegerOnly(true);
+        
+        try {
+            converter.getAsObject(facesContext, input, "test_invalid_input");
+            
+            fail();
+        }catch (ConverterException exception) {
+            FacesMessage facesMessage = exception.getFacesMessage();
+            assertEquals(FacesMessage.SEVERITY_ERROR, facesMessage.getSeverity());
+        }
+        
+    }
 }

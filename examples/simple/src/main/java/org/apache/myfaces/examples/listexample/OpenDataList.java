@@ -70,8 +70,8 @@ public class OpenDataList extends SortableList
 
     void setData(DataModel datamodel)
     {
-    	System.out.println("preserved datamodel updated");
-    	// just here to see if the datamodel is updated if preservedatamodel=true
+        System.out.println("preserved datamodel updated");
+        // just here to see if the datamodel is updated if preservedatamodel=true
     }
 
     public DataModel getColumnHeaders()

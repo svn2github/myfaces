@@ -20,33 +20,33 @@ package org.apache.myfaces.examples.testexception;
 
 public class TestException
 {
-	public String npe()
-	{
-		throw new NullPointerException();
-	}
+    public String npe()
+    {
+        throw new NullPointerException();
+    }
 
-	public String wrappedRuntimeNpe()
-	{
-		throw new RuntimeException(new NullPointerException());
-	}
+    public String wrappedRuntimeNpe()
+    {
+        throw new RuntimeException(new NullPointerException());
+    }
 
-	public String wrappedServletNpe()
-	{
-		throw new FakesServletException(new NullPointerException());
-	}
+    public String wrappedServletNpe()
+    {
+        throw new FakesServletException(new NullPointerException());
+    }
 
-	public String npeTxt()
-	{
-		throw new NullPointerException("my null pointer exception");
-	}
+    public String npeTxt()
+    {
+        throw new NullPointerException("my null pointer exception");
+    }
 
-	public String wrappedRuntimeNpeTxt()
-	{
-		throw new RuntimeException("my text in wrapper exception", new NullPointerException());
-	}
+    public String wrappedRuntimeNpeTxt()
+    {
+        throw new RuntimeException("my text in wrapper exception", new NullPointerException());
+    }
 
-	public String wrappedServletNpeTxt()
-	{
-		throw new FakesServletException("my text in wrapper exception", new NullPointerException());
-	}
+    public String wrappedServletNpeTxt()
+    {
+        throw new FakesServletException("my text in wrapper exception", new NullPointerException());
+    }
 }

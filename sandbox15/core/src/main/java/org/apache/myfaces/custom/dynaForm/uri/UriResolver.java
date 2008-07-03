@@ -31,157 +31,157 @@ import org.apache.myfaces.custom.dynaForm.metadata.Extractor;
  */
 public abstract class UriResolver
 {
-	/**
-	 * The configuration
-	 */
-	public static class Configuration
-	{
-		private final Extractor extractor;
-		private final String entity;
-		
-		protected Configuration(Extractor extractor, String entity)
-		{
-			this.extractor = extractor;
-			this.entity = entity;
-		}
+    /**
+     * The configuration
+     */
+    public static class Configuration
+    {
+        private final Extractor extractor;
+        private final String entity;
+        
+        protected Configuration(Extractor extractor, String entity)
+        {
+            this.extractor = extractor;
+            this.entity = entity;
+        }
 
-		/**
-		 * metadata for the given entity
-		 */
-		public Extractor getExtractor()
-		{
-			return extractor;
-		}
+        /**
+         * metadata for the given entity
+         */
+        public Extractor getExtractor()
+        {
+            return extractor;
+        }
 
-		/**
-		 * the entity identification 
-		 */
-		public String getEntity()
-		{
-			return entity;
-		}
-	}
-	
-	protected Configuration createConfiguration(Extractor extractor, String entity)
-	{
-		return new Configuration(extractor, entity);
-	}
+        /**
+         * the entity identification 
+         */
+        public String getEntity()
+        {
+            return entity;
+        }
+    }
+    
+    protected Configuration createConfiguration(Extractor extractor, String entity)
+    {
+        return new Configuration(extractor, entity);
+    }
 
-	/**
-	 * resolve the given uri 
-	 */
-	public Configuration resolveUri(String uri)
-	{
-		int pos = uri.indexOf(":");
+    /**
+     * resolve the given uri 
+     */
+    public Configuration resolveUri(String uri)
+    {
+        int pos = uri.indexOf(":");
         if (pos < 0)
         {
             return resolve("default", uri);
         }
         if (uri.length() < pos+1)
-		{
-			throw new IllegalArgumentException("Invalid uri: " + uri);
-		}
-		
-		return resolve(uri.substring(0, pos), uri.substring(pos+1));
-	}
+        {
+            throw new IllegalArgumentException("Invalid uri: " + uri);
+        }
+        
+        return resolve(uri.substring(0, pos), uri.substring(pos+1));
+    }
 
-	/**
-	 * do the hard work
-	 */
-	protected Configuration resolve(String scheme, String path)
-	{
-		String config = "dynaForm-" + scheme + ".xml";
-		Properties props = new Properties();
-		InputStream resource = null;
-		try
-		{
-			resource = findConfig(config);
-			if (resource == null)
-			{
-				throw new DynaFormException("configuration '" + config + "' not found.");
-			}
-			
-			props.loadFromXML(resource);
-		}
-		catch (InvalidPropertiesFormatException e)
-		{
-			throw new DynaFormException(e);
-		}
-		catch (IOException e)
-		{
-			throw new DynaFormException(e);
-		}
-		finally
-		{
-			if (resource != null)
-			{
-				try
-				{
-					resource.close();
-				}
-				catch (IOException e)
-				{
-					// do not shadow the real exception
-				}
-			}
-		}
-		
-		String extractor = getRequiredProperty(config, props, "Extractor");
+    /**
+     * do the hard work
+     */
+    protected Configuration resolve(String scheme, String path)
+    {
+        String config = "dynaForm-" + scheme + ".xml";
+        Properties props = new Properties();
+        InputStream resource = null;
+        try
+        {
+            resource = findConfig(config);
+            if (resource == null)
+            {
+                throw new DynaFormException("configuration '" + config + "' not found.");
+            }
+            
+            props.loadFromXML(resource);
+        }
+        catch (InvalidPropertiesFormatException e)
+        {
+            throw new DynaFormException(e);
+        }
+        catch (IOException e)
+        {
+            throw new DynaFormException(e);
+        }
+        finally
+        {
+            if (resource != null)
+            {
+                try
+                {
+                    resource.close();
+                }
+                catch (IOException e)
+                {
+                    // do not shadow the real exception
+                }
+            }
+        }
+        
+        String extractor = getRequiredProperty(config, props, "Extractor");
 
-		try
-		{
-			Extractor extractorClass = (Extractor) Class.forName(extractor).newInstance();
-			return createConfiguration(
-					extractorClass,
-					path);
-		}
-		catch (InstantiationException e)
-		{
-			throw new DynaFormException(e);
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new DynaFormException(e);
-		}
-		catch (ClassNotFoundException e)
-		{
-			throw new DynaFormException(e);
-		}
-		catch (SecurityException e)
-		{
-			throw new DynaFormException(e);
-		}
-		catch (IllegalArgumentException e)
-		{
-			throw new DynaFormException(e);
-		}
-	}
+        try
+        {
+            Extractor extractorClass = (Extractor) Class.forName(extractor).newInstance();
+            return createConfiguration(
+                    extractorClass,
+                    path);
+        }
+        catch (InstantiationException e)
+        {
+            throw new DynaFormException(e);
+        }
+        catch (IllegalAccessException e)
+        {
+            throw new DynaFormException(e);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new DynaFormException(e);
+        }
+        catch (SecurityException e)
+        {
+            throw new DynaFormException(e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            throw new DynaFormException(e);
+        }
+    }
 
-	/**
-	 * load the configuration
-	 */
-	protected InputStream findConfig(String config)
-	{
-		return getResourceAsStream("META-INF/" + config);
-	}
+    /**
+     * load the configuration
+     */
+    protected InputStream findConfig(String config)
+    {
+        return getResourceAsStream("META-INF/" + config);
+    }
 
-	protected InputStream getResourceAsStream(String resource)
-	{
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
-		if (stream == null)
-		{
-			stream = UriResolver.class.getClassLoader().getResourceAsStream(resource);
-		}
-		return stream;
-	}
+    protected InputStream getResourceAsStream(String resource)
+    {
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
+        if (stream == null)
+        {
+            stream = UriResolver.class.getClassLoader().getResourceAsStream(resource);
+        }
+        return stream;
+    }
 
-	protected String getRequiredProperty(String config, Properties props, String key)
-	{
-		String value = props.getProperty(key);
-		if (value == null)
-		{
-			throw new IllegalStateException("Configuration '" + key + "' missing in config " + config);
-		}
-		return value;
-	}
+    protected String getRequiredProperty(String config, Properties props, String key)
+    {
+        String value = props.getProperty(key);
+        if (value == null)
+        {
+            throw new IllegalStateException("Configuration '" + key + "' missing in config " + config);
+        }
+        return value;
+    }
 }

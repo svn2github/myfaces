@@ -30,8 +30,8 @@ import java.lang.annotation.Target;
 @Retention(value=RetentionPolicy.RUNTIME)
 public @interface ReadOnly
 {
-	/**
-	 * set to true if you would like to render as disabled control
-	 */
-	boolean disabled() default false;
+    /**
+     * set to true if you would like to render as disabled control
+     */
+    boolean disabled() default false;
 }

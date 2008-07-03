@@ -95,12 +95,12 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         String mainComponentRenderedValue = null;
 
-		/* check if the user supplied a label method */
-		if (inputSuggestAjax.getItemLabelMethod() == null)
-		{
-			mainComponentRenderedValue = RendererUtils.getStringValue(context, inputSuggestAjax);
+        /* check if the user supplied a label method */
+        if (inputSuggestAjax.getItemLabelMethod() == null)
+        {
+            mainComponentRenderedValue = RendererUtils.getStringValue(context, inputSuggestAjax);
         }
-		else
+        else
         {
             MethodBinding labelMethod = inputSuggestAjax.getItemLabelMethod();
 
@@ -114,7 +114,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
                 label = (String) labelMethod.invoke(context, new Object[]{valueObject});
 
-				hiddenInputValue = converter.getAsString(context, inputSuggestAjax, valueObject);
+                hiddenInputValue = converter.getAsString(context, inputSuggestAjax, valueObject);
                 mainComponentRenderedValue = hiddenInputValue;
             }
         }
@@ -133,36 +133,36 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         out.endElement(HTML.DIV_ELEM);
 
         String textInputId = inputSuggestAjax.getClientId(context);
-		if (label != null)
-		{
-			// whe have a label method and thus a hidden input field holding the real value
-			// now fake the component id to have the rendered input component use another id
-			// than the one we render later for the real value
-			String oriId = inputSuggestAjax.getId();
-			try
-			{
-				// fake the label
-				inputSuggestAjax.setId(oriId + "_fake");
+        if (label != null)
+        {
+            // whe have a label method and thus a hidden input field holding the real value
+            // now fake the component id to have the rendered input component use another id
+            // than the one we render later for the real value
+            String oriId = inputSuggestAjax.getId();
+            try
+            {
+                // fake the label
+                inputSuggestAjax.setId(oriId + "_fake");
 
-				textInputId = inputSuggestAjax.getClientId(context);
+                textInputId = inputSuggestAjax.getClientId(context);
 
-				// fake a submitted value so we have it rendered
-				inputSuggestAjax.setSubmittedValue(label);
+                // fake a submitted value so we have it rendered
+                inputSuggestAjax.setSubmittedValue(label);
 
-				super.encodeEnd(context, inputSuggestAjax);
-			}
-			finally
-			{
-				inputSuggestAjax.setSubmittedValue(null);
-				inputSuggestAjax.setId(oriId);
-			}
-		}
-		else
-		{
-			super.encodeEnd(context, inputSuggestAjax);
-		}
+                super.encodeEnd(context, inputSuggestAjax);
+            }
+            finally
+            {
+                inputSuggestAjax.setSubmittedValue(null);
+                inputSuggestAjax.setId(oriId);
+            }
+        }
+        else
+        {
+            super.encodeEnd(context, inputSuggestAjax);
+        }
 
-		String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(placeHolderId);
+        String inputSuggestComponentVar = DojoUtils.calculateWidgetVarName(placeHolderId);
 
         Map attributes = new HashedMap();
 
@@ -221,29 +221,29 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         }
     }
 
-	protected Converter getRequiredConverter(FacesContext context, InputSuggestAjax inputSuggestAjax)
-	{
-		Converter converter = inputSuggestAjax.getConverter();
-		if (converter != null)
-		{
-			return converter;
-		}
+    protected Converter getRequiredConverter(FacesContext context, InputSuggestAjax inputSuggestAjax)
+    {
+        Converter converter = inputSuggestAjax.getConverter();
+        if (converter != null)
+        {
+            return converter;
+        }
 
-		Class type = inputSuggestAjax.getValueBinding("value").getType(context);
-		if (type != null)
-		{
-			converter = context.getApplication().createConverter(type);
-			if (converter != null)
-			{
-				return converter;
-			}
-		}
+        Class type = inputSuggestAjax.getValueBinding("value").getType(context);
+        if (type != null)
+        {
+            converter = context.getApplication().createConverter(type);
+            if (converter != null)
+            {
+                return converter;
+            }
+        }
 
-		throw new IllegalStateException("There must be a converter if " +
-														  "attribute \"labelMethod\" is used");
-	}
+        throw new IllegalStateException("There must be a converter if " +
+                                                          "attribute \"labelMethod\" is used");
+    }
 
-	public void encodeAjax(FacesContext context, UIComponent uiComponent)
+    public void encodeAjax(FacesContext context, UIComponent uiComponent)
                                                                     throws IOException
     {
         InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) uiComponent;
@@ -258,7 +258,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
         if (labelMethod != null)
         {
-			Converter converter = getRequiredConverter(context, inputSuggestAjax);
+            Converter converter = getRequiredConverter(context, inputSuggestAjax);
 
             for (Iterator iterator = suggesteds.iterator(); iterator.hasNext();)
             {
@@ -302,7 +302,7 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
 
     private String escapeQuotes(String input)
     {
-   	    return input != null ? input.replaceAll("\"", "\\\\\"") : "";
+           return input != null ? input.replaceAll("\"", "\\\\\"") : "";
     }
 
 }

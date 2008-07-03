@@ -25,28 +25,28 @@ package org.apache.myfaces.custom.conversation;
  */
 public interface PersistenceManager
 {
-	/**
-	 * commit the transaction
-	 */
-	public void commit();
+    /**
+     * commit the transaction
+     */
+    public void commit();
 
-	/**
-	 * rollback the transaction
-	 */
-	public void rollback();
+    /**
+     * rollback the transaction
+     */
+    public void rollback();
 
-	/**
-	 * attach to your underlaying persistence
-	 */
-	public void attach();
+    /**
+     * attach to your underlaying persistence
+     */
+    public void attach();
 
-	/**
-	 * detach from your underlaying persistence
-	 */
-	public void detach();
+    /**
+     * detach from your underlaying persistence
+     */
+    public void detach();
 
-	/**
-	 * purge this persistence manager - e.g. throw away your session due to some exceptions
-	 */
-	void purge();
+    /**
+     * purge this persistence manager - e.g. throw away your session due to some exceptions
+     */
+    void purge();
 }

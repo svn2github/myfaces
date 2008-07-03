@@ -189,15 +189,15 @@ public final class DojoUtils {
         renderWidgetInitializationCode(writer, component, DEBUG_CONSOLE_TYPE, attributeMap, MYFACES_DOJO_DEBUGCONSOLE_ID, true);
     }
 
-	/**
-	 * check if dojo is going to be used 
-	 */
-	public static boolean isDojoInitialized(FacesContext facesContext)
-	{
-		return isInlineScriptCheck(facesContext, DJCONFIG_INITKEY);
-	}
+    /**
+     * check if dojo is going to be used 
+     */
+    public static boolean isDojoInitialized(FacesContext facesContext)
+    {
+        return isInlineScriptCheck(facesContext, DJCONFIG_INITKEY);
+    }
 
-	public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, DojoConfig config) throws IOException {
+    public static void addMainInclude(FacesContext facesContext, UIComponent component, String javascriptLocation, DojoConfig config) throws IOException {
 
         AddResource addResource = AddResourceFactory.getInstance(facesContext);
 
@@ -446,19 +446,19 @@ public final class DojoUtils {
         return true;
     }
 
-	/**
-	 * check if the script with the given inlineScript-name has been added
-	 */
-	public static boolean isInlineScriptCheck(FacesContext context, String inlineScript)
-	{
-		// TODO move this non neutral code into the resource handler
-		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-		Set set = getBodyScriptInfos(request);
+    /**
+     * check if the script with the given inlineScript-name has been added
+     */
+    public static boolean isInlineScriptCheck(FacesContext context, String inlineScript)
+    {
+        // TODO move this non neutral code into the resource handler
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        Set set = getBodyScriptInfos(request);
 
-		return set.contains(inlineScript);
-	}
+        return set.contains(inlineScript);
+    }
 
-	/**
+    /**
      * please, instead of using standard dojo taglib mechanisms use this code
      * for initialisation it will render a clean and proper javascript
      * initialisation instead. There are issues with ADF and the dojo taglib
@@ -540,8 +540,8 @@ public final class DojoUtils {
                 if (!first)
                     writer.write(",");
                 writer.write(entry.getKey().toString());
-                writer.write(":"); 	// only real string values should be within
-                					// ambersants, dojo req
+                writer.write(":");     // only real string values should be within
+                                    // ambersants, dojo req
                 boolean isString = value instanceof String;
                 if (isString)
                 {

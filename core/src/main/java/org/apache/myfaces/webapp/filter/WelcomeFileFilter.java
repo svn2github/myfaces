@@ -133,7 +133,7 @@ implements Filter
 
             File file = new File(_context.getRealPath(sb.toString()));
 
-            //            			context.log("Welcome File: " + file.getAbsolutePath());
+            //                        context.log("Welcome File: " + file.getAbsolutePath());
             if (file.exists())
             {
                 // REVISIT: This will force all "welcome" JSPs through MyFaces. 

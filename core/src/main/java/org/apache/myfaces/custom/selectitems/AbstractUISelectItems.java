@@ -46,7 +46,7 @@ import javax.faces.model.SelectItemGroup;
  * @version $Revision$ $Date$
  */
 public abstract class AbstractUISelectItems extends javax.faces.component.UISelectItems {
-	
+    
     public static final String COMPONENT_TYPE = "org.apache.myfaces.UISelectItems";
     
     /**
@@ -54,86 +54,86 @@ public abstract class AbstractUISelectItems extends javax.faces.component.UISele
      * 
      * @JSFProperty
      */
-	public abstract String getVar();
-	
-	/**
-	 * name of the selectitem
-	 * 
-	 * @JSFProperty
-	 */
-	public abstract Object getItemLabel();
+    public abstract String getVar();
+    
+    /**
+     * name of the selectitem
+     * 
+     * @JSFProperty
+     */
+    public abstract Object getItemLabel();
 
     /**
      * value of the selectitem
      * 
      * @JSFProperty
      */
-	public abstract Object getItemValue();
+    public abstract Object getItemValue();
     
     public Object getValue() {
-    	Object value = super.getValue();
-    	return createSelectItems(value);
+        Object value = super.getValue();
+        return createSelectItems(value);
     }
 
-	private SelectItem[] createSelectItems(Object value) {
-		List items = new ArrayList();
-		
-		if (value instanceof SelectItem[]) {
-			return (SelectItem[]) value;
-		}
-		else if (value instanceof Collection) {
-			Collection collection = (Collection) value;
-			for (Iterator iter = collection.iterator(); iter.hasNext();) {
-				Object currentItem = (Object) iter.next();
-				if (currentItem instanceof SelectItemGroup) {
-					SelectItemGroup itemGroup = (SelectItemGroup) currentItem;		
-					SelectItem[] itemsFromGroup = itemGroup.getSelectItems();
-					for (int i = 0; i < itemsFromGroup.length; i++) {
-						items.add(itemsFromGroup[i]);
-					}
-				}
-				else {
-					putIteratorToRequestParam(currentItem);
-					SelectItem selectItem = createSelectItem();
-					removeIteratorFromRequestParam();
-					items.add(selectItem);
-				}
-			}
-		}
-		else if (value instanceof Map) {
-			Map map = (Map) value;
-			for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
-				Entry currentItem = (Entry) iter.next();
-				putIteratorToRequestParam(currentItem.getValue());
-				SelectItem selectItem = createSelectItem();
-				removeIteratorFromRequestParam();
-				items.add(selectItem);
-			}
-		}
-		
-		return (SelectItem[]) items.toArray(new SelectItem[0]);
-	}
+    private SelectItem[] createSelectItems(Object value) {
+        List items = new ArrayList();
+        
+        if (value instanceof SelectItem[]) {
+            return (SelectItem[]) value;
+        }
+        else if (value instanceof Collection) {
+            Collection collection = (Collection) value;
+            for (Iterator iter = collection.iterator(); iter.hasNext();) {
+                Object currentItem = (Object) iter.next();
+                if (currentItem instanceof SelectItemGroup) {
+                    SelectItemGroup itemGroup = (SelectItemGroup) currentItem;        
+                    SelectItem[] itemsFromGroup = itemGroup.getSelectItems();
+                    for (int i = 0; i < itemsFromGroup.length; i++) {
+                        items.add(itemsFromGroup[i]);
+                    }
+                }
+                else {
+                    putIteratorToRequestParam(currentItem);
+                    SelectItem selectItem = createSelectItem();
+                    removeIteratorFromRequestParam();
+                    items.add(selectItem);
+                }
+            }
+        }
+        else if (value instanceof Map) {
+            Map map = (Map) value;
+            for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
+                Entry currentItem = (Entry) iter.next();
+                putIteratorToRequestParam(currentItem.getValue());
+                SelectItem selectItem = createSelectItem();
+                removeIteratorFromRequestParam();
+                items.add(selectItem);
+            }
+        }
+        
+        return (SelectItem[]) items.toArray(new SelectItem[0]);
+    }
 
-	private SelectItem createSelectItem() {
-		SelectItem item = null;
-		Object value = getItemValue();
-		String label = getItemLabel() != null ? getItemLabel().toString() : null;
-		
-		if(label != null)
-			item = new SelectItem(value, label);
-		else
-			item = new SelectItem(value);
-		
-		return item;
-	}
-	
-	private void putIteratorToRequestParam(Object object) {
-		FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put(getVar(), object);
-	}
-	
-	private void removeIteratorFromRequestParam() {
-		FacesContext.getCurrentInstance().getExternalContext().getRequestMap().remove(getVar());
-	}
-	
+    private SelectItem createSelectItem() {
+        SelectItem item = null;
+        Object value = getItemValue();
+        String label = getItemLabel() != null ? getItemLabel().toString() : null;
+        
+        if(label != null)
+            item = new SelectItem(value, label);
+        else
+            item = new SelectItem(value);
+        
+        return item;
+    }
+    
+    private void putIteratorToRequestParam(Object object) {
+        FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put(getVar(), object);
+    }
+    
+    private void removeIteratorFromRequestParam() {
+        FacesContext.getCurrentInstance().getExternalContext().getRequestMap().remove(getVar());
+    }
+    
 }
 

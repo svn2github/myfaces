@@ -43,12 +43,12 @@ public abstract class AbstractHtmlFocus extends UIInput
 
     private static Log log = LogFactory.getLog(AbstractHtmlFocus.class);
 
-	/**
-	 * The JSF id of the component to receive focus.
-	 * 
-	 * @JSFProperty
-	 */
-	public abstract String getFor();
+    /**
+     * The JSF id of the component to receive focus.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getFor();
 
     /**
      * @JSFProperty
@@ -58,21 +58,21 @@ public abstract class AbstractHtmlFocus extends UIInput
 
 
     protected UIComponent findUIComponent()
-	{
-		String forStr = getFor();
+    {
+        String forStr = getFor();
 
-		if (forStr == null)
-		{
-			throw new IllegalArgumentException("focus@for must be specified");
-		}
+        if (forStr == null)
+        {
+            throw new IllegalArgumentException("focus@for must be specified");
+        }
 
-		UIComponent forComp = findComponent(forStr);
-		if (forComp == null)
-		{
-			log.warn("could not find UIComponent referenced by attribute focus@for = '"
-					+ forStr + "'");
-		}
-		return forComp;
-	}
+        UIComponent forComp = findComponent(forStr);
+        if (forComp == null)
+        {
+            log.warn("could not find UIComponent referenced by attribute focus@for = '"
+                    + forStr + "'");
+        }
+        return forComp;
+    }
 
 }

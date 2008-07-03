@@ -59,35 +59,35 @@ public class StringUtilsConverter implements Converter, StateHolder {
     protected Integer maxLength = null;
     protected Boolean appendEllipsesDuringOutput = null;
     protected Boolean appendEllipsesDuringInput = null;
-	
-	public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-		return null == value ? null : format(value.toString(), false);
-	}
+    
+    public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
+        return null == value ? null : format(value.toString(), false);
+    }
 
-	public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-		return value == null ? "" : format(value.toString(), true);
-	}
+    public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
+        return value == null ? "" : format(value.toString(), true);
+    }
 
-	private String format(String val, boolean duringOutput) throws ConverterException {
+    private String format(String val, boolean duringOutput) throws ConverterException {
 
-		String str;
-		if (BooleanUtils.isTrue(trim)) {
-			str = val.trim();
-		} else {
-			str = val;
-		}
-		// Any decorations first
-		if (StringUtils.isNotEmpty(format)) {
-			if ("uppercase".equalsIgnoreCase(format)) {
-				str = StringUtils.upperCase(str);
-			} else if ("lowercase".equalsIgnoreCase(format)) {
-				str = StringUtils.lowerCase(str);
-			} else if ("capitalize".equalsIgnoreCase(format)) {
-				str = WordUtils.capitalizeFully(str);
-			} else {
-				throw new ConverterException("Invalid format '" + format + "'");
-			}
-		}
+        String str;
+        if (BooleanUtils.isTrue(trim)) {
+            str = val.trim();
+        } else {
+            str = val;
+        }
+        // Any decorations first
+        if (StringUtils.isNotEmpty(format)) {
+            if ("uppercase".equalsIgnoreCase(format)) {
+                str = StringUtils.upperCase(str);
+            } else if ("lowercase".equalsIgnoreCase(format)) {
+                str = StringUtils.lowerCase(str);
+            } else if ("capitalize".equalsIgnoreCase(format)) {
+                str = WordUtils.capitalizeFully(str);
+            } else {
+                throw new ConverterException("Invalid format '" + format + "'");
+            }
+        }
         
         boolean appendEllipses = 
             ((duringOutput)
@@ -111,8 +111,8 @@ public class StringUtilsConverter implements Converter, StateHolder {
                 str = str.substring(0, maxLength.intValue());
             }
         }
-		return str;
-	}
+        return str;
+    }
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         this.format = (String) values[0];
@@ -146,12 +146,12 @@ public class StringUtilsConverter implements Converter, StateHolder {
      * @JSFProperty
      */
     public String getFormat() {
-		return format;
-	}
+        return format;
+    }
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
+    public void setFormat(String format) {
+        this.format = format;
+    }
 
     /**
      * Integer value for the maximum length of the rendered string. 
@@ -164,9 +164,9 @@ public class StringUtilsConverter implements Converter, StateHolder {
         return maxLength;
     }
 
-	public void setMaxLength(Integer maxLength) {
-		this.maxLength = maxLength;
-	}
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
+    }
 
     /**
      * Boolean value determining if data should be truncated with ellipses 
@@ -202,11 +202,11 @@ public class StringUtilsConverter implements Converter, StateHolder {
      * 
      * @JSFProperty
      */
-	public Boolean getTrim() {
-		return trim;
-	}
+    public Boolean getTrim() {
+        return trim;
+    }
 
-	public void setTrim(Boolean trim) {
-		this.trim = trim;
-	}
+    public void setTrim(Boolean trim) {
+        this.trim = trim;
+    }
 }

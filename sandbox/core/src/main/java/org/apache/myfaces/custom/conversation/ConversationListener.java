@@ -24,5 +24,5 @@ package org.apache.myfaces.custom.conversation;
  */
 public interface ConversationListener
 {
-	public void conversationEnded();
+    public void conversationEnded();
 }

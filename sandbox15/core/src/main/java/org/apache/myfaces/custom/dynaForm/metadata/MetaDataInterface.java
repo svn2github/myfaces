@@ -22,23 +22,23 @@ import java.util.Iterator;
 
 public interface MetaDataInterface
 {
-	/**
-	 * number of fields
-	 */
-	public int getFieldCount();
+    /**
+     * number of fields
+     */
+    public int getFieldCount();
 
-	/**
-	 * iterate through fields
-	 */
-	public Iterator<String> iterFieldNames();
+    /**
+     * iterate through fields
+     */
+    public Iterator<String> iterFieldNames();
 
-	/**
-	 * get the field by name
-	 */
-	public FieldInterface getField(String name);
+    /**
+     * get the field by name
+     */
+    public FieldInterface getField(String name);
 
-	/**
-	 * get all fields names
-	 */
-	public String[] getFieldNames();
+    /**
+     * get all fields names
+     */
+    public String[] getFieldNames();
 }

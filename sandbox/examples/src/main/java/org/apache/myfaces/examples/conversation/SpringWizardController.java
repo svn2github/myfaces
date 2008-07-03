@@ -24,26 +24,26 @@ import javax.faces.application.FacesMessage;
 
 public class SpringWizardController
 {
-	private WizardData wizardData;
+    private WizardData wizardData;
 
-	public WizardData getWizardData()
-	{
-		return wizardData;
-	}
+    public WizardData getWizardData()
+    {
+        return wizardData;
+    }
 
-	public void setWizardData(WizardData wizardData)
-	{
-		this.wizardData = wizardData;
-	}
+    public void setWizardData(WizardData wizardData)
+    {
+        this.wizardData = wizardData;
+    }
 
-	public String ensureConversationAction()
-	{
-		return "springWizardPage1";
-	}
+    public String ensureConversationAction()
+    {
+        return "springWizardPage1";
+    }
 
-	public String save()
-	{
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("data saved"));
-		return "success";
-	}
+    public String save()
+    {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("data saved"));
+        return "success";
+    }
 }

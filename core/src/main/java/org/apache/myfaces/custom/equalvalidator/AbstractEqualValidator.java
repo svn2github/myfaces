@@ -52,34 +52,34 @@ import org.apache.myfaces.validator.ValidatorBase;
 
 public abstract class AbstractEqualValidator extends ValidatorBase {
 
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.Equal";
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.Equal";
 
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the equal_for check fails.</p>
-	 */
-	public static final String EQUAL_MESSAGE_ID = "org.apache.myfaces.Equal.INVALID";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the equal_for check fails.</p>
+     */
+    public static final String EQUAL_MESSAGE_ID = "org.apache.myfaces.Equal.INVALID";
 
-	public AbstractEqualValidator(){
-	}
+    public AbstractEqualValidator(){
+    }
 
   // -------------------------------------------------------- ValidatorIF
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
 
-	    if (facesContext == null) throw new NullPointerException("facesContext");
+        if (facesContext == null) throw new NullPointerException("facesContext");
         if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-		if (value == null)
-		{
-		    return;
-		}
+        if (value == null)
+        {
+            return;
+        }
 
         UIComponent foreignComp = uiComponent.getParent().findComponent(getFor());
         if(foreignComp==null)
@@ -124,14 +124,14 @@ public abstract class AbstractEqualValidator extends ValidatorBase {
         }
         
 
-		Object[] args = {value.toString(),(foreignValue==null) ? foreignComp.getId():foreignValue.toString()};
+        Object[] args = {value.toString(),(foreignValue==null) ? foreignComp.getId():foreignValue.toString()};
 
-		if(foreignEditableValueHolder.getValue()==null || !foreignValue.toString().equals(value.toString())  )
+        if(foreignEditableValueHolder.getValue()==null || !foreignValue.toString().equals(value.toString())  )
         {
             throw new ValidatorException(getFacesMessage(EQUAL_MESSAGE_ID, args));
         }
 
-	}
+    }
     
     // ---------------- Borrowed to convert foreign submitted values
 
@@ -214,18 +214,18 @@ public abstract class AbstractEqualValidator extends ValidatorBase {
         return componentValueObject;
     }
         
-	// -------------------------------------------------------- GETTER & SETTER
+    // -------------------------------------------------------- GETTER & SETTER
 
-	/**
-	 * the id of the foreign component, which is needed for the validation
-	 * 
-	 * @JSFProperty
-	 * @return the foreign component_id, on which a value should be validated
-	 */
-	public abstract String getFor();
+    /**
+     * the id of the foreign component, which is needed for the validation
+     * 
+     * @JSFProperty
+     * @return the foreign component_id, on which a value should be validated
+     */
+    public abstract String getFor();
 
-	/**
-	 * @param string the foreign component_id, on which a value should be validated
-	 */
-	public abstract void setFor(String string);
+    /**
+     * @param string the foreign component_id, on which a value should be validated
+     */
+    public abstract void setFor(String string);
 }

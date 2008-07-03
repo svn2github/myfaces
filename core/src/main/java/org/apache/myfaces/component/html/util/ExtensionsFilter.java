@@ -30,10 +30,10 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ExtensionsFilter extends org.apache.myfaces.webapp.filter.ExtensionsFilter
 {
-	private final static Log log = LogFactory.getLog(ExtensionsFilter.class);
-	
-	public ExtensionsFilter()
-	{
-		log.warn("Please adjust your web.xml to use org.apache.myfaces.webapp.filter.ExtensionsFilter");
-	}
+    private final static Log log = LogFactory.getLog(ExtensionsFilter.class);
+    
+    public ExtensionsFilter()
+    {
+        log.warn("Please adjust your web.xml to use org.apache.myfaces.webapp.filter.ExtensionsFilter");
+    }
 }

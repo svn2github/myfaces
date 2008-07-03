@@ -30,11 +30,11 @@ import javax.faces.component.UIComponentBase;
  */
 public class ValidationScript extends UIComponentBase{
 
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.clientvalidation.ValidationScript";
-	public static final String COMPONENT_FAMILY = "org.apache.myfaces.clientvalidation";
-	public static final String DEFAULT_RENDERER = "org.apache.myfaces.clientvalidation.ValidationScriptRenderer";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.clientvalidation.ValidationScript";
+    public static final String COMPONENT_FAMILY = "org.apache.myfaces.clientvalidation";
+    public static final String DEFAULT_RENDERER = "org.apache.myfaces.clientvalidation.ValidationScriptRenderer";
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 }

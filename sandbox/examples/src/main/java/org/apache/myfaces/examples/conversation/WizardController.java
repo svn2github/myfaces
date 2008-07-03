@@ -23,14 +23,14 @@ import javax.faces.context.FacesContext;
 
 public class WizardController
 {
-	public String ensureConversationAction()
-	{
-		return "wizardPage1";
-	}
+    public String ensureConversationAction()
+    {
+        return "wizardPage1";
+    }
 
-	public String save()
-	{
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("data saved"));
-		return "success";
-	}
+    public String save()
+    {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("data saved"));
+        return "success";
+    }
 }

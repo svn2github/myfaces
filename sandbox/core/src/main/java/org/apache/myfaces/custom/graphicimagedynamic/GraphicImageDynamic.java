@@ -65,10 +65,10 @@ public class GraphicImageDynamic extends HtmlGraphicImage
     public static final String COMPONENT_TYPE = "org.apache.myfaces.GraphicImageDynamic";
     public static final String COMPONENT_FAMILY = "javax.faces.Graphic";
     public static final String RENDERER_PARAM = "_renderer";
-	public static final String VALUE_PARAM = "_value";
-	public static final String WIDTH_PARAM = "_width";
-	public static final String HEIGHT_PARAM = "_height";    
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.GraphicImageDynamicRenderer";	
+    public static final String VALUE_PARAM = "_value";
+    public static final String WIDTH_PARAM = "_width";
+    public static final String HEIGHT_PARAM = "_height";    
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.GraphicImageDynamicRenderer";    
     
 
     public GraphicImageDynamic()

@@ -114,7 +114,7 @@ public abstract class AbstractSelectOneCountry extends HtmlSelectOneMenu {
 
         List countriesSelectItems = new ArrayList( map.size() );
         if(getEmptySelection() != null)
-        	countriesSelectItems.add(new SelectItem("", getEmptySelection()));
+            countriesSelectItems.add(new SelectItem("", getEmptySelection()));
 
         Integer maxLength = getMaxLength();
         int maxDescriptionLength = maxLength==null ? Integer.MAX_VALUE : maxLength.intValue();
@@ -137,11 +137,11 @@ public abstract class AbstractSelectOneCountry extends HtmlSelectOneMenu {
     }
 
     protected void validateValue(FacesContext context, Object value) {
-    	UISelectItems selectItems = new UISelectItems();
-    	selectItems.setTransient(true);
-    	selectItems.setValue(getCountriesChoicesAsSelectItemList());
-    	getChildren().add(selectItems);
-    	
-    	super.validateValue(context,value);
+        UISelectItems selectItems = new UISelectItems();
+        selectItems.setTransient(true);
+        selectItems.setValue(getCountriesChoicesAsSelectItemList());
+        getChildren().add(selectItems);
+        
+        super.validateValue(context,value);
     }
 }

@@ -127,7 +127,7 @@ public abstract class AbstractCompactScheduleRenderer extends
         boolean isToday = ScheduleUtil.isSameDay(day.getDate(), new Date(), schedule.getModel().getTimeZone());
         
         String dayClass = getStyleClass(schedule, isCurrentMonth ? "day" : "inactive-day") + 
-        		" " + getStyleClass(schedule, isWeekend ? "weekend" : "workday") + " " + (isToday ? getStyleClass(schedule, "today") : "");
+                " " + getStyleClass(schedule, isWeekend ? "weekend" : "workday") + " " + (isToday ? getStyleClass(schedule, "today") : "");
         
         writer.writeAttribute(HTML.CLASS_ATTR, dayClass, null);
 
@@ -215,7 +215,7 @@ public abstract class AbstractCompactScheduleRenderer extends
                 null);
 
         writer.writeAttribute(HTML.ID_ATTR, dayBodyId, null);
-		
+        
         //register an onclick event listener to a day cell which will capture
         //the date
         if (!schedule.isReadonly() && schedule.isSubmitOnClick()) {
@@ -269,7 +269,7 @@ public abstract class AbstractCompactScheduleRenderer extends
 
         if (entrySet.size() > 0)
         {
-        	writer.startElement(HTML.TABLE_ELEM, schedule);
+            writer.startElement(HTML.TABLE_ELEM, schedule);
             writer.writeAttribute(HTML.CELLPADDING_ATTR, "0", null);
             writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
             writer.writeAttribute(HTML.STYLE_ATTR, "width: 100%;", null);           
@@ -357,7 +357,7 @@ public abstract class AbstractCompactScheduleRenderer extends
      * into account when determining the last clicked date.
      */
     protected Date determineLastClickedDate(HtmlSchedule schedule, String dateId, String yPos) {
-		//the dateId is the schedule client id + "_" + yyyyMMdd
+        //the dateId is the schedule client id + "_" + yyyyMMdd
         String day = dateId.substring(dateId.lastIndexOf("_") + 1);
         Date date = ScheduleUtil.getDateFromId(day, schedule.getModel().getTimeZone());
 

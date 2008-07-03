@@ -61,16 +61,16 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 public class CAPTCHARenderer extends Renderer implements ResourceLoader {
 
     public void encodeBegin(FacesContext context, UIComponent component)
-	    throws IOException {
+        throws IOException {
 
-	CAPTCHAComponent captchaComponent = (CAPTCHAComponent) component;
+    CAPTCHAComponent captchaComponent = (CAPTCHAComponent) component;
 
-	generateImageTag(context, captchaComponent);
+    generateImageTag(context, captchaComponent);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component)
-	    throws IOException {
-	super.encodeEnd(context, component);
+        throws IOException {
+    super.encodeEnd(context, component);
     }
 
     /*
@@ -78,52 +78,52 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
      * use the (AddResource) to generate the url of the generated image.
      */
     private void generateImageTag(FacesContext context,
-	    CAPTCHAComponent component) throws IOException {
+        CAPTCHAComponent component) throws IOException {
 
-	AddResource addResource;
-	ResponseWriter writer = context.getResponseWriter();
-	Map params = HtmlComponentUtils.getParameterMap(component);
-	String url;	
-	String captchaSessionKeyName = component.getCaptchaSessionKeyName();
-	String width = component.getImageWidth();
-	String height = component.getImageHeight();
-	
-	// determine width and height of the generated image.
-	if(width == null) 
-	{
-	    width = CAPTCHAConstants.DEFAULT_CAPTCHA_WIDTH + ""; 
-	}
-	
-	if(height == null) 
-	{
-	    height = CAPTCHAConstants.DEFAULT_CAPTCHA_HEIGHT + ""; 
-	}	
-	
-	writer.startElement(HTML.IMG_ELEM, component);
+    AddResource addResource;
+    ResponseWriter writer = context.getResponseWriter();
+    Map params = HtmlComponentUtils.getParameterMap(component);
+    String url;    
+    String captchaSessionKeyName = component.getCaptchaSessionKeyName();
+    String width = component.getImageWidth();
+    String height = component.getImageHeight();
+    
+    // determine width and height of the generated image.
+    if(width == null) 
+    {
+        width = CAPTCHAConstants.DEFAULT_CAPTCHA_WIDTH + ""; 
+    }
+    
+    if(height == null) 
+    {
+        height = CAPTCHAConstants.DEFAULT_CAPTCHA_HEIGHT + ""; 
+    }    
+    
+    writer.startElement(HTML.IMG_ELEM, component);
 
-	// constructing the parameter map to be passed to the (AddResource).
-	if (captchaSessionKeyName != null) 
-	{
-	    params.put(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME,
-		    captchaSessionKeyName);
-	}
-	
-	// write the url to trigger the (AddResource).
-	addResource = AddResourceFactory.getInstance(context);
+    // constructing the parameter map to be passed to the (AddResource).
+    if (captchaSessionKeyName != null) 
+    {
+        params.put(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME,
+            captchaSessionKeyName);
+    }
+    
+    // write the url to trigger the (AddResource).
+    addResource = AddResourceFactory.getInstance(context);
 
-	url = context.getExternalContext().encodeResourceURL(
-		addResource.getResourceUri(context,
-			new ParameterResourceHandler(this.getClass(), params)));
+    url = context.getExternalContext().encodeResourceURL(
+        addResource.getResourceUri(context,
+            new ParameterResourceHandler(this.getClass(), params)));
 
-	
-	writer.writeAttribute(HTML.SRC_ATTR, url, null);
+    
+    writer.writeAttribute(HTML.SRC_ATTR, url, null);
 
-	// write rest of attributes.
-	writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
-	
-	writer.writeAttribute(HTML.HEIGHT_ATTR, height, null);	
-	
-	writer.endElement(HTML.IMG_ELEM);
+    // write rest of attributes.
+    writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
+    
+    writer.writeAttribute(HTML.HEIGHT_ATTR, height, null);    
+    
+    writer.endElement(HTML.IMG_ELEM);
     }
 
     /*
@@ -131,39 +131,39 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
      * It wraps the CAPTCHA image generation.
      */
     public void serveResource(ServletContext servletContext,
-	    HttpServletRequest request, HttpServletResponse response,
-	    String resourceUri) throws IOException {
+        HttpServletRequest request, HttpServletResponse response,
+        String resourceUri) throws IOException {
 
-	// get the FacesContext from the ServletContext.
-	FacesContextFactory facesContextFactory = (FacesContextFactory) FactoryFinder
-		.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
-	LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder
-		.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-	Lifecycle lifecycle = lifecycleFactory.getLifecycle(HtmlComponentUtils
-		.getLifecycleId(servletContext));
-	FacesContext facesContext = facesContextFactory.getFacesContext(
-		servletContext, request, response, lifecycle);
-	facesContext.setResponseStream(new CAPTCHAResponseStream(response
-		.getOutputStream()));
+    // get the FacesContext from the ServletContext.
+    FacesContextFactory facesContextFactory = (FacesContextFactory) FactoryFinder
+        .getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
+    LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder
+        .getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+    Lifecycle lifecycle = lifecycleFactory.getLifecycle(HtmlComponentUtils
+        .getLifecycleId(servletContext));
+    FacesContext facesContext = facesContextFactory.getFacesContext(
+        servletContext, request, response, lifecycle);
+    facesContext.setResponseStream(new CAPTCHAResponseStream(response
+        .getOutputStream()));
 
-	// render the CAPTCHA.
-	try 
-	{
-	    try 
-	    {
-		renderCAPTCHA(facesContext);
-	    }
-	    catch (IOException e) 
-	    {
-		throw new FacesException("Could not render the CAPTCHA : "
-			+ e.getMessage(), e);
-	    }
-	    facesContext.getResponseStream().close();
-	}
-	finally 
-	{
-	    facesContext.release();
-	}
+    // render the CAPTCHA.
+    try 
+    {
+        try 
+        {
+        renderCAPTCHA(facesContext);
+        }
+        catch (IOException e) 
+        {
+        throw new FacesException("Could not render the CAPTCHA : "
+            + e.getMessage(), e);
+        }
+        facesContext.getResponseStream().close();
+    }
+    finally 
+    {
+        facesContext.release();
+    }
     }
 
     /*
@@ -171,42 +171,42 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
      */
     protected void renderCAPTCHA(FacesContext facesContext) throws IOException {
 
-	// getting CAPTCHA attributes.
-	HttpServletResponse response = (HttpServletResponse) facesContext
-		.getExternalContext().getResponse();
-	ResponseStream out = facesContext.getResponseStream();
-	Map requestMap = facesContext.getExternalContext()
-		.getRequestParameterMap();
-	HttpServletRequest request = (HttpServletRequest) facesContext
-		.getExternalContext().getRequest();
-	String captchaSessionKeyName = requestMap.get(
-		CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME).toString();
-	
-	// construct the CAPTCHA image generator object.
-	CAPTCHAImageGenerator captchaImageGenerator = new CAPTCHAImageGenerator();
-	
-	try 
-	{
-	    String captchaText;
-	    Color endingColor = ColorGenerator.generateRandomColor(null);
-	    Color startingColor = ColorGenerator.generateRandomColor(endingColor);
-	    
-	    // Generate random CAPTCHA text.
-	    captchaText = CAPTCHATextGenerator.generateRandomText();	    
-	    
-	    // Generate the image, the BG color is randomized from starting to ending colors.
+    // getting CAPTCHA attributes.
+    HttpServletResponse response = (HttpServletResponse) facesContext
+        .getExternalContext().getResponse();
+    ResponseStream out = facesContext.getResponseStream();
+    Map requestMap = facesContext.getExternalContext()
+        .getRequestParameterMap();
+    HttpServletRequest request = (HttpServletRequest) facesContext
+        .getExternalContext().getRequest();
+    String captchaSessionKeyName = requestMap.get(
+        CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME).toString();
+    
+    // construct the CAPTCHA image generator object.
+    CAPTCHAImageGenerator captchaImageGenerator = new CAPTCHAImageGenerator();
+    
+    try 
+    {
+        String captchaText;
+        Color endingColor = ColorGenerator.generateRandomColor(null);
+        Color startingColor = ColorGenerator.generateRandomColor(endingColor);
+        
+        // Generate random CAPTCHA text.
+        captchaText = CAPTCHATextGenerator.generateRandomText();        
+        
+        // Generate the image, the BG color is randomized from starting to ending colors.
             captchaImageGenerator.generateImage(response, captchaText,
-		    startingColor, endingColor);
+            startingColor, endingColor);
 
-	    // Set the generated text in the user session.
-	    request.getSession().setAttribute(captchaSessionKeyName,
-		    captchaText);
+        // Set the generated text in the user session.
+        request.getSession().setAttribute(captchaSessionKeyName,
+            captchaText);
 
-	}
-	finally 
-	{
-	    out.close();
-	    facesContext.responseComplete();
-	}
+    }
+    finally 
+    {
+        out.close();
+        facesContext.responseComplete();
+    }
     }
 }

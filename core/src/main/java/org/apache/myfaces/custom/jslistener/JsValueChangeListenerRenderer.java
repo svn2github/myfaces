@@ -133,9 +133,9 @@ public class JsValueChangeListenerRenderer
 
             // render the jsValueChangeListener script only for each parent component 
             if(oldValueStr.indexOf(parent.getClientId(FacesContext.getCurrentInstance())) < 0
-            		&& oldValueStr.length() > 0)
+                    && oldValueStr.length() > 0)
             {
-            	oldValueStr = "";
+                oldValueStr = "";
             }
 
             if(oldValueStr.length()>0 && !oldValueStr.endsWith(";"))

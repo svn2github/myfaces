@@ -48,10 +48,10 @@ public class HtmlSelectBooleanCheckboxTag
     private String _visibleOnUserRole;
 
     private String _displayValueOnly;
-	private String _displayValueOnlyStyle;
-	private String _displayValueOnlyStyleClass;
-	
-	private String _escape;
+    private String _displayValueOnlyStyle;
+    private String _displayValueOnlyStyleClass;
+    
+    private String _escape;
 
     public void release() {
         super.release();

@@ -39,8 +39,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RequestParameterServletFilter implements Filter
 {
-	public final static String REQUEST_PARAM_FILTER_CALLED = RequestParameterServletFilter.class.getName() + ".CALLED";
-	
+    public final static String REQUEST_PARAM_FILTER_CALLED = RequestParameterServletFilter.class.getName() + ".CALLED";
+    
     public RequestParameterServletFilter()
     {
     }
@@ -55,12 +55,12 @@ public class RequestParameterServletFilter implements Filter
     {
         if(servletResponse instanceof HttpServletResponse)
         {
-        	HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-    		if (!Boolean.TRUE.equals(httpServletRequest.getAttribute(REQUEST_PARAM_FILTER_CALLED)))
-    		{
-    			httpServletRequest.setAttribute(REQUEST_PARAM_FILTER_CALLED, Boolean.TRUE);
-    			servletResponse = new RequestParameterResponseWrapper((HttpServletResponse) servletResponse);
-    		}
+            HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+            if (!Boolean.TRUE.equals(httpServletRequest.getAttribute(REQUEST_PARAM_FILTER_CALLED)))
+            {
+                httpServletRequest.setAttribute(REQUEST_PARAM_FILTER_CALLED, Boolean.TRUE);
+                servletResponse = new RequestParameterResponseWrapper((HttpServletResponse) servletResponse);
+            }
         }
         
         filterChain.doFilter(servletRequest, servletResponse);

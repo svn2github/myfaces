@@ -22,18 +22,18 @@ import org.apache.myfaces.shared_tomahawk.taglib.UIComponentBodyTagBase;
 
 public class DynaConfigsTag extends UIComponentBodyTagBase
 {
-	public void release()
-	{
-		super.release();
-	}
+    public void release()
+    {
+        super.release();
+    }
 
-	public String getComponentType()
-	{
-		return DynaConfigs.COMPONENT_TYPE;
-	}
+    public String getComponentType()
+    {
+        return DynaConfigs.COMPONENT_TYPE;
+    }
 
-	public String getRendererType()
-	{
-		return null;
-	}
+    public String getRendererType()
+    {
+        return null;
+    }
 }

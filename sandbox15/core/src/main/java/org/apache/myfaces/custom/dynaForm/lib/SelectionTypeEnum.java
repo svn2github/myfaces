@@ -20,7 +20,7 @@ package org.apache.myfaces.custom.dynaForm.lib;
 
 public enum SelectionTypeEnum
 {
-	none,
-	one,
-	many
+    none,
+    one,
+    many
 }

@@ -29,38 +29,38 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
  */
 public class TreeNodeChecked extends TreeNodeBase
 {
-	private static final long serialVersionUID = -3319932828983347196L;
-	private boolean checked;
+    private static final long serialVersionUID = -3319932828983347196L;
+    private boolean checked;
 
-	public TreeNodeChecked() {
-		super();
-	}
+    public TreeNodeChecked() {
+        super();
+    }
 
-	public TreeNodeChecked(String type, String description, boolean leaf) {
-		super(type, description, leaf);
-	}
+    public TreeNodeChecked(String type, String description, boolean leaf) {
+        super(type, description, leaf);
+    }
 
-	public TreeNodeChecked(String type, String description, String identifier, boolean leaf) {
-		super(type, description, identifier, leaf);
-	}
-	
-	public TreeNodeChecked(String type, String description, boolean checked, boolean leaf) {
-		super(type, description, leaf);
-		this.checked = checked;
-	}
-	
-	public TreeNodeChecked(String type, String description, String identifier, boolean checked, boolean leaf) {
-		super(type, description, identifier, leaf);
-		this.checked = checked;
-	}
+    public TreeNodeChecked(String type, String description, String identifier, boolean leaf) {
+        super(type, description, identifier, leaf);
+    }
+    
+    public TreeNodeChecked(String type, String description, boolean checked, boolean leaf) {
+        super(type, description, leaf);
+        this.checked = checked;
+    }
+    
+    public TreeNodeChecked(String type, String description, String identifier, boolean checked, boolean leaf) {
+        super(type, description, identifier, leaf);
+        this.checked = checked;
+    }
 
 
-	public boolean isChecked() {
-		return checked;
-	}
+    public boolean isChecked() {
+        return checked;
+    }
 
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	}
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
 }

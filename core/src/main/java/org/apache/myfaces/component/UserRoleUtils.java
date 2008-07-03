@@ -30,13 +30,13 @@ public final class UserRoleUtils
 {
     //private static final Log log = LogFactory.getLog(UserRoleUtils.class);
 
-	/**
-	 * Constructor (private one)
-	 */
-	private UserRoleUtils(){
-		
-	}
-	
+    /**
+     * Constructor (private one)
+     */
+    private UserRoleUtils(){
+        
+    }
+    
     /**
      * Gets the comma separated list of visibility user roles from the given component
      * and checks if current user is in one of these roles.

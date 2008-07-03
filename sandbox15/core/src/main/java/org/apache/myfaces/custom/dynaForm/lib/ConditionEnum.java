@@ -20,15 +20,15 @@ package org.apache.myfaces.custom.dynaForm.lib;
 
 public enum ConditionEnum
 {
-	auto,
-	eq,
-	ne,
-	gt,
-	lt,
-	ge,
-	le,
-	isNull,
-	isNotNull,
-	like,
-	ilike
+    auto,
+    eq,
+    ne,
+    gt,
+    lt,
+    ge,
+    le,
+    isNull,
+    isNotNull,
+    like,
+    ilike
 }

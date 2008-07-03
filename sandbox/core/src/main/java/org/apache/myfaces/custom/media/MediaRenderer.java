@@ -44,38 +44,38 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 public class MediaRenderer extends Renderer {
 
     public void encodeBegin(FacesContext context, UIComponent component)
-	    throws IOException {
+        throws IOException {
 
-	MediaComponent mediaComponent = (MediaComponent) component;
+    MediaComponent mediaComponent = (MediaComponent) component;
 
-	RendererUtils.checkParamValidity(context, component,
-		MediaComponent.class);
+    RendererUtils.checkParamValidity(context, component,
+        MediaComponent.class);
 
-	generateMediaTag(context, mediaComponent);
+    generateMediaTag(context, mediaComponent);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component)
-	    throws IOException {
-	super.encodeEnd(context, component);
+        throws IOException {
+    super.encodeEnd(context, component);
     }
 
     /*
      * This helper method is used for generating the suitable media tag.
      */
     private void generateMediaTag(FacesContext context,
-	    MediaComponent mediaComponent) throws IOException {
-	
-	String source = mediaComponent.getSource();	
-	
-	/* if the src uri is an image then use the <img> tag */
-	if(MediaUtil.isImage(source)) 
-	{
-	    MediaUtil.generateImageTag(context, mediaComponent);
-	} 
-	else /* generate EMBED Tag */
-	{
-	    MediaUtil.generateEmbedTag(context, mediaComponent);
-	}
-	
+        MediaComponent mediaComponent) throws IOException {
+    
+    String source = mediaComponent.getSource();    
+    
+    /* if the src uri is an image then use the <img> tag */
+    if(MediaUtil.isImage(source)) 
+    {
+        MediaUtil.generateImageTag(context, mediaComponent);
+    } 
+    else /* generate EMBED Tag */
+    {
+        MediaUtil.generateEmbedTag(context, mediaComponent);
+    }
+    
     }    
 }

@@ -44,7 +44,7 @@ public abstract class AbstractFieldset extends HtmlTag {
    *   tagExcluded = "true"
    */
   public Object getValue() {
-	return "fieldset";
+    return "fieldset";
   }
   
   /**

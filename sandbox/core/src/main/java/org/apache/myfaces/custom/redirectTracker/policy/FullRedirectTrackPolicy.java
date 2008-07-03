@@ -27,12 +27,12 @@ import org.apache.myfaces.custom.redirectTracker.RedirectTrackerContext;
  */
 public class FullRedirectTrackPolicy implements RedirectTrackerPolicy
 {
-	public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath)
-	{
-		redirectContext.saveLocale();
-		redirectContext.saveBeans();
-		redirectContext.saveMessages();
+    public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath)
+    {
+        redirectContext.saveLocale();
+        redirectContext.saveBeans();
+        redirectContext.saveMessages();
 
-		return redirectPath;
-	}
+        return redirectPath;
+    }
 }

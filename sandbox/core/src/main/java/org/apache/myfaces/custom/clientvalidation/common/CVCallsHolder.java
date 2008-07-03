@@ -30,21 +30,21 @@ import java.util.List;
  */
 public class CVCallsHolder implements Serializable{
 
-	private List _cvCalls;
-	
-	public CVCallsHolder() {
-	}
-	
-	public void addCVCall(CVCall call) {
-		getCvCalls().add( call );
-	}
+    private List _cvCalls;
+    
+    public CVCallsHolder() {
+    }
+    
+    public void addCVCall(CVCall call) {
+        getCvCalls().add( call );
+    }
 
-	public List getCvCalls() {
-		if(_cvCalls == null)
-			_cvCalls = new ArrayList();
-		return _cvCalls;
-	}
-	public void setCvCalls(List cvCalls) {
-		this._cvCalls = cvCalls;
-	}
+    public List getCvCalls() {
+        if(_cvCalls == null)
+            _cvCalls = new ArrayList();
+        return _cvCalls;
+    }
+    public void setCvCalls(List cvCalls) {
+        this._cvCalls = cvCalls;
+    }
 }

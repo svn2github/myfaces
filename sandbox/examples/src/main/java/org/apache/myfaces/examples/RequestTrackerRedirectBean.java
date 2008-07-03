@@ -23,23 +23,23 @@ import javax.faces.application.FacesMessage;
 
 public class RequestTrackerRedirectBean
 {
-	private String input;
+    private String input;
 
-	public String getInput()
-	{
-		return input;
-	}
+    public String getInput()
+    {
+        return input;
+    }
 
-	public void setInput(String input)
-	{
-		this.input = input;
-	}
+    public void setInput(String input)
+    {
+        this.input = input;
+    }
 
-	public String redirectAction()
-	{
-		FacesContext.getCurrentInstance().addMessage(null,
-			new FacesMessage(FacesMessage.SEVERITY_INFO, "requestTrackerRedirect message", "this is the message from the previous http request"));
+    public String redirectAction()
+    {
+        FacesContext.getCurrentInstance().addMessage(null,
+            new FacesMessage(FacesMessage.SEVERITY_INFO, "requestTrackerRedirect message", "this is the message from the previous http request"));
 
-		return "requestTrackerRedirect";
-	}
+        return "requestTrackerRedirect";
+    }
 }

@@ -30,13 +30,13 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(value= RetentionPolicy.RUNTIME)
 public @interface DataProvider
 {
-	/**
-	 * points to a method returning a list
-	 */
-	public String value();
+    /**
+     * points to a method returning a list
+     */
+    public String value();
 
-	/**
-	 * the properties to use as description. This can be a JSF value-binding.
-	 */
-	public String description();
+    /**
+     * the properties to use as description. This can be a JSF value-binding.
+     */
+    public String description();
 }

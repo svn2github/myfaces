@@ -24,80 +24,80 @@ package org.apache.myfaces.custom.security;
  */
 public abstract class SecurityContext {
 
-	public final static int AUTH_MODE_NONE = -1;
-	public final static int AUTH_MODE_SINGLE = 0;
-	public final static int AUTH_MODE_ALL = 1;
-	public final static int AUTH_MODE_ANY = 2;
-	public final static int AUTH_MODE_NOT = 3;
-	
-	private String[] roles;
-	private int authMode = AUTH_MODE_NONE;
-	
-	public abstract String getAuthType();	
-	
-	public abstract String getRemoteUser();
-	
-	public abstract boolean ifGranted(String role);
-	
-	boolean ifSingleGranted() {
-		return ifGranted(roles[0]);
-	}
-	
-	boolean ifAllGranted() {
-		boolean isAuthorized = false;
-		for (int i = 0; i < roles.length; i++) {
-			String role = roles[i];
-			if(ifGranted(role)) {
-				isAuthorized = true;
-			} else {
-				isAuthorized = false;
-				break;
-			}
-		}
-		return isAuthorized;
-	}
-	
-	boolean ifAnyGranted() {
-		boolean isAuthorized = false;
-		for (int i = 0; i < roles.length; i++) {
-			String role = roles[i];
-			if(ifGranted(role)) {
-				isAuthorized = true;
-				break;
-			}
-		}
-		return isAuthorized;
-	}
-	
-	boolean ifNotGranted() {
-		boolean isAuthorized = false;
-		for (int i = 0; i < roles.length; i++) {
-			String role = roles[i];
-			if(ifGranted(role)) {
-				isAuthorized = false;
-				break;
-			} else {
-				isAuthorized = true;
-			}
-		}
-		return isAuthorized;
-	}
-	
-	boolean inAuthMode() {
-		return authMode != AUTH_MODE_NONE;
-	}
-	
-	int getAuthMode() {
-		return authMode;
-	}
-	void setAuthMode(int authMode) {
-		this.authMode = authMode;
-	}
+    public final static int AUTH_MODE_NONE = -1;
+    public final static int AUTH_MODE_SINGLE = 0;
+    public final static int AUTH_MODE_ALL = 1;
+    public final static int AUTH_MODE_ANY = 2;
+    public final static int AUTH_MODE_NOT = 3;
+    
+    private String[] roles;
+    private int authMode = AUTH_MODE_NONE;
+    
+    public abstract String getAuthType();    
+    
+    public abstract String getRemoteUser();
+    
+    public abstract boolean ifGranted(String role);
+    
+    boolean ifSingleGranted() {
+        return ifGranted(roles[0]);
+    }
+    
+    boolean ifAllGranted() {
+        boolean isAuthorized = false;
+        for (int i = 0; i < roles.length; i++) {
+            String role = roles[i];
+            if(ifGranted(role)) {
+                isAuthorized = true;
+            } else {
+                isAuthorized = false;
+                break;
+            }
+        }
+        return isAuthorized;
+    }
+    
+    boolean ifAnyGranted() {
+        boolean isAuthorized = false;
+        for (int i = 0; i < roles.length; i++) {
+            String role = roles[i];
+            if(ifGranted(role)) {
+                isAuthorized = true;
+                break;
+            }
+        }
+        return isAuthorized;
+    }
+    
+    boolean ifNotGranted() {
+        boolean isAuthorized = false;
+        for (int i = 0; i < roles.length; i++) {
+            String role = roles[i];
+            if(ifGranted(role)) {
+                isAuthorized = false;
+                break;
+            } else {
+                isAuthorized = true;
+            }
+        }
+        return isAuthorized;
+    }
+    
+    boolean inAuthMode() {
+        return authMode != AUTH_MODE_NONE;
+    }
+    
+    int getAuthMode() {
+        return authMode;
+    }
+    void setAuthMode(int authMode) {
+        this.authMode = authMode;
+    }
 
-	String[] getRoles() {
-		return roles;
-	}
-	void setRoles(String[] roles) {
-		this.roles = roles;
-	}
+    String[] getRoles() {
+        return roles;
+    }
+    void setRoles(String[] roles) {
+        this.roles = roles;
+    }
 }

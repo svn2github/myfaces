@@ -43,33 +43,33 @@ import org.apache.myfaces.renderkit.html.ext.HtmlMenuRenderer;
  * @version $Revision$ $Date: 2005-05-11 12:14:23 -0400 (Wed, 11 May 2005) $
  */
 public class SelectOneLanguageRenderer extends HtmlMenuRenderer {
-	
-	public void encodeEnd(FacesContext facesContext, UIComponent component)
+    
+    public void encodeEnd(FacesContext facesContext, UIComponent component)
     throws IOException
-	{
-		RendererUtils.checkParamValidity(facesContext, component, null);
+    {
+        RendererUtils.checkParamValidity(facesContext, component, null);
 
-		SelectOneLanguage selectOneLanguage = (SelectOneLanguage) component;
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
-		if(HtmlRendererUtils.isDisplayValueOnly(component))
-		{
-		    //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
-			writer.startElement(HTML.SPAN_ELEM, selectOneLanguage);
-	        HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
-	    
-	        String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
+        SelectOneLanguage selectOneLanguage = (SelectOneLanguage) component;
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        if(HtmlRendererUtils.isDisplayValueOnly(component))
+        {
+            //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
+            writer.startElement(HTML.SPAN_ELEM, selectOneLanguage);
+            HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
+        
+            String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
             HtmlRendererUtils.renderHTMLAttributes(writer, selectOneLanguage, supportedAttributes);
-	        
-	        String languageCode = selectOneLanguage.getValue().toString();
-	        String languageName = new Locale(languageCode).getDisplayLanguage( facesContext.getViewRoot().getLocale() );
-	        
-	        writer.write( languageName );
-	        
-	        writer.endElement(HTML.SPAN_ELEM);
-		    return;
-		}
-		
+            
+            String languageCode = selectOneLanguage.getValue().toString();
+            String languageName = new Locale(languageCode).getDisplayLanguage( facesContext.getViewRoot().getLocale() );
+            
+            writer.write( languageName );
+            
+            writer.endElement(HTML.SPAN_ELEM);
+            return;
+        }
+        
         writer.startElement(HTML.SELECT_ELEM, component);
         HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
         writer.writeAttribute(HTML.NAME_ATTR, selectOneLanguage.getClientId(facesContext), null);
@@ -90,5 +90,5 @@ public class SelectOneLanguageRenderer extends HtmlMenuRenderer {
         // bug #970747: force separate end tag
         writer.writeText("", null);
         writer.endElement(HTML.SELECT_ELEM);
-	}
+    }
 }

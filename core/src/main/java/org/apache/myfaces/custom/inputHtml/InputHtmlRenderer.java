@@ -580,7 +580,7 @@ public class InputHtmlRenderer extends HtmlRenderer {
                  writer.startElement(HTML.SELECT_ELEM,editor);
                  writer.writeAttribute(HTML.ID_ATTR, "kupu-ulstyles", null);
                  writer.writeAttribute(HTML.CLASS_ATTR, "kupu-ulstyles", null);
-                     writeOption(writer, "disc", "list-disc", "&#x25CF;", editor);		// TODO : Check as last parameter has been removed.
+                     writeOption(writer, "disc", "list-disc", "&#x25CF;", editor);        // TODO : Check as last parameter has been removed.
                      writeOption(writer, "square", "list-square", "&#x25A0;", editor);
                      writeOption(writer, "circle", "list-circle", "&#x25CB;", editor);
                      writeOption(writer, "none", "list-nobullet", "no bullet", editor);

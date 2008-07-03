@@ -34,41 +34,41 @@ import java.util.Date;
  */
 public class HalfHourInterval extends Interval {
 
-	public static final long HALF_HOUR = 1000 * 60 * 30;
+    public static final long HALF_HOUR = 1000 * 60 * 30;
 
-	public HalfHourInterval(Date startTime, Date maxEnd)
-	{
-		super(null, startTime, new Date(Math.min(startTime.getTime() + HALF_HOUR, maxEnd.getTime())));
-	}
+    public HalfHourInterval(Date startTime, Date maxEnd)
+    {
+        super(null, startTime, new Date(Math.min(startTime.getTime() + HALF_HOUR, maxEnd.getTime())));
+    }
 
-	private HalfHourInterval(String label, Date startTime, Date endTime)
-	{
-		super(label, startTime, endTime); 
-	}
-	
-	/**
-	 * Create a new half hour interval following on from the supplied interval.
-	 * The interval will be anything up to half an hour, depending on when the
-	 * end of the previous interval was. If an interval cannot be fitted between
-	 * the end of the last interval and the maximum end time, null will be returned.
-	 * 
-	 * @param interval The previous interval
-	 * @param maxEnd The maximum end time of the new interval
-	 * @return The next half hour interval
-	 */
-	public static Interval next(Interval interval, Date maxEnd) {
-		Date startTime = interval.getEndTime();
-		
-		if (startTime.before(maxEnd))
-		{
-			Date endTime = new Date(Math.min(startTime.getTime() - (startTime.getTime() % HALF_HOUR) + HALF_HOUR, maxEnd.getTime()));
-			
-			return new HalfHourInterval(null, startTime, endTime);
-		}
-		else
-		{
-			
-			return null;
-		}
-	}
+    private HalfHourInterval(String label, Date startTime, Date endTime)
+    {
+        super(label, startTime, endTime); 
+    }
+    
+    /**
+     * Create a new half hour interval following on from the supplied interval.
+     * The interval will be anything up to half an hour, depending on when the
+     * end of the previous interval was. If an interval cannot be fitted between
+     * the end of the last interval and the maximum end time, null will be returned.
+     * 
+     * @param interval The previous interval
+     * @param maxEnd The maximum end time of the new interval
+     * @return The next half hour interval
+     */
+    public static Interval next(Interval interval, Date maxEnd) {
+        Date startTime = interval.getEndTime();
+        
+        if (startTime.before(maxEnd))
+        {
+            Date endTime = new Date(Math.min(startTime.getTime() - (startTime.getTime() % HALF_HOUR) + HALF_HOUR, maxEnd.getTime()));
+            
+            return new HalfHourInterval(null, startTime, endTime);
+        }
+        else
+        {
+            
+            return null;
+        }
+    }
 }

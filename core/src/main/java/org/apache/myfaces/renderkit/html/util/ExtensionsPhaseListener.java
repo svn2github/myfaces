@@ -123,9 +123,9 @@ public class ExtensionsPhaseListener implements PhaseListener {
      * @throws IOException Exception if writing to the output-stream fails.
      */
     public static void writeCodeBeforeBodyEnd(FacesContext facesContext) throws IOException
-	{
-		ResponseWriter writer = facesContext.getResponseWriter();
-		
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
         MyfacesConfig myfacesConfig = MyfacesConfig.getCurrentInstance(facesContext.getExternalContext());
         if (myfacesConfig.isDetectJavascript())
         {

@@ -52,34 +52,34 @@ public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
     }
 
     public String toString(){
-    	try{
+        try{
             return stream.toString(getCharacterEncoding());
-    	}catch(UnsupportedEncodingException e){
-    		// an attempt to set an invalid character encoding would have caused this exception before
+        }catch(UnsupportedEncodingException e){
+            // an attempt to set an invalid character encoding would have caused this exception before
             throw new RuntimeException("Response accepted invalid character encoding " + getCharacterEncoding());
-    	}
+        }
     }
 
     /** This method is used by Tomcat.
      */
     public PrintWriter getWriter(){
         if( printWriter == null ){
-			OutputStreamWriter streamWriter = new OutputStreamWriter(stream, Charset.forName(getCharacterEncoding()));
-			printWriter = new PrintWriter(streamWriter, true);
-			//printWriter = new PrintWriter(stream, true); // autoFlush is true
+            OutputStreamWriter streamWriter = new OutputStreamWriter(stream, Charset.forName(getCharacterEncoding()));
+            printWriter = new PrintWriter(streamWriter, true);
+            //printWriter = new PrintWriter(stream, true); // autoFlush is true
         }
         return printWriter;
     }
 
-	/** This method is used by Jetty.
-	*/
-	public ServletOutputStream getOutputStream(){
-		return new MyServletOutputStream( stream );
-	}
+    /** This method is used by Jetty.
+    */
+    public ServletOutputStream getOutputStream(){
+        return new MyServletOutputStream( stream );
+    }
 
     public InputSource getInputSource(){
-		ByteArrayInputStream bais = new ByteArrayInputStream( stream.toByteArray() );
-		return new InputSource( bais );
+        ByteArrayInputStream bais = new ByteArrayInputStream( stream.toByteArray() );
+        return new InputSource( bais );
     }
 
      /**
@@ -90,22 +90,22 @@ public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
     }
 
     public void setContentType(String contentType) {
-    	super.setContentType(contentType);
-    	this.contentType = contentType;
+        super.setContentType(contentType);
+        this.contentType = contentType;
     }
     
     public String getContentType() {
-		return contentType;
-	}
+        return contentType;
+    }
     
     public void flushBuffer() throws IOException{
-    	stream.flush();
+        stream.flush();
     }
 
     public void finishResponse() {
         try {
             if (printWriter != null) {
-				printWriter.close();
+                printWriter.close();
             } else {
                 if (stream != null) {
                     stream.close();
@@ -123,22 +123,22 @@ public class ExtensionsResponseWrapper extends HttpServletResponseWrapper {
     /** Used in the <code>getOutputStream()</code> method.
      */
     private class MyServletOutputStream extends ServletOutputStream {
-		private ByteArrayOutputStream outputStream;
+        private ByteArrayOutputStream outputStream;
 
-		public MyServletOutputStream(ByteArrayOutputStream outputStream){
-			this.outputStream = outputStream;
-		}
+        public MyServletOutputStream(ByteArrayOutputStream outputStream){
+            this.outputStream = outputStream;
+        }
 
-		public void write(int b){
-		    outputStream.write( b );
-		}
+        public void write(int b){
+            outputStream.write( b );
+        }
 
-		public void write(byte[] bytes) throws IOException{
-		    outputStream.write( bytes );
-		}
+        public void write(byte[] bytes) throws IOException{
+            outputStream.write( bytes );
+        }
 
-		public void write(byte[] bytes, int off, int len){
-		    outputStream.write(bytes, off, len);
-		}
+        public void write(byte[] bytes, int off, int len){
+            outputStream.write(bytes, off, len);
+        }
     }
 }

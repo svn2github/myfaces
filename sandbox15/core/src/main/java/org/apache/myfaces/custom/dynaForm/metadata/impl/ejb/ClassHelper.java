@@ -26,6 +26,6 @@ import java.lang.reflect.Method;
  */
 public interface ClassHelper
 {
-	public Field[] getFields(Class clazz);
-	public Method[] getMethods(Class clazz);
+    public Field[] getFields(Class clazz);
+    public Method[] getMethods(Class clazz);
 }

@@ -72,26 +72,26 @@ public class ParameterResourceHandler implements ResourceHandler
                 Map.Entry entry = (Map.Entry) iter.next();
                 sb.append(entry.getKey());
                 sb.append("=");
-				if (entry.getValue() != null)
-				{
-					try
-					{
-						// encode the value to make it safe to be passed through the url
-						// the best we can do here is to use the same encoding than the response writer
-						String encoding = context.getResponseWriter().getCharacterEncoding();
-						if (encoding == null)
-						{
-							// or fallback to UTF-8 (which makes the most sense)
-							encoding = "UTF-8";
-						}
-						sb.append(URLEncoder.encode(entry.getValue().toString(), encoding));
-					}
-					catch (UnsupportedEncodingException e)
-					{
-						throw new FacesException(e);
-					}
-				}
-				if (iter.hasNext())
+                if (entry.getValue() != null)
+                {
+                    try
+                    {
+                        // encode the value to make it safe to be passed through the url
+                        // the best we can do here is to use the same encoding than the response writer
+                        String encoding = context.getResponseWriter().getCharacterEncoding();
+                        if (encoding == null)
+                        {
+                            // or fallback to UTF-8 (which makes the most sense)
+                            encoding = "UTF-8";
+                        }
+                        sb.append(URLEncoder.encode(entry.getValue().toString(), encoding));
+                    }
+                    catch (UnsupportedEncodingException e)
+                    {
+                        throw new FacesException(e);
+                    }
+                }
+                if (iter.hasNext())
                 {
                     sb.append("&");
                 }

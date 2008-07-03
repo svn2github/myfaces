@@ -22,27 +22,27 @@ package org.apache.myfaces.custom.graphicimagedynamic.util;
 import java.util.Map;
 
 public class SimpleImageContext implements ImageContext {
-	
-	private final Map _params;
-	private final Integer _width;
-	private final Integer _height;
+    
+    private final Map _params;
+    private final Integer _width;
+    private final Integer _height;
 
-	public SimpleImageContext(Map params, Integer width, Integer height) {
-		_params = params;
-		_width = width;
-		_height = height;
-	}
+    public SimpleImageContext(Map params, Integer width, Integer height) {
+        _params = params;
+        _width = width;
+        _height = height;
+    }
 
-	public Map getParamters() {
-		return _params;
-	}
+    public Map getParamters() {
+        return _params;
+    }
 
-	public Integer getWidth() {
-		return _width;
-	}
+    public Integer getWidth() {
+        return _width;
+    }
 
-	public Integer getHeight() {
-		return _height;
-	}
+    public Integer getHeight() {
+        return _height;
+    }
 }
 

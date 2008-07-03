@@ -26,14 +26,14 @@ import javax.faces.el.ValueBinding;
  */
 public class DefaultConversationBeanElevator implements ConversationBeanElevator
 {
-	public void elevateBean(FacesContext context, Conversation conversation, ValueBinding valueBinding)
-	{
-		String name = ConversationUtils.extractBeanName(valueBinding);
+    public void elevateBean(FacesContext context, Conversation conversation, ValueBinding valueBinding)
+    {
+        String name = ConversationUtils.extractBeanName(valueBinding);
 
-		conversation.putBean(context, name, valueBinding.getValue(context));
+        conversation.putBean(context, name, valueBinding.getValue(context));
 
-		// remove it from the other contexts
-		context.getExternalContext().getRequestMap().remove(name);
-		context.getExternalContext().getSessionMap().remove(name);
-	}
+        // remove it from the other contexts
+        context.getExternalContext().getRequestMap().remove(name);
+        context.getExternalContext().getSessionMap().remove(name);
+    }
 }

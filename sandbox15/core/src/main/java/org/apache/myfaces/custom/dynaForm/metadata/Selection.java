@@ -25,33 +25,33 @@ import java.io.Serializable;
  */
 public class Selection implements Serializable
 {
-	private final String label;
-	private final Object value;
+    private final String label;
+    private final Object value;
 
-	/**
-	 * let the gui determine how to display this value
-	 */
-	public Selection(Object value)
-	{
-		this(null, value);
-	}
+    /**
+     * let the gui determine how to display this value
+     */
+    public Selection(Object value)
+    {
+        this(null, value);
+    }
 
-	/**
-	 * selection with fixed label
-	 */
-	public Selection(String label, Object value)
-	{
-		this.label = label;
-		this.value = value;
-	}
+    /**
+     * selection with fixed label
+     */
+    public Selection(String label, Object value)
+    {
+        this.label = label;
+        this.value = value;
+    }
 
-	public String getLabel()
-	{
-		return label;
-	}
+    public String getLabel()
+    {
+        return label;
+    }
 
-	public Object getValue()
-	{
-		return value;
-	}
+    public Object getValue()
+    {
+        return value;
+    }
 }

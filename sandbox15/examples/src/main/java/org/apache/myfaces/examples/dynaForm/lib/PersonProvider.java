@@ -23,38 +23,38 @@ import java.util.List;
 
 public class PersonProvider
 {
-	public List<Person> persons = new ArrayList<Person>();
+    public List<Person> persons = new ArrayList<Person>();
 
-	public PersonProvider()
-	{
-		for (int i=0;i<20; i++)
-		{
-			persons.add(createPersonFake("dummy", i));
-		}
-	}
+    public PersonProvider()
+    {
+        for (int i=0;i<20; i++)
+        {
+            persons.add(createPersonFake("dummy", i));
+        }
+    }
 
-	public List<Person> getSearchPersons(String searchString)
-	{
-		return persons;
-	}
+    public List<Person> getSearchPersons(String searchString)
+    {
+        return persons;
+    }
 
-	private Person createPersonFake(String search, long count)
-	{
-		Person p = new Person();
-		p.setId(count);
-		p.setUserName(search + " " + count);
-		p.setAge(count);
-		p.setMartialStatus(MartialStatus.MARRIED);
-		return p;
-	}
+    private Person createPersonFake(String search, long count)
+    {
+        Person p = new Person();
+        p.setId(count);
+        p.setUserName(search + " " + count);
+        p.setAge(count);
+        p.setMartialStatus(MartialStatus.MARRIED);
+        return p;
+    }
 
-	public String getPersonDescription(Person person)
-	{
-		if (person == null)
-		{
-			return "#null?";
-		}
+    public String getPersonDescription(Person person)
+    {
+        if (person == null)
+        {
+            return "#null?";
+        }
 
-		return person.getUserName() + ", " + person.getAge();
-	}
+        return person.getUserName() + ", " + person.getAge();
+    }
 }

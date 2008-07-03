@@ -30,25 +30,25 @@ import java.io.StringWriter;
  */
 public class DefaultConversationMessager implements ConversationMessager
 {
-	public void setConversationException(FacesContext context, Throwable t)
-	{
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, t.getLocalizedMessage(), getThrowableText(t)));
-	}
+    public void setConversationException(FacesContext context, Throwable t)
+    {
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, t.getLocalizedMessage(), getThrowableText(t)));
+    }
 
-	public void setConversationNotActive(FacesContext context, String name)
-	{
-		String message = "Conversation not active";
-		String messageDtl = "Conversation not active. Please start over. (Conversation Name:" + name + ")";
-		
-		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, messageDtl));
-	}
+    public void setConversationNotActive(FacesContext context, String name)
+    {
+        String message = "Conversation not active";
+        String messageDtl = "Conversation not active. Please start over. (Conversation Name:" + name + ")";
+        
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, messageDtl));
+    }
 
-	protected String getThrowableText(Throwable t)
-	{
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		t.printStackTrace(pw);
-		pw.close();
-		return sw.toString();
-	}
+    protected String getThrowableText(Throwable t)
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        pw.close();
+        return sw.toString();
+    }
 }

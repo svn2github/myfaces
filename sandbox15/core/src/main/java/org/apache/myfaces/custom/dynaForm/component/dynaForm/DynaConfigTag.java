@@ -24,117 +24,117 @@ import org.apache.myfaces.shared_tomahawk.taglib.UIComponentBodyTagBase;
 
 public class DynaConfigTag extends UIComponentBodyTagBase
 {
-	private String displaySize;
-	private String forProperty;
-	private String displayOnly;
-	private String readOnly;
-	private String disabled;
+    private String displaySize;
+    private String forProperty;
+    private String displayOnly;
+    private String readOnly;
+    private String disabled;
 
-	public void release()
-	{
-		super.release();
+    public void release()
+    {
+        super.release();
 
-		displaySize = null;
-		forProperty = null;
-	}
+        displaySize = null;
+        forProperty = null;
+    }
 
-	protected void setProperties(UIComponent component)
-	{
-		super.setProperties(component);
-		setIntegerProperty(component, "displaySize", displaySize);
-		setStringProperty(component, "for", forProperty);
-		setBooleanProperty(component, "displayOnly", displayOnly);
-		setBooleanProperty(component, "readOnly", readOnly);
-		setBooleanProperty(component, "disabled", disabled);
-	}
+    protected void setProperties(UIComponent component)
+    {
+        super.setProperties(component);
+        setIntegerProperty(component, "displaySize", displaySize);
+        setStringProperty(component, "for", forProperty);
+        setBooleanProperty(component, "displayOnly", displayOnly);
+        setBooleanProperty(component, "readOnly", readOnly);
+        setBooleanProperty(component, "disabled", disabled);
+    }
 
-	/**
-	 * @see DynaConfig#setDisplaySize(Integer)
-	 */
-	public String getDisplaySize()
-	{
-		return displaySize;
-	}
+    /**
+     * @see DynaConfig#setDisplaySize(Integer)
+     */
+    public String getDisplaySize()
+    {
+        return displaySize;
+    }
 
-	/**
-	 * @see DynaConfig#setDisplaySize(Integer)
-	 */
-	public void setDisplaySize(String size)
-	{
-		this.displaySize = size;
-	}
+    /**
+     * @see DynaConfig#setDisplaySize(Integer)
+     */
+    public void setDisplaySize(String size)
+    {
+        this.displaySize = size;
+    }
 
-	/**
-	 * @see DynaConfig#setFor(String)
-	 */
-	public String getFor()
-	{
-		return forProperty;
-	}
+    /**
+     * @see DynaConfig#setFor(String)
+     */
+    public String getFor()
+    {
+        return forProperty;
+    }
 
-	/**
-	 * @see DynaConfig#setFor(String)
-	 */
-	public void setFor(String forProperty)
-	{
-		this.forProperty = forProperty;
-	}
+    /**
+     * @see DynaConfig#setFor(String)
+     */
+    public void setFor(String forProperty)
+    {
+        this.forProperty = forProperty;
+    }
 
-	/**
-	 * @see DynaConfig#setDisplayOnly(Boolean)
-	 */
-	public String getDisplayOnly()
-	{
-		return displayOnly;
-	}
+    /**
+     * @see DynaConfig#setDisplayOnly(Boolean)
+     */
+    public String getDisplayOnly()
+    {
+        return displayOnly;
+    }
 
-	/**
-	 * @see DynaConfig#setDisplayOnly(Boolean)
-	 */
-	public void setDisplayOnly(String displayOnly)
-	{
-		this.displayOnly = displayOnly;
-	}
+    /**
+     * @see DynaConfig#setDisplayOnly(Boolean)
+     */
+    public void setDisplayOnly(String displayOnly)
+    {
+        this.displayOnly = displayOnly;
+    }
 
-	/**
-	 * @see DynaConfig#setDisabled(Boolean)
-	 */
-	public String getDisabled()
-	{
-		return disabled;
-	}
+    /**
+     * @see DynaConfig#setDisabled(Boolean)
+     */
+    public String getDisabled()
+    {
+        return disabled;
+    }
 
-	/**
-	 * @see DynaConfig#setDisabled(Boolean)
-	 */
-	public void setDisabled(String disabled)
-	{
-		this.disabled = disabled;
-	}
+    /**
+     * @see DynaConfig#setDisabled(Boolean)
+     */
+    public void setDisabled(String disabled)
+    {
+        this.disabled = disabled;
+    }
 
-	/**
-	 * @see DynaConfig#setReadOnly(Boolean)
-	 */
-	public String getReadOnly()
-	{
-		return readOnly;
-	}
+    /**
+     * @see DynaConfig#setReadOnly(Boolean)
+     */
+    public String getReadOnly()
+    {
+        return readOnly;
+    }
 
-	/**
-	 * @see DynaConfig#setReadOnly(Boolean)
-	 */
-	public void setReadOnly(String readOnly)
-	{
-		this.readOnly = readOnly;
-	}
+    /**
+     * @see DynaConfig#setReadOnly(Boolean)
+     */
+    public void setReadOnly(String readOnly)
+    {
+        this.readOnly = readOnly;
+    }
 
-	public String getComponentType()
-	{
-		return DynaConfig.COMPONENT_TYPE;
-	}
+    public String getComponentType()
+    {
+        return DynaConfig.COMPONENT_TYPE;
+    }
 
-	public String getRendererType()
-	{
-		return null;
-	}
+    public String getRendererType()
+    {
+        return null;
+    }
 }

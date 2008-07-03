@@ -27,7 +27,7 @@ import java.util.Date;
 
 public class SimpleBeanBacking
 {
-	private PersonRelation personRelation;
+    private PersonRelation personRelation;
     private Person person;
     private List<Person> persons;
 
@@ -39,17 +39,17 @@ public class SimpleBeanBacking
     protected void initBean()
     {
         person = new Person();
-		person.setId(666L);
+        person.setId(666L);
 
-		Person s1 = new Person();
-		s1.setId(4711L);
-		s1.setCheckedData(true);
+        Person s1 = new Person();
+        s1.setId(4711L);
+        s1.setCheckedData(true);
         s1.setCreationDate(new Date());
         s1.setAge(1L);
         s1.setUserName("bean 1");
         Person s2 = new Person();
-		s2.setId(815L);
-		s2.setCheckedData(true);
+        s2.setId(815L);
+        s2.setCheckedData(true);
         s2.setCreationDate(new Date());
         s2.setAge(2L);
         s2.setUserName("bean 2");
@@ -58,8 +58,8 @@ public class SimpleBeanBacking
         persons.add(s1);
         persons.add(s2);
 
-		personRelation = new PersonRelation();
-	}
+        personRelation = new PersonRelation();
+    }
 
     public Person getPerson()
     {
@@ -79,15 +79,15 @@ public class SimpleBeanBacking
     public void setPersons(List<Person> persons)
     {
         this.persons = persons;
-	}
+    }
 
-	public PersonRelation getPersonRelation()
-	{
-		return personRelation;
-	}
+    public PersonRelation getPersonRelation()
+    {
+        return personRelation;
+    }
 
-	public void setPersonRelation(PersonRelation personRelation)
-	{
-		this.personRelation = personRelation;
-	}
+    public void setPersonRelation(PersonRelation personRelation)
+    {
+        this.personRelation = personRelation;
+    }
 }

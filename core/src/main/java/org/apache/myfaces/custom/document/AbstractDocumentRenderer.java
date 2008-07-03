@@ -35,56 +35,56 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  */
 public abstract class AbstractDocumentRenderer extends Renderer
 {
-	protected abstract String getHtmlTag();
-	protected abstract Class getDocumentClass();
+    protected abstract String getHtmlTag();
+    protected abstract Class getDocumentClass();
 
-	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-			throws IOException
-	{
-		RendererUtils.checkParamValidity(facesContext, uiComponent,
-				getDocumentClass());
+    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException
+    {
+        RendererUtils.checkParamValidity(facesContext, uiComponent,
+                getDocumentClass());
 
-		AbstractDocument document = (AbstractDocument) uiComponent;
+        AbstractDocument document = (AbstractDocument) uiComponent;
 
-		ResponseWriter writer = facesContext.getResponseWriter();
+        ResponseWriter writer = facesContext.getResponseWriter();
 
-		if (document.hasState() && document.isEndState())
-		{
-			closeTag(facesContext, writer);
-		}
-		else
-		{
-			openTag(writer, uiComponent);
-		}
-	}
+        if (document.hasState() && document.isEndState())
+        {
+            closeTag(facesContext, writer);
+        }
+        else
+        {
+            openTag(writer, uiComponent);
+        }
+    }
 
-	protected void openTag(ResponseWriter writer, UIComponent uiComponent)
-		throws IOException
-	{
-		writer.startElement(getHtmlTag(), uiComponent);
-	}
+    protected void openTag(ResponseWriter writer, UIComponent uiComponent)
+        throws IOException
+    {
+        writer.startElement(getHtmlTag(), uiComponent);
+    }
 
-	protected void closeTag(FacesContext facesContext, ResponseWriter writer)
-		throws IOException
-	{
-		writeBeforeEnd(facesContext);
-		writer.endElement(getHtmlTag());
-	}
+    protected void closeTag(FacesContext facesContext, ResponseWriter writer)
+        throws IOException
+    {
+        writeBeforeEnd(facesContext);
+        writer.endElement(getHtmlTag());
+    }
 
-	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-			throws IOException
-	{
-		AbstractDocument document = (AbstractDocument) uiComponent;
+    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+            throws IOException
+    {
+        AbstractDocument document = (AbstractDocument) uiComponent;
 
-		ResponseWriter writer = facesContext.getResponseWriter();
+        ResponseWriter writer = facesContext.getResponseWriter();
 
-		if (!document.hasState())
-		{
-			closeTag(facesContext, writer);
-		}
-	}
+        if (!document.hasState())
+        {
+            closeTag(facesContext, writer);
+        }
+    }
 
-	protected void writeBeforeEnd(FacesContext facesContext) throws IOException
-	{
-	}
+    protected void writeBeforeEnd(FacesContext facesContext) throws IOException
+    {
+    }
 }

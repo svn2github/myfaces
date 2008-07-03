@@ -19,13 +19,13 @@
 package org.apache.myfaces.examples.passwordStrength;
 
 public class PasswordStrengthBean {
-	String password;
+    String password;
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -19,6 +19,6 @@
 package org.apache.myfaces.custom.passwordStrength;
 
 public interface TextIndicatorType {
-	public String PROGRESSBAR = "bar";
-	public String TEXT = "text";	
+    public String PROGRESSBAR = "bar";
+    public String TEXT = "text";    
 }

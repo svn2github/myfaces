@@ -36,12 +36,12 @@ public class GraphicImageDynamicBean
 
     public void setUpImage(UploadedFile upImage)
     {
-    	this._upImage = upImage;
+        this._upImage = upImage;
     }
 
     public boolean isUploaded()
     {
-    	return _upImage != null;
+        return _upImage != null;
     }
     
     public Class getImageRenderer()

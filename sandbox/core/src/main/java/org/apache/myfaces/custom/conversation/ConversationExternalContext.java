@@ -29,80 +29,80 @@ import javax.servlet.ServletContext;
  */
 public class ConversationExternalContext
 {
-	private final Map requestMap;
-	private final Map requestParameterMap;
-	private final Map initParameterMap;
+    private final Map requestMap;
+    private final Map requestParameterMap;
+    private final Map initParameterMap;
 
-	protected ConversationExternalContext(Map initParameterMap, Map requestMap, Map requestParameterMap)
-	{
-		this.requestMap = requestMap;
-		this.requestParameterMap = requestParameterMap;
-		this.initParameterMap = initParameterMap;
-	}
+    protected ConversationExternalContext(Map initParameterMap, Map requestMap, Map requestParameterMap)
+    {
+        this.requestMap = requestMap;
+        this.requestParameterMap = requestParameterMap;
+        this.initParameterMap = initParameterMap;
+    }
 
-	public static ConversationExternalContext create(final ServletContext servletContext, final HttpServletRequest httpRequest)
-	{
-		Map initParameterMap = new FakeMap()
-		{
-			public boolean containsKey(Object key)
-			{
-				return servletContext.getInitParameter((String) key) != null;
-			}
+    public static ConversationExternalContext create(final ServletContext servletContext, final HttpServletRequest httpRequest)
+    {
+        Map initParameterMap = new FakeMap()
+        {
+            public boolean containsKey(Object key)
+            {
+                return servletContext.getInitParameter((String) key) != null;
+            }
 
-			public Object get(Object key)
-			{
-				return servletContext.getInitParameter((String) key);
-			}
-		};
+            public Object get(Object key)
+            {
+                return servletContext.getInitParameter((String) key);
+            }
+        };
 
-		Map requestParameterMap = new FakeMap()
-		{
-			public boolean containsKey(Object key)
-			{
-				return httpRequest.getParameter((String) key) != null;
-			}
+        Map requestParameterMap = new FakeMap()
+        {
+            public boolean containsKey(Object key)
+            {
+                return httpRequest.getParameter((String) key) != null;
+            }
 
-			public Object get(Object key)
-			{
-				return httpRequest.getParameter((String) key);
-			}
-		};
+            public Object get(Object key)
+            {
+                return httpRequest.getParameter((String) key);
+            }
+        };
 
-		Map requestMap = new FakeMap()
-		{
-			public boolean containsKey(Object key)
-			{
-				return httpRequest.getAttribute((String) key) != null;
-			}
+        Map requestMap = new FakeMap()
+        {
+            public boolean containsKey(Object key)
+            {
+                return httpRequest.getAttribute((String) key) != null;
+            }
 
-			public Object get(Object key)
-			{
-				return httpRequest.getAttribute((String) key);
-			}
+            public Object get(Object key)
+            {
+                return httpRequest.getAttribute((String) key);
+            }
 
-			public Object put(Object key, Object value)
-			{
-				Object prev = httpRequest.getAttribute((String) key);
-				httpRequest.setAttribute((String) key, value);
-				return prev;
-			}
-		};
+            public Object put(Object key, Object value)
+            {
+                Object prev = httpRequest.getAttribute((String) key);
+                httpRequest.setAttribute((String) key, value);
+                return prev;
+            }
+        };
 
-		return new ConversationExternalContext(initParameterMap, requestMap, requestParameterMap);
-	}
+        return new ConversationExternalContext(initParameterMap, requestMap, requestParameterMap);
+    }
 
-	public Map getRequestMap()
-	{
-		return requestMap;
-	}
+    public Map getRequestMap()
+    {
+        return requestMap;
+    }
 
-	public Map getRequestParameterMap()
-	{
-		return requestParameterMap;
-	}
+    public Map getRequestParameterMap()
+    {
+        return requestParameterMap;
+    }
 
-	public Map getInitParameterMap()
-	{
-		return initParameterMap;
-	}
+    public Map getInitParameterMap()
+    {
+        return initParameterMap;
+    }
 }

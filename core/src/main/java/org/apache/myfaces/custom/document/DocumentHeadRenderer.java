@@ -40,26 +40,26 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
  */
 public class DocumentHeadRenderer extends AbstractDocumentRenderer
 {
-	public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentHead";
+    public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentHead";
 
-	protected String getHtmlTag()
-	{
-		return "head";
-	}
+    protected String getHtmlTag()
+    {
+        return "head";
+    }
 
-	protected Class getDocumentClass()
-	{
-		return DocumentHead.class;
-	}
+    protected Class getDocumentClass()
+    {
+        return DocumentHead.class;
+    }
 
-	protected void writeBeforeEnd(FacesContext facesContext) throws IOException
-	{
-		super.writeBeforeEnd(facesContext);
-		
-		AddResource addResource = AddResourceFactory.getInstance(facesContext);
-		if (addResource instanceof StreamingAddResource)
-		{
-			((StreamingAddResource) addResource).addStyleLoaderHere(facesContext, DocumentHead.class);
-		}
-	}
+    protected void writeBeforeEnd(FacesContext facesContext) throws IOException
+    {
+        super.writeBeforeEnd(facesContext);
+        
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+        if (addResource instanceof StreamingAddResource)
+        {
+            ((StreamingAddResource) addResource).addStyleLoaderHere(facesContext, DocumentHead.class);
+        }
+    }
 }

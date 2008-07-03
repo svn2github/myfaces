@@ -26,12 +26,12 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientConverter;
  */
 public class IntegerConverter extends javax.faces.convert.IntegerConverter implements ClientConverter{
 
-	public String getScriptFunction() {
-		return "tomahawk.IntegerConverter()";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.IntegerConverter()";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 
 }

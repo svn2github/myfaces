@@ -27,5 +27,5 @@ package org.apache.myfaces.custom.conversation;
  */
 public interface PersistenceManagerFactory
 {
-	public PersistenceManager create();
+    public PersistenceManager create();
 }

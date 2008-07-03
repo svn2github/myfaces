@@ -32,14 +32,14 @@ import javax.faces.context.ResponseStream;
  */
 public interface ResourceRenderer
 {
-	/**
-	 * This method will be called first, to set the contexts.
-	 * 
+    /**
+     * This method will be called first, to set the contexts.
+     * 
      * @param facesContext the faces context
      * @param imageContext the image context width aditional image parameters
-	 */
-	void setContext(FacesContext facesContext, ResourceContext resourceContext) throws Exception;
-	
+     */
+    void setContext(FacesContext facesContext, ResourceContext resourceContext) throws Exception;
+    
     /**
      * The content length of the image to render.
      * Set to a negative value if you don't want to set the response content length.

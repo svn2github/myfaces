@@ -36,12 +36,12 @@ public class OutputLinkDynamicBean
 
     public void setUpFile(UploadedFile upFile)
     {
-    	this._upFile = upFile;
+        this._upFile = upFile;
     }
 
     public boolean isUploaded()
     {
-    	return _upFile != null;
+        return _upFile != null;
     }
     
     public Class getResourceRenderer()

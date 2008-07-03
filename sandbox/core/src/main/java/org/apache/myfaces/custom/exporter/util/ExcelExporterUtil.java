@@ -40,37 +40,37 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * This class is a utility class for serving excel exporting.
  */
 public class ExcelExporterUtil {
-	
-	private static void addColumnHeaders(HSSFSheet sheet, List columns) {
-		HSSFRow rowHeader = sheet.createRow(0);
+    
+    private static void addColumnHeaders(HSSFSheet sheet, List columns) {
+        HSSFRow rowHeader = sheet.createRow(0);
 
-		for (int i = 0; i < columns.size(); i++) {
-			UIColumn column = (UIColumn) columns.get(i);
-			addColumnValue(rowHeader, column.getHeader(), i);
-		}
-	}
+        for (int i = 0; i < columns.size(); i++) {
+            UIColumn column = (UIColumn) columns.get(i);
+            addColumnValue(rowHeader, column.getHeader(), i);
+        }
+    }
 
-	private static List getColumns(HtmlDataTable table) {
-		List columns = new ArrayList();
-		for (int i = 0; i < table.getChildCount(); i++) {
-			UIComponent child = (UIComponent) table.getChildren().get(i);
-			if (child instanceof UIColumn) {
-				columns.add(child);
-			}
-		}
-		return columns;
-	}
+    private static List getColumns(HtmlDataTable table) {
+        List columns = new ArrayList();
+        for (int i = 0; i < table.getChildCount(); i++) {
+            UIComponent child = (UIComponent) table.getChildren().get(i);
+            if (child instanceof UIColumn) {
+                columns.add(child);
+            }
+        }
+        return columns;
+    }
 
-	private static void addColumnValue(HSSFRow rowHeader,
-			UIComponent component, int index) {
-		HSSFCell cell = rowHeader.createCell((short) index);
-		cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-		if (component instanceof ValueHolder) {
-			String stringValue = RendererUtils.getStringValue(FacesContext
-					.getCurrentInstance(), component);
-			cell.setCellValue(stringValue);
-		}
-	}
+    private static void addColumnValue(HSSFRow rowHeader,
+            UIComponent component, int index) {
+        HSSFCell cell = rowHeader.createCell((short) index);
+        cell.setEncoding(HSSFCell.ENCODING_UTF_16);
+        if (component instanceof ValueHolder) {
+            String stringValue = RendererUtils.getStringValue(FacesContext
+                    .getCurrentInstance(), component);
+            cell.setCellValue(stringValue);
+        }
+    }
     
     /*
      * This method is used for adding the columns values to the HSSFSheet.
@@ -167,7 +167,7 @@ public class ExcelExporterUtil {
      * @param fileName
      * @throws IOException
      */    
-	public static void generateEXCEL(FacesContext facesContext,
+    public static void generateEXCEL(FacesContext facesContext,
             HttpServletResponse response, String fileName,
             HtmlDataScroller dataScroller, boolean selectedPage)
             throws IOException {
@@ -196,14 +196,14 @@ public class ExcelExporterUtil {
 
 // public static void generateEXCEL(HSSFWorkbook workBook,
 // RenderResponse response, String filename) throws IOException {
-//		response.setContentType("application/vnd.ms-excel");
-//		response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
-//		response.setProperty("Cache-Control",
-//				"must-revalidate, post-check=0, pre-check=0");
-//		response.setProperty("Pragma", "public");
-//		response.setProperty("Content-disposition", "attachment;filename="
-//				+ filename + ".xls");
+//        response.setContentType("application/vnd.ms-excel");
+//        response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
+//        response.setProperty("Cache-Control",
+//                "must-revalidate, post-check=0, pre-check=0");
+//        response.setProperty("Pragma", "public");
+//        response.setProperty("Content-disposition", "attachment;filename="
+//                + filename + ".xls");
 //
-//		workBook.write(response.getPortletOutputStream());
-//	}
+//        workBook.write(response.getPortletOutputStream());
+//    }
 }

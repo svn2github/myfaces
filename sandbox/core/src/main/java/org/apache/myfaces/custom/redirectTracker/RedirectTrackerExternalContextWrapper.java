@@ -35,195 +35,195 @@ import java.security.Principal;
  */
 public class RedirectTrackerExternalContextWrapper extends ExternalContext
 {
-	private final ExternalContext original;
+    private final ExternalContext original;
 
-	public RedirectTrackerExternalContextWrapper(ExternalContext original)
-	{
-		this.original = original;
-	}
+    public RedirectTrackerExternalContextWrapper(ExternalContext original)
+    {
+        this.original = original;
+    }
 
-	public void dispatch(String s)
-		throws IOException
-	{
-		original.dispatch(s);
-	}
+    public void dispatch(String s)
+        throws IOException
+    {
+        original.dispatch(s);
+    }
 
-	public String encodeActionURL(String s)
-	{
-		return original.encodeActionURL(s);
-	}
+    public String encodeActionURL(String s)
+    {
+        return original.encodeActionURL(s);
+    }
 
-	public String encodeNamespace(String s)
-	{
-		return original.encodeNamespace(s);
-	}
+    public String encodeNamespace(String s)
+    {
+        return original.encodeNamespace(s);
+    }
 
-	public String encodeResourceURL(String s)
-	{
-		return original.encodeResourceURL(s);
-	}
+    public String encodeResourceURL(String s)
+    {
+        return original.encodeResourceURL(s);
+    }
 
-	public Map getApplicationMap()
-	{
-		return original.getApplicationMap();
-	}
+    public Map getApplicationMap()
+    {
+        return original.getApplicationMap();
+    }
 
-	public String getAuthType()
-	{
-		return original.getAuthType();
-	}
+    public String getAuthType()
+    {
+        return original.getAuthType();
+    }
 
-	public Object getContext()
-	{
-		return original.getContext();
-	}
+    public Object getContext()
+    {
+        return original.getContext();
+    }
 
-	public String getInitParameter(String s)
-	{
-		return original.getInitParameter(s);
-	}
+    public String getInitParameter(String s)
+    {
+        return original.getInitParameter(s);
+    }
 
-	public Map getInitParameterMap()
-	{
-		return original.getInitParameterMap();
-	}
+    public Map getInitParameterMap()
+    {
+        return original.getInitParameterMap();
+    }
 
-	public String getRemoteUser()
-	{
-		return original.getRemoteUser();
-	}
+    public String getRemoteUser()
+    {
+        return original.getRemoteUser();
+    }
 
-	public Object getRequest()
-	{
-		return original.getRequest();
-	}
+    public Object getRequest()
+    {
+        return original.getRequest();
+    }
 
-	public String getRequestContextPath()
-	{
-		return original.getRequestContextPath();
-	}
+    public String getRequestContextPath()
+    {
+        return original.getRequestContextPath();
+    }
 
-	public Map getRequestCookieMap()
-	{
-		return original.getRequestCookieMap();
-	}
+    public Map getRequestCookieMap()
+    {
+        return original.getRequestCookieMap();
+    }
 
-	public Map getRequestHeaderMap()
-	{
-		return original.getRequestHeaderMap();
-	}
+    public Map getRequestHeaderMap()
+    {
+        return original.getRequestHeaderMap();
+    }
 
-	public Map getRequestHeaderValuesMap()
-	{
-		return original.getRequestHeaderValuesMap();
-	}
+    public Map getRequestHeaderValuesMap()
+    {
+        return original.getRequestHeaderValuesMap();
+    }
 
-	public Locale getRequestLocale()
-	{
-		return original.getRequestLocale();
-	}
+    public Locale getRequestLocale()
+    {
+        return original.getRequestLocale();
+    }
 
-	public Iterator getRequestLocales()
-	{
-		return original.getRequestLocales();
-	}
+    public Iterator getRequestLocales()
+    {
+        return original.getRequestLocales();
+    }
 
-	public Map getRequestMap()
-	{
-		return original.getRequestMap();
-	}
+    public Map getRequestMap()
+    {
+        return original.getRequestMap();
+    }
 
-	public Map getRequestParameterMap()
-	{
-		return original.getRequestParameterMap();
-	}
+    public Map getRequestParameterMap()
+    {
+        return original.getRequestParameterMap();
+    }
 
-	public Iterator getRequestParameterNames()
-	{
-		return original.getRequestParameterNames();
-	}
+    public Iterator getRequestParameterNames()
+    {
+        return original.getRequestParameterNames();
+    }
 
-	public Map getRequestParameterValuesMap()
-	{
-		return original.getRequestParameterValuesMap();
-	}
+    public Map getRequestParameterValuesMap()
+    {
+        return original.getRequestParameterValuesMap();
+    }
 
-	public String getRequestPathInfo()
-	{
-		return original.getRequestPathInfo();
-	}
+    public String getRequestPathInfo()
+    {
+        return original.getRequestPathInfo();
+    }
 
-	public String getRequestServletPath()
-	{
-		return original.getRequestServletPath();
-	}
+    public String getRequestServletPath()
+    {
+        return original.getRequestServletPath();
+    }
 
-	public URL getResource(String s)
-		throws MalformedURLException
-	{
-		return original.getResource(s);
-	}
+    public URL getResource(String s)
+        throws MalformedURLException
+    {
+        return original.getResource(s);
+    }
 
-	public InputStream getResourceAsStream(String s)
-	{
-		return original.getResourceAsStream(s);
-	}
+    public InputStream getResourceAsStream(String s)
+    {
+        return original.getResourceAsStream(s);
+    }
 
-	public Set getResourcePaths(String s)
-	{
-		return original.getResourcePaths(s);
-	}
+    public Set getResourcePaths(String s)
+    {
+        return original.getResourcePaths(s);
+    }
 
-	public Object getResponse()
-	{
-		return original.getResponse();
-	}
+    public Object getResponse()
+    {
+        return original.getResponse();
+    }
 
-	public Object getSession(boolean b)
-	{
-		return original.getSession(b);
-	}
+    public Object getSession(boolean b)
+    {
+        return original.getSession(b);
+    }
 
-	public Map getSessionMap()
-	{
-		return original.getSessionMap();
-	}
+    public Map getSessionMap()
+    {
+        return original.getSessionMap();
+    }
 
-	public Principal getUserPrincipal()
-	{
-		return original.getUserPrincipal();
-	}
+    public Principal getUserPrincipal()
+    {
+        return original.getUserPrincipal();
+    }
 
-	public boolean isUserInRole(String s)
-	{
-		return original.isUserInRole(s);
-	}
+    public boolean isUserInRole(String s)
+    {
+        return original.isUserInRole(s);
+    }
 
-	public void log(String s)
-	{
-		original.log(s);
-	}
+    public void log(String s)
+    {
+        original.log(s);
+    }
 
-	public void log(String s, Throwable throwable)
-	{
-		original.log(s, throwable);
-	}
+    public void log(String s, Throwable throwable)
+    {
+        original.log(s, throwable);
+    }
 
-	public void redirect(String url) throws IOException
-	{
-		FacesContext facesContext = FacesContext.getCurrentInstance();
+    public void redirect(String url) throws IOException
+    {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
 
-		RedirectTrackerManager manager = RedirectTrackerManager.getInstance(facesContext);
-		if (manager != null)
-		{
-			url = manager.trackRedirect(facesContext, url);
-		}
+        RedirectTrackerManager manager = RedirectTrackerManager.getInstance(facesContext);
+        if (manager != null)
+        {
+            url = manager.trackRedirect(facesContext, url);
+        }
 
-		original.redirect(url);
-	}
+        original.redirect(url);
+    }
 
-	public ExternalContext getWrappedExternalContext()
-	{
-		return original;
-	}
+    public ExternalContext getWrappedExternalContext()
+    {
+        return original;
+    }
 }

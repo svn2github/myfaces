@@ -98,10 +98,10 @@ public class RequestParameterProviderManager implements Serializable
 
     public String encodeAndAttachParameters(String url)
     {
-    		if (!isFilterCalled())
-    		{
-    			throw new IllegalStateException("RequestParameterServletFilter not called. Please configure the filter " + RequestParameterServletFilter.class.getName() + " in your web.xml to cover your faces requests.");
-    		}
+            if (!isFilterCalled())
+            {
+                throw new IllegalStateException("RequestParameterServletFilter not called. Please configure the filter " + RequestParameterServletFilter.class.getName() + " in your web.xml to cover your faces requests.");
+            }
 
         StringBuffer sb = new StringBuffer();
         if(url == null)
@@ -119,11 +119,11 @@ public class RequestParameterProviderManager implements Serializable
             String[] fields = provider.getFields();
             if (fields == null)
             {
-            	continue;
+                continue;
             }
             for (int i = 0; i < fields.length; i++)
             {
-            	nuofParams++;
+                nuofParams++;
 
                 sb.append(nuofParams == 0 ? firstSeparator : PARAMETER_SEP);
                 sb.append(fields[i]);
@@ -155,20 +155,20 @@ public class RequestParameterProviderManager implements Serializable
         return Boolean.TRUE.equals(context.getExternalContext().getRequestMap().get(RequestParameterServletFilter.REQUEST_PARAM_FILTER_CALLED));
     }
 
-	private void writeObject(java.io.ObjectOutputStream out) throws IOException
-	{
-		// the conversation manager is not (yet) serializable, we just implement it
-		// to make it work with distributed sessions
-	}
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException
+    {
+        // the conversation manager is not (yet) serializable, we just implement it
+        // to make it work with distributed sessions
+    }
 
-	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
-		// nothing written, so nothing to read
-	}
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException
+    {
+        // nothing written, so nothing to read
+    }
 
-	private Object readResolve() throws ObjectStreamException
-	{
-		// do not return a real object, that way on first request a new manager will be created
-		return null;
-	}
+    private Object readResolve() throws ObjectStreamException
+    {
+        // do not return a real object, that way on first request a new manager will be created
+        return null;
+    }
 }

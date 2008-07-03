@@ -32,31 +32,31 @@ import javax.faces.event.PhaseListener;
  */
 public class AfterScopePhaseListener implements PhaseListener {
 
-	/**
+    /**
      *
      */
     private static final long serialVersionUID = 9137086632177423625L;
 
     /**
-	 * we have to tackle the scope cleanup
-	 * at the latest stage possible
-	 * thus we intercept it at the last phase
-	 * at the after phase stage
-	 */
-	public void afterPhase(PhaseEvent arg0) {
-		ScopeHolder holder = (ScopeHolder) ScopeUtils.getManagedBean(UIScope.SCOPE_CONTAINER_KEY);
-		if(holder != null)
-		    holder.pageRefresh();
-	}
+     * we have to tackle the scope cleanup
+     * at the latest stage possible
+     * thus we intercept it at the last phase
+     * at the after phase stage
+     */
+    public void afterPhase(PhaseEvent arg0) {
+        ScopeHolder holder = (ScopeHolder) ScopeUtils.getManagedBean(UIScope.SCOPE_CONTAINER_KEY);
+        if(holder != null)
+            holder.pageRefresh();
+    }
 
-	public void beforePhase(PhaseEvent arg0) {
-	}
+    public void beforePhase(PhaseEvent arg0) {
+    }
 
-	/**
-	 * last phase possible, the render responce phase
-	 */
-	public PhaseId getPhaseId() {
-		return PhaseId.RENDER_RESPONSE;
-	}
+    /**
+     * last phase possible, the render responce phase
+     */
+    public PhaseId getPhaseId() {
+        return PhaseId.RENDER_RESPONSE;
+    }
 
 }

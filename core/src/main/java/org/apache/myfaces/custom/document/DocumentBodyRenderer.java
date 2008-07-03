@@ -39,33 +39,33 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
  */
 public class DocumentBodyRenderer extends AbstractDocumentRenderer
 {
-	public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
-	private String BODY_ELEM = "body";
-	private String[] ATTRS = new String[] {"onload", "onunload", "onresize", "onkeypress", "style", "styleClass", "id"};
+    public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
+    private String BODY_ELEM = "body";
+    private String[] ATTRS = new String[] {"onload", "onunload", "onresize", "onkeypress", "style", "styleClass", "id"};
 
-	protected String getHtmlTag()
-	{
-		return BODY_ELEM;
-	}
+    protected String getHtmlTag()
+    {
+        return BODY_ELEM;
+    }
 
-	protected Class getDocumentClass()
-	{
-		return DocumentBody.class;
-	}
+    protected Class getDocumentClass()
+    {
+        return DocumentBody.class;
+    }
 
-	protected void openTag(ResponseWriter writer, UIComponent uiComponent)
-	throws IOException
-	{
-		super.openTag(writer, uiComponent);
+    protected void openTag(ResponseWriter writer, UIComponent uiComponent)
+    throws IOException
+    {
+        super.openTag(writer, uiComponent);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, ATTRS);
-	}
+    }
 
-	protected void writeBeforeEnd(FacesContext facesContext) throws IOException
-	{
-		super.writeBeforeEnd(facesContext);
-       	ExtensionsPhaseListener.writeCodeBeforeBodyEnd(facesContext);
+    protected void writeBeforeEnd(FacesContext facesContext) throws IOException
+    {
+        super.writeBeforeEnd(facesContext);
+           ExtensionsPhaseListener.writeCodeBeforeBodyEnd(facesContext);
 
-		// fake string, so the ExtensionsPhaseListener will not create the javascript again
-		facesContext.getExternalContext().getRequestMap().put(ExtensionsPhaseListener.ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "");
-	}
+        // fake string, so the ExtensionsPhaseListener will not create the javascript again
+        facesContext.getExternalContext().getRequestMap().put(ExtensionsPhaseListener.ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "");
+    }
 }

@@ -31,49 +31,49 @@ import org.apache.shale.test.base.AbstractJsfTestCase;
  */
 public class SecurityContextPropertyResolverTest extends AbstractJsfTestCase{
 
-	protected SecurityContextPropertyResolver resolver;
-	
-	public SecurityContextPropertyResolverTest(String testName) {
-		super(testName);
-	}
-	
-	public void setUp() throws Exception{
-		super.setUp();
-		resolver = new SecurityContextPropertyResolver(null);
-	}
-	
-	public void tearDown() throws Exception{
-		super.tearDown();
-		resolver = null;
-	}
-	
-	public static Test suite() {
-		return new TestSuite(SecurityContextPropertyResolverTest.class);
-	}
-	
-	//#{securityContext.remoteUser}
-	public void testRemoteUser() {
-		request.setUserPrincipal(new TestPrincipalImpl("Ronaldinho"));
-		
-		SecurityContext securityContext = new SecurityContextImpl();
-		String user = (String) resolver.getValue(securityContext, "remoteUser");
-		assertEquals("Ronaldinho", user);
-	}
-	
-	public static class TestPrincipalImpl implements Principal {
+    protected SecurityContextPropertyResolver resolver;
+    
+    public SecurityContextPropertyResolverTest(String testName) {
+        super(testName);
+    }
+    
+    public void setUp() throws Exception{
+        super.setUp();
+        resolver = new SecurityContextPropertyResolver(null);
+    }
+    
+    public void tearDown() throws Exception{
+        super.tearDown();
+        resolver = null;
+    }
+    
+    public static Test suite() {
+        return new TestSuite(SecurityContextPropertyResolverTest.class);
+    }
+    
+    //#{securityContext.remoteUser}
+    public void testRemoteUser() {
+        request.setUserPrincipal(new TestPrincipalImpl("Ronaldinho"));
+        
+        SecurityContext securityContext = new SecurityContextImpl();
+        String user = (String) resolver.getValue(securityContext, "remoteUser");
+        assertEquals("Ronaldinho", user);
+    }
+    
+    public static class TestPrincipalImpl implements Principal {
 
-		private String _name;
+        private String _name;
 
-		public TestPrincipalImpl() {
-			// NoOp
-		}
+        public TestPrincipalImpl() {
+            // NoOp
+        }
 
-		public TestPrincipalImpl(String name) {
-			this._name = name;
-		}
+        public TestPrincipalImpl(String name) {
+            this._name = name;
+        }
 
-		public String getName() {
-			return _name;
-		}
-	}
+        public String getName() {
+            return _name;
+        }
+    }
 }

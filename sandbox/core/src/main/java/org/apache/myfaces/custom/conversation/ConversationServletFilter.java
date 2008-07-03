@@ -33,86 +33,86 @@ import javax.servlet.http.HttpSession;
 
 public class ConversationServletFilter implements Filter
 {
-	public final static String CONVERSATION_FILTER_CALLED = "org.apache.myfaces.conversation.ConversationServletFilter.CALLED";
+    public final static String CONVERSATION_FILTER_CALLED = "org.apache.myfaces.conversation.ConversationServletFilter.CALLED";
 
-	private final static ThreadLocal externalContextTL = new ThreadLocal();
-	private final static ThreadLocal conversationManagerTL = new ThreadLocal();
+    private final static ThreadLocal externalContextTL = new ThreadLocal();
+    private final static ThreadLocal conversationManagerTL = new ThreadLocal();
 
-	private ServletContext servletContext;
+    private ServletContext servletContext;
 
-	public void init(FilterConfig arg0) throws ServletException
-	{
-		servletContext = arg0.getServletContext();
-	}
+    public void init(FilterConfig arg0) throws ServletException
+    {
+        servletContext = arg0.getServletContext();
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
-	{
-		ConversationManager conversationManager = null;
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
+    {
+        ConversationManager conversationManager = null;
 
-		if (!Boolean.TRUE.equals(request.getAttribute(CONVERSATION_FILTER_CALLED)))
-		{
-			if (request instanceof HttpServletRequest)
-			{
-				HttpServletRequest httpRequest = (HttpServletRequest) request;
-				externalContextTL.set(ConversationExternalContext.create(servletContext, httpRequest));
+        if (!Boolean.TRUE.equals(request.getAttribute(CONVERSATION_FILTER_CALLED)))
+        {
+            if (request instanceof HttpServletRequest)
+            {
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                externalContextTL.set(ConversationExternalContext.create(servletContext, httpRequest));
 
-				HttpSession httpSession = httpRequest.getSession(false);
-				if (httpSession != null)
-				{
-					conversationManager = ConversationManager.getInstance(httpSession);
-					if (conversationManager != null)
-					{
-						conversationManagerTL.set(conversationManager);
+                HttpSession httpSession = httpRequest.getSession(false);
+                if (httpSession != null)
+                {
+                    conversationManager = ConversationManager.getInstance(httpSession);
+                    if (conversationManager != null)
+                    {
+                        conversationManagerTL.set(conversationManager);
 
-						conversationManager.attachPersistence();
-					}
-				}
-			}
+                        conversationManager.attachPersistence();
+                    }
+                }
+            }
 
-			request.setAttribute(CONVERSATION_FILTER_CALLED, Boolean.TRUE);
-		}
+            request.setAttribute(CONVERSATION_FILTER_CALLED, Boolean.TRUE);
+        }
 
-		boolean ok = false;
-		try
-		{
-			chain.doFilter(request, response);
-			ok = true;
-		}
-		finally
-		{
-			if (conversationManager != null)
-			{
-				try
-				{
-					if (!ok)
-					{
-						conversationManager.purgePersistence();
-					}
-					else
-					{
-						conversationManager.detachPersistence();
-					}
-				}
-				finally
-				{
-					externalContextTL.set(null);
-					conversationManagerTL.set(null);
-				}
-			}
-		}
-	}
+        boolean ok = false;
+        try
+        {
+            chain.doFilter(request, response);
+            ok = true;
+        }
+        finally
+        {
+            if (conversationManager != null)
+            {
+                try
+                {
+                    if (!ok)
+                    {
+                        conversationManager.purgePersistence();
+                    }
+                    else
+                    {
+                        conversationManager.detachPersistence();
+                    }
+                }
+                finally
+                {
+                    externalContextTL.set(null);
+                    conversationManagerTL.set(null);
+                }
+            }
+        }
+    }
 
-	public void destroy()
-	{
-	}
+    public void destroy()
+    {
+    }
 
-	static ConversationExternalContext getConversationExternalContext()
-	{
-		return (ConversationExternalContext) externalContextTL.get();
-	}
+    static ConversationExternalContext getConversationExternalContext()
+    {
+        return (ConversationExternalContext) externalContextTL.get();
+    }
 
-	static ConversationManager getConversationManager()
-	{
-		return (ConversationManager) conversationManagerTL.get();
-	}
+    static ConversationManager getConversationManager()
+    {
+        return (ConversationManager) conversationManagerTL.get();
+    }
 }

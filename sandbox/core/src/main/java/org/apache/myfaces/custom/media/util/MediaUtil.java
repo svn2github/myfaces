@@ -33,13 +33,13 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 public class MediaUtil {
     
     final static String[] IMAGES_EXTENSIONS = new String[] {
-	"jpg",
-	"jpeg",
-	"png",
-	"mng",
-	"bmp",
-	"gif",
-	"dxf"
+    "jpg",
+    "jpeg",
+    "png",
+    "mng",
+    "bmp",
+    "gif",
+    "dxf"
     };
     
     /**
@@ -49,16 +49,16 @@ public class MediaUtil {
      * @return boolean.
      */
     public static boolean isImage(String uri) {
-	
-	for(int i = 0; i < IMAGES_EXTENSIONS.length; ++i) 
-	{
-	    if(uri.endsWith(IMAGES_EXTENSIONS[i])) 
-	    {
-		return true;
-	    }
-	}
-	
-	return false;
+    
+    for(int i = 0; i < IMAGES_EXTENSIONS.length; ++i) 
+    {
+        if(uri.endsWith(IMAGES_EXTENSIONS[i])) 
+        {
+        return true;
+        }
+    }
+    
+    return false;
     }
     
     /**
@@ -69,50 +69,50 @@ public class MediaUtil {
      * @throws IOException
      */
     public static void generateEmbedTag(FacesContext context,
-	    MediaComponent mediaComponent) throws IOException {
+        MediaComponent mediaComponent) throws IOException {
 
-	ResponseWriter writer = context.getResponseWriter();
-	String source = mediaComponent.getSource();
-	String contentType = mediaComponent.getContentType();
-	String width = mediaComponent.getWidth();
-	String height = mediaComponent.getHeight();
+    ResponseWriter writer = context.getResponseWriter();
+    String source = mediaComponent.getSource();
+    String contentType = mediaComponent.getContentType();
+    String width = mediaComponent.getWidth();
+    String height = mediaComponent.getHeight();
 
-	/* start writing the media component */
-	writer.startElement(MediaConstants.EMBED_ELEM, mediaComponent);
+    /* start writing the media component */
+    writer.startElement(MediaConstants.EMBED_ELEM, mediaComponent);
 
-	writer.writeAttribute(HTML.ID_ATTR,
-		mediaComponent.getClientId(context), null);
-	writer.writeAttribute(HTML.NAME_ATTR, mediaComponent.getId(),
-		JSFAttr.ID_ATTR);
+    writer.writeAttribute(HTML.ID_ATTR,
+        mediaComponent.getClientId(context), null);
+    writer.writeAttribute(HTML.NAME_ATTR, mediaComponent.getId(),
+        JSFAttr.ID_ATTR);
 
-	writer.writeAttribute(HTML.SRC_ATTR, source, null);
+    writer.writeAttribute(HTML.SRC_ATTR, source, null);
 
-	writer.writeAttribute(HTML.TYPE_ATTR, contentType, null);
+    writer.writeAttribute(HTML.TYPE_ATTR, contentType, null);
 
-	/* write the rest of attributes */
+    /* write the rest of attributes */
 
-	if (width != null && !"".equals(width)) {
-	    writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
-	}
+    if (width != null && !"".equals(width)) {
+        writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
+    }
 
-	if (height != null && !"".equals(height)) {
-	    writer.writeAttribute(HTML.HEIGHT_ATTR, height, null);
-	}
+    if (height != null && !"".equals(height)) {
+        writer.writeAttribute(HTML.HEIGHT_ATTR, height, null);
+    }
 
-	writer.writeAttribute(MediaConstants.PLUGINSPAGE_ATTR,
-		MediaConstants.DEFAULT_MEDIA_PLUGIN_PAGE, null);
-	writer.writeAttribute(MediaConstants.SHOW_GOTO_BAR_ATTR, "true", null);
-	writer.writeAttribute(MediaConstants.SHOW_DISPLAY_ATTR, "true", null);
-	writer
-		.writeAttribute(MediaConstants.SHOW_STATUS_BAR_ATTR, "true",
-			null);
+    writer.writeAttribute(MediaConstants.PLUGINSPAGE_ATTR,
+        MediaConstants.DEFAULT_MEDIA_PLUGIN_PAGE, null);
+    writer.writeAttribute(MediaConstants.SHOW_GOTO_BAR_ATTR, "true", null);
+    writer.writeAttribute(MediaConstants.SHOW_DISPLAY_ATTR, "true", null);
+    writer
+        .writeAttribute(MediaConstants.SHOW_STATUS_BAR_ATTR, "true",
+            null);
 
-	/* if no EMBED not supported */
-	writer.startElement(MediaConstants.NO_EMBED_ELEM, mediaComponent);
-	writer.write("<a href=\"" + 
-			source + 
-			"\">EMBED is not supported, Click here to see the resource</a>");
-	writer.endElement(MediaConstants.NO_EMBED_ELEM);
+    /* if no EMBED not supported */
+    writer.startElement(MediaConstants.NO_EMBED_ELEM, mediaComponent);
+    writer.write("<a href=\"" + 
+            source + 
+            "\">EMBED is not supported, Click here to see the resource</a>");
+    writer.endElement(MediaConstants.NO_EMBED_ELEM);
     }
     
     /**
@@ -123,34 +123,34 @@ public class MediaUtil {
      * @throws IOException
      */
     public static void generateImageTag(FacesContext context,
-	    MediaComponent mediaComponent) throws IOException {
+        MediaComponent mediaComponent) throws IOException {
 
-	ResponseWriter writer = context.getResponseWriter();
-	String source = mediaComponent.getSource();
-	String width = mediaComponent.getWidth();
-	String height = mediaComponent.getHeight();
+    ResponseWriter writer = context.getResponseWriter();
+    String source = mediaComponent.getSource();
+    String width = mediaComponent.getWidth();
+    String height = mediaComponent.getHeight();
 
-	/* start writing the media component */
-	writer.startElement(HTML.IMG_ELEM, mediaComponent);
+    /* start writing the media component */
+    writer.startElement(HTML.IMG_ELEM, mediaComponent);
 
-	writer.writeAttribute(HTML.ID_ATTR, mediaComponent.getClientId(context), null);
-	writer.writeAttribute(HTML.NAME_ATTR, mediaComponent.getId(), JSFAttr.ID_ATTR);
+    writer.writeAttribute(HTML.ID_ATTR, mediaComponent.getClientId(context), null);
+    writer.writeAttribute(HTML.NAME_ATTR, mediaComponent.getId(), JSFAttr.ID_ATTR);
 
-	writer.writeAttribute(HTML.SRC_ATTR, source, null);
+    writer.writeAttribute(HTML.SRC_ATTR, source, null);
 
-	/* write the rest of attributes */
+    /* write the rest of attributes */
 
-	if (width != null && !"".equals(width)) 
-	{
-	    writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
-	}
+    if (width != null && !"".equals(width)) 
+    {
+        writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
+    }
 
-	if (height != null && !"".equals(height)) 
-	{
-	    writer.writeAttribute(HTML.HEIGHT_ATTR, height, null);
-	}
+    if (height != null && !"".equals(height)) 
+    {
+        writer.writeAttribute(HTML.HEIGHT_ATTR, height, null);
+    }
 
-	writer.endElement(HTML.IMG_ELEM);
+    writer.endElement(HTML.IMG_ELEM);
     }    
     
 }

@@ -40,8 +40,8 @@ public class UploadedFileDefaultMemoryImpl extends UploadedFileDefaultImplBase
     {
         super(fileItem.getName(), fileItem.getContentType());
         int sizeInBytes = (int)fileItem.getSize();
-    	bytes = new byte[sizeInBytes];
-    	fileItem.getInputStream().read(bytes);
+        bytes = new byte[sizeInBytes];
+        fileItem.getInputStream().read(bytes);
       this.storageStrategy = new StorageStrategy() {
 
         public void deleteFileContents() {
@@ -72,7 +72,7 @@ public class UploadedFileDefaultMemoryImpl extends UploadedFileDefaultImplBase
      */
     public InputStream getInputStream() throws IOException
     {
-    	return new ByteArrayInputStream( bytes );
+        return new ByteArrayInputStream( bytes );
     }
 
 
@@ -81,9 +81,9 @@ public class UploadedFileDefaultMemoryImpl extends UploadedFileDefaultImplBase
      * @return long
      */
     public long getSize() {
-    	if( bytes == null )
-    		return 0;
-    	return bytes.length;
+        if( bytes == null )
+            return 0;
+        return bytes.length;
     }
 
 

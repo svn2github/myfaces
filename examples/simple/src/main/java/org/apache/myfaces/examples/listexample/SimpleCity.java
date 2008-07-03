@@ -34,55 +34,55 @@ public class SimpleCity implements Serializable
 
     private boolean selected;
     
-	public boolean isSelected() {
-		return selected;
-	}
+    public boolean isSelected() {
+        return selected;
+    }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-	
-	public void unselect(){
-		setSelected(false);
-	}
-	
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    
+    public void unselect(){
+        setSelected(false);
+    }
+    
 
-	/**
-	 * 
-	 */
-	public SimpleCity(String name)
-	{
-		mName = name;
-	}
+    /**
+     * 
+     */
+    public SimpleCity(String name)
+    {
+        mName = name;
+    }
 
-	/**
-	 * 
-	 */
-	public SimpleCity()
-	{
-	}
+    /**
+     * 
+     */
+    public SimpleCity()
+    {
+    }
 
-	/**
-	 * @return Returns the name.
-	 */
-	public String getName()
-	{
-		return mName;
-	}
+    /**
+     * @return Returns the name.
+     */
+    public String getName()
+    {
+        return mName;
+    }
 
-	/**
-	 * @param name The name to set.
-	 */
-	public void setName(String name)
-	{
-		mName = name;
-	}
+    /**
+     * @param name The name to set.
+     */
+    public void setName(String name)
+    {
+        mName = name;
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString()
-	{
-		return getName();
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return getName();
+    }
 }

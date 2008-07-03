@@ -86,13 +86,13 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     private static final boolean DEFAULT_SORTASCENDING = true;
     private static final boolean DEFAULT_SORTABLE = false;
-	private static final boolean DEFAULT_EMBEDDED = false;
-	private static final boolean DEFAULT_DETAILSTAMP_EXPANDED = false;
-	private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
+    private static final boolean DEFAULT_EMBEDDED = false;
+    private static final boolean DEFAULT_DETAILSTAMP_EXPANDED = false;
+    private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
     private static final Integer DEFAULT_NEWSPAPER_COLUMNS = new Integer(1);
     private static final String DEFAULT_NEWSPAPER_ORIENTATION = "vertical";
-	private static final String DEFAULT_DETAILSTAMP_LOCATION = "after";
+    private static final String DEFAULT_DETAILSTAMP_LOCATION = "after";
 
     /**
      * the property names
@@ -1153,7 +1153,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * @JSFProperty
      *   defaultValue="false"
      */
-	public abstract boolean isEmbedded();
+    public abstract boolean isEmbedded();
 
     /**
      * true|false - true if the detailStamp should be expanded by default. default: false
@@ -1161,7 +1161,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * @JSFProperty
      *   defaultValue="false"
      */
-	public abstract boolean isDetailStampExpandedDefault();
+    public abstract boolean isDetailStampExpandedDefault();
 
     /**
      * before|after - where to render the detailStamp, before the 
@@ -1170,7 +1170,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * @JSFProperty
      *   defaultValue="after"
      */
-	public abstract String getDetailStampLocation();
+    public abstract String getDetailStampLocation();
 
     /**
      * Defines a JavaScript onmouseover event handler for each table row
@@ -1228,21 +1228,21 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public String getRowStyleClass()
     {
-	if (_rowStyleClass != null)
-	    return _rowStyleClass;
+    if (_rowStyleClass != null)
+        return _rowStyleClass;
 
-	// TODO: temporarily support fully-qualified ext. dataTable attribute names.
-	ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLECLASS");
-	if (vb != null)
-	    log.warn("org.apache.myfaces.dataTable.ROW_STYLECLASS is deprecated. Please use rowStyleClass instead.");
-	else
-	    vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
-	if(vb == null)
-	    return null;
-	String bindingValue = (String) vb.getValue(getFacesContext());
-	if(bindingValue == "")
-	    return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
-	return bindingValue;
+    // TODO: temporarily support fully-qualified ext. dataTable attribute names.
+    ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLECLASS");
+    if (vb != null)
+        log.warn("org.apache.myfaces.dataTable.ROW_STYLECLASS is deprecated. Please use rowStyleClass instead.");
+    else
+        vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
+    if(vb == null)
+        return null;
+    String bindingValue = (String) vb.getValue(getFacesContext());
+    if(bindingValue == "")
+        return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
+    return bindingValue;
     }
 
     public void setRowStyleClass(String rowStyleClass)
@@ -1260,18 +1260,18 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         if (_rowStyle != null)
             return _rowStyle;
 
-	// TODO: temporarily support fully-qualified ext. dataTable attribute names.
+    // TODO: temporarily support fully-qualified ext. dataTable attribute names.
         ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLE");
-	if (vb != null)
-	    log.warn("org.apache.myfaces.dataTable.ROW_STYLE is deprecated. Please use rowStyle instead.");
-	else
-	    vb = getValueBinding(JSFAttr.ROW_STYLE_ATTR);
-	if(vb == null)
-	    return null;
-	String bindingValue = (String) vb.getValue(getFacesContext());
-	if(bindingValue == "")
-	    return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
-	return bindingValue;
+    if (vb != null)
+        log.warn("org.apache.myfaces.dataTable.ROW_STYLE is deprecated. Please use rowStyle instead.");
+    else
+        vb = getValueBinding(JSFAttr.ROW_STYLE_ATTR);
+    if(vb == null)
+        return null;
+    String bindingValue = (String) vb.getValue(getFacesContext());
+    if(bindingValue == "")
+        return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
+    return bindingValue;
     }
 
     public void setRowStyle(String rowStyle)
@@ -1327,13 +1327,13 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public boolean isCurrentDetailExpanded()
     {
-		Boolean expanded = (Boolean) _expandedNodes.get(new Integer(getRowIndex()));
-		if (expanded != null)
-		{
-			return expanded.booleanValue();
-		}
+        Boolean expanded = (Boolean) _expandedNodes.get(new Integer(getRowIndex()));
+        if (expanded != null)
+        {
+            return expanded.booleanValue();
+        }
 
-		return isDetailStampExpandedDefault();
+        return isDetailStampExpandedDefault();
     }
 
     public void setVarDetailToggler(String varDetailToggler)
@@ -1398,38 +1398,38 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     {
         Integer rowIndex = new Integer(getRowIndex());
 
-		// get the current expanded state of the row
-		boolean expanded = isDetailExpanded();
-		if (expanded)
+        // get the current expanded state of the row
+        boolean expanded = isDetailExpanded();
+        if (expanded)
         {
-			// toggle to "collapsed"
+            // toggle to "collapsed"
 
-			if (isDetailStampExpandedDefault())
-			{
-				// if default is expanded we have to override with FALSE here
-				_expandedNodes.put(rowIndex, Boolean.FALSE);
-			}
-			else
-			{
-				// if default is collapsed we can fallback to this default
-				_expandedNodes.remove(rowIndex);
-			}
-		}
+            if (isDetailStampExpandedDefault())
+            {
+                // if default is expanded we have to override with FALSE here
+                _expandedNodes.put(rowIndex, Boolean.FALSE);
+            }
+            else
+            {
+                // if default is collapsed we can fallback to this default
+                _expandedNodes.remove(rowIndex);
+            }
+        }
         else
         {
-			// toggle to "expanded"
+            // toggle to "expanded"
 
-			if (isDetailStampExpandedDefault())
-			{
-				// if default is expanded we can fallback to this default
-				_expandedNodes.remove(rowIndex);
-			}
-			else
-			{
-				// if default is collapsed we have to override with TRUE
-				_expandedNodes.put(rowIndex, Boolean.TRUE);
-			}
-		}
+            if (isDetailStampExpandedDefault())
+            {
+                // if default is expanded we can fallback to this default
+                _expandedNodes.remove(rowIndex);
+            }
+            else
+            {
+                // if default is collapsed we have to override with TRUE
+                _expandedNodes.put(rowIndex, Boolean.TRUE);
+            }
+        }
     }
 
     /**
@@ -1442,13 +1442,13 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         Integer rowIndex = new Integer(getRowIndex());
 
         Boolean expanded = (Boolean) _expandedNodes.get(rowIndex);
-		if (expanded == null)
-		{
-			return isDetailStampExpandedDefault();
-		}
+        if (expanded == null)
+        {
+            return isDetailStampExpandedDefault();
+        }
 
-		return expanded.booleanValue();
-	}
+        return expanded.booleanValue();
+    }
 
     public int getSortColumnIndex()
     {
@@ -1480,7 +1480,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * @JSFProperty
      *   defaultValue = "vertical"
      */
-	public abstract String getNewspaperOrientation();
+    public abstract String getNewspaperOrientation();
 
     /**
      * Gets the spacer facet, between each pair of newspaper columns.

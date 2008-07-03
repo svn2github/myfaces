@@ -28,18 +28,18 @@ import junit.framework.TestCase;
  */
 public class ComponentUtilsTest extends TestCase{
 
-	public void testDecorateEventAttribute() {
-		HtmlCommandButton button = new HtmlCommandButton();
-		button.setId("testButton");
-		
-		ComponentUtils.decorateEventAttribute(button, "onclick", "alert('Whad up?');");
-		assertEquals("alert('Whad up?');", (String) button.getAttributes().get("onclick"));
-		
-		//Second try to decorate with same value
-		ComponentUtils.decorateEventAttribute(button, "onclick", "alert('Whad up?');");
-		assertEquals("alert('Whad up?');", (String) button.getAttributes().get("onclick"));
-		
-		ComponentUtils.decorateEventAttribute(button, "onclick", "return false;");
-		assertEquals("alert('Whad up?');return false;", (String) button.getAttributes().get("onclick"));
-	}
+    public void testDecorateEventAttribute() {
+        HtmlCommandButton button = new HtmlCommandButton();
+        button.setId("testButton");
+        
+        ComponentUtils.decorateEventAttribute(button, "onclick", "alert('Whad up?');");
+        assertEquals("alert('Whad up?');", (String) button.getAttributes().get("onclick"));
+        
+        //Second try to decorate with same value
+        ComponentUtils.decorateEventAttribute(button, "onclick", "alert('Whad up?');");
+        assertEquals("alert('Whad up?');", (String) button.getAttributes().get("onclick"));
+        
+        ComponentUtils.decorateEventAttribute(button, "onclick", "return false;");
+        assertEquals("alert('Whad up?');return false;", (String) button.getAttributes().get("onclick"));
+    }
 }

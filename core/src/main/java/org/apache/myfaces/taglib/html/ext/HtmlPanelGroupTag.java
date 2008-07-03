@@ -34,7 +34,7 @@ public class HtmlPanelGroupTag
 {
     private static final String LAYOUT_ATTR = "layout";
 
-	public String getComponentType()
+    public String getComponentType()
     {
         return HtmlPanelGroup.COMPONENT_TYPE;
     }
@@ -48,10 +48,10 @@ public class HtmlPanelGroupTag
     private String _visibleOnUserRole;
 
     private String _displayValueOnly;
-	private String _displayValueOnlyStyle;
-	private String _displayValueOnlyStyleClass;
-	
-	private String _layout;
+    private String _displayValueOnlyStyle;
+    private String _displayValueOnlyStyleClass;
+    
+    private String _layout;
 
     private String _colspan;
     
@@ -106,7 +106,7 @@ public class HtmlPanelGroupTag
     
     public void setLayout(String layout)
     {
-    	_layout = layout;
+        _layout = layout;
     }
     public void setColspan(String colspan)
     {

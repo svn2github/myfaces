@@ -26,12 +26,12 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientValidator;
  */
 public class LengthValidator extends javax.faces.validator.LengthValidator implements ClientValidator{
 
-	public String getScriptFunction() {
-		return "tomahawk.LengthValidator(" + getMinimum() + "," + getMaximum() + ")";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.LengthValidator(" + getMinimum() + "," + getMaximum() + ")";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 
 }

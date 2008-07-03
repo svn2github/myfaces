@@ -42,42 +42,42 @@ import org.apache.myfaces.validator.ValidatorBase;
  */
 public class EmailValidator extends ValidatorBase {
 
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.Email";
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the maximum length check fails.</p>
-	 */
-	public static final String EMAIL_MESSAGE_ID = "org.apache.myfaces.Email.INVALID";
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.Email";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the maximum length check fails.</p>
+     */
+    public static final String EMAIL_MESSAGE_ID = "org.apache.myfaces.Email.INVALID";
 
-	public EmailValidator(){
-	}
+    public EmailValidator(){
+    }
 
-	/**
-	 * methode that validates an email-address.
-	 * it uses the commons-validator
-	 */
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
+    /**
+     * methode that validates an email-address.
+     * it uses the commons-validator
+     */
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
 
 
-			if (facesContext == null) throw new NullPointerException("facesContext");
-			if (uiComponent == null) throw new NullPointerException("uiComponent");
+            if (facesContext == null) throw new NullPointerException("facesContext");
+            if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-			if (value == null)
-			{
-				return;
-			}
-			if (!GenericValidator.isEmail(value.toString().trim())) {
-				Object[] args = {value.toString()};
-	            throw new ValidatorException(getFacesMessage(EMAIL_MESSAGE_ID, args));
-			}
+            if (value == null)
+            {
+                return;
+            }
+            if (!GenericValidator.isEmail(value.toString().trim())) {
+                Object[] args = {value.toString()};
+                throw new ValidatorException(getFacesMessage(EMAIL_MESSAGE_ID, args));
+            }
 
-	}
+    }
 
 }

@@ -43,7 +43,7 @@ public class FieldsetRenderer extends HtmlTagRenderer
 
     public boolean getRendersChildren() 
     {
-    	return true;
+        return true;
     }
     
     public void encodeBegin(FacesContext context, UIComponent component)
@@ -54,11 +54,11 @@ public class FieldsetRenderer extends HtmlTagRenderer
 
         if (fieldset.isRendered())
         {
-        	super.encodeBegin(context, component);
-        	String legend = fieldset.getLegend();
-        	if( legend == null || legend.trim().length() == 0 ) // Don't render the legend
-        		return;
-        	
+            super.encodeBegin(context, component);
+            String legend = fieldset.getLegend();
+            if( legend == null || legend.trim().length() == 0 ) // Don't render the legend
+                return;
+            
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("legend", fieldset);
@@ -68,7 +68,7 @@ public class FieldsetRenderer extends HtmlTagRenderer
     }
     
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-    	RendererUtils.renderChildren(context, component);
+        RendererUtils.renderChildren(context, component);
     }
     
 }

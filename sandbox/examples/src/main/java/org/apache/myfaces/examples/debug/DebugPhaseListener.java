@@ -34,26 +34,26 @@ import org.apache.commons.logging.LogFactory;
 public class DebugPhaseListener implements PhaseListener
 {
 
-	private static Log log = LogFactory.getLog(DebugPhaseListener.class);
-	
-	public void afterPhase(PhaseEvent event)
-	{
-		if(log.isInfoEnabled())
-		{
-			log.info("AFTER PHASE " + event.getPhaseId());
-		}
-	}
+    private static Log log = LogFactory.getLog(DebugPhaseListener.class);
+    
+    public void afterPhase(PhaseEvent event)
+    {
+        if(log.isInfoEnabled())
+        {
+            log.info("AFTER PHASE " + event.getPhaseId());
+        }
+    }
 
-	public void beforePhase(PhaseEvent event)
-	{
-		if(log.isInfoEnabled())
-		{
-			log.info("BEFORE PHASE " + event.getPhaseId());
-		}
-	
-	}
+    public void beforePhase(PhaseEvent event)
+    {
+        if(log.isInfoEnabled())
+        {
+            log.info("BEFORE PHASE " + event.getPhaseId());
+        }
+    
+    }
 
-	public PhaseId getPhaseId() {
-		return PhaseId.ANY_PHASE;
-	}
+    public PhaseId getPhaseId() {
+        return PhaseId.ANY_PHASE;
+    }
 }

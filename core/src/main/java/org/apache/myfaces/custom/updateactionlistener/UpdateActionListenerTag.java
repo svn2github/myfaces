@@ -147,9 +147,9 @@ public class UpdateActionListenerTag
 
     public void release()
     {
-    	_property = null;
-    	_converter = null;
-    	_value = null;
+        _property = null;
+        _converter = null;
+        _value = null;
     }
 
 }

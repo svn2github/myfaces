@@ -58,10 +58,10 @@ public abstract class AbstractInputSuggestAjax extends SuggestAjax
 
         setRendererType(DEFAULT_RENDERER_TYPE);
 
-		// it makes absolutely no sense to have two autocompletes active at the same time
-		// ensure to disable the browser one - this has nothing to do with the
-		// autocomplete attribute this component provides
-		setAutocomplete("off"); // NON-NLS
+        // it makes absolutely no sense to have two autocompletes active at the same time
+        // ensure to disable the browser one - this has nothing to do with the
+        // autocomplete attribute this component provides
+        setAutocomplete("off"); // NON-NLS
     }
 
     public void encodeChildren(FacesContext context) throws IOException

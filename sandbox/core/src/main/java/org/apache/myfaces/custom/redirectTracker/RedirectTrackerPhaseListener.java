@@ -27,32 +27,32 @@ import javax.faces.event.PhaseListener;
  */
 public class RedirectTrackerPhaseListener implements PhaseListener
 {
-	public void afterPhase(PhaseEvent event)
-	{
-		if (event.getPhaseId().equals(PhaseId.RESTORE_VIEW))
-		{
-			RedirectTrackerManager manager = RedirectTrackerManager.getInstance(event.getFacesContext());
-			if (manager != null)
-			{
-				manager.processTrackedRequest(event.getFacesContext());
-			}
-		}
-	}
+    public void afterPhase(PhaseEvent event)
+    {
+        if (event.getPhaseId().equals(PhaseId.RESTORE_VIEW))
+        {
+            RedirectTrackerManager manager = RedirectTrackerManager.getInstance(event.getFacesContext());
+            if (manager != null)
+            {
+                manager.processTrackedRequest(event.getFacesContext());
+            }
+        }
+    }
 
-	public void beforePhase(PhaseEvent event)
-	{
-		if (event.getPhaseId().equals(PhaseId.RESTORE_VIEW))
-		{
-			RedirectTrackerManager manager = RedirectTrackerManager.getInstance(event.getFacesContext());
-			if (manager != null)
-			{
-				manager.clearSaveStateBean();
-			}
-		}
-	}
+    public void beforePhase(PhaseEvent event)
+    {
+        if (event.getPhaseId().equals(PhaseId.RESTORE_VIEW))
+        {
+            RedirectTrackerManager manager = RedirectTrackerManager.getInstance(event.getFacesContext());
+            if (manager != null)
+            {
+                manager.clearSaveStateBean();
+            }
+        }
+    }
 
-	public PhaseId getPhaseId()
-	{
-		return PhaseId.ANY_PHASE;
-	}
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.ANY_PHASE;
+    }
 }

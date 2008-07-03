@@ -36,95 +36,95 @@ import javax.faces.event.ValueChangeListener;
  * @version $Revision$ $Date$
  */
 public class ValueChangeCollector implements ValueChangeListener,
-		StateHolder
+        StateHolder
 {
-	private String method = null;
-	private boolean isTransient = false;
+    private String method = null;
+    private boolean isTransient = false;
 
-	public ValueChangeCollector()
-	{
-	}
+    public ValueChangeCollector()
+    {
+    }
 
-	protected ValueChangeCollector(String method)
-	{
-		this.method = method;
-	}
+    protected ValueChangeCollector(String method)
+    {
+        this.method = method;
+    }
 
-	/**
-	 * This it the valueChange sink<br />
-	 * The received event will be cloned and collected by the manager.  
-	 */
-	public void processValueChange(ValueChangeEvent event)
-			throws AbortProcessingException
-	{
-		UIComponent valueChangeComponent = event.getComponent();
-		List restoreStateCommands = new ArrayList(); 
-		collectStates(restoreStateCommands, valueChangeComponent); 
-		
-		ValueChangeEvent clonedEvent = new ValueChangeEvent(
-			event.getComponent(),
-			event.getOldValue(),
-			event.getNewValue());
+    /**
+     * This it the valueChange sink<br />
+     * The received event will be cloned and collected by the manager.  
+     */
+    public void processValueChange(ValueChangeEvent event)
+            throws AbortProcessingException
+    {
+        UIComponent valueChangeComponent = event.getComponent();
+        List restoreStateCommands = new ArrayList(); 
+        collectStates(restoreStateCommands, valueChangeComponent); 
+        
+        ValueChangeEvent clonedEvent = new ValueChangeEvent(
+            event.getComponent(),
+            event.getOldValue(),
+            event.getNewValue());
 
-		ValueChangeManager manager = ValueChangeManager.getManager(FacesContext
-				.getCurrentInstance());
-		manager.addEvent(method, clonedEvent, restoreStateCommands);
-	}
+        ValueChangeManager manager = ValueChangeManager.getManager(FacesContext
+                .getCurrentInstance());
+        manager.addEvent(method, clonedEvent, restoreStateCommands);
+    }
 
-	protected void collectStates(List restoreStateCommands, UIComponent component)
-	{
-		while (component != null)
-		{
-			if (component instanceof UIData)
-			{
-				final UIData data = (UIData) component;
-				final int rowIndex = data.getRowIndex();
-				
-				restoreStateCommands.add(new RestoreStateCommand()
-				{
-					int currentRowIndex;
-					
-					public void saveCurrentState()
-					{
-						currentRowIndex = data.getRowIndex();
-					}
-					
-					public void restoreCurrentState()
-					{
-						data.setRowIndex(currentRowIndex);
-					}
+    protected void collectStates(List restoreStateCommands, UIComponent component)
+    {
+        while (component != null)
+        {
+            if (component instanceof UIData)
+            {
+                final UIData data = (UIData) component;
+                final int rowIndex = data.getRowIndex();
+                
+                restoreStateCommands.add(new RestoreStateCommand()
+                {
+                    int currentRowIndex;
+                    
+                    public void saveCurrentState()
+                    {
+                        currentRowIndex = data.getRowIndex();
+                    }
+                    
+                    public void restoreCurrentState()
+                    {
+                        data.setRowIndex(currentRowIndex);
+                    }
 
-					public void restoreEventState()
-					{
-						data.setRowIndex(rowIndex);
-					}
-				});
-			}
-			
-			component = component.getParent(); 
-		}
-	}
+                    public void restoreEventState()
+                    {
+                        data.setRowIndex(rowIndex);
+                    }
+                });
+            }
+            
+            component = component.getParent(); 
+        }
+    }
 
-	public Object saveState(FacesContext context)
-	{
-		return new Object[]
-		{ this.method};
-	}
+    public Object saveState(FacesContext context)
+    {
+        return new Object[]
+        { this.method};
+    }
 
-	public void restoreState(FacesContext context, Object state)
-	{
-		Object[] o = (Object[]) state;
-		
-		this.method = (String) o[0];
-	}
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] o = (Object[]) state;
+        
+        this.method = (String) o[0];
+    }
 
-	public boolean isTransient()
-	{
-		return isTransient;
-	}
+    public boolean isTransient()
+    {
+        return isTransient;
+    }
 
-	public void setTransient(boolean isTransient)
-	{
-		this.isTransient = isTransient;
-	}
+    public void setTransient(boolean isTransient)
+    {
+        this.isTransient = isTransient;
+    }
 }

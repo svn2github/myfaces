@@ -43,292 +43,292 @@ import org.apache.myfaces.custom.dynaForm.metadata.FieldInterface;
  */
 public class JsfGuiBuilderDecorator extends JsfGuiBuilder
 {
-	private final JsfGuiBuilder original;
+    private final JsfGuiBuilder original;
 
-	public JsfGuiBuilderDecorator(JsfGuiBuilder original)
-	{
-		this.original = original;
-	}
+    public JsfGuiBuilderDecorator(JsfGuiBuilder original)
+    {
+        this.original = original;
+    }
 
-	public JsfGuiBuilder getOriginal()
-	{
-		return original;
-	}
+    public JsfGuiBuilder getOriginal()
+    {
+        return original;
+    }
 
-	public void createInputBoolean(FieldInterface field)
-	{
-		original.createInputBoolean(field);
-	}
+    public void createInputBoolean(FieldInterface field)
+    {
+        original.createInputBoolean(field);
+    }
 
-	public void createInputDate(FieldInterface field)
-	{
-		original.createInputDate(field);
-	}
+    public void createInputDate(FieldInterface field)
+    {
+        original.createInputDate(field);
+    }
 
-	public void createInputNumber(FieldInterface field)
-	{
-		original.createInputNumber(field);
-	}
+    public void createInputNumber(FieldInterface field)
+    {
+        original.createInputNumber(field);
+    }
 
-	public void createInputText(FieldInterface field)
-	{
-		original.createInputText(field);
-	}
+    public void createInputText(FieldInterface field)
+    {
+        original.createInputText(field);
+    }
 
-	public UIOutput createLabelFor(String labelText, UIComponent cmp)
-	{
-		return original.createLabelFor(labelText, cmp);
-	}
+    public UIOutput createLabelFor(String labelText, UIComponent cmp)
+    {
+        return original.createLabelFor(labelText, cmp);
+    }
 
-	public void createNative(FieldInterface field)
-	{
-		original.createNative(field);
-	}
+    public void createNative(FieldInterface field)
+    {
+        original.createNative(field);
+    }
 
-	public void createOutputText(FieldInterface field)
-	{
-		original.createOutputText(field);
-	}
+    public void createOutputText(FieldInterface field)
+    {
+        original.createOutputText(field);
+    }
 
-	public UIParameter createParameter(String name, String value)
-	{
-		return original.createParameter(name, value);
-	}
+    public UIParameter createParameter(String name, String value)
+    {
+        return original.createParameter(name, value);
+    }
 
-	public void createSearchFor(FieldInterface field)
-	{
-		original.createSearchFor(field);
-	}
+    public void createSearchFor(FieldInterface field)
+    {
+        original.createSearchFor(field);
+    }
 
-	/*
-	public void createSearchForSelectMenu(FieldInterface field)
-	{
-		original.createSearchForSelectMenu(field);
-	}
-	*/
+    /*
+    public void createSearchForSelectMenu(FieldInterface field)
+    {
+        original.createSearchForSelectMenu(field);
+    }
+    */
 
-	public void createSelectOneMenu(FieldInterface field)
-	{
-		original.createSelectOneMenu(field);
-	}
+    public void createSelectOneMenu(FieldInterface field)
+    {
+        original.createSelectOneMenu(field);
+    }
 
-	public HtmlCommandLink doCreateCommandLink(FieldInterface field)
-	{
-		return original.doCreateCommandLink(field);
-	}
+    public HtmlCommandLink doCreateCommandLink(FieldInterface field)
+    {
+        return original.doCreateCommandLink(field);
+    }
 
-	public HtmlCommandLink doCreateCommandLinkComponent()
-	{
-		return original.doCreateCommandLinkComponent();
-	}
+    public HtmlCommandLink doCreateCommandLinkComponent()
+    {
+        return original.doCreateCommandLinkComponent();
+    }
 
-	public DateTimeConverter doCreateDateConverter(FieldInterface field)
-	{
-		return original.doCreateDateConverter(field);
-	}
+    public DateTimeConverter doCreateDateConverter(FieldInterface field)
+    {
+        return original.doCreateDateConverter(field);
+    }
 
-	public UISelectBoolean doCreateInputBoolean(FieldInterface field)
-	{
-		return original.doCreateInputBoolean(field);
-	}
+    public UISelectBoolean doCreateInputBoolean(FieldInterface field)
+    {
+        return original.doCreateInputBoolean(field);
+    }
 
-	public HtmlSelectBooleanCheckbox doCreateInputBooleanComponent()
-	{
-		return original.doCreateInputBooleanComponent();
-	}
+    public HtmlSelectBooleanCheckbox doCreateInputBooleanComponent()
+    {
+        return original.doCreateInputBooleanComponent();
+    }
 
-	public HtmlInputText doCreateInputDate(FieldInterface field)
-	{
-		return original.doCreateInputDate(field);
-	}
+    public HtmlInputText doCreateInputDate(FieldInterface field)
+    {
+        return original.doCreateInputDate(field);
+    }
 
-	public HtmlInputText doCreateInputDateComponent(FieldInterface field)
-	{
-		return original.doCreateInputDateComponent(field);
-	}
+    public HtmlInputText doCreateInputDateComponent(FieldInterface field)
+    {
+        return original.doCreateInputDateComponent(field);
+    }
 
-	public HtmlInputText doCreateInputNumber(FieldInterface field)
-	{
-		return original.doCreateInputNumber(field);
-	}
+    public HtmlInputText doCreateInputNumber(FieldInterface field)
+    {
+        return original.doCreateInputNumber(field);
+    }
 
-	public HtmlInputText doCreateInputText(FieldInterface field)
-	{
-		return original.doCreateInputText(field);
-	}
+    public HtmlInputText doCreateInputText(FieldInterface field)
+    {
+        return original.doCreateInputText(field);
+    }
 
-	public HtmlInputText doCreateInputTextComponent()
-	{
-		return original.doCreateInputTextComponent();
-	}
+    public HtmlInputText doCreateInputTextComponent()
+    {
+        return original.doCreateInputTextComponent();
+    }
 
-	public void doCreateNative(FieldInterface field, UIComponent uicomponent)
-	{
-		original.doCreateNative(field, uicomponent);
-	}
+    public void doCreateNative(FieldInterface field, UIComponent uicomponent)
+    {
+        original.doCreateNative(field, uicomponent);
+    }
 
-	public HtmlOutputLabel doCreateOutputLabel(String text)
-	{
-		return original.doCreateOutputLabel(text);
-	}
+    public HtmlOutputLabel doCreateOutputLabel(String text)
+    {
+        return original.doCreateOutputLabel(text);
+    }
 
-	public HtmlOutputLabel doCreateOutputLabelComponent()
-	{
-		return original.doCreateOutputLabelComponent();
-	}
+    public HtmlOutputLabel doCreateOutputLabelComponent()
+    {
+        return original.doCreateOutputLabelComponent();
+    }
 
-	public HtmlOutputText doCreateOutputText(FieldInterface field)
-	{
-		return original.doCreateOutputText(field);
-	}
+    public HtmlOutputText doCreateOutputText(FieldInterface field)
+    {
+        return original.doCreateOutputText(field);
+    }
 
-	public HtmlOutputText doCreateOutputText(String text)
-	{
-		return original.doCreateOutputText(text);
-	}
+    public HtmlOutputText doCreateOutputText(String text)
+    {
+        return original.doCreateOutputText(text);
+    }
 
-	public HtmlOutputText doCreateOutputTextComponent()
-	{
-		return original.doCreateOutputTextComponent();
-	}
+    public HtmlOutputText doCreateOutputTextComponent()
+    {
+        return original.doCreateOutputTextComponent();
+    }
 
-	public HtmlPanelGroup doCreatePanelGroupComponent()
-	{
-		return original.doCreatePanelGroupComponent();
-	}
+    public HtmlPanelGroup doCreatePanelGroupComponent()
+    {
+        return original.doCreatePanelGroupComponent();
+    }
 
-	public UIComponent doCreateSearchFor(FieldInterface field)
-	{
-		return original.doCreateSearchFor(field);
-	}
+    public UIComponent doCreateSearchFor(FieldInterface field)
+    {
+        return original.doCreateSearchFor(field);
+    }
 
-	public HtmlSelectOneMenu doCreateSelectOneMenu(FieldInterface field)
-	{
-		return original.doCreateSelectOneMenu(field);
-	}
+    public HtmlSelectOneMenu doCreateSelectOneMenu(FieldInterface field)
+    {
+        return original.doCreateSelectOneMenu(field);
+    }
 
-	public HtmlSelectOneMenu doCreateSelectOneMenuComponent()
-	{
-		return original.doCreateSelectOneMenuComponent();
-	}
+    public HtmlSelectOneMenu doCreateSelectOneMenuComponent()
+    {
+        return original.doCreateSelectOneMenuComponent();
+    }
 
-	public UIInput findInputComponent(UIComponent cmp)
-	{
-		return original.findInputComponent(cmp);
-	}
+    public UIInput findInputComponent(UIComponent cmp)
+    {
+        return original.findInputComponent(cmp);
+    }
 
-	public void fireNewComponent(FieldInterface field, UIComponent cmp)
-	{
-		original.fireNewComponent(field, cmp);
-	}
+    public void fireNewComponent(FieldInterface field, UIComponent cmp)
+    {
+        original.fireNewComponent(field, cmp);
+    }
 
-	public String getBackingBeanPrefix()
-	{
-		return original.getBackingBeanPrefix();
-	}
+    public String getBackingBeanPrefix()
+    {
+        return original.getBackingBeanPrefix();
+    }
 
-	public String getBackingEntityPrefix()
-	{
-		return original.getBackingEntityPrefix();
-	}
+    public String getBackingEntityPrefix()
+    {
+        return original.getBackingEntityPrefix();
+    }
 
-	public FacesContext getContext()
-	{
-		return original.getContext();
-	}
+    public FacesContext getContext()
+    {
+        return original.getContext();
+    }
 
-	public NewComponentListener getNewComponentListener()
-	{
-		return original.getNewComponentListener();
-	}
+    public NewComponentListener getNewComponentListener()
+    {
+        return original.getNewComponentListener();
+    }
 
-	public void iniCommandDefaults(UICommand cmp, FieldInterface field, String action, String actionListener)
-	{
-		original.iniCommandDefaults(cmp, field, action, actionListener);
-	}
+    public void iniCommandDefaults(UICommand cmp, FieldInterface field, String action, String actionListener)
+    {
+        original.iniCommandDefaults(cmp, field, action, actionListener);
+    }
 
-	public void initDefaults(UIComponent cmp, FieldInterface field)
-	{
-		original.initDefaults(cmp, field);
-	}
+    public void initDefaults(UIComponent cmp, FieldInterface field)
+    {
+        original.initDefaults(cmp, field);
+    }
 
-	public void initInputDefaults(HtmlInputText cmp, FieldInterface field)
-	{
-		original.initInputDefaults(cmp, field);
-	}
+    public void initInputDefaults(HtmlInputText cmp, FieldInterface field)
+    {
+        original.initInputDefaults(cmp, field);
+    }
 
-	public void initInputDefaults(UIInput cmp, FieldInterface field)
-	{
-		original.initInputDefaults(cmp, field);
-	}
+    public void initInputDefaults(UIInput cmp, FieldInterface field)
+    {
+        original.initInputDefaults(cmp, field);
+    }
 
-	public void initOutputDefaults(UIOutput cmp, FieldInterface field)
-	{
-		original.initOutputDefaults(cmp, field);
-	}
+    public void initOutputDefaults(UIOutput cmp, FieldInterface field)
+    {
+        original.initOutputDefaults(cmp, field);
+    }
 
-	public void initSelections(FieldInterface field, UIComponent cmp)
-	{
-		original.initSelections(field, cmp);
-	}
+    public void initSelections(FieldInterface field, UIComponent cmp)
+    {
+        original.initSelections(field, cmp);
+    }
 
-	public void initValueBinding(UIComponent cmp, FieldInterface field)
-	{
-		original.initValueBinding(cmp, field);
-	}
+    public void initValueBinding(UIComponent cmp, FieldInterface field)
+    {
+        original.initValueBinding(cmp, field);
+    }
 
-	public boolean isDisplayOnly()
-	{
-		return original.isDisplayOnly();
-	}
+    public boolean isDisplayOnly()
+    {
+        return original.isDisplayOnly();
+    }
 
-	public void setBackingBeanPrefix(String backingBeanPrefix)
-	{
-		original.setBackingBeanPrefix(backingBeanPrefix);
-	}
+    public void setBackingBeanPrefix(String backingBeanPrefix)
+    {
+        original.setBackingBeanPrefix(backingBeanPrefix);
+    }
 
-	public void setBackingEntityPrefix(String backingEntityPrefix)
-	{
-		original.setBackingEntityPrefix(backingEntityPrefix);
-	}
+    public void setBackingEntityPrefix(String backingEntityPrefix)
+    {
+        original.setBackingEntityPrefix(backingEntityPrefix);
+    }
 
-	public void setContext(FacesContext context)
-	{
-		original.setContext(context);
-	}
+    public void setContext(FacesContext context)
+    {
+        original.setContext(context);
+    }
 
-	public void setDisplayOnly(boolean displayOnly)
-	{
-		original.setDisplayOnly(displayOnly);
-	}
+    public void setDisplayOnly(boolean displayOnly)
+    {
+        original.setDisplayOnly(displayOnly);
+    }
 
-	public void setNewComponentListener(NewComponentListener newComponentListener)
-	{
-		original.setNewComponentListener(newComponentListener);
-	}
+    public void setNewComponentListener(NewComponentListener newComponentListener)
+    {
+        original.setNewComponentListener(newComponentListener);
+    }
 
-	public Map getLabelBundle()
-	{
-		return original.getLabelBundle();
-	}
+    public Map getLabelBundle()
+    {
+        return original.getLabelBundle();
+    }
 
-	public void setLabelBundle(Map labelBundle)
-	{
-		original.setLabelBundle(labelBundle);
-	}
+    public void setLabelBundle(Map labelBundle)
+    {
+        original.setLabelBundle(labelBundle);
+    }
 
-	protected void attachLengthValidator(HtmlInputText cmp, int minSize, int maxSize)
-	{
-		original.attachLengthValidator(cmp, minSize, maxSize);
-	}
+    protected void attachLengthValidator(HtmlInputText cmp, int minSize, int maxSize)
+    {
+        original.attachLengthValidator(cmp, minSize, maxSize);
+    }
 
-	protected void attachRangeValidator(HtmlInputText cmp, double minValue, double maxValue)
-	{
-		original.attachRangeValidator(cmp, minValue, maxValue);
-	}
+    protected void attachRangeValidator(HtmlInputText cmp, double minValue, double maxValue)
+    {
+        original.attachRangeValidator(cmp, minValue, maxValue);
+    }
 
-	protected boolean buildField(FieldInterface field)
-	{
-		return super.buildField(field);
-	}
+    protected boolean buildField(FieldInterface field)
+    {
+        return super.buildField(field);
+    }
 }

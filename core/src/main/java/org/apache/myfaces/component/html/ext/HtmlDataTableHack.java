@@ -185,7 +185,7 @@ public abstract class HtmlDataTableHack extends
             _dataModelMap.clear();
             if (!isPreserveRowStates())
             {
-            	_rowStates.clear();
+                _rowStates.clear();
             }
         }
         super.encodeBegin(context);
@@ -655,7 +655,7 @@ public abstract class HtmlDataTableHack extends
      */
     public void clearRowStates()
     {
-    	_rowStates.clear();
+        _rowStates.clear();
     }
     
     /**
@@ -664,37 +664,37 @@ public abstract class HtmlDataTableHack extends
      */
     public void deleteRowStateForRow(int deletedIndex)
     {
-    	// save row index
-    	int savedRowIndex = getRowIndex();
-    	
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
-     	setRowIndex(deletedIndex);
-    	String currentRowStateKey = getClientId(facesContext);
+        // save row index
+        int savedRowIndex = getRowIndex();
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+         setRowIndex(deletedIndex);
+        String currentRowStateKey = getClientId(facesContext);
 
-    	// copy next rowstate to current row for each row from deleted row onward.
-    	int rowCount = getRowCount();
-    	for (int index = deletedIndex + 1; index < rowCount; ++index)
-    	{
-        	setRowIndex(index);
-        	String nextRowStateKey = getClientId(facesContext);
+        // copy next rowstate to current row for each row from deleted row onward.
+        int rowCount = getRowCount();
+        for (int index = deletedIndex + 1; index < rowCount; ++index)
+        {
+            setRowIndex(index);
+            String nextRowStateKey = getClientId(facesContext);
 
             Object nextRowState = _rowStates.get(nextRowStateKey);
             if (nextRowState == null)
             {
-            	_rowStates.remove(currentRowStateKey);
+                _rowStates.remove(currentRowStateKey);
             }
             else
             {
-            	_rowStates.put(currentRowStateKey, nextRowState);
+                _rowStates.put(currentRowStateKey, nextRowState);
             }
-        	currentRowStateKey = nextRowStateKey;
-    	}
+            currentRowStateKey = nextRowStateKey;
+        }
 
-    	// Remove last row
-    	_rowStates.remove(currentRowStateKey);
+        // Remove last row
+        _rowStates.remove(currentRowStateKey);
 
-    	// restore saved row index
-    	setRowIndex(savedRowIndex);
+        // restore saved row index
+        setRowIndex(savedRowIndex);
     }
     
 }

@@ -26,11 +26,11 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientConverter;
  */
 public class ShortConverter extends javax.faces.convert.ShortConverter implements ClientConverter{
 
-	public String getScriptFunction() {
-		return "tomahawk.ShortConverter()";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.ShortConverter()";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 }

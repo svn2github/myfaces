@@ -21,23 +21,23 @@ package org.apache.myfaces.custom.dynaForm.lib;
 @SuppressWarnings("serial")
 public class DynaFormException extends RuntimeException
 {
-	public DynaFormException()
-	{
-		super();
-	}
+    public DynaFormException()
+    {
+        super();
+    }
 
-	public DynaFormException(String message)
-	{
-		super(message);
-	}
+    public DynaFormException(String message)
+    {
+        super(message);
+    }
 
-	public DynaFormException(String message, Throwable cause)
-	{
-		super(message, cause);
-	}
+    public DynaFormException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
 
-	public DynaFormException(Throwable cause)
-	{
-		super(cause);
-	}
+    public DynaFormException(Throwable cause)
+    {
+        super(cause);
+    }
 }

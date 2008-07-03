@@ -26,11 +26,11 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientConverter;
  */
 public class FloatConverter extends javax.faces.convert.FloatConverter implements ClientConverter{
 
-	public String getScriptFunction() {
-		return "tomahawk.FloatConverter()";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.FloatConverter()";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 }

@@ -92,33 +92,33 @@ public class ScheduleCompactMonthRenderer
         String dayOfWeekDateFormat = schedule.getCompactMonthDayOfWeekDateFormat();
 
         if (dayOfWeekDateFormat != null && dayOfWeekDateFormat.length() > 0) {
-        	DateFormat dayOfWeekFormater = getDateFormat(context, schedule, dayOfWeekDateFormat);
-        	writer.startElement(HTML.THEAD_ELEM, schedule);
-        	writer.startElement(HTML.TR_ELEM, schedule);
+            DateFormat dayOfWeekFormater = getDateFormat(context, schedule, dayOfWeekDateFormat);
+            writer.startElement(HTML.THEAD_ELEM, schedule);
+            writer.startElement(HTML.TR_ELEM, schedule);
 
-        	for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();) {
-        		ScheduleDay day = (ScheduleDay) dayIterator.next();
-        		cal.setTime(day.getDate());
+            for (Iterator dayIterator = schedule.getModel().iterator(); dayIterator.hasNext();) {
+                ScheduleDay day = (ScheduleDay) dayIterator.next();
+                cal.setTime(day.getDate());
 
-        		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+                int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 
-        		writer.startElement(HTML.TH_ELEM, schedule);
-        		writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "header"), null);
+                writer.startElement(HTML.TH_ELEM, schedule);
+                writer.writeAttribute(HTML.CLASS_ATTR, getStyleClass(schedule, "header"), null);
 
-        		if (schedule.isSplitWeekend() && dayOfWeek == Calendar.SATURDAY) {
-            		// Don't label the weekend
-        			writer.endElement(HTML.TH_ELEM);
-        			break;
-        		} else {
-            		writer.writeText(dayOfWeekFormater.format(day.getDate()), null);
-            		writer.endElement(HTML.TH_ELEM);        			
-        		}
-        		if (dayOfWeek == Calendar.SUNDAY) {
-        			break;
-        		}
-        	}
-        	writer.endElement(HTML.TR_ELEM);
-        	writer.endElement(HTML.THEAD_ELEM);
+                if (schedule.isSplitWeekend() && dayOfWeek == Calendar.SATURDAY) {
+                    // Don't label the weekend
+                    writer.endElement(HTML.TH_ELEM);
+                    break;
+                } else {
+                    writer.writeText(dayOfWeekFormater.format(day.getDate()), null);
+                    writer.endElement(HTML.TH_ELEM);                    
+                }
+                if (dayOfWeek == Calendar.SUNDAY) {
+                    break;
+                }
+            }
+            writer.endElement(HTML.TR_ELEM);
+            writer.endElement(HTML.THEAD_ELEM);
         }
 
         writer.startElement(HTML.TBODY_ELEM, schedule);

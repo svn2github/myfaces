@@ -309,9 +309,9 @@ public class DynaForm extends UIComponentBase
             {
                 formConfigs = (DynaConfigs) obj;
                 return formConfigs;
-			}
-		}
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

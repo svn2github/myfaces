@@ -40,47 +40,47 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  */
 public class UISeparateConversationContext extends UIComponentBase
 {
-	public static final String COMPONENT_FAMILY = "javax.faces.Component";
+    public static final String COMPONENT_FAMILY = "javax.faces.Component";
     public static final String COMPONENT_TYPE = "org.apache.myfaces.SeparateConversationContext";
 
     private final static ThreadLocal inSeperationMode = new ThreadLocal();
     
-	public static void setInSeparationMode(boolean seperationMode)
-	{
-		inSeperationMode.set(seperationMode?Boolean.TRUE:Boolean.FALSE);
-	}
+    public static void setInSeparationMode(boolean seperationMode)
+    {
+        inSeperationMode.set(seperationMode?Boolean.TRUE:Boolean.FALSE);
+    }
 
-	public static boolean isInSeparationMode()
-	{
-		return Boolean.TRUE.equals(inSeperationMode.get());
-	}
-	
+    public static boolean isInSeparationMode()
+    {
+        return Boolean.TRUE.equals(inSeperationMode.get());
+    }
+    
     public void encodeBegin(FacesContext context) throws IOException
-	{
-		super.encodeBegin(context);
+    {
+        super.encodeBegin(context);
 
-		setInSeparationMode(true);
-	}
+        setInSeparationMode(true);
+    }
 
-	public void encodeChildren(FacesContext context) throws IOException
-	{
-		try
-		{
-			RendererUtils.renderChildren(context, this);
-		}
-		finally
-		{
-			setInSeparationMode(false);
-		}
-	}
+    public void encodeChildren(FacesContext context) throws IOException
+    {
+        try
+        {
+            RendererUtils.renderChildren(context, this);
+        }
+        finally
+        {
+            setInSeparationMode(false);
+        }
+    }
 
     public boolean getRendersChildren()
     {
-    	return true;
+        return true;
     }
     
-	public String getFamily()
-	{
-		return COMPONENT_FAMILY;
-	}
+    public String getFamily()
+    {
+        return COMPONENT_FAMILY;
+    }
 }

@@ -39,60 +39,60 @@ import org.apache.commons.logging.LogFactory;
 
 class Alias {
     static final Log log = LogFactory.getLog(Alias.class);
-	
-	private transient UIComponent _aliasComponent;
-	private String _aliasBeanExpression;
+    
+    private transient UIComponent _aliasComponent;
+    private String _aliasBeanExpression;
     private String _valueExpression;
-	private transient boolean _active = false;
-	
-	private transient Object evaluatedExpression = null;
+    private transient boolean _active = false;
+    
+    private transient Object evaluatedExpression = null;
 
-	Alias(AliasBean aliasComponent){
-		this._aliasComponent = aliasComponent;
-	}
+    Alias(AliasBean aliasComponent){
+        this._aliasComponent = aliasComponent;
+    }
 
-	/**
-	 * Define the temporary/transient name that will exist while this alias
-	 * is "active" (in scope). This is usually a constant string.
-	 */
-	void setAliasBeanExpression(String aliasBeanExpression){
-		this._aliasBeanExpression = aliasBeanExpression;
-	}
-	
-	/**
-	 * Define the object that will be referenced by the temporary/transient
-	 * name while it exists.
-	 * <p>
-	 * This can be a constant, but is more usually an EL expression. The value is
-	 * recalculated each time this alias is "activated".
-	 */
-	void setValueExpression(String valueExpression){
-		this._valueExpression = valueExpression;
-	}
-	
-	String getValueExpression(){
-		return _valueExpression;
-	}
-	
-	boolean isActive(){
-		return _active;
-	}
-	
-	String[] saveState(){
-		return new String[]{_aliasBeanExpression, _valueExpression};
-	}
-	
-	void restoreState(Object state){
-		String[] values = (String[]) state;
-		_aliasBeanExpression = values[0];
-		_valueExpression = values[1];
-	}
-	
-	private void computeEvaluatedExpression(FacesContext facesContext){
-		if( evaluatedExpression != null )
-			return;
-		
-		ValueBinding valueVB = null;
+    /**
+     * Define the temporary/transient name that will exist while this alias
+     * is "active" (in scope). This is usually a constant string.
+     */
+    void setAliasBeanExpression(String aliasBeanExpression){
+        this._aliasBeanExpression = aliasBeanExpression;
+    }
+    
+    /**
+     * Define the object that will be referenced by the temporary/transient
+     * name while it exists.
+     * <p>
+     * This can be a constant, but is more usually an EL expression. The value is
+     * recalculated each time this alias is "activated".
+     */
+    void setValueExpression(String valueExpression){
+        this._valueExpression = valueExpression;
+    }
+    
+    String getValueExpression(){
+        return _valueExpression;
+    }
+    
+    boolean isActive(){
+        return _active;
+    }
+    
+    String[] saveState(){
+        return new String[]{_aliasBeanExpression, _valueExpression};
+    }
+    
+    void restoreState(Object state){
+        String[] values = (String[]) state;
+        _aliasBeanExpression = values[0];
+        _valueExpression = values[1];
+    }
+    
+    private void computeEvaluatedExpression(FacesContext facesContext){
+        if( evaluatedExpression != null )
+            return;
+        
+        ValueBinding valueVB = null;
         if (_valueExpression == null) {
             valueVB = _aliasComponent.getValueBinding("value");
             _valueExpression = valueVB.getExpressionString();
@@ -101,55 +101,55 @@ class Alias {
         if( valueVB == null ){
             if( _valueExpression.startsWith("#{") ){
                 valueVB = facesContext.getApplication().createValueBinding(_valueExpression);
-				evaluatedExpression = valueVB.getValue(facesContext);
+                evaluatedExpression = valueVB.getValue(facesContext);
             }else{
-				evaluatedExpression = _valueExpression;
+                evaluatedExpression = _valueExpression;
             }
         }else{
-			evaluatedExpression = valueVB.getValue(facesContext);
+            evaluatedExpression = valueVB.getValue(facesContext);
         }
-	}
+    }
 
-	/**
-	 * Activate this alias (ie create the temporary name).
-	 */
-	void make(FacesContext facesContext){
-		if( _active )
-			return;
+    /**
+     * Activate this alias (ie create the temporary name).
+     */
+    void make(FacesContext facesContext){
+        if( _active )
+            return;
 
         ValueBinding aliasVB;
         if (_aliasBeanExpression == null) {
             aliasVB = _aliasComponent.getValueBinding("alias");
-			if( aliasVB == null )
-				return;
+            if( aliasVB == null )
+                return;
             _aliasBeanExpression = aliasVB.getExpressionString();
-			if( _aliasBeanExpression == null )
-				return;
+            if( _aliasBeanExpression == null )
+                return;
         } else {
             aliasVB = facesContext.getApplication().createValueBinding(_aliasBeanExpression);
         }
 
-		computeEvaluatedExpression( facesContext );
-		
+        computeEvaluatedExpression( facesContext );
+        
         aliasVB.setValue(facesContext, evaluatedExpression);
-		_active = true;
+        _active = true;
 
         log.debug("makeAlias: " + _valueExpression + " = " + _aliasBeanExpression);
-	}
-	
-	/**
-	 * Deactivate this alias (ie remove the temporary name).
-	 */
-	void remove(FacesContext facesContext){
+    }
+    
+    /**
+     * Deactivate this alias (ie remove the temporary name).
+     */
+    void remove(FacesContext facesContext){
         _active = false;
-		if( evaluatedExpression == null )
-			return;
+        if( evaluatedExpression == null )
+            return;
         
         evaluatedExpression = null;
 
         log.debug("removeAlias: " + _valueExpression + " != " + _aliasBeanExpression);
         ValueBinding aliasVB = _aliasComponent.getValueBinding("alias");
         if( aliasVB != null )
-			aliasVB.setValue(facesContext, null);
-	}
+            aliasVB.setValue(facesContext, null);
+    }
 }

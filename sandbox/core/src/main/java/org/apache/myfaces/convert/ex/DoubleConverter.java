@@ -26,11 +26,11 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientConverter;
  */
 public class DoubleConverter extends javax.faces.convert.DoubleConverter implements ClientConverter{
 
-	public String getScriptFunction() {
-		return "tomahawk.DoubleConverter()";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.DoubleConverter()";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 }

@@ -119,19 +119,19 @@ public abstract class AbstractHtmlSelectOneRadio
             if (isRequired() && empty)
             {
               //Only add this message once, not for every radio button in set
-            	String clientId = this.getClientId(context);
-            	Iterator messages = context.getMessages(clientId);
-            	boolean messageExists = messages.hasNext();
+                String clientId = this.getClientId(context);
+                Iterator messages = context.getMessages(clientId);
+                boolean messageExists = messages.hasNext();
 
-            	if(!messageExists)
-            	{
-            		//Add message
-            		FacesMessage message = MessageUtils.getMessage(REQUIRED_MESSAGE_ID, new Object[]{clientId});
-            		message.setSeverity(FacesMessage.SEVERITY_WARN);
-            		context.addMessage(clientId, message);
+                if(!messageExists)
+                {
+                    //Add message
+                    FacesMessage message = MessageUtils.getMessage(REQUIRED_MESSAGE_ID, new Object[]{clientId});
+                    message.setSeverity(FacesMessage.SEVERITY_WARN);
+                    context.addMessage(clientId, message);
 
                     setValid(false);
-            	}
+                }
                 return;
             }
 

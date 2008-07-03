@@ -27,10 +27,10 @@ import org.apache.myfaces.custom.redirectTracker.RedirectTrackerContext;
  */
 public class MessagesRedirectTrackPolicy implements RedirectTrackerPolicy
 {
-	public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath)
-	{
-		redirectContext.saveMessages();
+    public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath)
+    {
+        redirectContext.saveMessages();
 
-		return redirectPath;
-	}
+        return redirectPath;
+    }
 }

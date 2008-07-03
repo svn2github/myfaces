@@ -42,93 +42,93 @@ import javax.faces.validator.ValidatorException;
  */
 public abstract class AbstractCreditCardValidator extends ValidatorBase {
 
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.CreditCard";
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.CreditCard";
 
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the creditcard check fails.</p>
-	 */
-	public static final String CREDITCARD_MESSAGE_ID = "org.apache.myfaces.Creditcard.INVALID";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the creditcard check fails.</p>
+     */
+    public static final String CREDITCARD_MESSAGE_ID = "org.apache.myfaces.Creditcard.INVALID";
 
-	public AbstractCreditCardValidator(){
-	}
+    public AbstractCreditCardValidator(){
+    }
 
-	//Field, to init the desired Validator
-	private int _initSum = 0;
+    //Field, to init the desired Validator
+    private int _initSum = 0;
 
-	private org.apache.commons.validator.CreditCardValidator creditCardValidator = null;
+    private org.apache.commons.validator.CreditCardValidator creditCardValidator = null;
 
-	/**
-	 *
-	 */
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
+    /**
+     *
+     */
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
 
-			if (facesContext == null) throw new NullPointerException("facesContext");
-			if (uiComponent == null) throw new NullPointerException("uiComponent");
+            if (facesContext == null) throw new NullPointerException("facesContext");
+            if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-			if (value == null)
-			{
-				return;
-			}
-		initValidator();
-		if (!this.creditCardValidator.isValid(value.toString())){
-			Object[] args = {value.toString()};
+            if (value == null)
+            {
+                return;
+            }
+        initValidator();
+        if (!this.creditCardValidator.isValid(value.toString())){
+            Object[] args = {value.toString()};
             throw new ValidatorException(getFacesMessage(CREDITCARD_MESSAGE_ID, args));
-		}
-	}
+        }
+    }
 
 
-	// -------------------------------------------------------- Private Methods
+    // -------------------------------------------------------- Private Methods
 
-	/**
-	 * <p>initializes the desired validator.</p>
-	 */
+    /**
+     * <p>initializes the desired validator.</p>
+     */
 
-	private void initValidator() {
-		if(isNone()){
-			//no cardtypes are allowed
-			creditCardValidator = new org.apache.commons.validator.CreditCardValidator(org.apache.commons.validator.CreditCardValidator.NONE);
-		}
-		else{
-			computeValidators();
-			creditCardValidator = new org.apache.commons.validator.CreditCardValidator(_initSum);
-		}
-	}
+    private void initValidator() {
+        if(isNone()){
+            //no cardtypes are allowed
+            creditCardValidator = new org.apache.commons.validator.CreditCardValidator(org.apache.commons.validator.CreditCardValidator.NONE);
+        }
+        else{
+            computeValidators();
+            creditCardValidator = new org.apache.commons.validator.CreditCardValidator(_initSum);
+        }
+    }
 
-	/**
-	 * private methode, that counts the desired creditCards
-	 */
-	private void computeValidators(){
-		if(isAmex()){
-			this._initSum= org.apache.commons.validator.CreditCardValidator.AMEX + _initSum;
-		}
-		if(isVisa()){
-			this._initSum= org.apache.commons.validator.CreditCardValidator.VISA+ _initSum;
-		}
-		if(isMastercard()){
-			this._initSum= org.apache.commons.validator.CreditCardValidator.MASTERCARD+ _initSum;
-		}
-		if(isDiscover()){
-			this._initSum= org.apache.commons.validator.CreditCardValidator.DISCOVER+ _initSum;
-		}
-	}
+    /**
+     * private methode, that counts the desired creditCards
+     */
+    private void computeValidators(){
+        if(isAmex()){
+            this._initSum= org.apache.commons.validator.CreditCardValidator.AMEX + _initSum;
+        }
+        if(isVisa()){
+            this._initSum= org.apache.commons.validator.CreditCardValidator.VISA+ _initSum;
+        }
+        if(isMastercard()){
+            this._initSum= org.apache.commons.validator.CreditCardValidator.MASTERCARD+ _initSum;
+        }
+        if(isDiscover()){
+            this._initSum= org.apache.commons.validator.CreditCardValidator.DISCOVER+ _initSum;
+        }
+    }
 
-	//GETTER & SETTER
-	
-	/**
-	 * american express cards
-	 * 
-	 * @JSFProperty
-	 *   defaultValue = "true"
-	 */
-	public abstract boolean isAmex();
+    //GETTER & SETTER
+    
+    /**
+     * american express cards
+     * 
+     * @JSFProperty
+     *   defaultValue = "true"
+     */
+    public abstract boolean isAmex();
 
     /**
      * validation for discover
@@ -136,7 +136,7 @@ public abstract class AbstractCreditCardValidator extends ValidatorBase {
      * @JSFProperty
      *   defaultValue = "true"
      */
-	public abstract boolean isDiscover();
+    public abstract boolean isDiscover();
 
     /**
      * validation for mastercard
@@ -144,7 +144,7 @@ public abstract class AbstractCreditCardValidator extends ValidatorBase {
      * @JSFProperty
      *   defaultValue = "true"
      */
-	public abstract boolean isMastercard();
+    public abstract boolean isMastercard();
 
     /**
      * none of the given cardtypes is allowed.
@@ -152,7 +152,7 @@ public abstract class AbstractCreditCardValidator extends ValidatorBase {
      * @JSFProperty
      *   defaultValue = "false"
      */
-	public abstract boolean isNone();
+    public abstract boolean isNone();
 
     /**
      * validation for visa
@@ -160,16 +160,16 @@ public abstract class AbstractCreditCardValidator extends ValidatorBase {
      * @JSFProperty
      *   defaultValue = "true"
      */
-	public abstract boolean isVisa();
+    public abstract boolean isVisa();
 
-	public abstract void setAmex(boolean b);
+    public abstract void setAmex(boolean b);
 
-	public abstract void setDiscover(boolean b);
+    public abstract void setDiscover(boolean b);
 
-	public abstract void setMastercard(boolean b);
+    public abstract void setMastercard(boolean b);
 
-	public abstract void setNone(boolean b);
+    public abstract void setNone(boolean b);
 
-	public abstract void setVisa(boolean b);
+    public abstract void setVisa(boolean b);
 
 }

@@ -23,8 +23,8 @@ package org.apache.myfaces.custom.redirectTracker;
  */
 public interface RedirectTrackerPolicy
 {
-	/**
-	 * Tracks the redirect, return the new (or old, but not NULL) redirectPath used for the real redirection.
-	 */
-	public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath);
+    /**
+     * Tracks the redirect, return the new (or old, but not NULL) redirectPath used for the real redirection.
+     */
+    public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath);
 }

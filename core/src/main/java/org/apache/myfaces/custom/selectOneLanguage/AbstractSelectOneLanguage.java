@@ -118,7 +118,7 @@ public abstract class AbstractSelectOneLanguage extends HtmlSelectOneMenu {
 
         List languagesSelectItems = new ArrayList( map.size() );
         if(getEmptySelection() != null)
-        	languagesSelectItems.add(new SelectItem("", getEmptySelection()));
+            languagesSelectItems.add(new SelectItem("", getEmptySelection()));
 
         Integer maxLength = getMaxLength();
         int maxDescriptionLength = maxLength==null ? Integer.MAX_VALUE : maxLength.intValue();
@@ -141,11 +141,11 @@ public abstract class AbstractSelectOneLanguage extends HtmlSelectOneMenu {
     }
 
     protected void validateValue(FacesContext context, Object value) {
-    	UISelectItems selectItems = new UISelectItems();
-    	selectItems.setTransient(true);
-    	selectItems.setValue(getLanguagesChoicesAsSelectItemList());
-    	getChildren().add(selectItems);
-    	
-    	super.validateValue(context,value);
+        UISelectItems selectItems = new UISelectItems();
+        selectItems.setTransient(true);
+        selectItems.setValue(getLanguagesChoicesAsSelectItemList());
+        getChildren().add(selectItems);
+        
+        super.validateValue(context,value);
     }
 }

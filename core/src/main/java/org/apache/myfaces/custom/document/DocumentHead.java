@@ -32,11 +32,11 @@ package org.apache.myfaces.custom.document;
  */
 public class DocumentHead extends AbstractDocument
 {
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.DocumentHead";
-	private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DocumentHead";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.DocumentHead";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DocumentHead";
 
-	public DocumentHead()
-	{
-		super(DEFAULT_RENDERER_TYPE);
-	}
+    public DocumentHead()
+    {
+        super(DEFAULT_RENDERER_TYPE);
+    }
 }

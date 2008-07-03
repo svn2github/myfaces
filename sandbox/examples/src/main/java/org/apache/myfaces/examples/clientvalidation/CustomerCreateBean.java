@@ -26,17 +26,17 @@ import java.io.Serializable;
  */
 public class CustomerCreateBean implements Serializable{
 
-	private Customer _customer;
-	
-	public CustomerCreateBean() {
-		_customer = new Customer();
-	}
+    private Customer _customer;
+    
+    public CustomerCreateBean() {
+        _customer = new Customer();
+    }
 
-	public Customer getCustomer() {
-		return _customer;
-	}
-	public void setCustomer(Customer _customer) {
-		this._customer = _customer;
-	}
-	
+    public Customer getCustomer() {
+        return _customer;
+    }
+    public void setCustomer(Customer _customer) {
+        this._customer = _customer;
+    }
+    
 }

@@ -50,73 +50,73 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ValueChangeNotifierTag extends TagSupport
 {
-	private String method = null;
-	
-	private static Log log = LogFactory.getLog(ValueChangeNotifierTag.class);
+    private String method = null;
+    
+    private static Log log = LogFactory.getLog(ValueChangeNotifierTag.class);
 
-	public ValueChangeNotifierTag()
-	{
-	}
+    public ValueChangeNotifierTag()
+    {
+    }
 
-	/**
-	 * The bean.method name of your valueChange method<br />
-	 * Currently only methods listeners are supported.<br />
-	 * e.g. myBean.myListenerMethod
-	 * 
-	 * @JSFJspAttribute
-	 *   required = "true"
-	 */
-	public void setMethod(String method)
-	{
-		this.method = method;
-	}
+    /**
+     * The bean.method name of your valueChange method<br />
+     * Currently only methods listeners are supported.<br />
+     * e.g. myBean.myListenerMethod
+     * 
+     * @JSFJspAttribute
+     *   required = "true"
+     */
+    public void setMethod(String method)
+    {
+        this.method = method;
+    }
 
-	public int doStartTag() throws JspException
-	{
-		if (method == null)
-		{
-			throw new JspException("name attribute not set");
-		}
+    public int doStartTag() throws JspException
+    {
+        if (method == null)
+        {
+            throw new JspException("name attribute not set");
+        }
 
-		// Find parent UIComponentTag
-		UIComponentTag componentTag = UIComponentTag
-				.getParentUIComponentTag(pageContext);
-		if (componentTag == null)
-		{
-			throw new JspException(
-					"ValueChangeListenerTag has no UIComponentTag ancestor");
-		}
+        // Find parent UIComponentTag
+        UIComponentTag componentTag = UIComponentTag
+                .getParentUIComponentTag(pageContext);
+        if (componentTag == null)
+        {
+            throw new JspException(
+                    "ValueChangeListenerTag has no UIComponentTag ancestor");
+        }
 
-		if (componentTag.getCreated())
-		{
-			// Component was just created, so we add the Listener
-			UIComponent component = componentTag.getComponentInstance();
-			if (component instanceof EditableValueHolder)
-			{
-				setupClassListener(component);
-			}
-			else
-			{
-				throw new JspException("Component " + component.getId()
-						+ " is no EditableValueHolder");
-			}
-		}
+        if (componentTag.getCreated())
+        {
+            // Component was just created, so we add the Listener
+            UIComponent component = componentTag.getComponentInstance();
+            if (component instanceof EditableValueHolder)
+            {
+                setupClassListener(component);
+            }
+            else
+            {
+                throw new JspException("Component " + component.getId()
+                        + " is no EditableValueHolder");
+            }
+        }
 
-		return Tag.SKIP_BODY;
-	}
+        return Tag.SKIP_BODY;
+    }
 
-	protected void setupClassListener(UIComponent component)
-	{
-		if (UIComponentTag.isValueReference(method))
-		{
-				((EditableValueHolder) component)
-				.addValueChangeListener(new ValueChangeCollector(method));
-		} 
-		else
-		{
-			if(log.isErrorEnabled()){
-				log.error("Invalid expression " + method);
-			}
-		}
-	}
+    protected void setupClassListener(UIComponent component)
+    {
+        if (UIComponentTag.isValueReference(method))
+        {
+                ((EditableValueHolder) component)
+                .addValueChangeListener(new ValueChangeCollector(method));
+        } 
+        else
+        {
+            if(log.isErrorEnabled()){
+                log.error("Invalid expression " + method);
+            }
+        }
+    }
 }

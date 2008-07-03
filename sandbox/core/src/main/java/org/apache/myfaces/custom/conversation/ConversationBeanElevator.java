@@ -27,5 +27,5 @@ import javax.faces.el.ValueBinding;
  */
 public interface ConversationBeanElevator
 {
-	public void elevateBean(FacesContext context, Conversation conversation, ValueBinding valueBinding);
+    public void elevateBean(FacesContext context, Conversation conversation, ValueBinding valueBinding);
 }

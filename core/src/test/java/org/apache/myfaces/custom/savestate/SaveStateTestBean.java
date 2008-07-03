@@ -30,45 +30,45 @@ import javax.faces.context.FacesContext;
  */
 public class SaveStateTestBean implements Serializable, StateHolder {
 
-	private LinkedList linkedList;
+    private LinkedList linkedList;
 
-	private String name;
+    private String name;
 
-	public LinkedList getLinkedList() {
-		if(linkedList == null)
-			linkedList = new LinkedList();
-		return linkedList;
-	}
+    public LinkedList getLinkedList() {
+        if(linkedList == null)
+            linkedList = new LinkedList();
+        return linkedList;
+    }
 
-	public void setLinkedList(LinkedList linkedList) {
-		this.linkedList = linkedList;
-	}
+    public void setLinkedList(LinkedList linkedList) {
+        this.linkedList = linkedList;
+    }
 
-	public boolean isTransient() {
-		return false;
-	}
+    public boolean isTransient() {
+        return false;
+    }
 
-	public void restoreState(FacesContext context, Object state) {
-		Object values[] = (Object[])state;
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[])state;
         name = (String)values[0];
-	}
+    }
 
-	public Object saveState(FacesContext context) {
-		Object values[] = new Object[1];
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[1];
         values[0] = name;
         return values;
-	}
+    }
 
-	public void setTransient(boolean newTransientValue) {
-		
-	}
+    public void setTransient(boolean newTransientValue) {
+        
+    }
 
-	public String name() {
-		return name;
-	}
+    public String name() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

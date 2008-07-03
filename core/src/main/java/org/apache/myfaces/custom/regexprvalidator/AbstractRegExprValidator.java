@@ -42,53 +42,53 @@ import org.apache.myfaces.validator.ValidatorBase;
  */
 
 public abstract class AbstractRegExprValidator extends ValidatorBase {
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.RegExpr";
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.RegExpr";
 
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the regex check fails.</p>
-	 */
-	public static final String REGEXPR_MESSAGE_ID = "org.apache.myfaces.Regexpr.INVALID";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the regex check fails.</p>
+     */
+    public static final String REGEXPR_MESSAGE_ID = "org.apache.myfaces.Regexpr.INVALID";
 
-	public AbstractRegExprValidator(){
-	}
+    public AbstractRegExprValidator(){
+    }
 
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
 
-		if (facesContext == null) throw new NullPointerException("facesContext");
-		if (uiComponent == null) throw new NullPointerException("uiComponent");
+        if (facesContext == null) throw new NullPointerException("facesContext");
+        if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-		if (value == null)
-			{
-				return;
-		}
-		Object[] args = {value.toString()};
-		if(!GenericValidator.matchRegexp(value.toString(),"^"+getPattern()+"$")){
-			throw new ValidatorException(getFacesMessage(REGEXPR_MESSAGE_ID, args));
+        if (value == null)
+            {
+                return;
         }
-	}
+        Object[] args = {value.toString()};
+        if(!GenericValidator.matchRegexp(value.toString(),"^"+getPattern()+"$")){
+            throw new ValidatorException(getFacesMessage(REGEXPR_MESSAGE_ID, args));
+        }
+    }
 
-	// -------------------------------------------------------- GETTER & SETTER
+    // -------------------------------------------------------- GETTER & SETTER
 
-	/**
-	 * the pattern, which is the base of the validation
-	 * 
-	 * @JSFProperty
-	 *   literalOnly = "true"
-	 * @return the pattern, on which a value should be validated
-	 */
+    /**
+     * the pattern, which is the base of the validation
+     * 
+     * @JSFProperty
+     *   literalOnly = "true"
+     * @return the pattern, on which a value should be validated
+     */
     public abstract String getPattern();
 
-	/**
-	 * @param string the pattern, on which a value should be validated
-	 */
-	public abstract void setPattern(String string);
+    /**
+     * @param string the pattern, on which a value should be validated
+     */
+    public abstract void setPattern(String string);
 
 }

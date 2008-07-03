@@ -28,8 +28,8 @@ import javax.faces.component.UIComponent;
  */
 public interface NewComponentListener
 {
-	/**
-	 * the new component and its label
-	 */
-	public void newComponent(String fieldName, UIComponent label, UIComponent component);
+    /**
+     * the new component and its label
+     */
+    public void newComponent(String fieldName, UIComponent label, UIComponent component);
 }

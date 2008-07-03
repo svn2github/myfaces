@@ -29,74 +29,74 @@ import org.apache.myfaces.custom.dynaForm.metadata.MetaDataInterface;
  */
 public class Slipstream
 {
-	private boolean displayOnly;
-	private MetaDataInterface modelMetaData;
-	private GuiBuilder guiBuilder;
-	private Map labelBundle;
-	
-	public Slipstream()
-	{
-	}
+    private boolean displayOnly;
+    private MetaDataInterface modelMetaData;
+    private GuiBuilder guiBuilder;
+    private Map labelBundle;
+    
+    public Slipstream()
+    {
+    }
 
-	public boolean isDisplayOnly()
-	{
-		return displayOnly;
-	}
+    public boolean isDisplayOnly()
+    {
+        return displayOnly;
+    }
 
-	public void setDisplayOnly(boolean displayOnly)
-	{
-		this.displayOnly = displayOnly;
-	}
-	
-	public MetaDataInterface getModelMetaData()
-	{
-		return modelMetaData;
-	}
+    public void setDisplayOnly(boolean displayOnly)
+    {
+        this.displayOnly = displayOnly;
+    }
+    
+    public MetaDataInterface getModelMetaData()
+    {
+        return modelMetaData;
+    }
 
-	public void setModelMetaData(MetaDataInterface modelMetaData)
-	{
-		this.modelMetaData = modelMetaData;
-	}
+    public void setModelMetaData(MetaDataInterface modelMetaData)
+    {
+        this.modelMetaData = modelMetaData;
+    }
 
-	public GuiBuilder getGuiBuilder()
-	{
-		return guiBuilder;
-	}
+    public GuiBuilder getGuiBuilder()
+    {
+        return guiBuilder;
+    }
 
-	public void setGuiBuilder(GuiBuilder guiBuilder)
-	{
-		this.guiBuilder = guiBuilder;
-	}
-	
-	public Map getLabelBundle()
-	{
-		return labelBundle;
-	}
+    public void setGuiBuilder(GuiBuilder guiBuilder)
+    {
+        this.guiBuilder = guiBuilder;
+    }
+    
+    public Map getLabelBundle()
+    {
+        return labelBundle;
+    }
 
-	public void setLabelBundle(Map labelBundle)
-	{
-		this.labelBundle = labelBundle;
-	}
+    public void setLabelBundle(Map labelBundle)
+    {
+        this.labelBundle = labelBundle;
+    }
 
-	public void process()
-	{
-		configureGuiBuilder();
-		
-		MetaDataInterface metaData = modelMetaData;
-		Iterator<String> iterFieldNames = metaData.iterFieldNames();
-		while (iterFieldNames.hasNext())
-		{
-			String fieldName = iterFieldNames.next();
-			FieldInterface field = modelMetaData.getField(fieldName);
-			
-			guiBuilder.buildField(field);
-		}
-	}
+    public void process()
+    {
+        configureGuiBuilder();
+        
+        MetaDataInterface metaData = modelMetaData;
+        Iterator<String> iterFieldNames = metaData.iterFieldNames();
+        while (iterFieldNames.hasNext())
+        {
+            String fieldName = iterFieldNames.next();
+            FieldInterface field = modelMetaData.getField(fieldName);
+            
+            guiBuilder.buildField(field);
+        }
+    }
 
-	protected void configureGuiBuilder()
-	{
-		guiBuilder.setDisplayOnly(isDisplayOnly());
-		guiBuilder.setLabelBundle(getLabelBundle());
-	}
+    protected void configureGuiBuilder()
+    {
+        guiBuilder.setDisplayOnly(isDisplayOnly());
+        guiBuilder.setLabelBundle(getLabelBundle());
+    }
 
 }

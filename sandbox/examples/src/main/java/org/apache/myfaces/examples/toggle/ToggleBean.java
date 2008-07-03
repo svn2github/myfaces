@@ -23,34 +23,34 @@ import java.io.Serializable;
 
 public class ToggleBean implements Serializable
 {
-	private String testValue = "default";
-	
-	private String firstName = "firstName";
-	private String lastName = "lastName";
-	
-	public String getTestValue()
-	{
-		return testValue;
-	}
-	
-	public void setTestValue(String val)
-	{
-		testValue = val;
-	}
+    private String testValue = "default";
+    
+    private String firstName = "firstName";
+    private String lastName = "lastName";
+    
+    public String getTestValue()
+    {
+        return testValue;
+    }
+    
+    public void setTestValue(String val)
+    {
+        testValue = val;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }

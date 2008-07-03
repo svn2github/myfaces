@@ -40,14 +40,14 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 public class ToggleGroupRenderer extends HtmlGroupRendererBase {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
 
-		writer.startElement( org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SPAN_ELEM, component );
-		writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context), null);
-		HtmlRendererUtils.renderHTMLAttributes( writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES );
+        writer.startElement( org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SPAN_ELEM, component );
+        writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context), null);
+        HtmlRendererUtils.renderHTMLAttributes( writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES );
 
-		RendererUtils.renderChildren( context, component );
+        RendererUtils.renderChildren( context, component );
 
-		writer.endElement( HTML.SPAN_ELEM );
-	}
+        writer.endElement( HTML.SPAN_ELEM );
+    }
 }

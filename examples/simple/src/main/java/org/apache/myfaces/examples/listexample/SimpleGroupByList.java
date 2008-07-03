@@ -26,26 +26,26 @@ import java.util.Map;
 
 public class SimpleGroupByList
 {
-	private List _demoList = new ArrayList();
+    private List _demoList = new ArrayList();
 
-	private Map _demoListMap = new HashMap();
+    private Map _demoListMap = new HashMap();
 
-	public SimpleGroupByList()
-	{
-		for (int i = 0; i < 12; i++)
-		{
-			Object demo = new SimpleDemo(i, (i < 3 )? "Group 1":(i < 6 ) ? "Group 2": (i < 9)?"Group 3":"Group 4", "Item "+i);
-			_demoList.add(demo);
-			_demoListMap.put(new Integer(i), demo);
-		}
-	}
+    public SimpleGroupByList()
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            Object demo = new SimpleDemo(i, (i < 3 )? "Group 1":(i < 6 ) ? "Group 2": (i < 9)?"Group 3":"Group 4", "Item "+i);
+            _demoList.add(demo);
+            _demoListMap.put(new Integer(i), demo);
+        }
+    }
 
-	public List getDemoList()
-	{
-		return _demoList;
-	}
+    public List getDemoList()
+    {
+        return _demoList;
+    }
 
-	public void setDemoList(List demo)
+    public void setDemoList(List demo)
     {
         _demoList = demo;
     }

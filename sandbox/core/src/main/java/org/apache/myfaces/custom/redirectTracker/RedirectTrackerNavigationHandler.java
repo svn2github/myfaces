@@ -27,24 +27,24 @@ import javax.faces.context.FacesContext;
  */
 public class RedirectTrackerNavigationHandler extends NavigationHandler
 {
-	private final NavigationHandler original;
+    private final NavigationHandler original;
 
-	public RedirectTrackerNavigationHandler(NavigationHandler original)
-	{
-		this.original = original;
-	}
+    public RedirectTrackerNavigationHandler(NavigationHandler original)
+    {
+        this.original = original;
+    }
 
-	public void handleNavigation(FacesContext facesContext, String fromAction, String outcome)
-	{
-		final RedirectTrackerExternalContextWrapper wrappedExternalContext = new RedirectTrackerExternalContextWrapper(facesContext.getExternalContext());
-		original.handleNavigation(new FacesContextWrapper(facesContext)
-		{
-			public ExternalContext getExternalContext()
-			{
-				return wrappedExternalContext;
-			}
-		},
-			fromAction,
-			outcome);
-	}
+    public void handleNavigation(FacesContext facesContext, String fromAction, String outcome)
+    {
+        final RedirectTrackerExternalContextWrapper wrappedExternalContext = new RedirectTrackerExternalContextWrapper(facesContext.getExternalContext());
+        original.handleNavigation(new FacesContextWrapper(facesContext)
+        {
+            public ExternalContext getExternalContext()
+            {
+                return wrappedExternalContext;
+            }
+        },
+            fromAction,
+            outcome);
+    }
 }

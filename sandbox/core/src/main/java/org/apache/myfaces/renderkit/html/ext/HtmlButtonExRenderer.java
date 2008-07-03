@@ -39,17 +39,17 @@ import org.apache.myfaces.custom.util.ComponentUtils;
  * @version $Revision$ $Date$
  */
 public class HtmlButtonExRenderer extends HtmlButtonRenderer{
-	
-	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-		HtmlCommandButton button = (HtmlCommandButton) component;
-		
-		if(CVUtils.isCVEnabled() && button.isImmediate()) {
-			String bypassCVScript = "document.getElementById('" + CVUtils.BYPASS_CLIENT_VALIDATION_FIELD + "').value = true;";
-			ComponentUtils.decorateEventAttribute(component, "onclick", bypassCVScript);
-		}
-		
-		super.encodeBegin(context, component);
-	}
+    
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        HtmlCommandButton button = (HtmlCommandButton) component;
+        
+        if(CVUtils.isCVEnabled() && button.isImmediate()) {
+            String bypassCVScript = "document.getElementById('" + CVUtils.BYPASS_CLIENT_VALIDATION_FIELD + "').value = true;";
+            ComponentUtils.decorateEventAttribute(component, "onclick", bypassCVScript);
+        }
+        
+        super.encodeBegin(context, component);
+    }
 
-	
+    
 }

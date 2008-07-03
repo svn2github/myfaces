@@ -53,121 +53,121 @@ import java.io.PrintWriter;
  */
 public class HtmlAjaxChildComboBoxRenderer extends HtmlMenuRenderer implements AjaxRenderer
 {
-	private static final String BEGIN_OPTION = "<option>";
-	private static final String END_OPTION = "</option>";
-	private static final String BEGIN_OPTION_TEXT = "<optionText>";
-	private static final String END_OPTION_TEXT = "</optionText>";
-	private static final String BEGIN_OPTION_VALUE = "<optionValue>";
-	private static final String END_OPTION_VALUE = "</optionValue>";
+    private static final String BEGIN_OPTION = "<option>";
+    private static final String END_OPTION = "</option>";
+    private static final String BEGIN_OPTION_TEXT = "<optionText>";
+    private static final String END_OPTION_TEXT = "</optionText>";
+    private static final String BEGIN_OPTION_VALUE = "<optionValue>";
+    private static final String END_OPTION_VALUE = "</optionValue>";
 
-	public static final int DEFAULT_MAX_SUGGESTED_ITEMS = 200;
+    public static final int DEFAULT_MAX_SUGGESTED_ITEMS = 200;
 
-	private static Log log = LogFactory.getLog(HtmlAjaxChildComboBoxRenderer.class);
+    private static Log log = LogFactory.getLog(HtmlAjaxChildComboBoxRenderer.class);
 
-	// Adds the javascript files needed by Dojo and the custom javascript for
-	// this
-	// component
-	private void encodeJavascript(FacesContext context, UIComponent component)
-		throws IOException
-	{
-		String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-		DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
-		DojoUtils.addRequire(context, component, "dojo.event.*");
-		// not required - and results in an error
-		// DojoUtils.addRequire(context, component, "dojo.io.bind");
+    // Adds the javascript files needed by Dojo and the custom javascript for
+    // this
+    // component
+    private void encodeJavascript(FacesContext context, UIComponent component)
+        throws IOException
+    {
+        String javascriptLocation = (String) component.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        DojoUtils.addMainInclude(context, component, javascriptLocation, new DojoConfig());
+        DojoUtils.addRequire(context, component, "dojo.event.*");
+        // not required - and results in an error
+        // DojoUtils.addRequire(context, component, "dojo.io.bind");
 
-		AddResource addResource = AddResourceFactory.getInstance(context);
+        AddResource addResource = AddResourceFactory.getInstance(context);
 
-		addResource.addJavaScriptAtPosition(context,
-			AddResource.HEADER_BEGIN, AjaxChildComboBox.class, "javascript/ajaxChildComboBox.js");
-	}
+        addResource.addJavaScriptAtPosition(context,
+            AddResource.HEADER_BEGIN, AjaxChildComboBox.class, "javascript/ajaxChildComboBox.js");
+    }
 
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException
-	{
-		RendererUtils.checkParamValidity(context, component, AjaxChildComboBox.class);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    {
+        RendererUtils.checkParamValidity(context, component, AjaxChildComboBox.class);
 
-		AjaxChildComboBox childComboBox = (AjaxChildComboBox) component;
+        AjaxChildComboBox childComboBox = (AjaxChildComboBox) component;
 
-		super.encodeEnd(context, component);
+        super.encodeEnd(context, component);
 
-		String clientId = component.getClientId(context);
+        String clientId = component.getClientId(context);
 
-		UIComponent parentComboBox = this.getParentComboBox(childComboBox);
-		if (parentComboBox == null)
-		{
-			log.error("Could not find parent combo box for AjaxChildComboBox " +
-				childComboBox.getClientId(context));
-			return;
-		}
+        UIComponent parentComboBox = this.getParentComboBox(childComboBox);
+        if (parentComboBox == null)
+        {
+            log.error("Could not find parent combo box for AjaxChildComboBox " +
+                childComboBox.getClientId(context));
+            return;
+        }
 
-		encodeJavascript(context, component);
+        encodeJavascript(context, component);
 
-		ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
 
-		// Begin: Write out the javascript that hooks up this component with the
-		// parent combo-box
-		writer.startElement(HTML.SCRIPT_ELEM, component);
-		writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
+        // Begin: Write out the javascript that hooks up this component with the
+        // parent combo-box
+        writer.startElement(HTML.SCRIPT_ELEM, component);
+        writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-		writer.write("var parentCombo = document.getElementById('" +
-			parentComboBox.getClientId(context) + "');");
-		HtmlRendererUtils.writePrettyLineSeparator(context);
-		writer.write("dojo.event.connect(parentCombo, 'onchange', function(evt) { ");
-		HtmlRendererUtils.writePrettyLineSeparator(context);
-		writer.write("var targetElement = evt.target;");
-		writer.write("var targetValue = targetElement.options[targetElement.selectedIndex].value;");
-		HtmlRendererUtils.writePrettyLineSeparator(context);
-		writer.write("reloadChildComboBox('" + clientId + "', targetValue);");
-		HtmlRendererUtils.writePrettyLineSeparator(context);
-		writer.write("});");
-		writer.endElement(HTML.SCRIPT_ELEM);
-		// End: Javascript
-	}
+        writer.write("var parentCombo = document.getElementById('" +
+            parentComboBox.getClientId(context) + "');");
+        HtmlRendererUtils.writePrettyLineSeparator(context);
+        writer.write("dojo.event.connect(parentCombo, 'onchange', function(evt) { ");
+        HtmlRendererUtils.writePrettyLineSeparator(context);
+        writer.write("var targetElement = evt.target;");
+        writer.write("var targetValue = targetElement.options[targetElement.selectedIndex].value;");
+        HtmlRendererUtils.writePrettyLineSeparator(context);
+        writer.write("reloadChildComboBox('" + clientId + "', targetValue);");
+        HtmlRendererUtils.writePrettyLineSeparator(context);
+        writer.write("});");
+        writer.endElement(HTML.SCRIPT_ELEM);
+        // End: Javascript
+    }
 
 
-	// creates the XML response that is sent back to the browser
-	public void encodeAjax(FacesContext context, UIComponent uiComponent)
-		throws IOException
-	{
+    // creates the XML response that is sent back to the browser
+    public void encodeAjax(FacesContext context, UIComponent uiComponent)
+        throws IOException
+    {
 
-		String parentValue = (String) context.getExternalContext().
-			getRequestParameterMap().get("parentValue");
+        String parentValue = (String) context.getExternalContext().
+            getRequestParameterMap().get("parentValue");
 
-		ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
-		PrintWriter writer = response.getWriter();
+        ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
+        PrintWriter writer = response.getWriter();
 
-		StringBuffer xml = new StringBuffer();
+        StringBuffer xml = new StringBuffer();
 
-		MethodBinding mb = ((AjaxChildComboBox) uiComponent).getAjaxSelectItemsMethod();
-		SelectItem[] options = (SelectItem[])
-			mb.invoke(context, new Object[]{parentValue});
+        MethodBinding mb = ((AjaxChildComboBox) uiComponent).getAjaxSelectItemsMethod();
+        SelectItem[] options = (SelectItem[])
+            mb.invoke(context, new Object[]{parentValue});
 
         xml.append("<?xml version=\"1.0\"?>\n");
         xml.append("<response>\n");
         for (int i = 0; i < options.length; i++)
-		{
-			xml.append(BEGIN_OPTION);
-			xml.append(BEGIN_OPTION_TEXT).append(options[i].getLabel()).append(END_OPTION_TEXT);
-			xml.append(BEGIN_OPTION_VALUE).append(options[i].getValue()).append(END_OPTION_VALUE);
-			xml.append(END_OPTION);
-		}
+        {
+            xml.append(BEGIN_OPTION);
+            xml.append(BEGIN_OPTION_TEXT).append(options[i].getLabel()).append(END_OPTION_TEXT);
+            xml.append(BEGIN_OPTION_VALUE).append(options[i].getValue()).append(END_OPTION_VALUE);
+            xml.append(END_OPTION);
+        }
         xml.append("</response>");
 
         writer.write(xml.toString());
 
-	}
+    }
 
-	private UIComponent getParentComboBox(AjaxChildComboBox comboBox)
-	{
-		String parentId = comboBox.getParentComboBox();
+    private UIComponent getParentComboBox(AjaxChildComboBox comboBox)
+    {
+        String parentId = comboBox.getParentComboBox();
 
-		UIComponent parentComboBox = comboBox.findComponent(parentId);
-		if (parentComboBox != null)
-		{
-			return parentComboBox;
-		}
+        UIComponent parentComboBox = comboBox.findComponent(parentId);
+        if (parentComboBox != null)
+        {
+            return parentComboBox;
+        }
 
-		// try searching from the very root of the component tree
-		return comboBox.findComponent(UINamingContainer.SEPARATOR_CHAR + parentId);
-	}
+        // try searching from the very root of the component tree
+        return comboBox.findComponent(UINamingContainer.SEPARATOR_CHAR + parentId);
+    }
 }

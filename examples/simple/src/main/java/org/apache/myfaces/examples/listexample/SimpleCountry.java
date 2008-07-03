@@ -43,170 +43,170 @@ public class SimpleCountry implements Serializable
      */
     private static final long serialVersionUID = 1L;
     private long _id;
-	private String _name;
-	private String _isoCode;
-	private BigDecimal _size;
-	private boolean _remove = false;
-	private List _cities;
-	private String mSortCitiesColumn;
-	private boolean mIsSortCitiesAscending;
-	
-	public SimpleCountry(long id, String name, String isoCode, BigDecimal size, SimpleCity[] cities)
-	{
-		_id = id;
-		_name = name;
-		_isoCode = isoCode;
-		_size = size;
+    private String _name;
+    private String _isoCode;
+    private BigDecimal _size;
+    private boolean _remove = false;
+    private List _cities;
+    private String mSortCitiesColumn;
+    private boolean mIsSortCitiesAscending;
+    
+    public SimpleCountry(long id, String name, String isoCode, BigDecimal size, SimpleCity[] cities)
+    {
+        _id = id;
+        _name = name;
+        _isoCode = isoCode;
+        _size = size;
 
-		if (cities != null)
-			_cities = new ArrayList(Arrays.asList(cities));
-		else
-			_cities = new ArrayList();
-	}
+        if (cities != null)
+            _cities = new ArrayList(Arrays.asList(cities));
+        else
+            _cities = new ArrayList();
+    }
 
-	public long getId()
-	{
-		return _id;
-	}
+    public long getId()
+    {
+        return _id;
+    }
 
-	public String getName()
-	{
-		return _name;
-	}
+    public String getName()
+    {
+        return _name;
+    }
 
-	public String getIsoCode()
-	{
-		return _isoCode;
-	}
+    public String getIsoCode()
+    {
+        return _isoCode;
+    }
 
-	public BigDecimal getSize()
-	{
-		return _size;
-	}
+    public BigDecimal getSize()
+    {
+        return _size;
+    }
 
-	public List getCities()
-	{
-		if (mSortCitiesColumn != null)
-		{
-			Collections.sort(_cities, new Comparator()
-			{
-				public int compare(Object arg0, Object arg1)
-				{
-					SimpleCity lhs;
-					SimpleCity rhs;
-					if (isSortCitiesAscending())
-					{
-						lhs = (SimpleCity) arg0;
-						rhs = (SimpleCity) arg1;
-					}
-					else
-					{
-						rhs = (SimpleCity) arg0;
-						lhs = (SimpleCity) arg1;
-					}
-					String lhsName = lhs.getName();
-					String rhsName = rhs.getName();
-					if (lhsName != null)
-					{
-						if(rhsName != null)
-						{
-							return lhsName.compareToIgnoreCase(rhsName);
-						}
-						return -1;
-					}
-					else if (rhsName != null)
-					{
-						return 1;
-					}
-					return 0;
-				}
-			});
-		}
-		return _cities;
-	}
+    public List getCities()
+    {
+        if (mSortCitiesColumn != null)
+        {
+            Collections.sort(_cities, new Comparator()
+            {
+                public int compare(Object arg0, Object arg1)
+                {
+                    SimpleCity lhs;
+                    SimpleCity rhs;
+                    if (isSortCitiesAscending())
+                    {
+                        lhs = (SimpleCity) arg0;
+                        rhs = (SimpleCity) arg1;
+                    }
+                    else
+                    {
+                        rhs = (SimpleCity) arg0;
+                        lhs = (SimpleCity) arg1;
+                    }
+                    String lhsName = lhs.getName();
+                    String rhsName = rhs.getName();
+                    if (lhsName != null)
+                    {
+                        if(rhsName != null)
+                        {
+                            return lhsName.compareToIgnoreCase(rhsName);
+                        }
+                        return -1;
+                    }
+                    else if (rhsName != null)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+            });
+        }
+        return _cities;
+    }
 
-	public void setId(long id)
-	{
-		_id = id;
-	}
+    public void setId(long id)
+    {
+        _id = id;
+    }
 
-	public void setIsoCode(String isoCode)
-	{
-		_isoCode = isoCode;
-	}
+    public void setIsoCode(String isoCode)
+    {
+        _isoCode = isoCode;
+    }
 
-	public void setName(String name)
-	{
-		_name = name;
-	}
+    public void setName(String name)
+    {
+        _name = name;
+    }
 
-	public void setSize(BigDecimal size)
-	{
-		_size = size;
-	}
+    public void setSize(BigDecimal size)
+    {
+        _size = size;
+    }
 
-	public boolean isRemove()
-	{
-		return _remove;
-	}
+    public boolean isRemove()
+    {
+        return _remove;
+    }
 
-	public void setRemove(boolean remove)
-	{
-		_remove = remove;
-	}
+    public void setRemove(boolean remove)
+    {
+        _remove = remove;
+    }
 
-	public String addCity()
-	{
-		getCities().add(new SimpleCity());
-		return null;
-	}
+    public String addCity()
+    {
+        getCities().add(new SimpleCity());
+        return null;
+    }
 
-	public void deleteCity(ActionEvent ev)
-	{
-		UIData datatable = findParentHtmlDataTable(ev.getComponent());
-		getCities().remove(datatable.getRowIndex() + datatable.getFirst());
-	}
+    public void deleteCity(ActionEvent ev)
+    {
+        UIData datatable = findParentHtmlDataTable(ev.getComponent());
+        getCities().remove(datatable.getRowIndex() + datatable.getFirst());
+    }
 
-	public void setSortCitiesColumn(String columnName)
-	{
-		mSortCitiesColumn = columnName;
-	}
+    public void setSortCitiesColumn(String columnName)
+    {
+        mSortCitiesColumn = columnName;
+    }
 
-	/**
-	 * @return Returns the sortCitiesColumn.
-	 */
-	public String getSortCitiesColumn()
-	{
-		return mSortCitiesColumn;
-	}
+    /**
+     * @return Returns the sortCitiesColumn.
+     */
+    public String getSortCitiesColumn()
+    {
+        return mSortCitiesColumn;
+    }
 
-	public boolean isSortCitiesAscending()
-	{
-		return mIsSortCitiesAscending;
-	}
+    public boolean isSortCitiesAscending()
+    {
+        return mIsSortCitiesAscending;
+    }
 
-	/**
-	 * @param isSortCitiesAscending The isSortCitiesAscending to set.
-	 */
-	public void setSortCitiesAscending(boolean isSortCitiesAscending)
-	{
-		mIsSortCitiesAscending = isSortCitiesAscending;
-	}
+    /**
+     * @param isSortCitiesAscending The isSortCitiesAscending to set.
+     */
+    public void setSortCitiesAscending(boolean isSortCitiesAscending)
+    {
+        mIsSortCitiesAscending = isSortCitiesAscending;
+    }
 
-	/**
-	 * @param component
-	 * @return
-	 */
-	private HtmlDataTable findParentHtmlDataTable(UIComponent component)
-	{
-		if (component == null)
-		{
-			return null;
-		}
-		if (component instanceof HtmlDataTable)
-		{
-			return (HtmlDataTable) component;
-		}
-		return findParentHtmlDataTable(component.getParent());
-	}
+    /**
+     * @param component
+     * @return
+     */
+    private HtmlDataTable findParentHtmlDataTable(UIComponent component)
+    {
+        if (component == null)
+        {
+            return null;
+        }
+        if (component instanceof HtmlDataTable)
+        {
+            return (HtmlDataTable) component;
+        }
+        return findParentHtmlDataTable(component.getParent());
+    }
 }

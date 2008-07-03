@@ -20,8 +20,8 @@ package org.apache.myfaces.custom.valueChangeNotifier;
 
 public interface RestoreStateCommand
 {
-	public void saveCurrentState();
-	public void restoreCurrentState();
-	
-	public void restoreEventState();
+    public void saveCurrentState();
+    public void restoreCurrentState();
+    
+    public void restoreEventState();
 }

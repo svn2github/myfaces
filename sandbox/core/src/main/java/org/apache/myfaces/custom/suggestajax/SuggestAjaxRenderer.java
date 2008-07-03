@@ -90,7 +90,7 @@ public class SuggestAjaxRenderer extends HtmlTextRenderer implements AjaxSuggest
     }
 
      protected String addQueryString(String url, String queryString)
-     {    	
-   	    return url + (url.indexOf("?") > 0 ? "&" : "?") + queryString;
+     {        
+           return url + (url.indexOf("?") > 0 ? "&" : "?") + queryString;
      }
 }

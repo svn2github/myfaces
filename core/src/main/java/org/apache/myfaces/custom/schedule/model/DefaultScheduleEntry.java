@@ -190,15 +190,15 @@ public class DefaultScheduleEntry
      */
     public boolean isAllDay()
     {
-    	return allDay;
+        return allDay;
     }
 
-	/**
-	 * @param allDay does the entry last all day?
-	 */
-	public void setAllDay(boolean allDay) {
-		this.allDay = allDay;
-	}
-	
+    /**
+     * @param allDay does the entry last all day?
+     */
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
+    }
+    
 }
 //The End

@@ -49,48 +49,48 @@ import org.apache.myfaces.component.AlignProperty;
 public abstract class AbstractPasswordStrengthComponent extends HtmlInputText 
     implements AlignProperty{ 
 
-	public static String COMPONENT_TYPE = "org.apache.myfaces.PasswordStrength";
+    public static String COMPONENT_TYPE = "org.apache.myfaces.PasswordStrength";
 
-	public static String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PasswordStrength";
-	
-	public static String COMPONENT_FAMILY = "org.apache.myfaces.PasswordStrength";
-		
-	/**
-	 * This flag {true | false} determines whether to show the details (left characters). 
-	 * default is true
-	 * 
-	 * @JSFProperty
-	 */
-	public abstract String getShowDetails();
-	
+    public static String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.PasswordStrength";
+    
+    public static String COMPONENT_FAMILY = "org.apache.myfaces.PasswordStrength";
+        
+    /**
+     * This flag {true | false} determines whether to show the details (left characters). 
+     * default is true
+     * 
+     * @JSFProperty
+     */
+    public abstract String getShowDetails();
+    
     /**
      * This flag determines the indicator type. It can be {text or bar}. Default is text
      * 
      * @JSFProperty
      */
-	public abstract String getStrengthIndicatorType();		
+    public abstract String getStrengthIndicatorType();        
 
     /**
      * The prefered length of the password
      * 
      * @JSFProperty
      */
-	public abstract String getPreferredPasswordLength();
-	
+    public abstract String getPreferredPasswordLength();
+    
     /**
      * The prefix of the component message
      * 
      * @JSFProperty
      */
-	public abstract String getPrefixText();
-	
+    public abstract String getPrefixText();
+    
     /**
      * The text strength descriptions
      * 
      * @JSFProperty
      */
-	public abstract String getTextStrengthDescriptions();
-	
+    public abstract String getTextStrengthDescriptions();
+    
     /**
      * This string determines the expression of the custom security rule of the password
      * <p>
@@ -129,7 +129,7 @@ public abstract class AbstractPasswordStrengthComponent extends HtmlInputText
      * 
      * @JSFProperty
      */
-	public abstract String getCustomSecurityExpression();
+    public abstract String getCustomSecurityExpression();
 
     /**
      * This flag determines whether to user custom security rules instead
@@ -137,8 +137,8 @@ public abstract class AbstractPasswordStrengthComponent extends HtmlInputText
      * 
      * @JSFProperty
      */
-	public abstract String getUseCustomSecurity();
-	
+    public abstract String getUseCustomSecurity();
+    
     /**
      * This attribute determines the penalty ratio that will decrease the password 
      * Strength if the custom security expression is not met. Note also that the 
@@ -147,13 +147,13 @@ public abstract class AbstractPasswordStrengthComponent extends HtmlInputText
      * 
      * @JSFProperty
      */
-	public abstract String getPenaltyRatio();
-	
+    public abstract String getPenaltyRatio();
+    
     /**
      * HTML: Specifies the horizontal alignment of this element. Deprecated in HTML 4.01.
      * 
      * @JSFProperty 
      */
-    public abstract String getAlign();	
-	
+    public abstract String getAlign();    
+    
 }

@@ -81,7 +81,7 @@ public class DojoAddResource implements AddResource
     private static final String PATH_SEPARATOR = "/";
 
     protected static final Log log = LogFactory.getLog(DojoAddResource.class);
-	protected static final Log logSend = LogFactory.getLog(DojoAddResource.class.getName() + ".SEND");
+    protected static final Log logSend = LogFactory.getLog(DojoAddResource.class.getName() + ".SEND");
 
     private static final String RESOURCE_VIRTUAL_PATH = "/faces/myFacesExtensionResource";
 
@@ -379,19 +379,19 @@ public class DojoAddResource implements AddResource
         addStyleSheet(context, getStyleInstance(context, uri));
     }
 
-	private void addStyleSheet(FacesContext context, WritablePositionedInfo styleInstance)
-	{
-		try
-		{
-			styleInstance.writePositionedInfo(context, context.getResponseWriter());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
+    private void addStyleSheet(FacesContext context, WritablePositionedInfo styleInstance)
+    {
+        try
+        {
+            styleInstance.writePositionedInfo(context, context.getResponseWriter());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
-	protected String getAbsoluteUri(FacesContext context, String uri)
+    protected String getAbsoluteUri(FacesContext context, String uri)
     {
         if (uri.startsWith("/"))
         {
@@ -440,7 +440,7 @@ public class DojoAddResource implements AddResource
             return;
         }
 
-		try
+        try
         {
             info.writePositionedInfo(context, context.getResponseWriter());
         }
@@ -626,7 +626,7 @@ public class DojoAddResource implements AddResource
             resourceUri = uri.substring(posEndCacheKey + 1);
         }
 
-		try
+        try
         {
             Class resourceLoader = getClass(className);
             validateResourceLoader(resourceLoader);
@@ -637,9 +637,9 @@ public class DojoAddResource implements AddResource
         catch (ClassNotFoundException e)
         {
             log.error("Could not find class for name: " + className, e);
-			sendError(response, HttpServletResponse.SC_NOT_FOUND,
+            sendError(response, HttpServletResponse.SC_NOT_FOUND,
                     "Could not find resourceloader class for name: " + className);
-		}
+        }
         catch (InstantiationException e)
         {
             log.error("Could not instantiate class for name: " + className, e);
@@ -652,11 +652,11 @@ public class DojoAddResource implements AddResource
             sendError(response, HttpServletResponse.SC_FORBIDDEN,
                     "Could not access resourceloader class for name: " + className);
         }
-		catch (IOException e)
-		{
-			logSend.error("Error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
-			sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-		}
+        catch (IOException e)
+        {
+            logSend.error("Error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
+            sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+        }
         catch (Throwable e)
         {
             log.error("Unknown error while serving resource: " +resourceUri+", message : "+ e.getMessage(), e);
@@ -664,20 +664,20 @@ public class DojoAddResource implements AddResource
         }
     }
 
-	protected void sendError(HttpServletResponse response, int errorCode, String errorText)
-		throws IOException
-	{
-		try
-		{
-			response.sendError(errorCode, errorText);
-		}
-		catch (IllegalStateException e)
-		{
-			logSend.error("Could not send error, maybe some data has already been sent.", e);
-		}
-	}
+    protected void sendError(HttpServletResponse response, int errorCode, String errorText)
+        throws IOException
+    {
+        try
+        {
+            response.sendError(errorCode, errorText);
+        }
+        catch (IllegalStateException e)
+        {
+            logSend.error("Could not send error, maybe some data has already been sent.", e);
+        }
+    }
 
-	public boolean hasHeaderBeginInfos(HttpServletRequest request)
+    public boolean hasHeaderBeginInfos(HttpServletRequest request)
     {
         throw new UnsupportedOperationException();
     }
@@ -704,7 +704,7 @@ public class DojoAddResource implements AddResource
             String myFacesJavascript = (String) request.getAttribute("org.apache.myfaces.myFacesJavascript");
             if(myFacesJavascript != null)
             {
-            	originalResponse.insert(beforeBodyEndPosition, myFacesJavascript);
+                originalResponse.insert(beforeBodyEndPosition, myFacesJavascript);
             }
             else
             {
@@ -825,22 +825,22 @@ public class DojoAddResource implements AddResource
         public void writePositionedInfo(FacesContext context, ResponseWriter writer)
                 throws IOException
         {
-			// this will include the dojo stuff in default mode. Override it yourself by adding
-			// the DojoInitializer component before any other component (right after f:view)
-			DojoUtils.addMainInclude(context, null, null, DojoUtils.getDjConfigInstance(context));
+            // this will include the dojo stuff in default mode. Override it yourself by adding
+            // the DojoInitializer component before any other component (right after f:view)
+            DojoUtils.addMainInclude(context, null, null, DojoUtils.getDjConfigInstance(context));
 
-			addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoAddResource.class, "dojoaddresource.js");
+            addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DojoAddResource.class, "dojoaddresource.js");
 
-			writer.startElement(HTML.SCRIPT_ELEM, null);
-			writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, HTML.SCRIPT_LANGUAGE_JAVASCRIPT, null);
+            writer.startElement(HTML.SCRIPT_ELEM, null);
+            writer.writeAttribute(HTML.SCRIPT_LANGUAGE_ATTR, HTML.SCRIPT_LANGUAGE_JAVASCRIPT, null);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
 
-			// writer.write("dojo.html.insertCssFile('");
-			writer.write("oamInsertCssFile('");
-			writer.write(context.getExternalContext().encodeActionURL(this.getResourceUri()));
-			writer.write("');");
+            // writer.write("dojo.html.insertCssFile('");
+            writer.write("oamInsertCssFile('");
+            writer.write(context.getExternalContext().encodeActionURL(this.getResourceUri()));
+            writer.write("');");
 
-			writer.endElement(HTML.SCRIPT_ELEM);
+            writer.endElement(HTML.SCRIPT_ELEM);
         }
     }
 

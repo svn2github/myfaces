@@ -27,9 +27,9 @@ import java.util.Date;
 
 public class Person implements Serializable
 {
-	private Long id;
+    private Long id;
 
-	private String userName;
+    private String userName;
     private long age;
     private Date creationDate;
     private Date birthday;
@@ -37,18 +37,18 @@ public class Person implements Serializable
     private String description;
     private boolean checkedData;
 
-	@DisplayOnly
-	public Long getId()
-	{
-		return id;
-	}
+    @DisplayOnly
+    public Long getId()
+    {
+        return id;
+    }
 
-	public void setId(Long id)
-	{
-		this.id = id;
-	}
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
-	public String getUserName()
+    public String getUserName()
     {
         return userName;
     }
@@ -119,11 +119,11 @@ public class Person implements Serializable
         this.description = description;
     }
 
-	@Override
-	public boolean equals(Object o)
-	{
-		Person p = (Person) o;
+    @Override
+    public boolean equals(Object o)
+    {
+        Person p = (Person) o;
 
-		return id.equals(p.id);
-	}
+        return id.equals(p.id);
+    }
 }

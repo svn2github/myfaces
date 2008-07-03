@@ -34,46 +34,46 @@ import org.apache.myfaces.custom.dynaForm.metadata.MetaData;
  */
 public class JsfRequestFieldExtractor implements Extractor
 {
-	public JsfRequestFieldExtractor()
-	{
-	}
+    public JsfRequestFieldExtractor()
+    {
+    }
 
-	public void getMetaData(MetaData metaData, Object entity)
-	{
-		if (!(entity instanceof DynaForm))
-		{
-			throw new IllegalArgumentException("passed entity argument not a DynaForm: " + entity);
-		}
-		
-		create(metaData, (DynaForm) entity);
-	}
+    public void getMetaData(MetaData metaData, Object entity)
+    {
+        if (!(entity instanceof DynaForm))
+        {
+            throw new IllegalArgumentException("passed entity argument not a DynaForm: " + entity);
+        }
+        
+        create(metaData, (DynaForm) entity);
+    }
 
-	/**
-	 * create the metadata out of the dynaConfigs for the given component
-	 */
-	@SuppressWarnings("unchecked")
-	protected void create(MetaData metaData, DynaForm dynaForm)
-	{
-		DynaConfigs formConfig = dynaForm.getFormConfigs();
-		if (formConfig == null)
-		{
-			return;
-		}
-		
-		Iterator<DynaConfig> entries = formConfig.iterator();
-		while (entries.hasNext())
-		{
-			DynaConfig dynaConfig = entries.next();
-			String name = dynaConfig.getFor();
-			if (name == null)
-			{
-				throw new IllegalArgumentException("'for' in config tag required");
-			}
-			
-			if (metaData.processField(name))
-			{
-				metaData.requestField(name);
-			}
-		}
-	}
+    /**
+     * create the metadata out of the dynaConfigs for the given component
+     */
+    @SuppressWarnings("unchecked")
+    protected void create(MetaData metaData, DynaForm dynaForm)
+    {
+        DynaConfigs formConfig = dynaForm.getFormConfigs();
+        if (formConfig == null)
+        {
+            return;
+        }
+        
+        Iterator<DynaConfig> entries = formConfig.iterator();
+        while (entries.hasNext())
+        {
+            DynaConfig dynaConfig = entries.next();
+            String name = dynaConfig.getFor();
+            if (name == null)
+            {
+                throw new IllegalArgumentException("'for' in config tag required");
+            }
+            
+            if (metaData.processField(name))
+            {
+                metaData.requestField(name);
+            }
+        }
+    }
 }

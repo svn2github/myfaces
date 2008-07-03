@@ -328,8 +328,8 @@ public class ScheduleUtil
         Calendar calendar2 = getCalendarInstance(date2, null);
 
         return (calendar1.get(Calendar.HOUR_OF_DAY) == calendar2.get(Calendar.HOUR_OF_DAY) &&
-        		calendar1.get(Calendar.MINUTE) == calendar2.get(Calendar.MINUTE) &&
-        		calendar1.get(Calendar.SECOND) == calendar2.get(Calendar.SECOND));
+                calendar1.get(Calendar.MINUTE) == calendar2.get(Calendar.MINUTE) &&
+                calendar1.get(Calendar.SECOND) == calendar2.get(Calendar.SECOND));
     }
 
 
@@ -347,29 +347,29 @@ public class ScheduleUtil
      */
     public static boolean areEquivalentIntervals(TreeSet intervals1, TreeSet intervals2)
     {
-    	if (intervals1 == null || intervals2 == null)
-    	{
-    		return !(intervals1 != null || intervals2 != null);
-    	}
-    	
-    	if (intervals1.size() == intervals2.size())
-    	{
-    		Iterator it1 = intervals1.iterator();
-    		Iterator it2 = intervals2.iterator();
-    		
-    		while (it1.hasNext())
-    		{
-    			if (!((Interval) it1.next()).isEquivalent(((Interval) it2.next()))) {
-    				return false;
-    			}
-    		}
-    		
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
+        if (intervals1 == null || intervals2 == null)
+        {
+            return !(intervals1 != null || intervals2 != null);
+        }
+        
+        if (intervals1.size() == intervals2.size())
+        {
+            Iterator it1 = intervals1.iterator();
+            Iterator it2 = intervals2.iterator();
+            
+            while (it1.hasNext())
+            {
+                if (!((Interval) it1.next()).isEquivalent(((Interval) it2.next()))) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     /**
@@ -505,7 +505,7 @@ public class ScheduleUtil
     public static Calendar getCalendarInstance(Date date, TimeZone timeZone)
     {
         Calendar cal = GregorianCalendar.getInstance(
-        		timeZone != null ? timeZone : TimeZone.getDefault());
+                timeZone != null ? timeZone : TimeZone.getDefault());
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         cal.setTime(date);
 
@@ -514,11 +514,11 @@ public class ScheduleUtil
     
     private static SimpleDateFormat getDateIdFormater(TimeZone timeZone)
     {
-    	SimpleDateFormat format = new SimpleDateFormat(DATE_ID_PATTERN);
-    	
-    	format.setTimeZone(timeZone);
-    	
-    	return format;
+        SimpleDateFormat format = new SimpleDateFormat(DATE_ID_PATTERN);
+        
+        format.setTimeZone(timeZone);
+        
+        return format;
     }
 }
 //The End

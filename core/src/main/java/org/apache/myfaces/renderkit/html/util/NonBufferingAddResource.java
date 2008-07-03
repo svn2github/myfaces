@@ -455,7 +455,7 @@ public class NonBufferingAddResource implements AddResource {
      */
     protected long getCacheKey(FacesContext context)
     {
-		// cache key is hold in application scope so it is recreated on redeploying the webapp.
+        // cache key is hold in application scope so it is recreated on redeploying the webapp.
         Map applicationMap = context.getExternalContext().getApplicationMap();
         Long cacheKey = (Long) applicationMap.get(RESOURCES_CACHE_KEY);
         if (cacheKey == null)
@@ -555,8 +555,8 @@ public class NonBufferingAddResource implements AddResource {
         }
         catch (ResourceLoader.ClosedSocketException e)
         {
-        	// The ResourceLoader was unable to send the data because the client closed
-        	// the socket on us; just ignore.
+            // The ResourceLoader was unable to send the data because the client closed
+            // the socket on us; just ignore.
         }
         catch (ClassNotFoundException e)
         {

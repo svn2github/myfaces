@@ -27,48 +27,48 @@ import org.apache.myfaces.custom.requestParameterProvider.RequestParameterProvid
  */
 public class ConversationRequestParameterProvider implements RequestParameterProvider
 {
-	private final static String[] REQUEST_PARAMETERS = new String[]
+    private final static String[] REQUEST_PARAMETERS = new String[]
                {
-		ConversationManager.CONVERSATION_CONTEXT_PARAM
+        ConversationManager.CONVERSATION_CONTEXT_PARAM
                };
-	
-	public String getFieldValue(String field)
-	{
-		if (UISeparateConversationContext.isInSeparationMode())
-		{
-			return null;
-		}
-		
-		ConversationManager conversationManager = ConversationManager.getInstance();
-		if (conversationManager == null)
-		{
-			throw new IllegalStateException("can find the conversationManager");
-		}
-		if (!conversationManager.hasConversationContext())
-		{
-			return null;
-		}
-		
-		return Long.toString(conversationManager.getConversationContextId().longValue(), Character.MAX_RADIX);
-	}
+    
+    public String getFieldValue(String field)
+    {
+        if (UISeparateConversationContext.isInSeparationMode())
+        {
+            return null;
+        }
+        
+        ConversationManager conversationManager = ConversationManager.getInstance();
+        if (conversationManager == null)
+        {
+            throw new IllegalStateException("can find the conversationManager");
+        }
+        if (!conversationManager.hasConversationContext())
+        {
+            return null;
+        }
+        
+        return Long.toString(conversationManager.getConversationContextId().longValue(), Character.MAX_RADIX);
+    }
 
-	public String[] getFields()
-	{
-		if (UISeparateConversationContext.isInSeparationMode())
-		{
-			return null;
-		}
+    public String[] getFields()
+    {
+        if (UISeparateConversationContext.isInSeparationMode())
+        {
+            return null;
+        }
 
-		ConversationManager conversationManager = ConversationManager.getInstance();
-		if (conversationManager == null)
-		{
-			throw new IllegalStateException("can find the conversationManager");
-		}
-		if (!conversationManager.hasConversationContext())
-		{
-			return null;
-		}
-		
-		return REQUEST_PARAMETERS; 
-	}
+        ConversationManager conversationManager = ConversationManager.getInstance();
+        if (conversationManager == null)
+        {
+            throw new IllegalStateException("can find the conversationManager");
+        }
+        if (!conversationManager.hasConversationContext())
+        {
+            return null;
+        }
+        
+        return REQUEST_PARAMETERS; 
+    }
 }

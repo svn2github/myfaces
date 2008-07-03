@@ -167,9 +167,9 @@ public class PPRExampleBean
         this._textField = textField;
     }
 
-	public String testExceptionAction() {
-		throw new FacesException("Test PPR Exception Handling");
-	}    
+    public String testExceptionAction() {
+        throw new FacesException("Test PPR Exception Handling");
+    }    
 
     public String searchNames() {
         _names = getListMasterData();

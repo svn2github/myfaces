@@ -32,41 +32,41 @@ import java.net.URL;
  */
 public class DefaultResourceProvider implements ResourceProvider
 {
-	private final Class clazz;
+    private final Class clazz;
 
-	public DefaultResourceProvider(Class clazz)
-	{
-		this.clazz = clazz;
-	}
+    public DefaultResourceProvider(Class clazz)
+    {
+        this.clazz = clazz;
+    }
 
-	protected URL getResource(String resource)
-	{
-		resource = "resource/" + resource;
-		return clazz.getResource(resource);
-	}
+    protected URL getResource(String resource)
+    {
+        resource = "resource/" + resource;
+        return clazz.getResource(resource);
+    }
 
-	public boolean exists(ServletContext context, String resource)
-	{
-		return getResource(resource) != null;
-	}
+    public boolean exists(ServletContext context, String resource)
+    {
+        return getResource(resource) != null;
+    }
 
-	public long getLastModified(ServletContext context, String resource) throws IOException
-	{
-		return getResource(resource).openConnection().getLastModified();
-	}
+    public long getLastModified(ServletContext context, String resource) throws IOException
+    {
+        return getResource(resource).openConnection().getLastModified();
+    }
 
-	public int getContentLength(ServletContext context, String resource) throws IOException
-	{
-		return getResource(resource).openConnection().getContentLength();
-	}
+    public int getContentLength(ServletContext context, String resource) throws IOException
+    {
+        return getResource(resource).openConnection().getContentLength();
+    }
 
-	public InputStream getInputStream(ServletContext context, String resource) throws IOException
-	{
-		return getResource(resource).openConnection().getInputStream();
-	}
+    public InputStream getInputStream(ServletContext context, String resource) throws IOException
+    {
+        return getResource(resource).openConnection().getInputStream();
+    }
 
-	public String getEncoding(ServletContext context, String resource) throws IOException
-	{
-		return null; //Tomahawk-877, this has to be null for now to avoid encoding issues
-	}
+    public String getEncoding(ServletContext context, String resource) throws IOException
+    {
+        return null; //Tomahawk-877, this has to be null for now to avoid encoding issues
+    }
 }

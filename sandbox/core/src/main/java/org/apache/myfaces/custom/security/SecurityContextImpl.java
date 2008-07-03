@@ -26,15 +26,15 @@ import javax.faces.context.FacesContext;
  */
 public class SecurityContextImpl extends SecurityContext{
 
-	public String getAuthType() {
-		return FacesContext.getCurrentInstance().getExternalContext().getAuthType();
-	}
-	
-	public String getRemoteUser() {
-		return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-	}
+    public String getAuthType() {
+        return FacesContext.getCurrentInstance().getExternalContext().getAuthType();
+    }
+    
+    public String getRemoteUser() {
+        return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+    }
 
-	public boolean ifGranted(String role) {
-		return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
-	}
+    public boolean ifGranted(String role) {
+        return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
+    }
 }

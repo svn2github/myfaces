@@ -19,9 +19,9 @@
 package org.apache.myfaces.custom.exporter.util;
 
 public interface ExporterConstants {
-	public static String EXPORTER_TABLE_ID = "exporterTableId";
-	public static String EXPORTER_FILE_NAME = "exporterFileName";
-	public static String EXPORTER_FILE_TYPE = "exporterFileType";
-	public static String PDF_FILE_TYPE = "PDF";
-	public static String EXCEL_FILE_TYPE = "XLS";	
+    public static String EXPORTER_TABLE_ID = "exporterTableId";
+    public static String EXPORTER_FILE_NAME = "exporterFileName";
+    public static String EXPORTER_FILE_TYPE = "exporterFileType";
+    public static String PDF_FILE_TYPE = "PDF";
+    public static String EXCEL_FILE_TYPE = "XLS";    
 }

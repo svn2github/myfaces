@@ -30,28 +30,28 @@ import java.io.InputStream;
  */
 public interface ResourceProvider
 {
-	/**
-	 * check if the resource exists
-	 */
-	public boolean exists(ServletContext context, String resource);
+    /**
+     * check if the resource exists
+     */
+    public boolean exists(ServletContext context, String resource);
 
-	/**
-	 * get the content length of the resource
-	 */
-	public int getContentLength(ServletContext context, String resource) throws IOException;
+    /**
+     * get the content length of the resource
+     */
+    public int getContentLength(ServletContext context, String resource) throws IOException;
 
-	/**
-	 * get the last modified time of the resource
-	 */
-	public long getLastModified(ServletContext context, String resource) throws IOException;
+    /**
+     * get the last modified time of the resource
+     */
+    public long getLastModified(ServletContext context, String resource) throws IOException;
 
-	/**
-	 * get the input stream of the resource
-	 */
-	public InputStream getInputStream(ServletContext context, String resource) throws IOException;
+    /**
+     * get the input stream of the resource
+     */
+    public InputStream getInputStream(ServletContext context, String resource) throws IOException;
 
-	/**
-	 * get resource encoding
-	 */
-	public String getEncoding(ServletContext context, String resource) throws IOException;
+    /**
+     * get resource encoding
+     */
+    public String getEncoding(ServletContext context, String resource) throws IOException;
 }

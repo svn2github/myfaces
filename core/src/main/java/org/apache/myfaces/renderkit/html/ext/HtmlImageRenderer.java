@@ -34,7 +34,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlImageRendererBase;
 public class HtmlImageRenderer
     extends HtmlImageRendererBase
 {
-	
-	
-	
+    
+    
+    
 }

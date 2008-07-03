@@ -123,8 +123,8 @@ public class TreeModelBase implements TreeModel
 
     public TreeNode getNodeById(String nodeId)
     {
-    	if (nodeId == null)
-    		return null;
+        if (nodeId == null)
+            return null;
 
         TreeNode node = null;
         StringTokenizer st = new StringTokenizer(nodeId, SEPARATOR);

@@ -26,11 +26,11 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientValidator;
  */
 public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValidator implements ClientValidator{
 
-	public String getScriptFunction() {
-		return "tomahawk.DoubleRangeValidator(" + getMinimum() + "," + getMaximum() + ")";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.DoubleRangeValidator(" + getMinimum() + "," + getMaximum() + ")";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 }

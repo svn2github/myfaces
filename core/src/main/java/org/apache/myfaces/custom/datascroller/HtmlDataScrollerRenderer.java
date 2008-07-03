@@ -262,15 +262,15 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         }
         if (scroller.isPaginator())
         {
-        	if(!scroller.isSingleElementLayout())
-        	{
-        		writeScrollerElementStart(writer, scroller);
-        	}
+            if(!scroller.isSingleElementLayout())
+            {
+                writeScrollerElementStart(writer, scroller);
+            }
             renderPaginator(facesContext, scroller);
-        	if(!scroller.isSingleElementLayout())
-        	{
-        		writeScrollerElementEnd(writer, scroller);
-        	}
+            if(!scroller.isSingleElementLayout())
+            {
+                writeScrollerElementEnd(writer, scroller);
+            }
         }
         facetComp = scroller.getNext();
         if (facetComp != null)
@@ -339,15 +339,15 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
                                UIComponent facetComp, String facetName) throws IOException
     {
-    	String onclick = scroller.getOnclick();
-    	String ondblclick = scroller.getOndblclick();
+        String onclick = scroller.getOnclick();
+        String ondblclick = scroller.getOndblclick();
 
-    	HtmlCommandLink link = getLink(facesContext, scroller, facetName);
+        HtmlCommandLink link = getLink(facesContext, scroller, facetName);
         if(onclick != null){
-        	link.setOnclick(onclick);
+            link.setOnclick(onclick);
         }
         if(ondblclick != null){
-        	link.setOndblclick(ondblclick);
+            link.setOndblclick(ondblclick);
         }
 
         link.encodeBegin(facesContext);
@@ -416,7 +416,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         }
 
         String onclick = scroller.getOnclick();
-   	    String ondblclick = scroller.getOndblclick();
+           String ondblclick = scroller.getOndblclick();
 
         for (int i = start, size = start + pages; i < size; i++)
         {
@@ -503,7 +503,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
         Application application = facesContext.getApplication();
 
-	    // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
+        // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
         //     and http://issues.apache.org/jira/browse/MYFACES-1809
         HtmlCommandLink link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
 
@@ -534,7 +534,7 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     {
         Application application = facesContext.getApplication();
 
-	    // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
+        // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
         //     and http://issues.apache.org/jira/browse/MYFACES-1809
         HtmlCommandLink link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
 

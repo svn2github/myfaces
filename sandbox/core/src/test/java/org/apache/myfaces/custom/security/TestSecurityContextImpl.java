@@ -23,16 +23,16 @@ package org.apache.myfaces.custom.security;
  * @version $Revision$ $Date$
  */
 public class TestSecurityContextImpl extends SecurityContext{
-	
-	public String getAuthType() {
-		return null;
-	}
+    
+    public String getAuthType() {
+        return null;
+    }
 
-	public String getRemoteUser() {
-		return null;
-	}
+    public String getRemoteUser() {
+        return null;
+    }
 
-	public boolean ifGranted(String role) {
-		return false;
-	}
+    public boolean ifGranted(String role) {
+        return false;
+    }
 }

@@ -22,15 +22,15 @@ import java.io.Serializable;
 
 public class NullObject implements Serializable
 {
-	private static final long serialVersionUID = -5631278744813815987L;
+    private static final long serialVersionUID = -5631278744813815987L;
 
-	public NullObject()
-	{
-	}
+    public NullObject()
+    {
+    }
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		return obj == null || obj instanceof NullObject;  
-	}
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj == null || obj instanceof NullObject;  
+    }
 }

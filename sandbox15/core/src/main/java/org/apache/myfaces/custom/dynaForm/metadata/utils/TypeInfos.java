@@ -25,109 +25,109 @@ import java.util.Map;
 
 public class TypeInfos
 {
-	private final static Map<Class, Info> INFOS = new HashMap<Class, Info>(10);
+    private final static Map<Class, Info> INFOS = new HashMap<Class, Info>(10);
 
-	public static class Info
-	{
-		/**
-		 * min possible value
-		 */
-		private final Double minValue;
+    public static class Info
+    {
+        /**
+         * min possible value
+         */
+        private final Double minValue;
 
-		/**
-		 * max possible value
-		 */
-		private final Double maxValue;
+        /**
+         * max possible value
+         */
+        private final Double maxValue;
 
-		/**
-		 * display length, -1 means unknown
-		 */
-		private final int length;
+        /**
+         * display length, -1 means unknown
+         */
+        private final int length;
 
-		/**
-		 * do this type has a fractional part
-		 */
-		private final boolean hasFractional;
+        /**
+         * do this type has a fractional part
+         */
+        private final boolean hasFractional;
 
-		/**
-		 * if this is a number
-		 */
-		private final boolean number;
+        /**
+         * if this is a number
+         */
+        private final boolean number;
 
-		private Info(boolean number, Double minValue, Double maxValue, boolean hasFractional)
-		{
-			if (minValue != null)
-			{
-				int length = String.valueOf(minValue).length();
-				if (!hasFractional)
-				{
-					length=length-2; // strip off the .0 part after string conversion
-				}
-				this.length = length;
-			}
-			else
-			{
-				length = -1;
-			}
-			this.minValue = minValue;
-			this.maxValue = maxValue;
-			this.hasFractional = hasFractional;
-			this.number = number;
-		}
+        private Info(boolean number, Double minValue, Double maxValue, boolean hasFractional)
+        {
+            if (minValue != null)
+            {
+                int length = String.valueOf(minValue).length();
+                if (!hasFractional)
+                {
+                    length=length-2; // strip off the .0 part after string conversion
+                }
+                this.length = length;
+            }
+            else
+            {
+                length = -1;
+            }
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+            this.hasFractional = hasFractional;
+            this.number = number;
+        }
 
-		public int getLength()
-		{
-			return length;
-		}
+        public int getLength()
+        {
+            return length;
+        }
 
-		public Double getMaxValue()
-		{
-			return maxValue;
-		}
+        public Double getMaxValue()
+        {
+            return maxValue;
+        }
 
-		public Double getMinValue()
-		{
-			return minValue;
-		}
+        public Double getMinValue()
+        {
+            return minValue;
+        }
 
-		public boolean isHasFractional()
-		{
-			return hasFractional;
-		}
+        public boolean isHasFractional()
+        {
+            return hasFractional;
+        }
 
-		public boolean isNumber()
-		{
-			return number;
-		}
-	}
+        public boolean isNumber()
+        {
+            return number;
+        }
+    }
 
-	static
-	{
-		addInfo(new Info(true, (double) Byte.MIN_VALUE, (double) Byte.MAX_VALUE, false), Byte.class, Byte.TYPE);
-		addInfo(new Info(true, (double) Short.MIN_VALUE, (double) Short.MAX_VALUE, false), Short.class, Short.TYPE);
-		addInfo(new Info(true, (double) Integer.MIN_VALUE, (double) Integer.MAX_VALUE, false), Integer.class, Integer.TYPE);
-		addInfo(new Info(true, (double) Long.MIN_VALUE, (double) Long.MAX_VALUE, false), Long.class, Long.TYPE);
-		addInfo(new Info(true, null, null, false), BigInteger.class);
-		addInfo(new Info(true, null, (double) Float.MAX_VALUE, true), Float.class, Float.TYPE);
-		addInfo(new Info(true, null, Double.MAX_VALUE, true), Double.class, Double.TYPE);
-		addInfo(new Info(true, null, null, true), BigDecimal.class);
-		addInfo(new Info(false, null, null, false), String.class);
-	}
+    static
+    {
+        addInfo(new Info(true, (double) Byte.MIN_VALUE, (double) Byte.MAX_VALUE, false), Byte.class, Byte.TYPE);
+        addInfo(new Info(true, (double) Short.MIN_VALUE, (double) Short.MAX_VALUE, false), Short.class, Short.TYPE);
+        addInfo(new Info(true, (double) Integer.MIN_VALUE, (double) Integer.MAX_VALUE, false), Integer.class, Integer.TYPE);
+        addInfo(new Info(true, (double) Long.MIN_VALUE, (double) Long.MAX_VALUE, false), Long.class, Long.TYPE);
+        addInfo(new Info(true, null, null, false), BigInteger.class);
+        addInfo(new Info(true, null, (double) Float.MAX_VALUE, true), Float.class, Float.TYPE);
+        addInfo(new Info(true, null, Double.MAX_VALUE, true), Double.class, Double.TYPE);
+        addInfo(new Info(true, null, null, true), BigDecimal.class);
+        addInfo(new Info(false, null, null, false), String.class);
+    }
 
-	private TypeInfos()
-	{
-	}
+    private TypeInfos()
+    {
+    }
 
-	private static void addInfo(Info info, Class ... types)
-	{
-		for (Class type : types)
-		{
-			INFOS.put(type, info);
-		}
-	}
+    private static void addInfo(Info info, Class ... types)
+    {
+        for (Class type : types)
+        {
+            INFOS.put(type, info);
+        }
+    }
 
-	public static Info getInfo(Class type)
-	{
-		return INFOS.get(type);
-	}
+    public static Info getInfo(Class type)
+    {
+        return INFOS.get(type);
+    }
 }

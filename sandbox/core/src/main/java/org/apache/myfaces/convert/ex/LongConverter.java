@@ -26,11 +26,11 @@ import org.apache.myfaces.custom.clientvalidation.common.ClientConverter;
  */
 public class LongConverter extends javax.faces.convert.LongConverter implements ClientConverter{
 
-	public String getScriptFunction() {
-		return "tomahawk.LongConverter()";
-	}
+    public String getScriptFunction() {
+        return "tomahawk.LongConverter()";
+    }
 
-	public String getScriptResource() {
-		return null;
-	}
+    public String getScriptResource() {
+        return null;
+    }
 }

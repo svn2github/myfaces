@@ -46,130 +46,130 @@ import java.io.IOException;
  */
 public class UIEnsureConversation extends AbstractConversationComponent
 {
-	public static final String COMPONENT_TYPE = "org.apache.myfaces.EnsureConversation";
+    public static final String COMPONENT_TYPE = "org.apache.myfaces.EnsureConversation";
 
-	private String redirectTo;
-	private Boolean preCheck;
+    private String redirectTo;
+    private Boolean preCheck;
 
-	public void encodeBegin(FacesContext context) throws IOException
-	{
-		super.encodeBegin(context);
+    public void encodeBegin(FacesContext context) throws IOException
+    {
+        super.encodeBegin(context);
 
-		checkConversation(context, getName());
-	}
+        checkConversation(context, getName());
+    }
 
-	public void decode(FacesContext context)
-	{
-		super.decode(context);
+    public void decode(FacesContext context)
+    {
+        super.decode(context);
 
-		try
-		{
-			checkConversation(context, getName());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
+        try
+        {
+            checkConversation(context, getName());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public void restoreState(FacesContext context, Object state)
-	{
-		Object[] states = (Object[]) state;
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object[] states = (Object[]) state;
 
-		super.restoreState(context, states[0]);
-		redirectTo = (String) states[1];
-		preCheck = (Boolean) states[2];
-	}
+        super.restoreState(context, states[0]);
+        redirectTo = (String) states[1];
+        preCheck = (Boolean) states[2];
+    }
 
-	public Object saveState(FacesContext context)
-	{
-		return new Object[]
-			{
-				super.saveState(context),
-				redirectTo,
-				preCheck
-			};
-	}
+    public Object saveState(FacesContext context)
+    {
+        return new Object[]
+            {
+                super.saveState(context),
+                redirectTo,
+                preCheck
+            };
+    }
 
-	protected void checkConversation(FacesContext context, String name) throws IOException
-	{
-		ConversationManager conversationManager = ConversationManager.getInstance();
+    protected void checkConversation(FacesContext context, String name) throws IOException
+    {
+        ConversationManager conversationManager = ConversationManager.getInstance();
 
-		if (Boolean.TRUE.equals(preCheck))
-		{
-			String actionResult = (String) getAction().invoke(context, null);
-			if (actionResult == null)
-			{
-				// no further action, maybe the user started a conversation
-				return;
-			}
+        if (Boolean.TRUE.equals(preCheck))
+        {
+            String actionResult = (String) getAction().invoke(context, null);
+            if (actionResult == null)
+            {
+                // no further action, maybe the user started a conversation
+                return;
+            }
 
-			conversationManager.getMessager().setConversationNotActive(context, getName());
-			return;
-		}
-		else if (!conversationManager.hasConversation(name))
-		{
-			if (getAction() != null)
-			{
-				String actionResult = (String) getAction().invoke(context, null);
-				if (actionResult == null)
-				{
-					// no further action, maybe the user started a conversation
-					return;
-				}
-				conversationManager.getMessager().setConversationNotActive(context, getName());
+            conversationManager.getMessager().setConversationNotActive(context, getName());
+            return;
+        }
+        else if (!conversationManager.hasConversation(name))
+        {
+            if (getAction() != null)
+            {
+                String actionResult = (String) getAction().invoke(context, null);
+                if (actionResult == null)
+                {
+                    // no further action, maybe the user started a conversation
+                    return;
+                }
+                conversationManager.getMessager().setConversationNotActive(context, getName());
 
-				// hopefully the user configured the navigation as redirect ...
-				context.getApplication().getNavigationHandler().handleNavigation(context, null, actionResult);
-			}
-			else
-			{
-				conversationManager.getMessager().setConversationNotActive(context, getName());
+                // hopefully the user configured the navigation as redirect ...
+                context.getApplication().getNavigationHandler().handleNavigation(context, null, actionResult);
+            }
+            else
+            {
+                conversationManager.getMessager().setConversationNotActive(context, getName());
 
-				String actionUrl = context.getApplication().getViewHandler().getActionURL(
-							context, getRedirectTo());
-				String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
+                String actionUrl = context.getApplication().getViewHandler().getActionURL(
+                            context, getRedirectTo());
+                String encodedActionUrl = context.getExternalContext().encodeActionURL(actionUrl);
 
-				// XXX: figure out a way to avoid this ==>
-				RedirectTrackerManager manager = RedirectTrackerManager.getInstance(context);
-				if (manager != null)
-				{
-					encodedActionUrl = manager.trackRedirect(context, encodedActionUrl);
-				}
-				// XXX: figure out a way to avoid this <==
+                // XXX: figure out a way to avoid this ==>
+                RedirectTrackerManager manager = RedirectTrackerManager.getInstance(context);
+                if (manager != null)
+                {
+                    encodedActionUrl = manager.trackRedirect(context, encodedActionUrl);
+                }
+                // XXX: figure out a way to avoid this <==
 
-				context.getExternalContext().redirect(encodedActionUrl);
-			}
+                context.getExternalContext().redirect(encodedActionUrl);
+            }
 
-			return;
-		}
-	}
+            return;
+        }
+    }
 
-	/**
-	 * redirect to the given view if the conversation is not running
-	 * 
-	 * @JSFProperty
-	 * @return
-	 */
-	public String getRedirectTo()
-	{
-		if (redirectTo != null)
-		{
-			return redirectTo;
-		}
-		ValueBinding vb = getValueBinding("redirectTo");
-		if (vb == null)
-		{
-			return null;
-		}
-		return (String) vb.getValue(getFacesContext());
-	}
+    /**
+     * redirect to the given view if the conversation is not running
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public String getRedirectTo()
+    {
+        if (redirectTo != null)
+        {
+            return redirectTo;
+        }
+        ValueBinding vb = getValueBinding("redirectTo");
+        if (vb == null)
+        {
+            return null;
+        }
+        return (String) vb.getValue(getFacesContext());
+    }
 
-	public void setRedirectTo(String redirectTo)
-	{
-		this.redirectTo = redirectTo;
-	}
-	
+    public void setRedirectTo(String redirectTo)
+    {
+        this.redirectTo = redirectTo;
+    }
+    
     /**
      * Delegate the check to the action method at all. The user has to check if 
      * a conversation is running. A action method is mandatory.

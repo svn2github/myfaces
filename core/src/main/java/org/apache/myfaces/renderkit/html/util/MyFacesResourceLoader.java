@@ -109,7 +109,7 @@ public class MyFacesResourceLoader implements ResourceLoader
     public void serveResource(ServletContext context, HttpServletRequest request,
             HttpServletResponse response, String resourceUri) throws IOException
     {
-		String[] uriParts = resourceUri.split("/", 2);
+        String[] uriParts = resourceUri.split("/", 2);
 
         String component = uriParts[0];
         if (component == null || component.trim().length() == 0)
@@ -143,34 +143,34 @@ public class MyFacesResourceLoader implements ResourceLoader
 
         try
         {
-			ResourceProvider resourceProvider;
-			if (ResourceProvider.class.isAssignableFrom(componentClass))
-			{
-				try
-				{
-					resourceProvider = (ResourceProvider) componentClass.newInstance();
-				}
-				catch (InstantiationException e)
-				{
-					response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Unable to instantiate resource provider for resource "
-							+ resource + " for component " + component);
-					log.error("Unable to instantiate resource provider for resource " + resource + " for component " + component, e);
-					return;
-				}
-				catch (IllegalAccessException e)
-				{
-					response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Unable to instantiate resource provider for resource "
-							+ resource + " for component " + component);
-					log.error("Unable to instantiate resource provider for resource " + resource + " for component " + component, e);
-					return;
-				}
-			}
-			else
-			{
-				resourceProvider = new DefaultResourceProvider(componentClass);
-			}
+            ResourceProvider resourceProvider;
+            if (ResourceProvider.class.isAssignableFrom(componentClass))
+            {
+                try
+                {
+                    resourceProvider = (ResourceProvider) componentClass.newInstance();
+                }
+                catch (InstantiationException e)
+                {
+                    response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Unable to instantiate resource provider for resource "
+                            + resource + " for component " + component);
+                    log.error("Unable to instantiate resource provider for resource " + resource + " for component " + component, e);
+                    return;
+                }
+                catch (IllegalAccessException e)
+                {
+                    response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "Unable to instantiate resource provider for resource "
+                            + resource + " for component " + component);
+                    log.error("Unable to instantiate resource provider for resource " + resource + " for component " + component, e);
+                    return;
+                }
+            }
+            else
+            {
+                resourceProvider = new DefaultResourceProvider(componentClass);
+            }
 
-			if (!resourceProvider.exists(context, resource))
+            if (!resourceProvider.exists(context, resource))
             {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Unable to find resource "
                         + resource + " for component " + component
@@ -182,49 +182,49 @@ public class MyFacesResourceLoader implements ResourceLoader
             }
             else
             {
-				// URLConnection con = url.openConnection();
+                // URLConnection con = url.openConnection();
 
-				long lastModified = resourceProvider.getLastModified(context, resource);
-				if (lastModified < 1)
-				{
-					// fallback
-					lastModified = getLastModified();
-				}
+                long lastModified = resourceProvider.getLastModified(context, resource);
+                if (lastModified < 1)
+                {
+                    // fallback
+                    lastModified = getLastModified();
+                }
 
-				long browserDate = request.getDateHeader("If-Modified-Since");
-				if (browserDate > -1)
-				{
-					// normalize to seconds - this should work with any os
-					lastModified = (lastModified / 1000) * 1000;
-					browserDate = (browserDate / 1000) * 1000;
+                long browserDate = request.getDateHeader("If-Modified-Since");
+                if (browserDate > -1)
+                {
+                    // normalize to seconds - this should work with any os
+                    lastModified = (lastModified / 1000) * 1000;
+                    browserDate = (browserDate / 1000) * 1000;
 
-					if (lastModified == browserDate)
-					{
-						// the browser already has the correct version
+                    if (lastModified == browserDate)
+                    {
+                        // the browser already has the correct version
 
-						response.setStatus(HttpURLConnection.HTTP_NOT_MODIFIED);
-						return;
-					}
-				}
+                        response.setStatus(HttpURLConnection.HTTP_NOT_MODIFIED);
+                        return;
+                    }
+                }
 
 
-				int contentLength = resourceProvider.getContentLength(context, resource);
-				String contentEncoding = resourceProvider.getEncoding(context, resource);
+                int contentLength = resourceProvider.getContentLength(context, resource);
+                String contentEncoding = resourceProvider.getEncoding(context, resource);
 
-				is = resourceProvider.getInputStream(context, resource);
+                is = resourceProvider.getInputStream(context, resource);
 
-				defineContentHeaders(request, response, resource, contentLength, contentEncoding);
+                defineContentHeaders(request, response, resource, contentLength, contentEncoding);
                 defineCaching(request, response, resource, lastModified);
                 writeResource(request, response, is);
             }
         }
         finally
         {
-        	// nothing to do here..
+            // nothing to do here..
         }
     }
 
-	/**
+    /**
      * Copy the content of the specified input stream to the servlet response.
      */
     protected void writeResource(HttpServletRequest request, HttpServletResponse response,
@@ -238,28 +238,28 @@ public class MyFacesResourceLoader implements ResourceLoader
             {
                 out.write(buffer, 0, size);
             }
-    		out.flush();
+            out.flush();
         }
         catch(IOException e)
         {
-        	// This happens sometimes with Microsft Internet Explorer. It would
-        	// appear (guess) that when javascript creates multiple dom nodes
-        	// referring to the same remote resource then IE stupidly opens 
-        	// multiple sockets and requests that resource multiple times. But
-        	// when the first request completes, it then realises its stupidity
-        	// and forcibly closes all the other sockets. But here we are trying
-        	// to service those requests, and so get a "broken pipe" failure 
-        	// on write. The only thing to do here is to silently ignore the issue,
-        	// ie suppress the exception. Note that it is also possible for the
-        	// above code to succeed (ie this exception clause is not run) but
-        	// for a later flush to get the "broken pipe"; this is either due
-        	// just to timing, or possibly IE is closing sockets after receiving
-        	// a complete file for some types (gif?) rather than waiting for the
-        	// server to close it. We throw a special exception here to inform
-        	// callers that they should NOT flush anything - though that is
-        	// dangerous no matter what IOException subclass is thrown.
-        	log.debug("Unable to send resource data to client", e);
-        	throw new ResourceLoader.ClosedSocketException();
+            // This happens sometimes with Microsft Internet Explorer. It would
+            // appear (guess) that when javascript creates multiple dom nodes
+            // referring to the same remote resource then IE stupidly opens 
+            // multiple sockets and requests that resource multiple times. But
+            // when the first request completes, it then realises its stupidity
+            // and forcibly closes all the other sockets. But here we are trying
+            // to service those requests, and so get a "broken pipe" failure 
+            // on write. The only thing to do here is to silently ignore the issue,
+            // ie suppress the exception. Note that it is also possible for the
+            // above code to succeed (ie this exception clause is not run) but
+            // for a later flush to get the "broken pipe"; this is either due
+            // just to timing, or possibly IE is closing sockets after receiving
+            // a complete file for some types (gif?) rather than waiting for the
+            // server to close it. We throw a special exception here to inform
+            // callers that they should NOT flush anything - though that is
+            // dangerous no matter what IOException subclass is thrown.
+            log.debug("Unable to send resource data to client", e);
+            throw new ResourceLoader.ClosedSocketException();
         }
     }
 
@@ -281,9 +281,9 @@ public class MyFacesResourceLoader implements ResourceLoader
         expires.add(Calendar.DAY_OF_YEAR, 7);
         response.setDateHeader("Expires", expires.getTimeInMillis());
 
-		//12 hours: 43200 = 60s * 60 * 12
-    	response.setHeader("Cache-Control", "max-age=43200");
-    	response.setHeader("Pragma", "");
+        //12 hours: 43200 = 60s * 60 * 12
+        response.setHeader("Cache-Control", "max-age=43200");
+        response.setHeader("Pragma", "");
     }
 
     /**
@@ -291,24 +291,24 @@ public class MyFacesResourceLoader implements ResourceLoader
      * The mime-type output is determined by the resource filename suffix.
      */
     protected void defineContentHeaders(HttpServletRequest request, HttpServletResponse response,
-										String resource, int contentLength, String contentEncoding)
+                                        String resource, int contentLength, String contentEncoding)
     {
-		String charset = "";
-		if (contentEncoding != null)
-		{
-			charset = "; charset=" + contentEncoding;
-		}
-		if (contentLength > -1)
-		{
-			response.setContentLength(contentLength);
-		}
+        String charset = "";
+        if (contentEncoding != null)
+        {
+            charset = "; charset=" + contentEncoding;
+        }
+        if (contentLength > -1)
+        {
+            response.setContentLength(contentLength);
+        }
 
-		if (resource.endsWith(".js"))
+        if (resource.endsWith(".js"))
             response.setContentType(
-				org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT + charset);
+                org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT + charset);
         else if (resource.endsWith(".css"))
             response.setContentType(
-				org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.STYLE_TYPE_TEXT_CSS + charset);
+                org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.STYLE_TYPE_TEXT_CSS + charset);
         else if (resource.endsWith(".gif"))
             response.setContentType("image/gif");
         else if (resource.endsWith(".png"))

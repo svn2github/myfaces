@@ -32,15 +32,15 @@ package org.apache.myfaces.custom.document;
  */
 public class DocumentRenderer extends AbstractDocumentRenderer
 {
-	public static final String RENDERER_TYPE = "org.apache.myfaces.Document";
+    public static final String RENDERER_TYPE = "org.apache.myfaces.Document";
 
-	protected String getHtmlTag()
-	{
-		return "html";
-	}
+    protected String getHtmlTag()
+    {
+        return "html";
+    }
 
-	protected Class getDocumentClass()
-	{
-		return Document.class;
-	}
+    protected Class getDocumentClass()
+    {
+        return Document.class;
+    }
 }

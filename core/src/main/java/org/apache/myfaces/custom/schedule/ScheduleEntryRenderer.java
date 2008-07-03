@@ -121,5 +121,5 @@ public interface ScheduleEntryRenderer extends Serializable
      * @param entry
      *            the entry
      */
-	public String getEntryClass(HtmlSchedule schedule, ScheduleEntry entry);
+    public String getEntryClass(HtmlSchedule schedule, ScheduleEntry entry);
 }

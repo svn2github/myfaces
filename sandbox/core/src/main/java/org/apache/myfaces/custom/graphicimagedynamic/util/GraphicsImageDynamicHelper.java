@@ -34,91 +34,91 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * GraphicsImageDynamic component.
  */
 public class GraphicsImageDynamicHelper {
-	
-	/**
-	 * This method is used for getting the ImageRenderer
-	 * from the image render class.
-	 * @param imageRendererClassName
-	 * @return the image renderer
-	 */
-	public static ImageRenderer getImageRendererFromClassName(
-			String imageRendererClassName) {
-		ImageRenderer imageRenderer;
-		try {
-			Class rendererClass = ClassUtils
-					.classForName(imageRendererClassName);
-			if (!ImageRenderer.class.isAssignableFrom(rendererClass)) {
-				throw new FacesException("Image renderer class ["
-						+ imageRendererClassName + "] does not implement "
-						+ ImageRenderer.class.getName());
-			}
-			try {
-				imageRenderer = (ImageRenderer) rendererClass.newInstance();
-			} catch (InstantiationException e) {
-				throw new FacesException(
-						"could not instantiate image renderer class "
-								+ imageRendererClassName + " : "
-								+ e.getMessage(), e);
-			} catch (IllegalAccessException e) {
-				throw new FacesException(
-						"could not instantiate image renderer class "
-								+ imageRendererClassName + " : "
-								+ e.getMessage(), e);
-			}
-		} catch (ClassNotFoundException e) {
-			throw new FacesException("image renderer class not found: "
-					+ e.getMessage(), e);
-		}
-		return imageRenderer;
-	}
+    
+    /**
+     * This method is used for getting the ImageRenderer
+     * from the image render class.
+     * @param imageRendererClassName
+     * @return the image renderer
+     */
+    public static ImageRenderer getImageRendererFromClassName(
+            String imageRendererClassName) {
+        ImageRenderer imageRenderer;
+        try {
+            Class rendererClass = ClassUtils
+                    .classForName(imageRendererClassName);
+            if (!ImageRenderer.class.isAssignableFrom(rendererClass)) {
+                throw new FacesException("Image renderer class ["
+                        + imageRendererClassName + "] does not implement "
+                        + ImageRenderer.class.getName());
+            }
+            try {
+                imageRenderer = (ImageRenderer) rendererClass.newInstance();
+            } catch (InstantiationException e) {
+                throw new FacesException(
+                        "could not instantiate image renderer class "
+                                + imageRendererClassName + " : "
+                                + e.getMessage(), e);
+            } catch (IllegalAccessException e) {
+                throw new FacesException(
+                        "could not instantiate image renderer class "
+                                + imageRendererClassName + " : "
+                                + e.getMessage(), e);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new FacesException("image renderer class not found: "
+                    + e.getMessage(), e);
+        }
+        return imageRenderer;
+    }
 
-	/**
-	 * This method gets the image renderer from the ValueBinding.
-	 * @param facesContext
-	 * @param rendererValueBinding
-	 * @return the ImageRenderer.
-	 */
-	public static ImageRenderer getImageRendererFromValueBinding(
-			FacesContext facesContext, String rendererValueBinding) {
-		return (ImageRenderer) facesContext.getApplication()
-				.createValueBinding(rendererValueBinding).getValue(
-						facesContext);
-	}	
-	
-	
-	/**
-	 * This method is used for creating the image context.
-	 * @param facesContext
-	 * @return the imageContext.
-	 */
+    /**
+     * This method gets the image renderer from the ValueBinding.
+     * @param facesContext
+     * @param rendererValueBinding
+     * @return the ImageRenderer.
+     */
+    public static ImageRenderer getImageRendererFromValueBinding(
+            FacesContext facesContext, String rendererValueBinding) {
+        return (ImageRenderer) facesContext.getApplication()
+                .createValueBinding(rendererValueBinding).getValue(
+                        facesContext);
+    }    
+    
+    
+    /**
+     * This method is used for creating the image context.
+     * @param facesContext
+     * @return the imageContext.
+     */
     public static ImageContext createImageContext(FacesContext facesContext,
-			Log log) {
+            Log log) {
 
-		ExternalContext externalContext = facesContext.getExternalContext();
-		final Map requestMap = externalContext.getRequestParameterMap();
-		Object value = requestMap.get(GraphicImageDynamic.WIDTH_PARAM);
-		Integer height = null;
-		Integer width = null;
+        ExternalContext externalContext = facesContext.getExternalContext();
+        final Map requestMap = externalContext.getRequestParameterMap();
+        Object value = requestMap.get(GraphicImageDynamic.WIDTH_PARAM);
+        Integer height = null;
+        Integer width = null;
 
-		if (value != null) {
-			try {
-				width = Integer.valueOf(value.toString());
-			} catch (NumberFormatException e) {
-				log.error("Invalid value for image width : " + value + ", "
-						+ e.getMessage(), e);
-			}
-		}
+        if (value != null) {
+            try {
+                width = Integer.valueOf(value.toString());
+            } catch (NumberFormatException e) {
+                log.error("Invalid value for image width : " + value + ", "
+                        + e.getMessage(), e);
+            }
+        }
 
-		value = requestMap.get(GraphicImageDynamic.HEIGHT_PARAM);
-		if (value != null) {
-			try {
-				height = Integer.valueOf(value.toString());
-			} catch (NumberFormatException e) {
-				log.error("Invalid value for image height : " + value + ", "
-						+ e.getMessage(), e);
-			}
-		}
+        value = requestMap.get(GraphicImageDynamic.HEIGHT_PARAM);
+        if (value != null) {
+            try {
+                height = Integer.valueOf(value.toString());
+            } catch (NumberFormatException e) {
+                log.error("Invalid value for image height : " + value + ", "
+                        + e.getMessage(), e);
+            }
+        }
 
-		return new SimpleImageContext(requestMap, width, height);
-	}
+        return new SimpleImageContext(requestMap, width, height);
+    }
 }

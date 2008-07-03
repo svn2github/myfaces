@@ -26,8 +26,8 @@ import org.apache.myfaces.custom.redirectTracker.RedirectTrackerContext;
  */
 public class NoopRedirectTrackPolicy implements RedirectTrackerPolicy
 {
-	public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath)
-	{
-		return redirectPath;
-	}
+    public String trackRedirect(RedirectTrackerContext redirectContext, String redirectPath)
+    {
+        return redirectPath;
+    }
 }

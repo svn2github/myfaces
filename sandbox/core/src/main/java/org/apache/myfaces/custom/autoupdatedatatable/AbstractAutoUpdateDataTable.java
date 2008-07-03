@@ -56,18 +56,18 @@ public abstract class AbstractAutoUpdateDataTable extends HtmlDataTable implemen
      * @param state Object
      */
     public void processRestoreState(FacesContext context, Object state)
-	{
-		super.processRestoreState(context, state);
-	}
+    {
+        super.processRestoreState(context, state);
+    }
 
     /**
      * @param context FacesContext
      * @return Object
      */
     public Object processSaveState(FacesContext context)
-	{
-		return super.processSaveState(context);
-	}   
+    {
+        return super.processSaveState(context);
+    }   
 
     /**
      * Defines in seconds the interval of reloads. if no value is specified 2 seconds will be default.

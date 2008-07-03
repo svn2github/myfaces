@@ -72,14 +72,14 @@ public abstract class AbstractUIScheduleBase extends UIComponentBase implements 
     protected static final String DEFAULT_ENABLED_ON_USER_ROLE = null;
     protected static final boolean DEFAULT_SUBMIT_ON_CLICK = false;
     protected static final String DEFAULT_VISIBLE_ON_USER_ROLE = null;
-	protected static final boolean DEFAULT_SPLIT_WEEKEND = true;
+    protected static final boolean DEFAULT_SPLIT_WEEKEND = true;
     
-	/**
-	 * @JSFProperty
-	 *   defaultValue = true;
-	 */
-	public abstract boolean isSplitWeekend();
-	
+    /**
+     * @JSFProperty
+     *   defaultValue = true;
+     */
+    public abstract boolean isSplitWeekend();
+    
     /**
      * Should the parent form of this schedule be submitted when the user
      * clicks on a day? Note that this will only work when the readonly

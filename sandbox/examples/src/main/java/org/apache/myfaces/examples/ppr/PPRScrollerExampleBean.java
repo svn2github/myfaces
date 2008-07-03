@@ -27,70 +27,70 @@ import java.io.Serializable;
  * @author Martin Marinschek
  */
 public class PPRScrollerExampleBean extends SortableList implements Serializable {
-	private List cars = new ArrayList();
+    private List cars = new ArrayList();
 
-	private Map carMap = new HashMap();
+    private Map carMap = new HashMap();
 
-	public PPRScrollerExampleBean()
-	{
-		super("type");
-		for (int i = 100; i < 900; i++)
-		{
-			Object car = new SimpleCar(i, "Car Type " + i, (i % 2 == 0) ? "blue" : "green");
-			cars.add(car);
-			carMap.put(new Integer(i), car);
-		}
-	}
+    public PPRScrollerExampleBean()
+    {
+        super("type");
+        for (int i = 100; i < 900; i++)
+        {
+            Object car = new SimpleCar(i, "Car Type " + i, (i % 2 == 0) ? "blue" : "green");
+            cars.add(car);
+            carMap.put(new Integer(i), car);
+        }
+    }
 
-	public List getCars()
-	{
-		sort(getSort(), isAscending());
-		return cars;
-	}
+    public List getCars()
+    {
+        sort(getSort(), isAscending());
+        return cars;
+    }
 
-	public void setCars(List cars)
-	{
-		// update the cars from the provided list
-		for (Iterator iter = cars.iterator(); iter.hasNext();)
-		{
-			SimpleCar car = (SimpleCar) iter.next();
-			SimpleCar oldCar = (SimpleCar) carMap.get(new Integer(car.getId()));
-			oldCar.setType(car.getType());
-			oldCar.setColor(car.getColor());
-		}
-	}
+    public void setCars(List cars)
+    {
+        // update the cars from the provided list
+        for (Iterator iter = cars.iterator(); iter.hasNext();)
+        {
+            SimpleCar car = (SimpleCar) iter.next();
+            SimpleCar oldCar = (SimpleCar) carMap.get(new Integer(car.getId()));
+            oldCar.setType(car.getType());
+            oldCar.setColor(car.getColor());
+        }
+    }
 
-	protected boolean isDefaultAscending(String sortColumn)
-	{
-		return true;
-	}
+    protected boolean isDefaultAscending(String sortColumn)
+    {
+        return true;
+    }
 
-	protected void sort(final String column, final boolean ascending)
-	{
-		Comparator comparator = new Comparator()
-		{
-			public int compare(Object o1, Object o2)
-			{
-				SimpleCar c1 = (SimpleCar) o1;
-				SimpleCar c2 = (SimpleCar) o2;
-				if (column == null)
-				{
-					return 0;
-				}
-				if (column.equals("type"))
-				{
-					return ascending ? c1.getType().compareTo(c2.getType()) : c2.getType()
-									.compareTo(c1.getType());
-				}
-				else if (column.equals("color"))
-				{
-					return ascending ? c1.getColor().compareTo(c2.getColor()) : c2.getColor()
-									.compareTo(c1.getColor());
-				}
-				else
-					return 0;
-			}
-		};
-		Collections.sort(cars, comparator);
-	}
+    protected void sort(final String column, final boolean ascending)
+    {
+        Comparator comparator = new Comparator()
+        {
+            public int compare(Object o1, Object o2)
+            {
+                SimpleCar c1 = (SimpleCar) o1;
+                SimpleCar c2 = (SimpleCar) o2;
+                if (column == null)
+                {
+                    return 0;
+                }
+                if (column.equals("type"))
+                {
+                    return ascending ? c1.getType().compareTo(c2.getType()) : c2.getType()
+                                    .compareTo(c1.getType());
+                }
+                else if (column.equals("color"))
+                {
+                    return ascending ? c1.getColor().compareTo(c2.getColor()) : c2.getColor()
+                                    .compareTo(c1.getColor());
+                }
+                else
+                    return 0;
+            }
+        };
+        Collections.sort(cars, comparator);
+    }
 }

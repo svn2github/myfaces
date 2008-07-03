@@ -66,18 +66,18 @@ public class ScheduleMouseEvent extends FacesEvent implements Serializable
    
     public Interval getClickedInterval()
     {
-    	Date clickedDate = getClickedDate();
-    	
-    	for (Iterator intervalIt = getSchedule().getModel().iterator(); intervalIt.hasNext(); ) {
+        Date clickedDate = getClickedDate();
+        
+        for (Iterator intervalIt = getSchedule().getModel().iterator(); intervalIt.hasNext(); ) {
             ScheduleDay day = (ScheduleDay) intervalIt.next();
 
             if (day.equalsDate(clickedDate))
             {
                 return day.getInterval(clickedDate);
             }
-    	}
-    	
-    	return null;
+        }
+        
+        return null;
     }
 
     public int getEventType()

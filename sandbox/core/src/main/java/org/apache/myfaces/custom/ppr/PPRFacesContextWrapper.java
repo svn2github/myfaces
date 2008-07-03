@@ -180,33 +180,33 @@ class PPRFacesContextWrapper extends FacesContext
      */
     public final ELContext getELContext()
     {
-    	// Here, we cannot call getELContext on FacesContext as it does not
-    	// exist for JSF1.1; the solution is to use reflection instead. This
-    	// method will never be called unless we are in a JSF1.2 environment
-    	// so the target method will always exist when this is called.
-    	try
-    	{
-    		if (methodGetELContext == null)
-    		{
-    			// Performance optimisation: find method, and cache it for later.
-    			methodGetELContext = FacesContext.class.getDeclaredMethod("getELContext", (Class[]) null);
-    		}
-    		return (ELContext) methodGetELContext.invoke(_facesContext, (Object[]) null);
-    	}
-    	catch(NoSuchMethodException e)
-    	{
-    		// should never happen
-    		throw (IllegalStateException) new IllegalStateException("JSF1.2 method invoked in non-JSF-1.2 environment").initCause(e);
-    	}
-    	catch(InvocationTargetException e)
-    	{
-    		// should never happen
-    		throw (IllegalStateException) new IllegalStateException("Method getELContext on wrapped instance threw exception").initCause(e);
-    	}
-    	catch(IllegalAccessException e)
-    	{
-    		// should never happen
-    		throw (IllegalStateException) new IllegalStateException("Method getElContext on wrapped instance is not accessable").initCause(e);
-    	}
+        // Here, we cannot call getELContext on FacesContext as it does not
+        // exist for JSF1.1; the solution is to use reflection instead. This
+        // method will never be called unless we are in a JSF1.2 environment
+        // so the target method will always exist when this is called.
+        try
+        {
+            if (methodGetELContext == null)
+            {
+                // Performance optimisation: find method, and cache it for later.
+                methodGetELContext = FacesContext.class.getDeclaredMethod("getELContext", (Class[]) null);
+            }
+            return (ELContext) methodGetELContext.invoke(_facesContext, (Object[]) null);
+        }
+        catch(NoSuchMethodException e)
+        {
+            // should never happen
+            throw (IllegalStateException) new IllegalStateException("JSF1.2 method invoked in non-JSF-1.2 environment").initCause(e);
+        }
+        catch(InvocationTargetException e)
+        {
+            // should never happen
+            throw (IllegalStateException) new IllegalStateException("Method getELContext on wrapped instance threw exception").initCause(e);
+        }
+        catch(IllegalAccessException e)
+        {
+            // should never happen
+            throw (IllegalStateException) new IllegalStateException("Method getElContext on wrapped instance is not accessable").initCause(e);
+        }
     }
 }

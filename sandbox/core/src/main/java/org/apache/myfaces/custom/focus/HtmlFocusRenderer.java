@@ -70,14 +70,14 @@ public class HtmlFocusRenderer extends Renderer
 
         if(targetComponent != null)
         {
-			if (focus.isRememberClientFocus())
-			{
-				String javascriptLocation = (String)uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
-				DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
-				DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
-			}
+            if (focus.isRememberClientFocus())
+            {
+                String javascriptLocation = (String)uiComponent.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+                DojoUtils.addMainInclude(facesContext, uiComponent, javascriptLocation, new DojoConfig());
+                DojoUtils.addRequire(facesContext, uiComponent, "dojo.event.*");
+            }
 
-			String clientId = targetComponent.getClientId(facesContext);
+            String clientId = targetComponent.getClientId(facesContext);
             if(targetComponent instanceof HtmlInputDate)
             {
                 clientId = HtmlDateRenderer.getClientIdForDaySubcomponent(clientId);
@@ -89,15 +89,15 @@ public class HtmlFocusRenderer extends Renderer
             writer.writeText("setTimeout(\"document.getElementById('" + clientId + "').focus()\", 100)", null);
             writer.endElement(HTML.SCRIPT_ELEM);
 
-			if (focus.isRememberClientFocus())
-			{
-				writer.startElement(HTML.INPUT_ELEM, uiComponent);
-				writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_HIDDEN,null);
-				writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext), JSFAttr.ID_ATTR);
-				writer.writeAttribute(HTML.VALUE_ATTR,clientId,JSFAttr.VALUE_ATTR);
-				writer.endElement(HTML.INPUT_ELEM);
-			}
-		}
+            if (focus.isRememberClientFocus())
+            {
+                writer.startElement(HTML.INPUT_ELEM, uiComponent);
+                writer.writeAttribute(HTML.TYPE_ATTR,HTML.INPUT_TYPE_HIDDEN,null);
+                writer.writeAttribute(HTML.ID_ATTR,uiComponent.getClientId(facesContext), JSFAttr.ID_ATTR);
+                writer.writeAttribute(HTML.VALUE_ATTR,clientId,JSFAttr.VALUE_ATTR);
+                writer.endElement(HTML.INPUT_ELEM);
+            }
+        }
     }
 
 }

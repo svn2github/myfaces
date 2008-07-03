@@ -29,11 +29,11 @@ import javax.faces.el.ValueBinding;
  */
 public class ValueBindingKey implements Comparator
 {
-	public int compare(Object o1, Object o2)
-	{
-		ValueBinding vb1 = (ValueBinding) o1;
-		ValueBinding vb2 = (ValueBinding) o2;
-		
-		return vb1.getExpressionString().compareTo(vb2.getExpressionString());
-	}
+    public int compare(Object o1, Object o2)
+    {
+        ValueBinding vb1 = (ValueBinding) o1;
+        ValueBinding vb2 = (ValueBinding) o2;
+        
+        return vb1.getExpressionString().compareTo(vb2.getExpressionString());
+    }
 }

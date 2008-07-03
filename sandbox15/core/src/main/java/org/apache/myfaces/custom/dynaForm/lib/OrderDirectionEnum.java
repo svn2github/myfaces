@@ -20,6 +20,6 @@ package org.apache.myfaces.custom.dynaForm.lib;
 
 public enum OrderDirectionEnum
 {
-	asc,
-	desc
+    asc,
+    desc
 }

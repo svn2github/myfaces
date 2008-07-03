@@ -40,53 +40,53 @@ import org.apache.myfaces.validator.ValidatorBase;
 
 public class ISBNValidator extends ValidatorBase {
 
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.ISBN";
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the maximum length check fails.</p>
-	 */
-	public static final String ISBN_MESSAGE_ID = "org.apache.myfaces.ISBN.INVALID";
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.ISBN";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the maximum length check fails.</p>
+     */
+    public static final String ISBN_MESSAGE_ID = "org.apache.myfaces.ISBN.INVALID";
 
-	/**
-	 * <p>isbnValidator</p>
-	 */
-	private org.apache.commons.validator.ISBNValidator isbnValidator;
+    /**
+     * <p>isbnValidator</p>
+     */
+    private org.apache.commons.validator.ISBNValidator isbnValidator;
 
-	public ISBNValidator(){
-	    isbnValidator = new org.apache.commons.validator.ISBNValidator();
-	}
+    public ISBNValidator(){
+        isbnValidator = new org.apache.commons.validator.ISBNValidator();
+    }
 
-	/**
-	 * methode that validates isbn codes.
-	 * it uses the commons-validator
-	 */
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
+    /**
+     * methode that validates isbn codes.
+     * it uses the commons-validator
+     */
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
 
 
-			if (facesContext == null) throw new NullPointerException("facesContext");
-			if (uiComponent == null) throw new NullPointerException("uiComponent");
+            if (facesContext == null) throw new NullPointerException("facesContext");
+            if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-			if (value == null)
-			{
-				return;
-			}
+            if (value == null)
+            {
+                return;
+            }
         
             if (!isbnValidator.isValid( value.toString())) {
-				Object[] args = {value.toString()};
+                Object[] args = {value.toString()};
                 String message = getMessage();
                 if (null == message)  message = ISBN_MESSAGE_ID;
 
                 throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
-			}
-			
+            }
+            
 
-	}
+    }
 
 }

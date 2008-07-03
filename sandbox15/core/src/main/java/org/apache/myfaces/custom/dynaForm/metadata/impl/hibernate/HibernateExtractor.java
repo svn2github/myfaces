@@ -28,40 +28,40 @@ import org.apache.myfaces.custom.dynaForm.metadata.impl.ejb.EjbExtractor;
  */
 public class HibernateExtractor extends EjbExtractor
 {
-	@Override
-	protected void initFromAnnotations(Context context, FieldImpl mdField, AccessibleObject accessibleObject)
-	{
+    @Override
+    protected void initFromAnnotations(Context context, FieldImpl mdField, AccessibleObject accessibleObject)
+    {
         throw new UnsupportedOperationException();
 
         /*
-		super.initFromAnnotations(context, mdField, accessibleObject);
+        super.initFromAnnotations(context, mdField, accessibleObject);
 
         if (accessibleObject.isAnnotationPresent(Min.class))
-		{
-			Min annot = accessibleObject.getAnnotation(Min.class);
-			mdField.setMinValue((double) annot.value());
-		}
-		if (accessibleObject.isAnnotationPresent(Max.class))
-		{
-			Max annot = accessibleObject.getAnnotation(Max.class);
-			mdField.setMaxValue((double) annot.value());
-		}
-		if (accessibleObject.isAnnotationPresent(Length.class))
-		{
-			Length annot = accessibleObject.getAnnotation(Length.class);
-			mdField.setMinSize(annot.min());
-			mdField.setMaxSize(annot.max());
-		}
-		if (accessibleObject.isAnnotationPresent(NotNull.class))
-		{
-			mdField.setRequired(true);
-		}
-		if (accessibleObject.isAnnotationPresent(Range.class))
-		{
-			Range annot = accessibleObject.getAnnotation(Range.class);
-			mdField.setMinValue((double) annot.min());
-			mdField.setMaxValue((double) annot.max());
-		}
-		*/
-	}
+        {
+            Min annot = accessibleObject.getAnnotation(Min.class);
+            mdField.setMinValue((double) annot.value());
+        }
+        if (accessibleObject.isAnnotationPresent(Max.class))
+        {
+            Max annot = accessibleObject.getAnnotation(Max.class);
+            mdField.setMaxValue((double) annot.value());
+        }
+        if (accessibleObject.isAnnotationPresent(Length.class))
+        {
+            Length annot = accessibleObject.getAnnotation(Length.class);
+            mdField.setMinSize(annot.min());
+            mdField.setMaxSize(annot.max());
+        }
+        if (accessibleObject.isAnnotationPresent(NotNull.class))
+        {
+            mdField.setRequired(true);
+        }
+        if (accessibleObject.isAnnotationPresent(Range.class))
+        {
+            Range annot = accessibleObject.getAnnotation(Range.class);
+            mdField.setMinValue((double) annot.min());
+            mdField.setMaxValue((double) annot.max());
+        }
+        */
+    }
 }

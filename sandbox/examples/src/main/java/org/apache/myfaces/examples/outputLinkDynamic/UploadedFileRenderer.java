@@ -52,8 +52,8 @@ public class UploadedFileRenderer implements ResourceRenderer
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentLength()
      */
     public int getContentLength() {
-		return _outputLinkDynamicBean.isUploaded() ? (int)_outputLinkDynamicBean.getUpFile().getSize() : -1;
-	}
+        return _outputLinkDynamicBean.isUploaded() ? (int)_outputLinkDynamicBean.getUpFile().getSize() : -1;
+    }
 
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentType()

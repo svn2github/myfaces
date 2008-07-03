@@ -26,14 +26,14 @@ import javax.faces.context.FacesContext;
 
 public class ComponentUtils
 {
-	private ComponentUtils()
-	{
-	}
-	
-	public static void renderChildren(FacesContext context, UIComponent component)
-			throws IOException
-	{
-		List children = component.getChildren();
+    private ComponentUtils()
+    {
+    }
+    
+    public static void renderChildren(FacesContext context, UIComponent component)
+            throws IOException
+    {
+        List children = component.getChildren();
         for (Object aChild : children)
         {
             UIComponent child = (UIComponent) aChild;

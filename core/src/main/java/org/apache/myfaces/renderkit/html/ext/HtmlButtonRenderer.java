@@ -40,19 +40,19 @@ public class HtmlButtonRenderer
     extends ExtendedHtmlButtonRenderer
 {
     protected void addHiddenCommandParameter(FacesContext facesContext, UIComponent nestingForm, String hiddenFieldName)
-	{
-		if (nestingForm != null)
+    {
+        if (nestingForm != null)
         {
-			super.addHiddenCommandParameter(facesContext, nestingForm, hiddenFieldName);
+            super.addHiddenCommandParameter(facesContext, nestingForm, hiddenFieldName);
         }
-		else
-		{
+        else
+        {
             DummyFormUtils.addDummyFormParameter(facesContext, hiddenFieldName);
-		}
-	}
+        }
+    }
     
     protected FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
     {
-    	return DummyFormUtils.findNestingForm(uiComponent, facesContext);
+        return DummyFormUtils.findNestingForm(uiComponent, facesContext);
     }
 }

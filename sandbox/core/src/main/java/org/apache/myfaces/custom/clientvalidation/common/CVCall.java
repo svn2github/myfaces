@@ -29,69 +29,69 @@ import java.io.Serializable;
  */
 public class CVCall implements Serializable{
 
-	private String _id;
-	private String _clientId;
-	private boolean _required;
-	private String _converterScriptFunction;
-	private String _converterScriptResource;
-	private String[] _validatorScriptFunctions;
-	private String[] _validatorScriptResources;
-	
-	public CVCall() {}
-	
-	public CVCall(String id, String clientId, boolean required) {
-		this._id = id;
-		this._clientId = clientId;
-		this._required = required;
-	}
-	
-	public String getId() {
-		return _id;
-	}
-	public void setId(String id) {
-		this._id = id;
-	}
-	
-	public String getClientId() {
-		return _clientId;
-	}
-	public void setClientId(String clientId) {
-		this._clientId = clientId;
-	}
-	
-	public boolean isRequired() {
-		return _required;
-	}
-	public void setRequired(boolean required) {
-		this._required = required;
-	}
+    private String _id;
+    private String _clientId;
+    private boolean _required;
+    private String _converterScriptFunction;
+    private String _converterScriptResource;
+    private String[] _validatorScriptFunctions;
+    private String[] _validatorScriptResources;
+    
+    public CVCall() {}
+    
+    public CVCall(String id, String clientId, boolean required) {
+        this._id = id;
+        this._clientId = clientId;
+        this._required = required;
+    }
+    
+    public String getId() {
+        return _id;
+    }
+    public void setId(String id) {
+        this._id = id;
+    }
+    
+    public String getClientId() {
+        return _clientId;
+    }
+    public void setClientId(String clientId) {
+        this._clientId = clientId;
+    }
+    
+    public boolean isRequired() {
+        return _required;
+    }
+    public void setRequired(boolean required) {
+        this._required = required;
+    }
 
-	public String getConverterScriptFunction() {
-		return _converterScriptFunction;
-	}
-	public void setConverterScriptFunction(String scriptFunction) {
-		_converterScriptFunction = scriptFunction;
-	}
+    public String getConverterScriptFunction() {
+        return _converterScriptFunction;
+    }
+    public void setConverterScriptFunction(String scriptFunction) {
+        _converterScriptFunction = scriptFunction;
+    }
 
-	public String getConverterScriptResource() {
-		return _converterScriptResource;
-	}
-	public void setConverterScriptResource(String scriptResource) {
-		_converterScriptResource = scriptResource;
-	}
+    public String getConverterScriptResource() {
+        return _converterScriptResource;
+    }
+    public void setConverterScriptResource(String scriptResource) {
+        _converterScriptResource = scriptResource;
+    }
 
-	public String[] getValidatorScriptFunctions() {
-		return _validatorScriptFunctions;
-	}
-	public void setValidatorScriptFunctions(String[] scriptFunctions) {
-		_validatorScriptFunctions = scriptFunctions;
-	}
+    public String[] getValidatorScriptFunctions() {
+        return _validatorScriptFunctions;
+    }
+    public void setValidatorScriptFunctions(String[] scriptFunctions) {
+        _validatorScriptFunctions = scriptFunctions;
+    }
 
-	public String[] getValidatorScriptResources() {
-		return _validatorScriptResources;
-	}
-	public void setValidatorScriptResources(String[] scriptResources) {
-		_validatorScriptResources = scriptResources;
-	}
+    public String[] getValidatorScriptResources() {
+        return _validatorScriptResources;
+    }
+    public void setValidatorScriptResources(String[] scriptResources) {
+        _validatorScriptResources = scriptResources;
+    }
 }
 

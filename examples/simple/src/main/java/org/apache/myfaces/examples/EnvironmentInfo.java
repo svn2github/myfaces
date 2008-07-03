@@ -25,8 +25,8 @@ import javax.faces.context.FacesContext;
  */
 public class EnvironmentInfo
 {
-	public String getRequestContextPath()
-	{
-		return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-	}
+    public String getRequestContextPath()
+    {
+        return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+    }
 }

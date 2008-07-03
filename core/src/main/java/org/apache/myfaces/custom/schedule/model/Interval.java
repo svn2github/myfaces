@@ -38,84 +38,84 @@ import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
 public class Interval implements Serializable, Comparable
 {
 
-	private String label;
-	private Date startTime;
-	private Date endTime;
-	
-	public Interval(String label, Date startTime, Date endTime)
-	{
-		this.label = label;
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
-	
-	public String getLabel()
-	{
-		return label;
-	}
-	public void setLabel(String label)
-	{
-		this.label = label;
-	}
-	
-	public Date getStartTime()
-	{
-		return startTime;
-	}
-	public void setStartTime(Date startTime)
-	{
-		this.startTime = startTime;
-	}
-	
-	public Date getEndTime()
-	{
-		return endTime;
-	}
-	public void setEndTime(Date endTime)
-	{
-		this.endTime = endTime;
-	}
+    private String label;
+    private Date startTime;
+    private Date endTime;
+    
+    public Interval(String label, Date startTime, Date endTime)
+    {
+        this.label = label;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+    
+    public String getLabel()
+    {
+        return label;
+    }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
+    
+    public Date getStartTime()
+    {
+        return startTime;
+    }
+    public void setStartTime(Date startTime)
+    {
+        this.startTime = startTime;
+    }
+    
+    public Date getEndTime()
+    {
+        return endTime;
+    }
+    public void setEndTime(Date endTime)
+    {
+        this.endTime = endTime;
+    }
 
-	public boolean containsDate(Date clickedDate)
-	{
-		return !getStartTime().after(clickedDate) && clickedDate.before(getEndTime());
-	}
-	
-	public int compareTo(Object o)
-	{
-		if (o instanceof Interval)
-		{
-			
-			return startTime.compareTo(((Interval) o).startTime);
-		}
+    public boolean containsDate(Date clickedDate)
+    {
+        return !getStartTime().after(clickedDate) && clickedDate.before(getEndTime());
+    }
+    
+    public int compareTo(Object o)
+    {
+        if (o instanceof Interval)
+        {
+            
+            return startTime.compareTo(((Interval) o).startTime);
+        }
 
-		return 1;
-	}
+        return 1;
+    }
 
-	public boolean after(Interval last)
-	{
-		
-		return !startTime.before(last.getEndTime());
-	}
+    public boolean after(Interval last)
+    {
+        
+        return !startTime.before(last.getEndTime());
+    }
 
-	public int getStartHours(TimeZone timeZone)
-	{
-		
-		return ScheduleUtil.getCalendarInstance(getStartTime(), timeZone).get(Calendar.HOUR_OF_DAY);
-	}
+    public int getStartHours(TimeZone timeZone)
+    {
+        
+        return ScheduleUtil.getCalendarInstance(getStartTime(), timeZone).get(Calendar.HOUR_OF_DAY);
+    }
 
-	public int getStartMinutes(TimeZone timeZone)
-	{
-		
-		return ScheduleUtil.getCalendarInstance(getStartTime(), timeZone).get(Calendar.MINUTE);
-	}
-	
-	public long getDuration()
-	{
-		
-		return getEndTime().getTime() - getStartTime().getTime();
-	}
-	
+    public int getStartMinutes(TimeZone timeZone)
+    {
+        
+        return ScheduleUtil.getCalendarInstance(getStartTime(), timeZone).get(Calendar.MINUTE);
+    }
+    
+    public long getDuration()
+    {
+        
+        return getEndTime().getTime() - getStartTime().getTime();
+    }
+    
     /**
      * <p>
      * Intervals are equivalent if their label is the same and they begin and end
@@ -126,35 +126,35 @@ public class Interval implements Serializable, Comparable
      *
      * @return true, if this interval is equivalent to the given interval
      */
-	public boolean isEquivalent(Interval other)
-	{
-			
-		return label.equals(other.label) 
-				&& ScheduleUtil.isSameTime(startTime, other.startTime) 
-				&& ScheduleUtil.isSameTime(endTime, other.endTime);
-	}
-	
-	public int hashCode() {
+    public boolean isEquivalent(Interval other)
+    {
+            
+        return label.equals(other.label) 
+                && ScheduleUtil.isSameTime(startTime, other.startTime) 
+                && ScheduleUtil.isSameTime(endTime, other.endTime);
+    }
+    
+    public int hashCode() {
 
-		return label.hashCode() + startTime.hashCode() + endTime.hashCode();
-	}
-	
-	public boolean equals(Object obj)
-	{
-		if (obj != null && obj instanceof Interval) {
-			Interval other = (Interval) obj;
-			
-			return label.equals(other.label) 
-					&& startTime.equals(other.startTime) 
-					&& endTime.equals(other.endTime);
-		}
-		
-		return false;
-	}
-	
-	public String toString()
-	{
-		
-		return this.getClass().getName() + " Start:" + startTime + " End:" + endTime;
-	}
+        return label.hashCode() + startTime.hashCode() + endTime.hashCode();
+    }
+    
+    public boolean equals(Object obj)
+    {
+        if (obj != null && obj instanceof Interval) {
+            Interval other = (Interval) obj;
+            
+            return label.equals(other.label) 
+                    && startTime.equals(other.startTime) 
+                    && endTime.equals(other.endTime);
+        }
+        
+        return false;
+    }
+    
+    public String toString()
+    {
+        
+        return this.getClass().getName() + " Start:" + startTime + " End:" + endTime;
+    }
 }

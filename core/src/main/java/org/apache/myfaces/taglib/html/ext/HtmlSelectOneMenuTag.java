@@ -48,8 +48,8 @@ public class HtmlSelectOneMenuTag
     private String _visibleOnUserRole;
 
     private String _displayValueOnly;
-	private String _displayValueOnlyStyle;
-	private String _displayValueOnlyStyleClass;
+    private String _displayValueOnlyStyle;
+    private String _displayValueOnlyStyleClass;
 
     public void release() {
         super.release();

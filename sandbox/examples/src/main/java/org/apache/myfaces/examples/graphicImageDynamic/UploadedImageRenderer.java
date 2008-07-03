@@ -52,8 +52,8 @@ public class UploadedImageRenderer implements ImageRenderer
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentLength()
      */
     public int getContentLength() {
-		return _graphicImageDynamicBean.isUploaded() ? (int)_graphicImageDynamicBean.getUpImage().getSize() : -1;
-	}
+        return _graphicImageDynamicBean.isUploaded() ? (int)_graphicImageDynamicBean.getUpImage().getSize() : -1;
+    }
 
     /**
      * @see org.apache.myfaces.custom.graphicimagedynamic.ImageRenderer#getContentType()

@@ -47,14 +47,14 @@ public class JsListenerModel
 
     public List getOptionItems()
     {
-    	if( optionItems == null ) {
-    		initOptions();
-    	}
+        if( optionItems == null ) {
+            initOptions();
+        }
         return optionItems;
     }
     
     private void initOptions() {
-    	options = new ArrayList();
+        options = new ArrayList();
         options.add("o1");
         options.add("o2");
         options.add("o3");

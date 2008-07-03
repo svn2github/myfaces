@@ -87,13 +87,13 @@ public class UISaveState extends UIParameter
         Object objectToSave = getValue();
         if (objectToSave instanceof StateHolder)
         {
-        	values[1] = Boolean.TRUE;
-        	values[2] = saveAttachedState(context, objectToSave);
+            values[1] = Boolean.TRUE;
+            values[2] = saveAttachedState(context, objectToSave);
         }
         else
         {
-        	values[1] = Boolean.FALSE;
-        	values[2] = objectToSave;
+            values[1] = Boolean.FALSE;
+            values[2] = objectToSave;
         }
         return values;
     }
@@ -107,11 +107,11 @@ public class UISaveState extends UIParameter
         Boolean storedObjectIsAStateHolder = (Boolean) values[1];
         if ( Boolean.TRUE.equals( storedObjectIsAStateHolder ) )
         {
-        	savedObject = restoreAttachedState(context,values[2]);
+            savedObject = restoreAttachedState(context,values[2]);
         }
         else
         {
-        	savedObject = values[2];
+            savedObject = values[2];
         }
         ValueExpression vb = getValueExpression("value");
         if (vb != null)

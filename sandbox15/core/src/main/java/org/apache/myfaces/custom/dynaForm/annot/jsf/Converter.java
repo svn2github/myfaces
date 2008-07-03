@@ -31,13 +31,13 @@ import java.lang.annotation.Target;
 @Retention(value= RetentionPolicy.RUNTIME)
 public @interface Converter
 {
-	/**
-	 * attach a converter by its id
-	 */
-	String converterId() default "";
+    /**
+     * attach a converter by its id
+     */
+    String converterId() default "";
 
-	/**
-	 * attach a converter by its class
-	 */
-	Class converterClass() default Void.class;
+    /**
+     * attach a converter by its class
+     */
+    Class converterClass() default Void.class;
 }

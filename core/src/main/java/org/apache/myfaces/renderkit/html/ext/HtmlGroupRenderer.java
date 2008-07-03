@@ -44,8 +44,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 public class HtmlGroupRenderer
     extends HtmlGroupRendererBase
 {
-	
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean span = false;
         String element = getHtmlElement(component);
@@ -74,14 +74,14 @@ public class HtmlGroupRenderer
             writer.endElement(element);
         }
     }
-	
-	private String getHtmlElement(UIComponent component) {
-		if (component instanceof HtmlPanelGroup) {
-			HtmlPanelGroup group = (HtmlPanelGroup) component;
-			if (HtmlPanelGroup.BLOCK_LAYOUT.equals(group.getLayout())) {
-				return HTML.DIV_ELEM;
-			}
-		}
-		return HTML.SPAN_ELEM;
-	}
+    
+    private String getHtmlElement(UIComponent component) {
+        if (component instanceof HtmlPanelGroup) {
+            HtmlPanelGroup group = (HtmlPanelGroup) component;
+            if (HtmlPanelGroup.BLOCK_LAYOUT.equals(group.getLayout())) {
+                return HTML.DIV_ELEM;
+            }
+        }
+        return HTML.SPAN_ELEM;
+    }
 }

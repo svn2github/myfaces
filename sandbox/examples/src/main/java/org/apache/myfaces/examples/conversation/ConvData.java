@@ -20,20 +20,20 @@ package org.apache.myfaces.examples.conversation;
 
 public class ConvData
 {
-	private String input;
+    private String input;
 
-	public String getInput()
-	{
-		return input;
-	}
+    public String getInput()
+    {
+        return input;
+    }
 
-	public void setInput(String input)
-	{
-		this.input = input;
-	}
-	
-	public String save()
-	{
-		return "jo-o";
-	}
+    public void setInput(String input)
+    {
+        this.input = input;
+    }
+    
+    public String save()
+    {
+        return "jo-o";
+    }
 }

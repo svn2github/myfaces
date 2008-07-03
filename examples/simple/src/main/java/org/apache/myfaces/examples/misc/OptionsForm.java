@@ -32,8 +32,8 @@ import java.util.Locale;
  */
 public class OptionsForm
 {
-	private static final Locale SPANISH = new Locale("es", "","");
-	private static final Locale CATALAN = new Locale("ca", "","");
+    private static final Locale SPANISH = new Locale("es", "","");
+    private static final Locale CATALAN = new Locale("ca", "","");
 
     private static final List AVAILABLE_LOCALES
         = Arrays.asList(new Locale[] {Locale.ENGLISH,
@@ -41,8 +41,8 @@ public class OptionsForm
                                       Locale.GERMAN,
                                       Locale.JAPANESE,
                                       Locale.FRENCH,
-									  SPANISH,
-									  CATALAN});
+                                      SPANISH,
+                                      CATALAN});
 
     private Locale _locale = null;
 

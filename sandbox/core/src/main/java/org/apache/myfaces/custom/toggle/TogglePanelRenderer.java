@@ -64,7 +64,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
         writer.endElement(HTML.INPUT_ELEM);
 
         if( ! toggleMode )
-        	writeJavascriptToToggleVisibility(context, togglePanel);
+            writeJavascriptToToggleVisibility(context, togglePanel);
 
         super.encodeEnd(context, togglePanel);
     }
@@ -107,7 +107,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
             
             boolean display = toggleMode != isHiddenWhenToggled(component);
             if( display ){
-            	if (style == null || style.length() == 0) {
+                if (style == null || style.length() == 0) {
                     return;
                 } else {
                     int index = style.indexOf(";display:none;");
@@ -121,11 +121,11 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
                     }
                 }
             }else{ // hide
-	            if (style == null) {
-	                style = ";display:none;";
-	            } else if (style.indexOf("display:none;") == -1) {
-	                style = style.concat(";display:none;");
-	            }
+                if (style == null) {
+                    style = ";display:none;";
+                } else if (style.indexOf("display:none;") == -1) {
+                    style = style.concat(";display:none;");
+                }
             }
 
             setStyle.invoke(component, new Object[] { style });
@@ -139,11 +139,11 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
     }
 
     private boolean isHiddenWhenToggled(UIComponent component){
-    	return component instanceof ToggleLink || component instanceof ToggleGroup;
+        return component instanceof ToggleLink || component instanceof ToggleGroup;
     }
 
     private String getHiddenFieldId(FacesContext context, TogglePanel togglePanel){
-    	return togglePanel.getClientId(context) + "_hidden";
+        return togglePanel.getClientId(context) + "_hidden";
     }
     // Generate the javascript function to hide the Link component
     // and display the components specified in the 'for' attribute
@@ -163,20 +163,20 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
         for(Iterator it = togglePanel.getChildren().iterator(); it.hasNext(); ) {
             UIComponent component = (UIComponent) it.next();
             if ( isHiddenWhenToggled( component ) ) {
-            	if( idsToHideCount > 0 )
-            		idsToHide.append( ',' );
-            	idsToHide.append( component.getClientId( context ) );
-            	idsToHideCount++;
+                if( idsToHideCount > 0 )
+                    idsToHide.append( ',' );
+                idsToHide.append( component.getClientId( context ) );
+                idsToHideCount++;
             }
         }
 
         if( idsToHideCount == 1 ){
-        	out.write( "document.getElementById('"+ idsToHide.toString() +"').style.display = 'none';\n" );
+            out.write( "document.getElementById('"+ idsToHide.toString() +"').style.display = 'none';\n" );
         }else if( idsToHideCount > 1 ){
-        	out.write( "var idsToHide = '" + idsToHide.toString() + "'.split(',');\n" );
-        	out.write( "for(var i=0;i<idsToHide.length;i++) document.getElementById(idsToHide[i]).style.display = 'none';\n" );
+            out.write( "var idsToHide = '" + idsToHide.toString() + "'.split(',');\n" );
+            out.write( "for(var i=0;i<idsToHide.length;i++) document.getElementById(idsToHide[i]).style.display = 'none';\n" );
         }else{ // no idsToHide set
-        	getLog().warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
+            getLog().warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
         }
         out.write( "var idsToShow = idsToShowS.split(',');\n" );
         out.write( "for(var j=0;j<idsToShow.length;j++) document.getElementById(idsToShow[j]).style.display = 'inline';\n");

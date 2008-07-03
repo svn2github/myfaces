@@ -45,26 +45,26 @@ public class DVOFace implements Serializable
         private static final long serialVersionUID = 1L;
 
         public Object get(Object key){
-    		Object held = super.get( key );
-    		if( held != null )
-    			return held;
-    		if( key.toString().toLowerCase().indexOf("list")>0 )
-    			return new ArrayList();
-    		
-    		return null;	
-    	}
+            Object held = super.get( key );
+            if( held != null )
+                return held;
+            if( key.toString().toLowerCase().indexOf("list")>0 )
+                return new ArrayList();
+            
+            return null;    
+        }
     };
 
-	public boolean isAttribute() {
-		return attribute;
-	}
-	public void setAttribute(boolean attribute) {
-		this.attribute = attribute;
-	}
-	public Map getMap() {
-		return map;
-	}
-	public void setMap(Map map) {
-		this.map = map;
-	}
+    public boolean isAttribute() {
+        return attribute;
+    }
+    public void setAttribute(boolean attribute) {
+        this.attribute = attribute;
+    }
+    public Map getMap() {
+        return map;
+    }
+    public void setMap(Map map) {
+        this.map = map;
+    }
 }

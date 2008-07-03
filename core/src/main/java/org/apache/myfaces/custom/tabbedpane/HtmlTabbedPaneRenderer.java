@@ -450,8 +450,8 @@ public class HtmlTabbedPaneRenderer
                 String onclickEvent = tab.getAttributes().get(HTML.ONCLICK_ATTR) != null ? (String) tab.getAttributes().get(HTML.ONCLICK_ATTR) : "";
                 
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
-                					  onclickEvent
-                					  + "return myFaces_showPanelTab("
+                                      onclickEvent
+                                      + "return myFaces_showPanelTab("
                                       +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
                                       +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
                                       +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
@@ -494,17 +494,17 @@ public class HtmlTabbedPaneRenderer
                     classes.append(SUB_HEADER_CELL_CLASS_FIRST);
                 }
                 if( renderedIndex == visibleTabCount ){
-                	classes.append(' ');
-                	classes.append(SUB_HEADER_CELL_CLASS_LAST);
+                    classes.append(' ');
+                    classes.append(SUB_HEADER_CELL_CLASS_LAST);
                 }
                 if( renderedIndex == visibleTabSelectedIndex ){
-                	if( activeSubStyleUserClass != null ){
-	                	classes.append(' ');
-	                	classes.append(activeSubStyleUserClass);
-                	}
+                    if( activeSubStyleUserClass != null ){
+                        classes.append(' ');
+                        classes.append(activeSubStyleUserClass);
+                    }
                 }else if( inactiveSubStyleUserClass != null ){
-            		classes.append(' ');
-            		classes.append(inactiveSubStyleUserClass);
+                    classes.append(' ');
+                    classes.append(inactiveSubStyleUserClass);
                 }
 
                 classes.append(' ');

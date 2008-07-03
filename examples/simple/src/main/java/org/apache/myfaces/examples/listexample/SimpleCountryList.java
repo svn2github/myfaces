@@ -114,20 +114,20 @@ public class SimpleCountryList
     }
 
     /**
-	 * @param names
-	 * @return
-	 */
-	private SimpleCity[] createCities(String[] names)
-	{
-		SimpleCity[] result = new SimpleCity[names.length];
-		for (int i = 0; i < result.length; i++)
-		{
-			result[i] = new SimpleCity(names[i]);
-		}
-		return result;
-	}
+     * @param names
+     * @return
+     */
+    private SimpleCity[] createCities(String[] names)
+    {
+        SimpleCity[] result = new SimpleCity[names.length];
+        for (int i = 0; i < result.length; i++)
+        {
+            result[i] = new SimpleCity(names[i]);
+        }
+        return result;
+    }
 
-	public List getCountries()
+    public List getCountries()
     {
         return _countries;
     }
@@ -159,26 +159,26 @@ public class SimpleCountryList
         return "ok";
     }
 
-	public void deleteCountry(ActionEvent ev)
-	{
-		UIData datatable = findParentHtmlDataTable(ev.getComponent());
-		getCountries().remove(datatable.getRowIndex() + datatable.getFirst());
-	}
+    public void deleteCountry(ActionEvent ev)
+    {
+        UIData datatable = findParentHtmlDataTable(ev.getComponent());
+        getCountries().remove(datatable.getRowIndex() + datatable.getFirst());
+    }
 
-	/**
-	 * @param component
-	 * @return
-	 */
-	private HtmlDataTable findParentHtmlDataTable(UIComponent component)
-	{
-		if (component == null)
-		{
-			return null;
-		}
-		if (component instanceof HtmlDataTable)
-		{
-			return (HtmlDataTable) component;
-		}
-		return findParentHtmlDataTable(component.getParent());
-	}
+    /**
+     * @param component
+     * @return
+     */
+    private HtmlDataTable findParentHtmlDataTable(UIComponent component)
+    {
+        if (component == null)
+        {
+            return null;
+        }
+        if (component instanceof HtmlDataTable)
+        {
+            return (HtmlDataTable) component;
+        }
+        return findParentHtmlDataTable(component.getParent());
+    }
 }

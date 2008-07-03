@@ -41,50 +41,50 @@ import org.apache.myfaces.validator.ValidatorBase;
  */
 public abstract class AbstractUrlValidator extends ValidatorBase {
 
-	/**
-	 * <p>The standard converter id for this converter.</p>
-	 */
-	public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.Url";
-	/**
-	 * <p>The message identifier of the {@link FacesMessage} to be created if
-	 * the maximum length check fails.</p>
-	 */
-	public static final String URL_MESSAGE_ID = "org.apache.myfaces.Url.INVALID";
-	 
-	public AbstractUrlValidator(){
+    /**
+     * <p>The standard converter id for this converter.</p>
+     */
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.Url";
+    /**
+     * <p>The message identifier of the {@link FacesMessage} to be created if
+     * the maximum length check fails.</p>
+     */
+    public static final String URL_MESSAGE_ID = "org.apache.myfaces.Url.INVALID";
+     
+    public AbstractUrlValidator(){
 
-	}
+    }
 
-	/**
-	 * method that validates an url address.
-	 * it uses the commons-validator
-	 */
-	public void validate(
-		FacesContext facesContext,
-		UIComponent uiComponent,
-		Object value)
-		throws ValidatorException {
+    /**
+     * method that validates an url address.
+     * it uses the commons-validator
+     */
+    public void validate(
+        FacesContext facesContext,
+        UIComponent uiComponent,
+        Object value)
+        throws ValidatorException {
 
 
-			if (facesContext == null) throw new NullPointerException("facesContext");
-			if (uiComponent == null) throw new NullPointerException("uiComponent");
+            if (facesContext == null) throw new NullPointerException("facesContext");
+            if (uiComponent == null) throw new NullPointerException("uiComponent");
 
-			if (value == null)
-			{
-				return;
-			}
-			
-			org.apache.commons.validator.UrlValidator urlValidator = initValidator();
-			
-			if (!urlValidator.isValid(value.toString())) {
-				Object[] args = {value.toString()};
-				throw new ValidatorException(getFacesMessage(URL_MESSAGE_ID, args));
+            if (value == null)
+            {
+                return;
+            }
+            
+            org.apache.commons.validator.UrlValidator urlValidator = initValidator();
+            
+            if (!urlValidator.isValid(value.toString())) {
+                Object[] args = {value.toString()};
+                throw new ValidatorException(getFacesMessage(URL_MESSAGE_ID, args));
             }
 
-	}
-	
-	private org.apache.commons.validator.UrlValidator initValidator()
-	{
+    }
+    
+    private org.apache.commons.validator.UrlValidator initValidator()
+    {
         int options = 0;
         
         if (isAllow2Slashes())
@@ -109,34 +109,34 @@ public abstract class AbstractUrlValidator extends ValidatorBase {
                 org.apache.commons.validator.UrlValidator(schemesList,options);
         }
         return urlValidator;
-	}
-	
-	private String[] getSchemesList(){
-	    if (getSchemes() == null)
-	    {
-	        return null;
-	    }
-	    String [] list = getSchemes().split(",");
-	    String [] resp = new String [list.length];
-	    
-	    for (int i = 0; i < list.length; i++)
-	    {
-	        resp[i] = list[i].trim();
-	    }	    
-	    return resp;	    
-	}
-    	
-	public abstract void setSchemes(String _schemes);
+    }
+    
+    private String[] getSchemesList(){
+        if (getSchemes() == null)
+        {
+            return null;
+        }
+        String [] list = getSchemes().split(",");
+        String [] resp = new String [list.length];
+        
+        for (int i = 0; i < list.length; i++)
+        {
+            resp[i] = list[i].trim();
+        }        
+        return resp;        
+    }
+        
+    public abstract void setSchemes(String _schemes);
 
-	/**
-	 *  CSV values that indicates the set of schemes to check this url.
-	 *  
-	 *  If allowAllSchemas = true, the values of this field are ignored.
-	 * 
-	 *  If no schemes are provided, default to this set ("http", "https", "ftp").
-	 * 
-	 * @JSFProperty
-	 */
+    /**
+     *  CSV values that indicates the set of schemes to check this url.
+     *  
+     *  If allowAllSchemas = true, the values of this field are ignored.
+     * 
+     *  If no schemes are provided, default to this set ("http", "https", "ftp").
+     * 
+     * @JSFProperty
+     */
     public abstract String getSchemes();
 
     public abstract void setAllow2Slashes(boolean _allow2Slashes);

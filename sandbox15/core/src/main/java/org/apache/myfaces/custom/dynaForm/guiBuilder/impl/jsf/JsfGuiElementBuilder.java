@@ -22,5 +22,5 @@ import org.apache.myfaces.custom.dynaForm.metadata.FieldInterface;
 
 public interface JsfGuiElementBuilder
 {
-	public boolean buildElement(JsfGuiBuilder builder, FieldInterface field);
+    public boolean buildElement(JsfGuiBuilder builder, FieldInterface field);
 }

@@ -34,20 +34,20 @@ import javax.faces.context.FacesContext;
 public class ExtendedHtmlLinkRenderer
         extends HtmlLinkRendererBase
 {
-	protected void addHiddenCommandParameter(FacesContext facesContext, UIComponent nestingForm, String hiddenFieldName)
-	{
-		if (nestingForm != null)
-	    {
-			super.addHiddenCommandParameter(facesContext, nestingForm, hiddenFieldName);
-	    }
-		else
-		{
-	        DummyFormUtils.addDummyFormParameter(facesContext, hiddenFieldName);
-		}
-	}
-	
-	protected FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
-	{
-    	return DummyFormUtils.findNestingForm(uiComponent, facesContext);
-	}
+    protected void addHiddenCommandParameter(FacesContext facesContext, UIComponent nestingForm, String hiddenFieldName)
+    {
+        if (nestingForm != null)
+        {
+            super.addHiddenCommandParameter(facesContext, nestingForm, hiddenFieldName);
+        }
+        else
+        {
+            DummyFormUtils.addDummyFormParameter(facesContext, hiddenFieldName);
+        }
+    }
+    
+    protected FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
+    {
+        return DummyFormUtils.findNestingForm(uiComponent, facesContext);
+    }
 }

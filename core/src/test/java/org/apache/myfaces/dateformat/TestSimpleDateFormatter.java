@@ -64,12 +64,12 @@ public class TestSimpleDateFormatter extends TestCase
      */
     public void testParseNamedMonth()
     {
-    	Locale locale = Locale.ENGLISH;
+        Locale locale = Locale.ENGLISH;
         org.apache.myfaces.dateformat.DateFormatSymbols symbols = 
-        	new org.apache.myfaces.dateformat.DateFormatSymbols(locale);
+            new org.apache.myfaces.dateformat.DateFormatSymbols(locale);
         int firstDayOfWeek = 0;
         SimpleDateFormatter sdf = new SimpleDateFormatter(
-        		"dd-MMM-yyyy", symbols, firstDayOfWeek);
+                "dd-MMM-yyyy", symbols, firstDayOfWeek);
         
         Date d = sdf.parse("12-Mar-2008");
         assertNotNull(d);
@@ -333,35 +333,35 @@ public class TestSimpleDateFormatter extends TestCase
         //   23-31 dec
          for(int year = 2000; year < 2020; ++year)
          {
-        	 checkWeekFormatAgainstJoda(year, 0, 1);
-        	 checkWeekFormatAgainstJoda(year, 0, 2);
-        	 checkWeekFormatAgainstJoda(year, 0, 3);
-        	 checkWeekFormatAgainstJoda(year, 0, 4);
-        	 checkWeekFormatAgainstJoda(year, 0, 5);
-        	 checkWeekFormatAgainstJoda(year, 0, 6);
-        	 checkWeekFormatAgainstJoda(year, 0, 7);
-        	 checkWeekFormatAgainstJoda(year, 0, 8);
+             checkWeekFormatAgainstJoda(year, 0, 1);
+             checkWeekFormatAgainstJoda(year, 0, 2);
+             checkWeekFormatAgainstJoda(year, 0, 3);
+             checkWeekFormatAgainstJoda(year, 0, 4);
+             checkWeekFormatAgainstJoda(year, 0, 5);
+             checkWeekFormatAgainstJoda(year, 0, 6);
+             checkWeekFormatAgainstJoda(year, 0, 7);
+             checkWeekFormatAgainstJoda(year, 0, 8);
 
-        	 checkWeekFormatAgainstJoda(year, 4, 29);
-        	 checkWeekFormatAgainstJoda(year, 4, 30);
-        	 checkWeekFormatAgainstJoda(year, 5, 1);
-        	 checkWeekFormatAgainstJoda(year, 5, 2);
-        	 checkWeekFormatAgainstJoda(year, 5, 3);
-        	 checkWeekFormatAgainstJoda(year, 5, 4);
-        	 checkWeekFormatAgainstJoda(year, 5, 5);
-        	 checkWeekFormatAgainstJoda(year, 5, 6);
-        	 checkWeekFormatAgainstJoda(year, 5, 7);
-        	 checkWeekFormatAgainstJoda(year, 5, 8);
+             checkWeekFormatAgainstJoda(year, 4, 29);
+             checkWeekFormatAgainstJoda(year, 4, 30);
+             checkWeekFormatAgainstJoda(year, 5, 1);
+             checkWeekFormatAgainstJoda(year, 5, 2);
+             checkWeekFormatAgainstJoda(year, 5, 3);
+             checkWeekFormatAgainstJoda(year, 5, 4);
+             checkWeekFormatAgainstJoda(year, 5, 5);
+             checkWeekFormatAgainstJoda(year, 5, 6);
+             checkWeekFormatAgainstJoda(year, 5, 7);
+             checkWeekFormatAgainstJoda(year, 5, 8);
 
-        	 checkWeekFormatAgainstJoda(year, 11, 23);
-        	 checkWeekFormatAgainstJoda(year, 11, 24);
-        	 checkWeekFormatAgainstJoda(year, 11, 25);
-        	 checkWeekFormatAgainstJoda(year, 11, 26);
-        	 checkWeekFormatAgainstJoda(year, 11, 27);
-        	 checkWeekFormatAgainstJoda(year, 11, 28);
-        	 checkWeekFormatAgainstJoda(year, 11, 29);
-        	 checkWeekFormatAgainstJoda(year, 11, 30);
-        	 checkWeekFormatAgainstJoda(year, 11, 31);
+             checkWeekFormatAgainstJoda(year, 11, 23);
+             checkWeekFormatAgainstJoda(year, 11, 24);
+             checkWeekFormatAgainstJoda(year, 11, 25);
+             checkWeekFormatAgainstJoda(year, 11, 26);
+             checkWeekFormatAgainstJoda(year, 11, 27);
+             checkWeekFormatAgainstJoda(year, 11, 28);
+             checkWeekFormatAgainstJoda(year, 11, 29);
+             checkWeekFormatAgainstJoda(year, 11, 30);
+             checkWeekFormatAgainstJoda(year, 11, 31);
          }
     }
 

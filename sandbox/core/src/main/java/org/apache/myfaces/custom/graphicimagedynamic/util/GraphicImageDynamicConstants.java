@@ -20,6 +20,6 @@
 package org.apache.myfaces.custom.graphicimagedynamic.util;
 
 public interface GraphicImageDynamicConstants {
-	String NO_IMAGE_RENDERER_DEFINED = "no image renderer defined.";
-	String MSG_COULDNOT_RENDER_IMAGE = "could not render image ";
+    String NO_IMAGE_RENDERER_DEFINED = "no image renderer defined.";
+    String MSG_COULDNOT_RENDER_IMAGE = "could not render image ";
 }

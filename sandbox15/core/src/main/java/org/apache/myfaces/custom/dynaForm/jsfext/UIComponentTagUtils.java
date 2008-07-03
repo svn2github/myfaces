@@ -25,28 +25,28 @@ import javax.faces.webapp.UIComponentTag;
 
 public class UIComponentTagUtils
 {
-	public static boolean isValueReference(String v)
-	{
-		return UIComponentTag.isValueReference(v);
-	}
+    public static boolean isValueReference(String v)
+    {
+        return UIComponentTag.isValueReference(v);
+    }
 
-	@SuppressWarnings("unchecked")
-	public static void setObjectProperty(FacesContext context,
-			UIComponent component, String propName, Object value)
-	{
-		if (value != null)
-		{
-			if (value instanceof String
-					&& UIComponentTagUtils.isValueReference(value.toString()))
-			{
-				ValueBinding vb = context.getApplication().createValueBinding(
-					value.toString());
-				component.setValueBinding(propName, vb);
-			}
-			else
-			{
-				component.getAttributes().put(propName, value);
-			}
-		}
-	}
+    @SuppressWarnings("unchecked")
+    public static void setObjectProperty(FacesContext context,
+            UIComponent component, String propName, Object value)
+    {
+        if (value != null)
+        {
+            if (value instanceof String
+                    && UIComponentTagUtils.isValueReference(value.toString()))
+            {
+                ValueBinding vb = context.getApplication().createValueBinding(
+                    value.toString());
+                component.setValueBinding(propName, vb);
+            }
+            else
+            {
+                component.getAttributes().put(propName, value);
+            }
+        }
+    }
 }

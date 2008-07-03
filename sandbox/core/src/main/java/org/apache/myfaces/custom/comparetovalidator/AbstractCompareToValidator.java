@@ -49,7 +49,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  * </p>
  * <ul>
  *   <li>equals:                  eq, ==, =,</li>
- * 	 <li>not equals:              ne, !=,</li>
+ *      <li>not equals:              ne, !=,</li>
  *   <li>greater than:            gt, &gt;,</li>
  *   <li>less than:               lt, &lt;,</li>
  *   <li>greater than or equals:  ge, &gt;=,</li>
@@ -114,7 +114,7 @@ public abstract class AbstractCompareToValidator extends ValidatorBase {
     /**
      * <p>The standard converter id for this converter.</p>
      */
-    public static final String 	VALIDATOR_ID 	   = "org.apache.myfaces.validator.CompareTo";
+    public static final String     VALIDATOR_ID        = "org.apache.myfaces.validator.CompareTo";
 
     /**
      * <p>The message identifier of the {@link FacesMessage} to be created if
@@ -228,9 +228,9 @@ public abstract class AbstractCompareToValidator extends ValidatorBase {
             return;
         }
 
-		String foreignComponentName = getFor();
+        String foreignComponentName = getFor();
 
-		UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
+        UIComponent foreignComponent = (UIComponent) uiComponent.getParent().findComponent(foreignComponentName);
         if(foreignComponent == null)
             throw new FacesException("Unable to find component '" + foreignComponentName + "' (calling findComponent on component '" + uiComponent.getId() + "')");
 

@@ -26,36 +26,36 @@ import org.apache.myfaces.examples.listexample.SimpleCar;
 
 public class SelectItemsBean {
 
-	private List carList;
-	
-	private String selectedCarColor;
+    private List carList;
+    
+    private String selectedCarColor;
 
-	public List getCarList() {
-		if(carList == null) {
-			carList = createCarList();
-		}		
-		return carList;
-	}
+    public List getCarList() {
+        if(carList == null) {
+            carList = createCarList();
+        }        
+        return carList;
+    }
 
-	public void setCarList(List list) {
-		carList = list;
-	}
-	
-	private List createCarList() {
-		List list = new ArrayList();
-		list.add(new SimpleCar(1, "Car 1", "blue"));
-		list.add(new SimpleCar(2, "Car 2", "white"));
-		list.add(new SimpleCar(3, "Car 3", "red"));
-		list.add(new SimpleCar(4, "Car 4", "green"));
-		return list;
-	}
+    public void setCarList(List list) {
+        carList = list;
+    }
+    
+    private List createCarList() {
+        List list = new ArrayList();
+        list.add(new SimpleCar(1, "Car 1", "blue"));
+        list.add(new SimpleCar(2, "Car 2", "white"));
+        list.add(new SimpleCar(3, "Car 3", "red"));
+        list.add(new SimpleCar(4, "Car 4", "green"));
+        return list;
+    }
 
-	public String getSelectedCarColor() {
-		return selectedCarColor;
-	}
+    public String getSelectedCarColor() {
+        return selectedCarColor;
+    }
 
-	public void setSelectedCarColor(String selectedCarColor) {
-		this.selectedCarColor = selectedCarColor;
-	}
-	
+    public void setSelectedCarColor(String selectedCarColor) {
+        this.selectedCarColor = selectedCarColor;
+    }
+    
 }

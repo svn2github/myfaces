@@ -72,7 +72,7 @@ public abstract class AbstractHtmlInputFileUpload
     /**
      * @JSFProperty
      */
-	public abstract String getStorage();
+    public abstract String getStorage();
     /**
      * @JSFProperty
      */
