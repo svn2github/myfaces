@@ -34,18 +34,19 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
+import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- * 
+ *
  * @JSFRenderer
- *   renderKitId = "HTML_BASIC" 
+ *   renderKitId = "HTML_BASIC"
  *   family = "javax.faces.Input"
  *   type = "org.apache.myfaces.InputSuggestAjax"
- * 
+ *
  * @author Gerald Müllan
  * @author Martin Marinschek
  * @version $Revision$ $Date$
@@ -247,6 +248,11 @@ public class InputSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
     public void encodeAjax(FacesContext context, UIComponent uiComponent)
                                                                     throws IOException
     {
+        // we are not sending html, xml or json, so notify the system about that else any filter
+        // trying to parse the result as html (e.g. richfaces) will fail
+        ServletResponse response = (ServletResponse) context.getExternalContext().getResponse();
+        response.setContentType("text/plain");
+
         InputSuggestAjax inputSuggestAjax = (InputSuggestAjax) uiComponent;
 
         Collection suggesteds = getSuggestedItems(context, uiComponent);
