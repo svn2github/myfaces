@@ -42,7 +42,16 @@ function orgApacheMyfacesSubmitOnEventRegister(eventType, callbackFunction, inpu
     var clickComponent = document.getElementById(clickComponentId);
     if (!clickComponent)
     {
-		alert("SubmitOnEvent: can't find button or link '" + clickComponentId + "'");
+        var clickComponents = document.getElementsByName(clickComponentId);
+        if (clickComponents && clickComponents.length > 0)
+        {
+            clickComponent = clickComponents[0];
+        }
+    }
+
+    if (!clickComponent)
+    {
+        alert("SubmitOnEvent: can't find button or link '" + clickComponentId + "'");
 		return;
 	}
 
