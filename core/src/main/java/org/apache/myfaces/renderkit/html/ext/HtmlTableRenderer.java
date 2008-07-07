@@ -640,7 +640,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
         int colStyleIndex = 0;
         for (int i = 0; i < columnStyleIndex; i++)
         {
-            UIComponent child = (UIComponent) uiData.getChildren().get(i);
+            UIComponent child = (UIComponent) uiData.getChildren().get(i % uiData.getChildCount());
             if (child instanceof UIColumns)
             {
                 colStyleIndex += ((UIColumns) child).getRowCount();
