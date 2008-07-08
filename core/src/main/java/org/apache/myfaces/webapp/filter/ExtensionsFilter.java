@@ -226,6 +226,7 @@ public class ExtensionsFilter implements Filter {
             throw new ServletException(th);
         }
 
+        /*
         try
         {
             addResource.responseStarted();
@@ -291,8 +292,9 @@ public class ExtensionsFilter implements Filter {
         {
             addResource.responseFinished();         
         }
+        */
         
-        //chain.doFilter(extendedRequest, response);
+        chain.doFilter(extendedRequest, response);
     }
 
     public boolean isValidContentType(String contentType)

@@ -18,11 +18,18 @@
  */
 package org.apache.myfaces.webapp.filter;
 
-import javax.faces.context.FacesContextFactory;
-import javax.faces.context.FacesContext;
-import javax.faces.lifecycle.Lifecycle;
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileUpload;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 
 public class TomahawkFacesContextFactory extends FacesContextFactory {
 
@@ -33,6 +40,25 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
     }
 
     public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle) throws FacesException {
+        
+        if(!ExternalContextUtils.getRequestType(context, request).isPortlet())
+        {
+            //This is servlet world
+            //For handle buffered response we need to wrap response object here,
+            //so all response will be written and then on facesContext
+            //release() method write to the original response.
+            //This could not be done on TomahawkFacesContextWrapper
+            //constructor, because the delegate ExternalContext do
+            //calls like dispatch, forward and redirect, that requires
+            //the wrapped response instance to work properly.
+            AddResource addResource = AddResourceFactory.getInstance((HttpServletRequest)request,(ServletContext)context);
+            
+            if (addResource.requiresBuffer())
+            {
+                ExtensionsResponseWrapper extensionsResponseWrapper = new ExtensionsResponseWrapper((HttpServletResponse)response);
+                return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, extensionsResponseWrapper, lifecycle));
+            }
+        }
         return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, response, lifecycle));
     }
 }

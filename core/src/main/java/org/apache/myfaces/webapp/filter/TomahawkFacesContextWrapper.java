@@ -38,7 +38,6 @@ import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
-import org.apache.myfaces.webapp.filter.portlet.PortletExternalContextWrapper;
 import org.apache.myfaces.webapp.filter.servlet.ServletExternalContextWrapper;
 
 /**
@@ -54,7 +53,6 @@ public class TomahawkFacesContextWrapper extends FacesContext {
 
         this.delegate = delegate;
         
-        //if(delegate.getExternalContext().getResponse() instanceof PortletResponse) {
         if(ExternalContextUtils.getRequestType(delegate.getExternalContext()).isPortlet()) {
             //todo do something here - with the multipart-wrapper. rest should be fine
             //javax.portlet.PortletRequest portletRequest = (javax.portlet.PortletRequest) delegate.getExternalContext().getRequest();
@@ -87,7 +85,13 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             HttpServletRequest extendedRequest = httpRequest;
             HttpServletResponse extendedResponse = httpResponse;
 
-            // For multipart/form-data requests
+            // For multipart/form-data requests we need to encapsulate
+            // the request using MultipartRequestWrapper. This could not be
+            // done on TomahawkFacesContextFactory.getFacesContext(...)
+            // because we need an ExternalContext instance to get
+            // the init params for the ExtensionsFilter and initialize
+            // MultipartRequestWrapper with the correct values.
+            
             boolean multipartContent = false;
             if (FileUpload.isMultipartContent(httpRequest)) {
                 multipartContent = true;
@@ -102,8 +106,12 @@ public class TomahawkFacesContextWrapper extends FacesContext {
 
             if (addResource.requiresBuffer())
             {
-                extensionsResponseWrapper = new ExtensionsResponseWrapper(httpResponse);
-                extendedResponse = extensionsResponseWrapper;
+                //If the request requires buffer, this was already
+                //wrapped (on TomahawkFacesContextFactory.getFacesContext(...) ),
+                //but we need to save the wrapped response value 
+                //on a local variable to then reference it on release() 
+                //method and parse the old response.
+                extensionsResponseWrapper = (ExtensionsResponseWrapper) extendedResponse; 
             }
 
             externalContextDelegate = new ServletExternalContextWrapper(
@@ -239,9 +247,12 @@ public class TomahawkFacesContextWrapper extends FacesContext {
                 HttpServletResponse servletResponse = extensionsResponseWrapper.getDelegate();
                 HttpServletRequest servletRequest = (HttpServletRequest) getExternalContext().getRequest();
 
+                String contentType = extensionsResponseWrapper.getContentType();
+                
                 // only parse HTML responses
-                if (extensionsResponseWrapper.getContentType() != null && isValidContentType(extensionsResponseWrapper.getContentType()))
+                if (contentType != null && isValidContentType(contentType))
                 {
+                    String oldResponse = extensionsResponseWrapper.toString();
                     addResource.parseResponse(servletRequest, extensionsResponseWrapper.toString(),
                             servletResponse);
 

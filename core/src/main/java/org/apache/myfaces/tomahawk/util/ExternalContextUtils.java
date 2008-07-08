@@ -154,16 +154,67 @@ public final class ExternalContextUtils
         return RequestType.SERVLET;
     }
 
+    /**
+     * This method is used when a ExternalContext object is not available,
+     * like in TomahawkFacesContextFactory.  
+     * 
+     * @param config
+     * @param request
+     * @return
+     */
+    public static final RequestType getRequestType(Object config, Object request)
+    {
+        //Stuff is laid out strangely in this class in order to optimize
+        //performance.  We want to do as few instanceof's as possible so
+        //things are laid out according to the expected frequency of the
+        //various requests occurring.
+
+        if(_PORTLET_CONFIG_CLASS != null)
+        {
+            if (_PORTLET_CONFIG_CLASS.isInstance(config))
+            {
+                //We are inside of a portlet container
+                
+                if(_PORTLET_RENDER_REQUEST_CLASS.isInstance(request))
+                {
+                    return RequestType.RENDER;
+                }
+                
+                if(_PORTLET_RESOURCE_REQUEST_CLASS != null)
+                {
+                    if(_PORTLET_ACTION_REQUEST_CLASS.isInstance(request))
+                    {
+                        return RequestType.ACTION;
+                    }
+
+                    //We are in a JSR-286 container
+                    if(_PORTLET_RESOURCE_REQUEST_CLASS.isInstance(request))
+                    {
+                        return RequestType.RESOURCE;
+                    }
+                    
+                    return RequestType.EVENT;
+                }
+                
+                return RequestType.ACTION;
+            }
+        }
+        
+        return RequestType.SERVLET;
+    }
+
     private static final Log _LOG = LogFactory.getLog(ExternalContextUtils.class);
 
     private static final Class    _PORTLET_ACTION_REQUEST_CLASS;
     private static final Class _PORTLET_RENDER_REQUEST_CLASS;
     private static final Class _PORTLET_RESOURCE_REQUEST_CLASS; //Will be present in JSR-286 containers only
     private static final Class    _PORTLET_CONTEXT_CLASS;
+    private static final Class    _PORTLET_CONFIG_CLASS;
     
     static
     {
         Class context;
+        Class config;
         Class actionRequest;
         Class renderRequest;
         Class resourceRequest;
@@ -171,6 +222,7 @@ public final class ExternalContextUtils
         {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             context = loader.loadClass("javax.portlet.PortletContext");
+            config = loader.loadClass("javax.portlet.PortletConfig");
             actionRequest = loader.loadClass("javax.portlet.ActionRequest");
             renderRequest = loader.loadClass("javax.portlet.RenderRequest");
             
@@ -186,12 +238,14 @@ public final class ExternalContextUtils
         catch (ClassNotFoundException e)
         {
             context = null;
+            config = null;
             actionRequest = null;
             renderRequest = null;
             resourceRequest = null;
         }
 
         _PORTLET_CONTEXT_CLASS = context;
+        _PORTLET_CONFIG_CLASS = config;
         _PORTLET_ACTION_REQUEST_CLASS = actionRequest;
         _PORTLET_RENDER_REQUEST_CLASS = renderRequest;
         _PORTLET_RESOURCE_REQUEST_CLASS = resourceRequest;
