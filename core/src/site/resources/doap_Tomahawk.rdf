@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl"?>
+<rdf:RDF xml:lang="en"
+         xmlns="http://usefulinc.com/ns/doap#" 
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+         xmlns:asfext="http://projects.apache.org/ns/asfext#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<!--
+  =======================================================================
+
+   Copyright (c) 2006 The Apache Software Foundation.  
+   All rights reserved.
+
+  =======================================================================
+-->
+  <Project rdf:about="http://MyFaces.rdf.apache.org/">
+    <created>2006-02-28</created>
+    <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
+    <name>Apache Tomahawk</name>
+    <homepage rdf:resource="http://myfaces.apache.org" />
+    <asfext:pmc rdf:resource="http://myfaces.apache.org" />
+    <shortdesc>Tomahawk provides a series of JSF components that go beyond the JSF specification.</shortdesc>
+    <description>Tomahawk provides a series of JSF components that go beyond the JSF specification. These components are 100% compatible with the Sun JSF 1.1 Reference Implementation (RI) or any other JSF 1.1 compatible implementation. Of course the custom components can also be used with the Apache MyFaces JSF implementation.</description>
+    <bug-database rdf:resource="http://issues.apache.org/jira/browse/TOMAHAWK" />
+    <mailing-list rdf:resource="http://myfaces.apache.org/mail-lists.html" />
+    <download-page rdf:resource="http://myfaces.apache.org/download.html" />
+    <programming-language>Java</programming-language>
+    <category rdf:resource="http://projects.apache.org/category/web-framework" />
+    <release>
+      <Version>
+        <name>Latest stable release</name>
+        <created>2006-06-14</created>
+        <revision>1.1.3</revision>
+      </Version>
+      <Version>
+        <name>Apache Tomahawk 1.1.2</name>
+        <created>2006-05-09</created>
+        <revision>1.1.2</revision>
+      </Version>
+    </release>
+    <repository>
+      <SVNRepository>
+        <location rdf:resource="http://svn.apache.org/repos/asf/myfaces/current"/>
+        <browse rdf:resource="http://svn.apache.org/viewcvs.cgi/myfaces/current"/>
+      </SVNRepository>
+    </repository>
+    <maintainer>
+      <foaf:Person>
+        <foaf:name>Manfred Geiler</foaf:name>
+          <foaf:mbox rdf:resource="mailto:manolito@apache.org"/>
+      </foaf:Person>
+    </maintainer>
+    <asfext:implements>
+      <asfext:Standard>
+          <asfext:title>JavaServer Faces</asfext:title>
+          <asfext:body>JCP</asfext:body>
+          <asfext:id>JSR 127</asfext:id>
+          <asfext:url rdf:resource="http://www.jcp.org/en/jsr/detail?id=127"/>
+      </asfext:Standard>
+    </asfext:implements>
+  </Project>
+</rdf:RDF>
