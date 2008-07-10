@@ -56,7 +56,8 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
             if (addResource.requiresBuffer())
             {
                 ExtensionsResponseWrapper extensionsResponseWrapper = new ExtensionsResponseWrapper((HttpServletResponse)response);
-                return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, extensionsResponseWrapper, lifecycle));
+                return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, extensionsResponseWrapper, lifecycle),
+                        extensionsResponseWrapper);
             }
         }
         return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, response, lifecycle));

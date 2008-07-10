@@ -49,7 +49,13 @@ public class TomahawkFacesContextWrapper extends FacesContext {
     private ExternalContext externalContextDelegate=null;
     private ExtensionsResponseWrapper extensionsResponseWrapper = null;
 
-    public TomahawkFacesContextWrapper(FacesContext delegate) {
+    public TomahawkFacesContextWrapper(FacesContext delegate)
+    {
+        this(delegate, null);
+    }
+    
+    public TomahawkFacesContextWrapper(FacesContext delegate, 
+            ExtensionsResponseWrapper extensionsResponseWrapper ) {
 
         this.delegate = delegate;
         
@@ -83,7 +89,6 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             HttpServletRequest httpRequest = (HttpServletRequest) delegate.getExternalContext().getRequest();
 
             HttpServletRequest extendedRequest = httpRequest;
-            HttpServletResponse extendedResponse = httpResponse;
 
             // For multipart/form-data requests we need to encapsulate
             // the request using MultipartRequestWrapper. This could not be
@@ -104,18 +109,18 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             AddResource addResource= AddResourceFactory.getInstance(this);
             addResource.responseStarted();
 
-            if (addResource.requiresBuffer())
+            if (addResource.requiresBuffer() && extensionsResponseWrapper != null)
             {
                 //If the request requires buffer, this was already
                 //wrapped (on TomahawkFacesContextFactory.getFacesContext(...) ),
                 //but we need to save the wrapped response value 
                 //on a local variable to then reference it on release() 
                 //method and parse the old response.
-                extensionsResponseWrapper = (ExtensionsResponseWrapper) extendedResponse; 
+                this.extensionsResponseWrapper = (ExtensionsResponseWrapper) extensionsResponseWrapper; 
             }
 
             externalContextDelegate = new ServletExternalContextWrapper(
-                    delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);            
+                    delegate.getExternalContext(), extendedRequest, httpResponse, multipartContent);            
         }
     }
     
