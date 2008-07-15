@@ -259,7 +259,8 @@ function orgApacheMyfacesSubmitOnEventGeneral(componentId)
         return false;
     }
     else if (clickComponent.type
-        && (clickComponent.type.toLowerCase() == "submit" || clickComponent.type.toLowerCase() == "image"))
+        && (clickComponent.type.toLowerCase() == "submit" || clickComponent.type.toLowerCase() == "image"
+            || clickComponent.type.toLowerCase() == "button"))
     {
         orgApacheMyfacesSubmitOnEventClickButton(clickComponent);
         return false;
