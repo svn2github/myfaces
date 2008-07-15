@@ -139,6 +139,11 @@
                 </h:panelGrid>    
                 
                 
+				<h:outputText value="XML Template"/>
+	            <h:panelGrid style="padding-left:25px">
+	           		<h:outputLink value="template/index.jsf" ><f:verbatim>XML Template examples</f:verbatim></h:outputLink>
+	            </h:panelGrid>                
+                
                 <h:outputText value="picklist" />
                 <h:panelGrid style="padding-left:25px">
                     <h:outputLink value="picklist.jsf">
