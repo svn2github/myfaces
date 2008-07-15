@@ -342,6 +342,10 @@ public class HtmlTreeRenderer extends Renderer
             String lineSrc = (!lastChild && showLines)
                              ? getImageSrc(context, tree, "line-trunk.gif", true)
                              : getImageSrc(context, tree, "spacer.gif", true);
+            String altString = (!lastChild && showLines)
+                             ? "line trunk"
+                             : "spacer";             
+            
 
             out.startElement(HTML.TD_ELEM, tree);
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
@@ -352,7 +356,7 @@ public class HtmlTreeRenderer extends Renderer
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
             out.writeAttribute(HTML.HEIGHT_ATTR, "18", null);
             out.writeAttribute(HTML.BORDER_ATTR, "0", null);
-            out.writeAttribute(HTML.ALT_ATTR, "", null); // "alt" is a mandatory xhtml attribute
+            out.writeAttribute(HTML.ALT_ATTR, altString, null); // placing a suitable description for the alt.
             out.endElement(HTML.IMG_ELEM);
             out.endElement(HTML.TD_ELEM);
         }
@@ -512,7 +516,7 @@ public class HtmlTreeRenderer extends Renderer
         imageAttrs.put(HTML.WIDTH_ATTR, "19");
         imageAttrs.put(HTML.HEIGHT_ATTR, "18");
         imageAttrs.put(HTML.BORDER_ATTR, "0");
-        imageAttrs.put(HTML.ALT_ATTR, ""); // "alt" is a mandatory xhtml attribute
+        imageAttrs.put(HTML.ALT_ATTR, "Nav control image"); // placing a suitable description for the alt.
 
         if (clientSideToggle)
         {
