@@ -593,6 +593,13 @@
  		<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>    
  	
+    <!-- XMLTemplate -->
+    <managed-bean>
+    	<managed-bean-name>templateBacker</managed-bean-name>
+    	<managed-bean-class>org.apache.myfaces.examples.template.TemplateBacker</managed-bean-class>
+    	<managed-bean-scope>request</managed-bean-scope>
+    </managed-bean> 	
+ 	
  	
 	<!--  Managed bean for the selectManyPicklist component -->
 	<managed-bean>
