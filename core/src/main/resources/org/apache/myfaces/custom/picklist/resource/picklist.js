@@ -48,9 +48,12 @@ function myfaces_picklist_move(fromList, toList, hiddenId) {
 	if(selectedIndex < 0) { return; }
 
 	// Decremental loop, so the index is not affected in the moves
-	for(var i = fromList.length - 1; i >= 0; i--) {
-		if(fromList.options.item(i).selected) {
-			toList.appendChild(fromList.options.item(i));
+	for (var i = fromList.options.length - 1; i >= 0; i--) {
+		if(fromList.options[i].selected) {
+			var tLen = toList.options.length;
+			toList.options[tLen] = new Option(fromList.options[i].text);
+			toList.options[tLen].value = fromList.options[i].value;
+			fromList.options[i] = null;
 		}
 	}
 
