@@ -18,7 +18,6 @@
  */
 package org.apache.myfaces.webapp.filter;
 
-import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
@@ -113,7 +112,8 @@ import java.io.IOException;
  * library to save the file into a configurable local directory before
  * allowing the normal processing for the url that the post request
  * refers to. A number of configuration properties on this filter control
- * maximum file upload sizes and various other useful settings. 
+ * maximum file upload sizes and various other useful settings. See the
+ * documentation for the init method for more details.
  * 
  * <h2>Avoiding Processing</h2>
  * 
@@ -130,7 +130,7 @@ public class ExtensionsFilter implements Filter {
 
     private Log log = LogFactory.getLog(ExtensionsFilter.class);
 
-    private int _uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
+    private int _uploadMaxFileSize = 100 * 1024 * 1024; // 100 MB
 
     private int _uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
@@ -141,9 +141,53 @@ public class ExtensionsFilter implements Filter {
     public static final String DOFILTER_CALLED = "org.apache.myfaces.component.html.util.ExtensionFilter.doFilterCalled";
 
     /**
-     * Init method for this filter
+     * Init method for this filter.
+     * <p>
+     * The following filter init parameters can be configured in the web.xml file
+     * for this filter:
+     * <ul>
+     * <li>uploadMaxFileSize</li>
+     * <li>uploadThresholdSize</li>
+     * <li>uploadRepositoryPath</li>
+     * </ul>
+     * </p>
+     * <p>
+     * All size parameters may have the suffix "g" (gigabytes), "m" (megabytes) or "k" (kilobytes).
+     * </p>
+     * 
+     * <h2>uploadMaxFileSize</h2>
+     * 
+     * Sets the maximum allowable size for uploaded files.
+     * <p>
+     * If the user attempts to upload a file which is larger than this, then the data <i>is</i>
+     * transmitted from the browser to the server (this cannot be prevented with standard HTML
+     * functionality). However the file will not be saved in memory or on disk. An error message
+     * will be added to the standard JSF error messages, and the page re-rendered (as for a
+     * validation failure).
+     * </p>
+     * <p>
+     * The default value is 100 Megabytes.
+     * </p>
+     * 
+     * <h2>uploadThresholdSize</h2>
+     * 
+     * Sets the size threshold beyond which files are written directly to disk. Files which are
+     * smaller than this are simply held in memory. The default is 1 Megabyte.
+     * 
+     * <h2>uploadRepositoryPath</h2>
+     * 
+     * Sets the directory in which temporary files (ie caches for those uploaded files that
+     * are larger than uploadThresholdSize) are to be stored.
      */
     public void init(FilterConfig filterConfig) {
+        // Note that the code here to extract FileUpload configuration params is not actually used.
+        // The handling of multipart requests was moved from this Filter into a custom FacesContext
+        // (TomahawkFacesContextWrapper) so that Portlets could be supported (Portlets cannot use
+        // servlet filters).
+        //
+        // For backwards compatibility, the TomahawkFacesContextWrapper class *parses* the
+        // web.xml to retrieve these same filter config params. That is IMO seriously ugly
+        // and hopefully will be fixed.
 
         String param = filterConfig.getInitParameter("uploadMaxFileSize");
 

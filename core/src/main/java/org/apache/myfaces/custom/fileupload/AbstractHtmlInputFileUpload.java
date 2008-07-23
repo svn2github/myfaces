@@ -28,12 +28,24 @@ import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
- * You must enable the MultiPart Filter to make this component work (see web.xml). 
- * 
+ * Creates a file-selection widget in the rendered page which allows a user to select
+ * a file for uploading to the server.
+ * <p>
+ * When the page is selected (using a command component such as commandButton), the
+ * currently selected file contents are included in the data posted to the server.
+ * The contents are cached somewhere, and an object of type UploadedFile will then
+ * be assigned to the property pointed to by the "value" expression of this component.
+ * </p>
+ * <p>
+ * You must enable the Tomahawk ExtensionsFilter to make this component work (see web.xml).
+ * </p> 
+ * <p>
  * Also, don't forget to set the form's attribute "enctype" to "multipart/form-data". 
- * See "examples/web/fileupload.jsp" for an example! 
- * 
+ * See "examples/web/fileupload.jsp" for an example!
+ * </p> 
+ * <p>
  * Unless otherwise specified, all attributes accept static values or EL expressions.
+ * </p>
  * 
  * @JSFComponent
  *   name = "t:inputFileUpload"
@@ -70,13 +82,35 @@ public abstract class AbstractHtmlInputFileUpload
     }
     
     /**
+     * This setting was intended to allow control over how the contents of the
+     * file get temporarily stored during processing.
+     * <p>
+     * However it appears that this is only half-implemented, and not at all
+     * documented. It is therefore recommended that this not be used.
+     * </p>
+     * 
      * @JSFProperty
      */
     public abstract String getStorage();
+
     /**
+     * This property appears to have no purpose at all. It certainly has no
+     * documentation.
+     * 
      * @JSFProperty
      */
     public abstract String getAccept();
+
+    /**
+     * An EL expression to which an UploadedFile object will be assigned on postback
+     * if the user specified a file to upload to the server.
+     * 
+     * @JSFProperty
+     */
+    public Object getValue()
+    {
+        return super.getValue();
+    }
 
     public boolean isRendered()
     {

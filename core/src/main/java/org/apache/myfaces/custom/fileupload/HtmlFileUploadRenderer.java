@@ -41,6 +41,10 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ * Renderer for the HtmlInputFileUpload component.
+ * <p>
+ * See also class AbstractHtmlInputFileUpload.
+ * 
  * @JSFRenderer
  *   renderKitId = "HTML_BASIC" 
  *   family = "javax.faces.Input"
@@ -101,7 +105,15 @@ public class HtmlFileUploadRenderer
         }
     }
 
-
+    /**
+     * Handle the postback of a form containing a fileUpload component.
+     * <p>
+     * The browser request will have been in "multi-part-mime" format, where
+     * the normal http post is in one part, and the file being uploaded is
+     * in another. Hopefully JSF has been configured so that this special
+     * request is wrapped in a custom ServletRequest that allows us to
+     * fetch that extra data....
+     */
     public void decode(FacesContext facesContext, UIComponent uiComponent)
     {
         super.decode(facesContext, uiComponent); //check for NP

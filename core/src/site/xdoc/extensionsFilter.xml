@@ -54,7 +54,7 @@
 	&lt;filter-name&gt;MyFacesExtensionsFilter&lt;/filter-name&gt;
 	&lt;filter-class&gt;org.apache.myfaces.webapp.filter.ExtensionsFilter&lt;/filter-class&gt;
     &lt;init-param&gt;
-        &lt;param-name&gt;maxFileSize&lt;/param-name&gt;
+        &lt;param-name&gt;uploadMaxFileSize&lt;/param-name&gt;
         &lt;param-value&gt;20m&lt;/param-value&gt;
         &lt;description&gt;Set the size limit for uploaded files.
             Format: 10 - 10 bytes
@@ -86,6 +86,12 @@
     &lt;url-pattern&gt;*.jsf&lt;/url-pattern&gt;
 &lt;/filter-mapping&gt;
 	</source>
+</section>
+<section name="What configuration settings are available?">
+    <p>
+    See the javadoc for class ExtensionsFilter for information on the full set of configuration
+    options for this filter.
+    </p>
 </section>
 <section name="Under what circumstances am I *required* to use the extensions filter?">
 	<p>

@@ -77,6 +77,7 @@
                 <br/>
                                 
                 <code>
+<!-- TODO: fixme
 		&html_align_attribute;
 		&html_disabled_attribute;
 		&html_focus_blur_attributes;
@@ -84,7 +85,8 @@
 		&html_onclick_attribute;
 		&html_onselect_attribute;
 		&html_readonly_attribute;
-		&ui_input_attributes;                
+		&ui_input_attributes;
+		-->                
                 </code>
                 <br/>
                 
