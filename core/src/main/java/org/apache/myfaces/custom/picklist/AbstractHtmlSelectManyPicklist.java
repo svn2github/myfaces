@@ -53,6 +53,13 @@ public abstract class AbstractHtmlSelectManyPicklist extends HtmlSelectManyListb
     public abstract String getAddButtonText();
     
     /**
+     * Define the text that goes inside the add all button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddAllButtonText();    
+    
+    /**
      * Define the text that goes inside the remove button
      * 
      * @JSFProperty
@@ -60,32 +67,66 @@ public abstract class AbstractHtmlSelectManyPicklist extends HtmlSelectManyListb
     public abstract String getRemoveButtonText();
     
     /**
-     * CSS style to be applied to the button
+     * Define the text that goes inside the remove all button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveAllButtonText();    
+    
+    /**
+     * CSS style to be applied to the add button
      * 
      * @JSFProperty
      */
     public abstract String getAddButtonStyle();
     
     /**
-     * CSS style to be applied to the button
+     * CSS style to be applied to the add all button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddAllButtonStyle();    
+    
+    /**
+     * CSS style to be applied to the remove button
      * 
      * @JSFProperty
      */
     public abstract String getRemoveButtonStyle();
     
     /**
-     * CSS styleClass to be applied to the button
+     * CSS style to be applied to the remove all button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveAllButtonStyle();    
+    
+    /**
+     * CSS styleClass to be applied to the add button
      * 
      * @JSFProperty
      */
     public abstract String getAddButtonStyleClass();
     
     /**
-     * CSS styleClass to be applied to the button
+     * CSS styleClass to be applied to the add all button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getAddAllButtonStyleClass();    
+    
+    /**
+     * CSS styleClass to be applied to the remove button
      * 
      * @JSFProperty
      */
     public abstract String getRemoveButtonStyleClass();
     
+    /**
+     * CSS styleClass to be applied to the remove all button
+     * 
+     * @JSFProperty
+     */
+    public abstract String getRemoveAllButtonStyleClass();    
 }
  
