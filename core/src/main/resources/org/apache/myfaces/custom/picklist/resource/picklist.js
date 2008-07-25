@@ -22,6 +22,26 @@
  * @version $Revision$ $Date$
  */
  
+// moves all the items to the selected list
+function myfaces_picklist_addAllToSelected(availableListId, selectedListId, hiddenId)
+{
+	var availableList = document.getElementById(availableListId);
+    var selectedList = document.getElementById(selectedListId);
+
+	myfaces_picklist_moveAll(availableList, selectedList, hiddenId);
+	myfaces_picklist_updateHidden(selectedList, hiddenId);
+}
+
+// removes all the items from the selected list
+function myfaces_picklist_removeAllFromSelected(availableListId, selectedListId, hiddenId)
+{
+    var availableList = document.getElementById(availableListId);
+    var selectedList = document.getElementById(selectedListId);
+
+	myfaces_picklist_moveAll(selectedList, availableList, hiddenId);
+	myfaces_picklist_updateHidden(selectedList, hiddenId);
+}
+
 // moves an item to the selected list
 function myfaces_picklist_addToSelected(availableListId, selectedListId, hiddenId)
 {
@@ -56,7 +76,17 @@ function myfaces_picklist_move(fromList, toList, hiddenId) {
 			fromList.options[i] = null;
 		}
 	}
+}
 
+function myfaces_picklist_moveAll(fromList, toList, hiddenId) {
+
+	// Decremental loop, so the index is not affected in the moves
+	for (var i = fromList.options.length - 1; i >= 0; i--) {
+		var tLen = toList.options.length;
+		toList.options[tLen] = new Option(fromList.options[i].text);
+		toList.options[tLen].value = fromList.options[i].value;
+		fromList.options[i] = null;
+	}
 }
 
 // Selection - invoked on submit
