@@ -106,6 +106,8 @@ public class ModalDialogRenderer extends HtmlRenderer
 
         if (dlg.getViewId() != null)
         {
+            // when getViewId is set, we did not render the children in the
+            // encodeChildren method, so instead do it now.
             RendererUtils.renderChildren(context, component);
             HtmlRendererUtils.writePrettyLineSeparator(context);
         }
@@ -227,7 +229,7 @@ public class ModalDialogRenderer extends HtmlRenderer
             .append(dialogVar)
             .append(" = dojo.widget.createWidget(\"dialog\", {id:")
             .append("\"")
-            .append(dlg.getDialogId())
+            .append(dlgId)
             .append("\"");
 
         appendDialogAttributes(buf, dlg);
@@ -236,9 +238,21 @@ public class ModalDialogRenderer extends HtmlRenderer
 
         appendHiderIds(buf, dlg);
 
-        if (dlg.getViewId() != null)
+        String viewId = dlg.getViewId();
+        String contentURL = dlg.getContentURL();
+        if (viewId != null)
         {
-            appendShowHideView(context, buf, dlg);
+            StringBuffer sbUrl = new StringBuffer();
+            sbUrl.append(context.getExternalContext().getRequestContextPath());
+            sbUrl.append("/");
+            sbUrl.append(viewId);
+            String encodedUrl = context.getExternalContext().encodeActionURL(sbUrl.toString());
+            appendShowHideView(context, buf, dialogVar, encodedUrl);
+        }
+        else if (contentURL != null)
+        {
+            String encodedUrl = context.getExternalContext().encodeActionURL(contentURL);
+            appendShowHideView(context, buf, dialogVar, encodedUrl);
         }
 
         buf.append("}");
@@ -268,16 +282,12 @@ public class ModalDialogRenderer extends HtmlRenderer
      * show and hide methods to do some initialisation, including loading the
      * required view into the iframe.
      */
-    private void appendShowHideView(FacesContext context, StringBuffer buf, ModalDialog dlg)
+    private void appendShowHideView(
+            FacesContext context,
+            StringBuffer buf,
+            String dialogVar,
+            String url)
     {
-        StringBuffer sbUrl = new StringBuffer();
-        sbUrl.append(context.getExternalContext().getRequestContextPath());
-        sbUrl.append("/");
-        sbUrl.append(dlg.getViewId());
-        String encodedUrl = context.getExternalContext().encodeActionURL(sbUrl.toString());
-
-        String dialogVar = dlg.getDialogVar();
-
         // save original onShow function (the standard dojo widget implementation)
         buf .append(dialogVar)
             .append(".oldOnShow=")
@@ -286,7 +296,8 @@ public class ModalDialogRenderer extends HtmlRenderer
 
         // Define a new onShow function which first shows the modal window then
         // causes it to do a GET to the server to fetch a specific page that is
-        // defined by the "viewId" property on the JSF component.
+        // defined by the "url" parameter (which is defined via property viewId
+        // or contentURL on the JSF component).
         //
         // TODO: What is the purpose of variable window._myfaces_currentModal?
         // There doesn't appear to be anything that *reads* it...
@@ -305,7 +316,7 @@ public class ModalDialogRenderer extends HtmlRenderer
             .append(dialogVar)
             .append("._myfaces_ok=false; ")
             .append("content.contentWindow.location.replace('")
-            .append(encodedUrl)
+            .append(url)
             .append("'); ")
             .append("}; ");
 
@@ -335,12 +346,20 @@ public class ModalDialogRenderer extends HtmlRenderer
     }
 
     /**
-     * Override normal "encodeChildren" method to either render the children in
-     * normal manner, or to render an IFrame instead.
+     * Override normal "encodeChildren" method to render the necessary dynamic
+     * parts of this component as well as the children.
      * <p>
-     * When the ModalDialog component has its "viewId" property set, then all
-     * children (except facets) are ignored, and instead an IFrame is rendered
-     * into which a specific JSF viewId will later be loaded.
+     * If the user specified a titleBar facet, then that is rendered as the
+     * "window decoration" for the popup window. Otherwise if the user specified
+     * a dialogTitle, then a standard "window decoration" is rendered.
+     * <p>
+     * Then if the user did NOT specify a content page to be loaded into the popup,
+     * then the rest of the child components are rendered as normal.
+     * <p>
+     * But if the user DID specify a content page to be loaded, then an empty
+     * IFrame is rendered (javascript will be used to load it later), and the
+     * rendering of the child components is delayed until the encodeEnd method.
+     * TODO: why is child component rendering delayed?
      *
      * @see javax.faces.render.Renderer#encodeChildren(javax.faces.context.FacesContext,
      *      javax.faces.component.UIComponent)
@@ -389,9 +408,12 @@ public class ModalDialogRenderer extends HtmlRenderer
             writer.endElement(HTML.TABLE_ELEM);
         }
 
-        if (dlg.getViewId() != null)
+        if ((dlg.getViewId() != null) || (dlg.getContentURL() != null))
         {
             renderDialogViewFrame(facesContext, dlg);
+            // TODO: why are the rest of the child components not rendered here?
+            // is it so that subclasses of this component can insert stuff between
+            // the iframe and the normal children? 
         }
         else
         {
@@ -416,7 +438,7 @@ public class ModalDialogRenderer extends HtmlRenderer
     }
 
     /**
-     * Invoked only when the ModalDialog component has property viewId defined.
+     * Invoked only when the ModalDialog component has property viewId or contentURL defined.
      */
     private void renderDialogViewFrame(FacesContext facesContext, ModalDialog dlg) throws IOException
     {
