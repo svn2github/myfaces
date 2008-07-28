@@ -31,7 +31,7 @@
         <f:view>
             <h:outputText value="Example 1: Source and Style Using Location"/>
             <br/>
-            <t:xmlTemplate   rendered="true"
+            <t:xmlTransform   rendered="true"
                             contentLocation="org/apache/myfaces/examples/template/foo.xml"
                             stylesheetLocation="org/apache/myfaces/examples/template/foo.xsl"/>
 
@@ -39,7 +39,7 @@
 
             <h:outputText value="Example 2: Source and Style Using Streams and Value Binding"/>
             <br/>
-            <t:xmlTemplate   rendered="true"
+            <t:xmlTransform   rendered="true"
                              contentStream="#{templateBacker.contentStream}"
                              styleStream="#{templateBacker.styleStream}"/>
 
