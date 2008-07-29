@@ -60,7 +60,7 @@ public class ValidatorBaseTag extends ValidatorTag {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
         if(_message != null && _detailMessage != null)
-            throw new JspException("you may not set detailMessage and detailMessage together - they serve the same purpose.");
+            throw new JspException("you may not set message and detailMessage together - they serve the same purpose.");
 
         String detailMessage = _message;
 
