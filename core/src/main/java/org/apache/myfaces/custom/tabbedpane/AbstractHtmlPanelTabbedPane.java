@@ -30,6 +30,7 @@ import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 
 import org.apache.myfaces.component.AlignProperty;
 import org.apache.myfaces.component.DataProperties;
@@ -310,4 +311,37 @@ public abstract class AbstractHtmlPanelTabbedPane
      */
     public abstract boolean isServerSideTabSwitch();
 
+    /**
+     * Define if the process validation and update model phases
+     * should be executed before change between tabs, when
+     * serverSideTabSwitch = true (if is false, the switch
+     * is done by other way so this property does not have any
+     * effect).
+     * 
+     * Note that if this property is set as false, only a tab 
+     * change is done if all input fields inside the form are valid 
+     * (including input components outside this panel). 
+     * 
+     * By default is true, so both phases are not executed.
+     * 
+     * @JSFProperty
+     *   defaultValue = "true"
+     */    
+    public abstract boolean isImmediateTabChange();
+    
+    public void queueEvent(FacesEvent event)
+    {
+        if (event != null && event instanceof TabChangeEvent)
+        {
+            if (isImmediateTabChange())
+            {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else
+            {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+        }
+        super.queueEvent(event);
+    }
 }
