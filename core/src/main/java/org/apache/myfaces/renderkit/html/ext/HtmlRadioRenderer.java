@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -150,10 +152,80 @@ public class HtmlRadioRenderer
                     itemStrValue,
                     selectItem.getLabel(),
                     selectItem.isDisabled(),
-                    itemStrValue.equals(currentValue), false);
+                    itemStrValue.equals(currentValue),
+                    false,
+                    index);
         writer.endElement(HTML.LABEL_ELEM);
     }
+    
+    /**
+     * Renders the input item
+     * @return the 'id' value of the rendered element
+     */
+    protected String renderRadio(FacesContext facesContext,
+                               UIInput uiComponent,
+                               String value,
+                               String label,
+                               boolean disabled,
+                               boolean checked,
+                               boolean renderId,
+                               int itemNum)
+            throws IOException
+    {
+        String clientId = uiComponent.getClientId(facesContext);
 
+        String itemId = clientId + NamingContainer.SEPARATOR_CHAR + itemNum;
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+
+        if (itemId != null)
+        {
+            writer.writeAttribute(HTML.ID_ATTR, itemId, null);
+        }
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO, null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+
+        if (disabled) {
+            writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
+        }
+
+        if (renderId) {
+            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        }
+
+        if (checked)
+        {
+            writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
+        }
+
+        if (value != null)
+        {
+            writer.writeAttribute(HTML.VALUE_ATTR, value, null);
+        }
+
+        //HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_STYLE);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_ATTRIBUTES);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_ATTRIBUTES_WITHOUT_DISABLED);
+        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        
+        if (isDisabled(facesContext, uiComponent))
+        {
+            writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.DISABLED_ATTR, Boolean.TRUE, null);
+        }
+
+        writer.endElement(HTML.INPUT_ELEM);
+
+        if ((label != null) && (label.length() > 0))
+        {
+            writer.write(HTML.NBSP_ENTITY);
+            writer.writeText(label, null);
+        }
+        
+        return itemId;
+    }
 
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
     {
