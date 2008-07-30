@@ -416,12 +416,29 @@ public class HtmlCheckboxRenderer
         //TODO: we must cache this Set!
         Set lookupSet = RendererUtils.getSelectedValuesAsSet(facesContext, uiComponent, converter, uiSelectMany);
 
-        renderCheckbox(facesContext,
-                       uiSelectMany,
-                       itemStrValue,
-                       selectItem.getLabel(),
-                       isDisabled(facesContext,uiSelectMany),
-                       lookupSet.contains(itemStrValue), true);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        //renderCheckbox(facesContext,
+        //               uiSelectMany,
+        //               itemStrValue,
+        //               selectItem.getLabel(),
+        //               isDisabled(facesContext,uiSelectMany),
+        //               lookupSet.contains(itemStrValue), true);
+        
+        String itemId = renderCheckbox(facesContext,
+                uiSelectMany,
+                itemStrValue,
+                isDisabled(facesContext,uiSelectMany),
+                lookupSet.contains(itemStrValue), false, index);
+
+        //Render the
+        // label element after the input
+        boolean componentDisabled = isDisabled(facesContext, uiSelectMany);
+        boolean itemDisabled = selectItem.isDisabled();
+        boolean disabled = (componentDisabled || itemDisabled);
+
+        HtmlRendererUtils.renderLabel(writer, uiSelectMany, itemId, selectItem.getLabel(), disabled);
+        
     }
 
 
