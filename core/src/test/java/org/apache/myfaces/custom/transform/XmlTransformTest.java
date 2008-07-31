@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.myfaces.custom.template;
+package org.apache.myfaces.custom.transform;
 
 import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.mock.MockResponseWriter;
@@ -33,17 +33,17 @@ import java.net.URL;
 import java.net.URI;
 
 /**
- * Test case for XmlTemplate
+ * Test case for XmlTransform
  *
  * @author Sean Schofield
  */
-public class XmlTemplateTest extends AbstractJsfTestCase
+public class XmlTransformTest extends AbstractJsfTestCase
 {
     private static final String PETS_STYLESHEET = "pets.xsl";
     private static final String PETS_CONTENT = "pets.xml";
     private static final String EXPECTED_TEXT = "Iguana";
 
-    private XmlTemplate xmlTemplate;
+    private XmlTransform xmlTransform;
     private ManagedFoo fooBean;
     private String stylesheet;
     private String stylesheetLocation = PETS_STYLESHEET;
@@ -58,7 +58,7 @@ public class XmlTemplateTest extends AbstractJsfTestCase
      * Constructor
      * @param name String
      */
-    public XmlTemplateTest(String name)
+    public XmlTransformTest(String name)
     {
         super(name);
     }
@@ -70,7 +70,7 @@ public class XmlTemplateTest extends AbstractJsfTestCase
     {
         super.setUp();
 
-        xmlTemplate = new XmlTemplate();
+        xmlTransform = new XmlTransform();
 
         // additional setup not provided automatically by the shale mock stuff
         facesContext.setResponseWriter(new MockResponseWriter(mockWriter, null, null));
@@ -90,7 +90,7 @@ public class XmlTemplateTest extends AbstractJsfTestCase
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         if (loader == null)
         {
-            loader = XmlTemplate.class.getClassLoader();
+            loader = XmlTransform.class.getClassLoader();
         }
 
         URL url = loader.getResource(PETS_CONTENT);
@@ -141,23 +141,23 @@ public class XmlTemplateTest extends AbstractJsfTestCase
          * NOTE: Normally you would not set all of these properties together in the component, but for the
          * purposes of testing, we want to make sure all fields are saved and restored properly.
          */
-        xmlTemplate.setContent(content);
-        xmlTemplate.setContentLocation(contentLocation);
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.setStylesheetLocation(stylesheetLocation);
-        xmlTemplate.setContentStream(contentStream);
-        xmlTemplate.setStyleStream(styleStream);
+        xmlTransform.setContent(content);
+        xmlTransform.setContentLocation(contentLocation);
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.setStylesheetLocation(stylesheetLocation);
+        xmlTransform.setContentStream(contentStream);
+        xmlTransform.setStyleStream(styleStream);
 
-        Object state = xmlTemplate.saveState(facesContext);
-        xmlTemplate = new XmlTemplate();
-        xmlTemplate.restoreState(facesContext, state);
+        Object state = xmlTransform.saveState(facesContext);
+        xmlTransform = new XmlTransform();
+        xmlTransform.restoreState(facesContext, state);
 
-        assertEquals(content, xmlTemplate.getContent());
-        assertEquals(contentLocation, xmlTemplate.getContentLocation());
-        assertEquals(stylesheet, xmlTemplate.getStylesheet());
-        assertEquals(stylesheetLocation, xmlTemplate.getStylesheetLocation());
-        assertNull("contentStream should be null since it cannot be serialized", xmlTemplate.getContentStream());
-        assertNull("styleStream should be null since it cannot be serialized", xmlTemplate.getStyleStream());
+        assertEquals(content, xmlTransform.getContent());
+        assertEquals(contentLocation, xmlTransform.getContentLocation());
+        assertEquals(stylesheet, xmlTransform.getStylesheet());
+        assertEquals(stylesheetLocation, xmlTransform.getStylesheetLocation());
+        assertNull("contentStream should be null since it cannot be serialized", xmlTransform.getContentStream());
+        assertNull("styleStream should be null since it cannot be serialized", xmlTransform.getStyleStream());
     }
 
     /**
@@ -170,73 +170,73 @@ public class XmlTemplateTest extends AbstractJsfTestCase
          * NOTE: Normally you would not set all of these properties together in the component, but for the
          * purposes of testing, we want to make sure all fields are saved and restored properly.
          */
-        xmlTemplate.setValueBinding("content", new MockValueBinding(application, "#{foo.content}"));
-        xmlTemplate.setValueBinding("contentLocation", new MockValueBinding(application, "#{foo.contentLocation}"));
-        xmlTemplate.setValueBinding("stylesheet", new MockValueBinding(application, "#{foo.stylesheet}"));
-        xmlTemplate.setValueBinding("stylesheetLocation", new MockValueBinding(application, "#{foo.stylesheetLocation}"));
-        xmlTemplate.setValueBinding("contentStream", new MockValueBinding(application, "#{foo.contentStream}"));
-        xmlTemplate.setValueBinding("styleStream", new MockValueBinding(application, "#{foo.styleStream}"));
+        xmlTransform.setValueBinding("content", new MockValueBinding(application, "#{foo.content}"));
+        xmlTransform.setValueBinding("contentLocation", new MockValueBinding(application, "#{foo.contentLocation}"));
+        xmlTransform.setValueBinding("stylesheet", new MockValueBinding(application, "#{foo.stylesheet}"));
+        xmlTransform.setValueBinding("stylesheetLocation", new MockValueBinding(application, "#{foo.stylesheetLocation}"));
+        xmlTransform.setValueBinding("contentStream", new MockValueBinding(application, "#{foo.contentStream}"));
+        xmlTransform.setValueBinding("styleStream", new MockValueBinding(application, "#{foo.styleStream}"));
 
-        Object state = xmlTemplate.saveState(facesContext);
-        xmlTemplate = new XmlTemplate();
-        xmlTemplate.restoreState(facesContext, state);
+        Object state = xmlTransform.saveState(facesContext);
+        xmlTransform = new XmlTransform();
+        xmlTransform.restoreState(facesContext, state);
 
-        assertEquals(content, xmlTemplate.getContent());
-        assertEquals(contentLocation, xmlTemplate.getContentLocation());
-        assertEquals(stylesheet, xmlTemplate.getStylesheet());
-        assertEquals(stylesheetLocation, xmlTemplate.getStylesheetLocation());
-        assertEquals(contentStream, xmlTemplate.getContentStream());
+        assertEquals(content, xmlTransform.getContent());
+        assertEquals(contentLocation, xmlTransform.getContentLocation());
+        assertEquals(stylesheet, xmlTransform.getStylesheet());
+        assertEquals(stylesheetLocation, xmlTransform.getStylesheetLocation());
+        assertEquals(contentStream, xmlTransform.getContentStream());
     }
 
     public void testSetContent()
     {
-        xmlTemplate.setContent("foo");
-        assertEquals("foo", xmlTemplate.getContent());
+        xmlTransform.setContent("foo");
+        assertEquals("foo", xmlTransform.getContent());
 
         // reset property so we can test value binding
-        xmlTemplate.setContent(null);
-        xmlTemplate.setValueBinding("content", new MockValueBinding(application, "#{foo.content}"));
-        assertEquals(fooBean.getContent(), xmlTemplate.getContent());
+        xmlTransform.setContent(null);
+        xmlTransform.setValueBinding("content", new MockValueBinding(application, "#{foo.content}"));
+        assertEquals(fooBean.getContent(), xmlTransform.getContent());
     }
 
     public void testSetContentStream()
     {
-        xmlTemplate.setContentStream(fooBean.getContentStream());
-        assertEquals(fooBean.getContentStream(), xmlTemplate.getContentStream());
+        xmlTransform.setContentStream(fooBean.getContentStream());
+        assertEquals(fooBean.getContentStream(), xmlTransform.getContentStream());
     }
 
     public void testSetContentStreamValueBinding()
     {
-        xmlTemplate.setValueBinding("contentStream", new MockValueBinding(application, "#{foo.contentStream}"));
-        assertEquals(fooBean.getContentStream(), xmlTemplate.getContentStream());
+        xmlTransform.setValueBinding("contentStream", new MockValueBinding(application, "#{foo.contentStream}"));
+        assertEquals(fooBean.getContentStream(), xmlTransform.getContentStream());
     }
 
     public void testSetStylesheet()
     {
-        xmlTemplate.setStylesheet("foo");
-        assertEquals("foo", xmlTemplate.getStylesheet());
+        xmlTransform.setStylesheet("foo");
+        assertEquals("foo", xmlTransform.getStylesheet());
 
         // reset property so we can test value binding
-        xmlTemplate.setStylesheet(null);
-        xmlTemplate.setValueBinding("stylesheet", new MockValueBinding(application, "#{foo.stylesheet}"));
-        assertEquals(fooBean.getStylesheet(), xmlTemplate.getStylesheet());
+        xmlTransform.setStylesheet(null);
+        xmlTransform.setValueBinding("stylesheet", new MockValueBinding(application, "#{foo.stylesheet}"));
+        assertEquals(fooBean.getStylesheet(), xmlTransform.getStylesheet());
     }
 
     /**
-     * Component should throw NPE if no stylesheet or template is provided
+     * Component should throw NPE if no stylesheet or Transform is provided
      */
     public void testNoTransformInfo() throws IOException
     {
         try
         {
-            xmlTemplate.encodeBegin(facesContext);
+            xmlTransform.encodeBegin(facesContext);
         }
         catch (NullPointerException e)
         {
             return;
         }
 
-        fail("Expected exception when no template or stylesheet provided");
+        fail("Expected exception when no Transform or stylesheet provided");
     }
 
     /**
@@ -245,11 +245,11 @@ public class XmlTemplateTest extends AbstractJsfTestCase
     public void testStylesheetNoContent() throws IOException
     {
         // stylesheet is not sufficient, content must be provided
-        xmlTemplate.setStylesheet("blah");
+        xmlTransform.setStylesheet("blah");
 
         try
         {
-            xmlTemplate.encodeBegin(facesContext);
+            xmlTransform.encodeBegin(facesContext);
         }
         catch (NullPointerException e)
         {
@@ -261,9 +261,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testStyleSheet() throws IOException
     {
-        xmlTemplate.setContentLocation(contentLocation);
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContentLocation(contentLocation);
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -271,9 +271,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testStyleSheetValueBinding() throws IOException
     {
-        xmlTemplate.setContent(content);
-        xmlTemplate.setValueBinding("stylesheet", new MockValueBinding(application, "#{foo.stylesheet}"));
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContent(content);
+        xmlTransform.setValueBinding("stylesheet", new MockValueBinding(application, "#{foo.stylesheet}"));
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -281,9 +281,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testStylesheetLocation() throws IOException
     {
-        xmlTemplate.setContent(content);
-        xmlTemplate.setStylesheetLocation(stylesheetLocation);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContent(content);
+        xmlTransform.setStylesheetLocation(stylesheetLocation);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -291,9 +291,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testStylesheetLocationValueBinding() throws IOException
     {
-        xmlTemplate.setContent(content);
-        xmlTemplate.setValueBinding("stylesheetLocation", new MockValueBinding(application, "#{foo.stylesheetLocation}"));
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContent(content);
+        xmlTransform.setValueBinding("stylesheetLocation", new MockValueBinding(application, "#{foo.stylesheetLocation}"));
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -301,9 +301,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testStylesheetStream() throws IOException
     {
-        xmlTemplate.setStyleStream(styleStream);
-        xmlTemplate.setContent(content);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setStyleStream(styleStream);
+        xmlTransform.setContent(content);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -311,9 +311,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testStylesheetStreamValueBinding() throws IOException
     {
-        xmlTemplate.setValueBinding("styleStream", new MockValueBinding(application, "#{foo.styleStream}"));
-        xmlTemplate.setContent(content);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setValueBinding("styleStream", new MockValueBinding(application, "#{foo.styleStream}"));
+        xmlTransform.setContent(content);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -321,9 +321,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testContent() throws IOException
     {
-        xmlTemplate.setContent(content);
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContent(content);
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -331,9 +331,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testContentValueBinding() throws IOException
     {
-        xmlTemplate.setValueBinding("content", new MockValueBinding(application, "#{foo.content}"));
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setValueBinding("content", new MockValueBinding(application, "#{foo.content}"));
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -341,9 +341,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testContentLocation() throws IOException
     {
-        xmlTemplate.setContentLocation(contentLocation);
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContentLocation(contentLocation);
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -351,9 +351,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public void testContentLocationValueBinding() throws IOException
     {
-        xmlTemplate.setValueBinding("contentLocation", new MockValueBinding(application, "#{foo.contentLocation}"));
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setValueBinding("contentLocation", new MockValueBinding(application, "#{foo.contentLocation}"));
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -365,9 +365,9 @@ public class XmlTemplateTest extends AbstractJsfTestCase
      */
     public void testContentStream() throws IOException
     {
-        xmlTemplate.setContentStream(contentStream);
-        xmlTemplate.setStylesheet(stylesheet);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setContentStream(contentStream);
+        xmlTransform.setStylesheet(stylesheet);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -375,16 +375,16 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     /**
      * Tests the actual transformation process using an InputStream as the source for content.  This test
-     * sets the property to a value binding (as you would through use of XmlTemplateTag) instead of setting
+     * sets the property to a value binding (as you would through use of XmlTransformTag) instead of setting
      * the value of the contentStream on the component directly.
      *
      * @throws IOException
      */
     public void testContentStreamValueBinding() throws IOException
     {
-        xmlTemplate.setValueBinding("contentStream", new MockValueBinding(application, "#{foo.contentStream}"));
-        xmlTemplate.setStylesheetLocation(stylesheetLocation);
-        xmlTemplate.encodeBegin(facesContext);
+        xmlTransform.setValueBinding("contentStream", new MockValueBinding(application, "#{foo.contentStream}"));
+        xmlTransform.setStylesheetLocation(stylesheetLocation);
+        xmlTransform.encodeBegin(facesContext);
 
         String responseText = mockWriter.toString();
         assertEquals("Unexpected response text from content transformation", EXPECTED_TEXT, responseText);
@@ -392,7 +392,7 @@ public class XmlTemplateTest extends AbstractJsfTestCase
 
     public static Test suite()
     {
-        return new TestSuite(XmlTemplateTest.class);
+        return new TestSuite(XmlTransformTest.class);
     }
 
 }
