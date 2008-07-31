@@ -19,19 +19,25 @@
 package org.apache.myfaces.custom.focus;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectMany;
+import javax.faces.component.UISelectOne;
+import javax.faces.component.html.HtmlSelectManyCheckbox;
+import javax.faces.component.html.HtmlSelectOneRadio;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.custom.date.HtmlDateRenderer;
 import org.apache.myfaces.custom.date.HtmlInputDate;
-import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.custom.dojo.DojoConfig;
+import org.apache.myfaces.custom.dojo.DojoUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * 
@@ -81,6 +87,18 @@ public class HtmlFocusRenderer extends Renderer
             if(targetComponent instanceof HtmlInputDate)
             {
                 clientId = HtmlDateRenderer.getClientIdForDaySubcomponent(clientId);
+            } 
+            else if(targetComponent instanceof HtmlSelectOneRadio)
+            {
+                UISelectOne selectOne = (UISelectOne)targetComponent;
+                List selectItemList = org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getSelectItemList(selectOne);
+                clientId += getFirstChildId(selectItemList);
+            }
+            else if(targetComponent instanceof HtmlSelectManyCheckbox)
+            {
+                UISelectMany selectMany = (UISelectMany)targetComponent;
+                List selectItemList = org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getSelectItemList(selectMany);
+                clientId += getFirstChildId(selectItemList);
             }
             ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -99,5 +117,13 @@ public class HtmlFocusRenderer extends Renderer
             }
         }
     }
-
+    
+    private String getFirstChildId(List selectItems) 
+    {
+        if(selectItems.size() > 0) 
+        {
+            return NamingContainer.SEPARATOR_CHAR + "0";
+        }
+        return "";
+    }
 }
