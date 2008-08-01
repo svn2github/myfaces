@@ -1,10 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--
+  - Pom file for the Tomahawk core implementation.
+  -->
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.myfaces.tomahawk</groupId>
   <artifactId>tomahawk</artifactId>
   <packaging>jar</packaging>
   <name>Tomahawk Core</name>
+  <description>
+    JSF components and utilities that can be used with any JSF implementation.
+    This library is compatible with both JSF1.1 and JSF1.2; however for JSF1.2 users there
+    is an alternative build of Tomahawk available that takes advantage of JSF1.2 features to
+    offer some additional benefits.
+  </description>
 
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
@@ -290,7 +303,7 @@
       <plugin>
         <groupId>org.apache.myfaces.buildtools</groupId>
         <artifactId>myfaces-builder-plugin</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <executions>
           <execution>
             <!-- A hierarchy of different tag classes must be created, 
@@ -538,7 +551,7 @@
             <!-- Generate content for custom tagdoc report -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1</version>
             <configuration>
               <taglibs>
                 <t>http://myfaces.apache.org/tomahawk</t>
@@ -566,7 +579,7 @@
             <!-- which goal is run here? -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1</version>
             <configuration>
               <taglibs>
                 <t>http://myfaces.apache.org/tomahawk</t>

@@ -19,7 +19,8 @@
   - The "1.2.x" branch of the myfaces shared code is used rather than the "1.1.x" branch.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -29,6 +30,12 @@
   <artifactId>tomahawk12</artifactId>
   <packaging>jar</packaging>
   <name>Tomahawk 1.2 Core</name>
+  <description>
+    JSF components and utilities that can be used with any JSF implementation.
+    This library is based on the JSF1.1 version of Tomahawk, but with minor source code and build
+    changes to take advantage of JSF1.2 features. A JSF1.2 implementation is required to use this
+    version of the Tomahawk library.
+  </description>
 
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
@@ -178,7 +185,7 @@
     <dependency>
       <groupId>org.apache.myfaces.buildtools</groupId>
       <artifactId>myfaces-builder-annotations</artifactId> 
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.0.1</version>
       <scope>provided</scope>
     </dependency>
 
@@ -340,7 +347,7 @@
       <plugin>
         <groupId>org.apache.myfaces.buildtools</groupId>
         <artifactId>myfaces-builder-plugin</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.1</version>
         <executions>
           <execution>
             <id>unpack-tomahawk</id>
