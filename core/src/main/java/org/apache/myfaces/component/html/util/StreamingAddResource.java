@@ -52,10 +52,22 @@ import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 
 /**
  * This is a utility class to render link to resources used by custom components.
- * Mostly used to avoid having to include [script src="..."][/script]
- * in the head of the pages before using a component.
  * <p>
- * The special URL format is:
+ * This enables a JSF component that is within a page to register scripts and
+ * css stylesheets that it needs, and have them added to the page output.
+ * When multiple components in a page registers a need for the same script or
+ * stylesheet multiple times, only one reference is output in the page.
+ * <p>
+ * The default DefaultAddResources implementation achieves this by buffering the
+ * complete page in memory until after rendering is complete, then post-processing
+ * the page; this implementation does not require buffering the output but does
+ * have some limitations.
+ * <p>
+ * To enable the use of this implementation, the web.xml of the application must
+ * set property ????
+ * <p>
+ * For references to external resources (javascript files or css files), the url
+ * rendered into the page has the special format:
  * <pre>
  * {contextPath}/faces/myFacesExtensionResource/
  *    {resourceLoaderName}/{cacheKey}/{resourceURI}
@@ -71,7 +83,41 @@ import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
  *  implementation only serves resources for files stored beneath path
  *  org/apache/myfaces/custom in the classpath but non-myfaces code can provide their
  *  own ResourceLoader implementations.
+ * <li> {cacheKey} is a value provided by the ResourceLoader. For the standard ResourceLoader
+ * that returns resources from the tomahawk jarfile, this timestamp is the datetime at which the
+ * tomahawk library was built. This means that browsers will cache these resources for efficiency but
+ * hen a new version of the tomahawk jarfile is deployed then the url changes, so that new versions
+ * of the resources are picked up. Where a "build timestamp" is not available, the startup time of
+ * the webserver is a reasonable alternative; that means that webbrowsers will cache resources until
+ * the webserver is restarted.
  * </ul>
+ * <p>
+ * As specified in the base AddResource interface, most methods come in two flavours: one that takes
+ * an explicit ResourceHandler parameter (so can be used by "user" code) and one that implicitly
+ * uses a ResourceHandler that serves only Tomahawk resources (ie is intended for use only by
+ * Tomahawk components). For the tomahawk-specific methods, the standard MyFacesResourceHandler is
+ * used, which in turn uses the standard MyFacesResourceLoader. However for resources that must be
+ * cached and served in a separate request (see below) the custom StreamingResourceHandler is used,
+ * which uses StreamingResourceLoader.
+ * <p>
+ * The DefaultAddResource implementation inserts javascript file references into the head section of
+ * the generated page. This streaming implementation cannot do that, so it inserts them into the
+ * body of the page instead. This is not technically valid; according to the HTML spec references
+ * to external javascript files should be in the HEAD only. However all modern browsers do support this.
+ * There may be some corner cases where this does result in different behaviour of the page.
+ * <p>
+ * The DefaultAddResource implementation inserts css file references into the head section of the
+ * generated page by post-processing the page output after all components have finished rendering.
+ * This streaming implementation cannot do that, and no browser supports references to stylesheets
+ * from within the HTML page body. Therefore this class implements a workaround: it expects that
+ * every page will always emits a single CSS link to a "virtual page" from its HEAD section and then
+ * handles the later request for that virtual page by serving any resources that really should
+ * have been embedded in the head of the original page. When the page uses the t:documentHead tag to
+ * rite the HEAD tags of the page, this link is emitted automatically. This does unfortunately mean
+ * that use of this StreamingAddResource <i>always</i> results in an extra GET request per page. It
+ * also means that there needs to be an application-scoped cache that holds per-request cached data,
+ * which introduces some issues regarding "cleanup" of the cache entries. See javadoc of method
+ * addStyleLoaderHere() for more details.
  *
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -1165,6 +1211,45 @@ public class StreamingAddResource implements AddResource
         return false;
     }
 
+    /**
+     * Hack to allow pages to register CSS stylesheet files or inline CSS commands.
+     * <p>
+     * As described in the class javadocs, the "streaming" approach for resources has problems
+     * when it comes to stylesheet links or inline stylesheet commands. These MUST go in the HEAD
+     * section of a page, but by the time a component is being rendered the HEAD section is long
+     * gone. The DefaultAddResource class can solve this because it buffers the page, but here
+     * a different approach is needed.
+     * <p>
+     * This method should be called during rendering of the HEAD section of a page. For example,
+     * the t:documentHead tag (DocumentHeadRenderer) calls this automatically. A link tag of type
+     * CSS is written to the response, pointing at a virtual page "header.css" which does not actually exist.
+     * <p>
+     * During rendering of the page body, component renderers may register inline CSS or CSS files. This
+     * info is just cached in the user session. After the page has been sent to the remote browser, the
+     * browser will then make a request to the virtual "header.css" page which this class intercepts and
+     * then serves up the resources needed by the page.
+     * <p>
+     * Note that the link to the virtual page must <i>always</i> be rendered, as at this time we do
+     * not know whether the body of the page will contain components that need css resources or not.
+     * If no component did need CSS resources, then a zero-sized response is returned. And the value
+     * can change on each request, depending on which components are rendered or not, so a "requestId"
+     * is embedded into the url, making the url change for every request. This requestId is also used
+     * to find the relevant cached resources that need to be served (if any).
+     * <p>
+     * The url is generated using the StreamingResourceHandler (ie StreamingResourceLoader is the class
+     * embedded in the url). This means that when the browser fetches this resource, the 
+     * StreamingResourceLoader is invoked. It in turn extracts the requestId from the parameter and
+     * serves any "head" resources that were registered for the original page.
+     * <p>
+     * Note that JSF2.0 solves this issue by having components queue "system events" during the "build tree"
+     * phase of rendering. Tomahawk could possibly provide a framework to allow its own classes to
+     * do this for JSF1.2. But for JSF1.1 there is no "build tree" phase so this approach is the only
+     * possibility.
+     *   
+     * @param context
+     * @param myfacesCustomComponent
+     * @throws IOException
+     */
     public void addStyleLoaderHere(FacesContext context, Class myfacesCustomComponent) throws IOException
     {
         ResponseWriter writer = context.getResponseWriter();
