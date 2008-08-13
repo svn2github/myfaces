@@ -18,15 +18,23 @@
  */
 package org.apache.myfaces.webapp.filter;
 
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * This filter is mandatory for the use of many tomahawk components.
@@ -245,14 +253,6 @@ public class ExtensionsFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        HttpServletRequest extendedRequest = httpRequest;
-
-        // For multipart/form-data requests
-        // This is done by TomahawkFacesContextWrapper
-        //if (FileUpload.isMultipartContent(httpRequest)) {
-        //    extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
-        //}
-
         // Serve resources
         AddResource addResource;
 
@@ -270,7 +270,14 @@ public class ExtensionsFilter implements Filter {
             throw new ServletException(th);
         }
 
-        /*
+        HttpServletRequest extendedRequest = httpRequest;
+
+        // For multipart/form-data requests
+        // This is done by TomahawkFacesContextWrapper
+        if (FileUpload.isMultipartContent(httpRequest)) {
+            extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
+        }
+        
         try
         {
             addResource.responseStarted();
@@ -336,9 +343,8 @@ public class ExtensionsFilter implements Filter {
         {
             addResource.responseFinished();         
         }
-        */
         
-        chain.doFilter(extendedRequest, response);
+        //chain.doFilter(extendedRequest, response);
     }
 
     public boolean isValidContentType(String contentType)

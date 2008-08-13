@@ -23,16 +23,32 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
 import javax.faces.lifecycle.Lifecycle;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 
+/**
+ * The objective of this factory is this:
+ *  
+ * 1. Wrap a multipart request (used for t:inputFileUpload), 
+ *    so the request could be correctly decoded.
+ * 2. If a buffered instance of AddResource is configured, 
+ *    ExtensionsFilter must buffer and add the resource reference 
+ *    to the head of jsf pages (for example when it is used 
+ *    DefaultAddResource)
+ * 
+ * @author Martin Marinschek (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 public class TomahawkFacesContextFactory extends FacesContextFactory {
 
+    public static final String DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER = 
+        "org.apache.myfaces.DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER";
+    
     private FacesContextFactory delegate;
 
     public TomahawkFacesContextFactory(FacesContextFactory delegate) {
@@ -43,23 +59,47 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
         
         if(!ExternalContextUtils.getRequestType(context, request).isPortlet())
         {
-            //This is servlet world
-            //For handle buffered response we need to wrap response object here,
-            //so all response will be written and then on facesContext
-            //release() method write to the original response.
-            //This could not be done on TomahawkFacesContextWrapper
-            //constructor, because the delegate ExternalContext do
-            //calls like dispatch, forward and redirect, that requires
-            //the wrapped response instance to work properly.
-            AddResource addResource = AddResourceFactory.getInstance((HttpServletRequest)request,(ServletContext)context);
-            
-            if (addResource.requiresBuffer())
+            ServletRequest servletRequest = (ServletRequest) request;
+            ServletContext servletContext = (ServletContext) context;
+            // If no ExtensionsFilter wraps before the call, and 
+            //there is not a value indicating disabling the wrapping,
+            //use TomahawkFacesContextWrapper 
+            if (servletRequest.getAttribute(ExtensionsFilter.DOFILTER_CALLED) == null &&
+                    !getBooleanValue(servletContext.getInitParameter(
+                            DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER), false))
             {
-                ExtensionsResponseWrapper extensionsResponseWrapper = new ExtensionsResponseWrapper((HttpServletResponse)response);
-                return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, extensionsResponseWrapper, lifecycle),
-                        extensionsResponseWrapper);
+                //This is servlet world
+                //For handle buffered response we need to wrap response object here,
+                //so all response will be written and then on facesContext
+                //release() method write to the original response.
+                //This could not be done on TomahawkFacesContextWrapper
+                //constructor, because the delegate ExternalContext do
+                //calls like dispatch, forward and redirect, that requires
+                //the wrapped response instance to work properly.            
+                AddResource addResource = AddResourceFactory.getInstance((HttpServletRequest)request,(ServletContext)context);
+                
+                if (addResource.requiresBuffer())
+                {
+                    ExtensionsResponseWrapper extensionsResponseWrapper = new ExtensionsResponseWrapper((HttpServletResponse)response);
+                    return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, extensionsResponseWrapper, lifecycle),
+                            extensionsResponseWrapper);
+                }
+            }
+            else
+            {
+                //The wrapping was done by extensions filter, so 
+                //TomahawkFacesContextWrapper is not needed
+                return delegate.getFacesContext(context, request, response, lifecycle);
             }
         }
         return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, response, lifecycle));
     }
+    
+    private static boolean getBooleanValue(String initParameter, boolean defaultVal)
+    {
+        if(initParameter == null || initParameter.trim().length()==0)
+            return defaultVal;
+
+        return (initParameter.equalsIgnoreCase("on") || initParameter.equals("1") || initParameter.equalsIgnoreCase("true"));
+    }    
 }

@@ -35,7 +35,16 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 
 /**
- * @author Martin Marinschek
+ * This listener is used for serve resources, as a replacement of 
+ * ExtensionsFilter serve resources feature.
+ * <p>
+ * The idea is map FacesServlet to org.apache.myfaces.RESOURCE_VIRTUAL_PATH
+ * (Default is "/faces/myFacesExtensionResource), so this
+ * listener can receive the request.
+ * </p>
+ * 
+ * @author Martin Marinschek (latest modification by $Author$)
+ * @version $Revision$ $Date$
  */
 public class ServeResourcePhaseListener implements PhaseListener {
 
@@ -84,7 +93,7 @@ public class ServeResourcePhaseListener implements PhaseListener {
 
                 try
                 {
-                    addResource= AddResourceFactory.getInstance(request,(ServletContext) fc.getExternalContext().getContext());
+                    addResource= AddResourceFactory.getInstance(request, context);
                     if( addResource.isResourceUri(context, request ) ){
                         addResource.serveResource(context, request, response);
                         event.getFacesContext().responseComplete();

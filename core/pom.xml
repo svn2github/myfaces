@@ -57,6 +57,17 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- Transitive dependency from commons-fileupload.
+    in 1.2 it was declared optional, but t:inputFileUpload
+    uses it indirectly, so it is necessary to include it
+    in our pom as runtime dependency  -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.3.2</version>
+      <scope>runtime</scope>
+    </dependency>
+
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
