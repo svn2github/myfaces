@@ -169,7 +169,7 @@ public class HtmlRadioRenderer
         boolean itemDisabled = selectItem.isDisabled();
         boolean disabled = (componentDisabled || itemDisabled);
 
-        HtmlRendererUtils.renderLabel(writer, uiSelectOne, itemId, selectItem.getLabel(), disabled);
+        HtmlRendererUtils.renderLabel(writer, uiSelectOne, itemId, selectItem, disabled);
     }
 
 
