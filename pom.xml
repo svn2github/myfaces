@@ -140,7 +140,7 @@
       - against *when jsf1.1 is selected*. When jsf1.2 or a Sun implementation
       - are selected for running the examples, this is ignored.
       -->
-    <myfaces-core11-version>1.1.6-SNAPSHOT</myfaces-core11-version>
+    <myfaces-core11-version>1.1.6</myfaces-core11-version>
 
     <!--  
       - Define what shared lib version tomahawk and sandbox code will be compiled with.
