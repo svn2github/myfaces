@@ -58,48 +58,14 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         if (UserRoleUtils.isEnabledOnUserRole(output))
         {        
             ResponseWriter writer = facesContext.getResponseWriter();
-    
-            //calculate href
-            String href = org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils
-                    .getStringValue(facesContext, output);
-            
-            if (href == null)
-            {
-                href = "";
-            }
-            if ("".equals(href) || "#".equals(href))
-            {
-                //If no value defined the default is #componentId where
-                //componentId is the clientId of the component to be 
-                //shown. This avoid that the page jumps to top on every click.
-                ToggleLink toggleLink = (ToggleLink) output;
-                String[] componentsToToggle = toggleLink.getFor().split(",");
-                for (int i = 0; i < componentsToToggle.length; i++) {
-                    String componentId = componentsToToggle[i].trim();
-                    UIComponent componentToShow = toggleLink.findComponent(componentId);
-                    if (componentToShow != null){
-                        href = "#"+ componentToShow.getClientId(facesContext);
-                        break;
-                    }
-                }                
-            }
-            if (getChildCount(output) > 0)
-            {
-                StringBuffer hrefBuf = new StringBuffer(href);
-                addChildParametersToHref(facesContext, output, hrefBuf, (href
-                        .indexOf('?') == -1), //first url parameter?
-                        writer.getCharacterEncoding());
-                href = hrefBuf.toString();
-            }
-            href = facesContext.getExternalContext().encodeResourceURL(href); //TODO: or encodeActionURL ?
-    
+        
             String clientId = output.getClientId(facesContext);
     
             //write anchor
             writer.startElement(HTML.ANCHOR_ELEM, output);
             writer.writeAttribute(HTML.ID_ATTR, clientId, null);
             writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.writeURIAttribute(HTML.HREF_ATTR, href, null);
+            writer.writeURIAttribute(HTML.HREF_ATTR, "javascript:void(0);", null);
             
             HtmlRendererUtils
                     .renderHTMLAttributes(
@@ -111,9 +77,9 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
             HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_CLASS_ATTR, HTML.STYLE_CLASS_ATTR,
                     output.getAttributes().get(HTML.STYLE_CLASS_ATTR));
             
-            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, 
+           HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, 
                     buildOnclickToggleFunction(facesContext,output));
-            
+           
             writer.flush();
         }
     }
@@ -140,6 +106,16 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         String outputOnclick = toggleLink.getOnclick();
         StringBuffer onClick = new StringBuffer();
         
+        if(toggleLink.getOnClickFocusId() != null) 
+        {
+            String onClickFocusClientId = toggleLink.findComponent(toggleLink.getOnClickFocusId()).getClientId(facesContext);
+            onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','" + onClickFocusClientId + "');");
+        }
+        else
+        {
+            onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','');");
+        }
+        
         if (outputOnclick != null)
         {
             onClick.append("var cf = function(){");
@@ -148,8 +124,6 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
             onClick.append(';');
             onClick.append("var oamSF = function(){");            
         }
-        
-        onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"')");
         
         if (outputOnclick != null)
         {

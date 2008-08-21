@@ -67,6 +67,15 @@ public abstract class AbstractToggleLink extends HtmlOutputLink
      */
     public abstract boolean isDisabled();
     
+    /**
+     * Id of the component that will be focused when toggleLink is clicked
+     * 
+     * @JSFProperty
+     *   literalOnly = "true"
+     * @return
+     */
+    public abstract String getOnClickFocusId();
+    
     public AbstractToggleLink()
     {
         super();

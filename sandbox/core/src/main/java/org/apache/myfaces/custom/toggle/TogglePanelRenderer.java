@@ -29,6 +29,8 @@ import javax.faces.context.ResponseWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
@@ -45,6 +47,8 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, TogglePanel.class);
+        addScrollToJavascript(context);
+        
         TogglePanel togglePanel = (TogglePanel) component;
         boolean toggleMode = togglePanel.isToggled();
         toggleVisibility(togglePanel.getChildren(), toggleMode);
@@ -156,7 +160,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
 
         String functionName = getToggleJavascriptFunctionName(context, togglePanel);
 
-        out.write("function "+functionName + "(idsToShowS){\n");
+        out.write("function "+functionName + "(idsToShowS,onClickFocusId){\n");
 
         StringBuffer idsToHide = new StringBuffer();
         int idsToHideCount = 0;
@@ -179,8 +183,10 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
             getLog().warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
         }
         out.write( "var idsToShow = idsToShowS.split(',');\n" );
-        out.write( "for(var j=0;j<idsToShow.length;j++) document.getElementById(idsToShow[j]).style.display = 'inline';\n");
-
+        out.write( "scrollTo(idsToShow[0]);\n" );
+        out.write( "for(var j=0;j<idsToShow.length;j++) {document.getElementById(idsToShow[j]).style.display = 'inline';}\n");
+        out.write( "if(onClickFocusId != '') document.getElementById(onClickFocusId).focus();\n");
+        out.write( "else document.getElementById(idsToShow[0]).focus();\n");
         // toggle the value of the hidden field
         out.write("document.getElementById('" + getHiddenFieldId(context, togglePanel) + "').value = '1';\n");
 
@@ -191,5 +197,11 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
     static public String getToggleJavascriptFunctionName(FacesContext context, TogglePanel togglePanel) {
         String modifiedId = togglePanel.getClientId(context).replaceAll("\\:", "_").replaceAll("-", "_");
         return "toggle_" + modifiedId;
+    }
+    
+    public void addScrollToJavascript(FacesContext context)throws IOException {
+        AddResource addResource = AddResourceFactory.getInstance(context);
+        
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, AbstractTogglePanel.class, "scrollTo.js");
     }
 }
