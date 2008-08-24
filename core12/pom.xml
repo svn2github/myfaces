@@ -572,7 +572,7 @@
               <goal>jar</goal>
             </goals>
           </execution>
-      	</executions>
+        </executions>
       </plugin>
 
       <plugin>
@@ -614,10 +614,6 @@
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.4</version>
-        <configuration>
-            <sourcepath>${basedir}/src/main/java;${basedir}/target/tomahawk11_sources;${basedir}/target/myfaces-builder-plugin/main/java</sourcepath>
-        </configuration>
-        
       </plugin>
 
       <plugin>
@@ -657,6 +653,26 @@
   <profiles>
     <profile>
       <id>generate-site</id>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- Generate content for custom tagdoc report -->
+            <groupId>org.apache.myfaces.buildtools</groupId>
+            <artifactId>myfaces-builder-plugin</artifactId>
+            <version>1.0.1</version>
+            <configuration>
+              <taglibs>
+                <t>http://myfaces.apache.org/tomahawk</t>
+              </taglibs>
+            </configuration>
+            <executions>
+              <execution>
+                <goals><goal>tagdoc-content</goal></goals>
+              </execution>
+            </executions>
+          </plugin>          
+        </plugins>
+      </build>
       <reporting>
         <plugins>
           <plugin>
@@ -667,10 +683,26 @@
               <tldDocDir>${basedir}/target/site/tlddoc</tldDocDir>
             </configuration>
           </plugin>
+          <plugin>
+            <!-- which goal is run here? -->
+            <groupId>org.apache.myfaces.buildtools</groupId>
+            <artifactId>myfaces-builder-plugin</artifactId>
+            <version>1.0.1</version>
+            <configuration>
+              <taglibs>
+                <t>http://myfaces.apache.org/tomahawk</t>
+              </taglibs>
+            </configuration>
+          </plugin>
         </plugins>
       </reporting>
     </profile>
+
     <profile>
+      <!--
+        - Build and install into the repository some additional artifacts that we don't
+        - want to build during normal development because they take too long.
+        -->
       <id>generate-assembly</id>
       <activation>
         <property>
@@ -681,6 +713,7 @@
       <build>
         <plugins>
           <plugin>
+            <!-- Install in the repository a "-javadoc.jar" file -->
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.4</version>
             <executions>
@@ -691,6 +724,7 @@
             </executions>
           </plugin>
           <plugin>
+            <!-- Install in the repository a "-tlddoc.jar" file -->
             <groupId>net.sourceforge.maven-taglib</groupId>
             <artifactId>maven-taglib-plugin</artifactId>
             <configuration>
@@ -705,6 +739,7 @@
             </executions>
           </plugin>
           <plugin>
+            <!-- Install in the repository a "-sources.jar" file -->
             <artifactId>maven-source-plugin</artifactId>
             <executions>
               <execution>
