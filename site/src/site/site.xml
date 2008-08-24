@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<project name="MyFaces Tomahawk for JSF 1.1">
+<project name="MyFaces Tomahawk">
 
   <bannerLeft>
     <name>Apache MyFaces Tomahawk</name>
@@ -65,16 +65,15 @@
     </menu>
         
     <menu name="Documentation">
-      <item name="JSF Tag Documentation 1.1" href="tagdoc.html"/>
-      <item name="Tag Library Documentation" href="tlddoc/index.html"/>
-      <item name="Api Documentation" href="apidocs/index.html"/>
-      <item name="Extensions filter" href="http://myfaces.apache.org/tomahawk/extensionsFilter.html"/>  
-      <item name="forceId" href="http://myfaces.apache.org/tomahawk/forceId.html"/>
-      <item name="Tiles Support" href="http://myfaces.apache.org/tomahawk/tiles.html"/>
+      <item name="JSF Tag Documentation 1.1" href="http://myfaces.apache.org/tomahawk-project/tomahawk/tagdoc.html"/>
+      <item name="JSF Tag Documentation 1.2" href="http://myfaces.apache.org/tomahawk-project/tomahawk12/tagdoc.html"/>
+      <item name="Extensions filter" href="extensionsFilter.html"/>
+      <item name="forceId" href="forceId.html"/>
+      <item name="Tiles Support" href="tiles.html"/>
     </menu>    
-      
+    
     <menu ref="reports"/>
-  
+
     <menu name="Testing">
       <item name="OpenQA Selenium" href="http://myfaces.apache.org/tomahawk/testing/selenium.html"/>
       <item name="Autoriginate HostedQA" href="http://myfaces.apache.org/tomahawk/testing/hostedqa.html"/>

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 -->
-<project name="MyFaces Tomahawk for JSF 1.1">
+<project name="MyFaces Tomahawk for JSF 1.2">
 
   <bannerLeft>
     <name>Apache MyFaces Tomahawk</name>
@@ -65,7 +65,7 @@
     </menu>
         
     <menu name="Documentation">
-      <item name="JSF Tag Documentation 1.1" href="tagdoc.html"/>
+      <item name="JSF Tag Documentation" href="tagdoc.html"/>
       <item name="Tag Library Documentation" href="tlddoc/index.html"/>
       <item name="Api Documentation" href="apidocs/index.html"/>
       <item name="Extensions filter" href="http://myfaces.apache.org/tomahawk/extensionsFilter.html"/>  

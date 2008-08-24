@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;h:inputText id="email2"
+                value="#{validateForm.email2}"
+                required="true"&gt;
+    &lt;t:validateEmail /&gt;
+&lt;/h:inputText&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                A validator, that validates email address format.
+                It is based upon Jakarta Commons' Validator.
+            </p>
+            <p>see "examples/validate.jsp" for an example!</p>
+        </section>
+    </body>
+</document>

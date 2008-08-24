@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <section name="Obsolete">
+            <p><strong>
+                On May 17th, the functionality of the newspaperTable component was merged
+                into t:dataTable (Extended DataTable) for the tomahawk-1.1.3-SNAPSHOT.jar.
+                The newspaperTable component will be removed in the future.
+                Please use t:dataTable instead.
+            </strong></p>
+            <p>  
+                Upgrade to t:dataTable by replacing all references to t:newspaperTable with t:dataTable.
+            </p>
+        </section>    
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/newspaperTable.png" alt="Newspaper Table"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:newspaperTable newspaperColumns="3"  value="#{addressBB.states}" var="state"&gt;
+    &lt;f:facet name="spacer"&gt;&lt;f:verbatim&gt;&amp;#160;&lt;/f:verbatim&gt;&lt;/f:facet&gt;
+    &lt;h:column&gt;
+        &lt;h:outputText value="#{state.abbr}"/&gt;
+    &lt;/h:column&gt;
+    &lt;h:column&gt;
+        &lt;h:outputText value="#{state.name}"/&gt;
+    &lt;/h:column&gt;
+&lt;/t:newspaperTable&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see examples/newspaperTable.jsp for an example!</p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shots">
+            <table>
+                <tr>
+                    <th colspan="1" rowspan="1">
+                        Popup
+                    </th>
+                    <th colspan="1" rowspan="1">
+                        No Popup
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="1" rowspan="1">
+                        <div><img src="../images/calendar_popup.png" alt="calendar_popup"/></div>
+                    </td>
+                    <td colspan="1" rowspan="1">
+                        <div><img src="../images/calendar_nopopup.png" alt="calendar_nopopup"/></div>
+                    </td>
+                </tr>
+            </table>
+        </section>    
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:inputCalendar [ HTML universal attributes ]
+               [ HTML event handler attributes ]
+               [ UIInput standard attributes (i.e. valueChangeListener) ]
+               [monthYearRowClass="month-and-year-header-row-css-class"]
+               [weekRowClass="week-header-row-css-class"]
+               [dayCellClass="empty-or-date-cell-css-class"]
+               [currentDayCellClass="currently-selected-day-cell-css-class"]&gt;
+&lt;/t:inputCalendar&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">            
+            <p>
+                Standard core tags (i.e. a new Converter can be set for
+                value-bindings to values other than java.util.Date).
+            </p>
+            <p>see examples/calendar.jsp for an example!</p>
+        </section>
+    </body>
+</document>
