@@ -30,21 +30,25 @@ import javax.faces.context.FacesContext;
  * objects that the managed beans reference:  request, session, application.
  * However a common requirement is a way for a model object to have a scope
  * that is tied to the duration of the current view; that is longer than the
- * request scope but shorter than session scope. 
+ * request scope but shorter than session scope.
+ * </p> 
  * <p>
  * This component simply holds a reference to an arbitrary object (specified
  * by the value property). Because this object is an ordinary component whose
  * scope is the current view, the reference to the model automatically has that
- * same scope. 
+ * same scope.
+ * </p> 
  * <p>
  * When the value is an EL expression, then after the view is restored the
  * recreated target object is stored at the specified location.
+ * </p>
  * <p>
  * The object being saved must either:
+ * </p>
  * <ul>
- * <li>implement java.io.Serializable, or
+ * <li>implement java.io.Serializable, or</li>
  * <li>implement javax.faces.component.StateHolder and have a default
- *   constructor.
+ *   constructor.</li>
  * </ul>
  * <p>
  * Note that the saved object can be "chained" from view to view
@@ -55,7 +59,7 @@ import javax.faces.context.FacesContext;
  * and that view has a UISaveState component with the same EL expression
  * then the object will simply be saved into the new view, thus extending
  * its lifetime.
- * <p>
+ * </p>
  * 
  * @JSFComponent
  *   name = "t:saveState"

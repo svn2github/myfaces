@@ -29,9 +29,11 @@ import javax.faces.context.FacesContext;
  * Property "into" is an EL expression that specifies where to store a String holding
  * the results of rendering all the children of this component; this is assigned to
  * after rendering of this component (and its children) is complete.
+ * </p>
  * <p>
  * Typically, an h:output tag is then used later in the same page to output the buffer
  * contents.
+ * </p>
  * <p>
  * This can be useful with JSF1.1/JSP2.0 to work around the well-known problem where
  * on first render of a page, a component "A" cannot reference a component "B" which is
@@ -39,11 +41,13 @@ import javax.faces.context.FacesContext;
  * "B" before "A", but wrapped in a Buffer component. Component A can then be rendered
  * and successfully reference "B" because it now exists. And later in the page, the buffer
  * contents can then be output, preserving the original layout.
+ * </p>
  * <p>
  * This can also be useful when rendering the same data block multiple times within a page.
  * For example, a datatable can be rendered with a datascroller both before and after it;
  * first render the table into a buffer B1, then render the datascroller into a buffer B2,
  * then output buffers B2,B1,B2.
+ * </p>
  * 
  * @JSFComponent
  *   name = "t:buffer"
