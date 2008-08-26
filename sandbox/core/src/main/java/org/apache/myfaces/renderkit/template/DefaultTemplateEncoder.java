@@ -27,7 +27,6 @@ import javax.faces.render.Renderer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -37,19 +36,24 @@ import freemarker.template.TemplateException;
 /**
  * @author Martin Marinschek
  */
-public class DefaultTemplateEncoder implements TemplateEncoder {
-
+public class DefaultTemplateEncoder implements TemplateEncoder
+{
     private static final Log log = LogFactory.getLog(DefaultTemplateEncoder.class);
+    private static final String TEMPLATE_CACHE = "org.apache.myfaces.tomahawk.template.DefaultTemplateEncoder.CACHE";
     private static final String TEMPLATE_DIRECTORY = "template";
 
-    public void encodeTemplate(FacesContext context, UIComponent component, Renderer renderer, String template, Object dataModel) throws IOException {
-            Configuration cfg = new Configuration();
+    public void encodeTemplate(FacesContext context, UIComponent component, Renderer renderer, String template, Object dataModel)
+        throws IOException
+    {
         if(log.isDebugEnabled())
+        {
             log.debug("Encoding template : " + renderer.getClass().getResource(TEMPLATE_DIRECTORY+"/"+template));
-        TemplateLoader templateLoader = new ClassTemplateLoader(renderer.getClass(), TEMPLATE_DIRECTORY);
-        cfg.setTemplateLoader(templateLoader);
-        cfg.setObjectWrapper(new DefaultObjectWrapper());
-        Template temp = cfg.getTemplate(template);
+        }
+        Configuration cfg = getConfig(context, TEMPLATE_CACHE);
+        //Get the template using absolute path
+        Template temp = cfg.getTemplate('/'
+                +renderer.getClass().getPackage().getName().replace('.','/')
+                +'/'+TEMPLATE_DIRECTORY+'/'+template);
         try
         {
             temp.process(dataModel, context.getResponseWriter());
@@ -58,5 +62,33 @@ public class DefaultTemplateEncoder implements TemplateEncoder {
         {
             throw new IOException(e.getMessage());
         }
+    }
+    
+    /**
+     * Retrieve the current configuration or if no instance exists create a new one. 
+     * 
+     * @param context The current FacesContext
+     * @param cacheParamName the variable used to save and retrieve on application scope the current template configuration
+     * @return
+     */
+    protected Configuration getConfig(FacesContext context, String cacheParamName)
+    {
+        Configuration config = 
+            (Configuration) context.getExternalContext().getApplicationMap().get(cacheParamName);
+        if(config == null)
+        {
+            config = createConfig(context);
+            context.getExternalContext().getApplicationMap().put(cacheParamName, config);
+        }
+        return config;
+    }
+    
+    protected Configuration createConfig(FacesContext context)
+    {
+        Configuration config = new Configuration();
+        TemplateLoader templateLoader = new DefaultTemplateLoader();
+        config.setObjectWrapper(new DefaultObjectWrapper());
+        config.setTemplateLoader(templateLoader);
+        return config;
     }
 }
