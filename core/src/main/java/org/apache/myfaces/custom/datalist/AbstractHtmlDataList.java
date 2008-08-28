@@ -21,6 +21,7 @@ package org.apache.myfaces.custom.datalist;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -172,29 +173,6 @@ public abstract class AbstractHtmlDataList
         }
     }
     
-    public String getClientId(FacesContext context)
-    {
-        String clientId = HtmlComponentUtils.getClientId(
-                this,getRenderer(context),context);
-
-        if(clientId==null)
-        {
-            return super.getClientId(context);
-        }
-        else
-        {
-            int rowIndex = getRowIndex();
-            if (rowIndex == -1)
-            {
-                return clientId;
-            }
-            else
-            {
-                return clientId + "_" + rowIndex;
-            }
-        }
-    }
-
     public void setRowIndex(int rowIndex)
     {
         super.setRowIndex(rowIndex);

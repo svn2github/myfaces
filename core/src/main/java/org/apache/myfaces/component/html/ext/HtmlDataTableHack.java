@@ -42,6 +42,7 @@ import javax.faces.model.ScalarDataModel;
 import javax.servlet.jsp.jstl.sql.Result;
 
 import org.apache.myfaces.component.ForceIdAware;
+import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.custom.ExtendedComponentBase;
 
 /**
@@ -106,7 +107,11 @@ public abstract class HtmlDataTableHack extends
      */
     public String getClientId(FacesContext context)
     {
-        String clientId = super.getClientId(context);
+        String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
+        if (clientId == null)
+        {
+            clientId = super.getClientId(context);
+        }
         int rowIndex = getRowIndex();
         if (rowIndex == -1)
         {
