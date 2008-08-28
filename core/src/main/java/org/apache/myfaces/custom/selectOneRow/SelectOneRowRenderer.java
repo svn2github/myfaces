@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.custom.selectOneRow;
 
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
@@ -54,9 +55,11 @@ public class SelectOneRowRenderer extends HtmlRenderer
             writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO, null);
             writer.writeAttribute(HTML.NAME_ATTR, row.getGroupName(), null);
 
-            // todo: disabled Attribute
-            //writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
-
+            if (isDisabled(facesContext, row))
+            {
+                writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
+            }
+            
             writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
             if (isRowSelected(row))
@@ -72,6 +75,22 @@ public class SelectOneRowRenderer extends HtmlRenderer
 
             writer.endElement(HTML.INPUT_ELEM);
         }
+    }
+    
+    /**
+     * Check if the component is disabled or not, taking into account
+     * the config init param org.apache.myfaces.READONLY_AS_DISABLED_FOR_SELECTS 
+     */
+    protected boolean isDisabled(FacesContext facesContext, SelectOneRow row)
+    {
+        boolean disabled = row.isDisabled();
+        boolean readonly = row.isReadonly();
+        if (!disabled && readonly)
+        {
+            disabled = MyfacesConfig.getCurrentInstance(facesContext
+                            .getExternalContext()).isReadonlyAsDisabledForSelect();
+        }
+        return disabled;        
     }
 
     private boolean isRowSelected(UIComponent component)

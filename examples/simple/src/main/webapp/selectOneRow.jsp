@@ -33,6 +33,7 @@
 
     <h:form>
 
+    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
     <h:panelGroup id="body">
 
