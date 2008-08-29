@@ -23,6 +23,8 @@ import javax.faces.component.StateHolder;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+
 /**
  * Provides the ability to store a model value inside the view's component tree.
  * <p>
@@ -61,13 +63,13 @@ import javax.faces.context.FacesContext;
  * its lifetime.
  * </p>
  * 
- * @JSFComponent
- *   name = "t:saveState"
- *   tagClass = "org.apache.myfaces.custom.savestate.SaveStateTag"
  * @JSFJspProperty name = "name" returnType = "java.lang.String" tagExcluded = "true"
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+    name = "t:saveState",
+    tagClass = "org.apache.myfaces.custom.savestate.SaveStateTag")
 public class UISaveState extends UIParameter
 {
 

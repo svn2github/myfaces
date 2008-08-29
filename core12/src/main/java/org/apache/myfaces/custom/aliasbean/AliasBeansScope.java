@@ -33,6 +33,9 @@ import javax.faces.event.FacesEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperties;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperty;
 import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
 import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 
@@ -49,24 +52,23 @@ import org.apache.myfaces.shared_tomahawk.component.BindingAware;
  * the scope of the nested AliasBean tags extends to the end of this component.
  * </p>
  * 
- * @JSFComponent
- *   name = "t:aliasBeansScope"
- *   tagClass = "org.apache.myfaces.custom.aliasbean.AliasBeansScopeTag"
- *   tagHandler = "org.apache.myfaces.custom.aliasbean.AliasBeansScopeTagHandler"
- *   
- * @JSFJspProperty 
- *   name = "rendered"
- *   returnType = "boolean" 
- *   tagExcluded = "true"
- *   
- * @JSFJspProperty
- *   name = "binding"
- *   returnType = "java.lang.String"
- *   tagExcluded = "true"
- *   
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+        name = "t:aliasBeansScope",
+        tagClass = "org.apache.myfaces.custom.aliasbean.AliasBeansScopeTag",
+        tagHandler = "org.apache.myfaces.custom.aliasbean.AliasBeansScopeTagHandler")
+@JSFJspProperties(properties={
+        @JSFJspProperty(
+                name = "rendered",
+                returnType = "boolean", 
+                tagExcluded = true),
+        @JSFJspProperty(
+                name = "binding",
+                returnType = "java.lang.String",
+                tagExcluded = true)
+                })
 public class AliasBeansScope extends UIComponentBase implements BindingAware
 {
     static final Log log = LogFactory.getLog(AliasBeansScope.class);

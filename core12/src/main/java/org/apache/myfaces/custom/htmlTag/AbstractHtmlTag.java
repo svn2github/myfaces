@@ -21,6 +21,8 @@ package org.apache.myfaces.custom.htmlTag;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperty;
 import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.component.UserRoleAware;
@@ -45,19 +47,17 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
- * @JSFComponent
- *   name = "t:htmlTag"
- *   class = "org.apache.myfaces.custom.htmlTag.HtmlTag"
- *   tagClass = "org.apache.myfaces.custom.htmlTag.HtmlTagTag"
- *   
- * @JSFJspProperty
- *   name = "converter"
- *   returnType = "javax.faces.convert.Converter"
- *   tagExcluded = "true"
- * 
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+        name = "t:htmlTag",
+        clazz = "org.apache.myfaces.custom.htmlTag.HtmlTag",
+        tagClass = "org.apache.myfaces.custom.htmlTag.HtmlTagTag")
+@JSFJspProperty(
+        name = "converter",
+        returnType = "javax.faces.convert.Converter",
+        tagExcluded = true)
 public abstract class AbstractHtmlTag extends UIOutput 
     implements UserRoleAware, StyleAware, ForceIdAware
 {

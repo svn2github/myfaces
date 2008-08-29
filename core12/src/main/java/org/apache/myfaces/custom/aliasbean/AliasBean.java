@@ -34,6 +34,10 @@ import javax.faces.event.FacesEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperties;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperty;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
@@ -68,24 +72,23 @@ import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
  * component, rather than the end of this component.
  * </p>
  *
- * @JSFComponent
- *   name = "t:aliasBean"
- *   tagClass = "org.apache.myfaces.custom.aliasbean.AliasBeanTag"
- *   tagHandler = "org.apache.myfaces.custom.aliasbean.AliasBeanTagHandler"
- * 
- * @JSFJspProperty 
- *   name = "rendered"
- *   returnType = "boolean" 
- *   tagExcluded = "true"
- *   
- * @JSFJspProperty
- *   name = "binding"
- *   returnType = "java.lang.String"
- *   tagExcluded = "true"
- * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+        name="t:aliasBean",
+        tagClass = "org.apache.myfaces.custom.aliasbean.AliasBeanTag",
+        tagHandler = "org.apache.myfaces.custom.aliasbean.AliasBeanTagHandler")
+@JSFJspProperties(properties={
+        @JSFJspProperty(
+                name = "rendered",
+                returnType = "boolean", 
+                tagExcluded = true),
+        @JSFJspProperty(
+                name = "binding",
+                returnType = "java.lang.String",
+                tagExcluded = true)
+                })
 public class AliasBean extends UIComponentBase implements BindingAware
 {
     private static final Log log = LogFactory.getLog(AliasBean.class);
@@ -122,9 +125,9 @@ public class AliasBean extends UIComponentBase implements BindingAware
      * of this component as an alias to the "real" object specified
      * by the value attribute of this component.
      *
-     * @JSFProperty
      * @param aliasBeanExpression
      */
+    @JSFProperty
     public void setAlias(String aliasBeanExpression)
     {
         alias.setAliasBeanExpression(aliasBeanExpression);
@@ -135,8 +138,8 @@ public class AliasBean extends UIComponentBase implements BindingAware
      * a literal string (like "toto") or a reference to an existing 
      * bean (like "#{myBean.member1}").
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public String getValue()
     {
         String valueExpression = alias.getValueExpression();

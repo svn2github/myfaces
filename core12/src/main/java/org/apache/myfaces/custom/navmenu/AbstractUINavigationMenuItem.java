@@ -33,6 +33,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.component.MethodBindingToMethodExpression;
 import org.apache.myfaces.component.MethodExpressionToMethodBinding;
 import org.apache.myfaces.component.UserRoleAware;
@@ -45,15 +47,14 @@ import org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu;
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
- * @JSFComponent
- *   name = "t:navigationMenuItem"
- *   bodyContent = "JSP"
- *   class = "org.apache.myfaces.custom.navmenu.UINavigationMenuItem"
- *   tagClass = "org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItemTag"
- * 
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+        name = "t:navigationMenuItem",
+        bodyContent = "JSP",
+        clazz = "org.apache.myfaces.custom.navmenu.UINavigationMenuItem",
+        tagClass = "org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItemTag")
 public abstract class AbstractUINavigationMenuItem extends UISelectItem implements
     UserRoleAware, ActionSource {
     private static final boolean DEFAULT_IMMEDIATE = true;
@@ -70,21 +71,21 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
     }
 
     /**
-     * @JSFProperty 
+     *  
      */
+    @JSFProperty
     public abstract String getIcon();
 
     /**
-     * @JSFProperty
-     *   defaultValue="false" 
+     * 
      */
+    @JSFProperty(defaultValue="false")
     public abstract boolean isSplit();
 
     /**
-     * @JSFProperty
-     *   defaultValue="false" 
-     *   tagExcluded = "true"
+     * 
      */
+    @JSFProperty(defaultValue="false",tagExcluded=true)
     public abstract boolean isOpen();
     
     public abstract void setOpen(boolean open);
@@ -92,23 +93,21 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
     public abstract void setActive(boolean active);
 
     /**
-     * @JSFProperty
-     *   defaultValue="false"
-     *   tagExcluded = "true"
+     * 
      */
+    @JSFProperty(defaultValue="false",tagExcluded=true)
     public abstract boolean isActive();
 
     /**
-     * @JSFProperty
-     *   defaultValue="true" 
-     *   tagExcluded="true"
+     * 
      */
+    @JSFProperty(defaultValue="true",tagExcluded=true)
     public abstract boolean isImmediate();
 
     /**
-     * @JSFProperty
-     *   tagExcluded = "true"
+     * 
      */
+    @JSFProperty(tagExcluded=true)
     public abstract String getExternalLink();
 
     // Action Source    
@@ -125,12 +124,12 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
      * for the current view.  This is functionally equivalent to a reference to
      * an action method that returns the string literal.
      * 
-     * @JSFProperty
-     *   stateHolder = "true"
-     *   literalOnly = "true"
-     *   returnSignature="java.lang.Object"
-     *   jspName = "action"
      */
+    @JSFProperty(
+            stateHolder = true,
+            literalOnly = true,
+            returnSignature = "java.lang.Object",
+            jspName = "action")
     public abstract MethodExpression getActionExpression();
     
     /**
@@ -176,12 +175,12 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
      * and returns void. The phase that this event is fired in can be controlled
      * via the immediate attribute.
      *  
-     * @JSFProperty
-     *   stateHolder = "true"
-     *   literalOnly = "true"
-     *   returnSignature="void"
-     *   methodSignature="javax.faces.event.ActionEvent"
      */
+    @JSFProperty(
+         stateHolder = true,
+         literalOnly = true,
+         returnSignature="void",
+         methodSignature="javax.faces.event.ActionEvent")
     public abstract MethodBinding getActionListener();
 
     public void addActionListener(ActionListener listener) {
@@ -200,24 +199,23 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
 
     /**
      * 
-     * @JSFProperty 
      */
+    @JSFProperty
     public abstract String getTarget();
 
     /**
      * When set instead of a Hyperlink a span tag is rendered in 
      * the corresponding Component
-     * 
-     * @JSFProperty
-     *   defaultValue="false" 
+     *
      */
+    @JSFProperty(defaultValue="false") 
     public abstract boolean isDisabled();
 
     /**
      * CSS-Style Attribute to render when disabled is true
      * 
-     * @JSFProperty 
      */
+    @JSFProperty
     public abstract String getDisabledStyle();
 
     /**
@@ -258,15 +256,16 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
     /**
      * CSS-Style Class to use when disabled is true
      * 
-     * @JSFProperty 
      */
+    @JSFProperty
     public abstract String getDisabledStyleClass();
 
     /**
-     * @JSFProperty
-     *   localMethod="true"
-     *   tagExcluded = "true" 
+     * 
      */
+    @JSFProperty(
+        localMethod= true,
+        tagExcluded = true) 
     public abstract String getActiveOnViewIds();
     
     protected abstract String getLocalActiveOnViewIds();
@@ -318,7 +317,7 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
         }
 
         HtmlPanelNavigationMenu root = (HtmlPanelNavigationMenu) parent;
-        for (Iterator it = root.getChildren().iterator(); it.hasNext();) {
+        for (Iterator<UIComponent> it = root.getChildren().iterator(); it.hasNext();) {
             Object o = it.next();
             if (o instanceof AbstractUINavigationMenuItem) {
                 AbstractUINavigationMenuItem navItem = (AbstractUINavigationMenuItem) o;
@@ -338,7 +337,7 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
     }
 
     public void deactivateChildren() {
-        for (Iterator it = this.getChildren().iterator(); it.hasNext();) {
+        for (Iterator<UIComponent> it = this.getChildren().iterator(); it.hasNext();) {
             Object o = it.next();
             if (o instanceof AbstractUINavigationMenuItem) {
                 AbstractUINavigationMenuItem current = (AbstractUINavigationMenuItem) o;

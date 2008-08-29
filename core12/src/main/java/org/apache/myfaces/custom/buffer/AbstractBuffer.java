@@ -22,6 +22,11 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperties;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperty;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+
 /**
  * A component that renders its child components into an in-memory buffer rather than
  * render them directly to the response stream.
@@ -49,29 +54,27 @@ import javax.faces.context.FacesContext;
  * then output buffers B2,B1,B2.
  * </p>
  * 
- * @JSFComponent
- *   name = "t:buffer"
- *   class = "org.apache.myfaces.custom.buffer.Buffer"
- *   tagClass = "org.apache.myfaces.custom.buffer.BufferTag"
- *   
- * @JSFJspProperty 
- *   name = "rendered"
- *   returnType = "boolean" 
- *   tagExcluded = "true"
- *   
- * @JSFJspProperty
- *   name = "binding"
- *   returnType = "java.lang.String"
- *   tagExcluded = "true"
- * 
- * @JSFJspProperty
- *   name = "id"
- *   returnType = "java.lang.String"
- *   tagExcluded = "true" 
- * 
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+        name = "t:buffer",
+        clazz = "org.apache.myfaces.custom.buffer.Buffer",
+        tagClass = "org.apache.myfaces.custom.buffer.BufferTag")
+@JSFJspProperties(properties={
+        @JSFJspProperty(
+                name = "rendered",
+                returnType = "boolean", 
+                tagExcluded = true),
+        @JSFJspProperty(
+                name = "binding",
+                returnType = "java.lang.String",
+                tagExcluded = true),
+        @JSFJspProperty(
+                name = "id",
+                returnType = "java.lang.String",
+                tagExcluded = true)
+                })
 public abstract class AbstractBuffer extends UIComponentBase{
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.Buffer";
@@ -103,10 +106,10 @@ public abstract class AbstractBuffer extends UIComponentBase{
      * this is assigned to after rendering of this component (and its 
      * children) is complete.
      * 
-     * @JSFProperty
-     *   required = "true"
-     *   localMethod = "true"    
      */
+    @JSFProperty(
+            required = true,
+            localMethod = true)
     protected abstract String getInto(); 
 
 }

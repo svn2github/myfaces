@@ -33,6 +33,8 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.component.MethodBindingToMethodExpression;
 import org.apache.myfaces.component.MethodExpressionToMethodBinding;
 import org.apache.myfaces.custom.schedule.model.ScheduleDay;
@@ -42,11 +44,10 @@ import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
  * This class contains all 'interactive' stuff for the Schedule component, meaning
  * actions and actionListeners.
  * 
- * @JSFComponent
- * 
  * @author Jurgen Lust
  * @version $Revision$
  */
+@JSFComponent
 public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBase implements
         Serializable, ActionSource
 {
@@ -207,11 +208,11 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
      *         for the current view.  This is functionally equivalent to a reference to
      *         an action method that returns the string literal.
      *
-     * @JSFProperty
-     *   returnSignature="java.lang.String"
-     *   jspName="action"
      * @return  the new actionExpression value
      */
+    @JSFProperty(
+        returnSignature="java.lang.String",
+       jspName="action")
     public MethodExpression getActionExpression()
     {
       if (_actionExpression != null)
@@ -250,14 +251,14 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
     private MethodExpression _mouseListenerExpression;
 
     /**
-     * @JSFProperty
-     *   returnSignature="void"
-     *   methodSignature="org.apache.myfaces.custom.schedule.ScheduleMouseEvent"
-     *   stateHolder="true"
-     *   jspName="mouseListener"
      *   
      * @return
      */
+    @JSFProperty(
+        returnSignature="void",
+        methodSignature="org.apache.myfaces.custom.schedule.ScheduleMouseEvent",
+        stateHolder=true,
+        jspName="mouseListener")
     public MethodExpression getMouseListenerExpression()
     {
       if (_mouseListenerExpression != null)
@@ -284,10 +285,11 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
     }*/
 
     /**
-     * @JSFProperty
-     *   returnSignature="void"
-     *   methodSignature="javax.faces.event.ActionEvent"
+     * 
      */
+    @JSFProperty(
+        returnSignature="void",
+        methodSignature="javax.faces.event.ActionEvent")
     public MethodBinding getActionListener()
     {
         return _actionListener;
@@ -302,10 +304,9 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
      * The last date and time of day that was clicked. This is set when
      * submitOnClick is true, and the schedule is clicked by the user.
      * 
-     * @JSFProperty
-     *   tagExcluded = "true"
      * @return the last clicked date and time
      */
+    @JSFProperty(tagExcluded = true)        
     public Date getLastClickedDateAndTime()
     {
         return _lastClickedDateAndTime;

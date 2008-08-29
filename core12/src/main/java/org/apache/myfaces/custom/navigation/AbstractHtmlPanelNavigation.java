@@ -30,6 +30,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.component.AlignProperty;
 import org.apache.myfaces.component.DataProperties;
 import org.apache.myfaces.component.EventAware;
@@ -45,14 +47,13 @@ import org.apache.myfaces.component.UniversalProperties;
  * Panel, that includes navigation items ({@link HtmlCommandNavigation}) and other
  * components (separators).
  * 
- * @JSFComponent
- *   name = "t:panelNavigation"
- *   class = "org.apache.myfaces.custom.navigation.HtmlPanelNavigation"
- *   tagClass = "org.apache.myfaces.custom.navigation.HtmlPanelNavigationTag"
- * 
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
+@JSFComponent(
+        name = "t:panelNavigation",
+        clazz = "org.apache.myfaces.custom.navigation.HtmlPanelNavigation",
+        tagClass = "org.apache.myfaces.custom.navigation.HtmlPanelNavigationTag")
 public abstract class AbstractHtmlPanelNavigation
         extends HtmlPanelGroup implements AlignProperty,
         UniversalProperties, EventAware, DataProperties, PanelProperties
@@ -144,57 +145,57 @@ public abstract class AbstractHtmlPanelNavigation
     /**
      * The CSS class of closed navigation items.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getItemClass();
 
     /**
      * The CSS class of open navigation items.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getOpenItemClass();
 
     /**
      * The CSS class of the active navigation item.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getActiveItemClass();
 
     /**
      * The CSS class for the td element of a separator.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getSeparatorClass();
 
     /**
      * The CSS Style of closed navigation items.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getItemStyle();
 
     /**
      * The CSS Style of open navigation items.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getOpenItemStyle();
 
     /**
      * The CSS Style of the active navigation item.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getActiveItemStyle();
 
     /**
      * The CSS Style for the td element of a separator.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getSeparatorStyle();
 
 }

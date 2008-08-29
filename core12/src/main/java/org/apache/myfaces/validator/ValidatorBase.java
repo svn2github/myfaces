@@ -32,15 +32,17 @@ import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFValidator;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 
 /**
  * Base validator implementation for Apache MyFaces Commons Validators.
  *
- * @JSFValidator
- *   configExcluded = "true"
- *   tagClass = "org.apache.myfaces.validator.ValidatorBaseTag"
  */
+@JSFValidator(
+   configExcluded = true,
+   tagClass = "org.apache.myfaces.validator.ValidatorBaseTag")
 public abstract class ValidatorBase implements StateHolder, Validator {
 
     private String _summaryMessage = null;
@@ -49,9 +51,10 @@ public abstract class ValidatorBase implements StateHolder, Validator {
 
     /**
      *
-     * @JSFProperty
+     * 
      * @return  The summary message to be displayed
      */
+    @JSFProperty
     public String getSummaryMessage()
     {
         if (_summaryMessage != null) return _summaryMessage;
@@ -69,10 +72,11 @@ public abstract class ValidatorBase implements StateHolder, Validator {
 
     /**
      *
-     * @JSFProperty
+     * 
      * @return  The message.
      * @deprecated Use getDetailMessage()
      */
+    @JSFProperty
     public String getMessage() {
         return getDetailMessage();
     }
@@ -89,9 +93,10 @@ public abstract class ValidatorBase implements StateHolder, Validator {
 
     /**
      *
-     * @JSFProperty
+     * 
      * @return  The detail message.
      */
+    @JSFProperty
     public String getDetailMessage() {
         if (_detailMessage != null) return _detailMessage;
         ValueExpression vb = getValueExpression("detailMessage");
