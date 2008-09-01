@@ -48,7 +48,7 @@ public abstract class AbstractHtmlNewspaperTable
         extends HtmlDataTable implements AlignProperty, DataProperties
 {
     /** the component's renderers and type */
-    public static final String RENDERER_TYPE = "org.apache.myfaces.HtmlNewspaperTable";
+    public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlNewspaperTable";
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlNewspaperTable";
 
     /** the property names */
