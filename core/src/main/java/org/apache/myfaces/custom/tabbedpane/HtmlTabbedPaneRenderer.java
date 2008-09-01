@@ -449,6 +449,10 @@ public class HtmlTabbedPaneRenderer
                 String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
                 String onclickEvent = tab.getAttributes().get(HTML.ONCLICK_ATTR) != null ? (String) tab.getAttributes().get(HTML.ONCLICK_ATTR) : "";
                 
+                if(!("").equals(onclickEvent) && onclickEvent.charAt(onclickEvent.length()-1) !=  ';') {
+                    onclickEvent += ";";
+                }
+                
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
                                       onclickEvent
                                       + "return myFaces_showPanelTab("
