@@ -374,7 +374,7 @@
                 <artifactItem>
                   <groupId>org.apache.myfaces.tomahawk</groupId>
                   <artifactId>tomahawk</artifactId>
-                  <version>1.1.7-SNAPSHOT</version>
+                  <version>${pom.version}</version>
                   <classifier>sources</classifier>                   
                   <!-- <outputDirectory>${project.build.directory}/unpacktomahawksources</outputDirectory> -->
                   <outputDirectory>${project.build.directory}/tomahawk11_sources</outputDirectory>
@@ -396,7 +396,7 @@
                 <artifactItem>
                   <groupId>org.apache.myfaces.tomahawk</groupId>
                   <artifactId>tomahawk</artifactId>
-                  <version>1.1.7-SNAPSHOT</version>                                   
+                  <version>${pom.version}</version>                                   
                   <outputDirectory>${project.build.directory}/tomahawk11_resources</outputDirectory>
                   <excludes>**/*.class,**/META-INF/**</excludes>
                 </artifactItem>
