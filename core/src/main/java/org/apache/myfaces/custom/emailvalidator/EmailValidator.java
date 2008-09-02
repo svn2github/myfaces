@@ -36,7 +36,8 @@ import org.apache.myfaces.validator.ValidatorBase;
  *   name = "t:validateEmail"
  *   tagClass = "org.apache.myfaces.custom.emailvalidator.ValidateEmailTag"
  *   serialuidtag = "6041422002721046221L"
- *   
+ * 
+ * @deprecated use myfaces commons mcv:validateEmail instead
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
