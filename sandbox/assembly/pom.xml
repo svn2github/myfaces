@@ -20,13 +20,10 @@
     </scm>
 
     <build>
-
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>dependency-maven-plugin</artifactId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-
                     <execution>
                         <id>copy-javadoc</id>
                         <phase>package</phase>
@@ -35,36 +32,14 @@
                         </goals>
                         <configuration>
                             <artifactItems>
-
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>tomahawk-sandbox</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>javadoc</classifier>
-                                </artifactItem>               
-
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-tlddoc</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-
-                                <artifactItem>
-                                    <groupId>org.apache.myfaces.tomahawk</groupId>
-                                    <artifactId>tomahawk-sandbox</artifactId>
-                                    <version>${version}</version>
-                                    <classifier>tlddoc</classifier>
-                                </artifactItem>
-
-                            </artifactItems>
-                            <outputDirectory>${project.build.directory}/tlddoc</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -78,10 +53,29 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>tomahawk-sandbox</artifactId>
-                                    <version>${version}</version>
-                                </artifactItem>                
+                                    <version>${project.version}</version>
+                                </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/assembly-lib</outputDirectory>
+                        </configuration>
+                    </execution>
+    
+                    <execution>
+                        <id>copy-tlddoc</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk-sandbox</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>tlddoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/tlddoc</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -92,34 +86,145 @@
                         </goals>
                         <configuration>
                             <artifactItems>
+    
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>tomahawk-sandbox</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>sources</classifier>
-                                </artifactItem>                
-
+                                </artifactItem>
+    
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.shared</groupId>
+                                    <artifactId>myfaces-shared-tomahawk</artifactId>
+                                    <version>${myfaces-shared11-version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+    
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/src</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-javadoc12</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk-sandbox12</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>javadoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/javadoc12</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-lib12</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk-sandbox12</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/assembly-lib12</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-tlddoc12</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk-sandbox12</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>tlddoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/tlddoc12</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-source12</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk-sandbox12</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.shared</groupId>
+                                    <artifactId>myfaces-shared-tomahawk</artifactId>
+                                    <version>${myfaces-shared12-version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/src12</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
-
             <plugin>
+                <!-- EXECUTE mvn package to generate assembly files -->
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.0.1</version>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/bin.xml</descriptor>
-                        <descriptor>src/main/assembly/src.xml</descriptor>
-                    </descriptors>
-                    <finalName>tomahawk-sandbox-${version}</finalName>
-                    <outputDirectory>${project.build.directory}/assembly/out</outputDirectory>
-                    <workDirectory>${project.build.directory}/assembly/work</workDirectory>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>makeassembly11</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin.xml</descriptor>
+                                <descriptor>src/main/assembly/src.xml</descriptor>
+                            </descriptors>
+                            <finalName>tomahawk-sandbox-${project.version}</finalName>
+                            <outputDirectory>target/assembly/out</outputDirectory>
+                            <workDirectory>target/assembly/work</workDirectory>
+                        </configuration>                    
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>makeassembly12</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin12.xml</descriptor>
+                                <descriptor>src/main/assembly/src12.xml</descriptor>
+                            </descriptors>
+                            <finalName>tomahawk-sandbox12-${project.version}</finalName>
+                            <outputDirectory>target/assembly/out</outputDirectory>
+                            <workDirectory>target/assembly/work12</workDirectory>
+                        </configuration>                    
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.myfaces.maven</groupId>
                 <artifactId>wagon-maven-plugin</artifactId>
@@ -130,30 +235,99 @@
                     <inputDirectory>${project.build.directory}/assembly/out</inputDirectory>
                 </configuration>
             </plugin>
-
-        </plugins>
-
-    </build>  
-
-    <dependencies>    	
-        <dependency>
-            <groupId>org.apache.myfaces.core</groupId>
-            <artifactId>myfaces-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.myfaces.core</groupId>
-            <artifactId>myfaces-impl</artifactId>
-            <!-- Sandbox must only have runtime dependency to myfaces-impl
-            so that it will be automatically added to binary. But there must not be
-            any compile dependency on impl so that is is always possible to use
-            other JSF implementations. -->
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.myfaces.tomahawk</groupId>
-            <artifactId>tomahawk-sandbox</artifactId>
-            <version>${version}</version>
-        </dependency> 
-    </dependencies>
-
+        </plugins>            
+    </build>
+    
+    <!-- This profile attemped to add dependency libraries to tomahawk
+         binaries and source packages. But it needs to uncomment
+         on src/main/assembly/bin.xml dependencySets tag.
+         
+         But the dependency libraries can be found on the examples
+         assembly, so it is better do not include it here.
+         -->
+    <!-- 
+    <profiles>
+        <profile>
+            <id>tomahawk11</id>
+            <activation>
+                <property>
+                    <name>!jsf</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>makeassembly11</id>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/bin.xml</descriptor>
+                                        <descriptor>src/main/assembly/src.xml</descriptor>
+                                    </descriptors>
+                                    <finalName>tomahawk-${project.version}</finalName>
+                                    <outputDirectory>target/assembly/out</outputDirectory>
+                                    <workDirectory>target/assembly/work</workDirectory>
+                                </configuration>                    
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attached</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                    <artifactId>tomahawk-sandbox</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>            
+        </profile>
+        <profile>
+            <id>tomahawk-sandbox12</id>
+            <activation>
+                <property>
+                    <name>jsf</name>
+                    <value>12</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>makeassembly12</id>
+                                <configuration>
+                                    <descriptors>
+                                        <descriptor>src/main/assembly/bin12.xml</descriptor>
+                                        <descriptor>src/main/assembly/src12.xml</descriptor>
+                                    </descriptors>
+                                    <finalName>tomahawk-sandbox12-${project.version}</finalName>
+                                    <outputDirectory>target/assembly/out</outputDirectory>
+                                    <workDirectory>target/assembly/work12</workDirectory>
+                                </configuration>                    
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attached</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>                
+                </plugins>
+            </build>            
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                    <artifactId>tomahawk-sandbox12</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+    -->
 </project>
