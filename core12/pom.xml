@@ -1,4 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--
+  - Tomahawk code built to use JSF1.2 features.
+  -
+  - Because the JSF1.2 API is mostly backwards-compatible with the JSF1.1 API, Tomahawk can be
+  - compiled for JSF1.1 and run on JSF 1.2. However there are a few JSF1.2-specific features
+  - that this does not take advantage of.
+  -
+  - In particular, JSF1.2 can assume a newer version of JSP is available, and that provides the
+  - following benefits:
+  -  * JSP TLDs can now declare whether attributes support expressions or not. Compile-time
+  -    errors and IDE support are improved.
+  -
+  - Of course JSF1.2 code can take advantage of a lot more (Java1.5 generics, annotations, 
+  - new APIs, etc). However that would require splitting the Tomahawk code into two branches,
+  - and the maintenance issues associated with that are not desirable. So this project mostly
+  - reuses the "core" tomahawk source code (which is written for JSF1.1 and java1.4) then
+  - recreates the associated configuration files (.tld, faces-config.xml, etc). The source
+  - code *is* compiled using java1.5 (while tomahawk 1.1.x releases of course use java1.4).
+  - The "1.2.x" branch of the myfaces shared code is used rather than the "1.1.x" branch.
+  -->
+
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +40,7 @@
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
     <artifactId>tomahawk-project</artifactId>
-    <version>1.1.8-SNAPSHOT</version>
+    <version>1.1.7-SNAPSHOT</version>
   </parent>
 
   <scm>

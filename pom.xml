@@ -1,4 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!--
+  - Parent pom for all tomahawk and sandbox code.
+  -
+  - This is also a "module" pom that builds child modules.
+  -->
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   
@@ -13,7 +21,7 @@
   <packaging>pom</packaging>
   <name>Tomahawk Project</name>
   <url>http://myfaces.apache.org/tomahawk-project</url>
-  <version>1.1.8-SNAPSHOT</version>	 
+  <version>1.1.7-SNAPSHOT</version>	 
   <description>
   Apache MyFaces Tomahawk is a sub-project of Apache MyFaces which provides an extensive sets
   of custom components for use in your JSF-projects. Additionally, Tomahawk includes many custom
