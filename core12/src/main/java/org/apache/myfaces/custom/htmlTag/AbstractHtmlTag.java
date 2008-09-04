@@ -47,6 +47,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
+ * @since 1.1.7
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

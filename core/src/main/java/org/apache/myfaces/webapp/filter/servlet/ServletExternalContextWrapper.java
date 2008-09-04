@@ -42,8 +42,14 @@ import javax.servlet.http.HttpServletRequest;
  * multipart content request, it is necessary to encapsulate the original
  * request with MultipartRequestWrapper, but the original ExternalContext
  * is tied with the original request so we need to do this wrapper using
- * the delegate pattern starting with TomahawkFacesContextFactory. 
+ * the delegate pattern starting with TomahawkFacesContextFactory.
+ * <p>
+ * NOTE: This class should is used(instantiated) only by 
+ * TomahawkFacesContextWrapper. By that reason, it could change
+ * in the future.
+ * </p>
  * 
+ * @since  1.1.7
  * @author Martin Marinschek
  */
 public class ServletExternalContextWrapper extends ExternalContext {

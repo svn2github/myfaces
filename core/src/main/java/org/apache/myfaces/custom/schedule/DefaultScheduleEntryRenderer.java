@@ -38,6 +38,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 /**
  * The default implementation of the ScheduleEntryRenderer
  * 
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$
  */

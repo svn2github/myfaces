@@ -33,7 +33,10 @@ import javax.faces.el.MethodNotFoundException;
  * ATTENTION: If you make changes to this class, treat 
  * org.apache.myfaces.el.convert.MethodExpressionToMethodBinding
  * accordingly.
- *
+ * 
+ * This class could be moved or changed in the future
+ * 
+ * @since 1.1.7
  * @author Stan Silvert
  * @see org.apache.myfaces.el.convert.MethodExpressionToMethodBinding
  */

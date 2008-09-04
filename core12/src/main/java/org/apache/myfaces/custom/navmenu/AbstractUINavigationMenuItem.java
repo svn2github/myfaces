@@ -47,6 +47,7 @@ import org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu;
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
+ * @since 1.1.7
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

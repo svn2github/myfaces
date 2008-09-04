@@ -41,6 +41,7 @@ import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
  *    to the head of jsf pages (for example when it is used 
  *    DefaultAddResource)
  * 
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

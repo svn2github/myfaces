@@ -38,7 +38,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * <p>
  * Renderer for the month view of the Schedule component
  * </p>
- *
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author: schof $)
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 382051 $

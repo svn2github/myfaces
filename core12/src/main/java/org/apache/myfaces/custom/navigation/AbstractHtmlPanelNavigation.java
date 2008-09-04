@@ -47,6 +47,7 @@ import org.apache.myfaces.component.UniversalProperties;
  * Panel, that includes navigation items ({@link HtmlCommandNavigation}) and other
  * components (separators).
  * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

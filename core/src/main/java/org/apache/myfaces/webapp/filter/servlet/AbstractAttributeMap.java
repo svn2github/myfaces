@@ -32,7 +32,14 @@ import java.util.Set;
 
 /**
  * Helper Map implementation for use with different Attribute Maps.
- *
+ * <p>
+ * NOTE: This class was copied from myfaces impl 
+ * org.apache.myfaces.context.servlet and it is
+ * used by TomahawkFacesContextWrapper. By that reason, it could change
+ * in the future.
+ * </p>
+ * 
+ * @since 1.1.7
  * @author Anton Koinov (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

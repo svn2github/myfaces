@@ -18,6 +18,13 @@
  */
 package org.apache.myfaces.component.html.ext;
 
+/**
+ * 
+ * @since 1.1.7
+ * @author Leonardo Uribe (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ *
+ */
 public interface MessageProperties
 {
 

@@ -31,7 +31,7 @@ import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
  * This class represents a period of time, which may be given a label.
  * An interval is inclusive of the start time, but excludes the end time.
  * </p>
- *
+ * @since 1.1.7
  * @author Peter Mahoney
  * @version $Revision: 371736 $
  */

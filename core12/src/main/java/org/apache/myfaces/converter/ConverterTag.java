@@ -30,8 +30,9 @@ import javax.servlet.jsp.JspException;
  * 
  * This is a copy of org.apache.myfaces.taglib.core.ConverterTag from 
  * myfaces core impl 1.2. This is copied here because we need a base class
- * where all custom converters must inherit. 
- *
+ * where all custom converters must inherit.
+ *  
+ * @since 1.1.7
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -61,6 +61,10 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 /**
+ * This ViewHandler should be used with myfaces core 1.2.4 or superior
+ * and it does not work with jsf ri 1.2 
+ * 
+ * @since 1.1.7
  * @author Martin Marinschek
  * @version $Revision$ $Date$
  */

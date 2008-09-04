@@ -36,6 +36,9 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * 
  * TODO: find a way to share the implementation of class with impl.
  * 
+ * This class could be moved or changed in the future
+ * 
+ * @since 1.1.7
  * @author Stan Silvert
  */
 @SuppressWarnings("deprecation")

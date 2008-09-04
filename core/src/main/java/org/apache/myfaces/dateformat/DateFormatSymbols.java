@@ -33,6 +33,8 @@ import java.util.Locale;
  * SimpleDateFormatter, making this class unnecessary. However javascript
  * does not have an equivalent class built-in, so to keep symmetry between
  * the java and javascript versions we have one here too.
+ * 
+ * @since 1.1.7
  */
 public class DateFormatSymbols
 {

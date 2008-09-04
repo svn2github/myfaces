@@ -28,7 +28,7 @@ import org.apache.myfaces.component.StyleAware;
  *   name = "t:documentBody"
  *   class = "org.apache.myfaces.custom.document.DocumentBody"
  *   tagClass = "org.apache.myfaces.custom.document.DocumentBodyTag"
- *   
+ * @since 1.1.7
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

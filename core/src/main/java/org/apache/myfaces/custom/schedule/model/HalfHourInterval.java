@@ -28,7 +28,7 @@ import java.util.Date;
  * e.g. a start time of 14:15 will generate an interval with
  * end time of 14:30.
  * </p>
- *
+ * @since 1.1.7
  * @author Peter Mahoney
  * @version $Revision: 371736 $
  */

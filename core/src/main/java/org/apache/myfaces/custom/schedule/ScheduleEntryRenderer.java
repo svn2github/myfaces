@@ -44,6 +44,7 @@ import org.apache.myfaces.custom.schedule.model.ScheduleEntry;
  * example.
  * </p>
  * 
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author$)
  * @version $Revision$
  */

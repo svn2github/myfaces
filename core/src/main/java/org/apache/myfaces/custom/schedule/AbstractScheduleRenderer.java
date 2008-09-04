@@ -45,7 +45,7 @@ import java.util.Map;
  * <p>
  * Abstract superclass for all renderer of the UISchedule component
  * </p>
- *
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author: mkienenb $)
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 389938 $

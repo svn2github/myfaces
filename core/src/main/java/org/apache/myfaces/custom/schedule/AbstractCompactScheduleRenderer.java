@@ -44,6 +44,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * Abstract superclass for the week and month view renderers.
  * </p>
  * 
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author: jlust $)
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 398348 $

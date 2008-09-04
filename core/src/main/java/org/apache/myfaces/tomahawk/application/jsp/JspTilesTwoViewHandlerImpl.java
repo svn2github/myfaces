@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * @since 1.1.7
  * @author Martin Marinschek
  * @version $Revision: 472792 $ $Date: 2006-11-09 07:34:47 +0100 (Do, 09 Nov 2006) $
  */

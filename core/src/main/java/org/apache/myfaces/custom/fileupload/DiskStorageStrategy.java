@@ -20,6 +20,10 @@ package org.apache.myfaces.custom.fileupload;
 
 import java.io.File;
 
+/**
+ * 
+ * @since 1.1.7
+ */
 public abstract class DiskStorageStrategy extends StorageStrategy {
 
   public abstract File getTempFile();

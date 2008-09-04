@@ -39,7 +39,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
  *   renderKitId="HTML_BASIC"
  *   family="javax.faces.Input"
  *   type="org.apache.myfaces.Hidden"
- *   
+ * 
+ * @since 1.1.7
  * @author Thomas Spiegl (latest modification by $Author$)
  * @author Anton Koinov
  * @version $Revision$ $Date$

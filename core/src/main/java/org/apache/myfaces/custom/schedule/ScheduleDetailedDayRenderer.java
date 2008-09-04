@@ -47,7 +47,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * <p>
  * Renderer for the day and workweek views of the Schedule component
  * </p>
- *
+ * 
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author: jlust $)
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 392301 $

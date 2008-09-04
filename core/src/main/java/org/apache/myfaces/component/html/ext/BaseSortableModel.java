@@ -37,6 +37,7 @@ import javax.servlet.jsp.jstl.sql.Result;
 /**
  * BaseSortableModel provides a DataModel that is automatically sorted by the specified Comparator.
  * Each time the Comparator is set, the model will be resorted.
+ * @since 1.1.7
  * @version $Revision$
  */
 public class BaseSortableModel extends DataModel

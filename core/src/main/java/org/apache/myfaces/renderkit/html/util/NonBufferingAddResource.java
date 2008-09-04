@@ -38,6 +38,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 /**
+ * @since 1.1.7
  * @author Martin Marinschek
  */
 public class NonBufferingAddResource implements AddResource {

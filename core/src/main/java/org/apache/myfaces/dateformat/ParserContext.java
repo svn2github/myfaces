@@ -24,6 +24,8 @@ package org.apache.myfaces.dateformat;
  * <p>
  * This encapsulates all the properties of a SimpleDateFormatter which
  * are modified during the parsing of a specific input string.
+ * 
+ * @since 1.1.7
  */
 public class ParserContext
 {

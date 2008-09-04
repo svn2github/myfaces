@@ -38,7 +38,7 @@ import org.apache.myfaces.custom.schedule.model.ScheduleModel;
  *   renderKitId = "HTML_BASIC" 
  *   family = "javax.faces.Panel"
  *   type = "org.apache.myfaces.Schedule"
- *
+ * @since 1.1.7
  * @author Jurgen Lust (latest modification by $Author: skitching $)
  * @author Bruno Aranda (adaptation of Jurgen's code to myfaces)
  * @version $Revision: 367444 $

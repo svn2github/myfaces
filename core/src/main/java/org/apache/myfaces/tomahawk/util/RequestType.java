@@ -32,6 +32,8 @@ package org.apache.myfaces.tomahawk.util;
  * all of the other RequestTypes will be portlet type requests.  There
  * are a number of convenience methods on the RequestType enumeration
  * which can be used to determine the capabilities of the current request.
+ * 
+ * @since 1.1.7
  */
 public class RequestType
 {

@@ -35,7 +35,7 @@ import org.apache.myfaces.custom.htmlTag.HtmlTagRenderer;
  *   renderKitId = "HTML_BASIC" 
  *   family = "javax.faces.Output"
  *   type = "org.apache.myfaces.DivRenderer"
- * 
+ * @since 1.1.7
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -23,6 +23,11 @@ import com.sun.facelets.tag.MethodRule;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import com.sun.facelets.tag.jsf.ComponentHandler;
 
+/**
+ * 
+ * @since 1.1.7
+ *
+ */
 public class HtmlPanelTabbedPaneTagHandler extends ComponentHandler
 {
     static final String METHOD_BINDING_ATTR_NAME = "tabChangeListener";

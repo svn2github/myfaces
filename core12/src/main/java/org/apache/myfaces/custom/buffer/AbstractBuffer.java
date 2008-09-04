@@ -54,6 +54,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFPropert
  * then output buffers B2,B1,B2.
  * </p>
  * 
+ * @since 1.1.7
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

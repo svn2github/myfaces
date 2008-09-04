@@ -20,6 +20,10 @@ package org.apache.myfaces.custom.fileupload;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @since 1.1.7
+ */
 public abstract class StorageStrategy implements Serializable{
 
   public abstract void deleteFileContents();    

@@ -25,7 +25,7 @@ import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
  *   renderKitId = "HTML_BASIC"
  *   family = "javax.faces.Command"
  *   type = "org.apache.myfaces.HeaderLink" 
- * 
+ * @since 1.1.7
  * @author Leonardo Uribe (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

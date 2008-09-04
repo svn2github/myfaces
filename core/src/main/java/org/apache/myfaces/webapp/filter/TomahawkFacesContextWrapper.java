@@ -41,6 +41,7 @@ import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 import org.apache.myfaces.webapp.filter.servlet.ServletExternalContextWrapper;
 
 /**
+ * @since 1.1.7
  * @author Martin Marinschek
  */
 public class TomahawkFacesContextWrapper extends FacesContext {

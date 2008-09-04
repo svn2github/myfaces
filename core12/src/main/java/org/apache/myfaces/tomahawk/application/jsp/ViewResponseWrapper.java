@@ -28,6 +28,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 /**
+ * @since 1.1.7
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -29,7 +29,14 @@ import org.apache.myfaces.webapp.filter.servlet.AbstractAttributeMap;
 
 /**
  * PortletRequest header values (multi-value headers) as Map of String[].
- *
+ * <p>
+ * NOTE: This class was copied from myfaces impl 
+ * org.apache.myfaces.context.portlet and it is
+ * used by TomahawkFacesContextWrapper. By that reason, it could change
+ * in the future.
+ * </p>
+ * 
+ * @since 1.1.7
  * @author  Stan Silvert (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

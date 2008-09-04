@@ -22,6 +22,8 @@ package org.apache.myfaces.dateformat;
 /**
  * A simple class that holds a date represented as a (year, week) pair
  * rather than the more traditional (year, month, day).
+ * 
+ * @since 1.1.7
  */
 public class WeekDate
 {

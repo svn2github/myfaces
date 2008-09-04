@@ -34,6 +34,10 @@ import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.TagConfig;
 import com.sun.facelets.tag.TagHandler;
 
+/**
+ * 
+ * @since 1.1.7
+ */
 public class TreeSelectionListenerTagHandler extends TagHandler
 {
 

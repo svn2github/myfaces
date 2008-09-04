@@ -34,6 +34,10 @@ import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import com.sun.facelets.tag.jsf.html.HtmlComponentHandler;
 
+/**
+ * 
+ * @since 1.1.7
+ */
 public class TreeTagHandler extends HtmlComponentHandler
 {
 

@@ -23,6 +23,10 @@ import com.sun.facelets.tag.MethodRule;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import com.sun.facelets.tag.jsf.html.HtmlComponentHandler;
 
+/**
+ * 
+ * @since 1.1.7
+ */
 public class ScheduleTagHandler extends HtmlComponentHandler {
  
     private static final String MOUSE_LISTENER = "mouseListener";
