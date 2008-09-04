@@ -75,7 +75,7 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *   name = "t:inputCalendar"
  *   class = "org.apache.myfaces.custom.calendar.HtmlInputCalendar"
  *   tagClass = "org.apache.myfaces.custom.calendar.HtmlInputCalendarTag"
- * 
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -145,6 +145,13 @@ public abstract class AbstractHtmlInputCalendar
      *   defaultValue = "true" 
      */
     public abstract boolean isAddResources();
+    
+    public abstract void setAddResources(boolean value);
+    
+    public void setAddResources(Boolean value)
+    {
+        this.setAddResources(value.booleanValue());
+    }
 
     /**
      * Defines the string displayed on the button which leads to 

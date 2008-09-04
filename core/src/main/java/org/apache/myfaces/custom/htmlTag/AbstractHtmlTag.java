@@ -47,7 +47,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:htmlTag"
  *   class = "org.apache.myfaces.custom.htmlTag.HtmlTag"
  *   tagClass = "org.apache.myfaces.custom.htmlTag.HtmlTagTag"
- *   
+ * @since 1.1.7
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

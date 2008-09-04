@@ -34,7 +34,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:graphicImage"
  *   class = "org.apache.myfaces.component.html.ext.HtmlGraphicImage"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlGraphicImageTag"
- *   
+ * @since 1.1.7
  * @author Bruno Aranda
  * @version $Revision$ $Date$
  */

@@ -77,6 +77,10 @@ import java.util.List;
  * With ISO-8601, a week always starts on a monday. However many countries
  * use a different convention, starting weeks on saturday, sunday or monday.
  * This class supports setting the firstDayOfWeek.
+ * 
+ * @since 1.1.7
+ * @author Simon Kitching (latest modification by $Author: grantsmith $)
+ * @version $Revision: 472638 $ $Date: 2006-11-08 15:54:13 -0500 (Wed, 08 Nov 2006) $
  */
 public class SimpleDateFormatter
 {

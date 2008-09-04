@@ -60,7 +60,7 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  *   name = "t:dataScroller"
  *   class = "org.apache.myfaces.custom.datascroller.HtmlDataScroller"
  *   tagClass = "org.apache.myfaces.custom.datascroller.HtmlDataScrollerTag"
- *  
+ * @since 1.1.7
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

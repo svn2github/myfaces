@@ -48,7 +48,7 @@ import org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu;
  *   bodyContent = "JSP"
  *   class = "org.apache.myfaces.custom.navmenu.UINavigationMenuItem"
  *   tagClass = "org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItemTag"
- * 
+ * @since 1.1.7
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

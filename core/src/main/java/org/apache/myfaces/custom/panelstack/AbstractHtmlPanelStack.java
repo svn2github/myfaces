@@ -34,7 +34,7 @@ import javax.faces.component.UIPanel;
  *   name = "t:panelStack"
  *   class = "org.apache.myfaces.custom.panelstack.HtmlPanelStack"
  *   tagClass = "org.apache.myfaces.custom.panelstack.PanelStackTag"
- *
+ * @since 1.1.7
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller</a>
  * @version $Revision$ $Date$
  */

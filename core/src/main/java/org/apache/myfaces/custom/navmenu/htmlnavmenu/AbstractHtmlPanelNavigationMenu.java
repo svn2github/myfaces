@@ -51,7 +51,7 @@ import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
  *   name = "t:panelNavigation2"
  *   class = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenu"
  *   tagClass = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlPanelNavigationMenuTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */

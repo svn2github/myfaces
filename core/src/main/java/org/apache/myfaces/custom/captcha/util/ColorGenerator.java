@@ -22,6 +22,8 @@ import java.awt.Color;
 
 /**
  * This class is responsible for generating CAPTCHA random color...
+ * 
+ * @since 1.1.7
  */
 public class ColorGenerator {
     

@@ -63,7 +63,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  *   class = "org.apache.myfaces.custom.subform.SubForm"
  *   tagClass = "org.apache.myfaces.custom.subform.SubFormTag"
  *   implements = "javax.faces.component.NamingContainer"
- *   
+ * @since 1.1.7
  * @author Gerald Muellan
  * @author Martin Marinschek
  *         Date: 19.01.2006

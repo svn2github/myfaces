@@ -39,7 +39,7 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  *   name = "t:selectOneMenu"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectOneMenu"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectOneMenuTag"
- *   
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

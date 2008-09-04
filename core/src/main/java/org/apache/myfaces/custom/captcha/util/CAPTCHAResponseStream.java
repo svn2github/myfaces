@@ -25,6 +25,8 @@ import javax.faces.context.ResponseStream;
 /**
  * This class is responsible for wrapping the CAPTCHA Image
  * response stream.
+ * 
+ * @since 1.1.7
  */
 public final class CAPTCHAResponseStream extends ResponseStream {
     private final OutputStream _out;

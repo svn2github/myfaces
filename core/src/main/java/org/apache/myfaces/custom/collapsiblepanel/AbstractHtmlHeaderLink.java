@@ -33,9 +33,9 @@ import org.apache.myfaces.component.html.ext.HtmlCommandLink;
  *   name = "t:headerLink"
  *   class = "org.apache.myfaces.custom.collapsiblepanel.HtmlHeaderLink"
  *   tagClass = "org.apache.myfaces.custom.collapsiblepanel.HtmlHeaderLinkTag"
- * 
- * @author Martin Marinschek (latest modification by $Author$)
  *
+ * @since 1.1.7
+ * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  *
  */

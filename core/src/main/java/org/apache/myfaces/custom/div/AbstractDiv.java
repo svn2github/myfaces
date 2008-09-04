@@ -30,7 +30,7 @@ import org.apache.myfaces.custom.htmlTag.HtmlTag;
  *   name = "t:div"
  *   class = "org.apache.myfaces.custom.div.Div"
  *   tagClass = "org.apache.myfaces.custom.div.DivTag"
- * 
+ * @since 1.1.7
  * @author bdudney (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -23,6 +23,8 @@ import java.util.Random;
 /**
  * This class is responsible for generating the 
  * CAPTCHA text.
+ * 
+ * @since 1.1.7
  */
 public class CAPTCHATextGenerator {
     

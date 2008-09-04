@@ -50,7 +50,7 @@ import org.apache.myfaces.component.html.ext.HtmlCommandLink;
  *   name = "t:commandNavigation2"
  *   class = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItem"
  *   tagClass = "org.apache.myfaces.custom.navmenu.htmlnavmenu.HtmlCommandNavigationItemTag"
- *    
+ * @since 1.1.7
  * @author Manfred Geiler
  * @author Thomas Spiegl
  */

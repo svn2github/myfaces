@@ -39,7 +39,7 @@ import org.apache.myfaces.custom.schedule.util.ScheduleUtil;
  *   serialuid = "5702081384947086911L"
  *   class = "org.apache.myfaces.custom.schedule.UIScheduleBase"
  *   implements = "java.io.Serializable, javax.faces.component.ValueHolder"   
- * 
+ * @since 1.1.7
  * @author Jurgen Lust
  * @version $Revision$
  */

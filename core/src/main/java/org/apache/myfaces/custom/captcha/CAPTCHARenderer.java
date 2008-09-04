@@ -54,7 +54,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  *   renderKitId = "HTML_BASIC" 
  *   family = "org.apache.myfaces.CAPTCHA"
  *   type = "org.apache.myfaces.CAPTCHA"
- *
+ * @since 1.1.7
  * @author Hazem Saleh
  *
  */

@@ -37,6 +37,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  * @JSFJspProperty name = "binding" tagExcluded = "true"
  * @JSFJspProperty name = "rendered" tagExcluded = "true"
  * @JSFJspProperty name = "converter" tagExcluded = "true"
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

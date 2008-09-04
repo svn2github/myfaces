@@ -26,7 +26,11 @@ package org.apache.myfaces.component;
  * 
  * org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable 
  * are available on shared, but we need something on tomahawk
- * to define and generate properties. 
+ * to define and generate properties.
+ * 
+ * @since 1.1.7
+ * @author Leonardo Uribe (latest modification by $Author$)
+ * @version $Revision$ $Date$
  *
  */
 public interface DisplayValueOnlyAware

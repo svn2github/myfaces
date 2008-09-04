@@ -36,7 +36,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:messages"
  *   class = "org.apache.myfaces.component.html.ext.HtmlMessages"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlMessagesTag"
- * 
+ * @since 1.1.7 
  * @author Thomas Spiegl (latest modification by $Author$)
  * @author Manfred Geiler
  * @version $Revision$ $Date$

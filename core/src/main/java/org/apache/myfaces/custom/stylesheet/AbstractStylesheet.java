@@ -31,7 +31,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  *   name = "t:stylesheet"
  *   class = "org.apache.myfaces.custom.stylesheet.Stylesheet"
  *   tagClass = "org.apache.myfaces.custom.stylesheet.StylesheetTag"
- * 
+ * @since 1.1.7
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

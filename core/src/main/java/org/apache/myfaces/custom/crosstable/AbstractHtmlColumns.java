@@ -36,7 +36,7 @@ import org.apache.myfaces.custom.column.HtmlColumn;
  *   tagClass = "org.apache.myfaces.custom.crosstable.HtmlColumnsTag"
  *   implements = "org.apache.myfaces.custom.column.HtmlColumn"
  *   defaultRendererType = ""
- * 
+ * @since 1.1.7
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

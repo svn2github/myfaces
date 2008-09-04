@@ -29,7 +29,7 @@ import org.apache.myfaces.component.AlignProperty;
  *   name = "t:selectOneRow"
  *   class = "org.apache.myfaces.custom.selectOneRow.SelectOneRow"
  *   tagClass = "org.apache.myfaces.custom.selectOneRow.SelectOneRowTag"
- *
+ * @since 1.1.7
  */
 public abstract class AbstractSelectOneRow extends UIInput 
     implements AlignProperty

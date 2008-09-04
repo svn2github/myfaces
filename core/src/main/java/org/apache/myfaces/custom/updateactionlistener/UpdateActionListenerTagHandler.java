@@ -42,6 +42,7 @@ import com.sun.facelets.tag.jsf.ComponentConfig;
 /**
  * Tag handler for the Tomahawk UpdateActionListener tag
  * 
+ * @since 1.1.7
  * @author arobinson74
  */
 public class UpdateActionListenerTagHandler extends TagHandler

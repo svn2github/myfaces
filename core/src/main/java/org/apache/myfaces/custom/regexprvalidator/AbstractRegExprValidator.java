@@ -36,7 +36,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  *   class = "org.apache.myfaces.custom.regexprvalidator.RegExprValidator"
  *   tagClass = "org.apache.myfaces.custom.regexprvalidator.ValidateRegExprTag"
  *   serialuidtag = "-449945949876262076L"
- * 
+ * @since 1.1.7
  * @deprecated use myfaces commons mcv:validateRegExpr instead
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$

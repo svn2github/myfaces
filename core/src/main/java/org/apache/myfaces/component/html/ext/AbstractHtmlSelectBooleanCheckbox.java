@@ -40,7 +40,7 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  *   name = "t:selectBooleanCheckbox"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectBooleanCheckbox"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectBooleanCheckboxTag"
- *   
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

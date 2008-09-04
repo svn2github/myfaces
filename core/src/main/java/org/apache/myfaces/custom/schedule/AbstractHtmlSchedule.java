@@ -48,7 +48,7 @@ import org.apache.myfaces.component.UserRoleAware;
  *
  * @author Bruno Aranda (latest modification by $Author$)
  * @author Jurgen Lust
- * 
+ * @since 1.1.7
  * @version $Revision$
  */
 public abstract class AbstractHtmlSchedule extends UISchedule implements UserRoleAware,

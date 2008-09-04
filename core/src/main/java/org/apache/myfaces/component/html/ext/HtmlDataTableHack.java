@@ -56,7 +56,8 @@ import org.apache.myfaces.custom.ExtendedComponentBase;
  * @version $Revision$ $Date$
  */
 public abstract class HtmlDataTableHack extends
-                javax.faces.component.html.HtmlDataTable 
+                javax.faces.component.html.HtmlDataTable implements
+                ExtendedComponentBase
                 
 {
     private Map _dataModelMap = new HashMap();
@@ -606,14 +607,14 @@ public abstract class HtmlDataTableHack extends
      *   
      * @return
      */
-    public Boolean getForceId()
+    public boolean isForceId()
     {
-        return _forceId;
+        return _forceId.booleanValue();
     }
 
-    public void setForceId(Boolean forceId)
+    public void setForceId(boolean forceId)
     {
-        this._forceId = forceId;
+        this._forceId = Boolean.valueOf(forceId);
     }
     // Property: forceIdIndex
     private Boolean _forceIdIndex  = Boolean.valueOf(true);
@@ -631,14 +632,14 @@ public abstract class HtmlDataTableHack extends
      *   
      * @return
      */
-    public Boolean getForceIdIndex()
+    public boolean isForceIdIndex()
     {
-        return _forceIdIndex;
+        return _forceIdIndex.booleanValue();
     }
 
-    public void setForceIdIndex(Boolean forceIdIndex)
+    public void setForceIdIndex(boolean forceIdIndex)
     {
-        this._forceIdIndex = forceIdIndex;
+        this._forceIdIndex = Boolean.valueOf(forceIdIndex);
     }
     
     private static boolean booleanFromObject(Object obj, boolean defaultValue)

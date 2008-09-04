@@ -32,7 +32,7 @@ import javax.faces.context.FacesContext;
  *   name = "t:inputHidden"
  *   class = "org.apache.myfaces.component.html.ext.HtmlInputHidden"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlInputHiddenTag"
- *
+ * @since 1.1.7
  * @author Sean Schofield
  * @version $Revision$ $Date$
  */

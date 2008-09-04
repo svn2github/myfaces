@@ -28,6 +28,7 @@ import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.custom.ExtendedComponentBase;
 import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
 
@@ -43,7 +44,7 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  *   name = "t:selectManyCheckbox"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectManyCheckboxTag"
- *   
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -51,7 +52,8 @@ public abstract class AbstractHtmlSelectManyCheckbox
         extends javax.faces.component.html.HtmlSelectManyCheckbox
         implements UserRoleAware, DisplayValueOnlyCapable,  
         EscapeCapable, DisplayValueOnlyAware, EscapeAware,
-        ForceIdAware, DataProperties, AltProperty
+        ForceIdAware, DataProperties, AltProperty,
+        ExtendedComponentBase
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlSelectManyCheckbox";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Checkbox";

@@ -39,7 +39,7 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  *   name = "t:selectManyMenu"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectManyMenu"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectManyMenuTag"
- *   
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

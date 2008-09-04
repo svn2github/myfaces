@@ -103,7 +103,7 @@ public abstract class AbstractHtmlForm extends javax.faces.component.html.HtmlFo
      *   
      * @return
      */
-    public abstract Boolean getForceId();
+    public abstract boolean isForceId();
         
     /**
      *  If false, this component will not append a '[n]' suffix 
@@ -118,6 +118,6 @@ public abstract class AbstractHtmlForm extends javax.faces.component.html.HtmlFo
      *   
      * @return
      */
-    public abstract Boolean getForceIdIndex();
+    public abstract boolean isForceIdIndex();
         
 }

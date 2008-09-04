@@ -176,9 +176,9 @@ public abstract class AbstractOutputLinkDynamic extends HtmlOutputLink
      *   
      * @return
      */
-    public abstract Boolean getForceId();
+    public abstract boolean isForceId();
     
-    public abstract void setForceId(Boolean forceId);
+    public abstract void setForceId(boolean forceId);
     
     /**
      *  If false, this component will not append a '[n]' suffix 
@@ -193,8 +193,8 @@ public abstract class AbstractOutputLinkDynamic extends HtmlOutputLink
      *   
      * @return
      */
-    public abstract Boolean getForceIdIndex();
+    public abstract boolean isForceIdIndex();
     
-    public abstract void setForceIdIndex(Boolean forceIdIndex);
+    public abstract void setForceIdIndex(boolean forceIdIndex);
     
 }

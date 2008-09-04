@@ -42,7 +42,7 @@ import javax.faces.component.UIOutput;
  * @JSFJspProperty name = "rendered" returnType = "boolean" tagExcluded = "true"
  * @JSFJspProperty name = "binding" returnType = "java.lang.String" tagExcluded = "true"
  * @JSFJspProperty name = "id" returnType = "java.lang.String" tagExcluded = "true"
- * 
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

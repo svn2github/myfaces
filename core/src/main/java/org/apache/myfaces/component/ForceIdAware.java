@@ -23,6 +23,7 @@ package org.apache.myfaces.component;
  * Components that support forceId generation should implement 
  * this interface to optimize property access.
  *
+ * @since 1.1.7
  * @author Leonardo Uribe (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
@@ -38,9 +39,9 @@ public interface ForceIdAware
      *   
      * @return
      */
-    public Boolean getForceId();
+    public boolean isForceId();
     
-    public void setForceId(Boolean forceId);
+    public void setForceId(boolean forceId);
     
     /**
      *  If false, this component will not append a '[n]' suffix 
@@ -55,8 +56,8 @@ public interface ForceIdAware
      *   
      * @return
      */
-    public Boolean getForceIdIndex();
+    public boolean isForceIdIndex();
     
-    public void setForceIdIndex(Boolean forceIdIndex);
+    public void setForceIdIndex(boolean forceIdIndex);
     
 }

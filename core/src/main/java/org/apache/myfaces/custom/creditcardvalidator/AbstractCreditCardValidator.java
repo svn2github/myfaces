@@ -36,7 +36,8 @@ import javax.faces.validator.ValidatorException;
  *   bodyContent = "empty"
  *   tagClass = "org.apache.myfaces.custom.creditcardvalidator.ValidateCreditCardTag"
  *   serialuidtag = "3810660506302799072L"
- * 
+ *   
+ * @since 1.1.7
  * @deprecated use myfaces commons mcv:validateCreditCard instead
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$

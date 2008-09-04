@@ -49,7 +49,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlListboxRendererBase
  *   renderKitId = "HTML_BASIC" 
  *   family = "javax.faces.SelectMany"
  *   type = "org.apache.myfaces.PicklistRenderer"
- * 
+ * @since 1.1.7
  * @author Bruno Aranda (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -310,6 +310,11 @@ public abstract class AbstractHtmlPanelTabbedPane
      *   defaultValue = "false"
      */
     public abstract boolean isServerSideTabSwitch();
+    
+    public boolean getServerSideTabSwitch()
+    {
+        return isServerSideTabSwitch();
+    }
 
     /**
      * Define if the process validation and update model phases

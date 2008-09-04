@@ -26,7 +26,7 @@ import javax.faces.component.UIComponentBase;
  *   name = "t:captcha"
  *   class = "org.apache.myfaces.custom.captcha.CAPTCHAComponent"
  *   tagClass = "org.apache.myfaces.custom.captcha.CAPTCHATag"
- * 
+ * @since 1.1.7
  * @author Hazem Saleh
  *
  */

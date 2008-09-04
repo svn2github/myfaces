@@ -48,7 +48,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  *   name = "t:selectOneLanguage"
  *   class = "org.apache.myfaces.custom.selectOneLanguage.SelectOneLanguage"
  *   tagClass = "org.apache.myfaces.custom.selectOneLanguage.SelectOneLanguageTag"
- * 
+ * @since 1.1.7
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

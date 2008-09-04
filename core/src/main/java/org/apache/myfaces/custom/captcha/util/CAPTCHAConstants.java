@@ -20,6 +20,8 @@ package org.apache.myfaces.custom.captcha.util;
 
 /**
  * This interface holds all the CAPTCHA related constants.
+ * 
+ * @since 1.1.7
  */
 public interface CAPTCHAConstants {
     public static final int DEFAULT_CAPTCHA_WIDTH = 290;

@@ -38,7 +38,7 @@ import org.apache.myfaces.component.UniversalProperties;
  *   name = "t:panelLayout"
  *   class = "org.apache.myfaces.custom.layout.HtmlPanelLayout"
  *   tagClass = "org.apache.myfaces.custom.layout.HtmlPanelLayoutTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

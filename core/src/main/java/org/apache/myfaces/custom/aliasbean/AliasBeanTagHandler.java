@@ -31,6 +31,14 @@ import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import com.sun.facelets.tag.jsf.ComponentHandler;
 
+/**
+ * Tag handler used in facelets
+ * 
+ * @since 1.1.7
+ * @author Leonardo Uribe (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ *
+ */
 public class AliasBeanTagHandler extends ComponentHandler
 {
     private TagAttribute valueAttr;

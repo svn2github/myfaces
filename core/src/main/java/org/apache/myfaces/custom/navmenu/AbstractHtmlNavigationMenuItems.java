@@ -28,7 +28,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  * A tree of menu items as returned by a value-expression. 
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
- * 
+ * @since 1.1.7
  * @JSFComponent
  *   name = "t:navigationMenuItems"
  *   class = "org.apache.myfaces.custom.navmenu.HtmlNavigationMenuItems"

@@ -36,7 +36,7 @@ import org.apache.myfaces.component.html.ext.HtmlSelectManyListbox;
  *   name = "t:selectManyPicklist"
  *   class = "org.apache.myfaces.custom.picklist.HtmlSelectManyPicklist"
  *   tagClass = "org.apache.myfaces.custom.picklist.HtmlSelectManyPicklistTag"
- *   
+ * @since 1.1.7
  * @author Bruno Aranda (latest modification by $Author: lu4242 $)
  * @version $Revision: 667663 $ $Date: 2008-06-14 00:53:17 +0300 (Sat, 14 Jun 2008) $
  */

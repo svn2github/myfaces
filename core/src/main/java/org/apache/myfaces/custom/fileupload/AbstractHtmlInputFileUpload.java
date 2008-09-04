@@ -51,7 +51,7 @@ import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
  *   name = "t:inputFileUpload"
  *   class = "org.apache.myfaces.custom.fileupload.HtmlInputFileUpload"
  *   tagClass = "org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -29,7 +29,7 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *   name = "t:inputTextHelp"
  *   class = "org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp"
  *   tagClass = "org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelpTag"
- * 
+ * @since 1.1.7
  * @author Thomas Obereder
  * @version $Date: 2005-07-02 15:32:34 +01:00 (Thu, 09 Jun 2005)
  */

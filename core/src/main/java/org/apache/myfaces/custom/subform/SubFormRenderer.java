@@ -37,7 +37,7 @@ import java.util.Map;
  *   renderKitId = "HTML_BASIC" 
  *   family = "org.apache.myfaces.SubForm"
  *   type = "org.apache.myfaces.SubForm"
- * 
+ * @since 1.1.7
  * @author Gerald Muellan
  *         Date: 19.01.2006
  *         Time: 14:01:35

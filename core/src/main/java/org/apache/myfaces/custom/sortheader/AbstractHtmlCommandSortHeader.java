@@ -50,7 +50,7 @@ import org.apache.myfaces.component.html.ext.HtmlDataTable;
  *   name = "t:commandSortHeader"
  *   class = "org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader"
  *   tagClass = "org.apache.myfaces.custom.sortheader.HtmlCommandSortHeaderTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

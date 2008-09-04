@@ -31,7 +31,7 @@ import javax.faces.component.UIColumn;
  *   name = "t:column"
  *   class = "org.apache.myfaces.custom.column.HtmlSimpleColumn"
  *   tagClass = "org.apache.myfaces.custom.column.HtmlColumnTag"
- * 
+ * @since 1.1.7
  * @author Mathias Broekelmann (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

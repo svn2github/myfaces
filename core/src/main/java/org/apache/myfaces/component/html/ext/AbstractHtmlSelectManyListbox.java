@@ -39,7 +39,7 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  *   name = "t:selectManyListbox"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectManyListbox"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectManyListboxTag"
- *   
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -48,9 +48,9 @@ public abstract class AbstractInputSuggest extends HtmlInputText
      *   defaultValue = "false"
      * @return  the new forceId value
      */
-    public abstract Boolean getForceId();
+    public abstract boolean isForceId();
     
-    public abstract void setForceId(Boolean forceId);
+    public abstract void setForceId(boolean forceId);
 
     /**
      * Gets If false, this component will not append a '[n]' suffix (where 'n' is the row index) to components
@@ -62,7 +62,7 @@ public abstract class AbstractInputSuggest extends HtmlInputText
      *   defaultValue = "true"
      * @return  the new forceIdIndex value
      */
-    public abstract Boolean getForceIdIndex();
+    public abstract boolean isForceIdIndex();
 
     /**
      * Gets An alternate location to find javascript resources. If no values is specified, javascript will be loaded from the resources directory using AddResource and ExtensionsFilter.

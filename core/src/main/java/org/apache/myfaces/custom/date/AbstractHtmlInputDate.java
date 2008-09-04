@@ -45,7 +45,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:inputDate"
  *   class = "org.apache.myfaces.custom.date.HtmlInputDate"
  *   tagClass = "org.apache.myfaces.custom.date.HtmlInputDateTag"
- * 
+ * @since 1.1.7
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

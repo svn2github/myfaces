@@ -36,6 +36,8 @@ import org.apache.batik.ext.awt.image.codec.PNGImageEncoder;
 
 /**
  * This class is responsible for generating the CAPTCHA image.
+ * 
+ * @since 1.1.7
  */
 public class CAPTCHAImageGenerator {
 

@@ -32,7 +32,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  *   name = "t:swapImage"
  *   class = "org.apache.myfaces.custom.swapimage.HtmlSwapImage"
  *   tagClass = "org.apache.myfaces.custom.swapimage.HtmlSwapImageTag"
- * 
+ * @since 1.1.7
  * @author Thomas Spiegl
  * @version $Revision$ $Date$
  */

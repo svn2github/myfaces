@@ -46,7 +46,7 @@ import javax.xml.transform.stream.StreamSource;
  *   name = "t:xmlTransform"
  *   class = "org.apache.myfaces.custom.transform.XmlTransform"
  *   tagClass = "org.apache.myfaces.custom.transform.XmlTransformTag"
- *   
+ * @since 1.1.7
  * @author Sean Schofield
  */
 public abstract class AbstractXmlTransform extends UIComponentBase

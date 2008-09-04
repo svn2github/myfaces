@@ -48,7 +48,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  *   name = "t:selectOneCountry"
  *   class = "org.apache.myfaces.custom.selectOneCountry.SelectOneCountry"
  *   tagClass = "org.apache.myfaces.custom.selectOneCountry.SelectOneCountryTag"
- * 
+ * @since 1.1.7
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -41,6 +41,8 @@ import org.apache.commons.logging.LogFactory;
  * also provide access to some request-specific items which are not available on
  * the JSF ExternalContext.  If portlet API's are not present, this class simply 
  * handles the Servlet Request type.
+ * 
+ * @since 1.1.7
  */
 public final class ExternalContextUtils
 {

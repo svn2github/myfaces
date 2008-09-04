@@ -115,7 +115,8 @@ $innersource
     private $type $field;
     
 #end
-#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded() )
+#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded()
+    && !$property.isLiteralOnly() )
     private boolean ${field}Set;
     
 #if ($property.isSetMethod())
@@ -181,7 +182,8 @@ $innersource
     public void $utils.getPrefixedPropertyName("set", $property.name)($type $utils.getVariableFromName($property.name))
     {
         this.$field = $utils.getVariableFromName($property.name);
-#if ($utils.isPrimitiveClass($type) && !$property.isTagExcluded() )
+#if ($utils.isPrimitiveClass($type) && !$property.isTagExcluded() 
+     && !$property.isLiteralOnly())
         this.${field}Set = true;        
 #end
     }
@@ -191,7 +193,8 @@ $innersource
     {
 #set ($primitiveCount = $propertyList.size() + 1)
 #foreach( $property in $propertyList )
-#if($utils.isPrimitiveClass($property.className))
+#if($utils.isPrimitiveClass($property.className) && 
+    !$property.isLiteralOnly())
 #set ($primitiveCount = $primitiveCount + 1)
 #end
 #end
@@ -215,7 +218,8 @@ $innersource
 #else
         values[$arrayIndex] = $field;
 #end
-#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded())
+#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded()
+    && !$property.isLiteralOnly() )
 #set ($arrayIndex = $arrayIndex + 1)
         values[$arrayIndex] = Boolean.valueOf(${field}Set);
 #end
@@ -247,7 +251,8 @@ $innersource
 #else
         $field = $utils.castIfNecessary($type) values[$arrayIndex];
 #end
-#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded() )
+#if($utils.isPrimitiveClass($type) && !$property.isTagExcluded()
+    && !$property.isLiteralOnly() )
 #set ($arrayIndex = $arrayIndex + 1)
         ${field}Set = ((Boolean) values[$arrayIndex]).booleanValue();
 #end

@@ -34,7 +34,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:outputLabel"
  *   class = "org.apache.myfaces.component.html.ext.HtmlOutputLabel"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlOutputLabelTag"
- *   
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

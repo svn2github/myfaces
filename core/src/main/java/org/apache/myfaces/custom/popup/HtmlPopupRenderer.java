@@ -36,7 +36,7 @@ import java.util.List;
  *   renderKitId = "HTML_BASIC" 
  *   family = "javax.faces.Panel"
  *   type = "org.apache.myfaces.Popup"
- * 
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

@@ -44,7 +44,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  * @JSFJspProperty name = "value" tagExcluded = "true"
  * @JSFJspProperty name = "actionListener" tagExcluded = "true"
  * @JSFJspProperty name = "action" tagExcluded = "true"
- * 
+ * @since 1.1.7
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

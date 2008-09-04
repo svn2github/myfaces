@@ -37,7 +37,7 @@ import javax.faces.component.UISelectItem;
  *   name = "t:treeCheckbox"
  *   class = "org.apache.myfaces.custom.tree.HtmlTreeCheckbox"
  *   tagClass = "org.apache.myfaces.custom.tree.taglib.TreeCheckboxTag"
- *   
+ * @since 1.1.7
  * @author <a href="mailto:dlestrat@yahoo.com">David Le Strat</a>
  */
 public abstract class AbstractHtmlTreeCheckbox extends UISelectItem

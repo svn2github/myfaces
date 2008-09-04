@@ -37,7 +37,7 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  *   name = "t:inputTextarea"
  *   class = "org.apache.myfaces.component.html.ext.HtmlInputTextarea"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlInputTextareaTag"
- *   
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

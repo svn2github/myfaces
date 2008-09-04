@@ -47,7 +47,7 @@ import org.apache.myfaces.component.html.ext.HtmlCommandLink;
  *   name = "t:commandNavigation"
  *   class = "org.apache.myfaces.custom.navigation.HtmlCommandNavigation"
  *   tagClass = "org.apache.myfaces.custom.navigation.HtmlCommandNavigationTag"
- *
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

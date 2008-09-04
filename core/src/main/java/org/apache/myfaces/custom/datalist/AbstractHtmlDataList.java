@@ -41,7 +41,7 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:dataList"
  *   class = "org.apache.myfaces.custom.datalist.HtmlDataList"
  *   tagClass = "org.apache.myfaces.custom.datalist.HtmlDataListTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

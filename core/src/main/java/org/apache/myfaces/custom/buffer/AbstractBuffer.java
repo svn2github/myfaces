@@ -68,7 +68,7 @@ import javax.faces.el.ValueBinding;
  *   name = "id"
  *   returnType = "java.lang.String"
  *   tagExcluded = "true" 
- * 
+ * @since 1.1.7
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

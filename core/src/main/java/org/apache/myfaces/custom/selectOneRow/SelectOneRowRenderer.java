@@ -37,7 +37,7 @@ import java.util.Map;
  *   renderKitId = "HTML_BASIC" 
  *   family = "org.apache.myfaces.SelectOneRow"
  *   type = "org.apache.myfaces.SelectOneRow"
- * 
+ * @since 1.1.7
  */
 public class SelectOneRowRenderer extends HtmlRenderer
 {

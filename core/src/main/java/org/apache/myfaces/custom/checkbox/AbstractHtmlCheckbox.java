@@ -37,7 +37,7 @@ import org.apache.myfaces.component.UserRoleAware;
  *   name = "t:checkbox"
  *   class = "org.apache.myfaces.custom.checkbox.HtmlCheckbox"
  *   tagClass = "org.apache.myfaces.custom.checkbox.HtmlCheckboxTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

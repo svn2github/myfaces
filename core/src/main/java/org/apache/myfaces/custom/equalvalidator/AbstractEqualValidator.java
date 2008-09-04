@@ -45,7 +45,7 @@ import org.apache.myfaces.validator.ValidatorBase;
  *   class = "org.apache.myfaces.custom.equalvalidator.EqualValidator"
  *   tagClass = "org.apache.myfaces.custom.equalvalidator.ValidateEqualTag"
  *   serialuidtag = "-3249115551944863108L"
- * 
+ * @since 1.1.7
  * @deprecated use myfaces commons mcv:validateEqual instead
  * @author mwessendorf (latest modification by $Author$)
  * @version $Revision$ $Date$

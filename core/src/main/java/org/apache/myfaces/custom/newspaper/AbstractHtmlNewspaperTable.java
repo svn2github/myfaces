@@ -41,7 +41,7 @@ import org.apache.myfaces.component.DataProperties;
  *   name = "t:newspaperTable"
  *   class = "org.apache.myfaces.custom.newspaper.HtmlNewspaperTable"
  *   tagClass = "org.apache.myfaces.custom.newspaper.HtmlNewspaperTableTag"
- *
+ * @since 1.1.7
  * @author <a href="mailto:jesse@odel.on.ca">Jesse Wilson</a>
  */
 public abstract class AbstractHtmlNewspaperTable

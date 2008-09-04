@@ -35,7 +35,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  *   name = "t:popup"
  *   class = "org.apache.myfaces.custom.popup.HtmlPopup"
  *   tagClass = "org.apache.myfaces.custom.popup.HtmlPopupTag"
- * 
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

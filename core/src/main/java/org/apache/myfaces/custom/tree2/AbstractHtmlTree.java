@@ -47,7 +47,7 @@ import java.util.Map;
  *   name = "t:tree2"
  *   class = "org.apache.myfaces.custom.tree2.HtmlTree"
  *   tagClass = "org.apache.myfaces.custom.tree2.TreeTag"
- *
+ * @since 1.1.7
  * @author Sean Schofield
  */
 public abstract class AbstractHtmlTree extends UITreeData

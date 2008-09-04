@@ -39,7 +39,7 @@ import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
  *   name = "t:selectOneListbox"
  *   class = "org.apache.myfaces.component.html.ext.HtmlSelectOneListbox"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlSelectOneListboxTag"
- *   
+ * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

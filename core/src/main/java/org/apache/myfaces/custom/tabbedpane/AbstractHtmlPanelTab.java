@@ -35,7 +35,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  *   name = "t:panelTab"
  *   class = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTab"
  *   tagClass = "org.apache.myfaces.custom.tabbedpane.HtmlPanelTabTag"
- * 
+ * @since 1.1.7
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
  */

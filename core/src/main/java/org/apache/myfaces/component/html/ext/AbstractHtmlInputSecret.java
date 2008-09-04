@@ -38,7 +38,7 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  *   name = "t:inputSecret"
  *   class = "org.apache.myfaces.component.html.ext.HtmlInputSecret"
  *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlInputSecretTag"
- *   
+ * @since 1.1.7
  * @author Bruno Aranda
  * @version $Revision$ $Date$
  */
