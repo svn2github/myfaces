@@ -33,6 +33,7 @@ import org.apache.myfaces.custom.suggestajax.SuggestAjax;
  *   class = "org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjax"
  *   superClass = "org.apache.myfaces.custom.suggestajax.inputsuggestajax.AbstractInputSuggestAjax"
  *   tagClass = "org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjaxTag"
+ *   tagHandler = "org.apache.myfaces.custom.suggestajax.inputsuggestajax.InputSuggestAjaxTagHandler"
  *   
  * @author Gerald Muellan (latest modification by $Author$)
  * @author Martin Marinschek
