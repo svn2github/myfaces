@@ -381,7 +381,7 @@
                          <uri>http://myfaces.apache.org/sandbox</uri>
                       </params>
                       <modelIds>
-                          <modelId>tomahawk-sandbox</modelId>
+                          <modelId>tomahawk-sandbox12</modelId>
                       </modelIds>
                   </configuration>
                   <goals>

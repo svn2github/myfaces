@@ -515,7 +515,7 @@
                    <uri>http://myfaces.apache.org/tomahawk</uri>
                 </params>
                 <modelIds>
-                    <modelId>tomahawk</modelId>
+                    <modelId>tomahawk12</modelId>
                 </modelIds>
             </configuration>
             <goals>

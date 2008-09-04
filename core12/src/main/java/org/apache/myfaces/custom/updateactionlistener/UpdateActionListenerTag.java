@@ -44,6 +44,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * @JSFJspTag
  *   name="t:updateActionListener"
  *   bodyContent="JSP"
+ *   tagHandler="org.apache.myfaces.custom.updateactionlistener.UpdateActionListenerTagHandler"
  *   
  * @author Manfred Geiler (latest modification by $Author$)
  * @version $Revision$ $Date$
