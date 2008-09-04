@@ -98,12 +98,17 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             // MultipartRequestWrapper with the correct values.
             
             boolean multipartContent = false;
+           
             if (FileUpload.isMultipartContent(httpRequest)) {
                 multipartContent = true;
-                ExtensionsFilterConfig config = ExtensionsFilterConfig.
-                    getExtensionsFilterConfig(delegate.getExternalContext());
+                
+                MultipartRequestWrapperConfig config = MultipartRequestWrapperConfig
+                        .getMultipartRequestWrapperConfig(delegate
+                                .getExternalContext());                
+                
                 extendedRequest = new MultipartRequestWrapper(httpRequest, config.getUploadMaxFileSize(),
                         config.getUploadThresholdSize(), config.getUploadRepositoryPath());
+                
             }
 
             AddResource addResource= AddResourceFactory.getInstance(this);
