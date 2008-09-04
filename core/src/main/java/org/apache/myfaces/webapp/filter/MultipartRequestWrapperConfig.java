@@ -35,6 +35,12 @@ public class MultipartRequestWrapperConfig
     private int _uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
     private String _uploadRepositoryPath = null; //standard temp directory 
     
+    private static final String UPLOAD_MAX_FILE_SIZE = "org.apache.myfaces.UPLOAD_MAX_FILE_SIZE";
+    private static final String UPLOAD_THRESHOLD_SIZE = "org.apache.myfaces.UPLOAD_THRESHOLD_SIZE"; 
+    private static final String UPLOAD_MAX_REPOSITORY_PATH = "org.apache.myfaces.UPLOAD_MAX_REPOSITORY_PATH";  
+    
+    private static final String MULTIPART_REQUEST_WRAPPER_CONFIG = MultipartRequestWrapperConfig.class.getName();
+    
     private MultipartRequestWrapperConfig() {}
         
     private static int resolveSize(String param, int defaultValue)
@@ -101,22 +107,34 @@ public class MultipartRequestWrapperConfig
     public static MultipartRequestWrapperConfig getMultipartRequestWrapperConfig(
             ExternalContext context)
     {
-        MultipartRequestWrapperConfig config = new MultipartRequestWrapperConfig();
 
-        ServletContext servletContext = (ServletContext) context.getContext();
+        MultipartRequestWrapperConfig config = (MultipartRequestWrapperConfig) context
+                .getApplicationMap().get(MULTIPART_REQUEST_WRAPPER_CONFIG);
 
-        String param = servletContext.getInitParameter("uploadMaxFileSize");
+        if (config == null)
+        {
+            config = new MultipartRequestWrapperConfig();
 
-        config._uploadMaxFileSize = resolveSize(param,
-                config._uploadMaxFileSize);
+            ServletContext servletContext = (ServletContext) context
+                    .getContext();
 
-        param = servletContext.getInitParameter("uploadThresholdSize");
+            String param = servletContext
+                    .getInitParameter(UPLOAD_MAX_FILE_SIZE);
 
-        config._uploadThresholdSize = resolveSize(param,
-                config._uploadThresholdSize);
+            config._uploadMaxFileSize = resolveSize(param,
+                    config._uploadMaxFileSize);
 
-        config._uploadRepositoryPath = servletContext
-                .getInitParameter("uploadRepositoryPath");
+            param = servletContext.getInitParameter(UPLOAD_THRESHOLD_SIZE);
+
+            config._uploadThresholdSize = resolveSize(param,
+                    config._uploadThresholdSize);
+
+            config._uploadRepositoryPath = servletContext
+                    .getInitParameter(UPLOAD_MAX_REPOSITORY_PATH);
+
+            context.getApplicationMap().put(MULTIPART_REQUEST_WRAPPER_CONFIG,
+                    config);
+        }
 
         return config;
     }
