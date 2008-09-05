@@ -36,22 +36,27 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * This class encapsulate the ExternalContext given, adding support for
- * inputFileUpload (necessary when this is encapsulated with 
- * MultipartRequestWrapper). For make available the parameters map on a
- * multipart content request, it is necessary to encapsulate the original
- * request with MultipartRequestWrapper, but the original ExternalContext
- * is tied with the original request so we need to do this wrapper using
- * the delegate pattern starting with TomahawkFacesContextFactory.
+ * This class enhances a standard ExternalContext with support for handling a request
+ * that is a multi-part-mime request.
  * <p>
- * NOTE: This class should is used(instantiated) only by 
- * TomahawkFacesContextWrapper. By that reason, it could change
- * in the future.
+ * In particular, this is needed to provide support for the inputFileUpload component.
+ * When an html "file upload" element is embedded in a form, the browser will generate
+ * a multi-part-mime message to the server containing the posted form input fields
+ * in one mime part, and the contents of the selected files in additional mime parts.
+ * JSF only expects one mime part, so we need to provide access by default to just
+ * the posted form params, but allow the inputFileUpload component to access the
+ * additional mime parts.
+ * <p>
+ * NOTE: This class is an internal implementation detail of the Tomahawk library, intended
+ * for use only by the TomahawkFacesContextWrapper class. This class is NOT part of the
+ * Tomahawk stable API and may be modified in minor releases. User code should not use or
+ * subclass this class.
  * </p>
  * 
  * @since  1.1.7
  * @author Martin Marinschek
  */
+
 public class ServletExternalContextWrapper extends ExternalContext {
     private ExternalContext _delegate;
     private ServletRequest _servletRequest;
@@ -116,6 +121,7 @@ public class ServletExternalContextWrapper extends ExternalContext {
     }
 
     public Object getRequest() {
+        // Why is this done?
         return _servletRequest==null?_delegate.getRequest():_servletRequest;
     }
 

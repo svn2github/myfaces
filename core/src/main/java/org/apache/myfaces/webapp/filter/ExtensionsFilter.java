@@ -37,7 +37,12 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
- * This filter is mandatory for the use of many tomahawk components.
+ * This filter provides a number of functions that many tomahawk components require.
+ * <p>
+ * In tomahawk versions up to and including 1.1.6, it is mandatory to define this filter in the application's
+ * web.xml in order to use some tomahawk components. In Tomahawk version 1.1.7, this filter is now optional;
+ * when defined it will be used as for earlier versions. When omitted, the same functionality is now
+ * automatically provided via classes TomahawkFacesContextFactory and ServeResourcePhaseListener. 
  *
  * <h2>Response Buffering</h2>
  * 
