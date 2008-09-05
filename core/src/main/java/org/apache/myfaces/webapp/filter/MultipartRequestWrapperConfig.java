@@ -28,7 +28,7 @@ import javax.servlet.ServletContext;
  * @author Hazem Saleh
  * 
  */
-public class MultipartRequestWrapperConfig
+class MultipartRequestWrapperConfig
 {
     
     private int _uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
