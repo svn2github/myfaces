@@ -227,7 +227,8 @@ public class ScheduleDay
         return equalsDate(startTime.getTime()) ? startTime.get(Calendar.HOUR_OF_DAY) : 0;
     }
 
-    public Interval getInterval(Date clickedDate) {
+    public Interval getInterval(Date clickedDate)
+    {
         if (getIntervals() != null)
         {
             for (Iterator intervalIt = getIntervals().iterator(); intervalIt.hasNext(); )
@@ -254,7 +255,9 @@ public class ScheduleDay
      * @param endHour The last hour
      * @return A List<Interval> of intervals covering the day
      */
-    public List getIntervals(int startHour, int endHour) {
+    public List getIntervals(int startHour, int endHour)
+    {
+        Date startTime = initDate(getDate(), startHour);
         Date endTime = initDate(getDate(), endHour);
         ArrayList intervals = new ArrayList();
         Interval last = null;
@@ -280,6 +283,11 @@ public class ScheduleDay
                     }
                 }
                 
+                // Don't add any intervals before the start time
+                if (interval.getEndTime().before(startTime))
+                {
+                    continue;
+                }
                 // Don't add any intervals beyond the end time
                 if (interval.getStartTime().after(endTime)) 
                 {
@@ -302,6 +310,17 @@ public class ScheduleDay
                     intervals.add(last);
                     last = HalfHourInterval.next(last, interval.getStartTime());
                 }
+                
+                // Truncate the interval to fit within start and end times
+                if (interval.getStartTime().before(startTime))
+                {
+                    interval.setStartTime(startTime);
+                }
+                if (interval.getEndTime().after(endTime))
+                {
+                    interval.setEndTime(endTime);
+                }
+                
                 intervals.add(interval);
                 last = interval;
             }
