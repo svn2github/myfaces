@@ -55,7 +55,7 @@ public class MethodBindingToMethodExpression extends MethodExpression implements
     /**
      * No-arg constructor used during restoreState
      */
-    protected MethodBindingToMethodExpression()
+    public MethodBindingToMethodExpression()
     {
     }
 
