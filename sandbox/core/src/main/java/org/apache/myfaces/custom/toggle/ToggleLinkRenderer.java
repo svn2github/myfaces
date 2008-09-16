@@ -105,6 +105,10 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         
         String outputOnclick = toggleLink.getOnclick();
         StringBuffer onClick = new StringBuffer();
+        if(outputOnclick != null) {
+            onClick.append(outputOnclick);
+            onClick.append(";");
+        }
         
         if(toggleLink.getOnClickFocusId() != null) 
         {
@@ -115,81 +119,8 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         {
             onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','');");
         }
-        
-        if (outputOnclick != null)
-        {
-            onClick.append("var cf = function(){");
-            onClick.append(outputOnclick);
-            onClick.append('}');
-            onClick.append(';');
-            onClick.append("var oamSF = function(){");            
-        }
-        
-        if (outputOnclick != null)
-        {
-            onClick.append('}');
-            onClick.append(';');
-            onClick.append("return (cf()==false)? false : oamSF();");        
-        }
 
         return onClick.toString();
-    }
-    
-    //This method is copied from HtmlLinkRendererBase.  
-    private void addChildParametersToHref(FacesContext facesContext,
-            UIComponent linkComponent, StringBuffer hrefBuf,
-            boolean firstParameter, String charEncoding) throws IOException
-    {
-        boolean strictXhtmlLinks = MyfacesConfig.getCurrentInstance(
-                facesContext.getExternalContext()).isStrictXhtmlLinks();
-        for (Iterator it = getChildren(linkComponent).iterator(); it.hasNext();)
-        {
-            UIComponent child = (UIComponent) it.next();
-            if (child instanceof UIParameter)
-            {
-                String name = ((UIParameter) child).getName();
-                Object value = ((UIParameter) child).getValue();
-                addParameterToHref(name, value, hrefBuf, firstParameter,
-                        charEncoding, strictXhtmlLinks);
-                firstParameter = false;
-            }
-        }
-    }
-
-    //This method is copied from HtmlLinkRendererBase.     
-    private static void addParameterToHref(String name, Object value,
-            StringBuffer hrefBuf, boolean firstParameter, String charEncoding,
-            boolean strictXhtmlLinks) throws UnsupportedEncodingException
-    {
-        if (name == null)
-        {
-            throw new IllegalArgumentException(
-                    "Unnamed parameter value not allowed within command link.");
-        }
-
-        if (firstParameter)
-        {
-            hrefBuf.append('?');
-        }
-        else
-        {
-            if (strictXhtmlLinks)
-            {
-                hrefBuf.append("&amp;");
-            }
-            else
-            {
-                hrefBuf.append('&');
-            }
-        }
-
-        hrefBuf.append(URLEncoder.encode(name, charEncoding));
-        hrefBuf.append('=');
-        if (value != null)
-        {
-            //UIParameter is no ConvertibleValueHolder, so no conversion possible
-            hrefBuf.append(URLEncoder.encode(value.toString(), charEncoding));
-        }
     }
             
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
