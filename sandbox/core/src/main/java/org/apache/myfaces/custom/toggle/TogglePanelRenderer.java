@@ -45,6 +45,8 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
  */
 public class TogglePanelRenderer extends HtmlGroupRendererBase {
 
+    private static Log log = LogFactory.getLog(TogglePanelRenderer.class);
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, TogglePanel.class);
         addScrollToJavascript(context);
@@ -81,7 +83,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
     }
 
     // checks if this component has getStyle/setStyle methods
-    private boolean hasStyleAttribute(UIComponent component) {
+    public static boolean hasStyleAttribute(UIComponent component) {
         Method[] methods = component.getClass().getMethods();
 
         for (int i = 0; i < methods.length; i++) {
@@ -94,11 +96,11 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
     }
 
     // hides component by appending 'display:none' to the 'style' attribute
-    private void setComponentVisibility(UIComponent component, boolean toggleMode) {
+    public static void setComponentVisibility(UIComponent component, boolean toggleMode) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (!hasStyleAttribute(component)) {
-            getLog().info("style attribute expected, not found for component " + component.getClientId(context));
+            log.info("style attribute expected, not found for component " + component.getClientId(context));
             return;
         }
 
@@ -134,15 +136,11 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
 
             setStyle.invoke(component, new Object[] { style });
         } catch (Throwable e) {
-            getLog().error("unable to set style attribute on component " + component.getClientId(context));
+            log.error("unable to set style attribute on component " + component.getClientId(context));
         }
     }
 
-    private Log getLog() {
-        return LogFactory.getLog(TogglePanelRenderer.class);
-    }
-
-    private boolean isHiddenWhenToggled(UIComponent component){
+    public static boolean isHiddenWhenToggled(UIComponent component){
         return component instanceof ToggleLink || component instanceof ToggleGroup;
     }
 
@@ -180,7 +178,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
             out.write( "var idsToHide = '" + idsToHide.toString() + "'.split(',');\n" );
             out.write( "for(var i=0;i<idsToHide.length;i++) document.getElementById(idsToHide[i]).style.display = 'none';\n" );
         }else{ // no idsToHide set
-            getLog().warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
+            log.warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
         }
         out.write( "var idsToShow = idsToShowS.split(',');\n" );
         out.write( "scrollTo(idsToShow[0]);\n" );

@@ -40,10 +40,13 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 public class ToggleGroupRenderer extends HtmlGroupRendererBase {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ToggleGroup toggleGroup = (ToggleGroup) component;
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement( org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SPAN_ELEM, component );
         writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context), null);
+        TogglePanelRenderer.setComponentVisibility(toggleGroup, !toggleGroup.isToggled());
+
         HtmlRendererUtils.renderHTMLAttributes( writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES );
 
         RendererUtils.renderChildren( context, component );

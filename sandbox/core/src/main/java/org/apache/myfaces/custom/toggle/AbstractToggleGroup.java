@@ -137,4 +137,13 @@ public abstract class AbstractToggleGroup extends HtmlPanelGroup
      */
     public abstract String getOnmouseup();
     
+    /**
+     * HTML: Flag to define the toggle status.
+     * 
+     * @JSFProperty
+     */
+     public abstract boolean isToggled();
+    
+     public abstract void setToggled(boolean toggleMode);
+    
 }
