@@ -158,22 +158,27 @@ public final class ExternalContextUtils
 
     /**
      * This method is used when a ExternalContext object is not available,
-     * like in TomahawkFacesContextFactory.  
+     * like in TomahawkFacesContextFactory.
      * 
-     * @param config
+     * According to TOMAHAWK-1331, the object context could receive an
+     * instance of javax.portlet.PortletContext or javax.portlet.PortletConfig,
+     * so we check both cases.
+     * 
+     * @param context
      * @param request
      * @return
      */
-    public static final RequestType getRequestType(Object config, Object request)
+    public static final RequestType getRequestType(Object context, Object request)
     {
         //Stuff is laid out strangely in this class in order to optimize
         //performance.  We want to do as few instanceof's as possible so
         //things are laid out according to the expected frequency of the
         //various requests occurring.
 
-        if(_PORTLET_CONFIG_CLASS != null)
+        if(_PORTLET_CONTEXT_CLASS != null)
         {
-            if (_PORTLET_CONFIG_CLASS.isInstance(config))
+            if (_PORTLET_CONFIG_CLASS.isInstance(context) ||
+                _PORTLET_CONTEXT_CLASS.isInstance(context))
             {
                 //We are inside of a portlet container
                 
