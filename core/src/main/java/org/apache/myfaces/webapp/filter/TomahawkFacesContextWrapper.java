@@ -38,6 +38,7 @@ import org.apache.commons.fileupload.FileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
+import org.apache.myfaces.webapp.filter.portlet.PortletExternalContextWrapper;
 import org.apache.myfaces.webapp.filter.servlet.ServletExternalContextWrapper;
 
 /**
@@ -61,16 +62,32 @@ public class TomahawkFacesContextWrapper extends FacesContext {
         this.delegate = delegate;
         
         if(ExternalContextUtils.getRequestType(delegate.getExternalContext()).isPortlet()) {
-            //todo do something here - with the multipart-wrapper. rest should be fine
-            //javax.portlet.PortletRequest portletRequest = (javax.portlet.PortletRequest) delegate.getExternalContext().getRequest();
             
-            //Object portletResponse = delegate.getExternalContext().getResponse();
-            //Object portletRequest = delegate.getExternalContext().getRequest();
+            Object portletResponse = delegate.getExternalContext().getResponse();
+            Object portletRequest = delegate.getExternalContext().getRequest();
 
-            //Object extendedRequest = portletRequest;
-            //Object extendedResponse = portletResponse;
+            Object extendedRequest = portletRequest;
+            Object extendedResponse = portletResponse;
             
-            //boolean multipartContent = false;            
+            // For multipart/form-data requests we need to encapsulate
+            // the request using PortletMultipartRequestWrapper. This could not be
+            // done on TomahawkFacesContextFactory.getFacesContext(...)
+            // because we need an ExternalContext instance to get
+            // the init params for the ExtensionsFilter and initialize
+            // MultipartRequestWrapper with the correct values.
+
+            boolean multipartContent = false;
+            
+            if (PortletUtils.isMultipartContent(portletRequest))
+            {
+                multipartContent = true;
+                MultipartRequestWrapperConfig config = MultipartRequestWrapperConfig
+                .getMultipartRequestWrapperConfig(delegate
+                        .getExternalContext());
+
+                extendedRequest = new PortletMultipartRequestWrapper( portletRequest, config.getUploadMaxFileSize(),
+                        config.getUploadThresholdSize(), config.getUploadRepositoryPath());
+            }
             
             AddResource addResource= AddResourceFactory.getInstance(this);
             addResource.responseStarted();
@@ -82,8 +99,8 @@ public class TomahawkFacesContextWrapper extends FacesContext {
                         " org.apache.myfaces.renderkit.html.util.NonBufferingAddResource.");
             }
             
-            //externalContextDelegate = new PortletExternalContextWrapper(
-            //        delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);
+            externalContextDelegate = new PortletExternalContextWrapper(
+                    delegate.getExternalContext(), extendedRequest, extendedResponse, multipartContent);
         }
         else {
             HttpServletResponse httpResponse = (HttpServletResponse) delegate.getExternalContext().getResponse();

@@ -21,6 +21,8 @@ package org.apache.myfaces.webapp.filter;
 import javax.faces.context.ExternalContext;
 import javax.servlet.ServletContext;
 
+import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
+
 /**
  * This class is used to retrieve the context paramaters used to initialize 
  * of the MultipartRequestWrapper.
@@ -115,25 +117,51 @@ class MultipartRequestWrapperConfig
         {
             config = new MultipartRequestWrapperConfig();
 
-            ServletContext servletContext = (ServletContext) context
-                    .getContext();
+            if(!ExternalContextUtils.getRequestType(context).isPortlet())
+            {
+                ServletContext servletContext = (ServletContext) context
+                        .getContext();
+    
+                String param = servletContext
+                        .getInitParameter(UPLOAD_MAX_FILE_SIZE);
+    
+                config._uploadMaxFileSize = resolveSize(param,
+                        config._uploadMaxFileSize);
+    
+                param = servletContext.getInitParameter(UPLOAD_THRESHOLD_SIZE);
+    
+                config._uploadThresholdSize = resolveSize(param,
+                        config._uploadThresholdSize);
+    
+                config._uploadRepositoryPath = servletContext
+                        .getInitParameter(UPLOAD_MAX_REPOSITORY_PATH);
+    
+                context.getApplicationMap().put(MULTIPART_REQUEST_WRAPPER_CONFIG,
+                        config);
+            }
+            else
+            {
+                Object portletContext = context.getContext();
 
-            String param = servletContext
-                    .getInitParameter(UPLOAD_MAX_FILE_SIZE);
-
-            config._uploadMaxFileSize = resolveSize(param,
-                    config._uploadMaxFileSize);
-
-            param = servletContext.getInitParameter(UPLOAD_THRESHOLD_SIZE);
-
-            config._uploadThresholdSize = resolveSize(param,
-                    config._uploadThresholdSize);
-
-            config._uploadRepositoryPath = servletContext
-                    .getInitParameter(UPLOAD_MAX_REPOSITORY_PATH);
-
-            context.getApplicationMap().put(MULTIPART_REQUEST_WRAPPER_CONFIG,
-                    config);
+                String param = PortletUtils.getContextInitParameter(
+                        portletContext, UPLOAD_MAX_FILE_SIZE);
+        
+                config._uploadMaxFileSize = resolveSize(param,
+                        config._uploadMaxFileSize);
+        
+                param = PortletUtils.getContextInitParameter(
+                        portletContext, UPLOAD_THRESHOLD_SIZE);
+        
+                config._uploadThresholdSize = resolveSize(param,
+                        config._uploadThresholdSize);
+        
+                config._uploadRepositoryPath = PortletUtils.getContextInitParameter(
+                        portletContext,UPLOAD_MAX_REPOSITORY_PATH);
+        
+                context.getApplicationMap().put(MULTIPART_REQUEST_WRAPPER_CONFIG,
+                        config);
+                
+            }
         }
 
         return config;

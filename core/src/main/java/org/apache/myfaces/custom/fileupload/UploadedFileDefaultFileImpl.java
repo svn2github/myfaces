@@ -18,13 +18,13 @@
  */
 package org.apache.myfaces.custom.fileupload;
 
-import org.apache.commons.fileupload.DefaultFileItem;
-import org.apache.commons.fileupload.FileItem;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 
 
 /**
@@ -34,14 +34,14 @@ import java.io.InputStream;
 public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
 {
   private static final long serialVersionUID = -6401426361519246443L;
-  private transient DefaultFileItem fileItem = null;
+  private transient DiskFileItem fileItem = null;
   private StorageStrategy storageStrategy;
 
     public UploadedFileDefaultFileImpl(final FileItem fileItem) throws IOException
     {
         super(fileItem.getName(), fileItem.getContentType());
-        this.fileItem = (DefaultFileItem) fileItem;
-      storageStrategy = new DiskStorageStrategy() {
+        this.fileItem = (DiskFileItem) fileItem;
+        storageStrategy = new DiskStorageStrategy() {
 
         public File getTempFile() {
           return UploadedFileDefaultFileImpl.this.fileItem.getStoreLocation();
