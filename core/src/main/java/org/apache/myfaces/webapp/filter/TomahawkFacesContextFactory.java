@@ -50,6 +50,8 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
     public static final String DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER = 
         "org.apache.myfaces.DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER";
     
+    public static final boolean DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER_DEFAULT = true;
+    
     private FacesContextFactory delegate;
 
     public TomahawkFacesContextFactory(FacesContextFactory delegate) {
@@ -67,7 +69,8 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
             //use TomahawkFacesContextWrapper 
             if (servletRequest.getAttribute(ExtensionsFilter.DOFILTER_CALLED) == null &&
                     !getBooleanValue(servletContext.getInitParameter(
-                            DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER), false))
+                            DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER),
+                            DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER_DEFAULT))
             {
                 //This is servlet world
                 //For handle buffered response we need to wrap response object here,
@@ -85,6 +88,10 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
                     return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, extensionsResponseWrapper, lifecycle),
                             extensionsResponseWrapper);
                 }
+                else
+                {
+                    return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, response, lifecycle));
+                }
             }
             else
             {
@@ -93,7 +100,14 @@ public class TomahawkFacesContextFactory extends FacesContextFactory {
                 return delegate.getFacesContext(context, request, response, lifecycle);
             }
         }
-        return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, response, lifecycle));
+        else
+        {
+            if (!PortletUtils.isDisabledTomahawkFacesContextWrapper(context))
+            {            
+                return new TomahawkFacesContextWrapper(delegate.getFacesContext(context, request, response, lifecycle));
+            }
+        }    
+        return delegate.getFacesContext(context, request, response, lifecycle);
     }
     
     private static boolean getBooleanValue(String initParameter, boolean defaultVal)
