@@ -40,7 +40,7 @@ import org.apache.myfaces.webapp.filter.portlet.ActionRequestWrapper;
 
 /**
  * @since 1.1.8
- * @author Sylvain Vieujot (latest modification by $Author$)
+ * @author Leonardo Uribe (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
 public class PortletMultipartRequestWrapper

@@ -26,7 +26,11 @@ import java.io.UnsupportedEncodingException;
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
 
-
+/**
+ * @since 1.1.8
+ * @author Leonardo Uribe (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 public class ActionRequestWrapper extends PortletRequestWrapper
     implements ActionRequest
 {

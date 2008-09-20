@@ -31,6 +31,11 @@ import javax.portlet.PortletSession;
 import javax.portlet.WindowState;
 import javax.servlet.ServletResponse;
 
+/**
+ * @since 1.1.8
+ * @author Leonardo Uribe (latest modification by $Author$)
+ * @version $Revision$ $Date$
+ */
 public class PortletRequestWrapper implements PortletRequest
 {
 
