@@ -33,13 +33,14 @@ import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 
 /**
  * The objective of this factory is this:
- *  
- * 1. Wrap a multipart request (used for t:inputFileUpload), 
- *    so the request could be correctly decoded.
- * 2. If a buffered instance of AddResource is configured, 
+ * <ol>
+ * <li> Wrap a multipart request (used for t:inputFileUpload), 
+ *    so the request could be correctly decoded.</li>
+ * <li>If a buffered instance of AddResource is configured, 
  *    ExtensionsFilter must buffer and add the resource reference 
  *    to the head of jsf pages (for example when it is used 
- *    DefaultAddResource)
+ *    DefaultAddResource)</li>
+ * </ol>
  * 
  * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author$)
@@ -47,6 +48,12 @@ import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
  */
 public class TomahawkFacesContextFactory extends FacesContextFactory {
 
+    /**
+     * Disable or enable this factory to wrap the request using 
+     * TomahawkFacesContextWrapper as an alternative to ExtensionsFilter.
+     * If ExtensionsFilter is configured, use of TomahawkFacesContextWrapper
+     * is skipped
+     */
     public static final String DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER = 
         "org.apache.myfaces.DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER";
     

@@ -42,6 +42,49 @@ import org.apache.myfaces.webapp.filter.portlet.PortletExternalContextWrapper;
 import org.apache.myfaces.webapp.filter.servlet.ServletExternalContextWrapper;
 
 /**
+ * This class acts as an alternative to ExtensionsFilter feature.
+ * <p>
+ * It wraps the FacesContext using TomahawkFacesContextFactory. See this
+ * class for parameters and additional information
+ * </p>
+ * <p>
+ * If ExtensionsFilter is used on servlet environment, this wrapper is 
+ * not used. You can set this wrapper using the following configuration:
+ * <code>
+ *   <context-param>
+ *     <param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
+ *     <param-value>false</param-value>
+ *   </context-param>
+ * 
+ *   <context-param>
+ *     <param-name>org.apache.myfaces.DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER</param-name>
+ *     <param-value>false</param-value>
+ *   </context-param>
+ * </code>
+ * </p>
+ * <p>
+ * Remember map the FacesServet to the org.apache.myfaces.RESOURCE_VIRTUAL_PATH
+ * value (default /faces/myFacesExtensionResource, so map FacesServlet to /faces/* 
+ * could be used or better /faces/myFacesExtensionResource/*) so the
+ * ServeResourcePhaseListener can serve resources.
+ * </p>
+ * <p>
+ * One use that has this wrapper is in portlets (there is no PortletFilter
+ * on portlet api 1.0, so to take all tomahawk advantages (components
+ * that uses some javascript handled by AddResource api and fileupload
+ * support) users must configure this alternative.
+ * </p>
+ * <p>
+ * When it is used this alternative, the params used to configure
+ * MultipartRequestWrapper (file upload support) are set using this
+ * web.xml config params: 
+ * </p>
+ * <ul>
+ * <li>org.apache.myfaces.UPLOAD_MAX_FILE_SIZE</li>
+ * <li>org.apache.myfaces.UPLOAD_THRESHOLD_SIZE</li>
+ * <li>org.apache.myfaces.UPLOAD_MAX_REPOSITORY_PATH</li>
+ * </ul>
+ * 
  * @since 1.1.7
  * @author Martin Marinschek
  */
