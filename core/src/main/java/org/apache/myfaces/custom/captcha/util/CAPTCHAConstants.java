@@ -23,7 +23,8 @@ package org.apache.myfaces.custom.captcha.util;
  * 
  * @since 1.1.7
  */
-public interface CAPTCHAConstants {
+public interface CAPTCHAConstants
+{
     public static final int DEFAULT_CAPTCHA_WIDTH = 290;
     public static final int DEFAULT_CAPTCHA_HEIGHT = 81;
     public static final double PI = 3.1415926535897932384626433832795;
