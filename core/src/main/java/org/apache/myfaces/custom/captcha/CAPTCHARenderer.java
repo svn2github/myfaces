@@ -177,8 +177,6 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
     ResponseStream out = facesContext.getResponseStream();
     Map requestMap = facesContext.getExternalContext()
         .getRequestParameterMap();
-    HttpServletRequest request = (HttpServletRequest) facesContext
-        .getExternalContext().getRequest();
     String captchaSessionKeyName = requestMap.get(
         CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME).toString();
     
@@ -199,9 +197,8 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader {
             startingColor, endingColor);
 
         // Set the generated text in the user session.
-        request.getSession().setAttribute(captchaSessionKeyName,
-            captchaText);
-
+        facesContext.getExternalContext().getSessionMap().put(
+                captchaSessionKeyName, captchaText);
     }
     finally 
     {
