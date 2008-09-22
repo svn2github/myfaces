@@ -211,13 +211,18 @@ public class HtmlFishEyeNavigationMenuRenderer extends HtmlLinkRenderer {
     }
 
     private Stack getChildsMenuStack(FacesContext context, UIComponent component) {
-        Stack menuStack = (Stack) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(component.getClientId(context)
+        //Stack menuStack = (Stack) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(component.getClientId(context)
+        //        + "_FishEyeMenuAttr");
+        Stack menuStack = (Stack) context.getExternalContext().getRequestMap().get(component.getClientId(context)
                 + "_FishEyeMenuAttr");
         if (menuStack != null)
             return menuStack;
 
         menuStack = new Stack();
-        ((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(component.getClientId(context) + "_FishEyeMenuAttr", menuStack);
+        //((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(component.getClientId(context) + "_FishEyeMenuAttr", menuStack);
+        context.getExternalContext().getRequestMap().put(
+                component.getClientId(context) + "_FishEyeMenuAttr", menuStack);
+        
         return menuStack;
     }
 

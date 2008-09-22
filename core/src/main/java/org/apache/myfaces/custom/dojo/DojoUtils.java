@@ -394,11 +394,13 @@ public final class DojoUtils {
         // we wont have a need for a synchronized here, since
         // we are in a single request cycle anyway
         // but take care if you use the djconfig in multiple threads!
-        DojoConfig djConfig = (DojoConfig) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(DJCONFIG_REQ_KEY);
+        //DojoConfig djConfig = (DojoConfig) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(DJCONFIG_REQ_KEY);
+        DojoConfig djConfig = (DojoConfig) (context.getExternalContext().getRequestMap()).get(DJCONFIG_REQ_KEY);
 
         if (djConfig == null) {
             djConfig = new DojoConfig();
-            ((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(DJCONFIG_REQ_KEY, djConfig);
+            //((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(DJCONFIG_REQ_KEY, djConfig);
+            context.getExternalContext().getRequestMap().put(DJCONFIG_REQ_KEY, djConfig);
         }
 
         return djConfig;
@@ -412,8 +414,9 @@ public final class DojoUtils {
      */
     public static Boolean getExpanded(FacesContext facesContext) {
         // either the development attribute set or a special request key
-        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        Boolean devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
+        //HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        //Boolean devStatus = (Boolean) request.getAttribute(INCL_TYPE_REQ_KEY);
+        Boolean devStatus = (Boolean) facesContext.getExternalContext().getRequestMap().get(INCL_TYPE_REQ_KEY);
         DojoConfig config = getDjConfigInstance(facesContext);
         if (devStatus == null)
             devStatus = new Boolean(false);
@@ -434,8 +437,8 @@ public final class DojoUtils {
     public static boolean isInlineScriptSet(FacesContext context, String inlineScript) {
 
         // TODO move this non neutral code into the resource handler
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        Set set = getBodyScriptInfos(request);
+        //HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        Set set = getBodyScriptInfos(context.getExternalContext().getRequestMap());
 
         if (!set.contains(inlineScript)) {
             set.add(inlineScript);
@@ -452,8 +455,9 @@ public final class DojoUtils {
     public static boolean isInlineScriptCheck(FacesContext context, String inlineScript)
     {
         // TODO move this non neutral code into the resource handler
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-        Set set = getBodyScriptInfos(request);
+        
+        //HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        Set set = getBodyScriptInfos(context.getExternalContext().getRequestMap());
 
         return set.contains(inlineScript);
     }
@@ -683,8 +687,9 @@ public final class DojoUtils {
      *            loaded otherwise the non expanded ones are loaded
      */
     public static void setExpanded(FacesContext facesContext, Boolean expanded) {
-        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        request.setAttribute(INCL_TYPE_REQ_KEY, expanded);
+        //HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        //request.setAttribute(INCL_TYPE_REQ_KEY, expanded);
+        facesContext.getExternalContext().getRequestMap().put(INCL_TYPE_REQ_KEY, expanded);
     }
 
     /**
@@ -725,6 +730,7 @@ public final class DojoUtils {
         return namespaceStr;
     }
 
+    /*
     private static Set getBodyScriptInfos(HttpServletRequest request) {
         Set set = (Set) request.getAttribute(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME);
 
@@ -734,7 +740,18 @@ public final class DojoUtils {
         }
 
         return set;
-    }
+    }*/
+    
+    private static Set getBodyScriptInfos(Map requestMap) {
+        Set set = (Set) requestMap.get(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME);
+
+        if (set == null) {
+            set = new TreeSet();
+            requestMap.put(BODY_SCRIPT_INFOS_ATTRIBUTE_NAME, set);
+        }
+
+        return set;
+    }    
 
     /**
      * helper to write an inline javascript at the exact resource location of

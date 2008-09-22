@@ -114,9 +114,10 @@ public class HtmlSelectOneRadioAjaxRenderer extends HtmlRadioRenderer implements
     {
         log.debug("encodeAjax in HtmlSelectOneRadioAjaxRenderer");
         // check for request type (portlet support)
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        //HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         Map extraReturnAttributes = new HashMap();
-        extraReturnAttributes.put("checked", request.getParameter("checked"));
+        //extraReturnAttributes.put("checked", request.getParameter("checked"));
+        extraReturnAttributes.put("checked", context.getExternalContext().getRequestParameterMap().get("checked"));
         extraReturnAttributes.put("eltype", "radio");
         AjaxRendererUtils.encodeAjax(context, component, extraReturnAttributes);
 

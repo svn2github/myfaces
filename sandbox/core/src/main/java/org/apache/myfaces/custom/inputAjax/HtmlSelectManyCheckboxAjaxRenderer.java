@@ -117,9 +117,10 @@ public class HtmlSelectManyCheckboxAjaxRenderer extends HtmlCheckboxRenderer imp
     {
         log.debug("encodeAjax in HtmlSelectManyCheckboxAjaxRenderer");
         // check for request type (portlet support)
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        //HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         Map extraReturnAttributes = new HashMap();
-        extraReturnAttributes.put("checked", request.getParameter("checked"));
+        //extraReturnAttributes.put("checked", request.getParameter("checked"));
+        extraReturnAttributes.put("checked", context.getExternalContext().getRequestParameterMap().get("checked"));
         extraReturnAttributes.put("eltype", "checkbox");
         AjaxRendererUtils.encodeAjax(context, component, extraReturnAttributes);
 

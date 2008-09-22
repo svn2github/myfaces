@@ -88,13 +88,18 @@ public class DojoSplitPaneRenderer extends DojoContentPaneRenderer {
     }
 
     private Stack getChildsStack(FacesContext context, UIComponent component) {
-        Stack menuStack = (Stack) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(component.getClientId(context)
+        //Stack menuStack = (Stack) ((HttpServletRequest) context.getExternalContext().getRequest()).getAttribute(component.getClientId(context)
+        //        + DojoSplitPaneRenderer.class.toString());
+        Stack menuStack = (Stack) context.getExternalContext().getRequestMap().get(component.getClientId(context)
                 + DojoSplitPaneRenderer.class.toString());
         if (menuStack != null)
             return menuStack;
 
         menuStack = new Stack();
-        ((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(component.getClientId(context) + DojoSplitPaneRenderer.class.toString(),
+        //((HttpServletRequest) context.getExternalContext().getRequest()).setAttribute(component.getClientId(context) + DojoSplitPaneRenderer.class.toString(),
+        //        menuStack);
+        context.getExternalContext().getRequestMap().put(
+                component.getClientId(context) + DojoSplitPaneRenderer.class.toString(),
                 menuStack);
         return menuStack;
     }
