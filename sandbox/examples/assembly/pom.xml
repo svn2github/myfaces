@@ -37,7 +37,7 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>tomahawk-sandbox-examples</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>war</type>	
                                 </artifactItem>
 			    </artifactItems>	
@@ -54,7 +54,7 @@
 		    <descriptors>	
 	                <descriptor>src/main/assembly/dep.xml</descriptor>
  		    </descriptors>
-		    <finalName>tomahawk-sandbox-examples-${version}</finalName>
+		    <finalName>tomahawk-sandbox-examples-${project.version}</finalName>
                     <outputDirectory>${project.build.directory}/out</outputDirectory>
                     <workDirectory>${project.build.directory}/work</workDirectory>
                 </configuration>

@@ -42,7 +42,7 @@
                                         <artifactItem>
                                             <groupId>org.apache.myfaces.tomahawk</groupId>
                                             <artifactId>${artifactId}</artifactId>
-                                            <version>${version}</version>
+                                            <version>${project.version}</version>
                                             <classifier>sources</classifier>
                                         </artifactItem>
                                     </artifactItems>
@@ -189,12 +189,12 @@
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>
             <artifactId>tomahawk-sandbox</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency> 
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>
             <artifactId>tomahawk-sandbox15</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency> 
         <dependency>

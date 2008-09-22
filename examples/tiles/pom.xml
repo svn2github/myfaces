@@ -40,7 +40,7 @@
                                         <artifactItem>
                                             <groupId>org.apache.myfaces.tomahawk</groupId>
                                             <artifactId>${artifactId}</artifactId>
-                                            <version>${version}</version>
+                                            <version>${project.version}</version>
                                             <classifier>sources</classifier>
                                         </artifactItem>
                                     </artifactItems>

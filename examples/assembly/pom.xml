@@ -36,25 +36,25 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-blank</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>war</type>	
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-simple</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>war</type>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-tiles</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>war</type>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-wap</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>war</type>
                                 </artifactItem>
                             </artifactItems>
@@ -72,25 +72,25 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-blank</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>java-source</type>    
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-simple</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>java-source</type>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-tiles</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>java-source</type>
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-wap</artifactId>
-                                    <version>${version}</version>
+                                    <version>${project.version}</version>
                                     <type>java-source</type>
                                 </artifactItem>
                             </artifactItems>
@@ -115,7 +115,7 @@
                             <descriptors>   
                                 <descriptor>src/main/assembly/depsrc.xml</descriptor>
                             </descriptors>
-                            <finalName>tomahawk-examples-${version}-src</finalName>
+                            <finalName>tomahawk-examples-${project.version}-src</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <outputDirectory>${project.build.directory}/out</outputDirectory>
                             <workDirectory>${project.build.directory}/work</workDirectory>
@@ -131,7 +131,7 @@
 	                        <descriptors>   
 	                            <descriptor>src/main/assembly/dep.xml</descriptor>
 	                        </descriptors>
-	                        <finalName>tomahawk-examples-${version}</finalName>
+	                        <finalName>tomahawk-examples-${project.version}</finalName>
 	                        <outputDirectory>${project.build.directory}/out</outputDirectory>
 	                        <workDirectory>${project.build.directory}/work</workDirectory>
 	                    </configuration>                        
