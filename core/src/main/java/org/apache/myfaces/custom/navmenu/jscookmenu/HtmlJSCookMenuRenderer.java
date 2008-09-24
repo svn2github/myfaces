@@ -117,6 +117,11 @@ public class HtmlJSCookMenuRenderer
                             action = action.substring(0, idx);
                             ((HtmlCommandJSCookMenu) component).setValue(value);
                         }
+                        else if (idx == action.length() - 1)
+                        {
+                            value = null; //No Value found, so set it to null as expected
+                            action = action.substring(0, idx);
+                        }
                         MethodBinding mb;
                         if (NavigationMenuUtils.isValueReference(action)) {
                             mb = context.getApplication().createMethodBinding(action, ACTION_LISTENER_ARGS);
