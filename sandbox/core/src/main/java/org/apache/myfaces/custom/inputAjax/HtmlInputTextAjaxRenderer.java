@@ -94,12 +94,32 @@ public class HtmlInputTextAjaxRenderer extends HtmlTextRendererBase implements A
         HtmlInputTextAjax comp = (HtmlInputTextAjax) component;
         String loadingStyleClass = AjaxRendererUtils.STYLECLASS_LOADER;
         //comp.setStyleClass(comp.getStyleClass() == null ? loadingStyleClass : comp.getStyleClass() + ";" + loadingStyleClass);
-        comp.setStyleClass(loadingStyleClass);
+        String styleClass = comp.getStyleClass();
+        if(styleClass != null && styleClass.length() > 0)
+        {
+            comp.setStyleClass(loadingStyleClass + " " + styleClass);
+        }
+        else
+        {
+            comp.setStyleClass(loadingStyleClass);
+        }
 
         if(!comp.getShowOkButton().booleanValue()){
             // then submit on change
             //comp.setOnchange(comp.getOnchange() == null ? submitFunctionStart : comp.getOnchange() + ";" + submitFunctionStart);
-            comp.setOnchange(submitFunctionStart);
+            String onchange = comp.getOnchange();
+            if(onchange != null && onchange.length() > 0) 
+            {
+                if(!onchange.endsWith(";")) 
+                {
+                    onchange += ";";
+                }
+                comp.setOnchange(submitFunctionStart+onchange);
+            } 
+            else 
+            {
+                comp.setOnchange(submitFunctionStart);
+            }
         }
         this.encodeJavascript(context, component);
         super.encodeEnd(context, component);
