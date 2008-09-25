@@ -30,7 +30,10 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 
 /**
- * Tag to add a tab change listeners to a {@link org.apache.myfaces.custom.tabbedpane.HtmlPanelTabbedPane}
+ * Adds a tab-change-listener to the enclosing t:panelTabbedPane component.
+ * <p>
+ * When the panelTabbedPane changes the displayed tab, the listener is invoked.
+ * </p>
  *
  * @JSFJspTag
  *   name="t:tabChangeListener"
@@ -51,8 +54,26 @@ public class TabChangeListenerTag extends TagSupport
     }
 
     /**
-     * @JSFJspAttribute
-     *   required = "true"
+     * Define a listener to be attached to the parent HtmlPanelTabbedPane instance.
+     * <p>
+     * This attribute may be a literal string containing a fully-qualified class name. The
+     * specified class must implement the TabChangeListener interface and have a no-arguments
+     * constructor. A new instance will be created when the view is created.
+     * </p>
+     * <p>
+     * This attribute may also be an EL expression that returns type String. The EL expression will be
+     * evaluated when the view is built, and the returned value must be a fully-qualified class name. The
+     * specified class must implement the TabChangeListener interface and have a no-arguments constructor.
+     * A new instance will be created when the view is created.
+     * </p>
+     * <p>
+     * This attribute may also be an EL expression that returns a TabChangeListener instance.
+     * </p>
+     * <p>
+     * It is an error if an EL expression returns an object of any type other than String or TabChangeListener.
+     * </p>
+     * 
+     * @JSFJspAttribute required = "true"
      */
     public void setType(String type)
     {
@@ -68,17 +89,17 @@ public class TabChangeListenerTag extends TagSupport
         }
 
         //Find parent UIComponentTag
-        UIComponentTag componentTag = UIComponentTag.getParentUIComponentTag(pageContext);
-        if (componentTag == null)
+        UIComponentTag parentComponentTag = UIComponentTag.getParentUIComponentTag(pageContext);
+        if (parentComponentTag == null)
         {
             throw new JspException("TabChangeListenerTag has no UIComponentTag ancestor");
         }
 
-        if (componentTag.getCreated())
+        if (parentComponentTag.getCreated())
         {
             //Component was just created, so we add the Listener
-            UIComponent component = componentTag.getComponentInstance();
-            if (component instanceof HtmlPanelTabbedPane)
+            UIComponent parent = parentComponentTag.getComponentInstance();
+            if (parent instanceof HtmlPanelTabbedPane)
             {
                 Object listenerRef = type;
                 if (UIComponentTag.isValueReference(type))
@@ -92,20 +113,28 @@ public class TabChangeListenerTag extends TagSupport
                 {
                     String className = (String) listenerRef;
                     TabChangeListener listener = (TabChangeListener) ClassUtils.newInstance(className);
-                    ((HtmlPanelTabbedPane) component).addTabChangeListener(listener);
+                    ((HtmlPanelTabbedPane) parent).addTabChangeListener(listener);
                 }
                 else if(listenerRef instanceof TabChangeListener)
                 {
                     TabChangeListener listener = (TabChangeListener) listenerRef;
-                    ((HtmlPanelTabbedPane) component).addTabChangeListener(listener);
-
+                    ((HtmlPanelTabbedPane) parent).addTabChangeListener(listener);
+                }
+                else if (listenerRef == null)
+                {
+                    throw new JspException("Property 'type' must not be null.");
                 }
                 else
-                    throw new JspException("type is neither a 'String' nor a value-binding to a 'String' or a 'TabChangeListener' instance.");
+                {
+                    throw new JspException(
+                       "Property 'type' must be either a string (containing a class name) " +
+                       "or a TabChangeListener instance.");
+                }
             }
             else
             {
-                throw new JspException("Component " + component.getId() + " is no HtmlPanelTabbedPane");
+                throw new JspException(
+                    "Component " + parent.getId() + " is not of type HtmlPanelTabbedPane");
             }
         }
 
