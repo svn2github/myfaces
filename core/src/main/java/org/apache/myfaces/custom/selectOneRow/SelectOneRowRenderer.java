@@ -71,8 +71,6 @@ public class SelectOneRowRenderer extends HtmlRenderer
 
             HtmlRendererUtils.renderHTMLAttributes(writer, row, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
 
-            HtmlRendererUtils.renderHTMLAttributes(writer, row, new String[]{HTML.ONCLICK_ATTR});
-
             writer.endElement(HTML.INPUT_ELEM);
         }
     }
