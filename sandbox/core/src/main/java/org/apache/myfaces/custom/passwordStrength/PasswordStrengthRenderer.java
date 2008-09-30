@@ -216,13 +216,46 @@ public class PasswordStrengthRenderer extends Renderer {
             value = passwordStrength.getValue().toString();
         }
         writer.writeAttribute("value", value, "value");
-        writer.writeAttribute("onkeyup", createOnKeyUpString(context,
+  
+        String onKeyUpString = createOnKeyUpString(context,
                 passwordStrength, textID, preferredLength, prefixText,
                 textStrengthDescriptions, true, showDetails, useCustomSecurity,
-                customSecurityExpression, penaltyRatio), "onkeyup");
-        writer.writeAttribute("onblur", getOnBlurString(context, passwordStrength), "onblur");
+                customSecurityExpression, penaltyRatio);
+        String onKeyUpAttr = passwordStrength.getOnkeyup();
+        passwordStrength.setOnkeyup(constructJSFunction(onKeyUpString, onKeyUpAttr));
+
+        String onBlurString = getOnBlurString(context, passwordStrength);
+        String onBlurAttr = passwordStrength.getOnblur();
+        passwordStrength.setOnblur(constructJSFunction(onBlurString, onBlurAttr));
+        
+        HtmlRendererUtils.renderHTMLAttributes(writer, passwordStrength, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+        if (isDisabled(context, passwordStrength))
+        {
+            writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
+        }
+        
         writer.endElement(HTML.INPUT_ELEM);
         writer.endElement(HTML.SPAN_ELEM);
+    }
+    
+    /**
+     * Concatenates two javascript functions.  One of which is usually supplied as an attribute
+     * of this component's tag.  The other one is the script created by this component.
+     */
+    private String constructJSFunction(String function, String attrFunction)
+    {
+        if(attrFunction != null && attrFunction.length() > 0) 
+        {
+            if(!attrFunction.endsWith(";"))
+            {
+                attrFunction += ";";
+            }
+            return (function+attrFunction);
+        }
+        else
+        {
+            return function;
+        }
     }
 
     /**
