@@ -52,6 +52,7 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * Renderer for the {@link HtmlRoundedDiv} component.
@@ -224,6 +225,12 @@ public class HtmlRoundedDivRenderer extends HtmlTagRenderer implements
         ResponseWriter writer = context.getResponseWriter();
         Set areas = null;
 
+        if (div.isRendered())
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, div, 
+                    HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE);
+        }
+        
         if (div.getSize() == null)
         {
             areas = getAreasToRender(context, div);
