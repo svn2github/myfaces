@@ -102,7 +102,7 @@ public class HtmlSwapImageRenderer
                 }
             }
 
-            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.IMG_PASSTHROUGH_ATTRIBUTES);
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.IMG_PASSTHROUGH_ATTRIBUTES_WITHOUT_ONMOUSEOVER_AND_ONMOUSEOUT);
 
             writer.endElement(HTML.IMG_ELEM);
         }
