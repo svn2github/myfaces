@@ -32,20 +32,29 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.render.RenderKitFactory;
 
-import junit.framework.TestCase;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 import org.apache.myfaces.application.ApplicationFactoryImpl;
 import org.apache.myfaces.custom.date.AbstractHtmlInputDate.UserData;
+import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
+import org.apache.myfaces.test.utils.HtmlCheckAttributesUtil;
+import org.apache.myfaces.test.utils.HtmlRenderedAttr;
+import org.apache.shale.test.mock.MockResponseWriter;
 import org.easymock.MockControl;
 import org.easymock.classextension.MockClassControl;
 
-public class HtmlDateRendererTest extends TestCase {
-  public static void main(String[] args) {
-    junit.textui.TestRunner.run(HtmlDateRendererTest.class);
-  }
-
+public class HtmlDateRendererTest extends AbstractTomahawkViewControllerTestCase {
+//  public static void main(String[] args) {
+//    junit.textui.TestRunner.run(HtmlDateRendererTest.class);
+//  }
+   
   public HtmlDateRendererTest(String name) {
     super(name);
+  }
+  
+  public static Test suite() {
+      return new TestSuite(HtmlDateRendererTest.class);
   }
 
   protected void setUp() throws Exception {
@@ -252,4 +261,36 @@ public class HtmlDateRendererTest extends TestCase {
     return facesContext;
   }
 
+  public void testHtmlPropertyPassTru() throws Exception
+  {
+      HtmlInputDate inputDate = new HtmlInputDate();
+      
+      HtmlRenderedAttr[] attrs = {
+          //_UniversalProperties
+          new HtmlRenderedAttr("dir", 3), 
+          new HtmlRenderedAttr("lang", 3), 
+          new HtmlRenderedAttr("title", 3),
+          //_EventProperties 
+          new HtmlRenderedAttr("ondblclick", 3), 
+          new HtmlRenderedAttr("onkeydown", 3), 
+          new HtmlRenderedAttr("onkeypress", 3),
+          new HtmlRenderedAttr("onkeyup", 3), 
+          new HtmlRenderedAttr("onmousedown", 3), 
+          new HtmlRenderedAttr("onmousemove", 3), 
+          new HtmlRenderedAttr("onmouseout", 3),
+          new HtmlRenderedAttr("onmouseover", 3), 
+          new HtmlRenderedAttr("onmouseup", 3),
+          //_StyleProperties
+          new HtmlRenderedAttr("style", 3), 
+          new HtmlRenderedAttr("styleClass", "styleClass", "class=\"styleClass\"", 3),
+      };
+      
+      
+      MockResponseWriter writer = (MockResponseWriter)facesContext.getResponseWriter();
+      HtmlCheckAttributesUtil.checkRenderedAttributes(
+              inputDate, facesContext, writer, attrs);
+      if(HtmlCheckAttributesUtil.hasFailedAttrRender(attrs)) {
+          fail(HtmlCheckAttributesUtil.constructErrorMessage(attrs, writer.getWriter().toString()));
+      }
+  }
 }

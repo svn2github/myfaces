@@ -111,50 +111,55 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
                                           FacesContext facesContext)
             throws IOException
     {
-        if(!(component instanceof HtmlInputTextHelp))
+        if(!(component instanceof HtmlInputTextHelp) || getHelpText(component) == null || ("").equals(getHelpText(component).trim()))
         {
             HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
         }
         else
         {
             String id = component.getClientId(facesContext);
-            if(isSelectText(component))
-            {
-                HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                                                       HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
-                writer.writeAttribute(HTML.ONFOCUS_ATTR,
-                                      HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT + "('" +
-                                      getHelpText(component) + "', '" + id +"')", null);
-                writer.writeAttribute(HTML.ONCLICK_ATTR,
-                                      HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT + "('" +
-                                      getHelpText(component) + "', '" + id +"')", null);
-
-            }
-            else
-            {
-                if(getHelpText(component) != null)
-                {
-                    HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                                                           HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
-                    writer.writeAttribute(HTML.ONFOCUS_ATTR,
-                                          HtmlInputTextHelp.JS_FUNCTION_RESET_HELP + "('" +
-                                          getHelpText(component) + "', '" + id +"')", null);
-                writer.writeAttribute(HTML.ONCLICK_ATTR,
-                                      HtmlInputTextHelp.JS_FUNCTION_RESET_HELP + "('" +
-                                      getHelpText(component) + "', '" + id +"')", null);
-                }
-                else
-                {
-                    HtmlRendererUtils.renderHTMLAttributes(writer,
-                                                           component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
-                }
-            }
+            HtmlInputTextHelp textHelp = (HtmlInputTextHelp)component;
+            
+            HtmlRendererUtils.renderHTMLAttributes(writer, component,
+                                                   HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
+            writer.writeAttribute(HTML.ONFOCUS_ATTR,
+                                  buildJavascriptFunction(component, id, textHelp.getOnfocus()), null);
+            writer.writeAttribute(HTML.ONCLICK_ATTR,
+                                  buildJavascriptFunction(component, id, textHelp.getOnclick()), null);
         }
 
-         if (isDisabled(facesContext, component))
+        if (isDisabled(facesContext, component))
         {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
         }
+    }
+    
+    private String buildJavascriptFunction(UIComponent component, String id, String componentScript) 
+    {
+        StringBuffer jsFunction = new StringBuffer();
+        if(isSelectText(component))
+        {
+            jsFunction.append(HtmlInputTextHelp.JS_FUNCTION_SELECT_TEXT);
+            jsFunction.append("('");
+            jsFunction.append(    getHelpText(component)).append("', '");
+            jsFunction.append(    id);
+            jsFunction.append("')");
+        }
+        else
+        {
+            jsFunction.append(HtmlInputTextHelp.JS_FUNCTION_RESET_HELP );
+            jsFunction.append("('");
+            jsFunction.append(    getHelpText(component)).append("', '");
+            jsFunction.append(    id);
+            jsFunction.append("')");
+        }
+        
+        if(componentScript != null && !("").equals(componentScript.trim())) {
+            jsFunction.append(";");
+            jsFunction.append(componentScript);
+        }
+        
+        return jsFunction.toString();
     }
 
     public void decode(FacesContext facesContext, UIComponent component)

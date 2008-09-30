@@ -408,7 +408,16 @@
                 </executions>
             </plugin>
             -->
-            
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>                    
+                        <exclude>**/TestUtils.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

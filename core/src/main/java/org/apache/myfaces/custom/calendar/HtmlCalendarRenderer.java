@@ -290,6 +290,7 @@ public class HtmlCalendarRenderer
         writer.startElement(HTML.TABLE_ELEM, inputCalendar);
         HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.UNIVERSAL_ATTRIBUTES);
         HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.EVENT_HANDLER_ATTRIBUTES);
+        HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.COMMON_FIELD_EVENT_ATTRIBUTES_WITHOUT_ONSELECT_AND_ONCHANGE);
         writer.flush();
 
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
