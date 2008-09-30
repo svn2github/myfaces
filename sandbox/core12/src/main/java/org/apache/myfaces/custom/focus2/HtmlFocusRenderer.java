@@ -20,14 +20,17 @@ package org.apache.myfaces.custom.focus2;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 
+import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import javax.faces.component.ContextCallback;
+
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 /**
  * 
  * @JSFRenderer
@@ -47,6 +50,16 @@ public class HtmlFocusRenderer extends Renderer
     public void decode(FacesContext context, UIComponent component)
     {
         super.decode(context, component);
+        RendererUtils.checkParamValidity(context, component, HtmlFocus.class);
+        HtmlFocus focus = (HtmlFocus) component;
+        focus.setSubmittedValue(getCurrentFocusedClientId(context, component));
+    }
+    
+    private Object getCurrentFocusedClientId(FacesContext context, UIComponent component) 
+    {
+        Map paramMap = context.getExternalContext().getRequestParameterMap();
+        String clientId = component.getClientId(context);
+        return paramMap.get(clientId);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component)
@@ -292,24 +305,27 @@ public class HtmlFocusRenderer extends Renderer
         String clientId = (String) focus.getValue();
         if (clientId != null && clientId.length() > 0)
         {
-            final StringHolder nextClientId = new StringHolder();
-            context.getViewRoot().invokeOnComponent(context, clientId,
-                    new ContextCallback()
-                    {
-
-                        public void invokeContextCallback(FacesContext context,
-                                UIComponent target)
+            boolean isPostBack = context.getRenderKit().getResponseStateManager().isPostback(context);
+            if(isPostBack) 
+            {
+                final StringHolder nextClientId = new StringHolder();
+                context.getViewRoot().invokeOnComponent(context, clientId,
+                        new ContextCallback()
                         {
-                            String nextClientIdString = getNextValueHolder(
-                                    context, target);
-                            if (nextClientIdString != null)
-                                nextClientId.string = nextClientIdString;
-                        }
-                    });
-
-            if (nextClientId.string != null && nextClientId.string.length() > 0)
-                return nextClientId.string;
-
+    
+                            public void invokeContextCallback(FacesContext context,
+                                    UIComponent target)
+                            {
+                                String nextClientIdString = getNextValueHolder(
+                                        context, target);
+                                if (nextClientIdString != null)
+                                    nextClientId.string = nextClientIdString;
+                            }
+                        });
+    
+                if (nextClientId.string != null && nextClientId.string.length() > 0)
+                    return nextClientId.string;
+            }
             return clientId;
         }
 
