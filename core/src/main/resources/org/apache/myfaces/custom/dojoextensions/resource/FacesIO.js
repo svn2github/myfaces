@@ -47,11 +47,14 @@ dojo.io.FacesTransport = new function() {
             //Remember that each form has its own child with            
             var formElement = dojo.dom.getAncestorsByTag(document.getElementById(affectedAjaxComponent), "form", true);
 
-            //request.content["javax.faces.ViewState"] = formElement["javax.faces.ViewState"].value;            
+            //request.content["javax.faces.ViewState"] = formElement["javax.faces.ViewState"].value;
+            
+            //Here we have to handle correctly the encoding of the state value
+            var enc = /utf/i.test(request.encoding||"") ? encodeURIComponent : dojo.string.encodeAscii;
             if (request.postContent){
-                request.postContent = request.postContent + '&javax.faces.ViewState='+ formElement["javax.faces.ViewState"].value;
+                request.postContent = request.postContent + '&javax.faces.ViewState='+ enc(formElement["javax.faces.ViewState"].value);
             }else{
-                request.postContent = 'javax.faces.ViewState='+ formElement["javax.faces.ViewState"].value;
+                request.postContent = 'javax.faces.ViewState='+ enc(formElement["javax.faces.ViewState"].value);
             }            
         }
         else
