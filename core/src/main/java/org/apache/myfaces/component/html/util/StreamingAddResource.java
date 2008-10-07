@@ -21,6 +21,7 @@ package org.apache.myfaces.component.html.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.net.URLEncoder;
 
 import javax.faces.FacesException;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletContext;
@@ -41,14 +42,14 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.MyFacesResourceHandler;
 import org.apache.myfaces.renderkit.html.util.ResourceHandler;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.renderkit.html.util.ResourcePosition;
-import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -711,7 +712,7 @@ public class StreamingAddResource implements AddResource
                                     boolean withContextPath)
     {
         StringBuffer sb = new StringBuffer(200);
-        sb.append(RESOURCE_VIRTUAL_PATH);
+        sb.append(MyfacesConfig.getCurrentInstance(context.getExternalContext()).getResourceVirtualPath());
         sb.append(PATH_SEPARATOR);
         sb.append(resourceLoader.getName());
         sb.append(PATH_SEPARATOR);
@@ -807,7 +808,7 @@ public class StreamingAddResource implements AddResource
         String pathInfo = request.getPathInfo();
         String uri = request.getContextPath() + request.getServletPath()
                 + (pathInfo == null ? "" : pathInfo);
-        String classNameStartsAfter = RESOURCE_VIRTUAL_PATH + '/';
+        String classNameStartsAfter = getResourceVirtualPath(context) + '/';
 
         int posStartClassName = uri.indexOf(classNameStartsAfter) + classNameStartsAfter.length();
         int posEndClassName = uri.indexOf(PATH_SEPARATOR, posStartClassName);
@@ -825,7 +826,16 @@ public class StreamingAddResource implements AddResource
             validateResourceLoader(resourceLoader);
             ((ResourceLoader) resourceLoader.newInstance()).serveResource(context, request,
                     response, resourceUri);
-            response.flushBuffer();
+            // response.flushBuffer();
+            // Do not call response.flushBuffer buffer here. There is no point, as if there
+            // ever were header data to write, this would fail as we have already written
+            // the response body. The only point would be to flush the output stream, but
+            // that will happen anyway when the servlet container closes the socket.
+            //
+            // In addition, flushing could fail here; it appears that Microsoft IE
+            // hasthe habit of hard-closing its socket as soon as it has received a complete
+            // gif file, rather than letting the server close it. The container will hopefully
+            // silently ignore exceptions on close.            
         }
         catch (ClassNotFoundException e)
         {
