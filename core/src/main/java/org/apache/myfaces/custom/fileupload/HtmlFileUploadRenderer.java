@@ -90,7 +90,9 @@ public class HtmlFileUploadRenderer
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
         {
-            return false;
+            //if the user is not enabled, the component is
+            //disabled, so it should return true.
+            return true;
         }
         else
         {
