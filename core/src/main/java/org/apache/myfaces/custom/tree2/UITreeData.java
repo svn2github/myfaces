@@ -176,6 +176,10 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         decode(context);
 
         processNodes(context, PROCESS_DECODES, getDataModel().getTreeWalker());
+        // After processNodes is executed, the node active is the last one
+        // we have to set it to null again to avoid inconsistency on outsider
+        // code (just like UIData components does)
+        setNodeId(null);
 
     }
 
