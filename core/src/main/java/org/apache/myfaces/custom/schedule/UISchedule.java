@@ -62,12 +62,6 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
             ScheduleEntry entry = schedule.getSubmittedEntry();
             schedule.getModel().setSelectedEntry(entry);
             schedule.setSubmittedEntry(null);
-
-            if (schedule.getAction() != null)
-            {
-                getFacesContext().getApplication().getActionListener()
-                        .processAction(event);
-            }
         }
     }
     
@@ -85,7 +79,6 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
     {
         super();
         _scheduleListener = new ScheduleActionListener();
-        addActionListener(_scheduleListener); 
     }
 
     public void addActionListener(ActionListener listener)
@@ -112,15 +105,37 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
                         new Object[] { mouseEvent });
             }
         }
+        
+        //then invoke private ScheduleActionListener for set
+        //the selected entry (if exists), so other
+        //listeners can retrieve it from getSelectedEntry.
+        if (event.isAppropriateListener(_scheduleListener))
+        {
+            event.processListener(_scheduleListener);
+        }
 
-        //then invode any other listeners
+        //then invoke any other listeners
         super.broadcast(event);
 
-        MethodBinding actionListener = getActionListener();
-
-        if (actionListener != null)
+        if (event instanceof ActionEvent)
         {
-            actionListener.invoke(context, new Object[] { event });
+            //Call registered actionListener if applies
+            MethodBinding actionListener = getActionListener();
+    
+            if (actionListener != null)
+            {
+                actionListener.invoke(context, new Object[] { event });
+            }
+            
+            //Since UISchedule is an ActionSource component,
+            //we should call to the application actionListener
+            //when an ActionEvent happens.
+            ActionListener defaultActionListener = context.getApplication()
+                .getActionListener();
+            if (defaultActionListener != null)
+            {
+                defaultActionListener.processAction((ActionEvent) event);
+            }
         }
     }
 
@@ -255,8 +270,6 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
      */
     public void restoreState(FacesContext context, Object state)
     {
-        removeActionListener(_scheduleListener);
-
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         _lastClickedDateAndTime = (Date) values[1];
@@ -264,7 +277,6 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
                 values[2]);
         _action = (MethodBinding) restoreAttachedState(context, values[3]);
         _mouseListener = (MethodBinding) restoreAttachedState(context, values[4]);
-        addActionListener(_scheduleListener);
     }
     
     /**
@@ -272,8 +284,6 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
      */
     public Object saveState(FacesContext context)
     {
-        removeActionListener(_scheduleListener);
-
         Object[] values = new Object[5];
         values[0] = super.saveState(context);
         values[1] = _lastClickedDateAndTime;
