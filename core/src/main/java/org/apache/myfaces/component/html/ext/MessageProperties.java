@@ -67,7 +67,7 @@ public interface MessageProperties
      *  Default: true.
      * 
      * @JSFProperty
-     *   defaultValue="false"
+     *   defaultValue="true"
      */
     public boolean isReplaceIdWithLabel();
     
