@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Backing bean for the input-suggest-ajax component
  *
- * @author Gerald Müllan (latest modification by $Author$)
+ * @author Gerald Mï¿½llan (latest modification by $Author$)
  * @version $Revision$
  */
 public class InputSuggestAjaxBean
@@ -82,7 +82,7 @@ public class InputSuggestAjaxBean
                 filteredCities.add(city);
             }
         }
-        System.out.println("returning cities: " + filteredCities.size());
+
         return filteredCities;
     }
         
