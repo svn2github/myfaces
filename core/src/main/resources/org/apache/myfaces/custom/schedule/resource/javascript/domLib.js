@@ -152,7 +152,11 @@ function Hash()
 // using prototype as opposed to inner functions saves on memory 
 Hash.prototype.get = function(in_key)
 {
-	return this.elementData[in_key];
+	if (typeof(this.elementData[in_key]) != 'undefined') {
+		return this.elementData[in_key];
+	}
+
+	return null;
 }
 
 Hash.prototype.set = function(in_key, in_value)
@@ -211,6 +215,8 @@ Hash.prototype.find = function(in_obj)
 			return tmp_key;
 		}
 	}
+
+	return null;
 }
 
 Hash.prototype.merge = function(in_hash)
@@ -251,11 +257,22 @@ Hash.prototype.compare = function(in_hash)
 // }}}
 // {{{ domLib_isDescendantOf()
 
-function domLib_isDescendantOf(in_object, in_ancestor)
+function domLib_isDescendantOf(in_object, in_ancestor, in_bannedTags)
 {
+	if (in_object == null)
+	{
+		return false;
+	}
+
 	if (in_object == in_ancestor)
 	{
 		return true;
+	}
+
+	if (typeof(in_bannedTags) != 'undefined' &&
+		(',' + in_bannedTags.join(',') + ',').indexOf(',' + in_object.tagName + ',') != -1)
+	{
+		return false;
 	}
 
 	while (in_object != document.documentElement)
@@ -275,10 +292,10 @@ function domLib_isDescendantOf(in_object, in_ancestor)
 				in_object = tmp_object;
 			}
 		}
-		// in case we get some wierd error, just assume we haven't gone out yet
+		// in case we get some wierd error, assume we left the building
 		catch(e)
 		{
-			return true;
+			return false;
 		}
 	}
 
@@ -414,8 +431,12 @@ function domLib_detectCollisions(in_object, in_recover, in_useCache)
 // }}}
 // {{{ domLib_getOffsets()
 
-function domLib_getOffsets(in_object)
+function domLib_getOffsets(in_object, in_preserveScroll)
 {
+	if (typeof(in_preserveScroll) == 'undefined') {
+		in_preserveScroll = false;
+	}
+
 	var originalObject = in_object;
 	var originalWidth = in_object.offsetWidth;
 	var originalHeight = in_object.offsetHeight;
@@ -427,6 +448,12 @@ function domLib_getOffsets(in_object)
 		offsetLeft += in_object.offsetLeft;
 		offsetTop += in_object.offsetTop;
 		in_object = in_object.offsetParent;
+		// consider scroll offset of parent elements
+		if (in_object && !in_preserveScroll)
+		{
+			offsetLeft -= in_object.scrollLeft;
+			offsetTop -= in_object.scrollTop;
+		}
 	}
 
 	// MacIE misreports the offsets (even with margin: 0 in body{}), still not perfect
@@ -459,7 +486,7 @@ function domLib_setTimeout(in_function, in_timeout, in_args)
 	if (in_timeout == -1)
 	{
 		// timeout event is disabled
-		return;
+		return 0;
 	}
 	else if (in_timeout == 0)
 	{
@@ -494,7 +521,9 @@ function domLib_clearTimeout(in_id)
 {
 	if (!domLib_hasBrokenTimeout)
 	{
-		clearTimeout(in_id);
+		if (in_id > 0) {
+			clearTimeout(in_id);
+		}
 	}
 	else
 	{
@@ -549,6 +578,7 @@ function domLib_getEventPosition(in_eventObj)
 		eventPosition.set('scrollX', in_eventObj.pageX - in_eventObj.clientX);
 		eventPosition.set('scrollY', in_eventObj.pageY - in_eventObj.clientY);
 	}
+
 	return eventPosition;
 }
 
@@ -577,7 +607,7 @@ function domLib_getIFrameReference(in_frame)
 		var name = in_frame.name;
 		if (!name || !in_frame.parent)
 		{
-			return;
+			return null;
 		}
 
 		var candidates = in_frame.parent.document.getElementsByTagName('iframe');
@@ -588,6 +618,8 @@ function domLib_getIFrameReference(in_frame)
 				return candidates[i];
 			}
 		}
+
+		return null;
 	}
 }
 
@@ -611,7 +643,7 @@ function domLib_getElementsByClass(in_class)
 }
 
 // }}}
-// {{{
+// {{{ domLib_getElementsByTagNames()
 
 function domLib_getElementsByTagNames(in_list, in_excludeHidden)
 {
@@ -621,6 +653,22 @@ function domLib_getElementsByTagNames(in_list, in_excludeHidden)
 		var matches = document.getElementsByTagName(in_list[i]);
 		for (var j = 0; j < matches.length; j++)
 		{
+			// skip objects that have nested embeds, or else we get "flashing"
+			if (matches[j].tagName == 'OBJECT' && domLib_isGecko)
+			{
+				var kids = matches[j].childNodes;
+				var skip = false;
+				for (var k = 0; k < kids.length; k++)
+				{
+					if (kids[k].tagName == 'EMBED')
+					{
+						skip = true;
+						break;
+					}
+				}
+				if (skip) continue;
+			}
+
 			if (in_excludeHidden && domLib_getComputedStyle(matches[j], 'visibility') == 'hidden')
 			{
 				continue;
@@ -634,7 +682,7 @@ function domLib_getElementsByTagNames(in_list, in_excludeHidden)
 }
 
 // }}}
-// {{{
+// {{{ domLib_getComputedStyle()
 
 function domLib_getComputedStyle(in_obj, in_property)
 {
@@ -646,7 +694,7 @@ function domLib_getComputedStyle(in_obj, in_property)
 	// getComputedStyle() is broken in konqueror, so let's go for the style object
 	else if (domLib_isKonq)
 	{
-		var humpBackProp = in_property.replace(/-(.)/, function (a, b) { return b.toUpperCase(); });
+		//var humpBackProp = in_property.replace(/-(.)/, function (a, b) { return b.toUpperCase(); });
 		return eval('in_obj.style.' + in_property);
 	}
 	else

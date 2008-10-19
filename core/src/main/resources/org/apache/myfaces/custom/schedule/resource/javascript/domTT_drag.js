@@ -31,10 +31,7 @@ var domTT_dragOffsetTop;
 
 function domTT_dragStart(in_this, in_event)
 {
-	if (typeof(in_event) == 'undefined')
-	{
-		in_event = event;
-	}
+	if (typeof(in_event) == 'undefined') { in_event = window.event; }
 
 	var eventButton = in_event[domLib_eventButton];
 	if (eventButton != 1 && !domLib_isKHTML)
@@ -68,17 +65,13 @@ function domTT_dragUpdate(in_event)
 			window.getSelection().removeAllRanges()
 		}
 
-		if (domTT_useGlobalMousePosition)
+		if (domTT_useGlobalMousePosition && domTT_mousePosition != null)
 		{
 			var eventPosition = domTT_mousePosition;
 		}
 		else
 		{
-			if (typeof(in_event) == 'undefined')
-			{
-				in_event = event;
-			}
-
+			if (typeof(in_event) == 'undefined') { in_event = window.event; }
 			var eventPosition = domLib_getEventPosition(in_event);
 		}
 
