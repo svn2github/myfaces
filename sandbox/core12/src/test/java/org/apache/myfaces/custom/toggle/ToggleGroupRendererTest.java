@@ -70,7 +70,7 @@ public class ToggleGroupRendererTest extends AbstractTomahawkViewControllerTestC
             new HtmlRenderedAttr("onmouseover"), 
             new HtmlRenderedAttr("onmouseup"),
             //_StyleProperties
-            new HtmlRenderedAttr("style", "style", "style=\"style;display:none;\""), 
+            new HtmlRenderedAttr("style", "style", "style=\"style\""), 
             new HtmlRenderedAttr("styleClass", "styleClass", "class=\"styleClass\""),
         };
 

@@ -19,13 +19,9 @@
 package org.apache.myfaces.custom.toggle;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -33,7 +29,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
-import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
@@ -53,12 +48,7 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     public static final int DEFAULT_MAX_SUGGESTED_ITEMS = 200;
 
     /**
-     * The difference of this method from the parent is that the id 
-     * is always necessary (some javascript refers to it), so we only
-     * change the id part and let the rest as is. In this way, we 
-     * avoid side effects of change the parent render class.
-     * 
-     * Also the difference of this renderer with 1.1 is that outputLink
+     * The difference of this renderer with 1.1 is that outputLink
      * includes disabled attribute.
      * 
      * This is only necessary for tomahawk 1.2
@@ -82,62 +72,27 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
             }
             else
             {
-                //calculate href
-                String href = org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getStringValue(facesContext, output);
+                String clientId = output.getClientId(facesContext);
                 
-                if (href == null)
-                {
-                    href = "";
-                }
-                if ("".equals(href) || "#".equals(href))
-                {
-                    //If no value defined the default is #componentId where
-                    //componentId is the clientId of the component to be 
-                    //shown. This avoid that the page jumps to top on every click.
-                    ToggleLink toggleLink = (ToggleLink) output;
-                    String[] componentsToToggle = toggleLink.getFor().split(",");
-                    for (int i = 0; i < componentsToToggle.length; i++) {
-                        String componentId = componentsToToggle[i].trim();
-                        UIComponent componentToShow = toggleLink.findComponent(componentId);
-                        if (componentToShow != null){
-                            href = "#"+ componentToShow.getClientId(facesContext);
-                            break;
-                        }
-                    }                
-                }
-                
-                if (getChildCount(output) > 0)
-                {
-                    StringBuffer hrefBuf = new StringBuffer(href);
-                    addChildParametersToHref(facesContext, output, hrefBuf,
-                                         (href.indexOf('?') == -1), //first url parameter?
-                                         writer.getCharacterEncoding());
-                    href = hrefBuf.toString();
-                }
-                href = facesContext.getExternalContext().encodeResourceURL(href);    //TODO: or encodeActionURL ?
-    
                 //write anchor
                 writer.startElement(HTML.ANCHOR_ELEM, output);
-                
-                //HtmlRendererUtils.writeIdAndNameIfNecessary(writer, output, facesContext);
-                String clientId = output.getClientId(facesContext);
                 writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-                writer.writeAttribute(HTML.NAME_ATTR, clientId, null);                
-                writer.writeURIAttribute(HTML.HREF_ATTR, href, null);
+                writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+                writer.writeURIAttribute(HTML.HREF_ATTR, "javascript:void(0);", null);
                 
                 HtmlRendererUtils
-                .renderHTMLAttributes(
-                        writer,
-                        output,
-                        org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.ANCHOR_PASSTHROUGH_ATTRIBUTES_WITHOUT_ONCLICK_WITHOUT_STYLE);
+                        .renderHTMLAttributes(
+                                writer,
+                                output,
+                                org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.ANCHOR_PASSTHROUGH_ATTRIBUTES_WITHOUT_ONCLICK_WITHOUT_STYLE);
                 HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_ATTR, HTML.STYLE_ATTR,
                         output.getAttributes().get(HTML.STYLE_ATTR));
                 HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_CLASS_ATTR, HTML.STYLE_CLASS_ATTR,
                         output.getAttributes().get(HTML.STYLE_CLASS_ATTR));
                 
-                HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, 
+               HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, 
                         buildOnclickToggleFunction(facesContext,output));
-                        
+                                        
                 writer.flush();
             }
         }
@@ -174,7 +129,15 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
             onClick.append("var oamSF = function(){");            
         }
         
-        onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"')");
+        if(toggleLink.getOnClickFocusId() != null) 
+        {
+            String onClickFocusClientId = toggleLink.findComponent(toggleLink.getOnClickFocusId()).getClientId(facesContext);
+            onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','" + onClickFocusClientId + "');");
+        }
+        else
+        {
+            onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','');");
+        }
         
         if (outputOnclick != null)
         {
@@ -184,63 +147,6 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         }
 
         return onClick.toString();
-    }
-    
-    //This method is copied from HtmlLinkRendererBase.  
-    private void addChildParametersToHref(FacesContext facesContext,
-            UIComponent linkComponent, StringBuffer hrefBuf,
-            boolean firstParameter, String charEncoding) throws IOException
-    {
-        boolean strictXhtmlLinks = MyfacesConfig.getCurrentInstance(
-                facesContext.getExternalContext()).isStrictXhtmlLinks();
-        for (Iterator it = getChildren(linkComponent).iterator(); it.hasNext();)
-        {
-            UIComponent child = (UIComponent) it.next();
-            if (child instanceof UIParameter)
-            {
-                String name = ((UIParameter) child).getName();
-                Object value = ((UIParameter) child).getValue();
-                addParameterToHref(name, value, hrefBuf, firstParameter,
-                        charEncoding, strictXhtmlLinks);
-                firstParameter = false;
-            }
-        }
-    }
-
-    //This method is copied from HtmlLinkRendererBase.     
-    private static void addParameterToHref(String name, Object value,
-            StringBuffer hrefBuf, boolean firstParameter, String charEncoding,
-            boolean strictXhtmlLinks) throws UnsupportedEncodingException
-    {
-        if (name == null)
-        {
-            throw new IllegalArgumentException(
-                    "Unnamed parameter value not allowed within command link.");
-        }
-
-        if (firstParameter)
-        {
-            hrefBuf.append('?');
-        }
-        else
-        {
-            if (strictXhtmlLinks)
-            {
-                hrefBuf.append("&amp;");
-            }
-            else
-            {
-                hrefBuf.append('&');
-            }
-        }
-
-        hrefBuf.append(URLEncoder.encode(name, charEncoding));
-        hrefBuf.append('=');
-        if (value != null)
-        {
-            //UIParameter is no ConvertibleValueHolder, so no conversion possible
-            hrefBuf.append(URLEncoder.encode(value.toString(), charEncoding));
-        }
     }
             
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
