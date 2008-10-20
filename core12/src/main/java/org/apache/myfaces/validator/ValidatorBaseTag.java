@@ -68,13 +68,13 @@ public abstract class ValidatorBaseTag extends ValidatorELTag {
 
         if (detailMessage != null)
         {
-            if (!_detailMessage.isLiteralText())
+            if (!detailMessage.isLiteralText())
             {
-                validator.setValueExpression("detailMessage",_detailMessage);
+                validator.setValueExpression("detailMessage",detailMessage);
             }
             else
             {
-                validator.setDetailMessage((String)_detailMessage.getValue(facesContext.getELContext()));
+                validator.setDetailMessage((String)detailMessage.getValue(facesContext.getELContext()));
             }
         }
 
