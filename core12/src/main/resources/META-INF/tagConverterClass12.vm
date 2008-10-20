@@ -29,6 +29,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 $utils.importTagClasses($converter)
 
+// Generated from class ${component.sourceClassName}.
+//
+// WARNING: This file was automatically generated. Do not edit it directly,
+//          or you will lose your changes.
 public class $utils.getClassFromFullClass($converter.tagClass)
 #if (${converter.tagSuperclass})
     extends ${converter.tagSuperclass}
