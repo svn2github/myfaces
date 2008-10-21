@@ -139,11 +139,11 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
                     tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
                     tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
                     if( !type.equals("full")) {
-                    	tempCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                    	tempCalendar.set(Calendar.MINUTE, 0);
-                    	tempCalendar.set(Calendar.SECOND, 0);
-                    	tempCalendar.set(Calendar.MILLISECOND, 0);
-                    	return new java.sql.Date(tempCalendar.getTimeInMillis());
+                        tempCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                        tempCalendar.set(Calendar.MINUTE, 0);
+                        tempCalendar.set(Calendar.SECOND, 0);
+                        tempCalendar.set(Calendar.MILLISECOND, 0);
+                        return new java.sql.Date(tempCalendar.getTimeInMillis());
                     }
                 }
 
