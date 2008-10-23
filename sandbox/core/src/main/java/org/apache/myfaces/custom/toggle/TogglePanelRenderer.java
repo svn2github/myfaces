@@ -49,7 +49,7 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, TogglePanel.class);
-        addScrollToJavascript(context);
+        addToggleLinkJavascript(context);
         
         TogglePanel togglePanel = (TogglePanel) component;
         boolean toggleMode = togglePanel.isToggled();
@@ -68,9 +68,6 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
         writer.writeAttribute(HTML.VALUE_ATTR, toggleMode ? "1" : "", null);
 
         writer.endElement(HTML.INPUT_ELEM);
-
-        if( ! toggleMode )
-            writeJavascriptToToggleVisibility(context, togglePanel);
 
         super.encodeEnd(context, togglePanel);
     }
@@ -147,59 +144,14 @@ public class TogglePanelRenderer extends HtmlGroupRendererBase {
     private String getHiddenFieldId(FacesContext context, TogglePanel togglePanel){
         return togglePanel.getClientId(context) + "_hidden";
     }
-    // Generate the javascript function to hide the Link component
-    // and display the components specified in the 'for' attribute
-    private void writeJavascriptToToggleVisibility(FacesContext context, TogglePanel togglePanel) throws IOException {
-
-        ResponseWriter out = context.getResponseWriter();
-
-        out.startElement(HTML.SCRIPT_ELEM, null);
-        out.writeAttribute(HTML.TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
-
-        String functionName = getToggleJavascriptFunctionName(context, togglePanel);
-
-        out.write("function "+functionName + "(idsToShowS,onClickFocusId){\n");
-
-        StringBuffer idsToHide = new StringBuffer();
-        int idsToHideCount = 0;
-        for(Iterator it = togglePanel.getChildren().iterator(); it.hasNext(); ) {
-            UIComponent component = (UIComponent) it.next();
-            if ( isHiddenWhenToggled( component ) ) {
-                if( idsToHideCount > 0 )
-                    idsToHide.append( ',' );
-                idsToHide.append( component.getClientId( context ) );
-                idsToHideCount++;
-            }
-        }
-
-        if( idsToHideCount == 1 ){
-            out.write( "document.getElementById('"+ idsToHide.toString() +"').style.display = 'none';\n" );
-        }else if( idsToHideCount > 1 ){
-            out.write( "var idsToHide = '" + idsToHide.toString() + "'.split(',');\n" );
-            out.write( "for(var i=0;i<idsToHide.length;i++) document.getElementById(idsToHide[i]).style.display = 'none';\n" );
-        }else{ // no idsToHide set
-            log.warn( "TogglePanel "+ togglePanel.getClientId(context) +" has no visible components when toggled." );
-        }
-        out.write( "var idsToShow = idsToShowS.split(',');\n" );
-        out.write( "scrollTo(idsToShow[0]);\n" );
-        out.write( "for(var j=0;j<idsToShow.length;j++) {document.getElementById(idsToShow[j]).style.display = 'inline';}\n");
-        out.write( "if(onClickFocusId != '') document.getElementById(onClickFocusId).focus();\n");
-        out.write( "else document.getElementById(idsToShow[0]).focus();\n");
-        // toggle the value of the hidden field
-        out.write("document.getElementById('" + getHiddenFieldId(context, togglePanel) + "').value = '1';\n");
-
-        out.write("}");
-        out.endElement(HTML.SCRIPT_ELEM);
-    }
 
     static public String getToggleJavascriptFunctionName(FacesContext context, TogglePanel togglePanel) {
-        String modifiedId = togglePanel.getClientId(context).replaceAll("\\:", "_").replaceAll("-", "_");
-        return "toggle_" + modifiedId;
+        return "MyFacesToggleLinkUtils.toggle";
     }
     
-    public void addScrollToJavascript(FacesContext context)throws IOException {
+    public void addToggleLinkJavascript(FacesContext context)throws IOException {
         AddResource addResource = AddResourceFactory.getInstance(context);
         
-        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, AbstractTogglePanel.class, "scrollTo.js");
+        addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, AbstractTogglePanel.class, "MyFacesToggleLink.js");
     }
 }

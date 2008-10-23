@@ -19,13 +19,10 @@
 package org.apache.myfaces.custom.toggle;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -33,7 +30,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
-import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
@@ -88,7 +84,9 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
             UIOutput output) throws IOException
     {
         ToggleLink toggleLink = (ToggleLink) output;
+        TogglePanel togglePanel = getParentTogglePanel(facesContext, toggleLink);
         String[] componentsToToggle = toggleLink.getFor().split(",");
+        String idsToHide = getIdsToHide(facesContext, togglePanel);
         StringBuffer idsToShow = new StringBuffer();
         for (int i = 0; i < componentsToToggle.length; i++) {
             String componentId = componentsToToggle[i].trim();
@@ -109,16 +107,9 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
             onClick.append(outputOnclick);
             onClick.append(";");
         }
-        
-        if(toggleLink.getOnClickFocusId() != null) 
-        {
-            String onClickFocusClientId = toggleLink.findComponent(toggleLink.getOnClickFocusId()).getClientId(facesContext);
-            onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','" + onClickFocusClientId + "');");
-        }
-        else
-        {
-            onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','');");
-        }
+
+        String onClickFocusClientId = toggleLink.getOnClickFocusId() != null ? toggleLink.findComponent(toggleLink.getOnClickFocusId()).getClientId(facesContext) : "";
+        onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','" + idsToHide + "','" + getHiddenFieldId(facesContext, togglePanel) + "','" + onClickFocusClientId + "');");
 
         return onClick.toString();
     }
@@ -151,5 +142,35 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         Log log = LogFactory.getLog(ToggleLinkRenderer.class);
         log.error("The ToggleLink component with id " + toggleLink.getClientId( context )+" isn't enclosed in a togglePanel.");
         return null;
+    }
+    
+    private String getIdsToHide(FacesContext facesContext, TogglePanel togglePanel) {
+         StringBuffer idsToHide = new StringBuffer();
+         int idsToHideCount = 0;
+         for(Iterator it = togglePanel.getChildren().iterator(); it.hasNext(); ) {
+             UIComponent component = (UIComponent) it.next();
+             if ( TogglePanelRenderer.isHiddenWhenToggled( component ) ) {
+                 if( idsToHideCount > 0 )
+                     idsToHide.append( ',' );
+                 
+                 idsToHide.append( component.getClientId( facesContext ) );
+                 idsToHideCount++;
+             }
+         }
+         
+         return idsToHide.toString();
+    }
+    
+    private TogglePanel getParentTogglePanel(FacesContext facesContext, ToggleLink toggleLink) {
+         for(UIComponent component = toggleLink.getParent(); component != null; component = component.getParent()) {
+             if( component instanceof TogglePanel )
+                 return (TogglePanel) component;
+         }
+         
+         return null;
+    }
+    
+    private String getHiddenFieldId(FacesContext context, TogglePanel togglePanel){
+        return togglePanel.getClientId(context) + "_hidden";
     }
 }
