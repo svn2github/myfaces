@@ -169,17 +169,18 @@ public class InputSuggestAjaxBean
         return dummyDataBaseAddresses;
     }
 
-    public String getAddressLabel(Object adress)
+    public String getAddressLabel(Object address)
     {
-        if (adress instanceof Address)
+        if (address instanceof Address)
         {
-            Address a = (Address) adress;
+            Address a = (Address) address;
             return a.getCity() + "," + a.getStreetName() + "," + a.getState();
         }
-        else
+        else if( address instanceof String)
         {
-            return adress.toString();
-        }
+            return address.toString();
+        } else
+            return null;
     }
 
     public String getSuggestValue()
@@ -204,10 +205,6 @@ public class InputSuggestAjaxBean
 
     public Address getChoosenAddress()
     {
-        if (choosenAddress == null)
-        {
-            return new Address(11,"nonamestreet","detroit",15,"KL");
-        }
         return choosenAddress;
     }
 
