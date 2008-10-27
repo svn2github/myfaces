@@ -123,26 +123,15 @@
 		<br>
 		
 		<h:commandButton action="" value="Export as excel">
-			<s:exporterActionListener for="scroll_1" fileType="XLS"/>
-		</h:commandButton>
-		
-		<br>
-		
-		<h:commandButton action="" value="Export the current page as an excel file">
-			<s:exporterActionListener for="scroll_1" fileType="XLS" showDisplayedPageOnly="true"/>
-		</h:commandButton>				
+			<s:exporterActionListener for="tbl_cars" fileType="XLS"/>
+		</h:commandButton>			
 		
 		<br>
 		
 		<h:commandButton action="" value="Export as pdf">
-			<s:exporterActionListener for="scroll_1" fileType="PDF"/>
+			<s:exporterActionListener for="tbl_cars" fileType="PDF"/>
 		</h:commandButton>
-		
-		<br>
-		
-		<h:commandButton action="" value="Export the current page as a pdf file">
-			<s:exporterActionListener for="scroll_1" fileType="PDF" showDisplayedPageOnly="true"/>
-		</h:commandButton>		
+			
 		
     </h:form>
 </f:view>
