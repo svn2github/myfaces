@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.exporter.util.ExcelExporterUtil;
 import org.apache.myfaces.custom.exporter.util.ExporterConstants;
 import org.apache.myfaces.custom.exporter.util.PDFExporterUtil;
@@ -47,15 +47,11 @@ public class ExporterActionListener implements ActionListener, StateHolder {
 
     public static final String FOR_KEY                   = "for";
 
-    public static final String SHOWDISPLAYEDPAGEONLY_KEY = "showDisplayedPageOnly";
-
     private String             _fileType;
 
     private String             _fileName;
 
     private String             _for;
-
-    private String             _showDisplayedPageOnly;
 
     public void processAction(ActionEvent event) {
 
@@ -68,26 +64,18 @@ public class ExporterActionListener implements ActionListener, StateHolder {
         else {
             try {
 
-                /* get the source dataScroller component */
-                HtmlDataScroller dataScroller = (HtmlDataScroller) ComponentUtils
+                /* get the source dataTable component */
+                HtmlDataTable dataTable = (HtmlDataTable) ComponentUtils
                         .findComponentById(facesContext, facesContext
                                 .getViewRoot(), _for);
 
-                if (!(dataScroller instanceof HtmlDataScroller)) 
+                if (!(dataTable instanceof HtmlDataTable)) 
                 {
                     throw new RuntimeException(
                             "exporterActionListener for attribute should contain a "
-                                    + "dataScroller component id");
+                                    + "dataTable component id");
                 }
                 
-                /*
-                 * By default if the showDisplayedPageOnly is not specified, then the
-                 * default is false.
-                 */
-                if (_showDisplayedPageOnly == null) 
-                {
-                    _showDisplayedPageOnly = "false";
-                }
                 
                 if (ExporterConstants.EXCEL_FILE_TYPE
                         .equalsIgnoreCase(_fileType)) 
@@ -96,7 +84,6 @@ public class ExporterActionListener implements ActionListener, StateHolder {
                     /*
                      * Excel case. Generate the XLS to the response stream.
                      */
-                    
                     Object contextResponse = facesContext.getExternalContext()
                             .getResponse();
 
@@ -104,8 +91,7 @@ public class ExporterActionListener implements ActionListener, StateHolder {
                     {
                         ExcelExporterUtil.generateEXCEL(facesContext,
                                 (HttpServletResponse) contextResponse,
-                                _fileName, dataScroller, Boolean
-                                        .parseBoolean(_showDisplayedPageOnly)); 
+                                _fileName, dataTable); 
                     }
 
                 }
@@ -120,8 +106,7 @@ public class ExporterActionListener implements ActionListener, StateHolder {
                     
 
                     PDFExporterUtil.generatePDF(facesContext, httpResponse,
-                            _fileName, dataScroller, Boolean
-                                    .parseBoolean(_showDisplayedPageOnly));
+                            _fileName, dataTable);
                 }
 
                 /* save the seralized view and complete the response. */
@@ -162,14 +147,6 @@ public class ExporterActionListener implements ActionListener, StateHolder {
     public void setFor(String _for) {
         this._for = _for;
     }
-    
-    public String getShowDisplayedPageOnly() {
-        return _showDisplayedPageOnly;
-    }
-
-    public void setShowDisplayedPageOnly(String showDisplayedPageOnly) {
-        _showDisplayedPageOnly = showDisplayedPageOnly;
-    }       
 
     public void restoreState(FacesContext context, Object state) {
         String values[] = (String[]) state;
@@ -177,16 +154,14 @@ public class ExporterActionListener implements ActionListener, StateHolder {
         _for = values[0];
         _fileName = values[1];
         _fileType = values[2];
-        _showDisplayedPageOnly = values[3];
     }
 
     public Object saveState(FacesContext context) {
-        String values[] = new String[4];
+        String values[] = new String[3];
 
         values[0] = _for;
         values[1] = _fileName;
         values[2] = _fileType;
-        values[3] = _showDisplayedPageOnly;
         return ((String[]) values);
     }
 

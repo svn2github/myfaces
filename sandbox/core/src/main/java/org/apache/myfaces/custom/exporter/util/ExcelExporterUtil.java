@@ -29,7 +29,6 @@ import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -76,34 +75,17 @@ public class ExcelExporterUtil {
      * This method is used for adding the columns values to the HSSFSheet.
      */
     private static void generateTableContent(FacesContext facesContext,
-            HSSFSheet sheet, List columns, HtmlDataScroller dataScroller,
-            boolean selectedPage) {
-
-        HtmlDataTable tomahawkDataTable = ExporterUtil
-                .getDataTableFromDataScroller(facesContext, dataScroller);
+            HSSFSheet sheet, List columns, HtmlDataTable dataTable) {
         
         int numberOfColumns = columns.size();
-        int numberOfRows = dataScroller.getRowCount();        
+        int numberOfRows = dataTable.getRowCount();        
         int startFrom = 0;
-        int currentIndex = 0;
-        int endAt = numberOfRows;
-
-        /* if the current page is selected only, then generate only in the report */
-        if (selectedPage) 
-        {
-            startFrom = (dataScroller.getPageIndex() - 1) * dataScroller.getRows();
-            endAt = startFrom + dataScroller.getRows();
-            
-            if(endAt > numberOfRows) 
-            {
-                endAt = numberOfRows;
-            }
-            
-        }          
+        int currentIndex = 1;
+        int endAt = numberOfRows;         
     
         /* fill the table with the data. */
         for (int i = startFrom; i < endAt; ++i) {
-            tomahawkDataTable.setRowIndex(i);
+            dataTable.setRowIndex(i);
             HSSFRow row = sheet.createRow(currentIndex++);
             for (int j = 0; j < numberOfColumns; ++j) {
                 UIColumn column = (UIColumn) columns.get(j);
@@ -141,21 +123,17 @@ public class ExcelExporterUtil {
      * @return the (HSSFWorkbook) object. 
      */
     private static HSSFWorkbook generateExcelTableModel(
-            FacesContext facesContext, HtmlDataScroller dataScroller,
-            boolean selectedPage) {
+            FacesContext facesContext, HtmlDataTable dataTable) {
   
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HtmlDataTable tomahawkDataTable = ExporterUtil
-                .getDataTableFromDataScroller(facesContext, dataScroller);        
-        HSSFSheet sheet = workbook.createSheet(tomahawkDataTable.getId());
-        List columns = getColumns(tomahawkDataTable);
-        int currentRowIndex = tomahawkDataTable.getRowIndex();
+        HSSFWorkbook workbook = new HSSFWorkbook();       
+        HSSFSheet sheet = workbook.createSheet(dataTable.getId());
+        List columns = getColumns(dataTable);
+        int currentRowIndex = dataTable.getRowIndex();
 
         addColumnHeaders(sheet, columns);
-        generateTableContent(facesContext, sheet, columns, dataScroller,
-                selectedPage);
+        generateTableContent(facesContext, sheet, columns, dataTable);
 
-        tomahawkDataTable.setRowIndex(currentRowIndex);
+        dataTable.setRowIndex(currentRowIndex);
         return workbook;
     }    
 
@@ -168,13 +146,8 @@ public class ExcelExporterUtil {
      * @throws IOException
      */    
     public static void generateEXCEL(FacesContext facesContext,
-            HttpServletResponse response, String fileName,
-            HtmlDataScroller dataScroller, boolean selectedPage)
+            HttpServletResponse response, String fileName, HtmlDataTable dataTable)
             throws IOException {
-
-        /* get the dataScroller dataTable object */
-        HtmlDataTable tomahawkDataTable = ExporterUtil
-                .getDataTableFromDataScroller(facesContext, dataScroller);
 
         /*
          * By default if the fileName is not specified, then use the
@@ -182,28 +155,13 @@ public class ExcelExporterUtil {
          */
         if (fileName == null) 
         {
-            fileName = tomahawkDataTable.getId();
+            fileName = dataTable.getId();
         }
 
         /* generate the excel model */
         HSSFWorkbook generatedExcel = ExcelExporterUtil
-                .generateExcelTableModel(facesContext, dataScroller,
-                        selectedPage);
+                .generateExcelTableModel(facesContext, dataTable);
 
         writeExcelToResponse(response, generatedExcel, fileName);
     }
-
-
-// public static void generateEXCEL(HSSFWorkbook workBook,
-// RenderResponse response, String filename) throws IOException {
-//        response.setContentType("application/vnd.ms-excel");
-//        response.setProperty(RenderResponse.EXPIRATION_CACHE, "0");
-//        response.setProperty("Cache-Control",
-//                "must-revalidate, post-check=0, pre-check=0");
-//        response.setProperty("Pragma", "public");
-//        response.setProperty("Content-disposition", "attachment;filename="
-//                + filename + ".xls");
-//
-//        workBook.write(response.getPortletOutputStream());
-//    }
 }

@@ -40,7 +40,6 @@ public class ExporterActionListenerTag extends TagSupport {
     private String _fileType;
     private String _fileName;
     private String _for;
-    private String _showDisplayedPageOnly;    
     
     public int doStartTag() throws JspException {
 
@@ -77,7 +76,6 @@ public class ExporterActionListenerTag extends TagSupport {
                 exporterActionListener.setFor(_for);
                 exporterActionListener.setFileType(_fileType);
                 exporterActionListener.setFilename(_fileName);
-                exporterActionListener.setShowDisplayedPageOnly(_showDisplayedPageOnly);
 
                 ((ActionSource) component)
                         .addActionListener(exporterActionListener);
@@ -97,7 +95,6 @@ public class ExporterActionListenerTag extends TagSupport {
         _fileType = null;
         _fileName = null;
         _for = null;
-        _showDisplayedPageOnly = null;
     }
     
     public String getFilename() {
@@ -138,18 +135,4 @@ public class ExporterActionListenerTag extends TagSupport {
     public void setFor(String _for) {
         this._for = _for;
     }
-
-    public String getShowDisplayedPageOnly() {
-        return _showDisplayedPageOnly;
-    }
-
-    /**
-     * This attribute determines whether to generate only the current displayed dataTable page to the file.
-     * 
-     * @JSFJspAttribute
-     */
-    public void setShowDisplayedPageOnly(String showDisplayedPageOnly) {
-        _showDisplayedPageOnly = showDisplayedPageOnly;
-    }   
-    
 }

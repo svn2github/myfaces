@@ -30,7 +30,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
 import org.apache.myfaces.custom.util.ComponentUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 
@@ -91,34 +90,16 @@ public class PDFExporterUtil {
      * This method is used for adding the columns values to the pdfTable.
      */
     private static void generateTableContent(FacesContext facesContext,
-            PdfPTable pdfTable, List columns, HtmlDataScroller dataScroller,
-            boolean selectedPage) {
+            PdfPTable pdfTable, List columns, HtmlDataTable dataTable) {
 
         int numberOfColumns = columns.size();
-        int numberOfRows = dataScroller.getRowCount();
+        int numberOfRows = dataTable.getRowCount();
         int startFrom = 0;
         int endAt = numberOfRows;
-
-        HtmlDataTable tomahawkDataTable = ExporterUtil
-                .getDataTableFromDataScroller(facesContext, dataScroller);
-        
-        
-        /* if the current page is selected only, then generate only in the report */
-        if (selectedPage) 
-        {
-            startFrom = (dataScroller.getPageIndex() - 1) * dataScroller.getRows();
-            endAt = startFrom + dataScroller.getRows();
-            
-            if(endAt > numberOfRows) 
-            {
-                endAt = numberOfRows;
-            }
-            
-        }  
         
         /* fill the table with the data. */
         for (int i = startFrom; i < endAt; ++i) {
-            tomahawkDataTable.setRowIndex(i);
+            dataTable.setRowIndex(i);
             for (int j = 0; j < numberOfColumns; ++j) {
                 UIComponent valueHolder = (UIComponent) ((UIColumn) columns
                         .get(j)).getChildren().get(0);
@@ -135,18 +116,15 @@ public class PDFExporterUtil {
      * This method is used for creating the PDFTable model.
      */
     public static PdfPTable generatePDFTableModel(FacesContext facesContext,
-            HtmlDataScroller dataScroller, boolean selectedPage) {
+            HtmlDataTable dataTable) {
 
         int numberOfColumns;
         List columns = null;
         PdfPTable pdfTable = null;
 
-        /* get the parent dataTable component */
-        HtmlDataTable tomahawkDataTable = ExporterUtil
-                .getDataTableFromDataScroller(facesContext, dataScroller);
 
         /* getting the HTMLDataTable Columns */
-        columns = ComponentUtils.getHTMLDataTableColumns(tomahawkDataTable);
+        columns = ComponentUtils.getHTMLDataTableColumns(dataTable);
 
         if (columns.size() == 0) {
             return null;
@@ -161,7 +139,7 @@ public class PDFExporterUtil {
         generateTableHeader(pdfTable, columns);
 
         generateTableContent(facesContext, pdfTable, columns,
-                dataScroller, selectedPage);
+                dataTable);
 
         return pdfTable;
     }
@@ -171,21 +149,17 @@ public class PDFExporterUtil {
      * @param facesContext
      * @param response
      * @param fileName
-     * @param dataScroller
+     * @param dataTable
      */
     public static void generatePDF(FacesContext facesContext,
             HttpServletResponse response, String fileName,
-            HtmlDataScroller dataScroller, boolean selectedPage) throws Exception {
+            HtmlDataTable dataTable) throws Exception {
 
         int currentRowIndex;
         Document document = new Document();
         ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, byteArrayStream);
         PdfPTable pdfTable = null;
-
-        /* get the parent dataTable component */
-        HtmlDataTable tomahawkDataTable = ExporterUtil
-                .getDataTableFromDataScroller(facesContext, dataScroller);
         
         /*
          * By default if the fileName is not specified, then use the
@@ -193,13 +167,13 @@ public class PDFExporterUtil {
          */
         if (fileName == null) 
         {
-            fileName = tomahawkDataTable.getId();
+            fileName = dataTable.getId();
         }        
 
-        currentRowIndex = tomahawkDataTable.getRowIndex();
+        currentRowIndex = dataTable.getRowIndex();
 
         // generate the PDF table model.
-        pdfTable = generatePDFTableModel(facesContext, dataScroller, selectedPage);
+        pdfTable = generatePDFTableModel(facesContext, dataTable);
 
         // open the document and write the generated PDF.
         document.open();
@@ -209,7 +183,7 @@ public class PDFExporterUtil {
         // write the response headers.
         setPDFResponseHeaders(response, byteArrayStream, fileName);
 
-        tomahawkDataTable.setRowIndex(currentRowIndex);
+        dataTable.setRowIndex(currentRowIndex);
 
     }
 }
