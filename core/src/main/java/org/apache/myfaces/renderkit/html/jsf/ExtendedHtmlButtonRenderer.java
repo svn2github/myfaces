@@ -18,12 +18,13 @@
  */
 package org.apache.myfaces.renderkit.html.jsf;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
+import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlButtonRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 
 /**
@@ -50,5 +51,17 @@ public class ExtendedHtmlButtonRenderer
     protected FormInfo findNestingForm(UIComponent uiComponent, FacesContext facesContext)
     {
         return DummyFormUtils.findNestingForm(uiComponent, facesContext);
+    }
+    
+    protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent) 
+    {
+        if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
+        {
+            return true;
+        }
+        else
+        {
+            return super.isDisabled(facesContext, uiComponent);
+        }
     }
 }
