@@ -111,4 +111,12 @@ public class HtmlSwapImageRenderer
             if (log.isWarnEnabled()) log.warn("Graphic with id " + uiComponent.getClientId(facesContext) + " has no value (url).");
         }
     }
+    
+    protected boolean shouldRenderId(
+            FacesContext context,
+            UIComponent  component)
+    {
+        //Always return true, since javascript needs it rendered
+        return true;
+    }
 }
