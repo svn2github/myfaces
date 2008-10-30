@@ -21,6 +21,7 @@ package org.apache.myfaces.custom.calendar;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
 import org.apache.myfaces.dateformat.SimpleDateFormatter;
@@ -223,7 +224,7 @@ public class HtmlCalendarRenderer
                               JSFAttr.ID_ATTR);
         writer.endElement(HTML.SPAN_ELEM);
 
-        if (!inputCalendar.isDisabled())
+        if (!isDisabled(facesContext, inputCalendar) && !inputCalendar.isReadonly())
         {
             writer.startElement(HTML.SCRIPT_ELEM, inputCalendar);
             writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,null);
@@ -635,7 +636,7 @@ public class HtmlCalendarRenderer
             {
                 writer.writeAttribute(HTML.CLASS_ATTR, popupButtonStyleClass, null);
             }
-
+            
             writer.endElement(HTML.INPUT_ELEM);
         } else {
             // render the image
@@ -846,7 +847,7 @@ public class HtmlCalendarRenderer
         text.setTransient(true);
 
         HtmlInputCalendar calendar = (HtmlInputCalendar)component;
-        if (calendar.isDisabled() || calendar.isReadonly())
+        if (isDisabled(facesContext, component) || calendar.isReadonly())
         {
             component.getChildren().add(text);
 
@@ -1067,6 +1068,25 @@ public class HtmlCalendarRenderer
                 RendererUtils.getPathToComponent(component));
         }
 
+    }
+    
+    protected static boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
+    {
+        if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
+        {
+            return true;
+        }
+        else
+        {
+            if (uiComponent instanceof HtmlInputCalendar)
+            {
+                return ((HtmlInputCalendar)uiComponent).isDisabled();
+            }
+            else
+            {
+                return org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getBooleanAttribute(uiComponent, HTML.DISABLED_ATTR, false);
+            }
+        }
     }
 
     public Object getConvertedValue(FacesContext facesContext, UIComponent uiComponent, Object submittedValue) throws ConverterException
