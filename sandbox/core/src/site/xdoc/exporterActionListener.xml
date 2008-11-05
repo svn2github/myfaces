@@ -45,8 +45,7 @@ components.
 
 				&lt;s:exporterActionListener filename="myFile" 
 							     fileType="&lt;XLS or PDF&gt;" 
-							     for="&lt;your Tomahawk DataScroller ID>"
-							     showDisplayedPageOnly="true or false (default: false)"/&gt;
+							     for="&lt;your JSF DataTable ID>"
 
 			&lt;/h:commandButton&gt;
 
@@ -59,9 +58,8 @@ components.
             
             <blockquote><h3>&lt;s:exporterActionListener&gt;</h3>
 		<code>fileType="Attribute to specify whether to export an excel or a pdf file, possible values are {'XLS', 'PDF'}"</code><br/>            
-                <code>for="Id of the Tomahawk dataScroller to be exported"</code><br/>
-		<code>filename="Optional attribute to specify the filename of the exported excel or pdf file"</code><br/>                                            
-		<code>showDisplayedPageOnly="An attribute determines whether to generate only the current displayed dataTable page to the file."</code><br/>                            
+                <code>for="Id of the JSF dataTable to be exported"</code><br/>
+		<code>filename="Optional attribute to specify the filename of the exported excel or pdf file"</code><br/>                                                                      
             </blockquote>
         </section>
         
