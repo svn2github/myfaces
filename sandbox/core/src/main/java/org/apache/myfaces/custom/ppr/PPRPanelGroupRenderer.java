@@ -18,16 +18,19 @@
  */
 package org.apache.myfaces.custom.ppr;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.renderkit.html.ext.HtmlGroupRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import java.io.IOException;
+import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.Iterator;
+import javax.faces.context.ResponseWriter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.renderkit.html.ext.HtmlGroupRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
  * 
@@ -95,6 +98,22 @@ public class PPRPanelGroupRenderer extends HtmlGroupRenderer
 
         if (disableRenderChildren == null || disableRenderChildren.booleanValue() == false) {
             RendererUtils.renderChildren(context, component);
+        }
+        
+        if (component instanceof PPRPanelGroup)
+        {
+            PPRPanelGroup pprPanelGroup = (PPRPanelGroup) component; 
+            if (PPRSupport.isPartialRequest(context) && pprPanelGroup.getAfterUpdateJSHook() != null)
+            {
+                // Write the afterUpdateJSHook script to CDATA section
+                ResponseWriter writer = context.getResponseWriter();
+                writer.startElement(HTML.SCRIPT_ELEM, pprPanelGroup);
+                writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR,
+                        HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT,
+                        null);
+                writer.writeText(pprPanelGroup.getAfterUpdateJSHook(),null);
+                writer.endElement(HTML.SCRIPT_ELEM);
+            }
         }
     }
 

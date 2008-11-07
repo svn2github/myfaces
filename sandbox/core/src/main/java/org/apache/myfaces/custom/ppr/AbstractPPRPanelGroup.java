@@ -149,7 +149,13 @@ public abstract class AbstractPPRPanelGroup extends HtmlPanelGroup
      */
     public abstract String getReplaceMessages();
 
-
+    /**
+     * Javascript code executed after a ppr update has been completed
+     *
+     * @JSFProperty
+     */
+    public abstract String getAfterUpdateJSHook();
+    
     public boolean getInitializationSent(){
         return isInitializationSent();
     }
@@ -162,7 +168,8 @@ public abstract class AbstractPPRPanelGroup extends HtmlPanelGroup
      * @JSFProperty
      *   literalOnly = "true"
      *   tagExcluded = "true"
-     */    public abstract boolean isInitializationSent();
+     */
+    public abstract boolean isInitializationSent();
 
     public abstract void setInitializationSent(boolean initializationSent);
 
