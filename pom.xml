@@ -114,6 +114,20 @@
         <module>sandbox15</module>
       </modules>
     </profile>
+
+    <!-- This profile is invoked by -DprepareRelease=true.  This allows mvn release:prepare to
+         run successfully on the assembly projects. -->
+    <profile>
+      <id>prepare-release</id>
+      <activation>
+        <property>
+          <name>prepareRelease</name>
+        </property>
+      </activation>
+      <modules>
+        <module>assembly</module>
+      </modules>
+    </profile>
   </profiles>
     
   <modules>
