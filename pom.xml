@@ -151,7 +151,7 @@
     <!--  
       - Define what shared lib version tomahawk and sandbox code will be compiled with.
       -->
-    <myfaces-shared11-version>2.0.8</myfaces-shared11-version>
+    <myfaces-shared11-version>2.0.9</myfaces-shared11-version>
 
     <!--
       - Define what version of myfaces core 1.2 the tomahawk core12 and sandbox12
