@@ -520,6 +520,7 @@
             <phase>process-classes</phase>
             <goals><goal>unpack</goal></goals>
             <configuration>
+              <excludes>META-INF/*.*</excludes>
               <artifactItems>
                 <artifactItem>
                    <groupId>org.apache.myfaces.shared</groupId>
@@ -538,6 +539,7 @@
                 <goal>unpack</goal>
             </goals>
             <configuration>
+                <excludes>META-INF/*.*</excludes>
                 <artifactItems>
                     <artifactItem>
                         <groupId>org.apache.myfaces.shared</groupId>
