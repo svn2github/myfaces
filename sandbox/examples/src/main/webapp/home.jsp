@@ -159,10 +159,10 @@
             
         </h:panelGrid>
 
-        <h:outputText value="Limit Rendered"/>
+        <h:outputText value="renderOne"/>
         <h:panelGrid style="padding-left:25px">
-            <h:outputLink value="limitRendered.jsf" >
-                <f:verbatim>Limit Rendered - limit the number of child components to render</f:verbatim>
+            <h:outputLink value="renderOne.jsf" >
+                <f:verbatim>renderOne - render the first child component by order or by index</f:verbatim>
             </h:outputLink>
         </h:panelGrid>
         
