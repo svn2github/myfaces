@@ -615,14 +615,7 @@
         <managed-bean-class>org.apache.myfaces.examples.selectOneRow.SelectOneRowList</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>	
-    
-    
-    <!-- managed bean for renderOne -->
-    <managed-bean>
-        <managed-bean-name>renderOne</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.examples.renderone.RenderOneBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>    
+     
 
     <!-- NAVIGATION RULES -->
 
