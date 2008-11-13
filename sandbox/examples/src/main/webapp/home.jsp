@@ -158,13 +158,6 @@
             </h:panelGrid>
             
         </h:panelGrid>
-
-        <h:outputText value="renderOne"/>
-        <h:panelGrid style="padding-left:25px">
-            <h:outputLink value="renderOne.jsf" >
-                <f:verbatim>renderOne - render the first child component by order or by index</f:verbatim>
-            </h:outputLink>
-        </h:panelGrid>
         
         <h:outputText value="Rounded DIV"/>
         <h:panelGrid style="padding-left:25px">

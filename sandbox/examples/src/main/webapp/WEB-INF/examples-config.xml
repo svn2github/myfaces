@@ -513,13 +513,6 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   
-    <!-- managed bean for renderOne -->
-    <managed-bean>
-        <managed-bean-name>renderOne</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.examples.renderone.RenderOneBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-  
     <!-- managed bean for roundedDiv -->
     <managed-bean>
         <managed-bean-name>roundedDiv</managed-bean-name>
