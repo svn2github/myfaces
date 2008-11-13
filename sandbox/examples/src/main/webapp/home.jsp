@@ -179,6 +179,13 @@
 	                <f:verbatim>Media - component to display media content, such as audio, video, or image in a player embedded in the user agent.</f:verbatim>
 	            </h:outputLink>
          </h:panelGrid>         
+         
+		 <h:outputText value="renderOne"/>
+		        <h:panelGrid style="padding-left:25px">
+		            <h:outputLink value="renderOne.jsf" >
+		                <f:verbatim>renderOne - render the first child component by order or by index</f:verbatim>
+		            </h:outputLink>
+		 </h:panelGrid>               
         
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
