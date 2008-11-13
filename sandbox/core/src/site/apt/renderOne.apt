@@ -1,0 +1,107 @@
+~~~~~~~~~~~~~~~~~~~~
+Description
+  
+  The <<<renderOne>>> component renders the first child component by order or by index.
+      
+~~~~~~~~~~~~~~~~~~~~
+Screen Shot
+
+  Component does not render HTML, see example for more information.
+
+~~~~~~~~~~~~~~~~~~~~
+API
+  
+*--+--+
+component-family | javax.faces.Data
+*--+--+
+component-type | org.apache.myfaces.UIRenderOne
+*--+--+
+component-class | org.apache.myfaces.custom.renderOne.UIRenderOne
+*--+--+
+tag-class | org.apache.myfaces.custom.limitrendered.UIRenderOneTag
+*--+--+
+  
+~~~~~~~~~~~~~~~~~~~~
+Usage
+	
++--------+
+<s:renderOne
+  id="String"
+  binding="EL"
+  rendered="Boolean"
+  type="first|index"
+  value="Integer">
+  <h:outputText />
+  ...
+</s:renderOne>
++--------+
+
+~~~~~~~~~~~~~~~~~~~~
+Syntax
+
+* \<s:renderOne /\>
+
+	<<<type>>> [first|index] - How the child should be shown. If first, the first rendered child will be shown. 
+	If index, the child with the given index will be rendered. Default: 'first'.
+	
+	<<<value>>> - is used only if the type if 'index' to determine the child index to display. It is zero-based.
+	
+~~~~~~~~~~~~~~~~~~~~
+Examples
+
+* type == first
+
+	Because the defaults are 'first', if no attributes are specified, only the first
+	child that is rendered will be rendered. "A" will be rendered:
+
++----+
+<s:limitRendered>
+  <h:outputText value="A" />
+  <h:outputText value="B" />
+  <h:outputText value="C" />
+</s:limitRendered>
++----+
+
+	Only "A" will be rendered.	
+	
++----+
+<s:limitRendered>
+  <h:outputText value="A" rendered="false" />
+  <h:outputText value="B" />
+  <h:outputText value="C" />
+</s:limitRendered>
++----+
+
+	Only "B" will be rendered.	
+	
++----+
+
+* type == index
+
+  If the value is null, the first component will be shown.
+
++----+
+<s:limitRendered type="index">
+  <h:outputText value="A" />
+  <h:outputText value="B" />
+  <h:outputText value="C" />
+</s:limitRendered>
++----+
+
+	Only "A" will be rendered.
+	
++----+
+<s:limitRendered type="index" value="1">
+  <h:outputText value="A" />
+  <h:outputText value="B" />
+  <h:outputText value="C" />
+</s:limitRendered>
++----+
+
+	Only "B" will be rendered.
+  
+~~~~~~~~~~~~~~~~~~~~
+  
+  See the example code for more information.
+  
+	
