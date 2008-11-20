@@ -252,6 +252,12 @@ public abstract class AbstractUINavigationMenuItem extends UISelectItem implemen
     
     private Boolean _rendered = null;
     
+    /**
+     * A boolean value that indicates whether this component should be rendered.
+     * Default value: true.
+     * 
+     * @JSFProperty tagExcluded = "false"
+     */
     public boolean isRendered() {
         if (!UserRoleUtils.isVisibleOnUserRole(this))
             return false;
