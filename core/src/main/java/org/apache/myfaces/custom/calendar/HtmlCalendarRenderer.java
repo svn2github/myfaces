@@ -1144,7 +1144,7 @@ public class HtmlCalendarRenderer
                 if (date != null) {
                     return date;
                 }
-                FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
+                FacesMessage msg = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,CONVERSION_MESSAGE_ID,new Object[]{
                         uiComponent.getId(),s});
                 throw new ConverterException(msg);
             }
@@ -1159,7 +1159,7 @@ public class HtmlCalendarRenderer
                 }
                 catch (ParseException e)
                 {
-                    FacesMessage msg = MessageUtils.getMessage(CONVERSION_MESSAGE_ID,new Object[]{
+                    FacesMessage msg = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,CONVERSION_MESSAGE_ID,new Object[]{
                             uiComponent.getId(),s});
                     throw new ConverterException(msg,e);
                 }
