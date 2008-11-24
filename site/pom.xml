@@ -26,4 +26,18 @@
     </site>
   </distributionManagement>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <checkoutDirectoryName>tomahawk</checkoutDirectoryName>
+          <anonymousConnection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk</anonymousConnection>
+          <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk</developerConnection>
+          <webAccessUrl>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk</webAccessUrl>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
