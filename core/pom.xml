@@ -303,7 +303,21 @@
       </resource>
        -->
     </resources>
-
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <X-Compile-Source-JDK>1.4</X-Compile-Source-JDK>
+                <X-Compile-Target-JDK>1.4</X-Compile-Target-JDK>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.myfaces.buildtools</groupId>
