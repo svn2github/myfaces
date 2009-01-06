@@ -365,9 +365,9 @@ public class ScheduleDetailedDayRenderer extends AbstractScheduleRenderer
                 writer.endElement(HTML.SPAN_ELEM);
             }
             writer.endElement(HTML.TD_ELEM);
+            writer.endElement(HTML.TR_ELEM);
         }
 
-        writer.endElement(HTML.TR_ELEM);
         writer.endElement(HTML.TBODY_ELEM);
         writer.endElement(HTML.TABLE_ELEM);            
             }
