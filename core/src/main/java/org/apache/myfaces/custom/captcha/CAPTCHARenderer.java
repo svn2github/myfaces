@@ -120,7 +120,9 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
                 addResource.getResourceUri(context,
                         new ParameterResourceHandler(this.getClass(), params)));
 
-        writer.writeAttribute(HTML.SRC_ATTR, url, null);
+        // adding dummy parameter to prevent caching.
+        writer.writeAttribute(HTML.SRC_ATTR, url + "dummyParameter="
+                + System.currentTimeMillis(), null);
 
         // write rest of attributes.
         writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
