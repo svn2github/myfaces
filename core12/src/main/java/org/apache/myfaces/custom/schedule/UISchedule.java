@@ -362,7 +362,7 @@ public class UISchedule extends org.apache.myfaces.custom.schedule.UIScheduleBas
     /**
      * @return the submittedEntry
      */
-    protected ScheduleEntry getSubmittedEntry()
+    public ScheduleEntry getSubmittedEntry()
     {
         return _submittedEntry;
     }
