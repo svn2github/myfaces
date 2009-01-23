@@ -50,9 +50,9 @@ import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
- * 
+ *
  * @JSFRenderer
- *   renderKitId = "HTML_BASIC" 
+ *   renderKitId = "HTML_BASIC"
  *   family = "org.apache.myfaces.CAPTCHA"
  *   type = "org.apache.myfaces.CAPTCHA"
  * @since 1.1.7
@@ -121,7 +121,7 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
                         new ParameterResourceHandler(this.getClass(), params)));
 
         // adding dummy parameter to prevent caching.
-        writer.writeAttribute(HTML.SRC_ATTR, url + "dummyParameter="
+        writer.writeAttribute(HTML.SRC_ATTR, url + "?dummyParameter="
                 + System.currentTimeMillis(), null);
 
         // write rest of attributes.
