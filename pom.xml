@@ -162,7 +162,7 @@
       - against *when jsf1.2 is selected*. When jsf1.1 or a Sun implementation
       - are selected for running the examples, this is ignored.
       -->
-    <myfaces-core12-version>1.2.6-SNAPSHOT</myfaces-core12-version>
+    <myfaces-core12-version>1.2.6</myfaces-core12-version>
 
     <!--  
       - Define what shared lib version tomahawk12 and sandbox12 code will be compiled with.
