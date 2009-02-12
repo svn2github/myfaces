@@ -295,6 +295,20 @@
         <directory>src/main/resources</directory>
         <excludes>
            <exclude>**/*.vm</exclude>
+           <exclude>**/AddResource.properties</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+            <!-- Used in the resources URL, to enable caching the 
+               resources on the client.
+               See MyfacesResourceLoader.getLastModified() -->
+            <include>**/AddResource.properties</include>
+        </includes>
+        <excludes>
+           <exclude>**/*.vm</exclude>
         </excludes>
       </resource>
       <!--       
@@ -319,6 +333,31 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <!-- Used in the resources URL, to enable caching the 
+           resources on the client.
+           See MyfacesResourceLoader.getLastModified() -->      
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.0-beta-1</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+          <buildNumberPropertyName>tomahawk.lastModified</buildNumberPropertyName>
+          <format>{0,date,yyyy-MM-dd HH:mm:ss Z}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.myfaces.buildtools</groupId>
         <artifactId>myfaces-builder-plugin</artifactId>
