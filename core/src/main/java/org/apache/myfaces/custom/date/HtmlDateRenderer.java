@@ -389,7 +389,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
         if( isDisabled(facesContext, inputDate) ) // For safety, do not set the submited value if the component is disabled.
             return;
         
-        if (null == inputDate.getConverter())
+        if (null != inputDate.getConverter())
         {
             //Instead of use a custom object to encode data,
             //we have to encode all info in a String, so the converter
