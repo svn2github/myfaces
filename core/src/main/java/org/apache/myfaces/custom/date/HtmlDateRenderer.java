@@ -19,11 +19,14 @@
 package org.apache.myfaces.custom.date;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -85,12 +88,63 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
         HtmlInputDate inputDate = (HtmlInputDate) uiComponent;
         Locale currentLocale = facesContext.getViewRoot().getLocale();
-        UserData userData = (UserData) inputDate.getSubmittedValue();
-        if( userData == null )
-            userData = inputDate.getUserData(currentLocale);
+        UserData userData = null;
         String type = inputDate.getType();
         boolean ampm = inputDate.isAmpm();
         String clientId = uiComponent.getClientId(facesContext);
+        
+        if (null == inputDate.getConverter())
+        {
+            userData = (UserData) inputDate.getSubmittedValue();
+            if( userData == null )
+                userData = inputDate.getUserData(currentLocale);
+        }
+        else
+        {
+            //Use converter to get the value as string and
+            //create a UserData decoding it.
+            String value = org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils.getStringValue(facesContext, inputDate);
+            
+            //Create a UserData bean
+            userData = inputDate.getUserData(currentLocale);
+            
+            if (null != value)
+            {
+                StringTokenizer st = new StringTokenizer(value,"\n");
+                while(st.hasMoreTokens())
+                {
+                    String token = st.nextToken();
+                    if (token.startsWith("year="))
+                    {
+                        userData.setYear(token.substring(5));
+                    }
+                    if (token.startsWith("month="))
+                    {
+                        userData.setYear(token.substring(6));
+                    }
+                    if (token.startsWith("day="))
+                    {
+                        userData.setYear(token.substring(4));
+                    }
+                    if (token.startsWith("hours="))
+                    {
+                        userData.setYear(token.substring(6));
+                    }
+                    if (token.startsWith("minutes="))
+                    {
+                        userData.setYear(token.substring(8));
+                    }
+                    if (token.startsWith("seconds="))
+                    {
+                        userData.setYear(token.substring(8));
+                    }
+                    if (token.startsWith("ampm="))
+                    {
+                        userData.setYear(token.substring(5));
+                    }
+                }
+            }
+        }
 
         boolean disabled = isDisabled(facesContext, inputDate);
         boolean readonly = inputDate.isReadonly();
@@ -334,42 +388,122 @@ public class HtmlDateRenderer extends HtmlRenderer {
 
         if( isDisabled(facesContext, inputDate) ) // For safety, do not set the submited value if the component is disabled.
             return;
+        
+        if (null == inputDate.getConverter())
+        {
+            //Instead of use a custom object to encode data,
+            //we have to encode all info in a String, so the converter
+            //can convert it to a String if the value
+            //is invalid.
+            String clientId = inputDate.getClientId(facesContext);
+            String type = inputDate.getType();
+            Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+            StringBuffer submittedValue = new StringBuffer();
+            if( ! (type.equals( "time" ) || type.equals( "short_time" )) )
+            {
+                submittedValue.append("year=");
+                submittedValue.append((String) requestMap.get(clientId + ID_YEAR_POSTFIX) );
+                submittedValue.append("\n");
 
-        Locale currentLocale = facesContext.getViewRoot().getLocale();
-        UserData userData = (UserData) inputDate.getSubmittedValue();
-        if( userData == null )
-            userData = inputDate.getUserData(currentLocale);
-
-        String clientId = inputDate.getClientId(facesContext);
-        String type = inputDate.getType();
-        Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
-
-        if( ! (type.equals( "time" ) || type.equals( "short_time" )) ){
-            userData.setDay( (String) requestMap.get(getClientIdForDaySubcomponent(clientId)) );
-            userData.setMonth( (String) requestMap.get(clientId + ID_MONTH_POSTFIX) );
-            userData.setYear( (String) requestMap.get(clientId + ID_YEAR_POSTFIX) );
-        }
-
-        if( ! type.equals( "date" ) ){
-            userData.setHours( (String) requestMap.get(clientId + ID_HOURS_POSTFIX) );
-            userData.setMinutes( (String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
-            if (type.equals("full") || type.equals("time"))
-                userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
-
-            if (inputDate.isAmpm()) {
-                userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
+                submittedValue.append("month=");
+                submittedValue.append((String) requestMap.get(clientId + ID_MONTH_POSTFIX));
+                submittedValue.append("\n");
+                
+                submittedValue.append("day=");
+                submittedValue.append((String) requestMap.get(getClientIdForDaySubcomponent(clientId)) );
+                submittedValue.append("\n");                
             }
-        }
-        inputDate.setSubmittedValue( userData );
-    }
+            
+            if( ! type.equals( "date" ) )
+            {
+                submittedValue.append("hours=");
+                submittedValue.append((String) requestMap.get(clientId + ID_HOURS_POSTFIX) );
+                submittedValue.append("\n");
+                
+                submittedValue.append("minutes=");
+                submittedValue.append((String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
+                submittedValue.append("\n");
 
+                if (type.equals("full") || type.equals("time"))
+                {
+                    submittedValue.append("seconds=");
+                    submittedValue.append((String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
+                    submittedValue.append("\n");                    
+                }
+                
+                if (inputDate.isAmpm())
+                {
+                    submittedValue.append("ampm=");
+                    submittedValue.append((String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
+                    submittedValue.append("\n");
+                }
+            }
+            if (submittedValue.charAt(submittedValue.length()-1) == '\n' )
+            {
+                submittedValue.deleteCharAt(submittedValue.length()-1);
+            }
+            
+            inputDate.setSubmittedValue( submittedValue.toString() );
+        }
+        else
+        {
+            //Use AbstractHtmlInputDate.UserData to save submitted value
+            Locale currentLocale = facesContext.getViewRoot().getLocale();
+            UserData userData = (UserData) inputDate.getSubmittedValue();
+            if( userData == null )
+                userData = inputDate.getUserData(currentLocale);
+
+            String clientId = inputDate.getClientId(facesContext);
+            String type = inputDate.getType();
+            Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
+
+            if( ! (type.equals( "time" ) || type.equals( "short_time" )) ){
+                userData.setDay( (String) requestMap.get(getClientIdForDaySubcomponent(clientId)) );
+                userData.setMonth( (String) requestMap.get(clientId + ID_MONTH_POSTFIX) );
+                userData.setYear( (String) requestMap.get(clientId + ID_YEAR_POSTFIX) );
+            }
+
+            if( ! type.equals( "date" ) ){
+                userData.setHours( (String) requestMap.get(clientId + ID_HOURS_POSTFIX) );
+                userData.setMinutes( (String) requestMap.get(clientId + ID_MINUTES_POSTFIX) );
+                if (type.equals("full") || type.equals("time"))
+                    userData.setSeconds( (String) requestMap.get(clientId + ID_SECONDS_POSTFIX) );
+
+                if (inputDate.isAmpm()) {
+                    userData.setAmpm( (String) requestMap.get(clientId + ID_AMPM_POSTFIX) );
+                }
+            }
+            inputDate.setSubmittedValue( userData );
+        }
+    }
+    
     public Object getConvertedValue(FacesContext context, UIComponent uiComponent, Object submittedValue) throws ConverterException {
-        UserData userData = (UserData) submittedValue;
-        try {
-            return userData.parse();
-        } catch (ParseException e) {
-            Object[] args = {uiComponent.getId()};
-            throw new ConverterException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, DATE_MESSAGE_ID, args));
+        
+        HtmlInputDate inputDate = (HtmlInputDate) uiComponent;
+        
+        if (inputDate.getConverter() == null)
+        {
+            UserData userData = (UserData) submittedValue;
+            try {
+                return userData.parse();
+            } catch (ParseException e) {
+                Object[] args = {uiComponent.getId()};
+                throw new ConverterException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, DATE_MESSAGE_ID, args));
+            }            
+        }
+        else
+        {
+            if (submittedValue != null && !(submittedValue instanceof String))
+            {
+                if (RendererUtils.NOTHING.equals(submittedValue))
+                {
+                    return null;
+                }
+                throw new IllegalArgumentException("Submitted value of type String for component : "
+                        + RendererUtils.getPathToComponent(inputDate) + "expected");
+            }
+            
+            return inputDate.getConverter().getAsObject(context, inputDate, (String) submittedValue);
         }
     }
 }

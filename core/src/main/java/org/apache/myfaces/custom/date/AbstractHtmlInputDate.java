@@ -342,39 +342,36 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
     public abstract boolean isDisabled();
 
     /**
-     * This component converts submitted values to its inner class
-     * UserData, so this method does not allow custom
-     * converters to be defined.
+     * Retrieve the converter used by this component. 
+     * <p>
+     * If no converter is selected, submitted values are converted to 
+     * its inner class UserData on decode method.
+     * </p>
+     * <p>
+     * If some converter is used, submitted values are decoded as
+     * a String with the following format:
+     * </p>
+     * <p></p>
+     * <p>year=yyyy</p>
+     * <p>month=mm</p>
+     * <p>day=dd</p>
+     * <p>hours=hh</p>
+     * <p>minutes=mm</p>
+     * <p>seconds=ss</p>
+     * <p>ampm=ampm</p>
+     * <p></p>
+     * <p>
+     * Note that submitted values could be wrong and it is necessary to
+     * restore values on render response phase. The converter receive 
+     * a string with this format on getAsObject method and it is expected
+     * the converter encode it on getAsString method, so the renderer can
+     * restore the submitted values correctly.
+     * </p>
      * 
      * @JSFProperty
-     *   tagExcluded = "true"
      */
     public Converter getConverter()
     {
-        return null;
-    }
-    
-    public void setConverter(Converter converter)
-    {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * This property comes from 1.2 UIInput, but since this
-     * component does not allow a custom converter, this
-     * should return null.
-     * 
-     * @JSFProperty
-     *   tagExcluded = "true"
-     * @return
-     */
-    public String getConverterMessage()
-    {
-        return null;
-    }
-    
-    public void setConverterMessage(String converterMessage)
-    {
-        throw new UnsupportedOperationException();
+        return super.getConverter();
     }
 }

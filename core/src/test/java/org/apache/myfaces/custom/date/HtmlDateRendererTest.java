@@ -19,17 +19,25 @@
 
 package org.apache.myfaces.custom.date;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.faces.FactoryFinder;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.render.RenderKitFactory;
 
 import junit.framework.Test;
@@ -37,6 +45,7 @@ import junit.framework.TestSuite;
 
 import org.apache.myfaces.application.ApplicationFactoryImpl;
 import org.apache.myfaces.custom.date.AbstractHtmlInputDate.UserData;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 import org.apache.myfaces.test.utils.HtmlCheckAttributesUtil;
 import org.apache.myfaces.test.utils.HtmlRenderedAttr;
@@ -206,6 +215,240 @@ public class HtmlDateRendererTest extends AbstractTomahawkViewControllerTestCase
     assertEquals((cal.get(Calendar.MONTH) + 1) + "", data.getMonth());
     assertEquals(cal.get(Calendar.YEAR) + "", data.getYear());
   }
+
+  public static class DateTestConverter implements Converter
+  {
+
+    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String submittedValue)
+            throws ConverterException
+    {
+        HtmlInputDate inputDate = (HtmlInputDate) uiComponent;
+        String type = inputDate.getType();
+        Properties props = new Properties();
+        try
+        {
+            props.load(new StringReader(submittedValue));
+        }catch(IOException e)
+        {
+        }
+        UserData userData = inputDate.getUserData(facesContext.getViewRoot().getLocale());
+        if( ! (type.equals( "time" ) || type.equals( "short_time" )) )
+        {
+            userData.setYear(props.getProperty("year"));
+            userData.setMonth(props.getProperty("month"));
+            userData.setDay(props.getProperty("day"));
+        }
+        
+        if( ! type.equals( "date" ) ){
+            userData.setHours(props.getProperty("hours"));
+            userData.setMinutes(props.getProperty("minutes"));
+            if (type.equals("full") || type.equals("time"))
+            {
+                userData.setSeconds(props.getProperty("seconds"));
+            }
+            if (inputDate.isAmpm()) {
+                userData.setAmpm(props.getProperty("ampm"));
+            }
+        }
+        try {
+            return userData.parse();
+        } catch (ParseException e) {
+            Object[] args = {uiComponent.getId()};
+            throw new ConverterException("Error Parsing");
+        }  
+    }
+
+    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object submitValue)
+            throws ConverterException
+    {
+        HtmlInputDate inputDate = (HtmlInputDate) uiComponent;
+        String type = inputDate.getType();
+        UserData value = new UserData((Date) submitValue, 
+                facesContext.getViewRoot().getLocale(), 
+                inputDate.getTimeZone(), inputDate.isAmpm(), inputDate.getType());        
+        
+        StringBuffer submittedValue = new StringBuffer();
+        if( ! (type.equals( "time" ) || type.equals( "short_time" )) )
+        {
+            submittedValue.append("year=");
+            submittedValue.append((String) value.getYear() );
+            submittedValue.append("\n");
+
+            submittedValue.append("month=");
+            submittedValue.append((String) value.getMonth());
+            submittedValue.append("\n");
+            
+            submittedValue.append("day=");
+            submittedValue.append((String) value.getDay() );
+            submittedValue.append("\n");                
+        }
+        
+        if( ! type.equals( "date" ) )
+        {
+            submittedValue.append("hours=");
+            submittedValue.append((String) value.getHours() );
+            submittedValue.append("\n");
+            
+            submittedValue.append("minutes=");
+            submittedValue.append((String) value.getMinutes() );
+            submittedValue.append("\n");
+
+            if (type.equals("full") || type.equals("time"))
+            {
+                submittedValue.append("seconds=");
+                submittedValue.append((String) value.getSeconds() );
+                submittedValue.append("\n");                    
+            }
+            
+            if (inputDate.isAmpm())
+            {
+                submittedValue.append("ampm=");
+                submittedValue.append((String) value.getAmpm() );
+                submittedValue.append("\n");
+            }
+        }
+        if (submittedValue.charAt(submittedValue.length()-1) == '\n' )
+        {
+            submittedValue.deleteCharAt(submittedValue.length()-1);
+        }
+        
+        return submittedValue.toString();
+    }
+      
+  }
+  
+  public void testDecodeConverterDate() throws Exception {
+      HtmlInputDate inputDate = new HtmlInputDate();
+      inputDate.setId("test");
+      inputDate.setType("date");
+      inputDate.setConverter(new DateTestConverter());
+      HtmlDateRenderer subject = new HtmlDateRenderer();
+      // setup the request map
+      Map map = new HashMap();
+      map.put("test.day", "14");
+      map.put("test.month", "1");
+      map.put("test.year", "2005");
+      FacesContext facesContext = mockupForDecodeCall(map);
+      // decode
+      subject.decode(facesContext, inputDate);
+      //With converter, the submitted value is a String
+      assertTrue(inputDate.getSubmittedValue() instanceof String);
+      // converter
+      inputDate.validate(facesContext);
+      
+      UserData data = inputDate.getUserData(Locale.ENGLISH);
+      assertEquals("14", data.getDay());
+      assertEquals("1", data.getMonth());
+      assertEquals("2005", data.getYear());
+    }
+  
+  public void testDecodeConverterWithSubmittedValue() throws Exception {
+      HtmlInputDate inputDate = new HtmlInputDate();
+      inputDate.setId("test");
+      inputDate.setType("date");
+      inputDate.setConverter(new DateTestConverter());
+      Date today = new Date();
+      inputDate.setSubmittedValue(new UserData(today, Locale.ENGLISH, null, true, "date"));
+      HtmlDateRenderer subject = new HtmlDateRenderer();
+      // setup the request map
+      Map map = new HashMap();
+      map.put("test.day", "14");
+      map.put("test.month", "1");
+      map.put("test.year", "2005");
+      FacesContext facesContext = mockupForDecodeCall(map);
+      // decode
+      subject.decode(facesContext, inputDate);
+      //With converter, the submitted value is a String
+      assertTrue(inputDate.getSubmittedValue() instanceof String);
+      // converter
+      inputDate.validate(facesContext);
+      
+      UserData data = inputDate.getUserData(Locale.ENGLISH);
+      assertEquals("14", data.getDay());
+      assertEquals("1", data.getMonth());
+      assertEquals("2005", data.getYear());
+    }
+  
+  public void testDecodeConverterTime() throws Exception {
+      HtmlInputDate inputDate = new HtmlInputDate();
+      inputDate.setId("test");
+      inputDate.setType("time");
+      HtmlDateRenderer subject = new HtmlDateRenderer();
+      // setup the request map
+      Map map = new HashMap();
+      map.put("test.hours", "12");
+      map.put("test.minutes", "15");
+      map.put("test.seconds", "35");
+      FacesContext facesContext = mockupForDecodeCall(map);
+      // decode
+      subject.decode(facesContext, inputDate);
+      //With converter, the submitted value is a String
+      assertTrue(inputDate.getSubmittedValue() instanceof String);
+      // converter
+      inputDate.validate(facesContext);
+      
+      UserData data = inputDate.getUserData(Locale.ENGLISH);
+      assertEquals("12", data.getHours());
+      assertEquals("15", data.getMinutes());
+      assertEquals("35", data.getSeconds());
+    }
+
+  public void testDecodeConverterFull() throws Exception {
+      HtmlInputDate inputDate = new HtmlInputDate();
+      inputDate.setId("test");
+      inputDate.setType("full");
+      HtmlDateRenderer subject = new HtmlDateRenderer();
+      // setup the request map
+      Map map = new HashMap();
+      map.put("test.day", "14");
+      map.put("test.month", "1");
+      map.put("test.year", "2005");
+      map.put("test.hours", "12");
+      map.put("test.minutes", "15");
+      map.put("test.seconds", "3");
+      FacesContext facesContext = mockupForDecodeCall(map);
+      // decode
+      subject.decode(facesContext, inputDate);
+      //With converter, the submitted value is a String
+      assertTrue(inputDate.getSubmittedValue() instanceof String);
+      // converter
+      inputDate.validate(facesContext);
+      UserData data = inputDate.getUserData(Locale.ENGLISH);
+      assertEquals("14", data.getDay());
+      assertEquals("1", data.getMonth());
+      assertEquals("2005", data.getYear());
+      assertEquals("12", data.getHours());
+      assertEquals("15", data.getMinutes());
+      assertEquals("03", data.getSeconds());
+    }
+
+    public void testDecodeConverterFlorp() throws Exception {
+      HtmlInputDate inputDate = new HtmlInputDate();
+      inputDate.setId("test");
+      // is this correct? Should it parse correctly if the type is not valid?
+      inputDate.setType("florp");
+      HtmlDateRenderer subject = new HtmlDateRenderer();
+      // setup the request map
+      Map map = new HashMap();
+      map.put("test.day", "14");
+      map.put("test.month", "1");
+      map.put("test.year", "2005");
+      map.put("test.hours", "12");
+      map.put("test.minutes", "15");
+      FacesContext facesContext = mockupForDecodeCall(map);
+      // decode
+      subject.decode(facesContext, inputDate);
+      //With converter, the submitted value is a String
+      assertTrue(inputDate.getSubmittedValue() instanceof String);
+      // converter
+      inputDate.validate(facesContext);
+      UserData data = inputDate.getUserData(Locale.ENGLISH);
+      assertEquals("14", data.getDay());
+      assertEquals("1", data.getMonth());
+      assertEquals("2005", data.getYear());
+      assertEquals("12", data.getHours());
+      assertEquals("15", data.getMinutes());
+    }
 
   /*
    * Test method for
