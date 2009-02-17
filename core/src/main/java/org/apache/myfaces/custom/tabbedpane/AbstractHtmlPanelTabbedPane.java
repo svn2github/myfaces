@@ -191,6 +191,21 @@ public abstract class AbstractHtmlPanelTabbedPane
     {
         _tabChangeListener = tabChangeListener;
     }
+    
+    public Object saveState(FacesContext context)
+    {
+        Object values[] = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = saveAttachedState(context, _tabChangeListener);
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state)
+    {
+        Object values[] = (Object[])state;
+        super.restoreState(context, values[0]);
+        _tabChangeListener = (MethodBinding)restoreAttachedState(context, values[1]);
+    }    
 
     public void broadcast(FacesEvent event) throws AbortProcessingException
     {
