@@ -41,7 +41,7 @@ public class AbstractTreeTag extends HtmlPanelGroupTag {
 
     private String value;
 
-    private boolean expandRoot;
+    private String expandRoot;
 
     public String getComponentType() {
         return "org.apache.myfaces.HtmlTree";
@@ -59,11 +59,11 @@ public class AbstractTreeTag extends HtmlPanelGroupTag {
         value = newValue;
     }
 
-    public boolean isExpandRoot() {
+    public String isExpandRoot() {
         return expandRoot;
     }
 
-    public void setExpandRoot(boolean expandRoot) {
+    public void setExpandRoot(String expandRoot) {
         this.expandRoot = expandRoot;
     }
 
@@ -87,7 +87,7 @@ public class AbstractTreeTag extends HtmlPanelGroupTag {
         int answer = super.doStartTag();
         HtmlTree tree = (HtmlTree) getComponentInstance();
 
-        if (getCreated() && expandRoot) {
+        if (getCreated() && Boolean.parseBoolean(expandRoot)) {
             // component was created, so expand the root node
             TreeModel model = tree.getModel(context);
 
@@ -104,7 +104,7 @@ public class AbstractTreeTag extends HtmlPanelGroupTag {
     public void release() {
         super.release();
         value = null;
-        expandRoot = false;
+        expandRoot = null;
     }
 
     /**
