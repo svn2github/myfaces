@@ -75,7 +75,10 @@ public class HtmlTagRenderer extends HtmlRenderer
             for(Iterator iter = params.entrySet().iterator(); iter.hasNext();)
             {
                 Entry param = (Entry) iter.next();
-                writer.writeAttribute(param.getKey().toString(), param.getValue().toString(), null);
+                if (null != param.getValue())
+                {
+                    writer.writeAttribute(param.getKey().toString(), param.getValue().toString(), null);
+                }
             }
         }
     }
