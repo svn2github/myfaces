@@ -117,7 +117,8 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
 
-        if(((ToggleLink) component).isDisabled())
+        ToggleLink toggleLink = (ToggleLink) component;
+        if(isDisabled(context, toggleLink))
             return;
 
         super.encodeEnd(context, component);
@@ -127,7 +128,7 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         RendererUtils.checkParamValidity(context, component, ToggleLink.class);
 
         ToggleLink toggleLink = (ToggleLink) component;
-        if(toggleLink.isDisabled())
+        if(isDisabled(context, toggleLink))
             return;
 
 
@@ -172,5 +173,11 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     
     private String getHiddenFieldId(FacesContext context, TogglePanel togglePanel){
         return togglePanel.getClientId(context) + "_hidden";
+    }
+    
+    private boolean isDisabled(FacesContext facesContext, ToggleLink link) {
+        TogglePanel panel = getParentTogglePanel(facesContext, link);
+
+        return panel.isDisabled() || link.isDisabled();
     }
 }

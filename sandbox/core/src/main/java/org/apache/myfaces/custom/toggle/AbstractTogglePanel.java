@@ -44,6 +44,8 @@ public abstract class AbstractTogglePanel extends HtmlPanelGroup
 
     public static final boolean DEFAULT_TOGGLED = false;
 
+    public static final boolean DEFAULT_DISABLED = false;
+
     /**
      * You can set toggled to true to force the toggleGroup to always be in toggle 
      * mode. Default is false.
@@ -55,6 +57,13 @@ public abstract class AbstractTogglePanel extends HtmlPanelGroup
     public abstract boolean isToggled();
     
     public abstract void setToggled(boolean toggleMode);
+    
+    /**
+     * @JSFProperty
+     *   defaultValue="false"
+     * @return
+     */
+    public abstract boolean isDisabled();
     
     public void processDecodes(FacesContext context)
     {
