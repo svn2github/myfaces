@@ -45,17 +45,17 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 
 /**
- * Scroller for UIData components eg. dataTable 
- * 
- * Must be nested inside footer facet of dataTable OR for 
- * attribute must be given so that corresponding uiData can be found. 
- * 
+ * Scroller for UIData components eg. dataTable
+ *
+ * Must be nested inside footer facet of dataTable OR for
+ * attribute must be given so that corresponding uiData can be found.
+ *
  * Unless otherwise specified, all attributes accept static values or EL expressions.
- * 
+ *
  * A component which works together with a UIData component to allow a
  * user to view a large list of data one "page" at a time, and navigate
  * between pages.
- * 
+ *
  * @JSFComponent
  *   name = "t:dataScroller"
  *   class = "org.apache.myfaces.custom.datascroller.HtmlDataScroller"
@@ -64,16 +64,16 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
  * @author Thomas Spiegl (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public abstract class AbstractHtmlDataScroller extends UIPanel 
+public abstract class AbstractHtmlDataScroller extends UIPanel
     implements ActionSource, UserRoleAware, DisplayValueOnlyCapable,
     DisplayValueOnlyAware, ForceIdAware, UniversalProperties, StyleAware
 {
-    
+
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDataScroller";
     public static final String COMPONENT_FAMILY = "javax.faces.Panel";
-    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DataScroller";    
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.DataScroller";
     private static final boolean DEFAULT_IMMEDIATE = false;
-    
+
     private static final Log log = LogFactory.getLog(AbstractHtmlDataScroller.class);
 
     private static final String FIRST_FACET_NAME = "first";
@@ -89,7 +89,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
     public static final String FACET_LAST = "last".intern();
     public static final String FACET_FAST_FORWARD = "fastf".intern();
     public static final String FACET_FAST_REWIND = "fastr".intern();
-        
+
     private static final String TABLE_LAYOUT = "table";
     private static final String LIST_LAYOUT = "list";
     private static final String SINGLE_LIST_LAYOUT = "singleList";
@@ -103,7 +103,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
     private transient Boolean _singleElementLayout;
 
     private MethodBinding _actionListener;
-    
+
     public String getClientId(FacesContext context)
     {
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
@@ -120,52 +120,52 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
         return super.isRendered();
     }
-    
+
     public boolean isSetDisplayValueOnly(){
-        return getDisplayValueOnly() != null ? true : false;  
+        return getDisplayValueOnly() != null ? true : false;
     }
-    
+
     public boolean isDisplayValueOnly(){
         return getDisplayValueOnly() != null ? getDisplayValueOnly().booleanValue() : false;
     }
-    
+
     public void setDisplayValueOnly(boolean displayValueOnly){
         this.setDisplayValueOnly((Boolean) Boolean.valueOf(displayValueOnly));
     }
 
     /**
-     *  The layout this scroller should render with. Default is 'table', 
-     *  'list' is implemented as well. Additionally you can use 
-     *  'singleList' - then the data-scroller will render a list, but 
-     *  not the paginator - same with the value 'singleTable'. 
-     * 
+     *  The layout this scroller should render with. Default is 'table',
+     *  'list' is implemented as well. Additionally you can use
+     *  'singleList' - then the data-scroller will render a list, but
+     *  not the paginator - same with the value 'singleTable'.
+     *
      * @JSFProperty
      *   defaultValue = "table"
      */
-    public abstract String getLayout(); 
+    public abstract String getLayout();
 
     /**
      * standard html colspan attribute for table cell
-     * 
+     *
      * @JSFProperty
      *   defaultValue = "Integer.MIN_VALUE"
      */
     public abstract int getColspan();
-    
+
     /**
      * HTML: Script to be invoked when the element is clicked.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getOnclick();
 
     /**
      * HTML: Script to be invoked when the element is double-clicked.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getOndblclick();
-            
+
     public boolean isListLayout()
     {
         if(_listLayout == null)
@@ -252,7 +252,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
             ScrollerActionEvent scrollerEvent = (ScrollerActionEvent) event;
 
             broadcastToActionListener(scrollerEvent);
-            
+
             // huh? getUIData never returns null.
             UIData uiData = getUIData();
             if (uiData == null)
@@ -305,7 +305,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
                 {
                     int rowcount = uiData.getRowCount();
                     int rows = uiData.getRows();
-                    int delta = rowcount % rows;
+                    int delta = (rows != 0) ? (rowcount % rows) : 0;
                     int first = delta > 0 && delta < rows ? rowcount - delta : rowcount - rows;
                     if (first >= 0)
                     {
@@ -373,7 +373,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
                 throw e;
             }
         }
-        
+
         ActionListener defaultActionListener
                 = context.getApplication().getActionListener();
         if (defaultActionListener != null)
@@ -481,7 +481,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
      * <p>
      * If the "for" attribute is not defined, then this component is expected to
      * be a child of a UIData component.
-     * 
+     *
      * @throws IllegalArgumentException if an associated UIData component
      * cannot be found.
      */
@@ -625,10 +625,10 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
 
     /**
      * MethodBinding pointing at method acception an ActionEvent with return type void.
-     * 
+     *
      * @JSFProperty
      *   returnSignature="void"
-     *   methodSignature="javax.faces.event.ActionEvent"   
+     *   methodSignature="javax.faces.event.ActionEvent"
      * @see javax.faces.component.ActionSource#getActionListener()
      */
     public MethodBinding getActionListener()
@@ -674,76 +674,76 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
         super.restoreState(context, values[0]);
         _actionListener = (MethodBinding)restoreAttachedState(context, values[1]);
     }
-    
+
     /**
      * The JSF id of a UIData component that this scroller will affect.
-     *  
-     * If this attribute is not present then the datascroller must be 
+     *
+     * If this attribute is not present then the datascroller must be
      * a child of a UIData component.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getFor();
 
     /**
      * step (pages) used for fastforward and fastrewind
-     * 
+     *
      * @JSFProperty
      *   defaultValue="Integer.MIN_VALUE"
      */
     public abstract int getFastStep();
 
     /**
-     * A parameter name, under which the actual page index is set 
+     * A parameter name, under which the actual page index is set
      * in request scope similar to the var parameter.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPageIndexVar();
 
     /**
-     * A parameter name, under which the actual page count is set 
+     * A parameter name, under which the actual page count is set
      * in request scope similar to the var parameter.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPageCountVar();
 
     /**
-     * A parameter name, under which the actual rows count is set 
+     * A parameter name, under which the actual rows count is set
      * in request scope similar to the var parameter.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getRowsCountVar();
 
     /**
-     * A parameter name, under which the actual displayed rows count 
+     * A parameter name, under which the actual displayed rows count
      * is set in request scope similar to the var parameter.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getDisplayedRowsCountVar();
 
     /**
-     * A parameter name, under which the actual first displayed row 
+     * A parameter name, under which the actual first displayed row
      * index is set in request scope similar to the var parameter.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getFirstRowIndexVar();
 
     /**
-     * A parameter name, under which the actual last displayed row 
+     * A parameter name, under which the actual last displayed row
      * index is set in request scope similar to the var parameter.
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getLastRowIndexVar();
 
     /**
      * If set true, then the paginator gets rendered
-     * 
+     *
      * @JSFProperty
      *   defaultValue = "false"
      */
@@ -751,7 +751,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
 
     /**
      * The maximum amount of pages to be displayed in the paginator.
-     * 
+     *
      * @JSFProperty
      *   defaultValue = "Integer.MIN_VALUE"
      */
@@ -759,43 +759,43 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
 
     /**
      * styleclass for pagingator
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPaginatorTableClass();
 
     /**
      * style for pagingator
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPaginatorTableStyle();
 
     /**
      * styleClass for paginator's column
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPaginatorColumnClass();
 
     /**
      * style for paginator's column
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPaginatorColumnStyle();
 
     /**
      * styleClass for paginator's column with pageIndex = currentPageIndex
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPaginatorActiveColumnClass();
 
     /**
-     * 'true' - render a link for the paginator's column with 
+     * 'true' - render a link for the paginator's column with
      * pageIndex = currentPageIndex. Default-value is 'true'.
-     * 
+     *
      * @JSFProperty
      *   defaultValue = "true"
      */
@@ -803,71 +803,71 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
 
     /**
      * style-class for data-scroller first-element
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getFirstStyleClass();
 
     /**
      * style-class for data-scroller last-element
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getLastStyleClass();
 
     /**
      * style-class for data-scroller previous-element
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPreviousStyleClass();
 
     /**
      * style-class for dataScroller next-element
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getNextStyleClass();
 
     /**
      * style-class for data-scroller fast-forward-element
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getFastfStyleClass();
 
     /**
      * style-class for data-scroller fast-rewind-element
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getFastrStyleClass();
 
     /**
      * style for paginator's column with pageIndex = currentPageIndex
-     * 
+     *
      * @JSFProperty
      */
     public abstract String getPaginatorActiveColumnStyle();
 
     /**
-     * If set to false, the facets aren't renderd if all the 
+     * If set to false, the facets aren't renderd if all the
      * lines are contained on a single page. Default is true.
-     * 
+     *
      * @JSFProperty
      *   defaultValue="true"
      */
     public abstract boolean isRenderFacetsIfSinglePage();
 
     /**
-     * True means that the default ActionListener should be 
-     * executed immediately (i.e. during Apply Request 
-     * Values phase of the request processing lifecycle), 
+     * True means that the default ActionListener should be
+     * executed immediately (i.e. during Apply Request
+     * Values phase of the request processing lifecycle),
      * rather than waiting until the Invoke Application phase.
-     * 
+     *
      * @JSFProperty
      *   defaultValue="false"
-     */    
+     */
     public abstract boolean isImmediate();
-    
+
 }
