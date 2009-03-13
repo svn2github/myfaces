@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+      
+        <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN" "http://maven.apache.org/dtd/maven-xdoc.dtd">
+
+<document>
+    <!-- component name -->
+    <body>
+        <!-- Description -->
+        <section name="Description">
+            <p>
+                The media component can be used for displaying media content such as audio, video, or image in a player embedded in the user agent.
+            </p>
+        </section>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+                NA
+        </section>
+        <!-- API -->
+        <section name="API">
+            <table>
+                <tr>
+                    <td>author</td>
+                    <td>Hazem Ahmed Saleh</td>
+                </tr>
+                <tr>
+                    <td>component-family</td>
+                    <td>org.apache.myfaces.media</td>
+                </tr>
+                <tr>
+                    <td>renderer-type</td>
+                    <td>org.apache.myfaces.media</td>
+                </tr>
+                <tr>
+                    <td>component-class</td>
+                    <td>org.apache.myfaces.custom.media.MediaComponent</td>
+                </tr>
+                <tr>
+                    <td>renderer-class</td>
+                    <td>org.apache.myfaces.custom.media.MediaRenderer</td>
+                </tr>
+                <tr>
+                    <td>tag-class</td>
+                    <td>org.apache.myfaces.custom.media.MediaTag</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Usage -->
+        <section name="Usage">
+            <source xml:space="preserve">
+
+                &lt;s:media [id="media"] 
+                            [source="#{facesContext.externalContext.requestContextPath}/images/clock.avi"]
+                            [contentType="application/x-mplayer2"] 
+                            [width="300"]
+                            [height="300"]                                  
+                &lt;/s:media&gt;
+
+            </source>
+        </section>
+        
+        
+        <!-- Instructions -->
+        <section name="Instructions">
+            
+            <p>
+                <code>
+                id - defines the id of the component.
+                </code>
+                <br/>
+                <code>
+                source - determines the path of the media file.
+                </code>
+                <br/>
+                <code>
+                contentType - determines the media content type.
+                </code>
+                <br/>
+                
+                <code>
+                width - determines the media width.
+                </code>
+                <br/> 
+                
+                <code>
+                height - determines the media height.
+                </code>
+                <br/>                                
+                
+            </p>
+        </section>
+        
+        
+        <!-- Additional Information -->
+        <section name="Additional Information">
+            <p>see media.jsp in the Sandbox examples.</p>
+        </section>        
+    </body>
+
+</document>
