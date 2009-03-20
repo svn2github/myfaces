@@ -49,3 +49,14 @@ Requirements and Setup
   
   []
   
+  Note that some specific Tomahawk components need additional libraries. For example, if you use the
+  t:fileUpload component, then you will need to also add the commons-fileupload jarfile to your
+  application classpath (eg in WEB-INF/lib). Components which need additional jars should describe
+  that requirement in their documentation.
+
+  Note also that this webpage is part of the special <site> project for all the tomahawk modules (core,
+  sandbox, examples, etc). Therefore the pages under the <<project documentation>> menu on the left refer
+  just to this <site>, and not to the tomahawk library. For information about a specific tomahawk
+  <library> (dependencies, unit test reports, etc.) select that library from the left menu bar then
+  select the <<project documentation>> menu.
+  
