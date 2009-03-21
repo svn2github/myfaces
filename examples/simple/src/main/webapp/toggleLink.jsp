@@ -1,7 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
 
 <!--
 /*
@@ -34,10 +33,10 @@
 
 			<f:verbatim> <br/><br/> </f:verbatim>
 
-			<s:togglePanel>
-				<s:toggleLink for="code">
+			<t:togglePanel>
+				<t:toggleLink for="code">
 					<h:outputText value="#{toggleBean.testValue}"/>
-				</s:toggleLink>
+				</t:toggleLink>
 
 				<t:inputText
 					id="code"
@@ -47,19 +46,19 @@
 					size="6">
 		        	<f:validateLength minimum="5"/>
 				</t:inputText>
-			</s:togglePanel>
+			</t:togglePanel>
 			<t:messages showDetail="true"/>
 			<h:commandButton value="Update"/>
 			
 			<f:verbatim> <br/><hr/><br/> </f:verbatim>
 
-			<s:togglePanel>
-				<s:toggleGroup>
+			<t:togglePanel>
+				<t:toggleGroup>
 					<h:outputLabel for="fullName" value="Full Name (click to edit) "/>
-					<s:toggleLink for="editNames" onclick="return confirm('do you really want to edit this stuff?')">
+					<t:toggleLink for="editNames" onclick="return confirm('do you really want to edit this stuff?')">
 						<h:outputText id="fullName" value="#{toggleBean.firstName} #{toggleBean.lastName}"/>
-					</s:toggleLink>
-				</s:toggleGroup>
+					</t:toggleLink>
+				</t:toggleGroup>
 
 				<t:div id="editNames">
 					<h:outputLabel for="firstName" value="First Name"/>
@@ -70,7 +69,7 @@
 
 					<h:commandButton value="Update"/>	
 				</t:div>
-			</s:togglePanel>
+			</t:togglePanel>
 
 		</h:form>
 	</f:view>

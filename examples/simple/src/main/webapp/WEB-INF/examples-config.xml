@@ -237,6 +237,14 @@
         <managed-bean-class>org.apache.myfaces.examples.crosstable.DataBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
+    <!-- Managed Beans for toggleLink.jsp -->
+    
+    <managed-bean>
+        <managed-bean-name>toggleBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.toggle.ToggleBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
     <!-- Managed Beans for date.jsp -->
 

@@ -156,6 +156,13 @@
                     <h:outputLink value="selectOneRow.jsf">
                     	<f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim>
                     </h:outputLink>                     
+                </h:panelGrid>   
+
+ 				<h:outputText value="toggleLink" />
+                <h:panelGrid style="padding-left:25px">      
+                    <h:outputLink value="toggleLink.jsf">
+                    	<f:verbatim>ToggleLink - Edit/Read-Only Mode Toggler</f:verbatim>
+                    </h:outputLink>                     
                 </h:panelGrid>                                       
 
         </h:panelGrid>
