@@ -328,22 +328,17 @@ public class HtmlTabbedPaneRenderer
                 false);
     }
 
-    protected String getActiveHeaderClasses(HtmlPanelTabbedPane tabbedPane){
-        String userActiveStyleClass = tabbedPane.getActiveTabStyleClass();
+    protected String getHeaderClasses(HtmlPanelTabbedPane tabbedPane, HtmlPanelTab tab, String defaultClass, String userClass){
+        String headerCellClass = defaultClass;
+        String userTabStyleClass = tab.getStyleClass();
 
-        if( userActiveStyleClass == null || userActiveStyleClass.length() == 0 )
-            return ACTIVE_HEADER_CELL_CLASS;
+        if( userClass != null )
+            headerCellClass = headerCellClass + " " + userClass;
 
-        return ACTIVE_HEADER_CELL_CLASS+' '+userActiveStyleClass;
-    }
+        if( userTabStyleClass != null )
+            headerCellClass = headerCellClass + " " + userTabStyleClass;
 
-    protected String getInactiveHeaderClasses(HtmlPanelTabbedPane tabbedPane){
-        String userInactiveStyleClass = tabbedPane.getInactiveTabStyleClass();
-
-        if( userInactiveStyleClass == null || userInactiveStyleClass.length() == 0 )
-            return INACTIVE_HEADER_CELL_CLASS;
-
-        return INACTIVE_HEADER_CELL_CLASS+' '+userInactiveStyleClass;
+        return headerCellClass;
     }
 
     protected void writeTableStart(ResponseWriter writer,
@@ -413,17 +408,20 @@ public class HtmlTabbedPaneRenderer
             if (active)
             {
                 writer.writeAttribute(HTML.CLASS_ATTR,
-                                      getActiveHeaderClasses(tabbedPane),
+                                      getHeaderClasses(tabbedPane, tab, ACTIVE_HEADER_CELL_CLASS, tabbedPane.getActiveTabStyleClass()),
                                       null);
             }
             else
             {
                 writer.writeAttribute(HTML.CLASS_ATTR,
-                                      getInactiveHeaderClasses(tabbedPane),
+                                      getHeaderClasses(tabbedPane, tab, INACTIVE_HEADER_CELL_CLASS, tabbedPane.getInactiveTabStyleClass()),
                                       null);
             }
         }
-
+      
+        if (tab.getStyle() != null) {
+            writer.writeAttribute(HTML.STYLE_ATTR, tab.getStyle(), null);
+        }
 
         String label = tab.getLabel();
         if (label == null || label.length() == 0)
