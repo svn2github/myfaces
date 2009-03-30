@@ -53,6 +53,7 @@ public abstract class AbstractToggleLink extends HtmlOutputLink
      * using session or application scoped beans.
      * 
      * @JSFProperty
+     *   required="true"
      *   literalOnly = "true"
      * @return
      */
