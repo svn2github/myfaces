@@ -45,7 +45,6 @@ public class ToggleGroupRenderer extends HtmlGroupRendererBase {
 
         writer.startElement( org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.SPAN_ELEM, component );
         writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context), null);
-        TogglePanelRenderer.setComponentVisibility(toggleGroup, toggleGroup.isToggled());
 
         HtmlRendererUtils.renderHTMLAttributes( writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES );
 
