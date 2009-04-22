@@ -337,7 +337,21 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
                     // strip html comment start to make ppr work with ie 5.5
                     script = script.substring(4);
                 }
-                eval(script);
+                try
+                {
+                    eval(script);
+                }
+                catch (e)
+                {
+                    if (this.showDebugMessages)
+                    {
+                        alert('Error in eval script: ' + script + ' ' + e.message );
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
                 s = s.substr(0, match.index) + s.substr(match.index + match[0].length);
             }
         }
@@ -423,6 +437,11 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
     }
     else if (!this.formNode.myFacesPPRCtrl.blockPeriodicalUpdateDuringPost)
     {
+        if (type == "error" && this.showDebugMessages)
+        {
+            alert("An unexpected error occured during an ajax-request." + data.message);
+        }
+
         // In case of an error during the AJAX Request do a normal form submit
         // to enable showing a proper error page
         this.formNode.myFacesPPRCtrl.callbackErrorHandler();
@@ -518,6 +537,10 @@ org.apache.myfaces.PPRCtrl.prototype.callbackErrorHandler = function()
     else
     {
         oamSetHiddenInput(formName, formName + ':' + '_idcl', triggerElement.id);
+    }
+    if (this.showDebugMessages)
+    {
+        alert("An unexpected error occured during an ajax-request!");
     }
     this.form.submit();
 }
