@@ -399,7 +399,10 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
             if (stateUpdate)
             {
                 var stateUpdateId = stateUpdate.getAttribute('id');
-
+                // fix for Trinidad CoreResponseStateManager.java only writes name see r594297
+                if (stateUpdateId == undefined) {
+				    stateUpdateId = stateUpdate.getAttribute('name');
+				}
                 if (stateUpdateId == 'javax.faces.ViewState')
                 {
                     var formArray = document.forms;
