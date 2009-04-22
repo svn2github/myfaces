@@ -331,7 +331,7 @@ org.apache.myfaces.PPRCtrl.prototype.handleCallback = function(type, data, evt)
             var s = domElement.innerHTML;
             while (match = regex.exec(s))
             {
-                var script = match[2];
+                var script = dojo.string.trimStart(match[2]);
                 if (script.length > 5 && script.substring(0, 4) == "<!--")
                 {
                     // strip html comment start to make ppr work with ie 5.5
