@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.custom.date;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
@@ -227,7 +228,7 @@ public class HtmlDateRendererTest extends AbstractTomahawkViewControllerTestCase
         Properties props = new Properties();
         try
         {
-            props.load(new StringReader(submittedValue));
+            props.load(new ByteArrayInputStream(submittedValue.getBytes()));
         }catch(IOException e)
         {
         }
