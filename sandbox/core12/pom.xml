@@ -134,12 +134,12 @@
             <scope>compile</scope>
         </dependency>
         
-		<dependency>
-			<groupId>org.apache.myfaces.buildtools</groupId>
-			<artifactId>myfaces-builder-annotations</artifactId> 
-			<version>1.0.2</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.buildtools</groupId>
+            <artifactId>myfaces-builder-annotations</artifactId> 
+            <version>1.0.3</version>
+            <scope>provided</scope>
+        </dependency>
 
     <dependency>
       <groupId>com.sun.facelets</groupId>
@@ -156,12 +156,12 @@
             <scope>test</scope>
         </dependency>
         
-		<dependency>
-		  <groupId>maven-taglib</groupId>
-		  <artifactId>maven-taglib-plugin</artifactId>
-		  <version>1.4.2</version>
-		  <scope>test</scope>
-		</dependency>        
+        <dependency>
+          <groupId>maven-taglib</groupId>
+          <artifactId>maven-taglib-plugin</artifactId>
+          <version>1.4.2</version>
+          <scope>test</scope>
+        </dependency>
         
         <dependency>
             <groupId>org.apache.shale</groupId>
@@ -208,165 +208,165 @@
             </resource>
         </resources>
         <plugins>
-			<plugin>
-			  <groupId>org.codehaus.mojo</groupId>
-			  <artifactId>build-helper-maven-plugin</artifactId>
-			  <executions>
-			      <execution>
-			          <id>add-source</id>
-			          <phase>generate-sources</phase>
-			          <!-- <phase>process-sources</phase> -->
-			          <goals>
-			              <goal>add-source</goal>
-			          </goals>
-			          <configuration>
-			              <sources>
-			                  <source>
-			                      ${project.build.directory}/tomahawk11_sources
-			                  </source>
-			              </sources>
-			          </configuration>
-			      </execution>
-			  </executions>
-			</plugin>    
-			<plugin>
-			  <groupId>org.apache.myfaces.buildtools</groupId>
-			  <artifactId>myfaces-builder-plugin</artifactId>
-			  <version>1.0.2</version>
-			  <executions>
-				<execution>
-				  <id>unpack-tomahawk</id>
-				  <phase>generate-sources</phase>
-				  <!-- <phase>process-resources</phase> -->
-				  <goals>
-				    <goal>unpack</goal>
-				  </goals>
-				  <configuration>
-				    <scanModel>true</scanModel>
-				    <artifactItems>
-				      <artifactItem>
-				        <groupId>org.apache.myfaces.tomahawk</groupId>
-				        <artifactId>tomahawk-sandbox</artifactId>
-				        <version>${pom.version}</version>
-				        <classifier>sources</classifier>                   
-				        <!-- <outputDirectory>${project.build.directory}/unpacktomahawksources</outputDirectory> -->
-				        <outputDirectory>${project.build.directory}/tomahawk11_sources</outputDirectory>
-				        <includes>**/*.java</includes>
-				        <!-- Conversation tags will not work on 1.2 by architectural problems,
-				        use orchestra instead 
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>build-helper-maven-plugin</artifactId>
+              <executions>
+                  <execution>
+                      <id>add-source</id>
+                      <phase>generate-sources</phase>
+                      <!-- <phase>process-sources</phase> -->
+                      <goals>
+                          <goal>add-source</goal>
+                      </goals>
+                      <configuration>
+                          <sources>
+                              <source>
+                                  ${project.build.directory}/tomahawk11_sources
+                              </source>
+                          </sources>
+                      </configuration>
+                  </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.myfaces.buildtools</groupId>
+              <artifactId>myfaces-builder-plugin</artifactId>
+              <version>1.0.3</version>
+              <executions>
+                <execution>
+                  <id>unpack-tomahawk</id>
+                  <phase>generate-sources</phase>
+                  <!-- <phase>process-resources</phase> -->
+                  <goals>
+                    <goal>unpack</goal>
+                  </goals>
+                  <configuration>
+                    <scanModel>true</scanModel>
+                    <artifactItems>
+                      <artifactItem>
+                        <groupId>org.apache.myfaces.tomahawk</groupId>
+                        <artifactId>tomahawk-sandbox</artifactId>
+                        <version>${pom.version}</version>
+                        <classifier>sources</classifier>                   
+                        <!-- <outputDirectory>${project.build.directory}/unpacktomahawksources</outputDirectory> -->
+                        <outputDirectory>${project.build.directory}/tomahawk11_sources</outputDirectory>
+                        <includes>**/*.java</includes>
+                        <!-- Conversation tags will not work on 1.2 by architectural problems,
+                        use orchestra instead 
                         org/apache/myfaces/custom/conversation/*.java -->
-				        <excludes>
-				        **/*.class,**/META-INF/**,
-				        org/apache/myfaces/shared_tomahawk/**/*.java
-				        </excludes>
-				      </artifactItem>
-				    </artifactItems>
-				  </configuration>
-				</execution>
-				<execution>
-				  <id>unpack-tomahawk-resources</id>
-				  <phase>generate-resources</phase>
-				  <goals>
-				    <goal>unpack</goal>
-				  </goals>
-				  <configuration>
-				    <baseDirectory1>${basedir}/src/main/resources</baseDirectory1>
-				    <artifactItems>
-				      <artifactItem>
-				        <groupId>org.apache.myfaces.tomahawk</groupId>
-				        <artifactId>tomahawk-sandbox</artifactId>
-				        <version>${pom.version}</version>                                   
-				        <outputDirectory>${project.build.directory}/tomahawk11_resources</outputDirectory>
-				        <excludes>**/*.class,**/META-INF/**</excludes>
-				      </artifactItem>
-				    </artifactItems>
-				  </configuration>
-				</execution>			  
-			    <execution>
-			      <!-- A hierarchy of different tag classes must be created, 
-			      because this classes are not part of the public api. The
-			      generation of all html package is the same. Please note that
-			      we need only a subset -->
-			      <configuration>
-			          <replacePackagePrefixTagFrom>org.apache.myfaces.taglib</replacePackagePrefixTagFrom>
-			          <replacePackagePrefixTagTo>org.apache.myfaces.shared_tomahawk.taglib</replacePackagePrefixTagTo>
-			      </configuration>
-			      <goals>
-			        <goal>build-metadata</goal>
-			      </goals>
-			    </execution>
-			    <execution>
-			      <id>makefacesconfig</id>
-			      <configuration>
+                        <excludes>
+                        **/*.class,**/META-INF/**,
+                        org/apache/myfaces/shared_tomahawk/**/*.java
+                        </excludes>
+                      </artifactItem>
+                    </artifactItems>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>unpack-tomahawk-resources</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                    <goal>unpack</goal>
+                  </goals>
+                  <configuration>
+                    <baseDirectory1>${basedir}/src/main/resources</baseDirectory1>
+                    <artifactItems>
+                      <artifactItem>
+                        <groupId>org.apache.myfaces.tomahawk</groupId>
+                        <artifactId>tomahawk-sandbox</artifactId>
+                        <version>${pom.version}</version>                                   
+                        <outputDirectory>${project.build.directory}/tomahawk11_resources</outputDirectory>
+                        <excludes>**/*.class,**/META-INF/**</excludes>
+                      </artifactItem>
+                    </artifactItems>
+                  </configuration>
+                </execution>
+                <execution>
+                  <!-- A hierarchy of different tag classes must be created, 
+                  because this classes are not part of the public api. The
+                  generation of all html package is the same. Please note that
+                  we need only a subset -->
+                  <configuration>
+                      <replacePackagePrefixTagFrom>org.apache.myfaces.taglib</replacePackagePrefixTagFrom>
+                      <replacePackagePrefixTagTo>org.apache.myfaces.shared_tomahawk.taglib</replacePackagePrefixTagTo>
+                  </configuration>
+                  <goals>
+                    <goal>build-metadata</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>makefacesconfig</id>
+                  <configuration>
                       <templateFile>faces-config12.vm</templateFile>
-			          <xmlFile>META-INF/faces-config.xml</xmlFile>
-			      </configuration>
-			      <goals>
-			          <goal>make-config</goal>
-			      </goals>
-			    </execution>
-			    <execution>
-					<id>makecomp</id>
-					<goals>
-					  <goal>make-components</goal>
-					</goals>
-					<configuration>
-					   <jsfVersion>12</jsfVersion>
-					   <templateComponentName>componentClass12.vm</templateComponentName>
-					   <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
-					</configuration>
-			    </execution>
-				<execution>
-					<id>makeval</id>
-					<goals>
-					  <goal>make-validators</goal>
-					</goals>
-					<configuration>
-					   <jsfVersion>12</jsfVersion>
-					   <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
-					</configuration>
-				</execution>
-			    <execution>
+                      <xmlFile>META-INF/faces-config.xml</xmlFile>
+                  </configuration>
+                  <goals>
+                      <goal>make-config</goal>
+                  </goals>
+                </execution>
+                <execution>
+                    <id>makecomp</id>
+                    <goals>
+                      <goal>make-components</goal>
+                    </goals>
+                    <configuration>
+                       <jsfVersion>12</jsfVersion>
+                       <templateComponentName>componentClass12.vm</templateComponentName>
+                       <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>makeval</id>
+                    <goals>
+                      <goal>make-validators</goal>
+                    </goals>
+                    <configuration>
+                       <jsfVersion>12</jsfVersion>
+                       <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
+                    </configuration>
+                </execution>
+                <execution>
                     <id>maketags</id>
-					<configuration>
-					   <jsfVersion>12</jsfVersion>
-					   <templateTagName>tagClass12.vm</templateTagName>
-					   <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
-					</configuration>
-					<goals>
-					    <goal>make-tags</goal>
-					</goals>
-			    </execution>
-				<execution>
-				  <id>make_validator_tags_tomahawk</id>
-				  <configuration>
-					  <jsfVersion>12</jsfVersion>
-			      </configuration> 
-				  <goals>
-				      <goal>make-validator-tags</goal>
-				      <goal>make-converter-tags</goal>
-				  </goals>
-				</execution>			    
-				<execution>
-				  <id>makesandboxtld</id>
-				  <configuration>
-				      <xmlFile>META-INF/myfaces_sandbox.tld</xmlFile>
-				      <xmlBaseFile>src/main/conf/META-INF/myfaces_sandbox-base.tld</xmlBaseFile>
-				      <templateFile>tomahawk12.vm</templateFile>
-				      <params>
-				         <shortname>s</shortname>
-				         <uri>http://myfaces.apache.org/sandbox</uri>
-				         <displayname>Tomahawk sandbox tag library.</displayname>
-				         <description>Enhanced standard JSP actions and custom MyFaces actions.</description>
-				      </params>
-				      <modelIds>
-				          <modelId>tomahawk-sandbox12</modelId>
-				      </modelIds>
-				  </configuration>
-				  <goals>
-				      <goal>make-config</goal>
-				  </goals>
-				</execution>
+                    <configuration>
+                       <jsfVersion>12</jsfVersion>
+                       <templateTagName>tagClass12.vm</templateTagName>
+                       <mainSourceDirectory2>${project.build.directory}/tomahawk11_sources</mainSourceDirectory2>
+                    </configuration>
+                    <goals>
+                        <goal>make-tags</goal>
+                    </goals>
+                </execution>
+                <execution>
+                  <id>make_validator_tags_tomahawk</id>
+                  <configuration>
+                      <jsfVersion>12</jsfVersion>
+                  </configuration> 
+                  <goals>
+                      <goal>make-validator-tags</goal>
+                      <goal>make-converter-tags</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>makesandboxtld</id>
+                  <configuration>
+                      <xmlFile>META-INF/myfaces_sandbox.tld</xmlFile>
+                      <xmlBaseFile>src/main/conf/META-INF/myfaces_sandbox-base.tld</xmlBaseFile>
+                      <templateFile>tomahawk12.vm</templateFile>
+                      <params>
+                         <shortname>s</shortname>
+                         <uri>http://myfaces.apache.org/sandbox</uri>
+                         <displayname>Tomahawk sandbox tag library.</displayname>
+                         <description>Enhanced standard JSP actions and custom MyFaces actions.</description>
+                      </params>
+                      <modelIds>
+                          <modelId>tomahawk-sandbox12</modelId>
+                      </modelIds>
+                  </configuration>
+                  <goals>
+                      <goal>make-config</goal>
+                  </goals>
+                </execution>
                 <execution>
                   <id>makesandboxtaglib</id>
                   <configuration>
@@ -385,8 +385,8 @@
                       <goal>make-config</goal>
                   </goals>
                 </execution>
-			  </executions>
-			</plugin>
+              </executions>
+            </plugin>
 
             <!--    
             <plugin>
