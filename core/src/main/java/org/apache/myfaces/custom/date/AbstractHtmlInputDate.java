@@ -133,12 +133,15 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
                 if(!isSubmitValid(uses_ampm, type)) {
                     return null;
                 }
-                
+                //There are this types: date | time | short_time | both | full
                 if(! (type.equals( "time" ) || type.equals( "short_time" )) ) {
+                	//Set day, month and year for type date, both, full
                     tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
                     tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
                     tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
-                    if( !type.equals("full")) {
+                    
+                    if( type.equals("date") ) {
+                    	//Reset hour, minute, second and milisecond to type date
                         tempCalendar.set(Calendar.HOUR_OF_DAY, 0);
                         tempCalendar.set(Calendar.MINUTE, 0);
                         tempCalendar.set(Calendar.SECOND, 0);
@@ -148,7 +151,8 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
                 }
 
                 if(! type.equals( "date" )) {
-                    
+                    //Set hour, ampm, minute, second to
+                    //type time, short_time, both, full
                     if (uses_ampm) {
                         int int_hours = Integer.parseInt(hours);
                         // ampm hours must be in range 0-11 to be handled right; we have to handle "12" specially
@@ -164,6 +168,11 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
                     
                     if (seconds != null & (type.equals("full") || type.equals("time") || type.equals("short_time"))) {
                         tempCalendar.set(Calendar.SECOND,Integer.parseInt(seconds));
+                    }
+                    else
+                    {
+                        //Reset seconds for both type
+                        tempCalendar.set(Calendar.SECOND,0);
                     }
                 }
                 tempCalendar.set(Calendar.MILLISECOND, 0);
