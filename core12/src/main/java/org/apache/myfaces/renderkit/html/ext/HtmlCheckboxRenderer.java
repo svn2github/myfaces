@@ -275,7 +275,8 @@ public class HtmlCheckboxRenderer
 
             writer.startElement(HTML.LABEL_ELEM, selectMany);
             renderLabelClassIfNecessary(facesContext, selectMany, disabled);
-            renderCheckbox(facesContext, selectMany, itemStrValue, disabled, checked, false,0);            
+            renderCheckbox(facesContext, selectMany, itemStrValue, disabled, checked, false,0);
+            writer.write(HTML.NBSP_ENTITY);
             if(selectItem.isEscape())
             {
                 writer.writeText(selectItem.getLabel(), null);
