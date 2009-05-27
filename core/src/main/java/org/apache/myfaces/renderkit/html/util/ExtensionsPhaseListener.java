@@ -108,7 +108,8 @@ public class ExtensionsPhaseListener implements PhaseListener {
         if(responseWriter!=null)
             facesContext.setResponseWriter(responseWriter);
 
-        return "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n";
+        //return "<!-- MYFACES JAVASCRIPT -->\n"+writerWrapper.toString()+"\n";
+        return writerWrapper.toString();
     }
 
     /**In case of StreamingAddResource and a documentBody-Tag, this method will be called with the
