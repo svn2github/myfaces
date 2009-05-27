@@ -19,11 +19,13 @@
 package org.apache.myfaces.custom.htmlTag;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -71,7 +73,7 @@ public class HtmlTagRenderer extends HtmlRenderer
             HtmlRendererUtils.renderHTMLAttributes(writer, htmlTag, supportedAttributes);
             
             // write additional attributes supplied by f:param tags
-            Map params = HtmlComponentUtils.getParameterMap(htmlTag);
+            Map params = getParameterMap(htmlTag);
             for(Iterator iter = params.entrySet().iterator(); iter.hasNext();)
             {
                 Entry param = (Entry) iter.next();
@@ -81,6 +83,21 @@ public class HtmlTagRenderer extends HtmlRenderer
                 }
             }
         }
+    }
+    
+    public Map getParameterMap(UIComponent component) {
+        Map result = new HashMap();
+        for (Iterator iter = component.getChildren().iterator(); iter.hasNext();) {
+            UIComponent child = (UIComponent) iter.next();
+            if (child.getClass().equals(UIParameter.class))  {
+                UIParameter uiparam = (UIParameter) child;
+                Object value = uiparam.getValue();
+                if (value != null) {
+                    result.put(uiparam.getName(), value);
+                }
+            }
+        }
+        return result;
     }
 
     public void encodeChildren(FacesContext context, UIComponent component)
