@@ -72,14 +72,19 @@ public class HtmlTagRenderer extends HtmlRenderer
             String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
             HtmlRendererUtils.renderHTMLAttributes(writer, htmlTag, supportedAttributes);
             
-            // write additional attributes supplied by f:param tags
-            Map params = getParameterMap(htmlTag);
-            for(Iterator iter = params.entrySet().iterator(); iter.hasNext();)
+            if (htmlTag.getClass().equals(HtmlTag.class))
             {
-                Entry param = (Entry) iter.next();
-                if (null != param.getValue())
+                // write additional attributes supplied by f:param tags
+                // Components that extend from HtmlTag component should render attributes
+                // on a proper encodeBegin (see Div component for details) 
+                Map params = getParameterMap(htmlTag);
+                for(Iterator iter = params.entrySet().iterator(); iter.hasNext();)
                 {
-                    writer.writeAttribute(param.getKey().toString(), param.getValue().toString(), null);
+                    Entry param = (Entry) iter.next();
+                    if (null != param.getValue())
+                    {
+                        writer.writeAttribute(param.getKey().toString(), param.getValue().toString(), null);
+                    }
                 }
             }
         }
