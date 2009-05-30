@@ -25,9 +25,9 @@
               version="1.2">
 
   <lifecycle>
-      <!-- 
+
       <phase-listener>org.apache.myfaces.webapp.filter.ServeResourcePhaseListener</phase-listener>
-       -->
+
       <phase-listener>org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener</phase-listener>
       <!-- This PhaseListener is only necessary if the autoscroll feature is used -->
       <phase-listener>org.apache.myfaces.renderkit.html.util.AutoScrollPhaseListener</phase-listener>
