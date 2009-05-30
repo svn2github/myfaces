@@ -87,7 +87,6 @@ public class PortletMultipartRequestWrapper
             fileUpload.setFileItemFactory(
                     new DiskFileItemFactory(thresholdSize,
                             new File(System.getProperty("java.io.tmpdir"))));
-            System.out.println("TEMP DIR:"+ new File(System.getProperty("java.io.tmpdir")));
         }
         
         String charset = request.getCharacterEncoding();
