@@ -135,13 +135,13 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
                 }
                 //There are this types: date | time | short_time | both | full
                 if(! (type.equals( "time" ) || type.equals( "short_time" )) ) {
-                	//Set day, month and year for type date, both, full
+                    //Set day, month and year for type date, both, full
                     tempCalendar.set(Calendar.DAY_OF_MONTH,Integer.parseInt(day));
                     tempCalendar.set(Calendar.MONTH,Integer.parseInt(month)-1);
                     tempCalendar.set(Calendar.YEAR,Integer.parseInt(year));
                     
                     if( type.equals("date") ) {
-                    	//Reset hour, minute, second and milisecond to type date
+                        //Reset hour, minute, second and milisecond to type date
                         tempCalendar.set(Calendar.HOUR_OF_DAY, 0);
                         tempCalendar.set(Calendar.MINUTE, 0);
                         tempCalendar.set(Calendar.SECOND, 0);
