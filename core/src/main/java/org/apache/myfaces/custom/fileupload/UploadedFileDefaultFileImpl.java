@@ -22,6 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -41,19 +42,43 @@ public class UploadedFileDefaultFileImpl extends UploadedFileDefaultImplBase
     {
         super(fileItem.getName(), fileItem.getContentType());
         this.fileItem = (DiskFileItem) fileItem;
-        storageStrategy = new DiskStorageStrategy() {
-
-        public File getTempFile() {
-          return UploadedFileDefaultFileImpl.this.fileItem.getStoreLocation();
-        }
-
-        public void deleteFileContents() {
-          UploadedFileDefaultFileImpl.this.fileItem.delete();
-        }
-        
-      };
+        storageStrategy = new DefaultDiskStorageStrategy();
     }
 
+    private class DefaultDiskStorageStrategy 
+        extends DiskStorageStrategy implements Serializable
+    {
+        private static final long serialVersionUID = 5191237379179109587L;
+        
+        public DefaultDiskStorageStrategy()
+        {
+        }
+
+        public File getTempFile()
+        {
+            if (UploadedFileDefaultFileImpl.this.fileItem != null)
+            {
+                return UploadedFileDefaultFileImpl.this.fileItem.getStoreLocation();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void deleteFileContents()
+        {
+            // UploadedFileDefaultFileImpl.this.fileItem becomes null 
+            // when the parent class is serialized and deserialized.
+            // In this case, the instance contained by the original
+            // object is garbage collected, so we don't have to 
+            // worry about it.
+            if (UploadedFileDefaultFileImpl.this.fileItem != null)
+            {
+                UploadedFileDefaultFileImpl.this.fileItem.delete();
+            }
+        }
+    }
 
     /**
      * Answer the uploaded file contents.
