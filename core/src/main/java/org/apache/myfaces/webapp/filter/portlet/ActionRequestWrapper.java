@@ -27,6 +27,12 @@ import javax.portlet.ActionRequest;
 import javax.portlet.PortletRequest;
 
 /**
+ * <p>
+ * NOTE: This class should be used(instantiated) only by 
+ * TomahawkFacesContextWrapper. By that reason, it could change
+ * in the future.
+ * </p>
+ * 
  * @since 1.1.8
  * @author Leonardo Uribe (latest modification by $Author$)
  * @version $Revision$ $Date$
