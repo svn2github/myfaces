@@ -33,14 +33,17 @@ import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 class MultipartRequestWrapperConfig
 {
     
+    private int _uploadMaxSize = 100 * 1024 * 1024; // 10 MB
     private int _uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
     private int _uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
     private String _uploadRepositoryPath = null; //standard temp directory 
+    private boolean _cacheFileSizeErrors = false;
     
+    private static final String UPLOAD_MAX_SIZE = "org.apache.myfaces.UPLOAD_MAX_SIZE";
     private static final String UPLOAD_MAX_FILE_SIZE = "org.apache.myfaces.UPLOAD_MAX_FILE_SIZE";
     private static final String UPLOAD_THRESHOLD_SIZE = "org.apache.myfaces.UPLOAD_THRESHOLD_SIZE"; 
     private static final String UPLOAD_MAX_REPOSITORY_PATH = "org.apache.myfaces.UPLOAD_MAX_REPOSITORY_PATH";  
-    
+    private static final String UPLOAD_CACHE_FILE_SIZE_ERRORS = "org.apache.myfaces.UPLOAD_CACHE_FILE_SIZE_ERRORS";
     private static final String MULTIPART_REQUEST_WRAPPER_CONFIG = MultipartRequestWrapperConfig.class.getName();
     
     private MultipartRequestWrapperConfig() {}
@@ -76,6 +79,24 @@ class MultipartRequestWrapperConfig
         return numberParam;
     }
     
+    private static boolean getBooleanValue(String initParameter, boolean defaultVal)
+    {
+        if(initParameter == null || initParameter.trim().length()==0)
+            return defaultVal;
+
+        return (initParameter.equalsIgnoreCase("on") || initParameter.equals("1") || initParameter.equalsIgnoreCase("true"));
+    }
+    
+    public int getUploadMaxSize()
+    {
+        return _uploadMaxSize;
+    }
+
+    public void setUploadMaxSize(int uploadMaxSize)
+    {
+        this._uploadMaxSize = uploadMaxSize;
+    }
+
     public int getUploadMaxFileSize()
     {
         return _uploadMaxFileSize;
@@ -104,7 +125,17 @@ class MultipartRequestWrapperConfig
     public void setUploadRepositoryPath(String uploadRepositoryPath)
     {
         this._uploadRepositoryPath = uploadRepositoryPath;
-    }    
+    }
+    
+    public boolean isCacheFileSizeErrors()
+    {
+        return _cacheFileSizeErrors;
+    }
+    
+    public void setCacheFileSizeErrors(boolean cacheFileSizeErrors)
+    {
+        this._cacheFileSizeErrors = cacheFileSizeErrors;
+    }
 
     public static MultipartRequestWrapperConfig getMultipartRequestWrapperConfig(
             ExternalContext context)
@@ -127,6 +158,21 @@ class MultipartRequestWrapperConfig
     
                 config._uploadMaxFileSize = resolveSize(param,
                         config._uploadMaxFileSize);
+                
+                param = servletContext
+                    .getInitParameter(UPLOAD_MAX_SIZE);
+
+                if (param != null)
+                {
+                    config._uploadMaxSize = resolveSize(param,
+                            config._uploadMaxSize);
+                }
+                else
+                {
+                    //If not set, default to uploadMaxFileSize
+                    config._uploadMaxSize = resolveSize(param,
+                            config._uploadMaxFileSize);
+                }
     
                 param = servletContext.getInitParameter(UPLOAD_THRESHOLD_SIZE);
     
@@ -135,7 +181,10 @@ class MultipartRequestWrapperConfig
     
                 config._uploadRepositoryPath = servletContext
                         .getInitParameter(UPLOAD_MAX_REPOSITORY_PATH);
-    
+
+                config._cacheFileSizeErrors = getBooleanValue(servletContext
+                        .getInitParameter(UPLOAD_CACHE_FILE_SIZE_ERRORS), false);
+                
                 context.getApplicationMap().put(MULTIPART_REQUEST_WRAPPER_CONFIG,
                         config);
             }
@@ -148,6 +197,21 @@ class MultipartRequestWrapperConfig
         
                 config._uploadMaxFileSize = resolveSize(param,
                         config._uploadMaxFileSize);
+                
+                param = PortletUtils.getContextInitParameter(
+                        portletContext, UPLOAD_MAX_SIZE);
+
+                if (param != null)
+                {
+                    config._uploadMaxSize = resolveSize(param,
+                            config._uploadMaxSize);
+                }
+                else
+                {
+                    //If not set, default to uploadMaxFileSize
+                    config._uploadMaxSize = resolveSize(param,
+                            config._uploadMaxFileSize);
+                }
         
                 param = PortletUtils.getContextInitParameter(
                         portletContext, UPLOAD_THRESHOLD_SIZE);
@@ -157,10 +221,13 @@ class MultipartRequestWrapperConfig
         
                 config._uploadRepositoryPath = PortletUtils.getContextInitParameter(
                         portletContext,UPLOAD_MAX_REPOSITORY_PATH);
+                
+                config._cacheFileSizeErrors = getBooleanValue(PortletUtils
+                        .getContextInitParameter(portletContext, 
+                                UPLOAD_CACHE_FILE_SIZE_ERRORS), false);
         
                 context.getApplicationMap().put(MULTIPART_REQUEST_WRAPPER_CONFIG,
                         config);
-                
             }
         }
 

@@ -29,7 +29,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.myfaces.webapp.filter.MultipartRequestWrapper;
 
 
@@ -45,18 +45,32 @@ import org.apache.myfaces.webapp.filter.MultipartRequestWrapper;
 public class MultipartFilter implements Filter
 {
 
+    private int uploadMaxSize = 100 * 1024 * 1024; // 100 MB
+    
     private int uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
 
     private int uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
     private String uploadRepositoryPath = null; //standard temp directory
-
+    
+    private boolean cacheFileSizeErrors = false;
 
     public void init(FilterConfig filterConfig)
     {
         uploadMaxFileSize = resolveSize(filterConfig.getInitParameter("uploadMaxFileSize"), uploadMaxFileSize);
+        String param = filterConfig.getInitParameter("uploadMaxSize");
+        if (param != null)
+        {
+            uploadMaxSize = resolveSize(param, uploadMaxSize);
+        }
+        else
+        {
+            //If not set, default to uploadMaxFileSize
+            uploadMaxSize = resolveSize(param, uploadMaxFileSize);
+        }
         uploadThresholdSize = resolveSize(filterConfig.getInitParameter("uploadThresholdSize"), uploadThresholdSize);
         uploadRepositoryPath = filterConfig.getInitParameter("uploadRepositoryPath");
+        cacheFileSizeErrors = getBooleanValue(filterConfig.getInitParameter("cacheFileSizeErrors"), false);
     }
 
 
@@ -88,7 +102,14 @@ public class MultipartFilter implements Filter
         }
         return numberParam;
     }
+    
+    private static boolean getBooleanValue(String initParameter, boolean defaultVal)
+    {
+        if(initParameter == null || initParameter.trim().length()==0)
+            return defaultVal;
 
+        return (initParameter.equalsIgnoreCase("on") || initParameter.equals("1") || initParameter.equalsIgnoreCase("true"));
+    }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
     {
@@ -101,9 +122,10 @@ public class MultipartFilter implements Filter
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         // For multipart/form-data requests
-        if (FileUpload.isMultipartContent(httpRequest))
+        if (ServletFileUpload.isMultipartContent(httpRequest))
         {
-            chain.doFilter(new MultipartRequestWrapper(httpRequest, uploadMaxFileSize, uploadThresholdSize, uploadRepositoryPath), response);
+            chain.doFilter(new MultipartRequestWrapper(httpRequest, uploadMaxFileSize, 
+                    uploadThresholdSize, uploadRepositoryPath, uploadMaxSize , cacheFileSizeErrors), response);
         } else
         {
             chain.doFilter(request, response);

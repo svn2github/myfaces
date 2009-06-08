@@ -37,6 +37,7 @@ import org.apache.commons.fileupload.portlet.PortletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.webapp.filter.portlet.ActionRequestWrapper;
+import org.apache.myfaces.webapp.filter.portlet.PortletChacheFileSizeErrorsFileUpload;
 
 /**
  * @since 1.1.8
@@ -54,24 +55,50 @@ public class PortletMultipartRequestWrapper
     HashMap parametersMap = null;
     PortletFileUpload fileUpload = null;
     HashMap fileItems = null;
+    int maxFileSize;
     int maxSize;
     int thresholdSize;
     String repositoryPath;
+    boolean cacheFileSizeErrors;
 
     public PortletMultipartRequestWrapper(Object request,
-                                   int maxSize, int thresholdSize,
+                                   int maxFileSize, int thresholdSize,
                                    String repositoryPath){
         super((ActionRequest) request );
         this.request = (ActionRequest) request;
-        this.maxSize = maxSize;
+        this.maxFileSize = maxFileSize;
         this.thresholdSize = thresholdSize;
         this.repositoryPath = repositoryPath;
+        //Default values
+        this.maxSize = maxFileSize;
+        this.cacheFileSizeErrors = false;
+    }
+    
+    public PortletMultipartRequestWrapper(Object request,
+            int maxFileSize, int thresholdSize,
+            String repositoryPath, int maxRequestSize, boolean cacheFileSizeErrors){
+        super((ActionRequest) request );
+        this.request = (ActionRequest) request;
+        this.maxFileSize = maxFileSize;
+        this.maxSize = maxRequestSize;
+        this.thresholdSize = thresholdSize;
+        this.repositoryPath = repositoryPath;
+        this.cacheFileSizeErrors = cacheFileSizeErrors;
     }
 
+
     private void parseRequest() {
-        fileUpload = new PortletFileUpload();
+        if (cacheFileSizeErrors)
+        {
+            fileUpload = new PortletChacheFileSizeErrorsFileUpload();
+        }
+        else
+        {
+            fileUpload = new PortletFileUpload();
+        }
 
         fileUpload.setSizeMax(maxSize);
+        fileUpload.setFileSizeMax(maxFileSize);
 
         //fileUpload.setSizeThreshold(thresholdSize);
 
@@ -88,27 +115,69 @@ public class PortletMultipartRequestWrapper
                     new DiskFileItemFactory(thresholdSize,
                             new File(System.getProperty("java.io.tmpdir"))));
         }
-        
+
         String charset = request.getCharacterEncoding();
         fileUpload.setHeaderEncoding(charset);
 
 
         List requestParameters = null;
-        try{
-            requestParameters = fileUpload.parseRequest(request);
-        } catch (FileUploadBase.SizeLimitExceededException e) {
-
+        
+        try
+        {
+            if (cacheFileSizeErrors)
+            {
+                requestParameters = ((PortletChacheFileSizeErrorsFileUpload) fileUpload).
+                    parseRequestCatchingFileSizeErrors(request, fileUpload);
+            }
+            else
+            {
+                requestParameters = fileUpload.parseRequest(request);
+            }
+        }
+        catch (FileUploadBase.FileSizeLimitExceededException e)
+        {
+            // Since commons-fileupload does not allow to continue processing files
+            // if this exception is thrown, we can't do anything else.
+            // So, the current request is rejected and we can't restore state, so 
+            // this request is dealt like a new request, but note that caching the params
+            // below it is possible to detect if the current request has been aborted
+            // or not.
+            // Note that if cacheFileSizeErrors is true, this is not thrown, so the request
+            // is not aborted unless other different error occur.
+            request.setAttribute(
+                    "org.apache.myfaces.custom.fileupload.exception","fileSizeLimitExceeded");
+            request.setAttribute("org.apache.myfaces.custom.fileupload.maxSize",
+                    new Integer((int)maxFileSize));
+            
+            if (log.isWarnEnabled())
+                log.warn("FileSizeLimitExceededException while uploading file.", e);
+            
+            requestParameters = Collections.EMPTY_LIST;
+        }
+        catch (FileUploadBase.SizeLimitExceededException e)
+        {
+            // This exception is thrown when the max request size has been reached.
+            // In this case, the current request is rejected. The current 
+            // request is dealt like a new request, but note that caching the params below
+            // params it is possible to detect if the current request has been aborted
+            // or not.
             request.setAttribute(
                 "org.apache.myfaces.custom.fileupload.exception","sizeLimitExceeded");
             request.setAttribute("org.apache.myfaces.custom.fileupload.maxSize",
-                new Integer(maxSize));
+                new Integer((int)maxSize));
+            
+            if (log.isWarnEnabled())
+                log.warn("SizeLimitExceededException while uploading file.", e);
             
             requestParameters = Collections.EMPTY_LIST;
-
-        }catch(FileUploadException fue){
-            log.error("Exception while uploading file.", fue);
-            requestParameters = Collections.EMPTY_LIST;
         }
+        catch(FileUploadException fue)
+        {
+            if (log.isErrorEnabled())
+                log.error("Exception while uploading file.", fue);
+            
+            requestParameters = Collections.EMPTY_LIST;
+        }        
 
         parametersMap = new HashMap( requestParameters.size() );
         fileItems = new HashMap();

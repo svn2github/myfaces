@@ -107,6 +107,49 @@ public class HtmlFileUploadRenderer
         }
     }
 
+    private void setSubmittedValueForImplementation(
+        FacesContext facesContext, UIComponent uiComponent, FileItem fileItem)
+    {
+        try
+        {
+            UploadedFile upFile;
+            String implementation =
+                ((HtmlInputFileUpload)uiComponent).getStorage();
+            if (implementation == null || implementation.length() == 0)
+            {
+                implementation = "default";
+            }
+            if (("memory").equals(implementation))
+            {
+                upFile = new UploadedFileDefaultMemoryImpl(fileItem);
+            }
+            else if (("default").equals(implementation))
+            {
+                if (fileItem.isInMemory())
+                {
+                    upFile = new UploadedFileDefaultMemoryImpl(fileItem);
+                }
+                else
+                {
+                    upFile = new UploadedFileDefaultFileImpl(fileItem);                    
+                }
+            }
+            else //"file" case
+            {
+                upFile = new UploadedFileDefaultFileImpl(fileItem);
+            }
+
+            ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
+            ((HtmlInputFileUpload)uiComponent).setValid(true);
+        }
+        catch (IOException ioe)
+        {
+            throw new FacesException(
+                "Exception while processing file upload for file-input : "
+                    + uiComponent.getClientId(facesContext), ioe);
+        }
+    }
+
     /**
      * Handle the postback of a form containing a fileUpload component.
      * <p>
@@ -136,18 +179,7 @@ public class HtmlFileUploadRenderer
             }
             if (fileItem != null)
             {
-                try{
-                    UploadedFile upFile;
-                    String implementation = ((HtmlInputFileUpload) uiComponent).getStorage();
-                    if( implementation == null || ("memory").equals( implementation ) )
-                        upFile = new UploadedFileDefaultMemoryImpl( fileItem );
-                    else
-                        upFile = new UploadedFileDefaultFileImpl( fileItem );
-                    ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
-                    ((HtmlInputFileUpload)uiComponent).setValid(true);
-                }catch(IOException ioe){
-                    throw new FacesException("Exception while processing file upload for file-input : " + uiComponent.getClientId(facesContext),ioe);
-                }
+                setSubmittedValueForImplementation(facesContext, uiComponent, fileItem);
             }
             return;
         }
@@ -175,18 +207,7 @@ public class HtmlFileUploadRenderer
                 FileItem fileItem = mpReq.getFileItem(paramName);
                 if (fileItem != null)
                 {
-                    try{
-                        UploadedFile upFile;
-                        String implementation = ((HtmlInputFileUpload) uiComponent).getStorage();
-                        if( implementation == null || ("memory").equals( implementation ) )
-                            upFile = new UploadedFileDefaultMemoryImpl( fileItem );
-                        else
-                            upFile = new UploadedFileDefaultFileImpl( fileItem );
-                        ((HtmlInputFileUpload)uiComponent).setSubmittedValue(upFile);
-                        ((HtmlInputFileUpload)uiComponent).setValid(true);
-                    }catch(IOException ioe){
-                      throw new FacesException("Exception while processing file upload for file-input : " + uiComponent.getClientId(facesContext),ioe);
-                    }
+                    setSubmittedValueForImplementation(facesContext, uiComponent, fileItem);
                 }
             }
         }

@@ -30,7 +30,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
@@ -142,12 +142,16 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 public class ExtensionsFilter implements Filter {
 
     private Log log = LogFactory.getLog(ExtensionsFilter.class);
+    
+    private int _uploadMaxSize = 100 * 1024 * 1024; // 100 MB
 
     private int _uploadMaxFileSize = 100 * 1024 * 1024; // 100 MB
 
     private int _uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
     private String _uploadRepositoryPath = null; //standard temp directory
+    
+    private boolean _cacheFileSizeErrors = false; 
 
     private ServletContext _servletContext;
 
@@ -162,6 +166,8 @@ public class ExtensionsFilter implements Filter {
      * <li>uploadMaxFileSize</li>
      * <li>uploadThresholdSize</li>
      * <li>uploadRepositoryPath</li>
+     * <li>uploadMaxSize</li>
+     * <li>cacheFileSizeErrors</li>
      * </ul>
      * </p>
      * <p>
@@ -191,6 +197,17 @@ public class ExtensionsFilter implements Filter {
      * 
      * Sets the directory in which temporary files (ie caches for those uploaded files that
      * are larger than uploadThresholdSize) are to be stored.
+     * 
+     * <h2>uploadMaxSize</h2>
+     * 
+     * Sets the maximum allowable size for the current request. If not set, its value is the 
+     * value set on uploadMaxFileSize param. 
+     * 
+     * <h2>cacheFileSizeErrors</h2>
+     * 
+     * Catch and swallow FileSizeLimitExceededExceptions in order to return as
+     * many usable items as possible.
+     * 
      */
     public void init(FilterConfig filterConfig) {
         // Note that the code here to extract FileUpload configuration params is not actually used.
@@ -206,11 +223,25 @@ public class ExtensionsFilter implements Filter {
 
         _uploadMaxFileSize = resolveSize(param, _uploadMaxFileSize);
 
+        param = filterConfig.getInitParameter("uploadMaxSize");
+
+        if (param != null)
+        {
+            _uploadMaxSize = resolveSize(param, _uploadMaxSize);
+        }
+        else
+        {
+            //If not set, default to uploadMaxFileSize
+            _uploadMaxSize = resolveSize(param, _uploadMaxFileSize);
+        }
+        
         param = filterConfig.getInitParameter("uploadThresholdSize");
 
         _uploadThresholdSize = resolveSize(param, _uploadThresholdSize);
 
         _uploadRepositoryPath = filterConfig.getInitParameter("uploadRepositoryPath");
+        
+        _cacheFileSizeErrors = getBooleanValue(filterConfig.getInitParameter("cacheFileSizeErrors"), false);
 
         _servletContext = filterConfig.getServletContext();
     }
@@ -237,6 +268,14 @@ public class ExtensionsFilter implements Filter {
             numberParam = Integer.parseInt(number) * factor;
         }
         return numberParam;
+    }
+    
+    private static boolean getBooleanValue(String initParameter, boolean defaultVal)
+    {
+        if(initParameter == null || initParameter.trim().length()==0)
+            return defaultVal;
+
+        return (initParameter.equalsIgnoreCase("on") || initParameter.equals("1") || initParameter.equalsIgnoreCase("true"));
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -279,8 +318,9 @@ public class ExtensionsFilter implements Filter {
 
         // For multipart/form-data requests
         // This is done by TomahawkFacesContextWrapper
-        if (FileUpload.isMultipartContent(httpRequest)) {
-            extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, _uploadThresholdSize, _uploadRepositoryPath);
+        if (ServletFileUpload.isMultipartContent(httpRequest)) {
+            extendedRequest = new MultipartRequestWrapper(httpRequest, _uploadMaxFileSize, 
+                    _uploadThresholdSize, _uploadRepositoryPath, _uploadMaxSize, _cacheFileSizeErrors);
         }
         
         try

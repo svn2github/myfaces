@@ -34,7 +34,7 @@ import javax.faces.render.RenderKit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileUpload;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
@@ -83,6 +83,8 @@ import org.apache.myfaces.webapp.filter.servlet.ServletExternalContextWrapper;
  * <li>org.apache.myfaces.UPLOAD_MAX_FILE_SIZE</li>
  * <li>org.apache.myfaces.UPLOAD_THRESHOLD_SIZE</li>
  * <li>org.apache.myfaces.UPLOAD_MAX_REPOSITORY_PATH</li>
+ * <li>org.apache.myfaces.UPLOAD_MAX_SIZE</li>
+ * <li>org.apache.myfaces.UPLOAD_CACHE_FILE_SIZE_ERRORS</li>
  * </ul>
  * 
  * @since 1.1.7
@@ -129,7 +131,8 @@ public class TomahawkFacesContextWrapper extends FacesContext {
                         .getExternalContext());
 
                 extendedRequest = new PortletMultipartRequestWrapper( portletRequest, config.getUploadMaxFileSize(),
-                        config.getUploadThresholdSize(), config.getUploadRepositoryPath());
+                        config.getUploadThresholdSize(), config.getUploadRepositoryPath(),
+                        config.getUploadMaxSize(), config.isCacheFileSizeErrors());
             }
             
             AddResource addResource= AddResourceFactory.getInstance(this);
@@ -160,7 +163,7 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             
             boolean multipartContent = false;
            
-            if (FileUpload.isMultipartContent(httpRequest)) {
+            if (ServletFileUpload.isMultipartContent(httpRequest)) {
                 multipartContent = true;
                 
                 MultipartRequestWrapperConfig config = MultipartRequestWrapperConfig
@@ -168,7 +171,8 @@ public class TomahawkFacesContextWrapper extends FacesContext {
                                 .getExternalContext());                
                 
                 extendedRequest = new MultipartRequestWrapper(httpRequest, config.getUploadMaxFileSize(),
-                        config.getUploadThresholdSize(), config.getUploadRepositoryPath());
+                        config.getUploadThresholdSize(), config.getUploadRepositoryPath(), 
+                        config.getUploadMaxSize(), config.isCacheFileSizeErrors());
                 
             }
 
