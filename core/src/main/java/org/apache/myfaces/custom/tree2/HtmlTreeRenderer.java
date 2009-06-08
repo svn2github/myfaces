@@ -582,7 +582,7 @@ public class HtmlTreeRenderer extends Renderer
                     .toString();
 
                 imageAttrs.put(HTML.ONCLICK_ATTR, onClick);
-                imageAttrs.put(HTML.STYLE_ATTR, "cursor:hand;cursor:pointer");
+                imageAttrs.put(HTML.STYLE_ATTR, "cursor:pointer;cursor:hand");
             }
             RendererUtils.renderChild(context, image);
 
