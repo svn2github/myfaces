@@ -23,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -214,6 +215,10 @@ public class MultipartRequestWrapper
         }
 
         //Add the query string paramters
+        /* This code does only works if is true the assumption that query params
+         * are the same from start of the request. But it is possible
+         * use jsp:include and jsp:param to set query params after
+         * the request is parsed.
         for (Iterator it = request.getParameterMap().entrySet().iterator(); it.hasNext(); )
         {
             Map.Entry entry = (Map.Entry)it.next();
@@ -238,6 +243,7 @@ public class MultipartRequestWrapper
                         entry.getKey()+" cannot be handled.");
 
         }
+        */
     }
 
     private void addTextParameter(String name, String value){
@@ -257,28 +263,60 @@ public class MultipartRequestWrapper
     public Enumeration getParameterNames() {
         if( parametersMap == null ) parseRequest();
 
-        return Collections.enumeration( parametersMap.keySet() );
+        //return Collections.enumeration( parametersMap.keySet() );
+        HashSet mergedNames = new HashSet(parametersMap.keySet());
+        mergedNames.addAll(request.getParameterMap().keySet());
+        
+        return Collections.enumeration( mergedNames );
     }
 
     public String getParameter(String name) {
         if( parametersMap == null ) parseRequest();
 
         String[] values = (String[])parametersMap.get( name );
-        if( values == null )
+        //if( values == null )
+        //    return null;
+        //return values[0];
+        if (values != null)
+        {
+            return values[0];
+        }
+        else if (parametersMap.containsKey(name))
+        {
             return null;
-        return values[0];
+        }
+        else
+        {
+            return request.getParameter(name);
+        }
     }
 
     public String[] getParameterValues(String name) {
         if( parametersMap == null ) parseRequest();
 
-        return (String[])parametersMap.get( name );
+        //return (String[])parametersMap.get( name );
+        String[] values = (String[])parametersMap.get( name );
+        if (values != null)
+        {
+            return values;
+        }
+        else if (parametersMap.containsKey(name))
+        {
+            return null;
+        }
+        else
+        {
+            return request.getParameterValues(name);
+        }
     }
 
     public Map getParameterMap() {
         if( parametersMap == null ) parseRequest();
 
-        return parametersMap;
+        //return parametersMap;
+        HashMap mergedMap = new HashMap(parametersMap);
+        mergedMap.putAll(request.getParameterMap());        
+        return mergedMap;
     }
 
     // Hook for the x:inputFileUpload tag.
