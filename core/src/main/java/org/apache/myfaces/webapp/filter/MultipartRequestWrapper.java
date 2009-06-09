@@ -264,8 +264,8 @@ public class MultipartRequestWrapper
         if( parametersMap == null ) parseRequest();
 
         //return Collections.enumeration( parametersMap.keySet() );
-        HashSet mergedNames = new HashSet(parametersMap.keySet());
-        mergedNames.addAll(request.getParameterMap().keySet());
+        HashSet mergedNames = new HashSet(request.getParameterMap().keySet());
+        mergedNames.addAll(parametersMap.keySet());
         
         return Collections.enumeration( mergedNames );
     }
@@ -314,8 +314,8 @@ public class MultipartRequestWrapper
         if( parametersMap == null ) parseRequest();
 
         //return parametersMap;
-        HashMap mergedMap = new HashMap(parametersMap);
-        mergedMap.putAll(request.getParameterMap());        
+        HashMap mergedMap = new HashMap(request.getParameterMap());
+        mergedMap.putAll(parametersMap);
         return mergedMap;
     }
 
