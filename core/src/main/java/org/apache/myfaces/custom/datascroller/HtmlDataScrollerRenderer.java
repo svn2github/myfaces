@@ -19,21 +19,23 @@
 package org.apache.myfaces.custom.datascroller;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 
 /**
  * Renderer for the HtmlDataScroller component.
@@ -417,6 +419,36 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
         String onclick = scroller.getOnclick();
            String ondblclick = scroller.getOndblclick();
+           
+        // TOMAHAWK-596 TOMAHAWK-1249 Duplicate id exception for HtmlDataScrollerRenderer
+        // Prevent render old paginator links removing it from tree.
+        // Note that this only happens when transient components are not removed
+        // from component tree on save and restore phase.
+        if (scroller.getChildCount() != 0)
+        {
+            String scrollerIdPagePrefix = scroller.getId() + HtmlDataScrollerRenderer.PAGE_NAVIGATION; 
+            for(Iterator it = scroller.getChildren().iterator(); it.hasNext();)
+            {
+                UIComponent child = (UIComponent) it.next();
+                String childId = child.getId();
+                if (childId != null && childId.startsWith(scrollerIdPagePrefix))
+                {
+                    try
+                    {
+                        int p = Integer.parseInt(childId.substring(scrollerIdPagePrefix.length()));
+                        if (p < start && p >= start + pages)
+                        {
+                            //Remove from child list
+                            it.remove();
+                        }
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        //Do nothing because this component does not have the expected id format
+                    }
+                }
+            }
+        }
 
         for (int i = start, size = start + pages; i < size; i++)
         {
@@ -503,29 +535,50 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
 
         Application application = facesContext.getApplication();
 
-        // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
-        //     and http://issues.apache.org/jira/browse/MYFACES-1809
-        HtmlCommandLink link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
-
-        link.setId(scroller.getId() + id);
-        link.setTransient(true);
-        UIParameter parameter = (UIParameter) application
-                        .createComponent(UIParameter.COMPONENT_TYPE);
-        parameter.setId(scroller.getId() + id + "_param");
-        parameter.setTransient(true);
-        parameter.setName(scroller.getClientId(facesContext));
-        parameter.setValue(id);
-        List children = link.getChildren();
-        children.add(parameter);
-        if (text != null)
+        // TOMAHAWK-596 Duplicate id exception for HtmlDataScrollerRenderer
+        // For prevent this condition, try to detect if there is a component.
+        // Theorically this method should always return null, but it is known
+        // than in some cases (portlet) when the state manager is different from
+        // the default one, transient components are saved on the component tree.
+        // Really the error is on the jsf portlet bridge implementation used, but
+        // do this does not cause any side effect.
+        HtmlCommandLink link = (HtmlCommandLink) scroller.findComponent(scroller.getId() + id);
+        if (link == null)
         {
-            HtmlOutputText uiText = (HtmlOutputText) application
-                            .createComponent(HtmlOutputText.COMPONENT_TYPE);
-            uiText.setTransient(true);
-            uiText.setValue(text);
-            children.add(uiText);
+            // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
+            //     and http://issues.apache.org/jira/browse/MYFACES-1809
+            link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
+
+            link.setId(scroller.getId() + id);
+            link.setTransient(true);
+            UIParameter parameter = (UIParameter) application
+                            .createComponent(UIParameter.COMPONENT_TYPE);
+            parameter.setId(scroller.getId() + id + "_param");
+            parameter.setTransient(true);
+            parameter.setName(scroller.getClientId(facesContext));
+            parameter.setValue(id);
+            List children = link.getChildren();
+            children.add(parameter);
+            if (text != null)
+            {
+                HtmlOutputText uiText = (HtmlOutputText) application
+                                .createComponent(HtmlOutputText.COMPONENT_TYPE);
+                uiText.setId(scroller.getId() + id + "_text");
+                uiText.setTransient(true);
+                uiText.setValue(text);
+                children.add(uiText);
+            }
+            scroller.getChildren().add(link);
         }
-        scroller.getChildren().add(link);
+        else
+        {
+            UIOutput uiText = (UIOutput) link.findComponent(scroller.getId() + id + "_text");
+            if (uiText != null)
+            {
+                //Update text value
+                uiText.setValue(text);
+            }
+        }
         return link;
     }
 
@@ -534,21 +587,32 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     {
         Application application = facesContext.getApplication();
 
-        // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
-        //     and http://issues.apache.org/jira/browse/MYFACES-1809
-        HtmlCommandLink link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
-
-        link.setId(scroller.getId() + facetName);
-        link.setTransient(true);
-        UIParameter parameter = (UIParameter) application
-                        .createComponent(UIParameter.COMPONENT_TYPE);
-        parameter.setId(scroller.getId() + facetName + "_param");
-        parameter.setTransient(true);
-        parameter.setName(scroller.getClientId(facesContext));
-        parameter.setValue(facetName);
-        List children = link.getChildren();
-        children.add(parameter);
-        scroller.getChildren().add(link);
+        // TOMAHAWK-596 TOMAHAWK-1249 Duplicate id exception for HtmlDataScrollerRenderer
+        // For prevent this condition, try to detect if there is a component.
+        // Theorically this method should always return null, but it is known
+        // than in some cases (portlet) when the state manager is different from
+        // the default one, transient components are saved on the component tree.
+        // Really the error is on the jsf portlet bridge implementation used, but
+        // do this does not cause any side effect.
+        HtmlCommandLink link = (HtmlCommandLink) scroller.findComponent(scroller.getId() + facetName);
+        if (link == null)
+        {
+            // See Jira Issue TOMAHAWK-117 http://issues.apache.org/jira/browse/TOMAHAWK-117
+            //     and http://issues.apache.org/jira/browse/MYFACES-1809
+            link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
+    
+            link.setId(scroller.getId() + facetName);
+            link.setTransient(true);
+            UIParameter parameter = (UIParameter) application
+                            .createComponent(UIParameter.COMPONENT_TYPE);
+            parameter.setId(scroller.getId() + facetName + "_param");
+            parameter.setTransient(true);
+            parameter.setName(scroller.getClientId(facesContext));
+            parameter.setValue(facetName);
+            List children = link.getChildren();
+            children.add(parameter);
+            scroller.getChildren().add(link);
+        }
         return link;
     }
 }
