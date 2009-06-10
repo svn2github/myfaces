@@ -86,7 +86,7 @@ ImageLoop.prototype.stop = function() {
         this._timer = null;
     }
 }
-    
+
 ImageLoop.prototype.forward = function() {
     if (this._numImagesLoaded === this._images.length && this._images.length > 1) {
         this.stop();
@@ -162,7 +162,13 @@ ImageLoop.prototype._imagePreloaded = function(evt) {
         dojo.debug("Finished loading: " + this._numImagesLoaded + " images loaded.");
         // Set index to last image. Loop will start with first image.
         this._index = this._images.length - 1;
-        this.start();
+        if(imageLoops[this._clientId] === this){
+            // Only start the image loop, when the instance is still active.
+            // Otherwise, an old, inactive instance can interfere with the current active one.
+            // Happens, when new imageloop instances, containing new pictures, are created before 
+            // images are preloaded.
+            this.start();
+        }
     }
 }
 
