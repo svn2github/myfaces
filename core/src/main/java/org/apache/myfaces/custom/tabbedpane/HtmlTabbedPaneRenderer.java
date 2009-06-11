@@ -143,6 +143,7 @@ public class HtmlTabbedPaneRenderer
 
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.SCRIPT_ELEM, tabbedPane);
+            writer.writeAttribute(HTML.SCRIPT_TYPE_ATTR, HTML.SCRIPT_TYPE_TEXT_JAVASCRIPT, null);
             writer.write('\n');
 
             writer.write( getHeaderCellsIDsVar(tabbedPane,facesContext)+"= new Array(" );
