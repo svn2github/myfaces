@@ -1,5 +1,5 @@
 /*
-	JSCookMenu v2.0.3 (c) Copyright 2002-2006 by Heng Yuan
+	JSCookMenu v2.0.4 (c) Copyright 2002-2006 by Heng Yuan
 
 	http://jscook.sourceforge.net/JSCookMenu/
 
@@ -312,7 +312,7 @@ function cmDrawSubMenu (subMenu, prefix, id, nodeProperties, zIndexStart, menuIn
 			str += cmActionItem (item, 0, idSub, menuInfo, menuID);
 		else
 			str += cmNoClickItem (item, 0, idSub, menuInfo, menuID);
-		str += '>'
+		str += '>';
 
 		if (item[0] == _cmNoAction || item[0] == _cmNoClick)
 		{
@@ -723,7 +723,7 @@ function cmEnableItem (item, prefix)
 		menu.className = prefix + 'MainItem';
 	else
 		menu.className = prefix + 'MenuItem';
-	item.isDisabled = true;
+	item.isDisabled = false;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -1547,11 +1547,17 @@ function cmGetProperties (obj)
 	return msg;
 }
 
+/* v2.0.4			1. Fixed the bug that cmEnableItem setting the wrong isDisabled value.
+					2. Fixed a missing semicolon issue.
+*/
 /* v2.0.3			1. Fix an issue with IE6 displaying menu over HTTPS connection.
 						Thanks to Paul Horton for reporting the bug and testing
-						possible solutions. */
-/* v2.0.2			1. Minor clean up and some attempts to reduce memory leak in IE. */
-/* v2.0.1			1. Disable iframe masking for IE7 since it is no longer necessary. */
+						possible solutions.
+*/
+/* v2.0.2			1. Minor clean up and some attempts to reduce memory leak in IE.
+*/
+/* v2.0.1			1. Disable iframe masking for IE7 since it is no longer necessary.
+*/
 /* v2.0				1. improves the way handling flash/iframe/select boxes in IE
 						and firefox and Opera 9.  Hiding these elements is no
 						longer necessary.  For older versions of Opera, flash/iframe
