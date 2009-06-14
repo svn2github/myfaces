@@ -46,6 +46,7 @@ public class CalendarBean implements Serializable
     private String _text;
     private Date _firstDate;
     private Date _secondDate;
+    private Date _thirdDate;
 
     public List getDates()
     {
@@ -93,6 +94,16 @@ public class CalendarBean implements Serializable
     public void setSecondDate(Date secondDate)
     {
         _secondDate = secondDate;
+    }
+    
+    public Date getThirdDate()
+    {
+        return _thirdDate;
+    }
+
+    public void setThirdDate(Date thirdDate)
+    {
+        _thirdDate = thirdDate;
     }
 
     public String submitMethod()
