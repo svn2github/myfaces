@@ -130,7 +130,32 @@ public class HtmlCalendarRenderer
             }
             else
             {
-                value = RendererUtils.getDateValue(inputCalendar);
+                //value = RendererUtils.getDateValue(inputCalendar);
+                Object objectValue = RendererUtils.getObjectValue(component);
+                if (objectValue == null || objectValue instanceof Date)
+                {
+                    value = (Date) objectValue;
+                }
+                else
+                {
+                    //Use Converter.getAsString and convert to date using 
+                    String stringValue = converter.getAsString(facesContext, component, objectValue);
+
+                    if(stringValue ==null || stringValue.trim().length()==0 ||stringValue.equals(getHelperString(inputCalendar)))
+                    {
+                        value = null;
+                    }
+                    else
+                    {
+                        String formatStr = CalendarDateTimeConverter.createJSPopupFormat(facesContext, inputCalendar.getPopupDateFormat());
+                        Calendar timeKeeper = Calendar.getInstance(currentLocale);
+                        int firstDayOfWeek = timeKeeper.getFirstDayOfWeek() - 1;
+                        org.apache.myfaces.dateformat.DateFormatSymbols symbols = new org.apache.myfaces.dateformat.DateFormatSymbols(currentLocale);
+    
+                        SimpleDateFormatter dateFormat = new SimpleDateFormatter(formatStr, symbols, firstDayOfWeek);
+                        value = dateFormat.parse(stringValue);
+                    }
+                }
             }
         }
         catch (IllegalArgumentException illegalArgumentException)
