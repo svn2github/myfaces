@@ -536,6 +536,14 @@ public class SimpleDateFormatter
                 dateIndex += oplen;
             }
         }
+        
+        if (dateIndex < dateStrLen)
+        {
+            // TOMAHAWK-1390
+            //Remaining chars are on the string. All chars should be processed, otherwise
+            //the dateStr is invalid
+            context.invalid = true;
+        }
 
         return context;
     }

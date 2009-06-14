@@ -253,6 +253,73 @@ public class TestSimpleDateFormatter extends TestCase
             }
         }
     }
+    
+    //Try to parse non valid data
+    public void testParseInvalidValue()  throws Exception {
+        Object[] data =
+        {
+                "yyyy", "x1987",
+                "yyy", "98someinvalid7",                
+                "yy", "87x/dksk/-",
+                "y", "x87x-/\\233",
+                "MMMM", "Marchx",
+                "MMMM", "xMarch",
+                "MMMM", "Marcxh",
+                "MMM", "xMar",
+                "MMM", "xMxarx",
+                "MMM", "Marx",
+                "MM", "x03",
+                "MM", "0x3",
+                "MM", "03x",
+                "M", "x3",
+                "M", "3x",
+                "dd", "x12",
+                "HH", "0x4",
+                "H", "4x",
+                "hh", "04x",
+                "h", "4x",
+                "mm", "x23",
+                "m", "23x",
+                "ss", "x59",
+                "s", "59x",
+                "a", "AMx",                
+                "yyyy-MM-dd", "1987-0x1-08",
+                "yyyy-MM-dd", "1987-01-08x",
+                "yyyy-MM-dd", "x1987-0x1-08",
+                "yyyy--MM-:()dd", "x1987--01-:()08",
+                "yyyy--MM-:()dd", "1987--01-:()0x8",
+                "yyyy--MM-:()dd", "1987--01-:()08x",
+                "yyyy'T'MM'T'dd", "1987T01'T'08",
+                "yyyy'T'MM'T'dd", "T1987T01T08",
+                "yyyy'T'MM'T'dd", "19T87T01T08",
+                "yyyy'T'MM'T'dd", "1987T01T08T",
+                "yyyyRMMRdd", "1987-01-08",
+                "yyyyRMMRdd", "1987/01/08",
+                "yyyyRMMRdd", "1987'R'01-08",
+                "yyyy'year'MM'month'dd", "2003year0x4month06",
+                "yyyy'year'MM'month'dd", "2003'year'04month06",
+                "yyyy'year'MM'month'dd", "2003'year'04monxth06",
+                "yyyy'year'MM'month'dd", "2003YEAR04month06",
+                "yyyy'year'MM'month'dd", "2003yexr04month06",
+                "yy-MM-dd", "x99-04-06", 
+                "yy-MM-dd", "9x9-04-06",
+                "yy-MM-dd", "99-04-0x6",
+                "yy-MM-dd", "99-x04-06",
+                "yy-MM-dd", "99-x04-06",
+                "yy-MM-dd", "99-04-06y",
+        };
+        Locale locale = Locale.ENGLISH;
+        for(int i=0; i<data.length; i+=2)
+        {
+            String pattern = (String) data[i];
+            String input = (String) data[i+1];
+
+            SimpleDateFormatter sdf = new SimpleDateFormatter(pattern, null);
+            Date d = sdf.parse(input);
+            assertNull("Parsing should fail when using this pattern "+
+                    pattern+" and this input "+input,d);
+        }
+    }
 
     // try to format with various combinations, and see what we get
     public void testFormatAssorted() throws Exception
