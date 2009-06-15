@@ -103,13 +103,24 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
         
         String outputOnclick = toggleLink.getOnclick();
         StringBuffer onClick = new StringBuffer();
-        if(outputOnclick != null) {
+        if(outputOnclick != null)
+        {
+            onClick.append("var cf = function(){");
             onClick.append(outputOnclick);
-            onClick.append(";");
+            onClick.append('}');
+            onClick.append(';');
+            onClick.append("var oamSF = function(){");            
         }
 
         String onClickFocusClientId = toggleLink.getOnClickFocusId() != null ? toggleLink.findComponent(toggleLink.getOnClickFocusId()).getClientId(facesContext) : "";
         onClick.append(getToggleJavascriptFunctionName(facesContext, toggleLink) + "('"+idsToShow+"','" + idsToHide + "','" + getHiddenFieldId(facesContext, togglePanel) + "','" + onClickFocusClientId + "');");
+                
+        if (outputOnclick != null)
+        {
+            onClick.append('}');
+            onClick.append(';');
+            onClick.append("return (cf()==false)? false : oamSF();");        
+        }        
 
         return onClick.toString();
     }
