@@ -391,6 +391,20 @@ public final class TestUtils
         addRenderer(facesContext, "org.apache.myfaces.HtmlTree",
                 "javax.faces.Group",
                 "org.apache.myfaces.custom.tree.renderkit.html.HtmlTreeRenderer");
+        addRenderer(facesContext, "javax.faces.Output",
+                "org.apache.myfaces.FieldsetRenderer",
+                "org.apache.myfaces.custom.fieldset.FieldsetRenderer");
+        addRenderer(facesContext, "javax.faces.Panel",
+                "org.apache.myfaces.ToggleGroup",
+                "org.apache.myfaces.custom.toggle.ToggleGroupRenderer");
+        
+        addRenderer(facesContext, "javax.faces.Output",
+                "org.apache.myfaces.ToggleLink",
+                "org.apache.myfaces.custom.toggle.ToggleLinkRenderer");
+        
+        addRenderer(facesContext, "javax.faces.Panel",
+                "org.apache.myfaces.TogglePanel",
+                "org.apache.myfaces.custom.toggle.TogglePanelRenderer");
     }
 
     /**
