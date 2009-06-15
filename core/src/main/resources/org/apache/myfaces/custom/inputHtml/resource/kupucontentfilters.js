@@ -601,9 +601,11 @@ function XhtmlValidation(editor) {
         var permittedChildren = this.States[parentnode.tagName] || permitted;
 
         if (kids.length == 0) {
-            if (htmlnode.text && htmlnode.text != "" &&
+            // TOMAHAWK-1307 #000000 is displayed in inputHtml
+            // changed htmlnode.text to htmlnode.textContent
+            if (htmlnode.textContent && htmlnode.textContent != "" &&
                 (nostructure || permittedChildren['#PCDATA'])) {
-                var text = htmlnode.text;
+                var text = htmlnode.textContent;
                 var tnode = ownerdoc.createTextNode(text);
                 parentnode.appendChild(tnode);
             }
