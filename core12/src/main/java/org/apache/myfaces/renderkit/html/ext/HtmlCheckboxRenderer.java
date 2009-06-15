@@ -422,7 +422,13 @@ public class HtmlCheckboxRenderer
         String itemStrValue = getItemStringValue(facesContext, uiSelectMany, converter, itemValue);
 
         //TODO: we must cache this Set!
-        Set lookupSet = RendererUtils.getSelectedValuesAsSet(facesContext, uiComponent, converter, uiSelectMany);
+        Set lookupSet = RendererUtils.getSubmittedValuesAsSet(facesContext, uiComponent, converter, uiSelectMany);
+        
+        boolean useSubmittedValues = (lookupSet != null);
+        if (!useSubmittedValues)
+        {
+            lookupSet = RendererUtils.getSelectedValuesAsSet(facesContext, uiComponent, converter, uiSelectMany);
+        }
 
         ResponseWriter writer = facesContext.getResponseWriter();
         
