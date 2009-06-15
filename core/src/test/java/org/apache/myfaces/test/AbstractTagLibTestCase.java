@@ -19,6 +19,7 @@
 
 package org.apache.myfaces.test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Insures the following ...
@@ -193,12 +197,42 @@ public abstract class AbstractTagLibTestCase extends TestCase {
         } // end for attributes
 
     }
+    
+    private static class DelegateEntityResolver implements EntityResolver
+    {
+        private EntityResolver _delegate;
+
+        public DelegateEntityResolver(EntityResolver delegate)
+        {
+            this._delegate = delegate;
+        }
+
+        public InputSource resolveEntity(String publicId, String systemId)
+                throws SAXException, IOException
+        {
+            if (publicId.equals("-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"))
+            {
+                return new InputSource(Thread.currentThread()
+                        .getContextClassLoader().getResourceAsStream(
+                                "META-INF/dtd/web-jsptaglibrary_1_2.dtd"));
+            }
+            else
+            {
+                return _delegate.resolveEntity(publicId, systemId);
+            }
+        }
+    }    
 
     private static class TldTestUtils {
         private static Log log = LogFactory.getLog(TldTestUtils.class);
 
         private static DocumentBuilderFactory dbf = DocumentBuilderFactory
                 .newInstance();
+        static
+        {
+            dbf.setNamespaceAware(false);
+            dbf.setValidating(false);
+        }
 
         public static Tld getTld(String name, InputStream stream)
                 throws Exception {
@@ -206,6 +240,7 @@ public abstract class AbstractTagLibTestCase extends TestCase {
                 log.error(" input stream is null ");
 
             DocumentBuilder db = dbf.newDocumentBuilder();
+            db.setEntityResolver(new DelegateEntityResolver(null));
             Document doc = db.parse(stream);
 
             return TldParser.parse(doc, name);
