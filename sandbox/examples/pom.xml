@@ -17,22 +17,6 @@
     </scm>
 
     <profiles>
-        <!-- This profile is invoked by -DprepareRelease=true.
-             This allows mvn release:prepare to
-             run successfully on the assembly projects.
-             But note than sandbox is never released. -->
-        <profile>
-          <id>prepare-release</id>
-          <activation>
-            <property>
-              <name>prepareRelease</name>
-            </property>
-          </activation>
-          <modules>
-            <module>assembly</module>
-          </modules>
-        </profile>
-    
         <profile>
             <id>generate-assembly</id>
             <activation>
