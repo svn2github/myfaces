@@ -85,7 +85,7 @@ public abstract class AbstractHtmlInputFileUpload
     /**
      * This setting was intended to allow control over how the contents of the
      * file get temporarily stored during processing.
-     * <p> It allows three options<p>
+     * <p> It allows three options</p>
      * <ul>
      * <li>"default": The file is handled on memory while the file size is below 
      * uploadThresholdSize value, otherwise is handled on disk or file storage when
