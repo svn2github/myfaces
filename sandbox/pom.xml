@@ -19,6 +19,23 @@
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</developerConnection>
     <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox</url>
   </scm>
+  <profiles>
+    <!-- This profile is invoked by -DprepareRelease=true.
+         This allows mvn release:prepare to
+         run successfully on the assembly projects.
+         But note than sandbox is never released. -->
+    <profile>
+      <id>prepare-release</id>
+      <activation>
+        <property>
+          <name>prepareRelease</name>
+        </property>
+      </activation>
+      <modules>
+        <module>assembly</module>
+      </modules>
+    </profile>
+  </profiles>
 
   <modules>
     <module>core</module>
