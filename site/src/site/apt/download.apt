@@ -36,30 +36,30 @@ Download Apache MyFaces Tomahawk
     Release notes can be found
   {{{https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310272&styleName=Html&version=12313507}here}}.
 
-  << MyFaces Tomahawk 1.1.8 Distribution >>
+  << MyFaces Tomahawk 1.1.9 Distribution >>
 
 *-------------------------+---------+----------+-----------+
 |                         | Mirrors | Checksum | Signature |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-1.1.8-bin.tar.gz} tomahawk-1.1.8-bin.tar.gz}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.8-bin.tar.gz.md5} tomahawk-1.1.8-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.8-bin.tar.gz.asc} tomahawk-1.1.8-bin.tar.gz.asc}} |
+| MyFaces Tomahawk 1.1.9 (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-1.1.9-bin.tar.gz} tomahawk-1.1.9-bin.tar.gz}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.9-bin.tar.gz.md5} tomahawk-1.1.9-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.9-bin.tar.gz.asc} tomahawk-1.1.9-bin.tar.gz.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-1.1.8-bin.zip} tomahawk-1.1.8-bin.zip}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.8-bin.zip.md5} tomahawk-1.1.8-bin.zip.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.8-bin.zip.asc} tomahawk-1.1.8-bin.zip.asc}} |
+| MyFaces Tomahawk 1.1.9 (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-1.1.9-bin.zip} tomahawk-1.1.9-bin.zip}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.9-bin.zip.md5} tomahawk-1.1.9-bin.zip.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-1.1.9-bin.zip.asc} tomahawk-1.1.9-bin.zip.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 Source (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk-1.1.8-src.tar.gz} tomahawk-1.1.8-src.tar.gz}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.8-src.tar.gz.md5} tomahawk-1.1.8-src.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.8-src.tar.gz.asc} tomahawk-1.1.8-src.tar.gz.asc}} |
+| MyFaces Tomahawk 1.1.9 Source (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk-1.1.9-src.tar.gz} tomahawk-1.1.9-src.tar.gz}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.9-src.tar.gz.md5} tomahawk-1.1.9-src.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.9-src.tar.gz.asc} tomahawk-1.1.9-src.tar.gz.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 Source (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk-1.1.8-src.zip} tomahawk-1.1.8-src.zip}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.8-src.zip.md5} tomahawk-1.1.8-src.zip.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.8-src.zip.asc} tomahawk-1.1.8-src.zip.asc}} |
+| MyFaces Tomahawk 1.1.9 Source (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk-1.1.9-src.zip} tomahawk-1.1.9-src.zip}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.9-src.zip.md5} tomahawk-1.1.9-src.zip.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk-1.1.9-src.zip.asc} tomahawk-1.1.9-src.zip.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 for JSF 1.2 (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk12-1.1.8-bin.tar.gz} tomahawk12-1.1.8-bin.tar.gz}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.8-bin.tar.gz.md5} tomahawk12-1.1.8-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.8-bin.tar.gz.asc} tomahawk12-1.1.8-bin.tar.gz.asc}} |
+| MyFaces Tomahawk 1.1.9 for JSF 1.2 (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk12-1.1.9-bin.tar.gz} tomahawk12-1.1.9-bin.tar.gz}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.9-bin.tar.gz.md5} tomahawk12-1.1.9-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.9-bin.tar.gz.asc} tomahawk12-1.1.9-bin.tar.gz.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 for JSF 1.2 (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk12-1.1.8-bin.zip} tomahawk12-1.1.8-bin.zip}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.8-bin.zip.md5} tomahawk12-1.1.8-bin.zip.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.8-bin.zip.asc} tomahawk12-1.1.8-bin.zip.asc}} |
+| MyFaces Tomahawk 1.1.9 for JSF 1.2 (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk12-1.1.9-bin.zip} tomahawk12-1.1.9-bin.zip}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.9-bin.zip.md5} tomahawk12-1.1.9-bin.zip.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk12-1.1.9-bin.zip.asc} tomahawk12-1.1.9-bin.zip.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 for JSF 1.2 Source (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk12-1.1.8-src.tar.gz} tomahawk12-1.1.8-src.tar.gz}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.8-src.tar.gz.md5} tomahawk12-1.1.8-src.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.8-src.tar.gz.asc} tomahawk12-1.1.8-src.tar.gz.asc}} |
+| MyFaces Tomahawk 1.1.9 for JSF 1.2 Source (tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk12-1.1.9-src.tar.gz} tomahawk12-1.1.9-src.tar.gz}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.9-src.tar.gz.md5} tomahawk12-1.1.9-src.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.9-src.tar.gz.asc} tomahawk12-1.1.9-src.tar.gz.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8  for JSF 1.2 Source (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk12-1.1.8-src.zip} tomahawk12-1.1.8-src.zip}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.8-src.zip.md5} tomahawk12-1.1.8-src.zip.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.8-src.zip.asc} tomahawk12-1.1.8-src.zip.asc}} |
+| MyFaces Tomahawk 1.1.9  for JSF 1.2 Source (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/source/tomahawk12-1.1.9-src.zip} tomahawk12-1.1.9-src.zip}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.9-src.zip.md5} tomahawk12-1.1.9-src.zip.md5}} | {{{http://www.apache.org/dist/myfaces/source/tomahawk12-1.1.9-src.zip.asc} tomahawk12-1.1.9-src.zip.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 Examples(tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-examples-1.1.8-bin.tar.gz} tomahawk-examples-1.1.8-bin.tar.gz}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.8-bin.tar.gz.md5} tomahawk-examples-1.1.8-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.8-bin.tar.gz.asc} tomahawk-examples-1.1.8-bin.tar.gz.asc}} |
+| MyFaces Tomahawk 1.1.9 Examples(tar.gz)     | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-examples-1.1.9-bin.tar.gz} tomahawk-examples-1.1.9-bin.tar.gz}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.9-bin.tar.gz.md5} tomahawk-examples-1.1.9-bin.tar.gz.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.9-bin.tar.gz.asc} tomahawk-examples-1.1.9-bin.tar.gz.asc}} |
 *-------------------------+---------+----------+-----------+
-| MyFaces Tomahawk 1.1.8 Examples (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-examples-1.1.8-bin.zip} tomahawk-examples-1.1.8-bin.zip}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.8-bin.zip.md5} tomahawk-examples-1.1.8-bin.zip.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.8-bin.zip.asc} tomahawk-examples-1.1.8-bin.zip.asc}} |
+| MyFaces Tomahawk 1.1.9 Examples (zip)      | {{{http://www.apache.org/dyn/closer.cgi/myfaces/binaries/tomahawk-examples-1.1.9-bin.zip} tomahawk-examples-1.1.9-bin.zip}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.9-bin.zip.md5} tomahawk-examples-1.1.9-bin.zip.md5}} | {{{http://www.apache.org/dist/myfaces/binaries/tomahawk-examples-1.1.9-bin.zip.asc} tomahawk-examples-1.1.9-bin.zip.asc}} |
 *-------------------------+---------+----------+-----------+
 
 Latest source code from SVN repository
@@ -102,19 +102,19 @@ Verifying signatures
 
 	  <<<
 	  % pgpk -a KEYS
-	  % pgpv tomahawk-1.1.8-bin.tar.gz.asc tomahawk-1.1.8-bin.tar.gz
+	  % pgpv tomahawk-1.1.9-bin.tar.gz.asc tomahawk-1.1.9-bin.tar.gz
 	  >>>
 
 	  <or>
 
 	  <<<
 	  % pgp -ka KEYS
-	  % pgp tomahawk-1.1.8-bin.tar.gz.asc tomahawk-1.1.8-bin.tar.gz
+	  % pgp tomahawk-1.1.9-bin.tar.gz.asc tomahawk-1.1.9-bin.tar.gz
 	  >>>
 
 	  <or>
 
 	  <<<
   	% gpg --import KEYS
-	  % gpg --verify tomahawk-1.1.8-bin.tar.gz.asc tomahawk-1.1.8-bin.tar.gz
+	  % gpg --verify tomahawk-1.1.9-bin.tar.gz.asc tomahawk-1.1.9-bin.tar.gz
 	  >>>
