@@ -432,5 +432,23 @@ public class ServletExternalContextWrapper extends ExternalContext {
             throw new RuntimeException("Error calling JSF 1.2 method: "+e.getMessage());
         }
     }
-        
+
+    public String getRequestCharacterEncoding()
+    {
+        try
+        {
+            Method method = _delegate.getClass().getMethod(
+                    "getRequestCharacterEncoding", 
+                    null);
+            return (String) method.invoke(_delegate, null);
+        }
+        catch (NoSuchMethodException e)
+        {
+            throw new RuntimeException("JSF 1.2 method not implemented: "+e.getMessage());
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException("Error calling JSF 1.2 method: "+e.getMessage());
+        }
+    }
 }
