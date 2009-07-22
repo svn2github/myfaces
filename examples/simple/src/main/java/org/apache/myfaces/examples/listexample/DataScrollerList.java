@@ -33,13 +33,13 @@ import org.apache.myfaces.custom.datascroller.ScrollerActionEvent;
  */
 public class DataScrollerList
 {
-    private Long rowCount = new Long(10);
+    private Integer rowCount = new Integer(10);
 
-    public Long getRowCount() {
+    public Integer getRowCount() {
         return rowCount;
     }
 
-    public void setRowCount(Long rowCount) {
+    public void setRowCount(Integer rowCount) {
         this.rowCount = rowCount;
     }
     
