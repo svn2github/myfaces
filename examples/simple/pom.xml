@@ -43,6 +43,12 @@
                                             <version>${project.version}</version>
                                             <classifier>sources</classifier>
                                         </artifactItem>
+                                        <artifactItem>
+											<groupId>org.apache.myfaces.tomahawk</groupId>
+											<artifactId>tomahawk</artifactId>
+											<version>${project.version}</version>
+											<classifier>sources</classifier>
+										</artifactItem>
                                     </artifactItems>
                                     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/src</outputDirectory>
                                 </configuration>
