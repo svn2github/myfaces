@@ -230,7 +230,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeJavaScriptReference(context,getResourceUri(context,resourceHandler),true,false);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -239,7 +239,7 @@ public class NonBufferingAddResource implements AddResource {
             writeJavaScriptReference(context,getResourceUri(context,new MyFacesResourceHandler(
                     myfacesCustomComponent, resourceName)),true,false);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -248,7 +248,7 @@ public class NonBufferingAddResource implements AddResource {
             writeJavaScriptReference(context,getResourceUri(context,new MyFacesResourceHandler(
                     myfacesCustomComponent, resourceName)),true,true);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -256,7 +256,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeJavaScriptReference(context,getResourceUri(context,uri),true,false);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -264,7 +264,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeJavaScriptReference(context,getResourceUri(context,uri),true,true);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -284,7 +284,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeJavaScriptReference(context,getResourceUri(context,resourceHandler),true,defer);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -292,7 +292,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeJavaScriptReference(context,getResourceUri(context,new MyFacesResourceHandler(myfacesCustomComponent, resourceName)),false,false);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -300,7 +300,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeStyleReference(context,getResourceUri(context,new MyFacesResourceHandler(myfacesCustomComponent, resourceName)));
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -308,7 +308,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeStyleReference(context,getResourceUri(context,uri));
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -316,7 +316,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeStyleReference(context,getResourceUri(context,resourceHandler));
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -324,7 +324,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeInlineStylesheet(context.getResponseWriter(), inlineStyle);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -332,7 +332,7 @@ public class NonBufferingAddResource implements AddResource {
         try {
             writeInlineScript(context.getResponseWriter(), inlineScript);
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 

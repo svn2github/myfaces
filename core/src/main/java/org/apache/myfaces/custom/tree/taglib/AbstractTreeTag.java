@@ -87,7 +87,7 @@ public class AbstractTreeTag extends HtmlPanelGroupTag {
         int answer = super.doStartTag();
         HtmlTree tree = (HtmlTree) getComponentInstance();
 
-        if (getCreated() && Boolean.parseBoolean(expandRoot)) {
+        if (getCreated() && parseBoolean(expandRoot)) {
             // component was created, so expand the root node
             TreeModel model = tree.getModel(context);
 
@@ -99,6 +99,11 @@ public class AbstractTreeTag extends HtmlPanelGroupTag {
 
         tree.addToModelListeners();
         return answer;
+    }
+    
+    private boolean parseBoolean(String s)
+    {
+        return ((s != null) && s.equalsIgnoreCase("true"));
     }
 
     public void release() {
