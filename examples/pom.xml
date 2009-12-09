@@ -77,7 +77,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>tomahawk-current12</id>
+            <id>tomahawk-current20</id>
             <activation>
                 <property>
                     <name>tomahawk</name>
