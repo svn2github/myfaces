@@ -126,12 +126,6 @@
       <version>1.6-1</version>
     </dependency>   
 
-    <dependency>
-      <groupId>com.lowagie</groupId>
-      <artifactId>itext</artifactId>
-      <version>1.4.8</version>
-    </dependency> 
-
     <!-- provided dependencies -->
 
     <dependency>
@@ -299,18 +293,27 @@
         </excludes>
       </resource>
       <resource>
+        <directory>src/main/resources-filtered</directory>
+        <filtering>true</filtering>
+      </resource>
+      
+      <!-- 
+      <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
         <includes>
+         -->
             <!-- Used in the resources URL, to enable caching the 
                resources on the client.
                See MyfacesResourceLoader.getLastModified() -->
+               <!-- 
             <include>**/AddResource.properties</include>
         </includes>
         <excludes>
            <exclude>**/*.vm</exclude>
         </excludes>
       </resource>
+       -->
       <!--       
       <resource>
         <directory>src/main/resources-facesconfig</directory>
@@ -489,7 +492,7 @@
                 <artifactItem>
                    <groupId>org.apache.myfaces.shared</groupId>
                    <artifactId>myfaces-shared-tomahawk</artifactId>
-                   <version>${myfaces-shared.version}</version>
+                   <version>${myfaces-shared11-version}</version>
                  </artifactItem>
                </artifactItems>
                <outputDirectory>${project.build.directory}/classes</outputDirectory>
@@ -508,7 +511,7 @@
                     <artifactItem>
                         <groupId>org.apache.myfaces.shared</groupId>
                         <artifactId>myfaces-shared-tomahawk</artifactId>
-                        <version>${myfaces-shared.version}</version>
+                        <version>${myfaces-shared11-version}</version>
                         <classifier>sources</classifier>
                     </artifactItem>
                 </artifactItems>
@@ -550,6 +553,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <target>1.4</target>
+        </configuration>
       </plugin>
     </plugins>
 

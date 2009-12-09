@@ -118,12 +118,6 @@
       <artifactId>batik-awt-util</artifactId>
       <version>1.6-1</version>
     </dependency>   
-
-    <dependency>
-      <groupId>com.lowagie</groupId>
-      <artifactId>itext</artifactId>
-      <version>1.4.8</version>
-    </dependency> 
       
       <!--
       <dependency>

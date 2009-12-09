@@ -40,6 +40,7 @@
   <modules>
     <module>core</module>
     <module>core12</module>
+    <module>core20</module>
     <module>examples</module>
   </modules>
 

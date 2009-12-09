@@ -151,6 +151,12 @@
            <scope>provided</scope>
         </dependency>
 
+        <dependency>
+           <groupId>com.lowagie</groupId>
+           <artifactId>itext</artifactId>
+           <version>1.4.8</version>
+        </dependency>
+
         <!-- test dependencies -->
 
         <dependency>
@@ -212,7 +218,7 @@
             <plugin>
               <groupId>org.apache.myfaces.buildtools</groupId>
               <artifactId>myfaces-builder-plugin</artifactId>
-              <version>1.0.3</version>
+              <version>1.0.4</version>
               <executions>
                 <execution>
                   <!-- A hierarchy of different tag classes must be created, 
@@ -370,7 +376,7 @@
                         <!-- Generate report content -->
                         <groupId>org.apache.myfaces.buildtools</groupId>
                         <artifactId>myfaces-builder-plugin</artifactId>
-                        <version>1.0.3</version>
+                        <version>1.0.4</version>
                         <configuration>
                             <taglibs>
                                 <s>http://myfaces.apache.org/sandbox</s>
@@ -400,7 +406,7 @@
                         <!-- Generate report index -->
                         <groupId>org.apache.myfaces.buildtools</groupId>
                         <artifactId>myfaces-builder-plugin</artifactId>
-                        <version>1.0.3</version>
+                        <version>1.0.4</version>
                         <configuration>
                             <taglibs>
                                 <s>http://myfaces.apache.org/sandbox</s>

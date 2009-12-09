@@ -48,7 +48,7 @@
             <activation>
                 <property>
                     <name>tomahawk</name>
-		    <value>11</value>
+		            <value>11</value>
                 </property>
             </activation>
             <dependencies>
@@ -65,13 +65,29 @@
             <activation>
                 <property>
                     <name>tomahawk</name>
-		    <value>12</value>
+		            <value>12</value>
                 </property>
             </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.apache.myfaces.tomahawk</groupId>
                     <artifactId>tomahawk12</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>tomahawk-current12</id>
+            <activation>
+                <property>
+                    <name>tomahawk</name>
+                    <value>20</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                    <artifactId>tomahawk20</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>
@@ -120,7 +136,6 @@
             </properties>
         </profile>
 
-
         <!-- To run the examples using MyFaces 1.2: -Djsf=12 -->
         <profile>
             <id>myfaces-1.2</id>
@@ -164,7 +179,50 @@
                 <jsf_implementation>MyFaces 1.2</jsf_implementation>
             </properties>
         </profile>
+        
+        <!-- To run the examples using MyFaces 2.0: -Djsf=20 -->
+        <profile>
+            <id>myfaces-2.0</id>
+            <activation>
+                <property>
+                    <name>jsf</name>
+                    <value>20</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-api</artifactId>
+                    <version>${myfaces-core20-version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>myfaces-impl</artifactId>
+                    <version>${myfaces-core20-version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>taglibs</groupId>
+                    <artifactId>standard</artifactId>
+                    <version>1.1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-el_1.0_spec</artifactId>
+                    <version>1.0-M1</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
 
+            <properties>
+                <jsf_implementation>MyFaces 2.0</jsf_implementation>
+            </properties>
+        </profile>
 
         <!-- To run the examples using Sun's JSF Reference Implementation 1.1: -Djsf=ri -->
         <profile>
@@ -286,6 +344,48 @@
 
             <properties>
                 <jsf_implementation>JSF-RI 1.2</jsf_implementation>
+            </properties>
+        </profile>
+        
+        <!-- To use the examples using the Sun's JSF Reference Implementation 1.2 : -Djsf=ri12 -->
+        <profile>
+            <id>jsfri-2.0</id>
+            <activation>
+                <property>
+                    <name>jsf</name>
+                    <value>ri20</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>javax.faces</groupId>
+                    <artifactId>jsf-api</artifactId>
+                    <version>2.0.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>javax.faces</groupId>
+                    <artifactId>jsf-impl</artifactId>
+                    <version>2.0.1</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.geronimo.specs</groupId>
+                    <artifactId>geronimo-el_1.0_spec</artifactId>
+                    <version>1.0-M1</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+            <repositories>
+                <repository>
+                    <id>java.net.2</id>
+                    <name>java.net Maven 2 Repository</name>
+                    <url>http://download.java.net/maven/2</url>
+                </repository>
+            </repositories>
+
+            <properties>
+                <jsf_implementation>JSF-RI 2.0</jsf_implementation>
             </properties>
         </profile>
 
