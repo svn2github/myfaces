@@ -351,7 +351,7 @@
       <plugin>
         <groupId>org.apache.myfaces.buildtools</groupId>
         <artifactId>myfaces-builder-plugin</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5-SNAPSHOT</version>
         <executions>
           <execution>
             <id>unpack-tomahawk</id>
@@ -411,7 +411,7 @@
           <execution>
             <id>makefacesconfig</id>
             <configuration>
-                <templateFile>faces-config12.vm</templateFile>
+                <templateFile>faces-config20.vm</templateFile>
                 <xmlFile>META-INF/faces-config.xml</xmlFile>
             </configuration>
             <goals>
@@ -424,8 +424,8 @@
               <goal>make-components</goal>
             </goals>
             <configuration>
-               <jsfVersion>12</jsfVersion>
-               <templateComponentName>componentClass12.vm</templateComponentName>
+               <jsfVersion>20</jsfVersion>
+               <templateComponentName>componentClass20.vm</templateComponentName>
                <mainSourceDirectory2>${project.build.directory}/tomahawk12_sources</mainSourceDirectory2>
             </configuration>
           </execution>          
@@ -503,7 +503,7 @@
             <configuration>
                 <xmlFile>META-INF/tomahawk.taglib.xml</xmlFile>
                 <xmlBaseFile>src/main/conf/META-INF/facelets-taglib-base.xml</xmlBaseFile>
-                <templateFile>facelets-taglib.vm</templateFile>
+                <templateFile>facelets-taglib20.vm</templateFile>
                 <params>
                    <shortname>t</shortname>
                    <uri>http://myfaces.apache.org/tomahawk</uri>
@@ -688,7 +688,7 @@
             <!-- Generate content for custom tagdoc report -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5-SNAPSHOT</version>
             <configuration>
               <taglibs>
                 <t>http://myfaces.apache.org/tomahawk</t>
@@ -716,7 +716,7 @@
             <!-- which goal is run here? -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.5-SNAPSHOT</version>
             <configuration>
               <taglibs>
                 <t>http://myfaces.apache.org/tomahawk</t>
