@@ -298,7 +298,7 @@
                 <execution>
                   <id>makefacesconfig</id>
                   <configuration>
-                      <templateFile>faces-config12.vm</templateFile>
+                      <templateFile>faces-config20.vm</templateFile>
                       <xmlFile>META-INF/faces-config.xml</xmlFile>
                   </configuration>
                   <goals>
@@ -311,8 +311,8 @@
                       <goal>make-components</goal>
                     </goals>
                     <configuration>
-                       <jsfVersion>12</jsfVersion>
-                       <templateComponentName>componentClass12.vm</templateComponentName>
+                       <jsfVersion>20</jsfVersion>
+                       <templateComponentName>componentClass20.vm</templateComponentName>
                        <mainSourceDirectory2>${project.build.directory}/tomahawk12_sources</mainSourceDirectory2>
                     </configuration>
                 </execution>
@@ -372,7 +372,7 @@
                   <configuration>
                       <xmlFile>META-INF/sandbox.taglib.xml</xmlFile>
                       <xmlBaseFile>src/main/conf/META-INF/facelets-taglib-base.xml</xmlBaseFile>
-                      <templateFile>facelets-taglib.vm</templateFile>
+                      <templateFile>facelets-taglib20.vm</templateFile>
                       <params>
                          <shortname>s</shortname>
                          <uri>http://myfaces.apache.org/sandbox</uri>
