@@ -21,6 +21,8 @@ package org.apache.myfaces.examples.selectitems;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.myfaces.examples.listexample.SimpleCar;
 
@@ -29,6 +31,8 @@ public class SelectItemsBean {
     private List carList;
     
     private String selectedCarColor;
+    
+    private Map carMap;
 
     public List getCarList() {
         if(carList == null) {
@@ -49,7 +53,34 @@ public class SelectItemsBean {
         list.add(new SimpleCar(4, "Car 4", "green"));
         return list;
     }
+    
+    public Map getCarMap() {
+        if (carMap == null) {
+            carMap = createCarMap();
+        }
+        return carMap;
+    }
 
+    public void setCarMap(Map carMap)
+    {
+        this.carMap = carMap;
+    }
+
+    private Map createCarMap() {
+        Map list = new TreeMap();
+        list.put(new Integer(1), new SimpleCar(1, "Car 1", "blue"));
+        list.put(new Integer(2), new SimpleCar(2, "Car 2", "white"));
+        list.put(new Integer(3), new SimpleCar(3, "Car 3", "red"));
+        list.put(new Integer(4), new SimpleCar(4, "Car 4", "green"));
+        /*
+        list.put(new Integer(1), "Car 1");
+        list.put(new Integer(2), "Car 2");
+        list.put(new Integer(3), "Car 3");
+        list.put(new Integer(4), "Car 4");
+        */
+        return list;
+    }
+    
     public String getSelectedCarColor() {
         return selectedCarColor;
     }

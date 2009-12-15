@@ -32,17 +32,40 @@
 <f:view>
 
     <h:form>
-		<h:selectOneMenu id="menu1" value="#{selectItemsBean.selectedCarColor}">
-   			<t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
-		</h:selectOneMenu>
-		
-        <h:selectOneRadio id="radio1" value="#{selectItemsBean.selectedCarColor}">
-   			<t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
-        </h:selectOneRadio>
+    
+        <h:outputText value ="List" />
+
+        <h:panelGrid columns="1">
+          <h:selectOneMenu id="menu1" value="#{selectItemsBean.selectedCarColor}">
+              <t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+          </h:selectOneMenu>
+          
+          <h:selectOneRadio id="radio1" value="#{selectItemsBean.selectedCarColor}">
+              <t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+          </h:selectOneRadio>
+          
+          <h:selectOneListbox id="list1" value="#{selectItemsBean.selectedCarColor}">
+              <t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+          </h:selectOneListbox>
+        </h:panelGrid>
         
-        <h:selectOneListbox id="list1" value="#{selectItemsBean.selectedCarColor}">
-   			<t:selectItems value="#{selectItemsBean.carList}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
-        </h:selectOneListbox>
+        <h:outputText value ="Map" />
+        
+        <h:panelGrid columns="1">
+          <h:selectOneMenu id="menu2" value="#{selectItemsBean.selectedCarColor}">
+              <t:selectItems value="#{selectItemsBean.carMap}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+          </h:selectOneMenu>
+          
+          <h:selectOneRadio id="radio2" value="#{selectItemsBean.selectedCarColor}">
+              <t:selectItems value="#{selectItemsBean.carMap}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+          </h:selectOneRadio>
+          
+          <h:selectOneListbox id="list2" value="#{selectItemsBean.selectedCarColor}">
+              <t:selectItems value="#{selectItemsBean.carMap}" var="Car" itemLabel="#{Car.type}" itemValue="#{Car.color}" />
+          </h:selectOneListbox>
+        </h:panelGrid>
+
+        <h:commandButton value="GO!" action="doSomething"/>
     </h:form>
 </f:view>
 

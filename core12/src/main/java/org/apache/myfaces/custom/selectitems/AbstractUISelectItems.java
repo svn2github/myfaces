@@ -94,9 +94,27 @@ public abstract class AbstractUISelectItems extends javax.faces.component.UISele
      */
     public abstract Object getItemDisabled();
     
+    /**
+     * Only applies when value points to a map. Use the Entry instance instead
+     * the value for resolve EL Expressions
+     * 
+     * @since 1.1.10
+     * @JSFProperty
+     *    defaultValue = "false"
+     */
+    public abstract boolean isUseEntryAsItem();
+    
     public Object getValue() {
         Object value = super.getValue();
-        return createSelectItems(value);
+        String var = getVar(); 
+        if (var != null && var.length() > 0)
+        {
+            return createSelectItems(value);
+        }
+        else
+        {
+            return value;
+        }
     }
 
     private SelectItem[] createSelectItems(Object value) {
@@ -126,12 +144,25 @@ public abstract class AbstractUISelectItems extends javax.faces.component.UISele
         }
         else if (value instanceof Map) {
             Map map = (Map) value;
-            for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
-                Entry currentItem = (Entry) iter.next();
-                putIteratorToRequestParam(currentItem.getValue());
-                SelectItem selectItem = createSelectItem();
-                removeIteratorFromRequestParam();
-                items.add(selectItem);
+            if (isUseEntryAsItem())
+            {
+                for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
+                    Entry currentItem = (Entry) iter.next();
+                    putIteratorToRequestParam(currentItem);
+                    SelectItem selectItem = createSelectItem();
+                    removeIteratorFromRequestParam();
+                    items.add(selectItem);
+                }
+            }
+            else
+            {
+                for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
+                    Entry currentItem = (Entry) iter.next();
+                    putIteratorToRequestParam(currentItem.getValue());
+                    SelectItem selectItem = createSelectItem();
+                    removeIteratorFromRequestParam();
+                    items.add(selectItem);
+                }
             }
         }
         
