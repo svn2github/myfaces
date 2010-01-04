@@ -251,8 +251,6 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
         {
             ScrollerActionEvent scrollerEvent = (ScrollerActionEvent) event;
 
-            broadcastToActionListener(scrollerEvent);
-
             // huh? getUIData never returns null.
             UIData uiData = getUIData();
             if (uiData == null)
@@ -330,6 +328,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
                 }
                 setFirst(uiData, uiData.getRows() * (pageindex - 1));
             }
+            broadcastToActionListener(scrollerEvent);
         }
     }
 
