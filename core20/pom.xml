@@ -351,7 +351,7 @@
       <plugin>
         <groupId>org.apache.myfaces.buildtools</groupId>
         <artifactId>myfaces-builder-plugin</artifactId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.5</version>
         <executions>
           <execution>
             <id>unpack-tomahawk</id>
@@ -688,7 +688,7 @@
             <!-- Generate content for custom tagdoc report -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.5</version>
             <configuration>
               <taglibs>
                 <t>http://myfaces.apache.org/tomahawk</t>
@@ -716,7 +716,7 @@
             <!-- which goal is run here? -->
             <groupId>org.apache.myfaces.buildtools</groupId>
             <artifactId>myfaces-builder-plugin</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.5</version>
             <configuration>
               <taglibs>
                 <t>http://myfaces.apache.org/tomahawk</t>
