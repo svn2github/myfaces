@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+     <meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8" />
+     <title>MyFaces - the free JSF Implementation</title>
+     <h:outputStylesheet name="css/basic.css"/>
+     <ui:insert name="head"/>
+</h:head>
+<h:body>
+<ui:insert name="body"/>
+<ui:insert name="mbean_source">
+  <br/>
+  <br/>
+  
+  <t:dataList value="#{accessedBeans.beanList}" var="accessedBean" layout="unorderedList">
+      <h:outputLink value="#{accessedBean.clazz}.java.source">
+          <h:outputText value="Show source of bean with name : "/>
+          <h:outputText value="#{accessedBean.name}"/>
+          <h:outputText value=" and class : "/>
+          <h:outputText value="#{accessedBean.clazz}"/>
+      </h:outputLink>
+  </t:dataList>
+</ui:insert>
+<ui:insert name="footer">
+  <br/>
+  <br/>
+  <a href="home.jsf">[HOME]</a>
+  &nbsp;
+  <a href="#{request.requestURI}.source">[SOURCE]</a>
+  </ui:insert>
+</h:body>
+</html>
