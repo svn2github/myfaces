@@ -185,7 +185,7 @@ public abstract class AbstractPPRPanelGroup extends HtmlPanelGroup
             list = (new PartialTriggerParser()).parse(partialTriggers);
         }
         else {
-            list = Collections.emptyList();
+            list = Collections.EMPTY_LIST;
         }
         return list;
     }
@@ -201,7 +201,7 @@ public abstract class AbstractPPRPanelGroup extends HtmlPanelGroup
             list = (new PartialTriggerParser()).parse(periodicalTriggers);
         }
         else {
-            list = Collections.emptyList();
+            list = Collections.EMPTY_LIST;
         }
         return list;
     }
