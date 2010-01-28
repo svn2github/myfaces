@@ -42,7 +42,6 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProp
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * The aliasBean tag allows you to create a temporary name for a real bean.
