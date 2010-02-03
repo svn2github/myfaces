@@ -371,7 +371,7 @@
                   <!-- <outputDirectory>${project.build.directory}/unpacktomahawksources</outputDirectory> -->
                   <outputDirectory>${project.build.directory}/tomahawk12_sources</outputDirectory>
                   <includes>**/*.java</includes>
-                  <excludes>**/*.class,**/META-INF/**,org/apache/myfaces/shared_tomahawk/**/*.java,org/apache/myfaces/taglib/html/ext/**/*.java</excludes>
+                  <excludes>**/*.class,**/META-INF/**,org/apache/myfaces/shared_tomahawk/**/*.java</excludes>
                 </artifactItem>
               </artifactItems>
             </configuration>
