@@ -1,8 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,32 +26,22 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc"%>
-
 <body>
-
-<f:view>
-	   
-	<h:form id="form1">
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
+ 	<h:form id="form1">
 		<h:panelGrid columns="2">
 			<h:outputText value="Type the code shown "/>
 			<h:inputText value="#{captchaBean.value}"/>
-			
-			<h:commandLink value="Try a different image" />		
+
+			<h:commandLink value="Try a different image" />
 			<t:captcha captchaSessionKeyName="#{captchaBean.sessionKeyName}" />
-			
+
 			<h:commandButton value="Submit" action="#{captchaBean.check}"/>
 			<h:outputText value="#{captchaBean.status}"/>
 		</h:panelGrid>
-	</h:form>		
-	    
-
-	<%@include file="inc/page_footer.jsp"%>
-
-</f:view>
-
+	</h:form>
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>
-

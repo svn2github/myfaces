@@ -1,11 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
-<%@include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,14 +26,12 @@
  * under the License.
  */
 //-->
-
 <body>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 
-<f:view>
+       <h1>Usage of the displayValueOnly attribute</h1>
 
-    <f:verbatim>
-        <h1>Usage of the displayValueOnly attribute</h1>
-    </f:verbatim>
     <h:form id="form" >
 	    <t:saveState id="ss1" value="#{dvoFace.attribute}"/>
 
@@ -43,7 +41,7 @@
 			value="#{dvoFace.attribute}"/>
 		<h:outputLabel id="displayValueOnlyCheckBoxL" for="displayValueOnlyCheckBox" value="displayValueOnly attribute"/>
 
-		<f:verbatim><br/></f:verbatim>
+		<br/>
 
 		<h:panelGrid id="firstGrid" columns="2">
 	        <h:outputLabel id="inputTextL" for="inputText" value="inputText"/>
@@ -59,13 +57,6 @@
 			  	<f:selectItem itemLabel="Value 3" itemValue="3"/>
 			</t:selectManyCheckbox>
 
-	        <%--h:outputLabel for="selectOneMenu" value="selectOneMenu"/>
-			<t:selectOneMenu id="selectOneMenu" value="#{dvoFace.map['selectOneMenu']}" displayValueOnly="#{dvoFace.attribute}">
-			  	<f:selectItem itemLabel="Value 1" itemValue="1"/>
-			  	<f:selectItem itemLabel="Value 2" itemValue="2"/>
-			  	<f:selectItem itemLabel="Value 3" itemValue="3"/>
-			</t:selectOneMenu--%>
-
 	        <h:outputLabel id="selectManyMenuL" for="selectManyMenu" value="selectManyMenu"/>
 			<t:selectManyMenu id="selectManyMenu" value="#{dvoFace.map['selectManyMenuList']}" displayValueOnly="#{dvoFace.attribute}">
 			  	<f:selectItem itemLabel="Value 1" itemValue="1"/>
@@ -73,26 +64,19 @@
 			  	<f:selectItem itemLabel="Value 3" itemValue="3"/>
 			</t:selectManyMenu>
 
-			<%--h:outputLabel for="selectOneListbox" value="selectOneListbox"/>
-			<t:selectOneListbox id="selectOneListbox" value="#{dvoFace.map['selectOneListbox']}" displayValueOnly="#{dvoFace.attribute}">
-			  	<f:selectItem itemLabel="Value 1" itemValue="1"/>
-			  	<f:selectItem itemLabel="Value 2" itemValue="2"/>
-			  	<f:selectItem itemLabel="Value 3" itemValue="3"/>
-			</t:selectOneListbox--%>
-
 			<h:outputLabel id="inputHtmlL" for="inputHtml" value="inputHtml"/>
 	        <t:inputHtml id="inputHtml" value="#{dvoFace.map['inputHtml']}" displayValueOnly="#{dvoFace.attribute}"/>
 
 		</h:panelGrid>
-        <f:verbatim><br/><br/>
 
+        <br/><br/>
         <h2>The attribute can also be set for a whole section</h2>
 
-        </f:verbatim>
+
         <t:panelGrid id="secondGrid" columns="2" displayValueOnly="#{dvoFace.attribute}">
 	        <h:outputLabel id="inputText2L" for="inputText2" value="inputText"/>
 	        <t:inputText id="inputText2" value="#{dvoFace.map['inputText2']}"/>
-	        
+
 	        <h:outputLabel id="inputSecret2L" for="inputSecret2" value="inputSecret"/>
 	        <t:inputSecret id="inputSecret2" value="secret" />
 
@@ -101,13 +85,7 @@
 	    </t:panelGrid>
         <h:commandButton id="submitBtn" />
     </h:form>
-
-   <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

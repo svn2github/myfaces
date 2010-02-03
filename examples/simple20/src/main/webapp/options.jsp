@@ -1,11 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8" %>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
-<html>
-
-<%@ include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,56 +26,22 @@
  * under the License.
  */
 //-->
-
 <body>
-
-<!--
-managed beans used:
-    optionsForm
-    optionsCtrl
--->
-
-<f:view>
-
-    <t:saveState id="ss1" value="#{optionsForm.language}"/>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
-
-    <t:panelLayout id="page" layout="#{globalOptions.pageLayout}"
-                   styleClass="pageLayout"
-                   headerClass="pageHeader"
-                   navigationClass="pageNavigation"
-                   bodyClass="pageBody"
-                   footerClass="pageFooter">
-
-        <f:facet name="header">
-            <f:subview id="header">
-                <jsp:include page="inc/page_header.jsp"/>
-            </f:subview>
-        </f:facet>
-
-        <f:facet name="navigation">
-            <f:subview id="menu">
-                <jsp:include page="inc/navigation.jsp"/>
-            </f:subview>
-        </f:facet>
-
-
-        <f:facet name="body">
-            <h:panelGroup id="body">
+ <ui:composition template="/META-INF/templates/pageLayout.xhtml">
+  <ui:define name="body">
+      <t:saveState id="ss1" value="#{optionsForm.language}"/>
                 <h:messages id="messageList"/>
 
-                <f:verbatim>
                     <h4>Options</h4>
                     <table border="1"><tr><td>
-                </f:verbatim>
+                
                 <h:form id="form1">
                     <h:outputText value="#{example_messages['option_lang']}"/>
                     <f:verbatim>:&nbsp;</f:verbatim>
                     <h:selectOneMenu id="locale" value="#{optionsForm.language}">
                         <f:selectItems id="available" value="#{optionsForm.availableLanguages}"/>
                     </h:selectOneMenu>
-                    <f:verbatim><br></f:verbatim>
+                    <f:verbatim><br/></f:verbatim>
                     <h:outputText value="#{example_messages['option_layout']}"/>
                     <f:verbatim>:&nbsp;</f:verbatim>
                     <h:selectOneMenu id="layout" value="#{globalOptions.pageLayout}">
@@ -83,27 +49,14 @@ managed beans used:
                         <f:selectItem id="item102" itemLabel="Navigation right" itemValue="navigationRight"/>
                         <f:selectItem id="item103" itemLabel="Upside down" itemValue="upsideDown"/>
                     </h:selectOneMenu>
-                    <f:verbatim><br></f:verbatim>
+                    <br/>
                     <h:commandButton id="apply" value="#{example_messages['button_apply']}"
                                      action="#{optionsCtrl.changeLocale}"/>
                 </h:form>
 
-                <f:verbatim>
+
                     </td></tr></table>
-                </f:verbatim>
-
-            </h:panelGroup>
-        </f:facet>
-
-        <%@ include file="inc/page_footer.jsp" %>
-
-    </t:panelLayout>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-
-</f:view>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

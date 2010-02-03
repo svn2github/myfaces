@@ -22,7 +22,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for sample1.jsp -->
+    <!-- Managed Beans for sample1.xhtml -->
 
     <managed-bean>
         <managed-bean-name>calcForm</managed-bean-name>
@@ -58,7 +58,7 @@
     </managed-bean>
 
 
-    <!-- Managed Beans for sample2.jsp -->
+    <!-- Managed Beans for sample2.xhtml -->
 
     <managed-bean>
         <managed-bean-name>q_form</managed-bean-name>
@@ -104,7 +104,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for collapsiblePanel.jsp -->
+    <!-- Managed Beans for collapsiblePanel.xhtml -->
     <managed-bean>
         <managed-bean-name>firstCollapsiblePanelBean</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.collapsiblepanel.CollapsiblePanelBean</managed-bean-class>
@@ -124,7 +124,7 @@
     </managed-bean>
 
 
-    <!-- Managed Beans for selectbox.jsp -->
+    <!-- Managed Beans for selectbox.xhtml -->
 
     <managed-bean>
         <managed-bean-name>carconf</managed-bean-name>
@@ -132,7 +132,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for selectOneLanguage.jsp -->
+    <!-- Managed Beans for selectOneLanguage.xhtml -->
 
     <managed-bean>
         <managed-bean-name>language</managed-bean-name>
@@ -148,7 +148,7 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for simpleGroupBy.jsp -->
+    <!-- Managed Beans for simpleGroupBy.xhtml -->
 
     <managed-bean>
         <managed-bean-name>simpleGroupBy</managed-bean-name>
@@ -164,7 +164,7 @@
     </managed-bean>
 
 
-    <!-- Managed Beans for tree.jsp -->
+    <!-- Managed Beans for tree.xhtml -->
 
     <managed-bean>
         <managed-bean-name>treeTable</managed-bean-name>
@@ -178,14 +178,14 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for tree2.jsp -->
+    <!-- Managed Beans for tree2.xhtml -->
     <managed-bean>
         <managed-bean-name>treeBacker</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.tree.TreeBacker</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for forceId.jsp -->
+    <!-- Managed Beans for forceId.xhtml -->
 
     <managed-bean>
         <managed-bean-name>forceIdBean</managed-bean-name>
@@ -210,7 +210,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for calendar.jsp -->
+    <!-- Managed Beans for calendar.xhtml -->
 
     <managed-bean>
         <managed-bean-name>calendarBean</managed-bean-name>
@@ -218,7 +218,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for countryForm.jsp -->
+    <!-- Managed Beans for countryForm.xhtml -->
 
     <managed-bean>
         <managed-bean-name>countryForm</managed-bean-name>
@@ -232,7 +232,7 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
-    <!-- Managed Beans for toggleLink.jsp -->
+    <!-- Managed Beans for toggleLink.xhtml -->
     
     <managed-bean>
         <managed-bean-name>toggleBean</managed-bean-name>
@@ -240,7 +240,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for date.jsp -->
+    <!-- Managed Beans for date.xhtml -->
 
     <managed-bean>
         <managed-bean-name>date1</managed-bean-name>
@@ -260,7 +260,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for date.jsp -->
+    <!-- Managed Beans for date.xhtml -->
 
     <managed-bean>
         <managed-bean-name>dvoFace</managed-bean-name>
@@ -268,7 +268,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for inputHtml.jsp -->
+    <!-- Managed Beans for inputHtml.xhtml -->
 
     <managed-bean>
         <managed-bean-name>editor</managed-bean-name>
@@ -288,7 +288,7 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for fileupload.jsp -->
+    <!-- Managed Beans for fileupload.xhtml -->
 
     <managed-bean>
         <managed-bean-name>fileUploadForm</managed-bean-name>
@@ -297,7 +297,7 @@
     </managed-bean>
 
 
-    <!-- Managed Beans for options.jsp -->
+    <!-- Managed Beans for options.xhtml -->
 
     <managed-bean>
         <managed-bean-name>globalOptions</managed-bean-name>
@@ -321,7 +321,7 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for dataScroller.jsp -->
+    <!-- Managed Beans for dataScroller.xhtml -->
 
     <managed-bean>
         <managed-bean-name>scrollerList</managed-bean-name>
@@ -371,7 +371,7 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for pagedSortTable.jsp -->
+    <!-- Managed Beans for pagedSortTable.xhtml -->
 
     <managed-bean>
         <managed-bean-name>pagedSort</managed-bean-name>
@@ -379,7 +379,7 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for openDataTable.jsp -->
+    <!-- Managed Beans for openDataTable.xhtml -->
 
     <managed-bean>
         <managed-bean-name>openDataList</managed-bean-name>
@@ -572,7 +572,7 @@
     	<managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for calendar.jsp -->
+    <!-- Managed Beans for calendar.xhtml -->
 
     <managed-bean>
         <managed-bean-name>autoScrollBean</managed-bean-name>
@@ -580,7 +580,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Beans for colspan.jsp -->
+    <!-- Managed Beans for colspan.xhtml -->
 
     <managed-bean>
         <managed-bean-name>testColspanBean</managed-bean-name>
@@ -616,7 +616,13 @@
         <managed-bean-name>selectOneRowList</managed-bean-name>
         <managed-bean-class>org.apache.myfaces.examples.selectOneRow.SelectOneRowList</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>	
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>inputTextDisabled</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.inputtextdisabled.InputTextDisabledBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
      
 
     <!-- NAVIGATION RULES -->
@@ -624,7 +630,7 @@
     <navigation-rule>
         <navigation-case>
             <from-outcome>go_home</from-outcome>
-            <to-view-id>/home.jsp</to-view-id>
+            <to-view-id>/home.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
@@ -637,117 +643,117 @@
 
         <navigation-case>
             <from-outcome>go_sample1</from-outcome>
-            <to-view-id>/sample1.jsp</to-view-id>
+            <to-view-id>/sample1.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_sample2</from-outcome>
-            <to-view-id>/sample2.jsp</to-view-id>
+            <to-view-id>/sample2.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_aliasBean</from-outcome>
-            <to-view-id>/aliasBean.jsp</to-view-id>
+            <to-view-id>/aliasBean.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_buffer</from-outcome>
-            <to-view-id>/buffer.jsp</to-view-id>
+            <to-view-id>/buffer.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_dataTable</from-outcome>
-            <to-view-id>/dataTable.jsp</to-view-id>
+            <to-view-id>/dataTable.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_sortTable</from-outcome>
-            <to-view-id>/sortTable.jsp</to-view-id>
+            <to-view-id>/sortTable.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_selectbox</from-outcome>
-            <to-view-id>/selectbox.jsp</to-view-id>
+            <to-view-id>/selectbox.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_fileupload</from-outcome>
-            <to-view-id>/fileupload.jsp</to-view-id>
+            <to-view-id>/fileupload.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_tabbedPane</from-outcome>
-            <to-view-id>/tabbedPane.jsp</to-view-id>
+            <to-view-id>/tabbedPane.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_calendar</from-outcome>
-            <to-view-id>/calendar.jsp</to-view-id>
+            <to-view-id>/calendar.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_popup</from-outcome>
-            <to-view-id>/popup.jsp</to-view-id>
+            <to-view-id>/popup.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_jslistener</from-outcome>
-            <to-view-id>/jslistener.jsp</to-view-id>
+            <to-view-id>/jslistener.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_date</from-outcome>
-            <to-view-id>/date.jsp</to-view-id>
+            <to-view-id>/date.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_dataList</from-outcome>
-            <to-view-id>/dataList.jsp</to-view-id>
+            <to-view-id>/dataList.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_tree</from-outcome>
-            <to-view-id>/tree.jsp</to-view-id>
+            <to-view-id>/tree.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_tree2</from-outcome>
-            <to-view-id>/tree2.jsp</to-view-id>
+            <to-view-id>/tree2.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_treeTable</from-outcome>
-            <to-view-id>/treeTable.jsp</to-view-id>
+            <to-view-id>/treeTable.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_features</from-outcome>
-            <to-view-id>/features.jsp</to-view-id>
+            <to-view-id>/features.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_options</from-outcome>
-            <to-view-id>/options.jsp</to-view-id>
+            <to-view-id>/options.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_contact</from-outcome>
-            <to-view-id>/contact.jsp</to-view-id>
+            <to-view-id>/contact.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_copyright</from-outcome>
-            <to-view-id>/copyright.jsp</to-view-id>
+            <to-view-id>/copyright.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_validate</from-outcome>
-            <to-view-id>/validate.jsp</to-view-id>
+            <to-view-id>/validate.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_datascroller</from-outcome>
-            <to-view-id>/dataScroller.jsp</to-view-id>
+            <to-view-id>/dataScroller.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
@@ -757,42 +763,42 @@
 
         <navigation-case>
             <from-outcome>go_css</from-outcome>
-            <to-view-id>/css.jsp</to-view-id>
+            <to-view-id>/css.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_newspaperTable</from-outcome>
-            <to-view-id>/newspaperTable.jsp</to-view-id>
+            <to-view-id>/newspaperTable.xhtml</to-view-id>
         </navigation-case>
 
 		<navigation-case>
             <from-outcome>go_forceId</from-outcome>
-            <to-view-id>/forceId.jsp</to-view-id>
+            <to-view-id>/forceId.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_swapimage</from-outcome>
-            <to-view-id>/swapimage.jsp</to-view-id>
+            <to-view-id>/swapimage.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_selectOneCountry</from-outcome>
-            <to-view-id>/selectOneCountry.jsp</to-view-id>
+            <to-view-id>/selectOneCountry.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_panelnavigation_1</from-outcome>
-            <to-view-id>/panelnavigation_1.jsp</to-view-id>
+            <to-view-id>/panelnavigation_1.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_panelnavigation_2</from-outcome>
-            <to-view-id>/panelnavigation_2.jsp</to-view-id>
+            <to-view-id>/panelnavigation_2.xhtml</to-view-id>
         </navigation-case>
 
         <navigation-case>
             <from-outcome>go_panelnavigation_3</from-outcome>
-            <to-view-id>/panelnavigation_3.jsp</to-view-id>
+            <to-view-id>/panelnavigation_3.xhtml</to-view-id>
         </navigation-case>
 
 
@@ -800,111 +806,117 @@
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/sample1.jsp</from-view-id>
+        <from-view-id>/sample1.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>jump_home</from-outcome>
-            <to-view-id>/home.jsp</to-view-id>
+            <to-view-id>/home.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
      <navigation-rule>
-        <from-view-id>/validate.jsp</from-view-id>
+        <from-view-id>/validate.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>valid</from-outcome>
-            <to-view-id>/home.jsp</to-view-id>
+            <to-view-id>/home.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
         <navigation-case>
             <from-outcome>go_country</from-outcome>
-            <to-view-id>/countryForm.jsp</to-view-id>
+            <to-view-id>/countryForm.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <!-- from-view-id>/dataTable.jsp</from-view-id -->
+        <!-- from-view-id>/dataTable.xhtml</from-view-id -->
         <navigation-case>
             <from-outcome>go_edit_table</from-outcome>
-            <to-view-id>/countryTableForm.jsp</to-view-id>
+            <to-view-id>/countryTableForm.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/countryTableForm.jsp</from-view-id>
+        <from-view-id>/countryTableForm.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>go_back</from-outcome>
-            <to-view-id>/masterDetail.jsp</to-view-id>
+            <to-view-id>/masterDetail.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/countryForm.jsp</from-view-id>
+        <from-view-id>/countryForm.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>cancel</from-outcome>
-            <to-view-id>/masterDetail.jsp</to-view-id>
+            <to-view-id>/masterDetail.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>ok_next</from-outcome>
-            <to-view-id>/masterDetail.jsp</to-view-id>
+            <to-view-id>/masterDetail.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
     <!-- navigational rules for the schedule examples -->
 	<navigation-rule>
-		<from-view-id>/schedule2.jsp</from-view-id>
+		<from-view-id>/schedule2.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>add_entry</from-outcome>
-			<to-view-id>/schedule_addentry.jsp</to-view-id>
+			<to-view-id>/schedule_addentry.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/schedule_addentry.jsp</from-view-id>
+		<from-view-id>/schedule_addentry.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/schedule2.jsp</to-view-id>
+			<to-view-id>/schedule2.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cancel</from-outcome>
-			<to-view-id>/schedule2.jsp</to-view-id>
+			<to-view-id>/schedule2.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>failure</from-outcome>
-			<to-view-id>/schedule_addentry.jsp</to-view-id>
+			<to-view-id>/schedule_addentry.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/schedule3.jsp</from-view-id>
+		<from-view-id>/schedule3.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>edit_settings</from-outcome>
-			<to-view-id>/schedule_editsettings.jsp</to-view-id>
+			<to-view-id>/schedule_editsettings.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/schedule_editsettings.jsp</from-view-id>
+		<from-view-id>/schedule_editsettings.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/schedule3.jsp</to-view-id>
+			<to-view-id>/schedule3.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cancel</from-outcome>
-			<to-view-id>/schedule3.jsp</to-view-id>
+			<to-view-id>/schedule3.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>failure</from-outcome>
-			<to-view-id>/schedule_editsettings.jsp</to-view-id>
+			<to-view-id>/schedule_editsettings.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
+ <application>
+  <resource-bundle>
+   <base-name>org.apache.myfaces.examples.resource.example_messages</base-name>
+   <var>example_messages</var>
+  </resource-bundle>
+ </application>
 </faces-config>

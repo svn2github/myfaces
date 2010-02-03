@@ -1,11 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
-<%@include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,11 +26,9 @@
  * under the License.
  */
 //-->
-
 <body>
-
-<f:view>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <t:htmlTag value="h1"><b>h1</b> tag.</t:htmlTag>
     <t:htmlTag value="h2"><b>h2</b> tag.</t:htmlTag>
     <t:htmlTag value="p"><b>p</b> tag.</t:htmlTag>
@@ -42,13 +40,7 @@
     <t:htmlTag value="p">
     	<t:htmlTag value="b" rendered="false">This should not be bold, because the <i>b</i> tag is not rendered</t:htmlTag>
     </t:htmlTag>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

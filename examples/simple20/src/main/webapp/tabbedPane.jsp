@@ -1,11 +1,11 @@
-<%@ page import="java.math.BigDecimal,
-                 java.util.Date"%>
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,49 +26,47 @@
  * under the License.
  */
 //-->
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 <h:form>
 
     <t:saveState id="ss1" value="#{tabbedPaneBean}" />
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
     <t:messages id="messageList" showSummary="true" showDetail="true" summaryFormat="{0}:" />
 
 	<f:subview id="panelTabbedPane1">
 	    <h:outputText value="client-side tab switching"/>
-	    
+
 	    <t:panelTabbedPane bgcolor="#FFFFCC" serverSideTabSwitch="false">
-	
-	        <f:verbatim><p></f:verbatim>
+
+	        <p>
 	            <h:outputText value="#{example_messages['tabbed_common']}"/>
-	        <f:verbatim></p></f:verbatim>
-	
-	
+	        </p>
+
+
 	        <t:panelTab id="tab1" label="#{example_messages['tabbed_tab1']}" rendered="#{tabbedPaneBean.tab1Visible}">
 	                <h:selectBooleanCheckbox id="testCheckBox" value="#{testCheckBox.checked}"/><h:outputLabel for="testCheckBox" value="A checkbox"/>
-	                <f:verbatim><br/><br/></f:verbatim>
-	            <h:inputText id="inp1"/><f:verbatim><br></f:verbatim>
+	                <br/><br/>
+	            <h:inputText id="inp1"/><br/>
 	            <h:inputText id="inp2" required="true" /><h:message for="inp2" showSummary="false" showDetail="true" />
 	        </t:panelTab>
-	
+
 	        <f:subview id="tab2" >
-	            <jsp:include page="tab2.jsp"/>
+	            <t:panelTab label="#{example_messages['tabbed_tab2']}" rendered="#{tabbedPaneBean.tab2Visible}">
+                    <h:inputTextarea ></h:inputTextarea>
+                </t:panelTab>
 	        </f:subview>
-	
+
 	        <t:panelTab id="tab3" label="#{example_messages['tabbed_tab3']}" rendered="#{tabbedPaneBean.tab3Visible}">
-	
+
 	            <t:selectOneRadio value="#{testRadioButton.choice}">
 	                    <f:selectItem itemValue="0" itemLabel="First Choice" />
 	                    <f:selectItem itemValue="1" itemLabel="Second Choice" />
 	            </t:selectOneRadio>
-	
-	            <f:verbatim><br/><br/></f:verbatim>
-	
+
+	            <br/><br/>
+
 	            <t:dataTable id="xxx" value="#{testCheckList.testCheckBoxes}"
 	                        var="checkBox"
 	                        preserveDataModel="true"
@@ -87,58 +85,61 @@
 	                    <h:inputText value="#{checkBox.text}"/>
 	                </h:column>
 	            </t:dataTable>
-	
-	                                    <f:verbatim><br/><br/></f:verbatim>
-	
-	            <h:inputText id="inp3"/><f:verbatim><br/></f:verbatim>
+
+	            <br/><br/>
+
+	            <h:inputText id="inp3"/>
+                <br/>
 	        </t:panelTab>
-	
-	        <f:verbatim><br/><hr/><br/></f:verbatim>
-	
+
+	        <br/><hr/><br/>
+
 	        <h:selectBooleanCheckbox value="#{tabbedPaneBean.tab1Visible}"/>
 	        <h:outputText value="#{example_messages['tabbed_visible1']}"/>
-	        <f:verbatim><br></f:verbatim>
+	        <br/>
 	        <h:selectBooleanCheckbox value="#{tabbedPaneBean.tab2Visible}"/>
 	        <h:outputText value="#{example_messages['tabbed_visible2']}" />
-	        <f:verbatim><br></f:verbatim>
+	        <br/>
 	        <h:selectBooleanCheckbox value="#{tabbedPaneBean.tab3Visible}"/>
 	        <h:outputText value="#{example_messages['tabbed_visible3']}" />
-	        <f:verbatim><br></f:verbatim>
-	
+	        <br/>
+
 	        <h:commandButton value="#{example_messages['tabbed_submit']}" />
-	
+
 	    </t:panelTabbedPane>
 	</f:subview>
 	<f:subview id="panelTabbedPane2">
 	    <h:outputText value="server-side tab switching"/>
-	    
+
 	    <t:panelTabbedPane bgcolor="#CCFFFF" serverSideTabSwitch="true">
-	
-	        <f:verbatim><p></f:verbatim>
+
+	        <p>
 	            <h:outputText value="#{example_messages['tabbed_common']}"/>
-	        <f:verbatim></p></f:verbatim>
-	
-	
+	        </p>
+
+
 	        <t:panelTab id="tab1" label="#{example_messages['tabbed_tab1']}" rendered="#{tabbedPaneBean.tab1Visible}">
 	                <h:selectBooleanCheckbox id="testCheckBox" value="#{testCheckBox.checked}"/><h:outputLabel for="testCheckBox" value="A checkbox"/>
-	                <f:verbatim><br/><br/></f:verbatim>
-	            <h:inputText id="inp1"/><f:verbatim><br></f:verbatim>
+	                <br/><br/>
+	            <h:inputText id="inp1"/><br/>
 	            <h:inputText id="inp2" required="true" /><h:message for="inp2" showSummary="false" showDetail="true" />
 	        </t:panelTab>
-	
+
 	        <f:subview id="tab2" >
-	            <jsp:include page="tab2.jsp"/>
+                <t:panelTab label="#{example_messages['tabbed_tab2']}" rendered="#{tabbedPaneBean.tab2Visible}">
+                    <h:inputTextarea ></h:inputTextarea>
+                </t:panelTab>
 	        </f:subview>
-	
+
 	        <t:panelTab id="tab3" label="#{example_messages['tabbed_tab3']}" rendered="#{tabbedPaneBean.tab3Visible}">
-	
+
 	            <t:selectOneRadio value="#{testRadioButton.choice}">
 	                    <f:selectItem itemValue="0" itemLabel="First Choice" />
 	                    <f:selectItem itemValue="1" itemLabel="Second Choice" />
 	            </t:selectOneRadio>
-	
-	            <f:verbatim><br/><br/></f:verbatim>
-	
+
+	            <br/><br/>
+
 	            <t:dataTable id="xxx" value="#{testCheckList.testCheckBoxes}"
 	                        var="checkBox"
 	                        preserveDataModel="true"
@@ -157,37 +158,31 @@
 	                    <h:inputText value="#{checkBox.text}"/>
 	                </h:column>
 	            </t:dataTable>
-	
-	                                    <f:verbatim><br/><br/></f:verbatim>
-	
+
+	           <br/><br/>
+
 	            <h:inputText id="inp3"/><f:verbatim><br/></f:verbatim>
 	        </t:panelTab>
-	
-	        <f:verbatim><br/><hr/><br/></f:verbatim>
-	
+
+	        <br/><hr/><br/>
+
 	        <h:selectBooleanCheckbox value="#{tabbedPaneBean.tab1Visible}"/>
 	        <h:outputText value="#{example_messages['tabbed_visible1']}"/>
-	        <f:verbatim><br></f:verbatim>
+	        <br/>
 	        <h:selectBooleanCheckbox value="#{tabbedPaneBean.tab2Visible}"/>
 	        <h:outputText value="#{example_messages['tabbed_visible2']}" />
-	        <f:verbatim><br></f:verbatim>
+	        <br/>
 	        <h:selectBooleanCheckbox value="#{tabbedPaneBean.tab3Visible}"/>
 	        <h:outputText value="#{example_messages['tabbed_visible3']}" />
-	        <f:verbatim><br></f:verbatim>
-	
+	        <br/>
+
 	        <h:commandButton value="#{example_messages['tabbed_submit']}" />
-	
+
 	    </t:panelTabbedPane>
 	</f:subview>
 
 </h:form>
-
-<jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

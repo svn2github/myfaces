@@ -1,11 +1,11 @@
-<%@ page import="java.math.BigDecimal,
-                 java.util.Date"%>
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,52 +26,18 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc" %>
-
 <body>
+ <ui:composition template="/META-INF/templates/pageLayout.xhtml">
+  <ui:define name="body">
 
-<f:view>
+    <h3>Webpages</h3>
+     <a href="http://myfaces.apache.org/" target="_blank">Project Homepage</a><br/>
+     <a href="http://www.apache.org" target="_blank">Apache Software Foundation</a><br/>
+    <h3>Project Members</h3>
+     <a href="http://myfaces.apache.org/team-list.html">MyFaces Team Members</a><br/>
 
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
 
-    <t:panelLayout id="page" layout="#{globalOptions.pageLayout}"
-            styleClass="pageLayout"
-            headerClass="pageHeader"
-            navigationClass="pageNavigation"
-            bodyClass="pageBody"
-            footerClass="pageFooter" >
-
-        <f:facet name="header">
-            <f:subview id="header">
-                <jsp:include page="inc/page_header.jsp" />
-            </f:subview>
-        </f:facet>
-
-        <f:facet name="navigation">
-            <f:subview id="menu" >
-                <jsp:include page="inc/navigation.jsp" />
-            </f:subview>
-        </f:facet>
-
-        <f:facet name="body">
-            <h:panelGroup id="body">
-                <f:verbatim>
-                    <h3>Webpages</h3>
-                     <a href="http://myfaces.apache.org/" target="_blank">Project Homepage</a><br>
-                     <a href="http://www.apache.org" target="_blank">Apache Software Foundation</a><br>
-                    <h3>Project Members</h3>
-                     <a href="http://myfaces.apache.org/community/whoweare.html">MyFaces Team Members</a><br>
-                </f:verbatim>
-            </h:panelGroup>
-        </f:facet>
-
-        <%@include file="inc/page_footer.jsp" %>
-
-    </t:panelLayout>
-
-</f:view>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

@@ -1,8 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,14 +26,9 @@
  * under the License.
  */
 //-->
-<html>
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 
     <t:saveState value="#{calendarBean}"/>
 
@@ -67,7 +65,8 @@
                 currentDayCellClass="currentDayCell" value="#{calendarBean.thirdDate}" renderAsPopup="true"
                 popupTodayString="#{example_messages['popup_today_string']}"
                 popupDateFormat="MM/dd/yyyy" popupWeekString="#{example_messages['popup_week_string']}"
-                helpText="MM/DD/YYYY"/>
+                helpText="MM/DD/YYYY"
+                    forceId="false"/>
 
             <h:inputText value="#{calendarBean.text}"/>
             <h:commandButton value="#{example_messages['js_submit']}" action="#{calendarBean.submitMethod}" />
@@ -75,66 +74,8 @@
 
 
     </h:panelGroup>
-    <%--h:panelGroup id="body">
-
-
-        <f:verbatim><br/></f:verbatim>
-
-        <h:outputText value="#{calendarBean.firstDate}" />
-
-        <f:verbatim><br/><br/><br/></f:verbatim>
-
-        <h:outputText value="#{example_messages['js_popup']}"/>
-
-        <h:form id="calendarForm2">
-
-            <t:outputLabel for="secondOne" value="Second calendar input"/>
-            <t:inputCalendar id="secondOne" monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader" popupButtonStyleClass="standard_bold"
-                currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
-                popupTodayString="#{example_messages['popup_today_string']}" popupWeekString="#{example_messages['popup_week_string']}" helpText="MM/DD/YYYY"/>
-            <h:inputText value="#{calendarBean.text}"/>
-            <h:commandButton value="#{example_messages['js_submit']}" action="#{calendarBean.submitMethod}" />
-        </h:form>
-        
-        <h:outputText value="#{calendarBean.secondDate}" />
-        
-        <f:verbatim><br/><br/></f:verbatim>
-        
-        <h:form id="calendarForm3">
-            <t:inputCalendar monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader"
-                currentDayCellClass="currentDayCell" value="#{calendarBean.secondDate}" renderAsPopup="true"
-                popupTodayString="#{example_messages['popup_today_string']}" popupWeekString="#{example_messages['popup_week_string']}"
-                renderPopupButtonAsImage="true"
-                popupButtonImageUrl="/images/help.gif"/>
-        </h:form>
-
-        <h:form id="calendarForm4">
-
-            <t:dataTable id="data"
-                    styleClass="standardTable"
-                    headerClass="standardTable_Header"
-                    rowClasses="standardTable_Row1,standardTable_Row2"
-                    columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
-                    var="dateHolder"
-                    value="#{calendarBean.dates}"
-                    preserveDataModel="true">
-                <h:column>
-                    <t:inputCalendar monthYearRowClass="yearMonthHeader" weekRowClass="weekHeader"
-                        currentDayCellClass="currentDayCell" value="#{dateHolder.date}" renderAsPopup="true"
-                        popupTodayString="#{example_messages['popup_today_string']}" popupWeekString="#{example_messages['popup_week_string']}" />
-                </h:column>
-            </t:dataTable>
-
-            <h:commandButton value="#{example_messages['js_submit']}"/>
-
-        </h:form>
-    </h:panelGroup--%>
-    <jsp:include page="inc/mbean_source.jsp"/>
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>
 

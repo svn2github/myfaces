@@ -1,10 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -25,118 +26,108 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc" %>
-
 <body>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
+    <h:form>
+        <h:outputText value="Rows to show"/>
+        <h:inputText value="#{scrollerList.rowCount}" />
+        <h:commandButton value="set rowCount"/>
 
-<f:view>
-<h:form>
+        <h:panelGroup id="body">
 
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
+            <t:dataTable id="data"
+                    styleClass="scrollerTable"
+                    headerClass="standardTable_Header"
+                    footerClass="standardTable_Header"
+                    rowClasses="standardTable_Row1,standardTable_Row2"
+                    columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+                    var="car"
+                    value="#{scrollerList.list}"
+                    preserveDataModel="false"
+                    rows="#{scrollerList.rowCount}"
+               >
+               <h:column>
+                   <f:facet name="header">
+                   </f:facet>
+                   <h:outputText value="#{car.id}" />
+               </h:column>
 
-    <h:outputText value="Rows to show"/>
-    <h:inputText value="#{scrollerList.rowCount}" />
-    <h:commandButton value="set rowCount"/>
+               <h:column>
+                   <f:facet name="header">
+                      <h:outputText value="#{example_messages['label_cars']}" />
+                   </f:facet>
+                   <h:outputText value="#{car.type}" />
+               </h:column>
 
-    <h:panelGroup id="body">
-    
-        <t:dataTable id="data"
-                styleClass="scrollerTable"
-                headerClass="standardTable_Header"
-                footerClass="standardTable_Header"
-                rowClasses="standardTable_Row1,standardTable_Row2"
-                columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
-                var="car"
-                value="#{scrollerList.list}"
-                preserveDataModel="false"
-                rows="#{scrollerList.rowCount}"
-           >
-           <h:column>
-               <f:facet name="header">
-               </f:facet>
-               <h:outputText value="#{car.id}" />
-           </h:column>
+               <h:column>
+                   <f:facet name="header">
+                      <h:outputText value="#{example_messages['label_color']}" />
+                   </f:facet>
+                   <h:outputText value="#{car.color}" />
+               </h:column>
 
-           <h:column>
-               <f:facet name="header">
-                  <h:outputText value="#{example_messages['label_cars']}" />
-               </f:facet>
-               <h:outputText value="#{car.type}" />
-           </h:column>
+            </t:dataTable>
 
-           <h:column>
-               <f:facet name="header">
-                  <h:outputText value="#{example_messages['label_color']}" />
-               </f:facet>
-               <h:outputText value="#{car.color}" />
-           </h:column>
+            <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+                <t:dataScroller id="scroll_1"
+                        for="data"
+                        fastStep="10"
+                        pageCountVar="pageCount"
+                        pageIndexVar="pageIndex"
+                        styleClass="scroller"
+                        paginator="true"
+                        paginatorMaxPages="9"
+                        paginatorTableClass="paginator"
+                        paginatorActiveColumnStyle="font-weight:bold;"
+                        immediate="true"
+                        actionListener="#{scrollerList.scrollerAction}"
+                        >
+                    <f:facet name="first" >
+                        <t:graphicImage url="images/arrow-first.gif" border="1" />
+                    </f:facet>
+                    <f:facet name="last">
+                        <t:graphicImage url="images/arrow-last.gif" border="1" />
+                    </f:facet>
+                    <f:facet name="previous">
+                        <t:graphicImage url="images/arrow-previous.gif" border="1" />
+                    </f:facet>
+                    <f:facet name="next">
+                        <t:graphicImage url="images/arrow-next.gif" border="1" />
+                    </f:facet>
+                    <f:facet name="fastforward">
+                        <t:graphicImage url="images/arrow-ff.gif" border="1" />
+                    </f:facet>
+                    <f:facet name="fastrewind">
+                        <t:graphicImage url="images/arrow-fr.gif" border="1" />
+                    </f:facet>
+                </t:dataScroller>
+                <t:dataScroller id="scroll_2"
+                        for="data"
+                        rowsCountVar="rowsCount"
+                        displayedRowsCountVar="displayedRowsCountVar"
+                        firstRowIndexVar="firstRowIndex"
+                        lastRowIndexVar="lastRowIndex"
+                        pageCountVar="pageCount"
+                        immediate="true"
+                        pageIndexVar="pageIndex"
+                        >
+                    <h:outputFormat value="#{example_messages['dataScroller_pages']}" styleClass="standard" >
+                        <f:param value="#{rowsCount}" />
+                        <f:param value="#{displayedRowsCountVar}" />
+                        <f:param value="#{firstRowIndex}" />
+                        <f:param value="#{lastRowIndex}" />
+                        <f:param value="#{pageIndex}" />
+                        <f:param value="#{pageCount}" />
+                    </h:outputFormat>
+                </t:dataScroller>
+            </h:panelGrid>
 
-        </t:dataTable>
+        </h:panelGroup>
+        <t:commandLink value="test" immediate="true" />
 
-        <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
-            <t:dataScroller id="scroll_1"
-                    for="data"
-                    fastStep="10"
-                    pageCountVar="pageCount"
-                    pageIndexVar="pageIndex"
-                    styleClass="scroller"
-                    paginator="true"
-                    paginatorMaxPages="9"
-                    paginatorTableClass="paginator"
-                    paginatorActiveColumnStyle="font-weight:bold;"
-                    immediate="true"
-                    actionListener="#{scrollerList.scrollerAction}"
-                    >
-                <f:facet name="first" >
-                    <t:graphicImage url="images/arrow-first.gif" border="1" />
-                </f:facet>
-                <f:facet name="last">
-                    <t:graphicImage url="images/arrow-last.gif" border="1" />
-                </f:facet>
-                <f:facet name="previous">
-                    <t:graphicImage url="images/arrow-previous.gif" border="1" />
-                </f:facet>
-                <f:facet name="next">
-                    <t:graphicImage url="images/arrow-next.gif" border="1" />
-                </f:facet>
-                <f:facet name="fastforward">
-                    <t:graphicImage url="images/arrow-ff.gif" border="1" />
-                </f:facet>
-                <f:facet name="fastrewind">
-                    <t:graphicImage url="images/arrow-fr.gif" border="1" />
-                </f:facet>
-            </t:dataScroller>
-            <t:dataScroller id="scroll_2"
-                    for="data"
-                    rowsCountVar="rowsCount"
-                    displayedRowsCountVar="displayedRowsCountVar"
-                    firstRowIndexVar="firstRowIndex"
-                    lastRowIndexVar="lastRowIndex"
-                    pageCountVar="pageCount"
-                    immediate="true"
-                    pageIndexVar="pageIndex"
-                    >
-                <h:outputFormat value="#{example_messages['dataScroller_pages']}" styleClass="standard" >
-                    <f:param value="#{rowsCount}" />
-                    <f:param value="#{displayedRowsCountVar}" />
-                    <f:param value="#{firstRowIndex}" />
-                    <f:param value="#{lastRowIndex}" />
-                    <f:param value="#{pageIndex}" />
-                    <f:param value="#{pageCount}" />
-                </h:outputFormat>
-            </t:dataScroller>
-        </h:panelGrid>
-
-    </h:panelGroup>
-    <t:commandLink value="test" immediate="true" />
-        
     </h:form>
-    <jsp:include page="inc/mbean_source.jsp"/>
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

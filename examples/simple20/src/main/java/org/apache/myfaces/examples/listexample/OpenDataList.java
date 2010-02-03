@@ -18,13 +18,12 @@
  */
 package org.apache.myfaces.examples.listexample;
 
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 
 public class OpenDataList extends SortableList
 {
@@ -44,6 +43,9 @@ public class OpenDataList extends SortableList
         headerList.add(new ColumnHeader("Type","200",true));
         headerList.add(new ColumnHeader("Model","300",true));
         columnHeaders = new ListDataModel(headerList);
+
+        // set default sort column
+        setSort(((ColumnHeader)headerList.get(0)).getLabel());
 
         // create list of lists (data)
         List rowList = new ArrayList();
@@ -173,6 +175,7 @@ public class OpenDataList extends SortableList
         List headers = (List) columnHeaders.getWrappedData();
         for (int i=0;i<headers.size() && columnIndex==-1;i++)
         {
+
             ColumnHeader header = (ColumnHeader) headers.get(i);
             if (header.getLabel().equals(columnName))
             {

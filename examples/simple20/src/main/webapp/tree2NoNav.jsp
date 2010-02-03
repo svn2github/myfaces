@@ -1,7 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,13 +26,9 @@
  * under the License.
  */
 //-->
-<html>
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 <h:form>
 
     <t:tree2 id="serverTree" value="#{treeBacker.treeData}" var="node" varNodeToggler="t" clientSideToggle="false" showNav="false">
@@ -38,7 +38,7 @@
                     <t:graphicImage value="/images/yellow-folder-open.png" rendered="#{t.nodeExpanded}" border="0"/>
                     <t:graphicImage value="/images/yellow-folder-closed.png" rendered="#{!t.nodeExpanded}" border="0"/>
                 </h:commandLink>
-                <t:graphicImage value="/images/yellow-folder-closed.png" rendered="#{!t.nodeExpanded && node.leaf}" border="0"/>                
+                <t:graphicImage value="/images/yellow-folder-closed.png" rendered="#{!t.nodeExpanded &amp;&amp; node.leaf}" border="0"/>
                 <h:outputText value="#{node.description}" styleClass="nodeFolder"/>
             </h:panelGroup>
         </f:facet>
@@ -48,18 +48,18 @@
                     <t:graphicImage value="/images/yellow-folder-open.png" rendered="#{t.nodeExpanded}" border="0"/>
                     <t:graphicImage value="/images/yellow-folder-closed.png" rendered="#{!t.nodeExpanded}" border="0"/>
                 </h:commandLink>
-                <t:graphicImage value="/images/yellow-folder-closed.png" rendered="#{!t.nodeExpanded && node.leaf}" border="0"/>
+                <t:graphicImage value="/images/yellow-folder-closed.png" rendered="#{!t.nodeExpanded &amp;&amp; node.leaf}" border="0"/>
                 <h:outputText value="#{node.description}" styleClass="nodeFolder"/>
                 <h:outputText value=" (#{node.childCount})" styleClass="childCount" rendered="#{!empty node.children}"/>
             </h:panelGroup>
         </f:facet>
         <f:facet name="bar-folder">
             <h:panelGroup>
-                <h:commandLink immediate="true" action="#{t.toggleExpanded}" rendered="#{!node.leaf}">                
+                <h:commandLink immediate="true" action="#{t.toggleExpanded}" rendered="#{!node.leaf}">
                     <t:graphicImage value="/images/blue-folder-open.gif" rendered="#{t.nodeExpanded}" border="0"/>
                     <t:graphicImage value="/images/blue-folder-closed.png" rendered="#{!t.nodeExpanded}" border="0"/>
-                </h:commandLink>                    
-                <t:graphicImage value="/images/blue-folder-closed.png" rendered="#{!t.nodeExpanded && node.leaf}" border="0"/>
+                </h:commandLink>
+                <t:graphicImage value="/images/blue-folder-closed.png" rendered="#{!t.nodeExpanded &amp;&amp; node.leaf}" border="0"/>
                 <h:outputText value="#{node.description}" styleClass="nodeFolder"/>
                 <h:outputText value=" (#{node.childCount})" styleClass="childCount" rendered="#{!empty node.children}"/>
             </h:panelGroup>
@@ -76,14 +76,7 @@
     </t:tree2>
 
 </h:form>
-
-<jsp:include page="inc/mbean_source.jsp"/>
-    
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>
-

@@ -1,13 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://myfaces.apache.org/sandbox" prefix="s"%>
-
-<html>
-
-<%@include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -28,60 +26,51 @@
  * under the License.
  */
 //-->
-
 <body>
-
-<f:view>
-    <h:form>
-        <h:panelGrid>     
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
+    <h:form id="testForm">
+        <h:panelGrid>
              <t:messages showDetail="true" showSummary="false"/>
-            <h:outputText value="Example for disabled input value submit"/>                        
-            
-            <f:verbatim>
+            <h:outputText value="Example for disabled input value submit"/>
+
                 <script type="text/javascript"><!--
                     function changeDisabledInputValue() {
-                        var fName = document.getElementById("_idJsp0:firstName");
-                        var lName = document.getElementById("_idJsp0:lastName");
-                        var fullName = document.getElementById("_idJsp0:fullName");
+                        var fName = document.getElementById("testForm:firstName");
+                        var lName = document.getElementById("testForm:lastName");
+                        var fullName = document.getElementById("testForm:fullName");
                         fullName.value = fName.value+" "+lName.value;
-                        fullName.onchange();                        
+                        fullName.onchange();
                     }
-                //--></script>    
-            </f:verbatim>    
-                        
+                //--></script>
+
             <h:outputText value="Person" style="font-weight:bold;"/>
             <h:panelGrid columns="2">
                 <h:outputLabel for="firstName" value="First Name:"/>
                 <h:inputText id="firstName" value="#{inputTextDisabled.firstName}"/>
-                <h:outputLabel for="lastName" value="Last Name:"/>                
-                <h:inputText id="lastName" value="#{inputTextDisabled.lastName}"/>                
+                <h:outputLabel for="lastName" value="Last Name:"/>
+                <h:inputText id="lastName" value="#{inputTextDisabled.lastName}"/>
                 <h:outputLabel for="fullName" value="Full Name:"/>
                 <t:inputText id="fullName" value="#{inputTextDisabled.fullName}" disabledOnClientSide="true">
-                    <f:validateLength maximum="5" minimum="2"/>
-                </t:inputText>                   
+                    <f:validateLength maximum="20" minimum="2"/>
+                </t:inputText>
             </h:panelGrid>
-            <h:outputLink value="#" onclick="changeDisabledInputValue();"><f:verbatim>Change disabled input field's value</f:verbatim></h:outputLink>                
-            <h:commandButton value="Show current values of Person"/>                        
+            <h:outputLink value="#" onclick="changeDisabledInputValue();"><f:verbatim>Change disabled input field's value</f:verbatim></h:outputLink>
+            <h:commandButton value="Show current values of Person"/>
         </h:panelGrid>
-                
-        
+
+
         <h:panelGrid columns="2">
             <h:outputText value="First name of Person:"/>
             <h:outputText value="#{inputTextDisabled.firstName}"/>
             <h:outputText value="Last name of Person:"/>
             <h:outputText value="#{inputTextDisabled.lastName}"/>
             <h:outputText value="Full name of Person:"/>
-            <h:outputText value="#{inputTextDisabled.fullName}"/>            
+            <h:outputText value="#{inputTextDisabled.fullName}"/>
         </h:panelGrid>
 
     </h:form>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

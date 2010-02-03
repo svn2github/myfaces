@@ -1,11 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
-
-<html>
-
-<%@ include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,15 +26,11 @@
  * under the License.
  */
 //-->
-
 <body>
-<f:view>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages"
-                  var="example_messages"/>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <t:div id="hNav_outer">
-    <h:form id="form1">    
+    <h:form id="form1">
         <t:panelNavigation2 id="nav1" layout="list" itemClass="off" activeItemClass="on" openItemClass="on"
                             renderAll="true">
             <t:commandNavigation2 value="#{example_messages['panelnav_products']}" style="padding-left: 0px;">
@@ -68,12 +64,7 @@
         </t:panelNavigation2>
     </h:form>
     </t:div>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-<%@ include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

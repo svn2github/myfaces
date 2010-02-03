@@ -1,12 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:ui="http://java.sun.com/jsf/facelets"
-        xmlns:t="http://myfaces.apache.org/tomahawk">
-<!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,13 +16,45 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-//-->
-<body>
- <ui:composition template="/META-INF/templates/template.xhtml">
-  <ui:define name="body">
-    <h:outputText value="#{example_messages['css_msg']}"/><code>stylesheet</code>-Component<br />
-    <a href='http://myfaces.apache.org'>The MyFaces-Team</a>.
-  </ui:define>
- </ui:composition>
-</body>
-</html>
+package org.apache.myfaces.examples.inputtextdisabled;
+
+/**
+ * @author Ingo Hofmann
+ */
+public class InputTextDisabledBean
+{
+
+    private String firstName;
+    private String lastName;
+    private String fullName;
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    public String getFullName()
+    {
+        return fullName;
+    }
+
+    public void setFullName(String fullName)
+    {
+        this.fullName = fullName;
+    }
+}

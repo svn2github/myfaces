@@ -1,9 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8" %>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,14 +26,9 @@
  * under the License.
  */
 //-->
-
-<%@ include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
-
-<f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 <h:form>
 <h:panelGroup id="body">
 
@@ -43,17 +40,13 @@
         <h:outputText value="#{example_messages['country_edit_table']}" styleClass="standard"/>
     </h:commandLink>
 </h:panelGrid>
-<f:verbatim>
-    <br>
-</f:verbatim>
 
-<f:verbatim>
-    A table rendering the details using an independent table within an cell of the master table.
+    <p>
+    A table rendering the details using an independent table within an cell of the master table.<br/>
     As a resulting effect the each child table will have its own cell width.
-    <br/>
-</f:verbatim>
+    </p>
 
-<t:dataTable id="data" styleClass="standardTable" headerClass="standardTable_Header" footerClass="standardTable_Header"
+    <t:dataTable id="data" styleClass="standardTable" headerClass="standardTable_Header" footerClass="standardTable_Header"
              rowClasses="standardTable_Row1,standardTable_Row2"
              columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column" var="currentCountry"
              value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler">
@@ -102,19 +95,13 @@
     </f:facet>
 </t:dataTable>
 
-<f:verbatim>
-    <br>
-</f:verbatim>
-
-
-<f:verbatim>
+ <p>
     A table rendering the details using an "embedded" table. (embedded="true" at the child datatable).
     In contrast to the above example this will result in a combined table sharing the same layout.
     All cells in on collumn will have the same width.<br />
     To achive this the child table will not renter a table start/end tag and, also the rendering of
     any thead/tfoot/th will be supressed. You have to take care about that fact in your stylesheet(s).
-    <br/>
-</f:verbatim>
+    </p>
 
 <t:dataTable id="data2" styleClass="standardTable" detailStampExpandedDefault="true"
              headerClass="standardTable_Header"
@@ -188,13 +175,7 @@
 </h:panelGroup>
 
 </h:form>
-
-<jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@ include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

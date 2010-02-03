@@ -1,11 +1,11 @@
-<%@ page import="java.math.BigDecimal,
-                 java.util.Date"%>
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,21 +26,14 @@
  * under the License.
  */
 //-->
-
 <body>
-
-<f:view>
-
-    <h:messages id="messageList" />
-    <t:swapImage url="images/myfaces_powered.gif" swapImageUrl="images/myfaces_powered_over.gif" border="none" />
-    <t:swapImage url="/images/myfaces_powered.gif" swapImageUrl="/images/myfaces_powered_over.gif" border="none" />
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
+      <h:messages id="messageList" />
+      <t:swapImage url="images/myfaces_powered.gif" swapImageUrl="images/myfaces_powered_over.gif" border="none" />
+      <t:swapImage url="/images/myfaces_powered.gif" swapImageUrl="/images/myfaces_powered_over.gif" border="none" />
+ 
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

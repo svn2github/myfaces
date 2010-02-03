@@ -1,6 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,34 +26,26 @@
  * under the License.
  */
 //-->
-<html>
-
-	<%@include file="inc/head.inc" %>
-
 <body>
-  	<f:view>	
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
   		<h:form>
 	  		<h:panelGrid columns="1">
 				<h:outputText value="Test if the custom error page correctly works" />
-				
+
 				<h:outputText value="Exceptions without text:" />
 		  		<h:commandButton action="#{testException.npe}" value="simple npe"/>
 		  		<h:commandButton action="#{testException.wrappedRuntimeNpe}" value="wrapped npe in runtime exception"/>
 		  		<h:commandButton action="#{testException.wrappedServletNpe}" value="wrapped npe in ServletException"/>
-		  		
+
 				<h:outputText value="Exceptions with text:" />
-		  		
+
 		  		<h:commandButton action="#{testException.npeTxt}" value="simple npe"/>
 		  		<h:commandButton action="#{testException.wrappedRuntimeNpeTxt}" value="wrapped npe in runtime exception"/>
 		  		<h:commandButton action="#{testException.wrappedServletNpeTxt}" value="wrapped npe in ServletException"/>
 		  	</h:panelGrid>
 		  </h:form>
-
-          <jsp:include page="inc/mbean_source.jsp"/>
-          
-      </f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
 </html>

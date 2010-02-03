@@ -644,3 +644,27 @@ background-color: #EAF4F4;
     }
 
     */
+table.background td.evenReddish,
+table.background td.unevenReddish,
+table.background td.freeReddish {
+    font-family: Verdana, Arial, Helvetica, Sans-Serif;
+    font-size: 10px;
+    text-align: center;
+}
+
+table.background td.unevenReddish {
+    background-color: rgb(240,220,220);
+    color: rgb(230,220,220);
+}
+
+table.background td.evenReddish {
+    background-color: rgb(255,230,230);
+    color: rgb(240,230,230);
+}
+
+table.background td.freeReddish {
+	background-color: rgb(255,0,0);
+	color: rgb(255,0,0);
+}
+
+.test { color: red }

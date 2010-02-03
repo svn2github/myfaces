@@ -1,11 +1,11 @@
-<%@ page import="java.math.BigDecimal,
-                 java.util.Date"%>
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,15 +26,9 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <t:saveState value="#{carconf}"/>
 
     <t:messages id="messageList" styleClass="error" showDetail="true" summaryFormat="{0} "/>
@@ -76,15 +70,15 @@
                 </h:selectOneRadio>
             </h:panelGroup>
 
-            <h:panelGroup ></h:panelGroup>
-            <h:panelGroup ></h:panelGroup>
+            <h:panelGroup />
+            <h:panelGroup />
 
             <f:verbatim>&nbsp;</f:verbatim>
             <h:panelGrid columns="1"  >
-                <%/* t:selectOneRadio is an extension of h:selectOneRadio
+                <!-- t:selectOneRadio is an extension of h:selectOneRadio
                        if layout="spread" selectitems wont get rendered
                        instead t:radio components are getting rendered
-                */%>
+                -->
                 <t:selectOneRadio id="discount2" value="#{carconf.discount2}" layout="spread" styleClass="selectOneRadio">
                     <f:selectItem itemValue="0" itemLabel="#{example_messages['discount_2_0']}" />
                     <f:selectItem itemValue="1" itemLabel="#{example_messages['discount_2_1']}" />
@@ -94,9 +88,9 @@
                     <t:radio for="discount2" index="2" /><f:verbatim>&nbsp;</f:verbatim>
                     <h:inputText value="#{carconf.bandName}" />
                 </h:panelGroup>
-                <%/* t:radio is a myfaces extension. renders the selectItem at the
+                <!-- t:radio is a myfaces extension. renders the selectItem at the
                      given index (starting with 0). the for attribute must be the id
-                     of the corresponding t:selectOneRadio */%>
+                     of the corresponding t:selectOneRadio -->
                 <t:radio for="discount2" index="0" />
                 <t:radio for="discount2" index="1" />
 
@@ -130,13 +124,7 @@
             <h:outputText value="#{example_messages[interiorColor.color]}"/>
         </h:column>
     </h:dataTable>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

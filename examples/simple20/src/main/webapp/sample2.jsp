@@ -1,9 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,20 +26,9 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<!--
-managed beans used:
-    q_form
--->
-
-<f:view>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <h:panelGroup id="body">
 
         <h:messages id="messageList" />
@@ -46,10 +37,11 @@ managed beans used:
             <h:inputTextarea id="text"
                               rows="5"
                               value="#{q_form.text}" required="true" />
-            <f:verbatim><br><br></f:verbatim>
+            <br/>
+            <br/>
             <h:selectOneMenu id="oneoption" value="#{q_form.quoteChar}" >
                 <f:selectItem itemValue="" itemLabel="#{example_messages['sample2_select_quote']}" />
-                <f:selectItem itemValue="\"" itemLabel="Double" />
+                <f:selectItem itemValue="&quot;" itemLabel="Double" />
                 <f:selectItem itemValue="'" itemLabel="Single" />
                 <f:selectItems value="#{q_form.selectOneItems}" />
             </h:selectOneMenu>
@@ -57,25 +49,21 @@ managed beans used:
                 <f:actionListener type="org.apache.myfaces.examples.example2.QuotationController" ></f:actionListener>
             </h:commandButton>
 
-            <f:verbatim><br><br></f:verbatim>
+            <br/>
+            <br/>
             <h:selectManyListbox id="manyoptions" value="#{q_form.selectManyValues}" >
                 <f:selectItem itemValue="" itemLabel="#{example_messages['sample2_select_unquote']}" />
                 <f:selectItems value="#{q_form.selectManyItems}" />
             </h:selectManyListbox>
-            <h:commandButton id="button2" value="#{example_messages['sample2_remove_quote']}" action="none"><f:verbatim><br></f:verbatim>
+            <h:commandButton id="button2" value="#{example_messages['sample2_remove_quote']}" action="none">
+                <br/>
                 <f:actionListener type="org.apache.myfaces.examples.example2.QuotationController" ></f:actionListener>
             </h:commandButton>
 
         </h:form>
 
     </h:panelGroup>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

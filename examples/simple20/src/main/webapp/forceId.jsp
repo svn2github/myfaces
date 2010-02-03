@@ -1,11 +1,11 @@
-<%@ page import="java.math.BigDecimal,
-                 java.util.Date"%>
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,20 +26,9 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<!--
-managed beans used:
-    validateForm
--->
-
-<f:view>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <h:form id="forceIdForm" >
         <h:panelGrid columns="3">
 
@@ -83,42 +72,15 @@ managed beans used:
 
         <br/>
         Table data <b>with</b> forceId/forceIdIndex
-        <br/>        
+        <br/>
         <t:dataTable value="#{forceIdBean.choices}" var="choice">
             <h:column>
                 <t:inputText id="widget" value="#{choice}" forceId="true" forceIdIndex="true"/>
-            </h:column>            
-        </t:dataTable>        
-        
-        <br/>
-<%-- doesn't work yet (see MYFACES-91) 
+            </h:column>
+        </t:dataTable>
 
-        <b>Radio buttons without forceId/forceIdIndex</b>
-        <br/>
-                
-        <h:selectOneRadio id="something" value="#{forceIdBean.currentChoice}">
-            <f:selectItem itemValue="0" itemLabel="foo"/>
-            <f:selectItem itemValue="1" itemLabel="bar"/>
-            <f:selectItem itemValue="2" itemLabel="buzz"/>            
-        </h:selectOneRadio>
-        
-        <b>Radio buttons with forceId/forceIdIndex</b>
-        <br/>
-        
-        <t:selectOneRadio id="something" forceId="true" forceIdIndex="true" value="#{forceIdBean.currentChoice}">
-            <f:selectItem itemValue="0" itemLabel="foo"/>
-            <f:selectItem itemValue="1" itemLabel="bar"/>
-            <f:selectItem itemValue="2" itemLabel="buzz"/>            
-        </t:selectOneRadio>        
---%>        
     </h:form>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

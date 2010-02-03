@@ -18,10 +18,9 @@
  */
 package org.apache.myfaces.examples.picklist;
 
-import java.util.ArrayList;
-
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import java.util.ArrayList;
 
 public class PicklistBean
 {
@@ -38,7 +37,7 @@ public class PicklistBean
 
     public void selectionChanged(ValueChangeEvent evt)
     {
-        String[] selectedValues = (String[]) evt.getNewValue();
+        Object[] selectedValues = (Object[]) evt.getNewValue();
 
         if (selectedValues.length == 0)
         {
@@ -53,7 +52,7 @@ public class PicklistBean
             {
                 if (i > 0)
                     sb.append(", ");
-                sb.append(selectedValues[i]);
+                sb.append((String) selectedValues[i]);
             }
 
             selectedInfo = sb.toString();

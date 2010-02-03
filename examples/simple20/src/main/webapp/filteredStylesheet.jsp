@@ -1,11 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
-<%@include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,10 +26,9 @@
  * under the License.
  */
 //-->
-
 <body>
-
-<f:view>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 	<t:stylesheet path="/css/table.css" filtered="true" />
 
 	<f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
@@ -44,7 +43,7 @@
 		<pre>
 .tableBack
 {
-	background-image: url(&#35;{environmentInfo.requestContextPath}/images/logo.jpg)
+	background-image: url(/images/logo.jpg)
 }
 		</pre>
 	</p>
@@ -60,11 +59,9 @@
 		<h:outputText value="col3.2" />
 		<h:outputText value="col3.3" />
 	</h:panelGrid>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>
+
+

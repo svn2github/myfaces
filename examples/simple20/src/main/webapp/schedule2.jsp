@@ -1,7 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,12 +26,10 @@
  * under the License.
  */
 //-->
-
-<html>
-<%@include file="/inc/head.inc"%>
 <body>
-<f:view>
-	<h:form>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
+ 	<h:form>
 		<!--  The schedule itself -->
 		<t:div style="position: absolute; left: 220px; top: 5px; right: 5px;">
 			<t:schedule value="#{scheduleHandler1.model}" id="schedule1"
@@ -48,10 +50,9 @@
 					value="delete selected entry"
 					rendered="#{scheduleHandler1.model.entrySelected}"/>
 			</h:panelGrid>
-		    <%@include file="/inc/page_footer.jsp" %>
-		    <jsp:include page="inc/mbean_source.jsp"/>
 		</t:div>
 	</h:form>
-</f:view>
+  </ui:define>
+ </ui:composition>
 </body>
 </html>

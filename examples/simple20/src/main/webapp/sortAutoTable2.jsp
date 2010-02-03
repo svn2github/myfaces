@@ -1,9 +1,11 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,58 +26,46 @@
  * under the License.
  */
 //-->
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
-    
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <h:form>
         <t:dataTable id="data"
-                styleClass="standardTable"            
+                styleClass="standardTable"
                 headerClass="standardTable_SortHeader"
                 footerClass="standardTable_Footer"
                 rowClasses="standardTable_Row1,standardTable_Row2"
-                var="car"                                                        
-                value="#{autosortlist.cars}"                 
-                sortColumn="#{autosortlist.sortColumn}" 
+                var="car"
+                value="#{autosortlist.cars}"
+                sortColumn="#{autosortlist.sortColumn}"
                 sortAscending="#{autosortlist.sortAscending}"
                 preserveDataModel="true"
                 preserveSort="true">
 
             <t:column sortable="true" defaultSorted="true">
-                <f:facet name="header">  
-                    <h:outputText value="ID" />                
+                <f:facet name="header">
+                    <h:outputText value="ID" />
                 </f:facet>
-                <h:outputText value="#{car.id}" />            
+                <h:outputText value="#{car.id}" />
             </t:column>
 
             <t:column>
-                <f:facet name="header">  
-                    <h:outputText value="#{example_messages['sort_cartype']}" />                                
+                <f:facet name="header">
+                    <h:outputText value="#{example_messages['sort_cartype']}" />
                 </f:facet>
-                <h:outputText value="#{car.type}" />            
+                <h:outputText value="#{car.type}" />
             </t:column>
 
             <t:column sortable="true">
                 <f:facet name="header">
-                    <h:outputText value="#{example_messages['sort_carcolor']}" />                
+                    <h:outputText value="#{example_messages['sort_carcolor']}" />
                 </f:facet>
-                <h:outputText value="#{car.color}" />            
+                <h:outputText value="#{car.color}" />
             </t:column>
 
-        </t:dataTable>      
+        </t:dataTable>
     </h:form>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

@@ -1,7 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,39 +26,9 @@
  * under the License.
  */
 //-->
-
-<html>
-<head>
-<meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8" />
-<title>MyFaces - the free JSF Implementation</title>
-<link rel="stylesheet" type="text/css" href="css/basic.css" />
-<style>
-table.background td.evenReddish,
-table.background td.unevenReddish,
-table.background td.freeReddish {
-    font-family: Verdana, Arial, Helvetica, Sans-Serif;
-    font-size: 10px;
-    text-align: center;
-}
-
-table.background td.unevenReddish {
-    background-color: rgb(240,220,220);
-    color: rgb(230,220,220);
-}
-
-table.background td.evenReddish {
-    background-color: rgb(255,230,230);
-    color: rgb(240,230,230);
-}
-
-table.background td.freeReddish {
-	background-color: rgb(255,0,0);
-	color: rgb(255,0,0);
-}
-  </style>
-</head>
 <body>
-<f:view>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 	<h:form>
 		<!--  The schedule itself -->
 		<t:div style="position: absolute; left: 220px; top: 5px; right: 5px;">
@@ -77,11 +51,9 @@ table.background td.freeReddish {
 					actionListener="#{scheduleHandler1.addSampleHoliday}"
 					value="add sample holiday" />
 			</h:panelGrid>
-			<%@include file="/inc/page_footer.jsp"%>
-		    <jsp:include page="inc/mbean_source.jsp"/>
 		</t:div>
 	</h:form>
-
-</f:view>
+  </ui:define>
+ </ui:composition>
 </body>
 </html>

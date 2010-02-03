@@ -1,12 +1,11 @@
-<%@ page import="java.util.Random"%>
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<html>
-
-<%@include file="inc/head.inc" %>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -27,26 +26,19 @@
  * under the License.
  */
 //-->
-
 <body>
-
-<f:view>
-
-    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
-
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <t:saveState value="#{fileUploadForm.name}"/>
 
     <h:panelGroup id="body">
 
         <h:messages id="messageList" showSummary="true" />
 
-        <f:verbatim>
-
             <h4>
                 <h:outputText value="#{example_messages['fileupload_title']}"/>
             </h4>
             <table border="1"><tr><td>
-        </f:verbatim>
 
         <h:form id="form1" enctype="multipart/form-data" >
         <h:outputText value=""/>
@@ -59,7 +51,7 @@
                                required="true"
                                maxlength="200000"/>
             <h:message for="fileupload" showDetail="true" />
-            <f:verbatim><br></f:verbatim>
+            <f:verbatim><br/></f:verbatim>
             <h:outputText value="#{example_messages['fileupload_name']}"/>
             <h:inputText value="#{fileUploadForm.name}"/>
             <h:commandButton value="#{example_messages['fileupload_button']}" action="#{fileUploadForm.upload}" />
@@ -82,20 +74,12 @@
                 <h:outputText value="#{example_messages['fileupload_dlimg']}"/>
             </h:outputLink>
         </h:panelGrid>
-        <f:verbatim></td></tr></table><p></f:verbatim>
 
-        <f:verbatim></p><p></f:verbatim>
+        </td></tr></table>
 
-        <f:verbatim></p></f:verbatim>
 
     </h:panelGroup>
-
-    <%@include file="inc/page_footer.jsp" %>
-
-    <jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

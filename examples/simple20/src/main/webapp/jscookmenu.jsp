@@ -1,8 +1,11 @@
-
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,23 +26,11 @@
  * under the License.
  */
 //-->
-
-<html>
-
-<%@include file="inc/head.inc"%>
-
 <body>
-
-<f:view>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 	<h:form>
-	<f:loadBundle
-		basename="org.apache.myfaces.examples.resource.example_messages"
-		var="example_messages" />
     <t:jscookMenu layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
-		<%/* Availaible jscookMenu themes: ThemeIE, ThemeMiniBlack, ThemeOffice, ThemePanel, ThemeGray
-             Availaible jscookMenu layout: hbr, hbl, hur, hul, vbr, vbl, vur, vul
-             respect to Heng Yuan http://www.cs.ucla.edu/~heng/JSCookMenu
-        */%>
 
         <t:navigationMenuItems id="nav_0" value="#{navigationMenu.JSCookMenuNavigationItems}" />
         <t:navigationMenuItem id="nav_1" actionListener="#{navigationMenu.actionListener}"
@@ -103,19 +94,13 @@
             itemLabel="Apache MyFaces Home" action="http://myfaces.apache.org" />
 	</t:jscookMenu>
 
-    <h:outputText value="<p>Dynamic binding: </p>" escape="false"/>
+    <p><h:outputText value="Dynamic binding: " escape="false"/></p>
 
     <t:jscookMenu id="menu2" layout="hbr" theme="ThemeOffice" styleLocation="css/jscookmenu">
         <t:navigationMenuItems id="navitems" value="#{navigationMenu.panelNavigationItems}" />
     </t:jscookMenu>
 </h:form>
-
-<jsp:include page="inc/mbean_source.jsp"/>
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp"%>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>

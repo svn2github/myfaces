@@ -1,7 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,24 +26,9 @@
  * under the License.
  */
 //-->
-<html>
-
-<%@include file="inc/head.inc" %>
-
 <body>
-
-<f:view>
-
-    <!-- Expand/Collapse Handled By Client -->
-
-    <%--
-    NOTE: There is no commandLink for the folders because the toggling of expand/collapse is handled on the client
-    via javascript.  We have a command link for document but that is really application specific.  In a real application
-    you would likely specify an action method/listener and do something interesting with the node identifier that is
-    submitted.
-
-    First child in the expand/collapse facet should be image (if any)
-    --%>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
     <span style="font-family:verdana">
         <b>Tree2 w/client-side (default) toggle</b><br/>
     </span>
@@ -98,7 +87,7 @@
         <b>Tree2 w/server-side toggle</b><br/>
     </span>
     <br/>
-    
+
     <!-- Expand/Collapse Handled By Server -->
     <t:tree2 id="serverTree" value="#{treeBacker.treeData}" var="node" varNodeToggler="t" clientSideToggle="false">
         <f:facet name="person">
@@ -135,14 +124,7 @@
         </f:facet>
     </t:tree2>
 </h:form>
-
-<jsp:include page="inc/mbean_source.jsp"/>    
-
-</f:view>
-
-<%@include file="inc/page_footer.jsp" %>
-
+  </ui:define>
+ </ui:composition>
 </body>
-
 </html>
-

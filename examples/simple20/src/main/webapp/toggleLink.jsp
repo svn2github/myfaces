@@ -1,7 +1,11 @@
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
 <!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,16 +26,13 @@
  * under the License.
  */
 //-->
-<html>
-
-<%@include file="inc/head.inc" %>
-
 <body>
-	<f:view>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 		<h:form>
 			<h:outputText value="Allows toggling between View/Edit modes. Click on the link to enter a value. An entry less than 5 characters triggers validation error. When the page is re-displayed after a validation error, the component 'remembers' that it is in Edit mode. "/>
 
-			<f:verbatim> <br/><br/> </f:verbatim>
+			<br/><br/>
 
 			<t:togglePanel>
 				<t:toggleLink for="code">
@@ -49,8 +50,10 @@
 			</t:togglePanel>
 			<t:messages showDetail="true"/>
 			<h:commandButton value="Update"/>
-			
-			<f:verbatim> <br/><hr/><br/> </f:verbatim>
+
+			<br/>
+            <hr/>
+            <br/>
 
 			<t:togglePanel>
 				<t:toggleGroup>
@@ -67,14 +70,12 @@
 					<h:outputLabel for="lastName" value="Last Name"/>
 					<t:inputText id="lastName"	value="#{toggleBean.lastName}"/>
 
-					<h:commandButton value="Update"/>	
+					<h:commandButton value="Update"/>
 				</t:div>
 			</t:togglePanel>
 
 		</h:form>
-	</f:view>
+  </ui:define>
+ </ui:composition>
 </body>
-
-<%@include file="inc/page_footer.jsp" %>
-
 </html>
