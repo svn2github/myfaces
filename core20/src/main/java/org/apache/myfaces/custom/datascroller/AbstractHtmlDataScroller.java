@@ -18,9 +18,10 @@
  */
 package org.apache.myfaces.custom.datascroller;
 
+import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.ActionSource;
+import javax.faces.component.ActionSource2;
 import javax.faces.component.PartialStateHolder;
 import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
@@ -73,7 +74,7 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
     clazz = "org.apache.myfaces.custom.datascroller.HtmlDataScroller",
     tagClass = "org.apache.myfaces.custom.datascroller.HtmlDataScrollerTag")
 public abstract class AbstractHtmlDataScroller extends UIPanel
-    implements ActionSource, ClientBehaviorHolder, UserRoleAware, DisplayValueOnlyCapable,
+    implements ActionSource2, ClientBehaviorHolder, UserRoleAware, DisplayValueOnlyCapable,
     DisplayValueOnlyAware, ForceIdAware, UniversalProperties, StyleAware
 {
 
@@ -622,6 +623,19 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
         throw new UnsupportedOperationException(
                         "defining an action is not supported. use an actionlistener");
     }
+    
+    public MethodExpression getActionExpression()
+    {
+        // not used
+        return null;
+    }
+
+    public void setActionExpression(MethodExpression action)
+    {
+        throw new UnsupportedOperationException(
+                        "defining an action is not supported. use an actionlistener");
+    }
+
 
     /**
      * @see javax.faces.component.ActionSource#setActionListener(javax.faces.el.MethodBinding)
