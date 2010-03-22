@@ -50,9 +50,14 @@
 					value="delete selected entry"
 					rendered="#{scheduleHandler1.model.entrySelected}"/>
 			</h:panelGrid>
+
+            <ui:include src="/META-INF/templates/mbean_source.xhtml"/>
+            <ui:include src="/META-INF/templates/footer.xhtml"/>
 		</t:div>
 	</h:form>
   </ui:define>
+  <ui:define name="mbean_source"></ui:define>
+  <ui:define name="footer"></ui:define>
  </ui:composition>
 </body>
 </html>

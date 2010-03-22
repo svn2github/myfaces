@@ -15,22 +15,10 @@
 <h:body>
 <ui:insert name="body"/>
 <ui:insert name="mbean_source">
-  <br/>
-  <br/>
-  
-  <t:dataList value="#{accessedBeans.beanList}" var="accessedBean" layout="unorderedList">
-          <h:outputText value="Usage of bean with name : "/>
-          <h:outputText value="#{accessedBean.name}"/>
-          <h:outputText value=" and class : "/>
-          <h:outputText value="#{accessedBean.clazz}"/>
-  </t:dataList>
+    <ui:include src="/META-INF/templates/mbean_source.xhtml"/>
 </ui:insert>
 <ui:insert name="footer">
-  <br/>
-  <br/>
-  <a href="home.jsf">[HOME]</a>
-  &nbsp;
-  <a href="#{request.requestURI}.source">[SOURCE]</a>
-  </ui:insert>
+    <ui:include src="/META-INF/templates/footer.xhtml"/>
+</ui:insert>
 </h:body>
 </html>
