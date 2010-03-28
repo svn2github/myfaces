@@ -97,8 +97,10 @@ function myFacesKupuFormSubmit(){
 	}
 	
 	originalFormOnSubmit = myFacesKupuOriginalFormsOnSubmits[0]; // TODO : Fix (How do we get the calling frame ??)
-	if( originalFormOnSubmit )
+	if( originalFormOnSubmit ){
 		return originalFormOnSubmit();
+	}
+	return true;
 }
 
 // Redefine or extend buggy kupu functions
