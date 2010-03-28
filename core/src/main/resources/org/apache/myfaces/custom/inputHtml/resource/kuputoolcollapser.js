@@ -14,13 +14,13 @@ this.kuputoolcollapser = new function() {
             var cookie = document.cookie;
             var reg = /initial_state=([^;]+);?/;
             var match = cookie.match(reg);
-            if (match) {
+            if (match) { /*ignore 558 */
                 eval(unescape(match[0]));
             };
         };
         for (var i=0; i < this.parent.childNodes.length; i++) {
             var child = this.parent.childNodes[i];
-            if (child.className == 'kupu-toolbox') {
+            if (child.className && child.className.match(/\bkupu-toolbox\b/)) {
                 var heading = child.getElementsByTagName('h1')[0];
                 if (!heading) {
                     throw('heading not found by collapser for toolbox ' +
@@ -54,7 +54,7 @@ this.kuputoolcollapser = new function() {
                     };
                 };
                 addEventHandler(heading, 'click', handler, body, heading);
-                if (initial_state[child.id] === undefined || 
+                if (initial_state[child.id] === undefined ||
                         initial_state[child.id] == '0') {
                     body.style.display = 'none';
                 } else {
@@ -67,7 +67,7 @@ this.kuputoolcollapser = new function() {
                 child.open_handler = wrap_openhandler(body, heading);
             };
         };
-		// TODO : Check this
+
         addEventHandler(window, 'beforeunload', this.saveState, this);
     };
 
@@ -78,7 +78,7 @@ this.kuputoolcollapser = new function() {
             currchild = currchild.nextSibling;
             if (!currchild) {
                 throw('body not found by collapser for toolbox ' +
-                        child.id);
+                        tool.id);
             };
         };
         return currchild;
@@ -98,12 +98,12 @@ this.kuputoolcollapser = new function() {
             var body = this.getToolBody(child);
             current_state[child.id] = body.style.display == 'none' ? '0' : '1';
         };
-        
+
         var exp = new Date();
         // 100 years before state is lost... should be enough ;)
         exp.setTime(exp.getTime() + (100 * 365 * 24 * 60 * 60 * 1000));
-        var cookie = 'initial_state=' + 
-                            escape(this.serializeMapping(current_state)) + 
+        var cookie = 'initial_state=' +
+                            escape(this.serializeMapping(current_state)) +
                             ';' +
                             'expires=' + exp.toGMTString() + ';' +
                             'path=/';
@@ -112,7 +112,7 @@ this.kuputoolcollapser = new function() {
 
     ToolCollapser.prototype.serializeMapping = function(mapping) {
         /* serializes the config dict into a string that can be evalled
-            
+
             works only for dicts with string values
         */
         if (typeof(mapping) == 'string') {
@@ -124,7 +124,7 @@ this.kuputoolcollapser = new function() {
             if (!first) {
                 ret += ', ';
             };
-            ret += "'" + key + "': " + 
+            ret += "'" + key + "': " +
                 this.serializeMapping(mapping[key]);
             first = false;
         };

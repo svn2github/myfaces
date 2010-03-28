@@ -13,7 +13,9 @@ KupuSpellChecker.prototype = new KupuTool;
 
 KupuSpellChecker.prototype.initialize = function(editor) {
     this.editor = editor;
-    addEventHandler(this.button, 'click', this.check, this);
+    if (this.button) {
+        addEventHandler(this.button, 'click', this.check, this);
+    }
 };
 
 KupuSpellChecker.prototype.check = function() {
@@ -26,7 +28,7 @@ KupuSpellChecker.prototype.check = function() {
                                     this,
                                     request).execute;
     var result = this.getCurrentContents();
-    result = escape(result.strip().replace('\n', ' ').reduceWhitespace());
+    result = encodeURIComponent(result.reduceWhitespace().strip());
     request.send('text=' + result);
 };
 
@@ -53,7 +55,7 @@ KupuSpellChecker.prototype.getCurrentContents = function() {
     var bits = [];
     while (true) {
         var node = iterator.next();
-        if (!node) {
+        if (!node || node.nodeName.toLowerCase() == 'body') {
             break;
         };
         while (this.skip_tags.contains(node.nodeName.toLowerCase())) {
@@ -86,7 +88,7 @@ KupuSpellChecker.prototype.displayUnrecognized = function(mapping) {
     html = html.replace(/<meta[^>]*http-equiv="[Cc]ontent-[Tt]ype"[^>]*>/gm, 
                         '');
     win.document.write('<html>' + html + '</html>');
-    win.deentitize = function(str) {return str.deentitize()};
+    win.deentitize = function(str) {return str.deentitize();};
     win.document.close();
     if (!win.document.getElementsByTagName('body').length) {
         addEventHandler(win, 'load', this.continueDisplay, this, win, mapping);
@@ -113,7 +115,7 @@ KupuSpellChecker.prototype.continueDisplayHelper = function(win, mapping) {
 
 KupuSpellChecker.prototype.displayHelperNodeLoop = function(iterator, node, 
                                                                 win, mapping) {
-    if (!node) {
+    if (!node || node.nodeName.toLowerCase() == 'body') {
         return;
     };
     var next = iterator.next();
@@ -195,6 +197,5 @@ KupuSpellChecker.prototype.xmlToMapping = function(docnode) {
         };
         result[word] = replacements;
     };
-    var attrs = [];
     return result;
 };

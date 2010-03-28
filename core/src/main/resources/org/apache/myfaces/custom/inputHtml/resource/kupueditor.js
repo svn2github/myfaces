@@ -7,7 +7,6 @@
  * Contributors see CREDITS.txt.
  *
  *****************************************************************************/
-
 // $Id$
 
 //----------------------------------------------------------------------------
@@ -30,12 +29,19 @@ function KupuDocument(iframe) {
     this.document = this.window.document;
 
     this._browser = _SARISSA_IS_IE ? 'IE' : 'Mozilla';
-    
+    var DEPRECATED = { 'contentReadOnly': 'readonly', 'styleWithCSS': 'useCSS' };
     // methods
     this.execCommand = function(command, arg) {
         /* delegate execCommand */
         if (arg === undefined) arg = null;
-        this.document.execCommand(command, false, arg);
+        try {
+            this.document.execCommand(command, false, arg);
+        } catch(e) {
+            command = DEPRECATED[command];
+            if (command) {
+                this.document.execCommand(command, false, !arg);
+            };
+        };
     };
     
     this.reloadSource = function() {
@@ -84,10 +90,12 @@ function KupuEditor(document, config, logger) {
     this.config = config; // an object that holds the config values
     this.log = logger; // simple logger object
     this.tools = {}; // mapping id->tool
-    this.filters = new Array(); // contentfilters
+    this.filters = []; // contentfilters
+    this.serializer = new XMLSerializer();
     
     this._designModeSetAttempts = 0;
     this._initialized = false;
+    this._wantDesignMode = false;
 
     // some properties to save the selection, required for IE to remember 
     // where in the iframe the selection was
@@ -115,7 +123,6 @@ function KupuEditor(document, config, logger) {
         } else {
             this._setDesignModeWhenReady();
         };
-        this.logMessage(_('Editor initialized'));
     };
 
     this.setContextMenu = function(menu) {
@@ -150,13 +157,13 @@ function KupuEditor(document, config, logger) {
     this.updateStateHandler = function(event) {
         /* check whether the event is interesting enough to trigger the 
         updateState machinery and act accordingly */
-        var interesting_codes = new Array(8, 13, 37, 38, 39, 40, 46);
+        var interesting_codes = [8, 13, 37, 38, 39, 40, 46];
         // unfortunately it's not possible to do this on blur, since that's
         // too late. also (some versions of?) IE 5.5 doesn't support the
         // onbeforedeactivate event, which would be ideal here...
         this._saveSelection();
 
-        if (event.type == 'click' || event.type=='mouseup' ||
+        if (event.type == 'click' ||
                 (event.type == 'keyup' && 
                     interesting_codes.contains(event.keyCode))) {
             // Filthy trick to make the updateState method get called *after*
@@ -181,8 +188,8 @@ function KupuEditor(document, config, logger) {
                     break;
                 } else {
                     this.logMessage(
-                        _('Exception while processing updateState on ' +
-                            '${id}: ${msg}', {'id': id, 'msg': e}), 2);
+                        'Exception while processing updateState on ' +
+                            '${id}: ${msg}', {'id': id, 'msg': e}, 2);
                 };
             };
         };
@@ -252,7 +259,7 @@ function KupuEditor(document, config, logger) {
             request.open("PUT", this.config.dst, false);
             request.setRequestHeader("Content-type", this.config.content_type);
             request.send(contents);
-            this.handleSaveResponse(request,redirect)
+            this.handleSaveResponse(request,redirect);
         };
     };
     
@@ -333,23 +340,15 @@ function KupuEditor(document, config, logger) {
             this._restoreSelection();
         } else {
             this.focusDocument();
-            if (command != 'useCSS') {
+            if (command != 'styleWithCSS') {
                 this.content_changed = true;
-                // note the negation: the argument doesn't work as
-                // expected...
                 // Done here otherwise it doesn't always work or gets lost
                 // after some commands
-                this.getDocument().execCommand('useCSS', !this.config.use_css);
+                this.getDocument().execCommand('styleWithCSS', false);
             };
         };
         this.getDocument().execCommand(command, param);
-        var message = _('Command ${command} executed', {'command': command});
-        if (param) {
-            message = _('Command ${command} executed with parameter ${param}',
-                            {'command': command, 'param': param});
-        }
         this.updateState();
-        this.logMessage(message);
     };
 
     this.getSelection = function() {
@@ -358,9 +357,12 @@ function KupuEditor(document, config, logger) {
         return this.getDocument().getSelection();
     };
 
-    this.getSelectedNode = function() {
+    this.getSelectedNode = function(allowmulti) {
         /* returns the selected node (read: parent) or none */
-        return this.getSelection().parentElement();
+        /* if allowmulti is true, returns the parent of all ranges in the
+           selection (in the rare case that selection has more than one
+           range) */
+        return this.getSelection().parentElement(allowmulti);
     };
 
     this.getNearestParentOfType = function(node, type) {
@@ -368,7 +370,7 @@ function KupuEditor(document, config, logger) {
         var type = type.toLowerCase();
         while (node) {
             if (node.nodeName.toLowerCase() == type) {
-                return node
+                return node;
             }   
             var node = node.parentNode;
         }
@@ -421,7 +423,7 @@ function KupuEditor(document, config, logger) {
 
     this.focusDocument = function() {
         this.getDocument().getWindow().focus();
-    }
+    };
 
     this.logMessage = function(message, severity) {
         /* log a message using the logger, severity can be 0 (message, default), 1 (warning) or 2 (error) */
@@ -479,7 +481,7 @@ function KupuEditor(document, config, logger) {
     this._saveCallback = function(request, redirect) {
         /* callback for Sarissa */
         if (request.readyState == 4) {
-            this.handleSaveResponse(request, redirect)
+            this.handleSaveResponse(request, redirect);
         };
     };
     
@@ -503,26 +505,78 @@ function KupuEditor(document, config, logger) {
         */
     };
 
-    this._initializeEventHandlers = function() {
-        /* attache the event handlers to the iframe */
-        // Initialize DOM2Event compatibility
-        // XXX should come back and change to passing in an element
-        this._addEventHandler(this.getInnerDocument(), "click", this.updateStateHandler, this);
-        this._addEventHandler(this.getInnerDocument(), "dblclick", this.updateStateHandler, this);
-        this._addEventHandler(this.getInnerDocument(), "keyup", this.updateStateHandler, this);
-        this._addEventHandler(this.getInnerDocument(), "keyup", function() {this.content_changed = true}, this);
-        this._addEventHandler(this.getInnerDocument(), "mouseup", this.updateStateHandler, this);
+    // Fixup Mozilla breaking image src url when dragging images
+    this.imageInserted = function(event) {
+        var node = event.target;
+        if (node && node.nodeType==1) {
+            var nodes = (/^img$/i.test(node.nodeName))?[node]:node.getElementsByTagName('img');
+            for (var i = 0; i < nodes.length; i++) {
+                node = nodes[i];
+                var src = node.getAttribute('kupu-src');
+                if (src) { node.src = src; };
+            };
+        };
+    };
+    // Prevent Mozilla resizing of images
+    this.imageModified = function(event) {
+        var node = event.target;
+        if (node && (/^img$/i.test(node.nodeName))) {
+            if (event.attrName=="style" && event.attrChange==1 && (/height|width/.test(event.newValue))) {
+                timer_instance.registerFunction(this, this._clearStyle, 1, node);
+            }
+        };
+    };
+    // Make sure image size is set on width/height attributes not style.
+    this._clearStyle = function(node) {
+        var w = node.width;
+        var h = node.height;
+        node.style.width = "";
+        node.style.height = "";
+        if (this.okresize) {
+            if (w) {node.width = w;};
+            if (h) {node.height = h;};
+        };
+    };
+    this._cancelResize = function(evt) {
+        return false;
     };
 
+    this._initializeEventHandlers = function() {
+        /* attache the event handlers to the iframe */
+        var win = this.getDocument().getWindow();
+        var idoc = this.getInnerDocument();
+        var e = this._addEventHandler;
+        var validattrs =  this.xhtmlvalid.tagAttributes.img;
+        this.okresize = validattrs.contains('width') && validattrs.contains('height');
+        // Set design mode on resize event:
+        e(win, 'resize', this._resizeHandler, this);
+        // Initialize DOM2Event compatibility
+        // XXX should come back and change to passing in an element
+        e(idoc, "click", this.updateStateHandler, this);
+        e(idoc, "dblclick", this.updateStateHandler, this);
+        e(idoc, "keyup", this.updateStateHandler, this);
+        e(idoc, "keyup", function() {this.content_changed = true;}, this);
+        e(idoc, "mouseup", this.updateStateHandler, this);
+        if (this.getBrowserName() == "IE") {
+            e(idoc, "selectionchange", this.onSelectionChange, this);
+            if (!this.okresize) { e(idoc.documentElement, "resizestart", this._cancelResize, this);};
+        } else {
+            e(idoc, "DOMNodeInserted", this.imageInserted, this);
+            e(idoc, "DOMAttrModified", this.imageModified, this);
+        }
+    };
+
+    this._resizeHandler = function() {
+        // Use the resize event to trigger setting design mode
+        if (this._wantDesignMode) {
+            this._setDesignModeWhenReady();
+        }
+    };
+    
     this._setDesignModeWhenReady = function() {
-        /* Rather dirty polling loop to see if Mozilla is done doing it's
-            initialization thing so design mode can be set.
-        */
-        this._designModeSetAttempts++;
-        if (this._designModeSetAttempts > 25) {
-            alert(_('Couldn\'t set design mode. Kupu will not work on this browser.'));
-            return;
-        };
+        /* Try to set design mode, but if we fail then just wait for a
+         * resize event.
+         */
         var success = false;
         try {
             this._setDesignMode();
@@ -564,12 +618,15 @@ function KupuEditor(document, config, logger) {
 			// END myFaces special code.
         };
         if (success) {
+            this._wantDesignMode = false;
             // provide an 'afterInit' method on KupuEditor.prototype
             // for additional bootstrapping (after editor init)
             if (this.afterInit) {
                 this.afterInit();
             };
-        };
+        } else {
+            this._wantDesignMode = true; // Enable the resize trigger
+        }
     };
 
     this._setDesignMode = function() {
@@ -584,21 +641,25 @@ function KupuEditor(document, config, logger) {
          selection in the iframe gets lost. We only save if the current 
          selection in the document */
         if (this._isDocumentSelected()) {
-            var currange = this.getInnerDocument().selection.createRange();
+            var cursel = this.getInnerDocument().selection;
+            var currange = cursel.createRange();
+            if (cursel.type=="Control" && currange.item(0).nodeName.toLowerCase()=="body") {
+                /* This happens when you try to active an embedded
+                 * object */
+                this._restoreSelection(true);
+                return;
+            }
             this._previous_range = currange;
         };
     };
 
-    this._restoreSelection = function() {
+    this._restoreSelection = function(force) {
         /* re-selects the previous selection in IE. We only restore if the
         current selection is not in the document.*/
-        if (this._previous_range && !this._isDocumentSelected()) {
+        if (this._previous_range && (force || !this._isDocumentSelected())) {
             try {
                 this._previous_range.select();
-            } catch (e) {
-                alert("Error placing back selection");
-                this.logMessage(_('Error placing back selection'));
-            };
+            } catch (e) { };
         };
     };
     
@@ -607,7 +668,13 @@ function KupuEditor(document, config, logger) {
         this._restoreSelection = function() {};
     }
 
+    this.onSelectionChange = function(event) {
+        this._saveSelection();
+    };
+
     this._isDocumentSelected = function() {
+        if (this.suspended) return false;
+
         var editable_body = this.getInnerDocument().getElementsByTagName('body')[0];
         try {
             var selrange = this.getInnerDocument().selection.createRange();
@@ -647,9 +714,9 @@ function KupuEditor(document, config, logger) {
         var bodies = transform.getElementsByTagName('body');
         var data = '';
         for (var i = 0; i < bodies.length; i++) {
-            data += Sarissa.serialize(bodies[i]);
+            data += this.serializer.serializeToString(bodies[i]);
         }
-        return this.escapeEntities(data);
+        return this.layoutsource(this.escapeEntities(data));
     };
 
     this.getHTMLBody = function() {
@@ -660,16 +727,35 @@ function KupuEditor(document, config, logger) {
         for (var i = 0; i < bodies.length; i++) {
             data += bodies[i].innerHTML;
         }
-        return this.escapeEntities(data);
+        return this.layoutsource(this.escapeEntities(data));
     };
 
     // If we have multiple bodies this needs to remove the extras.
     this.setHTMLBody = function(text) {
-        var bodies = this.getInnerDocument().documentElement.getElementsByTagName('body');
+        var doc = this.getInnerDocument().documentElement;
+        var bodies = doc.getElementsByTagName('body');
         for (var i = 0; i < bodies.length-1; i++) {
             bodies[i].parentNode.removeChild(bodies[i]);
         }
+        if (_SARISSA_IS_IE) { /* IE converts certain comments to visible text so strip them */
+            text = text.replace(/<!--\[.*?-->/g, '');
+
+        } else { /* Mozilla doesn't understand strong/em */
+            var fixups = { 'strong':'b', 'em':'i' };
+
+            text = text.replace(/<(\/?)(strong|em)\b([^>]*)>/gi, function(all,close,tag,attrs) {
+                tag = fixups[tag.toLowerCase()];
+                return '<'+close+tag+attrs+'>';
+            });
+        };
+        text = text.replace(/<p>(<hr.*?>)<\/p>/g,'$1');
         bodies[bodies.length-1].innerHTML = text;
+        /* Mozilla corrupts dragged images, so save the src attribute */
+        var nodes = doc.getElementsByTagName('img');
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            node.setAttribute('kupu-src', node.src);
+        };
     };
 
     this._fixXML = function(doc, document) {
@@ -694,23 +780,23 @@ function KupuEditor(document, config, logger) {
             title.appendChild(titletext);
         };
         // create a closing element for all elements that require one in XHTML
-        var dualtons = new Array('a', 'abbr', 'acronym', 'address', 'applet', 
-                                    'b', 'bdo', 'big', 'blink', 'blockquote', 
-                                    'button', 'caption', 'center', 'cite', 
-                                    'comment', 'del', 'dfn', 'dir', 'div',
-                                    'dl', 'dt', 'em', 'embed', 'fieldset',
-                                    'font', 'form', 'frameset', 'h1', 'h2',
-                                    'h3', 'h4', 'h5', 'h6', 'i', 'iframe',
-                                    'ins', 'kbd', 'label', 'legend', 'li',
-                                    'listing', 'map', 'marquee', 'menu',
-                                    'multicol', 'nobr', 'noembed', 'noframes',
-                                    'noscript', 'object', 'ol', 'optgroup',
-                                    'option', 'p', 'pre', 'q', 's', 'script',
-                                    'select', 'small', 'span', 'strike', 
-                                    'strong', 'style', 'sub', 'sup', 'table',
-                                    'tbody', 'td', 'textarea', 'tfoot',
-                                    'th', 'thead', 'title', 'tr', 'tt', 'u',
-                                    'ul', 'xmp');
+        var dualtons = ['a', 'abbr', 'acronym', 'address', 'applet', 
+            'b', 'bdo', 'big', 'blink', 'blockquote', 
+            'button', 'caption', 'center', 'cite', 
+            'comment', 'del', 'dfn', 'dir', 'div',
+            'dl', 'dt', 'em', 'embed', 'fieldset',
+            'font', 'form', 'frameset', 'h1', 'h2',
+            'h3', 'h4', 'h5', 'h6', 'i', 'iframe',
+            'ins', 'kbd', 'label', 'legend', 'li',
+            'listing', 'map', 'marquee', 'menu',
+            'multicol', 'nobr', 'noembed', 'noframes',
+            'noscript', 'object', 'ol', 'optgroup',
+            'option', 'p', 'pre', 'q', 's', 'script',
+            'select', 'small', 'span', 'strike', 
+            'strong', 'style', 'sub', 'sup', 'table',
+            'tbody', 'td', 'textarea', 'tfoot',
+            'th', 'thead', 'title', 'tr', 'tt', 'u',
+            'ul', 'xmp'];
         // XXX I reckon this is *way* slow, can we use XPath instead or
         // something to speed this up?
         for (var i=0; i < dualtons.length; i++) {
@@ -750,7 +836,7 @@ function KupuEditor(document, config, logger) {
 
     this._fixupSingletons = function(xml) {
         return xml.replace(/<([^>]+)\/>/g, "<$1 />");
-    }
+    };
     this._serializeOutputToString = function(transform) {
         // XXX need to fix this.  Sometimes a spurious "\n\n" text 
         // node appears in the transform, which breaks the Moz 
@@ -760,13 +846,13 @@ function KupuEditor(document, config, logger) {
             var contents =  '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" ' + 
                             '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n' + 
                             '<html xmlns="http://www.w3.org/1999/xhtml">' +
-                            Sarissa.serialize(transform.getElementsByTagName("head")[0]) +
-                            Sarissa.serialize(transform.getElementsByTagName("body")[0]) +
+                            this.serializer.serializeToString(transform.getElementsByTagName("head")[0]) +
+                            this.serializer.serializeToString(transform.getElementsByTagName("body")[0]) +
                             '</html>';
         } else {
             var contents = '<html>' + 
-                            Sarissa.serialize(transform.getElementsByTagName("head")[0]) +
-                            Sarissa.serialize(transform.getElementsByTagName("body")[0]) +
+                            this.serializer.serializeToString(transform.getElementsByTagName("head")[0]) +
+                            this.serializer.serializeToString(transform.getElementsByTagName("body")[0]) +
                             '</html>';
         };
 
@@ -778,32 +864,57 @@ function KupuEditor(document, config, logger) {
         
         return contents;
     };
+    this.layoutsource = function(data) {
+        data = data.replace(
+            /\s*(<(p|div|h.|ul|ol|dl|menu|dir|pre|blockquote|address|center|table|thead|tbody|tfoot|tr|th|td))\b/ig, '\n$1');
+        data = data.replace(
+            /\s*(<\/(p|div|h.|ul|ol|dl|menu|dir|pre|blockquote|address|center|table|thead|tbody|tfoot|tr|th|td)>)\s*/ig, '$1\n');
+        data = data.replace(/\<pre\>((?:.|\n)*?)\<\/pre\>/gm, function(s) {
+            return s.replace(/<br\b[^>]*>/gi,'\n');
+            });
+        return data.strip();
+    };
     this.escapeEntities = function(xml) {
         // XXX: temporarily disabled
+        xml = xml.replace(/\xa0/g, '&nbsp;');
         return xml;
         // Escape non-ascii characters as entities.
-        return xml.replace(/[^\r\n -\177]/g,
-            function(c) {
-            return '&#'+c.charCodeAt(0)+';';
-        });
-    }
+//         return xml.replace(/[^\r\n -\177]/g,
+//             function(c) {
+//             return '&#'+c.charCodeAt(0)+';';
+//         });
+    };
 
     this.getFullEditor = function() {
         var fulleditor = this.getDocument().getEditable();
-        while (!/kupu-fulleditor/.test(fulleditor.className)) {
+        while (!(/kupu-fulleditor/.test(fulleditor.className))) {
             fulleditor = fulleditor.parentNode;
         }
         return fulleditor;
-    }
+    };
     // Control the className and hence the style for the whole editor.
     this.setClass = function(name) {
         this.getFullEditor().className += ' '+name;
-    }
+    };
     
     this.clearClass = function(name) {
         var fulleditor = this.getFullEditor();
         fulleditor.className = fulleditor.className.replace(' '+name, '');
-    }
+    };
+
+    var busycount = 0;
+    this.busy = function() {
+        if (busycount <= 0) {
+            this.setClass('kupu-busy');
+        }
+        busycount++;
+    };
+    this.notbusy = function(force) {
+        busycount = force?0:busycount?busycount-1:0;
+        if (busycount <= 0) {
+            this.clearClass('kupu-busy');
+        }
+    };
 
     this.suspendEditing = function() {
         this._previous_range = this.getSelection().getRange();
@@ -815,32 +926,38 @@ function KupuEditor(document, config, logger) {
             var body = this.getInnerDocument().getElementsByTagName('body')[0];
             body.setAttribute('contentEditable', 'false');
         } else {
-
-            this.getInnerDocument().designMode = "Off";
-            var iframe = this.getDocument().getEditable();
-            iframe.style.position = iframe.style.position?"":"relative"; // Changing this disables designMode!
+            this.getDocument().execCommand('contentReadOnly', 'true');
         }
         this.suspended = true;
-    }
+    };
     
     this.resumeEditing = function() {
         if (!this.suspended) {
             return;
         }
-        this.suspended = false;
         this.clearClass('kupu-modal');
         for (var id in this.tools) {
             this.tools[id].enable();
         }
         if (this.getBrowserName() == "IE") {
-            this._restoreSelection();
             var body = this.getInnerDocument().getElementsByTagName('body')[0];
             body.setAttribute('contentEditable', 'true');
+            this._restoreSelection();
         } else {
             var doc = this.getInnerDocument();
+            this.getDocument().execCommand('contentReadOnly', 'false');
             doc.designMode = "On";
+            this.focusDocument();
             this.getSelection().restoreRange(this._previous_range);
         }
-    }
+        this.suspended = false;
+    };
+    this.newElement = function(tagName) {
+        return newDocumentElement(this.getInnerDocument(), tagName, arguments);
+    };
+    this.newText = function(text) {
+        return this.getInnerDocument().createTextNode(text);
+    };
 }
+
 

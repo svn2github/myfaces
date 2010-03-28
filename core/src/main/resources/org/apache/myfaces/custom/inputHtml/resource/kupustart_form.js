@@ -7,7 +7,6 @@
  * Contributors see CREDITS.txt.
  *
  *****************************************************************************/
-
 // $Id$
 
 function startKupu() {
@@ -54,4 +53,4 @@ function continueStartKupu(kupu) {
     kupu.initialize();
 
     return kupu;
-};
+}

@@ -7,7 +7,6 @@
  * Contributors see CREDITS.txt.
  *
  *****************************************************************************/
-
 // $Id$
 
 
@@ -30,7 +29,7 @@ SourceEditTool.prototype = new KupuTool;
 SourceEditTool.prototype.cancelSourceMode = function() {
     if (this._currently_editing) {
         this.switchSourceEdit(null, true);
-    };
+    }
 };
 
 SourceEditTool.prototype.updateState = 
@@ -39,7 +38,7 @@ SourceEditTool.prototype.updateState =
 SourceEditTool.prototype.initialize = function(editor) {
     /* attach the event handlers */
     this.editor = editor;
-    this._fixTabIndex(this.sourceButton);
+    if (!this.sourceButton) return;
     addEventHandler(this.sourceButton, "click", this.switchSourceEdit, this);
     this.editor.logMessage(_('Source edit tool initialized'));
 };
@@ -55,7 +54,7 @@ SourceEditTool.prototype.switchSourceEdit = function(event, nograb) {
     if (!this.sourcemode) {
         if (window.drawertool) {
             window.drawertool.closeDrawer();
-        };
+        }
         if (/on/i.test(kupudoc.designMode)) {
             kupudoc.designMode = 'Off';
         };
@@ -64,15 +63,18 @@ SourceEditTool.prototype.switchSourceEdit = function(event, nograb) {
         var data='';
         if(kupu.config.filtersourceedit) {
             window.status = _('Cleaning up HTML...');
-            var transform = kupu._filterContent(
-                                kupu.getInnerDocument().documentElement);
+            var transform = kupu._filterContent(kupu.getInnerDocument().documentElement);
             data = kupu.getXMLBody(transform);
             data = kupu._fixupSingletons(data).replace(/<\/?body[^>]*>/g, "");
+            if (kupu._getBase && kupu.makeLinksRelative) {
+                var base = kupu._getBase(transform);
+                data = kupu.makeLinksRelative(data, base).replace(/<\/?body[^>]*>/g, "");
+            };
             window.status = '';
         } else {
             data = kupu.getHTMLBody();
-        };
-        sourcearea.value = data;
+        }
+        sourcearea.value = data.strip();
         kupu.setClass(sourceClass);
         editorframe.style.display = 'none';
         sourcearea.style.display = 'block';
@@ -102,11 +104,11 @@ SourceEditTool.prototype.switchSourceEdit = function(event, nograb) {
 };
 
 SourceEditTool.prototype.enable = function() {
-    KupuButtonEnable(this.sourceButton);
+    kupuButtonEnable(this.sourceButton);
 };
 
 SourceEditTool.prototype.disable = function() {
-    KupuButtonDisable(this.sourceButton);
+    kupuButtonDisable(this.sourceButton);
 };
 
 function MultiSourceEditTool(sourcebuttonid, textareaprefix) {

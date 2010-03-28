@@ -114,6 +114,7 @@ div.kupu-smalleditor {
 
 .kupu-bold {background-image: url("kupuimages/bold.png");}
 .kupu-bold-pressed {background-image: url("kupuimages/bold.png"); background-color: white;}
+.kupu-anchors {background-image: url("kupuimages/anchor.png");}
 .kupu-forecolor {background-image: url("kupuimages/text-color.png");}
 .kupu-hilitecolor {background-image: url("kupuimages/background-color.png");}
 
@@ -181,7 +182,7 @@ textarea.kupu-editor-textarea {
 }
 
 div.kupu-toolboxes {
-  float: right;	
+  float: right;
   border: solid 2px ButtonFace;
   width: 19.4em;
   margin-right: 0.3em;
@@ -273,7 +274,7 @@ div.kupu-drawer {
    overflow: auto;
 }
 
-button.disabled {
+input.disabled, button.disabled {
    opacity:0.5;
    filter:alpha(opacity=50);
 }

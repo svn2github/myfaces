@@ -7,7 +7,6 @@
  * Contributors see CREDITS.txt.
  *
  *****************************************************************************/
-
 // $Id$
 
 
@@ -51,7 +50,7 @@ function ContextMenu() {
         };
         this.hideContextMenu();
         var selNode = this.editor.getSelectedNode();
-        var elements = new Array();
+        var elements = [];
         for (var id in this.editor.tools) {
             var tool = this.editor.tools[id];
             // alas, some people seem to want backward compatibility ;)
@@ -126,7 +125,7 @@ function ContextMenu() {
         menu.style.left = left + 'px';
         menu.style.top = top + 'px';
         menu.style.visibility = 'visible';
-        addEventHandler(menu, 'focus', function() {this.blur}, menu)
+        addEventHandler(menu, 'focus', function() {this.blur();}, menu);
         doc.getElementsByTagName('body')[0].appendChild(menu);
         this.contextmenu = menu;
     };
@@ -183,5 +182,5 @@ function ContextMenuElement(label, action, context) {
         */
         this.element.style.backgroundColor = 'white';
     };
-};
+}
 

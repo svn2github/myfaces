@@ -7,7 +7,6 @@
  * Contributors see CREDITS.txt.
  *
  *****************************************************************************/
-
 // $Id$
 
 /*
@@ -71,38 +70,93 @@ Some notes about the scripts:
 //----------------------------------------------------------------------------
 // Helper classes and functions
 //----------------------------------------------------------------------------
+function newDocumentElement(doc, tagName, args) {
+    /* Create a new element, set attributes, and append children */
+    if (_SARISSA_IS_IE) {
+        /* Braindead IE cannot set some attributes (e.g. NAME) except
+         * through bizarre use of createElement */
+        var attrs = [tagName];
+        for (var a = 1; a < args.length; a++) {
+            var arg = args[a];
+            if (arg.length===undefined) {
+                for (var attr in arg) {
+                    var val = arg[attr];
+                    if (val===true) val=attr;
+                    if (val===false) continue;
+                    if (attr=='className') attr='class';
+                    attrs.push(attr+'="'+val.replace(/"/,'&quot;')+'"');
+                };
+            };
+        };
+        tagName = "<"+attrs.join(' ')+"></"+tagName+">";
+    }
+    var node = doc.createElement(tagName);
+    for (var a = 1; a < args.length; a++) {
+        var arg = args[a];
+        if (arg.length===undefined) {
+            if (!_SARISSA_IS_IE) {
+                for (var attr in arg) {
+                    if (/^on/.test(attr)) {
+                        node.setAttribute(attr, arg[attr]);
+                    } else {
+                        node[attr] = arg[attr];
+                    };
+                };
+            };
+        } else {
+            for (var i = 0; i < arg.length; i++) {
+                if(typeof(arg[i])=='string') {
+                    node.appendChild(doc.createTextNode(arg[i]));
+                } else {
+                    node.appendChild(arg[i]);
+                }
+            }
+        }
+    }
+    return node;
+}
+
+function newElement(tagName) {
+    return newDocumentElement(document, tagName, arguments);
+}
 
 function addEventHandler(element, event, method, context) {
     /* method to add an event handler for both IE and Mozilla */
     var wrappedmethod = new ContextFixer(method, context);
-    var args = new Array(null, null);
+    var args = [null, null];
     for (var i=4; i < arguments.length; i++) {
         args.push(arguments[i]);
     };
     wrappedmethod.args = args;
     try {
-        if (_SARISSA_IS_MOZ) {
+        if (element.addEventListener) {
             element.addEventListener(event, wrappedmethod.execute, false);
-        } else if (_SARISSA_IS_IE) {
+        } else if (element.attachEvent) {
             element.attachEvent("on" + event, wrappedmethod.execute);
         } else {
             throw _("Unsupported browser!");
         };
         return wrappedmethod.execute;
     } catch(e) {
-        alert(_('exception ${message} while registering an event handler ' +
-                'for element ${element}, event ${event}, method ${method}',
-                {'message': e.message, 'element': element,
-                    'event': event,
-                    'method': method}));
+        var msg = _(
+            'exception ${message} while registering an event handler ' +
+            'for element ${element}, event ${event}, method ${method}, ',
+            {'message': e.message, 'element': element,
+                'event': event,
+                'method': method
+            });
+        if (e.stack) {
+            msg += _('\r\ntraceback:\r\n${traceback}', {'traceback': e.stack});
+        };
+        alert(msg);
     };
 };
 
 function removeEventHandler(element, event, method) {
     /* method to remove an event handler for both IE and Mozilla */
-    if (_SARISSA_IS_MOZ) {
-        window.removeEventListener(event, method, false);
-    } else if (_SARISSA_IS_IE) {
+    if (element.removeEventListener) {
+        element.removeEventListener(event, method, false);
+    } else if (element.detachEvent) {
         element.detachEvent("on" + event, method);
     } else {
         throw _("Unsupported browser!");
@@ -136,14 +190,13 @@ function getBaseTagClass(base, tag, className) {
     return null;
 }
 
-function openPopup(url, width, height) {
+function openPopup(url, width, height, properties) {
     /* open and center a popup window */
-    var sw = screen.width;
-    var sh = screen.height;
-    var left = sw / 2 - width / 2;
-    var top = sh / 2 - height / 2;
-    var win = window.open(url, 'someWindow', 
-                'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+    var allprops = 'width=' + width + ',height=' + height;
+    if (properties) {
+        allprops += ',' + properties;
+    };
+    var win = window.open(url, 'someWindow', allprops);
     return win;
 };
 
@@ -159,13 +212,13 @@ function selectSelectItem(select, item) {
     select.selectedIndex = 0;
 };
 
-function ParentWithStyleChecker(tagnames, style, stylevalue, command) {
+function parentWithStyleChecker(tagnames, style, stylevalue, command) {
     /* small wrapper that provides a generic function to check if a
        button should look pressed in */
     return function(selNode, button, editor, event) {
         /* check if the button needs to look pressed in */
         if (command) {
-            var result = editor.getInnerDocument().queryCommandState(command)
+            var result = editor.getInnerDocument().queryCommandState(command);
             if (result || editor.getSelection().getContentLength() == 0) {
                 return result;
             };
@@ -212,9 +265,13 @@ function _load_dict_helper(element) {
                 };
             };
             var name = child.nodeName.toLowerCase();
+            var attr = child.attributes[0];
+            if (attr && !(/^([^_]|_moz)/.test(attr.name))) {
+                name += attr.name.toLowerCase(); // Fix for Opera
+            }
             if (dict[name] != undefined) {
                 if (!dict[name].push) {
-                    dict[name] = new Array(dict[name], value);
+                    dict[name] = [dict[name], value];
                 } else {
                     dict[name].push(value);
                 };
@@ -275,10 +332,10 @@ function NodeIterator(node, continueatnextsibling) {
             this.current = current.firstChild;
         } else {
             // walk up parents until we finish or find one with a nextSibling
-            while (current != this.terminator && !current.nextSibling) {
+            while (current !== this.terminator && !current.nextSibling) {
                 current = current.parentNode;
             };
-            if (current == this.terminator) {
+            if (current === this.terminator) {
                 this.current = false;
             } else {
                 this.current = current.nextSibling;
@@ -406,17 +463,35 @@ function BaseSelection() {
 };
 
 function MozillaSelection(document) {
+    var win = document.getWindow();
     this.document = document;
-    this.selection = document.getWindow().getSelection();
-    
+    this.selection = win.getSelection();
+
+    this._createRange = function() {
+        return this.document.getDocument().createRange();
+    };
     this.selectNodeContents = function(node) {
-        /* select the contents of a node */
-        this.selection.removeAllRanges();
-        this.selection.selectAllChildren(node);
+        if (node && node.parentNode) {
+            /* select the contents of a node */
+            var sel = this.selection;
+            sel.removeAllRanges();
+            if (sel.selectAllChildren && node.nodeType == 1) {
+                sel.selectAllChildren(node);
+            } else {
+                var range = this._createRange();
+                try {
+                    range.selectNode(node);
+                } catch (e) {
+                    range.selectNodeContents(node);
+                };
+                sel.addRange(range);
+            };
+        };
     };
 
     this.collapse = function(collapseToEnd) {
         try {
+            if (!this.selection) this.reset();
             if (!collapseToEnd) {
                 this.selection.collapseToStart();
             } else {
@@ -450,7 +525,7 @@ function MozillaSelection(document) {
         var pos = range.startOffset;
 
         // make a new range for the new selection
-        var range = this.document.getDocument().createRange();
+        var range = this._createRange();
 
         if (container.nodeType == 3 && node.nodeType == 3) {
             // if we insert text in a textnode, do optimized insertion
@@ -492,11 +567,11 @@ function MozillaSelection(document) {
                     container.insertBefore(node, afterNode);
                 } else {
                     container.appendChild(node);
+                    afterNode = container.nextSibling;
                 };
             }
-
-            range.setEnd(afterNode, 0);
-            range.setStart(afterNode, 0);
+            range.setEndAfter(node);
+            range.collapse(false);
         }
 
         if (selectAfterPlace) {
@@ -505,7 +580,7 @@ function MozillaSelection(document) {
             // JavaScript isn't as nice as Python in that respect (kwargs)
             // if selectAfterPlace is a DOM node, select all of that node's
             // contents, else select the newly added node's
-            this.selection = this.document.getWindow().getSelection();
+            this.selection = win.getSelection();
             this.selection.addRange(range);
             if (selectAfterPlace.nodeType == 1) {
                 this.selection.selectAllChildren(selectAfterPlace);
@@ -519,7 +594,7 @@ function MozillaSelection(document) {
                     this.selection.addRange(range);
                 };
             };
-            this.document.getWindow().focus();
+            win.focus();
         };
         return node;
     };
@@ -551,6 +626,9 @@ function MozillaSelection(document) {
             if (currnode.nodeType == 3) {
                 offset += currnode.nodeValue.length;
             };
+            while (!currnode.nextSibling) {
+                currnode = currnode.parentNode;
+            };
             currnode = currnode.nextSibling;
         };
         return offset + startnodeoffset;
@@ -562,9 +640,9 @@ function MozillaSelection(document) {
         var aoffset = this.selection.anchorOffset;
         var onode = this.selection.focusNode;
         var ooffset = this.selection.focusOffset;
-        var arange = this.document.getDocument().createRange();
+        var arange = this._createRange();
         arange.setStart(anode, aoffset);
-        var orange = this.document.getDocument().createRange();
+        var orange = this._createRange();
         orange.setStart(onode, ooffset);
         return arange.compareBoundaryPoints('START_TO_START', orange) <= 0 ? anode : onode;
     };
@@ -573,7 +651,7 @@ function MozillaSelection(document) {
         // XXX this should be on a range object
         var endnode = this.endNode();
         var endnodeoffset = 0;
-        if (endnode = this.selection.focusNode) {
+        if (endnode == this.selection.focusNode) {
             endnodeoffset = this.selection.focusOffset;
         } else {
             endnodeoffset = this.selection.anchorOffset;
@@ -603,7 +681,7 @@ function MozillaSelection(document) {
             };
             return 0;
         };
-        while (currnode != endnode) {
+        while (currnode && currnode != endnode) {
             if (currnode.nodeType == 3) { // should account for CDATA nodes as well
                 offset += currnode.nodeValue.length;
             };
@@ -618,9 +696,9 @@ function MozillaSelection(document) {
         var aoffset = this.selection.anchorOffset;
         var onode = this.selection.focusNode;
         var ooffset = this.selection.focusOffset;
-        var arange = this.document.getDocument().createRange();
+        var arange = this._createRange();
         arange.setStart(anode, aoffset);
-        var orange = this.document.getDocument().createRange();
+        var orange = this._createRange();
         orange.setStart(onode, ooffset);
         return arange.compareBoundaryPoints('START_TO_START', orange) > 0 ? anode : onode;
     };
@@ -660,7 +738,7 @@ function MozillaSelection(document) {
         var curroffset = 0;
 
         var endparent = null;
-        var endoffset = 0;
+        var endparentoffset = 0;
         
         while (currnode) {
             if (currnode.nodeType == 3) { // XXX need to add CDATA support
@@ -703,9 +781,12 @@ function MozillaSelection(document) {
         return length;
     };
 
-    this.parentElement = function() {
+    this.parentElement = function(allowmulti) {
         /* return the selected node (or the node containing the selection) */
         // XXX this should be on a range object
+        if (!this.selection) {
+            return null;
+        }
         if (this.selection.rangeCount == 0) {
             var parent = this.document.getDocument().body;
             while (parent.firstChild) {
@@ -713,45 +794,114 @@ function MozillaSelection(document) {
             };
         } else {
             var range = this.selection.getRangeAt(0);
-            var parent = range.commonAncestorContainer;
+            var parent = this.parentElementOfRange(range);
+            if( allowmulti ) {
+                var numRanges = this.selection.rangeCount;
+                for( var i = 1; i < numRanges; i = i + 1 )
+                {
+                    var parent1 = parent;
+                    var parent2 = null;
+                    var range1 = this._createRange();
+                    var range2 = this._createRange();
+                
+                    var parent2 = this.parentElementOfRange(this.selection.getRangeAt(i));
 
-            // the following deals with cases where only a single child is
-            // selected, e.g. after a click on an image
-            var inv = range.compareBoundaryPoints(Range.START_TO_END, range) < 0;
-            var startNode = inv ? range.endContainer : range.startContainer;
-            var startOffset = inv ? range.endOffset : range.startOffset;
-            var endNode = inv ? range.startContainer : range.endContainer;
-            var endOffset = inv ? range.startOffset : range.endOffset;
-
-            var selectedChild = null;
-            var child = parent.firstChild;
-            while (child) {
-                // XXX the additional conditions catch some invisible
-                // intersections, but still not all of them
-                if (range.intersectsNode(child) &&
-                    !(child == startNode && startOffset == child.length) &&
-                    !(child == endNode && endOffset == 0)) {
-                    if (selectedChild) {
-                        // current child is the second selected child found
-                        selectedChild = null;
-                        break;
+                    range1.selectNode(parent1);
+                    range2.selectNode(parent2);
+                    
+                    if( range1.compareBoundaryPoints(Range.START_TO_START, range2) <= 0 &&
+                        range1.compareBoundaryPoints(Range.END_TO_END, range2) >= 0 ) {
+                        //parent1 contains parent2
+                        parent = parent1;
+                    } else if( range1.compareBoundaryPoints(Range.START_TO_START, range2) >= 0 &&
+                        range1.compareBoundaryPoints(Range.END_TO_END, range2) <= 0 ) {
+                        //parent2 contains parent1
+                        parent = parent2;
+                    } else if( range1.compareBoundaryPoints(Range.START_TO_END, range2) <= 0 ) {
+                        //parent1 comes before parent2
+                        //commonAncestorContainer returns the node parent if a range is
+                        //just one node, which we don't want; but since parent1
+                        //and parent2 are different, their range is not just
+                        //one node
+                        var coverRange = this._createRange();
+                        coverRange.setStartBefore(parent1);
+                        coverRange.setEndAfter(parent2);
+                        parent = coverRange.commonAncestorContainer;
                     } else {
-                        // current child is the first selected child found
-                        selectedChild = child;
+                        //parent2 comes before parent1
+                        //commonAncestorContainer returns the node parent if a range is
+                        //just one node, which we don't want; but since parent1
+                        //and parent2 are different, their range is not just
+                        //one node
+                        var coverRange = this._createRange();
+                        coverRange.setStartBefore(parent2);
+                        coverRange.setEndAfter(parent1);
+                        parent = coverRange.commonAncestorContainer;                    
                     };
-                } else if (selectedChild) {
-                    // current child is after the selection
-                    break;
                 };
-                child = child.nextSibling;
             };
-            if (selectedChild) {
-                parent = selectedChild;
+        };            
+
+        if (parent.nodeType == Node.TEXT_NODE) {
+            parent = parent.parentNode;
+        };
+        return parent;
+    };
+
+    this.parentElementOfRange = function(range) {
+        if( range.compareBoundaryPoints(Range.START_TO_END, range) < 0 ) {
+            var startNode = range.endContainer;
+            var startOffset = range.endOffset;
+            var endNode = range.startContainer;
+            var endOffset = range.startOffset;
+            range.setStart( startNode, startOffset );
+            range.setEnd( endNode, endOffset );
+        }
+            
+        var parent = range.commonAncestorContainer;
+            
+        // if there is only a single node selected, e.g. after a click on
+        // an image, then this node itself should be returned as the
+        // parentElement. however, in this case, "parent" is the selected
+        // node's parent. the following searches if any other node
+        // intersects the selection range; if not, then the selected node
+        // is set to the parentElement.     
+        var inv = range.compareBoundaryPoints(Range.START_TO_END, range) < 0;
+        var startNode = inv ? range.endContainer : range.startContainer;
+        var startOffset = inv ? range.endOffset : range.startOffset;
+        var endNode = inv ? range.startContainer : range.endContainer;
+        var endOffset = inv ? range.startOffset : range.endOffset;
+
+        var selectedChild = null;
+        var child = parent.firstChild;
+        while (child) {
+            if (range.intersectsNode(child) &&
+                !(child == startNode && startOffset == child.length) &&
+                !(child == endNode && endOffset == 0)) {
+                if (selectedChild) {
+                    // current child is the second node found that
+                    // intersects the selection, so commonAncestorContainer
+                    // is the correct parentElement to use                        
+                    selectedChild = null;
+                    break;
+                } else {
+                    // current child is the first selected child found
+                    selectedChild = child;
+                };
+            } else if (selectedChild) {
+                // current child is after the selection
+                break;
             };
+            child = child.nextSibling;
+        };
+
+        if (selectedChild) {
+            parent = selectedChild;
         };
         if (parent.nodeType == Node.TEXT_NODE) {
             parent = parent.parentNode;
         };
+
         return parent;
     };
 
@@ -767,8 +917,6 @@ function MozillaSelection(document) {
         if (realoffset >= 0) {
             var currnode = offsetparent.firstChild;
             var curroffset = 0;
-            var startparent = null;
-            var startoffset = 0;
             while (currnode) {
                 if (currnode.nodeType == 3) { // XXX need to support CDATA sections
                     var nodelength = currnode.nodeValue.length;
@@ -830,7 +978,7 @@ function MozillaSelection(document) {
     };
 
     this.reset = function() {
-        this.selection = this.document.getWindow().getSelection();
+        this.selection = win.getSelection();
     };
 
     this.cloneContents = function() {
@@ -840,21 +988,76 @@ function MozillaSelection(document) {
     };
 
     this.containsNode = function(node) {
-        return this.selection.containsNode(node, true);
-    }
+        var sel = this.selection;
+        if (sel.containsNode) {
+            return sel.containsNode(node, true);
+        } else {
+            // kludge it for safari
+            for(var i = 0; i < sel.rangeCount; i++ ) {
+                if( sel.getRangeAt(i).containsNode(node) ) {
+                    return true;
+                }
+            };
+            return false;
+        }
+    };
 
     this.toString = function() {
         return this.selection.toString();
     };
 
     this.getRange = function() {
-        return this.selection.getRangeAt(0);
-    }
+        if (this.selection && this.selection.rangeCount > 0) {
+            return this.selection.getRangeAt(0);
+        }
+    };
     this.restoreRange = function(range) {
         var selection = this.selection;
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
+        if (selection) {
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    };
+
+    //sample kindly snipped from Mozilla's wiki
+    if( !win.Range.prototype.intersectsNode ){
+        win.Range.prototype.intersectsNode = function(node) {
+            var nodeRange = node.ownerDocument.createRange();
+            try {
+                nodeRange.selectNode(node);
+            } catch (e) {
+                nodeRange.selectNodeContents(node);
+            };
+
+            // selection end after node start and selection start
+            // before node end
+            return this.compareBoundaryPoints(Range.END_TO_START, nodeRange) == -1 &&
+                this.compareBoundaryPoints(Range.START_TO_END, nodeRange) == 1;
+        };
+    };
+    this.intersectsNode = function(node) {
+        for(var i = 0; i < this.selection.rangeCount; i++ ) {
+           if( this.selection.getRangeAt(i).intersectsNode(node) ) {
+               return true;
+           }
+        };
+        return false;
+    };
+    if( !win.Range.prototype.containsNode ){
+        win.Range.prototype.containsNode = function(node) {
+            var nodeRange = node.ownerDocument.createRange();
+            try {
+                nodeRange.selectNode(node);
+            } catch (e) {
+                nodeRange.selectNodeContents(node);
+            };
+
+            // selection start not after node start and selection end
+            // not before node end.
+            return this.compareBoundaryPoints(Range.START_TO_START, nodeRange) != -1 &&
+                    this.compareBoundaryPoints(Range.END_TO_END, nodeRange) != 1;
+        };
+    };
 };
 
 MozillaSelection.prototype = new BaseSelection;
@@ -867,7 +1070,7 @@ function IESelection(document) {
      * main page, so force an inner selection. */
     var doc = document.getDocument();
 
-    var range = this.selection.createRange()
+    var range = this.selection.createRange();
     var parent = this.selection.type=="Text" ?
         range.parentElement() :
         this.selection.type=="Control" ?  range.parentElement : null;
@@ -876,6 +1079,7 @@ function IESelection(document) {
             var range = doc.body.createTextRange();
             range.collapse();
             range.select();
+            this.reset();
     }
 
     this.selectNodeContents = function(node) {
@@ -884,21 +1088,21 @@ function IESelection(document) {
         // to just before the element instead of inside it, and since IE doesn't reserve
         // an index for the element itself as well the way to get it inside the element is
         // by moving the start one pos and then moving it back (yuck!)
-        var range = this.selection.createRange().duplicate();
+        var range = doc.body.createTextRange();
         range.moveToElementText(node);
         range.moveStart('character', 1);
         range.moveStart('character', -1);
         range.moveEnd('character', -1);
         range.moveEnd('character', 1);
         range.select();
-        this.selection = this.document.getDocument().selection;
+        this.reset();
     };
 
     this.collapse = function(collapseToEnd) {
         var range = this.selection.createRange();
         range.collapse(!collapseToEnd);
         range.select();
-        this.selection = document.getDocument().selection;
+        this.reset();
     };
 
     this.replaceWithNode = function(newnode, selectAfterPlace) {
@@ -926,7 +1130,7 @@ function IESelection(document) {
             var range = this.selection.createRange();
 
             range.pasteHTML('<img id="kupu-tempnode">');
-            tempnode = document.getElementById('kupu-tempnode');
+            var tempnode = document.getElementById('kupu-tempnode');
             tempnode.replaceNode(newnode);
 
             if (selectAfterPlace) {
@@ -1022,7 +1226,7 @@ function IESelection(document) {
         return length;
     };
 
-    this.parentElement = function() {
+    this.parentElement = function(allowmulti) {
         /* return the selected node (or the node containing the selection) */
         // XXX this should be on a range object
         if (this.selection.type == 'Control') {
@@ -1040,6 +1244,7 @@ function IESelection(document) {
         var range = this.selection.createRange();
         range.moveStart('character', offset);
         range.select();
+        this.reset();
     };
 
     this.moveEnd = function(offset) {
@@ -1047,6 +1252,7 @@ function IESelection(document) {
         var range = this.selection.createRange();
         range.moveEnd('character', offset);
         range.select();
+        this.reset();
     };
 
     this.reset = function() {
@@ -1086,17 +1292,33 @@ function IESelection(document) {
     
     this.getRange = function() {
         return this.selection.createRange();
-    }
+    };
 
     this.restoreRange = function(range) {
         try {
             range.select();
+            this.reset();
         } catch(e) {
         };
-    }
+    };
 
     this.toString = function() {
         return this.selection.createRange().text;
+    };
+
+    this.intersectsNode = function(node) {
+        var noderange = doc.body.createTextRange();
+        noderange.moveToElementText(node);
+        
+        var selrange = this.selection.createRange();
+        
+        if((selrange.compareEndPoints('StartToStart', noderange) <= 0 &&
+            selrange.compareEndPoints('EndToStart', noderange) > 0) ||
+            (selrange.compareEndPoints('StartToStart', noderange) > 0 &&
+            selrange.compareEndPoints('StartToEnd', noderange) < 0)) {
+           return true;
+        }
+        return false;
     };
 };
 
@@ -1127,7 +1349,7 @@ function ContextFixer(func, context) {
     
     this.execute = function() {
         /* execute the method */
-        var args = new Array();
+        var args = [];
         // the first arguments will be the extra ones of the class
         for (var i=0; i < self.args.length - 2; i++) {
             args.push(self.args[i + 2]);
@@ -1179,12 +1401,12 @@ function Timer() {
                 
             all other args will be passed 1:1 to the function when called
         */
-        var args = new Array();
+        var args = [];
         for (var i=0; i < arguments.length - 3; i++) {
             args.push(arguments[i + 3]);
         }
         var id = this._createUniqueId();
-        this.functions[id] = new Array(object, func, args);
+        this.functions[id] = [object, func, args];
         setTimeout("timer_instance._handleFunction(" + id + ")", timeout);
     };
 
@@ -1266,16 +1488,16 @@ String.prototype.strip = function() {
 
 String.prototype.reduceWhitespace = function() {
     /* returns a string in which all whitespace is reduced 
-        to a single, plain space */
-    var spacereg = /(\s+)/g;
-    var copy = this;
-    while (true) {
-        var match = spacereg.exec(copy);
-        if (!match) {
-            return copy;
-        };
-        copy = copy.replace(match[0], ' ');
-    };
+    to a single, plain space */
+    return this.replace(/\s+/g, ' ');
+};
+String.prototype.truncate = function(len) {
+    if (this.length <= len) {
+        return this;
+    } else {
+        var trimmed = this.substring(0, len+1).replace(/\s[^\s]*$/, '...');
+        return trimmed;
+    }
 };
 
 String.prototype.entitize = function() {
@@ -1290,8 +1512,8 @@ String.prototype.entitize = function() {
 String.prototype.deentitize = function() {
     var ret = this.replace(/&gt;/g, '>');
     ret = ret.replace(/&lt;/g, '<');
-    ret = ret.replace(/&quot;/g, '"');
     ret = ret.replace(/&apos;/g, "'");
+    ret = ret.replace(/&quot;/g, '"');
     ret = ret.replace(/&amp;/g, '&');
     return ret;
 };
@@ -1343,3 +1565,53 @@ function Exception() {
 // update, may be required in situations where updateState changes the structure
 // of the document (e.g. does a cleanup or so)
 UpdateStateCancelBubble = new Exception();
+
+function kupuFixImage(image) {
+    image.removeAttribute('width');
+    image.removeAttribute('height');
+    var width = image.naturalWidth || image.width;
+    var height = image.naturalHeight || image.height;
+    if (height > width) {
+        if (height > 128) {
+            width = width * 128 / height;
+            height = 128;
+        };
+    } else {
+        if (width > 128) {
+            height = height * 128 / width;
+            width = 128;
+        };
+    };
+    if (width&&height) {
+        image.height = height;
+        image.width = width;
+    }
+}
+
+function toggleAltFieldVisibility(me) {
+    var label = document.getElementById('image-alt-label');
+    var vis = me.checked?'none':'';
+    if (label) {
+        label.style.display = vis;
+        var fld = document.getElementById(label.htmlFor);
+        if(fld) { fld.style.display = vis; }
+    }
+}
+
+function getOuterHtml(node) {
+    var html = '<';
+    html += node.nodeName.toLowerCase();
+    var attrs = node.attributes;
+    for (var a = 0; a < attrs.length; a++) {
+        var att = attrs[a];
+        if (att.specified) {
+            html += ' ' + att.nodeName.toLowerCase() + '="' + att.nodeValue + '"';
+        }
+    }
+    html += '>';
+    if (!(/hr|br|img|input/i.test(node.nodeName))) {
+        html += node.innerHTML;
+        html += '<\/' + node.nodeName.toLowerCase() + '>';
+    }
+    return html;
+}

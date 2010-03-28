@@ -7,7 +7,6 @@
  * Contributors see CREDITS.txt.
  *
  *****************************************************************************/
-
 // $Id$
 
 
@@ -70,4 +69,4 @@ function DummyLogger() {
             throw message;
         }
     };
-};
+}
