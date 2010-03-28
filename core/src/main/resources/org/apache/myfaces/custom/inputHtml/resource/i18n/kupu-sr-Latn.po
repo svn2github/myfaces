@@ -1,26 +1,26 @@
 # Translation of kupu.pot to Serbian
 # ----------------------------------------------------------------------
-#
+# 
 # The files kupu-sr.po and kupu-sr-Latn.po are respectivelly the plone
 # translations for the Serbian language in Cyrillic and the Serbian
 # language in Latin script. As the Serbian language can be written down
 # equivocally using these two different scripts, both translation files
 # are provided.
-#
+# 
 # The kupu-sr-Latn.po is automatically generated from kupu-sr.po and
 # should NOT be edited by hand.
-#
+# 
 # The kupu-sr.po and kupu-sr-Latn.po for plone domain MUST always be
 # distributed one with the other.
-#
+# 
 # If you have any questions regarding this translation, you can write to
 # the first translator, Filip Miletić (f dot miletic at ewi dot tudelft
 # dot nl).
 msgid ""
 msgstr ""
 "Project-Id-Version: Kupu\n"
-"POT-Creation-Date: 2005-08-02 20:40+0000\n"
-"PO-Revision-Date: 2005-08-07 23:45+01:00\n"
+"POT-Creation-Date: 2009-11-14 16:53+0000\n"
+"PO-Revision-Date: 2008-02-08 00:27+0100\n"
 "Last-Translator: Filip Miletic <f dot miletic at ewi dot tudelft dot nl>\n"
 "Language-Team: Serbian <gnu@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,889 +32,1043 @@ msgstr ""
 "Preferred-Encodings: utf-8\n"
 "Domain: kupu\n"
 
-#: /common/kupu.pox:None
-msgid "Properties modified"
-msgstr "Svojstva su izmenjena"
-
-#: /common/kupu.pox:None
-msgid "Command ${command} executed with parameter ${param}"
-msgstr "Naredba ${command} je izvršena sa parametrom ${param}"
-
-#: /common/kupu.pox:None
-msgid "Not inside a definition list element!"
-msgstr "Kursor nije unutar definicije člana spiska!"
-
-#: /common/kupu.pox:None
-msgid "Add table"
-msgstr "Dodaj tabelu"
-
-#: /common/kupu.pox:None
-msgid "Table added"
-msgstr "Tabela je dodata"
-
-#: /common/kupu.pox:None
-msgid "Source edit tool initialized"
-msgstr "Pokrenut je alat za uređivanje izvornog koda"
-
-#: /common/kupu.pox:None
-msgid "Delete row"
-msgstr "Obriši red"
-
-#: /common/kupu.pox:None
-msgid "Recursion detected when counting column position"
-msgstr "Primećena je rekurzija pri brojanju kolona"
-
-#: /common/kupu.pox:None
-msgid "List style changed"
-msgstr "Stil spiska je promenjen"
-
-#: /common/kupu.pox:None
-msgid "Create image"
-msgstr "Napravi sliku"
-
-#: /common/kupu.pox:None
-msgid "You have unsaved changes. Do you want to save before leaving the page?"
-msgstr "Neke izmene nisu sačuvane. Da li želite da ih sačuvate pre nego što napustite ovu stranicu?"
-
-#: /common/kupu.pox:None
-msgid "Table row removed"
-msgstr "Vrsta u tabeli je uklonjena"
-
-#: /common/kupu.pox:None
-msgid "Document saved"
-msgstr "Dokument je sačuvan"
-
-#: /common/kupu.pox:None
-msgid "Color chosen"
-msgstr "Izabrana boja"
-
-#: /common/kupu.pox:None
-msgid "Table row added"
-msgstr "Vrsta u tabeli je dodata"
-
-#: /common/kupu.pox:None
-msgid "Error saving document"
-msgstr "Greška pri čuvanju dokumenta"
-
-#: /common/kupu.pox:None
-msgid "No destination URL available!"
-msgstr "Odredišni URL nije dostupan!"
-
-#: /common/kupu.pox:None
-msgid "Link removed"
-msgstr "Veza je uklonjena"
-
-#: /common/kupu.pox:None
-msgid "No row to delete"
-msgstr "Nema vrsti za brisanje"
-
-#: /common/kupu.pox:None
-msgid "Delete Table"
-msgstr "Obriši tabelu"
-
-#: /common/kupu.pox:None
-msgid "Cleanup done, sending document to server"
-msgstr "Dokument je očišćen i šalje se na server"
-
-#: /common/kupu.pox:None
-msgid "Image tool initialized"
-msgstr "Pokrenut je alat za slike"
-
-#: /common/kupu.pox:None
-msgid "End offset out of range!"
-msgstr "Krajnji pomeraj je van opsega!"
-
-#: /common/kupu.pox:None
-msgid "tdindex: ${tdindex}"
-msgstr "tdindex: ${tdindex}"
-
-#: /common/kupu.pox:None
-msgid "Create link"
-msgstr "Napravi vezu"
-
-#: /common/kupu.pox:None
-msgid "Starting HTML cleanup"
-msgstr "Pročišćavanje HTML koda"
-
-#: /common/kupu.pox:None
-msgid "Link modified"
-msgstr "Veza je izmenjena"
-
-#: /common/kupu.pox:None
-msgid "Request sent to server"
-msgstr "Zahtev je poslat na server"
-
-#: /common/kupu.pox:None
-msgid "Table tool initialized"
-msgstr "Pokrenut je alat za tabele"
-
-#: /common/kupu.pox:None
-msgid "There were no errors."
-msgstr "Nije bilo grešaka."
-
-#: /common/kupu.pox:None
-msgid "exception ${message} while registering an event handler for element ${element}, event ${event}, method ${method}"
-msgstr "izuzetak ${message} pri prijavi obrađivača događaja za element ${element}, događaj ${event}, metod ${method}"
-
-#: /common/kupu.pox:None
-msgid "Error loading translation (status ${status} ), falling back to english"
-msgstr "Greška pri učitavanju prevoda (status ${status} ), biće korišćen engleski"
-
-#: /common/kupu.pox:None
-msgid "Start node offset detected in a node without children!"
-msgstr "Nađen je početni pomak u nodu bez dece!"
-
-#: /common/kupu.pox:None
-msgid "Deprecation warning: KupuTool._selectSelectItem"
-msgstr "Zastareli metod: KupuTool._selectSelectItem"
-
-#: /common/kupu.pox:None
-msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
-msgstr "Nije moguće postaviti dizajnerski način rada. Kupu neće raditi sa ovim pregledačem."
-
-#: /common/kupu.pox:None
-msgid "No element found in the config island!"
-msgstr "Nijedan element nije nađen u konfiguracionom ostrvu!"
-
-#: /common/kupu.pox:None
-msgid "Start offset out of range!"
-msgstr "Početni pomeraj je van opsega!"
-
-#: /common/kupu.pox:None
-msgid "Pasting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Nalepljivanje iz JavaSkripta je isključeno u vašoj Mozili iz bezbednosnih razloga. Za više podataka, pročitajte http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-
-#: /common/kupu.pox:None
-msgid "Property tool initialized"
-msgstr "Pokrenut je alat za svojstva"
-
-#: /common/kupu.pox:None
-msgid "Colorchooser tool initialized"
-msgstr "Pokrenut je alat za izbor boja"
-
-#: /common/kupu.pox:None
-msgid "No parentcolumn found!"
-msgstr "Roditeljska kolona nije pronađena!"
-
-#: /common/kupu.pox:None
-msgid "Row repeated"
-msgstr "Ponovljena vrsta"
-
-#: /common/kupu.pox:None
-msgid "Table removed"
-msgstr "Tabela je uklonjena"
-
-#: /common/kupu.pox:None
-msgid "Cut"
-msgstr "Iseci"
-
-#: /common/kupu.pox:None
-msgid "Unsupported browser!"
-msgstr "Pregledač nije podržan!"
-
-#: /common/kupu.pox:None
-msgid "Add row"
-msgstr "Dodaj vrstu"
-
-#: /common/kupu.pox:None
-msgid "Link tool initialized"
-msgstr "Alat za veze je pokrenut"
-
-#: /common/kupu.pox:None
-msgid "Sending request to server"
-msgstr "Slanje zahteva serveru"
-
-#: /common/kupu.pox:None
-msgid "Invalid table size"
-msgstr "Veličina tabele je neispravna"
-
-# FIXME What is this?
-#: /common/kupu.pox:None
-msgid "Error placing back selection"
-msgstr "Greška pri izboru unazad"
-
-#: /common/kupu.pox:None
-msgid "Delete link"
-msgstr "Obriši vezu"
-
-#: /common/kupu.pox:None
-msgid "Add column"
-msgstr "Dodaj kolonu"
-
-#: /common/kupu.pox:None
-msgid "Cutting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Isecanje iz JavaSkripta je isključeno u vašoj Mozili iz bezbednosnih razloga. Za više podataka, pročitajte http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-
-#: /common/kupu.pox:None
-msgid "Exception while processing updateState on ${id}: ${msg}"
-msgstr "Izuzetak pri obradi updateState na ${id}: ${msg}"
-
-#: /common/kupu.pox:None
-msgid "Cleaning up HTML..."
-msgstr "Pročišćavanje HTMLa..."
-
-#: /common/kupu.pox:None
-msgid "List style tool initialized"
-msgstr "Pokrenut alat za vrstu spiska"
-
-#: /common/kupu.pox:None
-msgid "Row repeat turned off"
-msgstr "Ponavljanje vrsti je isključeno"
-
-#: /common/kupu.pox:None
-msgid "There was a problem initializing the drawers. Most likely the XSLT or XML files aren\\'t available. If this is not the Kupu demo version, check your files or the service that provide them (error: ${error})."
-msgstr "Došlo je do greške pri pokretanju fioka. Najverovatnoje da XSLT ili XML datoteke nisu dostupne. Ako ovo nije probno izdanje Kupua, proverite datoteke ili servis koji trebaju da ih obezbede (greška: ${error})."
-
-#: /common/kupu.pox:None
-msgid "Deprecation warning: KupuToolBox._selectSelectItem"
-msgstr "Zastareli metod: KupuToolBox._selectSelectItem"
-
-#: /common/kupu.pox:None
-msgid "Copying from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Umnožavanje iz JavaSkripta je isključeno u vašoj Mozili iz bezbednosnih razloga. Za više podataka, pročitajte http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-
-#: /common/kupu.pox:None
-msgid "Command ${command} executed"
-msgstr "Izvršena je komanda ${command}"
-
-#: /common/kupu.pox:None
-msgid "Delete column"
-msgstr "Obriši kolonu"
-
-#: /common/kupu.pox:None
-msgid "Error saving your data.\\nResponse status: ${status}.\\nCheck your server log for more information."
-msgstr "Greška pri čuvanju podataka.\\nStatusna poruka: ${status}.\\nProverite dnevnik na serveru za više podataka."
-
-#: /common/kupu.pox:None
-msgid "This feature requires pop-ups to be enabled on your browser!"
-msgstr "Ova mogućnost zahteva da su iskačući prozori dozvoljeni u pregledaču!"
-
-#: /common/kupu.pox:None
-msgid "Not inside link"
-msgstr "Kursor nije unutar veze"
-
-#: /common/kupu.pox:None
-msgid "View source"
-msgstr "Pregled izvornog koda"
-
-#: /common/kupu.pox:None
-msgid "Image inserted"
-msgstr "Slika je ubačena"
-
-#: /common/kupu.pox:None
-msgid "Browser not supported!"
-msgstr "Pregledač nije podržan!"
-
-#: /common/kupu.pox:None
-msgid "Please wait while saving document..."
-msgstr "Sačekajte dok se čuvanje dokumenta ne završi..."
-
-#: /common/kupu.pox:None
-msgid "Editor initialized"
-msgstr "Uređivač je pokrenut"
-
-#: /common/kupu.pox:None
-msgid "Copy"
-msgstr "Umnoži"
-
-#: /common/kupu.pox:None
-msgid "Paste"
-msgstr "Nalepi"
-
-#: /common/kupu.pox:None
-msgid "Zoom tool initialized"
-msgstr "Alat za uveličavanje je pokrenut"
-
-#: /common/kupu.pox:None
-msgid "Table column deleted"
-msgstr "Kolona u tabeli je obrisana"
-
-#: /common/kupu.pox:None
-msgid "Offset out of document range"
-msgstr "Pomeraj je van opsega dokumenta"
-
-#: /common/kupu.pox:None
-msgid "Table cleaned up"
-msgstr "Tabela je pročišćena"
-
-#: /common/kupu.pox:None
-msgid "Error loading data, status ${status}"
-msgstr "Greška pri učitavanju podataka, status ${status}"
-
-#: /common/kupu.pox:None
-msgid "Could not set status bar message, check your browser\\'s security settings."
-msgstr "Poruka u statusnoj traci nije mogla biti postavljena, proverite bezbednosna podešavanja u Vašem pregledaču."
-
-#: /common/kupu.pox:None
-msgid "End node offset detected in a node without children!"
-msgstr "Pomak krajnjeg noda je primećen u nodu koji nema dece!"
-
-#: /common/kupu.pox:None
-msgid "Your form has not been saved. All changes you have made will be lost"
-msgstr "Vaš formular nije sačuvan. Sve izmene koje ste napravili biće izgubljene"
-
-#: /common/kupu.pox:None
-msgid "Link added"
-msgstr "Veza je dodata"
-
-#: /common/kupu.pox:None
-msgid "No head in document!"
-msgstr "Dokument nema zaglavlje!"
-
-#: /common/kupu.pox:None
-msgid "Not inside a row!"
-msgstr "Kursor nije unutar vrste!"
-
-#: /common/kupu.pox:None
-msgid "Not inside a table!"
-msgstr "Kursor nije unutar tabele!"
-
-#: /common/kupu.pox:None
-msgid "Selection not inside the node!"
-msgstr "Izbor nije unutar noda!"
-
-#: /common/kupu.pox:None
-msgid "Editor not initialized yet!"
-msgstr "Uređivač još nije pokrenut!"
-
-#: /common/kupu.pox:None
-msgid "Table column added"
-msgstr "Dodata je kolona u tabeli"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Caption"
-msgid "imagedrawer_caption_label"
-msgstr "Naslov"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Insert Link"
-msgid "linkdrawer_title"
-msgstr "Ubaci vezu"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Left"
-msgid "imagedrawer_left"
-msgstr "Levo"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "(${width} by ${height})"
-msgid "imagedrawer_size"
-msgstr "(${width} sa ${height})"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Insert Image"
-msgid "imagedrawer_title"
-msgstr "Ubaci sliku"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Upload to: ${folder}"
-msgid "imagedrawer_upload_to_label"
-msgstr "Postavi u: ${folder}"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Name"
-msgid "linkdrawer_name_label"
-msgstr "Ime"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Preview"
-msgid "imagedrawer_upload_preview_label"
-msgstr "Pregled"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: ""
-# "Select an image from your computer and click ok to have it\n"
-# "            automatically uploaded to selected folder and inserted into the\n"
-# "            editor."
-msgid "imagedrawer_upload_instructions"
+msgid "Call-out"
 msgstr ""
-"Izaberite sliku sa Vašeg računara i pritisnite „U redu“ kako biste\n"
-"je automatski poslali u izabrani direktorijum i ubacili u uređivač."
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Upload ..."
-msgid "imagedrawer_upload_link"
-msgstr "Pošalji..."
+msgid "Clear floats"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Title:"
-msgid "imagedrawer_upload_title_label"
-msgstr "Naslov:"
+#: kupu/plone/plonelibrarytool.py
+msgid "Current folder"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Title"
-msgid "linkdrawer_title_label"
-msgstr "Naslov"
+#. Default: "Data"
+#: kupu/default/drawers.kupu:156
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:270
+msgid "Data"
+msgstr "Podaci"
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Description"
-msgid "linkdrawer_description_label"
-msgstr "Opis"
+msgid "Discreet"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "ALT-text"
-msgid "imagedrawer_upload_alt_text"
-msgstr "Alternativni tekst"
+msgid "Even row"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "search"
-msgid "kupudrawer_search"
-msgstr "nađi"
+msgid "Fancy grid listing"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Inline"
-msgid "imagedrawer_inline"
-msgstr "U liniji"
+msgid "Fancy listing"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Target"
-msgid "linkdrawer_target_label"
-msgstr "Odredište"
+msgid "Fancy vertical listing"
+msgstr ""
 
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Right"
-msgid "imagedrawer_right"
-msgstr "Desno"
-
-#: /default/body.kupu:None
-msgid "Kupu Editor Test Page"
-msgstr "Probna strana uređivača Kupu"
-
-#: /default/colorchooser.kupu:None
-msgid "text color: alt-f"
-msgstr "boja teksta: alt-f"
-
-#: /default/colorchooser.kupu:None
-msgid "background color: alt-h"
-msgstr "boja pozadine: alt-h"
-
-#: /default/drawers.kupu:None
-# Default: "Row"
-msgid "tabledrawer_row_label"
-msgstr "Vrsta"
-
-#: /default/drawers.kupu:None
-# Default: "Right"
-msgid "tabledrawer_right_option"
-msgstr "Desno"
-
-#: /default/drawers.kupu:None
-# Default: "Current column alignment"
-msgid "tabledrawer_alignment_label"
-msgstr "Uravnaj trenutnu kolonu"
-
-#: /default/drawers.kupu:None
-msgid "external link"
-msgstr "spoljašnja veza"
-
-#: /default/drawers.kupu:None
-# Default: "Center"
-msgid "tabledrawer_center_option"
-msgstr "Sredina"
-
-#: /default/drawers.kupu:None
-# Default: "Fix All Tables"
-msgid "tabledrawer_fix_tables_button"
-msgstr "Fiksiraj sve tabele"
-
-#: /default/drawers.kupu:None
-msgid "External Link"
-msgstr "Spoljašnja veza"
-
-#: /default/drawers.kupu:None
-# Default: "Columns"
-msgid "tabledrawer_columns_label"
-msgstr "Kolone"
-
-#: /default/drawers.kupu:None
-# Default: "Left"
-msgid "tabledrawer_left_option"
-msgstr "Levo"
-
-#: /default/drawers.kupu:None
-msgid "image"
-msgstr "slika"
-
-#: /default/drawers.kupu:None
-msgid "table"
-msgstr "tabela"
-
-#: /default/drawers.kupu:None
-msgid "Preview"
-msgstr "Pregled"
-
-#: /default/drawers.kupu:None
-# Default: "Rows"
-msgid "tabledrawer_rows_label"
-msgstr "Vrste"
-
-#: /default/drawers.kupu:None
-msgid "internal link"
-msgstr "unutrašnja veza"
-
-#: /default/drawers.kupu:None
-# Default: "Table"
-msgid "tabledrawer_title"
-msgstr "Tabela"
-
-#: /default/drawers.kupu:None
-# Default: "Add Table"
-msgid "tabledrawer_add_table_button"
-msgstr "Dodaj tabelu"
-
-#: /default/drawers.kupu:None
-# Default: "Close"
-msgid "tabledrawer_close_button"
-msgstr "Zatvori"
-
-#: /default/drawers.kupu:None
-# Default: "Column"
-msgid "tabledrawer_column_label"
-msgstr "Kolona"
-
-#: /default/drawers.kupu:None
-# Default: "Create Headings"
-msgid "tabledrawer_headings_label"
-msgstr "Napravi zaglavlje"
-
-#: /default/drawers.kupu:None
-# Default: "Fix"
-msgid "tabledrawer_fix_button"
-msgstr "Fiksiraj"
-
-#: /default/drawers.kupu:None
-# Default: "Fix Table"
-msgid "tabledrawer_fix_table_label"
-msgstr "Fiksiraj tabelu"
-
-#: /default/drawers.kupu:None
-#: /common/kupudrawers/drawer.xsl:None
-msgid "Ok"
-msgstr "U redu"
-
-#: /default/drawers.kupu:None
-#: /common/kupudrawers/drawer.xsl:None
-msgid "Cancel"
-msgstr "Otkaži"
-
-#: /default/drawers.kupu:None
-#: /default/drawers.kupu:None
-# Default: "Add"
-msgid "tabledrawer_add_button"
-msgstr "Dodaj"
-
-#: /default/drawers.kupu:None
-#: /default/drawers.kupu:None
-# Default: "Remove"
-msgid "tabledrawer_remove_button"
-msgstr "Ukloni"
-
-#: /default/drawers.kupu:None
-#: /default/drawers.kupu:None
-# Default: "Table Class"
-msgid "tabledrawer_class_label"
-msgstr "Klasa tabele"
-
-#: /default/drawers.kupu:None
-#: /default/toolboxes.kupu:None
-msgid "Link the highlighted text to this URL:"
-msgstr "Priveži označeni tekst za ovaj URL:"
-
-#: /default/save.kupu:None
-msgid "save: alt-s"
-msgstr "sačuvaj: alt-s"
-
-#: /default/sourceedit.kupu:None
-msgid "edit HTML code"
-msgstr "uredi HTML kod"
-
-#: /default/spellchecker.kupu:None
-msgid "check spelling"
-msgstr "provera pravopisa"
-
-#: /default/toolbar.kupu:None
-# Default: "1"
-msgid "list-decimal"
-msgstr "1"
-
-#: /default/toolbar.kupu:None
-# Default: "A"
-msgid "list-upperalpha"
-msgstr "A"
-
-#: /default/toolbar.kupu:None
-msgid "bold: alt-b"
-msgstr "polucrno: alt-b"
-
-#: /default/toolbar.kupu:None
-msgid "superscript: alt-+"
-msgstr "gornji indeks: alt-+"
-
-#: /default/toolbar.kupu:None
-# Default: "&#9675;"
-msgid "list-circle"
-msgstr "&#9675;"
-
-#: /default/toolbar.kupu:None
+#. Default: "Formatted"
+#: kupu/default/toolbar.kupu:84
 msgid "Formatted"
 msgstr "Formatirano"
 
-#: /default/toolbar.kupu:None
-# Default: "a"
-msgid "list-loweralpha"
-msgstr "a"
+#. Default: "Grid"
+#: kupu/default/drawers.kupu:155
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:269
+msgid "Grid"
+msgstr "Mreža"
 
-#: /default/toolbar.kupu:None
-# Default: "no bullet"
-msgid "list-nobullet"
-msgstr "bez oznake"
-
-#: /default/toolbar.kupu:None
-# Default: "i"
-msgid "list-lowerroman"
-msgstr "i"
-
-#: /default/toolbar.kupu:None
-msgid "Kupu SVN/unreleased"
-msgstr "Kupu SVN/neobjavljen"
-
-#: /default/toolbar.kupu:None
-msgid "Remove image"
-msgstr "Ukloni sliku"
-
-#: /default/toolbar.kupu:None
-msgid "undo: alt-z"
-msgstr "poništi: alt-z"
-
-#: /default/toolbar.kupu:None
-# Default: "&#9679;"
-msgid "list-disc"
-msgstr "&#9679;"
-
-#: /default/toolbar.kupu:None
-msgid "definition list: alt-="
-msgstr "spisak definicija: alt-="
-
-#: /default/toolbar.kupu:None
-msgid "indent: alt->"
-msgstr "uvlačenje: alt->"
-
-#: /default/toolbar.kupu:None
-msgid "Remove link"
-msgstr "Ukloni vezu"
-
-#: /default/toolbar.kupu:None
-msgid "Normal"
-msgstr "Normalno"
-
-#: /default/toolbar.kupu:None
 msgid "Heading"
-msgstr "Naslov"
+msgstr ""
 
-#: /default/toolbar.kupu:None
-msgid "Subheading"
-msgstr "Podnaslov"
-
-#: /default/toolbar.kupu:None
-msgid "left justify: alt-l"
-msgstr "uravnaj levo: alt-l"
-
-#: /default/toolbar.kupu:None
-msgid "right justify: alt-r"
-msgstr "uravnaj desno: alt-r"
-
-#: /default/toolbar.kupu:None
-msgid "outdent: alt-<"
-msgstr "izvlačenje: alt-<"
-
-#: /default/toolbar.kupu:None
-# Default: "&#9632;"
-msgid "list-square"
-msgstr "&#9632;"
-
-#: /default/toolbar.kupu:None
-msgid "underline: alt-u"
-msgstr "podvučeno: alt-u"
-
-#: /default/toolbar.kupu:None
-msgid "redo: alt-y"
-msgstr "ponovi: alt-y"
-
-#: /default/toolbar.kupu:None
-msgid "subscript: alt--"
-msgstr "donji indeks: alt--"
-
-#: /default/toolbar.kupu:None
-msgid "center justify: alt-c"
-msgstr "uravnaj po sredini: alt-c"
-
-#: /default/toolbar.kupu:None
-msgid "unordered list: alt-*"
-msgstr "neuređen spisak: alt-*"
-
-#: /default/toolbar.kupu:None
-msgid "Heading 3"
-msgstr "Naslov 3"
-
-#: /default/toolbar.kupu:None
-msgid "Heading 2"
-msgstr "Naslov 2"
-
-#: /default/toolbar.kupu:None
+#. Default: "Heading 1"
+#: kupu/default/toolbar.kupu:67
 msgid "Heading 1"
 msgstr "Naslov 1"
 
-#: /default/toolbar.kupu:None
-msgid "Heading 6"
-msgstr "Naslov 6"
+#. Default: "Heading 2"
+#: kupu/default/toolbar.kupu:70
+msgid "Heading 2"
+msgstr "Naslov 2"
 
-#: /default/toolbar.kupu:None
-msgid "Heading 5"
-msgstr "Naslov 5"
+#. Default: "Heading 3"
+#: kupu/default/toolbar.kupu:73
+msgid "Heading 3"
+msgstr "Naslov 3"
 
-#: /default/toolbar.kupu:None
+#. Default: "Heading 4"
+#: kupu/default/toolbar.kupu:76
 msgid "Heading 4"
 msgstr "Naslov 4"
 
-#: /default/toolbar.kupu:None
-msgid "numbered list: alt-#"
-msgstr "nabrojani spisak: alt-#"
+#. Default: "Heading 5"
+#: kupu/default/toolbar.kupu:79
+msgid "Heading 5"
+msgstr "Naslov 5"
 
-#: /default/toolbar.kupu:None
-msgid "italic: alt-i"
-msgstr "kurziv: alt-i"
+#. Default: "Heading 6"
+#: kupu/default/toolbar.kupu:82
+msgid "Heading 6"
+msgstr "Naslov 6"
 
-#: /default/toolbar.kupu:None
-# Default: "I"
+msgid "Heading cell"
+msgstr ""
+
+msgid "Highlight"
+msgstr ""
+
+#: kupu/plone/plonelibrarytool.py
+msgid "Home"
+msgstr ""
+
+msgid "Invisible grid"
+msgstr ""
+
+#. Default: "Listing"
+#: kupu/default/drawers.kupu:154
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:268
+msgid "Listing"
+msgstr "Spisak"
+
+msgid "Literal"
+msgstr ""
+
+#: kupu/plone/plonelibrarytool.py
+msgid "My recent items"
+msgstr ""
+
+#. Default: "Normal paragraph"
+#: kupu/default/drawers.kupu:312
+#: kupu/default/toolbar.kupu:63
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:152
+msgid "Normal"
+msgstr "Normalan pasus"
+
+msgid "Odd row"
+msgstr ""
+
+msgid "Page break (print only)"
+msgstr ""
+
+#. Default: "Plain"
+#: kupu/default/drawers.kupu:153
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:267
+msgid "Plain"
+msgstr "Obično"
+
+msgid "Pull-quote"
+msgstr ""
+
+#: kupu/plone/plonelibrarytool.py
+msgid "Recent items"
+msgstr ""
+
+msgid "Subdued grid"
+msgstr ""
+
+msgid "Subheading"
+msgstr ""
+
+#. Default: "Anchors"
+#: kupu/default/drawers.kupu:289
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:359
+msgid "anchordrawer_title"
+msgstr "Sidra"
+
+#. Default: "Add Column"
+#: kupu/default/toolboxes.kupu:139
+msgid "button_add_column"
+msgstr "Dodaj kolonu"
+
+#. Default: "Add Row"
+#: kupu/default/toolboxes.kupu:145
+msgid "button_add_row"
+msgstr "Dodaj red"
+
+#. Default: "Add Table"
+#: kupu/default/toolboxes.kupu:120
+msgid "button_add_table"
+msgstr "Dodaj tabelu"
+
+#. Default: "Cancel"
+#: kupu/common/kupudrawers/drawer.xsl:139
+#: kupu/default/drawers.kupu:130
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:248
+msgid "button_cancel"
+msgstr "Otkaži"
+
+#. Default: "Fix Table"
+#: kupu/default/toolboxes.kupu:118
+msgid "button_fix_table"
+msgstr "Popravi tabelu"
+
+#. Default: "Insert Image"
+#: kupu/default/toolboxes.kupu:81
+msgid "button_insert_image"
+msgstr "Umetni sliku"
+
+#. Default: "Make Link"
+#: kupu/default/toolboxes.kupu:50
+msgid "button_makelink"
+msgstr "Napravi vezu"
+
+#. Default: "Ok"
+#: kupu/common/kupudrawers/drawer.xsl:135
+#: kupu/default/drawers.kupu:127
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:247
+msgid "button_ok"
+msgstr "U redu"
+
+#. Default: "Preview"
+#: kupu/default/drawers.kupu:79
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:206
+msgid "button_preview"
+msgstr "Pregled"
+
+#. Default: "Reload"
+#: kupu/common/kupudrawers/drawer.xsl:143
+msgid "button_reload"
+msgstr "Osveži"
+
+#. Default: "Remove Column"
+#: kupu/default/toolboxes.kupu:141
+msgid "button_remove_column"
+msgstr "Ukloni kolonu"
+
+#. Default: "Remove Row"
+#: kupu/default/toolboxes.kupu:147
+msgid "button_remove_row"
+msgstr "Ukloni red"
+
+#. Default: "Remove Table"
+#: kupu/default/toolboxes.kupu:152
+msgid "button_remove_table"
+msgstr "Ukloni tabelu"
+
+#. Default: "Convert to HTML and edit with the visual editor"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:492
+#: kupu/plone/wysiwyg_support.kupu:77
+msgid "convert-to-kupu"
+msgstr "Prebaci u HTML i uredi u vizuelnom uređivaču teksta"
+
+#. Default: "Anchors are created for checked paragraphs and removed for unchecked paragraphs when you press Ok. Anchors in use on this page may not be deleted."
+#: kupu/default/drawers.kupu:345
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:411
+msgid "create_anchor_help"
+msgstr "Sidra se prave za proverene pasuse i uklanjaju za neproverene pasuse kada pritisnete „U redu‟. Sidra u upotrebi na ovoj strani možda neće biti uklonjena."
+
+#. Default: "Select a paragraph style then choose a paragraph and Ok to insert a link to that location."
+#: kupu/default/drawers.kupu:339
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:405
+msgid "create_anchor_link_help"
+msgstr "Izaberite stil pasusa.  Zatim pritisnite „U redu‟ da biste umetnuli vezu."
+
+#. Default: "Select one or two paragraph styles, then Ok to insert a table of contents."
+#: kupu/default/drawers.kupu:342
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:408
+msgid "create_toc_help"
+msgstr "Izaberite jedan od dva stila pasusa.  Zatim pritisnite „U redu‟ da biste umetnuli sadržaj."
+
+#. Default: "You may use this box to insert custom snippets of HTML code. There is no guarantee that any code inserted in this way will be preserved when you save your edits. To select an existing object from IE click on the border, from Firefox double click it."
+#: kupu/default/drawers.kupu:115
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:235
+msgid "custom_html_help"
+msgstr "Možete da koristite ovu kutiju kako biste umetnuli proizvoljne isečke HTML koda.  Nije zagarantovano da će ovako umetnut kod biti sačuvan kada sačuvate izmene.  Da biste izabrali postojeći objekat iz internet eksplorera (IE), kliknite na ivicu.  Iz fajerfoksa (Firefox) kliknite dvaput."
+
+#. Default: "Drawer"
+#: kupu/common/kupudrawers/drawer.xsl:31
+msgid "default_drawer_title"
+msgstr "Fioka"
+
+#. Default: "My recently edited items."
+#: kupu/plone/kupu_plone_layer/kupumyitems.xml.pt:16
+msgid "descr_myitems"
+msgstr "Moje nedavno menjane stavke."
+
+#. Default: "Recently published items."
+#: kupu/plone/kupu_plone_layer/kupurecentitems.xml.pt:16
+msgid "descr_recentitems"
+msgstr "Nedavno objavljene stavke."
+
+#. Default: "Search results."
+#: kupu/plone/kupu_plone_layer/kupusearch.xml.pt:18
+msgid "descr_search_results"
+msgstr "Rezultati pretrage."
+
+#. Default: "Current selection."
+#: kupu/plone/kupu_plone_layer/kupuselection.xml.pt:22
+msgid "descr_selected"
+msgstr "Trenutni izbor."
+
+#. Default: "<em>...fetching anchors...</em>"
+#: kupu/common/kupudrawers/drawer.xsl:510
+msgid "fetching_anchors"
+msgstr "<em>...dobavljanje sidara...</em>"
+
+#. Default: "Edit with visual editor"
+#: kupu/plone/body.kupu:95
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:472
+msgid "force-kupu"
+msgstr "Uredi pomoću vizuelnog uređivača"
+
+#. Default: "HTML"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:506
+#: kupu/plone/wysiwyg_support.kupu:107
+msgid "format_html"
+msgstr "HTML"
+
+#. Default: "My Items"
+#: kupu/plone/kupu_plone_layer/kupumyitems.xml.pt:15
+msgid "heading_myitems"
+msgstr "Moje stavke"
+
+#. Default: "Recent Items"
+#: kupu/plone/kupu_plone_layer/kupurecentitems.xml.pt:15
+msgid "heading_recentitems"
+msgstr "Nedavne stavke"
+
+#. Default: "Selected"
+#: kupu/plone/kupu_plone_layer/kupuselection.xml.pt:21
+msgid "heading_selected"
+msgstr "Izabrano"
+
+#. Default: "If you are unsure of which format to use, just select Plain Text and type the document as you usually do."
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:497
+#: kupu/plone/wysiwyg_support.kupu:86
+msgid "help_format"
+msgstr "Ako niste sigurni koji format treba koristiti, izaberite „običan tekst‟ i unesite tekst na uobičajen način."
+
+#. Default: "Paste &lt;object&gt; or &lt;embed&gt; tag here:"
+#: kupu/default/drawers.kupu:105
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:227
+msgid "help_paste_here"
+msgstr "Umetnite oznaku &lt;object&gt; ili &lt;embed&gt; ovde:"
+
+#. Default: "Alignment"
+#: kupu/common/kupudrawers/drawer.xsl:355
+msgid "image_alignment"
+msgstr "Uravnanje"
+
+#. Default: "Caption"
+#: kupu/common/kupudrawers/drawer.xsl:383
+msgid "imagedrawer_caption_label"
+msgstr "Naslov"
+
+#. Default: "Inline"
+#: kupu/common/kupudrawers/drawer.xsl:370
+msgid "imagedrawer_inline"
+msgstr "U liniji"
+
+#. Default: "Left"
+#: kupu/common/kupudrawers/drawer.xsl:363
+msgid "imagedrawer_left"
+msgstr "Levo"
+
+#. Default: "Right"
+#: kupu/common/kupudrawers/drawer.xsl:377
+msgid "imagedrawer_right"
+msgstr "Desno"
+
+#. Default: "(${width} by ${height})"
+#: kupu/common/kupudrawers/drawer.xsl:293
+#, fuzzy
+msgid "imagedrawer_size"
+msgstr "( ${width} x ${height} )"
+
+#. Default: "Size"
+#: kupu/common/kupudrawers/drawer.xsl:399
+msgid "imagedrawer_size_2"
+msgstr "Veličina"
+
+#. Default: "Style"
+#: kupu/common/kupudrawers/drawer.xsl:414
+msgid "imagedrawer_style"
+msgstr "Stil"
+
+#. Default: "Insert Image"
+#: kupu/common/kupudrawers/drawer.xsl:62
+msgid "imagedrawer_title"
+msgstr "Umetni sliku"
+
+#. Default: "Text equivalent"
+#: kupu/common/kupudrawers/drawer.xsl:435
+msgid "imagedrawer_upload_alt_text"
+msgstr "Tekstualni opis"
+
+#. Default: "Description"
+#: kupu/common/kupudrawers/drawer.xsl:547
+msgid "imagedrawer_upload_desc_label"
+msgstr "Opis"
+
+#. Default: "Select an image from your computer and click ok to have it automatically uploaded to selected folder and inserted into the editor."
+#: kupu/common/kupudrawers/drawer.xsl:571
+msgid "imagedrawer_upload_instructions"
+msgstr "Izaberite sliku sa Vašeg računara i pritisnite „u redu‟ da biste je automatski poslali u izabran direktorijum i umetnuli u uređivač."
+
+#. Default: "Upload image here..."
+#: kupu/common/kupudrawers/drawer.xsl:244
+msgid "imagedrawer_upload_link"
+msgstr "Pošaljite sliku ovde..."
+
+#. Default: "Title"
+#: kupu/common/kupudrawers/drawer.xsl:543
+msgid "imagedrawer_upload_title_label"
+msgstr "Naslov"
+
+#. Default: "Upload to: ${folder}"
+#: kupu/common/kupudrawers/drawer.xsl:561
+#, fuzzy
+msgid "imagedrawer_upload_to_label"
+msgstr "Pošaljite u: ${folder} <input id=\\\"kupu-upload-file\\\" name=\\\"node_prop_image\\\" size=\\\"20\\\" type=\\\"file\\\"/>"
+
+#. Default: "Search"
+#: kupu/common/kupudrawers/drawer.xsl:84
+msgid "kupudrawer_search"
+msgstr "Traži"
+
+#. Default: "Anchor"
+#: kupu/default/drawers.kupu:86
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:211
+msgid "label_anchor"
+msgstr "Sidro"
+
+#. Default: "Col Align:"
+#: kupu/default/toolboxes.kupu:129
+msgid "label_col_align"
+msgstr "Uravnanje kolone:"
+
+#. Default: "Columns:"
+#: kupu/default/toolboxes.kupu:104
+msgid "label_columns"
+msgstr "Kolone:"
+
+#. Default: "Create"
+#: kupu/default/toolboxes.kupu:113
+msgid "label_create"
+msgstr "Napravi"
+
+#. Default: "Description:"
+#: kupu/default/toolboxes.kupu:26
+msgid "label_description"
+msgstr "Opis:"
+
+#. Default: "Format"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:495
+#: kupu/plone/wysiwyg_support.kupu:84
+msgid "label_format"
+msgstr "Format"
+
+#. Default: "Headings:"
+#: kupu/default/toolboxes.kupu:108
+msgid "label_headings"
+msgstr "Zaglavlja:"
+
+#. Default: "Image class:"
+#: kupu/default/toolboxes.kupu:64
+msgid "label_image_class"
+msgstr "Klasa slike:"
+
+#. Default: "Insert image at the following URL:"
+#: kupu/default/toolboxes.kupu:73
+msgid "label_insert_image_url"
+msgstr "Umetnite sliku u navedeni URL:"
+
+#. Default: "Link the highlighted text to this URL:"
+#: kupu/default/drawers.kupu:71
+#: kupu/default/toolboxes.kupu:40
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:199
+msgid "label_link_text"
+msgstr "Poveži istaknute tekst na ovaj URL:"
+
+#. Default: "Links"
+#: kupu/default/toolboxes.kupu:35
+msgid "label_links"
+msgstr "Veze"
+
+#. Default: "Numbering"
+#: kupu/default/drawers.kupu:316
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:382
+msgid "label_numbering"
+msgstr "Numeracija"
+
+#. Default: "Rows:"
+#: kupu/default/toolboxes.kupu:101
+msgid "label_rows"
+msgstr "Redovi:"
+
+#. Default: "Select a cleanup action:"
+#: kupu/default/toolboxes.kupu:178
+msgid "label_select_cleanup"
+msgstr "Izaberite dejstvo za čišćenje:"
+
+#. Default: "Table Class:"
+#: kupu/default/toolboxes.kupu:96
+msgid "label_table_class"
+msgstr "Klasa tabele:"
+
+#. Default: "Table style"
+#: kupu/default/drawers.kupu:308
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:374
+msgid "label_table_style"
+msgstr "Stil tabele"
+
+#. Default: "Title:"
+#: kupu/default/toolboxes.kupu:24
+msgid "label_title"
+msgstr "Naslov:"
+
+#. Default: "toggle all"
+#: kupu/default/drawers.kupu:323
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:389
+msgid "label_toggle_all"
+msgstr "izmeni sve"
+
+#. Default: "Link to anchor"
+#: kupu/common/kupudrawers/drawer.xsl:499
+msgid "linkdrawer_anchor"
+msgstr "Veza na sidro"
+
+#. Default: "Name"
+#: kupu/common/kupudrawers/drawer.xsl:473
+msgid "linkdrawer_name_label"
+msgstr "Ime"
+
+#. Default: "Target"
+#: kupu/common/kupudrawers/drawer.xsl:480
+msgid "linkdrawer_target_label"
+msgstr "Odredište"
+
+#. Default: "Insert Link"
+#: kupu/common/kupudrawers/drawer.xsl:63
+msgid "linkdrawer_title"
+msgstr "Umetni vezu"
+
+#. Default: "○"
+#: kupu/default/toolbar.kupu:28
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:168
+#: kupu/plone/toolbar.kupu:138
+msgid "list-circle"
+msgstr "&#9675;"
+
+#. Default: "1"
+#: kupu/default/toolbar.kupu:32
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:172
+#: kupu/plone/toolbar.kupu:142
+msgid "list-decimal"
+msgstr "1"
+
+#. Default: "●"
+#: kupu/default/toolbar.kupu:26
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:166
+#: kupu/plone/toolbar.kupu:136
+msgid "list-disc"
+msgstr "&#9679;"
+
+#. Default: "a"
+#: kupu/default/toolbar.kupu:40
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:176
+#: kupu/plone/toolbar.kupu:150
+msgid "list-loweralpha"
+msgstr "a"
+
+#. Default: "i"
+#: kupu/default/toolbar.kupu:36
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:174
+#: kupu/plone/toolbar.kupu:146
+msgid "list-lowerroman"
+msgstr "i"
+
+#. Default: "no bullet"
+#: kupu/default/toolbar.kupu:29
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:169
+#: kupu/plone/toolbar.kupu:139
+msgid "list-nobullet"
+msgstr "bez oznake"
+
+#. Default: "■"
+#: kupu/default/toolbar.kupu:27
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:167
+#: kupu/plone/toolbar.kupu:137
+msgid "list-square"
+msgstr "&#9632;"
+
+#. Default: "A"
+#: kupu/default/toolbar.kupu:38
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:175
+#: kupu/plone/toolbar.kupu:148
+msgid "list-upperalpha"
+msgstr "A"
+
+#. Default: "I"
+#: kupu/default/toolbar.kupu:34
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:173
+#: kupu/plone/toolbar.kupu:144
 msgid "list-upperroman"
 msgstr "I"
 
-#: /default/toolboxes.kupu:None
-msgid "Headings:"
-msgstr "Naslovi:"
+#. Default: "Locate"
+#: kupu/plone/kupu_plone_layer/kupumyitems.xml.pt:21
+#: kupu/plone/kupu_plone_layer/kupurecentitems.xml.pt:21
+#: kupu/plone/kupu_plone_layer/kupusearch.xml.pt:21
+msgid "locate_content"
+msgstr "Pronađi"
 
-#: /default/toolboxes.kupu:None
-msgid "Fix"
-msgstr "Fiksiraj"
+#. Default: "(optional 2nd style)"
+#: kupu/default/drawers.kupu:334
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:400
+msgid "opt_2nd_style"
+msgstr "(izborni drugi stil)"
 
-#: /default/toolboxes.kupu:None
-msgid "Remove Column"
-msgstr "Ukloni kolonu"
-
-#: /default/toolboxes.kupu:None
-msgid "Inline"
+#. Default: "Inline"
+#: kupu/default/toolboxes.kupu:67
+msgid "opt_inline"
 msgstr "U liniji"
 
-#: /default/toolboxes.kupu:None
-msgid "Select a cleanup action:"
-msgstr "Izbor prečišćavanja:"
-
-#: /default/toolboxes.kupu:None
-msgid "Links"
-msgstr "Veze"
-
-#: /default/toolboxes.kupu:None
-msgid "Rows:"
-msgstr "Vrste:"
-
-#: /default/toolboxes.kupu:None
-msgid "Remove Row"
-msgstr "Ukloni vrstu"
-
-#: /default/toolboxes.kupu:None
-msgid "Tables"
-msgstr "Tabele"
-
-#: /default/toolboxes.kupu:None
-msgid "Create"
-msgstr "Napravi"
-
-#: /default/toolboxes.kupu:None
-msgid "Insert image at the following URL:"
-msgstr "Ubaci sliku sa sledećeg URLa:"
-
-#: /default/toolboxes.kupu:None
-msgid "Title:"
-msgstr "Naslov:"
-
-#: /default/toolboxes.kupu:None
-msgid "Description:"
-msgstr "Opis:"
-
-#: /default/toolboxes.kupu:None
-msgid "Image class:"
-msgstr "Klasa slike:"
-
-#: /default/toolboxes.kupu:None
-msgid "Add Column"
-msgstr "Dodaj kolonu"
-
-#: /default/toolboxes.kupu:None
-msgid "Fix Table"
-msgstr "Fiksiraj tabelu"
-
-#: /default/toolboxes.kupu:None
-msgid "Images"
-msgstr "Slike"
-
-#: /default/toolboxes.kupu:None
-msgid "Insert Image"
-msgstr "Ubaci sliku"
-
-#: /default/toolboxes.kupu:None
-msgid "Add Table"
-msgstr "Dodaj tabelu"
-
-#: /default/toolboxes.kupu:None
-msgid "Add Row"
-msgstr "Dodaj vrstu"
-
-#: /default/toolboxes.kupu:None
-msgid "Properties"
-msgstr "Svojstva"
-
-#: /default/toolboxes.kupu:None
-msgid "Col Align:"
-msgstr "Uravnanje kolona:"
-
-#: /default/toolboxes.kupu:None
-msgid "Center"
-msgstr "Sredina"
-
-#: /default/toolboxes.kupu:None
-msgid "Debug Log"
-msgstr "Dnevnik grešaka"
-
-#: /default/toolboxes.kupu:None
-msgid "Make Link"
-msgstr "Napravi vezu"
-
-#: /default/toolboxes.kupu:None
-msgid "Cleanup expressions"
-msgstr "Pročisti izraze"
-
-#: /default/toolboxes.kupu:None
-msgid "Columns:"
-msgstr "Kolone:"
-
-#: /default/toolboxes.kupu:None
-msgid "Table Class:"
-msgstr "Klasa tabele:"
-
-#: /default/toolboxes.kupu:None
-#: /default/toolboxes.kupu:None
-msgid "Right"
-msgstr "Desno"
-
-#: /default/toolboxes.kupu:None
-#: /default/toolboxes.kupu:None
-msgid "Left"
+#. Default: "Left"
+#: kupu/default/toolboxes.kupu:68
+msgid "opt_left"
 msgstr "Levo"
 
-#: /plone/body.kupu
-msgid "force-kupu"
-msgstr "force-kupu"
+#. Default: "Right"
+#: kupu/default/toolboxes.kupu:69
+msgid "opt_right"
+msgstr "Desno"
 
-#: /plone/body.kupu
+#. Default: "top of page (default)"
+#: kupu/default/drawers.kupu:87
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:212
+msgid "opt_top_of_page"
+msgstr "Vrh strane (izvorno)"
+
+#. Default: "Perform action"
+#: kupu/default/toolboxes.kupu:186
+msgid "perform_action"
+msgstr "Uradi"
+
+#. Default: "[insert arbitrary HTML code here]"
+#: kupu/default/drawers.kupu:109
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:231
+msgid "placeholder_html_code"
+msgstr "[ovde unesite proizvoljni HTML kod]"
+
+#. Default: "Plain Text"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:509
+#: kupu/plone/wysiwyg_support.kupu:116
+msgid "plain_text"
+msgstr "Običan tekst"
+
+#. Default: "Structured Text"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:503
+#: kupu/plone/wysiwyg_support.kupu:98
+msgid "structured_text"
+msgstr "Strukturirani tekst"
+
+#. Default: "Edit without visual editor"
+#: kupu/plone/body.kupu:76
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:446
 msgid "suppress-kupu"
-msgstr "suppress-kupu"
+msgstr "Uredite bez vizuelnog uređivača"
+
+#. Default: "Embed external object"
+#: kupu/default/drawers.kupu:62
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:191
+msgid "tab_embed"
+msgstr "Usadite spoljašnji objekat"
+
+#. Default: "Link to url"
+#: kupu/default/drawers.kupu:59
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:190
+msgid "tab_link"
+msgstr "Veza na URL"
+
+#. Default: "Link to anchor"
+#: kupu/default/drawers.kupu:292
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:362
+msgid "tab_link_anchor"
+msgstr "Veza na sidro"
+
+#. Default: "Manage Anchors"
+#: kupu/default/drawers.kupu:295
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:363
+msgid "tab_manage_anchors"
+msgstr "Upravljanje sidrima"
+
+#. Default: "Table of contents"
+#: kupu/default/drawers.kupu:298
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:364
+msgid "tab_toc"
+msgstr "Sadržaj"
+
+#. Default: "Add"
+#: kupu/default/drawers.kupu:233
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:328
+msgid "tabledrawer_add_button"
+msgstr "Dodaj"
+
+#. Default: "Add Table"
+#: kupu/default/drawers.kupu:185
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:294
+msgid "tabledrawer_add_table_button"
+msgstr "Dodaj tabelu"
+
+#. Default: "Current column alignment"
+#: kupu/default/drawers.kupu:215
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:316
+msgid "tabledrawer_alignment_label"
+msgstr "Uravnaj trenutnu kolonu"
+
+#. Default: "Center"
+#: kupu/default/drawers.kupu:222
+#: kupu/default/toolboxes.kupu:132
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:320
+msgid "tabledrawer_center_option"
+msgstr "Sredina"
+
+#. Default: "Table Class"
+#: kupu/default/drawers.kupu:150
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:264
+msgid "tabledrawer_class_label"
+msgstr "Klasa tabele"
+
+#. Default: "Close"
+#: kupu/default/drawers.kupu:277
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:352
+msgid "tabledrawer_close_button"
+msgstr "Zatvori"
+
+#. Default: "Column"
+#: kupu/default/drawers.kupu:230
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:326
+msgid "tabledrawer_column_label"
+msgstr "Kolona"
+
+#. Default: "Columns"
+#: kupu/default/drawers.kupu:165
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:279
+msgid "tabledrawer_columns_label"
+msgstr "Kolone"
+
+#. Default: "Fix"
+#: kupu/default/drawers.kupu:261
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:342
+msgid "tabledrawer_fix_button"
+msgstr "Fiksiraj"
+
+#. Default: "Fix All Tables"
+#: kupu/default/drawers.kupu:189
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:295
+msgid "tabledrawer_fix_tables_button"
+msgstr "Fiksiraj sve tabele"
+
+#. Default: "Create Headings"
+#: kupu/default/drawers.kupu:176
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:286
+msgid "tabledrawer_headings_label"
+msgstr "Napravi zaglavlje"
+
+#. Default: "Left"
+#: kupu/default/drawers.kupu:220
+#: kupu/default/toolboxes.kupu:131
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:319
+msgid "tabledrawer_left_option"
+msgstr "Levo"
+
+#. Default: "Remove"
+#: kupu/default/drawers.kupu:237
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:329
+msgid "tabledrawer_remove_button"
+msgstr "Ukloni"
+
+#. Default: "Right"
+#: kupu/default/drawers.kupu:224
+#: kupu/default/toolboxes.kupu:133
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:321
+msgid "tabledrawer_right_option"
+msgstr "Desno"
+
+#. Default: "Row"
+#: kupu/default/drawers.kupu:244
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:333
+msgid "tabledrawer_row_label"
+msgstr "Vrsta"
+
+#. Default: "Rows"
+#: kupu/default/drawers.kupu:161
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:275
+msgid "tabledrawer_rows_label"
+msgstr "Vrste"
+
+#. Default: "Table"
+#: kupu/default/drawers.kupu:258
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:340
+msgid "tabledrawer_table_label"
+msgstr "Tabela"
+
+#. Default: "Table"
+#: kupu/default/drawers.kupu:141
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:255
+msgid "tabledrawer_title"
+msgstr "Tabela"
+
+#. Default: "Kupu Editor Test Page"
+#: kupu/default/body.kupu:14
+msgid "testpage_title"
+msgstr "Kupova probna strana"
+
+#. Default: "background color: alt-h"
+#: kupu/default/colorchooser.kupu:25
+#: kupu/plone/colorchooser.kupu:18
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:105
+msgid "title_back_color"
+msgstr "boja pozadine: alt-h"
+
+#. Default: "Bold: Access key (Alt or Ctrl) + B"
+#: kupu/default/toolbar.kupu:92
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:94
+#: kupu/plone/toolbar.kupu:34
+msgid "title_bold"
+msgstr "Podebljano: taster za pristup (alt ili ktrl) + B"
+
+#. Default: "Center justify: Access key (Alt or Ctrl) + C"
+#: kupu/default/toolbar.kupu:116
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:110
+#: kupu/plone/toolbar.kupu:61
+msgid "title_center"
+msgstr "Uravnaj u sredinu: taster za pristup (alt ili ktrl) + C"
+
+#. Default: "Check spelling"
+#: kupu/default/spellchecker.kupu:17
+msgid "title_check_spelling"
+msgstr "Provera pravopisa"
+
+#. Default: "Cleanup expressions"
+#: kupu/default/toolboxes.kupu:173
+msgid "title_cleanup_expressions"
+msgstr "Prečisti izraze"
+
+#. Default: "Debug Log"
+#: kupu/default/toolboxes.kupu:164
+msgid "title_debug_log"
+msgstr "Dnevnik grešaka"
+
+#. Default: "Decrease quote level: Access key (Alt or Ctrl) + <"
+#: kupu/default/toolbar.kupu:148
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:126
+#: kupu/plone/toolbar.kupu:97
+msgid "title_decrease_quote"
+msgstr "Umanji nivo citiranja: taster za pristup (alt ili ktrl) + <"
+
+#. Default: "Definition list: Access key (Alt or Ctrl) + ="
+#: kupu/default/toolbar.kupu:140
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:122
+#: kupu/plone/toolbar.kupu:89
+msgid "title_deflist"
+msgstr "Spisak definicija: taster za pristup (alt ili ktrl) + ="
+
+#. Default: "External Link"
+#: kupu/default/drawers.kupu:54
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:186
+msgid "title_external_link"
+msgstr "Spoljašnja veza"
+
+#. Default: "reload current page using kupu to edit this field"
+#: kupu/plone/body.kupu:95
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:472
+msgid "title_force_kupu"
+msgstr "učitaj ponovo ovu stranu koristeći kupu za uređivanje ovog polja"
+
+#. Default: "Images"
+#: kupu/default/toolboxes.kupu:60
+msgid "title_images"
+msgstr "Slike"
+
+#. Default: "Increase quote level: Access key (Alt or Ctrl) + >"
+#: kupu/default/toolbar.kupu:151
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:127
+#: kupu/plone/toolbar.kupu:101
+msgid "title_increase_quote"
+msgstr "Povećaj nivo citiranja: taster za pristup (alt ili ktrl) + >"
+
+#. Default: "Insert anchors"
+#: kupu/default/drawers.kupu:31
+#: kupu/plone/drawers.kupu:35
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:134
+msgid "title_insert_anchors"
+msgstr "Umetni sidra"
+
+#. Default: "Insert external link"
+#: kupu/default/drawers.kupu:29
+#: kupu/plone/drawers.kupu:30
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:133
+msgid "title_insert_external_link"
+msgstr "Umetni spoljašnju vezu"
+
+#. Default: "Insert image"
+#: kupu/default/drawers.kupu:23
+#: kupu/plone/drawers.kupu:20
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:131
+msgid "title_insert_image"
+msgstr "Umetni sliku"
+
+#. Default: "Insert internal link"
+#: kupu/default/drawers.kupu:27
+#: kupu/plone/drawers.kupu:25
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:132
+msgid "title_insert_internal_link"
+msgstr "Umetni unutrašnju vezu"
+
+#. Default: "Insert table"
+#: kupu/default/drawers.kupu:34
+#: kupu/plone/drawers.kupu:39
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:135
+msgid "title_insert_table"
+msgstr "Umetni tabelu"
+
+#. Default: "Italic: Access key (Alt or Ctrl) + I"
+#: kupu/default/toolbar.kupu:94
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:95
+#: kupu/plone/toolbar.kupu:38
+msgid "title_italic"
+msgstr "Iskošeno: taster za pristup (alt ili ktrl) + I"
+
+#. Default: "Left justify: Access key (Alt or Ctrl) + L"
+#: kupu/default/toolbar.kupu:112
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:109
+#: kupu/plone/toolbar.kupu:57
+msgid "title_ljust"
+msgstr "Levo uravnanje: taster za pristup (alt ili ktrl) + L"
+
+#. Default: "Kupu 1.4"
+#: kupu/default/toolbar.kupu:55
+msgid "title_logo"
+msgstr "Kupu 1.4"
+
+#. Default: "Numbered list: Access key (Alt or Ctrl) + #"
+#: kupu/default/toolbar.kupu:128
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:116
+#: kupu/plone/toolbar.kupu:75
+msgid "title_numlist"
+msgstr "Nabrojani spisak: taster za pristup (alt ili ktrl) + #"
+
+#. Default: "Properties"
+#: kupu/default/toolboxes.kupu:20
+msgid "title_properties"
+msgstr "Svojstva"
+
+#. Default: "Redo: Access key (Alt or Ctrl) + Y"
+#: kupu/default/toolbar.kupu:162
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:140
+#: kupu/plone/toolbar.kupu:114
+msgid "title_redo"
+msgstr "Ponovi: taster za pristup (alt ili ktrl) + Y"
+
+#. Default: "Remove image"
+#: kupu/default/toolbar.kupu:170
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:159
+#: kupu/plone/toolbar.kupu:157
+msgid "title_removeimage"
+msgstr "Ukloni sliku"
+
+#. Default: "Remove link"
+#: kupu/default/toolbar.kupu:173
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:160
+#: kupu/plone/toolbar.kupu:161
+msgid "title_removelink"
+msgstr "Ukloni vezu"
+
+#. Default: "Right justify: Access key (Alt or Ctrl) + R"
+#: kupu/default/toolbar.kupu:119
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:111
+#: kupu/plone/toolbar.kupu:65
+msgid "title_rjust"
+msgstr "Desno uravnanje: taster za pristup (alt ili ktrl) + R"
+
+#. Default: "Save"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:90
+#: kupu/plone/save.kupu:15
+msgid "title_save"
+msgstr "Sačuvaj"
+
+#. Default: "save: alt-s"
+#: kupu/default/save.kupu:14
+msgid "title_save_alts"
+msgstr "sačuvaj: alt-s"
+
+#. Default: "Check spelling"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:144
+#: kupu/plone/spellchecker.kupu:14
+msgid "title_spelling"
+msgstr "Provera pravopisa"
+
+#. Default: "Subscript: Access key (Alt or Ctrl) + -"
+#: kupu/default/toolbar.kupu:103
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:99
+#: kupu/plone/toolbar.kupu:46
+msgid "title_subscript"
+msgstr "Donji indeks: taster za pristup (alt ili ktrl) + -"
+
+#. Default: "Superscript: Access key (Alt or Ctrl) + +"
+#: kupu/default/toolbar.kupu:105
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:100
+#: kupu/plone/toolbar.kupu:49
+msgid "title_superscript"
+msgstr "Gornji indeks: taster za pristup (alt ili ktrl) + +"
+
+#. Default: "reload current page without kupu"
+#: kupu/plone/body.kupu:76
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:446
+msgid "title_suppress_kupu"
+msgstr "učitaj ponovo trenutnu stranu bez kupua"
+
+#. Default: "Tables"
+#: kupu/default/toolboxes.kupu:92
+msgid "title_tables"
+msgstr "Tabele"
+
+#. Default: "text color: alt-f"
+#: kupu/default/colorchooser.kupu:21
+#: kupu/plone/colorchooser.kupu:13
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:104
+msgid "title_text_color"
+msgstr "boja teksta: alt-f"
+
+#. Default: "Underline: Access key (Alt or Ctrl) + U"
+#: kupu/default/toolbar.kupu:96
+msgid "title_underline"
+msgstr "Podvučeno: taster za pristup (alt ili ktrl) + U"
+
+#. Default: "Undo: Access key (Alt or Ctrl) + Z"
+#: kupu/default/toolbar.kupu:159
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:139
+#: kupu/plone/toolbar.kupu:110
+msgid "title_undo"
+msgstr "Opozovi: taster za pristup (alt ili ktrl) + Z"
+
+#. Default: "Unordered list: Access key (Alt or Ctrl) + *"
+#: kupu/default/toolbar.kupu:131
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:117
+#: kupu/plone/toolbar.kupu:79
+msgid "title_unorderedlist"
+msgstr "Neuređen spisak: taster za pristup (alt ili ktrl) + *"
+
+#. Default: "Zoom: Access key (Alt or Ctrl) + X"
+#: kupu/default/toolbar.kupu:47
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:86
+#: kupu/plone/toolbar.kupu:25
+msgid "title_zoom"
+msgstr "Zumiranje: taster za pristup (alt ili ktrl) + X"
+
+#. Default: "Switch between visual editor and HTML view"
+#: kupu/default/sourceedit.kupu:23
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:148
+#: kupu/plone/sourceedit.kupu:18
+msgid "toggle_source_view"
+msgstr "Prebacivanje između uređivanja HTML koda i vizuelnog uređivanja"
+
+#. Default: "top of page (default)"
+#: kupu/common/kupudrawers/drawer.xsl:509
+msgid "top_of_page"
+msgstr "vrh strane (izvorno)"
+
+#. Default: "Preview"
+#: kupu/default/drawers.kupu:92
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:216
+msgid "watermark_preview"
+msgstr "Pregled"
+

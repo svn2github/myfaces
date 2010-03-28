@@ -1,900 +1,1059 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Wed Aug  3 16:07:37 2005\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2009-11-14 16:53+0000\n"
 "PO-Revision-Date: 2005-08-15 16:41+0200\n"
 "Last-Translator: Anton Stonor <stonor@giraffen.dk>\n"
 "Language-Team: gocept i18n team <rj@gocept.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: zope/app/translation_files/extract.py\n"
-"Language-code: da\n"
-"Language-name: Danish\n"
-"Preferred-encodings: latin1 utf-8\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: da\n"
+"Language-Name: Danish\n"
+"Preferred-Encodings: utf-8 latin1\n"
 "Domain: kupu\n"
+"Generated-By: zope/app/translation_files/extract.py\n"
+"Preferred-encodings: latin1 utf-8\n"
 
-#: /common/kupu.pox:None
-msgid "Properties modified"
-msgstr "Egenskaber Êndret"
+msgid "Call-out"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Command ${command} executed with parameter ${param}"
-msgstr "Kommandoen ${command} udf¯rst med parameter ${param}"
+msgid "Clear floats"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Not inside a definition list element!"
-msgstr "Ikke inde i et dl element"
+#: kupu/plone/plonelibrarytool.py
+msgid "Current folder"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Add table"
-msgstr "Tilf¯j tabel"
+#. Default: "Data"
+#: kupu/default/drawers.kupu:156
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:270
+msgid "Data"
+msgstr "Data"
 
-#: /common/kupu.pox:None
-msgid "Table added"
-msgstr "Tabel tilf¯jet"
+msgid "Discreet"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Source edit tool initialized"
-msgstr "Kildekode-vÊrkt¯j startet"
+msgid "Even row"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Delete row"
-msgstr "Slet rÊkke"
+msgid "Fancy grid listing"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Recursion detected when counting column position"
-msgstr "Fejl i optÊlling af kolonne-position"
+msgid "Fancy listing"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "List style changed"
-msgstr "Listeformattering Êndret"
+msgid "Fancy vertical listing"
+msgstr ""
 
-#: /common/kupu.pox:None
-msgid "Create image"
-msgstr "Opret billede"
-
-#: /common/kupu.pox:None
-msgid "You have unsaved changes. Do you want to save before leaving the page?"
-msgstr "Du har ugemte Êndringer. Vil du gemme, f¯r du forlader denne side?"
-
-#: /common/kupu.pox:None
-msgid "Table row removed"
-msgstr "Tabel-rÊkke fjernet"
-
-#: /common/kupu.pox:None
-msgid "Document saved"
-msgstr "Dokument gemt"
-
-#: /common/kupu.pox:None
-msgid "Color chosen"
-msgstr "Valgt farve"
-
-#: /common/kupu.pox:None
-msgid "Table row added"
-msgstr "Tabel-rÊkke tilf¯jet"
-
-#: /common/kupu.pox:None
-msgid "Error saving document"
-msgstr "Fejl opstod ved fors¯g pÂ at gemme dokumentet"
-
-#: /common/kupu.pox:None
-msgid "No destination URL available!"
-msgstr "Ingen URL tilgÊngelig!"
-
-#: /common/kupu.pox:None
-msgid "Link removed"
-msgstr "Linket fjernet"
-
-#: /common/kupu.pox:None
-msgid "No row to delete"
-msgstr "Ingen rÊkker at slette"
-
-#: /common/kupu.pox:None
-msgid "Delete Table"
-msgstr "Slet tabel"
-
-#: /common/kupu.pox:None
-msgid "Cleanup done, sending document to server"
-msgstr "Dokumentet er renset, nu sendes det til serveren"
-
-#: /common/kupu.pox:None
-msgid "Image tool initialized"
-msgstr "Billede-vÊrkt¯jet startet"
-
-#: /common/kupu.pox:None
-msgid "End offset out of range!"
-msgstr "End offset out of range!"
-
-#: /common/kupu.pox:None
-msgid "tdindex: ${tdindex}"
-msgstr "tdindex: ${tdindex}"
-
-#: /common/kupu.pox:None
-msgid "Create link"
-msgstr "Opret link"
-
-#: /common/kupu.pox:None
-msgid "Starting HTML cleanup"
-msgstr "Starter HTML-rensning"
-
-#: /common/kupu.pox:None
-msgid "Link modified"
-msgstr "Link Êndret"
-
-#: /common/kupu.pox:None
-msgid "Request sent to server"
-msgstr "Foresp¯rgsel sendt til server"
-
-#: /common/kupu.pox:None
-msgid "Table tool initialized"
-msgstr "Tabel-vÊrkt¯jet startet"
-
-#: /common/kupu.pox:None
-msgid "There were no errors."
-msgstr "Ingen fejl."
-
-#: /common/kupu.pox:None
-msgid "exception ${message} while registering an event handler for element ${element}, event ${event}, method ${method}"
-msgstr "exception ${message} while registering an event handler for element ${element}, event ${event}, method ${method}"
-
-#: /common/kupu.pox:None
-msgid "Error loading translation (status ${status} ), falling back to english"
-msgstr "Fejl ved hentinng af oversÊttelse (status ${status} ), bruger engelsk i stedet"
-
-#: /common/kupu.pox:None
-msgid "Start node offset detected in a node without children!"
-msgstr "Start node offset detected in a node without children!"
-
-#: /common/kupu.pox:None
-msgid "Deprecation warning: KupuTool._selectSelectItem"
-msgstr "Deprecation warning: KupuTool._selectSelectItem"
-
-#: /common/kupu.pox:None
-msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
-msgstr "Kunne ikke gÂ i designmode. Kupu vil ikke virke i denne browser."
-
-#: /common/kupu.pox:None
-msgid "No element found in the config island!"
-msgstr "Ingen elementer fundet i \"config island!\""
-
-#: /common/kupu.pox:None
-msgid "Start offset out of range!"
-msgstr "Start offset out of range!"
-
-#: /common/kupu.pox:None
-msgid "Pasting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Du kan ikke sÊtte ind fra Javascript i din Mozilla browser pÂ grund af sikkerhedsindstillinger. Se flere informationer her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-
-#: /common/kupu.pox:None
-msgid "Property tool initialized"
-msgstr "Egenskabs-vÊrkt¯jet startet"
-
-#: /common/kupu.pox:None
-msgid "Colorchooser tool initialized"
-msgstr "FarvevÊlger startet"
-
-#: /common/kupu.pox:None
-msgid "No parentcolumn found!"
-msgstr "Ingen kolonne h¯jere oppe fundet!"
-
-#: /common/kupu.pox:None
-msgid "Row repeated"
-msgstr "RÊkke gentaget"
-
-#: /common/kupu.pox:None
-msgid "Table removed"
-msgstr "Tabel fjernet"
-
-#: /common/kupu.pox:None
-msgid "Cut"
-msgstr "Klip"
-
-#: /common/kupu.pox:None
-msgid "Unsupported browser!"
-msgstr "Browseren er ikke underst¯ttet!"
-
-#: /common/kupu.pox:None
-msgid "Add row"
-msgstr "Tilf¯j rÊkke"
-
-#: /common/kupu.pox:None
-msgid "Link tool initialized"
-msgstr "Link-vÊrkt¯j startet"
-
-#: /common/kupu.pox:None
-msgid "Sending request to server"
-msgstr "Sender foresp¯rgsel til server"
-
-#: /common/kupu.pox:None
-msgid "Invalid table size"
-msgstr "Ikke tilladt tabelst¯rrelse"
-
-#: /common/kupu.pox:None
-msgid "Error placing back selection"
-msgstr "Fejl ved at sÊtte det valgte tilbage"
-
-#: /common/kupu.pox:None
-msgid "Delete link"
-msgstr "Slet link"
-
-#: /common/kupu.pox:None
-msgid "Add column"
-msgstr "Tilf¯j kolonne"
-
-#: /common/kupu.pox:None
-msgid "Cutting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Klipning fra javascript er slÂet fra i din Mozilla-browser pÂ grund af sikkerhedsindstillinger. LÊs mere her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-
-#: /common/kupu.pox:None
-msgid "Exception while processing updateState on ${id}: ${msg}"
-msgstr "Exception while processing updateState on ${id}: ${msg}"
-
-#: /common/kupu.pox:None
-msgid "Cleaning up HTML..."
-msgstr "Renser HTML..."
-
-#: /common/kupu.pox:None
-msgid "List style tool initialized"
-msgstr "Listformatterings-redskab startet"
-
-#: /common/kupu.pox:None
-msgid "Row repeat turned off"
-msgstr "RÊkke-gentagelse slÂet fra"
-
-#: /common/kupu.pox:None
-msgid "There was a problem initializing the drawers. Most likely the XSLT or XML files aren\\'t available. If this is not the Kupu demo version, check your files or the service that provide them (error: ${error})."
-msgstr "Der er et problem med at fÂ drawers til at virke. Det skyldes sikkert, at XSLT- og XML-filerne ikke til stede. Fejl: ${error}."
-
-#: /common/kupu.pox:None
-msgid "Deprecation warning: KupuToolBox._selectSelectItem"
-msgstr "Deprecation warning: KupuToolBox._selectSelectItem"
-
-#: /common/kupu.pox:None
-msgid "Copying from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-msgstr "Kopiering fra javascript er slÂet fra i din Mozilla-browser pÂ grund af sikkerhedsindstillinger. LÊs mere her: http://www.mozilla.org/editor/midasdemo/securityprefs.html"
-
-#: /common/kupu.pox:None
-msgid "Command ${command} executed"
-msgstr "Kommandoen ${command} udf¯rt"
-
-#: /common/kupu.pox:None
-msgid "Delete column"
-msgstr "Slet kolonne"
-
-#: /common/kupu.pox:None
-msgid "Error saving your data.\\nResponse status: ${status}.\\nCheck your server log for more information."
-msgstr "Fejl ved fors¯g pÂ at gemme data.\\nResponse status: ${status}.\\nKontroller din server log for at fÂ flere informationer."
-
-#: /common/kupu.pox:None
-msgid "This feature requires pop-ups to be enabled on your browser!"
-msgstr "Denne funktion krÊver, at pop-up vinduer er slÂet til i din browser!"
-
-#: /common/kupu.pox:None
-msgid "Not inside link"
-msgstr "Ikke inde i link"
-
-#: /common/kupu.pox:None
-msgid "View source"
-msgstr "Vis kilde"
-
-#: /common/kupu.pox:None
-msgid "Image inserted"
-msgstr "Billede indsat"
-
-#: /common/kupu.pox:None
-msgid "Browser not supported!"
-msgstr "Browseren er ikke underst¯ttet!"
-
-#: /common/kupu.pox:None
-msgid "Please wait while saving document..."
-msgstr "Vent venligst, mens dokumentet bliver gemt..."
-
-#: /common/kupu.pox:None
-msgid "Editor initialized"
-msgstr "Editoren er startet"
-
-#: /common/kupu.pox:None
-msgid "Copy"
-msgstr "Kopier"
-
-#: /common/kupu.pox:None
-msgid "Paste"
-msgstr "SÊt ind"
-
-#: /common/kupu.pox:None
-msgid "Zoom tool initialized"
-msgstr "Zoom-vÊrkt¯jet er startet"
-
-#: /common/kupu.pox:None
-msgid "Table column deleted"
-msgstr "Tabel-kolonne slettet"
-
-#: /common/kupu.pox:None
-msgid "Offset out of document range"
-msgstr "Offset out of document range"
-
-#: /common/kupu.pox:None
-msgid "Table cleaned up"
-msgstr "Tabel renset"
-
-#: /common/kupu.pox:None
-msgid "Error loading data, status ${status}"
-msgstr "Fejl ved hentningen af data, status ${status}"
-
-#: /common/kupu.pox:None
-msgid "Could not set status bar message, check your browser\\'s security settings."
-msgstr "Kunne ikke Êndre beskeden i statuslinien, kontroller din browsers sikkerhedsindstillinger."
-
-#: /common/kupu.pox:None
-msgid "End node offset detected in a node without children!"
-msgstr "End node offset detected in a node without children!"
-
-#: /common/kupu.pox:None
-msgid "Your form has not been saved. All changes you have made will be lost"
-msgstr "Din formular er ikke gemt. Alle Êndringer, du har lavet, vil gÂ tabt."
-
-#: /common/kupu.pox:None
-msgid "Link added"
-msgstr "Link tilf¯jet"
-
-#: /common/kupu.pox:None
-msgid "No head in document!"
-msgstr "Intet dokument-hoved!"
-
-#: /common/kupu.pox:None
-msgid "Not inside a row!"
-msgstr "Ikke inden i rÊkke!"
-
-#: /common/kupu.pox:None
-msgid "Not inside a table!"
-msgstr "Ikke inden i tabel!"
-
-#: /common/kupu.pox:None
-msgid "Selection not inside the node!"
-msgstr "Valget er ikke inden i node!"
-
-#: /common/kupu.pox:None
-msgid "Editor not initialized yet!"
-msgstr "Editoren er ikke fÊrdig med at starte endnu!"
-
-#: /common/kupu.pox:None
-msgid "Table column added"
-msgstr "Tabel-kolonne tilf¯jet"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Caption"
-msgid "imagedrawer_caption_label"
-msgstr "Billedtekst"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Insert Link"
-msgid "linkdrawer_title"
-msgstr "IndsÊt link"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Left"
-msgid "imagedrawer_left"
-msgstr "Venstre"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "(${width} by ${height})"
-msgid "imagedrawer_size"
-msgstr "St¯rrelse"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Insert Image"
-msgid "imagedrawer_title"
-msgstr "IndsÊt billede"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Upload to: ${folder}"
-msgid "imagedrawer_upload_to_label"
-msgstr "Upload til: ${folder} "
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Name"
-msgid "linkdrawer_name_label"
-msgstr "Navn"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Preview"
-msgid "imagedrawer_upload_preview_label"
-msgstr "ForhÂndskig"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: ""
-# "Select an image from your computer and click ok to have it\n"
-# "            automatically uploaded to selected folder and inserted into the\n"
-# "            editor."
-msgid "imagedrawer_upload_instructions"
-msgstr "VÊlg et billede fra din computer og klik OK for at fÂ det automatisk uploadet til den valgte mappe og indsat i editoren."
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Upload ..."
-msgid "imagedrawer_upload_link"
-msgstr "Upload..."
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Title:"
-msgid "imagedrawer_upload_title_label"
-msgstr "Titel:"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Title"
-msgid "linkdrawer_title_label"
-msgstr "Titel"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Description"
-msgid "linkdrawer_description_label"
-msgstr "Beskrivelse"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "ALT-text"
-msgid "imagedrawer_upload_alt_text"
-msgstr "ALT-tekst"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "search"
-msgid "kupudrawer_search"
-msgstr "S¯g"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Inline"
-msgid "imagedrawer_inline"
-msgstr "Inline"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Target"
-msgid "linkdrawer_target_label"
-msgstr "Target"
-
-#: /common/kupudrawers/drawer.xsl:None
-# Default: "Right"
-msgid "imagedrawer_right"
-msgstr "H¯jre"
-
-#: /default/body.kupu:None
-msgid "Kupu Editor Test Page"
-msgstr "Kupu testside"
-
-#: /default/colorchooser.kupu:None
-msgid "text color: alt-f"
-msgstr "Tekstfarve: alt-f"
-
-#: /default/colorchooser.kupu:None
-msgid "background color: alt-h"
-msgstr "Baggrunds-farve: alt-h"
-
-#: /default/drawers.kupu:None
-# Default: "Row"
-msgid "tabledrawer_row_label"
-msgstr "RÊkke"
-
-#: /default/drawers.kupu:None
-# Default: "Right"
-msgid "tabledrawer_right_option"
-msgstr "H¯jre"
-
-#: /default/drawers.kupu:None
-# Default: "Current column alignment"
-msgid "tabledrawer_alignment_label"
-msgstr "NuvÊrende kolonne-justering"
-
-#: /default/drawers.kupu:None
-msgid "external link"
-msgstr "Eksternt link"
-
-#: /default/drawers.kupu:None
-# Default: "Center"
-msgid "tabledrawer_center_option"
-msgstr "Centrer"
-
-#: /default/drawers.kupu:None
-# Default: "Fix All Tables"
-msgid "tabledrawer_fix_tables_button"
-msgstr "Fix alle tabeller"
-
-#: /default/drawers.kupu:None
-msgid "External Link"
-msgstr "Eksternt link"
-
-#: /default/drawers.kupu:None
-# Default: "Columns"
-msgid "tabledrawer_columns_label"
-msgstr "Antal kolonner"
-
-#: /default/drawers.kupu:None
-# Default: "Left"
-msgid "tabledrawer_left_option"
-msgstr "Venstre"
-
-#: /default/drawers.kupu:None
-msgid "image"
-msgstr "billede"
-
-#: /default/drawers.kupu:None
-msgid "table"
-msgstr "tabel"
-
-#: /default/drawers.kupu:None
-msgid "Preview"
-msgstr "Smugkig"
-
-#: /default/drawers.kupu:None
-# Default: "Rows"
-msgid "tabledrawer_rows_label"
-msgstr "Antal rÊkker"
-
-#: /default/drawers.kupu:None
-msgid "internal link"
-msgstr "internt link"
-
-#: /default/drawers.kupu:None
-# Default: "Table"
-msgid "tabledrawer_title"
-msgstr "Tabel"
-
-#: /default/drawers.kupu:None
-# Default: "Add Table"
-msgid "tabledrawer_add_table_button"
-msgstr "Tilf¯j tabel"
-
-#: /default/drawers.kupu:None
-# Default: "Close"
-msgid "tabledrawer_close_button"
-msgstr "Luk"
-
-#: /default/drawers.kupu:None
-# Default: "Column"
-msgid "tabledrawer_column_label"
-msgstr "Kolonner"
-
-#: /default/drawers.kupu:None
-# Default: "Create Headings"
-msgid "tabledrawer_headings_label"
-msgstr "Opret tabeloverskrifter"
-
-#: /default/drawers.kupu:None
-# Default: "Fix"
-msgid "tabledrawer_fix_button"
-msgstr "Fix"
-
-#: /default/drawers.kupu:None
-# Default: "Fix Table"
-msgid "tabledrawer_fix_table_label"
-msgstr "Fix tabel"
-
-#: /default/drawers.kupu:None
-#: /common/kupudrawers/drawer.xsl:None
-msgid "Ok"
-msgstr "OK"
-
-#: /default/drawers.kupu:None
-#: /common/kupudrawers/drawer.xsl:None
-msgid "Cancel"
-msgstr "Fortryd"
-
-#: /default/drawers.kupu:None
-#: /default/drawers.kupu:None
-# Default: "Add"
-msgid "tabledrawer_add_button"
-msgstr "Tilf¯j"
-
-#: /default/drawers.kupu:None
-#: /default/drawers.kupu:None
-# Default: "Remove"
-msgid "tabledrawer_remove_button"
-msgstr "Fjern"
-
-#: /default/drawers.kupu:None
-#: /default/drawers.kupu:None
-# Default: "Table Class"
-msgid "tabledrawer_class_label"
-msgstr "Tabel CSS class"
-
-#: /default/drawers.kupu:None
-#: /default/toolboxes.kupu:None
-msgid "Link the highlighted text to this URL:"
-msgstr "Link fra den fremhÊvede tekst til denne URL:"
-
-#: /default/save.kupu:None
-msgid "save: alt-s"
-msgstr "gem: alt-s"
-
-#: /default/sourceedit.kupu:None
-msgid "edit HTML code"
-msgstr "rediger HTML kilde"
-
-#: /default/spellchecker.kupu:None
-msgid "check spelling"
-msgstr "kontroller stavning"
-
-#: /default/toolbar.kupu:None
-# Default: "1"
-msgid "list-decimal"
-msgstr "liste-decimal"
-
-#: /default/toolbar.kupu:None
-# Default: "A"
-msgid "list-upperalpha"
-msgstr "A"
-
-#: /default/toolbar.kupu:None
-msgid "bold: alt-b"
-msgstr "fed: alt-b"
-
-#: /default/toolbar.kupu:None
-msgid "superscript: alt-+"
-msgstr "hÊvet tekst: alt-+"
-
-#: /default/toolbar.kupu:None
-# Default: "&#9675;"
-msgid "list-circle"
-msgstr "list-cirkel"
-
-#: /default/toolbar.kupu:None
+#. Default: "Formatted"
+#: kupu/default/toolbar.kupu:84
 msgid "Formatted"
 msgstr "Formatteret"
 
-#: /default/toolbar.kupu:None
-# Default: "a"
-msgid "list-loweralpha"
-msgstr "a"
+#. Default: "Grid"
+#: kupu/default/drawers.kupu:155
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:269
+msgid "Grid"
+msgstr "Gitter"
 
-#: /default/toolbar.kupu:None
-# Default: "no bullet"
-msgid "list-nobullet"
-msgstr "ingen cirkel"
-
-#: /default/toolbar.kupu:None
-# Default: "i"
-msgid "list-lowerroman"
-msgstr "i"
-
-#: /default/toolbar.kupu:None
-msgid "Kupu SVN/unreleased"
-msgstr ""
-
-#: /default/toolbar.kupu:None
-msgid "Remove image"
-msgstr "Fjern billede"
-
-#: /default/toolbar.kupu:None
-msgid "undo: alt-z"
-msgstr "fortryd: alt-z"
-
-#: /default/toolbar.kupu:None
-# Default: "&#9679;"
-msgid "list-disc"
-msgstr ""
-
-#: /default/toolbar.kupu:None
-msgid "definition list: alt-="
-msgstr "definitionsliste: alt-="
-
-#: /default/toolbar.kupu:None
-msgid "indent: alt->"
-msgstr "for¯g indrykning: alt->"
-
-#: /default/toolbar.kupu:None
-msgid "Remove link"
-msgstr "Fjern link"
-
-#: /default/toolbar.kupu:None
-msgid "Normal"
-msgstr "Normal"
-
-#: /default/toolbar.kupu:None
 msgid "Heading"
-msgstr "Overskrift"
+msgstr ""
 
-#: /default/toolbar.kupu:None
-msgid "Subheading"
-msgstr "Underrubrik"
-
-#: /default/toolbar.kupu:None
-msgid "left justify: alt-l"
-msgstr "venstrejusteret: alt-l"
-
-#: /default/toolbar.kupu:None
-msgid "right justify: alt-r"
-msgstr "h¯jrejusteret: alt-r"
-
-#: /default/toolbar.kupu:None
-msgid "outdent: alt-<"
-msgstr "formindsk indrykning: alt-<"
-
-#: /default/toolbar.kupu:None
-# Default: "&#9632;"
-msgid "list-square"
-msgstr "firkant"
-
-#: /default/toolbar.kupu:None
-msgid "underline: alt-u"
-msgstr "understreg: alt-u"
-
-#: /default/toolbar.kupu:None
-msgid "redo: alt-y"
-msgstr "gentag: alt-y"
-
-#: /default/toolbar.kupu:None
-msgid "subscript: alt--"
-msgstr "sÊnket tekst: alt--"
-
-#: /default/toolbar.kupu:None
-msgid "center justify: alt-c"
-msgstr "centreret: alt-c"
-
-#: /default/toolbar.kupu:None
-msgid "unordered list: alt-*"
-msgstr "punktliste: alt-*"
-
-#: /default/toolbar.kupu:None
-msgid "Heading 3"
-msgstr "Overskrift 3"
-
-#: /default/toolbar.kupu:None
-msgid "Heading 2"
-msgstr "Overskrift 2"
-
-#: /default/toolbar.kupu:None
+#. Default: "Heading 1"
+#: kupu/default/toolbar.kupu:67
 msgid "Heading 1"
 msgstr "Overskrift 1"
 
-#: /default/toolbar.kupu:None
-msgid "Heading 6"
-msgstr "Overskrift 6"
+#. Default: "Heading 2"
+#: kupu/default/toolbar.kupu:70
+msgid "Heading 2"
+msgstr "Overskrift 2"
 
-#: /default/toolbar.kupu:None
-msgid "Heading 5"
-msgstr "Overskrift 5"
+#. Default: "Heading 3"
+#: kupu/default/toolbar.kupu:73
+msgid "Heading 3"
+msgstr "Overskrift 3"
 
-#: /default/toolbar.kupu:None
+#. Default: "Heading 4"
+#: kupu/default/toolbar.kupu:76
 msgid "Heading 4"
 msgstr "Overskrift 4"
 
-#: /default/toolbar.kupu:None
-msgid "numbered list: alt-#"
-msgstr "nummereret liste: alt-#"
+#. Default: "Heading 5"
+#: kupu/default/toolbar.kupu:79
+msgid "Heading 5"
+msgstr "Overskrift 5"
 
-#: /default/toolbar.kupu:None
-msgid "italic: alt-i"
-msgstr "kursiv: alt-i"
+#. Default: "Heading 6"
+#: kupu/default/toolbar.kupu:82
+msgid "Heading 6"
+msgstr "Overskrift 6"
 
-#: /default/toolbar.kupu:None
-# Default: "I"
+msgid "Heading cell"
+msgstr ""
+
+msgid "Highlight"
+msgstr ""
+
+#: kupu/plone/plonelibrarytool.py
+msgid "Home"
+msgstr ""
+
+msgid "Invisible grid"
+msgstr ""
+
+#. Default: "Listing"
+#: kupu/default/drawers.kupu:154
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:268
+msgid "Listing"
+msgstr "Liste"
+
+msgid "Literal"
+msgstr ""
+
+#: kupu/plone/plonelibrarytool.py
+msgid "My recent items"
+msgstr ""
+
+#. Default: "Normal paragraph"
+#: kupu/default/drawers.kupu:312
+#: kupu/default/toolbar.kupu:63
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:152
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Odd row"
+msgstr ""
+
+msgid "Page break (print only)"
+msgstr ""
+
+#. Default: "Plain"
+#: kupu/default/drawers.kupu:153
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:267
+msgid "Plain"
+msgstr ""
+
+msgid "Pull-quote"
+msgstr ""
+
+#: kupu/plone/plonelibrarytool.py
+msgid "Recent items"
+msgstr ""
+
+msgid "Subdued grid"
+msgstr ""
+
+msgid "Subheading"
+msgstr ""
+
+#. Default: "Anchors"
+#: kupu/default/drawers.kupu:289
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:359
+msgid "anchordrawer_title"
+msgstr "Ankere"
+
+#. Default: "Add Column"
+#: kupu/default/toolboxes.kupu:139
+msgid "button_add_column"
+msgstr "Tilf√∏j Kolonne"
+
+#. Default: "Add Row"
+#: kupu/default/toolboxes.kupu:145
+msgid "button_add_row"
+msgstr "Tilf√∏j R√¶kke"
+
+#. Default: "Add Table"
+#: kupu/default/toolboxes.kupu:120
+msgid "button_add_table"
+msgstr "Tilf√∏j Tabel"
+
+#. Default: "Cancel"
+#: kupu/common/kupudrawers/drawer.xsl:139
+#: kupu/default/drawers.kupu:130
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:248
+msgid "button_cancel"
+msgstr ""
+
+#. Default: "Fix Table"
+#: kupu/default/toolboxes.kupu:118
+msgid "button_fix_table"
+msgstr "Fix Tabel"
+
+#. Default: "Insert Image"
+#: kupu/default/toolboxes.kupu:81
+msgid "button_insert_image"
+msgstr "Inds√¶t billede"
+
+#. Default: "Make Link"
+#: kupu/default/toolboxes.kupu:50
+msgid "button_makelink"
+msgstr "Opret Link"
+
+#. Default: "Ok"
+#: kupu/common/kupudrawers/drawer.xsl:135
+#: kupu/default/drawers.kupu:127
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:247
+msgid "button_ok"
+msgstr "Ok"
+
+#. Default: "Preview"
+#: kupu/default/drawers.kupu:79
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:206
+msgid "button_preview"
+msgstr "Smugkig"
+
+#. Default: "Reload"
+#: kupu/common/kupudrawers/drawer.xsl:143
+msgid "button_reload"
+msgstr "Genindl√¶s"
+
+#. Default: "Remove Column"
+#: kupu/default/toolboxes.kupu:141
+msgid "button_remove_column"
+msgstr "Fjern kolonne"
+
+#. Default: "Remove Row"
+#: kupu/default/toolboxes.kupu:147
+msgid "button_remove_row"
+msgstr "Fjern r√¶kke"
+
+#. Default: "Remove Table"
+#: kupu/default/toolboxes.kupu:152
+msgid "button_remove_table"
+msgstr "Fjern Tabel"
+
+#. Default: "Convert to HTML and edit with the visual editor"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:492
+#: kupu/plone/wysiwyg_support.kupu:77
+msgid "convert-to-kupu"
+msgstr "Konverter til HTML og rediger med visual editor"
+
+#. Default: "Anchors are created for checked paragraphs and removed for unchecked paragraphs when you press Ok. Anchors in use on this page may not be deleted."
+#: kupu/default/drawers.kupu:345
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:411
+msgid "create_anchor_help"
+msgstr ""
+
+#. Default: "Select a paragraph style then choose a paragraph and Ok to insert a link to that location."
+#: kupu/default/drawers.kupu:339
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:405
+msgid "create_anchor_link_help"
+msgstr ""
+
+#. Default: "Select one or two paragraph styles, then Ok to insert a table of contents."
+#: kupu/default/drawers.kupu:342
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:408
+msgid "create_toc_help"
+msgstr ""
+
+#. Default: "You may use this box to insert custom snippets of HTML code. There is no guarantee that any code inserted in this way will be preserved when you save your edits. To select an existing object from IE click on the border, from Firefox double click it."
+#: kupu/default/drawers.kupu:115
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:235
+msgid "custom_html_help"
+msgstr ""
+
+#. Default: "Drawer"
+#: kupu/common/kupudrawers/drawer.xsl:31
+msgid "default_drawer_title"
+msgstr ""
+
+#. Default: "My recently edited items."
+#: kupu/plone/kupu_plone_layer/kupumyitems.xml.pt:16
+msgid "descr_myitems"
+msgstr "Mine senest redigerede indholdsobjekter"
+
+#. Default: "Recently published items."
+#: kupu/plone/kupu_plone_layer/kupurecentitems.xml.pt:16
+msgid "descr_recentitems"
+msgstr "Senest publicerede indholdsobjekter"
+
+#. Default: "Search results."
+#: kupu/plone/kupu_plone_layer/kupusearch.xml.pt:18
+msgid "descr_search_results"
+msgstr "S√∏geresultater"
+
+#. Default: "Current selection."
+#: kupu/plone/kupu_plone_layer/kupuselection.xml.pt:22
+msgid "descr_selected"
+msgstr "Nuv√¶rende valgte"
+
+#. Default: "<em>...fetching anchors...</em>"
+#: kupu/common/kupudrawers/drawer.xsl:510
+msgid "fetching_anchors"
+msgstr ""
+
+#. Default: "Edit with visual editor"
+#: kupu/plone/body.kupu:95
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:472
+msgid "force-kupu"
+msgstr "Rediger med visual editor"
+
+#. Default: "HTML"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:506
+#: kupu/plone/wysiwyg_support.kupu:107
+msgid "format_html"
+msgstr "HTML"
+
+#. Default: "My Items"
+#: kupu/plone/kupu_plone_layer/kupumyitems.xml.pt:15
+msgid "heading_myitems"
+msgstr "Mine indholdsobjekter"
+
+#. Default: "Recent Items"
+#: kupu/plone/kupu_plone_layer/kupurecentitems.xml.pt:15
+msgid "heading_recentitems"
+msgstr "Seneste objekter"
+
+#. Default: "Selected"
+#: kupu/plone/kupu_plone_layer/kupuselection.xml.pt:21
+msgid "heading_selected"
+msgstr ""
+
+#. Default: "If you are unsure of which format to use, just select Plain Text and type the document as you usually do."
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:497
+#: kupu/plone/wysiwyg_support.kupu:86
+msgid "help_format"
+msgstr "Hvis du er usikker p√• hvilket format du skal bruge, s√• brug Plain Text og skriv dokumentet, som du plejer."
+
+#. Default: "Paste &lt;object&gt; or &lt;embed&gt; tag here:"
+#: kupu/default/drawers.kupu:105
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:227
+msgid "help_paste_here"
+msgstr "Inds√¶t &lt;object&gt; or &lt;embed&gt; tag her: "
+
+#. Default: "Alignment"
+#: kupu/common/kupudrawers/drawer.xsl:355
+msgid "image_alignment"
+msgstr "Justering"
+
+#. Default: "Caption"
+#: kupu/common/kupudrawers/drawer.xsl:383
+msgid "imagedrawer_caption_label"
+msgstr "Billedtekst"
+
+#. Default: "Inline"
+#: kupu/common/kupudrawers/drawer.xsl:370
+msgid "imagedrawer_inline"
+msgstr "Inline"
+
+#. Default: "Left"
+#: kupu/common/kupudrawers/drawer.xsl:363
+msgid "imagedrawer_left"
+msgstr "Venstre"
+
+#. Default: "Right"
+#: kupu/common/kupudrawers/drawer.xsl:377
+msgid "imagedrawer_right"
+msgstr "H√∏jre"
+
+#. Default: "(${width} by ${height})"
+#: kupu/common/kupudrawers/drawer.xsl:293
+#, fuzzy
+msgid "imagedrawer_size"
+msgstr "( ${width} gange ${height} )"
+
+#. Default: "Size"
+#: kupu/common/kupudrawers/drawer.xsl:399
+msgid "imagedrawer_size_2"
+msgstr "St√∏rrelse"
+
+#. Default: "Style"
+#: kupu/common/kupudrawers/drawer.xsl:414
+msgid "imagedrawer_style"
+msgstr ""
+
+#. Default: "Insert Image"
+#: kupu/common/kupudrawers/drawer.xsl:62
+msgid "imagedrawer_title"
+msgstr "Inds√¶t billede"
+
+#. Default: "Text equivalent"
+#: kupu/common/kupudrawers/drawer.xsl:435
+msgid "imagedrawer_upload_alt_text"
+msgstr "ALT-tekst"
+
+#. Default: "Description"
+#: kupu/common/kupudrawers/drawer.xsl:547
+msgid "imagedrawer_upload_desc_label"
+msgstr "Beskrivelse"
+
+#. Default: "Select an image from your computer and click ok to have it automatically uploaded to selected folder and inserted into the editor."
+#: kupu/common/kupudrawers/drawer.xsl:571
+msgid "imagedrawer_upload_instructions"
+msgstr "V√¶lg et billede fra din computer og klik ok for automatisk at uploade det til den valgte mappe og indsat i editoren."
+
+#. Default: "Upload image here..."
+#: kupu/common/kupudrawers/drawer.xsl:244
+msgid "imagedrawer_upload_link"
+msgstr "Upload billede her..."
+
+#. Default: "Title"
+#: kupu/common/kupudrawers/drawer.xsl:543
+msgid "imagedrawer_upload_title_label"
+msgstr "Titel"
+
+#. Default: "Upload to: ${folder}"
+#: kupu/common/kupudrawers/drawer.xsl:561
+msgid "imagedrawer_upload_to_label"
+msgstr ""
+
+#. Default: "Search"
+#: kupu/common/kupudrawers/drawer.xsl:84
+msgid "kupudrawer_search"
+msgstr "S√∏g"
+
+#. Default: "Anchor"
+#: kupu/default/drawers.kupu:86
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:211
+msgid "label_anchor"
+msgstr "Anker"
+
+#. Default: "Col Align:"
+#: kupu/default/toolboxes.kupu:129
+msgid "label_col_align"
+msgstr "Kolonnejustering"
+
+#. Default: "Columns:"
+#: kupu/default/toolboxes.kupu:104
+msgid "label_columns"
+msgstr "Kolonner"
+
+#. Default: "Create"
+#: kupu/default/toolboxes.kupu:113
+msgid "label_create"
+msgstr "Opret"
+
+#. Default: "Description:"
+#: kupu/default/toolboxes.kupu:26
+msgid "label_description"
+msgstr "Beskrivelse"
+
+#. Default: "Format"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:495
+#: kupu/plone/wysiwyg_support.kupu:84
+msgid "label_format"
+msgstr ""
+
+#. Default: "Headings:"
+#: kupu/default/toolboxes.kupu:108
+msgid "label_headings"
+msgstr "Headings"
+
+#. Default: "Image class:"
+#: kupu/default/toolboxes.kupu:64
+msgid "label_image_class"
+msgstr ""
+
+#. Default: "Insert image at the following URL:"
+#: kupu/default/toolboxes.kupu:73
+msgid "label_insert_image_url"
+msgstr "Inds√¶t billede p√• f√∏lgende URL:"
+
+#. Default: "Link the highlighted text to this URL:"
+#: kupu/default/drawers.kupu:71
+#: kupu/default/toolboxes.kupu:40
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:199
+msgid "label_link_text"
+msgstr "Link den markerede tekst til denne URL:"
+
+#. Default: "Links"
+#: kupu/default/toolboxes.kupu:35
+msgid "label_links"
+msgstr "Links"
+
+#. Default: "Numbering"
+#: kupu/default/drawers.kupu:316
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:382
+msgid "label_numbering"
+msgstr "Nummerering"
+
+#. Default: "Rows:"
+#: kupu/default/toolboxes.kupu:101
+msgid "label_rows"
+msgstr "R√¶kker"
+
+#. Default: "Select a cleanup action:"
+#: kupu/default/toolboxes.kupu:178
+msgid "label_select_cleanup"
+msgstr ""
+
+#. Default: "Table Class:"
+#: kupu/default/toolboxes.kupu:96
+msgid "label_table_class"
+msgstr "Tabelklasse"
+
+#. Default: "Table style"
+#: kupu/default/drawers.kupu:308
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:374
+msgid "label_table_style"
+msgstr ""
+
+#. Default: "Title:"
+#: kupu/default/toolboxes.kupu:24
+msgid "label_title"
+msgstr "Titel"
+
+#. Default: "toggle all"
+#: kupu/default/drawers.kupu:323
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:389
+msgid "label_toggle_all"
+msgstr "V√¶lg alle"
+
+#. Default: "Link to anchor"
+#: kupu/common/kupudrawers/drawer.xsl:499
+msgid "linkdrawer_anchor"
+msgstr "Link til anker"
+
+#. Default: "Name"
+#: kupu/common/kupudrawers/drawer.xsl:473
+msgid "linkdrawer_name_label"
+msgstr "Navn"
+
+#. Default: "Target"
+#: kupu/common/kupudrawers/drawer.xsl:480
+msgid "linkdrawer_target_label"
+msgstr ""
+
+#. Default: "Insert Link"
+#: kupu/common/kupudrawers/drawer.xsl:63
+msgid "linkdrawer_title"
+msgstr "Inds√¶t Link"
+
+#. Default: "‚óã"
+#: kupu/default/toolbar.kupu:28
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:168
+#: kupu/plone/toolbar.kupu:138
+#, fuzzy
+msgid "list-circle"
+msgstr "list-cirkel"
+
+#. Default: "1"
+#: kupu/default/toolbar.kupu:32
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:172
+#: kupu/plone/toolbar.kupu:142
+msgid "list-decimal"
+msgstr "liste-decimal"
+
+#. Default: "‚óè"
+#: kupu/default/toolbar.kupu:26
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:166
+#: kupu/plone/toolbar.kupu:136
+msgid "list-disc"
+msgstr ""
+
+#. Default: "a"
+#: kupu/default/toolbar.kupu:40
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:176
+#: kupu/plone/toolbar.kupu:150
+msgid "list-loweralpha"
+msgstr "a"
+
+#. Default: "i"
+#: kupu/default/toolbar.kupu:36
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:174
+#: kupu/plone/toolbar.kupu:146
+msgid "list-lowerroman"
+msgstr "i"
+
+#. Default: "no bullet"
+#: kupu/default/toolbar.kupu:29
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:169
+#: kupu/plone/toolbar.kupu:139
+msgid "list-nobullet"
+msgstr "ingen cirkel"
+
+#. Default: "‚ñ†"
+#: kupu/default/toolbar.kupu:27
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:167
+#: kupu/plone/toolbar.kupu:137
+#, fuzzy
+msgid "list-square"
+msgstr "firkant"
+
+#. Default: "A"
+#: kupu/default/toolbar.kupu:38
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:175
+#: kupu/plone/toolbar.kupu:148
+msgid "list-upperalpha"
+msgstr "A"
+
+#. Default: "I"
+#: kupu/default/toolbar.kupu:34
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:173
+#: kupu/plone/toolbar.kupu:144
 msgid "list-upperroman"
 msgstr "I"
 
-#: /default/toolboxes.kupu:None
-msgid "Headings:"
-msgstr "Overskrifter:"
+#. Default: "Locate"
+#: kupu/plone/kupu_plone_layer/kupumyitems.xml.pt:21
+#: kupu/plone/kupu_plone_layer/kupurecentitems.xml.pt:21
+#: kupu/plone/kupu_plone_layer/kupusearch.xml.pt:21
+msgid "locate_content"
+msgstr ""
 
-#: /default/toolboxes.kupu:None
-msgid "Fix"
-msgstr "Fix"
+#. Default: "(optional 2nd style)"
+#: kupu/default/drawers.kupu:334
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:400
+msgid "opt_2nd_style"
+msgstr ""
 
-#: /default/toolboxes.kupu:None
-msgid "Remove Column"
-msgstr "Fjern kolonne"
-
-#: /default/toolboxes.kupu:None
-msgid "Inline"
+#. Default: "Inline"
+#: kupu/default/toolboxes.kupu:67
+msgid "opt_inline"
 msgstr "Inline"
 
-#: /default/toolboxes.kupu:None
-msgid "Select a cleanup action:"
-msgstr "VÊlg rensefunktion:"
-
-#: /default/toolboxes.kupu:None
-msgid "Links"
-msgstr "Links"
-
-#: /default/toolboxes.kupu:None
-msgid "Rows:"
-msgstr "RÊkker:"
-
-#: /default/toolboxes.kupu:None
-msgid "Remove Row"
-msgstr "Fjern rÊkke"
-
-#: /default/toolboxes.kupu:None
-msgid "Tables"
-msgstr "Tabeller"
-
-#: /default/toolboxes.kupu:None
-msgid "Create"
-msgstr "Opret"
-
-#: /default/toolboxes.kupu:None
-msgid "Insert image at the following URL:"
-msgstr "IndsÊt billede pÂ denne URL:"
-
-#: /default/toolboxes.kupu:None
-msgid "Title:"
-msgstr "Titel"
-
-#: /default/toolboxes.kupu:None
-msgid "Description:"
-msgstr "Beskrivelse"
-
-#: /default/toolboxes.kupu:None
-msgid "Image class:"
-msgstr "Billede CSS class:"
-
-#: /default/toolboxes.kupu:None
-msgid "Add Column"
-msgstr "Tilf¯j kolonne"
-
-#: /default/toolboxes.kupu:None
-msgid "Fix Table"
-msgstr "Fix tabel"
-
-#: /default/toolboxes.kupu:None
-msgid "Images"
-msgstr "Billeder"
-
-#: /default/toolboxes.kupu:None
-msgid "Insert Image"
-msgstr "IndsÊt billede"
-
-#: /default/toolboxes.kupu:None
-msgid "Add Table"
-msgstr "Tilf¯j tabel"
-
-#: /default/toolboxes.kupu:None
-msgid "Add Row"
-msgstr "Tilf¯j rÊkke"
-
-#: /default/toolboxes.kupu:None
-msgid "Properties"
-msgstr "Egenskaber"
-
-#: /default/toolboxes.kupu:None
-msgid "Col Align:"
-msgstr "Kolonne justering:"
-
-#: /default/toolboxes.kupu:None
-msgid "Center"
-msgstr "Centrer"
-
-#: /default/toolboxes.kupu:None
-msgid "Debug Log"
-msgstr "Debug rapport"
-
-#: /default/toolboxes.kupu:None
-msgid "Make Link"
-msgstr "Opret link"
-
-#: /default/toolboxes.kupu:None
-msgid "Cleanup expressions"
-msgstr "Rensnings-udtryk"
-
-#: /default/toolboxes.kupu:None
-msgid "Columns:"
-msgstr "Kolonner:"
-
-#: /default/toolboxes.kupu:None
-msgid "Table Class:"
-msgstr "Tabel CSS class:"
-
-#: /default/toolboxes.kupu:None
-#: /default/toolboxes.kupu:None
-msgid "Right"
-msgstr "H¯jre"
-
-#: /default/toolboxes.kupu:None
-#: /default/toolboxes.kupu:None
-msgid "Left"
+#. Default: "Left"
+#: kupu/default/toolboxes.kupu:68
+msgid "opt_left"
 msgstr "Venstre"
 
-#: /plone/body.kupu
-msgid "force-kupu"
-msgstr ""
+#. Default: "Right"
+#: kupu/default/toolboxes.kupu:69
+msgid "opt_right"
+msgstr "H√∏jre"
 
-#: /plone/body.kupu
+#. Default: "top of page (default)"
+#: kupu/default/drawers.kupu:87
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:212
+msgid "opt_top_of_page"
+msgstr "Toppen af siden (default)"
+
+#. Default: "Perform action"
+#: kupu/default/toolboxes.kupu:186
+msgid "perform_action"
+msgstr "Udf√∏r handling"
+
+#. Default: "[insert arbitrary HTML code here]"
+#: kupu/default/drawers.kupu:109
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:231
+msgid "placeholder_html_code"
+msgstr "[Inds√¶t vilk√•rlig HTML-kode her]"
+
+#. Default: "Plain Text"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:509
+#: kupu/plone/wysiwyg_support.kupu:116
+msgid "plain_text"
+msgstr "Plain Text"
+
+#. Default: "Structured Text"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:503
+#: kupu/plone/wysiwyg_support.kupu:98
+msgid "structured_text"
+msgstr "Struktureret Tekst"
+
+#. Default: "Edit without visual editor"
+#: kupu/plone/body.kupu:76
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:446
 msgid "suppress-kupu"
+msgstr "Rediger uden visual editor"
+
+#. Default: "Embed external object"
+#: kupu/default/drawers.kupu:62
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:191
+msgid "tab_embed"
+msgstr "Indeslut eksternt objekt"
+
+#. Default: "Link to url"
+#: kupu/default/drawers.kupu:59
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:190
+msgid "tab_link"
+msgstr "Link til url"
+
+#. Default: "Link to anchor"
+#: kupu/default/drawers.kupu:292
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:362
+msgid "tab_link_anchor"
+msgstr "Link til anker"
+
+#. Default: "Manage Anchors"
+#: kupu/default/drawers.kupu:295
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:363
+msgid "tab_manage_anchors"
+msgstr "Administr√©r ankere"
+
+#. Default: "Table of contents"
+#: kupu/default/drawers.kupu:298
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:364
+msgid "tab_toc"
+msgstr "Indholdsfortegnelse"
+
+#. Default: "Add"
+#: kupu/default/drawers.kupu:233
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:328
+msgid "tabledrawer_add_button"
+msgstr "Tilf√∏j"
+
+#. Default: "Add Table"
+#: kupu/default/drawers.kupu:185
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:294
+msgid "tabledrawer_add_table_button"
+msgstr "Tilf√∏j tabel"
+
+#. Default: "Current column alignment"
+#: kupu/default/drawers.kupu:215
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:316
+msgid "tabledrawer_alignment_label"
+msgstr "Nuv√¶rende kolonne-justering"
+
+#. Default: "Center"
+#: kupu/default/drawers.kupu:222
+#: kupu/default/toolboxes.kupu:132
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:320
+msgid "tabledrawer_center_option"
+msgstr "Centrer"
+
+#. Default: "Table Class"
+#: kupu/default/drawers.kupu:150
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:264
+msgid "tabledrawer_class_label"
+msgstr "Tabel CSS class"
+
+#. Default: "Close"
+#: kupu/default/drawers.kupu:277
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:352
+msgid "tabledrawer_close_button"
+msgstr "Luk"
+
+#. Default: "Column"
+#: kupu/default/drawers.kupu:230
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:326
+msgid "tabledrawer_column_label"
+msgstr "Kolonner"
+
+#. Default: "Columns"
+#: kupu/default/drawers.kupu:165
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:279
+msgid "tabledrawer_columns_label"
+msgstr "Antal kolonner"
+
+#. Default: "Fix"
+#: kupu/default/drawers.kupu:261
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:342
+msgid "tabledrawer_fix_button"
+msgstr "Fix"
+
+#. Default: "Fix All Tables"
+#: kupu/default/drawers.kupu:189
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:295
+msgid "tabledrawer_fix_tables_button"
+msgstr "Fix alle tabeller"
+
+#. Default: "Create Headings"
+#: kupu/default/drawers.kupu:176
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:286
+msgid "tabledrawer_headings_label"
+msgstr "Opret tabeloverskrifter"
+
+#. Default: "Left"
+#: kupu/default/drawers.kupu:220
+#: kupu/default/toolboxes.kupu:131
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:319
+msgid "tabledrawer_left_option"
+msgstr "Venstre"
+
+#. Default: "Remove"
+#: kupu/default/drawers.kupu:237
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:329
+msgid "tabledrawer_remove_button"
+msgstr "Fjern"
+
+#. Default: "Right"
+#: kupu/default/drawers.kupu:224
+#: kupu/default/toolboxes.kupu:133
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:321
+msgid "tabledrawer_right_option"
+msgstr "H√∏jre"
+
+#. Default: "Row"
+#: kupu/default/drawers.kupu:244
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:333
+msgid "tabledrawer_row_label"
+msgstr "R√¶kke"
+
+#. Default: "Rows"
+#: kupu/default/drawers.kupu:161
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:275
+msgid "tabledrawer_rows_label"
+msgstr "Antal r√¶kker"
+
+#. Default: "Table"
+#: kupu/default/drawers.kupu:258
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:340
+msgid "tabledrawer_table_label"
+msgstr "Tabel"
+
+#. Default: "Table"
+#: kupu/default/drawers.kupu:141
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:255
+msgid "tabledrawer_title"
+msgstr "Tabel"
+
+#. Default: "Kupu Editor Test Page"
+#: kupu/default/body.kupu:14
+msgid "testpage_title"
+msgstr "Kupu Editor Testside"
+
+#. Default: "background color: alt-h"
+#: kupu/default/colorchooser.kupu:25
+#: kupu/plone/colorchooser.kupu:18
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:105
+msgid "title_back_color"
+msgstr "baggrundsfarve: alt-h"
+
+#. Default: "Bold: Access key (Alt or Ctrl) + B"
+#: kupu/default/toolbar.kupu:92
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:94
+#: kupu/plone/toolbar.kupu:34
+msgid "title_bold"
+msgstr "Fed: Access key (Alt eller Ctrl) + B"
+
+#. Default: "Center justify: Access key (Alt or Ctrl) + C"
+#: kupu/default/toolbar.kupu:116
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:110
+#: kupu/plone/toolbar.kupu:61
+msgid "title_center"
+msgstr "Centrer: Access key (Alt eller Ctrl) + C"
+
+#. Default: "Check spelling"
+#: kupu/default/spellchecker.kupu:17
+msgid "title_check_spelling"
+msgstr "Tjek stavning"
+
+#. Default: "Cleanup expressions"
+#: kupu/default/toolboxes.kupu:173
+msgid "title_cleanup_expressions"
 msgstr ""
 
+#. Default: "Debug Log"
+#: kupu/default/toolboxes.kupu:164
+msgid "title_debug_log"
+msgstr "Debug Log"
+
+#. Default: "Decrease quote level: Access key (Alt or Ctrl) + <"
+#: kupu/default/toolbar.kupu:148
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:126
+#: kupu/plone/toolbar.kupu:97
+msgid "title_decrease_quote"
+msgstr ""
+
+#. Default: "Definition list: Access key (Alt or Ctrl) + ="
+#: kupu/default/toolbar.kupu:140
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:122
+#: kupu/plone/toolbar.kupu:89
+msgid "title_deflist"
+msgstr "Definitionsliste: Access key (Alt eller Ctrl) + ="
+
+#. Default: "External Link"
+#: kupu/default/drawers.kupu:54
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:186
+msgid "title_external_link"
+msgstr "Eksternt link"
+
+#. Default: "reload current page using kupu to edit this field"
+#: kupu/plone/body.kupu:95
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:472
+msgid "title_force_kupu"
+msgstr "Genindl√¶s denne side, og brug kupu til at redigere dette felt"
+
+#. Default: "Images"
+#: kupu/default/toolboxes.kupu:60
+msgid "title_images"
+msgstr "Billeder"
+
+#. Default: "Increase quote level: Access key (Alt or Ctrl) + >"
+#: kupu/default/toolbar.kupu:151
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:127
+#: kupu/plone/toolbar.kupu:101
+msgid "title_increase_quote"
+msgstr ""
+
+#. Default: "Insert anchors"
+#: kupu/default/drawers.kupu:31
+#: kupu/plone/drawers.kupu:35
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:134
+msgid "title_insert_anchors"
+msgstr "Inds√¶t ankere"
+
+#. Default: "Insert external link"
+#: kupu/default/drawers.kupu:29
+#: kupu/plone/drawers.kupu:30
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:133
+msgid "title_insert_external_link"
+msgstr "Inds√¶t eksternt link"
+
+#. Default: "Insert image"
+#: kupu/default/drawers.kupu:23
+#: kupu/plone/drawers.kupu:20
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:131
+msgid "title_insert_image"
+msgstr "Inds√¶t billede"
+
+#. Default: "Insert internal link"
+#: kupu/default/drawers.kupu:27
+#: kupu/plone/drawers.kupu:25
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:132
+msgid "title_insert_internal_link"
+msgstr "Inds√¶t internt link"
+
+#. Default: "Insert table"
+#: kupu/default/drawers.kupu:34
+#: kupu/plone/drawers.kupu:39
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:135
+msgid "title_insert_table"
+msgstr "Inds√¶t tabel"
+
+#. Default: "Italic: Access key (Alt or Ctrl) + I"
+#: kupu/default/toolbar.kupu:94
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:95
+#: kupu/plone/toolbar.kupu:38
+msgid "title_italic"
+msgstr "Kursiv: Access key (Alt eller Ctrl) + I"
+
+#. Default: "Left justify: Access key (Alt or Ctrl) + L"
+#: kupu/default/toolbar.kupu:112
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:109
+#: kupu/plone/toolbar.kupu:57
+msgid "title_ljust"
+msgstr "Venstrejust√©r: Access key (Alt eller Ctrl) + L"
+
+#. Default: "Kupu 1.4"
+#: kupu/default/toolbar.kupu:55
+msgid "title_logo"
+msgstr "Kupu 1.4"
+
+#. Default: "Numbered list: Access key (Alt or Ctrl) + #"
+#: kupu/default/toolbar.kupu:128
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:116
+#: kupu/plone/toolbar.kupu:75
+msgid "title_numlist"
+msgstr "Nummereret liste: Access key (Alt eller Ctrl) + #"
+
+#. Default: "Properties"
+#: kupu/default/toolboxes.kupu:20
+msgid "title_properties"
+msgstr "Egenskaber"
+
+#. Default: "Redo: Access key (Alt or Ctrl) + Y"
+#: kupu/default/toolbar.kupu:162
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:140
+#: kupu/plone/toolbar.kupu:114
+msgid "title_redo"
+msgstr "Genskab: Access key (Alt eller Ctrl + Y"
+
+#. Default: "Remove image"
+#: kupu/default/toolbar.kupu:170
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:159
+#: kupu/plone/toolbar.kupu:157
+msgid "title_removeimage"
+msgstr "Fjern billede"
+
+#. Default: "Remove link"
+#: kupu/default/toolbar.kupu:173
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:160
+#: kupu/plone/toolbar.kupu:161
+msgid "title_removelink"
+msgstr "Fjern link"
+
+#. Default: "Right justify: Access key (Alt or Ctrl) + R"
+#: kupu/default/toolbar.kupu:119
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:111
+#: kupu/plone/toolbar.kupu:65
+msgid "title_rjust"
+msgstr "H√∏jrejust√©r: Access key (Alt eller Ctrl) + R"
+
+#. Default: "Save"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:90
+#: kupu/plone/save.kupu:15
+msgid "title_save"
+msgstr "Gem"
+
+#. Default: "save: alt-s"
+#: kupu/default/save.kupu:14
+msgid "title_save_alts"
+msgstr "gem: alt-s"
+
+#. Default: "Check spelling"
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:144
+#: kupu/plone/spellchecker.kupu:14
+msgid "title_spelling"
+msgstr "Tjek stavning"
+
+#. Default: "Subscript: Access key (Alt or Ctrl) + -"
+#: kupu/default/toolbar.kupu:103
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:99
+#: kupu/plone/toolbar.kupu:46
+msgid "title_subscript"
+msgstr "S√¶nket skrift: Access key (Alt eller Ctrl) + -"
+
+#. Default: "Superscript: Access key (Alt or Ctrl) + +"
+#: kupu/default/toolbar.kupu:105
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:100
+#: kupu/plone/toolbar.kupu:49
+msgid "title_superscript"
+msgstr "H√¶vet skrift: Access key (Alt eller Ctrl) + +"
+
+#. Default: "reload current page without kupu"
+#: kupu/plone/body.kupu:76
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:446
+msgid "title_suppress_kupu"
+msgstr "Genindl√¶s siden uden kupu"
+
+#. Default: "Tables"
+#: kupu/default/toolboxes.kupu:92
+msgid "title_tables"
+msgstr "Tabeller"
+
+#. Default: "text color: alt-f"
+#: kupu/default/colorchooser.kupu:21
+#: kupu/plone/colorchooser.kupu:13
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:104
+msgid "title_text_color"
+msgstr "Tekstfarve: alt-f"
+
+#. Default: "Underline: Access key (Alt or Ctrl) + U"
+#: kupu/default/toolbar.kupu:96
+msgid "title_underline"
+msgstr "Understreg: Access key (Alt eller Ctrl) + U"
+
+#. Default: "Undo: Access key (Alt or Ctrl) + Z"
+#: kupu/default/toolbar.kupu:159
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:139
+#: kupu/plone/toolbar.kupu:110
+msgid "title_undo"
+msgstr "Fortryd: Access key (Alt eller Ctrl) + Z"
+
+#. Default: "Unordered list: Access key (Alt or Ctrl) + *"
+#: kupu/default/toolbar.kupu:131
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:117
+#: kupu/plone/toolbar.kupu:79
+msgid "title_unorderedlist"
+msgstr "Usorteret liste: Access key (Alt eller Ctrl) + *"
+
+#. Default: "Zoom: Access key (Alt or Ctrl) + X"
+#: kupu/default/toolbar.kupu:47
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:86
+#: kupu/plone/toolbar.kupu:25
+msgid "title_zoom"
+msgstr "Zoom: Access key (Alt eller Ctrl) + X"
+
+#. Default: "Switch between visual editor and HTML view"
+#: kupu/default/sourceedit.kupu:23
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:148
+#: kupu/plone/sourceedit.kupu:18
+msgid "toggle_source_view"
+msgstr "rediger HTML kilde"
+
+#. Default: "top of page (default)"
+#: kupu/common/kupudrawers/drawer.xsl:509
+msgid "top_of_page"
+msgstr "Toppen af siden (default)"
+
+#. Default: "Preview"
+#: kupu/default/drawers.kupu:92
+#: kupu/plone/kupu_plone_layer/kupu_wysiwyg_support.html:216
+msgid "watermark_preview"
+msgstr "Smugkig"
 
