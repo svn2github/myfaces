@@ -1,18 +1,12 @@
-<%@ page session="false" contentType="text/html;charset=utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
-<%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
-<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-
-<html>
-	<head>
-		<meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=UTF-8" />
-		<title>MyFaces - the free JSF Implementation</title>
-
-		<link rel="stylesheet" type="text/css" href="css/basic.css" />
-	
-	</head>
-
-	<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
+<!--
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -32,11 +26,9 @@
  * under the License.
  */
 //-->
-
-
-
-	<body>
-		<f:view>
+<body>
+ <ui:composition template="/META-INF/templates/template.xhtml">
+  <ui:define name="body">
 			<h:panelGroup>
 				<t:dojoInitializer require="dojo.widget.Editor" debug="true"/>	
 				<t:dojoInitializer require="dojo.widget.DebugConsole" debugAtAllCosts="false"/>	
@@ -44,7 +36,7 @@
 				<t:dojoInitializer debugConsole="true" expanded="true"/>
 					
 				<f:verbatim>
-					<script type="text/javascript" >
+					<script type="text/javascript" ><!--
 						function generateSomeDebuggingInfo() {
 							for (var x=0; x<10; x++) {
 								dojo.debug(x + ": Here is some debugging info, should be 10 new lines");
@@ -54,13 +46,17 @@
 							dojo.debug("this attribute set to true loads the expanded version");
 							dojo.debug("otherwise the non expanded version is loaded");
 						}
+                    //-->
 					</script>
 				</f:verbatim>
 				<h:form>	
 				<h:commandButton id="triggerdojo" onclick="javascript:generateSomeDebuggingInfo();return false;" value="[Press me for debug infos]"></h:commandButton>
 				</h:form>
 			</h:panelGroup>
-		</f:view>
-		<%@include file="../inc/page_footer.jsp"%>
-	</body>
+  </ui:define>
+  <ui:define name="footer">
+     <ui:include src="/META-INF/templates/dojofooter.xhtml"/>
+  </ui:define>
+ </ui:composition>
+</body>
 </html>
