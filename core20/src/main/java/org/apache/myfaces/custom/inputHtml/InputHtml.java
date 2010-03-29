@@ -18,14 +18,12 @@
  */
 package org.apache.myfaces.custom.inputHtml;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
-
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 /**
  * HTML Editor using the kupu library.
@@ -55,77 +53,8 @@ public class InputHtml extends HtmlInputText {
 
     private static final Log log = LogFactory.getLog(HtmlInputText.class);
 
-    private String _fallback;
-    private String _type;
-
-    private Boolean _allowEditSource;
-    private Boolean _allowExternalLinks;
-    private Boolean _addKupuLogo;
-
-    private Boolean _showAllToolBoxes;
-    private Boolean _showPropertiesToolBox;
-    private Boolean _showLinksToolBox;
-    private Boolean _showImagesToolBox;
-    private Boolean _showTablesToolBox;
-    private Boolean _showCleanupExpressionsToolBox;
-    private Boolean _showDebugToolBox;
-
     public InputHtml() {
         setRendererType(DEFAULT_RENDERER_TYPE);
-    }
-
-    public Object saveState(FacesContext context) {
-        Object values[] = new Object[4];
-        values[0] = super.saveState(context);
-
-        String[] types = new String[2];
-        types[0] = _fallback;
-        types[1] = _type;
-
-        values[1] = types;
-
-        Boolean toolBarButtons[] = new Boolean[3];
-        toolBarButtons[0] = _allowEditSource;
-        toolBarButtons[1] = _allowExternalLinks;
-        toolBarButtons[2] = _addKupuLogo;
-
-        values[2] = toolBarButtons;
-
-        Boolean toolBoxes[] = new Boolean[7];
-        toolBoxes[0] = _showAllToolBoxes;
-        toolBoxes[1] = _showPropertiesToolBox;
-        toolBoxes[2] = _showLinksToolBox;
-        toolBoxes[3] = _showImagesToolBox;
-        toolBoxes[4] = _showTablesToolBox;
-        toolBoxes[5] = _showCleanupExpressionsToolBox;
-        toolBoxes[6] = _showDebugToolBox;
-
-        values[3] = toolBoxes;
-
-        return values;
-    }
-
-    public void restoreState(FacesContext context, Object state) {
-        Object values[] = (Object[]) state;
-        super.restoreState(context, values[0]);
-
-        String[] types = (String[]) values[1];
-        _fallback = types[0];
-        _type = types[1];
-
-        Boolean[] toolBarButtons = (Boolean[]) values[2];
-        _allowEditSource = toolBarButtons[0];
-        _allowExternalLinks = toolBarButtons[1];
-        _addKupuLogo = toolBarButtons[2];
-
-        Boolean[] toolBoxes = (Boolean[]) values[3];
-        _showAllToolBoxes = toolBoxes[0];
-        _showPropertiesToolBox = toolBoxes[1];
-        _showLinksToolBox = toolBoxes[2];
-        _showImagesToolBox = toolBoxes[3];
-        _showTablesToolBox = toolBoxes[4];
-        _showCleanupExpressionsToolBox = toolBoxes[5];
-        _showDebugToolBox = toolBoxes[6];
     }
 
     /**
@@ -136,13 +65,10 @@ public class InputHtml extends HtmlInputText {
      * @JSFProperty
      */
     public String getFallback(){
-        if (_fallback != null)
-            return _fallback;
-        ValueBinding vb = getValueBinding("fallback");
-        return vb != null ? vb.getValue(getFacesContext()).toString() : "false";
+        return (String) getStateHelper().eval(PropertyKeys.fallback, "false");
     }
     public void setFallback(String _fallback){
-        this._fallback = _fallback;
+        getStateHelper().put(PropertyKeys.fallback, _fallback);
     }
 
     /**
@@ -153,13 +79,10 @@ public class InputHtml extends HtmlInputText {
      * @JSFProperty
      */
     public String getType(){
-        if (_type != null)
-            return _type;
-        ValueBinding vb = getValueBinding("type");
-        return vb != null ? _ComponentUtils.getStringValue(getFacesContext(), vb) : "fragment";
+        return (String) getStateHelper().eval(PropertyKeys.type, "fragment");
     }
     public void setType(String _type){
-        this._type = _type;
+        getStateHelper().put(PropertyKeys.type, _type);
     }
     public boolean isTypeDocument(){
         return getType().equals("document");
@@ -171,13 +94,10 @@ public class InputHtml extends HtmlInputText {
      * @JSFProperty
      */
     public boolean isAllowEditSource(){
-           if (_allowEditSource != null)
-               return _allowEditSource.booleanValue();
-           ValueBinding vb = getValueBinding("allowEditSource");
-           return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : true;
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowEditSource, Boolean.TRUE);
     }
     public void setAllowEditSource(boolean allowEditSource){
-        this._allowEditSource = Boolean.valueOf(allowEditSource);
+        getStateHelper().put(PropertyKeys.allowEditSource, allowEditSource);
     }
 
     /**
@@ -186,13 +106,10 @@ public class InputHtml extends HtmlInputText {
      * @JSFProperty
      */
     public boolean isAllowExternalLinks(){
-        if (_allowExternalLinks != null)
-            return _allowExternalLinks.booleanValue();
-        ValueBinding vb = getValueBinding("allowExternalLinks");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : true;
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowExternalLinks, Boolean.TRUE);
     }
     public void setAllowExternalLinks(boolean allowExternalLinks){
-        this._allowExternalLinks = Boolean.valueOf(allowExternalLinks);
+        getStateHelper().put(PropertyKeys.allowExternalLinks, allowExternalLinks);
     }
 
     /**
@@ -201,13 +118,10 @@ public class InputHtml extends HtmlInputText {
      * @JSFProperty
      */
     public boolean isAddKupuLogo(){
-           if (_addKupuLogo != null)
-               return _addKupuLogo.booleanValue();
-           ValueBinding vb = getValueBinding("addKupuLogo");
-           return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : true;
+        return (Boolean) getStateHelper().eval(PropertyKeys.addKupuLogo, Boolean.TRUE);
     }
     public void setAddKupuLogo(boolean addKupuLogo){
-        this._addKupuLogo = Boolean.valueOf(addKupuLogo);
+        getStateHelper().put(PropertyKeys.addKupuLogo, addKupuLogo);
     }
 
     /**
@@ -216,13 +130,10 @@ public class InputHtml extends HtmlInputText {
      * @JSFProperty
      */
     public boolean isShowAllToolBoxes(){
-           if (_showAllToolBoxes != null)
-               return _showAllToolBoxes.booleanValue();
-        ValueBinding vb = getValueBinding("showAllToolBoxes");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showAllToolBoxes, Boolean.FALSE);
     }
     public void setShowAllToolBoxes(boolean showAllToolBoxes){
-        this._showAllToolBoxes = Boolean.valueOf(showAllToolBoxes);
+        getStateHelper().put(PropertyKeys.showAllToolBoxes, showAllToolBoxes);
     }
 
     /**
@@ -234,14 +145,11 @@ public class InputHtml extends HtmlInputText {
         if( isShowAllToolBoxes() )
             return true;
 
-           if (_showPropertiesToolBox != null)
-               return _showPropertiesToolBox.booleanValue();
-        ValueBinding vb = getValueBinding("showPropertiesToolBox");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showPropertiesToolBox, Boolean.FALSE);
     }
 
     public void setShowPropertiesToolBox(boolean showPropertiesToolBox){
-        this._showPropertiesToolBox = Boolean.valueOf(showPropertiesToolBox);
+        getStateHelper().put(PropertyKeys.showPropertiesToolBox, showPropertiesToolBox);
     }
 
     /**
@@ -253,14 +161,11 @@ public class InputHtml extends HtmlInputText {
         if( isShowAllToolBoxes() )
             return true;
 
-           if (_showLinksToolBox != null)
-               return _showLinksToolBox.booleanValue();
-        ValueBinding vb = getValueBinding("showLinksToolBox");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showLinksToolBox, Boolean.FALSE);
     }
     
     public void setShowLinksToolBox(boolean showLinksToolBox){
-        this._showLinksToolBox = Boolean.valueOf(showLinksToolBox);
+        getStateHelper().put(PropertyKeys.showLinksToolBox, showLinksToolBox);
     }
 
     /**
@@ -272,13 +177,10 @@ public class InputHtml extends HtmlInputText {
         if( isShowAllToolBoxes() )
             return true;
 
-           if (_showImagesToolBox != null)
-               return _showImagesToolBox.booleanValue();
-        ValueBinding vb = getValueBinding("showImagesToolBox");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showImagesToolBox, Boolean.FALSE);
     }
     public void setShowImagesToolBox(boolean showImagesToolBox){
-        this._showImagesToolBox = Boolean.valueOf(showImagesToolBox);
+        getStateHelper().put(PropertyKeys.showImagesToolBox, showImagesToolBox);
     }
 
     /**
@@ -290,13 +192,10 @@ public class InputHtml extends HtmlInputText {
         if( isShowAllToolBoxes() )
             return true;
 
-           if (_showTablesToolBox != null)
-               return _showTablesToolBox.booleanValue();
-        ValueBinding vb = getValueBinding("showTablesToolBox");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTablesToolBox, Boolean.FALSE);
     }
     public void setShowTablesToolBox(boolean showTablesToolBox){
-        this._showTablesToolBox = Boolean.valueOf(showTablesToolBox);
+        getStateHelper().put(PropertyKeys.showTablesToolBox, showTablesToolBox);
     }
 
     /**
@@ -308,13 +207,10 @@ public class InputHtml extends HtmlInputText {
         if( isShowAllToolBoxes() )
             return true;
 
-           if (_showCleanupExpressionsToolBox != null)
-               return _showCleanupExpressionsToolBox.booleanValue();
-        ValueBinding vb = getValueBinding("showCleanupExpressionsToolBox");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCleanupExpressionsToolBox, Boolean.FALSE);
     }
     public void setShowCleanupExpressionsToolBox(boolean showCleanupExpressionsToolBox){
-        this._showCleanupExpressionsToolBox = Boolean.valueOf(showCleanupExpressionsToolBox);
+        getStateHelper().put(PropertyKeys.showCleanupExpressionsToolBox, showCleanupExpressionsToolBox);
     }
 
     /**
@@ -326,13 +222,10 @@ public class InputHtml extends HtmlInputText {
         if( isShowAllToolBoxes() )
             return true;
 
-           if (_showDebugToolBox != null)
-               return _showDebugToolBox.booleanValue();
-        ValueBinding vb = getValueBinding("showDebugToolBox");
-        return vb != null ? ((Boolean)vb.getValue(getFacesContext())).booleanValue() : false;
+        return (Boolean) getStateHelper().eval(PropertyKeys.showDebugToolBox, Boolean.FALSE);
     }
-    public void setShowDebugToolBox(boolean showTablesToolBox){
-        this._showDebugToolBox = Boolean.valueOf(showTablesToolBox);
+    public void setShowDebugToolBox(boolean showTablesToolBox){        
+        getStateHelper().put(PropertyKeys.showDebugToolBox, showTablesToolBox);
     }
 
     public boolean isShowAnyToolBox(){
@@ -428,5 +321,22 @@ public class InputHtml extends HtmlInputText {
         }
 
         return html.substring(bodyStartIndex, bodyEndIndex+1).trim();
+    }
+    
+    protected enum PropertyKeys
+    {
+        fallback,
+        type,
+        allowEditSource,
+        allowExternalLinks,
+        addKupuLogo,
+        showAllToolBoxes,
+        showPropertiesToolBox,
+        showLinksToolBox,
+        showImagesToolBox,
+        showTablesToolBox,
+        showCleanupExpressionsToolBox,
+        showDebugToolBox,
+        
     }
 }
