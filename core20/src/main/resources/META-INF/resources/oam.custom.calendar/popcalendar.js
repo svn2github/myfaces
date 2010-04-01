@@ -26,6 +26,8 @@ org_apache_myfaces_CalendarInitData = function()
 
     // directory for images ... e.g. this.imgDir="/img/"
     this.imgDir = "images/";
+    
+    this.imgDirSuffix = "";
 
     this.themePrefix = "jscalendar-DB";
 
@@ -230,7 +232,7 @@ org_apache_myfaces_PopupCalendar.prototype._swapImage = function(srcImg, destImg
 {
 
     if (srcImg)
-        srcImg.setAttribute("src", this.initData.imgDir + destImg);
+        srcImg.setAttribute("src", this.initData.imgDir + destImg+ this.initData.imgDirSuffix);
 }
 
 org_apache_myfaces_PopupCalendar.prototype._keypresshandler = function()
@@ -281,7 +283,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
                 // force preload of all images, so that when DOM nodes have their src set to
                 // the name of this image, it has already been loaded from the server.
                 this.img[i] = new Image;
-                this.img[i].src = this.initData.imgDir + this.imgSrc[i];
+                this.img[i].src = this.initData.imgDir + this.imgSrc[i]+ this.initData.imgDirSuffix;
             }
 
             this.containerCtl = containerCtl;
@@ -530,7 +532,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 org_apache_myfaces_PopupCalendar.prototype._appendNavToCaption = function(direction)
 {
     var imgLeft = document.createElement("img");
-    imgLeft.setAttribute("src", this.initData.imgDir + direction + "1.gif");
+    imgLeft.setAttribute("src", this.initData.imgDir + direction + "1.gif"+this.initData.imgDirSuffix);
     imgLeft.setAttribute("width","10px");
     imgLeft.setAttribute("height","11px");
     imgLeft.setAttribute("style", "border:0px;")
@@ -1248,7 +1250,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
         contentRow.appendChild(dividerCell);
 
         var dividerImg = document.createElement("img");
-        dividerImg.setAttribute("src", this.initData.imgDir + "divider.gif");
+        dividerImg.setAttribute("src", this.initData.imgDir + "divider.gif"+ this.initData.imgDirSuffix);
         dividerImg.setAttribute("style", "width:1px;");
         dividerCell.appendChild(dividerImg);
     }
@@ -1364,7 +1366,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     this._appendNbsp(this.monthSpan);
 
     this.changeMonthImg = document.createElement("img");
-    this.changeMonthImg.setAttribute("src", this.initData.imgDir + "drop1.gif");
+    this.changeMonthImg.setAttribute("src", this.initData.imgDir + "drop1.gif" + this.initData.imgDirSuffix);
     this.changeMonthImg.setAttribute("width","12px");
     this.changeMonthImg.setAttribute("height","10px");
     this.changeMonthImg.setAttribute("style", "border:0px;");
@@ -1377,7 +1379,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     this.yearSpan.appendChild(document.createTextNode(this.selectedDate.year));
     this._appendNbsp(this.yearSpan);
     this.changeYearImg = document.createElement("img");
-    this.changeYearImg.setAttribute("src", this.initData.imgDir + "drop1.gif");
+    this.changeYearImg.setAttribute("src", this.initData.imgDir + "drop1.gif" + this.initData.imgDirSuffix);
     this.changeYearImg.setAttribute("width","12px");
     this.changeYearImg.setAttribute("height","10px");
     this.changeYearImg.setAttribute("style", "border:0px;");
@@ -1388,7 +1390,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     {
       this._removeAllChildren(this.acceptMonthSpan);
       var acceptMonthImg = document.createElement("img");
-      acceptMonthImg.setAttribute("src", this.initData.imgDir + "accept.gif");
+      acceptMonthImg.setAttribute("src", this.initData.imgDir + "accept.gif" + this.initData.imgDirSuffix);
       acceptMonthImg.setAttribute("width","15px");
       acceptMonthImg.setAttribute("height","13px");
       acceptMonthImg.setAttribute("style", "border:0px;");
@@ -1399,7 +1401,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     // Close Popup icon
     this._removeAllChildren(this.closeCalendarSpan);
     var closeButtonImg = document.createElement("img");
-    closeButtonImg.setAttribute("src", this.initData.imgDir + "close.gif");
+    closeButtonImg.setAttribute("src", this.initData.imgDir + "close.gif" + this.initData.imgDirSuffix);
     closeButtonImg.setAttribute("width","15px");
     closeButtonImg.setAttribute("height","13px");
     closeButtonImg.setAttribute("style", "border:0px;");

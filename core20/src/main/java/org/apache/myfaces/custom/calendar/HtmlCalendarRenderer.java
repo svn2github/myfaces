@@ -18,27 +18,20 @@
  */
 package org.apache.myfaces.custom.calendar;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
-import org.apache.myfaces.custom.prototype.PrototypeResourceLoader;
-import org.apache.myfaces.dateformat.SimpleDateFormatter;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
-import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -53,14 +46,24 @@ import javax.faces.convert.DateTimeConverter;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.ComponentSystemEventListener;
 import javax.faces.event.ListenerFor;
-import javax.faces.render.Renderer;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
+import org.apache.myfaces.dateformat.SimpleDateFormatter;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
+import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
 /**
  * Render a "calendar" which the user can use to choose a specific day.
@@ -516,16 +519,25 @@ public class HtmlCalendarRenderer
             String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
             if (imageLocation == null)
             {
-                String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme
-                        + "/");
-                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
-                        JavascriptUtils.encodeString(uri));
+                //String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme
+                //        + "/");
+                //setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
+                //        JavascriptUtils.encodeString(uri));
+                Resource resource = facesContext.getApplication().getResourceHandler().createResource(
+                        ";j", "oam.custom.calendar"+((popupTheme!=null&&popupTheme.length()>0)?"."+popupTheme:""));
+                String path = resource.getRequestPath();
+                int index = path.indexOf("/;j");
+                String prefix = path.substring(0, index+1); 
+                String suffix = path.substring(index+3);
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
             }
             else
             {
                 setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
                         (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
                                 .getResourceUri(facesContext, imageLocation + "/"))));
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix","");
             }
         }
         else
@@ -533,15 +545,25 @@ public class HtmlCalendarRenderer
             String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
             if (imageLocation == null)
             {
-                String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/");
-                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
-                        JavascriptUtils.encodeString(uri));
+                //String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/");
+                //setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
+                ///        JavascriptUtils.encodeString(uri));
+                //setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix","");
+                Resource resource = facesContext.getApplication().getResourceHandler().createResource(
+                        ";j", "oam.custom.calendar.images");
+                String path = resource.getRequestPath();
+                int index = path.indexOf("/;j");
+                String prefix = path.substring(0, index+1); 
+                String suffix = path.substring(index+3);
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
             }
             else
             {
                 setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
                         (JavascriptUtils.encodeString(AddResourceFactory.getInstance(facesContext)
                                 .getResourceUri(facesContext, imageLocation + "/"))));
+                setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix","");
             }
         }
         defineStringArray(script, popupCalendarVariable + ".initData.monthName", mapMonths(symbols));
@@ -699,7 +721,9 @@ public class HtmlCalendarRenderer
             }
             else
             {
-                writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
+                //writer.writeAttribute(HTML.SRC_ATTR, addResource.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/calendar.gif"), null);
+                Resource res = facesContext.getApplication().getResourceHandler().createResource("calendar.gif", "oam.custom.calendar.images");
+                writer.writeAttribute(HTML.SRC_ATTR, res.getRequestPath(), null);
             }
 
             if(popupButtonStyle != null)
