@@ -319,6 +319,7 @@
           -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
         <executions>
             <execution>
                 <id>add-source</id>
@@ -557,27 +558,6 @@
                     </artifactItem>
                 </artifactItems>
                 <outputDirectory>${project.build.directory}/shared_sources</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- the following will add the unpacked shared sources directory as source directory into the pom,
-           so also the shared sources are automaticaly included by the attach source plugin -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${project.build.directory}/shared_sources</source>
-              </sources>
             </configuration>
           </execution>
         </executions>
