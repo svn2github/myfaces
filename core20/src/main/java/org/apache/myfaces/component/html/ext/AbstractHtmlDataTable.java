@@ -1330,49 +1330,49 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * Defines a JavaScript onmouseover event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnMouseOver")
+    @JSFProperty(clientEvent="rowMouseOver")
     public abstract String getRowOnMouseOver();
 
     /**
      * Defines a JavaScript onmouseout event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnMouseOut")
+    @JSFProperty(clientEvent="rowMouseOut")
     public abstract String getRowOnMouseOut();
 
     /**
      * Defines a JavaScript onclick event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnClick")
+    @JSFProperty(clientEvent="rowClick")
     public abstract String getRowOnClick();
 
     /**
      * Defines a JavaScript ondblclick event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnDblClick")
+    @JSFProperty(clientEvent="rowDblClick")
     public abstract String getRowOnDblClick();
 
     /**
      * Defines a JavaScript onkeydown event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnKeyDown")
+    @JSFProperty(clientEvent="rowKeyDown")
     public abstract String getRowOnKeyDown();
 
     /**
      * Defines a JavaScript onkeypress event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnKeyPress")
+    @JSFProperty(clientEvent="rowKeyPress")
     public abstract String getRowOnKeyPress();
 
     /**
      * Defines a JavaScript onkeyup event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnKeyUp")
+    @JSFProperty(clientEvent="rowKeyUp")
     public abstract String getRowOnKeyUp();
 
     /**
@@ -1393,21 +1393,21 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * Defines a JavaScript onmpusedown event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnMouseDown")
+    @JSFProperty(clientEvent="rowMouseDown")
     public abstract String getRowOnMouseDown();
 
     /**
      * Defines a JavaScript onmousemove event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnMouseMove")
+    @JSFProperty(clientEvent="rowMouseMove")
     public abstract String getRowOnMouseMove();
 
     /**
      * Defines a JavaScript onmouseup event handler for each table row
      * 
      */
-    @JSFProperty(clientEvent="rowOnMouseUp")
+    @JSFProperty(clientEvent="rowMouseUp")
     public abstract String getRowOnMouseUp();
 
     /**
