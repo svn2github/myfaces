@@ -27,10 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.ArrayDataModel;
@@ -41,8 +42,6 @@ import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
 import javax.servlet.jsp.jstl.sql.Result;
 
-import org.apache.myfaces.component.ForceIdAware;
-import org.apache.myfaces.component.html.ext.HtmlCommandButton.PropertyKeys;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.custom.ExtendedComponentBase;
 
@@ -61,13 +60,14 @@ public abstract class HtmlDataTableHack extends
                 ExtendedComponentBase
                 
 {
-    private Map _dataModelMap = new HashMap();
+    @SuppressWarnings("unchecked")
+    private Map<String, DataModel> _dataModelMap = new HashMap<String, DataModel>();
 
     // will be set to false if the data should not be refreshed at the beginning of the encode phase
     private boolean _isValidChilds = true;
 
     // holds for each row the states of the child components of this UIData
-    private Map _rowStates = new HashMap();
+    private Map<String, Object> _rowStates = new HashMap<String, Object>();
 
     // contains the initial row state which is used to initialize each row
     private Object _initialDescendantComponentState = null;
@@ -76,6 +76,7 @@ public abstract class HtmlDataTableHack extends
     // Every field and method from here is identical to UIData !!!!!!!!!
     // EXCEPTION: we can create a DataModel from a Collection
 
+    @SuppressWarnings("unchecked")
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
     private static final boolean DEFAULT_PRESERVEROWSTATES = false;
@@ -118,7 +119,8 @@ public abstract class HtmlDataTableHack extends
             return clientId;
         }
         // the following code tries to avoid rowindex to be twice in the client id
-        int index = clientId.lastIndexOf(NamingContainer.SEPARATOR_CHAR);
+        char separator = UINamingContainer.getSeparatorChar(context);
+        int index = clientId.lastIndexOf(separator);
         if(index != -1)
         {
             String rowIndexString = clientId.substring(index + 1);
@@ -131,10 +133,10 @@ public abstract class HtmlDataTableHack extends
             }
             catch(NumberFormatException e)
             {
-                return clientId + NamingContainer.SEPARATOR_CHAR + rowIndex;
+                return clientId + separator + rowIndex;
             }
         }
-        return clientId + NamingContainer.SEPARATOR_CHAR + rowIndex;
+        return clientId + separator + rowIndex;
     }
 
     /**
@@ -228,7 +230,7 @@ public abstract class HtmlDataTableHack extends
 
     protected boolean hasErrorMessages(FacesContext context)
     {
-        for(Iterator iter = context.getMessages(); iter.hasNext();)
+        for(Iterator<FacesMessage> iter = context.getMessages(); iter.hasNext();)
         {
             FacesMessage message = (FacesMessage) iter.next();
             if(FacesMessage.SEVERITY_ERROR.compareTo(message.getSeverity()) <= 0)
@@ -248,6 +250,7 @@ public abstract class HtmlDataTableHack extends
         super.encodeEnd(context);
     }
 
+    @SuppressWarnings("unchecked")
     public void setRowIndex(int rowIndex)
     {
         if (rowIndex < -1)
@@ -329,7 +332,8 @@ public abstract class HtmlDataTableHack extends
         }
     }
 
-    protected void restoreDescendantComponentStates(Iterator childIterator,
+    @SuppressWarnings("unchecked")
+    protected void restoreDescendantComponentStates(Iterator<UIComponent> childIterator,
             Object state, boolean restoreChildFacets)
     {
         Iterator descendantStateIterator = null;
@@ -358,7 +362,7 @@ public abstract class HtmlDataTableHack extends
                     ((EditableValueHolderState) childState)
                             .restoreState((EditableValueHolder) component);
                 }
-                Iterator childsIterator;
+                Iterator<UIComponent> childsIterator;
                 if (restoreChildFacets)
                 {
                     childsIterator = component.getFacetsAndChildren();
@@ -373,7 +377,8 @@ public abstract class HtmlDataTableHack extends
         }
     }
 
-    protected Object saveDescendantComponentStates(Iterator childIterator,
+    @SuppressWarnings("unchecked")
+    protected Object saveDescendantComponentStates(Iterator<UIComponent> childIterator,
             boolean saveChildFacets)
     {
         Collection childStates = null;
@@ -386,7 +391,7 @@ public abstract class HtmlDataTableHack extends
             UIComponent child = (UIComponent) childIterator.next();
             if(!child.isTransient())
             {
-                Iterator childsIterator;
+                Iterator<UIComponent> childsIterator;
                 if (saveChildFacets)
                 {
                     childsIterator = child.getFacetsAndChildren();
@@ -426,6 +431,24 @@ public abstract class HtmlDataTableHack extends
         }
         super.setValueBinding(name, binding);
     }
+    
+    public void setValueExpression(String name, ValueExpression binding)
+    {
+        if (name == null)
+        {
+            throw new NullPointerException("name");
+        }
+        else if (name.equals("value"))
+        {
+            _dataModelMap.clear();
+        }
+        else if (name.equals("var") || name.equals("rowIndex"))
+        {
+            throw new IllegalArgumentException(
+                    "You can never set the 'rowIndex' or the 'var' attribute as a value-binding. Set the property directly instead. Name " + name);
+        }
+        super.setValueExpression(name, binding);
+    }
 
     /**
      * @see javax.faces.component.UIData#setValue(java.lang.Object)
@@ -438,6 +461,7 @@ public abstract class HtmlDataTableHack extends
         _isValidChilds = true;
     }
 
+    @SuppressWarnings("unchecked")
     protected DataModel getDataModel()
     {
         DataModel dataModel = null;
@@ -458,6 +482,7 @@ public abstract class HtmlDataTableHack extends
         return dataModel;
     }
 
+    @SuppressWarnings("unchecked")
     protected void setDataModel(DataModel datamodel)
     {
         UIComponent parent = getParent();
@@ -472,6 +497,7 @@ public abstract class HtmlDataTableHack extends
     /**
      * Creates a new DataModel around the current value.
      */
+    @SuppressWarnings("unchecked")
     protected DataModel createDataModel()
     {
         Object value = getValue();
@@ -510,6 +536,7 @@ public abstract class HtmlDataTableHack extends
         }
     }
     
+    @SuppressWarnings("unchecked")
     private static final DataModel EMPTY_DATA_MODEL = new _SerializableDataModel()
     {
         public boolean isRowAvailable()
@@ -631,20 +658,6 @@ public abstract class HtmlDataTableHack extends
         getStateHelper().put(PropertyKeys.forceIdIndex, forceIdIndex );
     }
     
-    private static boolean booleanFromObject(Object obj, boolean defaultValue)
-    {
-        if(obj instanceof Boolean)
-        {
-            return ((Boolean) obj).booleanValue();
-        }
-        else if(obj instanceof String)
-        {
-            return Boolean.valueOf(((String) obj)).booleanValue();
-        }
-
-        return defaultValue;
-    }
-
     /**
      * Remove all preserved row state for the dataTable
      */

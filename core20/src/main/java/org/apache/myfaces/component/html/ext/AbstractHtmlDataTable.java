@@ -18,26 +18,6 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.NewspaperTable;
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.custom.column.HtmlSimpleColumn;
-import org.apache.myfaces.custom.crosstable.UIColumns;
-import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
-import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
-import org.apache.myfaces.renderkit.html.util.TableContext;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-
-import javax.faces.application.Application;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.model.DataModel;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -49,6 +29,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.application.Application;
+import javax.faces.component.ContextCallback;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+import javax.faces.model.DataModel;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFFacet;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+import org.apache.myfaces.component.NewspaperTable;
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.custom.column.HtmlSimpleColumn;
+import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
+import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
+import org.apache.myfaces.renderkit.html.util.TableContext;
 
 /**
  * The MyFacesDataTable extends the standard JSF DataTable by two
@@ -67,15 +74,15 @@ import java.util.StringTokenizer;
  * <br/>
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  * 
- * @JSFComponent
- *   name = "t:dataTable"
- *   class = "org.apache.myfaces.component.html.ext.HtmlDataTable"
- *   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag"
  * @since 1.1.7
  * @author Thomas Spiegl (latest modification by $Author: lu4242 $)
  * @author Manfred Geiler
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
  */
+@JSFComponent(
+   name = "t:dataTable",
+   clazz = "org.apache.myfaces.component.html.ext.HtmlDataTable",
+   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag")
 public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements UserRoleAware, NewspaperTable
 {
     private static final Log log = LogFactory.getLog(AbstractHtmlDataTable.class);
@@ -103,21 +110,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     private _SerializableDataModel _preservedDataModel;
 
-    private String _forceIdIndexFormula = null;
-    private String _sortColumn = null;
-    private Boolean _sortAscending = null;
-    private String _sortProperty = null;
-    private String _rowStyleClass = null;
-    private String _rowStyle = null;
-    private String _varDetailToggler = null;
-
-    private int _sortColumnIndex = -1;
-
     private boolean _isValidChildren = true;
 
-    private Map _expandedNodes = new HashMap();
+    private Map<Integer, Boolean> _expandedNodes = new HashMap<Integer, Boolean>();
 
-    private Map _detailRowStates = new HashMap();
+    private Map<String, Object> _detailRowStates = new HashMap<String, Object>();
 
     private TableContext _tableContext = null;
 
@@ -146,11 +143,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // Trick : Remove the last part starting with NamingContainer.SEPARATOR_CHAR that contains the rowIndex.
         // It would be best to not resort to String manipulation,
         // but we can't get super.super.getClientId() :-(
-        int indexLast_ = standardClientId.lastIndexOf(NamingContainer.SEPARATOR_CHAR);
+        char separator = UINamingContainer.getSeparatorChar(context);
+        int indexLast_ = standardClientId.lastIndexOf(separator);
         if (indexLast_ == -1)
         {
             log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
-            return standardClientId + NamingContainer.SEPARATOR_CHAR + forcedIdIndex;
+            return standardClientId + separator + forcedIdIndex;
         }
 
         //noinspection UnnecessaryLocalVariable
@@ -162,7 +160,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     {
         if (expr.length() > 0 && Character.isDigit(expr.charAt(0)))
         {
-            int separatorIndex = expr.indexOf(NamingContainer.SEPARATOR_CHAR);
+            char separator = UINamingContainer.getSeparatorChar(getFacesContext());
+            int separatorIndex = expr.indexOf(separator);
 
             String rowIndexStr = expr;
             String remainingPart = null;
@@ -195,6 +194,126 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         {
             return super.findComponent(expr);
         }
+    }
+    
+    
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback) throws FacesException
+    {
+        if (context == null || clientId == null || callback == null)
+        {
+            throw new NullPointerException();
+        }
+
+        // searching for this component?
+        boolean returnValue = this.getClientId(context).equals(clientId);
+
+        if (returnValue)
+        {
+            try
+            {
+                callback.invokeContextCallback(context, this);
+            }
+            catch (Exception e)
+            {
+                throw new FacesException(e);
+            }
+            return returnValue;
+        }
+
+        // Now Look throught facets on this UIComponent
+        for (Iterator<UIComponent> it = this.getFacets().values().iterator(); !returnValue && it.hasNext();)
+        {
+            returnValue = it.next().invokeOnComponent(context, clientId, callback);
+        }
+
+        if (returnValue == true)
+        {
+            return returnValue;
+        }
+        
+        // Now we have to check if it is searching an inner component
+        String baseClientId = super.getClientId(context);
+        
+        // is the component an inner component?
+        if (clientId.startsWith(baseClientId))
+        {
+            // Check if the clientId for the component, which we 
+            // are looking for, has a rowIndex attached
+            char separator = UINamingContainer.getSeparatorChar(context);
+            if (clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
+            {
+                String subId = clientId.substring(baseClientId.length() + 1);
+                String clientRow = subId.substring(0, subId.indexOf(':'));
+    
+                //Now we save the current position
+                int oldRow = this.getRowIndex();
+                
+                // try-finally --> make sure, that the old row index is restored
+                try
+                {
+                    //The conversion is safe, because its already checked on the
+                    //regular expresion
+                    this.setRowIndex(Integer.parseInt(clientRow));
+                    
+                    // check, if the row is available
+                    if (!isRowAvailable())
+                    {
+                        return false;
+                    }
+        
+                    for (Iterator<UIComponent> it1 = getChildren().iterator(); 
+                            !returnValue && it1.hasNext();)
+                    {
+                        //recursive call to find the component
+                        returnValue = it1.next().invokeOnComponent(context, clientId, callback);
+                    }
+                }
+                finally
+                {
+                    //Restore the old position. Doing this prevent
+                    //side effects.
+                    this.setRowIndex(oldRow);
+                }
+            }
+            else
+            {
+                // MYFACES-2370: search the component in the childrens' facets too.
+                // We have to check the childrens' facets here, because in MyFaces
+                // the rowIndex is not attached to the clientId for the children of
+                // facets of the UIColumns. However, in RI the rowIndex is 
+                // attached to the clientId of UIColumns' Facets' children.
+                for (Iterator<UIComponent> itChildren = this.getChildren().iterator();
+                        !returnValue && itChildren.hasNext();)
+                {
+                    UIComponent child = itChildren.next();
+                    // This is the only part different to UIData.invokeOnComponent. Since we have
+                    // an auto wrapping on columns feature, it is necessary to check columns ids
+                    // without row for invokeOnComponent, but do not traverse all elements, so
+                    // save/restore algorithm could be able to remove / add them.  
+                    if (child instanceof UIColumn && clientId.equals(child.getClientId()))
+                    {
+                        try {
+                            callback.invokeContextCallback(context, child);
+                        } catch (Exception e) {
+                            throw new FacesException(e);
+                        }
+                        returnValue = true;
+                    }
+                    // process the child's facets
+                    for (Iterator<UIComponent> itChildFacets = child.getFacets().values().iterator(); 
+                            !returnValue && itChildFacets.hasNext();)
+                    {
+                        //recursive call to find the component
+                        returnValue = itChildFacets.next().invokeOnComponent(context, clientId, callback);
+                    }
+                }
+            }
+        }
+
+        return returnValue;
     }
 
     public void setRowIndex(int rowIndex)
@@ -285,10 +404,10 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
         }
 
-        if (_varDetailToggler != null)
+        if (getStateHelper().get(PropertyKeys.varDetailToggler) != null)
         {
             Map requestMap = getFacesContext().getExternalContext().getRequestMap();
-            requestMap.put(_varDetailToggler, this);
+            requestMap.put(getStateHelper().get(PropertyKeys.varDetailToggler), this);
         }
     }
 
@@ -581,13 +700,54 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                     if (propertyName == null)
                         log.warn("Couldn't determine sort property for column [" + aColumn.getId() + "].");
 
-                    if (headerFacet != null)
+                    if (headerFacet instanceof UIPanel)
                     {
+                        // In jsf 2.0, facets allow more than one component. That causes a side effect on
+                        // facelets mode when auto wrapping is used, because the algorithm is not aware
+                        // we wrap everything inside a HtmlCommandSortHeader. We have to check
+                        // here that condition and if so, fix it and threat it correctly. 
+                        HtmlCommandSortHeader sortHeader = null;
+                        for (UIComponent childHeaderFacet : headerFacet.getChildren())
+                        {
+                            if (childHeaderFacet instanceof HtmlCommandSortHeader)
+                            {
+                                sortHeader = (HtmlCommandSortHeader) childHeaderFacet;
+                                break;
+                            }
+                        }
+                        if (sortHeader != null)
+                        {
+                            aColumn.getFacets().remove("header");
+                            aColumn.setHeader(sortHeader);
+                            headerFacet = sortHeader;
+                            
+                            //command sort headers are already in place, just store the column name and sort property name
+                            columnName = sortHeader.getColumnName();
+                            propertyName = sortHeader.getPropertyName();
+
+                            //if the command sort header component doesn't specify a sort property, determine it
+                            if (propertyName == null)
+                            {
+                                propertyName = getSortPropertyFromEL(aColumn);
+                                sortHeader.setPropertyName(propertyName);
+                            }
+
+                            if (propertyName == null)
+                                log.warn("Couldn't determine sort property for column [" + aColumn.getId() + "].");                            
+                        }
+                    }
+                    if (headerFacet != null && isSortHeaderNeeded(aColumn, headerFacet))
+                    {
+                        // We need to force PreRemoveFromViewEvent on the wrapped facet, so we remove it manually here.
+                        // Otherwise the component is just moved on the view and no event is triggered. 
+                        aColumn.getFacets().remove("header");
+                        
                         HtmlCommandSortHeader sortHeader = createSortHeaderComponent(context, aColumn, headerFacet, propertyName);
                         columnName = sortHeader.getColumnName();
 
                         aColumn.setHeader(sortHeader);
-                        sortHeader.setParent(aColumn);
+                        //setParent is called internally!
+                        //sortHeader.setParent(aColumn);
                     }
                 }
                 else if (headerFacet instanceof HtmlCommandSortHeader)
@@ -609,7 +769,10 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 }
 
                 //make the column marked as default sorted be the current sorted column
-                if (defaultSorted && getSortColumn() == null)
+                //When getSortColumn() eval to a ValueExpression and it is a String, it could return
+                //null but here it is coerced to "", so we need to assume "" as null.
+                String sortColumn = getSortColumn();
+                if (defaultSorted &&  (sortColumn == null ? true : sortColumn.length() == 0))
                 {
                     setSortColumn(columnName);
                     setSortProperty(propertyName);
@@ -700,7 +863,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     protected int columnNameToIndex(String columnName)
     {
         int index = 0;
-        for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+        for (Iterator<UIComponent> iter = getChildren().iterator(); iter.hasNext();)
         {
             UIComponent aChild = (UIComponent) iter.next();
             if (aChild instanceof UIColumn)
@@ -709,7 +872,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 if (headerFacet != null && headerFacet instanceof HtmlCommandSortHeader)
                 {
                     HtmlCommandSortHeader sortHeader = (HtmlCommandSortHeader) headerFacet;
-                    if (columnName != null && columnName.equals(sortHeader.getColumnName()))
+                    if (columnName != null && columnName.length()>0 && columnName.equals(sortHeader.getColumnName()))
                         return index;
                 }
             }
@@ -726,7 +889,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public void encodeEnd(FacesContext context) throws IOException
     {
         super.encodeEnd(context);
-        for (Iterator iter = getChildren().iterator(); iter.hasNext();)
+        for (Iterator<UIComponent> iter = getChildren().iterator(); iter.hasNext();)
         {
             UIComponent component = (UIComponent) iter.next();
             if (component instanceof UIColumns)
@@ -739,8 +902,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     /**
      * The index of the first row to be displayed, where 0 is the first row.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public int getFirst()
     {
         if (_preservedDataModel != null)
@@ -767,8 +930,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     /**
      *  The number of rows to be displayed. Specify zero for all remaining rows in the table.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public int getRows()
     {
         if (_preservedDataModel != null)
@@ -796,36 +959,57 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     {
         boolean preserveSort = isPreserveSort();
 
-        Object[] values = new Object[15];
-        values[0] = super.saveState(context);
-        values[1] = _preserveDataModel;
-
-        if (isPreserveDataModel())
+        if (initialStateMarked())
         {
-            _preservedDataModel = getSerializableDataModel();
-            values[2] = saveAttachedState(context, _preservedDataModel);
+            Object parentSaved = super.saveState(context);
+            boolean preserveDataModel = isPreserveDataModel();
+            
+            if (parentSaved == null && !preserveSort 
+                    && !preserveDataModel && isExpandedEmpty())
+            {
+                //No values
+                return null;
+            }
+            
+            Object[] values = new Object[5];
+            values[0] = parentSaved;
+            
+            if (isPreserveDataModel())
+            {
+                _preservedDataModel = getSerializableDataModel();
+                values[1] = saveAttachedState(context, _preservedDataModel);
+            }
+            else
+            {
+                values[1] = null;
+            }
+            
+            values[2] = preserveSort ? getSortColumn() : null;
+            values[3] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
+            values[4] = _expandedNodes;
+            return values;
         }
         else
         {
-            values[2] = null;
+            Object[] values = new Object[5];
+            values[0] = super.saveState(context);
+
+            if (isPreserveDataModel())
+            {
+                _preservedDataModel = getSerializableDataModel();
+                values[1] = saveAttachedState(context, _preservedDataModel);
+            }
+            else
+            {
+                values[1] = null;
+            }
+            
+            values[2] = preserveSort ? getSortColumn() : null;
+            values[3] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
+            values[4] = _expandedNodes;
+
+            return values;
         }
-        values[3] = _preserveSort;
-        values[4] = _forceIdIndexFormula;
-        values[5] = _sortColumn;
-        values[6] = _sortAscending;
-        values[7] = _sortProperty;
-
-        values[8] = _rowStyleClass;
-        values[9] = _rowStyle;
-
-        values[10] = preserveSort ? getSortColumn() : null;
-        values[11] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
-
-        values[12] = _varDetailToggler;
-        values[13] = _expandedNodes;
-        values[14] = new Integer(_sortColumnIndex);
-
-        return values;
     }
 
     /**
@@ -868,7 +1052,9 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                     if (aColumn.isSortable())
                         isSortable = true;
 
-                    if (aColumn.isDefaultSorted() && getSortColumn() == null)
+                    String sortColumn = getSortColumn();
+                    
+                    if (aColumn.isDefaultSorted() && (sortColumn == null ? true : sortColumn.length() == 0))
                         setSortProperty(aColumn.getSortPropertyName());
                 }
             }
@@ -891,49 +1077,43 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void restoreState(FacesContext context, Object state)
     {
+        if (state == null)
+        {
+            return;
+        }
+        
         Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
-        _preserveDataModel = (Boolean) values[1];
         if (isPreserveDataModel())
         {
-            _preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[2]);
+            _preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[1]);
         }
         else
         {
             _preservedDataModel = null;
         }
-        _preserveSort = (Boolean) values[3];
-        _forceIdIndexFormula = (String) values[4];
-        _sortColumn = (String) values[5];
-        _sortAscending = (Boolean) values[6];
-        _sortProperty = (String) values[7];
-
-        _rowStyleClass = (String) values[8];
-        _rowStyle = (String) values[9];
 
         if (isPreserveSort())
         {
-            String sortColumn = (String) values[10];
-            Boolean sortAscending = (Boolean) values[11];
+            String sortColumn = (String) values[2];
+            Boolean sortAscending = (Boolean) values[3];
             if (sortColumn != null && sortAscending != null)
             {
-                ValueBinding vb = getValueBinding("sortColumn");
-                if (vb != null && !vb.isReadOnly(context))
+                ValueExpression vb = getValueExpression("sortColumn");
+                if (vb != null && !vb.isReadOnly(context.getELContext()))
                 {
-                    vb.setValue(context, sortColumn);
+                    vb.setValue(context.getELContext(), sortColumn);
                 }
 
-                vb = getValueBinding("sortAscending");
-                if (vb != null && !vb.isReadOnly(context))
+                vb = getValueExpression("sortAscending");
+                if (vb != null && !vb.isReadOnly(context.getELContext()))
                 {
-                    vb.setValue(context, sortAscending);
+                    vb.setValue(context.getELContext(), sortAscending);
                 }
             }
         }
 
-        _varDetailToggler = (String) values[12];
-        _expandedNodes = (Map) values[13];
-        _sortColumnIndex = values[14] != null ? ((Integer) values[14]).intValue() : -1;
+        _expandedNodes = (Map) values[4];
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -997,12 +1177,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setForceIdIndexFormula(String forceIdIndexFormula)
     {
-        _forceIdIndexFormula = forceIdIndexFormula;
-        ValueBinding vb = getValueBinding("forceIdIndexFormula");
+        getStateHelper().put(PropertyKeys.forceIdIndexFormula, forceIdIndexFormula);
+        ValueExpression vb = getValueExpression("forceIdIndexFormula");
         if (vb != null)
         {
-            vb.setValue(getFacesContext(), _forceIdIndexFormula);
-            _forceIdIndexFormula = null;
+            vb.setValue(getFacesContext().getELContext(), forceIdIndexFormula);
+            getStateHelper().put(PropertyKeys.forceIdIndexFormula, null);
         }
     }
 
@@ -1013,17 +1193,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * Example : #{myRowVar.key} Warning, the EL should 
      * evaluate to a unique value for each row !
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public String getForceIdIndexFormula()
     {
-        if (_forceIdIndexFormula != null)
-            return _forceIdIndexFormula;
-        ValueBinding vb = getValueBinding("forceIdIndexFormula");
-        if (vb == null)
-            return null;
-        Object eval = vb.getValue(getFacesContext());
-        return eval == null ? null : eval.toString();
+        return (String) getStateHelper().eval(PropertyKeys.forceIdIndexFormula);
     }
 
     /**
@@ -1041,14 +1215,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public void setSortColumn(String sortColumn)
     {
-        _sortColumn = sortColumn;
+        getStateHelper().put(PropertyKeys.sortColumn, sortColumn);
         // update model is necessary here, because processUpdates is never called
         // reason: HtmlCommandSortHeader.isImmediate() == true
-        ValueBinding vb = getValueBinding("sortColumn");
+        ValueExpression vb = getValueExpression("sortColumn");
         if (vb != null)
         {
-            vb.setValue(getFacesContext(), _sortColumn);
-            _sortColumn = null;
+            vb.setValue(getFacesContext().getELContext(), sortColumn);
+            getStateHelper().put(PropertyKeys.sortColumn, null);
         }
 
         setSortColumnIndex(columnNameToIndex(sortColumn));
@@ -1063,25 +1237,24 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * is expected to use this property to determine how to sort 
      * the DataModel's contents.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public String getSortColumn()
     {
-        if (_sortColumn != null) return _sortColumn;
-        ValueBinding vb = getValueBinding("sortColumn");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        return (String) getStateHelper().eval(PropertyKeys.sortColumn);
     }
 
     public void setSortAscending(boolean sortAscending)
     {
-        _sortAscending = Boolean.valueOf(sortAscending);
+        getStateHelper().put(PropertyKeys.sortAscending, sortAscending);
+        
         // update model is necessary here, because processUpdates is never called
         // reason: HtmlCommandSortHeader.isImmediate() == true
-        ValueBinding vb = getValueBinding("sortAscending");
+        ValueExpression vb = getValueExpression("sortAscending");
         if (vb != null)
         {
-            vb.setValue(getFacesContext(), _sortAscending);
-            _sortAscending = null;
+            vb.setValue(getFacesContext().getELContext(), sortAscending);
+            getStateHelper().put(PropertyKeys.sortAscending, null);
         }
     }
 
@@ -1094,18 +1267,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * DataModel used) is expected to use this property to 
      * determine how to sort the DataModel's contents.
      * 
-     * @JSFProperty
-     *   defaultValue = "true"
      */
+    @JSFProperty(defaultValue="true")
     public boolean isSortAscending()
     {
-        if (_sortAscending != null)
-            return _sortAscending.booleanValue();
-        ValueBinding vb = getValueBinding("sortAscending");
-        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : DEFAULT_SORTASCENDING;
+        return (Boolean) getStateHelper().eval(PropertyKeys.sortAscending, DEFAULT_SORTASCENDING);
     }
 
+    public abstract void setSortProperty(String sortProperty);
+    
     /**
      * The name of a javabean property on which the table is sorted.
      * <p>
@@ -1117,27 +1287,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * directly settable by users; instead it is set by other components
      * such as a CommandSortHeader.
      */
-    public void setSortProperty(String sortProperty)
-    {
-        _sortProperty = sortProperty;
-    }
-
-    /**
-     * @JSFProperty
-     *   literalOnly="true"
-     *   tagExcluded="true"
-     */
-    public String getSortProperty()
-    {
-        return _sortProperty;
-    }
+    @JSFProperty(literalOnly=true,tagExcluded=true)
+    public abstract String getSortProperty();
 
     /**
      * Define if the table is sortable or not
      * 
-     * @JSFProperty
-     *   defaultValue="false"
      */
+    @JSFProperty(defaultValue="false")
     public abstract boolean isSortable();
 
     /**
@@ -1150,160 +1307,112 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * number of columns. Using the colspan attribute of the 
      * column tag might help alot.
      * 
-     * @JSFProperty
-     *   defaultValue="false"
      */
+    @JSFProperty(defaultValue="false")
     public abstract boolean isEmbedded();
 
     /**
      * true|false - true if the detailStamp should be expanded by default. default: false
      * 
-     * @JSFProperty
-     *   defaultValue="false"
      */
+    @JSFProperty(defaultValue="false")
     public abstract boolean isDetailStampExpandedDefault();
 
     /**
      * before|after - where to render the detailStamp, before the 
      * actual row or after it. default: after
      * 
-     * @JSFProperty
-     *   defaultValue="after"
      */
+    @JSFProperty(defaultValue="after")
     public abstract String getDetailStampLocation();
 
     /**
      * Defines a JavaScript onmouseover event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnMouseOver")
     public abstract String getRowOnMouseOver();
 
     /**
      * Defines a JavaScript onmouseout event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnMouseOut")
     public abstract String getRowOnMouseOut();
 
     /**
      * Defines a JavaScript onclick event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnClick")
     public abstract String getRowOnClick();
 
     /**
      * Defines a JavaScript ondblclick event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnDblClick")
     public abstract String getRowOnDblClick();
 
     /**
      * Defines a JavaScript onkeydown event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnKeyDown")
     public abstract String getRowOnKeyDown();
 
     /**
      * Defines a JavaScript onkeypress event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnKeyPress")
     public abstract String getRowOnKeyPress();
 
     /**
      * Defines a JavaScript onkeyup event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnKeyUp")
     public abstract String getRowOnKeyUp();
 
     /**
      * Corresponds to the HTML class attribute for the row tr tag.
      * 
-     * @JSFProperty
      */
-    public String getRowStyleClass()
-    {
-    if (_rowStyleClass != null)
-        return _rowStyleClass;
-
-    // TODO: temporarily support fully-qualified ext. dataTable attribute names.
-    ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLECLASS");
-    if (vb != null)
-        log.warn("org.apache.myfaces.dataTable.ROW_STYLECLASS is deprecated. Please use rowStyleClass instead.");
-    else
-        vb = getValueBinding(JSFAttr.ROW_STYLECLASS_ATTR);
-    if(vb == null)
-        return null;
-    String bindingValue = (String) vb.getValue(getFacesContext());
-    if(bindingValue == "")
-        return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
-    return bindingValue;
-    }
-
-    public void setRowStyleClass(String rowStyleClass)
-    {
-        _rowStyleClass = rowStyleClass;
-    }
+    @JSFProperty
+    public abstract String getRowStyleClass();
 
     /**
      * Corresponds to the HTML style attribute for the row tr tag.
      * 
-     * @JSFProperty
      */
-    public String getRowStyle()
-    {
-        if (_rowStyle != null)
-            return _rowStyle;
-
-    // TODO: temporarily support fully-qualified ext. dataTable attribute names.
-        ValueBinding vb = getValueBinding("org.apache.myfaces.dataTable.ROW_STYLE");
-    if (vb != null)
-        log.warn("org.apache.myfaces.dataTable.ROW_STYLE is deprecated. Please use rowStyle instead.");
-    else
-        vb = getValueBinding(JSFAttr.ROW_STYLE_ATTR);
-    if(vb == null)
-        return null;
-    String bindingValue = (String) vb.getValue(getFacesContext());
-    if(bindingValue == "")
-        return null;  // Fix for JSF 1.2 EL coercing nulls to empty string
-    return bindingValue;
-    }
-
-    public void setRowStyle(String rowStyle)
-    {
-        _rowStyle = rowStyle;
-    }
+    @JSFProperty
+    public abstract String getRowStyle();
 
     /**
      * Defines a JavaScript onmpusedown event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnMouseDown")
     public abstract String getRowOnMouseDown();
 
     /**
      * Defines a JavaScript onmousemove event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnMouseMove")
     public abstract String getRowOnMouseMove();
 
     /**
      * Defines a JavaScript onmouseup event handler for each table row
      * 
-     * @JSFProperty
      */
+    @JSFProperty(clientEvent="rowOnMouseUp")
     public abstract String getRowOnMouseUp();
 
     /**
-     * @JSFProperty
-     *   tagExcluded = "true"
      */
+    @JSFProperty(tagExcluded=true)
     protected boolean isValidChildren()
     {
         return _isValidChildren;
@@ -1338,7 +1447,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setVarDetailToggler(String varDetailToggler)
     {
-        _varDetailToggler = varDetailToggler;
+        getStateHelper().put(PropertyKeys.varDetailToggler, varDetailToggler ); 
     }
 
     /**
@@ -1347,42 +1456,39 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      *  action method "toggleDetail" which expand/collapse the current 
      *  detail row.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public String getVarDetailToggler()
     {
-        if (_varDetailToggler != null)
-            return _varDetailToggler;
-        ValueBinding vb = getValueBinding("varDetailToggler");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        return (String) getStateHelper().eval(PropertyKeys.varDetailToggler);
     }
 
     /**
      * Corresponds to the HTML style attribute for grouped rows.
      *  
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getRowGroupStyle();
 
     /**
      * StyleClass for grouped rows.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getRowGroupStyleClass();
     
     /**
      * Corresponds to the HTML style attribute for the table body tag
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getBodyStyle();
 
     /**
      * Corresponds to the HTML class attribute for the table body tag.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getBodyStyleClass();
 
     public AbstractHtmlDataTable()
@@ -1452,15 +1558,21 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public int getSortColumnIndex()
     {
-        if (_sortColumnIndex == -1)
-            _sortColumnIndex = columnNameToIndex(getSortColumn());
+        Integer sortColumnIndex = (Integer) getStateHelper().get(PropertyKeys.sortColumnIndex);
+        if (sortColumnIndex == null)
+        {
+            //By default is -1 
+            sortColumnIndex = -1;
+        }
+        if (sortColumnIndex == -1)
+            sortColumnIndex = columnNameToIndex(getSortColumn());
 
-        return _sortColumnIndex;
+        return sortColumnIndex;
     }
 
     public void setSortColumnIndex(int sortColumnIndex)
     {
-        _sortColumnIndex = sortColumnIndex;
+        getStateHelper().put(PropertyKeys.sortColumnIndex, sortColumnIndex ); 
     }
 
     /**
@@ -1468,26 +1580,23 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * 
      * Set the number of columns the table will be divided over.
      * 
-     * @JSFProperty
-     *   defaultValue="1"
      */
+    @JSFProperty(defaultValue="1")
     public abstract int getNewspaperColumns();
 
     /**
      * The orientation of the newspaper columns in the newspaper 
      * table - "horizontal" or "vertical". Default: vertical
      * 
-     * @JSFProperty
-     *   defaultValue = "vertical"
      */
+    @JSFProperty(defaultValue = "vertical")
     public abstract String getNewspaperOrientation();
 
     /**
      * Gets the spacer facet, between each pair of newspaper columns.
      * 
-     * @JSFFacet
-     *   name="spacer"
      */
+    @JSFFacet
     public UIComponent getSpacer()
     {
         return (UIComponent) getFacets().get(SPACER_FACET_NAME);
@@ -1558,13 +1667,6 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     private static final boolean DEFAULT_PRESERVESORT = true;
     private static final boolean DEFAULT_RENDEREDIFEMPTY = true;
 
-    private Boolean _preserveDataModel = null;
-    private Boolean _preserveSort = null;
-
-    public void setPreserveDataModel(boolean preserveDataModel)
-    {
-        _preserveDataModel = Boolean.valueOf(preserveDataModel);
-    }
 
     /**
      * Indicates whether the state of the whole DataModel should 
@@ -1578,38 +1680,18 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * the DataModel can be updated to reflect any changes in the 
      * sort criteria. Default: false
      * 
-     * @JSFProperty
      */
-    public boolean isPreserveDataModel()
-    {
-        if (_preserveDataModel != null)
-            return _preserveDataModel.booleanValue();
-        ValueBinding vb = getValueBinding("preserveDataModel");
-        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : DEFAULT_PRESERVEDATAMODEL;
-    }
+    @JSFProperty
+    public abstract boolean isPreserveDataModel();
 
-    public void setPreserveSort(boolean preserveSort)
-    {
-        _preserveSort = Boolean.valueOf(preserveSort);
-    }
-    
     /**
      * Indicates whether the state of the sortColumn and sortAscending 
      * attribute should be saved and restored and written back to the 
      * model during the update model phase. Default: true
      * 
-     * @JSFProperty
-     *   defaultValue = "true"
      */
-    public boolean isPreserveSort()
-    {
-        if (_preserveSort != null)
-            return _preserveSort.booleanValue();
-        ValueBinding vb = getValueBinding("preserveSort");
-        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-        return v != null ? v.booleanValue() : DEFAULT_PRESERVESORT;
-    }
+    @JSFProperty(defaultValue = "true")
+    public abstract boolean isPreserveSort();
 
     /**
      * Indicates whether this table should be rendered if the 
@@ -1623,25 +1705,24 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * the DataModel and calles the model getter only once 
      * per request. Default: true
      * 
-     * @JSFProperty
-     *   defaultValue = "true"
      */
+    @JSFProperty(defaultValue = "true")
     public abstract boolean isRenderedIfEmpty();
 
     /**
      * A parameter name, under which the current rowIndex is set 
      * in request scope similar to the var parameter.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getRowIndexVar();
     
     /**
      * A parameter name, under which the rowCount is set in 
      * request scope similar to the var parameter.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getRowCountVar();
 
     /**
@@ -1651,8 +1732,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * request scope attribute is null in the first row or 
      * when isRowAvailable returns false for the previous row.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getPreviousRowDataVar();
 
     /**
@@ -1660,43 +1741,54 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * scope similar to the var parameter. TRUE for the column that 
      * is currently sorted, FALSE otherwise.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getSortedColumnVar();
     
     /**
      * HTML: Specifies the horizontal alignment of this element. 
      * Deprecated in HTML 4.01.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getAlign();
 
     /**
      * The id to use for
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getRowId();
         
     /**
      * Reserved for future use.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getDatafld();
     
     /**
      * Reserved for future use.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getDatasrc();
     
     /**
      * Reserved for future use.
      * 
-     * @JSFProperty
      */
-    public abstract String getDataformatas();    
+    @JSFProperty
+    public abstract String getDataformatas();
+    
+    protected enum PropertyKeys
+    {
+        preservedDataModel
+        , forceIdIndexFormula
+        , sortColumn
+        , sortAscending
+        , varDetailToggler
+        , expandedNodes
+        , sortColumnIndex
+    }
 }
