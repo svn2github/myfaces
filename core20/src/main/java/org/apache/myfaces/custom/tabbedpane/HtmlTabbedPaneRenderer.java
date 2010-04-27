@@ -29,6 +29,7 @@ import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ComponentSystemEvent;
@@ -379,7 +380,17 @@ public class HtmlTabbedPaneRenderer
         String oldTabbedStyleClass = tabbedPane.getStyleClass();
         tabbedPane.setStyleClass ((oldTabbedStyleClass == null) ? "myFaces_panelTabbedPane" : "myFaces_panelTabbedPane " + oldTabbedStyleClass);
         writer.writeAttribute(HTML.CELLSPACING_ATTR, "0", null);
-        HtmlRendererUtils.renderHTMLAttributes(writer, tabbedPane, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
+        Map<String, List<ClientBehavior>> behaviors = tabbedPane.getClientBehaviors();
+        
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, tabbedPane, behaviors);
+            HtmlRendererUtils.renderHTMLAttributes(writer, tabbedPane, HTML.TABLE_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
+        }
+        else
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, tabbedPane, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);            
+        }
         writer.flush();
 
         tabbedPane.setBgcolor(oldBgColor);

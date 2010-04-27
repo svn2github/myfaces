@@ -923,12 +923,35 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
 
     protected void renderHtmlColumnAttributes(ResponseWriter writer,
                                               UIComponent uiComponent, String prefix) throws IOException {
-        String[] attrs = (String[]) ArrayUtils.concat(HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
-        for (int i = 0, size = attrs.length; i < size; i++) {
-            String attributeName = attrs[i];
-            String compAttrName = prefix != null ? prefix + attributeName : attributeName;
-            HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
-                compAttrName, attributeName);
+        
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+        }
+        
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            String[] attrs = (String[]) ArrayUtils.concat(HTML.UNIVERSAL_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
+            for (int i = 0, size = attrs.length; i < size; i++) {
+                String attributeName = attrs[i];
+                String compAttrName = prefix != null ? prefix + attributeName : attributeName;
+                HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
+                    compAttrName, attributeName);
+            }
+            
+            //TODO: behavior stuff
+            
+        }
+        else
+        {
+            String[] attrs = (String[]) ArrayUtils.concat(HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
+            for (int i = 0, size = attrs.length; i < size; i++) {
+                String attributeName = attrs[i];
+                String compAttrName = prefix != null ? prefix + attributeName : attributeName;
+                HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
+                    compAttrName, attributeName);
+            }
         }
         String compAttrName = prefix != null ? prefix + HTML.STYLE_ATTR : HTML.STYLE_ATTR;
         HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,

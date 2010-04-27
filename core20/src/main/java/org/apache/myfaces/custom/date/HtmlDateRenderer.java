@@ -19,17 +19,18 @@
 package org.apache.myfaces.custom.date;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -38,16 +39,16 @@ import javax.faces.event.ComponentSystemEventListener;
 import javax.faces.event.ListenerFor;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
 import org.apache.myfaces.custom.calendar.FunctionCallProvider;
+import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
 import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer.CalendarDateTimeConverter;
 import org.apache.myfaces.custom.date.AbstractHtmlInputDate.UserData;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
 
@@ -180,9 +181,9 @@ public class HtmlDateRenderer extends HtmlRenderer
         writer.writeAttribute(HTML.ID_ATTR, clientId, null);
 
         if( ! (type.equals("time") || type.equals("short_time"))){
-            encodeInputDay(inputDate, writer, clientId, userData, disabled, readonly);
-            encodeInputMonth(inputDate, writer, clientId, userData, currentLocale, disabled, readonly);
-            encodeInputYear(inputDate, writer, clientId, userData, disabled, readonly);
+            encodeInputDay(facesContext, inputDate, writer, clientId, userData, disabled, readonly);
+            encodeInputMonth(facesContext, inputDate, writer, clientId, userData, currentLocale, disabled, readonly);
+            encodeInputYear(facesContext, inputDate, writer, clientId, userData, disabled, readonly);
 
             if( inputDate.isPopupCalendar() && ! disabled && ! readonly )
                 encodePopupCalendarButton(facesContext, uiComponent, writer, clientId, currentLocale);
@@ -191,28 +192,43 @@ public class HtmlDateRenderer extends HtmlRenderer
             writer.write(" ");
         }
         if( ! type.equals("date")){
-            encodeInputHours(uiComponent, writer, clientId, userData, disabled, readonly);
+            encodeInputHours(facesContext, uiComponent, writer, clientId, userData, disabled, readonly);
             writer.write(":");
-            encodeInputMinutes(uiComponent, writer, clientId, userData, disabled, readonly);
+            encodeInputMinutes(facesContext, uiComponent, writer, clientId, userData, disabled, readonly);
             if (type.equals("full")|| type.equals("time")) {
                         writer.write(":");
-                encodeInputSeconds(uiComponent, writer, clientId, userData, disabled, readonly);
+                encodeInputSeconds(facesContext, uiComponent, writer, clientId, userData, disabled, readonly);
                     }
             if (ampm) {
-                encodeInputAmpm(uiComponent, writer, clientId, userData, disabled, readonly, currentLocale);
+                encodeInputAmpm(facesContext, uiComponent, writer, clientId, userData, disabled, readonly, currentLocale);
             }
         }
 
         writer.endElement(HTML.SPAN_ELEM);
     }
 
-    protected void encodeInputField(UIComponent uiComponent, ResponseWriter writer, String id,
+    protected void encodeInputField(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String id,
             String value, int size, boolean disabled, boolean readonly)  throws IOException {
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+        }
+                
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedFieldEventHandlers(facesContext, writer, uiComponent, behaviors);
+        }
+        else
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        }
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+
 
         if (disabled) {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
@@ -231,20 +247,34 @@ public class HtmlDateRenderer extends HtmlRenderer
         writer.endElement(HTML.INPUT_ELEM);
     }
 
-    protected void encodeInputDay(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected void encodeInputDay(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId,
             UserData userData, boolean disabled, boolean readonly) throws IOException {
-        encodeInputField(uiComponent, writer, getClientIdForDaySubcomponent(clientId), userData.getDay(), 2, disabled, readonly);
+        encodeInputField(facesContext, uiComponent, writer, getClientIdForDaySubcomponent(clientId), userData.getDay(), 2, disabled, readonly);
     }
 
-    protected void encodeInputMonth(UIComponent uiComponent, ResponseWriter writer, String clientId, UserData userData, Locale currentLocale,
+    protected void encodeInputMonth(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId, UserData userData, Locale currentLocale,
             boolean disabled, boolean readonly) throws IOException {
         writer.startElement(HTML.SELECT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + ID_MONTH_POSTFIX, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId + ID_MONTH_POSTFIX, null);
         writer.writeAttribute(HTML.SIZE_ATTR, "1", null);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+        }
+                
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedFieldEventHandlers(facesContext, writer, uiComponent, behaviors);
+        }
+        else
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        }        
 
         if (disabled) {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);
@@ -289,24 +319,24 @@ public class HtmlDateRenderer extends HtmlRenderer
          writer.endElement(HTML.OPTION_ELEM);
     }
 
-    protected void encodeInputYear(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected void encodeInputYear(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId,
             UserData userData, boolean disabled, boolean readonly) throws IOException {
-        encodeInputField(uiComponent, writer, clientId + ID_YEAR_POSTFIX, userData.getYear(), 4, disabled, readonly);
+        encodeInputField(facesContext, uiComponent, writer, clientId + ID_YEAR_POSTFIX, userData.getYear(), 4, disabled, readonly);
     }
 
-    protected void encodeInputHours(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected void encodeInputHours(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId,
             UserData userData, boolean disabled, boolean readonly) throws IOException {
-        encodeInputField(uiComponent, writer, clientId + ID_HOURS_POSTFIX, userData.getHours(), 2, disabled, readonly);
+        encodeInputField(facesContext, uiComponent, writer, clientId + ID_HOURS_POSTFIX, userData.getHours(), 2, disabled, readonly);
     }
 
-    protected void encodeInputMinutes(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected void encodeInputMinutes(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId,
             UserData userData, boolean disabled, boolean readonly) throws IOException {
-        encodeInputField(uiComponent, writer, clientId + ID_MINUTES_POSTFIX, userData.getMinutes(), 2, disabled, readonly);
+        encodeInputField(facesContext, uiComponent, writer, clientId + ID_MINUTES_POSTFIX, userData.getMinutes(), 2, disabled, readonly);
     }
 
-    protected void encodeInputSeconds(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected void encodeInputSeconds(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId,
             UserData userData, boolean disabled, boolean readonly) throws IOException {
-        encodeInputField(uiComponent, writer, clientId + ID_SECONDS_POSTFIX, userData.getSeconds(), 2, disabled, readonly);
+        encodeInputField(facesContext, uiComponent, writer, clientId + ID_SECONDS_POSTFIX, userData.getSeconds(), 2, disabled, readonly);
     }
 
     protected void encodeAmpmChoice(DateFormatSymbols symbols, UIComponent uiComponent, ResponseWriter writer, int calendar_ampm, int selected) throws IOException {
@@ -320,15 +350,29 @@ public class HtmlDateRenderer extends HtmlRenderer
         writer.endElement(HTML.OPTION_ELEM);
     }
 
-    protected void encodeInputAmpm(UIComponent uiComponent, ResponseWriter writer, String clientId,
+    protected void encodeInputAmpm(FacesContext facesContext, UIComponent uiComponent, ResponseWriter writer, String clientId,
             UserData userData, boolean disabled, boolean readonly, Locale currentLocale) throws IOException {
         writer.startElement(HTML.SELECT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId + ID_AMPM_POSTFIX, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId + ID_AMPM_POSTFIX, null);
         writer.writeAttribute(HTML.SIZE_ATTR, "1", null);
         HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+        }
+                
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedFieldEventHandlers(facesContext, writer, uiComponent, behaviors);
+        }
+        else
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.EVENT_HANDLER_ATTRIBUTES);
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        } 
 
         if (disabled) {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);

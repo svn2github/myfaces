@@ -22,12 +22,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
@@ -220,7 +222,18 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.UL_ELEM, panelNav);
 
-            HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
+            Map<String, List<ClientBehavior>> behaviors = panelNav.getClientBehaviors();
+            
+            if (behaviors != null && !behaviors.isEmpty())
+            {
+                HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, panelNav, behaviors);
+                HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
+
+            }
+            else
+            {
+                HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
+            }
 
             //iterate over the tree and toggleOpen if viewId in item.getActiveOnVieIds()
             activeOnViewId(panelNav, facesContext.getViewRoot().getViewId());
@@ -245,7 +258,17 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
         if (panelNav.getChildCount() > 0) {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.TABLE_ELEM, panelNav);
-            HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
+            Map<String, List<ClientBehavior>> behaviors = panelNav.getClientBehaviors();
+            
+            if (behaviors != null && !behaviors.isEmpty())
+            {
+                HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, panelNav, behaviors);
+                HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
+            }
+            else
+            {
+                HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);                
+            }
             if (panelNav.getStyle() == null && panelNav.getStyleClass() == null) {
                 writer.writeAttribute(HTML.BORDER_ATTR, ZERO_INTEGER, null);
             }

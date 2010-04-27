@@ -36,6 +36,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -336,8 +337,19 @@ public class HtmlCalendarRenderer
 
         writer.startElement(HTML.TABLE_ELEM, inputCalendar);
         HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.UNIVERSAL_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.EVENT_HANDLER_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.COMMON_FIELD_EVENT_ATTRIBUTES_WITHOUT_ONSELECT_AND_ONCHANGE);
+
+        Map<String, List<ClientBehavior>> behaviors = inputCalendar.getClientBehaviors();
+        
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, inputCalendar, behaviors);
+            HtmlRendererUtils.renderBehaviorizedFieldEventHandlersWithoutOnchangeAndOnselect(facesContext, writer, inputCalendar, behaviors);
+        }
+        else
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.EVENT_HANDLER_ATTRIBUTES);
+            HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.COMMON_FIELD_EVENT_ATTRIBUTES_WITHOUT_ONSELECT_AND_ONCHANGE);
+        }
         writer.flush();
 
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);

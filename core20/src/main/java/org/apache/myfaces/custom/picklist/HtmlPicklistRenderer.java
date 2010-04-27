@@ -30,6 +30,8 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -295,8 +297,25 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
         {
             writer.writeAttribute(HTML.SIZE_ATTR, Integer.toString(size), null);
         }
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
-                                               HTML.SELECT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+        
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+        }
+        
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedOnchangeEventHandler(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedFieldEventHandlersWithoutOnchange(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.SELECT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_EVENTS);
+        }
+        else
+        {
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
+                                                   HTML.SELECT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+        }
         if (disabled)
         {
             writer.writeAttribute(HTML.DISABLED_ATTR, Boolean.TRUE, null);

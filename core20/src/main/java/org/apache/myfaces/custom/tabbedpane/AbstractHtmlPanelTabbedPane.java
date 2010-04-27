@@ -26,6 +26,7 @@ import javax.faces.component.StateHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
@@ -60,7 +61,7 @@ import org.apache.myfaces.component.UserRoleAware;
 public abstract class AbstractHtmlPanelTabbedPane
         extends HtmlPanelGroup
         implements UniversalProperties, EventAware, PanelProperties,
-        AlignProperty, DataProperties, UserRoleAware
+        AlignProperty, DataProperties, UserRoleAware, ClientBehaviorHolder
         
 {
     //private static final Log log = LogFactory.getLog(HtmlPanelTabbedPane.class);
