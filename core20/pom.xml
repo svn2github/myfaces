@@ -569,6 +569,7 @@
                 <params>
                    <shortname>t</shortname>
                    <uri>http://myfaces.apache.org/tomahawk</uri>
+                   <compositeLibrary>org.apache.myfaces.custom</compositeLibrary>
                 </params>
                 <modelIds>
                     <modelId>tomahawk20</modelId>

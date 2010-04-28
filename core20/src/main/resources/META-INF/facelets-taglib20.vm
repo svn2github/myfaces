@@ -23,12 +23,15 @@
               version="2.0">
               
     <namespace>$uri</namespace>
+#if ($compositeLibrary)
+    <composite-library-name>$compositeLibrary</composite-library-name>
+#end
 
     <!-- Component Tags -->
 #set ($componentList = ${model.getComponents()})
 #foreach( $component in $componentList )
 #if ($modelIds.contains($component.modelId) 
-    && ($component.name))
+    && ($component.name) && ($component.name != "t:inputHtml"))
 #if (!$component.isConfigExcluded())
     <tag>
         <tag-name>$utils.getTagName($component.name)</tag-name>

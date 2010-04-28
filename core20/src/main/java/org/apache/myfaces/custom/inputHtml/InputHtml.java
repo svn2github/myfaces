@@ -18,12 +18,26 @@
  */
 package org.apache.myfaces.custom.inputHtml;
 
+import javax.faces.FacesException;
+import javax.faces.application.Resource;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
+import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
 /**
  * HTML Editor using the kupu library.
@@ -39,24 +53,340 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
  * 
  * Unless otherwise specified, all attributes accept static values or EL expressions.
  *
- * @JSFComponent
- *   name = "t:inputHtml"
- *   tagClass = "org.apache.myfaces.custom.inputHtml.InputHtmlTag"
- *
  * @author Sylvain Vieujot (latest modification by $Author: skitching $)
  * @version $Revision: 673833 $ $Date: 2008-07-03 16:58:05 -0500 (jue, 03 jul 2008) $
  */
-public class InputHtml extends HtmlInputText {
+@JSFComponent(
+   name = "t:inputHtml",
+   tagClass = "org.apache.myfaces.custom.inputHtml.InputHtmlTag")
+@ListenerFor(systemEventClass=PreRenderViewAddResourceEvent.class)
+public class InputHtml extends HtmlInputText implements NamingContainer, UniqueIdVendor {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.InputHtml";
 
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.InputHtml";
+
+    private static final String INPUT_HTML_LIBRARY = "oam.custom.inputHtml";
+    private static final String INPUT_HTML_LIBRARY_KUPU_DRAWERS = "oam.custom.inputHtml.kupudrawers";
 
     private static final Log log = LogFactory.getLog(HtmlInputText.class);
 
     public InputHtml() {
         setRendererType(DEFAULT_RENDERER_TYPE);
     }
+    
+    @Override
+    public void setRendererType(String rendererType)
+    {
+        if (!"javax.faces.Composite".equals(rendererType))
+        {
+            super.setRendererType(rendererType);
+        }
+    }
+    
+    public void processEvent(ComponentSystemEvent event)
+    {
+        super.processEvent(event);
+        if (event instanceof PreRenderViewAddResourceEvent)
+        {
+            InputHtml editor = (InputHtml) event.getComponent();
+            if( !HtmlRendererUtils.isDisplayValueOnly(editor) && !useFallback(editor))
+            {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                //AddResource addResource = AddResourceFactory.getInstance(facesContext);
+                //addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupustyles.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, INPUT_HTML_LIBRARY, "myFacesKupustyles.css");
+                //addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupudrawerstyles.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, INPUT_HTML_LIBRARY, "kupudrawerstyles.css");
+                //addResource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "myFaces.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, INPUT_HTML_LIBRARY, "myFaces.css");
+    
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "sarissa.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "sarissa.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "sarissa_ieemu_xpath.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "sarissa_ieemu_xpath.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuhelpers.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupuhelpers.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupueditor.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupueditor.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupubasetools.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupubasetools.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuloggers.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupuloggers.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupunoi18n.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupunoi18n.js");
+                //addResource.addJavaScriptAtPosition(context, InputHtmlRenderer.class, "i18n/i18n.js"); //NO
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupucleanupexpressions.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupucleanupexpressions.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupucontentfilters.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupucontentfilters.js");
+    
+                if (editor.isShowAnyToolBox())
+                {
+                    //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kuputoolcollapser.js");
+                    TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kuputoolcollapser.js");
+                }
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupucontextmenu.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupucontextmenu.js");
+    
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuinit.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupuinit.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupustart.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupustart.js");
+    
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupusourceedit.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupusourceedit.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuspellchecker.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupuspellchecker.js");
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupudrawers.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupudrawers.js");
+    
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "kupuundo.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "kupuundo.js");
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "diff_match_patch.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "diff_match_patch.js");
+    
+                //addResource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, InputHtmlRenderer.class, "myFacesUtils.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, INPUT_HTML_LIBRARY, "myFacesUtils.js");
+                
+                if( editor.getStyle()!=null ){
+                    // Convert the style into an style declaration so that it doesn't preempt the Zoom works as it's relying on changing the class
+                    //addResource.addInlineStyleAtPosition(
+                    //        context, AddResource.HEADER_BEGIN,
+                    //        "#kupu-editor{height: inherit;}\n"+
+                    //        "div.kupu-fulleditor{"+editor.getStyle()+"}");
+                    TomahawkResourceUtils.addInlineOutputStylesheetResource(facesContext, 
+                            "#kupu-editor{height: inherit;}\n"+
+                            "div.kupu-fulleditor{"+editor.getStyle()+"}");
+                }
+            }
+        }
+    }
+    
+    private static boolean useFallback(InputHtml editor){
+        // TODO : Handle fallback="auto"
+        return editor.getFallback().equals("true");
+    }
+    /*
+    <xml id="kupuconfig" class="kupuconfig">
+      <kupuconfig>
+        
+  <dst>#{resource['oam.custom.inputHtml:fulldoc.html']}</dst>
+  <use_css>1</use_css>
+  <reload_after_save>0</reload_after_save>
+  <strict_output>1</strict_output>
+  <content_type>application/xhtml+xml</content_type>
+  <compatible_singletons>1</compatible_singletons>
+  <table_classes>
+    <class>plain</class>
+    <class>listing</class>
+    <class>grid</class>
+    <class>data</class>
+  </table_classes>
 
+  <cleanup_expressions>
+    <set>
+      <name>Convert single quotes to curly ones</name>
+      <expression>
+        <reg>
+          (\W)'
+        </reg>
+        <replacement>
+          \1&#8216;
+        </replacement>
+      </expression>
+      <expression>
+        <reg>
+          '
+        </reg>
+        <replacement>
+          &#8217;
+        </replacement>
+      </expression>
+    </set>
+    <set>
+      <name>Reduce whitespace</name>
+      <expression>
+        <reg>
+          [\n\r\t]
+        </reg>
+        <replacement>
+          \x20
+        </replacement>
+      </expression>
+      <expression>
+        <reg>
+          [ ]{2}
+        </reg>
+        <replacement>
+          \x20
+        </replacement>
+      </expression>
+    </set>
+  </cleanup_expressions>
+
+  <image_xsl_uri>#{resource['oam.custom.inputHtml.kupudrawers:drawer.xsl']}</image_xsl_uri>
+  <link_xsl_uri>#{resource['oam.custom.inputHtml.kupudrawers:drawer.xsl']}</link_xsl_uri>
+  <image_libraries_uri>#{resource['oam.custom.inputHtml.kupudrawers:imagelibrary.xml']}</image_libraries_uri>
+  <link_libraries_uri>#{resource['oam.custom.inputHtml.kupudrawers:linklibrary.xml']}</link_libraries_uri>
+  <search_images_uri> </search_images_uri>
+  <search_links_uri> </search_links_uri>
+
+      </kupuconfig>
+    </xml>
+   */
+    public String getKupuConfig()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<xml id=\"kupuconfig\" class=\"kupuconfig\">");
+        builder.append("<kupuconfig>");
+        builder.append("<dst>fulldoc.html</dst>");
+        builder.append("<use_css>1</use_css>");
+        builder.append("<reload_after_save>0</reload_after_save>");
+        builder.append("<strict_output>1</strict_output>");
+        builder.append("<content_type>application/xhtml+xml</content_type>");
+        builder.append("<compatible_singletons>1</compatible_singletons>");
+        builder.append("<table_classes>");
+        builder.append("<class>plain</class>");
+        builder.append("<class>listing</class>");
+        builder.append("<class>grid</class>");
+        builder.append("<class>data</class>");
+        builder.append("</table_classes>");
+
+        builder.append("<cleanup_expressions>");
+        builder.append("<set>");
+        builder.append("<name>Convert single quotes to curly ones</name>");
+        builder.append("<expression>");
+        builder.append("<reg>");
+        builder.append("(\\W)'");
+        builder.append("</reg>");
+        builder.append("<replacement>");
+        builder.append("\1&#8216;");
+        builder.append("</replacement>");
+        builder.append("</expression>");
+        builder.append("<expression>");
+        builder.append("<reg>");
+        builder.append("'");
+        builder.append("</reg>");
+        builder.append("<replacement>");
+        builder.append("&#8217;");
+        builder.append("</replacement>");
+        builder.append("</expression>");
+        builder.append("</set>");
+        builder.append("<set>");
+        builder.append("<name>Reduce whitespace</name>");
+        builder.append("<expression>");
+        builder.append("<reg>");
+        builder.append("[\n\r\t]");
+        builder.append("</reg>");
+        builder.append("<replacement>");
+        builder.append("\\x20");
+        builder.append("</replacement>");
+        builder.append("</expression>");
+        builder.append("<expression>");
+        builder.append("<reg>");
+        builder.append("[ ]{2}");
+        builder.append("</reg>");
+        builder.append("<replacement>");
+        builder.append("\\x20");
+        builder.append("</replacement>");
+        builder.append("</expression>");
+        builder.append("</set>");
+        builder.append("</cleanup_expressions>");
+
+        FacesContext context = getFacesContext();
+        Resource resource = context.getApplication().getResourceHandler()
+                .createResource("drawer.xsl",
+                        INPUT_HTML_LIBRARY_KUPU_DRAWERS);
+        builder.append("<image_xsl_uri>" + resource.getRequestPath()
+                + "</image_xsl_uri>");
+        builder.append("<link_xsl_uri>" + resource.getRequestPath()
+                + "</link_xsl_uri>");
+
+        resource = context.getApplication().getResourceHandler()
+                .createResource("imagelibrary.xml",
+                        INPUT_HTML_LIBRARY_KUPU_DRAWERS);
+        builder.append("<image_libraries_uri>" + resource.getRequestPath()
+                + "</image_libraries_uri>");
+
+        resource = context.getApplication().getResourceHandler()
+                .createResource("linklibrary.xml",
+                        INPUT_HTML_LIBRARY_KUPU_DRAWERS);
+        builder.append("<link_libraries_uri>" + resource.getRequestPath()
+                + "</link_libraries_uri>");
+
+        builder.append("<search_images_uri> </search_images_uri>");
+        builder.append("<search_links_uri> </search_links_uri>");
+
+        builder.append("</kupuconfig>");
+        builder.append("</xml>");
+        return builder.toString();
+    }
+    
+    
+    public String getDisplayValueOnlyText()
+    {
+        return getHtmlBody(RendererUtils.getStringValue(getFacesContext(), this));
+    }
+    
+    public String getFallbackText()
+    {
+        String text = RendererUtils.getStringValue(getFacesContext(), this);
+        return htmlToPlainText(text, this);
+    }
+    
+    public String getHiddenText()
+    {
+        return RendererUtils.getStringValue(getFacesContext(), this);
+    }
+    
+    private static String htmlToPlainText(String html, InputHtml editor){
+        return editor.getHtmlBody( html )
+                .replaceAll("<br.*>","\n")
+                .replaceAll("<.+?>", "");
+    }
+    
+    
+    public String getFormId()
+    {
+        FormInfo parentFormInfo = RendererUtils.findNestingForm(this, getFacesContext());
+        if(parentFormInfo == null)
+            throw new FacesException("InputHtml must be embedded in a form.");
+        return parentFormInfo.getFormName(); 
+    }
+    
+    public String getEncodedText()
+    {
+        String text = this.getValueAsHtmlDocument(getFacesContext());
+        return (text == null) ? "" : JavascriptUtils.encodeString( text );
+
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     * 
+     * @since 2.0
+     */
+    public String createUniqueId(FacesContext context, String seed)
+    {
+        ExternalContext extCtx = context.getExternalContext();
+        StringBuilder bld = new StringBuilder();
+
+        Long uniqueIdCounter = (Long) getStateHelper().get(PropertyKeys.uniqueIdCounter);
+        uniqueIdCounter = (uniqueIdCounter == null) ? 0 : uniqueIdCounter;
+        getStateHelper().put(PropertyKeys.uniqueIdCounter, (uniqueIdCounter+1L));
+        // Generate an identifier for a component. The identifier will be prefixed with UNIQUE_ID_PREFIX, and will be unique within this UIViewRoot. 
+        if(seed==null)
+        {
+            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(uniqueIdCounter).toString());    
+        }
+        // Optionally, a unique seed value can be supplied by component creators which should be included in the generated unique id.
+        else
+        {
+            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(seed).toString());
+        }
+    }    
+    
     /**
      * Use a text area instead of the javascript HTML editor. 
      * 
@@ -337,6 +667,6 @@ public class InputHtml extends HtmlInputText {
         showTablesToolBox,
         showCleanupExpressionsToolBox,
         showDebugToolBox,
-        
+        uniqueIdCounter
     }
 }
