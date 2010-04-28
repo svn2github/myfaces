@@ -40,6 +40,7 @@ import javax.faces.event.ListenerFor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.LibraryLocationAware;
 import org.apache.myfaces.custom.navmenu.NavigationMenuItem;
 import org.apache.myfaces.custom.navmenu.NavigationMenuUtils;
 import org.apache.myfaces.custom.navmenu.UINavigationMenuItem;
@@ -429,6 +430,9 @@ public class HtmlJSCookMenuRenderer
         String javascriptLocation = (String) menu.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
+        String javascriptLibrary = (String) menu.getAttributes().get(LibraryLocationAware.JAVASCRIPT_LIBRARY_ATTR);
+        String imageLibrary = (String) menu.getAttributes().get(LibraryLocationAware.IMAGE_LIBRARY_ATTR);
+        String styleLibrary = (String) menu.getAttributes().get(LibraryLocationAware.STYLE_LIBRARY_ATTR);
 
         AddResource addResource = AddResourceFactory.getInstance(context);
 
@@ -438,15 +442,25 @@ public class HtmlJSCookMenuRenderer
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
         }
         else {
-            //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
-            TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu", JSCOOK_MENU_SCRIPT);
-            //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_EFFECT_SCRIPT);
-            TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu", JSCOOK_EFFECT_SCRIPT);
-            //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, MYFACES_HACK_SCRIPT);
-            TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu", MYFACES_HACK_SCRIPT);
+            if (javascriptLibrary == null)
+            {
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
+                TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu", JSCOOK_MENU_SCRIPT);
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_EFFECT_SCRIPT);
+                TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu", JSCOOK_EFFECT_SCRIPT);
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, MYFACES_HACK_SCRIPT);
+                TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu", MYFACES_HACK_SCRIPT);
+            }
+            else
+            {
+                TomahawkResourceUtils.addOutputScriptResource(context, javascriptLibrary, JSCOOK_MENU_SCRIPT);
+                TomahawkResourceUtils.addOutputScriptResource(context, javascriptLibrary, JSCOOK_EFFECT_SCRIPT);
+                TomahawkResourceUtils.addOutputScriptResource(context, javascriptLibrary, MYFACES_HACK_SCRIPT);
+            }
         }
 
-        addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, context);
+        addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, 
+                styleLibrary, javascriptLibrary, imageLibrary, context);
     }
 
     /**
@@ -480,7 +494,9 @@ public class HtmlJSCookMenuRenderer
      * @param context            is the current faces context.
      */
     private void addThemeSpecificResources(String themeName, String styleLocation,
-                                           String javascriptLocation, String imageLocation, FacesContext context) {
+                                           String javascriptLocation, String imageLocation,
+                                           String styleLibrary, String javascriptLibrary,
+                                           String imageLibrary, FacesContext context) {
         String themeLocation = (String) builtInThemes.get(themeName);
         if (themeLocation == null) {
             log.debug("Unknown theme name '" + themeName + "' specified.");
@@ -503,6 +519,8 @@ public class HtmlJSCookMenuRenderer
             if (imageLocation != null) {
                 buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
                                                                                         imageLocation + "/" + themeName)));
+                buf.append("';");
+                addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
             }
             else {
                 //buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
@@ -510,15 +528,26 @@ public class HtmlJSCookMenuRenderer
                 Resource resource = context.getApplication().getResourceHandler().
                     createResource(";j","oam.custom.navmenu.jscookmenu."+themeName);
                 buf.append(resource.getRequestPath());
+                buf.append("';");
+                TomahawkResourceUtils.addInlineOutputScriptResource(context, TomahawkResourceUtils.HEAD_LOCATION, buf.toString());
             }
-            buf.append("';");
-            addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
         }
         else
         {
-            
+            if ((imageLibrary != null))
+            {
+                StringBuffer buf = new StringBuffer();
+                buf.append("var my");
+                buf.append(themeName);
+                buf.append("Base='");
+                Resource resource = context.getApplication().getResourceHandler().
+                    createResource(";j",imageLibrary+'.'+themeName);
+                buf.append(resource.getRequestPath());
+                buf.append("';");
+                //addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
+                TomahawkResourceUtils.addInlineOutputScriptResource(context, TomahawkResourceUtils.HEAD_LOCATION, buf.toString());
+            }
         }
-
 
         if ((javascriptLocation != null) || (themeLocation != null)) {
             // Generate a <script> tag in the page header pointing to the
@@ -539,6 +568,13 @@ public class HtmlJSCookMenuRenderer
                 TomahawkResourceUtils.addOutputScriptResource(context, "oam.custom.navmenu.jscookmenu."+themeName, "theme.js");
             }
         }
+        else
+        {
+            if ((javascriptLibrary != null))
+            {
+                TomahawkResourceUtils.addOutputScriptResource(context, javascriptLibrary+'.'+themeName, "theme.js");
+            }
+        }
 
         if ((styleLocation != null) || (themeLocation != null)) {
             // Generate a <link type="text/css"> tag in the page header pointing to
@@ -552,6 +588,13 @@ public class HtmlJSCookMenuRenderer
                 //addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
                 //    + "/theme.css");
                 TomahawkResourceUtils.addOutputStylesheetResource(context, "oam.custom.navmenu.jscookmenu."+themeName, "theme.css");
+            }
+        }
+        else
+        {
+            if ((styleLibrary != null))
+            {
+                TomahawkResourceUtils.addOutputStylesheetResource(context, styleLibrary+'.'+themeName, "theme.css");
             }
         }
     }

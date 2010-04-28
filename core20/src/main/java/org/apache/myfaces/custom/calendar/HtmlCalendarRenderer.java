@@ -51,6 +51,7 @@ import javax.faces.event.ListenerFor;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.LibraryLocationAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.inputTextHelp.HtmlInputTextHelp;
 import org.apache.myfaces.dateformat.SimpleDateFormatter;
@@ -430,10 +431,18 @@ public class HtmlCalendarRenderer
 
         if(styleLocation==null)
         {
-            //addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "WH/theme.css");
-            TomahawkResourceUtils.addOutputStylesheetResource(facesContext, "oam.custom.calendar.WH", "theme.css");
-            //addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "DB/theme.css");
-            TomahawkResourceUtils.addOutputStylesheetResource(facesContext, "oam.custom.calendar.DB", "theme.css");
+            String styleLibrary = (String) component.getAttributes().get(LibraryLocationAware.STYLE_LIBRARY_ATTR);
+            if (styleLibrary == null)
+            {
+                //addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "WH/theme.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, "oam.custom.calendar.WH", "theme.css");
+                //addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "DB/theme.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, "oam.custom.calendar.DB", "theme.css");
+            }
+            else
+            {
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, styleLocation, "theme.css");
+            }
         }
         else if (!RESOURCE_NONE.equals(styleLocation))
         {
@@ -448,12 +457,23 @@ public class HtmlCalendarRenderer
 
         if(javascriptLocation==null)
         {
-            //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
-            TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.prototype", "prototype.js");
-            //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
-            TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.calendar", "date.js");
-            //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
-            TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.calendar", "popcalendar.js");
+            String javascriptLibrary = (String) component.getAttributes().get(LibraryLocationAware.JAVASCRIPT_LIBRARY_ATTR);
+            if (javascriptLibrary == null)
+            {
+                //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.prototype", "prototype.js");
+                //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.calendar", "date.js");
+                //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.calendar", "popcalendar.js");
+            }
+            else
+            {
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, javascriptLibrary, "prototype.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, javascriptLibrary, "date.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, javascriptLibrary, "popcalendar.js");
+
+            }
         }
         else if (!RESOURCE_NONE.equals(javascriptLocation))
         {
@@ -531,18 +551,33 @@ public class HtmlCalendarRenderer
             String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
             if (imageLocation == null)
             {
-                //String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme
-                //        + "/");
-                //setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
-                //        JavascriptUtils.encodeString(uri));
-                Resource resource = facesContext.getApplication().getResourceHandler().createResource(
-                        ";j", "oam.custom.calendar"+((popupTheme!=null&&popupTheme.length()>0)?"."+popupTheme:""));
-                String path = resource.getRequestPath();
-                int index = path.indexOf("/;j");
-                String prefix = path.substring(0, index+1); 
-                String suffix = path.substring(index+3);
-                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
-                setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
+                String imageLibrary = (String) uiComponent.getAttributes().get(LibraryLocationAware.IMAGE_LIBRARY_ATTR);
+                if (imageLibrary == null)
+                {
+                    //String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, popupTheme
+                    //        + "/");
+                    //setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
+                    //        JavascriptUtils.encodeString(uri));
+                    Resource resource = facesContext.getApplication().getResourceHandler().createResource(
+                            ";j", "oam.custom.calendar"+((popupTheme!=null&&popupTheme.length()>0)?"."+popupTheme:""));
+                    String path = resource.getRequestPath();
+                    int index = path.indexOf("/;j");
+                    String prefix = path.substring(0, index+1); 
+                    String suffix = path.substring(index+3);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
+                }
+                else
+                {
+                    Resource resource = facesContext.getApplication().getResourceHandler().createResource(
+                            ";j", imageLibrary);
+                    String path = resource.getRequestPath();
+                    int index = path.indexOf("/;j");
+                    String prefix = path.substring(0, index+1); 
+                    String suffix = path.substring(index+3);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);                    
+                }
             }
             else
             {
@@ -557,18 +592,33 @@ public class HtmlCalendarRenderer
             String imageLocation = HtmlRendererUtils.getImageLocation(uiComponent);
             if (imageLocation == null)
             {
-                //String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/");
-                //setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
-                ///        JavascriptUtils.encodeString(uri));
-                //setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix","");
-                Resource resource = facesContext.getApplication().getResourceHandler().createResource(
-                        ";j", "oam.custom.calendar.images");
-                String path = resource.getRequestPath();
-                int index = path.indexOf("/;j");
-                String prefix = path.substring(0, index+1); 
-                String suffix = path.substring(index+3);
-                setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
-                setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
+                String imageLibrary = (String) uiComponent.getAttributes().get(LibraryLocationAware.IMAGE_LIBRARY_ATTR);
+                if (imageLibrary == null)
+                {
+                    //String uri = ar.getResourceUri(facesContext, HtmlCalendarRenderer.class, "images/");
+                    //setStringVariable(script, popupCalendarVariable + ".initData.imgDir",
+                    ///        JavascriptUtils.encodeString(uri));
+                    //setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix","");
+                    Resource resource = facesContext.getApplication().getResourceHandler().createResource(
+                            ";j", "oam.custom.calendar.images");
+                    String path = resource.getRequestPath();
+                    int index = path.indexOf("/;j");
+                    String prefix = path.substring(0, index+1); 
+                    String suffix = path.substring(index+3);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
+                }
+                else
+                {
+                    Resource resource = facesContext.getApplication().getResourceHandler().createResource(
+                            ";j", imageLibrary);
+                    String path = resource.getRequestPath();
+                    int index = path.indexOf("/;j");
+                    String prefix = path.substring(0, index+1); 
+                    String suffix = path.substring(index+3);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDir",prefix);
+                    setStringVariable(script, popupCalendarVariable + ".initData.imgDirSuffix",suffix);
+                }
             }
             else
             {

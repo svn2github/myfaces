@@ -18,43 +18,47 @@
  */
 package org.apache.myfaces.custom.tree.renderkit.html;
 
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.application.Resource;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderer;
 import org.apache.myfaces.custom.tree.HtmlTree;
 import org.apache.myfaces.custom.tree.HtmlTreeColumn;
 import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
 import org.apache.myfaces.custom.tree.HtmlTreeNode;
 import org.apache.myfaces.custom.tree.IconProvider;
 import org.apache.myfaces.custom.tree.TreeNode;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTableRendererBase;
 import org.apache.myfaces.shared_tomahawk.util.ArrayUtils;
 import org.apache.myfaces.shared_tomahawk.util.StringUtils;
 
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
- * @JSFRenderer
- *   renderKitId = "HTML_BASIC" 
- *   family = "org.apache.myfaces.HtmlTree"
- *   type = "org.apache.myfaces.HtmlTree"
  * 
  * @author <a href="mailto:oliver@rossmueller.com">Oliver Rossmueller </a>
  * @version $Revision: 659874 $ $Date: 2008-05-24 15:59:15 -0500 (sáb, 24 may 2008) $
  */
+@JSFRenderer(
+   renderKitId = "HTML_BASIC", 
+   family = "org.apache.myfaces.HtmlTree",
+   type = "org.apache.myfaces.HtmlTree")
 public class HtmlTreeRenderer extends HtmlTableRendererBase
 {
     // Defaut images
+    private static final String DEFAULT_IMAGE_LIBRARY = "oam.custom.tree.images";
     private static final String DEFAULT_IMAGE_ICON_LINE = "images/line.gif";
     private static final String DEFAULT_IMAGE_ICON_NOLINE = "images/noline.gif";
     private static final String DEFAULT_IMAGE_ICON_CHILD_FIRST = "images/line_first.gif";
@@ -68,10 +72,25 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
     private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE_FIRST = "images/node_close_first.gif";
     private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE_MIDDLE = "images/node_close_middle.gif";
     private static final String DEFAULT_IMAGE_ICON_NODE_CLOSE_LAST = "images/node_close_last.gif";
+    
+    private static final String DEFAULT_RESOURCE_ICON_LINE = "line.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NOLINE = "noline.gif";
+    private static final String DEFAULT_RESOURCE_ICON_CHILD_FIRST = "line_first.gif";
+    private static final String DEFAULT_RESOURCE_ICON_CHILD_MIDDLE = "line_middle.gif";
+    private static final String DEFAULT_RESOURCE_ICON_CHILD_LAST = "line_last.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_OPEN = "node_open.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_OPEN_FIRST = "node_open_first.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_OPEN_MIDDLE = "node_open_middle.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_OPEN_LAST = "node_open_last.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_CLOSE = "node_close.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_CLOSE_FIRST = "node_close_first.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_CLOSE_MIDDLE = "node_close_middle.gif";
+    private static final String DEFAULT_RESOURCE_ICON_NODE_CLOSE_LAST = "node_close_last.gif";
 
     private static final Integer ZERO = new Integer(0);
 
     private static final String DEFAULT_IMAGE_ICON_FOLDER = "images/folder.gif";
+    private static final String DEFAULT_RESOURCE_ICON_FOLDER = "folder.gif";
 
     public boolean getRendersChildren()
     {
@@ -361,11 +380,11 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         }
     }
 
-    public String getDefaultImagePath(FacesContext context, String relativePathInResourceFolder)
-    {
-        AddResource instance = AddResourceFactory.getInstance(context);
-        return instance.getResourceUri(context, HtmlTree.class, relativePathInResourceFolder, false);
-    }
+    //public String getDefaultImagePath(FacesContext context, String relativePathInResourceFolder)
+    //{
+    //    AddResource instance = AddResourceFactory.getInstance(context);
+    //    return instance.getResourceUri(context, HtmlTree.class, relativePathInResourceFolder, false);
+    //}
 
     /**
      * <p>
@@ -421,6 +440,12 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
                 //writer.endElement(HTML.IMG_ELEM);
                 writeImageElement(url, facesContext, writer, child);
             }
+            else
+            {
+                String resourceName = getDefaultLayoutResourceName(facesContext, tree, state);
+                Resource resource = facesContext.getApplication().getResourceHandler().createResource(resourceName, DEFAULT_IMAGE_LIBRARY);
+                writeImageElementWithoutEncodeResourceURL(resource.getRequestPath(), facesContext, writer, child);
+            }
             writer.endElement(HTML.TD_ELEM);
 
         }
@@ -433,13 +458,34 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         if (state == HtmlTreeNode.CHILD || state == HtmlTreeNode.CHILD_FIRST || state == HtmlTreeNode.CHILD_LAST)
         {
             // no action, just img
-            writeImageElement(url, facesContext, writer, child);
+            if ((url != null) && (url.length() > 0))
+            {
+                writeImageElement(url, facesContext, writer, child);
+            }
+            else
+            {
+                String resourceName = getDefaultLayoutResourceName(facesContext, tree, state);
+                Resource resource = facesContext.getApplication().getResourceHandler().createResource(resourceName, DEFAULT_IMAGE_LIBRARY);
+                writeImageElementWithoutEncodeResourceURL(resource.getRequestPath(), facesContext, writer, child);
+            }
         }
         else
         {
             HtmlTreeImageCommandLink expandCollapse = (HtmlTreeImageCommandLink) child
                     .getExpandCollapseCommand(facesContext);
-            expandCollapse.setImage(getLayoutImage(facesContext, tree, layout[layout.length - 1]));
+            
+            String url1 = getLayoutImage(facesContext, tree, layout[layout.length - 1]);
+            
+            if ((url1 != null) && (url1.length() > 0))
+            {
+                expandCollapse.setImage(url1);
+            }
+            else
+            {
+                String resourceName = getDefaultLayoutResourceName(facesContext, tree, layout[layout.length - 1]);
+                expandCollapse.getAttributes().put(JSFAttr.LIBRARY_ATTR, DEFAULT_IMAGE_LIBRARY);
+                expandCollapse.getAttributes().put(JSFAttr.NAME_ATTR, resourceName);
+            }
 
             expandCollapse.encodeBegin(facesContext);
             expandCollapse.encodeEnd(facesContext);
@@ -455,15 +501,15 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
         }
         else
         {
-            if (!child.isLeaf(facesContext))
-            {
+            //if (!child.isLeaf(facesContext))
+            //{
                 // todo: icon provider
-                url = getDefaultImagePath(facesContext, DEFAULT_IMAGE_ICON_FOLDER );
-            }
-            else
-            {
+                //url = getDefaultImagePath(facesContext, DEFAULT_IMAGE_ICON_FOLDER );
+            //}
+            //else
+            //{
                 url = null;
-            }
+            //}
         }
 
         if ((url != null) && (url.length() > 0))
@@ -474,6 +520,17 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
                 writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
             }
             writeImageElement(url, facesContext, writer, child);
+            writer.endElement(HTML.TD_ELEM);
+        }
+        else if (!child.isLeaf(facesContext) && iconProvider == null)
+        {
+            Resource resource = facesContext.getApplication().getResourceHandler().createResource(DEFAULT_RESOURCE_ICON_FOLDER, DEFAULT_IMAGE_LIBRARY);
+            writer.startElement(HTML.TD_ELEM, tree);
+            if (iconClass != null)
+            {
+                writer.writeAttribute(HTML.CLASS_ATTR, iconClass, null);
+            }
+            writeImageElementWithoutEncodeResourceURL(resource.getRequestPath(), facesContext, writer, child);
             writer.endElement(HTML.TD_ELEM);
         }
         else
@@ -538,6 +595,16 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
 
         writer.endElement(HTML.IMG_ELEM);
     }
+    
+    private void writeImageElementWithoutEncodeResourceURL(String url, FacesContext facesContext, ResponseWriter writer, HtmlTreeNode child)
+        throws IOException
+    {
+        writer.startElement(HTML.IMG_ELEM, child);
+        writer.writeAttribute(HTML.SRC_ATTR, url, null);
+        writer.writeAttribute(HTML.BORDER_ATTR, ZERO, null);
+        HtmlRendererUtils.renderHTMLAttributes(writer, child, HTML.IMG_PASSTHROUGH_ATTRIBUTES);
+        writer.endElement(HTML.IMG_ELEM);
+    }
 
     protected String getLayoutImage(FacesContext context, HtmlTree tree, int state)
     {
@@ -573,14 +640,51 @@ public class HtmlTreeRenderer extends HtmlTableRendererBase
             return getImageUrl(context, tree.getIconNoline(), DEFAULT_IMAGE_ICON_NOLINE);
         }
     }
+    
+    protected String getDefaultLayoutResourceName(FacesContext context, HtmlTree tree, int state)
+    {
+        switch (state)
+        {
+        case HtmlTreeNode.OPEN:
+            return DEFAULT_RESOURCE_ICON_NODE_OPEN_MIDDLE;
+        case HtmlTreeNode.OPEN_FIRST:
+            return DEFAULT_RESOURCE_ICON_NODE_OPEN_FIRST;
+        case HtmlTreeNode.OPEN_LAST:
+            return DEFAULT_RESOURCE_ICON_NODE_OPEN_LAST;
+        case HtmlTreeNode.OPEN_SINGLE:
+            return DEFAULT_RESOURCE_ICON_NODE_OPEN;
+        case HtmlTreeNode.CLOSED:
+            return DEFAULT_RESOURCE_ICON_NODE_CLOSE_MIDDLE;
+        case HtmlTreeNode.CLOSED_FIRST:
+            return DEFAULT_RESOURCE_ICON_NODE_CLOSE_FIRST;
+        case HtmlTreeNode.CLOSED_LAST:
+            return DEFAULT_RESOURCE_ICON_NODE_CLOSE_LAST;
+        case HtmlTreeNode.CLOSED_SINGLE:
+            return DEFAULT_RESOURCE_ICON_NODE_CLOSE;
+        case HtmlTreeNode.CHILD:
+            return DEFAULT_RESOURCE_ICON_CHILD_MIDDLE;
+        case HtmlTreeNode.CHILD_FIRST:
+            return DEFAULT_RESOURCE_ICON_CHILD_FIRST;
+        case HtmlTreeNode.CHILD_LAST:
+            return DEFAULT_RESOURCE_ICON_CHILD_LAST;
+        case HtmlTreeNode.LINE:
+            return DEFAULT_RESOURCE_ICON_LINE;
+        case HtmlTreeNode.EMPTY:
+            return DEFAULT_RESOURCE_ICON_NOLINE;
+        default:
+            return DEFAULT_RESOURCE_ICON_NOLINE;
+        }
+    }    
 
     protected String getImageUrl(FacesContext context, String userValue, String resourceValue)
     {
-        AddResource addResource = AddResourceFactory.getInstance(context);
         if(userValue != null)
         {
+            AddResource addResource = AddResourceFactory.getInstance(context);
             return addResource.getResourceUri(context, userValue, false);
         }
-        return addResource.getResourceUri(context, HtmlTree.class, resourceValue, false);
+        // Now we use JSF 2.0 Resource api for load default resources, so we need to return null
+        //return addResource.getResourceUri(context, HtmlTree.class, resourceValue, false);
+        return null;
     }
 }

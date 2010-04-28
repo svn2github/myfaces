@@ -27,6 +27,7 @@ import javax.faces.el.MethodBinding;
 
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+import org.apache.myfaces.component.LibraryLocationAware;
 import org.apache.myfaces.component.LocationAware;
 
 /**
@@ -52,7 +53,7 @@ import org.apache.myfaces.component.LocationAware;
     clazz = "org.apache.myfaces.custom.tree2.HtmlTree",
     tagClass = "org.apache.myfaces.custom.tree2.TreeTag")
 public abstract class AbstractHtmlTree extends UITreeData
-    implements LocationAware
+    implements LocationAware, LibraryLocationAware
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlTree2";
     private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlTree2";

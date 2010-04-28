@@ -25,8 +25,9 @@ import javax.faces.context.FacesContext;
 
 public class TomahawkResourceUtils
 {
-    public static String DEFAULT_SCRIPT_RENDERER_TYPE = "javax.faces.resource.Script";
-    public static String DEFAULT_STYLESHEET_RENDERER_TYPE = "javax.faces.resource.Stylesheet";
+    public static final String DEFAULT_SCRIPT_RENDERER_TYPE = "javax.faces.resource.Script";
+    public static final String DEFAULT_STYLESHEET_RENDERER_TYPE = "javax.faces.resource.Stylesheet";
+    public static final String HEAD_LOCATION = "head"; 
     
     public static void addOutputScriptResource(final FacesContext facesContext, final String libraryName, final String resourceName)
     {
@@ -63,6 +64,25 @@ public class TomahawkResourceUtils
         outputStylesheet.setTransient(true);
         outputStylesheet.setId(facesContext.getViewRoot().createUniqueId());
         facesContext.getViewRoot().addComponentResource(facesContext, outputStylesheet);
+    }
+    
+    public static void addInlineOutputScriptResource(final FacesContext facesContext, String target, Object value)
+    {
+        UIOutput script = (UIOutput) facesContext.getApplication().createComponent(facesContext, 
+                "javax.faces.Output", "javax.faces.Text");
+        UIOutput outputScript = (UIOutput) facesContext.getApplication().
+            createComponent(facesContext, "javax.faces.Output", DEFAULT_SCRIPT_RENDERER_TYPE);
+        if (target != null)
+        {
+            script.getAttributes().put("target", target);
+        }
+        script.setValue( value);
+        script.setTransient(true);
+        script.setId(facesContext.getViewRoot().createUniqueId());
+        outputScript.getChildren().add(script);
+        outputScript.setTransient(true);
+        outputScript.setId(facesContext.getViewRoot().createUniqueId());
+        facesContext.getViewRoot().addComponentResource(facesContext, outputScript);
     }
     
     public static String getIconSrc(final FacesContext facesContext, final String libraryName, final String resourceName)

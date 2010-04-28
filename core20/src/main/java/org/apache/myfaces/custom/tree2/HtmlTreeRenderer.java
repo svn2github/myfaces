@@ -640,16 +640,31 @@ public class HtmlTreeRenderer extends Renderer
         String javascriptLocation = ((HtmlTree) component).getJavascriptLocation();
         if (javascriptLocation == null)
         {
-            //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/tree.js");
-            //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/cookielib.js");
-
-            TomahawkResourceUtils.addOutputScriptResource(context, 
-                    "oam.custom.tree2.javascript", 
-                    "tree.js");
+            String javascriptLibrary = ((HtmlTree) component).getJavascriptLibrary();
             
-            TomahawkResourceUtils.addOutputScriptResource(context, 
-                    "oam.custom.tree2.javascript", 
-                    "cookielib.js");
+            if (javascriptLibrary == null)
+            {
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/tree.js");
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlTreeRenderer.class, "javascript/cookielib.js");
+    
+                TomahawkResourceUtils.addOutputScriptResource(context, 
+                        "oam.custom.tree2.javascript", 
+                        "tree.js");
+                
+                TomahawkResourceUtils.addOutputScriptResource(context, 
+                        "oam.custom.tree2.javascript", 
+                        "cookielib.js");
+            }
+            else
+            {
+                TomahawkResourceUtils.addOutputScriptResource(context, 
+                        javascriptLibrary, 
+                        "tree.js");
+                
+                TomahawkResourceUtils.addOutputScriptResource(context, 
+                        javascriptLibrary, 
+                        "cookielib.js");
+            }
         }
         else
         {
@@ -674,10 +689,19 @@ public class HtmlTreeRenderer extends Renderer
         String imageLocation = ((HtmlTree)component).getImageLocation();
         if (imageLocation == null)
         {
-            //return addResource.getResourceUri(context, HtmlTreeRenderer.class,
-            //        "images/" + imageName, withContextPath);
-            return TomahawkResourceUtils.getIconSrc(context, "oam.custom.tree2.images",
-                                      imageName);
+            String imageLibrary = ((HtmlTree) component).getImageLibrary();
+            if (imageLibrary == null)
+            {
+                //return addResource.getResourceUri(context, HtmlTreeRenderer.class,
+                //        "images/" + imageName, withContextPath);
+                return TomahawkResourceUtils.getIconSrc(context, "oam.custom.tree2.images",
+                                          imageName);
+            }
+            else
+            {
+                return TomahawkResourceUtils.getIconSrc(context, imageLibrary,
+                        imageName);
+            }
         }
         else
         {
