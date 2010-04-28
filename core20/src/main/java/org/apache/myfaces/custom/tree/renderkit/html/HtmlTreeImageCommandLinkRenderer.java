@@ -31,7 +31,7 @@ import org.apache.myfaces.custom.tree.HtmlTreeImageCommandLink;
 import org.apache.myfaces.custom.tree.HtmlTreeNode;
 import org.apache.myfaces.renderkit.html.jsf.ExtendedHtmlLinkRenderer;
 import org.apache.myfaces.renderkit.html.util.DummyFormUtils;
-import org.apache.myfaces.shared_impl.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
