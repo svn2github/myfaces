@@ -105,8 +105,6 @@ public class AliasBean extends UIComponentBase implements BindingAware
     // True if this is a direct child of an AliasBeansScope component.
     private boolean withinScope;
 
-    private transient FacesContext _context = null;
-
     public AliasBean()
     {
         alias = new Alias(this);
@@ -163,18 +161,12 @@ public class AliasBean extends UIComponentBase implements BindingAware
     public Object saveState(FacesContext context)
     {
         log.debug("saveState");
-
-        _context = context;
-
         return new Object[]{super.saveState(context), alias.saveState()};
     }
 
     public void restoreState(FacesContext context, Object state)
     {
         log.debug("restoreState");
-
-        _context = context;
-
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         alias.restoreState(values[1]);
@@ -339,7 +331,6 @@ public class AliasBean extends UIComponentBase implements BindingAware
 
     void makeAlias(FacesContext context)
     {
-        _context = context;
         makeAlias();
     }
 
@@ -355,19 +346,18 @@ public class AliasBean extends UIComponentBase implements BindingAware
             }
             scopeSearched = true;
         }
-        alias.make(_context);
+        alias.make(getFacesContext());
     }
 
     void removeAlias(FacesContext context)
     {
-        _context = context;
         removeAlias();
     }
 
     private void removeAlias()
     {
         if (! withinScope)
-            alias.remove(_context);
+            alias.remove(getFacesContext());
     }
 
 

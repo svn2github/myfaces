@@ -18,12 +18,12 @@
  */
 package org.apache.myfaces.custom.aliasbean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -38,8 +38,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperties;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperty;
-import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
 import org.apache.myfaces.shared_tomahawk.component.BindingAware;
+import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
 
 /**
  * Holds several aliases that are configured by aliasBean tags.
@@ -78,8 +78,7 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
     public static final String COMPONENT_TYPE = "org.apache.myfaces.AliasBeansScope";
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
 
-    private ArrayList _aliases = new ArrayList();
-    transient FacesContext _context = null;
+    private ArrayList<Alias> _aliases = new ArrayList<Alias>();
 
     void addAlias(Alias alias)
     {
@@ -95,22 +94,6 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
       return null;
     }
 
-  public Object saveState(FacesContext context)
-    {
-        log.debug("saveState");
-        _context = context;
-
-        return super.saveState(context);
-    }
-
-    public void restoreState(FacesContext context, Object state)
-    {
-        log.debug("restoreState");
-        _context = context;
-
-        super.restoreState(context, state);
-    }
-
     public Object processSaveState(FacesContext context)
     {
         if (context == null)
@@ -120,12 +103,12 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
         makeAliases(context);
 
-        Map facetMap = null;
-        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext();)
+        Map<String, Object> facetMap = null;
+        for (Iterator<Map.Entry<String, UIComponent>> it = getFacets().entrySet().iterator(); it.hasNext();)
         {
-            Map.Entry entry = (Map.Entry) it.next();
+            Map.Entry<String, UIComponent> entry = (Map.Entry<String, UIComponent>) it.next();
             if (facetMap == null)
-                facetMap = new HashMap();
+                facetMap = new HashMap<String, Object>();
             UIComponent component = (UIComponent) entry.getValue();
             if (!component.isTransient())
             {
@@ -133,16 +116,16 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
             }
         }
 
-        List childrenList = null;
+        List<Object> childrenList = null;
         if (getChildCount() > 0)
         {
-            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            for (Iterator<UIComponent> it = getChildren().iterator(); it.hasNext();)
             {
                 UIComponent child = (UIComponent) it.next();
                 if (!child.isTransient())
                 {
                     if (childrenList == null)
-                        childrenList = new ArrayList(getChildCount());
+                        childrenList = new ArrayList<Object>(getChildCount());
                     childrenList.add(child.processSaveState(context));
                 }
             }
@@ -163,11 +146,11 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
         makeAliases(context);
 
-        Map facetMap = (Map) ((Object[]) state)[1];
+        Map<String, Object> facetMap = (Map<String, Object>) ((Object[]) state)[1];
 
-        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext();)
+        for (Iterator<Map.Entry<String, UIComponent>> it = getFacets().entrySet().iterator(); it.hasNext();)
         {
-            Map.Entry entry = (Map.Entry) it.next();
+            Map.Entry<String, UIComponent> entry = (Map.Entry<String, UIComponent>) it.next();
             Object facetState = facetMap.get(entry.getKey());
             if (facetState != null)
             {
@@ -179,11 +162,11 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
             }
         }
 
-        List childrenList = (List) ((Object[]) state)[2];
+        List<Object> childrenList = (List<Object>) ((Object[]) state)[2];
         if (getChildCount() > 0)
         {
             int idx = 0;
-            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            for (Iterator<UIComponent> it = getChildren().iterator(); it.hasNext();)
             {
                 UIComponent child = (UIComponent) it.next();
                 Object childState = childrenList.get(idx++);
@@ -261,26 +244,24 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
     void makeAliases(FacesContext context)
     {
-        _context = context;
         makeAliases();
     }
 
     private void makeAliases()
     {
         for (Iterator i = _aliases.iterator(); i.hasNext();)
-            ((Alias) i.next()).make(_context);
+            ((Alias) i.next()).make(getFacesContext());
     }
 
     void removeAliases(FacesContext context)
     {
-        _context = context;
         removeAliases();
     }
 
     private void removeAliases()
     {
         for (Iterator i = _aliases.iterator(); i.hasNext();)
-            ((Alias) i.next()).remove(_context);
+            ((Alias) i.next()).remove(getFacesContext());
     }
 
     public void handleBindings()
