@@ -5,6 +5,7 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
         xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
 <ui:composition>
@@ -12,10 +13,12 @@
   <br/>
   
   <t:dataList value="#{accessedBeans.beanList}" var="accessedBean" layout="unorderedList">
+      <h:outputLink value="#{accessedBean.clazz}.java.source" disabled="#{!fn:startsWith(accessedBean.clazz,'org.apache.myfaces.examples')}">
           <h:outputText value="Usage of bean with name : "/>
           <h:outputText value="#{accessedBean.name}"/>
           <h:outputText value=" and class : "/>
           <h:outputText value="#{accessedBean.clazz}"/>
+      </h:outputLink>
   </t:dataList>
 </ui:composition>
 </body>

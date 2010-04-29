@@ -20,6 +20,9 @@ package org.apache.myfaces.examples.webapp;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+
 import java.io.*;
 
 public class SourceCodeServlet extends HttpServlet 
@@ -32,31 +35,80 @@ public class SourceCodeServlet extends HttpServlet
         // remove the '*.source' suffix that maps to this servlet
         int chopPoint = webPage.indexOf(".source");
         
-        webPage = webPage.substring(0, chopPoint - 3);
-        webPage += "xhtml"; // replace jsf with xhtml
+        String path = webPage.substring(0, chopPoint);
         
-        // get the actual file location of the requested resource
-        String realPath = getServletConfig().getServletContext().getRealPath(webPage);
-
-        // output an HTML page
-        res.setContentType("text/plain");
-
-        // print some html
-        ServletOutputStream out = res.getOutputStream();
-
-        // print the file
-        InputStream in = null;
-        try 
+        if (path.endsWith(".java"))
         {
-            in = new BufferedInputStream(new FileInputStream(realPath));
-            int ch;
-            while ((ch = in.read()) !=-1) 
+            path = path.substring(0,path.length()-5);
+            
+            if (path.contains("org.apache.myfaces.examples"))
             {
-                out.print((char)ch);
+                path = path.replace('.', '/') + ".java";
+
+                InputStream is = ClassUtils.getResourceAsStream(path);
+             
+                // output an HTML page
+                res.setContentType("text/plain");
+    
+                if (is != null)
+                {
+                    // print some html
+                    ServletOutputStream out = res.getOutputStream();
+        
+                    // print the file
+                    InputStream in = null;
+                    try 
+                    {
+                        in = new BufferedInputStream(is);
+                        int ch;
+                        while ((ch = in.read()) !=-1) 
+                        {
+                            out.print((char)ch);
+                        }
+                    }
+                    finally {
+                        if (in != null) in.close();  // very important
+                    }
+                }
+                else
+                {
+                    res.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+            }
+            else
+            {
+                res.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         }
-        finally {
-            if (in != null) in.close();  // very important
+        else
+        {
+            
+            webPage = webPage.substring(0, chopPoint - 3);
+            webPage += "xhtml"; // replace jsf with xhtml
+            
+            // get the actual file location of the requested resource
+            String realPath = getServletConfig().getServletContext().getRealPath(webPage);
+
+            // output an HTML page
+            res.setContentType("text/plain");
+
+            // print some html
+            ServletOutputStream out = res.getOutputStream();
+
+            // print the file
+            InputStream in = null;
+            try 
+            {
+                in = new BufferedInputStream(new FileInputStream(realPath));
+                int ch;
+                while ((ch = in.read()) !=-1) 
+                {
+                    out.print((char)ch);
+                }
+            }
+            finally {
+                if (in != null) in.close();  // very important
+            }
         }
     }
 }
