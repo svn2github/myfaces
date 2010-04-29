@@ -246,7 +246,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
             {
                 String subId = clientId.substring(baseClientId.length() + 1);
-                String clientRow = subId.substring(0, subId.indexOf(':'));
+                String clientRow = subId.substring(0, subId.indexOf(separator));
     
                 //Now we save the current position
                 int oldRow = this.getRowIndex();
@@ -293,7 +293,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                     // an auto wrapping on columns feature, it is necessary to check columns ids
                     // without row for invokeOnComponent, but do not traverse all elements, so
                     // save/restore algorithm could be able to remove / add them.  
-                    if (child instanceof UIColumn && clientId.equals(child.getClientId()))
+                    if (child instanceof UIColumn && clientId.equals(child.getClientId(context)))
                     {
                         try {
                             callback.invokeContextCallback(context, child);
