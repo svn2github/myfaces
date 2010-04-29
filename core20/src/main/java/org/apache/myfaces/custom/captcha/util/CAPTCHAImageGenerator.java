@@ -27,9 +27,8 @@ import java.awt.RenderingHints;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Random;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.batik.ext.awt.image.codec.PNGEncodeParam;
 import org.apache.batik.ext.awt.image.codec.PNGImageEncoder;
@@ -110,8 +109,8 @@ public class CAPTCHAImageGenerator
      * @param startingColor
      * @param endingColor
      * @throws IOException
-     */
-    public void generateImage(HttpServletResponse response, String captchaText,
+     */   
+    public void generateImage(OutputStream out, String captchaText,
             Color startingColor, Color endingColor) throws IOException
     {
 
@@ -148,11 +147,8 @@ public class CAPTCHAImageGenerator
         drawBorders(graphics, bufferedImage.getWidth(), bufferedImage
                 .getHeight());
 
-        // Set the reponse content type to jpeg.
-        response.setContentType("image/jpg");
-
         param = PNGEncodeParam.getDefaultEncodeParam(bufferedImage);
-        captchaPNGImage = new PNGImageEncoder(response.getOutputStream(), param);
+        captchaPNGImage = new PNGImageEncoder(out, param);
 
         captchaPNGImage.encode(bufferedImage);
     }

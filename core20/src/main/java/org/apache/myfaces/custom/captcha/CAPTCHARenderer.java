@@ -18,35 +18,15 @@
  */
 package org.apache.myfaces.custom.captcha;
 
-import java.awt.Color;
 import java.io.IOException;
-import java.util.Map;
 
-import javax.faces.FacesException;
-import javax.faces.FactoryFinder;
+import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextFactory;
-import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
 import javax.faces.render.Renderer;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
-import org.apache.myfaces.component.html.util.ParameterResourceHandler;
 import org.apache.myfaces.custom.captcha.util.CAPTCHAConstants;
-import org.apache.myfaces.custom.captcha.util.CAPTCHAImageGenerator;
-import org.apache.myfaces.custom.captcha.util.CAPTCHAResponseStream;
-import org.apache.myfaces.custom.captcha.util.CAPTCHATextGenerator;
-import org.apache.myfaces.custom.captcha.util.ColorGenerator;
-import org.apache.myfaces.renderkit.html.util.AddResource;
-import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
-import org.apache.myfaces.renderkit.html.util.ResourceLoader;
-
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 /**
@@ -59,7 +39,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
  * @author Hazem Saleh
  *
  */
-public class CAPTCHARenderer extends Renderer implements ResourceLoader
+public class CAPTCHARenderer extends Renderer/* implements ResourceLoader*/
 {
 
     public void encodeBegin(FacesContext context, UIComponent component)
@@ -85,9 +65,9 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
             CAPTCHAComponent component) throws IOException
     {
 
-        AddResource addResource;
+        //AddResource addResource;
         ResponseWriter writer = context.getResponseWriter();
-        Map params = HtmlComponentUtils.getParameterMap(component);
+        //Map params = HtmlComponentUtils.getParameterMap(component);
         String url;
         String captchaSessionKeyName = component.getCaptchaSessionKeyName();
         String width = component.getImageWidth();
@@ -107,22 +87,29 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
         writer.startElement(HTML.IMG_ELEM, component);
 
         // constructing the parameter map to be passed to the (AddResource).
-        if (captchaSessionKeyName != null)
-        {
-            params.put(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME,
-                    captchaSessionKeyName);
-        }
+        //if (captchaSessionKeyName != null)
+        //{
+        //    params.put(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME,
+        //            captchaSessionKeyName);
+        //}
 
         // write the url to trigger the (AddResource).
-        addResource = AddResourceFactory.getInstance(context);
+        //addResource = AddResourceFactory.getInstance(context);
 
-        url = context.getExternalContext().encodeResourceURL(
-                addResource.getResourceUri(context,
-                        new ParameterResourceHandler(this.getClass(), params)));
+        //url = context.getExternalContext().encodeResourceURL(
+        //        addResource.getResourceUri(context,
+        //                new ParameterResourceHandler(this.getClass(), params)));
+        
+        // Use facesContext attribute map to pass params to createResource. I would like to do
+        // that in a cleaner way but we don't have choice.
+        context.getAttributes().put(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME,
+                captchaSessionKeyName);
+        Resource resource = context.getApplication().getResourceHandler().createResource(
+                "captcha", CAPTCHAResourceHandlerWrapper.CAPTCHA_LIBRARY);
+        context.getAttributes().remove(CAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME);
+        url = resource.getRequestPath();
 
-        // adding dummy parameter to prevent caching.
-        writer.writeAttribute(HTML.SRC_ATTR, url + "&dummyParameter="
-                + System.currentTimeMillis(), null);
+        writer.writeAttribute(HTML.SRC_ATTR, url, null);
 
         // write rest of attributes.
         writer.writeAttribute(HTML.WIDTH_ATTR, width, null);
@@ -136,6 +123,7 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
      * This method is implemented to be called from the (AddResource).
      * It wraps the CAPTCHA image generation.
      */
+    /*
     public void serveResource(ServletContext servletContext,
             HttpServletRequest request, HttpServletResponse response,
             String resourceUri) throws IOException
@@ -171,11 +159,12 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
         {
             facesContext.release();
         }
-    }
+    }*/
 
     /*
      * This method is used for rendering the CAPTCHA component.
      */
+    /*
     protected void renderCAPTCHA(FacesContext facesContext) throws IOException
     {
 
@@ -214,5 +203,5 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
             out.close();
             facesContext.responseComplete();
         }
-    }
+    }*/
 }
