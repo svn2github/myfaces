@@ -28,6 +28,7 @@ import org.apache.myfaces.component.AlignProperty;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 
 /**
  * Creates a file-selection widget in the rendered page which allows a user to select
@@ -143,8 +144,8 @@ public abstract class AbstractHtmlInputFileUpload
                 {
                   Integer maxSize =
                     (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
-                  MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
-                              SIZE_LIMIT_MESSAGE_ID, new Object[] { getLabel(context, this),
+                  MessageUtils.addMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR,
+                              SIZE_LIMIT_MESSAGE_ID, new Object[] { MessageUtils.getLabel(context, this),
                                       maxSize},
                               getClientId(context), context);
                   setValid(false);
@@ -155,8 +156,8 @@ public abstract class AbstractHtmlInputFileUpload
                         (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
                     if (maxSize != null)
                     {
-                        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
-                                SIZE_LIMIT_MESSAGE_ID, new Object[] { getLabel(context, this),
+                        MessageUtils.addMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR,
+                                SIZE_LIMIT_MESSAGE_ID, new Object[] { MessageUtils.getLabel(context, this),
                                         maxSize},
                                 getClientId(context), context);
                     }
@@ -166,8 +167,8 @@ public abstract class AbstractHtmlInputFileUpload
                                 "org.apache.myfaces.custom.fileupload."+this.getClientId(context)+".maxSize");
                         if (maxSize != null)
                         {
-                            MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
-                                    SIZE_LIMIT_MESSAGE_ID, new Object[] { getLabel(context, this),
+                            MessageUtils.addMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR,
+                                    SIZE_LIMIT_MESSAGE_ID, new Object[] { MessageUtils.getLabel(context, this),
                                             maxSize},
                                     getClientId(context), context);
                         }
@@ -185,19 +186,4 @@ public abstract class AbstractHtmlInputFileUpload
              }
          }
      }
-    
-    //TODO: Move this method to org.apache.myfaces.shared.util.MessageUtils
-    private static String getLabel(FacesContext facesContext, UIComponent component) {
-        Object label = component.getAttributes().get("label");
-        if(label != null)
-            return label.toString();
-        
-        ValueExpression expression = component.getValueExpression("label");
-        if(expression != null)
-            return expression.getExpressionString();
-            //return (String)expression.getValue(facesContext.getELContext());
-        
-        //If no label is not specified, use clientId
-        return component.getClientId( facesContext );
-    }
 }

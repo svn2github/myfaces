@@ -35,6 +35,7 @@ import javax.faces.validator.Validator;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFValidator;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 
 /**
  * Base validator implementation for Apache MyFaces Commons Validators.
@@ -150,7 +151,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
 
         if (getSummaryMessage() == null && getDetailMessage() == null)
         {
-            msg = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, defaultMessage, args);
+            msg = MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, defaultMessage, args);
         } else {
             Locale locale = MessageUtils.getCurrentLocale();
             String summaryText = MessageUtils.substituteParams(locale, getSummaryMessage(), args);
