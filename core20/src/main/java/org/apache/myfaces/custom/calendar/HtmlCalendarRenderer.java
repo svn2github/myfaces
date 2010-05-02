@@ -65,6 +65,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
+import org.apache.myfaces.tomahawk.util.Constants;
 import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
 /**
@@ -1278,8 +1279,8 @@ public class HtmlCalendarRenderer
                 if (date != null) {
                     return date;
                 }
-                FacesMessage msg = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,CONVERSION_MESSAGE_ID,new Object[]{
-                        uiComponent.getId(),s});
+                FacesMessage msg = MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE,FacesMessage.SEVERITY_ERROR,CONVERSION_MESSAGE_ID,new Object[]{
+                        uiComponent.getId(),s},facesContext);
                 throw new ConverterException(msg);
             }
             else
@@ -1293,8 +1294,8 @@ public class HtmlCalendarRenderer
                 }
                 catch (ParseException e)
                 {
-                    FacesMessage msg = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR,CONVERSION_MESSAGE_ID,new Object[]{
-                            uiComponent.getId(),s});
+                    FacesMessage msg = MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE,FacesMessage.SEVERITY_ERROR,CONVERSION_MESSAGE_ID,new Object[]{
+                            uiComponent.getId(),s},facesContext);
                     throw new ConverterException(msg,e);
                 }
             }

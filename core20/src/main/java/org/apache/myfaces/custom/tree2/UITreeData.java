@@ -38,11 +38,11 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
 
-import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
-import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
+import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 
 /**
  * TreeData is a {@link UIComponent} that supports binding data stored in a tree represented
@@ -374,7 +374,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
              * message so the user can optionally display the warning.  Also, we will allow the user to provide
              * their own value binding method to be called so they can handle it how they see fit.
              */
-            FacesMessage message = MessageUtils.getMessage(MISSING_NODE, new String[] {nodeId});
+            FacesMessage message = MessageUtils.getMessageFromBundle(Constants.TOMAHAWK_DEFAULT_BUNDLE, MISSING_NODE, new String[] {nodeId});
             message.setSeverity(FacesMessage.SEVERITY_WARN);
             FacesContext.getCurrentInstance().addMessage(getId(), message);
 

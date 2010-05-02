@@ -450,7 +450,8 @@
                   org/apache/myfaces/renderkit/html/jsf/**,
                   org/apache/myfaces/shared_tomahawk/**,
                   org/apache/myfaces/taglib/**,
-                  org/apache/myfaces/tomahawk/**,
+                  org/apache/myfaces/tomahawk/application/**,
+                  org/apache/myfaces/tomahawk/util/**,
                   org/apache/myfaces/validator/**,
                   org/apache/myfaces/webapp/**</excludes>
                 </artifactItem>
