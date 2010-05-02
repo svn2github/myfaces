@@ -21,14 +21,12 @@ package org.apache.myfaces.custom.datalist;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 
 /**
  * Similar to dataTable, but does not render a table. 
