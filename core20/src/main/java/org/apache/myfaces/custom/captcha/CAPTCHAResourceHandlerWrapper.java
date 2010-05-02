@@ -179,14 +179,14 @@ public class CAPTCHAResourceHandlerWrapper extends javax.faces.application.Resou
                 
                     // Generate random CAPTCHA text.
                     captchaText = CAPTCHATextGenerator.generateRandomText();
-                
-                    // Generate the image, the BG color is randomized from starting to ending colors.
-                    captchaImageGenerator.generateImage(out, captchaText,
-                            startingColor, endingColor);
-                
+
                     // Set the generated text in the user session.
                     facesContext.getExternalContext().getSessionMap().put(
                             captchaSessionKeyName, captchaText);
+
+                    // Generate the image, the BG color is randomized from starting to ending colors.
+                    captchaImageGenerator.generateImage(out, captchaText,
+                            startingColor, endingColor);
                 }
                 finally
                 {
