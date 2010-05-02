@@ -201,13 +201,13 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
             // Generate random CAPTCHA text.
             captchaText = CAPTCHATextGenerator.generateRandomText();
 
-            // Generate the image, the BG color is randomized from starting to ending colors.
-            captchaImageGenerator.generateImage(response, captchaText,
-                    startingColor, endingColor);
-
             // Set the generated text in the user session.
             facesContext.getExternalContext().getSessionMap().put(
                     captchaSessionKeyName, captchaText);
+
+            // Generate the image, the BG color is randomized from starting to ending colors.
+            captchaImageGenerator.generateImage(response, captchaText,
+                    startingColor, endingColor);
         }
         finally
         {
