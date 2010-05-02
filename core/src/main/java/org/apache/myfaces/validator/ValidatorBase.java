@@ -29,6 +29,7 @@ import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 
 /**
  * Base validator implementation for Tomahawk validators.
@@ -146,7 +147,7 @@ public abstract class ValidatorBase implements StateHolder, Validator {
 
         if (getSummaryMessage() == null && getDetailMessage() == null)
         {
-            msg = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, defaultMessage, args);
+            msg = MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, defaultMessage, args);
         } else {
             Locale locale = MessageUtils.getCurrentLocale();
             String summaryText = MessageUtils.substituteParams(locale, getSummaryMessage(), args);

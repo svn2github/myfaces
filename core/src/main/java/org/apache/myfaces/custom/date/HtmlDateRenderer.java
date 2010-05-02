@@ -46,6 +46,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 
 /**
  * @JSFRenderer
@@ -488,7 +489,7 @@ public class HtmlDateRenderer extends HtmlRenderer {
                 return userData.parse();
             } catch (ParseException e) {
                 Object[] args = {uiComponent.getId()};
-                throw new ConverterException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, DATE_MESSAGE_ID, args));
+                throw new ConverterException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, DATE_MESSAGE_ID, args, context));
             }            
         }
         else

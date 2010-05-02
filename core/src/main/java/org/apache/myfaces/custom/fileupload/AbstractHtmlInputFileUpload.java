@@ -26,6 +26,7 @@ import org.apache.myfaces.component.AlignProperty;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 
 /**
  * Creates a file-selection widget in the rendered page which allows a user to select
@@ -141,7 +142,7 @@ public abstract class AbstractHtmlInputFileUpload
                 {
                   Integer maxSize =
                     (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
-                  MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+                  MessageUtils.addMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR,
                               SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
                                       maxSize},
                               getClientId(context), context);
@@ -153,7 +154,7 @@ public abstract class AbstractHtmlInputFileUpload
                         (Integer) context.getExternalContext().getRequestMap().get(FILEUPLOAD_MAX_SIZE);
                     if (maxSize != null)
                     {
-                        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+                        MessageUtils.addMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR,
                                 SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
                                         maxSize},
                                 getClientId(context), context);
@@ -164,7 +165,7 @@ public abstract class AbstractHtmlInputFileUpload
                                 "org.apache.myfaces.custom.fileupload."+this.getClientId(context)+".maxSize");
                         if (maxSize != null)
                         {
-                            MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR,
+                            MessageUtils.addMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR,
                                     SIZE_LIMIT_MESSAGE_ID, new Object[] { getId(),
                                             maxSize},
                                     getClientId(context), context);
