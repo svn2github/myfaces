@@ -167,6 +167,7 @@ public class HtmlListRenderer
                     {
                         writer.startElement(HTML.LI_ELEM, component);
                         HtmlRendererUtils.renderHTMLAttribute(writer, component, "itemStyleClass", HTML.STYLE_CLASS_ATTR);
+                        HtmlRendererUtils.renderHTMLAttribute(writer, component, "itemOnClick", HTML.ONCLICK_ATTR);
                     }
                     else if (layout.equals(LAYOUT_GRID))
                     {

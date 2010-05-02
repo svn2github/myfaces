@@ -244,4 +244,10 @@ public abstract class AbstractHtmlDataList
      */
     public abstract String getItemStyleClass();
     
+    /**
+     * OnClick handler to be applied to individual items in the list
+     * 
+     * @JSFProperty
+     */
+    public abstract String getItemOnClick();
 }
