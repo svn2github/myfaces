@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
@@ -83,7 +84,7 @@ public class ISBNValidator extends ValidatorBase {
                 String message = getMessage();
                 if (null == message)  message = ISBN_MESSAGE_ID;
 
-                throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+                throw new ValidatorException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, message, args, facesContext));
             }
             
 

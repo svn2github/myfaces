@@ -36,6 +36,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
@@ -293,7 +294,7 @@ public abstract class AbstractCompareToValidator extends ValidatorBase {
         {
             if (false == validateOperatorOnComparisonResult(operator, comparator.compare(value, foreignValue)))
             {
-                throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+                throw new ValidatorException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, message, args, facesContext));
             }
         }
         else if ( (value instanceof Comparable) && (foreignValue instanceof Comparable) )
@@ -302,7 +303,7 @@ public abstract class AbstractCompareToValidator extends ValidatorBase {
             {
                 if (false == validateOperatorOnComparisonResult(operator, ((Comparable)value).compareTo(foreignValue)))
                 {
-                    throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message, args));
+                    throw new ValidatorException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, message, args, facesContext));
                 }
             }
             catch (RuntimeException exception)
@@ -313,7 +314,7 @@ public abstract class AbstractCompareToValidator extends ValidatorBase {
                 }
                 else
                 {
-                    throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, message + ": " + exception.getLocalizedMessage(), args));
+                    throw new ValidatorException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, message + ": " + exception.getLocalizedMessage(), args, facesContext));
                 }
             }
         }

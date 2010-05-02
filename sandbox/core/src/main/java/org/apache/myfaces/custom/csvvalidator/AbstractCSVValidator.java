@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
+import org.apache.myfaces.tomahawk.util.Constants;
 import org.apache.myfaces.validator.ValidatorBase;
 
 /**
@@ -90,7 +91,7 @@ public abstract class AbstractCSVValidator extends ValidatorBase {
             detailMessageText = oldMsg.getDetail();
         }
         Object[] args = { new Integer(index + 1) };
-        FacesMessage suffixMessage = MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, suffixMessageKey, args);
+        FacesMessage suffixMessage = MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, suffixMessageKey, args);
         String summarySuffix = suffixMessage.getSummary();
         String detailSuffix = suffixMessage.getDetail();
         if (summarySuffix == null)
@@ -127,7 +128,7 @@ public abstract class AbstractCSVValidator extends ValidatorBase {
         // value must be a String
         if (!(value instanceof String)) {
             Object[] args = { value };
-            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, CSV_NOT_STRING_MESSAGE_ID, args));
+            throw new ValidatorException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, CSV_NOT_STRING_MESSAGE_ID, args, facesContext));
         }
         Validator validator = facesContext.getApplication().createValidator(getSubvalidatorId());
         if (getSeparator() == null)
@@ -138,7 +139,7 @@ public abstract class AbstractCSVValidator extends ValidatorBase {
         }
         catch (PatternSyntaxException e) {
             Object[] args = { getSeparator() };
-            throw new ValidatorException(MessageUtils.getMessage(FacesMessage.SEVERITY_ERROR, CSV_INVALID_SEPARATOR_MESSAGE_ID, args));
+            throw new ValidatorException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, CSV_INVALID_SEPARATOR_MESSAGE_ID, args, facesContext));
         }
         // loop through the separated values and validate each one
         for (int i = 0; i < values.length; i++) {
