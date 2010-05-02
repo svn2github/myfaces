@@ -160,7 +160,7 @@ public class HtmlMessageRenderer
 
     public static String findInputLabel(FacesContext facesContext, String inputClientId)
     {
-        Map outputLabelMap = getOutputLabelMap(facesContext);
+        Map<String, MessageLabelInfo> outputLabelMap = getOutputLabelMap(facesContext);
         MessageLabelInfo info = ((MessageLabelInfo)outputLabelMap.get(inputClientId));
 
         if(info == null)
@@ -184,12 +184,12 @@ public class HtmlMessageRenderer
             }
         }
 
-        return info==null?null:info.getText();
+        return info==null?null:info.getText(facesContext);
     }
 
     public static String findInputId(FacesContext facesContext, String inputClientId)
     {
-        Map outputLabelMap = getOutputLabelMap(facesContext);
+        Map<String, MessageLabelInfo> outputLabelMap = getOutputLabelMap(facesContext);
         MessageLabelInfo info = ((MessageLabelInfo)outputLabelMap.get(inputClientId));
 
         UIComponent comp = null;
@@ -222,12 +222,13 @@ public class HtmlMessageRenderer
      * @return a Map that reversely maps clientIds of components to their
      *         corresponding OutputLabel component
      */
-    private static Map getOutputLabelMap(FacesContext facesContext)
+    @SuppressWarnings("unchecked")
+    private static Map<String, MessageLabelInfo> getOutputLabelMap(FacesContext facesContext)
     {
-        Map map = (Map)facesContext.getExternalContext().getRequestMap().get(OUTPUT_LABEL_MAP);
+        Map<String, MessageLabelInfo> map = (Map<String, MessageLabelInfo>) facesContext.getExternalContext().getRequestMap().get(OUTPUT_LABEL_MAP);
         if (map == null)
         {
-            map = new HashMap();
+            map = new HashMap<String, MessageLabelInfo>();
             createOutputLabelMap(facesContext, facesContext.getViewRoot(), map);
             facesContext.getExternalContext().getRequestMap().put(OUTPUT_LABEL_MAP, map);
         }
@@ -236,9 +237,9 @@ public class HtmlMessageRenderer
 
     private static void createOutputLabelMap(FacesContext facesContext,
                                              UIComponent root,
-                                             Map map)
+                                             Map<String, MessageLabelInfo> map)
     {
-        for (Iterator it = root.getFacetsAndChildren(); it.hasNext(); )
+        for (Iterator<UIComponent> it = root.getFacetsAndChildren(); it.hasNext(); )
         {
             UIComponent child = (UIComponent)it.next();
             if (child instanceof HtmlOutputLabel)
@@ -253,9 +254,20 @@ public class HtmlMessageRenderer
                     }
                     else
                     {
-                        map.put(input.getClientId(facesContext),
-                                new MessageLabelInfo(
-                                        input,getComponentText(facesContext, (HtmlOutputLabel)child)));
+                        if (child.getValueExpression("value") == null)
+                        {
+                            // If the child uses a ValueExpression, do not evaluate the text
+                            // right now. When getText(FacesContext) is called, do it there.
+                            map.put(input.getClientId(facesContext),
+                                    new MessageDefferedLabelInfo(
+                                            input, child));                            
+                        }
+                        else
+                        {
+                            map.put(input.getClientId(facesContext),
+                                    new MessageTextLabelInfo(
+                                            input,getComponentText(facesContext, (HtmlOutputLabel)child)));
+                        }
                     }
                 }
             }
@@ -278,7 +290,7 @@ public class HtmlMessageRenderer
         if (text == null || text.length() < 1)
         {
             StringBuffer buf = new StringBuffer();
-            List li = component.getChildren();
+            List<UIComponent> li = component.getChildren();
 
             for (int i = 0; i < li.size(); i++)
             {
@@ -298,12 +310,18 @@ public class HtmlMessageRenderer
         return text;
     }
 
-    public static class MessageLabelInfo
+    public static interface MessageLabelInfo
     {
-        private UIComponent _forComponent;
-        private String _text;
+        public UIComponent getForComponent();
+        public String getText(FacesContext context);
+    }
+    
+    public final static class MessageTextLabelInfo implements MessageLabelInfo
+    {
+        private final UIComponent _forComponent;
+        private final String _text;
 
-        public MessageLabelInfo(UIComponent forComponent, String text)
+        public MessageTextLabelInfo(final UIComponent forComponent, final String text)
         {
             _forComponent = forComponent;
             _text = text;
@@ -314,19 +332,37 @@ public class HtmlMessageRenderer
             return _forComponent;
         }
 
-        public void setForComponent(UIComponent forComponent)
-        {
-            _forComponent = forComponent;
-        }
-
-        public String getText()
+        public String getText(FacesContext context)
         {
             return _text;
         }
-
-        public void setText(String text)
+    }
+    
+    public final static class MessageDefferedLabelInfo implements MessageLabelInfo
+    {
+        private final UIComponent _forComponent;
+        private final UIComponent _labelComponent;
+        private String _text;
+        
+        public MessageDefferedLabelInfo(final UIComponent forComponent, final UIComponent labelComponent)
         {
-            _text = text;
+            _forComponent = forComponent;
+            _labelComponent = labelComponent;
+        }
+
+        
+        public UIComponent getForComponent()
+        {
+            return _forComponent;
+        }
+
+        public String getText(FacesContext context)
+        {
+            if (_text == null)
+            {
+                _text = getComponentText(context, (HtmlOutputLabel)_labelComponent); 
+            }
+            return _text; 
         }
     }
 }
