@@ -623,7 +623,13 @@
         <managed-bean-class>org.apache.myfaces.examples.selectOneRow.SelectOneRowList</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>	
-     
+    
+    <!-- Managed bean for h:messages example -->
+    <managed-bean>
+        <managed-bean-name>messagesBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.messages.MessagesBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
     <!-- NAVIGATION RULES -->
 
