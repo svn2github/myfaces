@@ -1212,12 +1212,26 @@ public class SimpleDateFormatter
 
     public String format(Date date)
     {
-        return formatOps(symbols, yearIsWeekYear, firstDayOfWeek, ops, date);
+        if (date instanceof java.sql.Date)
+        {
+            return formatOps(symbols, yearIsWeekYear, firstDayOfWeek, ops, new Date(date.getTime()));
+        }
+        else
+        {
+            return formatOps(symbols, yearIsWeekYear, firstDayOfWeek, ops, date);
+        }
     }
     
     public WeekDate getWeekDate(Date date)
     {
-        return getWeekDate(date, this.firstDayOfWeek);
+        if (date instanceof java.sql.Date)
+        {
+            return getWeekDate(new Date(date.getTime()), this.firstDayOfWeek);
+        }
+        else
+        {
+            return getWeekDate(date, this.firstDayOfWeek);
+        }
     }
     
     public Date getDateForWeekDate(WeekDate wdate)
