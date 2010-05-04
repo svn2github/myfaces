@@ -58,7 +58,8 @@ import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
  */
 @JSFComponent(
    name = "t:inputHtml",
-   tagClass = "org.apache.myfaces.custom.inputHtml.InputHtmlTag")
+   tagClass = "org.apache.myfaces.custom.inputHtml.InputHtmlTag",
+   composite=true)
 @ListenerFor(systemEventClass=PreRenderViewAddResourceEvent.class)
 public class InputHtml extends HtmlInputText implements NamingContainer, UniqueIdVendor {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.InputHtml";

@@ -546,7 +546,7 @@
             <configuration>
                 <xmlFile>META-INF/tomahawk.tld</xmlFile>
                 <xmlBaseFile>src/main/conf/META-INF/tomahawk-base.tld</xmlBaseFile>
-                <templateFile>tomahawk12.vm</templateFile>
+                <templateFile>tld-tomahawk20.vm</templateFile>
                 <params>
                    <shortname>t</shortname>
                    <uri>http://myfaces.apache.org/tomahawk</uri>
@@ -560,7 +560,28 @@
             <goals>
                 <goal>make-config</goal>
             </goals>
-          </execution>        
+          </execution>
+          <execution>
+            <id>make_tomahawk_facelets_tld</id>
+            <configuration>
+                <outputDirectory>${project.build.directory}/tlddoc-facelets</outputDirectory>
+                <xmlFile>tomahawk_facelets.tld</xmlFile>
+                <xmlBaseFile>src/main/conf/META-INF/tomahawk-base.tld</xmlBaseFile>
+                <templateFile>tld-facelets-tomahawk20.vm</templateFile>
+                <params>
+                   <shortname>t</shortname>
+                   <uri>http://myfaces.apache.org/tomahawk</uri>
+                   <displayname>Tomahawk tag library 2.0.</displayname>
+                   <description> MyFaces subproject that contains components and other goodies to be used with any JSF implementation.</description>
+                </params>
+                <modelIds>
+                    <modelId>tomahawk20</modelId>
+                </modelIds>
+            </configuration>
+            <goals>
+                <goal>make-config</goal>
+            </goals>
+          </execution>
           <execution>
             <id>maketomahawktaglib</id>
             <configuration>
@@ -750,8 +771,10 @@
           <plugin>
             <groupId>net.sourceforge.maven-taglib</groupId>
             <artifactId>maven-taglib-plugin</artifactId>
+            <version>2.4</version>
             <configuration>
-              <taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir>
+              <!-- taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir -->
+              <taglib.src.dir>${basedir}/target/tlddoc-facelets</taglib.src.dir>
               <tldDocDir>${basedir}/target/site/tlddoc</tldDocDir>
             </configuration>
           </plugin>
@@ -799,8 +822,10 @@
             <!-- Install in the repository a "-tlddoc.jar" file -->
             <groupId>net.sourceforge.maven-taglib</groupId>
             <artifactId>maven-taglib-plugin</artifactId>
+            <version>2.4</version>
             <configuration>
-              <taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir>
+              <!-- taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir -->
+              <taglib.src.dir>${basedir}/target/tlddoc-facelets</taglib.src.dir>
               <tldDocDir>${basedir}/target/tlddoc</tldDocDir>
             </configuration>
             <executions>

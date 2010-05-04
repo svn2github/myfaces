@@ -17,15 +17,17 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<taglib xmlns="http://java.sun.com/xml/ns/javaee" 
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
-        version="2.1">
-  <tlib-version>1.1.7</tlib-version>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+   <description>$description</description>
+   <display-name>$displayname</display-name>
+   <tlib-version>1.1.7</tlib-version>
    <short-name>$shortname</short-name>
    <uri>$uri</uri>
-   <display-name>$displayname</display-name>
-   <description>$description</description>
+   
+   
 
 $baseContent
 
@@ -36,6 +38,7 @@ $baseContent
     && ($component.name))
 #if ($utils.getTagPrefix($component.name) == $shortname) 
    <tag>
+      <description><![CDATA[$component.longDescription]]></description>
       <name>$utils.getTagName($component.name)</name>
       <tag-class>$component.tagClass</tag-class>
 #if ($component.bodyContent)
@@ -43,12 +46,16 @@ $baseContent
 #else
       <body-content>JSP</body-content>
 #end
-      <description><![CDATA[$component.longDescription]]></description>
       
 #set ($propertyList = ${component.propertyList})
 #foreach( $property in $propertyList )
-#if (!$property.isTagExcluded())
+#if (!$property.isTagExcluded() && !$property.isFaceletsOnly())
       <attribute>
+#if ($property.longDescription)
+         <description><![CDATA[$property.longDescription]]></description>
+#else
+         <description><![CDATA[]]></description>
+#end
          <name>$property.jspName</name>
 #if ($property.isRequired())
          <required>$property.isRequired()</required>
@@ -72,8 +79,14 @@ $baseContent
 #else
 #if ( "$!property.isRtexprvalue()" == "")
 #set ($type = $utils.getClassFromFullClass($property.className))
-#if ($type == "String")
-         <deferred-value></deferred-value>
+#if($property.deferredValueType)
+         <deferred-value>
+             <type>$property.deferredValueType</type>
+         </deferred-value>
+#elseif ($type == "String")
+         <deferred-value>
+            <type>java.lang.String</type>
+         </deferred-value>
 #else
          <deferred-value>
              <type>$property.className</type>
@@ -82,11 +95,6 @@ $baseContent
 #else
          <rtexprvalue>$property.isRtexprvalue().booleanValue()</rtexprvalue>
 #end
-#end
-#if ($property.longDescription)
-         <description><![CDATA[$property.longDescription]]></description>
-#else
-         <description><![CDATA[]]></description>
 #end
       </attribute>
 #end
@@ -99,9 +107,10 @@ $baseContent
 #set ($componentList = ${model.getConverters()})
 #foreach( $component in $componentList )
 #if ($modelIds.contains($component.modelId) 
-    && ($component.name))
+    && ($component.name)  && ($component.tagClass))
 #if ($utils.getTagPrefix($component.name) == $shortname) 
    <tag>
+      <description><![CDATA[$component.longDescription]]></description>
       <name>$utils.getTagName($component.name)</name>
       <tag-class>$component.tagClass</tag-class>
 #if ($component.bodyContent)
@@ -109,12 +118,16 @@ $baseContent
 #else
       <body-content>empty</body-content>
 #end
-      <description><![CDATA[$component.longDescription]]></description>
       
 #set ($propertyList = ${component.propertyList})
 #foreach( $property in $propertyList )
-#if (!$property.isTagExcluded())
+#if (!$property.isTagExcluded() && !$property.isFaceletsOnly())
       <attribute>
+#if ($property.longDescription)
+         <description><![CDATA[$property.longDescription]]></description>
+#else
+         <description><![CDATA[]]></description>
+#end
          <name>$property.name</name>
 #if ($property.isRequired())
          <required>$property.isRequired()</required>
@@ -123,18 +136,19 @@ $baseContent
          <rtexprvalue>false</rtexprvalue>
 #else
 #set ($type = $utils.getClassFromFullClass($property.className))
-#if ($type == "String")
-         <deferred-value></deferred-value>
+#if($property.deferredValueType)
+         <deferred-value>
+             <type>$property.deferredValueType</type>
+         </deferred-value>             
+#elseif ($type == "String")
+         <deferred-value>
+            <type>java.lang.String</type>
+         </deferred-value>
 #else
          <deferred-value>
              <type>$property.className</type>
          </deferred-value>
 #end
-#end
-#if ($property.longDescription)
-         <description><![CDATA[$property.longDescription]]></description>
-#else
-         <description><![CDATA[]]></description>
 #end
       </attribute>
 #end
@@ -147,9 +161,10 @@ $baseContent
 #set ($componentList = ${model.getValidators()})
 #foreach( $component in $componentList )
 #if ($modelIds.contains($component.modelId) 
-    && ($component.name))
+    && ($component.name) && ($component.tagClass))
 #if ($utils.getTagPrefix($component.name) == $shortname) 
    <tag>
+      <description><![CDATA[$component.longDescription]]></description>
       <name>$utils.getTagName($component.name)</name>
       <tag-class>$component.tagClass</tag-class>
 #if ($component.bodyContent)
@@ -157,12 +172,16 @@ $baseContent
 #else
       <body-content>empty</body-content>
 #end
-      <description><![CDATA[$component.longDescription]]></description>
       
 #set ($propertyList = ${component.propertyList})
 #foreach( $property in $propertyList )
-#if (!$property.isTagExcluded())
+#if (!$property.isTagExcluded() && !$property.isFaceletsOnly())
       <attribute>
+#if ($property.longDescription)
+         <description><![CDATA[$property.longDescription]]></description>
+#else
+         <description><![CDATA[]]></description>
+#end
          <name>$property.name</name>
 #if ($property.isRequired())
          <required>$property.isRequired()</required>
@@ -171,18 +190,19 @@ $baseContent
          <rtexprvalue>false</rtexprvalue>
 #else
 #set ($type = $utils.getClassFromFullClass($property.className))
-#if ($type == "String")
-         <deferred-value></deferred-value>
+#if($property.deferredValueType)
+         <deferred-value>
+             <type>$property.deferredValueType</type>
+         </deferred-value>             
+#elseif ($type == "String")
+         <deferred-value>
+             <type>java.lang.String</type>
+         </deferred-value>
 #else
          <deferred-value>
              <type>$property.className</type>
          </deferred-value>
 #end
-#end
-#if ($property.longDescription)
-         <description><![CDATA[$property.longDescription]]></description>
-#else
-         <description><![CDATA[]]></description>
 #end
       </attribute>
 #end
@@ -196,18 +216,32 @@ $baseContent
 #foreach( $tag in $tagList )
 #if ($modelIds.contains($tag.modelId))
    <tag>
+      <description><![CDATA[$tag.longDescription]]></description>
       <name>$utils.getTagName($tag.name)</name>
       <tag-class>$tag.className</tag-class>
       <body-content>$tag.bodyContent</body-content>
-      <description><![CDATA[$tag.longDescription]]></description>
 #set ($attributeList = ${tag.attributeList})
 #foreach( $attribute in $attributeList )
+#if (!$attribute.isFaceletsOnly())
       <attribute>
+#if ($attribute.longDescription)
+         <description><![CDATA[$attribute.longDescription]]></description>
+#else
+         <description><![CDATA[]]></description>
+#end
          <name>$attribute.name</name>
          <required>$attribute.isRequired()</required>
 #set ($type = $utils.getClassFromFullClass($attribute.className))
-#if ($type == "ValueExpression")
-         <deferred-value></deferred-value>
+#if ($type == "MethodExpression")
+        <deferred-method>
+          <method-signature>${attribute.deferredMethodSignature}</method-signature>
+        </deferred-method>
+#elseif ($type == "ValueExpression")
+         <deferred-value>
+#if($attribute.deferredValueType)
+             <type>$attribute.deferredValueType</type>
+#end
+         </deferred-value>
 #else
          <rtexprvalue>$attribute.isRtexprvalue()</rtexprvalue>
 #if ($attribute.className)         
@@ -216,12 +250,8 @@ $baseContent
          <type>java.lang.String</type>
 #end
 #end
-#if ($property.longDescription)
-         <description><![CDATA[$property.longDescription]]></description>
-#else
-         <description><![CDATA[]]></description>
-#end
       </attribute>
+#end
 #end
    </tag>
 #end
