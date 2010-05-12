@@ -183,7 +183,12 @@ $innersource
 #end
         }
 #if ($defaultValue)
+#if ($defaultValue.startsWith("Integer.valueOf("))
+## replace Integer.valueOf with new Integer in jdk 1.4
+        return new Integer($defaultValue.substring(16);
+#else
         return $defaultValue; 
+#end
 #elseif ($utils.isPrimitiveClass($type))
         return $utils.primitiveDefaultValue($type);
 #else       
