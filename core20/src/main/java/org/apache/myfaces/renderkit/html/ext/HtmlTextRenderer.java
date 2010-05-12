@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -295,6 +296,10 @@ public class HtmlTextRenderer
             return;
         }
         
+        if (!(component instanceof UIInput) && (component instanceof UIOutput))
+        {
+            HtmlRendererUtils.decodeClientBehaviors(facesContext, component);
+        }
         super.decode(facesContext, component);        
     }
 }
