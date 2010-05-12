@@ -43,7 +43,8 @@
                     <h:outputLabel for="lastName" value="Last name:"/>
                     <h:inputText id="lastName" value="#{subFormBean.lastName}" required="true"/>
                     <h:outputText value="Partial condition"/>
-                    <h:selectBooleanCheckbox value="false"                                              
+                    <h:selectBooleanCheckbox value="false"
+                                             onclick="this.blur();"
                                              onchange="personForm_submit();"/>                   
                 </h:panelGrid>
                 <h:commandButton value="Show current values of Person"/>
@@ -57,7 +58,8 @@
                     <h:outputLabel for="lastName" value="Make:"/>
                     <h:inputText id="lastName" value="#{subFormBean.make}" required="true"/>
                     <h:outputText value="Partial condition"/>
-                    <h:selectBooleanCheckbox value="false"                                              
+                    <h:selectBooleanCheckbox value="false"
+                                             onclick="this.blur();"
                                              onchange="vehicleForm_submit();"/>  
                 </h:panelGrid>
                 <h:commandButton value="Show current values of Vehicle"/>
