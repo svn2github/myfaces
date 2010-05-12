@@ -29,7 +29,7 @@
 <body>
  <ui:composition template="/META-INF/templates/template.xhtml">
    <ui:define name="body">
-    <h:panelGroup id="body">
+    <h:panelGroup id="idbody">
         <h:form id="selection">
                 <h:selectOneMenu id="selone_menu_panel" value="#{stackState.selected}" styleClass="selectOneMenu" onchange="document.forms['selection'].submit();">
                     <f:selectItem itemValue="treePanel" itemLabel="#{example_messages['treePanel']}" />
