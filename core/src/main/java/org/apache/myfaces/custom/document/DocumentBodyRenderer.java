@@ -19,9 +19,13 @@
 package org.apache.myfaces.custom.document;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
@@ -63,7 +67,15 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
     protected void writeBeforeEnd(FacesContext facesContext) throws IOException
     {
         super.writeBeforeEnd(facesContext);
-           ExtensionsPhaseListener.writeCodeBeforeBodyEnd(facesContext);
+        
+        AddResource addResource = AddResourceFactory.getInstance(facesContext);
+        if (!addResource.requiresBuffer())
+        {
+            // This code is rendered only if this request don't require
+            // buffering, because when it is buffered, the buffer is responsible
+            // of render it.
+            ExtensionsPhaseListener.writeCodeBeforeBodyEnd(facesContext);
+        }
 
         // fake string, so the ExtensionsPhaseListener will not create the javascript again
         facesContext.getExternalContext().getRequestMap().put(ExtensionsPhaseListener.ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "");
