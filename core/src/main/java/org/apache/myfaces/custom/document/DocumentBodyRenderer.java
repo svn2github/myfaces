@@ -75,9 +75,9 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
             // buffering, because when it is buffered, the buffer is responsible
             // of render it.
             ExtensionsPhaseListener.writeCodeBeforeBodyEnd(facesContext);
-        }
 
-        // fake string, so the ExtensionsPhaseListener will not create the javascript again
-        facesContext.getExternalContext().getRequestMap().put(ExtensionsPhaseListener.ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "");
+            // fake string, so the ExtensionsPhaseListener will not create the javascript again
+            facesContext.getExternalContext().getRequestMap().put(ExtensionsPhaseListener.ORG_APACHE_MYFACES_MY_FACES_JAVASCRIPT, "");
+        }
     }
 }
