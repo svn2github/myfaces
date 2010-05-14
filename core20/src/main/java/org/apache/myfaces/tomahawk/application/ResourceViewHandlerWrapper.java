@@ -28,6 +28,15 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.custom.autoscroll.AutoscrollBehaviorTagHandler;
+import org.apache.myfaces.custom.autoscroll.AutoscrollBodyScript;
+import org.apache.myfaces.custom.autoscroll.AutoscrollHiddenField;
+import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
+
 public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
 {
     private ViewHandler _delegate;
@@ -48,6 +57,35 @@ public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
     public void renderView(FacesContext context, UIViewRoot viewToRender)
             throws IOException, FacesException
     {
+        if (MyfacesConfig.getCurrentInstance(context.getExternalContext()).isAutoScroll() ||
+            viewToRender.getAttributes().containsKey(AutoscrollBehaviorTagHandler.AUTOSCROLL_TAG_ON_PAGE))
+        {
+            AddResource addResource = AddResourceFactory.getInstance(context);
+
+            if (!addResource.requiresBuffer())
+            {
+                //If the response is buffered, addResource instance takes
+                //the responsability of render this script.
+                AutoscrollBodyScript autoscrollBodyScript = (AutoscrollBodyScript) 
+                    context.getApplication().createComponent(context, 
+                        AutoscrollBodyScript.COMPONENT_TYPE,
+                        AutoscrollBodyScript.DEFAULT_RENDERER_TYPE);
+                autoscrollBodyScript.setTransient(true);
+                autoscrollBodyScript.getAttributes().put(
+                        JSFAttr.TARGET_ATTR, 
+                        TomahawkResourceUtils.BODY_LOCATION);
+                viewToRender.addComponentResource(context, autoscrollBodyScript);
+            }
+            
+            AutoscrollHiddenField autoscrollHiddenField = (AutoscrollHiddenField) context.getApplication().
+                createComponent(context, 
+                        AutoscrollHiddenField.COMPONENT_TYPE,
+                        AutoscrollHiddenField.DEFAULT_RENDERER_TYPE);
+            autoscrollHiddenField.setTransient(true);
+            autoscrollHiddenField.getAttributes().put(JSFAttr.TARGET_ATTR, TomahawkResourceUtils.FORM_LOCATION);
+            viewToRender.addComponentResource(context, autoscrollHiddenField);
+        }
+        
         _publishPreRenderViewAddResourceEvent(context, viewToRender);
         super.renderView(context, viewToRender);
     }

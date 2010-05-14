@@ -23,18 +23,22 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
+
 public class TomahawkResourceUtils
 {
-    public static final String DEFAULT_SCRIPT_RENDERER_TYPE = "javax.faces.resource.Script";
-    public static final String DEFAULT_STYLESHEET_RENDERER_TYPE = "javax.faces.resource.Stylesheet";
-    public static final String HEAD_LOCATION = "head"; 
+    public static final String HEAD_LOCATION = "head";
+    public static final String BODY_LOCATION = HTML.BODY_ELEM;
+    public static final String FORM_LOCATION = HTML.FORM_ELEM;
     
     public static void addOutputScriptResource(final FacesContext facesContext, final String libraryName, final String resourceName)
     {
         UIOutput outputScript = (UIOutput) facesContext.getApplication().
-            createComponent(facesContext, "javax.faces.Output", DEFAULT_SCRIPT_RENDERER_TYPE);
-        outputScript.getAttributes().put("library", libraryName);
-        outputScript.getAttributes().put("name", resourceName);
+            createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_SCRIPT_RENDERER_TYPE);
+        outputScript.getAttributes().put(JSFAttr.LIBRARY_ATTR, libraryName);
+        outputScript.getAttributes().put(JSFAttr.NAME_ATTR, resourceName);
         outputScript.setTransient(true);
         outputScript.setId(facesContext.getViewRoot().createUniqueId());
         facesContext.getViewRoot().addComponentResource(facesContext, outputScript);
@@ -43,9 +47,9 @@ public class TomahawkResourceUtils
     public static void addOutputStylesheetResource(final FacesContext facesContext, final String libraryName, final String resourceName)
     {
         UIOutput outputStylesheet = (UIOutput) facesContext.getApplication().
-            createComponent(facesContext, "javax.faces.Output", DEFAULT_STYLESHEET_RENDERER_TYPE);
-        outputStylesheet.getAttributes().put("library", libraryName);
-        outputStylesheet.getAttributes().put("name", resourceName);
+            createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_STYLESHEET_RENDERER_TYPE);
+        outputStylesheet.getAttributes().put(JSFAttr.LIBRARY_ATTR, libraryName);
+        outputStylesheet.getAttributes().put(JSFAttr.NAME_ATTR, resourceName);
         outputStylesheet.setTransient(true);
         outputStylesheet.setId(facesContext.getViewRoot().createUniqueId());
         facesContext.getViewRoot().addComponentResource(facesContext, outputStylesheet);
@@ -54,9 +58,9 @@ public class TomahawkResourceUtils
     public static void addInlineOutputStylesheetResource(final FacesContext facesContext, Object value)
     {
         UIOutput stylesheet = (UIOutput) facesContext.getApplication().createComponent(facesContext, 
-                "javax.faces.Output", "javax.faces.Text");
+                ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.JAVAX_FACES_TEXT_RENDERER_TYPE);
         UIOutput outputStylesheet = (UIOutput) facesContext.getApplication().
-            createComponent(facesContext, "javax.faces.Output", DEFAULT_STYLESHEET_RENDERER_TYPE);
+            createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_STYLESHEET_RENDERER_TYPE);
         stylesheet.setValue( value);
         stylesheet.setTransient(true);
         stylesheet.setId(facesContext.getViewRoot().createUniqueId());
@@ -69,12 +73,12 @@ public class TomahawkResourceUtils
     public static void addInlineOutputScriptResource(final FacesContext facesContext, String target, Object value)
     {
         UIOutput script = (UIOutput) facesContext.getApplication().createComponent(facesContext, 
-                "javax.faces.Output", "javax.faces.Text");
+                ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.JAVAX_FACES_TEXT_RENDERER_TYPE);
         UIOutput outputScript = (UIOutput) facesContext.getApplication().
-            createComponent(facesContext, "javax.faces.Output", DEFAULT_SCRIPT_RENDERER_TYPE);
+            createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_SCRIPT_RENDERER_TYPE);
         if (target != null)
         {
-            script.getAttributes().put("target", target);
+            script.getAttributes().put(JSFAttr.TARGET_ATTR, target);
         }
         script.setValue( value);
         script.setTransient(true);
