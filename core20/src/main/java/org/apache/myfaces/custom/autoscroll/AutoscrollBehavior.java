@@ -34,7 +34,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @author Leonardo Uribe (latest modification by $Author: lu4242 $)
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
  */
-@JSFBehavior(name="t:autoscroll",bodyContent="empty")
+@JSFBehavior(name="t:autoScroll",bodyContent="empty")
 public class AutoscrollBehavior extends ClientBehaviorBase
 {
 

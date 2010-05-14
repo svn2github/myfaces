@@ -33,7 +33,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFFacelet
  * @author Leonardo Uribe (latest modification by $Author: lu4242 $)
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
  */
-@JSFFaceletTag(name="t:autoscroll", behaviorClass="org.apache.myfaces.custom.autoscroll.AutoscrollBehavior")
+@JSFFaceletTag(name="t:autoScroll", behaviorClass="org.apache.myfaces.custom.autoscroll.AutoscrollBehavior")
 public class AutoscrollBehaviorTagHandler extends BehaviorHandler
 {
 
