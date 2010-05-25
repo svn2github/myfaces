@@ -49,6 +49,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
 import org.apache.myfaces.tomahawk.util.Constants;
@@ -117,6 +118,12 @@ public class HtmlDateRenderer extends HtmlRenderer
         String type = inputDate.getType();
         boolean ampm = inputDate.isAmpm();
         String clientId = uiComponent.getClientId(facesContext);
+        
+        Map<String, List<ClientBehavior>> behaviors = inputDate.getClientBehaviors();
+        if (!behaviors.isEmpty())
+        {
+            ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+        }        
         
         if (null == inputDate.getConverter())
         {
@@ -543,6 +550,8 @@ public class HtmlDateRenderer extends HtmlRenderer
             }
             inputDate.setSubmittedValue( userData );
         }
+        
+        HtmlRendererUtils.decodeClientBehaviors(facesContext, inputDate);
     }
     
     public Object getConvertedValue(FacesContext context, UIComponent uiComponent, Object submittedValue) throws ConverterException {

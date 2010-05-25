@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -33,6 +34,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
 /**
  * @JSFRenderer
@@ -57,6 +59,14 @@ public class HtmlLayoutRenderer
         return true;
     }
 
+    @Override
+    public void decode(FacesContext context, UIComponent component)
+    {
+        super.decode(context, component);
+        
+        HtmlRendererUtils.decodeClientBehaviors(context, component);
+    }
+
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
     }
@@ -71,6 +81,16 @@ public class HtmlLayoutRenderer
 
         HtmlPanelLayout panelLayout = (HtmlPanelLayout)component;
 
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (component instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+            }
+        }
+        
         String layout = panelLayout.getLayout();
         if (layout == null || layout.equals(CLASSIC_LAYOUT))
         {

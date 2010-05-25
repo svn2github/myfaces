@@ -24,15 +24,13 @@ import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-
 import org.apache.myfaces.custom.htmlTag.HtmlTagRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
 /**
  * @JSFRenderer
@@ -47,6 +45,14 @@ public class DivRenderer extends HtmlTagRenderer
 {
     public static final String RENDERER_TYPE = "org.apache.myfaces.HtmlTagRenderer";
 
+    @Override
+    public void decode(FacesContext context, UIComponent component)
+    {
+        super.decode(context, component);
+        
+        HtmlRendererUtils.decodeClientBehaviors(context, component);
+    }
+
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException
     {
@@ -55,9 +61,14 @@ public class DivRenderer extends HtmlTagRenderer
             throw new NullPointerException();
         }
         
-        super.encodeBegin(context, component);
-        
         Div div = (Div) component;
+        Map<String, List<ClientBehavior>> behaviors = div.getClientBehaviors();
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            ResourceUtils.renderDefaultJsfJsInlineIfNecessary(context, context.getResponseWriter());
+        }
+
+        super.encodeBegin(context, component);
 
         if (div.isRendered())
         {
@@ -65,9 +76,6 @@ public class DivRenderer extends HtmlTagRenderer
             //Previously, style and styleClass was rendered,
             //so on div renderer we need to add event and universal
             //attributes only
-            
-            Map<String, List<ClientBehavior>> behaviors = div.getClientBehaviors();
-            
             if (behaviors != null && !behaviors.isEmpty())
             {
                 HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.UNIVERSAL_ATTRIBUTES_WITHOUT_STYLE);

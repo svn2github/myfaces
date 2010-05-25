@@ -37,6 +37,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -63,6 +64,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
 import org.apache.myfaces.tomahawk.util.Constants;
@@ -140,9 +142,15 @@ public class HtmlCalendarRenderer
         HtmlInputCalendar inputCalendar = (HtmlInputCalendar) component;
 
         Locale currentLocale = facesContext.getViewRoot().getLocale();
-        log.debug("current locale:" + currentLocale.toString());
-
         Date value;
+        
+        Map<String, List<ClientBehavior>> behaviors = inputCalendar.getClientBehaviors();
+        if (!behaviors.isEmpty())
+        {
+            ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+        }
+        
+        log.debug("current locale:" + currentLocale.toString());
 
         try
         {
@@ -1203,6 +1211,7 @@ public class HtmlCalendarRenderer
                 RendererUtils.getPathToComponent(component));
         }
 
+        HtmlRendererUtils.decodeClientBehaviors(facesContext, component);
     }
     
     protected static boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)

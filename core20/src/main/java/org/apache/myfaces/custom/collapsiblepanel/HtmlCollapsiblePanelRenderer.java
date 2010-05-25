@@ -39,6 +39,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
 /**
  * @JSFRenderer
@@ -115,6 +116,10 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         if (uiComponent instanceof ClientBehaviorHolder)
         {
             behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+            }
         }
         
         if (behaviors != null && !behaviors.isEmpty())
@@ -201,6 +206,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
             if (reqValue != null)
                 collapsiblePanel.setSubmittedValue("" + collapsiblePanel.isCurrentlyCollapsed());
         }
+        
+        HtmlRendererUtils.decodeClientBehaviors(facesContext, uiComponent);
     }
 
     protected HtmlCommandLink getLink(FacesContext facesContext, HtmlCollapsiblePanel collapsiblePanel)

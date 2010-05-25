@@ -23,6 +23,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
@@ -54,6 +55,14 @@ public class HtmlListRenderer
     public static final String LAYOUT_OL = "orderedList";
     public static final String LAYOUT_GRID = "grid";
 
+    @Override
+    public void decode(FacesContext context, UIComponent component)
+    {
+        super.decode(context, component);
+        
+        HtmlRendererUtils.decodeClientBehaviors(context, component);
+    }
+
     public boolean getRendersChildren()
     {
         return true;
@@ -69,8 +78,12 @@ public class HtmlListRenderer
         if (uiComponent instanceof ClientBehaviorHolder)
         {
             behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+            }
         }
-                
+        
         if (layout != null)
         {
             if (! layout.equals(LAYOUT_SIMPLE)) {

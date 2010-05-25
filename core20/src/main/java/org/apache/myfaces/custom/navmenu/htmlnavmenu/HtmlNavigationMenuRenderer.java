@@ -30,6 +30,7 @@ import javax.faces.component.UIOutput;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
@@ -47,6 +48,7 @@ import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
 import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
@@ -100,6 +102,10 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             //HtmlCommandNavigation
             super.decode(facesContext, component);
         }
+        else
+        {
+            HtmlRendererUtils.decodeClientBehaviors(facesContext, component);
+        }
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
@@ -121,6 +127,18 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
             //HtmlCommandNavigationItem
             super.encodeEnd(facesContext, component);
             return;
+        }
+        else
+        {
+            Map<String, List<ClientBehavior>> behaviors = null;
+            if (component instanceof ClientBehaviorHolder)
+            {
+                behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+                if (!behaviors.isEmpty())
+                {
+                    ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+                }
+            }
         }
         RendererUtils.checkParamValidity(facesContext, component, HtmlPanelNavigationMenu.class);
         HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu) component;

@@ -35,6 +35,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
 
 /**
@@ -49,13 +50,30 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 public class HtmlGroupRenderer
     extends HtmlGroupRendererBase
 {
-    
+
+    @Override
+    public void decode(FacesContext context, UIComponent component)
+    {
+        super.decode(context, component);
+        
+        HtmlRendererUtils.decodeClientBehaviors(context, component);
+    }
+
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean span = false;
         String element = getHtmlElement(component);
         
         Map<String, List<ClientBehavior>> behaviors = null;
+        if (component instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(context, writer);
+            }
+        }
+
         if (component instanceof ClientBehaviorHolder)
         {
             behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
