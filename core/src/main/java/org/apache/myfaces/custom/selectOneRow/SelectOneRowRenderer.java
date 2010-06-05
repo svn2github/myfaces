@@ -18,18 +18,20 @@
  */
 package org.apache.myfaces.custom.selectOneRow;
 
-import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Map;
+import javax.faces.el.ValueBinding;
+
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * 
@@ -99,7 +101,7 @@ public class SelectOneRowRenderer extends HtmlRenderer
         int currentRowIndex = getCurrentRowIndex(component);
 
         return (value != null)
-                && (currentRowIndex == ((Long) value).intValue());
+                && (currentRowIndex == ((Number) value).intValue());
 
     }
 
@@ -144,11 +146,31 @@ public class SelectOneRowRenderer extends HtmlRenderer
             String clientId = row.getClientId(context);
             if (clientId.equals(postedValue))
             {
-
                 String[] postedValueArray = postedValue.split(":");
                 String rowIndex = postedValueArray[postedValueArray.length - 2];
 
-                Long newValue = Long.valueOf(rowIndex);
+                ValueBinding vb = row.getValueBinding("value");
+                Class type = vb.getType(context);
+                if (type == null)
+                {
+                    type = (vb.getValue(context) != null) ? vb.getValue(context).getClass() : null;
+                }
+                Object newValue = null;
+                if (type != null)
+                {
+                    if (type.isAssignableFrom(Long.class))
+                    {
+                        newValue = Long.valueOf(rowIndex);
+                    }
+                    else
+                    {
+                        newValue = Integer.valueOf(rowIndex);
+                    }
+                }
+                else
+                {
+                    newValue = Integer.valueOf(rowIndex);
+                }
                 //the value to go in conversion&validation
                 row.setSubmittedValue(newValue);
                 row.setValid(true);
