@@ -42,10 +42,12 @@ public abstract class AbstractSelectOneRow extends UIInput
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.SelectOneRow";
 
     /**
-     * The Name of the radio-button-group to use
+     * The Name of the radio-button-group to use. If EL expressions are used,
+     * note that every time this is evaluated should lead to the same value
+     * in the scope used, that means the UIData instance used, otherwise
+     * it could lead to unwanted side effects.
      * 
      * @JSFProperty
-     *   literalOnly = "true"
      */
     public abstract String getGroupName();
     
