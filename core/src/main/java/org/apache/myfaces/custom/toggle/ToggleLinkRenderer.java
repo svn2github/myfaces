@@ -195,6 +195,6 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     private boolean isDisabled(FacesContext facesContext, ToggleLink link) {
         TogglePanel panel = getParentTogglePanel(facesContext, link);
 
-        return panel.isDisabled() || link.isDisabled() || UserRoleUtils.isEnabledOnUserRole(link);
+        return panel.isDisabled() || link.isDisabled() || !UserRoleUtils.isEnabledOnUserRole(link);
     }
 }
