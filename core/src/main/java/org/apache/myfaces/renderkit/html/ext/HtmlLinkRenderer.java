@@ -95,6 +95,15 @@ public class HtmlLinkRenderer
         }
     }
 
+    protected void renderOutputLinkEnd(FacesContext facesContext,
+            UIComponent component) throws IOException
+    {
+        if (UserRoleUtils.isEnabledOnUserRole(component))
+        {
+            super.renderOutputLinkEnd(facesContext, component);
+        }
+    }
+
     protected void renderCommandLinkEnd(FacesContext facesContext, UIComponent component) throws IOException
     {
         //if link is disabled we render the nested components without the anchor
