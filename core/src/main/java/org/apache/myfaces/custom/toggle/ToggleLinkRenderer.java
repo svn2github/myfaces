@@ -51,33 +51,39 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     protected void renderOutputLinkStart(FacesContext facesContext,
             UIOutput output) throws IOException
     {
-        if (UserRoleUtils.isEnabledOnUserRole(output))
-        {        
-            ResponseWriter writer = facesContext.getResponseWriter();
-        
-            String clientId = output.getClientId(facesContext);
+        ResponseWriter writer = facesContext.getResponseWriter();
     
-            //write anchor
-            writer.startElement(HTML.ANCHOR_ELEM, output);
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
-            writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
-            writer.writeURIAttribute(HTML.HREF_ATTR, "javascript:void(0);", null);
-            
-            HtmlRendererUtils
-                    .renderHTMLAttributes(
-                            writer,
-                            output,
-                            org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.ANCHOR_PASSTHROUGH_ATTRIBUTES_WITHOUT_ONCLICK_WITHOUT_STYLE);
-            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_ATTR, HTML.STYLE_ATTR,
-                    output.getAttributes().get(HTML.STYLE_ATTR));
-            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_CLASS_ATTR, HTML.STYLE_CLASS_ATTR,
-                    output.getAttributes().get(HTML.STYLE_CLASS_ATTR));
-            
-           HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, 
-                    buildOnclickToggleFunction(facesContext,output));
-           
-            writer.flush();
-        }
+        String clientId = output.getClientId(facesContext);
+
+        //write anchor
+        writer.startElement(HTML.ANCHOR_ELEM, output);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+        writer.writeURIAttribute(HTML.HREF_ATTR, "javascript:void(0);", null);
+        
+        HtmlRendererUtils
+                .renderHTMLAttributes(
+                        writer,
+                        output,
+                        org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.ANCHOR_PASSTHROUGH_ATTRIBUTES_WITHOUT_ONCLICK_WITHOUT_STYLE);
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_ATTR, HTML.STYLE_ATTR,
+                output.getAttributes().get(HTML.STYLE_ATTR));
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.STYLE_CLASS_ATTR, HTML.STYLE_CLASS_ATTR,
+                output.getAttributes().get(HTML.STYLE_CLASS_ATTR));
+        
+       HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, 
+                buildOnclickToggleFunction(facesContext,output));
+       
+        writer.flush();
+    }
+    
+    protected void renderOutputLinkEnd(FacesContext facesContext, UIComponent component)
+        throws IOException
+    {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        // force separate end tag
+        writer.writeText("", null);
+        writer.endElement(HTML.ANCHOR_ELEM);
     }
     
     private String buildOnclickToggleFunction(FacesContext facesContext,
@@ -189,6 +195,6 @@ public class ToggleLinkRenderer extends HtmlLinkRenderer {
     private boolean isDisabled(FacesContext facesContext, ToggleLink link) {
         TogglePanel panel = getParentTogglePanel(facesContext, link);
 
-        return panel.isDisabled() || link.isDisabled();
+        return panel.isDisabled() || link.isDisabled() || UserRoleUtils.isEnabledOnUserRole(link);
     }
 }
