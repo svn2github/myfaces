@@ -564,26 +564,26 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
         
         Map<String, List<ClientBehavior>> clientBehaviors = ((ClientBehaviorHolder) uiData).getClientBehaviors();
 
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_CLICK, ROW_ONCLICK_ATTR, HTML.ONCLICK_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_DBLCLICK, ROW_ONDBLCLICK_ATTR, HTML.ONDBLCLICK_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_KEYDOWN, ROW_ONKEYDOWN_ATTR, HTML.ONKEYDOWN_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_KEYPRESS, ROW_ONKEYPRESS_ATTR, HTML.ONKEYPRESS_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_KEYUP, ROW_ONKEYUP_ATTR, HTML.ONKEYUP_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_MOUSEDOWN, ROW_ONMOUSEDOWN_ATTR, HTML.ONMOUSEDOWN_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_MOUSEMOVE, ROW_ONMOUSEMOVE_ATTR, HTML.ONMOUSEMOVE_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_MOUSEOUT, ROW_ONMOUSEOUT_ATTR, HTML.ONMOUSEOUT_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_MOUSEOVER, ROW_ONMOUSEOVER_ATTR, HTML.ONMOUSEOVER_ATTR);
-        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, uiData, clientBehaviors,
-                ROW_MOUSEUP, ROW_ONMOUSEUP_ATTR, HTML.ONMOUSEUP_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONCLICK_ATTR, uiData,
+                ROW_CLICK, clientBehaviors, HTML.ONCLICK_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONDBLCLICK_ATTR, uiData,
+                ROW_DBLCLICK, clientBehaviors, HTML.ONDBLCLICK_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONKEYDOWN_ATTR, uiData,
+                ROW_KEYDOWN, clientBehaviors, HTML.ONKEYDOWN_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONKEYPRESS_ATTR, uiData,
+                ROW_KEYPRESS, clientBehaviors, HTML.ONKEYPRESS_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONKEYUP_ATTR, uiData,
+                ROW_KEYUP, clientBehaviors, HTML.ONKEYUP_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONMOUSEDOWN_ATTR, uiData,
+                ROW_MOUSEDOWN, clientBehaviors, HTML.ONMOUSEDOWN_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONMOUSEMOVE_ATTR, uiData,
+                ROW_MOUSEMOVE, clientBehaviors, HTML.ONMOUSEMOVE_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONMOUSEOUT_ATTR, uiData,
+                ROW_MOUSEOUT, clientBehaviors, HTML.ONMOUSEOUT_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONMOUSEOVER_ATTR, uiData,
+                ROW_MOUSEOVER, clientBehaviors, HTML.ONMOUSEOVER_ATTR);
+        HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONMOUSEUP_ATTR, uiData,
+                ROW_MOUSEUP, clientBehaviors, HTML.ONMOUSEUP_ATTR);
         
         /*
         renderRowAttribute(writer, HTML.ONCLICK_ATTR, table.getRowOnClick());

@@ -74,11 +74,6 @@ public class HtmlGroupRenderer
             }
         }
 
-        if (component instanceof ClientBehaviorHolder)
-        {
-            behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
-        }
-        
         if (behaviors != null && !behaviors.isEmpty())
         {
             //Render element and id to make javascript work
