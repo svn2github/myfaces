@@ -120,6 +120,13 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent,
                                          HtmlSelectManyPicklist.class);
+        
+        // check for displayValueOnly
+        if(HtmlRendererUtils.isDisplayValueOnly(uiComponent))
+        {
+            HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, uiComponent);
+            return;
+        }
 
         HtmlSelectManyPicklist picklist = (HtmlSelectManyPicklist) uiComponent;
 
