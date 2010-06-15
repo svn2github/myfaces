@@ -34,6 +34,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource2;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 /**
@@ -325,7 +326,14 @@ public class ExtensionsFilter implements Filter {
         
         try
         {
-            addResource.responseStarted();
+            if (addResource instanceof AddResource2)
+            {
+                ((AddResource2)addResource).responseStarted(_servletContext, extendedRequest);
+            }
+            else
+            {
+                addResource.responseStarted();
+            }
             
             //This case is necessary when is used            
             //org.apache.myfaces.renderkit.html.util.DefaultAddResource

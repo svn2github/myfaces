@@ -22,16 +22,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.FacesException;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.ServletContext;
@@ -42,7 +37,9 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.util.StreamingThreadManager.HeaderInfoEntry;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource2;
 import org.apache.myfaces.renderkit.html.util.MyFacesResourceHandler;
 import org.apache.myfaces.renderkit.html.util.ResourceHandler;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
@@ -50,6 +47,8 @@ import org.apache.myfaces.renderkit.html.util.ResourcePosition;
 import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
+import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
+import org.apache.myfaces.webapp.filter.PortletUtils;
 
 /**
  * This is a utility class to render link to resources used by custom components.
@@ -123,12 +122,12 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
  * @author Mario Ivankovits (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class StreamingAddResource implements AddResource
+public class StreamingAddResource extends AddResource2
 {
     /**
      * central place where all request store their "to be added" stylesheets
      */
-    private final static Map headerInfos = new HashMap();
+    //private final static Map headerInfos = new HashMap();
 
     /**
      * request counter
@@ -161,7 +160,7 @@ public class StreamingAddResource implements AddResource
 
     protected String _contextPath;
     private String resourceVirtualPath;
-
+/*
     public static class HeaderInfoEntry
     {
         private final long destroyTime = System.currentTimeMillis() + (1000 * 60); // one minute;
@@ -267,11 +266,12 @@ public class StreamingAddResource implements AddResource
         cleanupThread.setDaemon(true);
         cleanupThread.start();
     }
+    */
 
     public StreamingAddResource()
     {
     }
-
+    /*
     public static HeaderInfoEntry getHeaderInfo(Long requestId)
     {
         synchronized (headerInfos)
@@ -286,7 +286,7 @@ public class StreamingAddResource implements AddResource
         {
             headerInfos.remove(requestId);
         }
-    }
+    }*/
 
     // Methods to add resources
 
@@ -573,7 +573,7 @@ public class StreamingAddResource implements AddResource
     {
         uri = getAbsoluteUri(context, uri);
 
-        addStyleSheet(getStyleInstance(context, uri));
+        addStyleSheet(context, getStyleInstance(context, uri));
     }
 
     protected String getAbsoluteUri(FacesContext context, String uri)
@@ -594,12 +594,13 @@ public class StreamingAddResource implements AddResource
         return sb.toString();
     }
 
-    private void addStyleSheet(StreamablePositionedInfo styleInstance)
+    private void addStyleSheet(FacesContext context, StreamablePositionedInfo styleInstance)
     {
         if (checkAlreadyAdded(styleInstance))
         {
             return;
         }
+        StreamingThreadManager manager = (StreamingThreadManager) context.getExternalContext().getApplicationMap().get(StreamingThreadManager.KEY);
         getHeaderInfoEntry().addInfo(styleInstance);
     }
 
@@ -611,7 +612,7 @@ public class StreamingAddResource implements AddResource
                               ResourceHandler resourceHandler)
     {
         validateResourceHandler(resourceHandler);
-        addStyleSheet(getStyleInstance(context, resourceHandler));
+        addStyleSheet(context, getStyleInstance(context, resourceHandler));
     }
 
     /**
@@ -619,7 +620,7 @@ public class StreamingAddResource implements AddResource
      */
     public void addInlineStyleAtPosition(FacesContext context, ResourcePosition position, String inlineStyle)
     {
-        addStyleSheet(getInlineStyleInstance(inlineStyle));
+        addStyleSheet(context, getInlineStyleInstance(inlineStyle));
     }
 
     /**
@@ -1187,7 +1188,7 @@ public class StreamingAddResource implements AddResource
         return false;
     }
 
-    protected HeaderInfoEntry getHeaderInfoEntry()
+    protected StreamingThreadManager.HeaderInfoEntry getHeaderInfoEntry()
     {
         if (headerInfoEntry == null)
         {
@@ -1199,6 +1200,7 @@ public class StreamingAddResource implements AddResource
 
     public void responseStarted()
     {
+        /*
         synchronized(StreamingAddResource.class)
         {
             REQUEST_ID_COUNTER++;
@@ -1208,12 +1210,28 @@ public class StreamingAddResource implements AddResource
         synchronized (headerInfos)
         {
             headerInfos.put(requestId, headerInfoEntry);
-        }
+        }*/
     }
 
     public void responseFinished()
     {
         getHeaderInfoEntry().setRequestDone();
+    }
+    
+    public void responseStarted(Object context, Object request)
+    {
+        if(ExternalContextUtils.getRequestType(context, request).isPortlet())
+        {
+            StreamingThreadManager manager = (StreamingThreadManager) PortletUtils.getAttribute(context, StreamingThreadManager.KEY);
+            requestId = manager.putNewHeaderInfoEntry();
+            headerInfoEntry = manager.getHeaderInfo(requestId);
+        }
+        else
+        {
+            StreamingThreadManager manager = (StreamingThreadManager) ((ServletContext)context).getAttribute(StreamingThreadManager.KEY);
+            requestId = manager.putNewHeaderInfoEntry();
+            headerInfoEntry = manager.getHeaderInfo(requestId);
+        }
     }
 
     public boolean hasHeaderBeginInfos()

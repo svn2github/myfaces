@@ -31,11 +31,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.myfaces.renderkit.html.util.AddResource;
+import org.apache.myfaces.renderkit.html.util.AddResource2;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
 import org.apache.myfaces.webapp.filter.portlet.PortletExternalContextWrapper;
@@ -136,7 +138,15 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             }
             
             AddResource addResource= AddResourceFactory.getInstance(this);
-            addResource.responseStarted();
+            
+            if (addResource instanceof AddResource2)
+            {
+                ((AddResource2)addResource).responseStarted(delegate.getExternalContext().getContext(), extendedRequest);
+            }
+            else
+            {
+                addResource.responseStarted();
+            }
 
             if (addResource.requiresBuffer())
             {
@@ -177,7 +187,15 @@ public class TomahawkFacesContextWrapper extends FacesContext {
             }
 
             AddResource addResource= AddResourceFactory.getInstance(this);
-            addResource.responseStarted();
+            
+            if (addResource instanceof AddResource2)
+            {
+                ((AddResource2)addResource).responseStarted(delegate.getExternalContext().getContext(), extendedRequest);
+            }
+            else
+            {
+                addResource.responseStarted();
+            }
 
             if (addResource.requiresBuffer() && extensionsResponseWrapper != null)
             {

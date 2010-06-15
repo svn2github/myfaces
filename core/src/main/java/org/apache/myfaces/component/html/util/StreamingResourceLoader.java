@@ -70,7 +70,9 @@ public class StreamingResourceLoader implements ResourceLoader
         int pos = resourceUri.indexOf("/");
         Long requestId = new Long(Long.parseLong(resourceUri.substring(0, pos), 10));
         
-        StreamingAddResource.HeaderInfoEntry headerInfoEntry = StreamingAddResource.getHeaderInfo(requestId);
+        StreamingThreadManager manager = (StreamingThreadManager) context.getAttribute(StreamingThreadManager.KEY);
+        
+        StreamingThreadManager.HeaderInfoEntry headerInfoEntry = manager.getHeaderInfo(requestId);
         if (headerInfoEntry == null)
         {
             log.warn("No streamable resources found for request: " + requestId + " resourceUri: " + resourceUri);
@@ -106,7 +108,7 @@ public class StreamingResourceLoader implements ResourceLoader
         }
         finally
         {
-            StreamingAddResource.removeHeaderInfo(requestId);
+            manager.removeHeaderInfo(requestId);
         }
     }
 

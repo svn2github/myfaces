@@ -82,4 +82,16 @@ public class PortletUtils
         PortletContext portletContext = (PortletContext) context;
         return portletContext.getInitParameter(paramName);
     }
+    
+    public static Object getAttribute(Object context, String key)
+    {
+        PortletContext portletContext = (PortletContext) context;
+        return portletContext.getAttribute(key);
+    }
+    
+    public static void setAttribute(Object context, String key, Object value)
+    {
+        PortletContext portletContext = (PortletContext) context;
+        portletContext.setAttribute(key, value);
+    }
 }
