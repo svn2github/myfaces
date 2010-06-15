@@ -238,12 +238,17 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         }
         writeScrollerRowStart(writer, scroller);
 
+        boolean startActive = (scroller.getPageIndex() != 1);
+
+        boolean endActive = (scroller.getPageIndex() != scroller.getPageCount());
+        
         UIComponent facetComp = scroller.getFirst();
         if (facetComp != null)
         {
             writeScrollerElementStart(writer, scroller);
             writeStyleClass("firstStyleClass", scroller.getFirstStyleClass(), writer);
-            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FIRST);
+            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FIRST, startActive,
+                    scroller.isRenderFacetLinksIfFirstPage(), scroller.isDisableFacetLinksIfFirstPage());
             writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getFastRewind();
@@ -251,7 +256,8 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         {
             writeScrollerElementStart(writer, scroller);
             writeStyleClass("fastrStyleClass", scroller.getFastrStyleClass(), writer);
-            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FAST_REWIND);
+            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FAST_REWIND, startActive,
+                    scroller.isRenderFacetLinksIfFirstPage(), scroller.isDisableFacetLinksIfFirstPage());
             writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getPrevious();
@@ -259,7 +265,8 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         {
             writeScrollerElementStart(writer, scroller);
             writeStyleClass("previous", scroller.getPreviousStyleClass(), writer);
-            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_PREVIOUS);
+            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_PREVIOUS, startActive,
+                    scroller.isRenderFacetLinksIfFirstPage(), scroller.isDisableFacetLinksIfFirstPage());
             writeScrollerElementEnd(writer, scroller);
         }
         if (scroller.isPaginator())
@@ -279,7 +286,8 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         {
             writeScrollerElementStart(writer, scroller);
             writeStyleClass("next", scroller.getNextStyleClass(), writer);
-            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_NEXT);
+            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_NEXT, endActive,
+                    scroller.isRenderFacetLinksIfLastPage(), scroller.isDisableFacetLinksIfLastPage());
             writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getFastForward();
@@ -287,7 +295,8 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         {
             writeScrollerElementStart(writer, scroller);
             writeStyleClass("fastf", scroller.getFastfStyleClass(), writer);
-            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FAST_FORWARD);
+            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_FAST_FORWARD, endActive,
+                    scroller.isRenderFacetLinksIfLastPage(), scroller.isDisableFacetLinksIfLastPage());
             writeScrollerElementEnd(writer, scroller);
         }
         facetComp = scroller.getLast();
@@ -295,7 +304,8 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         {
             writeScrollerElementStart(writer, scroller);
             writeStyleClass("last", scroller.getLastStyleClass(), writer);
-            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_LAST);
+            renderFacet(facesContext, scroller, facetComp, HtmlDataScroller.FACET_LAST, endActive,
+                    scroller.isRenderFacetLinksIfLastPage(), scroller.isDisableFacetLinksIfLastPage());
             writeScrollerElementEnd(writer, scroller);
         }
 
@@ -339,25 +349,47 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     }
 
     protected void renderFacet(FacesContext facesContext, HtmlDataScroller scroller,
-                               UIComponent facetComp, String facetName) throws IOException
+                               UIComponent facetComp, String facetName, boolean active, boolean renderLinks, boolean disableLinks) throws IOException
     {
         String onclick = scroller.getOnclick();
         String ondblclick = scroller.getOndblclick();
 
         HtmlCommandLink link = getLink(facesContext, scroller, facetName);
+
         if(onclick != null){
             link.setOnclick(onclick);
         }
+
         if(ondblclick != null){
             link.setOndblclick(ondblclick);
         }
 
-        link.encodeBegin(facesContext);
+        if (active) {
+            if (disableLinks && link.isDisabled())
+            {
+                //Enable because the facet is active
+                link.setDisabled(false);
+            }
+            link.encodeBegin(facesContext);
+        }
+        else if (renderLinks)
+        {
+            if (disableLinks && !link.isDisabled())
+            {
+                //Disable because the facet is not active
+                link.setDisabled(true);
+            }
+            link.encodeBegin(facesContext);
+        }
+
         facetComp.encodeBegin(facesContext);
         if (!facetComp.getRendersChildren())
             facetComp.encodeChildren(facesContext);
         facetComp.encodeEnd(facesContext);
-        link.encodeEnd(facesContext);
+
+        if (active || renderLinks) {
+            link.encodeEnd(facesContext);
+        }
     }
 
     /**

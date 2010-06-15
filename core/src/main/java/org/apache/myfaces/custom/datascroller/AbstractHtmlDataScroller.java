@@ -869,4 +869,40 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
      */
     public abstract boolean isImmediate();
 
+    /**
+     * If the dataScroller is on the first page (index is at 1), links for
+     * first, prev and fastprev are disabled. Default is false.
+     * 
+     * @JSFProperty
+     *   defaultValue="false"
+     */
+    public abstract boolean isDisableFacetLinksIfFirstPage();
+
+    /**
+     * If the dataScroller is on the last page (index is at pagecount), links for
+     * last, next and fastnext are disabled. Default is false.
+     * 
+     * @JSFProperty
+     *   defaultValue="false"
+     */
+    public abstract boolean isDisableFacetLinksIfLastPage();
+
+    /**
+     * If the dataScroller is on the first page (index is at 1), links for
+     * first, prev and fastprev are rendered. Default is true.
+     * 
+     * @JSFProperty
+     *   defaultValue="true"
+     */
+    public abstract boolean isRenderFacetLinksIfFirstPage();
+
+    /**
+     * If the dataScroller is on the last page (index is at pagecount), links for
+     * last, next and fastnext are rendered. Default is true.
+     * 
+     * @JSFProperty
+     *   defaultValue="true"
+     */
+    public abstract boolean isRenderFacetLinksIfLastPage();
+    
 }
