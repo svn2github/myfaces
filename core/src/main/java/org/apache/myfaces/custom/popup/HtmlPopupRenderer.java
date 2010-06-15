@@ -24,6 +24,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -98,6 +99,15 @@ public class HtmlPopupRenderer
 
         if(closeExitPopup==null || closeExitPopup.booleanValue())
             writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, popupId + ".hide();",null);
+        
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, popup.getOnclick());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONDBLCLICK_ATTR, HTML.ONDBLCLICK_ATTR, popup.getOndblclick());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONMOUSEDOWN_ATTR, HTML.ONMOUSEDOWN_ATTR, popup.getOnmousedown());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONMOUSEUP_ATTR, HTML.ONMOUSEUP_ATTR, popup.getOnmouseup());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONMOUSEMOVE_ATTR, HTML.ONMOUSEMOVE_ATTR, popup.getOnmousemove());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONKEYPRESS_ATTR, HTML.ONKEYPRESS_ATTR, popup.getOnkeypress());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONKEYDOWN_ATTR, HTML.ONKEYDOWN_ATTR, popup.getOnkeydown());
+        HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONKEYUP_ATTR, HTML.ONKEYUP_ATTR, popup.getOnkeyup());
 
         RendererUtils.renderChild(facesContext, popupFacet);
         writer.endElement(HTML.DIV_ELEM);
