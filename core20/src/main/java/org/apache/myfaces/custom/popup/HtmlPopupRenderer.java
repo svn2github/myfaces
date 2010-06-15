@@ -20,16 +20,22 @@ package org.apache.myfaces.custom.popup;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
 /**
  * @JSFRenderer
@@ -52,6 +58,14 @@ public class HtmlPopupRenderer
         return true;
     }
 
+    @Override
+    public void decode(FacesContext context, UIComponent component)
+    {
+        super.decode(context, component);
+        
+        HtmlRendererUtils.decodeClientBehaviors(context, component);
+    }
+
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException
     {
     }
@@ -68,6 +82,16 @@ public class HtmlPopupRenderer
 
         HtmlPopup popup = (HtmlPopup) uiComponent;
 
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+            }
+        }
+        
         UIComponent popupFacet = popup.getPopup();
 
         String popupId = writePopupScript(
@@ -93,13 +117,48 @@ public class HtmlPopupRenderer
             writer.writeAttribute(HTML.CLASS_ATTR,popup.getStyleClass(),null);
         }
         writer.writeAttribute(HTML.ID_ATTR, popup.getClientId(facesContext),null);
-        writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, new String(popupId+".redisplay();"),null);
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,
+                    HTML.ONMOUSEOVER_ATTR, popup, ClientBehaviorEvents.MOUSEOVER, null, behaviors,
+                    HTML.ONMOUSEOVER_ATTR, popup.getOnmouseover(), new String(popupId+".redisplay();"));
+            
+            Boolean closeExitPopup = popup.getClosePopupOnExitingPopup();
 
-        Boolean closeExitPopup = popup.getClosePopupOnExitingPopup();
+            if(closeExitPopup==null || closeExitPopup.booleanValue())
+            {
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,
+                        HTML.ONMOUSEOUT_ATTR, popup, ClientBehaviorEvents.MOUSEOUT, null, behaviors,
+                        HTML.ONMOUSEOUT_ATTR, popup.getOnmouseover(), popupId + ".hide();");
+            }
+            else
+            {
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,
+                        HTML.ONMOUSEOUT_ATTR, popup, ClientBehaviorEvents.MOUSEOUT, null, behaviors,
+                        HTML.ONMOUSEOUT_ATTR, popup.getOnmouseover(), null);
+            }
+            
+            HtmlRendererUtils.renderBehaviorizedEventHandlersWithoutOnmouseoverAndOnmouseout(facesContext, writer, uiComponent, behaviors);
+        }
+        else
+        {
+            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, new String(popupId+".redisplay();"),null);
 
-        if(closeExitPopup==null || closeExitPopup.booleanValue())
-            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, popupId + ".hide();",null);
+            Boolean closeExitPopup = popup.getClosePopupOnExitingPopup();
 
+            if(closeExitPopup==null || closeExitPopup.booleanValue())
+                writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, popupId + ".hide();",null);
+            
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCLICK_ATTR, HTML.ONCLICK_ATTR, popup.getOnclick());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONDBLCLICK_ATTR, HTML.ONDBLCLICK_ATTR, popup.getOndblclick());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONMOUSEDOWN_ATTR, HTML.ONMOUSEDOWN_ATTR, popup.getOnmousedown());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONMOUSEUP_ATTR, HTML.ONMOUSEUP_ATTR, popup.getOnmouseup());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONMOUSEMOVE_ATTR, HTML.ONMOUSEMOVE_ATTR, popup.getOnmousemove());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONKEYPRESS_ATTR, HTML.ONKEYPRESS_ATTR, popup.getOnkeypress());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONKEYDOWN_ATTR, HTML.ONKEYDOWN_ATTR, popup.getOnkeydown());
+            HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONKEYUP_ATTR, HTML.ONKEYUP_ATTR, popup.getOnkeyup());
+        }
+        
         RendererUtils.renderChild(facesContext, popupFacet);
         writer.endElement(HTML.DIV_ELEM);
     }
