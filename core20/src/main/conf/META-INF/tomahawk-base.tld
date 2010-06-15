@@ -21,5 +21,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
         version="2.1">
-   
+
+   <listener>
+     <listener-class>org.apache.myfaces.component.html.util.StreamingDestroyerListener</listener-class>
+   </listener>
+
 </taglib>
