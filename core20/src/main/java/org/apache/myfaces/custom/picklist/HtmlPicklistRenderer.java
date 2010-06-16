@@ -35,6 +35,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -126,7 +127,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
         // check for displayValueOnly
         if(HtmlRendererUtils.isDisplayValueOnly(uiComponent))
         {
-            HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, uiComponent);
+            HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, uiComponent, true);
             return;
         }
 
@@ -169,8 +170,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
 
         List selectItemList = RendererUtils
                 .getSelectItemList((UISelectMany) uiComponent);
-        Converter converter = HtmlRendererUtils
-                .findUISelectManyConverterFailsafe(facesContext, uiComponent);
+        Converter converter = getConverter(facesContext, uiComponent); 
 
         Set lookupSet = HtmlRendererUtils.getSubmittedOrSelectedValuesAsSet(
                 true, uiComponent, facesContext, converter);
@@ -279,6 +279,49 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
         writer.writeAttribute(HTML.ONCLICK_ATTR, javaScriptFunction, null);
         writer.writeAttribute(HTML.VALUE_ATTR, text, null);
         writer.endElement(HTML.INPUT_ELEM);
+    }
+    
+    /**
+     * Overrides HtmlListboxRendererBase to handle valueType attribute on UISelectMany.
+     */
+    @Override
+    public Object getConvertedValue(FacesContext facesContext,
+            UIComponent component, Object submittedValue)
+            throws ConverterException
+    {
+        RendererUtils.checkParamValidity(facesContext, component, null);
+        
+        if (component instanceof UISelectMany) 
+        {
+            // invoke getConvertedUISelectManyValue() with considerValueType = true
+            return RendererUtils.getConvertedUISelectManyValue(facesContext,
+                    (UISelectMany) component, submittedValue, true); 
+        } 
+        else 
+        {
+            // component is not a UISelectMany --> no change needed
+            return super.getConvertedValue(facesContext, component, submittedValue);
+        }
+    }
+    
+    /**
+     * Overrides HtmlListboxRendererBase to handle valueType attribute on UISelectMany.
+     */
+    @Override
+    protected Converter getConverter(FacesContext facesContext,
+            UIComponent component)
+    {
+        if (component instanceof UISelectMany)
+        {
+            // invoke findUISelectManyConverterFailsafe() with considerValueType = true
+            return HtmlRendererUtils.findUISelectManyConverterFailsafe(facesContext, 
+                    (UISelectMany) component, true);
+        }
+        else
+        {
+            // component is not a UISelectMany --> no change needed
+            return super.getConverter(facesContext, component);
+        }
     }
 
     private void encodeSelect(FacesContext facesContext,
@@ -401,5 +444,5 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
         return new ArrayList(CollectionUtils.subtract(selectItemList,
                                                       selectItemsForSelectedList));
     }
-
+    
 }
