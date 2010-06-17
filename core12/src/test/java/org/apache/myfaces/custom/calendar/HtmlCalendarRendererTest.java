@@ -74,7 +74,7 @@ public class HtmlCalendarRendererTest extends AbstractTomahawkViewControllerTest
     
     public void testHtmlPropertyPassTru() throws Exception
     {
-        HtmlRenderedAttr[] attrs = HtmlCheckAttributesUtil.generateBasicAttrs();       
+        HtmlRenderedAttr[] attrs = HtmlCheckAttributesUtil.generateBasicAttrs(); 
         
         inputCalendar.setRenderAsPopup(true);
         

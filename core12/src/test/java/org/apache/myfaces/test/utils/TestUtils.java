@@ -391,7 +391,6 @@ public final class TestUtils
         addRenderer(facesContext, "org.apache.myfaces.HtmlTree",
                 "javax.faces.Group",
                 "org.apache.myfaces.custom.tree.renderkit.html.HtmlTreeRenderer");
-        
         addRenderer(facesContext, "javax.faces.Output",
                 "org.apache.myfaces.FieldsetRenderer",
                 "org.apache.myfaces.custom.fieldset.FieldsetRenderer");

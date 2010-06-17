@@ -61,7 +61,8 @@ public class TogglePanelRendererTest extends AbstractTomahawkViewControllerTestC
         {
             fail(HtmlCheckAttributesUtil.constructErrorMessage(attrs, writer.getWriter().toString()));
         }
-    }    
+    } 
+    
     
     public void testHtmlPropertyPassTruNotRendered() throws Exception
     {
