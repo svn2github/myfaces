@@ -215,7 +215,7 @@
 
         <!-- To use the examples using the Sun's JSF Reference Implementation 1.2 : -Djsf=ri12 -->
         <profile>
-            <id>jsfri</id>
+            <id>jsfri-1.2</id>
             <activation>
                 <property>
                     <name>jsf</name>
