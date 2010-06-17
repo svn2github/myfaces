@@ -100,7 +100,41 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
     public static final String ROW_ONMOUSEMOVE_ATTR = "rowOnMouseMove";
     public static final String ROW_ONMOUSEOUT_ATTR = "rowOnMouseOut";
     public static final String ROW_ONMOUSEOVER_ATTR = "rowOnMouseOver";
-    public static final String ROW_ONMOUSEUP_ATTR = "rowOnMouseUp";    
+    public static final String ROW_ONMOUSEUP_ATTR = "rowOnMouseUp";
+    
+    private static final String[] EVENTS = {
+        ClientBehaviorEvents.CLICK,
+        ClientBehaviorEvents.DBLCLICK,
+        ClientBehaviorEvents.KEYDOWN,
+        ClientBehaviorEvents.KEYPRESS,
+        ClientBehaviorEvents.KEYUP,
+        ClientBehaviorEvents.MOUSEDOWN,
+        ClientBehaviorEvents.MOUSEMOVE,
+        ClientBehaviorEvents.MOUSEOUT,
+        ClientBehaviorEvents.MOUSEOVER,
+        ClientBehaviorEvents.MOUSEUP
+    };
+    
+    private static final String[] EVENTS_ATTRIBUTES =
+    {
+        HTML.ONCLICK_ATTR,
+        HTML.ONDBLCLICK_ATTR,
+        HTML.ONKEYDOWN_ATTR,
+        HTML.ONKEYPRESS_ATTR,
+        HTML.ONKEYUP_ATTR,
+        HTML.ONMOUSEDOWN_ATTR,
+        HTML.ONMOUSEMOVE_ATTR,
+        HTML.ONMOUSEOUT_ATTR,
+        HTML.ONMOUSEOVER_ATTR,
+        HTML.ONMOUSEUP_ATTR,
+    };
+    
+    private static final String[] COLUMN_ATTRIBUTES_WITHOUT_EVENTS = (String [])
+        ArrayUtils.concat(HTML.UNIVERSAL_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
+
+    private static final String[] COLUMN_ATTRIBUTES = (String [])
+        (String[]) ArrayUtils.concat(HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
+
 
     /**
      * @param component dataTable
@@ -764,7 +798,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
                 }
             }
 
-            renderHtmlColumnAttributes(writer, component, null);
+            renderHtmlColumnAttributes(facesContext, writer, component, null);
 
             RendererUtils.renderChild(facesContext, component);
             writer.endElement(HTML.TD_ELEM);
@@ -783,7 +817,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
             if (styleClass != null) {
                 writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
             }
-            renderHtmlColumnAttributes(writer, component, null);
+            renderHtmlColumnAttributes(facesContext, writer, component, null);
 
             RendererUtils.renderChild(facesContext, component);
             writer.endElement(HTML.TD_ELEM);
@@ -873,7 +907,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
             if (styleClass != null) {
                 writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
             }
-            renderHtmlColumnAttributes(writer, uiComponent, "header");
+            renderHtmlColumnAttributes(facesContext, writer, uiComponent, "header");
             if (facet != null) {
                 RendererUtils.renderChild(facesContext, facet);
             }
@@ -909,7 +943,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
             if (styleClass != null) {
                 writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
             }
-            renderHtmlColumnAttributes(writer, uiComponent, "footer");
+            renderHtmlColumnAttributes(facesContext, writer, uiComponent, "footer");
             if (facet != null) {
                 RendererUtils.renderChild(facesContext, facet);
             }
@@ -921,7 +955,7 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
         }
     }
 
-    protected void renderHtmlColumnAttributes(ResponseWriter writer,
+    protected void renderHtmlColumnAttributes(FacesContext facesContext, ResponseWriter writer,
                                               UIComponent uiComponent, String prefix) throws IOException {
         
         Map<String, List<ClientBehavior>> behaviors = null;
@@ -932,22 +966,26 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
         
         if (behaviors != null && !behaviors.isEmpty())
         {
-            String[] attrs = (String[]) ArrayUtils.concat(HTML.UNIVERSAL_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
-            for (int i = 0, size = attrs.length; i < size; i++) {
-                String attributeName = attrs[i];
+            for (int i = 0, size = COLUMN_ATTRIBUTES_WITHOUT_EVENTS.length; i < size; i++) {
+                String attributeName = COLUMN_ATTRIBUTES_WITHOUT_EVENTS[i];
                 String compAttrName = prefix != null ? prefix + attributeName : attributeName;
                 HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
                     compAttrName, attributeName);
             }
             
-            //TODO: behavior stuff
-            
+            for (int i = 0, size = EVENTS.length; i < size; i++)
+            {
+                String attributeName = EVENTS_ATTRIBUTES[i];
+                String eventName = prefix != null ? prefix + EVENTS[i] : EVENTS[i];
+                String compAttrName = prefix != null ? prefix + attributeName : attributeName;
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,
+                        compAttrName, uiComponent, eventName, behaviors, attributeName);
+            }
         }
         else
         {
-            String[] attrs = (String[]) ArrayUtils.concat(HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
-            for (int i = 0, size = attrs.length; i < size; i++) {
-                String attributeName = attrs[i];
+            for (int i = 0, size = COLUMN_ATTRIBUTES.length; i < size; i++) {
+                String attributeName = COLUMN_ATTRIBUTES[i];
                 String compAttrName = prefix != null ? prefix + attributeName : attributeName;
                 HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent,
                     compAttrName, attributeName);
