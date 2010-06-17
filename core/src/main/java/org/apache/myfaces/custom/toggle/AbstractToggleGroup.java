@@ -21,6 +21,9 @@ package org.apache.myfaces.custom.toggle;
 
 import javax.faces.component.html.HtmlPanelGroup;
 
+import org.apache.myfaces.component.EventAware;
+import org.apache.myfaces.component.UniversalProperties;
+
 /**
  * Container class allows user to toggle between view/edit mode.
  * 
@@ -36,6 +39,7 @@ import javax.faces.component.html.HtmlPanelGroup;
  * 
  */
 public abstract class AbstractToggleGroup extends HtmlPanelGroup
+    implements EventAware, UniversalProperties
 {
     public static final String COMPONENT_TYPE = "org.apache.myfaces.ToggleGroup";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.ToggleGroup";
@@ -45,97 +49,6 @@ public abstract class AbstractToggleGroup extends HtmlPanelGroup
         super();
         setRendererType(AbstractToggleGroup.DEFAULT_RENDERER_TYPE);
     }
-    
-    /**
-     * HTML: The direction of text display, either 'ltr' (left-to-right) or 'rtl' (right-to-left).
-     * 
-     * @JSFProperty
-     */
-    public abstract String getDir();
-
-    /**
-     * HTML: The base language of this document.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getLang();
-
-    /**
-     * HTML: An advisory title for this element.  Often used by the user agent as a tooltip.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getTitle();
-
-    /**
-     * HTML: Script to be invoked when the element is clicked.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnclick();
-
-    /**
-     * HTML: Script to be invoked when the element is double-clicked.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOndblclick();
-
-    /**
-     * HTML: Script to be invoked when a key is pressed down over this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnkeydown();
-
-    /**
-     * HTML: Script to be invoked when a key is pressed over this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnkeypress();
-
-    /**
-     * HTML: Script to be invoked when a key is released over this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnkeyup();
-
-    /**
-     * HTML: Script to be invoked when the pointing device is pressed over this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnmousedown();
-
-    /**
-     * HTML: Script to be invoked when the pointing device is moved while it is in this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnmousemove();
-
-    /**
-     * HTML: Script to be invoked when the pointing device is moves out of this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnmouseout();
-
-    /**
-     * HTML: Script to be invoked when the pointing device is moved into this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnmouseover();
-
-    /**
-     * HTML: Script to be invoked when the pointing device is released over this element.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnmouseup();
     
     /**
      * HTML: Flag to define the toggle status.
