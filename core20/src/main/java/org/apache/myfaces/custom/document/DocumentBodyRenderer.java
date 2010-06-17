@@ -19,15 +19,23 @@
 package org.apache.myfaces.custom.document;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.ExtensionsPhaseListener;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
@@ -48,6 +56,9 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
     public static final String RENDERER_TYPE = "org.apache.myfaces.DocumentBody";
     private String BODY_ELEM = "body";
     private String[] ATTRS = new String[] {"onload", "onunload", "onresize", "onkeypress", "style", "styleClass", "id"};
+    
+    private final String ONRESIZE = "onresize";
+    private final String RESIZE = "resize";
 
     protected String getHtmlTag()
     {
@@ -59,11 +70,49 @@ public class DocumentBodyRenderer extends AbstractDocumentRenderer
         return DocumentBody.class;
     }
 
-    protected void openTag(ResponseWriter writer, UIComponent uiComponent)
-    throws IOException
+    protected void openTag(FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
+        throws IOException
     {
-        super.openTag(writer, uiComponent);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, ATTRS);
+        //HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, ATTRS);
+        
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (uiComponent instanceof ClientBehaviorHolder && JavascriptUtils.isJavascriptAllowed(facesContext.getExternalContext()))
+        {
+            behaviors = ((ClientBehaviorHolder) uiComponent).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, writer);
+            }
+            super.openTag(facesContext, writer, uiComponent);
+            
+            if (behaviors.isEmpty())
+            {
+                HtmlRendererUtils.writeIdIfNecessary(writer, uiComponent, facesContext);
+            }
+            else
+            {
+                writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), null);
+            }
+            
+            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONLOAD_ATTR, uiComponent,
+                    ClientBehaviorEvents.LOAD, behaviors, HTML.ONLOAD_ATTR);
+            HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONUNLOAD_ATTR, uiComponent,
+                    ClientBehaviorEvents.UNLOAD, behaviors, HTML.ONUNLOAD_ATTR);
+            HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ONRESIZE, uiComponent,
+                    RESIZE, behaviors, ONRESIZE);
+            
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
+                    HTML.BODY_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS);
+        }
+        else
+        {
+            super.openTag(facesContext, writer, uiComponent);
+            HtmlRendererUtils.writeIdIfNecessary(writer, uiComponent, facesContext);
+            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent,
+                    HTML.BODY_PASSTHROUGH_ATTRIBUTES);
+            HtmlRendererUtils.renderHTMLAttribute(writer, uiComponent, ONRESIZE, ONRESIZE);
+        }
     }
 
     protected void writeBeforeEnd(FacesContext facesContext) throws IOException
