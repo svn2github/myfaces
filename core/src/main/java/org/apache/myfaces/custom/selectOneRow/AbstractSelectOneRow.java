@@ -21,6 +21,9 @@ package org.apache.myfaces.custom.selectOneRow;
 import javax.faces.component.UIInput;
 
 import org.apache.myfaces.component.AlignProperty;
+import org.apache.myfaces.component.ChangeSelectProperties;
+import org.apache.myfaces.component.EventAware;
+import org.apache.myfaces.component.FocusBlurProperties;
 
 /**
  * Enhancement for a data-table to select one Row with a radio button. The row-index is stored in the vealu-binding
@@ -32,7 +35,7 @@ import org.apache.myfaces.component.AlignProperty;
  * @since 1.1.7
  */
 public abstract class AbstractSelectOneRow extends UIInput 
-    implements AlignProperty
+    implements AlignProperty, EventAware, FocusBlurProperties, ChangeSelectProperties
 {
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.SelectOneRow";
@@ -67,41 +70,5 @@ public abstract class AbstractSelectOneRow extends UIInput
      *   defaultValue = "false"
      */
     public abstract boolean isReadonly();    
-    
-    /**
-     * HTML: Specifies a script to be invoked when the element loses focus.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnblur();
-    
-    /**
-     * HTML: Specifies a script to be invoked when the element receives focus.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnfocus();
-
-    /**
-     * HTML: Specifies a script to be invoked when the element is modified.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnchange();
-
-
-    /**
-     * HTML: Specifies a script to be invoked when the element is selected.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnselect();
-    
-    /**
-     * HTML: Script to be invoked when the element is clicked.
-     * 
-     * @JSFProperty
-     */
-    public abstract String getOnclick();    
     
 }
