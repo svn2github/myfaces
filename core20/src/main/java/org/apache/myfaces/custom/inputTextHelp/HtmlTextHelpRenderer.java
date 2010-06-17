@@ -19,9 +19,13 @@
 package org.apache.myfaces.custom.inputTextHelp;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
@@ -30,10 +34,12 @@ import javax.faces.event.ComponentSystemEventListener;
 import javax.faces.event.ListenerFor;
 
 import org.apache.myfaces.renderkit.html.ext.HtmlTextRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
 import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
@@ -101,6 +107,16 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer  implements Component
     {
         ResponseWriter writer = facesContext.getResponseWriter();
 
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (input instanceof ClientBehaviorHolder)
+        {
+            behaviors = ((ClientBehaviorHolder) input).getClientBehaviors();
+            if (!behaviors.isEmpty())
+            {
+                ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
+            }
+        }
+        
         writer.startElement(HTML.INPUT_ELEM, input);
 
         writer.writeAttribute(HTML.ID_ATTR, input.getClientId(facesContext), null);
@@ -134,12 +150,35 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer  implements Component
             String id = component.getClientId(facesContext);
             HtmlInputTextHelp textHelp = (HtmlInputTextHelp)component;
             
-            HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                                                   HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
-            writer.writeAttribute(HTML.ONFOCUS_ATTR,
-                                  buildJavascriptFunction(component, id, textHelp.getOnfocus()), null);
-            writer.writeAttribute(HTML.ONCLICK_ATTR,
-                                  buildJavascriptFunction(component, id, textHelp.getOnclick()), null);
+            Map<String, List<ClientBehavior>> behaviors = textHelp.getClientBehaviors();
+            if (behaviors != null && !behaviors.isEmpty())
+            {
+                
+                HtmlRendererUtils.renderBehaviorizedEventHandlersWithoutOnclick(facesContext, writer, textHelp, behaviors);
+                HtmlRendererUtils.renderBehaviorizedOnchangeEventHandler(facesContext, writer, textHelp, behaviors);
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONBLUR_ATTR, textHelp,
+                        ClientBehaviorEvents.BLUR, behaviors, HTML.ONBLUR_ATTR);
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,  HTML.ONSELECT_ATTR, textHelp,
+                        ClientBehaviorEvents.SELECT, behaviors, HTML.ONSELECT_ATTR);
+
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONFOCUS_ATTR, textHelp, 
+                        ClientBehaviorEvents.FOCUS, null, behaviors, HTML.ONFOCUS_ATTR, null,
+                        buildJavascriptFunction(component, id, textHelp.getOnfocus()));
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCLICK_ATTR, textHelp, 
+                        ClientBehaviorEvents.CLICK, null, behaviors, HTML.ONCLICK_ATTR, null,
+                        buildJavascriptFunction(component, id, textHelp.getOnclick()));
+                HtmlRendererUtils.renderHTMLAttributes(writer, component,
+                        HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_EVENTS);
+            }
+            else
+            {
+                HtmlRendererUtils.renderHTMLAttributes(writer, component,
+                                                       HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
+                writer.writeAttribute(HTML.ONFOCUS_ATTR,
+                                      buildJavascriptFunction(component, id, textHelp.getOnfocus()), null);
+                writer.writeAttribute(HTML.ONCLICK_ATTR,
+                                      buildJavascriptFunction(component, id, textHelp.getOnclick()), null);
+            }
         }
 
         if (isDisabled(facesContext, component))
