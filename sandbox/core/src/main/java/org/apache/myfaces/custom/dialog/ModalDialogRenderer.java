@@ -19,6 +19,16 @@
 
 package org.apache.myfaces.custom.dialog;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.apache.myfaces.custom.dojo.DojoUtils;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
@@ -27,15 +37,6 @@ import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Renderer for the s:modalDialog component.
@@ -159,10 +160,12 @@ public class ModalDialogRenderer extends HtmlRenderer
             String value = pair[1].replaceAll("'", "");
             try
             {
-                Double number = new Double(value);
+                // try to parse a double from the attribute value
+                new Double(value);
             }
             catch(NumberFormatException e)
             {
+                // parsing failed - attribute is not numeric
                 value = new StringBuffer("\"").append(value).append("\"").toString();
             }
             buf
@@ -184,7 +187,7 @@ public class ModalDialogRenderer extends HtmlRenderer
     {
         StringBuffer buf = new StringBuffer();
 
-        String dlgId = getDialogId(dlg);
+        String dlgId = getDialogWrapperId(dlg);
         buf.append("<div id=\"").append(dlgId).append("\"");
         if(dlg.getStyle() != null)
         {
@@ -199,11 +202,19 @@ public class ModalDialogRenderer extends HtmlRenderer
         writer.write(buf.toString());
     }
 
-    private String getDialogId(ModalDialog dlg)
+    /**
+     * Gets the id for the HTML wrapper of the dialog.
+     * @param dlg
+     * @return
+     */
+    private String getDialogWrapperId(ModalDialog dlg)
     {
-        String dlgId = dlg.getId() != null ?
-                       dlg.getId() :
-                       new StringBuffer(dlg.getDialogId()).append(DIV_ID_PREFIX).toString();
+        // use dlg.getDialogId() with prefix if it is non-null,
+        // otherwise use the component id.
+        
+        String dlgId = dlg.getDialogId() != null ?
+                       new StringBuffer(dlg.getDialogId()).append(DIV_ID_PREFIX).toString() :
+                       dlg.getId();
         return dlgId;
     }
 
@@ -215,7 +226,7 @@ public class ModalDialogRenderer extends HtmlRenderer
      */
     private String writeDialogLoader(FacesContext context, ModalDialog dlg, StringBuffer buf)
     {
-        String dlgId = getDialogId(dlg);
+        String dlgWrapperId = getDialogWrapperId(dlg);
         String dialogVar = dlg.getDialogVar();
         buf.append("<script type=\"text/javascript\">");
 
@@ -229,12 +240,12 @@ public class ModalDialogRenderer extends HtmlRenderer
             .append(dialogVar)
             .append(" = dojo.widget.createWidget(\"dialog\", {id:")
             .append("\"")
-            .append(dlgId)
+            .append(dlg.getDialogId()) // use the dialogId from the component attribute
             .append("\"");
 
         appendDialogAttributes(buf, dlg);
 
-        buf.append("}, dojo.byId(\"").append(dlgId).append("\"));");
+        buf.append("}, dojo.byId(\"").append(dlgWrapperId).append("\"));");
 
         appendHiderIds(buf, dlg);
 
@@ -270,7 +281,7 @@ public class ModalDialogRenderer extends HtmlRenderer
         buf.append("dojo.addOnLoad(function() {" + dialogVar + "_loader();});");
 
         buf.append("</script>");
-        return dlgId;
+        return dlgWrapperId;
     }
 
     /**
