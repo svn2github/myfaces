@@ -30,6 +30,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ComponentSystemEvent;
@@ -37,12 +38,14 @@ import javax.faces.event.ComponentSystemEventListener;
 import javax.faces.event.ListenerFor;
 
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.tomahawk.application.PreRenderViewAddResourceEvent;
 import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
@@ -139,6 +142,24 @@ public class HtmlTabbedPaneRenderer
 
 
         ResponseWriter writer = facesContext.getResponseWriter();
+
+        Map<String, List<ClientBehavior>> behaviors = tabbedPane.getClientBehaviors();
+        if (!behaviors.isEmpty())
+        {
+            ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, writer);
+        }
+        
+        for (UIComponent child : tabbedPane.getChildren())
+        {
+            if (child instanceof HtmlPanelTab)
+            {
+                Map<String, List<ClientBehavior>> bh = ((HtmlPanelTab) child).getClientBehaviors();
+                if (!bh.isEmpty())
+                {
+                    ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, writer);
+                }
+            }
+        }
 
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
 
@@ -481,21 +502,29 @@ public class HtmlTabbedPaneRenderer
                 String inactiveUserClass = tabbedPane.getInactiveTabStyleClass();
                 String activeSubStyleUserClass = tabbedPane.getActiveSubStyleClass();
                 String inactiveSubStyleUserClass = tabbedPane.getInactiveSubStyleClass();
-                String onclickEvent = tab.getAttributes().get(HTML.ONCLICK_ATTR) != null ? (String) tab.getAttributes().get(HTML.ONCLICK_ATTR) : "";
                 
-                if(!("").equals(onclickEvent) && onclickEvent.charAt(onclickEvent.length()-1) !=  ';') {
-                    onclickEvent += ";";
-                }
+                String serverSideScript = "return myFaces_showPanelTab("
+                    +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
+                    +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
+                    +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
+                    + (activeUserClass==null ? "null" : '\''+activeUserClass+'\'')+','+ (inactiveUserClass==null ? "null" : '\''+inactiveUserClass+'\'')+','
+                    + (activeSubStyleUserClass==null ? "null" : '\''+activeSubStyleUserClass+'\'')+','+ (inactiveSubStyleUserClass==null ? "null" : '\''+inactiveSubStyleUserClass+'\'')+");";
                 
-                writer.writeAttribute(HTML.ONCLICK_ATTR,
-                                      onclickEvent
-                                      + "return myFaces_showPanelTab("
-                                      +tabIndex+",'"+getTabIndexSubmitFieldIDAndName(tabbedPane, facesContext)+"',"
-                                      +'\''+getHeaderCellID(tab, facesContext)+"','"+tab.getClientId(facesContext) + TAB_DIV_SUFFIX +"',"
-                                      +getHeaderCellsIDsVar(tabbedPane,facesContext)+','+getTabsIDsVar(tabbedPane,facesContext)+','
-                                      + (activeUserClass==null ? "null" : '\''+activeUserClass+'\'')+','+ (inactiveUserClass==null ? "null" : '\''+inactiveUserClass+'\'')+','
-                                      + (activeSubStyleUserClass==null ? "null" : '\''+activeSubStyleUserClass+'\'')+','+ (inactiveSubStyleUserClass==null ? "null" : '\''+inactiveSubStyleUserClass+'\'')+");",
-                                      null);
+                Map<String, List<ClientBehavior>> behaviors = tab.getClientBehaviors();
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCLICK_ATTR, 
+                        tab, ClientBehaviorEvents.CLICK, null, behaviors, HTML.ONCLICK_ATTR, 
+                        (String) tab.getAttributes().get(HTML.ONCLICK_ATTR), serverSideScript);
+                
+                //String onclickEvent = tab.getAttributes().get(HTML.ONCLICK_ATTR) != null ? (String) tab.getAttributes().get(HTML.ONCLICK_ATTR) : "";
+
+                //if(!("").equals(onclickEvent) && onclickEvent.charAt(onclickEvent.length()-1) !=  ';') {
+                //    onclickEvent += ";";
+                //}
+                
+                //writer.writeAttribute(HTML.ONCLICK_ATTR,
+                //                      onclickEvent +
+                //                      serverSideScript,
+                //                      null);
             }
 
             writer.endElement(HTML.INPUT_ELEM);

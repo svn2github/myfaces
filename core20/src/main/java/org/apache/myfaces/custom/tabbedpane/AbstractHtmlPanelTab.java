@@ -19,6 +19,7 @@
 package org.apache.myfaces.custom.tabbedpane;
 
 import javax.faces.component.NamingContainer;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlPanelGroup;
 
 import org.apache.myfaces.component.EventAware;
@@ -41,7 +42,7 @@ import org.apache.myfaces.component.UserRoleUtils;
  */
 public abstract class AbstractHtmlPanelTab
         extends HtmlPanelGroup  implements NamingContainer, 
-        UserRoleAware, EventAware, UniversalProperties
+        UserRoleAware, EventAware, UniversalProperties, ClientBehaviorHolder
 {
     //private static final Log log = LogFactory.getLog(HtmlPanelTab.class);
 

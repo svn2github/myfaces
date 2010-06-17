@@ -21,6 +21,7 @@ package org.apache.myfaces.custom.navigation;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.renderkit.html.ext.HtmlLinkRenderer;
 
 import org.apache.commons.logging.Log;
@@ -28,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -100,12 +102,17 @@ public class HtmlNavigationRenderer
         RendererUtils.checkParamValidity(facesContext, component, HtmlPanelNavigation.class);
         ResponseWriter writer = facesContext.getResponseWriter();
         HtmlPanelNavigation panelNav = (HtmlPanelNavigation)component;
+        
+        Map<String, List<ClientBehavior>> behaviors = panelNav.getClientBehaviors();
+        if (!behaviors.isEmpty())
+        {
+            ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, writer);
+        }
 
         if (panelNav.getChildCount() > 0)
         {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.TABLE_ELEM, component);
-            Map<String, List<ClientBehavior>> behaviors = panelNav.getClientBehaviors();
             
             if (behaviors != null && !behaviors.isEmpty())
             {
