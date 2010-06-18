@@ -26,25 +26,25 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UISelectItem;
 
-import org.apache.myfaces.component.html.ext.HtmlSelectManyMenu;
+import org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox;
 import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
- * Test cases for HtmlMenuRenderer.
+ * Test cases for HtmlCheckboxRenderer.
  * 
  * @author Jakob Korherr (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlMenuRendererTest extends AbstractJsfTestCase
+public class HtmlCheckboxRendererValueTest extends AbstractJsfTestCase
 {
 
-    private HtmlMenuRenderer _renderer;
+    private HtmlCheckboxRenderer _renderer;
     private MockResponseWriter _writer;
     private StringWriter _stringWriter;
     
-    public HtmlMenuRendererTest(String name)
+    public HtmlCheckboxRendererValueTest(String name)
     {
         super(name);
     }
@@ -54,7 +54,7 @@ public class HtmlMenuRendererTest extends AbstractJsfTestCase
     {
         super.setUp();
         
-        _renderer = new HtmlMenuRenderer();
+        _renderer = new HtmlCheckboxRenderer();
         _stringWriter = new StringWriter();
         _writer = new MockResponseWriter(_stringWriter, "text/html", "utf-8");
         
@@ -79,7 +79,7 @@ public class HtmlMenuRendererTest extends AbstractJsfTestCase
         ValueExpression beanVE = new MockValueExpression("#{bean.values}", Object.class);
         
         // create UISelectMany component
-        HtmlSelectManyMenu selectMany = new HtmlSelectManyMenu();
+        HtmlSelectManyCheckbox selectMany = new HtmlSelectManyCheckbox();
         selectMany.setValueExpression("value", beanVE);
         selectMany.setValueType(Integer.class.getName());
         
@@ -119,7 +119,7 @@ public class HtmlMenuRendererTest extends AbstractJsfTestCase
         };
         
         // create UISelectMany component
-        HtmlSelectManyMenu selectMany = new HtmlSelectManyMenu();
+        HtmlSelectManyCheckbox selectMany = new HtmlSelectManyCheckbox();
         selectMany.setValueExpression("value", beanVE);
         selectMany.setValueType(Integer.class.getName());
         

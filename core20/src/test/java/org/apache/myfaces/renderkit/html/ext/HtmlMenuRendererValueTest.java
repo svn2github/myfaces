@@ -26,25 +26,25 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UISelectItem;
 
-import org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox;
+import org.apache.myfaces.component.html.ext.HtmlSelectManyMenu;
 import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
- * Test cases for HtmlCheckboxRenderer.
+ * Test cases for HtmlMenuRenderer.
  * 
  * @author Jakob Korherr (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlCheckboxRendererTest extends AbstractJsfTestCase
+public class HtmlMenuRendererValueTest extends AbstractJsfTestCase
 {
 
-    private HtmlCheckboxRenderer _renderer;
+    private HtmlMenuRenderer _renderer;
     private MockResponseWriter _writer;
     private StringWriter _stringWriter;
     
-    public HtmlCheckboxRendererTest(String name)
+    public HtmlMenuRendererValueTest(String name)
     {
         super(name);
     }
@@ -54,7 +54,7 @@ public class HtmlCheckboxRendererTest extends AbstractJsfTestCase
     {
         super.setUp();
         
-        _renderer = new HtmlCheckboxRenderer();
+        _renderer = new HtmlMenuRenderer();
         _stringWriter = new StringWriter();
         _writer = new MockResponseWriter(_stringWriter, "text/html", "utf-8");
         
@@ -79,7 +79,7 @@ public class HtmlCheckboxRendererTest extends AbstractJsfTestCase
         ValueExpression beanVE = new MockValueExpression("#{bean.values}", Object.class);
         
         // create UISelectMany component
-        HtmlSelectManyCheckbox selectMany = new HtmlSelectManyCheckbox();
+        HtmlSelectManyMenu selectMany = new HtmlSelectManyMenu();
         selectMany.setValueExpression("value", beanVE);
         selectMany.setValueType(Integer.class.getName());
         
@@ -119,7 +119,7 @@ public class HtmlCheckboxRendererTest extends AbstractJsfTestCase
         };
         
         // create UISelectMany component
-        HtmlSelectManyCheckbox selectMany = new HtmlSelectManyCheckbox();
+        HtmlSelectManyMenu selectMany = new HtmlSelectManyMenu();
         selectMany.setValueExpression("value", beanVE);
         selectMany.setValueType(Integer.class.getName());
         

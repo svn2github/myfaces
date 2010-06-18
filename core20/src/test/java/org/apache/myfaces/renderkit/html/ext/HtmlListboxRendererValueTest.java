@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.custom.picklist;
+package org.apache.myfaces.renderkit.html.ext;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -26,26 +26,25 @@ import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UISelectItem;
 
-import org.apache.myfaces.renderkit.html.ext.TestBean;
-import org.apache.myfaces.renderkit.html.ext.TestIntegerConverter;
+import org.apache.myfaces.component.html.ext.HtmlSelectManyListbox;
 import org.apache.shale.test.base.AbstractJsfTestCase;
 import org.apache.shale.test.el.MockValueExpression;
 import org.apache.shale.test.mock.MockResponseWriter;
 
 /**
- * Test cases for HtmlPicklistRenderer.
+ * Test cases for HtmlListboxRenderer.
  * 
  * @author Jakob Korherr (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class HtmlPicklistRendererTest extends AbstractJsfTestCase
+public class HtmlListboxRendererValueTest extends AbstractJsfTestCase
 {
 
-    private HtmlPicklistRenderer _renderer;
+    private HtmlListboxRenderer _renderer;
     private MockResponseWriter _writer;
     private StringWriter _stringWriter;
     
-    public HtmlPicklistRendererTest(String name)
+    public HtmlListboxRendererValueTest(String name)
     {
         super(name);
     }
@@ -55,7 +54,7 @@ public class HtmlPicklistRendererTest extends AbstractJsfTestCase
     {
         super.setUp();
         
-        _renderer = new HtmlPicklistRenderer();
+        _renderer = new HtmlListboxRenderer();
         _stringWriter = new StringWriter();
         _writer = new MockResponseWriter(_stringWriter, "text/html", "utf-8");
         
@@ -80,19 +79,9 @@ public class HtmlPicklistRendererTest extends AbstractJsfTestCase
         ValueExpression beanVE = new MockValueExpression("#{bean.values}", Object.class);
         
         // create UISelectMany component
-        HtmlSelectManyPicklist selectMany = new HtmlSelectManyPicklist();
+        HtmlSelectManyListbox selectMany = new HtmlSelectManyListbox();
         selectMany.setValueExpression("value", beanVE);
         selectMany.setValueType(Integer.class.getName());
-        
-        // workaround for NPE in MockResponseWriter
-        selectMany.setAddButtonStyle("style");
-        selectMany.setAddButtonStyleClass("styleClass");
-        selectMany.setAddAllButtonStyle("style");
-        selectMany.setAddAllButtonStyleClass("styleClass");
-        selectMany.setRemoveButtonStyle("style");
-        selectMany.setRemoveButtonStyleClass("styleClass");
-        selectMany.setRemoveAllButtonStyle("style");
-        selectMany.setRemoveAllButtonStyleClass("styleClass");
         
         // create the select item
         UISelectItem item = new UISelectItem();
@@ -130,7 +119,7 @@ public class HtmlPicklistRendererTest extends AbstractJsfTestCase
         };
         
         // create UISelectMany component
-        HtmlSelectManyPicklist selectMany = new HtmlSelectManyPicklist();
+        HtmlSelectManyListbox selectMany = new HtmlSelectManyListbox();
         selectMany.setValueExpression("value", beanVE);
         selectMany.setValueType(Integer.class.getName());
         
