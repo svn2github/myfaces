@@ -21,15 +21,23 @@ package org.apache.myfaces.component.html.util;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
+
 public class StreamingDestroyerListener implements ServletContextListener 
 {
 
     public void contextInitialized(ServletContextEvent event)
     {
-        StreamingThreadManager manager = new StreamingThreadManager();
-        event.getServletContext().setAttribute(StreamingThreadManager.KEY,
-                manager);
-        manager.init();
+        //Only initialize a StreamingThreadManager if StreamingAddResource is used
+        String addResourceClass = MyfacesConfig.getAddResourceClassFromServletContext(event.getServletContext());
+        
+        if (addResourceClass != null && addResourceClass.equals(StreamingAddResource.class.getName()))
+        {
+            StreamingThreadManager manager = new StreamingThreadManager();
+            event.getServletContext().setAttribute(StreamingThreadManager.KEY,
+                    manager);
+            manager.init();
+        }
     }
 
     public void contextDestroyed(ServletContextEvent event)
