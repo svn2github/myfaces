@@ -19,13 +19,12 @@
 package org.apache.myfaces.custom.date;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.faces.application.FacesMessage;
@@ -35,16 +34,18 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
+import org.apache.myfaces.custom.calendar.DateBusinessConverter;
+import org.apache.myfaces.custom.calendar.DefaultDateBusinessConverter;
 import org.apache.myfaces.custom.calendar.FunctionCallProvider;
+import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer;
 import org.apache.myfaces.custom.calendar.HtmlCalendarRenderer.CalendarDateTimeConverter;
 import org.apache.myfaces.custom.date.AbstractHtmlInputDate.UserData;
-import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.JavascriptUtils;
 import org.apache.myfaces.shared_tomahawk.util.MessageUtils;
 import org.apache.myfaces.tomahawk.util.Constants;
 
@@ -477,6 +478,16 @@ public class HtmlDateRenderer extends HtmlRenderer {
             inputDate.setSubmittedValue( userData );
         }
     }
+
+    private DateBusinessConverter getDateBusinessConverter(AbstractHtmlInputDate component)
+    {
+        DateBusinessConverter dateBusinessConverter = component.getDateBusinessConverter(); 
+        if (dateBusinessConverter == null)
+        {
+            dateBusinessConverter = new DefaultDateBusinessConverter();
+        }
+        return dateBusinessConverter;
+    }
     
     public Object getConvertedValue(FacesContext context, UIComponent uiComponent, Object submittedValue) throws ConverterException {
         
@@ -485,12 +496,15 @@ public class HtmlDateRenderer extends HtmlRenderer {
         if (inputDate.getConverter() == null)
         {
             UserData userData = (UserData) submittedValue;
+            Date date = null;
             try {
-                return userData.parse();
+                date = userData.parse();
             } catch (ParseException e) {
                 Object[] args = {uiComponent.getId()};
                 throw new ConverterException(MessageUtils.getMessage(Constants.TOMAHAWK_DEFAULT_BUNDLE, FacesMessage.SEVERITY_ERROR, DATE_MESSAGE_ID, args, context));
-            }            
+            }
+            
+            return getDateBusinessConverter(inputDate).getBusinessValue(context, inputDate, date);
         }
         else
         {

@@ -35,6 +35,8 @@ import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.UserRoleAware;
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
+import org.apache.myfaces.custom.calendar.DateBusinessConverter;
+import org.apache.myfaces.custom.calendar.DefaultDateBusinessConverter;
 
 /**
  * Custom input control for dates and times. 
@@ -45,6 +47,9 @@ import org.apache.myfaces.component.html.util.HtmlComponentUtils;
  *   name = "t:inputDate"
  *   class = "org.apache.myfaces.custom.date.HtmlInputDate"
  *   tagClass = "org.apache.myfaces.custom.date.HtmlInputDateTag"
+ *   tagSuperclass = "org.apache.myfaces.custom.date.AbstractHtmlInputDateTag"
+ *   tagHandler = "org.apache.myfaces.custom.date.HtmlInputDateTagHandler"
+ *   
  * @since 1.1.7
  * @author Sylvain Vieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
@@ -75,8 +80,18 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
     }
     
     public UserData getUserData(Locale currentLocale){
-        return new UserData((Date) getValue(), currentLocale, getTimeZone(), isAmpm(), getType());
-    }    
+        return new UserData((Date) getDateBusinessConverter(this).getDateValue(getFacesContext(), this, getValue()), currentLocale, getTimeZone(), isAmpm(), getType());
+    }
+    
+    private DateBusinessConverter getDateBusinessConverter(AbstractHtmlInputDate component)
+    {
+        DateBusinessConverter dateBusinessConverter = component.getDateBusinessConverter(); 
+        if (dateBusinessConverter == null)
+        {
+            dateBusinessConverter = new DefaultDateBusinessConverter();
+        }
+        return dateBusinessConverter;
+    }
 
     public static class UserData implements Serializable {
         private static final long serialVersionUID = -6507279524833267707L;
@@ -289,6 +304,14 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
             this.type = type;
         }
     }
+
+    /**
+     * 
+     * @JSFProperty stateHolder="true" inheritedTag="true"
+     */
+    public abstract DateBusinessConverter getDateBusinessConverter();
+    
+    public abstract void setDateBusinessConverter(DateBusinessConverter dateBusinessConverter);
 
     /**
      * @JSFProperty
