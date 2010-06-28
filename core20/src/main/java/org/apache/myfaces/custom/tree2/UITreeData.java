@@ -208,9 +208,23 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
     }
 
     // see superclass for documentation
+    /*
     public String getClientId(FacesContext context)
     {
         String ownClientId = super.getClientId(context);
+        if (_nodeId != null)
+        {
+            return ownClientId + NamingContainer.SEPARATOR_CHAR + _nodeId;
+        } else
+        {
+            return ownClientId;
+        }
+    }*/
+    
+    @Override
+    public String getContainerClientId(FacesContext context)
+    {
+        String ownClientId = super.getContainerClientId(context);
         if (_nodeId != null)
         {
             return ownClientId + NamingContainer.SEPARATOR_CHAR + _nodeId;

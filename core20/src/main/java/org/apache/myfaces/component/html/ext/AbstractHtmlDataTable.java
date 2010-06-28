@@ -127,9 +127,40 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         return _tableContext;
     }
 
+    /*
     public String getClientId(FacesContext context)
     {
         String standardClientId = super.getClientId(context);
+        int rowIndex = getRowIndex();
+        if (rowIndex == -1)
+        {
+            return standardClientId;
+        }
+
+        String forcedIdIndex = getForceIdIndexFormula();
+        if (forcedIdIndex == null || forcedIdIndex.length() == 0)
+            return standardClientId;
+
+        // Trick : Remove the last part starting with NamingContainer.SEPARATOR_CHAR that contains the rowIndex.
+        // It would be best to not resort to String manipulation,
+        // but we can't get super.super.getClientId() :-(
+        char separator = UINamingContainer.getSeparatorChar(context);
+        int indexLast_ = standardClientId.lastIndexOf(separator);
+        if (indexLast_ == -1)
+        {
+            log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
+            return standardClientId + separator + forcedIdIndex;
+        }
+
+        //noinspection UnnecessaryLocalVariable
+        String parsedForcedClientId = standardClientId.substring(0, indexLast_ + 1) + forcedIdIndex;
+        return parsedForcedClientId;
+    }*/
+
+    @Override
+    public String getContainerClientId(FacesContext context)
+    {
+        String standardClientId = super.getContainerClientId(context);
         int rowIndex = getRowIndex();
         if (rowIndex == -1)
         {
