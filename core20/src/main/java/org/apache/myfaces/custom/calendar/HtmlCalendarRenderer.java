@@ -142,8 +142,6 @@ public class HtmlCalendarRenderer
         HtmlInputCalendar inputCalendar = (HtmlInputCalendar) component;
 
         Locale currentLocale = facesContext.getViewRoot().getLocale();
-        Date value;
-        
         Map<String, List<ClientBehavior>> behaviors = inputCalendar.getClientBehaviors();
         if (!behaviors.isEmpty())
         {
@@ -152,9 +150,62 @@ public class HtmlCalendarRenderer
         
         log.debug("current locale:" + currentLocale.toString());
 
+        String textValue;
+        
+        Converter converter = inputCalendar.getConverter();        
+        Object submittedValue = inputCalendar.getSubmittedValue();        
+        
+        Date value;
+
+        if (submittedValue != null)
+        {
+            //Don't need to convert anything, the textValue is the same as the submittedValue
+            textValue = (String) submittedValue;
+            
+            if(textValue ==null || textValue.trim().length()==0 || textValue.equals(getHelperString(inputCalendar)))
+            {
+                value = null;
+            }
+            else
+            {
+                try
+                {
+                    String formatStr = CalendarDateTimeConverter.createJSPopupFormat(facesContext, inputCalendar.getPopupDateFormat());
+                    Calendar timeKeeper = Calendar.getInstance(currentLocale);
+                    int firstDayOfWeek = timeKeeper.getFirstDayOfWeek() - 1;
+                    org.apache.myfaces.dateformat.DateFormatSymbols symbols = new org.apache.myfaces.dateformat.DateFormatSymbols(currentLocale);
+    
+                    SimpleDateFormatter dateFormat = new SimpleDateFormatter(formatStr, symbols, firstDayOfWeek);
+                    value = dateFormat.parse(textValue);
+                }
+                catch (IllegalArgumentException illegalArgumentException)
+                {
+                    value = null;
+                }
+            }
+        }
+        else
+        {
+            if (converter == null)
+            {
+                CalendarDateTimeConverter defaultConverter = new CalendarDateTimeConverter();
+                
+                value = (Date) getDateBusinessConverter(inputCalendar).getDateValue(facesContext, component, inputCalendar.getValue());
+
+                textValue = defaultConverter.getAsString(facesContext, inputCalendar, value);
+            }
+            else
+            {
+                //Use converter to retrieve the value.
+                value = (Date) inputCalendar.getValue();
+                textValue = converter.getAsString(facesContext, inputCalendar, value);
+            }
+        }
+        /*        
         try
         {
             // value = RendererUtils.getDateValue(inputCalendar);
+
             Converter converter = getConverter(inputCalendar);
             if (converter instanceof DateConverter)
             {
@@ -194,7 +245,7 @@ public class HtmlCalendarRenderer
         {
             value = null;
         }
-
+        */
 
         Calendar timeKeeper = Calendar.getInstance(currentLocale);
         timeKeeper.setTime(value!=null?value:new Date());
@@ -203,11 +254,11 @@ public class HtmlCalendarRenderer
 
         if(inputCalendar.isRenderAsPopup())
         {
-            renderPopup(facesContext, inputCalendar, value, timeKeeper, symbols);
+            renderPopup(facesContext, inputCalendar, textValue, timeKeeper, symbols);
         }
         else
         {
-            renderInline(facesContext, inputCalendar, value, timeKeeper, symbols);
+            renderInline(facesContext, inputCalendar, timeKeeper, symbols);
         }
 
         component.getChildren().removeAll(component.getChildren());
@@ -216,7 +267,7 @@ public class HtmlCalendarRenderer
     private void renderPopup(
             FacesContext facesContext, 
             HtmlInputCalendar inputCalendar,
-            Date value,
+            String value,
             Calendar timeKeeper,
             DateFormatSymbols symbols) throws IOException
     {
@@ -246,6 +297,8 @@ public class HtmlCalendarRenderer
         inputText.setHelpText(inputCalendar.getHelpText());
         inputText.setSelectText(true);
 
+        inputText.setValue(value);
+        /*
         if (value == null && inputCalendar.getSubmittedValue() != null)
         {
             inputText.setValue(inputCalendar.getSubmittedValue());
@@ -254,7 +307,7 @@ public class HtmlCalendarRenderer
         {
             inputText.setValue(getConverter(inputCalendar).getAsString(
                     facesContext,inputCalendar,value));
-        }
+        }*/
         inputText.setDisabled(inputCalendar.isDisabled());
         inputText.setReadonly(inputCalendar.isReadonly());
         inputText.setEnabledOnUserRole(inputCalendar.getEnabledOnUserRole());
@@ -320,7 +373,6 @@ public class HtmlCalendarRenderer
     private void renderInline(
             FacesContext facesContext, 
             HtmlInputCalendar inputCalendar,
-            Date value,
             Calendar timeKeeper,
             DateFormatSymbols symbols) throws IOException
     {
@@ -1028,6 +1080,16 @@ public class HtmlCalendarRenderer
         }
         return converter;
     }
+    
+    private DateBusinessConverter getDateBusinessConverter(AbstractHtmlInputCalendar component)
+    {
+        DateBusinessConverter dateBusinessConverter = component.getDateBusinessConverter(); 
+        if (dateBusinessConverter == null)
+        {
+            dateBusinessConverter = new DefaultDateBusinessConverter();
+        }
+        return dateBusinessConverter;
+    }
 
     private int mapCalendarDayToCommonDay(int day)
     {
@@ -1174,7 +1236,7 @@ public class HtmlCalendarRenderer
 
         RendererUtils.checkParamValidity(facesContext, component, HtmlInputCalendar.class);
 
-        String helperString = getHelperString(component);
+        //String helperString = getHelperString(component);
 
         if (!(component instanceof EditableValueHolder)) {
             throw new IllegalArgumentException("Component "
@@ -1189,20 +1251,20 @@ public class HtmlCalendarRenderer
         {
             String value = (String) paramMap.get(clientId);
 
-            if(!value.equalsIgnoreCase(helperString))
-            {
+            //if(!value.equalsIgnoreCase(helperString))
+            //{
                 ((EditableValueHolder) component).setSubmittedValue(value);
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 // The field was initially filled with the "helper string", and has
                 // not been altered by the user so treat this as if null had been
                 // passed by the user.
                 //
                 // TODO: does this mean the target date is set to todays date?
                 // And how does this affect the "required" property?
-                ((EditableValueHolder) component).setSubmittedValue("");
-            }
+                //((EditableValueHolder) component).setSubmittedValue("");
+            //}
         }
         else
         {
@@ -1237,21 +1299,31 @@ public class HtmlCalendarRenderer
     {
         RendererUtils.checkParamValidity(facesContext, uiComponent, HtmlInputCalendar.class);
 
-        UIInput uiInput = (UIInput) uiComponent;
+        AbstractHtmlInputCalendar uiInput = (AbstractHtmlInputCalendar) uiComponent;
 
         Converter converter = uiInput.getConverter();
-
-        if(converter==null)
-        {
-            converter = new CalendarDateTimeConverter();
-        }
 
         if (submittedValue != null && !(submittedValue instanceof String))
         {
             throw new IllegalArgumentException("Submitted value of type String expected");
         }
-
-        return converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
+        
+        //Do not convert if submittedValue is helper string  
+        if(submittedValue != null && submittedValue.equals(getHelperString(uiComponent)))
+            return null;
+        
+        if(converter==null)
+        {
+            converter = new CalendarDateTimeConverter();
+            
+            Date date = (Date) converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
+            
+            return getDateBusinessConverter(uiInput).getBusinessValue(facesContext, uiComponent, date);
+        }
+        else
+        {
+            return converter.getAsObject(facesContext, uiComponent, (String) submittedValue);
+        }
     }
 
     public interface DateConverter extends Converter

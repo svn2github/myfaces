@@ -76,6 +76,7 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *   name = "t:inputCalendar"
  *   class = "org.apache.myfaces.custom.calendar.HtmlInputCalendar"
  *   tagClass = "org.apache.myfaces.custom.calendar.HtmlInputCalendarTag"
+ *   tagSuperclass = "org.apache.myfaces.custom.calendar.AbstractHtmlInputCalendarTag"
  * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author: lu4242 $)
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
@@ -93,6 +94,14 @@ public abstract class AbstractHtmlInputCalendar
         if (!UserRoleUtils.isVisibleOnUserRole(this)) return false;
         return super.isRendered();
     }
+    
+    /**
+     * 
+     * @JSFProperty stateHolder="true" inheritedTag="true"
+     */
+    public abstract DateBusinessConverter getDateBusinessConverter();
+    
+    public abstract void setDateBusinessConverter(DateBusinessConverter dateBusinessConverter);
         
     /**
      * CSS class to be used on the TR element for the header-row showing month and year.
