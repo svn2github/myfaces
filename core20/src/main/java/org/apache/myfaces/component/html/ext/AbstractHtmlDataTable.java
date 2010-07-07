@@ -127,36 +127,6 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         return _tableContext;
     }
 
-    /*
-    public String getClientId(FacesContext context)
-    {
-        String standardClientId = super.getClientId(context);
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1)
-        {
-            return standardClientId;
-        }
-
-        String forcedIdIndex = getForceIdIndexFormula();
-        if (forcedIdIndex == null || forcedIdIndex.length() == 0)
-            return standardClientId;
-
-        // Trick : Remove the last part starting with NamingContainer.SEPARATOR_CHAR that contains the rowIndex.
-        // It would be best to not resort to String manipulation,
-        // but we can't get super.super.getClientId() :-(
-        char separator = UINamingContainer.getSeparatorChar(context);
-        int indexLast_ = standardClientId.lastIndexOf(separator);
-        if (indexLast_ == -1)
-        {
-            log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
-            return standardClientId + separator + forcedIdIndex;
-        }
-
-        //noinspection UnnecessaryLocalVariable
-        String parsedForcedClientId = standardClientId.substring(0, indexLast_ + 1) + forcedIdIndex;
-        return parsedForcedClientId;
-    }*/
-
     @Override
     public String getContainerClientId(FacesContext context)
     {
@@ -171,19 +141,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         if (forcedIdIndex == null || forcedIdIndex.length() == 0)
             return standardClientId;
 
-        // Trick : Remove the last part starting with NamingContainer.SEPARATOR_CHAR that contains the rowIndex.
-        // It would be best to not resort to String manipulation,
-        // but we can't get super.super.getClientId() :-(
-        char separator = UINamingContainer.getSeparatorChar(context);
-        int indexLast_ = standardClientId.lastIndexOf(separator);
-        if (indexLast_ == -1)
-        {
-            log.info("Could not parse super.getClientId. forcedIdIndex will contain the rowIndex.");
-            return standardClientId + separator + forcedIdIndex;
-        }
+        // we can get the index less client id directly, because only
+        // getContainerClientId() adds the row index, getClientId() does not.
+        final String indexLessClientId = getClientId(context);
 
         //noinspection UnnecessaryLocalVariable
-        String parsedForcedClientId = standardClientId.substring(0, indexLast_ + 1) + forcedIdIndex;
+        String parsedForcedClientId = indexLessClientId + forcedIdIndex;
         return parsedForcedClientId;
     }
 
@@ -238,20 +201,22 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             throw new NullPointerException();
         }
 
+        final String baseClientId = getClientId(context);
+        
         // searching for this component?
-        boolean returnValue = this.getClientId(context).equals(clientId);
+        boolean returnValue = baseClientId.equals(clientId);
 
         if (returnValue)
         {
             try
             {
                 callback.invokeContextCallback(context, this);
+                return true;
             }
             catch (Exception e)
             {
                 throw new FacesException(e);
             }
-            return returnValue;
         }
 
         // Now Look throught facets on this UIComponent
@@ -260,13 +225,10 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             returnValue = it.next().invokeOnComponent(context, clientId, callback);
         }
 
-        if (returnValue == true)
+        if (returnValue)
         {
             return returnValue;
         }
-        
-        // Now we have to check if it is searching an inner component
-        String baseClientId = super.getClientId(context);
         
         // is the component an inner component?
         if (clientId.startsWith(baseClientId))
@@ -362,7 +324,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         set.add(facet);
         if (rowIndex != -1 && facet != null)
         {
-            _detailRowStates.put(getClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
+            _detailRowStates.put(getContainerClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
         }
 
         String rowIndexVar = getRowIndexVar();
@@ -428,7 +390,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
         if (rowIndex != -1 && facet != null)
         {
-            Object rowState = _detailRowStates.get(getClientId(facesContext));
+            Object rowState = _detailRowStates.get(getContainerClientId(facesContext));
 
             restoreDescendantComponentStates(set.iterator(),
                     rowState, false);
@@ -529,7 +491,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                     Set set = new HashSet();
                     set.add(facet);
                     _detailRowStates.put(
-                            getClientId(FacesContext.getCurrentInstance()),
+                            getContainerClientId(FacesContext.getCurrentInstance()),
                                 saveDescendantComponentStates(set.iterator(),false));
                 }
             }

@@ -108,10 +108,23 @@ public abstract class HtmlDataTableHack extends
      */
     public String getClientId(FacesContext context)
     {
+        // check for forceId
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
         if (clientId == null)
         {
             clientId = super.getClientId(context);
+        }
+        return clientId;
+    }
+    
+    @Override
+    public String getContainerClientId(FacesContext context)
+    {
+        // check for forceId
+        String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
+        if (clientId == null)
+        {
+            clientId = super.getContainerClientId(context);
         }
         int rowIndex = getRowIndex();
         if (rowIndex == -1)
@@ -275,7 +288,7 @@ public abstract class HtmlDataTableHack extends
         }
         else
         {
-            _rowStates.put(getClientId(facesContext),
+            _rowStates.put(getContainerClientId(facesContext),
                             saveDescendantComponentStates(getChildren()
                                             .iterator(), false));
         }
@@ -318,7 +331,7 @@ public abstract class HtmlDataTableHack extends
         }
         else
         {
-            Object rowState = _rowStates.get(getClientId(facesContext));
+            Object rowState = _rowStates.get(getContainerClientId(facesContext));
             if (rowState == null)
             {
                 restoreDescendantComponentStates(getChildren().iterator(),
@@ -470,7 +483,7 @@ public abstract class HtmlDataTableHack extends
         UIComponent parent = getParent();
         if (parent != null) 
         {
-            clientID = parent.getClientId(getFacesContext());
+            clientID = parent.getContainerClientId(getFacesContext());
         }
         dataModel = (DataModel) _dataModelMap.get(clientID);
         if (dataModel == null)
@@ -489,7 +502,7 @@ public abstract class HtmlDataTableHack extends
         String clientID = "";
         if(parent != null)
         {
-            clientID = parent.getClientId(getFacesContext());
+            clientID = parent.getContainerClientId(getFacesContext());
         }
         _dataModelMap.put(clientID, datamodel);
     }
@@ -677,14 +690,14 @@ public abstract class HtmlDataTableHack extends
         
         FacesContext facesContext = FacesContext.getCurrentInstance();
          setRowIndex(deletedIndex);
-        String currentRowStateKey = getClientId(facesContext);
+        String currentRowStateKey = getContainerClientId(facesContext);
 
         // copy next rowstate to current row for each row from deleted row onward.
         int rowCount = getRowCount();
         for (int index = deletedIndex + 1; index < rowCount; ++index)
         {
             setRowIndex(index);
-            String nextRowStateKey = getClientId(facesContext);
+            String nextRowStateKey = getContainerClientId(facesContext);
 
             Object nextRowState = _rowStates.get(nextRowStateKey);
             if (nextRowState == null)

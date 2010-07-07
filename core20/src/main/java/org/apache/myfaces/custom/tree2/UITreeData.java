@@ -30,6 +30,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -227,8 +228,9 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         String ownClientId = super.getContainerClientId(context);
         if (_nodeId != null)
         {
-            return ownClientId + NamingContainer.SEPARATOR_CHAR + _nodeId;
-        } else
+            return ownClientId + UINamingContainer.getSeparatorChar(context) + _nodeId;
+        } 
+        else
         {
             return ownClientId;
         }
