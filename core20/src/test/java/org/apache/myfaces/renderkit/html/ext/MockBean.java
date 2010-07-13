@@ -18,35 +18,28 @@
  */
 package org.apache.myfaces.renderkit.html.ext;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
+import java.util.Collection;
 
 
 /**
- * A converter for Integer that changes the integer a bit.
+ * A bean for the test cases.
  * 
  * @author Jakob Korherr (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class TestIntegerConverter implements Converter
+public class MockBean
 {
+
+    private Collection<Integer> values;
+
+    public Collection<Integer> getValues()
+    {
+        return values;
+    }
+
+    public void setValues(Collection<Integer> values)
+    {
+        this.values = values;
+    }
     
-    public Object getAsObject(FacesContext context, UIComponent component,
-            String value) throws ConverterException
-    {
-        return (new Integer(value) - 10);
-    }
-
-    public String getAsString(FacesContext context, UIComponent component,
-            Object value) throws ConverterException
-    {
-        if (value instanceof String)
-        {
-            value = new Integer((String) value);
-        }
-        return (((Integer) value) + 10) + "";
-    }
-
 }

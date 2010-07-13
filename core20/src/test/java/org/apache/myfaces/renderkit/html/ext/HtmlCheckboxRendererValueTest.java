@@ -27,9 +27,9 @@ import javax.el.ValueExpression;
 import javax.faces.component.UISelectItem;
 
 import org.apache.myfaces.component.html.ext.HtmlSelectManyCheckbox;
-import org.apache.shale.test.base.AbstractJsfTestCase;
-import org.apache.shale.test.el.MockValueExpression;
-import org.apache.shale.test.mock.MockResponseWriter;
+import org.apache.myfaces.test.base.AbstractJsfTestCase;
+import org.apache.myfaces.test.el.MockValueExpression;
+import org.apache.myfaces.test.mock.MockResponseWriter;
 
 /**
  * Test cases for HtmlCheckboxRenderer.
@@ -74,7 +74,7 @@ public class HtmlCheckboxRendererValueTest extends AbstractJsfTestCase
     @SuppressWarnings("unchecked")
     public void testValueTypeRender() throws IOException
     {
-        TestBean bean = new TestBean();
+        MockBean bean = new MockBean();
         externalContext.getApplicationMap().put("bean", bean);
         ValueExpression beanVE = new MockValueExpression("#{bean.values}", Object.class);
         
@@ -89,7 +89,7 @@ public class HtmlCheckboxRendererValueTest extends AbstractJsfTestCase
         selectMany.getChildren().add(item);
         
         // register the converter
-        application.addConverter(Integer.class, TestIntegerConverter.class.getName());
+        application.addConverter(Integer.class, MockIntegerConverter.class.getName());
         
         // Render the component (only encodeEnd is used in this renderer)
         _renderer.encodeEnd(facesContext, selectMany);
@@ -103,7 +103,7 @@ public class HtmlCheckboxRendererValueTest extends AbstractJsfTestCase
     @SuppressWarnings({ "unchecked", "serial" })
     public void testValueTypeSubmit() throws IOException
     {
-        TestBean bean = new TestBean();
+        MockBean bean = new MockBean();
         externalContext.getApplicationMap().put("bean", bean);
         ValueExpression beanVE = new MockValueExpression("#{bean.values}", Object.class)
         {

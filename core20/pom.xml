@@ -188,6 +188,13 @@
     <!-- test dependencies -->
 
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-impl</artifactId>
       <version>${myfaces-core20-version}</version>
@@ -235,29 +242,12 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.shale</groupId>
-      <artifactId>shale-test</artifactId>
-      <version>1.0.4</version>
+      <groupId>org.apache.myfaces.test</groupId>
+      <artifactId>myfaces-test20</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.myfaces</groupId>
-          <artifactId>myfaces-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.myfaces</groupId>
-          <artifactId>myfaces-impl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>myfaces</groupId>
-          <artifactId>myfaces-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>myfaces</groupId>
-          <artifactId>myfaces-impl</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
+    
     <dependency>
       <groupId>jmock</groupId>
       <artifactId>jmock</artifactId>
@@ -605,7 +595,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.4.2</version>
+        <version>2.5</version>
         <configuration>
           <excludes>
             <exclude>**/Abstract*.java</exclude>
@@ -722,7 +712,7 @@
 
       <plugin>
         <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>2.4</version>
+        <version>2.5</version>
       </plugin>
       <!-- This plugin is reffered on myfaces master pom, but
            this is needed to set targetJdk to 1.5 -->
