@@ -42,6 +42,7 @@ import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
 import javax.servlet.jsp.jstl.sql.Result;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.custom.ExtendedComponentBase;
 
@@ -113,6 +114,23 @@ public abstract class HtmlDataTableHack extends
         if (clientId == null)
         {
             clientId = super.getClientId(context);
+            // remove index if necesssary 
+            int rowIndex = getRowIndex();
+            if (rowIndex != -1)
+            {
+                char separator = UINamingContainer.getSeparatorChar(context);
+                int index = clientId.lastIndexOf(separator);
+                if(index != -1)
+                {
+                    String rowIndexString = clientId.substring(index + 1);
+                    if (rowIndexString.length() > 0 && 
+                        StringUtils.isNumeric(rowIndexString) &&
+                        rowIndex == Integer.valueOf(rowIndexString).intValue())
+                    {
+                        clientId = clientId.substring(0,index - 1);
+                    }
+                }
+            }
         }
         return clientId;
     }
@@ -124,7 +142,7 @@ public abstract class HtmlDataTableHack extends
         String clientId = HtmlComponentUtils.getClientId(this, getRenderer(context), context);
         if (clientId == null)
         {
-            clientId = super.getContainerClientId(context);
+            clientId = super.getClientId(context);
         }
         int rowIndex = getRowIndex();
         if (rowIndex == -1)
@@ -137,16 +155,11 @@ public abstract class HtmlDataTableHack extends
         if(index != -1)
         {
             String rowIndexString = clientId.substring(index + 1);
-            try
+            if(rowIndexString.length() > 0 && 
+               StringUtils.isNumeric(rowIndexString) &&
+               Integer.valueOf(rowIndexString) == rowIndex)
             {
-                if(Integer.parseInt(rowIndexString) == rowIndex)
-                {
-                    return clientId;
-                }
-            }
-            catch(NumberFormatException e)
-            {
-                return clientId + separator + rowIndex;
+                return clientId;
             }
         }
         return clientId + separator + rowIndex;
