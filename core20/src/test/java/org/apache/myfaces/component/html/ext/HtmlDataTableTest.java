@@ -78,10 +78,10 @@ public class HtmlDataTableTest extends AbstractTomahawkViewControllerTestCase
         {
             _dataTable.setRowIndex(i);
             assertTrue("Duplicate client id while iterating rows", rowClientIds
-                    .add(_dataTable.getClientId(facesContext)));
+                    .add(_dataTable.getContainerClientId(facesContext)));
         }
         _dataTable.setRowIndex(-1);
-        assertEquals(baseClientId, _dataTable.getClientId(facesContext));
+        assertEquals(baseClientId, _dataTable.getContainerClientId(facesContext));
     }
 
     /*
