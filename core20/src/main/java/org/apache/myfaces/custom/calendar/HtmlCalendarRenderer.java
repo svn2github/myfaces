@@ -319,6 +319,9 @@ public class HtmlCalendarRenderer
         inputCalendar.setId(inputCalendar.getId()+"tempId");
 
         inputCalendar.getChildren().add(inputText);
+        
+        //Reset client id to ensure proper operation
+        inputText.setId(inputText.getId());
 
         RendererUtils.renderChild(facesContext, inputText);
 
