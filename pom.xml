@@ -177,12 +177,12 @@
       - against *when jsf2.0 is selected*. When jsf1.1 or a Sun implementation
       - are selected for running the examples, this is ignored.
       -->
-    <myfaces-core20-version>2.0.1-SNAPSHOT</myfaces-core20-version>
+    <myfaces-core20-version>2.0.2-SNAPSHOT</myfaces-core20-version>
 
     <!--  
       - Define what shared lib version tomahawk20 and sandbox20 code will be compiled with.
       -->
-    <myfaces-shared20-version>4.0.2-SNAPSHOT</myfaces-shared20-version>
+    <myfaces-shared20-version>4.0.2</myfaces-shared20-version>
   </properties>
 
 </project>
