@@ -116,11 +116,13 @@ public class HtmlNavigationRenderer
             
             if (behaviors != null && !behaviors.isEmpty())
             {
+                writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext),null);
                 HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, panelNav, behaviors);
                 HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
             }
             else
             {
+                HtmlRendererUtils.writeIdIfNecessary(writer, component, facesContext);
                 HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);            
             }            
             

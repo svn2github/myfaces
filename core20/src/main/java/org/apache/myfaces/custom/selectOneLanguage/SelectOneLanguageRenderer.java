@@ -67,7 +67,14 @@ public class SelectOneLanguageRenderer extends HtmlMenuRenderer {
         {
             //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
             writer.startElement(HTML.SPAN_ELEM, selectOneLanguage);
-            HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
+            if (!behaviors.isEmpty())
+            {
+                writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext),null);
+            }
+            else
+            {
+                HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
+            }
         
             String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
             HtmlRendererUtils.renderHTMLAttributes(writer, selectOneLanguage, supportedAttributes);
@@ -82,7 +89,14 @@ public class SelectOneLanguageRenderer extends HtmlMenuRenderer {
         }
         
         writer.startElement(HTML.SELECT_ELEM, component);
-        HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
+        if (!behaviors.isEmpty())
+        {
+            writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext),null);
+        }
+        else
+        {
+            HtmlRendererUtils.writeIdIfNecessary(writer, selectOneLanguage, facesContext);
+        }
         writer.writeAttribute(HTML.NAME_ATTR, selectOneLanguage.getClientId(facesContext), null);
 
         List selectItemList = selectOneLanguage.getLanguagesChoicesAsSelectItemList();

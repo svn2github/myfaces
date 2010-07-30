@@ -82,7 +82,14 @@ public class HtmlFileUploadRenderer
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.FILE_ATTR, null);
         String clientId = uiComponent.getClientId(facesContext);
-        renderId(facesContext, uiComponent);
+        if (behaviors != null && !behaviors.isEmpty())
+        {
+            writer.writeAttribute(HTML.ID_ATTR, clientId,null);
+        }
+        else
+        {
+            renderId(facesContext, uiComponent);
+        }
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
         UploadedFile value = (UploadedFile)((HtmlInputFileUpload)uiComponent).getValue();
         if (value != null)
@@ -97,7 +104,8 @@ public class HtmlFileUploadRenderer
         {
             HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_FILE_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_EVENTS);
             HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
-            HtmlRendererUtils.renderBehaviorizedFieldEventHandlers(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedFieldEventHandlersWithoutOnchange(facesContext, writer, uiComponent, behaviors);
+            HtmlRendererUtils.renderBehaviorizedOnchangeEventHandler(facesContext, writer, uiComponent, behaviors);
         }
         else
         {

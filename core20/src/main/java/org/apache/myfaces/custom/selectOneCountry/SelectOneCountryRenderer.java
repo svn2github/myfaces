@@ -67,7 +67,14 @@ public class SelectOneCountryRenderer extends HtmlMenuRenderer {
         {
             //HtmlRendererUtils.renderDisplayValueOnlyForSelects(facesContext, component);
             writer.startElement(HTML.SPAN_ELEM, selectOneCountry);
-            HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
+            if (!behaviors.isEmpty())
+            {
+                writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext),null);
+            }
+            else
+            {
+                HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
+            }
 
             String[] supportedAttributes = {HTML.STYLE_CLASS_ATTR, HTML.STYLE_ATTR};
             HtmlRendererUtils.renderHTMLAttributes(writer, selectOneCountry, supportedAttributes);
@@ -82,7 +89,14 @@ public class SelectOneCountryRenderer extends HtmlMenuRenderer {
         }
 
         writer.startElement(HTML.SELECT_ELEM, selectOneCountry);
-        HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
+        if (!behaviors.isEmpty())
+        {
+            writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext),null);
+        }
+        else
+        {
+            HtmlRendererUtils.writeIdIfNecessary(writer, selectOneCountry, facesContext);
+        }
         writer.writeAttribute(HTML.NAME_ATTR, component.getClientId(facesContext), null);
 
         List selectItemList = selectOneCountry.getCountriesChoicesAsSelectItemList();

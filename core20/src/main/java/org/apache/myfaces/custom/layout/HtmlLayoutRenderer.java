@@ -130,11 +130,13 @@ public class HtmlLayoutRenderer
         
         if (behaviors != null && !behaviors.isEmpty())
         {
+            writer.writeAttribute(HTML.ID_ATTR, panelLayout.getClientId(facesContext),null);
             HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, panelLayout, behaviors);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
         }
         else
         {
+            HtmlRendererUtils.writeIdIfNecessary(writer, panelLayout, facesContext);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);            
         }
         if (header != null)
@@ -186,15 +188,18 @@ public class HtmlLayoutRenderer
         UIComponent footer = panelLayout.getFooter();
 
         writer.startElement(HTML.TABLE_ELEM, panelLayout);
+        
         Map<String, List<ClientBehavior>> behaviors = panelLayout.getClientBehaviors();
         
         if (behaviors != null && !behaviors.isEmpty())
         {
+            writer.writeAttribute(HTML.ID_ATTR, panelLayout.getClientId(facesContext),null);
             HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, panelLayout, behaviors);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
         }
         else
         {
+            HtmlRendererUtils.writeIdIfNecessary(writer, panelLayout, facesContext);            
             HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);            
         }        
         if (header != null)
@@ -246,15 +251,18 @@ public class HtmlLayoutRenderer
         UIComponent footer = panelLayout.getFooter();
 
         writer.startElement(HTML.TABLE_ELEM, panelLayout);
+        
         Map<String, List<ClientBehavior>> behaviors = panelLayout.getClientBehaviors();
         
         if (behaviors != null && !behaviors.isEmpty())
         {
+            writer.writeAttribute(HTML.ID_ATTR, panelLayout.getClientId(facesContext),null);
             HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, panelLayout, behaviors);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES_WITHOUT_EVENTS); 
         }
         else
         {
+            HtmlRendererUtils.writeIdIfNecessary(writer, panelLayout, facesContext);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);            
         }
         if (footer != null)

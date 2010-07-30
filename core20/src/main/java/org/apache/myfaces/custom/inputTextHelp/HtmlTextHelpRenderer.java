@@ -141,43 +141,60 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer  implements Component
                                           FacesContext facesContext)
             throws IOException
     {
-        if(!(component instanceof HtmlInputTextHelp) || getHelpText(component) == null || ("").equals(getHelpText(component).trim()))
+        Map<String, List<ClientBehavior>> behaviors = null;
+        if (component instanceof ClientBehaviorHolder)
         {
-            HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+            behaviors = ((ClientBehaviorHolder)component).getClientBehaviors();
         }
-        else
+        if (behaviors != null && !behaviors.isEmpty())
         {
-            String id = component.getClientId(facesContext);
-            HtmlInputTextHelp textHelp = (HtmlInputTextHelp)component;
             
-            Map<String, List<ClientBehavior>> behaviors = textHelp.getClientBehaviors();
-            if (behaviors != null && !behaviors.isEmpty())
-            {
-                
-                HtmlRendererUtils.renderBehaviorizedEventHandlersWithoutOnclick(facesContext, writer, textHelp, behaviors);
-                HtmlRendererUtils.renderBehaviorizedOnchangeEventHandler(facesContext, writer, textHelp, behaviors);
-                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONBLUR_ATTR, textHelp,
-                        ClientBehaviorEvents.BLUR, behaviors, HTML.ONBLUR_ATTR);
-                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,  HTML.ONSELECT_ATTR, textHelp,
-                        ClientBehaviorEvents.SELECT, behaviors, HTML.ONSELECT_ATTR);
+            HtmlRendererUtils.renderBehaviorizedEventHandlersWithoutOnclick(facesContext, writer, component, behaviors);
+            HtmlRendererUtils.renderBehaviorizedOnchangeEventHandler(facesContext, writer, component, behaviors);
+            HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONBLUR_ATTR, component,
+                    ClientBehaviorEvents.BLUR, behaviors, HTML.ONBLUR_ATTR);
+            HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer,  HTML.ONSELECT_ATTR, component,
+                    ClientBehaviorEvents.SELECT, behaviors, HTML.ONSELECT_ATTR);
+            HtmlRendererUtils.renderHTMLAttributes(writer, component,
+                    HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_EVENTS);
 
-                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONFOCUS_ATTR, textHelp, 
-                        ClientBehaviorEvents.FOCUS, null, behaviors, HTML.ONFOCUS_ATTR, null,
-                        buildJavascriptFunction(component, id, textHelp.getOnfocus()));
-                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCLICK_ATTR, textHelp, 
-                        ClientBehaviorEvents.CLICK, null, behaviors, HTML.ONCLICK_ATTR, null,
-                        buildJavascriptFunction(component, id, textHelp.getOnclick()));
-                HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                        HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_EVENTS);
+            if(!(component instanceof HtmlInputTextHelp) || getHelpText(component) == null || ("").equals(getHelpText(component).trim()))
+            {
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONFOCUS_ATTR, component,
+                        ClientBehaviorEvents.FOCUS, behaviors, HTML.ONFOCUS_ATTR);
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCLICK_ATTR, component,
+                        ClientBehaviorEvents.CLICK, behaviors, HTML.ONCLICK_ATTR);
             }
             else
             {
+                String id = component.getClientId(facesContext);
+                HtmlInputTextHelp textHelp = (HtmlInputTextHelp)component;
+
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONFOCUS_ATTR, component, 
+                        ClientBehaviorEvents.FOCUS, null, behaviors, HTML.ONFOCUS_ATTR, null,
+                        buildJavascriptFunction(component, id, textHelp.getOnfocus()));
+                HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCLICK_ATTR, component, 
+                        ClientBehaviorEvents.CLICK, null, behaviors, HTML.ONCLICK_ATTR, null,
+                        buildJavascriptFunction(component, id, textHelp.getOnclick()));
+            }
+        }
+        else
+        {
+            if(!(component instanceof HtmlInputTextHelp) || getHelpText(component) == null || ("").equals(getHelpText(component).trim()))
+            {
+                HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+            }
+            else
+            {
+                String id = component.getClientId(facesContext);
+                HtmlInputTextHelp textHelp = (HtmlInputTextHelp)component;
+
                 HtmlRendererUtils.renderHTMLAttributes(writer, component,
-                                                       HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
+                                                   HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_ONFOCUS_AND_ONCLICK);
                 writer.writeAttribute(HTML.ONFOCUS_ATTR,
-                                      buildJavascriptFunction(component, id, textHelp.getOnfocus()), null);
+                                  buildJavascriptFunction(component, id, textHelp.getOnfocus()), null);
                 writer.writeAttribute(HTML.ONCLICK_ATTR,
-                                      buildJavascriptFunction(component, id, textHelp.getOnclick()), null);
+                                  buildJavascriptFunction(component, id, textHelp.getOnclick()), null);
             }
         }
 

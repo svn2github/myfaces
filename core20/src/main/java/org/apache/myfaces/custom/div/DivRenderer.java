@@ -78,6 +78,7 @@ public class DivRenderer extends HtmlTagRenderer
             //attributes only
             if (behaviors != null && !behaviors.isEmpty())
             {
+                HtmlRendererUtils.writeIdAndName(writer, component, context);
                 HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.UNIVERSAL_ATTRIBUTES_WITHOUT_STYLE);
                 HtmlRendererUtils.renderBehaviorizedEventHandlers(context, writer, component, behaviors);
             }
