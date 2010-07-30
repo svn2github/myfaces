@@ -37,7 +37,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -407,11 +406,13 @@ public class HtmlCalendarRenderer
         
         if (behaviors != null && !behaviors.isEmpty())
         {
+            writer.writeAttribute(HTML.ID_ATTR, inputCalendar.getClientId(facesContext),null);
             HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, inputCalendar, behaviors);
             HtmlRendererUtils.renderBehaviorizedFieldEventHandlersWithoutOnchangeAndOnselect(facesContext, writer, inputCalendar, behaviors);
         }
         else
         {
+            HtmlRendererUtils.writeIdIfNecessary(writer, inputCalendar, facesContext);
             HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.EVENT_HANDLER_ATTRIBUTES);
             HtmlRendererUtils.renderHTMLAttributes(writer, inputCalendar, HTML.COMMON_FIELD_EVENT_ATTRIBUTES_WITHOUT_ONSELECT_AND_ONCHANGE);
         }
@@ -470,6 +471,19 @@ public class HtmlCalendarRenderer
         if(inputText == null)
         {
             inputText = (HtmlInputTextHelp) application.createComponent(HtmlInputTextHelp.COMPONENT_TYPE);
+            
+            //Copy all client behaviors 
+            for (Map.Entry<String,List<ClientBehavior>> entry : inputCalendar.getClientBehaviors().entrySet())
+            {
+                List<ClientBehavior> list = entry.getValue();
+                if (list != null && !list.isEmpty())
+                {
+                    for (ClientBehavior cb : list)
+                    {
+                        inputText.addClientBehavior(entry.getKey(), cb);
+                    }
+                }
+            }
         }
         return inputText;
     }
