@@ -205,6 +205,15 @@
       -->
       <scope>test</scope>
     </dependency>
+    <!--
+    <dependency>
+      <groupId>org.apache.myfaces.core</groupId>
+      <artifactId>myfaces-impl</artifactId>
+      <version>${myfaces-core20-version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    -->
 
     <dependency>
       <groupId>joda-time</groupId>
@@ -246,6 +255,13 @@
       <artifactId>myfaces-test20</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>commons-digester</groupId>
+        <artifactId>commons-digester</artifactId>
+        <version>1.8</version>
+        <scope>test</scope>
     </dependency>
     
     <dependency>
