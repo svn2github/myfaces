@@ -197,6 +197,8 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.UL_ELEM, panelNav);
 
+            HtmlRendererUtils.writeIdIfNecessary(writer, panelNav, facesContext);
+            
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.UL_PASSTHROUGH_ATTRIBUTES);
 
             //iterate over the tree and toggleOpen if viewId in item.getActiveOnVieIds()
@@ -222,6 +224,9 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer {
         if (panelNav.getChildCount() > 0) {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.TABLE_ELEM, panelNav);
+            
+            HtmlRendererUtils.writeIdIfNecessary(writer, panelNav, facesContext);
+            
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
             if (panelNav.getStyle() == null && panelNav.getStyleClass() == null) {
                 writer.writeAttribute(HTML.BORDER_ATTR, ZERO_INTEGER, null);

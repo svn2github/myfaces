@@ -102,6 +102,7 @@ public class HtmlLayoutRenderer
         UIComponent footer = panelLayout.getFooter();
 
         writer.startElement(HTML.TABLE_ELEM, panelLayout);
+        HtmlRendererUtils.writeIdIfNecessary(writer, panelLayout, facesContext);
         HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         if (header != null)
         {
@@ -152,6 +153,7 @@ public class HtmlLayoutRenderer
         UIComponent footer = panelLayout.getFooter();
 
         writer.startElement(HTML.TABLE_ELEM, panelLayout);
+        HtmlRendererUtils.writeIdIfNecessary(writer, panelLayout, facesContext);
         HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         if (header != null)
         {
@@ -202,6 +204,7 @@ public class HtmlLayoutRenderer
         UIComponent footer = panelLayout.getFooter();
 
         writer.startElement(HTML.TABLE_ELEM, panelLayout);
+        HtmlRendererUtils.writeIdIfNecessary(writer, panelLayout, facesContext);
         HtmlRendererUtils.renderHTMLAttributes(writer, panelLayout, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
         if (footer != null)
         {

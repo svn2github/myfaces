@@ -182,6 +182,7 @@ public class HtmlPicklistRenderer extends HtmlListboxRendererBase
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement(HTML.TABLE_ELEM, uiComponent);
+        HtmlRendererUtils.writeIdIfNecessary(writer, uiComponent, facesContext);
         writer.startElement(HTML.TR_ELEM, uiComponent);
         writer.startElement(HTML.TD_ELEM, uiComponent);
 

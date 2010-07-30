@@ -103,6 +103,7 @@ public class HtmlNavigationRenderer
         {
             HtmlRendererUtils.writePrettyLineSeparator(facesContext);
             writer.startElement(HTML.TABLE_ELEM, component);
+            HtmlRendererUtils.writeIdIfNecessary(writer, component, facesContext);
             HtmlRendererUtils.renderHTMLAttributes(writer, panelNav, HTML.TABLE_PASSTHROUGH_ATTRIBUTES);
             
             boolean isBorderAlreadyDefined = component.getAttributes().containsKey(HTML.BORDER_ATTR);
