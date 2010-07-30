@@ -362,7 +362,7 @@ public class HtmlTreeRenderer extends Renderer
             out.startElement(HTML.TD_ELEM, tree);
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
             out.writeAttribute(HTML.HEIGHT_ATTR, "100%", null);
-            out.writeAttribute(HTML.STYLE_ATTR, "background-image:" + lineSrc + ";", null); //we use "style" because "background" is no valid xhtml attribute for td
+            out.writeURIAttribute(HTML.STYLE_ATTR, "background-image:url('" + lineSrc + "');", null); //we use "style" because "background" is no valid xhtml attribute for td
             out.startElement(HTML.IMG_ELEM, tree);
             out.writeURIAttribute(HTML.SRC_ATTR, lineSrc, null);
             out.writeAttribute(HTML.WIDTH_ATTR, "19", null);
@@ -515,7 +515,7 @@ public class HtmlTreeRenderer extends Renderer
         if ((bitMask & LINES)!=0 && (bitMask & LAST)==0)
         {
             //out.writeURIAttribute("background", getImageSrc(context, tree, "line-trunk.gif", true), null);
-            out.writeURIAttribute(HTML.STYLE_ATTR, "background-image:" + getImageSrc(context, tree, "line-trunk.gif", true) + ";", null); 
+            out.writeURIAttribute(HTML.STYLE_ATTR, "background-image:url('" + getImageSrc(context, tree, "line-trunk.gif", true) + "');", null); 
         }
 
 //      add the appropriate image for the nav control
