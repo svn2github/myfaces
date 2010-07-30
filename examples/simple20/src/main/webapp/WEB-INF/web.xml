@@ -90,9 +90,9 @@
             gain performance.
     </description>
     <param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
-    <param-value>org.apache.myfaces.renderkit.html.util.DefaultAddResource</param-value>
-    <!--param-value>org.apache.myfaces.renderkit.html.util.NonBufferingAddResource</param-value-->
-    <!--param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value-->
+    <!-- param-value>org.apache.myfaces.renderkit.html.util.DefaultAddResource</param-value -->
+    <param-value>org.apache.myfaces.renderkit.html.util.NonBufferingAddResource</param-value>
+    <!--param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value -->
   </context-param>
 
   <context-param>
@@ -121,23 +121,19 @@
     <param-value>/faces/extensionResource</param-value>
   </context-param>
 
+     <!-- 
     <context-param>
-      <description>
-          This parameter enables partial state saving.
-      </description>
-      <param-name>javax.faces.PARTIAL_STATE_SAVING_METHOD</param-name>
-      <param-value>false</param-value>
+        <param-name>javax.faces.PARTIAL_STATE_SAVING</param-name>
+        <param-value>true</param-value>
     </context-param>
+     -->
 
+    <!-- 
     <context-param>
-      <description>
-          If true every time a page is rendered, the corresponding JSP is dispatched also.
-          This is very usefull if Scriptlets are used inside the JSP.
-      </description>
-      <param-name>javax.faces.PARTIAL_STATE_SAVING_DISPATCH_EVERY_TIME</param-name>
-      <param-value>true</param-value>
+        <param-name>org.apache.myfaces.REFRESH_TRANSIENT_BUILD_ON_PSS</param-name>
+        <param-value>true</param-value>
     </context-param>
-
+     -->
 
   <filter>
     <filter-name>extensionsFilter</filter-name>
