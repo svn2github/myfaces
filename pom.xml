@@ -182,7 +182,7 @@
     <!--  
       - Define what shared lib version tomahawk20 and sandbox20 code will be compiled with.
       -->
-    <myfaces-shared20-version>4.0.2</myfaces-shared20-version>
+    <myfaces-shared20-version>4.0.3-SNAPSHOT</myfaces-shared20-version>
   </properties>
 
 </project>
