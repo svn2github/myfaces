@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehavior;
@@ -52,21 +53,11 @@ import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
  * @author Thomas Obereder
  * @version Date: 09.06.2005, 22:50:48
  */
-@ListenerFor(systemEventClass=PreRenderViewAddResourceEvent.class)
-public class HtmlTextHelpRenderer extends HtmlTextRenderer  implements ComponentSystemEventListener
+@ResourceDependency(library="oam.custom.inputTextHelp", name="inputTextHelp.js")
+public class HtmlTextHelpRenderer extends HtmlTextRenderer
 {
     private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.inputTextHelp.JAVASCRIPT_ENCODED";
 
-    public void processEvent(ComponentSystemEvent event)
-    {
-        if(event.getComponent() instanceof HtmlInputTextHelp)
-        {
-            TomahawkResourceUtils.addOutputScriptResource(FacesContext.getCurrentInstance(),
-                    "oam.custom.inputTextHelp", 
-                    "inputTextHelp.js");
-        }
-    }
-    
     protected void renderNormal(FacesContext facesContext, UIComponent component) throws IOException
     {
         if(component instanceof HtmlInputTextHelp)
