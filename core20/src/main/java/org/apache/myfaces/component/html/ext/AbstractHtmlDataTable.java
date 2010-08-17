@@ -39,6 +39,9 @@ import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
@@ -107,6 +110,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public static final String NEWSPAPER_COLUMNS_PROPERTY = "newspaperColumns";
     public static final String SPACER_FACET_NAME = "spacer";
     public static final String NEWSPAPER_ORIENTATION_PROPERTY = "newspaperOrientation";
+    
+    public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
 
     private _SerializableDataModel _preservedDataModel;
 
@@ -263,6 +268,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                         //recursive call to find the component
                         returnValue = it1.next().invokeOnComponent(context, clientId, callback);
                     }
+                    
+                    if (!returnValue)
+                    {
+                        UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
+                        if (detailStampFacet != null)
+                        {
+                            returnValue = detailStampFacet.invokeOnComponent(context, clientId, callback);
+                        }
+                    }
                 }
                 finally
                 {
@@ -307,6 +321,125 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         }
 
         return returnValue;
+    }
+    
+    public boolean visitTree(VisitContext context, VisitCallback callback)
+    {
+        if (!isVisitable(context))
+        {
+            return false;
+        }
+
+        // save the current row index
+        int oldRowIndex = getRowIndex();
+        // set row index to -1 to process the facets and to get the rowless clientId
+        setRowIndex(-1);
+        // push the Component to EL
+        pushComponentToEL(context.getFacesContext(), this);
+        try
+        {
+            VisitResult visitResult = context.invokeVisitCallback(this,
+                    callback);
+            switch (visitResult)
+            {
+            //we are done nothing has to be processed anymore
+            case COMPLETE:
+                return true;
+
+            case REJECT:
+                return false;
+
+                //accept
+            default:
+                // determine if we need to visit our children 
+                Collection<String> subtreeIdsToVisit = context
+                        .getSubtreeIdsToVisit(this);
+                boolean doVisitChildren = subtreeIdsToVisit != null
+                        && !subtreeIdsToVisit.isEmpty();
+                if (doVisitChildren)
+                {
+                    // visit the facets of the component
+                    for (UIComponent facet : getFacets().values())
+                    {
+                        if (facet.visitTree(context, callback))
+                        {
+                            return true;
+                        }
+                    }
+                    // visit every column directly without visiting its children 
+                    // (the children of every UIColumn will be visited later for 
+                    // every row) and also visit the column's facets
+                    for (UIComponent child : getChildren())
+                    {
+                        if (child instanceof UIColumn)
+                        {
+                            VisitResult columnResult = context.invokeVisitCallback(child, callback);
+                            if (columnResult == VisitResult.COMPLETE)
+                            {
+                                return true;
+                            }
+                            for (UIComponent facet : child.getFacets().values())
+                            {
+                                if (facet.visitTree(context, callback))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    boolean visitDetailStamp = (getFacet(DETAIL_STAMP_FACET_NAME) != null);
+                    
+                    // iterate over the rows
+                    int rowsToProcess = getRows();
+                    // if getRows() returns 0, all rows have to be processed
+                    if (rowsToProcess == 0)
+                    {
+                        rowsToProcess = getRowCount();
+                    }
+                    int rowIndex = getFirst();
+                    for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
+                    {
+                        setRowIndex(rowIndex);
+                        if (!isRowAvailable())
+                        {
+                            return false;
+                        }
+                        // visit the children of every child of the UIData that is an instance of UIColumn
+                        for (UIComponent child : getChildren())
+                        {
+                            if (child instanceof UIColumn)
+                            {
+                                for (UIComponent grandchild : child
+                                        .getChildren())
+                                {
+                                    if (grandchild.visitTree(context, callback))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        if (visitDetailStamp)
+                        {
+                            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
+                            if (detailStampFacet.visitTree(context, callback))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        finally
+        {
+            // pop the component from EL and restore the old row index
+            popComponentFromEL(context.getFacesContext());
+            setRowIndex(oldRowIndex);
+        }
+
+        // Return false to allow the visiting to continue
+        return false;
     }
 
     public void setRowIndex(int rowIndex)
@@ -414,15 +547,119 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // We must remove and then replace the facet so that
         // it is not processed by default facet handling code
         //
-        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
-        super.processDecodes(context);
-        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, (UIComponent)facet);
+        //Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //super.processDecodes(context);
+        //if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, (UIComponent)facet);
+        setRowIndex(-1);
+        processFacets(context, PROCESS_DECODES);
+        processColumnFacets(context, PROCESS_DECODES);
+        processColumnChildren(context, PROCESS_DECODES);
+        setRowIndex(-1);
+        try
+        {
+            decode(context);
+        }
+        catch (RuntimeException e)
+        {
+            context.renderResponse();
+            throw e;
+        }
 
         setRowIndex(-1);
         processColumns(context, PROCESS_DECODES);
         setRowIndex(-1);
         processDetails(context, PROCESS_DECODES);
         setRowIndex(-1);
+    }
+    
+    private void processFacets(FacesContext context, int processAction)
+    {
+        for (Map.Entry<String, UIComponent> entry : getFacets().entrySet())
+        {
+            if (!DETAIL_STAMP_FACET_NAME.equals(entry.getKey()))
+            {
+                process(context, entry.getValue(), processAction);
+            }
+        }
+    }
+
+    /**
+     * Invoke the specified phase on all facets of all UIColumn children of this component. Note that no methods are
+     * called on the UIColumn child objects themselves.
+     * 
+     * @param context
+     *            is the current faces context.
+     * @param processAction
+     *            specifies a JSF phase: decode, validate or update.
+     */
+    private void processColumnFacets(FacesContext context, int processAction)
+    {
+        for (UIComponent child : getChildren())
+        {
+            if (child instanceof UIColumn)
+            {
+                if (!child.isRendered())
+                {
+                    // Column is not visible
+                    continue;
+                }
+                
+                for (UIComponent facet : child.getFacets().values())
+                {
+                    process(context, facet, processAction);
+                }
+            }
+        }
+    }
+
+    /**
+     * Invoke the specified phase on all non-facet children of all UIColumn children of this component. Note that no
+     * methods are called on the UIColumn child objects themselves.
+     * 
+     * @param context
+     *            is the current faces context.
+     * @param processAction
+     *            specifies a JSF phase: decode, validate or update.
+     */
+    private void processColumnChildren(FacesContext context, int processAction)
+    {
+        int first = getFirst();
+        int rows = getRows();
+        int last;
+        if (rows == 0)
+        {
+            last = getRowCount();
+        }
+        else
+        {
+            last = first + rows;
+        }
+        for (int rowIndex = first; last == -1 || rowIndex < last; rowIndex++)
+        {
+            setRowIndex(rowIndex);
+
+            // scrolled past the last row
+            if (!isRowAvailable())
+            {
+                break;
+            }
+
+            for (UIComponent child : getChildren())
+            {
+                if (child instanceof UIColumn)
+                {
+                    if (!child.isRendered())
+                    {
+                        // Column is not visible
+                        continue;
+                    }
+                    for (UIComponent columnChild : child.getChildren())
+                    {
+                        process(context, columnChild, processAction);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -552,9 +789,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // We must remove and then replace the facet so that
         // it is not processed by default facet handling code
         //
-        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
-        super.processValidators(context);
-        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        //Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //super.processValidators(context);
+        //if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        setRowIndex(-1);
+        processFacets(context, PROCESS_VALIDATORS);
+        processColumnFacets(context, PROCESS_VALIDATORS);
+        processColumnChildren(context, PROCESS_VALIDATORS);
+        setRowIndex(-1);
 
         processColumns(context, PROCESS_VALIDATORS);
         setRowIndex(-1);
@@ -577,9 +819,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // We must remove and then replace the facet so that
         // it is not processed by default facet handling code
         //
-        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
-        super.processUpdates(context);
-        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        //Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //super.processUpdates(context);
+        //if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        
+        setRowIndex(-1);
+        processFacets(context, PROCESS_UPDATES);
+        processColumnFacets(context, PROCESS_UPDATES);
+        processColumnChildren(context, PROCESS_UPDATES);
+        setRowIndex(-1);
 
         processColumns(context, PROCESS_UPDATES);
         setRowIndex(-1);
