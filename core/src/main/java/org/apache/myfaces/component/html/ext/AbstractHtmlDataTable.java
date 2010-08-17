@@ -210,7 +210,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         /*Just for obtaining an iterator which must be passed to saveDescendantComponentStates()*/
         Set set = new HashSet();
         set.add(facet);
-        if (rowIndex != -1 && facet != null)
+        if (getRowIndex() != -1 && facet != null)
         {
             _detailRowStates.put(getClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
         }
