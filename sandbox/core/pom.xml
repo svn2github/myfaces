@@ -218,7 +218,7 @@
             <plugin>
               <groupId>org.apache.myfaces.buildtools</groupId>
               <artifactId>myfaces-builder-plugin</artifactId>
-              <version>1.0.4</version>
+              <version>${myfaces-builder-plugin-version}</version>
               <executions>
                 <execution>
                   <!-- A hierarchy of different tag classes must be created, 
@@ -384,7 +384,7 @@
                         <!-- Generate report content -->
                         <groupId>org.apache.myfaces.buildtools</groupId>
                         <artifactId>myfaces-builder-plugin</artifactId>
-                        <version>1.0.4</version>
+                        <version>${myfaces-builder-plugin-version}</version>
                         <configuration>
                             <taglibs>
                                 <s>http://myfaces.apache.org/sandbox</s>
@@ -414,7 +414,7 @@
                         <!-- Generate report index -->
                         <groupId>org.apache.myfaces.buildtools</groupId>
                         <artifactId>myfaces-builder-plugin</artifactId>
-                        <version>1.0.4</version>
+                        <version>${myfaces-builder-plugin-version}</version>
                         <configuration>
                             <taglibs>
                                 <s>http://myfaces.apache.org/sandbox</s>
