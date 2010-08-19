@@ -19,6 +19,7 @@
 package org.apache.myfaces.component.html.ext;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,8 +36,10 @@ import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
+import javax.faces.component.StateHolder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;
 import javax.faces.component.visit.VisitCallback;
@@ -113,7 +116,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
 
-    private _SerializableDataModel _preservedDataModel;
+    private Map<String, _SerializableDataModel> _preservedDataModel = new HashMap<String, _SerializableDataModel>();
 
     private boolean _isValidChildren = true;
 
@@ -945,7 +948,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 }
             }
         }
-        _preservedDataModel = null;
+        setPreservedDataModel(null);
     }
     
     public void markInitialState()
@@ -968,7 +971,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
         if (_isValidChildren && !hasErrorMessages(context))
         {
-            _preservedDataModel = null;
+            setPreservedDataModel(null);
         }
 
         for (Iterator iter = getChildren().iterator(); iter.hasNext();)
@@ -1217,6 +1220,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 ((UIColumns) component).encodeTableEnd(context);
             }
         }
+        
+        if (isPreserveDataModel())
+        {
+            setPreservedDataModel(getSerializableDataModel());
+        }
     }
 
     /**
@@ -1226,10 +1234,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     @JSFProperty
     public int getFirst()
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Rather get the currently restored DataModel attribute
-            return _preservedDataModel.getFirst();
+            return pdm.getFirst();
         }
         else
         {
@@ -1239,10 +1248,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setFirst(int first)
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Also change the currently restored DataModel attribute
-            _preservedDataModel.setFirst(first);
+            pdm.setFirst(first);
         }
         super.setFirst(first);
     }
@@ -1254,10 +1264,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     @JSFProperty
     public int getRows()
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Rather get the currently restored DataModel attribute
-            return _preservedDataModel.getRows();
+            return pdm.getRows();
         }
         else
         {
@@ -1267,10 +1278,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setRows(int rows)
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Also change the currently restored DataModel attribute
-            _preservedDataModel.setRows(rows);
+            pdm.setRows(rows);
         }
         super.setRows(rows);
     }
@@ -1296,8 +1308,22 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             
             if (isPreserveDataModel())
             {
-                _preservedDataModel = getSerializableDataModel();
-                values[1] = saveAttachedState(context, _preservedDataModel);
+                if (!_preservedDataModel.isEmpty())
+                {
+                    int cnt = 0;
+                    Object[] mapArr = new Object[_preservedDataModel.size() * 2];
+                    for (Map.Entry<String, _SerializableDataModel> entry : _preservedDataModel.entrySet())
+                    {
+                        mapArr[cnt] = entry.getKey();
+                        mapArr[cnt + 1] = saveAttachedState(context, entry.getValue());
+                        cnt += 2;
+                    }
+                    values[1] = mapArr;
+                }
+                else
+                {
+                    values[1] = null;
+                }
             }
             else
             {
@@ -1316,8 +1342,22 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
             if (isPreserveDataModel())
             {
-                _preservedDataModel = getSerializableDataModel();
-                values[1] = saveAttachedState(context, _preservedDataModel);
+                if (!_preservedDataModel.isEmpty())
+                {
+                    int cnt = 0;
+                    Object[] mapArr = new Object[_preservedDataModel.size() * 2];
+                    for (Map.Entry<String, _SerializableDataModel> entry : _preservedDataModel.entrySet())
+                    {
+                        mapArr[cnt] = entry.getKey();
+                        mapArr[cnt + 1] = saveAttachedState(context, entry.getValue());
+                        cnt += 2;
+                    }
+                    values[1] = mapArr;
+                }
+                else
+                {
+                    values[1] = null;
+                }
             }
             else
             {
@@ -1337,10 +1377,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     protected DataModel getDataModel()
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
-            setDataModel(_preservedDataModel);
-            _preservedDataModel = null;
+            setDataModel(pdm);
+            setPreservedDataModel(null);
         }
 
         return super.getDataModel();
@@ -1406,11 +1447,26 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         super.restoreState(context, values[0]);
         if (isPreserveDataModel())
         {
-            _preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[1]);
+            if (!_preservedDataModel.isEmpty())
+            {
+                _preservedDataModel.clear();
+            }            
+            Object[] listAsMap = (Object[]) values[1];
+            if (listAsMap != null)
+            {
+                for (int cnt = 0; cnt < listAsMap.length; cnt += 2)
+                {
+                    _preservedDataModel.put((String) listAsMap[cnt], (_SerializableDataModel) UIComponentBase
+                            .restoreAttachedState(context, listAsMap[cnt + 1]));
+                }
+            }
         }
         else
         {
-            _preservedDataModel = null;
+            if (!_preservedDataModel.isEmpty())
+            {
+                _preservedDataModel.clear();
+            }
         }
 
         if (isPreserveSort())
@@ -1745,12 +1801,31 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     protected _SerializableDataModel getPreservedDataModel()
     {
-        return _preservedDataModel;
+        UIComponent parent = getParent();
+        String clientID = "";
+        if (parent != null) 
+        {
+            clientID = parent.getContainerClientId(getFacesContext());
+        }
+        return _preservedDataModel.get(clientID);
     }
 
-    protected void setPreservedDataModel(_SerializableDataModel preservedDataModel)
+    protected void setPreservedDataModel(_SerializableDataModel datamodel)
     {
-        _preservedDataModel = preservedDataModel;
+        UIComponent parent = getParent();
+        String clientID = "";
+        if(parent != null)
+        {
+            clientID = parent.getContainerClientId(getFacesContext());
+        }
+        if (datamodel == null)
+        {
+            _preservedDataModel.remove(clientID);
+        }
+        else
+        {
+            _preservedDataModel.put(clientID, datamodel);
+        }
     }
 
 
