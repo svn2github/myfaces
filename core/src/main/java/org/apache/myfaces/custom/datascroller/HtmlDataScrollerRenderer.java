@@ -193,7 +193,23 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     {
         RendererUtils.checkParamValidity(facescontext, uicomponent, HtmlDataScroller.class);
 
-        RendererUtils.renderChildren(facescontext, uicomponent);
+        // TOMAHAWK-1463 Don't render paginator links twice!
+        if (uicomponent.getChildCount() > 0)
+        {
+            HtmlDataScroller scroller = (HtmlDataScroller) uicomponent;
+            String scrollerIdPagePrefix = scroller.getId() + HtmlDataScrollerRenderer.PAGE_NAVIGATION;
+
+            for (Iterator it = uicomponent.getChildren().iterator(); it.hasNext(); )
+            {
+                UIComponent child = (UIComponent)it.next();
+                String childId = child.getId();
+
+                if (childId != null && !childId.startsWith(scrollerIdPagePrefix))
+                {
+                    RendererUtils.renderChild(facescontext, child);
+                }
+            }
+        }
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException
