@@ -18,26 +18,6 @@
  */
 package org.apache.myfaces.component.html.ext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.NewspaperTable;
-import org.apache.myfaces.component.UserRoleAware;
-import org.apache.myfaces.component.UserRoleUtils;
-import org.apache.myfaces.custom.column.HtmlSimpleColumn;
-import org.apache.myfaces.custom.crosstable.UIColumns;
-import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
-import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
-import org.apache.myfaces.renderkit.html.util.TableContext;
-import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
-
-import javax.faces.application.Application;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIColumn;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.model.DataModel;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -49,6 +29,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import javax.faces.application.Application;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
+import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
+import javax.faces.model.DataModel;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.NewspaperTable;
+import org.apache.myfaces.component.UserRoleAware;
+import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.custom.column.HtmlSimpleColumn;
+import org.apache.myfaces.custom.crosstable.UIColumns;
+import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
+import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
+import org.apache.myfaces.renderkit.html.util.TableContext;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 
 /**
  * The MyFacesDataTable extends the standard JSF DataTable by two
@@ -101,7 +103,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public static final String SPACER_FACET_NAME = "spacer";
     public static final String NEWSPAPER_ORIENTATION_PROPERTY = "newspaperOrientation";
 
-    private _SerializableDataModel _preservedDataModel;
+    private Map _preservedDataModel = new HashMap();
 
     private String _forceIdIndexFormula = null;
     private String _sortColumn = null;
@@ -524,7 +526,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 }
             }
         }
-        _preservedDataModel = null;
+        setPreservedDataModel(null);
     }
 
     public void encodeBegin(FacesContext context) throws IOException
@@ -534,7 +536,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
         if (_isValidChildren && !hasErrorMessages(context))
         {
-            _preservedDataModel = null;
+            setPreservedDataModel(null);
         }
 
         for (Iterator iter = getChildren().iterator(); iter.hasNext();)
@@ -734,6 +736,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 ((UIColumns) component).encodeTableEnd(context);
             }
         }
+        
+        if (isPreserveDataModel())
+        {
+            setPreservedDataModel(getSerializableDataModel());
+        }
     }
 
     /**
@@ -743,10 +750,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public int getFirst()
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Rather get the currently restored DataModel attribute
-            return _preservedDataModel.getFirst();
+            return pdm.getFirst();
         }
         else
         {
@@ -756,10 +764,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setFirst(int first)
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Also change the currently restored DataModel attribute
-            _preservedDataModel.setFirst(first);
+            pdm.setFirst(first);
         }
         super.setFirst(first);
     }
@@ -771,10 +780,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public int getRows()
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Rather get the currently restored DataModel attribute
-            return _preservedDataModel.getRows();
+            return pdm.getRows();
         }
         else
         {
@@ -784,10 +794,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setRows(int rows)
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
             //Also change the currently restored DataModel attribute
-            _preservedDataModel.setRows(rows);
+            pdm.setRows(rows);
         }
         super.setRows(rows);
     }
@@ -802,8 +813,23 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
         if (isPreserveDataModel())
         {
-            _preservedDataModel = getSerializableDataModel();
-            values[2] = saveAttachedState(context, _preservedDataModel);
+            if (!_preservedDataModel.isEmpty())
+            {
+                int cnt = 0;
+                Object[] mapArr = new Object[_preservedDataModel.size() * 2];
+                for (Iterator it = _preservedDataModel.entrySet().iterator(); it.hasNext();)
+                {
+                    Map.Entry entry = (Map.Entry) it.next();
+                    mapArr[cnt] = (String) entry.getKey();
+                    mapArr[cnt + 1] = (_SerializableDataModel)saveAttachedState(context, entry.getValue());
+                    cnt += 2;
+                }
+                values[2] = mapArr;
+            }
+            else
+            {
+                values[2] = null;
+            }
         }
         else
         {
@@ -833,10 +859,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     protected DataModel getDataModel()
     {
-        if (_preservedDataModel != null)
+        _SerializableDataModel pdm = getPreservedDataModel();
+        if (pdm != null)
         {
-            setDataModel(_preservedDataModel);
-            _preservedDataModel = null;
+            setDataModel(pdm);
+            setPreservedDataModel(null);
         }
 
         return super.getDataModel();
@@ -896,11 +923,26 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         _preserveDataModel = (Boolean) values[1];
         if (isPreserveDataModel())
         {
-            _preservedDataModel = (_SerializableDataModel) restoreAttachedState(context, values[2]);
+            if (!_preservedDataModel.isEmpty())
+            {
+                _preservedDataModel.clear();
+            }            
+            Object[] listAsMap = (Object[]) values[2];
+            if (listAsMap != null)
+            {
+                for (int cnt = 0; cnt < listAsMap.length; cnt += 2)
+                {
+                    _preservedDataModel.put((String) listAsMap[cnt], (_SerializableDataModel) UIComponentBase
+                            .restoreAttachedState(context, listAsMap[cnt + 1]));
+                }
+            }
         }
         else
         {
-            _preservedDataModel = null;
+            if (!_preservedDataModel.isEmpty())
+            {
+                _preservedDataModel.clear();
+            }
         }
         _preserveSort = (Boolean) values[3];
         _forceIdIndexFormula = (String) values[4];
@@ -1316,12 +1358,31 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     protected _SerializableDataModel getPreservedDataModel()
     {
-        return _preservedDataModel;
+        UIComponent parent = getParent();
+        String clientID = "";
+        if (parent != null) 
+        {
+            clientID = parent.getClientId(getFacesContext());
+        }
+        return (_SerializableDataModel) _preservedDataModel.get(clientID);
     }
 
-    protected void setPreservedDataModel(_SerializableDataModel preservedDataModel)
+    protected void setPreservedDataModel(_SerializableDataModel datamodel)
     {
-        _preservedDataModel = preservedDataModel;
+        UIComponent parent = getParent();
+        String clientID = "";
+        if(parent != null)
+        {
+            clientID = parent.getClientId(getFacesContext());
+        }
+        if (datamodel == null)
+        {
+            _preservedDataModel.remove(clientID);
+        }
+        else
+        {
+            _preservedDataModel.put(clientID, datamodel);
+        }
     }
 
 
