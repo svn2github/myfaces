@@ -54,6 +54,7 @@ import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
 import org.apache.myfaces.renderkit.html.ext.HtmlTableRenderer;
 import org.apache.myfaces.renderkit.html.util.TableContext;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
+import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 
 /**
  * The MyFacesDataTable extends the standard JSF DataTable by two
@@ -624,12 +625,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         if (vb != null && !vb.isReadOnly(context))
         {
             _SerializableDataModel dm = (_SerializableDataModel) getDataModel();
-            Class type = vb.getType(context);
+            Class type = (getValueType() == null) ? 
+                    vb.getType(context) : 
+                        ClassUtils.simpleClassForName(getValueType());
+            Class dmType = dm.getClass();
             if (DataModel.class.isAssignableFrom(type))
             {
                 vb.setValue(context, dm);
             }
-            else if (List.class.isAssignableFrom(type))
+            else if (List.class.isAssignableFrom(type) || _SerializableListDataModel.class.isAssignableFrom(dmType))
             {
                 vb.setValue(context, dm.getWrappedData());
             }
@@ -1890,5 +1894,16 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * 
      * @JSFProperty
      */
-    public abstract String getDataformatas();    
+    public abstract String getDataformatas();
+
+    /**
+     * Indicate the expected type of the EL expression pointed
+     * by value property. It is useful when vb.getType() cannot
+     * found the type, like when a map value is resolved on 
+     * the expression.
+     * 
+     * @JSFProperty
+     */
+    public abstract String getValueType(); 
+
 }
