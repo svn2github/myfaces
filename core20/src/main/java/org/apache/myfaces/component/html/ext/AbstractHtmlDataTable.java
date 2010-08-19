@@ -453,11 +453,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
         UIComponent facet = getFacet(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
         /*Just for obtaining an iterator which must be passed to saveDescendantComponentStates()*/
-        Set set = new HashSet();
-        set.add(facet);
+        ArrayList<UIComponent> detailStampList = new ArrayList<UIComponent>(1);
+        detailStampList.add(facet);
         if (getRowIndex() != -1 && facet != null)
         {
-            _detailRowStates.put(getContainerClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
+            _detailRowStates.put(getContainerClientId(facesContext), saveDescendantComponentStates(detailStampList.iterator(), false));
         }
 
         String rowIndexVar = getRowIndexVar();
@@ -525,7 +525,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         {
             Object rowState = _detailRowStates.get(getContainerClientId(facesContext));
 
-            restoreDescendantComponentStates(set.iterator(),
+            restoreDescendantComponentStates(detailStampList.iterator(),
                     rowState, false);
 
         }
@@ -535,6 +535,67 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             Map requestMap = getFacesContext().getExternalContext().getRequestMap();
             requestMap.put(getStateHelper().get(PropertyKeys.varDetailToggler), this);
         }
+    }
+    
+    @Override
+    protected void restoreFullDescendantComponentDeltaStates(FacesContext facesContext,
+            Map<String, Object> rowState, Object initialState)
+    {
+        if (getFacetCount() > 0)
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                restoreFullDescendantComponentDeltaStates(facesContext, new _DetailStampFacetAndChildrenIterator(detailStampFacet, getChildren()), rowState, initialState, false, getContainerClientId(facesContext));
+                return;
+            }
+        }        
+        restoreFullDescendantComponentDeltaStates(facesContext, getChildren().iterator(), rowState, initialState, false, getContainerClientId(facesContext));
+    }
+
+    @Override
+    protected void restoreFullDescendantComponentStates(FacesContext facesContext,
+            Object initialState)
+    {
+        if (getFacetCount() > 0)
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                restoreFullDescendantComponentStates(facesContext, new _DetailStampFacetAndChildrenIterator(detailStampFacet, getChildren()), initialState, false);
+                return;
+            }
+        }
+        restoreFullDescendantComponentStates(facesContext, getChildren().iterator(), initialState, false);
+    }
+
+    @Override
+    protected Collection<Object[]> saveDescendantInitialComponentStates(
+            FacesContext facesContext)
+    {
+        if (getFacetCount() > 0)
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                return saveDescendantInitialComponentStates(facesContext, new _DetailStampFacetAndChildrenIterator(detailStampFacet, getChildren()), false);
+            }
+        }
+        return saveDescendantInitialComponentStates(facesContext, getChildren().iterator(), false);
+    }
+    
+    @Override
+    protected Map<String,Object> saveFullDescendantComponentStates(FacesContext facesContext)
+    {
+        if (getFacetCount() > 0)
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                return saveFullDescendantComponentStates(facesContext, null, new _DetailStampFacetAndChildrenIterator(detailStampFacet, getChildren()), false, getContainerClientId(facesContext));
+            }
+        }
+        return saveFullDescendantComponentStates(facesContext, null, getChildren().iterator(), false, getContainerClientId(facesContext));
     }
 
     public void processDecodes(FacesContext context)
@@ -725,11 +786,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
                 if ( rowIndex == (last - 1) )
                 {
-                    Set set = new HashSet();
-                    set.add(facet);
+                    ArrayList<UIComponent> detailStampList = new ArrayList<UIComponent>(1);
+                    detailStampList.add(facet);
                     _detailRowStates.put(
                             getContainerClientId(FacesContext.getCurrentInstance()),
-                                saveDescendantComponentStates(set.iterator(),false));
+                                saveDescendantComponentStates(detailStampList.iterator(),false));
                 }
             }
         }
@@ -886,6 +947,19 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         }
         _preservedDataModel = null;
     }
+    
+    public void markInitialState()
+    {
+        if (isPreserveRowComponentState())
+        {
+            if (getFacesContext().getAttributes().containsKey("org.apache.myfaces.MARK_INITIAL_STATE"))
+            {
+                //Since we re
+                replaceColumnsWithCommandSortHeadersIfNeeded(getFacesContext());
+            }
+        }
+        super.markInitialState();
+    }
 
     public void encodeBegin(FacesContext context) throws IOException
     {
@@ -907,7 +981,16 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 ((UIColumns) component).encodeTableBegin(context);
             }
         }
+        
+        replaceColumnsWithCommandSortHeadersIfNeeded(context);
 
+        // Now invoke the superclass encodeBegin, which will eventually
+        // execute the encodeBegin for the associated renderer.
+        super.encodeBegin(context);
+    }
+    
+    private void replaceColumnsWithCommandSortHeadersIfNeeded(FacesContext context)
+    {
         //replace facet header content component of the columns, with a new command sort header component
         //if sortable=true, replace it for all, if not just for the columns marked as sortable
         for (Iterator iter = getChildren().iterator(); iter.hasNext();)
@@ -1020,10 +1103,6 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 }
             }
         }
-
-        // Now invoke the superclass encodeBegin, which will eventually
-        // execute the encodeBegin for the associated renderer.
-        super.encodeBegin(context);
     }
 
     /**
