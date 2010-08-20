@@ -125,8 +125,6 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
 
@@ -199,15 +197,6 @@
                 </dependency>
             </dependencies>
 
-            <repositories>
-                <repository>
-                    <id>java.net</id>
-                    <name>java.net Maven 1 Repository</name>
-                    <url>https://maven-repository.dev.java.net/nonav/repository</url>
-                    <layout>legacy</layout>
-                </repository>
-            </repositories>
-
             <properties>
                 <jsf_implementation>JSF-RI</jsf_implementation>
             </properties>
@@ -236,19 +225,8 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
-
-            <repositories>
-                <repository>
-                    <id>java.net</id>
-                    <name>java.net Maven 1 Repository</name>
-                    <url>https://maven-repository.dev.java.net/nonav/repository</url>
-                    <layout>legacy</layout>
-                </repository>
-            </repositories>
 
             <properties>
                 <jsf_implementation>JSF-RI 1.2</jsf_implementation>

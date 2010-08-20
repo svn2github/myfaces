@@ -127,8 +127,6 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
 
@@ -171,8 +169,6 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
 
@@ -215,8 +211,6 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
 
@@ -283,23 +277,6 @@
             </dependency>
           </dependencies>
     
-          <repositories>
-            <repository>
-              <id>java.net</id>
-              <name>java.net Maven 1 Repository</name>
-              <url>https://maven-repository.dev.java.net/nonav/repository</url>
-              <layout>legacy</layout>
-            </repository>
-    
-            <repository>
-              <id>Maven2 Repo1</id>
-              <name>Maven2 Repo1</name>
-              <url>http://repo1.maven.org/maven2</url>
-              <layout>legacy</layout>
-            </repository>
-            
-          </repositories> 
-    
           <properties>
             <jsf_implementation>JSF-RI</jsf_implementation>
           </properties>
@@ -329,19 +306,8 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
-
-            <repositories>
-                <repository>
-                    <id>java.net</id>
-                    <name>java.net Maven 1 Repository</name>
-                    <url>http://download.java.net/maven/1</url>
-                    <layout>legacy</layout>
-                </repository>
-            </repositories>
 
             <properties>
                 <jsf_implementation>JSF-RI 1.2</jsf_implementation>
@@ -372,18 +338,9 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
 
-            <repositories>
-                <repository>
-                    <id>java.net.2</id>
-                    <name>java.net Maven 2 Repository</name>
-                    <url>http://download.java.net/maven/2</url>
-                </repository>
-            </repositories>
 
             <properties>
                 <jsf_implementation>JSF-RI 2.0</jsf_implementation>
@@ -447,19 +404,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <repositories>
-                <!-- 
-                <repository>
-                    <id>OpenQA</id>
-                    <url>http://maven.openqa.org</url>
-                </repository>
-                -->
-                <repository>
-                    <id>OpenQA_Release</id>
-                    <name>OpenQA Release Repository</name>
-                    <url>http://archiva.openqa.org/repository/releases/</url>
-                </repository> 
-            </repositories>
         </profile>
 
         <!-- See: http://myfaces.apache.org/tomahawk/testing/hostedqa.html -->
@@ -473,26 +417,6 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
-            <repositories>
-                <repository>
-                    <id>codehaus</id>
-                    <name>codehaus</name>
-                    <url>http://repository.codehaus.org</url>
-                </repository>
-                <repository>
-                    <id>maven-hostedqa</id>
-                    <name>maven-hostedqa</name>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                        <checksumPolicy>ignore</checksumPolicy>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <url>http://maven.hostedqa.com</url>
-                </repository>
-            </repositories>
             <build>
                 <plugins>
                     <plugin>

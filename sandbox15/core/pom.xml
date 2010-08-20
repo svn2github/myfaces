@@ -120,10 +120,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.struts.shale</groupId>
-            <artifactId>shale-test</artifactId>
-            <version>1.0.2</version>
-            <scope>test</scope>
+            <groupId>org.apache.shale</groupId> 
+            <artifactId>shale-test</artifactId> 
+            <version>1.0.4</version>
         </dependency>
 
     </dependencies>

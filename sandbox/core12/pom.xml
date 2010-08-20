@@ -22,14 +22,6 @@
         <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/core</url>
     </scm>
 
-    <repositories>
-        <repository>
-          <id>java-net</id>
-          <url>http://download.java.net/maven/1</url>
-          <layout>legacy</layout>
-        </repository>
-    </repositories>
-    
     <dependencies>
   
         <!-- compile -->
@@ -172,7 +164,6 @@
         <dependency>
             <groupId>org.apache.shale</groupId>
             <artifactId>shale-test</artifactId>
-            <version>1.0.4</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>

@@ -109,8 +109,6 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
 
@@ -145,18 +143,8 @@
                 <dependency>
                     <groupId>org.apache.geronimo.specs</groupId>
                     <artifactId>geronimo-el_1.0_spec</artifactId>
-                    <version>1.0-M1</version>
-                    <scope>provided</scope>
                 </dependency>
             </dependencies>
-
-            <repositories>
-                <repository>
-                    <id>java.net.2</id>
-                    <name>java.net Maven 2 Repository</name>
-                    <url>http://download.java.net/maven/2</url>
-                </repository>
-            </repositories>
 
             <properties>
                 <jsf_implementation>JSF-RI 2.0</jsf_implementation>
