@@ -31,6 +31,9 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.UniqueIdVendor;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
@@ -57,7 +60,7 @@ import org.apache.myfaces.tomahawk.util.Constants;
  * @version $Revision: 703742 $ $Date: 2008-10-11 17:10:36 -0500 (sáb, 11 oct 2008) $
  */
 @JSFComponent
-public class UITreeData extends UIComponentBase implements NamingContainer, Tree {
+public class UITreeData extends UIComponentBase implements NamingContainer, Tree, UniqueIdVendor {
     private Log log = LogFactory.getLog(UITreeData.class);
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.UITree2";
@@ -864,5 +867,36 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
     public boolean isNodeSelected()
     {
         return (getNodeId() != null) ? getDataModel().getTreeState().isSelected(getNodeId()) : false;
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     * 
+     * @since 2.0
+     */
+    public String createUniqueId(FacesContext context, String seed)
+    {
+        ExternalContext extCtx = context.getExternalContext();
+        StringBuilder bld = new StringBuilder();
+
+        Long uniqueIdCounter = (Long) getStateHelper().get(PropertyKeys.uniqueIdCounter);
+        uniqueIdCounter = (uniqueIdCounter == null) ? 0 : uniqueIdCounter;
+        getStateHelper().put(PropertyKeys.uniqueIdCounter, (uniqueIdCounter+1L));
+        // Generate an identifier for a component. The identifier will be prefixed with UNIQUE_ID_PREFIX, and will be unique within this UIViewRoot. 
+        if(seed==null)
+        {
+            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(uniqueIdCounter).toString());
+        }
+        // Optionally, a unique seed value can be supplied by component creators which should be included in the generated unique id.
+        else
+        {
+            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(seed).toString());
+        }
+    }
+    
+    enum PropertyKeys
+    {
+        uniqueIdCounter
     }
 }
