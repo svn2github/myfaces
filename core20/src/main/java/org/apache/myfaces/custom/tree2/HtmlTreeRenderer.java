@@ -83,7 +83,6 @@ public class HtmlTreeRenderer extends Renderer
     private static final int EXPANDED = 2;
     private static final int LINES = 4;
     private static final int LAST = 8;
-    private int counter = 0;
 
     public void processEvent(ComponentSystemEvent event)
     {
@@ -521,7 +520,8 @@ public class HtmlTreeRenderer extends Renderer
 
 //      add the appropriate image for the nav control
         UIGraphic image = new HtmlGraphicImage();
-        String imageId = IMAGE_PREFIX+(counter++);
+        image.setTransient(true);
+        String imageId = IMAGE_PREFIX+tree.createUniqueId(context, null).substring(UIViewRoot.UNIQUE_ID_PREFIX.length());//IMAGE_PREFIX+(counter++);
         image.setId(imageId);
         image.setUrl(navSrcUrl);
         
@@ -548,8 +548,6 @@ public class HtmlTreeRenderer extends Renderer
                 expandImgSrc = context.getApplication().getViewHandler().getResourceURL(context, expandImg.getUrl());
                 if (expandImg.isRendered())
                 {
-                    expandImg.setId(imageId + NODE_STATE_EXPANDED);
-                    expandImg.setParent(tree);
                     nodeImageId = expandImg.getClientId(context);
                     nodeImgFacet = expandFacet;
                 }
@@ -562,8 +560,6 @@ public class HtmlTreeRenderer extends Renderer
                 collapseImgSrc = context.getApplication().getViewHandler().getResourceURL(context, collapseImg.getUrl());
                 if (collapseImg.isRendered())
                 {
-                    collapseImg.setId(imageId + NODE_STATE_CLOSED);
-                    collapseImg.setParent(tree);
                     nodeImageId = collapseImg.getClientId(context);
                     nodeImgFacet = collapseFacet;
                 }

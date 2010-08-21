@@ -51,7 +51,8 @@ import org.apache.myfaces.component.LocationAware;
 @JSFComponent(
     name = "t:tree2",
     clazz = "org.apache.myfaces.custom.tree2.HtmlTree",
-    tagClass = "org.apache.myfaces.custom.tree2.TreeTag")
+    tagClass = "org.apache.myfaces.custom.tree2.TreeTag",
+    tagHandler = "org.apache.myfaces.custom.tree2.HtmlTreeTagHandler")
 public abstract class AbstractHtmlTree extends UITreeData
     implements LocationAware, LibraryLocationAware
 {
