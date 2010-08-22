@@ -20,12 +20,15 @@ package org.apache.myfaces.custom.tree2;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -33,6 +36,9 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.UniqueIdVendor;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -80,6 +86,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
     private Map _saved = new HashMap();
 
     private TreeState _restoredState = null;
+
+    private transient FacesContext _facesContext;
 
     /**
      * Constructor
@@ -417,6 +425,202 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         }
     }
 
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
+        throws FacesException
+    {
+        if (context == null || clientId == null || callback == null)
+        {
+            throw new NullPointerException();
+        }
+        
+        final String baseClientId = getClientId(context);
+
+        // searching for this component?
+        boolean returnValue = baseClientId.equals(clientId);
+
+        boolean isTemporalFacesContext = isTemporalFacesContext();
+        if (!isTemporalFacesContext)
+        {
+            setTemporalFacesContext(context);
+        }
+        
+        try
+        {
+            if (returnValue)
+            {
+                try
+                {
+                    callback.invokeContextCallback(context, this);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    throw new FacesException(e);
+                }
+            }
+    
+            // Now Look throught facets on this UIComponent
+            for (Iterator<UIComponent> it = this.getFacets().values().iterator(); !returnValue && it.hasNext();)
+            {
+                returnValue = it.next().invokeOnComponent(context, clientId, callback);
+            }
+    
+            if (returnValue)
+            {
+                return returnValue;
+            }
+            
+            // is the component an inner component?
+            if (clientId.startsWith(baseClientId))
+            {
+                TreeModel model = getDataModel();
+                
+                //We only use the tree walker to get the RootNodeId()
+                TreeWalker walker = model.getTreeWalker();
+                UIComponent facet = null;
+                walker.reset();
+                walker.setTree(this);
+                
+                String oldNodeId = getNodeId();
+                
+                try
+                {
+                    while(!returnValue && walker.next())
+                    {
+                        TreeNode node = getNode();
+                        facet = getFacet(node.getType());
+    
+                        if (facet == null)
+                        {
+                            log.warn("Unable to locate facet with the name: " + node.getType());
+                            continue;
+                        }
+                        
+                        returnValue = facet.invokeOnComponent(context, baseClientId, callback);
+                    }
+                }
+                finally
+                {
+                    setNodeId(oldNodeId);
+                }
+            }
+        }
+        finally
+        {
+            if (!isTemporalFacesContext)
+            {
+                setTemporalFacesContext(null);
+            }
+        }
+
+        return returnValue;
+    }
+    
+    @Override
+    public boolean visitTree(VisitContext context, VisitCallback callback)
+    {
+        if (!isVisitable(context))
+        {
+            return false;
+        }
+
+        boolean isTemporalFacesContext = isTemporalFacesContext();
+        if (!isTemporalFacesContext)
+        {
+            setTemporalFacesContext(context.getFacesContext());
+        }
+        // save the current row index
+        String oldNodeId = getNodeId();
+        // set row index to -1 to process the facets and to get the rowless clientId
+        setNodeId(null);
+        // push the Component to EL
+        pushComponentToEL(context.getFacesContext(), this);
+        try
+        {
+            VisitResult visitResult = context.invokeVisitCallback(this,
+                    callback);
+            switch (visitResult)
+            {
+            //we are done nothing has to be processed anymore
+            case COMPLETE:
+                return true;
+
+            case REJECT:
+                return false;
+
+                //accept
+            default:
+                // determine if we need to visit our children 
+                Collection<String> subtreeIdsToVisit = context
+                        .getSubtreeIdsToVisit(this);
+                boolean doVisitChildren = subtreeIdsToVisit != null
+                        && !subtreeIdsToVisit.isEmpty();
+                if (doVisitChildren)
+                {
+                    TreeWalker walker = getDataModel().getTreeWalker();
+                    UIComponent facet = null;
+                    walker.reset();
+                    walker.setTree(this);
+
+                    while(walker.next())
+                    {
+                        TreeNode node = getNode();
+                        facet = getFacet(node.getType());
+
+                        if (facet == null)
+                        {
+                            log.warn("Unable to locate facet with the name: " + node.getType());
+                            continue;
+                            //throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
+                        }
+
+                        if (facet.visitTree(context, callback))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        finally
+        {
+            // pop the component from EL and restore the old row index
+            popComponentFromEL(context.getFacesContext());
+            setNodeId(oldNodeId);
+            if (!isTemporalFacesContext)
+            {
+                setTemporalFacesContext(null);
+            }
+        }
+
+        // Return false to allow the visiting to continue
+        return false;
+    }
+    
+    @Override
+    protected FacesContext getFacesContext()
+    {
+        if (_facesContext == null)
+        {
+            return super.getFacesContext();
+        }
+        else
+        {
+            return _facesContext;
+        }
+    }
+    
+    private boolean isTemporalFacesContext()
+    {
+        return _facesContext != null;
+    }
+    
+    private void setTemporalFacesContext(FacesContext facesContext)
+    {
+        _facesContext = facesContext;
+    }
+    
     /**
      * Gets an array of String containing the ID's of all of the {@link TreeNode}s in the path to
      * the specified node.  The path information will be an array of <code>String</code> objects
