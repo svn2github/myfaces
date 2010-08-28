@@ -330,9 +330,9 @@ public final class TestUtils
                 "org.apache.myfaces.HtmlTagRenderer",
                 "org.apache.myfaces.custom.htmlTag.HtmlTagRenderer");
 
-        addRenderer(facesContext, "javax.faces.Output",
-                "org.apache.myfaces.DojoInitializerRenderer",
-                "org.apache.myfaces.custom.dojo.DojoInitializerRenderer");
+        //addRenderer(facesContext, "javax.faces.Output",
+        //        "org.apache.myfaces.DojoInitializerRenderer",
+        //        "org.apache.myfaces.custom.dojo.DojoInitializerRenderer");
 
         addRenderer(facesContext, "org.apache.myfaces.HtmlTree2",
                 "org.apache.myfaces.HtmlTree2",
