@@ -100,7 +100,7 @@ public class HtmlDateRenderer extends HtmlRenderer
         {
             if( inputDate.isPopupCalendar() && ! disabled && ! readonly )
             {
-                HtmlCalendarRenderer.addScriptAndCSSResources(facesContext,inputDate);
+                HtmlCalendarRenderer.addScriptAndCSSResourcesWithJSF2ResourceAPI(facesContext,inputDate);
             }
         }
     }
@@ -421,7 +421,7 @@ public class HtmlDateRenderer extends HtmlRenderer
 
         DateFormatSymbols symbols = new DateFormatSymbols(currentLocale);
 
-        //HtmlCalendarRenderer.addScriptAndCSSResources(facesContext,uiComponent);
+        HtmlCalendarRenderer.addScriptAndCSSResources(facesContext,uiComponent);
 
         String calendarVar = JavascriptUtils.getValidJavascriptName(
                 uiComponent.getClientId(facesContext)+"CalendarVar",false);
