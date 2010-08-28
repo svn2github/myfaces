@@ -47,7 +47,7 @@ public class UncompressedResourceHandlerSupport extends BaseResourceHandlerSuppo
             if (FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development))
             {
                 _resourceLoaders = new ResourceLoader[] {
-                        new UncompressedClassLoaderResourceLoader("META-INF/uncompressed-resources")
+                        new UncompressedClassLoaderResourceLoader("META-INF/uncompressed-js-resources")
                         };
             }
             else
