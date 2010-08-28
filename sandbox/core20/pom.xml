@@ -139,6 +139,13 @@
       <scope>provided</scope>
     </dependency>
  -->
+ 
+     <dependency>
+      <groupId>com.lowagie</groupId>
+      <artifactId>itext</artifactId>
+      <version>1.4.8</version>
+    </dependency> 
+ 
         <!-- test dependencies -->
 
         <dependency>
@@ -249,7 +256,21 @@
                         org/apache/myfaces/custom/conversation/*.java -->
                         <excludes>
                         **/*.class,**/META-INF/**,
-                        org/apache/myfaces/shared_tomahawk/**/*.java
+                        org/apache/myfaces/shared_tomahawk/**/*.java,
+                        org/apache/myfaces/custom/ajaxchildcombobox/**/*.java,
+                        org/apache/myfaces/custom/dialog/**/*.java,
+                        org/apache/myfaces/custom/dojoaddresource/**/*.java,
+                        org/apache/myfaces/custom/dojolayouts/**/*.java,
+                        org/apache/myfaces/custom/effect/**/*.java,
+                        org/apache/myfaces/custom/fisheye/**/*.java,
+                        org/apache/myfaces/custom/focus/**/*.java,
+                        org/apache/myfaces/custom/imageloop/**/*.java,
+                        org/apache/myfaces/custom/ppr/**/*.java,
+                        org/apache/myfaces/custom/statechangednotifier/**/*.java,
+                        org/apache/myfaces/custom/submitOnEvent/**/*.java,
+                        org/apache/myfaces/custom/suggestajax/**/*.java,
+                        org/apache/myfaces/custom/table/**/*.java,
+                        org/apache/myfaces/custom/timednotifier/**/*.java
                         </excludes>
                       </artifactItem>
                     </artifactItems>
@@ -269,7 +290,22 @@
                         <artifactId>tomahawk-sandbox12</artifactId>
                         <version>${pom.version}</version>                                   
                         <outputDirectory>${project.build.directory}/tomahawk12_resources</outputDirectory>
-                        <excludes>**/*.class,**/META-INF/**</excludes>
+                        <excludes>**/*.class,**/META-INF/**,
+                        org/apache/myfaces/custom/ajaxchildcombobox/**,
+                        org/apache/myfaces/custom/dialog/**,
+                        org/apache/myfaces/custom/dojoaddresource/**,
+                        org/apache/myfaces/custom/dojolayouts/**,
+                        org/apache/myfaces/custom/effect/**,
+                        org/apache/myfaces/custom/fisheye/**,
+                        org/apache/myfaces/custom/focus/**,
+                        org/apache/myfaces/custom/imageloop/**,
+                        org/apache/myfaces/custom/ppr/**,
+                        org/apache/myfaces/custom/statechangednotifier/**,
+                        org/apache/myfaces/custom/submitOnEvent/**,
+                        org/apache/myfaces/custom/suggestajax/**,
+                        org/apache/myfaces/custom/table/**,
+                        org/apache/myfaces/custom/timednotifier/**
+                        </excludes>
                       </artifactItem>
                     </artifactItems>
                   </configuration>
