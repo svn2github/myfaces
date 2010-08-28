@@ -306,6 +306,16 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
     }
 
     /**
+     * Indicate an object used as a bridge between the java.util.Date instance
+     * used by this component internally and the value object used on the bean,
+     * referred as a "business" value.
+     * 
+     * <ul>
+     * <li>If the value is literal, look for the mentioned class instance, 
+     * create a new instance and assign to the component property.</li>
+     * <li>If it the value a EL Expression, set the expression to the 
+     * component property.</li>
+     * </ul> 
      * 
      * @JSFProperty stateHolder="true" inheritedTag="true"
      */

@@ -22,6 +22,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
+ * Provide a bridge between the java.util.Date instance used by a component 
+ * that receive date/time values and the "business" value used to represent
+ * the value.
  * 
  * @since 1.1.10
  * @author Leonardo Uribe (latest modification by $Author: lu4242 $)
@@ -30,6 +33,9 @@ import javax.faces.context.FacesContext;
 public interface DateBusinessConverter
 {
     /**
+     * Convert the java.util.Date instance calculated from submittedValue, 
+     * so the resulting object will be used later as the converted value 
+     * and validation. 
      * 
      * @param context
      * @param component
@@ -41,6 +47,9 @@ public interface DateBusinessConverter
                        java.util.Date value);
 
     /**
+     * Used to retrieve the value stored in the business bean and convert 
+     * it in a representation that the component (t:inputCalendar and 
+     * t:inputDate for example)using this class can manipulate. 
      *  
      * @param context
      * @param component
