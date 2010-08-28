@@ -100,7 +100,7 @@ public class HtmlJSCookMenuRenderer
             throw new IllegalArgumentException("theme name is mandatory for a jscookmenu.");
         }
 
-        addResourcesToHeader(theme, menu, FacesContext.getCurrentInstance());
+        addResourcesToHeaderWithJSF2ResourceAPI(theme, menu, FacesContext.getCurrentInstance());
     }
 
     public void decode(FacesContext context, UIComponent component) {
@@ -381,7 +381,7 @@ public class HtmlJSCookMenuRenderer
     }
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        /*
+
         HtmlCommandJSCookMenu menu = (HtmlCommandJSCookMenu) component;
         String theme = menu.getTheme();
         if (theme == null) {
@@ -390,7 +390,7 @@ public class HtmlJSCookMenuRenderer
         }
 
         addResourcesToHeader(theme, menu, context);
-        */
+
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -426,7 +426,7 @@ public class HtmlJSCookMenuRenderer
         writer.endElement(HTML.SCRIPT_ELEM);
     }
 
-    private void addResourcesToHeader(String themeName, HtmlCommandJSCookMenu menu, FacesContext context) {
+    private void addResourcesToHeaderWithJSF2ResourceAPI(String themeName, HtmlCommandJSCookMenu menu, FacesContext context) {
         String javascriptLocation = (String) menu.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
         String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
         String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
@@ -434,14 +434,16 @@ public class HtmlJSCookMenuRenderer
         String imageLibrary = (String) menu.getAttributes().get(LibraryLocationAware.IMAGE_LIBRARY_ATTR);
         String styleLibrary = (String) menu.getAttributes().get(LibraryLocationAware.STYLE_LIBRARY_ATTR);
 
-        AddResource addResource = AddResourceFactory.getInstance(context);
+        //AddResource addResource = AddResourceFactory.getInstance(context);
 
-        if (javascriptLocation != null) {
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_EFFECT_SCRIPT);            
-            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
-        }
-        else {
+        //if (javascriptLocation != null) {
+        //    addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
+        //    addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_EFFECT_SCRIPT);            
+        //    addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
+        //}
+        //else 
+        if (javascriptLocation == null)
+        {
             if (javascriptLibrary == null)
             {
                 //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, JSCOOK_MENU_SCRIPT);
@@ -457,6 +459,26 @@ public class HtmlJSCookMenuRenderer
                 TomahawkResourceUtils.addOutputScriptResource(context, javascriptLibrary, JSCOOK_EFFECT_SCRIPT);
                 TomahawkResourceUtils.addOutputScriptResource(context, javascriptLibrary, MYFACES_HACK_SCRIPT);
             }
+        }
+
+        addThemeSpecificResourcesWithJSF2ResourceAPI(themeName, styleLocation, javascriptLocation, imageLocation, 
+                styleLibrary, javascriptLibrary, imageLibrary, context);
+    }
+    
+    private void addResourcesToHeader(String themeName, HtmlCommandJSCookMenu menu, FacesContext context) {
+        String javascriptLocation = (String) menu.getAttributes().get(JSFAttr.JAVASCRIPT_LOCATION);
+        String imageLocation = (String) menu.getAttributes().get(JSFAttr.IMAGE_LOCATION);
+        String styleLocation = (String) menu.getAttributes().get(JSFAttr.STYLE_LOCATION);
+        String javascriptLibrary = (String) menu.getAttributes().get(LibraryLocationAware.JAVASCRIPT_LIBRARY_ATTR);
+        String imageLibrary = (String) menu.getAttributes().get(LibraryLocationAware.IMAGE_LIBRARY_ATTR);
+        String styleLibrary = (String) menu.getAttributes().get(LibraryLocationAware.STYLE_LIBRARY_ATTR);
+
+        AddResource addResource = AddResourceFactory.getInstance(context);
+
+        if (javascriptLocation != null) {
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_MENU_SCRIPT);
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + JSCOOK_EFFECT_SCRIPT);            
+            addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + MYFACES_HACK_SCRIPT);
         }
 
         addThemeSpecificResources(themeName, styleLocation, javascriptLocation, imageLocation, 
@@ -493,7 +515,7 @@ public class HtmlJSCookMenuRenderer
      *                           theme is used then no javascript variable will be generated here.
      * @param context            is the current faces context.
      */
-    private void addThemeSpecificResources(String themeName, String styleLocation,
+    private void addThemeSpecificResourcesWithJSF2ResourceAPI(String themeName, String styleLocation,
                                            String javascriptLocation, String imageLocation,
                                            String styleLibrary, String javascriptLibrary,
                                            String imageLibrary, FacesContext context) {
@@ -502,7 +524,7 @@ public class HtmlJSCookMenuRenderer
             log.debug("Unknown theme name '" + themeName + "' specified.");
         }
 
-        AddResource addResource = AddResourceFactory.getInstance(context);
+        //AddResource addResource = AddResourceFactory.getInstance(context);
 
         if ((imageLocation != null) || (themeLocation != null)) {
             // Generate a javascript variable containing a reference to the
@@ -516,13 +538,15 @@ public class HtmlJSCookMenuRenderer
             buf.append(themeName);
             buf.append("Base='");
             ExternalContext externalContext = context.getExternalContext();
-            if (imageLocation != null) {
-                buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
-                                                                                        imageLocation + "/" + themeName)));
-                buf.append("';");
-                addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
-            }
-            else {
+            //if (imageLocation != null) {
+            //    buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
+            //                                                                            imageLocation + "/" + themeName)));
+            //    buf.append("';");
+            //    addResource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, buf.toString());
+            //}
+            //else 
+            if (imageLocation == null)
+            {
                 //buf.append(externalContext.encodeResourceURL(addResource.getResourceUri(context,
                 //        HtmlJSCookMenuRenderer.class, themeLocation)));
                 Resource resource = context.getApplication().getResourceHandler().
@@ -554,14 +578,16 @@ public class HtmlJSCookMenuRenderer
             // theme.js file for this theme. If neither of these is defined
             // then presumably the theme.js file is referenced by a <script>
             // tag hard-wired into the page or inserted via some other means.
-            if (javascriptLocation != null) {
+            //if (javascriptLocation != null) {
                 // For now, assume that if the user specified a location for a custom
                 // version of the jscookMenu.js file then the theme.js file can be found
                 // in the same location.
-                addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + themeName
-                    + "/theme.js");
-            }
-            else {
+                //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/" + themeName
+                //    + "/theme.js");
+            //}
+            //else
+            if (javascriptLocation == null)
+            {
                 // Using a built-in theme, so we know where the theme.js file is.
                 //addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
                 //    + "/theme.js");
@@ -581,10 +607,12 @@ public class HtmlJSCookMenuRenderer
             // the theme stylesheet. If neither of these is defined then presumably
             // the stylesheet is referenced by a <link> tag hard-wired into the page
             // or inserted via some other means.
-            if (styleLocation != null) {
-                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, styleLocation + "/" + themeName + "/theme.css");
-            }
-            else {
+            //if (styleLocation != null) {
+            //    addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, styleLocation + "/" + themeName + "/theme.css");
+            //}
+            //else
+            if (styleLocation == null)
+            {
                 //addResource.addStyleSheet(context, AddResource.HEADER_BEGIN, HtmlJSCookMenuRenderer.class, themeName
                 //    + "/theme.css");
                 TomahawkResourceUtils.addOutputStylesheetResource(context, "oam.custom.navmenu.jscookmenu."+themeName, "theme.css");
@@ -595,6 +623,74 @@ public class HtmlJSCookMenuRenderer
             if ((styleLibrary != null))
             {
                 TomahawkResourceUtils.addOutputStylesheetResource(context, styleLibrary+'.'+themeName, "theme.css");
+            }
+        }
+    }
+    
+    private void addThemeSpecificResources(String themeName,
+            String styleLocation, String javascriptLocation,
+            String imageLocation, String styleLibrary,
+            String javascriptLibrary, String imageLibrary, FacesContext context)
+    {
+        String themeLocation = (String) builtInThemes.get(themeName);
+        if (themeLocation == null)
+        {
+            log.debug("Unknown theme name '" + themeName + "' specified.");
+        }
+
+        AddResource addResource = AddResourceFactory.getInstance(context);
+
+        if ((imageLocation != null) || (themeLocation != null))
+        {
+            // Generate a javascript variable containing a reference to the
+            // directory containing theme image files, for use by the theme
+            // javascript file. If neither of these is defined (ie a custom
+            // theme was specified but no imageLocation) then presumably the
+            // theme.js file uses some other mechanism to determine where
+            // its image files are.
+            StringBuffer buf = new StringBuffer();
+            buf.append("var my");
+            buf.append(themeName);
+            buf.append("Base='");
+            ExternalContext externalContext = context.getExternalContext();
+            if (imageLocation != null)
+            {
+                buf.append(externalContext.encodeResourceURL(addResource
+                        .getResourceUri(context, imageLocation + "/"
+                                + themeName)));
+                buf.append("';");
+                addResource.addInlineScriptAtPosition(context,
+                        AddResource.HEADER_BEGIN, buf.toString());
+            }
+        }
+
+        if ((javascriptLocation != null) || (themeLocation != null))
+        {
+            // Generate a <script> tag in the page header pointing to the
+            // theme.js file for this theme. If neither of these is defined
+            // then presumably the theme.js file is referenced by a <script>
+            // tag hard-wired into the page or inserted via some other means.
+            if (javascriptLocation != null)
+            {
+                // For now, assume that if the user specified a location for a custom
+                // version of the jscookMenu.js file then the theme.js file can be found
+                // in the same location.
+                addResource.addJavaScriptAtPosition(context,
+                        AddResource.HEADER_BEGIN, javascriptLocation + "/"
+                                + themeName + "/theme.js");
+            }
+        }
+
+        if ((styleLocation != null) || (themeLocation != null))
+        {
+            // Generate a <link type="text/css"> tag in the page header pointing to
+            // the theme stylesheet. If neither of these is defined then presumably
+            // the stylesheet is referenced by a <link> tag hard-wired into the page
+            // or inserted via some other means.
+            if (styleLocation != null)
+            {
+                addResource.addStyleSheet(context, AddResource.HEADER_BEGIN,
+                        styleLocation + "/" + themeName + "/theme.css");
             }
         }
     }
