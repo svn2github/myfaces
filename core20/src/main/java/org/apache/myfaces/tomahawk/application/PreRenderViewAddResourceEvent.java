@@ -28,6 +28,14 @@ import javax.faces.event.SystemEventListener;
  * ViewHandler.render, to give the chance to component to add 
  * resources to the current view before render occur.
  * 
+ * <p>The component resources to be added are supposed to be transient, so
+ * each time before the view will be rendered, this event will be published
+ * and the resources will be on the page.</p>
+ * 
+ * <p>This event should be propagated only for the "real" component tree, that
+ * means for a datatable component it should to traverse all rows.</p>
+ * 
+ * @since 1.1.10
  */
 public class PreRenderViewAddResourceEvent extends ComponentSystemEvent
 {
