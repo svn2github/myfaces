@@ -119,6 +119,7 @@ public class HtmlCalendarRenderer
     private final Log log = LogFactory.getLog(HtmlCalendarRenderer.class);
 
     private static final String JAVASCRIPT_ENCODED = "org.apache.myfaces.calendar.JAVASCRIPT_ENCODED";
+    private static final String JAVASCRIPT_ENCODED_JSF2 = "org.apache.myfaces.calendar.JAVASCRIPT_ENCODED_JSF2";
 
     // TODO: move this to HtmlRendererUtils in shared
     private static final String RESOURCE_NONE = "none";
@@ -129,7 +130,7 @@ public class HtmlCalendarRenderer
         
         if (inputCalendar.isRenderAsPopup() && inputCalendar.isAddResources())
         {
-            addScriptAndCSSResources(FacesContext.getCurrentInstance(), inputCalendar);
+            addScriptAndCSSResourcesWithJSF2ResourceAPI(FacesContext.getCurrentInstance(), inputCalendar);
         }
     }
 
@@ -270,8 +271,8 @@ public class HtmlCalendarRenderer
             Calendar timeKeeper,
             DateFormatSymbols symbols) throws IOException
     {
-        //if(inputCalendar.isAddResources())
-        //    addScriptAndCSSResources(facesContext, inputCalendar);
+        if(inputCalendar.isAddResources())
+            addScriptAndCSSResources(facesContext, inputCalendar);
 
          // Check for an enclosed converter:
          UIInput uiInput = (UIInput) inputCalendar;
@@ -497,12 +498,90 @@ public class HtmlCalendarRenderer
         // different styleLocation or scriptLocation settings then all but the first one get ignored.
         // Having different settings for calendars on the same page would be unusual, so ignore this
         // for now..
-        if (facesContext.getExternalContext().getRequestMap().containsKey(JAVASCRIPT_ENCODED))
+        if (facesContext.getAttributes().containsKey(JAVASCRIPT_ENCODED) || 
+            facesContext.getAttributes().containsKey(JAVASCRIPT_ENCODED_JSF2))
         {
             return;
         }
 
         AddResource addresource = AddResourceFactory.getInstance(facesContext);
+        // Add the javascript and CSS pages
+
+        String styleLocation = HtmlRendererUtils.getStyleLocation(component);
+
+        if(styleLocation==null)
+        {
+            /*
+            String styleLibrary = (String) component.getAttributes().get(LibraryLocationAware.STYLE_LIBRARY_ATTR);
+            if (styleLibrary == null)
+            {
+                //addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "WH/theme.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, "oam.custom.calendar.WH", "theme.css");
+                //addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "DB/theme.css");
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, "oam.custom.calendar.DB", "theme.css");
+            }
+            else
+            {
+                TomahawkResourceUtils.addOutputStylesheetResource(facesContext, styleLocation, "theme.css");
+            }*/
+        }
+        else if (!RESOURCE_NONE.equals(styleLocation))
+        {
+            addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, styleLocation+"/theme.css");
+        }
+        else
+        {
+            // output nothing; presumably the page directly references the necessary stylesheet
+        }
+
+        String javascriptLocation = HtmlRendererUtils.getJavascriptLocation(component);
+
+        if(javascriptLocation==null)
+        {
+            /*
+            String javascriptLibrary = (String) component.getAttributes().get(LibraryLocationAware.JAVASCRIPT_LIBRARY_ATTR);
+            if (javascriptLibrary == null)
+            {
+                //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, PrototypeResourceLoader.class, "prototype.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.prototype", "prototype.js");
+                //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "date.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.calendar", "date.js");
+                //addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, HtmlCalendarRenderer.class, "popcalendar.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.calendar", "popcalendar.js");
+            }
+            else
+            {
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, javascriptLibrary, "prototype.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, javascriptLibrary, "date.js");
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, javascriptLibrary, "popcalendar.js");
+
+            }*/
+        }
+        else if (!RESOURCE_NONE.equals(javascriptLocation))
+        {
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/prototype.js");
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/date.js");
+            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/popcalendar.js");
+        }
+        else
+        {
+            // output nothing; presumably the page directly references the necessary javascript
+        }
+
+        facesContext.getAttributes().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
+    }
+    
+    static public void addScriptAndCSSResourcesWithJSF2ResourceAPI(FacesContext facesContext, UIComponent component){
+        // Check to see if javascript has already been written (which could happen if more than one calendar
+        // on the same page). Note that this means that if two calendar controls in the same page have
+        // different styleLocation or scriptLocation settings then all but the first one get ignored.
+        // Having different settings for calendars on the same page would be unusual, so ignore this
+        // for now..
+        if (facesContext.getAttributes().containsKey(JAVASCRIPT_ENCODED_JSF2))
+        {
+            return;
+        }
+
         // Add the javascript and CSS pages
 
         String styleLocation = HtmlRendererUtils.getStyleLocation(component);
@@ -521,14 +600,6 @@ public class HtmlCalendarRenderer
             {
                 TomahawkResourceUtils.addOutputStylesheetResource(facesContext, styleLocation, "theme.css");
             }
-        }
-        else if (!RESOURCE_NONE.equals(styleLocation))
-        {
-            addresource.addStyleSheet(facesContext, AddResource.HEADER_BEGIN, styleLocation+"/theme.css");
-        }
-        else
-        {
-            // output nothing; presumably the page directly references the necessary stylesheet
         }
 
         String javascriptLocation = HtmlRendererUtils.getJavascriptLocation(component);
@@ -553,21 +624,10 @@ public class HtmlCalendarRenderer
 
             }
         }
-        else if (!RESOURCE_NONE.equals(javascriptLocation))
-        {
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/prototype.js");
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/date.js");
-            addresource.addJavaScriptAtPosition(facesContext, AddResource.HEADER_BEGIN, javascriptLocation+ "/popcalendar.js");
-        }
-        else
-        {
-            // output nothing; presumably the page directly references the necessary javascript
-        }
 
-        facesContext.getExternalContext().getRequestMap().put(JAVASCRIPT_ENCODED, Boolean.TRUE);
+        facesContext.getAttributes().put(JAVASCRIPT_ENCODED_JSF2, Boolean.TRUE);
     }
-    
-    
+
     /**
      * Creates and returns a String which contains the initialisation data for
      * the popup calendar control as a sequence of javascript commands that
