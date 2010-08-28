@@ -34,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.myfaces.custom.captcha.util.CAPTCHAImageGenerator;
 import org.apache.myfaces.custom.captcha.util.CAPTCHATextGenerator;
 import org.apache.myfaces.custom.captcha.util.ColorGenerator;
+import org.apache.myfaces.shared_tomahawk.resource.ResourceHandlerSupport;
 import org.apache.myfaces.tomahawk.application.DefaultResourceHandlerSupport;
-import org.apache.myfaces.tomahawk.application.ResourceHandlerSupport;
 
 public class CAPTCHAResourceHandlerWrapper extends javax.faces.application.ResourceHandlerWrapper
 {

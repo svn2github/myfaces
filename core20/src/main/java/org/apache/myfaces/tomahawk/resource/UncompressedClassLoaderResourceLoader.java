@@ -16,29 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.tomahawk.application;
+package org.apache.myfaces.tomahawk.resource;
 
-import org.apache.myfaces.shared_tomahawk.resource.BaseResourceHandlerSupport;
-import org.apache.myfaces.shared_tomahawk.resource.ResourceLoader;
+import org.apache.myfaces.shared_tomahawk.resource.ClassLoaderResourceLoader;
+import org.apache.myfaces.shared_tomahawk.resource.ResourceMeta;
+import org.apache.myfaces.shared_tomahawk.resource.ResourceMetaImpl;
 
 /**
- * A ResourceHandlerSupport implementation for use with standard Java Servlet engines,
- * ie an engine that supports javax.servlet, and uses a standard web.xml file.
+ * A resource loader implementation which loads resources from the thread ClassLoader.
  * 
- * @author Leonardo Uribe (latest modification by $Author: bommel $)
- * @version $Revision: 915763 $ $Date: 2010-02-24 07:24:11 -0500 (Mié, 24 Feb 2010) $
  */
-public class DefaultResourceHandlerSupport extends BaseResourceHandlerSupport
+public class UncompressedClassLoaderResourceLoader extends ClassLoaderResourceLoader
 {
-
-    public DefaultResourceHandlerSupport()
+    
+    public UncompressedClassLoaderResourceLoader(String prefix)
     {
+        super(prefix);
     }
 
     @Override
-    public ResourceLoader[] getResourceLoaders()
+    public ResourceMeta createResourceMeta(String prefix, String libraryName, String libraryVersion,
+                                           String resourceName, String resourceVersion)
     {
-        return null;
+        return new ResourceMetaImpl(prefix, libraryName, libraryVersion, resourceName, resourceVersion);
     }
-
 }

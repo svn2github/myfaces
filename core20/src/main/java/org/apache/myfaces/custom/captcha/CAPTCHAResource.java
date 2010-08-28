@@ -29,7 +29,8 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.tomahawk.application.ResourceHandlerSupport;
+import org.apache.myfaces.shared_tomahawk.resource.ResourceHandlerSupport;
+
 
 public class CAPTCHAResource extends Resource
 {

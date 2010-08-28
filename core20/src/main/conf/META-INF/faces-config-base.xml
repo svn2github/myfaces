@@ -27,6 +27,7 @@
   <application>
       <view-handler>org.apache.myfaces.tomahawk.application.ResourceViewHandlerWrapper</view-handler>
       <resource-handler>org.apache.myfaces.custom.captcha.CAPTCHAResourceHandlerWrapper</resource-handler>
+      <resource-handler>org.apache.myfaces.tomahawk.resource.UncompressedResourceHandlerWrapper</resource-handler>
   </application>
   <lifecycle>
 

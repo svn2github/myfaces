@@ -16,7 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.myfaces.tomahawk.application;
+package org.apache.myfaces.tomahawk.resource;
+
+import javax.faces.application.ProjectStage;
+import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.shared_tomahawk.resource.BaseResourceHandlerSupport;
 import org.apache.myfaces.shared_tomahawk.resource.ResourceLoader;
@@ -28,17 +31,30 @@ import org.apache.myfaces.shared_tomahawk.resource.ResourceLoader;
  * @author Leonardo Uribe (latest modification by $Author: bommel $)
  * @version $Revision: 915763 $ $Date: 2010-02-24 07:24:11 -0500 (Mié, 24 Feb 2010) $
  */
-public class DefaultResourceHandlerSupport extends BaseResourceHandlerSupport
+public class UncompressedResourceHandlerSupport extends BaseResourceHandlerSupport
 {
+    private ResourceLoader[] _resourceLoaders;
 
-    public DefaultResourceHandlerSupport()
+    public UncompressedResourceHandlerSupport()
     {
     }
 
     @Override
     public ResourceLoader[] getResourceLoaders()
     {
-        return null;
+        if (_resourceLoaders == null)
+        {
+            if (FacesContext.getCurrentInstance().isProjectStage(ProjectStage.Development))
+            {
+                _resourceLoaders = new ResourceLoader[] {
+                        new UncompressedClassLoaderResourceLoader("META-INF/uncompressed-resources")
+                        };
+            }
+            else
+            {
+                _resourceLoaders = new ResourceLoader[] {};
+            }
+        }
+        return _resourceLoaders;
     }
-
 }

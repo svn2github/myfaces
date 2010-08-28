@@ -668,6 +668,39 @@
         </executions>
       </plugin>
       <plugin>
+        <artifactId>myfaces-javascript-plugin</artifactId>
+        <groupId>org.apache.myfaces.buildtools</groupId>
+        <version>1.0.2-SNAPSHOT</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+                <goal>compile</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+                <descriptor>${basedir}/src/assembler/scripts-compiler.xml</descriptor>
+                <sourceDirectory>src/main/javascript</sourceDirectory>
+                <outputDirectory>${basedir}/target/classes/META-INF/uncompressed-js-resources</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+              <id>directory-compress</id>
+              <goals>
+                  <goal>directory-compress</goal>
+              </goals>
+              <phase>process-resources</phase>
+              <configuration>
+                  <optimizationLevel>0</optimizationLevel>
+                  <compressor>yahooUI</compressor>
+                  <sourceDirectory>${basedir}/target/classes/META-INF/uncompressed-js-resources</sourceDirectory>
+                  <outputDirectory>${basedir}/target/classes/META-INF/resources</outputDirectory>
+              </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-source-plugin</artifactId>
         <executions>
           <execution>
