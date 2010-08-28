@@ -86,7 +86,7 @@ public class HtmlTreeRenderer extends Renderer
 
     public void processEvent(ComponentSystemEvent event)
     {
-        encodeJavascript(FacesContext.getCurrentInstance(), event.getComponent());
+        encodeJavascriptWithJSF2(FacesContext.getCurrentInstance(), event.getComponent());
     }
     
     // see superclass for documentation
@@ -170,7 +170,7 @@ public class HtmlTreeRenderer extends Renderer
         //}
 
         // write javascript functions
-        //encodeJavascript(context, component);
+        encodeJavascript(context, component);
     }
 
     /**
@@ -631,7 +631,7 @@ public class HtmlTreeRenderer extends Renderer
      * @param component UIComponent
      * @throws IOException
      */
-    private void encodeJavascript(FacesContext context, UIComponent component)
+    private void encodeJavascriptWithJSF2(FacesContext context, UIComponent component)
     {
         // render javascript function for client-side toggle (it won't be used if user has opted for server-side toggle)
         String javascriptLocation = ((HtmlTree) component).getJavascriptLocation();
@@ -663,7 +663,14 @@ public class HtmlTreeRenderer extends Renderer
                         "cookielib.js");
             }
         }
-        else
+    }
+    
+    private void encodeJavascript(FacesContext context, UIComponent component)
+    {
+        // render javascript function for client-side toggle (it won't be used if user has opted for server-side toggle)
+        String javascriptLocation = ((HtmlTree) component).getJavascriptLocation();
+
+        if (javascriptLocation != null)
         {
             AddResource addResource = AddResourceFactory.getInstance(context);
             addResource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, javascriptLocation + "/tree.js");
