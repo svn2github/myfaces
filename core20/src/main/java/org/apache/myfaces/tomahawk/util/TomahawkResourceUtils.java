@@ -18,6 +18,9 @@
  */
 package org.apache.myfaces.tomahawk.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIOutput;
@@ -27,14 +30,70 @@ import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 
+/**
+ * Utility class for add resources using JSF 2.0 Resource API. It is expected
+ * this methods be called from a listener for PreRenderViewAddResourceEvent.
+ * 
+ * @author Leonardo Uribe
+ * @since 1.1.10
+ *
+ */
 public class TomahawkResourceUtils
 {
     public static final String HEAD_LOCATION = "head";
     public static final String BODY_LOCATION = HTML.BODY_ELEM;
     public static final String FORM_LOCATION = HTML.FORM_ELEM;
+    public static final String ADDED_RESOURCES_SET = "org.apache.myfaces.ADDED_RESOURCES_SET";
     
+    /**
+     * Return a set of already rendered resources by this renderer on the current
+     * request. 
+     * 
+     * @param facesContext
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private static Map<String, Boolean> getAddedResources(FacesContext facesContext)
+    {
+        Map<String, Boolean> map = (Map<String, Boolean>) facesContext.getAttributes().get(ADDED_RESOURCES_SET);
+        if (map == null)
+        {
+            map = new HashMap<String, Boolean>();
+            facesContext.getAttributes().put(ADDED_RESOURCES_SET,map);
+        }
+        return map;
+    }
+    
+    public static void resetAddedResources(FacesContext facesContext)
+    {
+        facesContext.getAttributes().remove(ADDED_RESOURCES_SET);
+    }
+    
+    public static void markResourceAsAdded(FacesContext facesContext, String libraryName, String resourceName)
+    {
+        getAddedResources(facesContext).put(libraryName != null ? libraryName+'/'+resourceName : resourceName, Boolean.TRUE);
+    }
+    
+    public static boolean isAddedResource(FacesContext facesContext, String libraryName, String resourceName)
+    {
+        return getAddedResources(facesContext).containsKey(libraryName != null ? libraryName+'/'+resourceName : resourceName);
+    }
+
+    /**
+     * Add the script on PreRenderViewAddResourceEvent. The expected component resource instance
+     * has "transient" property as true.
+     * 
+     * @param facesContext
+     * @param libraryName
+     * @param resourceName
+     */
     public static void addOutputScriptResource(final FacesContext facesContext, final String libraryName, final String resourceName)
     {
+        if (isAddedResource(facesContext, libraryName, resourceName))
+        {
+            return;
+        }
+        
         UIOutput outputScript = (UIOutput) facesContext.getApplication().
             createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_SCRIPT_RENDERER_TYPE);
         outputScript.getAttributes().put(JSFAttr.LIBRARY_ATTR, libraryName);
@@ -42,10 +101,17 @@ public class TomahawkResourceUtils
         outputScript.setTransient(true);
         outputScript.setId(facesContext.getViewRoot().createUniqueId());
         facesContext.getViewRoot().addComponentResource(facesContext, outputScript);
+        
+        markResourceAsAdded(facesContext, libraryName, resourceName);
     }
     
     public static void addOutputStylesheetResource(final FacesContext facesContext, final String libraryName, final String resourceName)
     {
+        if (isAddedResource(facesContext, libraryName, resourceName))
+        {
+            return;
+        }
+
         UIOutput outputStylesheet = (UIOutput) facesContext.getApplication().
             createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_STYLESHEET_RENDERER_TYPE);
         outputStylesheet.getAttributes().put(JSFAttr.LIBRARY_ATTR, libraryName);
@@ -53,6 +119,8 @@ public class TomahawkResourceUtils
         outputStylesheet.setTransient(true);
         outputStylesheet.setId(facesContext.getViewRoot().createUniqueId());
         facesContext.getViewRoot().addComponentResource(facesContext, outputStylesheet);
+        
+        markResourceAsAdded(facesContext, libraryName, resourceName);
     }
     
     public static void addInlineOutputStylesheetResource(final FacesContext facesContext, Object value)

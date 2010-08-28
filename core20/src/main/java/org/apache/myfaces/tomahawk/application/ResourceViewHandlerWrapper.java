@@ -86,6 +86,9 @@ public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
             viewToRender.addComponentResource(context, autoscrollHiddenField);
         }
         
+        //Reset the added resource 
+        TomahawkResourceUtils.resetAddedResources(context);
+        
         _publishPreRenderViewAddResourceEvent(context, viewToRender);
         super.renderView(context, viewToRender);
     }
