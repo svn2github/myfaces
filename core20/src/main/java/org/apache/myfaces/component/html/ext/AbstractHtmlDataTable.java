@@ -597,6 +597,78 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         }
         return saveFullDescendantComponentStates(facesContext, null, getChildren().iterator(), false, getContainerClientId(facesContext));
     }
+    
+    @Override
+    public void deleteRowStateForRow(int deletedIndex)
+    {
+        super.deleteRowStateForRow(deletedIndex);
+
+        if (getFacetCount() > 0)
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                // save row index
+                int savedRowIndex = getRowIndex();
+                
+                FacesContext facesContext = getFacesContext();
+                setRowIndex(deletedIndex);
+                String currentRowStateKey = getContainerClientId(facesContext);
+        
+                int rowCount = getRowCount();
+                if (isPreserveRowComponentState())
+                {
+                    for (int index = deletedIndex + 1; index < rowCount; ++index)
+                    {
+                        setRowIndex(index);
+                        String nextRowStateKey = getContainerClientId(facesContext);
+            
+                        Object nextRowState = _detailRowStates.get(nextRowStateKey);
+                        if (nextRowState == null)
+                        {
+                            _detailRowStates.remove(currentRowStateKey);
+                        }
+                        else
+                        {
+                            _detailRowStates.put(currentRowStateKey, nextRowState);
+                        }
+                        currentRowStateKey = nextRowStateKey;
+                    }
+                    
+                    // restore saved row index
+                    setRowIndex(savedRowIndex);
+            
+                    // Remove last row
+                    _detailRowStates.remove(currentRowStateKey);
+                }
+                else
+                {
+                    for (int index = deletedIndex + 1; index < rowCount; ++index)
+                    {
+                        setRowIndex(index);
+                        String nextRowStateKey = getContainerClientId(facesContext);
+            
+                        Object nextRowState = _detailRowStates.get(nextRowStateKey);
+                        if (nextRowState == null)
+                        {
+                            _detailRowStates.remove(currentRowStateKey);
+                        }
+                        else
+                        {
+                            _detailRowStates.put(currentRowStateKey, nextRowState);
+                        }
+                        currentRowStateKey = nextRowStateKey;
+                    }
+                    
+                    // restore saved row index
+                    setRowIndex(savedRowIndex);
+            
+                    // Remove last row
+                    _detailRowStates.remove(currentRowStateKey);
+                }
+            }
+        }
+    }
 
     public void processDecodes(FacesContext context)
     {

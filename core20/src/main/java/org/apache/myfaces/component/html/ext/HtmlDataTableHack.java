@@ -1107,7 +1107,7 @@ public abstract class HtmlDataTableHack extends
         // save row index
         int savedRowIndex = getRowIndex();
         
-        FacesContext facesContext = FacesContext.getCurrentInstance();
+        FacesContext facesContext = getFacesContext();
          setRowIndex(deletedIndex);
         String currentRowStateKey = getContainerClientId(facesContext);
 
@@ -1131,6 +1131,9 @@ public abstract class HtmlDataTableHack extends
                 }
                 currentRowStateKey = nextRowStateKey;
             }
+
+            // restore saved row index
+            setRowIndex(savedRowIndex);
     
             // Remove last row
             _rowDeltaStates.remove(currentRowStateKey);
@@ -1153,13 +1156,13 @@ public abstract class HtmlDataTableHack extends
                 }
                 currentRowStateKey = nextRowStateKey;
             }
+
+            // restore saved row index
+            setRowIndex(savedRowIndex);
     
             // Remove last row
             _rowStates.remove(currentRowStateKey);
         }
-
-        // restore saved row index
-        setRowIndex(savedRowIndex);
     }
     
     
