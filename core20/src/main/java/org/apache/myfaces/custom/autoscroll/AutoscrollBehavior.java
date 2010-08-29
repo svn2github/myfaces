@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.custom.autoscroll;
 
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
 
@@ -35,6 +36,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.FormInfo;
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
  */
 @JSFBehavior(name="t:autoScroll",bodyContent="empty")
+@ResourceDependency(library="org.apache.myfaces", name="oamSubmit.js")
 public class AutoscrollBehavior extends ClientBehaviorBase
 {
 
