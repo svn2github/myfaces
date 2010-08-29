@@ -45,7 +45,7 @@ public class AutoscrollBehavior extends ClientBehaviorBase
     {
         FormInfo nestedFormInfo = RendererUtils.findNestingForm(behaviorContext.getComponent(), behaviorContext.getFacesContext());
         StringBuffer script = new StringBuffer();
-        HtmlRendererUtils.appendAutoScrollAssignment(script, nestedFormInfo.getFormName());
+        HtmlRendererUtils.appendAutoScrollAssignment(behaviorContext.getFacesContext(), script, nestedFormInfo.getFormName());
         return script.toString();
     }
     
