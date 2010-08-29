@@ -25,6 +25,7 @@ import junit.framework.TestSuite;
 
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
 import org.apache.myfaces.shared_impl.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 import org.apache.myfaces.test.mock.MockExternalContext;
 import org.apache.myfaces.test.mock.MockHttpServletRequest;
@@ -58,7 +59,6 @@ public class HtmlLinkRendererTest extends AbstractTomahawkViewControllerTestCase
 
         UIForm form = new UIForm();
         form.getChildren().add(link);
-
     }
 
     public void tearDown() throws Exception
@@ -80,7 +80,7 @@ public class HtmlLinkRendererTest extends AbstractTomahawkViewControllerTestCase
             new HtmlRenderedAttr("onfocus"), 
             new HtmlRenderedAttr("onblur"),
             //_EventProperties
-            new HtmlRenderedAttr("onclick", "onclick", "return jsf.util.chain(document.getElementById(&apos;j_id0:j_id0&apos;), event,&apos;onclick&apos;, &apos;return oamSubmitForm(\\&apos;j_id0\\&apos;,\\&apos;j_id0:j_id0\\&apos;);&apos;);"), 
+            new HtmlRenderedAttr("onclick", "onclick", "return jsf.util.chain(document.getElementById(&apos;j_id0:j_id0&apos;), event,&apos;onclick&apos;, &apos;return myfaces.oam.submitForm(\\&apos;j_id0\\&apos;,\\&apos;j_id0:j_id0\\&apos;);&apos;);"), 
             new HtmlRenderedAttr("ondblclick"), 
             new HtmlRenderedAttr("onkeydown"), 
             new HtmlRenderedAttr("onkeypress"),

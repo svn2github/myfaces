@@ -66,7 +66,7 @@ public class HtmlTreeImageCommandLinkRendererTest extends AbstractTomahawkViewCo
             new HtmlRenderedAttr("onfocus"), 
             new HtmlRenderedAttr("onblur"),
             //_EventProperties
-            new HtmlRenderedAttr("onclick", "onclick", "return jsf.util.chain(document.getElementById(&apos;j_id0&apos;), event,&apos;onclick&apos;, &apos;return oamSubmitForm(\\&apos;linkDummyForm\\&apos;,\\&apos;j_id0\\&apos;);&apos;);"), 
+            new HtmlRenderedAttr("onclick", "onclick", "return jsf.util.chain(document.getElementById(&apos;j_id0&apos;), event,&apos;onclick&apos;, &apos;return myfaces.oam.submitForm(\\&apos;linkDummyForm\\&apos;,\\&apos;j_id0\\&apos;);&apos;);"), 
             new HtmlRenderedAttr("ondblclick"), 
             new HtmlRenderedAttr("onkeydown"), 
             new HtmlRenderedAttr("onkeypress"),
