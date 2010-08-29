@@ -1453,7 +1453,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         if (pdm != null)
         {
             setDataModel(pdm);
-            setPreservedDataModel(null);
+            //setPreservedDataModel(null);
         }
 
         return super.getDataModel();
