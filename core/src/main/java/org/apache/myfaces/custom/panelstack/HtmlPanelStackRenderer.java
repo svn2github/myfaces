@@ -63,13 +63,7 @@ public class HtmlPanelStackRenderer extends HtmlRenderer
         String selectedPanel = panelStack.getSelectedPanel();
         UIComponent childToRender = null;
 
-        if (selectedPanel == null)
-        {
-            // render the first child
-            if (panelStack.getChildCount() > 0) {
-                childToRender = (UIComponent) panelStack.getChildren().get(0);
-            }
-        } else
+        if (selectedPanel != null && selectedPanel.length() > 0)
         {
             // render the selected child
             childToRender = panelStack.findComponent(selectedPanel);
@@ -79,6 +73,13 @@ public class HtmlPanelStackRenderer extends HtmlRenderer
                 if (panelStack.getChildCount() > 0) {
                     childToRender = (UIComponent) panelStack.getChildren().get(0);
                 }
+            }
+        }
+        else
+        {
+            // render the first child
+            if (panelStack.getChildCount() > 0) {
+                childToRender = (UIComponent) panelStack.getChildren().get(0);
             }
         }
 
