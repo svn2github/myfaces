@@ -72,9 +72,17 @@ public class HtmlMessagesRenderer
                 ResourceUtils.renderDefaultJsfJsInlineIfNecessary(facesContext, facesContext.getResponseWriter());
             }
         }
-        
-        renderMessages(facesContext, component);
 
+        boolean forceSpan = false;
+        if (component instanceof HtmlMessages
+                && ((HtmlMessages) component).getForceSpan())
+        {
+            forceSpan = true;
+        }
+        
+        renderMessages(facesContext, component, forceSpan, true);
+
+        /*
         if (component instanceof HtmlMessages
                 && ((HtmlMessages) component).getForceSpan())
         {
@@ -89,7 +97,7 @@ public class HtmlMessagesRenderer
             if(htmlMessages.getStyle()!=null)
             writer.writeAttribute(HTML.STYLE_ATTR,htmlMessages.getStyle(),null);
             writer.endElement(HTML.SPAN_ELEM);
-        }
+        }*/
     }
 
     protected String getSummary(FacesContext facesContext,

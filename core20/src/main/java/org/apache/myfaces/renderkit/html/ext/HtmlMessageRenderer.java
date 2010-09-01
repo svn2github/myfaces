@@ -86,8 +86,16 @@ public class HtmlMessageRenderer
             }
         }
 
-        renderMessage(facesContext, component);
+        boolean forceSpan = false;
+        if (component instanceof HtmlMessage
+                && ((HtmlMessage) component).getForceSpan())
+        {
+            forceSpan = true;
+        }
 
+        renderMessage(facesContext, component, forceSpan, true);
+
+        /*
         if (component instanceof HtmlMessage
                 && ((HtmlMessage)component).getForceSpan())
         {
@@ -109,7 +117,7 @@ public class HtmlMessageRenderer
                 writer.writeAttribute(HTML.STYLE_ATTR,htmlMessage.getStyle(),null);
                 writer.endElement(HTML.SPAN_ELEM);
             }
-        }
+        }*/
     }
 
     protected String getSummary(FacesContext facesContext,
