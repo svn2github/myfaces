@@ -41,7 +41,6 @@ import javax.faces.model.ResultSetDataModel;
 import javax.faces.model.ScalarDataModel;
 import javax.servlet.jsp.jstl.sql.Result;
 
-import org.apache.myfaces.component.ForceIdAware;
 import org.apache.myfaces.component.html.util.HtmlComponentUtils;
 import org.apache.myfaces.custom.ExtendedComponentBase;
 
@@ -329,6 +328,11 @@ public abstract class HtmlDataTableHack extends
         }
     }
 
+    protected void restoreDescendantComponentStates(Object state)
+    {
+        restoreDescendantComponentStates(getChildren().iterator(), state, false);
+    }
+
     protected void restoreDescendantComponentStates(Iterator childIterator,
             Object state, boolean restoreChildFacets)
     {
@@ -371,6 +375,11 @@ public abstract class HtmlDataTableHack extends
                         true);
             }
         }
+    }
+
+    protected Object saveDescendantComponentStates()
+    {
+        return saveDescendantComponentStates(getChildren().iterator(), false);
     }
 
     protected Object saveDescendantComponentStates(Iterator childIterator,

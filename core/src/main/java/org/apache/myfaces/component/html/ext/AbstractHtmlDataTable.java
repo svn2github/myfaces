@@ -23,11 +23,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.faces.application.Application;
@@ -104,6 +102,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public static final String SPACER_FACET_NAME = "spacer";
     public static final String NEWSPAPER_ORIENTATION_PROPERTY = "newspaperOrientation";
 
+    public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
+
     private Map _preservedDataModel = new HashMap();
 
     private String _forceIdIndexFormula = null;
@@ -120,7 +120,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     private Map _expandedNodes = new HashMap();
 
-    private Map _detailRowStates = new HashMap();
+    //private Map _detailRowStates = new HashMap();
 
     private TableContext _tableContext = null;
 
@@ -202,21 +202,21 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public void setRowIndex(int rowIndex)
     {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
+        //FacesContext facesContext = FacesContext.getCurrentInstance();
 
         if (rowIndex < -1)
         {
             throw new IllegalArgumentException("rowIndex is less than -1");
         }
 
-        UIComponent facet = getFacet(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //UIComponent facet = getFacet(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
         /*Just for obtaining an iterator which must be passed to saveDescendantComponentStates()*/
-        Set set = new HashSet();
-        set.add(facet);
-        if (getRowIndex() != -1 && facet != null)
-        {
-            _detailRowStates.put(getClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
-        }
+        //Set set = new HashSet();
+        //set.add(facet);
+        //if (getRowIndex() != -1 && facet != null)
+        //{
+        //    _detailRowStates.put(getClientId(facesContext), saveDescendantComponentStates(set.iterator(), false));
+        //}
 
         String rowIndexVar = getRowIndexVar();
         String rowCountVar = getRowCountVar();
@@ -279,20 +279,47 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             super.setRowIndex(rowIndex);
         }
 
-        if (rowIndex != -1 && facet != null)
-        {
-            Object rowState = _detailRowStates.get(getClientId(facesContext));
+        //if (rowIndex != -1 && facet != null)
+        //{
+        //    Object rowState = _detailRowStates.get(getClientId(facesContext));
 
-            restoreDescendantComponentStates(set.iterator(),
-                    rowState, false);
+        //    restoreDescendantComponentStates(set.iterator(),
+        //            rowState, false);
 
-        }
+        //}
 
         if (_varDetailToggler != null)
         {
             Map requestMap = getFacesContext().getExternalContext().getRequestMap();
             requestMap.put(_varDetailToggler, this);
         }
+    }
+
+    protected Object saveDescendantComponentStates()
+    {
+        if (!getFacets().isEmpty())
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                return saveDescendantComponentStates(new _DetailStampFacetAndChildrenIterator(detailStampFacet, getChildren()), false);
+            }
+        }
+        return super.saveDescendantComponentStates();
+    }
+    
+    protected void restoreDescendantComponentStates(Object state)
+    {
+        if (!getFacets().isEmpty())
+        {
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME); 
+            if (detailStampFacet != null)
+            {
+                restoreDescendantComponentStates(new _DetailStampFacetAndChildrenIterator(detailStampFacet, getChildren()), state, false);
+                return;
+            }
+        }
+        super.restoreDescendantComponentStates(state);
     }
 
     public void processDecodes(FacesContext context)
@@ -305,15 +332,124 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // We must remove and then replace the facet so that
         // it is not processed by default facet handling code
         //
-        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
-        super.processDecodes(context);
-        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, (UIComponent)facet);
+        //Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //super.processDecodes(context);
+        //if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME, (UIComponent)facet);
+        setRowIndex(-1);
+        processFacets(context, PROCESS_DECODES);
+        processColumnFacets(context, PROCESS_DECODES);
+        processColumnChildren(context, PROCESS_DECODES);
+        setRowIndex(-1);
+        try
+        {
+            decode(context);
+        }
+        catch (RuntimeException e)
+        {
+            context.renderResponse();
+            throw e;
+        }
 
         setRowIndex(-1);
         processColumns(context, PROCESS_DECODES);
         setRowIndex(-1);
         processDetails(context, PROCESS_DECODES);
         setRowIndex(-1);
+    }
+    
+    private void processFacets(FacesContext context, int processAction)
+    {
+        for (Iterator it = getFacets().entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+            if (!DETAIL_STAMP_FACET_NAME.equals((String)entry.getKey()))
+            {
+                process(context, (UIComponent) entry.getValue(), processAction);
+            }
+        }
+    }
+
+    /**
+     * Invoke the specified phase on all facets of all UIColumn children of this component. Note that no methods are
+     * called on the UIColumn child objects themselves.
+     * 
+     * @param context
+     *            is the current faces context.
+     * @param processAction
+     *            specifies a JSF phase: decode, validate or update.
+     */
+    private void processColumnFacets(FacesContext context, int processAction)
+    {
+        for (Iterator childIter = getChildren().iterator(); childIter.hasNext();)
+        {
+            UIComponent child = (UIComponent) childIter.next();
+            if (child instanceof UIColumn)
+            {
+                if (!child.isRendered())
+                {
+                    //Column is not visible
+                    continue;
+                }
+                for (Iterator facetsIter = child.getFacets().values()
+                        .iterator(); facetsIter.hasNext();)
+                {
+                    UIComponent facet = (UIComponent) facetsIter.next();
+                    process(context, facet, processAction);
+                }
+            }
+        }
+    }
+
+    /**
+     * Invoke the specified phase on all non-facet children of all UIColumn children of this component. Note that no
+     * methods are called on the UIColumn child objects themselves.
+     * 
+     * @param context
+     *            is the current faces context.
+     * @param processAction
+     *            specifies a JSF phase: decode, validate or update.
+     */
+    private void processColumnChildren(FacesContext context, int processAction)
+    {
+        int first = getFirst();
+        int rows = getRows();
+        int last;
+        if (rows == 0)
+        {
+            last = getRowCount();
+        }
+        else
+        {
+            last = first + rows;
+        }
+        for (int rowIndex = first; last==-1 || rowIndex < last; rowIndex++)
+        {
+            setRowIndex(rowIndex);
+
+            //scrolled past the last row
+            if (!isRowAvailable())
+                break;
+
+            for (Iterator it = getChildren().iterator(); it.hasNext();)
+            {
+                UIComponent child = (UIComponent) it.next();
+                if (child instanceof UIColumn)
+                {
+                    if (!child.isRendered())
+                    {
+                        //Column is not visible
+                        continue;
+                    }
+                    for (Iterator columnChildIter = child.getChildren()
+                            .iterator(); columnChildIter.hasNext();)
+                    {
+                        UIComponent columnChild = (UIComponent) columnChildIter
+                                .next();
+                        process(context, columnChild, processAction);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -377,14 +513,19 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
                 process(context, facet, processAction);
 
-                if ( rowIndex == (last - 1) )
-                {
-                    Set set = new HashSet();
-                    set.add(facet);
-                    _detailRowStates.put(
-                            getClientId(FacesContext.getCurrentInstance()),
-                                saveDescendantComponentStates(set.iterator(),false));
-                }
+                // This code comes from TOMAHAWK-493, but really the problem was caused by
+                // TOMAHAWK-1534, by a bad comparison of rowIndex. The solution proposed is override
+                // the default iterator for save/restore on HtmlDataTableHack.setRowIndex(), to
+                // include the detailStamp. In this way, we'll be sure that the state is correctly
+                // saved and the component clientId is reset for all components that requires it
+                //if ( rowIndex == (last - 1) )
+                //{
+                //    Set set = new HashSet();
+                //    set.add(facet);
+                //    _detailRowStates.put(
+                //            getClientId(FacesContext.getCurrentInstance()),
+                //                saveDescendantComponentStates(set.iterator(),false));
+                //}
             }
         }
     }
@@ -443,9 +584,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // We must remove and then replace the facet so that
         // it is not processed by default facet handling code
         //
-        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
-        super.processValidators(context);
-        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        //Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //super.processValidators(context);
+        //if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        setRowIndex(-1);
+        processFacets(context, PROCESS_VALIDATORS);
+        processColumnFacets(context, PROCESS_VALIDATORS);
+        processColumnChildren(context, PROCESS_VALIDATORS);
+        setRowIndex(-1);
 
         processColumns(context, PROCESS_VALIDATORS);
         setRowIndex(-1);
@@ -468,9 +614,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // We must remove and then replace the facet so that
         // it is not processed by default facet handling code
         //
-        Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
-        super.processUpdates(context);
-        if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        //Object facet = getFacets().remove(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME);
+        //super.processUpdates(context);
+        //if ( facet != null ) getFacets().put(HtmlTableRenderer.DETAIL_STAMP_FACET_NAME,(UIComponent) facet);
+        
+        setRowIndex(-1);
+        processFacets(context, PROCESS_UPDATES);
+        processColumnFacets(context, PROCESS_UPDATES);
+        processColumnChildren(context, PROCESS_UPDATES);
+        setRowIndex(-1);
 
         processColumns(context, PROCESS_UPDATES);
         setRowIndex(-1);
