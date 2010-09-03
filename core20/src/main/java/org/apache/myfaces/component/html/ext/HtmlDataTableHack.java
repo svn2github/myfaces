@@ -824,7 +824,7 @@ public abstract class HtmlDataTableHack extends
             else
             {
                 Object values[] = new Object[2];
-                values[0] = super.saveState(context);
+                values[0] = parentSaved;
                 values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
                 return values; 
             }
