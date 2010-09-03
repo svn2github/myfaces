@@ -85,7 +85,8 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
 @JSFComponent(
    name = "t:dataTable",
    clazz = "org.apache.myfaces.component.html.ext.HtmlDataTable",
-   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag")
+   tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag",
+   tagHandler = "org.apache.myfaces.component.html.ext.HtmlDataTableTagHandler")
 public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements UserRoleAware, NewspaperTable
 {
     private static final Log log = LogFactory.getLog(AbstractHtmlDataTable.class);
@@ -112,6 +113,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public static final String NEWSPAPER_ORIENTATION_PROPERTY = "newspaperOrientation";
 
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
+
+    public static final String DETAIL_STAMP_ROW_FACET_NAME = "detailStampRow";
 
     private _SerializableDataModel _preservedDataModel;
 
@@ -269,6 +272,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                     
                     if (!returnValue)
                     {
+                        UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
+                        if (detailStampRowFacet != null)
+                        {
+                            returnValue = detailStampRowFacet.invokeOnComponent(context, clientId, callback);
+                        }
                         UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
                         if (detailStampFacet != null)
                         {
@@ -386,6 +394,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                         }
                     }
                     boolean visitDetailStamp = (getFacet(DETAIL_STAMP_FACET_NAME) != null);
+                    boolean visitDetailStampRow = (getFacet(DETAIL_STAMP_ROW_FACET_NAME) != null);
                     
                     // iterate over the rows
                     int rowsToProcess = getRows();
@@ -415,6 +424,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                                         return true;
                                     }
                                 }
+                            }
+                        }
+                        if (visitDetailStampRow)
+                        {
+                            UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
+                            if (detailStampRowFacet.visitTree(context, callback))
+                            {
+                                return true;
                             }
                         }
                         if (visitDetailStamp)
@@ -527,6 +544,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         //            rowState, false);
 
         //}
+        UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
+        if (detailStampRowFacet != null)
+        {
+            detailStampRowFacet.setId(detailStampRowFacet.getId());
+        }
 
         if (getStateHelper().get(PropertyKeys.varDetailToggler) != null)
         {

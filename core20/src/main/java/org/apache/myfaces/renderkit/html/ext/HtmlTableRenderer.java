@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderer;
 import org.apache.myfaces.component.NewspaperTable;
+import org.apache.myfaces.component.html.ext.AbstractHtmlDataTable;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.column.HtmlColumn;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
@@ -268,54 +269,62 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
      * @throws IOException
      */
     private void renderDetailRow(FacesContext facesContext, UIData uiData) throws IOException {
+        UIComponent detailStampRow = uiData.getFacet(AbstractHtmlDataTable.DETAIL_STAMP_ROW_FACET_NAME);
         UIComponent detailStampFacet = uiData.getFacet(DETAIL_STAMP_FACET_NAME);
-
-        if (uiData instanceof HtmlDataTable) {
-            HtmlDataTable htmlDataTable = (HtmlDataTable) uiData;
-
-            if (htmlDataTable.isCurrentDetailExpanded()) {
-
-                boolean embedded = false;
-                if (detailStampFacet != null) {
-                    embedded = isEmbeddedTable(detailStampFacet);
-                }
-
-                ResponseWriter writer = facesContext.getResponseWriter();
-
-                if (!embedded) {
-                    writer.startElement(HTML.TR_ELEM, uiData);
-                    writer.startElement(HTML.TD_ELEM, uiData);
-                    //TOMAHAWK-1087 datatable dont renders a detail correct 
-                    //if a UIColumns is used we have to count UIColumns 
-                    //elements as component.getRowCount()
-                    //instead of just get the number of children available,
-                    //so the colspan could be assigned correctly.
-                    int childCount = 0;
-                    for (Iterator childIter = uiData.getChildren().iterator();
-                        childIter.hasNext();)
-                    {
-                        UIComponent childComp = (UIComponent) childIter.next();
-                        if (childComp instanceof UIColumns)
-                        {
-                            UIColumns v = (UIColumns) childComp;
-                            childCount += v.getRowCount();
-                        }
-                        else
-                        {
-                            childCount++;
-                        }
+        
+        if (detailStampRow != null && detailStampFacet != null)
+        {
+            detailStampRow.encodeAll(facesContext);
+        }
+        else
+        {
+            if (uiData instanceof HtmlDataTable) {
+                HtmlDataTable htmlDataTable = (HtmlDataTable) uiData;
+    
+                if (htmlDataTable.isCurrentDetailExpanded()) {
+    
+                    boolean embedded = false;
+                    if (detailStampFacet != null) {
+                        embedded = isEmbeddedTable(detailStampFacet);
                     }
-                    writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(
-                            childCount), null);
-                }
-
-                if (detailStampFacet != null) {
-                    RendererUtils.renderChild(facesContext, detailStampFacet);
-                }
-
-                if (!embedded) {
-                    writer.endElement(HTML.TD_ELEM);
-                    writer.endElement(HTML.TR_ELEM);
+    
+                    ResponseWriter writer = facesContext.getResponseWriter();
+    
+                    if (!embedded) {
+                        writer.startElement(HTML.TR_ELEM, uiData);
+                        writer.startElement(HTML.TD_ELEM, uiData);
+                        //TOMAHAWK-1087 datatable dont renders a detail correct 
+                        //if a UIColumns is used we have to count UIColumns 
+                        //elements as component.getRowCount()
+                        //instead of just get the number of children available,
+                        //so the colspan could be assigned correctly.
+                        int childCount = 0;
+                        for (Iterator childIter = uiData.getChildren().iterator();
+                            childIter.hasNext();)
+                        {
+                            UIComponent childComp = (UIComponent) childIter.next();
+                            if (childComp instanceof UIColumns)
+                            {
+                                UIColumns v = (UIColumns) childComp;
+                                childCount += v.getRowCount();
+                            }
+                            else
+                            {
+                                childCount++;
+                            }
+                        }
+                        writer.writeAttribute(HTML.COLSPAN_ATTR, new Integer(
+                                childCount), null);
+                    }
+    
+                    if (detailStampFacet != null) {
+                        RendererUtils.renderChild(facesContext, detailStampFacet);
+                    }
+    
+                    if (!embedded) {
+                        writer.endElement(HTML.TD_ELEM);
+                        writer.endElement(HTML.TR_ELEM);
+                    }
                 }
             }
         }
