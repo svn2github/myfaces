@@ -1036,40 +1036,44 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         ValueExpression vb = getValueExpression("value");
         if (vb != null && !vb.isReadOnly(context.getELContext()))
         {
-            _SerializableDataModel dm = (_SerializableDataModel) getDataModel();
-            Class type = (getValueType() == null) ? 
-                    vb.getType(context.getELContext()) : 
-                        ClassUtils.simpleClassForName(getValueType());
-            Class dmType = dm.getClass();
-            if (DataModel.class.isAssignableFrom(type))
+            DataModel qdm = getDataModel();
+            if (qdm instanceof _SerializableDataModel)
             {
-                vb.setValue(context.getELContext(), dm);
-            }
-            else if (List.class.isAssignableFrom(type) || _SerializableListDataModel.class.isAssignableFrom(dmType))
-            {
-                vb.setValue(context.getELContext(), dm.getWrappedData());
-            }
-            else if (OBJECT_ARRAY_CLASS.isAssignableFrom(type))
-            {
-                List lst = (List) dm.getWrappedData();
-                vb.setValue(context.getELContext(), lst.toArray(new Object[lst.size()]));
-            }
-            else if (ResultSet.class.isAssignableFrom(type))
-            {
-                throw new UnsupportedOperationException(this.getClass().getName()
-                        + " UnsupportedOperationException");
-            }
-            else
-            {
-                //Assume scalar data model
-                List lst = (List) dm.getWrappedData();
-                if (lst!= null && lst.size() > 0)
+                _SerializableDataModel dm = (_SerializableDataModel) qdm;
+                Class type = (getValueType() == null) ? 
+                        vb.getType(context.getELContext()) : 
+                            ClassUtils.simpleClassForName(getValueType());
+                Class dmType = dm.getClass();
+                if (DataModel.class.isAssignableFrom(type))
                 {
-                    vb.setValue(context.getELContext(), lst.get(0));
+                    vb.setValue(context.getELContext(), dm);
+                }
+                else if (List.class.isAssignableFrom(type) || _SerializableListDataModel.class.isAssignableFrom(dmType))
+                {
+                    vb.setValue(context.getELContext(), dm.getWrappedData());
+                }
+                else if (OBJECT_ARRAY_CLASS.isAssignableFrom(type))
+                {
+                    List lst = (List) dm.getWrappedData();
+                    vb.setValue(context.getELContext(), lst.toArray(new Object[lst.size()]));
+                }
+                else if (ResultSet.class.isAssignableFrom(type))
+                {
+                    throw new UnsupportedOperationException(this.getClass().getName()
+                            + " UnsupportedOperationException");
                 }
                 else
                 {
-                    vb.setValue(context.getELContext(), null);
+                    //Assume scalar data model
+                    List lst = (List) dm.getWrappedData();
+                    if (lst!= null && lst.size() > 0)
+                    {
+                        vb.setValue(context.getELContext(), lst.get(0));
+                    }
+                    else
+                    {
+                        vb.setValue(context.getELContext(), null);
+                    }
                 }
             }
         }
