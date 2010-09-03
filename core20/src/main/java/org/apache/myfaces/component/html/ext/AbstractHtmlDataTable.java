@@ -35,14 +35,12 @@ import javax.faces.component.ContextCallback;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIPanel;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
 
 import org.apache.commons.logging.Log;
@@ -1035,26 +1033,26 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     private void updateModelFromPreservedDataModel(FacesContext context)
     {
-        ValueBinding vb = getValueBinding("value");
-        if (vb != null && !vb.isReadOnly(context))
+        ValueExpression vb = getValueExpression("value");
+        if (vb != null && !vb.isReadOnly(context.getELContext()))
         {
             _SerializableDataModel dm = (_SerializableDataModel) getDataModel();
             Class type = (getValueType() == null) ? 
-                    vb.getType(context) : 
+                    vb.getType(context.getELContext()) : 
                         ClassUtils.simpleClassForName(getValueType());
             Class dmType = dm.getClass();
             if (DataModel.class.isAssignableFrom(type))
             {
-                vb.setValue(context, dm);
+                vb.setValue(context.getELContext(), dm);
             }
             else if (List.class.isAssignableFrom(type) || _SerializableListDataModel.class.isAssignableFrom(dmType))
             {
-                vb.setValue(context, dm.getWrappedData());
+                vb.setValue(context.getELContext(), dm.getWrappedData());
             }
             else if (OBJECT_ARRAY_CLASS.isAssignableFrom(type))
             {
                 List lst = (List) dm.getWrappedData();
-                vb.setValue(context, lst.toArray(new Object[lst.size()]));
+                vb.setValue(context.getELContext(), lst.toArray(new Object[lst.size()]));
             }
             else if (ResultSet.class.isAssignableFrom(type))
             {
@@ -1067,11 +1065,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 List lst = (List) dm.getWrappedData();
                 if (lst!= null && lst.size() > 0)
                 {
-                    vb.setValue(context, lst.get(0));
+                    vb.setValue(context.getELContext(), lst.get(0));
                 }
                 else
                 {
-                    vb.setValue(context, null);
+                    vb.setValue(context.getELContext(), null);
                 }
             }
         }
@@ -1274,12 +1272,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             return null;
         }
 
-        for (Iterator iter = component.getChildren().iterator(); iter.hasNext();)
+        for (Iterator<UIComponent> iter = component.getChildren().iterator(); iter.hasNext();)
         {
             UIComponent aChild = (UIComponent) iter.next();
             if (aChild.isRendered())
             {
-                ValueBinding vb = aChild.getValueBinding("value");
+                ValueExpression vb = aChild.getValueExpression("value");
                 if (vb != null)
                 {
                     String expressionString = vb.getExpressionString();
