@@ -122,27 +122,27 @@ public class HtmlDateRenderer extends HtmlRenderer {
                     }
                     if (token.startsWith("month="))
                     {
-                        userData.setYear(token.substring(6));
+                        userData.setMonth(token.substring(6));
                     }
                     if (token.startsWith("day="))
                     {
-                        userData.setYear(token.substring(4));
+                        userData.setDay(token.substring(4));
                     }
                     if (token.startsWith("hours="))
                     {
-                        userData.setYear(token.substring(6));
+                        userData.setHours(token.substring(6));
                     }
                     if (token.startsWith("minutes="))
                     {
-                        userData.setYear(token.substring(8));
+                        userData.setMinutes(token.substring(8));
                     }
                     if (token.startsWith("seconds="))
                     {
-                        userData.setYear(token.substring(8));
+                        userData.setSeconds(token.substring(8));
                     }
                     if (token.startsWith("ampm="))
                     {
-                        userData.setYear(token.substring(5));
+                        userData.setAmpm(token.substring(5));
                     }
                 }
             }
