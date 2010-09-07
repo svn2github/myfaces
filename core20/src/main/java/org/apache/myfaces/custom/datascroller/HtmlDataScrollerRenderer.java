@@ -27,6 +27,8 @@ import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIParameter;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -36,6 +38,7 @@ import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 
 /**
  * Renderer for the HtmlDataScroller component.
@@ -186,6 +189,21 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
         HtmlDataScroller scroller = (HtmlDataScroller) uiComponent;
 
         setVariables(facesContext, scroller);
+        
+        if (scroller.getFirst() == null && scroller.getFastRewind() == null
+            && scroller.getPrevious() == null && !scroller.isPaginator()
+            && scroller.getNext() == null && scroller.getFastForward() == null
+            && scroller.getLast() == null)
+        {
+            ResponseWriter writer = facesContext.getResponseWriter();
+            writer.startElement(HTML.DIV_ELEM, scroller);
+            Map<String, List<ClientBehavior>> clientBehaviors = scroller.getClientBehaviors();
+            if (!clientBehaviors.isEmpty() ||
+                    (scroller.getId() != null && !scroller.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)))
+            {
+                writer.writeAttribute(HTML.ID_ATTR, scroller.getClientId(facesContext), null);
+            }
+        }
     }
 
     public void encodeChildren(FacesContext facescontext, UIComponent uicomponent)
@@ -232,16 +250,28 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
     {
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        if (!scroller.isRenderFacetsIfSinglePage() && scroller.getPageCount() <= 1)
-            return;
-
         if (scroller.getFirst() == null && scroller.getFastRewind() == null
             && scroller.getPrevious() == null && !scroller.isPaginator()
             && scroller.getNext() == null && scroller.getFastForward() == null
             && scroller.getLast() == null)
+        {
+            writer.endElement(HTML.DIV_ELEM);
+            return;
+        }
+        
+        if (!scroller.isRenderFacetsIfSinglePage() && scroller.getPageCount() <= 1)
             return;
 
         writeScrollerStart(writer, scroller);
+        
+        Map<String, List<ClientBehavior>> clientBehaviors = scroller.getClientBehaviors();
+        
+        if (!clientBehaviors.isEmpty() ||
+            (scroller.getId() != null && !scroller.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)))
+        {
+            writer.writeAttribute(HTML.ID_ATTR, scroller.getClientId(facesContext), null);
+        }
+        
         String styleClass = scroller.getStyleClass();
         if (styleClass != null)
         {
@@ -597,6 +627,19 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             //     and http://issues.apache.org/jira/browse/MYFACES-1809
             link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
 
+            //Copy all client behaviors 
+            for (Map.Entry<String,List<ClientBehavior>> entry : scroller.getClientBehaviors().entrySet())
+            {
+                List<ClientBehavior> list = entry.getValue();
+                if (list != null && !list.isEmpty())
+                {
+                    for (ClientBehavior cb : list)
+                    {
+                        link.addClientBehavior(entry.getKey(), cb);
+                    }
+                }
+            }
+
             link.setId(scroller.getId() + id);
             link.setTransient(true);
             UIParameter parameter = (UIParameter) application
@@ -649,6 +692,19 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
             //     and http://issues.apache.org/jira/browse/MYFACES-1809
             link = new org.apache.myfaces.component.html.ext.HtmlCommandLink();
     
+            //Copy all client behaviors 
+            for (Map.Entry<String,List<ClientBehavior>> entry : scroller.getClientBehaviors().entrySet())
+            {
+                List<ClientBehavior> list = entry.getValue();
+                if (list != null && !list.isEmpty())
+                {
+                    for (ClientBehavior cb : list)
+                    {
+                        link.addClientBehavior(entry.getKey(), cb);
+                    }
+                }
+            }
+            
             link.setId(scroller.getId() + facetName);
             link.setTransient(true);
             UIParameter parameter = (UIParameter) application

@@ -72,7 +72,8 @@ import org.apache.myfaces.shared_tomahawk.component.DisplayValueOnlyCapable;
 @JSFComponent(
     name = "t:dataScroller",
     clazz = "org.apache.myfaces.custom.datascroller.HtmlDataScroller",
-    tagClass = "org.apache.myfaces.custom.datascroller.HtmlDataScrollerTag")
+    tagClass = "org.apache.myfaces.custom.datascroller.HtmlDataScrollerTag",
+    defaultEventName = "action")
 public abstract class AbstractHtmlDataScroller extends UIPanel
     implements ActionSource2, ClientBehaviorHolder, UserRoleAware, DisplayValueOnlyCapable,
     DisplayValueOnlyAware, ForceIdAware, UniversalProperties, StyleAware
@@ -164,14 +165,14 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
      * HTML: Script to be invoked when the element is clicked.
      *
      */
-    @JSFProperty
+    @JSFProperty(clientEvent="click")
     public abstract String getOnclick();
 
     /**
      * HTML: Script to be invoked when the element is double-clicked.
      *
      */
-    @JSFProperty
+    @JSFProperty(clientEvent="dblclick")
     public abstract String getOndblclick();
 
     public boolean isListLayout()
@@ -624,6 +625,7 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
                         "defining an action is not supported. use an actionlistener");
     }
     
+    @JSFProperty(stateHolder=true, returnSignature = "java.lang.Object", jspName = "action", clientEvent="action")
     public MethodExpression getActionExpression()
     {
         // not used
