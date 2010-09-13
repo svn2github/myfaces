@@ -1084,7 +1084,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     {
         if (isPreserveRowComponentState())
         {
-            if (getFacesContext().getAttributes().containsKey("org.apache.myfaces.MARK_INITIAL_STATE"))
+            if (getFacesContext().getAttributes().containsKey("javax.faces.MARK_INITIAL_STATE"))
             {
                 //Since we re
                 replaceColumnsWithCommandSortHeadersIfNeeded(getFacesContext());
