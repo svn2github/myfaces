@@ -545,7 +545,7 @@ public abstract class HtmlDataTableHack extends
     {
         if (isPreserveRowComponentState())
         {
-            if (getFacesContext().getAttributes().containsKey("javax.faces.MARK_INITIAL_STATE"))
+            if (getFacesContext().getAttributes().containsKey("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE"))
             {
                 _initialDescendantFullComponentState = saveDescendantInitialComponentStates(getFacesContext());
             }
