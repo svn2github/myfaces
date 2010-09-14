@@ -184,9 +184,9 @@
       -->
     <myfaces-shared20-version>4.0.3-SNAPSHOT</myfaces-shared20-version>
 
-    <myfaces-builder-annotations-version>1.0.6-SNAPSHOT</myfaces-builder-annotations-version>
+    <myfaces-builder-annotations-version>1.0.6</myfaces-builder-annotations-version>
 
-    <myfaces-builder-plugin-version>1.0.6</myfaces-builder-plugin-version>
+    <myfaces-builder-plugin-version>1.0.7</myfaces-builder-plugin-version>
   </properties>
 
 </project>
