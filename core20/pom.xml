@@ -248,7 +248,7 @@
     <dependency>
       <groupId>org.apache.myfaces.test</groupId>
       <artifactId>myfaces-test20</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
       <scope>test</scope>
     </dependency>
     
@@ -665,7 +665,7 @@
       <plugin>
         <artifactId>myfaces-javascript-plugin</artifactId>
         <groupId>org.apache.myfaces.buildtools</groupId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2</version>
         <extensions>true</extensions>
         <executions>
           <execution>
