@@ -152,7 +152,6 @@ public abstract class AbstractHtmlTree extends UITreeData
       return _varNodeToggler;
     }
     
-    /**///setVarNodeToggler
     public void setVarNodeToggler(String varNodeToggler)
     {
         _varNodeToggler = varNodeToggler;
