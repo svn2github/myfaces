@@ -27,9 +27,10 @@ import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.shared_tomahawk.resource.ResourceHandlerCache.ResourceValue;
 import org.apache.myfaces.shared_tomahawk.resource.ResourceHandlerCache;
-import org.apache.myfaces.shared_tomahawk.resource.ResourceImpl;
 import org.apache.myfaces.shared_tomahawk.resource.ResourceHandlerSupport;
+import org.apache.myfaces.shared_tomahawk.resource.ResourceImpl;
 import org.apache.myfaces.shared_tomahawk.resource.ResourceLoader;
 import org.apache.myfaces.shared_tomahawk.resource.ResourceMeta;
 import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
@@ -68,34 +69,37 @@ public class UncompressedResourceHandlerWrapper extends javax.faces.application.
         // There will be no resource loaders if ProjectStage != Development
         if (getResourceHandlerSupport().getResourceLoaders().length > 0)
         {
-            if(getResourceLoaderCache().containsResource(resourceName, libraryName, contentType))
-                return getResourceLoaderCache().getResource(resourceName, libraryName, contentType);
-            
             if (contentType == null)
             {
                 //Resolve contentType using ExternalContext.getMimeType
                 contentType = FacesContext.getCurrentInstance().getExternalContext().getMimeType(resourceName);
             }
             
-            for (ResourceLoader loader : getResourceHandlerSupport()
-                    .getResourceLoaders())
+            if(getResourceLoaderCache().containsResource(resourceName, libraryName, contentType))
             {
-                ResourceMeta resourceMeta = deriveResourceMeta(loader,
-                        resourceName, libraryName);
-        
-                if (resourceMeta != null)
+                ResourceValue resourceValue = getResourceLoaderCache().getResource(resourceName, libraryName, contentType);
+                resource = new ResourceImpl(resourceValue.getResourceMeta(), resourceValue.getResourceLoader(),
+                        getResourceHandlerSupport(), contentType);
+            }
+            else
+            {
+                for (ResourceLoader loader : getResourceHandlerSupport()
+                        .getResourceLoaders())
                 {
-                    resource = new ResourceImpl(resourceMeta, loader,
-                            getResourceHandlerSupport(), contentType);
-                    break;
+                    ResourceMeta resourceMeta = deriveResourceMeta(loader,
+                            resourceName, libraryName);
+        
+                    if (resourceMeta != null)
+                    {
+                        resource = new ResourceImpl(resourceMeta, loader,
+                                getResourceHandlerSupport(), contentType);
+                        
+                        getResourceLoaderCache().putResource(resourceName, libraryName, contentType, resourceMeta, loader);
+                        break;
+                    }
                 }
             }
-        
-            if (resource != null)
-            {
-                getResourceLoaderCache().putResource(resourceName, libraryName, contentType, resource);
-                return resource;
-            }
+            return resource;
         }
         return getWrapped().createResource(resourceName, libraryName, contentType);
     }
