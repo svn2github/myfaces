@@ -115,12 +115,12 @@ public class HtmlDataTablePreserveRowComponentStateTest extends AbstractJsfTestC
         column.getChildren().add(text);
 
         //Simulate markInitialState call.
-        facesContext.getAttributes().put("org.apache.myfaces.MARK_INITIAL_STATE", Boolean.TRUE);
+        facesContext.getAttributes().put("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE", Boolean.TRUE);
         root.markInitialState();
         table.markInitialState();
         column.markInitialState();
         text.markInitialState();
-        facesContext.getAttributes().remove("org.apache.myfaces.MARK_INITIAL_STATE");
+        facesContext.getAttributes().remove("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE");
         
         //Check the value expressions are working and change the component state 
         for (int i = 0; i < model.size(); i++)
@@ -180,12 +180,12 @@ public class HtmlDataTablePreserveRowComponentStateTest extends AbstractJsfTestC
         column.getChildren().add(text);
 
         //Simulate markInitialState call.
-        facesContext.getAttributes().put("org.apache.myfaces.MARK_INITIAL_STATE", Boolean.TRUE);
+        facesContext.getAttributes().put("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE", Boolean.TRUE);
         root.markInitialState();
         table.markInitialState();
         column.markInitialState();
         text.markInitialState();
-        facesContext.getAttributes().remove("org.apache.myfaces.MARK_INITIAL_STATE");
+        facesContext.getAttributes().remove("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE");
         
         //Check the value expressions are working and change the component state 
         for (int i = 0; i < model.size(); i++)
@@ -259,14 +259,14 @@ public class HtmlDataTablePreserveRowComponentStateTest extends AbstractJsfTestC
         detailStampPanel.getChildren().add(detailStampText);
 
         //Simulate markInitialState call.
-        facesContext.getAttributes().put("org.apache.myfaces.MARK_INITIAL_STATE", Boolean.TRUE);
+        facesContext.getAttributes().put("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE", Boolean.TRUE);
         root.markInitialState();
         table.markInitialState();
         detailStampPanel.markInitialState();
         detailStampText.markInitialState();
         column.markInitialState();
         text.markInitialState();
-        facesContext.getAttributes().remove("org.apache.myfaces.MARK_INITIAL_STATE");
+        facesContext.getAttributes().remove("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE");
         
         //Check the value expressions are working and change the component state 
         for (int i = 0; i < model.size(); i++)
@@ -339,14 +339,14 @@ public class HtmlDataTablePreserveRowComponentStateTest extends AbstractJsfTestC
         detailStampPanel.getChildren().add(detailStampText);
 
         //Simulate markInitialState call.
-        facesContext.getAttributes().put("org.apache.myfaces.MARK_INITIAL_STATE", Boolean.TRUE);
+        facesContext.getAttributes().put("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE", Boolean.TRUE);
         root.markInitialState();
         table.markInitialState();
         detailStampPanel.markInitialState();
         detailStampText.markInitialState();
         column.markInitialState();
         text.markInitialState();
-        facesContext.getAttributes().remove("org.apache.myfaces.MARK_INITIAL_STATE");
+        facesContext.getAttributes().remove("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE");
         
         //Check the value expressions are working and change the component state 
         for (int i = 0; i < model.size(); i++)
