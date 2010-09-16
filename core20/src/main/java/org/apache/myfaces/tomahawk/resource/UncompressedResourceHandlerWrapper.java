@@ -99,7 +99,10 @@ public class UncompressedResourceHandlerWrapper extends javax.faces.application.
                     }
                 }
             }
-            return resource;
+            if (resource != null)
+            {
+                return resource;
+            }
         }
         return getWrapped().createResource(resourceName, libraryName, contentType);
     }
