@@ -14,7 +14,7 @@
     <description>State saving method: "client" or "server" (= default)
             See JSF Specification 2.5.3</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>client</param-value>
+    <param-value>server</param-value>
   </context-param>
   <context-param>
     <description>Only applicable if state saving method is "server" (= default).
@@ -134,6 +134,17 @@
         <param-value>true</param-value>
     </context-param>
      -->
+     
+  <context-param>
+    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-value>Development</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>org.apache.myfaces.USE_MULTIPLE_JS_FILES_FOR_JSF_UNCOMPRESSED_JS</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  
 
   <filter>
     <filter-name>extensionsFilter</filter-name>
