@@ -83,12 +83,15 @@ public class HtmlNavigationMenuRenderer extends HtmlLinkRenderer
 
     public void processEvent(ComponentSystemEvent event)
     {
-        HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu) event.getComponent();
-        if (HtmlNavigationMenuRendererUtils.isListLayout(panelNav))
+        if (event.getComponent() instanceof HtmlPanelNavigationMenu)
         {
-            if (panelNav.isRenderAll())
+            HtmlPanelNavigationMenu panelNav = (HtmlPanelNavigationMenu) event.getComponent();
+            if (HtmlNavigationMenuRendererUtils.isListLayout(panelNav))
             {
-                addResourcesToHeader(FacesContext.getCurrentInstance());
+                if (panelNav.isRenderAll())
+                {
+                    addResourcesToHeader(FacesContext.getCurrentInstance());
+                }
             }
         }
     }
