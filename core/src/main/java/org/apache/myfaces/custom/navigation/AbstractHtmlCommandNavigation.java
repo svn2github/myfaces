@@ -58,7 +58,7 @@ public abstract class AbstractHtmlCommandNavigation
 
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlCommandNavigation";
     public static final String COMPONENT_FAMILY = "javax.faces.Command";
-    private static final String DEFAULT_RENDERER_TYPE = "javax.faces.Link";
+    private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.Navigation";
     
     public boolean isImmediate()
     {
