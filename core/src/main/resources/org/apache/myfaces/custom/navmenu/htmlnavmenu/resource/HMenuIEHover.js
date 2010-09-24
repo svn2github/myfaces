@@ -7,7 +7,7 @@ startList = function()
         for (i=0; i<navRoot.childNodes.length; i++) 
         {
             node = navRoot.childNodes[i];
-            if (node.nodeName=="LI") 
+            if ((node.nodeName || node.tagName).toLowerCase()=="li") 
             {
                 node.onmouseover=function() 
                 {
