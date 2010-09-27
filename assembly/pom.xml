@@ -184,6 +184,86 @@
                             <outputDirectory>${project.build.directory}/src12</outputDirectory>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>copy-javadoc20</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk20</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>javadoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/javadoc20</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-lib20</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk20</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/assembly-lib20</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-tlddoc20</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk20</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>tlddoc</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/tlddoc20</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-source20</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>tomahawk20</artifactId>
+                                    <version>${project.version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.shared</groupId>
+                                    <artifactId>myfaces-shared-tomahawk</artifactId>
+                                    <version>${myfaces-shared20-version}</version>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/src20</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -217,6 +297,22 @@
                             <outputDirectory>target/assembly/out</outputDirectory>
                             <workDirectory>target/assembly/work12</workDirectory>
                         </configuration>                    
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>makeassembly20</id>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/bin20.xml</descriptor>
+                                <descriptor>src/main/assembly/src20.xml</descriptor>
+                            </descriptors>
+                            <finalName>tomahawk20-${project.version}</finalName>
+                            <outputDirectory>target/assembly/out</outputDirectory>
+                            <workDirectory>target/assembly/work20</workDirectory>
+                        </configuration>
                         <phase>package</phase>
                         <goals>
                             <goal>attached</goal>
