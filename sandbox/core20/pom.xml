@@ -5,7 +5,6 @@
     <artifactId>tomahawk-sandbox20</artifactId>
     <packaging>jar</packaging>
     <name>Sandbox Core 20</name>
-    <url>http://myfaces.apache.org/sandbox</url>
     <description>
         This is the Sandbox Subproject Description [INSERT MORE STUFF HERE]
     </description>

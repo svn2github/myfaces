@@ -5,7 +5,6 @@
     <artifactId>tomahawk-sandbox</artifactId>
     <packaging>jar</packaging>
     <name>Sandbox Core</name>
-    <url>http://myfaces.apache.org/sandbox</url>
     <description>
         The Tomahawk Sandbox is a collection of experimental code that might some day be promoted into
         the Tomahawk library (or possibly some other Myfaces project). The code here is freely available
