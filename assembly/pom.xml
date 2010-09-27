@@ -20,8 +20,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>dependency-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>copy-javadoc</id>
@@ -58,7 +58,20 @@
                             <outputDirectory>${project.build.directory}/assembly-lib</outputDirectory>
                         </configuration>
                     </execution>
-    
+                    <execution>
+                        <id>copy-lib-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/assembly-lib</outputDirectory>
+                            <excludeArtifactIds>jstl,tomahawk12,tomahawk20</excludeArtifactIds>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>copy-tlddoc</id>
                         <phase>package</phase>
@@ -140,6 +153,20 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>copy-lib12-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/assembly-lib12</outputDirectory>
+                            <excludeArtifactIds>jstl,tomahawk,tomahawk20</excludeArtifactIds>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-tlddoc12</id>
                         <phase>package</phase>
                         <goals>
@@ -217,6 +244,20 @@
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.directory}/assembly-lib20</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-lib20-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/assembly-lib20</outputDirectory>
+                            <excludeArtifactIds>jstl,tomahawk,tomahawk12</excludeArtifactIds>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>
                     <execution>
@@ -425,4 +466,22 @@
         </profile>
     </profiles>
     -->
+    
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.myfaces.tomahawk</groupId>
+        <artifactId>tomahawk</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.myfaces.tomahawk</groupId>
+        <artifactId>tomahawk12</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.myfaces.tomahawk</groupId>
+        <artifactId>tomahawk20</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
 </project>
