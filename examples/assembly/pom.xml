@@ -45,6 +45,12 @@
                                 </artifactItem>
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>myfaces-example-simple20</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>war</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-tiles</artifactId>
                                     <version>${project.version}</version>
                                     <type>war</type>
@@ -76,6 +82,12 @@
                                 <artifactItem>
                                     <groupId>org.apache.myfaces.tomahawk</groupId>
                                     <artifactId>myfaces-example-simple</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>java-source</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.apache.myfaces.tomahawk</groupId>
+                                    <artifactId>myfaces-example-simple20</artifactId>
                                     <version>${project.version}</version>
                                     <type>java-source</type>
                                 </artifactItem>
