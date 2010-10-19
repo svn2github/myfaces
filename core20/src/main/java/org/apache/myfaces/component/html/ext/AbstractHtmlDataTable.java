@@ -210,118 +210,127 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         // searching for this component?
         boolean returnValue = baseClientId.equals(clientId);
 
-        if (returnValue)
+        pushComponentToEL(context, this);
+        try
         {
-            try
+            if (returnValue)
             {
-                callback.invokeContextCallback(context, this);
-                return true;
-            }
-            catch (Exception e)
-            {
-                throw new FacesException(e);
-            }
-        }
-
-        // Now Look throught facets on this UIComponent
-        for (Iterator<UIComponent> it = this.getFacets().values().iterator(); !returnValue && it.hasNext();)
-        {
-            returnValue = it.next().invokeOnComponent(context, clientId, callback);
-        }
-
-        if (returnValue)
-        {
-            return returnValue;
-        }
-        
-        // is the component an inner component?
-        if (clientId.startsWith(baseClientId))
-        {
-            // Check if the clientId for the component, which we 
-            // are looking for, has a rowIndex attached
-            char separator = UINamingContainer.getSeparatorChar(context);
-            if (clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
-            {
-                String subId = clientId.substring(baseClientId.length() + 1);
-                String clientRow = subId.substring(0, subId.indexOf(separator));
-    
-                //Now we save the current position
-                int oldRow = this.getRowIndex();
-                
-                // try-finally --> make sure, that the old row index is restored
                 try
                 {
-                    //The conversion is safe, because its already checked on the
-                    //regular expresion
-                    this.setRowIndex(Integer.parseInt(clientRow));
-                    
-                    // check, if the row is available
-                    if (!isRowAvailable())
-                    {
-                        return false;
-                    }
-        
-                    for (Iterator<UIComponent> it1 = getChildren().iterator(); 
-                            !returnValue && it1.hasNext();)
-                    {
-                        //recursive call to find the component
-                        returnValue = it1.next().invokeOnComponent(context, clientId, callback);
-                    }
-                    
-                    if (!returnValue)
-                    {
-                        UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
-                        if (detailStampRowFacet != null)
-                        {
-                            returnValue = detailStampRowFacet.invokeOnComponent(context, clientId, callback);
-                        }
-                        UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
-                        if (detailStampFacet != null)
-                        {
-                            returnValue = detailStampFacet.invokeOnComponent(context, clientId, callback);
-                        }
-                    }
+                    callback.invokeContextCallback(context, this);
+                    return true;
                 }
-                finally
+                catch (Exception e)
                 {
-                    //Restore the old position. Doing this prevent
-                    //side effects.
-                    this.setRowIndex(oldRow);
+                    throw new FacesException(e);
                 }
             }
-            else
+    
+            // Now Look throught facets on this UIComponent
+            for (Iterator<UIComponent> it = this.getFacets().values().iterator(); !returnValue && it.hasNext();)
             {
-                // MYFACES-2370: search the component in the childrens' facets too.
-                // We have to check the childrens' facets here, because in MyFaces
-                // the rowIndex is not attached to the clientId for the children of
-                // facets of the UIColumns. However, in RI the rowIndex is 
-                // attached to the clientId of UIColumns' Facets' children.
-                for (Iterator<UIComponent> itChildren = this.getChildren().iterator();
-                        !returnValue && itChildren.hasNext();)
+                returnValue = it.next().invokeOnComponent(context, clientId, callback);
+            }
+    
+            if (returnValue)
+            {
+                return returnValue;
+            }
+            
+            // is the component an inner component?
+            if (clientId.startsWith(baseClientId))
+            {
+                // Check if the clientId for the component, which we 
+                // are looking for, has a rowIndex attached
+                char separator = UINamingContainer.getSeparatorChar(context);
+                if (clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
                 {
-                    UIComponent child = itChildren.next();
-                    // This is the only part different to UIData.invokeOnComponent. Since we have
-                    // an auto wrapping on columns feature, it is necessary to check columns ids
-                    // without row for invokeOnComponent, but do not traverse all elements, so
-                    // save/restore algorithm could be able to remove / add them.  
-                    if (child instanceof UIColumn && clientId.equals(child.getClientId(context)))
+                    String subId = clientId.substring(baseClientId.length() + 1);
+                    String clientRow = subId.substring(0, subId.indexOf(separator));
+        
+                    //Now we save the current position
+                    int oldRow = this.getRowIndex();
+                    
+                    // try-finally --> make sure, that the old row index is restored
+                    try
                     {
-                        try {
-                            callback.invokeContextCallback(context, child);
-                        } catch (Exception e) {
-                            throw new FacesException(e);
+                        //The conversion is safe, because its already checked on the
+                        //regular expresion
+                        this.setRowIndex(Integer.parseInt(clientRow));
+                        
+                        // check, if the row is available
+                        if (!isRowAvailable())
+                        {
+                            return false;
                         }
-                        returnValue = true;
+            
+                        for (Iterator<UIComponent> it1 = getChildren().iterator(); 
+                                !returnValue && it1.hasNext();)
+                        {
+                            //recursive call to find the component
+                            returnValue = it1.next().invokeOnComponent(context, clientId, callback);
+                        }
+                        
+                        if (!returnValue)
+                        {
+                            UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
+                            if (detailStampRowFacet != null)
+                            {
+                                returnValue = detailStampRowFacet.invokeOnComponent(context, clientId, callback);
+                            }
+                            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
+                            if (detailStampFacet != null)
+                            {
+                                returnValue = detailStampFacet.invokeOnComponent(context, clientId, callback);
+                            }
+                        }
                     }
-                    // process the child's facets
-                    for (Iterator<UIComponent> itChildFacets = child.getFacets().values().iterator(); 
-                            !returnValue && itChildFacets.hasNext();)
+                    finally
                     {
-                        //recursive call to find the component
-                        returnValue = itChildFacets.next().invokeOnComponent(context, clientId, callback);
+                        //Restore the old position. Doing this prevent
+                        //side effects.
+                        this.setRowIndex(oldRow);
+                    }
+                }
+                else
+                {
+                    // MYFACES-2370: search the component in the childrens' facets too.
+                    // We have to check the childrens' facets here, because in MyFaces
+                    // the rowIndex is not attached to the clientId for the children of
+                    // facets of the UIColumns. However, in RI the rowIndex is 
+                    // attached to the clientId of UIColumns' Facets' children.
+                    for (Iterator<UIComponent> itChildren = this.getChildren().iterator();
+                            !returnValue && itChildren.hasNext();)
+                    {
+                        UIComponent child = itChildren.next();
+                        // This is the only part different to UIData.invokeOnComponent. Since we have
+                        // an auto wrapping on columns feature, it is necessary to check columns ids
+                        // without row for invokeOnComponent, but do not traverse all elements, so
+                        // save/restore algorithm could be able to remove / add them.  
+                        if (child instanceof UIColumn && clientId.equals(child.getClientId(context)))
+                        {
+                            try {
+                                callback.invokeContextCallback(context, child);
+                            } catch (Exception e) {
+                                throw new FacesException(e);
+                            }
+                            returnValue = true;
+                        }
+                        // process the child's facets
+                        for (Iterator<UIComponent> itChildFacets = child.getFacets().values().iterator(); 
+                                !returnValue && itChildFacets.hasNext();)
+                        {
+                            //recursive call to find the component
+                            returnValue = itChildFacets.next().invokeOnComponent(context, clientId, callback);
+                        }
                     }
                 }
             }
+        }
+        finally
+        {
+            //all components must call popComponentFromEl after visiting is finished
+            popComponentFromEL(context);
         }
 
         return returnValue;

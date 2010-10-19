@@ -445,6 +445,7 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
             setTemporalFacesContext(context);
         }
         
+        pushComponentToEL(context, this);
         try
         {
             if (returnValue)
@@ -508,6 +509,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         }
         finally
         {
+            //all components must call popComponentFromEl after visiting is finished
+            popComponentFromEL(context);
             if (!isTemporalFacesContext)
             {
                 setTemporalFacesContext(null);

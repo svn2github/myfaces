@@ -235,6 +235,7 @@ public abstract class AbstractHtmlDataList
             setTemporalFacesContext(context);
         }
         
+        pushComponentToEL(context, this);
         try
         {
             if (returnValue)
@@ -309,6 +310,8 @@ public abstract class AbstractHtmlDataList
         }
         finally
         {
+            //all components must call popComponentFromEl after visiting is finished
+            popComponentFromEL(context);
             if (!isCachedFacesContext)
             {
                 setTemporalFacesContext(null);
