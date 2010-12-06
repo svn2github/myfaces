@@ -524,7 +524,7 @@
             <configuration>
               <sources>
                 <source>${project.build.directory}/shared_sources</source>
-                <source>${project.build.directory}/myfaces-builder-plugin/main/java</source>
+                <source>${project.build.directory}/generated-sources/myfaces-builder-plugin</source>
               </sources>
             </configuration>
           </execution>
