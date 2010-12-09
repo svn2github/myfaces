@@ -85,7 +85,7 @@ seconds since last page refresh.
             <h:commandLink id="normalLinkGoingHome" value="Normal Submit with Link going home" action="home"/>
                         
         </h:panelGrid>
-        <s:fieldset legend="about this example">
+        <t:fieldset legend="about this example">
             <f:verbatim>
                 <br />
                 <br />
@@ -97,7 +97,7 @@ seconds since last page refresh.
                 which would normally cause a submit ) an AJAX request is performed  <br />
                 which updates all components within the pprPanelGroup  <br />
             </f:verbatim>
-        </s:fieldset>
+        </t:fieldset>
     </h:form>
 
 </f:view>

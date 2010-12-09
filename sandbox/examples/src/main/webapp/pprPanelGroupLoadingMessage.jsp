@@ -62,7 +62,7 @@ seconds since last page refresh.
 			</s:pprPanelGroup>
 		</h:panelGrid>
 
-        <s:fieldset legend="about this example">
+        <t:fieldset legend="about this example">
             <f:verbatim>
                 <br/>
                 <br/>
@@ -73,7 +73,7 @@ seconds since last page refresh.
                 This example shows a loading message while executing a 4 seconds  <br/>
                 timeout within the called action.    <br/>
             </f:verbatim>
-        </s:fieldset>
+        </t:fieldset>
     </h:form>
 
 </f:view>

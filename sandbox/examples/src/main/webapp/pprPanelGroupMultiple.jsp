@@ -72,7 +72,7 @@ seconds since last page refresh.
 				<h:outputText value="#{pprExampleBean.textField}" />
 			</s:pprPanelGroup>
         </h:panelGrid>
-        <s:fieldset legend="about this example">
+        <t:fieldset legend="about this example">
             <f:verbatim>
                 <br />
                 <br />
@@ -81,7 +81,7 @@ seconds since last page refresh.
                 how multiple partialTriggers can be used in more than one <br />
                 pprPanelGroup.
             </f:verbatim>
-        </s:fieldset>
+        </t:fieldset>
     </h:form>
 
 </f:view>

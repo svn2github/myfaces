@@ -63,14 +63,14 @@ seconds since last page refresh.
             </t:dataList>
         </s:pprPanelGroup>
 
-        <s:fieldset legend="about this example">
+        <t:fieldset legend="about this example">
             <f:verbatim>
                  <br />
                  <br />
                 This example demonstrates that also actions can be invoked via AJAX <br />
                 when using PPR.
             </f:verbatim>
-        </s:fieldset>
+        </t:fieldset>
     </h:form>
 
 

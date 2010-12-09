@@ -65,7 +65,7 @@ seconds since last page refresh.
 			</s:pprPanelGroup>
 		</h:panelGrid>
 	</h:form>
-    <s:fieldset legend="about this example">
+    <t:fieldset legend="about this example">
          <f:verbatim>
              <br />
              <br />
@@ -82,7 +82,7 @@ seconds since last page refresh.
              in the pprPanelGroup and so all of them trigger AJAX updates  <br />
              of the group.
         </f:verbatim>
-    </s:fieldset>
+    </t:fieldset>
 </f:view>
 
 <%@include file="inc/page_footer.jsp"%>

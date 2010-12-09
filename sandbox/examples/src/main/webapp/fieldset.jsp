@@ -30,7 +30,7 @@
 <body>
   	<f:view>	
 		<h:form>
-			<s:fieldset legend="FieldSet">
+			<t:fieldset legend="FieldSet">
 				<h:outputLabel for="input1" value="Input1: "/>
 				<h:inputText id="input1"/>
 				<t:htmlTag value="br"/>
@@ -40,7 +40,7 @@
 				<h:outputLabel for="input3" value="Input3: "/>
 				<h:inputText id="input3"/>
 				<s:focus id="focus" for="input2" />
-			</s:fieldset>
+			</t:fieldset>
 		</h:form>
   	</f:view>	
 </body>

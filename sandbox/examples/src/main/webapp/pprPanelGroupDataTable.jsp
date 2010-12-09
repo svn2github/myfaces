@@ -91,7 +91,7 @@ seconds since last page refresh.
             </f:facet>
         </t:dataTable>
 
-        <s:fieldset legend="about this example">
+        <t:fieldset legend="about this example">
             <f:verbatim>
                  <br />
                  <br />
@@ -99,7 +99,7 @@ seconds since last page refresh.
                 (in the table footer) how a component not easily reachable via id-references can be manually
                 added to the list of refreshed components on the server.
             </f:verbatim>
-        </s:fieldset>
+        </t:fieldset>
     </h:form>
 
 

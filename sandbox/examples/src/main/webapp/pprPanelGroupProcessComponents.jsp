@@ -87,7 +87,7 @@ function localDomUpdateFunction(formNode, targetNode, responseNode)
 </script>
         </f:verbatim>
 
-        <s:fieldset legend="about this example">
+        <t:fieldset legend="about this example">
             <f:verbatim>
                 <br/>
                 Both input fields in this form are required. Normally a PPR request will fail as long as
@@ -104,7 +104,7 @@ function localDomUpdateFunction(formNode, targetNode, responseNode)
                 Also notice that a user defined java script function is used to read the ppr response and
                 update the dom as required.
             </f:verbatim>
-        </s:fieldset>
+        </t:fieldset>
     </h:form>
 
     <h:messages id="messages" />
