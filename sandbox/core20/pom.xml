@@ -269,7 +269,36 @@
                         org/apache/myfaces/custom/submitOnEvent/**/*.java,
                         org/apache/myfaces/custom/suggestajax/**/*.java,
                         org/apache/myfaces/custom/table/**/*.java,
-                        org/apache/myfaces/custom/timednotifier/**/*.java
+                        org/apache/myfaces/custom/timednotifier/**/*.java,
+                        org/apache/myfaces/convert/ex/**/*.java,
+                        org/apache/myfaces/custom/ajax/**/*.java,
+                        org/apache/myfaces/custom/autoupdatedatatable/**/*.java,
+                        org/apache/myfaces/custom/clientvalidation/**/*.java,
+                        org/apache/myfaces/custom/comparetovalidator/**/*.java,
+                        org/apache/myfaces/custom/conversation/**/*.java,
+                        org/apache/myfaces/custom/convertboolean/**/*.java,
+                        org/apache/myfaces/custom/convertDateTime/**/*.java,
+                        org/apache/myfaces/custom/convertNumber/**/*.java,
+                        org/apache/myfaces/custom/csvvalidator/**/*.java,
+                        org/apache/myfaces/custom/dynamicResources/**/*.java,
+                        org/apache/myfaces/custom/exporter/**/*.java,
+                        org/apache/myfaces/custom/form/**/*.java,
+                        org/apache/myfaces/custom/globalId/**/*.java,
+                        org/apache/myfaces/custom/graphicimagedynamic/**/*.java,
+                        org/apache/myfaces/custom/inputAjax/**/*.java,
+                        org/apache/myfaces/custom/isbnvalidator/**/*.java,
+                        org/apache/myfaces/custom/outputlinkdynamic/**/*.java,
+                        org/apache/myfaces/custom/redirectTracker/**/*.java,
+                        org/apache/myfaces/custom/renderOne/**/*.java,
+                        org/apache/myfaces/custom/requestParameterProvider/**/*.java,
+                        org/apache/myfaces/custom/scope/**/*.java,
+                        org/apache/myfaces/custom/security/**/*.java,
+                        org/apache/myfaces/custom/suggest/**/*.java,
+                        org/apache/myfaces/custom/urlvalidator/**/*.java,
+                        org/apache/myfaces/custom/util/**/*.java,
+                        org/apache/myfaces/renderkit/**/*.java,
+                        org/apache/myfaces/tomahawk/util/**/*.java,
+                        org/apache/myfaces/validator/ex/**/*.java
                         </excludes>
                       </artifactItem>
                     </artifactItems>
@@ -354,6 +383,15 @@
                     </configuration>
                 </execution>
                 <execution>
+                    <id>make-client-behaviors</id>
+                    <goals>
+                      <goal>make-client-behaviors</goal>
+                    </goals>
+                    <configuration>
+                       <mainSourceDirectory2>${project.build.directory}/tomahawk12_sources</mainSourceDirectory2>
+                    </configuration>
+                </execution>
+                <execution>
                     <id>maketags</id>
                     <configuration>
                        <jsfVersion>12</jsfVersion>
@@ -379,7 +417,7 @@
                   <configuration>
                       <xmlFile>META-INF/myfaces_sandbox.tld</xmlFile>
                       <xmlBaseFile>src/main/conf/META-INF/myfaces_sandbox-base.tld</xmlBaseFile>
-                      <templateFile>tomahawk12.vm</templateFile>
+                      <templateFile>tld-tomahawk20.vm</templateFile>
                       <params>
                          <shortname>s</shortname>
                          <uri>http://myfaces.apache.org/sandbox</uri>
@@ -387,7 +425,7 @@
                          <description>Enhanced standard JSP actions and custom MyFaces actions.</description>
                       </params>
                       <modelIds>
-                          <modelId>tomahawk-sandbox12</modelId>
+                          <modelId>tomahawk-sandbox20</modelId>
                       </modelIds>
                   </configuration>
                   <goals>
@@ -405,7 +443,7 @@
                          <uri>http://myfaces.apache.org/sandbox</uri>
                       </params>
                       <modelIds>
-                          <modelId>tomahawk-sandbox12</modelId>
+                          <modelId>tomahawk-sandbox20</modelId>
                       </modelIds>
                   </configuration>
                   <goals>

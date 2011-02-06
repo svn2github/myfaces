@@ -21,16 +21,31 @@
 
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee" 
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd" 
-              version="1.2">
-              
-  <lifecycle>
-      <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
-      <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
-      <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
-      <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener> 
-  </lifecycle>
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" 
+              version="2.0">
 
+
+  <lifecycle>
+      <!--               
+      <phase-listener>org.apache.myfaces.custom.ajax.api.AjaxDecodePhaseListener</phase-listener>
+      -->
+      <phase-listener>org.apache.myfaces.custom.valueChangeNotifier.ValueChangePhaseListener</phase-listener>
+      <!--
+      <phase-listener>org.apache.myfaces.custom.redirectTracker.RedirectTrackerPhaseListener</phase-listener>
+      <phase-listener>org.apache.myfaces.custom.ppr.PPRPhaseListener</phase-listener>
+      --> 
+  </lifecycle>
+  
+  <!-- 
+  <render-kit>
+     <client-behavior-renderer>
+        <client-behavior-renderer-type>org.apache.myfaces.custom.effect.EffectAppearBehavior</client-behavior-renderer-type>
+        <client-behavior-renderer-class>org.apache.myfaces.custom.effect.EffectAppearClientBehaviorRenderer</client-behavior-renderer-class>
+     </client-behavior-renderer>
+  </render-kit>
+   -->
+  
+  <!--
   <application>
     <variable-resolver>org.apache.myfaces.custom.redirectTracker.RedirectTrackerVariableResolver</variable-resolver>
     <navigation-handler>org.apache.myfaces.custom.redirectTracker.RedirectTrackerNavigationHandler</navigation-handler>
@@ -41,8 +56,10 @@
   <factory>
       <lifecycle-factory>org.apache.myfaces.custom.ppr.PPRLifecycleFactory</lifecycle-factory>
   </factory>
+   -->
 
   <!-- sandbox managed beans -->
+  <!-- 
   <managed-bean>
     <managed-bean-name>ScopeContainer</managed-bean-name>
     <managed-bean-class>org.apache.myfaces.custom.scope.ScopeHolder</managed-bean-class>
@@ -55,8 +72,10 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
-
+ -->
+ 
   <!-- extended converters and validators -->
+  <!-- 
     <converter>
         <converter-id>javax.faces.Integer</converter-id>
         <converter-class>org.apache.myfaces.convert.ex.IntegerConverter</converter-class>
@@ -110,5 +129,6 @@
         <validator-id>javax.faces.DoubleRange</validator-id>
         <validator-class>org.apache.myfaces.validator.ex.DoubleRangeValidator</validator-class>
     </validator>
+     -->
 
 </faces-config>

@@ -29,6 +29,74 @@
 
 $baseContent
 
+## ----------------------------- START MACROS -----------------------------
+##
+## -------------------------------
+## writeJSFProperty
+## -------------------------------
+##
+#macro (writeJSFProperty $property)
+#if (!$property.isTagExcluded())
+        <attribute>
+#if ($property.longDescription)
+           <description><![CDATA[$property.longDescription]]></description>
+#else
+           <description><![CDATA[]]></description>
+#end
+           <name>$property.jspName</name>
+#if ($property.isRequired())
+           <required>$property.isRequired()</required>
+#end
+#if ($property.isMethodExpression() || $property.isMethodBinding())
+#if ($property.getMethodBindingSignature())
+#set ($sig = $property.getMethodBindingSignature())
+           <method-signature>$sig.returnType myMethod( $sig.parameterTypesAsString )</method-signature>
+#end
+#elseif($property.deferredValueType)
+           <type>$property.deferredValueType</type>
+#elseif ($type == "String")
+           <type>java.lang.String</type>
+#else
+           <type>$property.className</type>
+#end
+        </attribute>
+#end
+#end
+##
+## -------------------------------
+## writeJSFAttribute
+## -------------------------------
+##
+#macro (writeJSFAttribute $attribute)
+#if (!$attribute.isTagExcluded())
+        <attribute>
+#if ($attribute.longDescription)
+           <description><![CDATA[$attribute.longDescription]]></description>
+#else
+           <description><![CDATA[]]></description>
+#end
+           <name>$attribute.jspName</name>
+#if ($attribute.isRequired())
+           <required>$attribute.isRequired()</required>
+#end
+#set ($type = $utils.getClassFromFullClass($attribute.className))
+#if ($type == "MethodExpression")
+           <method-signature>${attribute.deferredMethodSignature}</method-signature>
+#elseif ($type == "ValueExpression")
+#if($attribute.deferredValueType)
+           <type>$attribute.deferredValueType</type>
+#end
+#else
+#if ($attribute.className)         
+           <type>$attribute.className</type>
+#else
+           <type>java.lang.String</type>
+#end
+#end
+        </attribute>
+#end
+#end
+## ----------------------------- END MACROS -------------------------------
     <!-- Component Tags -->
 #set ($componentList = ${model.getComponents()})
 #foreach( $component in $componentList )
@@ -38,6 +106,11 @@ $baseContent
 ## Check if we don't have a facelet tag taking precedence over this description
 #if (! ${model.findFaceletTagByName($component.name)})
     <tag>
+#if ($component.longDescription)
+        <description><![CDATA[$component.longDescription]]></description>
+#else
+        <description><![CDATA[]]></description>
+#end    
         <tag-name>$utils.getTagName($component.name)</tag-name>
         <component>
             <component-type>$component.type</component-type>
@@ -50,6 +123,10 @@ $baseContent
             <handler-class>$component.tagHandler</handler-class>
 #end
         </component>
+#set ($attributeList = ${component.propertyList})
+#foreach( $attribute in $attributeList )
+#writeJSFProperty($attribute)
+#end        
     </tag>
 #end
 #end
@@ -65,10 +142,22 @@ $baseContent
 ## Check if we don't have a facelet tag taking precedence over this description
 #if (! ${model.findFaceletTagByName($component.name)}) 
     <tag>
+#if ($component.longDescription)
+        <description><![CDATA[$component.longDescription]]></description>
+#else
+        <description><![CDATA[]]></description>
+#end    
         <tag-name>$utils.getTagName($component.name)</tag-name>
         <converter>
             <converter-id>$component.converterId</converter-id>
+#if ($component.tagHandler)
+            <handler-class>$component.tagHandler</handler-class>
+#end
         </converter>
+#set ($propertyList = ${component.propertyList})
+#foreach( $property in $propertyList )
+#writeJSFProperty($property)
+#end        
     </tag>
 #end
 #end
@@ -84,10 +173,22 @@ $baseContent
 ## Check if we don't have a facelet tag taking precedence over this description
 #if (! ${model.findFaceletTagByName($component.name)})
     <tag>
+#if ($component.longDescription)
+        <description><![CDATA[$component.longDescription]]></description>
+#else
+        <description><![CDATA[]]></description>
+#end    
         <tag-name>$utils.getTagName($component.name)</tag-name>
         <validator>
             <validator-id>$component.validatorId</validator-id>
-        </validator>      
+#if ($component.tagHandler)
+            <handler-class>$component.tagHandler</handler-class>
+#end
+        </validator>
+#set ($propertyList = ${component.propertyList})
+#foreach( $property in $propertyList )
+#writeJSFProperty($property)
+#end        
     </tag>
 #end
 #end
@@ -103,10 +204,22 @@ $baseContent
 ## Check if we don't have a facelet tag taking precedence over this description
 #if (! ${model.findFaceletTagByName($behavior.name)}) 
     <tag>
+#if ($behavior.longDescription)
+        <description><![CDATA[$behavior.longDescription]]></description>
+#else
+        <description><![CDATA[]]></description>
+#end    
         <tag-name>$utils.getTagName($behavior.name)</tag-name>
         <behavior>
             <behavior-id>$behavior.behaviorId</behavior-id>
+#if ($behavior.tagHandler)
+            <handler-class>$behavior.tagHandler</handler-class>
+#end
         </behavior>
+#set ($propertyList = ${behavior.propertyList})
+#foreach( $property in $propertyList )
+#writeJSFProperty($property)
+#end        
     </tag>
 #end
 #end
@@ -121,8 +234,16 @@ $baseContent
 ## Check if we don't have a facelet tag taking precedence over this description
 #if (! ${model.findFaceletTagByName($tag.name)})
    <tag>
+#if ($tag.longDescription)
+        <description><![CDATA[$tag.longDescription]]></description>
+#else
+        <description><![CDATA[]]></description>
+#end    
       <tag-name>$utils.getTagName($tag.name)</tag-name>
       <handler-class>$tag.tagHandler</handler-class>
+#foreach( $attribute in $attributeList )
+#writeJSFAttribute($attribute)
+#end
    </tag>
 #end
 #end
@@ -135,6 +256,12 @@ $baseContent
 #if ($modelIds.contains($faceletTag.modelId) && ($faceletTag.name))
 #if ($utils.getTagPrefix($faceletTag.name) == $shortname)
    <tag>
+#if ($faceletTag.longDescription)
+        <description><![CDATA[$faceletTag.longDescription]]></description>
+#else
+        <description><![CDATA[]]></description>
+#end    
+
       <tag-name>$utils.getTagName($faceletTag.name)</tag-name>
 #if ($faceletTag.componentClass)
 #set ($component = ${model.findComponentByClassName($faceletTag.componentClass)})
@@ -161,6 +288,10 @@ $baseContent
     </behavior>
 #else
     <handler-class>$faceletTag.className</handler-class>
+#end
+#set ($attributeList = ${tag.attributeList})
+#foreach( $attribute in $attributeList )
+#writeJSFAttribute($attribute)
 #end
    </tag>
 #end
