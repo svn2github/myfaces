@@ -9926,7 +9926,7 @@ return this.accessible;
 this.accessible=false;
 if(dojo.render.html.ie||dojo.render.html.mozilla){
 var div=document.createElement("div");
-div.style.backgroundImage="url(\""+this.imgPath+"/tab_close.gif\")";
+//div.style.backgroundImage="url(\""+this.imgPath+"/tab_close.gif\")";
 dojo.body().appendChild(div);
 var _920=null;
 if(window.getComputedStyle){

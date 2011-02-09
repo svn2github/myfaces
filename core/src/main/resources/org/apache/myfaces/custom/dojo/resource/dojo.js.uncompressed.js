@@ -15347,7 +15347,7 @@ dojo.a11y = {
 		if (dojo.render.html.ie || dojo.render.html.mozilla){
 			var div = document.createElement("div");
 			//div.style.color="rgb(153,204,204)";
-			div.style.backgroundImage = "url(\"" + this.imgPath + "/tab_close.gif\")";
+			//div.style.backgroundImage = "url(\"" + this.imgPath + "/tab_close.gif\")";
 			// must add to hierarchy before can view currentStyle below
 			dojo.body().appendChild(div);
 			// in FF and IE the value for the current background style of the added div
