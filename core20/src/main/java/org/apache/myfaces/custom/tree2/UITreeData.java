@@ -1084,7 +1084,6 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
      */
     public String createUniqueId(FacesContext context, String seed)
     {
-        ExternalContext extCtx = context.getExternalContext();
         StringBuilder bld = new StringBuilder();
 
         Long uniqueIdCounter = (Long) getStateHelper().get(PropertyKeys.uniqueIdCounter);
@@ -1093,12 +1092,12 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
         // Generate an identifier for a component. The identifier will be prefixed with UNIQUE_ID_PREFIX, and will be unique within this UIViewRoot. 
         if(seed==null)
         {
-            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(uniqueIdCounter).toString());
+            return bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(uniqueIdCounter).toString();
         }
         // Optionally, a unique seed value can be supplied by component creators which should be included in the generated unique id.
         else
         {
-            return extCtx.encodeNamespace(bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(seed).toString());
+            return bld.append(UIViewRoot.UNIQUE_ID_PREFIX).append(seed).toString();
         }
     }
     
