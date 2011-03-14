@@ -43,6 +43,13 @@ public class HtmlDataTableTagHandler extends ComponentHandler
                 HtmlDetailStampRow.COMPONENT_TYPE, HtmlDetailStampRow.DEFAULT_RENDERER_TYPE);
         detailStampRow.setId("detailStampRow");
         c.getFacets().put(AbstractHtmlDataTable.DETAIL_STAMP_ROW_FACET_NAME, detailStampRow);
+        
+        // Add a special component that is used to render a row on an ajax operation.
+        UIComponent row = ctx.getFacesContext().
+            getApplication().createComponent(ctx.getFacesContext(),
+                HtmlTableRow.COMPONENT_TYPE, HtmlTableRow.DEFAULT_RENDERER_TYPE);
+        row.setId("row");
+        c.getFacets().put(AbstractHtmlDataTable.TABLE_ROW_FACET_NAME, row);
     }
 
     @Override
@@ -58,6 +65,12 @@ public class HtmlDataTableTagHandler extends ComponentHandler
             {
                 c.getFacets().remove(AbstractHtmlDataTable.DETAIL_STAMP_ROW_FACET_NAME);
             }
+        }
+        
+        HtmlDataTable dataTable = (HtmlDataTable) c;
+        if (!dataTable.isAjaxRowRender())
+        {
+            c.getFacets().remove(AbstractHtmlDataTable.TABLE_ROW_FACET_NAME);
         }
     }
 

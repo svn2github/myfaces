@@ -605,6 +605,15 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
         // get event handlers from component
         HtmlDataTable table = (HtmlDataTable) uiData;
         
+        if (table.isAjaxRowRender())
+        {
+            UIComponent row = table.getFacet("row");
+            if (row != null)
+            {
+                writer.writeAttribute(HTML.ID_ATTR, row.getClientId(facesContext), null);
+            }
+        }
+        
         Map<String, List<ClientBehavior>> clientBehaviors = ((ClientBehaviorHolder) uiData).getClientBehaviors();
 
         HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, ROW_ONCLICK_ATTR, uiData,

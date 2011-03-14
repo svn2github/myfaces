@@ -113,6 +113,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public static final String DETAIL_STAMP_FACET_NAME = "detailStamp";
 
     public static final String DETAIL_STAMP_ROW_FACET_NAME = "detailStampRow";
+    
+    public static final String TABLE_ROW_FACET_NAME = "row";
 
     private _SerializableDataModel _preservedDataModel;
 
@@ -283,6 +285,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                             {
                                 returnValue = detailStampFacet.invokeOnComponent(context, clientId, callback);
                             }
+                            UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
+                            if (tableRowFacet != null)
+                            {
+                                returnValue = tableRowFacet.invokeOnComponent(context, clientId, callback);
+                            }
                         }
                     }
                     finally
@@ -402,6 +409,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                     }
                     boolean visitDetailStamp = (getFacet(DETAIL_STAMP_FACET_NAME) != null);
                     boolean visitDetailStampRow = (getFacet(DETAIL_STAMP_ROW_FACET_NAME) != null);
+                    boolean visitTableRow = (getFacet(TABLE_ROW_FACET_NAME) != null);
                     
                     // iterate over the rows
                     int rowsToProcess = getRows();
@@ -445,6 +453,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                         {
                             UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
                             if (detailStampFacet.visitTree(context, callback))
+                            {
+                                return true;
+                            }
+                        }
+                        if (visitTableRow)
+                        {
+                            UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
+                            if (tableRowFacet.visitTree(context, callback))
                             {
                                 return true;
                             }
@@ -555,6 +571,10 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         if (detailStampRowFacet != null)
         {
             detailStampRowFacet.setId(detailStampRowFacet.getId());
+        }
+        UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
+        if (tableRowFacet != null){
+            tableRowFacet.setId(tableRowFacet.getId());
         }
 
         if (getStateHelper().get(PropertyKeys.varDetailToggler) != null)
@@ -2248,9 +2268,22 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * found the type, like when a map value is resolved on 
      * the expression.
      * 
-     * @JSFProperty
      */
+    @JSFProperty
     public abstract String getValueType(); 
+    
+    /**
+     * Indicate if "row" can be a target for an ajax render
+     * operation. In other words, if it is set to true,
+     * a special component is added on a facet with name "row"
+     * and with id="row" that can be used to indicate it is 
+     * necessary to render the row.
+     * By default is set to false.
+     * 
+     * @return
+     */
+    @JSFProperty(defaultValue="false")
+    public abstract boolean isAjaxRowRender();
 
     protected enum PropertyKeys
     {
