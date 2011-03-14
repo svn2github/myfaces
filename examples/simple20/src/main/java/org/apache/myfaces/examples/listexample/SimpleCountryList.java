@@ -18,17 +18,20 @@
  */
 package org.apache.myfaces.examples.listexample;
 
-import org.apache.myfaces.component.html.ext.HtmlDataTable;
-
-import javax.faces.event.ActionEvent;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialViewContext;
+import javax.faces.event.ActionEvent;
+
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
 
 /**
  * DOCUMENT ME!
@@ -181,4 +184,30 @@ public class SimpleCountryList
         }
         return findParentHtmlDataTable(component.getParent());
     }
+    
+    /*
+    public void updateRow(ActionEvent ev)
+    {
+        UIData datatable = findParentHtmlDataTable(ev.getComponent());
+        
+        int oldIndex = datatable.getRowIndex();
+        try
+        {
+            datatable.setRowIndex(datatable.getFirst());
+            PartialViewContext pvc = FacesContext.getCurrentInstance().getPartialViewContext();
+            if (!pvc.isRenderAll())
+            {
+                Collection rows = pvc.getRenderIds();
+                String idToAdd = datatable.getFacet("row").getClientId();
+                if (!rows.contains(idToAdd))
+                {
+                    rows.add(idToAdd);
+                }
+            }
+        }
+        finally
+        {
+            datatable.setRowIndex(oldIndex);
+        }
+    }*/
 }

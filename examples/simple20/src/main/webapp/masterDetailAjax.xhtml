@@ -45,11 +45,14 @@
     A table rendering the details using an independent table within an cell of the master table.<br/>
     As a resulting effect the each child table will have its own cell width.
     </p>
+    <p>
+    This table has ajaxRowRender="true" and uses "row" to update the link, changing the label from Show to Hide.
+    </p>
 
     <t:dataTable id="data" styleClass="standardTable" headerClass="standardTable_Header" footerClass="standardTable_Header"
              rowClasses="standardTable_Row1,standardTable_Row2"
              columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column" var="currentCountry"
-             value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler">
+             value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler" ajaxRowRender="true">
     <h:column>
         <f:facet name="header">
             <h:outputText value="#{example_messages['label_country_name']}"/>
@@ -76,11 +79,11 @@
         <t:div id="panel">
           <h:commandLink rendered="#{detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
               <h:outputText value="Hide"/>
-              <f:ajax render="panel detailStampRow"/>
+              <f:ajax render="row detailStampRow"/><!-- panel detailStampRow -->
           </h:commandLink>
           <h:commandLink rendered="#{!detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
               <h:outputText value="Show"/>
-              <f:ajax render="panel detailStampRow"/>
+              <f:ajax render="row detailStampRow"/><!-- panel detailStampRow -->
           </h:commandLink>
         </t:div>
     </h:column>
@@ -102,15 +105,6 @@
         </t:dataTable>
     </f:facet>
 </t:dataTable>
-
- <p>
-    A table rendering the details using an "embedded" table. (embedded="true" at the child datatable).
-    In contrast to the above example this will result in a combined table sharing the same layout.
-    All cells in on collumn will have the same width.<br />
-    To achive this the child table will not renter a table start/end tag and, also the rendering of
-    any thead/tfoot/th will be supressed. You have to take care about that fact in your stylesheet(s).
-    </p>
-
 
 </h:panelGroup>
 
