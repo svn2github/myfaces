@@ -33,7 +33,6 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.DataModel;
@@ -1485,7 +1484,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public boolean isCurrentDetailExpanded()
     {
-        Boolean expanded = (Boolean) _expandedNodes.get(new Integer(getRowIndex()));
+        Boolean expanded = (Boolean) _expandedNodes.get(getClientId(getFacesContext()));
         if (expanded != null)
         {
             return expanded.booleanValue();
@@ -1554,7 +1553,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public void toggleDetail()
     {
-        Integer rowIndex = new Integer(getRowIndex());
+        String derivedRowKey = getClientId(getFacesContext());
 
         // get the current expanded state of the row
         boolean expanded = isDetailExpanded();
@@ -1565,12 +1564,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (isDetailStampExpandedDefault())
             {
                 // if default is expanded we have to override with FALSE here
-                _expandedNodes.put(rowIndex, Boolean.FALSE);
+                _expandedNodes.put(derivedRowKey, Boolean.FALSE);
             }
             else
             {
                 // if default is collapsed we can fallback to this default
-                _expandedNodes.remove(rowIndex);
+                _expandedNodes.remove(derivedRowKey);
             }
         }
         else
@@ -1580,12 +1579,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (isDetailStampExpandedDefault())
             {
                 // if default is expanded we can fallback to this default
-                _expandedNodes.remove(rowIndex);
+                _expandedNodes.remove(derivedRowKey);
             }
             else
             {
                 // if default is collapsed we have to override with TRUE
-                _expandedNodes.put(rowIndex, Boolean.TRUE);
+                _expandedNodes.put(derivedRowKey, Boolean.TRUE);
             }
         }
     }
@@ -1597,9 +1596,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public boolean isDetailExpanded()
     {
-        Integer rowIndex = new Integer(getRowIndex());
-
-        Boolean expanded = (Boolean) _expandedNodes.get(rowIndex);
+        Boolean expanded = (Boolean) _expandedNodes.get(getClientId(getFacesContext()));
         if (expanded == null)
         {
             return isDetailStampExpandedDefault();
@@ -1664,9 +1661,29 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         int rowCount = getRowCount();
 
         _expandedNodes.clear();
-        for (int row = 0; row < rowCount; row++)
+        
+        if (getRowKey() != null)
         {
-            _expandedNodes.put(new Integer(row), Boolean.TRUE);
+            int oldRow = getRowIndex();
+            try
+            {
+                for (int row = 0; row < rowCount; row++)
+                {
+                    setRowIndex(row);
+                    _expandedNodes.put(getClientId(getFacesContext()), Boolean.TRUE);
+                }
+            }
+            finally
+            {
+                setRowIndex(oldRow);
+            }
+        }
+        else
+        {
+            for (int row = 0; row < rowCount; row++)
+            {
+                _expandedNodes.put(new Integer(row).toString(), Boolean.TRUE);
+            }
         }
     }
 
