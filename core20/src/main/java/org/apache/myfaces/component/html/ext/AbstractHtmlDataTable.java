@@ -120,7 +120,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     private boolean _isValidChildren = true;
 
-    private Map<Integer, Boolean> _expandedNodes = new HashMap<Integer, Boolean>();
+    private Map<String, Boolean> _expandedNodes = new HashMap<String, Boolean>();
 
     //private Map<String, Object> _detailRowStates = new HashMap<String, Object>();
 
@@ -245,7 +245,49 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 // Check if the clientId for the component, which we 
                 // are looking for, has a rowIndex attached
                 char separator = UINamingContainer.getSeparatorChar(context);
-                if (clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
+                
+                ValueExpression rowKeyVE = getValueExpression("rowKey");
+                boolean rowKeyFound = false;
+                
+                if (rowKeyVE != null)
+                {
+                    int oldRow = this.getRowIndex();
+                    try
+                    {
+                        // iterate over the rows
+                        int rowsToProcess = getRows();
+                        // if getRows() returns 0, all rows have to be processed
+                        if (rowsToProcess == 0)
+                        {
+                            rowsToProcess = getRowCount();
+                        }
+                        int rowIndex = getFirst();
+                        for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
+                        {
+                            setRowIndex(rowIndex);
+                            if (!isRowAvailable())
+                            {
+                                break;
+                            }
+                            
+                            if (clientId.startsWith(getContainerClientId(context)))
+                            {
+                                rowKeyFound = true;
+                                break;
+                            }
+                        }
+                        
+                        if (rowKeyFound)
+                        {
+                            returnValue = invokeOnComponentTraverseRow(context, clientId, callback);
+                        }
+                    }
+                    finally
+                    {
+                        this.setRowIndex(oldRow);
+                    }
+                }
+                if (rowKeyVE == null && clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
                 {
                     String subId = clientId.substring(baseClientId.length() + 1);
                     String clientRow = subId.substring(0, subId.indexOf(separator));
@@ -266,31 +308,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                             return false;
                         }
             
-                        for (Iterator<UIComponent> it1 = getChildren().iterator(); 
-                                !returnValue && it1.hasNext();)
-                        {
-                            //recursive call to find the component
-                            returnValue = it1.next().invokeOnComponent(context, clientId, callback);
-                        }
-                        
-                        if (!returnValue)
-                        {
-                            UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
-                            if (detailStampRowFacet != null)
-                            {
-                                returnValue = detailStampRowFacet.invokeOnComponent(context, clientId, callback);
-                            }
-                            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
-                            if (detailStampFacet != null)
-                            {
-                                returnValue = detailStampFacet.invokeOnComponent(context, clientId, callback);
-                            }
-                            UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
-                            if (tableRowFacet != null)
-                            {
-                                returnValue = tableRowFacet.invokeOnComponent(context, clientId, callback);
-                            }
-                        }
+                        returnValue = invokeOnComponentTraverseRow(context, clientId, callback);
                     }
                     finally
                     {
@@ -299,7 +317,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                         this.setRowIndex(oldRow);
                     }
                 }
-                else
+                else if (!rowKeyFound) //If rowKeyVE == null --> rowKeyFound = false
                 {
                     // MYFACES-2370: search the component in the childrens' facets too.
                     // We have to check the childrens' facets here, because in MyFaces
@@ -340,6 +358,38 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             popComponentFromEL(context);
         }
 
+        return returnValue;
+    }
+    
+    private boolean invokeOnComponentTraverseRow(FacesContext context, String clientId,
+            ContextCallback callback)
+    {
+        boolean returnValue = false;
+        for (Iterator<UIComponent> it1 = getChildren().iterator(); 
+            !returnValue && it1.hasNext();)
+        {
+            //recursive call to find the component
+            returnValue = it1.next().invokeOnComponent(context, clientId, callback);
+        }
+
+        if (!returnValue)
+        {
+            UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
+            if (detailStampRowFacet != null)
+            {
+                returnValue = detailStampRowFacet.invokeOnComponent(context, clientId, callback);
+            }
+            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
+            if (detailStampFacet != null)
+            {
+                returnValue = detailStampFacet.invokeOnComponent(context, clientId, callback);
+            }
+            UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
+            if (tableRowFacet != null)
+            {
+                returnValue = tableRowFacet.invokeOnComponent(context, clientId, callback);
+            }
+        }
         return returnValue;
     }
     
@@ -1917,7 +1967,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public boolean isCurrentDetailExpanded()
     {
-        Boolean expanded = (Boolean) _expandedNodes.get(new Integer(getRowIndex()));
+        Boolean expanded = (Boolean) _expandedNodes.get(getContainerClientId(getFacesContext()));
         if (expanded != null)
         {
             return expanded.booleanValue();
@@ -1983,7 +2033,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public void toggleDetail()
     {
-        Integer rowIndex = new Integer(getRowIndex());
+        String derivedRowKey = getContainerClientId(getFacesContext());
 
         // get the current expanded state of the row
         boolean expanded = isDetailExpanded();
@@ -1994,12 +2044,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (isDetailStampExpandedDefault())
             {
                 // if default is expanded we have to override with FALSE here
-                _expandedNodes.put(rowIndex, Boolean.FALSE);
+                _expandedNodes.put(derivedRowKey, Boolean.FALSE);
             }
             else
             {
                 // if default is collapsed we can fallback to this default
-                _expandedNodes.remove(rowIndex);
+                _expandedNodes.remove(derivedRowKey);
             }
         }
         else
@@ -2009,12 +2059,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (isDetailStampExpandedDefault())
             {
                 // if default is expanded we can fallback to this default
-                _expandedNodes.remove(rowIndex);
+                _expandedNodes.remove(derivedRowKey);
             }
             else
             {
                 // if default is collapsed we have to override with TRUE
-                _expandedNodes.put(rowIndex, Boolean.TRUE);
+                _expandedNodes.put(derivedRowKey, Boolean.TRUE);
             }
         }
     }
@@ -2026,9 +2076,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public boolean isDetailExpanded()
     {
-        Integer rowIndex = new Integer(getRowIndex());
-
-        Boolean expanded = (Boolean) _expandedNodes.get(rowIndex);
+        Boolean expanded = (Boolean) _expandedNodes.get(getContainerClientId(getFacesContext()));
         if (expanded == null)
         {
             return isDetailStampExpandedDefault();
@@ -2096,9 +2144,29 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         int rowCount = getRowCount();
 
         _expandedNodes.clear();
-        for (int row = 0; row < rowCount; row++)
+        
+        if (getRowKey() != null)
         {
-            _expandedNodes.put(new Integer(row), Boolean.TRUE);
+            int oldRow = getRowIndex();
+            try
+            {
+                for (int row = 0; row < rowCount; row++)
+                {
+                    setRowIndex(row);
+                    _expandedNodes.put(getContainerClientId(getFacesContext()), Boolean.TRUE);
+                }
+            }
+            finally
+            {
+                setRowIndex(oldRow);
+            }
+        }
+        else
+        {
+            for (int row = 0; row < rowCount; row++)
+            {
+                _expandedNodes.put(new Integer(row).toString(), Boolean.TRUE);
+            }
         }
     }
 

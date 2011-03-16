@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
@@ -268,12 +269,57 @@ public abstract class AbstractHtmlDataList
                 // Check if the clientId for the component, which we 
                 // are looking for, has a rowIndex attached
                 char separator = UINamingContainer.getSeparatorChar(context);
-                String subId = clientId.substring(baseClientId.length() + 1);
+                ValueExpression rowKeyVE = getValueExpression("rowKey");
+                boolean rowKeyFound = false;
+                
+                if (rowKeyVE != null)
+                {
+                    int oldRow = this.getRowIndex();
+                    try
+                    {
+                        // iterate over the rows
+                        int rowsToProcess = getRows();
+                        // if getRows() returns 0, all rows have to be processed
+                        if (rowsToProcess == 0)
+                        {
+                            rowsToProcess = getRowCount();
+                        }
+                        int rowIndex = getFirst();
+                        for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
+                        {
+                            setRowIndex(rowIndex);
+                            if (!isRowAvailable())
+                            {
+                                break;
+                            }
+                            
+                            if (clientId.startsWith(getContainerClientId(context)))
+                            {
+                                rowKeyFound = true;
+                                break;
+                            }
+                        }
+                        
+                        if (rowKeyFound)
+                        {
+                            for (Iterator<UIComponent> it1 = getChildren().iterator(); 
+                                    !returnValue && it1.hasNext();)
+                            {
+                                //recursive call to find the component
+                                returnValue = it1.next().invokeOnComponent(context, clientId, callback);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        this.setRowIndex(oldRow);
+                    }
+                }
                 //If the char next to baseClientId is the separator one and
                 //the subId matches the regular expression
-                if (clientId.charAt(baseClientId.length()) == separator && 
-                        subId.matches("[0-9]+"+separator+".*"))
+                if (rowKeyVE == null && clientId.matches(baseClientId + separator+"[0-9]+"+separator+".*"))
                 {
+                    String subId = clientId.substring(baseClientId.length() + 1);
                     String clientRow = subId.substring(0, subId.indexOf(separator));
         
                     //Now we save the current position
@@ -434,7 +480,7 @@ public abstract class AbstractHtmlDataList
     {
         _facesContext = facesContext;
     }
-    
+
     /**
      * A parameter name, under which the rowCount is set in request 
      * scope similar to the var parameter.

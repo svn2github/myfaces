@@ -88,6 +88,8 @@ public abstract class HtmlDataTableHack extends
     private static final Class OBJECT_ARRAY_CLASS = (new Object[0]).getClass();
 
     private static final boolean DEFAULT_PRESERVEROWSTATES = false;
+    
+    private static final String UNIQUE_ROW_ID_PREFIX = "r_id_";
 
     private int _rowIndex = -1;
 
@@ -162,14 +164,17 @@ public abstract class HtmlDataTableHack extends
         if(index != -1)
         {
             String rowIndexString = clientId.substring(index + 1);
+            
             if(rowIndexString.length() > 0 && 
                StringUtils.isNumeric(rowIndexString) &&
                Integer.valueOf(rowIndexString) == rowIndex)
             {
-                return clientId;
+                //return clientId;
+                return clientId.substring(0,index)+getDerivedSubClientId();
             }
         }
-        return clientId + separator + rowIndex;
+        //return clientId + separator + rowIndex;
+        return clientId + separator + getDerivedSubClientId();
     }
 
     /**
@@ -1111,57 +1116,74 @@ public abstract class HtmlDataTableHack extends
          setRowIndex(deletedIndex);
         String currentRowStateKey = getContainerClientId(facesContext);
 
-        // copy next rowstate to current row for each row from deleted row onward.
-        int rowCount = getRowCount();
-        if (isPreserveRowComponentState())
+        Object rowKey = getRowKey(); 
+        if (rowKey != null)
         {
-            for (int index = deletedIndex + 1; index < rowCount; ++index)
+            setRowIndex(deletedIndex);
+            if (isPreserveRowComponentState())
             {
-                setRowIndex(index);
-                String nextRowStateKey = getContainerClientId(facesContext);
-    
-                Map<String, Object> nextRowState = _rowDeltaStates.get(nextRowStateKey);
-                if (nextRowState == null)
-                {
-                    _rowDeltaStates.remove(currentRowStateKey);
-                }
-                else
-                {
-                    _rowDeltaStates.put(currentRowStateKey, nextRowState);
-                }
-                currentRowStateKey = nextRowStateKey;
+                _rowDeltaStates.remove(currentRowStateKey);
             }
-
-            // restore saved row index
+            else
+            {
+                _rowStates.remove(currentRowStateKey);
+            }
             setRowIndex(savedRowIndex);
-    
-            // Remove last row
-            _rowDeltaStates.remove(currentRowStateKey);
         }
         else
         {
-            for (int index = deletedIndex + 1; index < rowCount; ++index)
+            // copy next rowstate to current row for each row from deleted row onward.
+            int rowCount = getRowCount();
+            if (isPreserveRowComponentState())
             {
-                setRowIndex(index);
-                String nextRowStateKey = getContainerClientId(facesContext);
+                for (int index = deletedIndex + 1; index < rowCount; ++index)
+                {
+                    setRowIndex(index);
+                    String nextRowStateKey = getContainerClientId(facesContext);
+        
+                    Map<String, Object> nextRowState = _rowDeltaStates.get(nextRowStateKey);
+                    if (nextRowState == null)
+                    {
+                        _rowDeltaStates.remove(currentRowStateKey);
+                    }
+                    else
+                    {
+                        _rowDeltaStates.put(currentRowStateKey, nextRowState);
+                    }
+                    currentRowStateKey = nextRowStateKey;
+                }
     
-                Object nextRowState = _rowStates.get(nextRowStateKey);
-                if (nextRowState == null)
-                {
-                    _rowStates.remove(currentRowStateKey);
-                }
-                else
-                {
-                    _rowStates.put(currentRowStateKey, nextRowState);
-                }
-                currentRowStateKey = nextRowStateKey;
+                // restore saved row index
+                setRowIndex(savedRowIndex);
+        
+                // Remove last row
+                _rowDeltaStates.remove(currentRowStateKey);
             }
-
-            // restore saved row index
-            setRowIndex(savedRowIndex);
+            else
+            {
+                for (int index = deletedIndex + 1; index < rowCount; ++index)
+                {
+                    setRowIndex(index);
+                    String nextRowStateKey = getContainerClientId(facesContext);
+        
+                    Object nextRowState = _rowStates.get(nextRowStateKey);
+                    if (nextRowState == null)
+                    {
+                        _rowStates.remove(currentRowStateKey);
+                    }
+                    else
+                    {
+                        _rowStates.put(currentRowStateKey, nextRowState);
+                    }
+                    currentRowStateKey = nextRowStateKey;
+                }
     
-            // Remove last row
-            _rowStates.remove(currentRowStateKey);
+                // restore saved row index
+                setRowIndex(savedRowIndex);
+        
+                // Remove last row
+                _rowStates.remove(currentRowStateKey);
+            }
         }
     }
     
@@ -1188,13 +1210,80 @@ public abstract class HtmlDataTableHack extends
     public void setPreserveRowComponentState(boolean preserveComponentState)
     {
         getStateHelper().put(PropertyKeys.preserveRowComponentState, preserveComponentState);
-    }    
+    }
     
+    /**
+     * Used to assign a value expression that identify in a unique way a row. This value
+     * will be used later instead of rowIndex as a key to be appended to the container 
+     * client id using getDerivedSubClientId() method.  
+     * 
+     * @return
+     */
+    @JSFProperty
+    public Object getRowKey()
+    {
+        return getStateHelper().eval(PropertyKeys.rowKey);
+    }
+    
+    public void setRowKey(Object rowKey)
+    {
+        getStateHelper().put(PropertyKeys.rowKey, rowKey);
+    }
+    
+    /**
+     * This attribute is used to append an unique prefix when rowKey is not used, to prevent
+     * a key match a existing component id (note two different components can't have the
+     * same unique id).
+     * 
+     * @return
+     */
+    @JSFProperty(defaultValue="r_id_")
+    public String getDerivedRowKeyPrefix()
+    {
+        return (String) getStateHelper().eval(PropertyKeys.derivedRowKeyPrefix, UNIQUE_ROW_ID_PREFIX);
+    }
+    
+    public void setDerivedRowKeyPrefix(String derivedRowKeyPrefix)
+    {
+        getStateHelper().put(PropertyKeys.derivedRowKeyPrefix, derivedRowKeyPrefix);
+    }
+
+    /**
+     * Return the fragment to be used on the container client id to
+     * identify a row. As a side effect, it will be used to indicate 
+     * a row component state and a datamodel in nested datatable case.
+     * 
+     * <p>
+     * The returned value must comply with the following rules:
+     * </p>
+     * <ul>
+     * <li> Can be followed by: letters (A-Za-z), digits (0-9), hyphens ("-"), 
+     *   underscores ("_"), colons (":"), and periods (".") </li>
+     * <li> Values are case-sensitive </li>
+     * </ul>
+     * 
+     * @return
+     */
+    protected String getDerivedSubClientId()
+    {
+        Object key = getRowKey();
+        if (key == null)
+        {
+            return _SubIdConverter.encode(Integer.toString(getRowIndex()));
+        }
+        else
+        {
+            return getDerivedRowKeyPrefix() + _SubIdConverter.encode(key.toString());
+        }
+    }
+
     protected enum PropertyKeys
     {
         preserveRowStates
         , forceId
         , forceIdIndex
         , preserveRowComponentState
+        , rowKey
+        , derivedRowKeyPrefix
     }
 }
