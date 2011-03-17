@@ -18,13 +18,15 @@
  */
 package org.apache.myfaces.custom.aliasbean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.io.IOException;
 
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -36,8 +38,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFComponent;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperties;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProperty;
-import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
 import org.apache.myfaces.shared_tomahawk.component.BindingAware;
+import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
 
 /**
  * Holds several aliases that are configured by aliasBean tags.
@@ -289,4 +291,20 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
         removeAliases(getFacesContext());
     }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback) throws FacesException
+    {
+        makeAliases(getFacesContext());
+        try
+        {
+            return super.invokeOnComponent(context, clientId, callback);
+        }
+        finally
+        {
+            removeAliases(getFacesContext());
+        }
+    }
+
 }

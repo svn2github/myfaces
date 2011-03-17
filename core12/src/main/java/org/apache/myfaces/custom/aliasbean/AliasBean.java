@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -40,7 +42,6 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFJspProp
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.shared_tomahawk.component.BindingAware;
 import org.apache.myfaces.shared_tomahawk.util.RestoreStateUtils;
-import org.apache.myfaces.shared_tomahawk.util._ComponentUtils;
 
 /**
  * The aliasBean tag allows you to create a temporary name for a real bean.
@@ -378,4 +379,20 @@ public class AliasBean extends UIComponentBase implements BindingAware
 
         removeAlias(getFacesContext());
     }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback) throws FacesException
+    {
+        makeAlias(getFacesContext());
+        try
+        {
+            return super.invokeOnComponent(context, clientId, callback);
+        }
+        finally
+        {
+            removeAlias(getFacesContext());
+        }
+    }
+
 }
