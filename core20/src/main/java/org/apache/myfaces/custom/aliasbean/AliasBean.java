@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.visit.VisitCallback;
@@ -105,6 +107,8 @@ public class AliasBean extends UIComponentBase implements BindingAware
     // True if this is a direct child of an AliasBeansScope component.
     private boolean withinScope;
 
+    private transient FacesContext _context = null;
+
     public AliasBean()
     {
         alias = new Alias(this);
@@ -138,7 +142,7 @@ public class AliasBean extends UIComponentBase implements BindingAware
      * bean (like "#{myBean.member1}").
      * 
      */
-    @JSFProperty
+    @JSFProperty(deferredValueType="java.lang.Object")
     public String getValue()
     {
         String valueExpression = alias.getValueExpression();
@@ -161,12 +165,18 @@ public class AliasBean extends UIComponentBase implements BindingAware
     public Object saveState(FacesContext context)
     {
         log.debug("saveState");
+
+        _context = context;
+
         return new Object[]{super.saveState(context), alias.saveState()};
     }
 
     public void restoreState(FacesContext context, Object state)
     {
         log.debug("restoreState");
+
+        _context = context;
+
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         alias.restoreState(values[1]);
@@ -331,6 +341,7 @@ public class AliasBean extends UIComponentBase implements BindingAware
 
     void makeAlias(FacesContext context)
     {
+        _context = context;
         makeAlias();
     }
 
@@ -346,21 +357,22 @@ public class AliasBean extends UIComponentBase implements BindingAware
             }
             scopeSearched = true;
         }
-        alias.make(getFacesContext());
+        alias.make(_context);
     }
 
     void removeAlias(FacesContext context)
     {
+        _context = context;
         removeAlias();
     }
 
     private void removeAlias()
     {
         if (! withinScope)
-            alias.remove(getFacesContext());
+            alias.remove(_context);
     }
 
-
+    @Deprecated
     public void handleBindings()
     {
         makeAlias(getFacesContext());
@@ -368,6 +380,21 @@ public class AliasBean extends UIComponentBase implements BindingAware
         RestoreStateUtils.recursivelyHandleComponentReferencesAndSetValid(getFacesContext(),this,true);
 
         removeAlias(getFacesContext());
+    }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback) throws FacesException
+    {
+        makeAlias(getFacesContext());
+        try
+        {
+            return super.invokeOnComponent(context, clientId, callback);
+        }
+        finally
+        {
+            removeAlias(getFacesContext());
+        }
     }
 
     @Override

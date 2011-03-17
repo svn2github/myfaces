@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.FacesException;
+import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.visit.VisitCallback;
@@ -79,6 +81,7 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
     public static final String COMPONENT_FAMILY = "javax.faces.Data";
 
     private ArrayList<Alias> _aliases = new ArrayList<Alias>();
+    transient FacesContext _context = null;
 
     void addAlias(Alias alias)
     {
@@ -92,6 +95,22 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
     public String getRendererType() {
       return null;
+    }
+
+    public Object saveState(FacesContext context)
+    {
+        log.debug("saveState");
+        _context = context;
+
+        return super.saveState(context);
+    }
+
+    public void restoreState(FacesContext context, Object state)
+    {
+        log.debug("restoreState");
+        _context = context;
+
+        super.restoreState(context, state);
     }
 
     public Object processSaveState(FacesContext context)
@@ -244,26 +263,29 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
 
     void makeAliases(FacesContext context)
     {
+        _context = context;
         makeAliases();
     }
 
     private void makeAliases()
     {
         for (Iterator i = _aliases.iterator(); i.hasNext();)
-            ((Alias) i.next()).make(getFacesContext());
+            ((Alias) i.next()).make(_context);
     }
 
     void removeAliases(FacesContext context)
     {
+        _context = context;
         removeAliases();
     }
 
     private void removeAliases()
     {
         for (Iterator i = _aliases.iterator(); i.hasNext();)
-            ((Alias) i.next()).remove(getFacesContext());
+            ((Alias) i.next()).remove(_context);
     }
 
+    @Deprecated
     public void handleBindings()
     {
         makeAliases(getFacesContext());
@@ -271,6 +293,21 @@ public class AliasBeansScope extends UIComponentBase implements BindingAware
         RestoreStateUtils.recursivelyHandleComponentReferencesAndSetValid(getFacesContext(), this, true);
 
         removeAliases(getFacesContext());
+    }
+
+    @Override
+    public boolean invokeOnComponent(FacesContext context, String clientId,
+            ContextCallback callback) throws FacesException
+    {
+        makeAliases(getFacesContext());
+        try
+        {
+            return super.invokeOnComponent(context, clientId, callback);
+        }
+        finally
+        {
+            removeAliases(getFacesContext());
+        }
     }
 
     @Override
