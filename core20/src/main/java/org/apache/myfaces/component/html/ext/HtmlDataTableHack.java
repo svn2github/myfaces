@@ -291,7 +291,7 @@ public abstract class HtmlDataTableHack extends
     @SuppressWarnings("unchecked")
     public void setRowIndex(int rowIndex)
     {
-        if (isPreserveRowComponentState() && _initialDescendantComponentState != null)
+        if (isPreserveRowComponentState() && _initialDescendantFullComponentState != null)
         {
             setRowIndexPreserveComponentState(rowIndex);
         }
