@@ -711,7 +711,16 @@ public class HtmlDataScrollerRenderer extends HtmlRenderer
                             .createComponent(UIParameter.COMPONENT_TYPE);
             parameter.setId(scroller.getId() + facetName + "_param");
             parameter.setTransient(true);
-            parameter.setName(scroller.getClientId(facesContext));
+            
+            // TOMAHAWK-96 Data table Scroller not working the dataTable which was actually 
+            // contained in other DataTable.
+            // Since the parent link is always the scroller, we can just use a value expression
+            // that calculates its id, so when the datascroller is rendered per row, the clientId
+            // is calculated based on the row position.
+            //parameter.setName(scroller.getClientId(facesContext));
+            parameter.setValueExpression("name", facesContext.getApplication().
+                    getExpressionFactory().createValueExpression(facesContext.getELContext(),
+                            "#{component.parent.clientId}", String.class));
             parameter.setValue(facetName);
             List children = link.getChildren();
             children.add(parameter);

@@ -105,12 +105,15 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
     private static final String SINGLE_LIST_LAYOUT = "singleList";
     private static final String SINGLE_TABLE_LAYOUT = "singleTable";
 
+    // TODO: JSF 2.1 put on Transient State
     // just for caching the associated uidata
     private transient UIData _UIData;
 
-    private transient Boolean _listLayout;
+    // TODO: JSF 2.1 put on Transient State
+    //private transient Boolean _listLayout;
 
-    private transient Boolean _singleElementLayout;
+    // TODO: JSF 2.1 put on Transient State
+    //private transient Boolean _singleElementLayout;
 
     private MethodBinding _actionListener;
 
@@ -177,8 +180,9 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
 
     public boolean isListLayout()
     {
-        if(_listLayout == null)
-        {
+        Boolean _listLayout;
+        //if(_listLayout == null)
+        //{
             String layout=getLayout();
             if(layout == null || layout.equals(TABLE_LAYOUT) || layout.equals(SINGLE_TABLE_LAYOUT))
                 _listLayout = Boolean.FALSE;
@@ -191,21 +195,22 @@ public abstract class AbstractHtmlDataScroller extends UIPanel
                 log.error("Invalid layout-parameter : "+layout +" provided. Defaulting to table-layout.");
                 _listLayout = Boolean.FALSE;
             }
-        }
+        //}
 
         return _listLayout.booleanValue();
     }
 
     public boolean isSingleElementLayout()
     {
-        if(_singleElementLayout == null)
-        {
+        Boolean _singleElementLayout;
+        //if(_singleElementLayout == null)
+        //{
             String layout=getLayout();
             if(layout == null || layout.equals(SINGLE_LIST_LAYOUT) || layout.equals(SINGLE_TABLE_LAYOUT))
                 _singleElementLayout = Boolean.TRUE;
             else
                 _singleElementLayout = Boolean.FALSE;
-        }
+        //}
 
         return _singleElementLayout.booleanValue();
     }
