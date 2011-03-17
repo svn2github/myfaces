@@ -103,6 +103,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     private static final String DEFAULT_NEWSPAPER_ORIENTATION = "vertical";
     private static final String DEFAULT_DETAILSTAMP_LOCATION = "after";
 
+    private static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
     /**
      * the property names
      */
@@ -436,83 +437,98 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                             return true;
                         }
                     }
-                    // visit every column directly without visiting its children 
-                    // (the children of every UIColumn will be visited later for 
-                    // every row) and also visit the column's facets
-                    for (UIComponent child : getChildren())
+                    Boolean skipIterationHint = (Boolean) context.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
+                    if (skipIterationHint != null && skipIterationHint.booleanValue())
                     {
-                        if (child instanceof UIColumn)
-                        {
-                            VisitResult columnResult = context.invokeVisitCallback(child, callback);
-                            if (columnResult == VisitResult.COMPLETE)
-                            {
-                                return true;
-                            }
-                            for (UIComponent facet : child.getFacets().values())
-                            {
-                                if (facet.visitTree(context, callback))
-                                {
+                        // If SKIP_ITERATION is enabled, do not take into account rows.
+                        if (getChildCount() > 0) {
+                            for (UIComponent child : getChildren()) {
+                                if (child.visitTree(context, callback)) {
                                     return true;
                                 }
                             }
                         }
                     }
-                    boolean visitDetailStamp = (getFacet(DETAIL_STAMP_FACET_NAME) != null);
-                    boolean visitDetailStampRow = (getFacet(DETAIL_STAMP_ROW_FACET_NAME) != null);
-                    boolean visitTableRow = (getFacet(TABLE_ROW_FACET_NAME) != null);
-                    
-                    // iterate over the rows
-                    int rowsToProcess = getRows();
-                    // if getRows() returns 0, all rows have to be processed
-                    if (rowsToProcess == 0)
+                    else
                     {
-                        rowsToProcess = getRowCount();
-                    }
-                    int rowIndex = getFirst();
-                    for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
-                    {
-                        setRowIndex(rowIndex);
-                        if (!isRowAvailable())
-                        {
-                            return false;
-                        }
-                        // visit the children of every child of the UIData that is an instance of UIColumn
+                        // visit every column directly without visiting its children 
+                        // (the children of every UIColumn will be visited later for 
+                        // every row) and also visit the column's facets
                         for (UIComponent child : getChildren())
                         {
                             if (child instanceof UIColumn)
                             {
-                                for (UIComponent grandchild : child
-                                        .getChildren())
+                                VisitResult columnResult = context.invokeVisitCallback(child, callback);
+                                if (columnResult == VisitResult.COMPLETE)
                                 {
-                                    if (grandchild.visitTree(context, callback))
+                                    return true;
+                                }
+                                for (UIComponent facet : child.getFacets().values())
+                                {
+                                    if (facet.visitTree(context, callback))
                                     {
                                         return true;
                                     }
                                 }
                             }
                         }
-                        if (visitDetailStampRow)
+                        boolean visitDetailStamp = (getFacet(DETAIL_STAMP_FACET_NAME) != null);
+                        boolean visitDetailStampRow = (getFacet(DETAIL_STAMP_ROW_FACET_NAME) != null);
+                        boolean visitTableRow = (getFacet(TABLE_ROW_FACET_NAME) != null);
+                        
+                        // iterate over the rows
+                        int rowsToProcess = getRows();
+                        // if getRows() returns 0, all rows have to be processed
+                        if (rowsToProcess == 0)
                         {
-                            UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
-                            if (detailStampRowFacet.visitTree(context, callback))
-                            {
-                                return true;
-                            }
+                            rowsToProcess = getRowCount();
                         }
-                        if (visitDetailStamp)
+                        int rowIndex = getFirst();
+                        for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
                         {
-                            UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
-                            if (detailStampFacet.visitTree(context, callback))
+                            setRowIndex(rowIndex);
+                            if (!isRowAvailable())
                             {
-                                return true;
+                                return false;
                             }
-                        }
-                        if (visitTableRow)
-                        {
-                            UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
-                            if (tableRowFacet.visitTree(context, callback))
+                            // visit the children of every child of the UIData that is an instance of UIColumn
+                            for (UIComponent child : getChildren())
                             {
-                                return true;
+                                if (child instanceof UIColumn)
+                                {
+                                    for (UIComponent grandchild : child
+                                            .getChildren())
+                                    {
+                                        if (grandchild.visitTree(context, callback))
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                            if (visitDetailStampRow)
+                            {
+                                UIComponent detailStampRowFacet = getFacet(DETAIL_STAMP_ROW_FACET_NAME);
+                                if (detailStampRowFacet.visitTree(context, callback))
+                                {
+                                    return true;
+                                }
+                            }
+                            if (visitDetailStamp)
+                            {
+                                UIComponent detailStampFacet = getFacet(DETAIL_STAMP_FACET_NAME);
+                                if (detailStampFacet.visitTree(context, callback))
+                                {
+                                    return true;
+                                }
+                            }
+                            if (visitTableRow)
+                            {
+                                UIComponent tableRowFacet = getFacet(TABLE_ROW_FACET_NAME);
+                                if (tableRowFacet.visitTree(context, callback))
+                                {
+                                    return true;
+                                }
                             }
                         }
                     }

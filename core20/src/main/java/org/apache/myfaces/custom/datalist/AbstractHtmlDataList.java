@@ -62,6 +62,7 @@ public abstract class AbstractHtmlDataList
     private static final int PROCESS_DECODES = 1;
     private static final int PROCESS_VALIDATORS = 2; // not currently in use
     private static final int PROCESS_UPDATES = 3; // not currently in use
+    private static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
     
     private transient FacesContext _facesContext;
 
@@ -416,27 +417,42 @@ public abstract class AbstractHtmlDataList
                             return true;
                         }
                     }
-                    // iterate over the rows
-                    int rowsToProcess = getRows();
-                    // if getRows() returns 0, all rows have to be processed
-                    if (rowsToProcess == 0)
+                    Boolean skipIterationHint = (Boolean) context.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
+                    if (skipIterationHint != null && skipIterationHint.booleanValue())
                     {
-                        rowsToProcess = getRowCount();
-                    }
-                    int rowIndex = getFirst();
-                    for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
-                    {
-                        setRowIndex(rowIndex);
-                        if (!isRowAvailable())
-                        {
-                            return false;
+                        // If SKIP_ITERATION is enabled, do not take into account rows.
+                        if (getChildCount() > 0) {
+                            for (UIComponent child : getChildren()) {
+                                if (child.visitTree(context, callback)) {
+                                    return true;
+                                }
+                            }
                         }
-                        // visit the children of every child of the UIData that is an instance of UIColumn
-                        for (UIComponent child : getChildren())
+                    }
+                    else
+                    {
+                        // iterate over the rows
+                        int rowsToProcess = getRows();
+                        // if getRows() returns 0, all rows have to be processed
+                        if (rowsToProcess == 0)
                         {
-                            if (child.visitTree(context, callback))
+                            rowsToProcess = getRowCount();
+                        }
+                        int rowIndex = getFirst();
+                        for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
+                        {
+                            setRowIndex(rowIndex);
+                            if (!isRowAvailable())
                             {
-                                return true;
+                                return false;
+                            }
+                            // visit the children of every child of the UIData that is an instance of UIColumn
+                            for (UIComponent child : getChildren())
+                            {
+                                if (child.visitTree(context, callback))
+                                {
+                                    return true;
+                                }
                             }
                         }
                     }

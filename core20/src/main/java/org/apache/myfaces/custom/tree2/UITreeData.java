@@ -88,6 +88,8 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
     private TreeState _restoredState = null;
 
     private transient FacesContext _facesContext;
+    
+    private static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
     /**
      * Constructor
@@ -561,26 +563,41 @@ public class UITreeData extends UIComponentBase implements NamingContainer, Tree
                         && !subtreeIdsToVisit.isEmpty();
                 if (doVisitChildren)
                 {
-                    TreeWalker walker = getDataModel().getTreeWalker();
-                    UIComponent facet = null;
-                    walker.reset();
-                    walker.setTree(this);
-
-                    while(walker.next())
+                    Boolean skipIterationHint = (Boolean) context.getFacesContext().getAttributes().get(SKIP_ITERATION_HINT);
+                    if (skipIterationHint != null && skipIterationHint.booleanValue())
                     {
-                        TreeNode node = getNode();
-                        facet = getFacet(node.getType());
-
-                        if (facet == null)
-                        {
-                            log.warn("Unable to locate facet with the name: " + node.getType());
-                            continue;
-                            //throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
+                        // If SKIP_ITERATION is enabled, do not take into account rows.
+                        if (getChildCount() > 0) {
+                            for (UIComponent child : getChildren()) {
+                                if (child.visitTree(context, callback)) {
+                                    return true;
+                                }
+                            }
                         }
-
-                        if (facet.visitTree(context, callback))
+                    }
+                    else
+                    {
+                        TreeWalker walker = getDataModel().getTreeWalker();
+                        UIComponent facet = null;
+                        walker.reset();
+                        walker.setTree(this);
+    
+                        while(walker.next())
                         {
-                            return true;
+                            TreeNode node = getNode();
+                            facet = getFacet(node.getType());
+    
+                            if (facet == null)
+                            {
+                                log.warn("Unable to locate facet with the name: " + node.getType());
+                                continue;
+                                //throw new IllegalArgumentException("Unable to locate facet with the name: " + node.getType());
+                            }
+    
+                            if (facet.visitTree(context, callback))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
