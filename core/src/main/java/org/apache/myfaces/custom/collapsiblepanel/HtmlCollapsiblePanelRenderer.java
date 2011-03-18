@@ -109,6 +109,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         HtmlRendererUtils.writePrettyLineSeparator(facesContext);
         writer.startElement(HTML.DIV_ELEM, uiComponent);
 
+        HtmlRendererUtils.writeIdIfNecessary(writer, uiComponent, facesContext);
+        
         ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
         String viewId = facesContext.getViewRoot().getViewId();
         viewHandler.getActionURL(facesContext, viewId);
