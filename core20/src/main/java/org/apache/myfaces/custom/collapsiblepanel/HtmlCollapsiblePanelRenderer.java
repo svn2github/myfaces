@@ -124,11 +124,13 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         
         if (behaviors != null && !behaviors.isEmpty())
         {
+            writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), null);
             HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.UNIVERSAL_ATTRIBUTES);
             HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, uiComponent, behaviors);
         }
         else
         {
+            HtmlRendererUtils.writeIdIfNecessary(writer, uiComponent, facesContext);
             HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
         }
         
