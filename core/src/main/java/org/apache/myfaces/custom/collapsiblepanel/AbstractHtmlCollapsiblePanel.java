@@ -287,4 +287,43 @@ public abstract class AbstractHtmlCollapsiblePanel extends UIInput
         return super.isRequired();
     }
     
+    /**
+     * The CSS class for this element.  Corresponds to the HTML 'class' attribute for the generated indicator span.
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public abstract String getIndicatorStyleClass();
+    
+    /**
+     * HTML: CSS styling instructions for the generated indicator. 
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public abstract String getIndicatorStyle(); 
+    
+    /**
+     * The CSS class for this element.  Corresponds to the HTML 'class' attribute for the generated title.
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public abstract String getTitleStyleClass();
+    
+    /**
+     * HTML: CSS styling instructions for the generated title. 
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @JSFProperty
+     * @return
+     */
+    public abstract String getTitleStyle(); 
 }

@@ -199,8 +199,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         uiText.setTransient(true);
         uiText.setValue(collapsiblePanel.isCollapsed() ? "&gt;" : "&#957;");
         uiText.setEscape(false);
-        uiText.setStyleClass(collapsiblePanel.getStyleClass());
-        uiText.setStyle(collapsiblePanel.getStyle());
+        uiText.setStyleClass(collapsiblePanel.getIndicatorStyleClass());
+        uiText.setStyle(collapsiblePanel.getIndicatorStyle());
         children.add(uiText);
 
         // Create the optional label
@@ -209,8 +209,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
             uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
             uiText.setTransient(true);
             uiText.setValue(" " + label);
-            uiText.setStyleClass(collapsiblePanel.getStyleClass());
-            uiText.setStyle(collapsiblePanel.getStyle());
+            uiText.setStyleClass(collapsiblePanel.getTitleStyleClass());
+            uiText.setStyle(collapsiblePanel.getTitleStyle());
             children.add(uiText);
         }
         return link;
