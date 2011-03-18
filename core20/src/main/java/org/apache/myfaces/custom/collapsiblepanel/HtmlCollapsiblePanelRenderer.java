@@ -218,14 +218,14 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
         link.setTransient(true);
         link.setImmediate(true);
 
-        List children = link.getChildren();
+        List<UIComponent> children = link.getChildren();
         // Create the indicator. You could later make this conditional and render optional images instead
         HtmlOutputText uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
         uiText.setTransient(true);
         uiText.setValue(collapsiblePanel.isCollapsed() ? "&gt;" : "&#957;");
         uiText.setEscape(false);
-        uiText.setStyleClass(collapsiblePanel.getStyleClass());
-        uiText.setStyle(collapsiblePanel.getStyle());
+        uiText.setStyleClass(collapsiblePanel.getIndicatorStyleClass());
+        uiText.setStyle(collapsiblePanel.getIndicatorStyle());
         children.add(uiText);
 
         // Create the optional label
@@ -234,8 +234,8 @@ public class HtmlCollapsiblePanelRenderer extends HtmlRenderer {
             uiText = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
             uiText.setTransient(true);
             uiText.setValue(" " + label);
-            uiText.setStyleClass(collapsiblePanel.getStyleClass());
-            uiText.setStyle(collapsiblePanel.getStyle());
+            uiText.setStyleClass(collapsiblePanel.getTitleStyleClass());
+            uiText.setStyle(collapsiblePanel.getTitleStyle());
             children.add(uiText);
         }
         return link;

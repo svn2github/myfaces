@@ -27,6 +27,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.component.EventAware;
 import org.apache.myfaces.component.StyleAware;
 import org.apache.myfaces.component.UniversalProperties;
@@ -288,4 +289,43 @@ public abstract class AbstractHtmlCollapsiblePanel extends UIInput
         return super.isRequired();
     }
     
+    /**
+     * The CSS class for this element.  Corresponds to the HTML 'class' attribute for the generated indicator span.
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @return
+     */
+    @JSFProperty
+    public abstract String getIndicatorStyleClass();
+    
+    /**
+     * HTML: CSS styling instructions for the generated indicator. 
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @return
+     */
+    @JSFProperty
+    public abstract String getIndicatorStyle(); 
+    
+    /**
+     * The CSS class for this element.  Corresponds to the HTML 'class' attribute for the generated title.
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @return
+     */
+    @JSFProperty
+    public abstract String getTitleStyleClass();
+    
+    /**
+     * HTML: CSS styling instructions for the generated title. 
+     * This attribute is ignored if a custom "header" facet is provided
+     * for the collapsible panel 
+     * 
+     * @return
+     */
+    @JSFProperty
+    public abstract String getTitleStyle(); 
 }
