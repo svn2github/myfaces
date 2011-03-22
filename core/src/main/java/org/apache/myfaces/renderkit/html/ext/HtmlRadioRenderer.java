@@ -26,6 +26,7 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectOne;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -149,6 +150,7 @@ public class HtmlRadioRenderer
 
         renderRadio(facesContext,
                     uiSelectOne,
+                    radio,
                     itemStrValue,
                     selectItem.getLabel(),
                     selectItem.isDisabled(),
@@ -164,6 +166,7 @@ public class HtmlRadioRenderer
      */
     protected String renderRadio(FacesContext facesContext,
                                UIInput uiComponent,
+                               HtmlRadio radio,
                                String value,
                                String label,
                                boolean disabled,
@@ -174,7 +177,8 @@ public class HtmlRadioRenderer
     {
         String clientId = uiComponent.getClientId(facesContext);
 
-        String itemId = clientId + NamingContainer.SEPARATOR_CHAR + itemNum;
+        String itemId = (radio.getId()!=null && !radio.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) ? 
+                radio.getClientId(facesContext) : clientId + NamingContainer.SEPARATOR_CHAR + itemNum;
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -184,15 +188,15 @@ public class HtmlRadioRenderer
         {
             writer.writeAttribute(HTML.ID_ATTR, itemId, null);
         }
+        else if (renderId) {
+            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        }
+        
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
 
         if (disabled) {
             writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
-        }
-
-        if (renderId) {
-            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
         }
 
         if (checked)
@@ -206,10 +210,10 @@ public class HtmlRadioRenderer
         }
 
         //HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_STYLE);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_ATTRIBUTES);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_ATTRIBUTES_WITHOUT_DISABLED);
-        HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
+        renderHTMLAttributes(writer, radio, uiComponent, HTML.INPUT_ATTRIBUTES);
+        renderHTMLAttributes(writer, radio, uiComponent, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+        renderHTMLAttributes(writer, radio, uiComponent, HTML.COMMON_FIELD_ATTRIBUTES_WITHOUT_DISABLED);
+        renderHTMLAttributes(writer, radio, uiComponent, HTML.COMMON_FIELD_EVENT_ATTRIBUTES);
         
         if (isDisabled(facesContext, uiComponent))
         {
@@ -225,6 +229,26 @@ public class HtmlRadioRenderer
         }
         
         return itemId;
+    }
+    
+    private static boolean renderHTMLAttributes(ResponseWriter writer,
+            UIComponent radio, UIComponent selectOne, String[] attributes) throws IOException
+    {
+        boolean somethingDone = false;
+        for (int i = 0, len = attributes.length; i < len; i++)
+        {
+            String attrName = attributes[i];
+            Object value = radio.getAttributes().get(attrName);
+            if (value == null)
+            {
+                value = selectOne.getAttributes().get(attrName);
+            }
+            if (HtmlRendererUtils.renderHTMLAttribute(writer, attrName, attrName, value ))
+            {
+                somethingDone = true;
+            }
+        }
+        return somethingDone;
     }
 
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
