@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.FacesException;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectOne;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -32,6 +34,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.radio.HtmlRadio;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRadioRendererBase;
@@ -157,6 +160,7 @@ public class HtmlRadioRenderer
         //Render the radio component
         String itemId = renderRadio(facesContext,
                 uiSelectOne,
+                radio,
                 itemStrValue,
                 selectItem.isDisabled(),
                 itemStrValue.equals(currentValue),
@@ -169,9 +173,139 @@ public class HtmlRadioRenderer
         boolean itemDisabled = selectItem.isDisabled();
         boolean disabled = (componentDisabled || itemDisabled);
 
-        HtmlRendererUtils.renderLabel(writer, uiSelectOne, itemId, selectItem, disabled);
+        renderLabel(writer, radio, uiSelectOne, itemId, selectItem, disabled);
+    }
+    
+    /**
+     * Renders the input item
+     * @return the 'id' value of the rendered element
+     */
+    protected String renderRadio(FacesContext facesContext,
+                               UIInput uiComponent,
+                               HtmlRadio radio,
+                               String value,
+                               boolean disabled,
+                               boolean checked,
+                               boolean renderId,
+                               Integer itemNum)
+            throws IOException
+    {
+        String clientId = uiComponent.getClientId(facesContext);
+
+        String itemId = (radio.getId()!=null && !radio.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX)) ? 
+                radio.getClientId(facesContext) :
+                (itemNum == null)? null : clientId + NamingContainer.SEPARATOR_CHAR + itemNum;
+
+        ResponseWriter writer = facesContext.getResponseWriter();
+
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+
+        if (itemId != null)
+        {
+            writer.writeAttribute(HTML.ID_ATTR, itemId, null);
+        }
+        else if (renderId) {
+            writer.writeAttribute(HTML.ID_ATTR, clientId, null);
+        }
+
+        writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_RADIO, null);
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);
+
+        if (disabled) {
+            writer.writeAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR, null);
+        }
+
+        if (checked)
+        {
+            writer.writeAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR, null);
+        }
+
+        if (value != null)
+        {
+            writer.writeAttribute(HTML.VALUE_ATTR, value, null);
+        }
+
+        renderHTMLAttributes(writer, radio ,uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
+        
+        if (isDisabled(facesContext, uiComponent))
+        {
+            writer.writeAttribute(org.apache.myfaces.shared_tomahawk.renderkit.html.HTML.DISABLED_ATTR, Boolean.TRUE, null);
+        }
+
+        writer.endElement(HTML.INPUT_ELEM);
+
+        return itemId;
+    }
+    
+    public static void renderLabel(ResponseWriter writer, UIComponent radio,
+            UIComponent component, String forClientId, SelectItem item,
+            boolean disabled) throws IOException
+    {
+        writer.startElement(HTML.LABEL_ELEM, component);
+        writer.writeAttribute(HTML.FOR_ATTR, forClientId, null);
+
+        String labelClass = null;
+
+        if (disabled)
+        {
+            labelClass = (String) radio.getAttributes().get(
+                    JSFAttr.DISABLED_CLASS_ATTR);
+            if (labelClass == null)
+            {
+                labelClass = (String) component.getAttributes().get(
+                        JSFAttr.DISABLED_CLASS_ATTR);
+            }
+        }
+        else
+        {
+            labelClass = (String) radio.getAttributes().get(
+                    JSFAttr.ENABLED_CLASS_ATTR);
+            if (labelClass == null)
+            {
+                labelClass = (String) component.getAttributes().get(
+                        JSFAttr.ENABLED_CLASS_ATTR);
+            }
+        }
+        if (labelClass != null)
+        {
+            writer.writeAttribute("class", labelClass, "labelClass");
+        }
+
+        if ((item.getLabel() != null) && (item.getLabel().length() > 0))
+        {
+            writer.write(HTML.NBSP_ENTITY);
+            if(item.isEscape())
+            {
+                writer.writeText(item.getLabel(), null);
+            }
+            else
+            {
+                writer.write(item.getLabel());
+            }
+        }
+
+        writer.endElement(HTML.LABEL_ELEM);
     }
 
+    private static boolean renderHTMLAttributes(ResponseWriter writer,
+            UIComponent radio, UIComponent selectOne, String[] attributes) throws IOException
+    {
+        boolean somethingDone = false;
+        for (int i = 0, len = attributes.length; i < len; i++)
+        {
+            String attrName = attributes[i];
+            Object value = radio.getAttributes().get(attrName);
+            if (value == null)
+            {
+                value = selectOne.getAttributes().get(attrName);
+            }
+            if (HtmlRendererUtils.renderHTMLAttribute(writer, attrName, attrName, value ))
+            {
+                somethingDone = true;
+            }
+        }
+        return somethingDone;
+    }
 
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
     {
