@@ -21,6 +21,16 @@ package org.apache.myfaces.custom.radio;
 import javax.faces.component.UIComponentBase;
 
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
+import org.apache.myfaces.component.AccesskeyProperty;
+import org.apache.myfaces.component.AlignProperty;
+import org.apache.myfaces.component.AltProperty;
+import org.apache.myfaces.component.ChangeSelectProperties;
+import org.apache.myfaces.component.DisabledClassEnabledClassProperties;
+import org.apache.myfaces.component.EventAware;
+import org.apache.myfaces.component.FocusBlurProperties;
+import org.apache.myfaces.component.StyleAware;
+import org.apache.myfaces.component.TabindexProperty;
+import org.apache.myfaces.component.UniversalProperties;
 import org.apache.myfaces.component.UserRoleAware;
 
 /**
@@ -42,7 +52,10 @@ import org.apache.myfaces.component.UserRoleAware;
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
  */
 public abstract class AbstractHtmlRadio
-    extends UIComponentBase implements UserRoleAware
+    extends UIComponentBase implements UserRoleAware, 
+    FocusBlurProperties, ChangeSelectProperties, 
+    UniversalProperties, EventAware, AltProperty, 
+    AlignProperty, StyleAware, AccesskeyProperty, TabindexProperty, DisabledClassEnabledClassProperties
 {
     //private static final Log log = LogFactory.getLog(HtmlRadio.class);
 
@@ -89,4 +102,6 @@ public abstract class AbstractHtmlRadio
      */
     @JSFProperty(defaultValue="false")
     public abstract boolean isRenderLogicalId();
+    
+
 }

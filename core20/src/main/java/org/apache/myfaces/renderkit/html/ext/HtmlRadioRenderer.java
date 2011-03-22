@@ -24,7 +24,6 @@ import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectOne;
 import javax.faces.component.behavior.ClientBehavior;
@@ -36,6 +35,8 @@ import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.component.UserRoleUtils;
 import org.apache.myfaces.custom.radio.HtmlRadio;
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
+import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRadioRendererBase;
@@ -65,6 +66,8 @@ public class HtmlRadioRenderer
     //private static final Log log = LogFactory.getLog(HtmlRadioRenderer.class);
 
     private static final String LAYOUT_SPREAD = "spread";
+    
+    private static final String[] LABEL_STYLES = { "labelStyle", "labelStyleClass" };
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException
     {
@@ -176,7 +179,7 @@ public class HtmlRadioRenderer
         boolean itemDisabled = selectItem.isDisabled();
         boolean disabled = (componentDisabled || itemDisabled);
 
-        HtmlRendererUtils.renderLabel(writer, uiSelectOne, itemId, selectItem, disabled);
+        renderLabel(writer, radio, uiSelectOne, itemId, selectItem, disabled);
     }
     
     protected String renderRadio(
@@ -227,14 +230,14 @@ public class HtmlRadioRenderer
             behaviors = ((ClientBehaviorHolder) uiComponent)
                     .getClientBehaviors();
 
-            HtmlRendererUtils.renderBehaviorizedOnchangeEventHandler(facesContext, writer, uiComponent, itemId, behaviors);
-            HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext,writer, uiComponent, itemId, behaviors);
-            HtmlRendererUtils.renderBehaviorizedFieldEventHandlersWithoutOnchange(facesContext, writer, uiComponent, itemId, behaviors);
-            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_STYLE_AND_EVENTS);
+            renderBehaviorizedOnchangeEventHandler(facesContext, writer, radio, uiComponent, itemId, behaviors);
+            renderBehaviorizedEventHandlers(facesContext,writer, radio, uiComponent, itemId, behaviors);
+            renderBehaviorizedFieldEventHandlersWithoutOnchange(facesContext, writer, radio, uiComponent, itemId, behaviors);
+            renderHTMLAttributes(writer, radio, uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_EVENTS);
         }
         else
         {
-            HtmlRendererUtils.renderHTMLAttributes(writer, uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED_AND_STYLE);
+            renderHTMLAttributes(writer, radio, uiComponent, HTML.INPUT_PASSTHROUGH_ATTRIBUTES_WITHOUT_DISABLED);
         }
         
         if (isDisabled(facesContext, uiComponent))
@@ -247,6 +250,161 @@ public class HtmlRadioRenderer
         writer.endElement(HTML.INPUT_ELEM);
 
         return itemId;
+    }
+    
+    public static void renderLabel(ResponseWriter writer, UIComponent radio,
+            UIComponent component, String forClientId, SelectItem item,
+            boolean disabled) throws IOException
+    {
+        writer.startElement(HTML.LABEL_ELEM, component);
+        writer.writeAttribute(HTML.FOR_ATTR, forClientId, null);
+
+        String labelClass = null;
+
+        if (disabled)
+        {
+            labelClass = (String) radio.getAttributes().get(
+                    JSFAttr.DISABLED_CLASS_ATTR);
+            if (labelClass == null)
+            {
+                labelClass = (String) component.getAttributes().get(
+                        JSFAttr.DISABLED_CLASS_ATTR);
+            }
+        }
+        else
+        {
+            labelClass = (String) radio.getAttributes().get(
+                    JSFAttr.ENABLED_CLASS_ATTR);
+            if (labelClass == null)
+            {
+                labelClass = (String) component.getAttributes().get(
+                        JSFAttr.ENABLED_CLASS_ATTR);
+            }
+        }
+        if (labelClass != null)
+        {
+            writer.writeAttribute("class", labelClass, "labelClass");
+        }
+
+        if ((item.getLabel() != null) && (item.getLabel().length() > 0))
+        {
+            // writer.write(HTML.NBSP_ENTITY);
+            writer.write(" ");
+            if (item.isEscape())
+            {
+                //writer.write(item.getLabel());
+                writer.writeText(item.getLabel(), null);
+            }
+            else
+            {
+                //writer.write(HTMLEncoder.encode (item.getLabel()));
+                writer.write(item.getLabel());
+            }
+        }
+
+        writer.endElement(HTML.LABEL_ELEM);
+    }
+
+    private static boolean renderHTMLAttributes(ResponseWriter writer,
+            UIComponent radio, UIComponent selectOne, String[] attributes) throws IOException
+    {
+        boolean somethingDone = false;
+        for (int i = 0, len = attributes.length; i < len; i++)
+        {
+            String attrName = attributes[i];
+            Object value = radio.getAttributes().get(attrName);
+            if (value == null)
+            {
+                value = selectOne.getAttributes().get(attrName);
+            }
+            if (HtmlRendererUtils.renderHTMLAttribute(writer, attrName, attrName, value ))
+            {
+                somethingDone = true;
+            }
+        }
+        return somethingDone;
+    }
+    
+    private static boolean renderBehaviorizedOnchangeEventHandler(
+            FacesContext facesContext, ResponseWriter writer, UIComponent radio, UIComponent uiComponent, String targetClientId,
+            Map<String, List<ClientBehavior>> clientBehaviors) throws IOException {
+        boolean hasChange = HtmlRendererUtils.hasClientBehavior(ClientBehaviorEvents.CHANGE, clientBehaviors, facesContext);
+        boolean hasValueChange = HtmlRendererUtils.hasClientBehavior(ClientBehaviorEvents.VALUECHANGE, clientBehaviors, facesContext);
+
+        String value = (String) radio.getAttributes().get(HTML.ONCHANGE_ATTR);
+        if (value == null)
+        {
+            value = (String) uiComponent.getAttributes().get(HTML.ONCHANGE_ATTR);
+        }
+        if (hasChange && hasValueChange) {
+            String chain = HtmlRendererUtils.buildBehaviorChain(facesContext,
+                    uiComponent, targetClientId, ClientBehaviorEvents.CHANGE, null, ClientBehaviorEvents.VALUECHANGE, null, clientBehaviors,
+                    value, null);
+            
+            return HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCHANGE_ATTR, HTML.ONCHANGE_ATTR, chain);
+        } else if (hasChange) {
+            return HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCHANGE_ATTR, uiComponent, targetClientId,
+                    ClientBehaviorEvents.CHANGE, null, clientBehaviors, HTML.ONCHANGE_ATTR, value);
+        } else if (hasValueChange) {
+            return HtmlRendererUtils.renderBehaviorizedAttribute(facesContext, writer, HTML.ONCHANGE_ATTR, uiComponent, targetClientId,
+                    ClientBehaviorEvents.VALUECHANGE, null, clientBehaviors, HTML.ONCHANGE_ATTR, value);
+        } else {
+            return HtmlRendererUtils.renderHTMLAttribute(writer, HTML.ONCHANGE_ATTR, HTML.ONCHANGE_ATTR, value);
+        }
+    }
+    
+    private static void renderBehaviorizedEventHandlers(
+            FacesContext facesContext, ResponseWriter writer, UIComponent radio, UIComponent uiComponent, String targetClientId,
+            Map<String, List<ClientBehavior>> clientBehaviors) throws IOException {
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONCLICK_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.CLICK, clientBehaviors, HTML.ONCLICK_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONDBLCLICK_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.DBLCLICK, clientBehaviors, HTML.ONDBLCLICK_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEDOWN_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.MOUSEDOWN, clientBehaviors, HTML.ONMOUSEDOWN_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEUP_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.MOUSEUP, clientBehaviors, HTML.ONMOUSEUP_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEOVER_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.MOUSEOVER, clientBehaviors, HTML.ONMOUSEOVER_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEMOVE_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.MOUSEMOVE, clientBehaviors, HTML.ONMOUSEMOVE_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONMOUSEOUT_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.MOUSEOUT, clientBehaviors, HTML.ONMOUSEOUT_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONKEYPRESS_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.KEYPRESS, clientBehaviors, HTML.ONKEYPRESS_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONKEYDOWN_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.KEYDOWN, clientBehaviors, HTML.ONKEYDOWN_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONKEYUP_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.KEYUP, clientBehaviors, HTML.ONKEYUP_ATTR);
+    }
+    
+    private static void renderBehaviorizedFieldEventHandlersWithoutOnchange(
+            FacesContext facesContext, ResponseWriter writer, UIComponent radio, UIComponent uiComponent, String targetClientId,
+            Map<String, List<ClientBehavior>> clientBehaviors) throws IOException {
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONFOCUS_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.FOCUS, clientBehaviors, HTML.ONFOCUS_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONBLUR_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.BLUR, clientBehaviors, HTML.ONBLUR_ATTR);
+        renderBehaviorizedAttribute(facesContext, writer, HTML.ONSELECT_ATTR, radio, uiComponent, targetClientId,
+                ClientBehaviorEvents.SELECT, clientBehaviors, HTML.ONSELECT_ATTR);
+    }
+    
+    private static boolean renderBehaviorizedAttribute(
+            FacesContext facesContext, ResponseWriter writer,
+            String componentProperty, UIComponent radio, UIComponent component, String targetClientId,
+            String eventName, Map<String, List<ClientBehavior>> clientBehaviors,
+            String htmlAttrName) throws IOException
+    {
+        String attributeValue = (String) radio.getAttributes().get(componentProperty);
+        if (attributeValue == null)
+        {
+            attributeValue = (String) component.getAttributes().get(componentProperty);
+        }
+        return HtmlRendererUtils.renderBehaviorizedAttribute(
+                facesContext, writer,
+                componentProperty, component, targetClientId,
+                eventName, null, clientBehaviors,
+                htmlAttrName, attributeValue);
     }
 
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
