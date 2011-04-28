@@ -291,6 +291,16 @@ public class HtmlCalendarRenderer
         HtmlInputTextHelp inputText = getOrCreateInputTextChild(inputCalendar, application);
 
         RendererUtils.copyHtmlInputTextAttributes(inputCalendar, inputText);
+        
+        inputText.setId(inputCalendar.getId()+"_input");
+        
+        boolean forceId = RendererUtils.getBooleanValue(
+            JSFAttr.FORCE_ID_ATTR,
+            inputCalendar.getAttributes().get(JSFAttr.FORCE_ID_ATTR),
+            false);
+        if (forceId) {
+            inputText.getAttributes().put(JSFAttr.FORCE_ID_ATTR, Boolean.TRUE);
+        }
 
         inputText.setConverter(null); // value for this transient component will already be converted
         inputText.setTransient(true);
@@ -316,21 +326,27 @@ public class HtmlCalendarRenderer
         //This is where two components with the same id are in the tree,
         //so make sure that during the rendering the id is unique.
 
-        inputCalendar.setId(inputCalendar.getId()+"tempId");
+        //inputCalendar.setId(inputCalendar.getId()+"tempId");
 
         inputCalendar.getChildren().add(inputText);
         
         //Reset client id to ensure proper operation
         inputText.setId(inputText.getId());
+        
+        inputText.setName(inputCalendar.getClientId(facesContext));
+        
+        ResponseWriter writer = facesContext.getResponseWriter();
+        
+        writer.startElement(HTML.SPAN_ELEM, inputCalendar);
+        
+        writer.writeAttribute(HTML.ID_ATTR, inputCalendar.getClientId(facesContext), null);
 
         RendererUtils.renderChild(facesContext, inputText);
 
         inputCalendar.getChildren().remove(inputText);
 
         //Set back the correct id to the input calendar
-        inputCalendar.setId(inputText.getId());
-
-        ResponseWriter writer = facesContext.getResponseWriter();
+        //inputCalendar.setId(inputText.getId());
 
         writer.startElement(HTML.SPAN_ELEM,inputCalendar);
         writer.writeAttribute(HTML.ID_ATTR,inputCalendar.getClientId(facesContext)+"Span",
@@ -371,6 +387,8 @@ public class HtmlCalendarRenderer
                 });
             }
         }
+        
+        writer.endElement(HTML.SPAN_ELEM);
     }
 
     private void renderInline(

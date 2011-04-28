@@ -111,7 +111,13 @@ public class HtmlTextHelpRenderer extends HtmlTextRenderer
         writer.startElement(HTML.INPUT_ELEM, input);
 
         writer.writeAttribute(HTML.ID_ATTR, input.getClientId(facesContext), null);
-        writer.writeAttribute(HTML.NAME_ATTR, input.getClientId(facesContext), null);
+        
+        String name = (String) input.getAttributes().get("name");
+        if (name == null)
+        {
+            name = input.getClientId(facesContext);
+        }
+        writer.writeAttribute(HTML.NAME_ATTR, name, null);
         writer.writeAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_TEXT, null);
 
         renderHelpTextAttributes(input, writer, facesContext);
