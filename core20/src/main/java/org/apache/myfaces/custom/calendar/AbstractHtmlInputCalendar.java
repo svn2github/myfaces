@@ -77,6 +77,7 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
  *   class = "org.apache.myfaces.custom.calendar.HtmlInputCalendar"
  *   tagClass = "org.apache.myfaces.custom.calendar.HtmlInputCalendarTag"
  *   tagSuperclass = "org.apache.myfaces.custom.calendar.AbstractHtmlInputCalendarTag"
+ *   tagHandler = "org.apache.myfaces.custom.calendar.HtmlInputCalendarTagHandler"
  * @since 1.1.7
  * @author Martin Marinschek (latest modification by $Author: lu4242 $)
  * @version $Revision: 691856 $ $Date: 2008-09-03 21:40:30 -0500 (mié, 03 sep 2008) $
