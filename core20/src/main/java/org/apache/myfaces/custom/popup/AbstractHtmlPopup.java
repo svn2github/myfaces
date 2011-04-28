@@ -112,4 +112,16 @@ public abstract class AbstractHtmlPopup
      * @JSFProperty
      */
     public abstract Boolean getClosePopupOnExitingPopup();
+    
+    /**
+     * The type of layout markup to use when rendering this group. If the value is "block"
+     * the renderer must produce an HTML "div" element. If the value is "none", no tag is
+     * rendered on the output and instead, onmouseover and onmouseout properties are modified
+     * for children components. Otherwise HTML "span" element must be produced.
+     *
+     * @JSFProperty
+     * @return  the new layout value
+     */
+    public abstract String getLayout();
+    
 }

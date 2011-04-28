@@ -52,6 +52,11 @@ public class HtmlPopupRenderer
 {
     public static final String RENDERER_TYPE = "org.apache.myfaces.Popup";
     //private static final Log log = LogFactory.getLog(HtmlListRenderer.class);
+    
+    private static final String LAYOUT_BLOCK = "block";
+    private static final String LAYOUT_DIV = "div";
+    private static final String LAYOUT_SPAN = "span";
+    private static final String LAYOUT_NONE = "none";
 
     public boolean getRendersChildren()
     {
@@ -100,13 +105,42 @@ public class HtmlPopupRenderer
 
         //writeMouseOverAndOutAttribs(popupId, popupFacet.getChildren());
 
-        writeMouseOverAttribs(popupId, uiComponent.getChildren(),
-            popup.getClosePopupOnExitingElement()==null ||
-                    popup.getClosePopupOnExitingElement().booleanValue());
-
-        RendererUtils.renderChildren(facesContext, uiComponent);
-
         ResponseWriter writer = facesContext.getResponseWriter();
+        
+        String layout = popup.getLayout();
+        
+        if (LAYOUT_BLOCK.equals(layout) || LAYOUT_DIV.equals(layout))
+        {
+            writer.startElement(HTML.DIV_ELEM, popup);
+            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, popupId + ".display(event);", null);
+            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, popupId + ".hide(event);", null);
+        }
+        else if (LAYOUT_NONE.equals(layout))
+        {
+            writeMouseOverAttribs(popupId, uiComponent.getChildren(),
+                    popup.getClosePopupOnExitingElement()==null ||
+                            popup.getClosePopupOnExitingElement().booleanValue());
+        }
+        else
+        {
+            writer.startElement(HTML.SPAN_ELEM, popup);
+            writer.writeAttribute(HTML.ONMOUSEOVER_ATTR, popupId + ".display(event);", null);
+            writer.writeAttribute(HTML.ONMOUSEOUT_ATTR, popupId + ".hide(event);", null);
+        }
+        
+        RendererUtils.renderChildren(facesContext, uiComponent);
+        
+        if (LAYOUT_BLOCK.equals(layout) || LAYOUT_DIV.equals(layout))
+        {
+            writer.endElement(HTML.DIV_ELEM);
+        }
+        else if (LAYOUT_NONE.equals(layout))
+        {
+        }
+        else
+        {
+            writer.endElement(HTML.SPAN_ELEM);
+        }
 
         writer.startElement(HTML.DIV_ELEM, popup);
         writer.writeAttribute(HTML.STYLE_ATTR,(popup.getStyle()!=null?(popup.getStyle()+
