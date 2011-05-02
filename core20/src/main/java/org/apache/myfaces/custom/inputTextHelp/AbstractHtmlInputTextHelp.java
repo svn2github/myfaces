@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.custom.inputTextHelp;
 
+import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
 
 /**
@@ -52,8 +53,14 @@ public abstract class AbstractHtmlInputTextHelp extends HtmlInputText
     public abstract boolean isSelectText();
     
     /**
-     * @JSFProperty
+     * Overrides the name field used by this input.
      */
+    @JSFProperty(tagExcluded=true)
     public abstract String getName();
-
+    
+    /**
+     * Overrides the targetClientId used for rendered client behaviors by this component.
+     */
+    @JSFProperty(tagExcluded=true)
+    public abstract String getTargetClientId();
 }

@@ -335,6 +335,8 @@ public class HtmlCalendarRenderer
         
         inputText.setName(inputCalendar.getClientId(facesContext));
         
+        inputText.setTargetClientId(inputCalendar.getClientId(facesContext));
+        
         ResponseWriter writer = facesContext.getResponseWriter();
         
         writer.startElement(HTML.SPAN_ELEM, inputCalendar);
@@ -382,7 +384,7 @@ public class HtmlCalendarRenderer
 
                         String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
 
-                        return clientVar+"._popUpCalendar(this,document.getElementById('"+clientId+"'),'"+dateFormat+"')";
+                        return clientVar+"._popUpCalendar(this,document.getElementById('"+clientId+"_input'),'"+dateFormat+"')";
                     }
                 });
             }
