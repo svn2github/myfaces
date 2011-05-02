@@ -300,7 +300,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
             this.containerCtl.appendChild(this.calendarDiv);
 
             var mainTable = document.createElement("table");
-            mainTable.setAttribute("style", "width:" + ((this.initData.showWeekNumber == 1)?250:220) + "px;");
+            Element.setStyle(mainTable, "width:" + ((this.initData.showWeekNumber == 1)?250:220) + "px;");
             mainTable.className = this.initData.themePrefix + "-table-style";
 
             this.calendarDiv.appendChild(mainTable);
@@ -319,7 +319,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
             mainRow.appendChild(mainCell);
 
             var contentTable = document.createElement("table");
-            contentTable.setAttribute("style", "width:" + ((this.initData.showWeekNumber == 1)?248:218) + "px;");
+            Element.setStyle(contentTable, "width:" + ((this.initData.showWeekNumber == 1)?248:218) + "px;");
 
             var contentBody = document.createElement("tbody");
             contentTable.appendChild(contentBody);
@@ -339,7 +339,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
             if (this._isMonthSelectable())
             {
                 var acceptMonthCell = document.createElement("td");
-                acceptMonthCell.setAttribute("style", "text-align:right;");
+                Element.setStyle(acceptMonthCell, "text-align:right;");
                 headerRow.appendChild(acceptMonthCell);
     
                 var acceptMonthLink = document.createElement("a");
@@ -359,7 +359,7 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
             }
 
             var closeButtonCell = document.createElement("td");
-            closeButtonCell.setAttribute("style", "text-align:right;");
+            Element.setStyle(closeButtonCell, "text-align:right;");
             headerRow.appendChild(closeButtonCell);
 
             var closeCalendarLink = document.createElement("a");
@@ -535,7 +535,7 @@ org_apache_myfaces_PopupCalendar.prototype._appendNavToCaption = function(direct
     imgLeft.setAttribute("src", this.initData.imgDir + direction + "1.gif"+this.initData.imgDirSuffix);
     imgLeft.setAttribute("width","10px");
     imgLeft.setAttribute("height","11px");
-    imgLeft.setAttribute("style", "border:0px;")
+    Element.setStyle(imgLeft, "border:0px;");
 
     var spanLeft = document.createElement("span");
 
@@ -719,7 +719,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
     {
 
         var selectMonthTable = document.createElement("table");
-        selectMonthTable.setAttribute("style", "width:70px;border-collapse:collapse;")
+        Element.setStyle(selectMonthTable, "width:70px;border-collapse:collapse;");
         selectMonthTable.className = this.initData.themePrefix + "-dropdown-style";
 
         this._removeAllChildren(this.selectMonthDiv);
@@ -752,7 +752,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructMonth = function()
             if (i == this.selectedDate.month)
             {
                 sNameNode = document.createElement("span");
-                sNameNode.setAttribute("style", "font-weight:bold;");
+                Element.setStyle(sNameNode, "font-weight:bold;");
                 sNameNode.appendChild(document.createTextNode(sName));
                 sNameNode.setAttribute("userData",i);
             }
@@ -873,7 +873,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
     {
 
         var selectYearTable = document.createElement("table");
-        selectYearTable.setAttribute("style", "width:44px;border-collapse:collapse;")
+        Element.setStyle(selectYearTable, "width:44px;border-collapse:collapse;");
         selectYearTable.className = this.initData.themePrefix + "-dropdown-style";
 
         this._removeAllChildren(this.selectYearDiv);
@@ -949,7 +949,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructYear = function()
             if (i == this.selectedDate.year)
             {
                 sNameNode = document.createElement("span");
-                sNameNode.setAttribute("style", "font-weight:bold;");
+                Element.setStyle(sNameNode, "font-weight:bold;");
                 sNameNode.appendChild(document.createTextNode(sName));
                 sNameNode.setAttribute("userData", sName);
             }
@@ -1060,7 +1060,7 @@ org_apache_myfaces_PopupCalendar.prototype._popUpYear = function()
 org_apache_myfaces_PopupCalendar.prototype._appendCell = function(parentElement, value)
 {
     var cell = document.createElement("td");
-    cell.setAttribute("style", "text-align:right;");
+    Element.setStyle(cell, "text-align:right;");
 
     if (value && value != "")
     {
@@ -1133,7 +1133,7 @@ org_apache_myfaces_PopupCalendar.prototype._addWeekCell = function(currentRow, s
     sNormalStyle, sSelectStyle)
 {
     var cell = document.createElement("td");
-    cell.setAttribute("style", "text-align:right;");
+    Element.setStyle(cell, "text-align:right;");
 
     var weekDate = this.stdDateFormatter.getWeekDate(startDate);
     if (weekSelectable)
@@ -1219,7 +1219,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     this._removeAllChildren(this.contentSpan);
 
     var contentTable = document.createElement("table");
-    contentTable.setAttribute("style", "border:0px;")
+    Element.setStyle(contentTable, "border:0px;");
     contentTable.className = this.initData.themePrefix + "-body-style";
 
     this.contentSpan.appendChild(contentTable);
@@ -1233,14 +1233,14 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     if (this.initData.showWeekNumber == 1)
     {
         var showWeekNumberCell = document.createElement("td");
-        showWeekNumberCell.setAttribute("style", "width:27px;font-weight:bold;");
+        Element.setStyle(showWeekNumberCell, "width:27px;font-weight:bold;");
 
         contentRow.appendChild(showWeekNumberCell);
 
         showWeekNumberCell.appendChild(document.createTextNode(this.initData.weekString));
 
         var dividerCell = document.createElement("td");
-        dividerCell.setAttribute("style", "width:1px;")
+        Element.setStyle(dividerCell, "width:1px;");
         if(this.ie) //fix for https://issues.apache.org/jira/browse/TOMAHAWK-1184
         	dividerCell.setAttribute("rowSpan", "7");
         else	
@@ -1251,14 +1251,14 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
 
         var dividerImg = document.createElement("img");
         dividerImg.setAttribute("src", this.initData.imgDir + "divider.gif"+ this.initData.imgDirSuffix);
-        dividerImg.setAttribute("style", "width:1px;");
+        Element.setStyle(dividerImg, "width:1px;");
         dividerCell.appendChild(dividerImg);
     }
 
     for (i = 0; i < 7; i++)
     {
         var dayNameCell = document.createElement("td");
-        dayNameCell.setAttribute("style", "width:27px;text-align:right;font-weight:bold;")
+        Element.setStyle(dayNameCell, "width:27px;text-align:right;font-weight:bold;");
         contentRow.appendChild(dayNameCell);
 
         dayNameCell.appendChild(document.createTextNode(this.initData.dayName[i]));
@@ -1285,7 +1285,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     {
         dayPointer++;
         var dateCell = document.createElement("td");
-        dateCell.setAttribute("style", "text-align:right;");
+        Element.setStyle(dateCell, "text-align:right;");
 
         currentRow.appendChild(dateCell);
 
@@ -1369,7 +1369,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     this.changeMonthImg.setAttribute("src", this.initData.imgDir + "drop1.gif" + this.initData.imgDirSuffix);
     this.changeMonthImg.setAttribute("width","12px");
     this.changeMonthImg.setAttribute("height","10px");
-    this.changeMonthImg.setAttribute("style", "border:0px;");
+    Element.setStyle(this.changeMonthImg, "border:0px;");
 
     this.monthSpan.appendChild(this.changeMonthImg);
 
@@ -1382,7 +1382,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     this.changeYearImg.setAttribute("src", this.initData.imgDir + "drop1.gif" + this.initData.imgDirSuffix);
     this.changeYearImg.setAttribute("width","12px");
     this.changeYearImg.setAttribute("height","10px");
-    this.changeYearImg.setAttribute("style", "border:0px;");
+    Element.setStyle(this.changeYearImg, "border:0px;");
     this.yearSpan.appendChild(this.changeYearImg);
 
     // Accept Month icon
@@ -1393,7 +1393,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
       acceptMonthImg.setAttribute("src", this.initData.imgDir + "accept.gif" + this.initData.imgDirSuffix);
       acceptMonthImg.setAttribute("width","15px");
       acceptMonthImg.setAttribute("height","13px");
-      acceptMonthImg.setAttribute("style", "border:0px;");
+      Element.setStyle(acceptMonthImg, "border:0px;");
       acceptMonthImg.setAttribute("alt", "Accept the current month selection");
       this.acceptMonthSpan.appendChild(acceptMonthImg);
     }
@@ -1404,7 +1404,7 @@ org_apache_myfaces_PopupCalendar.prototype._constructCalendar = function()
     closeButtonImg.setAttribute("src", this.initData.imgDir + "close.gif" + this.initData.imgDirSuffix);
     closeButtonImg.setAttribute("width","15px");
     closeButtonImg.setAttribute("height","13px");
-    closeButtonImg.setAttribute("style", "border:0px;");
+    Element.setStyle(closeButtonImg, "border:0px;");
     closeButtonImg.setAttribute("alt", "Close the calendar");
     this.closeCalendarSpan.appendChild(closeButtonImg);
 
