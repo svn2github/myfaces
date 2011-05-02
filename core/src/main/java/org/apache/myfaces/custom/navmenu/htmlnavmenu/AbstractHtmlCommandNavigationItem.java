@@ -122,7 +122,7 @@ public abstract class AbstractHtmlCommandNavigationItem extends HtmlCommandLink 
     public abstract void setActive(boolean active);
     
     /**
-     * A semicolon separated list of viewIds for which this item 
+     * A comma separated list of viewIds for which this item 
      * should be active.
      * 
      * @JSFProperty
