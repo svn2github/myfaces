@@ -313,7 +313,7 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                                 htmlOutputText.getFor());
                         response.append("\"").append(forText).append("\",");
                         response.append("\"label\": ");
-                        response.append("\"").append(htmlOutputText.getLabel()).append("\"");
+                        response.append("\"").append(escapeQuotes(htmlOutputText.getLabel())).append("\"");
                     }
                     //foreign-key field is a combo-box field 
                     else if (htmlOutputText.getForValue() != null)
@@ -324,12 +324,12 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                                 htmlOutputText.getForValue());
                         response.append("\"").append(forValue).append("\",");
                         response.append("\"label\": ");
-                        response.append("\"").append(htmlOutputText.getLabel()).append("\",");
+                        response.append("\"").append(escapeQuotes(htmlOutputText.getLabel())).append("\",");
                         response.append("\"value\": ");
-                        response.append("\"").append(htmlOutputText.getValue()).append("\"");
+                        response.append("\"").append(escapeQuotes(htmlOutputText.getValue().toString())).append("\"");
                     } else {
                         response.append("\"label\": ");
-                        response.append("\"").append(htmlOutputText.getValue()).append("\"");
+                        response.append("\"").append(escapeQuotes(htmlOutputText.getValue().toString())).append("\"");
                     }
                     response.append("}");
                     if (columnChildren.hasNext() || columns.hasNext()) {
@@ -349,6 +349,8 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
         context.getResponseWriter().write("]");
         
     }
+
+
 
     //renders column names in the XML response
     private void renderColumnHeaders(TableSuggestAjax tableSuggestAjax,
