@@ -415,6 +415,7 @@ proto._parsePattern = function(
     else
     {
       context.year = year;
+      context.ambiguousYear = false;
     }
 
     if (yearIsWeekYear)
@@ -437,6 +438,7 @@ proto._parsePattern = function(
     else
     {
       context.weekYear = year;
+      context.ambiguousWeekYear = false;
     }
   }
   else if (c == 'M')
@@ -608,6 +610,10 @@ proto._parsePostProcess = function(symbols, context)
     }
   }
   
+  if (context.year <= 0) {
+    context.year = new Date().getFullYear();
+  }
+
   if (context.hourAmpm > 0)
   {
     if (context.ampm == 1)
