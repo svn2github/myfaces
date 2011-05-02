@@ -99,7 +99,7 @@ org_apache_myfaces_PopupCalendar = function()
     this.today = new Date();
     this.dateNow = this.today.getDate();
     this.monthNow = this.today.getMonth();
-    this.yearNow = this.today.getYear();
+    this.yearNow = this.today.getFullYear();
     
     // list of images to be preloaded from the server
     this.imgSrc = new Array("drop1.gif", "drop2.gif", "left1.gif", "left2.gif", "right1.gif", "right2.gif");
@@ -427,8 +427,9 @@ org_apache_myfaces_PopupCalendar.prototype.init = function(containerCtl)
 
     if (!this.ns4)
     {
-        if (!this.ie)
-            this.yearNow += 1900;
+        /* Instead use getFullYear() */
+        /*if (!this.ie)
+            this.yearNow += 1900;*/
 
         this._hideCalendar();
 
