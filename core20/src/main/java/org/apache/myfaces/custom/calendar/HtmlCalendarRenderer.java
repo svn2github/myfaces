@@ -130,7 +130,12 @@ public class HtmlCalendarRenderer
         
         if (inputCalendar.isRenderAsPopup() && inputCalendar.isAddResources())
         {
-            addScriptAndCSSResourcesWithJSF2ResourceAPI(FacesContext.getCurrentInstance(), inputCalendar);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            if (!facesContext.getAttributes().containsKey(JAVASCRIPT_ENCODED_JSF2))
+            {
+                TomahawkResourceUtils.addOutputScriptResource(facesContext, "oam.custom.inputTextHelp", "inputTextHelp.js");
+            }
+            addScriptAndCSSResourcesWithJSF2ResourceAPI(facesContext, inputCalendar);
         }
     }
 
