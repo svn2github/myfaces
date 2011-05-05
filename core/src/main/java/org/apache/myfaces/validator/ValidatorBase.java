@@ -37,6 +37,7 @@ import org.apache.myfaces.tomahawk.util.Constants;
  * @JSFValidator
  *   configExcluded = "true"
  *   tagClass = "org.apache.myfaces.validator.ValidatorBaseTag"
+ *   tagHandler = "org.apache.myfaces.validator.ValidatorBaseTagHandler"
  */
 public abstract class ValidatorBase implements StateHolder, Validator {
 

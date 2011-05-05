@@ -66,7 +66,7 @@
 
                 <h:outputLabel for="equal2" value="#{example_messages['validate_equal']}2"/>
                 <h:inputText id="equal2" value="#{validateForm.equal2}" required="true">
-                    <t:validateEqual for="equal"
+                    <t:validateEqual forId="equal"
                                      summaryMessage='#{"Value {0} should equal {1}"}'
                                      detailMessage='#{"The value of this field, {0}, should equal the value of that other field, {1}"}'/>
                 </h:inputText>
