@@ -61,10 +61,11 @@ public class StylesheetRendererTest extends AbstractTomahawkViewControllerTestCa
         stylesheet = null;
     }
 
+    /*
     public static Test suite()
     {
         return null; // keep this method or maven won't run it
-    }
+    }*/
 
     /*
      * Test method for 'org.apache.myfaces.custom.stylesheet.StylesheetRenderer.encodeEnd(FacesContext, UIComponent)'

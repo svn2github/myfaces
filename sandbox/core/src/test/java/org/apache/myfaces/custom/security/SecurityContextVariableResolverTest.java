@@ -57,10 +57,10 @@ public class SecurityContextVariableResolverTest extends AbstractJsfTestCase{
     }
     
     public void testSecurityContextImplIsCustomWhenCustomImplIsConfigured() {
-        servletContext.addInitParameter("org.apache.myfaces.SECURITY_CONTEXT", "org.apache.myfaces.custom.security.TestSecurityContextImpl");
+        servletContext.addInitParameter("org.apache.myfaces.SECURITY_CONTEXT", "org.apache.myfaces.custom.security.CustomSecurityContextImpl");
         SecurityContext securityContext = (SecurityContext)resolver.resolveVariable(facesContext, "securityContext");
         assertFalse(securityContext instanceof SecurityContextImpl);
-        assertTrue(securityContext instanceof TestSecurityContextImpl);
+        assertTrue(securityContext instanceof CustomSecurityContextImpl);
     }
     
     public void testExceptionMustBeThrownWhenAnInvalidImplIsConfigured() {

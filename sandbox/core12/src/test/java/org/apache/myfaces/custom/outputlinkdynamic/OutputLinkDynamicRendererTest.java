@@ -55,7 +55,7 @@ public class OutputLinkDynamicRendererTest extends AbstractTomahawkViewControlle
     {
         HtmlRenderedAttr[] attrs = HtmlCheckAttributesUtil.generateBasicAttrs();
 
-        outputLink.setImageRendererClass(TestResourceRenderer.class);
+        outputLink.setImageRendererClass(CustomResourceRenderer.class);
         
         HtmlCheckAttributesUtil.checkRenderedAttributes(
                 outputLink, facesContext, writer, attrs);

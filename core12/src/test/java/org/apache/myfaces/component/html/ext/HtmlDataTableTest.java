@@ -52,10 +52,11 @@ public class HtmlDataTableTest extends AbstractTomahawkViewControllerTestCase
         super(name);
     }
 
+    /*
     public static Test suite()
     {
         return null; // keep this method or maven won't run it
-    }
+    }*/
 
     protected void setUp() throws Exception
     {

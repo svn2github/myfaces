@@ -21,10 +21,10 @@ package org.apache.myfaces.custom.date;
 
 import java.util.Date;
 
-public class TestBean {
+public class CustomBean {
   private Date date;
 
-  public TestBean() {
+  public CustomBean() {
     super();
   }
 

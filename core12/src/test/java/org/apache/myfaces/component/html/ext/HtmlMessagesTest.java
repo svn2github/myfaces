@@ -46,10 +46,11 @@ public class HtmlMessagesTest extends AbstractTomahawkViewControllerTestCase
         super.tearDown();
     }
 
+    /*
     public static Test suite()
     {
         return null; // keep this method or maven won't run it
-    }
+    }*/
 
     /**
      * Verify component renders with the default renderer.

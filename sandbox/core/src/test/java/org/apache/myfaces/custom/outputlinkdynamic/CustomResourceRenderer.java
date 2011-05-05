@@ -24,7 +24,7 @@ import javax.faces.context.ResponseStream;
 import org.apache.myfaces.custom.dynamicResources.ResourceContext;
 import org.apache.myfaces.custom.dynamicResources.ResourceRenderer;
 
-public class TestResourceRenderer implements ResourceRenderer
+public class CustomResourceRenderer implements ResourceRenderer
 {
     public void renderResource(ResponseStream stream) 
     {

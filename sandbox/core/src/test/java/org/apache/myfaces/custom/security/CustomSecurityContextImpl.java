@@ -22,7 +22,7 @@ package org.apache.myfaces.custom.security;
  * @author cagatay (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public class TestSecurityContextImpl extends SecurityContext{
+public class CustomSecurityContextImpl extends SecurityContext{
     
     public String getAuthType() {
         return null;
