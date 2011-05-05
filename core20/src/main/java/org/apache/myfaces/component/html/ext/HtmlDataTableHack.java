@@ -265,6 +265,30 @@ public abstract class HtmlDataTableHack extends
         }
         return DEFAULT_PRESERVEROWSTATES;
     }
+    
+    /**
+     * Indicates whether the state for a component in each row should not be 
+     * discarded before the datatable is rendered again.
+     * 
+     * In tomahawk, this property is the same as t:dataTable preserveRowComponentState
+     * 
+     * This will only work reliable if the datamodel of the 
+     * datatable did not change either by sorting, removing or 
+     * adding rows. Default: false
+     * 
+     * @return
+     */
+    @JSFProperty(literalOnly=true, faceletsOnly=true, defaultValue="false")
+    public boolean isRowStatePreserved()
+    {
+        Boolean b = (Boolean) getStateHelper().get(PropertyKeys.rowStatePreserved);
+        return b == null ? false : b.booleanValue(); 
+    }
+    
+    public void setRowStatePreserved(boolean preserveComponentState)
+    {
+        getStateHelper().put(PropertyKeys.rowStatePreserved, preserveComponentState);
+    }
 
     protected boolean hasErrorMessages(FacesContext context)
     {
@@ -291,7 +315,7 @@ public abstract class HtmlDataTableHack extends
     @SuppressWarnings("unchecked")
     public void setRowIndex(int rowIndex)
     {
-        if (isPreserveRowComponentState() && _initialDescendantFullComponentState != null)
+        if ( (isPreserveRowComponentState() || isRowStatePreserved()) && _initialDescendantFullComponentState != null)
         {
             setRowIndexPreserveComponentState(rowIndex);
         }
@@ -548,7 +572,7 @@ public abstract class HtmlDataTableHack extends
     @Override
     public void markInitialState()
     {
-        if (isPreserveRowComponentState())
+        if (isPreserveRowComponentState() || isRowStatePreserved())
         {
             if (getFacesContext().getAttributes().containsKey("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE"))
             {
@@ -1093,7 +1117,7 @@ public abstract class HtmlDataTableHack extends
      */
     public void clearRowStates()
     {
-        if (isPreserveRowComponentState())
+        if (isPreserveRowComponentState() || isRowStatePreserved())
         {
             _rowDeltaStates.clear();
         }
@@ -1120,7 +1144,7 @@ public abstract class HtmlDataTableHack extends
         if (rowKey != null)
         {
             setRowIndex(deletedIndex);
-            if (isPreserveRowComponentState())
+            if (isPreserveRowComponentState() || isRowStatePreserved())
             {
                 _rowDeltaStates.remove(currentRowStateKey);
             }
@@ -1134,7 +1158,7 @@ public abstract class HtmlDataTableHack extends
         {
             // copy next rowstate to current row for each row from deleted row onward.
             int rowCount = getRowCount();
-            if (isPreserveRowComponentState())
+            if (isPreserveRowComponentState() || isRowStatePreserved())
             {
                 for (int index = deletedIndex + 1; index < rowCount; ++index)
                 {
@@ -1285,5 +1309,6 @@ public abstract class HtmlDataTableHack extends
         , preserveRowComponentState
         , rowKey
         , derivedRowKeyPrefix
+        , rowStatePreserved
     }
 }

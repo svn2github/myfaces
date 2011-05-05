@@ -1177,7 +1177,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     
     public void markInitialState()
     {
-        if (isPreserveRowComponentState())
+        if (isPreserveRowComponentState() || isRowStatePreserved())
         {
             if (getFacesContext().getAttributes().containsKey("javax.faces.view.ViewDeclarationLanguage.IS_BUILDING_INITIAL_STATE"))
             {
