@@ -42,6 +42,7 @@
     <module>core12</module>
     <module>core20</module>
     <module>examples</module>
+    <module>examples20</module>
   </modules>
   
   <dependencyManagement>
