@@ -59,7 +59,9 @@ $baseContent
 #end
 #set ($behaviorList = ${model.getBehaviors()})
 #foreach( $behavior in $behaviorList )
-#if ($modelIds.contains($behavior.modelId))
+#if ($modelIds.contains($behavior.modelId) &&
+    !($behavior.isConfigExcluded().booleanValue()) &&
+    $behavior.behaviorId)
   <behavior>
     <behavior-id>$behavior.behaviorId</behavior-id>
     <behavior-class>$behavior.className</behavior-class>
