@@ -289,15 +289,6 @@
   -->
 
   <profiles>
-    <profile>
-      <activation>
-        <jdk>!1.4</jdk>
-      </activation>
-      <modules>
-        <module>sandbox15</module>
-      </modules>
-    </profile>
-
     <!-- This profile is invoked by -DprepareRelease=true.  This allows mvn release:prepare to
          run successfully on the assembly projects. -->
     <profile>
