@@ -34,11 +34,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
             <scope>compile</scope>
         </dependency>
+         -->
 
         <dependency>
             <groupId>commons-logging</groupId>
@@ -59,16 +61,34 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>el-api</artifactId>
+            <version>2.1.2-b05</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 
+        <dependency>
             <groupId>commons-el</groupId>
             <artifactId>commons-el</artifactId>
             <scope>compile</scope>
         </dependency>
+         -->
 
+        <!-- 
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <scope>compile</scope>
         </dependency>
+         -->
 
         <dependency>
             <groupId>commons-lang</groupId>
@@ -76,18 +96,22 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- 
         <dependency>
             <groupId>portlet-api</groupId>
             <artifactId>portlet-api</artifactId>
             <version>1.0</version>
             <scope>provided</scope>
         </dependency>
-
+         -->
+         
+        <!-- 
         <dependency>
             <groupId>poi</groupId>
             <artifactId>poi</artifactId>
             <scope>compile</scope>
         </dependency>
+         -->
 
         <!-- provided dependencies -->
 
@@ -111,12 +135,13 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-
+<!-- 
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <scope>compile</scope>
         </dependency>
+         -->
         
         <dependency>
             <groupId>org.apache.myfaces.buildtools</groupId>
@@ -132,10 +157,14 @@
     </dependency>
  -->
  
+     <!-- 
      <dependency>
       <groupId>com.lowagie</groupId>
       <artifactId>itext</artifactId>
-    </dependency> 
+    </dependency>
+     -->
+    
+    
  
         <!-- test dependencies -->
 
@@ -153,27 +182,9 @@
         </dependency>
         
         <dependency>
-            <groupId>org.apache.shale</groupId>
-            <artifactId>shale-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.myfaces</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.myfaces</groupId>
-                    <artifactId>myfaces-impl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>myfaces</groupId>
-                    <artifactId>myfaces-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>myfaces</groupId>
-                    <artifactId>myfaces-impl</artifactId>
-                </exclusion>
-            </exclusions>
+          <groupId>org.apache.myfaces.test</groupId>
+          <artifactId>myfaces-test20</artifactId>
+          <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -186,9 +197,11 @@
                    <exclude>**/*.vm</exclude>
                 </excludes>
             </resource>
+            <!-- 
             <resource>
                 <directory>target/tomahawk12_resources</directory>
             </resource>
+             -->
         </resources>
         <plugins>
             <plugin>
