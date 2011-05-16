@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+        xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+<ui:composition>
+  <h3>Accessed Managed Beans and Resource Bundles</h3>
+  <br/>
+
+  <t:dataList value="#{accessedBeans.beanList}" var="accessedBean" layout="unorderedList" style="padding:10px; border:1px solid #ccc; background:#ffffff;">
+      <h:outputLink value="#{accessedBean.clazz}.java.source" 
+        disabled="#{!fn:startsWith(accessedBean.clazz,'org.apache.myfaces.examples') || fn:startsWith(accessedBean.clazz,'org.apache.myfaces.examples.accessedbeans')}"
+        rendered="#{!fn:contains(accessedBean.clazz,'$')}">
+          <h:outputText value="Usage of bean with name : "/>
+          <h:outputText value="#{accessedBean.name}"/>
+          <h:outputText value=" and class : "/>
+          <h:outputText value="#{accessedBean.clazz}"/>
+      </h:outputLink>
+  </t:dataList>
+</ui:composition>
+</body>
+</html>

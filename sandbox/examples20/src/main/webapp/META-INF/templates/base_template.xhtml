@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+<!--
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+<h:head>
+    <title>#{i18n.webapp_title}</title>
+    <h:outputStylesheet library="styles" name="base.css"/>
+    <h:outputStylesheet library="styles" name="theme.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <ui:insert name="html_header_content"/>
+</h:head>
+<h:body>
+    <div id="header">
+        <ui:insert name="header_content">
+            <div id="top_menu">
+                <div id="top_menu_container">
+                    <div class="date">Apache MyFaces Tomahawk Sandbox (v #{build.tomahawk_version} running on #{build.jsf_implementation})</div>
+                    <ul>
+                        <li>
+                            <a href="#{i18n.link_apache}" target="_blank">Apache</a>
+                        </li>
+                        <li>
+                            <a href="#{i18n.link_myfaces}" target="_blank">MyFaces</a>
+                        </li>
+                        <li>
+                            <a href="#{i18n.link_host_page}">#{i18n.host_page}</a>
+                        </li>
+                        <li>
+                            <a href="#{i18n.link_documentation}" target="_blank">#{i18n.menu_documentation}</a>
+                        </li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div id="header_bottom">
+                <div id="logo_banner_container">
+                    <div id="logo">
+                        <a href="#{i18n.link_myfaces}">
+                            <h:graphicImage library="images" name="myfaces_logo.jpg" alt="MyFaces logo"/>
+                        </a>
+                    </div>
+                    <div id="banner">
+                        <a href="#{i18n.link_apache}">
+                            <h:graphicImage library="images" name="apache_banner.png" alt="Apache logo"/>
+                        </a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </ui:insert>
+    </div>
+
+    <div id="main_container">
+        <div id="left_column">
+            <ui:insert name="left_column_content">
+                <div class="left_menu_top">
+                    <div class="left_menu_bottom">
+                        <h5>#{i18n.example_list}</h5>
+
+                        <div class="content">
+                            <ui:insert name="left_menu_content">
+                                <ul class="left_menu">
+                                  <li class="none">
+                                    <a></a>
+                                  </li>
+                                </ul>
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </ui:insert>
+        </div>
+        <div id="body_column">
+            <ui:insert name="body_column_content">
+                <div>
+                    <div class="section">
+
+                        <ui:insert name="main_content_header"><h2>#{i18n.webapp_title}</h2></ui:insert>
+
+                        <div class="main_content">
+                            <ui:insert name="messages">
+                                <h:messages style="padding:10px; border:1px solid #ccc; background:#ffffff;"/>
+                            </ui:insert>
+                        
+                            <ui:insert name="main_content"><p></p></ui:insert>
+                        </div>
+
+                        <div class="main_content">
+                            <ui:insert name="source_list">
+                                <ui:include src="mbean_source.xhtml"/>
+                            </ui:insert>
+                            <ui:insert name="main_content_footer">
+                                <ui:include src="footer.xhtml"/>
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+            </ui:insert>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div id="footer">
+        <ui:insert name="footer_content">
+            <div class="copyright">
+                <p>&#169; The Apache Software Foundation
+                </p>
+            </div>
+        </ui:insert>
+    </div>
+</h:body>
+</html>
