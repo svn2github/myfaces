@@ -170,7 +170,7 @@ public abstract class HtmlDataTableHack extends
                Integer.valueOf(rowIndexString) == rowIndex)
             {
                 //return clientId;
-                return clientId.substring(0,index)+getDerivedSubClientId();
+                return clientId.substring(0,index+1)+getDerivedSubClientId();
             }
         }
         //return clientId + separator + rowIndex;
