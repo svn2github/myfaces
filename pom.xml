@@ -278,7 +278,7 @@
     </plugins>
   </reporting>
 
-
+  <!--
   <distributionManagement>
     <site>
       <id>apache-site</id>
@@ -286,6 +286,7 @@
       <url>scpexe://minotaur.apache.org/www/myfaces.apache.org/tomahawk-project/</url>
     </site>
   </distributionManagement>
+  -->
 
   <profiles>
     <profile>
@@ -308,6 +309,12 @@
       </activation>
       <modules>
         <module>assembly</module>
+        <module>site</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>generate-site</id>
+      <modules>
         <module>site</module>
       </modules>
     </profile>
