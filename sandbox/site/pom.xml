@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+      <groupId>org.apache.myfaces.tomahawk</groupId>
+      <artifactId>sandbox-project</artifactId>
+      <version>1.1.11-SNAPSHOT</version>
+  </parent>
+    
+  <groupId>org.apache.myfaces.tomahawk</groupId>
+  <artifactId>sandbox-site</artifactId>
+  <packaging>pom</packaging>
+  <name>Sandbox Core</name>
+  <description>
+        The Tomahawk Sandbox is a collection of experimental code that might some day be promoted into
+        the Tomahawk library (or possibly some other Myfaces project). The code here is freely available
+        under the normal ASF license. However there is no guarantee of API stability or continued maintenance
+        for any code that is in the sandbox.
+  </description>
+  <url>http://myfaces.apache.org/sandbox</url>
+
+  <distributionManagement>
+    <site>
+      <id>apache-site</id>
+      <name>Apache Website</name>
+      <url>scpexe://people.apache.org/www/myfaces.apache.org/sandbox/</url>
+    </site>
+  </distributionManagement>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <checkoutDirectoryName>sandbox</checkoutDirectoryName>
+          <anonymousConnection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</anonymousConnection>
+          <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox</developerConnection>
+          <webAccessUrl>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox</webAccessUrl>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

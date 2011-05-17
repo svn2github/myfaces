@@ -35,7 +35,7 @@
     <groupId>org.apache.myfaces.maven</groupId>
     <artifactId>myfaces-site-skin</artifactId>
     <version>3</version>
-  </skin> 
+  </skin>
 
   <body>
     <links>
@@ -43,7 +43,7 @@
       <item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
       <item name="Download Tomahawk" href="http://myfaces.apache.org/tomahawk/download.html"/>
     </links>
-      
+    
     <menu name="MyFaces Projects">
       <item name="Overview" href="http://myfaces.apache.org/index.html"/>
       <item name="Core JSF-1.1"   href="http://myfaces.apache.org/core11/index.html" collapse="true">
@@ -57,10 +57,10 @@
       </item>
       <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
       <item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
-      <item name="Tomahawk" href="http://myfaces.apache.org/tomahawk/index.html">
+      <item name="Tomahawk" href="http://myfaces.apache.org/tomahawk/index.html" collapse="true">
         <item name="dummy"        href="dummy"/>
       </item>
-      <item name="Sandbox" href="http://myfaces.apache.org/sandbox/index.html" collapse="true">
+      <item name="Sandbox" href="http://myfaces.apache.org/sandbox/index.html">
         <item name="Sandbox for JSF 1.1" href="http://myfaces.apache.org/sandbox-project/tomahawk-sandbox/index.html"/>
         <item name="Sandbox for JSF 1.2" href="http://myfaces.apache.org/sandbox-project/tomahawk-sandbox12/index.html"/>
         <item name="Sandbox for JSF 2.0" href="http://myfaces.apache.org/sandbox-project/tomahawk-sandbox20/index.html"/>
@@ -72,19 +72,20 @@
       <item name="Test"           href="http://myfaces.apache.org/test/index.html"/>
       <item name="Others"         href="http://myfaces.apache.org/otherProjects.html"/>
     </menu>
-
         
     <menu name="Documentation">
-      <item name="Tag Library" href="./tlddoc/index.html"/>
+      <item name="JSF Tag Documentation 1.1" href="tagdoc.html"/>
+      <item name="Tag Library Documentation" href="tlddoc/index.html"/>
+      <item name="Api Documentation" href="apidocs/index.html"/>
       <item name="Extended Docs" href="./extendedDocs.html"/>  
     </menu>    
-
+    
     <menu ref="reports"/>
 
     <menu name="Foundation">
-      	<item name="ASF" href="http://apache.org/" />
-      	<item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
-      	<item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
+      <item name="ASF" href="http://apache.org/" />
+      <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
+      <item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
     </menu>
-  </body>  
+  </body>
 </project>

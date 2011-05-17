@@ -372,36 +372,15 @@
                 </execution>
               </executions>
             </plugin>
-
-            <!--    
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>xslt-maven-plugin</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                    <srcIncludes>**/*.tld</srcIncludes>
-                    <srcDir>src/main/tld</srcDir>
-                    <destDir>target/classes/META-INF</destDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.2</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/Abstract*.java</exclude>                    
-                        <exclude>**/TestUtils.java</exclude>
-                    </excludes>
-                </configuration>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.4.2</version>
+              <configuration>
+                  <excludes>
+                      <exclude>**/Abstract*.java</exclude>
+                      <exclude>**/TestUtils.java</exclude>
+                  </excludes>
+              </configuration>
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -418,9 +397,8 @@
         <plugins>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>changelog-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <artifactId>maven-changelog-plugin</artifactId>
+                <version>2.1</version>
                 <reportSets>
                     <reportSet>
                         <id>dual-report</id>
@@ -469,41 +447,25 @@
             <id>generate-site</id>
             <build>
                 <plugins>
-                    <!-- 
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>xslt-maven-plugin</artifactId>
-                        <version>1.0</version>
+                        <!-- Generate report content -->
+                        <groupId>org.apache.myfaces.buildtools</groupId>
+                        <artifactId>myfaces-builder-plugin</artifactId>
+                        <version>${myfaces-builder-plugin-version}</version>
+                        <configuration>
+                            <taglibs>
+                                <s>http://myfaces.apache.org/sandbox</s>
+                            </taglibs>
+                        </configuration>
                         <executions>
                             <execution>
-                                <id>generate-tld-for-tlddoc</id>
                                 <goals>
-                                    <goal>transform</goal>
+                                  <goal>tagdoc-content</goal>
                                 </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/tlddoc-site</destDir>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>generate-tld-for-jar</id>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/classes/META-INF</destDir>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
-                     -->
                 </plugins>
-
             </build>
             <reporting>
                 <plugins>
@@ -515,6 +477,17 @@
                             <tldDocDir>${basedir}/target/site/tlddoc</tldDocDir>
                         </configuration>
                     </plugin>
+                    <plugin>
+                        <!-- Generate report index -->
+                        <groupId>org.apache.myfaces.buildtools</groupId>
+                        <artifactId>myfaces-builder-plugin</artifactId>
+                        <version>${myfaces-builder-plugin-version}</version>
+                        <configuration>
+                            <taglibs>
+                                <s>http://myfaces.apache.org/sandbox</s>
+                            </taglibs>
+                        </configuration>
+                    </plugin>                    
                 </plugins>
             </reporting>
         </profile>
@@ -528,39 +501,6 @@
             </activation>
             <build>
                 <plugins>
-                    <!-- 
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>xslt-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <executions>
-                            <execution>
-                                <id>generate-tld-for-tlddoc</id>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities-tlddoc.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/tlddoc-site</destDir>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>generate-tld-for-jar</id>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                                <configuration>
-                                    <xslFile>src/main/tld/misc/resolve_entities.xsl</xslFile>
-                                    <srcIncludes>**/*.tld</srcIncludes>
-                                    <srcDir>src/main/tld</srcDir>
-                                    <destDir>target/classes/META-INF</destDir>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                     -->
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.4</version>

@@ -4,10 +4,10 @@
   <artifactId>sandbox-project</artifactId>
   <packaging>pom</packaging>
   <name>Sandbox Project</name>
-  <url>http://myfaces.apache.org/sandbox</url>
   <description>
     This is the MyFaces Sandbox Subproject Description [INSERT MORE STUFF HERE]
   </description>
+  <url>http://myfaces.apache.org/sandbox-project</url>
 
   <parent>
     <groupId>org.apache.myfaces.tomahawk</groupId>
@@ -33,6 +33,12 @@
       </activation>
       <modules>
         <module>assembly</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>generate-site</id>
+      <modules>
+        <module>site</module>
       </modules>
     </profile>
   </profiles>
@@ -91,6 +97,31 @@
                 </executions>
             </plugin>    
         </plugins>
-    </build>	  
+    </build>	
+
+  <distributionManagement>
+    <site>
+      <id>apache-site</id>
+      <name>Apache Website</name>
+      <url>scpexe://people.apache.org/www/myfaces.apache.org/sandbox-project/</url>
+    </site>
+  </distributionManagement>
+
+
+<!--
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <configLocation>default/myfaces-checks-standard.xml</configLocation>
+          <headerLocation>default/myfaces-header.txt</headerLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>  
+-->
 
 </project>

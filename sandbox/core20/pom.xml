@@ -163,9 +163,7 @@
       <artifactId>itext</artifactId>
     </dependency>
      -->
-    
-    
- 
+
         <!-- test dependencies -->
 
         <dependency>
@@ -418,7 +416,28 @@
                          <shortname>s</shortname>
                          <uri>http://myfaces.apache.org/sandbox</uri>
                          <displayname>Tomahawk sandbox tag library.</displayname>
-                         <description>Enhanced standard JSP actions and custom MyFaces actions.</description>
+                         <description>Sandbox is a place to put new JSF 2.0 ideas.</description>
+                      </params>
+                      <modelIds>
+                          <modelId>tomahawk-sandbox20</modelId>
+                      </modelIds>
+                  </configuration>
+                  <goals>
+                      <goal>make-config</goal>
+                  </goals>
+                </execution>
+                <execution>
+                  <id>make_sandbox_facelets_tld</id>
+                  <configuration>
+                      <outputDirectory>${project.build.directory}/tlddoc-facelets</outputDirectory>
+                      <xmlFile>tomahawk_facelets.tld</xmlFile>
+                      <xmlBaseFile>src/main/conf/META-INF/myfaces_sandbox-facelets-base.tld</xmlBaseFile>
+                      <templateFile>tld-facelets-tomahawk20.vm</templateFile>
+                      <params>
+                         <shortname>s</shortname>
+                         <uri>http://myfaces.apache.org/sandbox</uri>
+                         <displayname>Tomahawk sandbox tag library.</displayname>
+                         <description>Sandbox is a place to put new JSF 2.0 ideas.</description>
                       </params>
                       <modelIds>
                           <modelId>tomahawk-sandbox20</modelId>
@@ -448,16 +467,15 @@
                 </execution>
               </executions>
             </plugin>
-
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.2</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/Abstract*.java</exclude>                    
-                        <exclude>**/TestUtils.java</exclude>
-                    </excludes>
-                </configuration>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.4.2</version>
+              <configuration>
+                  <excludes>
+                      <exclude>**/Abstract*.java</exclude>
+                      <exclude>**/TestUtils.java</exclude>
+                  </excludes>
+              </configuration>
             </plugin>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -474,9 +492,8 @@
         <plugins>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>changelog-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <artifactId>maven-changelog-plugin</artifactId>
+                <version>2.1</version>
                 <reportSets>
                     <reportSet>
                         <id>dual-report</id>
@@ -523,16 +540,50 @@
     <profiles>
         <profile>
             <id>generate-site</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- Generate report content -->
+                        <groupId>org.apache.myfaces.buildtools</groupId>
+                        <artifactId>myfaces-builder-plugin</artifactId>
+                        <version>${myfaces-builder-plugin-version}</version>
+                        <configuration>
+                            <taglibs>
+                                <s>http://myfaces.apache.org/sandbox</s>
+                            </taglibs>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                  <goal>tagdoc-content</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
             <reporting>
                 <plugins>
                     <plugin>
                         <groupId>net.sourceforge.maven-taglib</groupId>
                         <artifactId>maven-taglib-plugin</artifactId>
                         <configuration>
-                            <taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir>
+                            <!-- taglib.src.dir>${basedir}/target/classes/META-INF</taglib.src.dir -->
+                            <taglib.src.dir>${basedir}/target/tlddoc-facelets</taglib.src.dir>
                             <tldDocDir>${basedir}/target/site/tlddoc</tldDocDir>
                         </configuration>
                     </plugin>
+                    <plugin>
+                        <!-- Generate report index -->
+                        <groupId>org.apache.myfaces.buildtools</groupId>
+                        <artifactId>myfaces-builder-plugin</artifactId>
+                        <version>${myfaces-builder-plugin-version}</version>
+                        <configuration>
+                            <taglibs>
+                                <s>http://myfaces.apache.org/sandbox</s>
+                            </taglibs>
+                        </configuration>
+                    </plugin>                    
                 </plugins>
             </reporting>
         </profile>
