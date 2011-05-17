@@ -22,7 +22,7 @@
   <distributionManagement>
     <site>
       <id>apache-site</id>
-      <url>scpexe://minotaur.apache.org/www/myfaces.apache.org/tomahawk</url>
+      <url>scpexe://people.apache.org/www/myfaces.apache.org/tomahawk</url>
     </site>
   </distributionManagement>
 
