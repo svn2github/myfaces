@@ -79,7 +79,7 @@ body {
     </t:div>	
 
 	<t:div styleClass="page">
-            <%@include file="../inc/page_footer.jsp"%>
+            <%@include file="inc/page_footer.jsp"%>
 	</t:div>
 </f:view>
 </body>

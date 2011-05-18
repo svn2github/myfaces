@@ -424,13 +424,6 @@
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 
-
-    <managed-bean>
-		<managed-bean-name>dateTimeConverterBean</managed-bean-name>
-		<managed-bean-class>org.apache.myfaces.examples.dateTimeConverter.DateTimeConverterBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-
 	<managed-bean>
 		<managed-bean-name>fisheye</managed-bean-name>
 		<managed-bean-class>org.apache.myfaces.examples.fisheye.FishEyeHandler</managed-bean-class>
@@ -464,12 +457,6 @@
     <managed-bean>
     	<managed-bean-name>submitOnEvent</managed-bean-name>
     	<managed-bean-class>org.apache.myfaces.examples.submitOnEvent.SubmitOnEventBean</managed-bean-class>
-    	<managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
-    	<managed-bean-name>exporterBean</managed-bean-name>
-    	<managed-bean-class>org.apache.myfaces.examples.exporter.ExporterBean</managed-bean-class>
     	<managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
@@ -521,13 +508,6 @@
 	 </managed-bean> 
 	 
 	 
-    <!-- managed bean for renderOne -->
-    <managed-bean>
-        <managed-bean-name>renderOne</managed-bean-name>
-        <managed-bean-class>org.apache.myfaces.examples.renderone.RenderOneBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>   
-  
 	<!-- navigation rules -->
     <navigation-rule>
 		<navigation-case>

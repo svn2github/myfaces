@@ -61,17 +61,11 @@
 
 	            <h:outputText value="Conversion"/>
 	            <h:panelGrid style="padding-left:25px">
-	                <h:outputLink value="dateTimeConverter.jsf"><f:verbatim>convertDateTime - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
-                    <h:outputLink value="typedNumberConvert.jsf"><f:verbatim>convertNumber - automatically convert the number to the correct type</f:verbatim></h:outputLink>
 	                <h:outputLink value="convertStringUtils.jsf"><f:verbatim>convertStringUtils - a datetime converter that uses system timezone as default</f:verbatim></h:outputLink>
 	            </h:panelGrid>
                 <h:outputText value="Validation"/>
 	            <h:panelGrid style="padding-left:25px">
-	            	<h:outputLink value="validateUrl.jsf" ><f:verbatim>Validation example 2 - including URL validator</f:verbatim></h:outputLink>
-	            	<h:outputLink value="validateCompareTo.jsf" ><f:verbatim>validateCompareTo - Compare values on two different components</f:verbatim></h:outputLink>
-	            	<h:outputLink value="subForm.jsf"><f:verbatim>SubForm - Partial validation and model update with SubForms</f:verbatim></h:outputLink>
-	            	<h:outputLink value="validateCSV.jsf"><f:verbatim>CSVValidator - validate comma separated values with a given (sub)validator</f:verbatim></h:outputLink>
-	                
+                
             		<f:verbatim><a name="ClientSideValidation" /></f:verbatim>
 	                <h:outputText value="Client Side Validation"/>
 		            <h:panelGrid style="padding-left:25px">
@@ -88,8 +82,6 @@
                 <h:outputLink value="dojo/splitpanejsfonly.jsf" ><f:verbatim>SplitPane - Dojos ContentPane widget to separate a page into panes of belonging content</f:verbatim></h:outputLink>
                 <h:outputLink value="dojo/titlepanejsfonly.jsf" ><f:verbatim>TitlePane - Dojos TitlePane; Displays some data with a title on top. Data can be collapsed leaving only the title shown. </f:verbatim></h:outputLink>
                 <h:outputLink value="accordionPanel.jsf" ><f:verbatim>AccordionPanel</f:verbatim></h:outputLink>
-                <h:outputLink value="hmenu.jsf" ><f:verbatim>Horizontal Menu</f:verbatim></h:outputLink>
-				<h:outputLink value="fieldset.jsf"><f:verbatim>FieldSet</f:verbatim></h:outputLink>
             </h:panelGrid>
 
             <h:outputText value="Input Suggest"/>
@@ -105,8 +97,6 @@
                 <f:verbatim><a name="filterTable" /></f:verbatim>
                 <h:outputLink value="filterTable.jsf" ><f:verbatim>Filter Table</f:verbatim></h:outputLink>
             	<h:outputLink value="autoUpdateDataTable.jsf" ><f:verbatim>Automatically updated dataTable per AJAX</f:verbatim></h:outputLink>
-            	<h:outputLink value="selectOneRow.jsf"><f:verbatim>selectOneRow - a DataTable Enhancement</f:verbatim></h:outputLink>
-			<h:outputLink value="exporter.jsf"><f:verbatim>Exporter - Export datatable contents as an excel file or as a pdf file</f:verbatim></h:outputLink>
             </h:panelGrid>
 
             <h:outputText value="Messages"/>
@@ -131,12 +121,6 @@
                 <h:outputLink value="ajaxChildComboBox.jsf" >
                     <f:verbatim>Ajax-enabled combo box - reloads its contents when the value of another combo box is changed</f:verbatim>
                 </h:outputLink>
-            </h:panelGrid>
-
-            <h:outputText value="Conversation"/>
-            <h:panelGrid style="padding-left:25px">
-           		<h:outputLink value="conversation/index.jsf" ><f:verbatim>Conversation Tag examples</f:verbatim></h:outputLink>
-				<h:outputLink value="springConversation/index.jsf" ><f:verbatim>A new Spring "conversation" scope</f:verbatim></h:outputLink>
             </h:panelGrid>
 
 			<h:outputText value="Redirect Tracker"/>
@@ -179,13 +163,6 @@
 	            </h:outputLink>
          </h:panelGrid>         
          
-		 <h:outputText value="renderOne"/>
-		        <h:panelGrid style="padding-left:25px">
-		            <h:outputLink value="renderOne.jsf" >
-		                <f:verbatim>renderOne - render the first child component by order or by index</f:verbatim>
-		            </h:outputLink>
-		 </h:panelGrid>               
-        
         <f:verbatim><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
     </h:form>
     </f:view>
