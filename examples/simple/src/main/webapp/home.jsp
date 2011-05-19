@@ -166,6 +166,11 @@
                     </h:outputLink>                     
                 </h:panelGrid>                                       
 
+                <h:outputText value="FieldSet" />
+                <h:panelGrid style="padding-left:25px">      
+                    <h:outputLink value="fieldset.jsf"><f:verbatim>FieldSet</f:verbatim></h:outputLink>
+                </h:panelGrid>                                       
+
         </h:panelGrid>
 
 		</h:form>
