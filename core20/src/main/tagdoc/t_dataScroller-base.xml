@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">            
+            <div><img src="../images/datascroller.png" alt="DataScroller"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:dataScroller [ user-role-support-attributes ]
+                   [for="reference to UIData"]
+                   [pageIndexVar="A parameter name, under which the actual page index is set in request scope
+                                  similar to the var parameter."]
+                   [pageCountVar="A parameter name, under which the actual page count is set in request scope
+                                  similar to the var parameter."]&gt;
+    Nested Facets: first, previous, next, last, fastforward, fastrewind
+&lt;/t:dataScroller&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                DataScroller must be nested inside of an UIData component,
+                or attribute "for" must be given so that corresponding uiData can be found.
+            </p>
+            <p>
+                The "row" attribute must be specified on the corresponding uiData.
+            </p>
+            <p>
+                The scope of pageIndexVar and pageCountVar is limited, and only
+                direct children of DataScroller may see them.
+            </p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+    <!-- screen shot -->
+        <section name="Screen Shot">
+            <div>
+                <img alt="datatable" src="../images/datatable.png" />
+            </div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve"><![CDATA[
+<t:dataTable [ all standard dataTable attributes allowed ]
+                [ preserveDataModel="{true|false}" ]
+                [ preserveRowStates="{true|false}" ]
+                [ forceIdIndexFormula="value-binding" ]
+                [ sortColumn="value-binding" ]
+                [ sortAscending="value-binding" ]
+                [ preserveSort="{true|false}" ] 
+                [ renderedIfEmpty="{true|false}" ]
+                [ rowIndexVar="variable name" ]
+                [ rowCountVar="variable name" ]
+                [ previousRowDataVar="variable name" ]
+                [ rowId="value-binding" ]
+                [ newspaperColumns="value-binding" ] 
+                [ newspaperOrientation="value-binding" ] 
+                [ rowStyleClass="css styleclass" ]
+                [ rowStyle="inline css style" ]
+                [ rowOnClick="javascript" ]
+                [ rowOnDblClick="javascript" ]
+                [ rowOnMouseDown="javascript" ]
+                [ rowOnMouseUp="javascript" ]
+                [ rowOnMouseOver="javascript" ]
+                [ rowOnMouseMove="javascript" ]
+                [ rowOnMouseOut="javascript" ]
+                [ rowOnKeyPress="javascript" ]
+                [ rowOnKeyDown="javascript" ]
+                [ rowOnKeyUp="javascript" ]>
+    standard dataTable body (<h:column> tags 
+    and optional "header", "footer", and "spacer" facets)
+    <t:column>
+    <t:columns>
+    <t:command_sortheader/> inside column header or footer
+<t:dataTable>
+            ]]></source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+      <strong>Saving the state of the DataModel - the preserveDataModel attribute</strong>
+      <br />        
+      <p>When this attribute is "true", the data behind
+      the current DataModel is saved after the render response phase and
+      restored in the restore component tree phase.</p>
+
+      <strong>Why and when use this feature?</strong>
+      <br />
+      <p> Whenever you
+      use a DataModel backed by a database connection you could run into
+      problems, when the data in the database has changed since the last
+      request. All Lifecycle phases prior to the render response phase iterate
+      the DataModel and assume that the DataModel is unchanged since the last
+      request. At least the row count must not have changed, because all
+      children of UIData that are bound to the DataModel rely on it. But even
+      if you can assure that row count never changes, a change in the data can
+      have unintentional sideeffects.</p>
+      
+      <p> Using the preserveDataModel
+      feature prevents such problems. The DataModel (to be more exact: the
+      currently visible part of the DataModel given by the first and the rows
+      attribute) is freezed right after rendering and you can be sure that all
+      lifecycle actions during the next request happen on exactly the same
+      data.</p>
+
+      <strong>What data types are supported?</strong>
+      
+      <p>To be able to
+      save the state of the DataModel the row objects must be serializable.
+      All standard DataModel types are supported, except ResultSet, which will
+      follow in one of the next releases,</p>
+
+      <strong>Is updating the model supported?</strong>
+      <p>Yes. Just
+      make your bean property that is bound to the DataTable component
+      writable, i.e. give it a setter method.</p>
+
+      <p>Attention: To minimize the effort for saving the state
+      of the DataModel only the visible rows are saved and restored. During
+      the update model phase the setter will be called with an Array or List,
+      that contains only these restored rows.</p>
+
+      <strong>Wrapping table layout -- the newspaperColumns attribute and spacer facet</strong>
+      
+      <p>The newspaperColumns attribute allows a long,
+      narrow table to be wrapped so that it becomes a short, wide table. This
+      allows more information to be shown on a single screen. This is commonly
+      used to present checkboxes for a long list of items. Use the "spacer"
+      facet to specify a component displayed between layout columns. The
+      newspaperOrientation attribute specifies if the columns will be layed out
+      in a vertical or horizontal manner,</p>
+      Example:<br />
+<source xml:space="preserve"><![CDATA[
+<t:dataTable newspaperColumns="3" value="#{addressBB.states}" newspaperOrientation="horizontal" var="state">
+    <f:facet name="spacer">
+          <f:verbatim>&amp;#160;</f:verbatim>
+    </f:facet>
+    <h:column>
+          <h:outputText value="#{state.abbr}"/>
+    </h:column>
+    <h:column>
+        <h:outputText value="#{state.name}"/>
+    </h:column>
+</t:dataTable>]]></source>
+      <br />
+      
+      <strong>Displaying Details -- detailStamp facet</strong>
+      
+      <p>You can configure the Table to display or hide additional details of a particular row in 
+      response to a user gesture. This is done using "detailStamp" facet and varDetailToggle variable. 
+      </p>
+      Example:<br />
+<source xml:space="preserve"><![CDATA[
+<t:dataTable ... varDetailToggler="detailToggler">
+    ....
+    <h:column>
+        <h:commandLink rendered="#{detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
+            <h:outputText value="Hide"/>
+        </h:commandLink>
+        <h:commandLink rendered="#{!detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
+            <h:outputText value="Show"/>
+        </h:commandLink>
+    </h:column>
+</t:dataTable>]]></source>
+      <br />
+      
+      <p>In the example there is one column with two links that are rendered if the detail
+      is expanded or not, and they just has a JSF action to activate the toggle.
+      When a toggle is activated, the details for that row are displayed. When a toggle is 
+      deactivated, the details for the row are hidden. The user can also display or hide the 
+      details for all rows at the same time.</p>
+       
+      <p>The following methods are available to call from varDetailToggle variable: </p>
+      
+<source xml:space="preserve"><![CDATA[
+      public void collapseAllDetails()
+      public void expandAllDetails()
+      public boolean isCurrentDetailExpanded()
+      public boolean isDetailExpanded()
+      public boolean isExpandedEmpty()
+      public void toggleDetail()
+]]></source>
+      <br />
+      
+      <strong>Working with a changing data - the forceIdIndexFormula attribute</strong>
+      
+      <p>The default table assumes that your backing
+      data collection is stable between 2 requests. This assumption can be
+      false in several cases: concurrent accesses, unstable backing data
+      collection order, ... If you have components within that table that
+      update your data, you will get unintended behaviors.</p>
+      <p> This attribute is meant to fix that problem.</p>
+      <p> The table's components and
+      the backing data objects are linked by the table's components' ids. By
+      default the changing part of those ids is the row number. So if the
+      backing data positions in the list is changed between the 2 requests
+      (like an element inserted in the head of the list), you will update the
+      wrong element in the backing data's collection.</p>
+      <p> To fix this, you
+      can set the forceIdIndexFormula to an EL that will be unique and stable
+      for each row. That way, even if your backing data list changes between 2
+      requests, you always update the intended element in the list.</p>
+      
+      <br /> Example : &lt;t:dataTable value="#{mailDAO.userInbox}"
+      var="email" forceIdIndexFormula="#{email.primaryKey}" ...&gt; ... <br />
+      <br /> Warning : make sure that the value-binding evaluates to a unique
+      value for each row.
+      
+        </section>
+    </body>
+</document>

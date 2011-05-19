@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/panelnavigation2.png" alt="panelnavigation2"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:panelNavigation2 [ standard HTML table attributes ]
+                      [itemClass="normal-menu-item-css-class"]
+                      [openItemClass="open-menu-item-css-class"]
+                      [activeItemClass="active-menu-item-css-class"]
+                      [separatorClass="separator-css-class"]
+                      [itemStyle="normal-menu-item-css-style"]
+                      [openItemStyle="open-menu-item-css-style"]
+                      [activeItemStyle="active-menu-item-css-style"]
+                      [separatorStyle="separator-css-style"]&gt;
+    Nested &lt;t:commandNavigation2&gt; tags (menu items) and output components
+       &lt;t:navigationMenuItem&gt; tags (NavigationMenuItem)
+       &lt;t:navigationMenuItems&gt; tags (NavigationMenuItem(s))
+                &lt;/t:panelNavigation&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>See PanelNavigation Examples http://www.irian.at/myfaces/home.jsf.</p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:commandSortHeader [ all standard commandLink attributes allowed ]
+                        [ columnName="unique-column-name" ]
+                        [ arrow="{true|false}" ] &gt;
+        nested link text and/or image(s)
+&lt;/t:commandSortHeader&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>Must be nested inside an extended DataTable &lt;t:dataTable&gt;</p>
+            <p>(see examples/simpleSortList.jsp for an example)</p>
+        </section>
+    </body>
+</document>

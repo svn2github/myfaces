@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+            &lt;t:dojoInitializer
+            &gt;
+            [rendered="true|false"]
+            [allowQueryConfig="true|false"]
+            [baseScriptUri="&lt;some uri&gt;"]
+            [bindEncoding="utf8|iso8859-1|iso-8859-15|..."]
+            [debug="true|false"]
+            [debugAtAllCosts="true|false"]
+            [debugConsole="true|false"]
+            [debugContainerId="&lt;some id of an existing defined container &gt;"]
+            [development="true|false"]
+            [expanded="true|false"]
+            [ignoreClassNames="true|false"]
+            [ioSendTransport="xmlhttrequest"]
+            [parseWidgets="true|false"]
+            [preventBackButtonFix="true|false"]
+            [provide="&lt;dojo class with package&gt;"]
+            [require="&lt;dojo class with package&gt;"]
+            [searchIds="&lt;some id of an existing defined container &gt;"]
+            [development="true|false"]
+
+            &lt;/t:dojoInitializer&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see dojo/*.jsp for various usage examples!</p>
+        </section>
+    </body>
+</document>

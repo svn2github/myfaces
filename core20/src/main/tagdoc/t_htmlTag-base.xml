@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:htmlTag [{all standard UIOutput attributes}]&gt;
+  &lt;f:param name="AttributeName" value="AttributeValue" /&gt;
+&lt;/t:htmlTag&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Example">            
+            <p>
+&lt;t:htmlTag value="br" /&gt;
+            </p>
+            <p>
+OR<br/>
+&lt;t:htmlTag value="div" &gt;
+[Other JSF tags/content]
+&lt;/t:htmlTag&gt;
+            </p>
+            <p>
+OR<br/>
+&lt;t:htmlTag value="link"&gt;<br/>
+  &lt;f:param name="rel" value="stylesheet"/&gt;<br/>
+  &lt;f:param name="type" value="text/css"/&gt;<br/>
+  &lt;f:param name="href" value="#{userPrefs.stylesheet}"/&gt;<br/>
+&lt;/t:htmlTag&gt;
+            </p>
+        </section>        
+    </body>
+</document>

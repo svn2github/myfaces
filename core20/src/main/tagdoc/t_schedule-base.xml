@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <p>Month mode</p>
+            <div><img src="../images/schedule1.png" alt="schedule month mode"/></div>
+            <p>Workweek mode</p>
+            <div><img src="../images/schedule2.png" alt="schedule workweek mode"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;s:schedule [ UI component attributes ]
+               [ UI command attributes ]
+               [value="#{backingBean.scheduleModel}"]
+               [visibleStartHour="7"]
+               [visibleEndHour="21"]
+               [workingStartHour="9"]
+               [workingEndHour="17"]
+               [readonly={true|false}]
+               [submitOnClick={true|false}]
+               [mouseListener="#{backingBean.scheduleClicked}"]
+               [tooltip={true|false}]
+               [theme={default|outlookxp|evolution}]
+               [headerDateFormat="dd-MM-yyyy"]
+               [compactWeekRowHeight="200"]
+               [compactMonthRowHeight="100"]&gt;
+&lt;/s:schedule&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see the schedule.jsp example.</p>
+        </section>
+    </body>
+</document>

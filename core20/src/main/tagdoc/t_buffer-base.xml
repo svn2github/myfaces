@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve" >
+&lt;t:buffer into="Bean"&gt;
+    &lt;t:div&gt;
+        &lt;h:outputText value="String"/&gt;
+    &lt;/t:div&gt;
+&lt;/t:buffer&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>Just nest elements to buffer into a \&lt;t:buffer\&gt; element.</p>
+            <p>See examples/buffer.jsp for an example!</p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;h:inputText id="creditCardNumber"
+                value="#{validateForm.creditCardNumber}"
+                required="true"&gt;
+    &lt;t:validateCreditCard /&gt;
+&lt;/h:inputText&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                By default, all cards are allowed. You can disable one with card="false".
+                Note if you specify none="true", all cardtypes will be ignored. It is based
+                upon Jakarta Commons' Validator.
+            </p>
+            <p>See "examples/validate.jsp" for an example!</p>
+        </section>
+    </body>
+</document>

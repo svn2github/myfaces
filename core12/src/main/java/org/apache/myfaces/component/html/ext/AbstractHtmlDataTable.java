@@ -135,7 +135,25 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         }
         return _tableContext;
     }
+    
+    public void setDetailStamp(UIComponent facet)
+    {
+        getFacets().put(DETAIL_STAMP_FACET_NAME, facet);
+    }
 
+    /**
+     * This facet renders an additional row after or before (according
+     * to detailStampLocation value) the current row, usually containing
+     * additional information of the related row. It is toggled usually
+     * using varDetailToggle variable and the method toggleDetail().
+     * 
+     * @JSFFacet name="detailStamp"
+     */
+    public UIComponent getDetailStamp()
+    {
+        return (UIComponent) getFacets().get(DETAIL_STAMP_FACET_NAME);
+    }
+    
     public String getClientId(FacesContext context)
     {
         String standardClientId = super.getClientId(context);
