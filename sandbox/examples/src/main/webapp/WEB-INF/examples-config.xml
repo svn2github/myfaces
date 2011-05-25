@@ -647,10 +647,6 @@
         <!--</view-handler>-->
     <!--</application>-->
 
-	<application>
-		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
-	</application>
-
 	<converter>
         <converter-id>inputSuggestAjaxConverter</converter-id>
         <converter-class>org.apache.myfaces.examples.inputSuggestAjax.InputSuggestAjaxConverter</converter-class>
