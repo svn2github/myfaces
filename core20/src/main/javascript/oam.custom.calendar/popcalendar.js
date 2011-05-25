@@ -163,12 +163,11 @@ org_apache_myfaces_PopupCalendar.prototype._showPopupPostProcess = function(over
         if (iframe == null)
         {
             // the source attribute is to avoid a IE error message about non secure content on https connections
-            iframe = document.createElement(
-              "<iframe"
-              + " src='javascript:false;'"
-              + " id='" + overDiv.id + "_IFRAME'"
-              + " style='visibility:hidden; position: absolute; top:0px;left:0px;'"
-              + "/>");
+            iframe = document.createElement("iframe");
+            iframe.setAttribute("id", overDiv.id + "_IFRAME'");
+            iframe.setAttribute("src", "javascript:false;")
+            Element.setStyle(iframe, "visibility:hidden; position: absolute; top:0px;left:0px;");
+            
             //we can append it lazily since we are late here anyway and everything is rendered
             document.body.appendChild(iframe);
         }
