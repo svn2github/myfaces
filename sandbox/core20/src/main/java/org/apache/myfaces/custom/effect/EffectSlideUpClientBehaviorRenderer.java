@@ -61,9 +61,17 @@ public class EffectSlideUpClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.SlideUp('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getScaleX() != null || effectBehavior.getScaleY() != null ||
-            effectBehavior.getScaleMode() != null || effectBehavior.getScaleFromCenter() != null || effectBehavior.getScaleContent() != null ||
-            effectBehavior.getScaleFrom() != null || effectBehavior.getScaleTo() != null || effectBehavior.getDuration() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getScaleX(),
+                effectBehavior.getScaleY(),
+                effectBehavior.getScaleMode(),
+                effectBehavior.getScaleFromCenter(),
+                effectBehavior.getScaleContent(),
+                effectBehavior.getScaleFrom(),
+                effectBehavior.getScaleTo(),
+                effectBehavior.getDuration(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
@@ -75,6 +83,9 @@ public class EffectSlideUpClientBehaviorRenderer extends ClientBehaviorRenderer
             addComma = EffectUtils.addProperty(sb, "scaleFrom", effectBehavior.getScaleFrom(), addComma);
             addComma = EffectUtils.addProperty(sb, "scaleTo", effectBehavior.getScaleTo(), addComma);
             addComma = EffectUtils.addProperty(sb, "duration", effectBehavior.getDuration(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
+
             sb.append('}');
         }
         sb.append(')');

@@ -23,7 +23,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFPropert
 import org.apache.myfaces.custom.behavior.ClientBehaviorBase;
 
 /**
- * Convenient wrapper for scriptaculous Effect.Appear 
+ * Convenient wrapper for scriptaculous Effect.BlindDown 
  * 
  * @author Leonardo Uribe
  *
@@ -33,6 +33,7 @@ import org.apache.myfaces.custom.behavior.ClientBehaviorBase;
         clazz="org.apache.myfaces.custom.effect.EffectBlindDownBehavior",
         bodyContent="empty")
 public abstract class AbstractEffectBlindDownClientBehavior extends EffectClientBehaviorBase
+    implements JsEffectCallbackTarget
 {
     public static final String BEHAVIOR_ID = "org.apache.myfaces.custom.effect.EffectBlindDownBehavior";
     public static final String RENDERER_TYPE = "org.apache.myfaces.custom.effect.EffectBlindDownBehavior";

@@ -33,6 +33,7 @@ import org.apache.myfaces.custom.behavior.ClientBehaviorBase;
         clazz="org.apache.myfaces.custom.effect.EffectAppearBehavior",
         bodyContent="empty")
 public abstract class AbstractEffectAppearClientBehavior extends EffectClientBehaviorBase
+    implements JsEffectCallbackTarget
 {
     public static final String BEHAVIOR_ID = "org.apache.myfaces.custom.effect.EffectAppearBehavior";
     public static final String RENDERER_TYPE = "org.apache.myfaces.custom.effect.EffectAppearBehavior";

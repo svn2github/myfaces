@@ -60,8 +60,13 @@ public class EffectHighlightClientBehaviorRenderer extends ClientBehaviorRendere
         sb.append("new Effect.Highlight('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getKeepBackgroundImage() != null || effectBehavior.getRestorecolor() != null || 
-            effectBehavior.getStartcolor() != null || effectBehavior.getEndcolor() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getKeepBackgroundImage(),
+                effectBehavior.getRestorecolor(),
+                effectBehavior.getStartcolor(),
+                effectBehavior.getEndcolor(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
@@ -69,6 +74,8 @@ public class EffectHighlightClientBehaviorRenderer extends ClientBehaviorRendere
             addComma = EffectUtils.addStringProperty(sb, "restorecolor", effectBehavior.getRestorecolor(), addComma);
             addComma = EffectUtils.addStringProperty(sb, "startcolor", effectBehavior.getStartcolor(), addComma);
             addComma = EffectUtils.addStringProperty(sb, "endcolor", effectBehavior.getEndcolor(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }

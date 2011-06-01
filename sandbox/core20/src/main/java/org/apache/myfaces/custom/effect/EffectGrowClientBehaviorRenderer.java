@@ -60,12 +60,18 @@ public class EffectGrowClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.Grow('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getDirection() != null || effectBehavior.getDuration() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getDirection(),
+                effectBehavior.getDuration(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addProperty(sb, "duration", effectBehavior.getDuration(), addComma);
             addComma = EffectUtils.addStringProperty(sb, "direction", effectBehavior.getDirection(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }

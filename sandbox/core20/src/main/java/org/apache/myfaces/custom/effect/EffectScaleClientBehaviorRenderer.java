@@ -65,9 +65,15 @@ public class EffectScaleClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append(effectBehavior.getPercent() == null ? 100 : effectBehavior.getPercent());
         sb.append('\'');
         
-        if (effectBehavior.getScaleX() != null || effectBehavior.getScaleY() != null ||
-            effectBehavior.getScaleMode() != null || effectBehavior.getScaleFromCenter() != null || effectBehavior.getScaleContent() != null ||
-            effectBehavior.getScaleFrom() != null )
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getScaleX(),
+                effectBehavior.getScaleY(),
+                effectBehavior.getScaleMode(),
+                effectBehavior.getScaleFromCenter(),
+                effectBehavior.getScaleContent(),
+                effectBehavior.getScaleFrom(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
@@ -77,6 +83,9 @@ public class EffectScaleClientBehaviorRenderer extends ClientBehaviorRenderer
             addComma = EffectUtils.addProperty(sb, "scaleFromCenter", effectBehavior.getScaleFromCenter(), addComma);
             addComma = EffectUtils.addProperty(sb, "scaleContent", effectBehavior.getScaleContent(), addComma);
             addComma = EffectUtils.addProperty(sb, "scaleFrom", effectBehavior.getScaleFrom(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
+
             sb.append('}');
         }
         sb.append(')');

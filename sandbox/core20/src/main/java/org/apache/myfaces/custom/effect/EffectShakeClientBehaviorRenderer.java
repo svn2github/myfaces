@@ -60,12 +60,18 @@ public class EffectShakeClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.Shake('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getDistance() != null || effectBehavior.getDuration() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getDistance(),
+                effectBehavior.getDuration(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addProperty(sb, "duration", effectBehavior.getDuration(), addComma);
             addComma = EffectUtils.addProperty(sb, "distance", effectBehavior.getDistance(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }

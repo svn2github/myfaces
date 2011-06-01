@@ -60,11 +60,14 @@ public class EffectMorphClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.Morph('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getStyle() != null)
+        if (effectBehavior.getStyle() != null ||
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addStringProperty(sb, "style", effectBehavior.getStyle(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }

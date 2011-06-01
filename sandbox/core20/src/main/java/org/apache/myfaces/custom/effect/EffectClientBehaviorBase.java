@@ -21,10 +21,9 @@ package org.apache.myfaces.custom.effect;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFClientBehavior;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFProperty;
 import org.apache.myfaces.custom.behavior.ClientBehaviorBase;
-import org.apache.myfaces.custom.effect.EffectAppearBehavior.PropertyKeys;
 
 /**
- * Convenient wrapper for scriptaculous Effect.Appear 
+ * Convenient wrapper for scriptaculous. The properties here are common to all effects 
  * 
  * @author Leonardo Uribe
  *

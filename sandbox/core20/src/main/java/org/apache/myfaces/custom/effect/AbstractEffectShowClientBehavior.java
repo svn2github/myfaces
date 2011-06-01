@@ -23,7 +23,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFPropert
 import org.apache.myfaces.custom.behavior.ClientBehaviorBase;
 
 /**
- * Convenient wrapper for scriptaculous Effect.Fade 
+ * Convenient wrapper for scriptaculous Element.show 
  * 
  * @author Leonardo Uribe
  *

@@ -59,6 +59,40 @@ public class EffectUtils
         {
             return addComma;
         }
-    }    
+    }
+    
+    public static boolean addJSCallbacks(StringBuilder sb, JsEffectCallbackTarget effectBehavior, boolean addComma)
+    {
+        addComma = EffectUtils.addProperty(sb, "beforeStart", effectBehavior.getBeforeStart(), addComma);
+        addComma = EffectUtils.addProperty(sb, "beforeSetup", effectBehavior.getBeforeSetup(), addComma);
+        addComma = EffectUtils.addProperty(sb, "afterSetup", effectBehavior.getAfterSetup(), addComma);
+        addComma = EffectUtils.addProperty(sb, "beforeUpdate", effectBehavior.getBeforeUpdate(), addComma);
+        addComma = EffectUtils.addProperty(sb, "afterUpdate", effectBehavior.getAfterUpdate(), addComma);
+        addComma = EffectUtils.addProperty(sb, "afterFinish", effectBehavior.getAfterFinish(), addComma);
+        return addComma;
+    }
+    
+    public static boolean isAnyJsEffectCallbackTargetPropertySet(JsEffectCallbackTarget effectBehavior)
+    {
+        return isAnyPropertySet(
+                effectBehavior.getBeforeStart(),
+                effectBehavior.getBeforeSetup(),
+                effectBehavior.getAfterSetup(),
+                effectBehavior.getBeforeUpdate(),
+                effectBehavior.getAfterUpdate(),
+                effectBehavior.getAfterFinish());
+    }
+    
+    public static boolean isAnyPropertySet(Object... values)
+    {
+        for (Object value : values)
+        {
+            if (value != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

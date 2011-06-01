@@ -33,6 +33,7 @@ import org.apache.myfaces.custom.behavior.ClientBehaviorBase;
         clazz="org.apache.myfaces.custom.effect.EffectFadeBehavior",
         bodyContent="empty")
 public abstract class AbstractEffectFadeClientBehavior extends EffectClientBehaviorBase
+    implements JsEffectCallbackTarget
 {
     public static final String BEHAVIOR_ID = "org.apache.myfaces.custom.effect.EffectFadeBehavior";
     public static final String RENDERER_TYPE = "org.apache.myfaces.custom.effect.EffectFadeBehavior";
@@ -64,4 +65,5 @@ public abstract class AbstractEffectFadeClientBehavior extends EffectClientBehav
      */
     @JSFProperty
     public abstract Float getTo();
+
 }

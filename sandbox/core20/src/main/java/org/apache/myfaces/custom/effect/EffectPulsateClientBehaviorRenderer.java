@@ -60,13 +60,20 @@ public class EffectPulsateClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.Pulsate('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getFrom() != null || effectBehavior.getPulses() != null || effectBehavior.getDuration() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getFrom(),
+                effectBehavior.getPulses(),
+                effectBehavior.getDuration(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addProperty(sb, "duration", effectBehavior.getDuration(), addComma);
             addComma = EffectUtils.addProperty(sb, "from", effectBehavior.getFrom(), addComma);
             addComma = EffectUtils.addProperty(sb, "to", effectBehavior.getPulses(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }

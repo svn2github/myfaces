@@ -60,13 +60,20 @@ public class EffectOpacityClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.Opacity('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getFrom() != null || effectBehavior.getTo() != null || effectBehavior.getDuration() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getFrom(),
+                effectBehavior.getTo(),
+                effectBehavior.getDuration(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addProperty(sb, "duration", effectBehavior.getDuration(), addComma);
             addComma = EffectUtils.addProperty(sb, "from", effectBehavior.getFrom(), addComma);
             addComma = EffectUtils.addProperty(sb, "to", effectBehavior.getTo(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }

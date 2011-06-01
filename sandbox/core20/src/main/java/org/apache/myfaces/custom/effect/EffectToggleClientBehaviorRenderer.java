@@ -65,12 +65,19 @@ public class EffectToggleClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append(effectBehavior.getMode());
         sb.append('\'');
         
-        if (effectBehavior.getDelay() != null || effectBehavior.getDuration() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getDelay(),
+                effectBehavior.getDuration(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addProperty(sb, "delay", effectBehavior.getDelay(), addComma);
             addComma = EffectUtils.addProperty(sb, "duration", effectBehavior.getDuration(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
+
             sb.append('}');
         }
         sb.append(')');

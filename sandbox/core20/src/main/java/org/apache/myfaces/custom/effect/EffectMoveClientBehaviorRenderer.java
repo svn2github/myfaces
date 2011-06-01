@@ -60,13 +60,20 @@ public class EffectMoveClientBehaviorRenderer extends ClientBehaviorRenderer
         sb.append("new Effect.Move('");
         sb.append(clientId);
         sb.append("'");
-        if (effectBehavior.getMode() != null || effectBehavior.getX() != null || effectBehavior.getY() != null)
+        if (EffectUtils.isAnyPropertySet(
+                effectBehavior.getMode(),
+                effectBehavior.getX(),
+                effectBehavior.getY(),
+                EffectUtils.isAnyJsEffectCallbackTargetPropertySet(effectBehavior)
+                ))
         {
             sb.append(",{");
             boolean addComma = false;
             addComma = EffectUtils.addStringProperty(sb, "mode", effectBehavior.getMode(), addComma);
             addComma = EffectUtils.addProperty(sb, "x", effectBehavior.getX(), addComma);
             addComma = EffectUtils.addProperty(sb, "y", effectBehavior.getY(), addComma);
+            //Javascript callbacks
+            addComma = EffectUtils.addJSCallbacks(sb, effectBehavior, addComma);
             
             sb.append('}');
         }
