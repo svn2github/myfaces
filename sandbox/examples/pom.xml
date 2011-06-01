@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.apache.myfaces.tomahawk</groupId>
         <artifactId>sandbox-project</artifactId>
-        <version>1.1.11-SNAPSHOT</version>
+        <version>1.1.11</version>
     </parent>
     
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/examples</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/tags/tomahawk-project-1.1.11/sandbox/examples</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/tags/tomahawk-project-1.1.11/sandbox/examples</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/tags/tomahawk-project-1.1.11/sandbox/examples</url>
     </scm>
 
     <profiles>
