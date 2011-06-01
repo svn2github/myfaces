@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk"
+        xmlns:s="http://myfaces.apache.org/sandbox"
+        xmlns:mc="http://myfaces.apache.org/commons/components">
+<!--
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+//-->
+<body>
+<ui:composition template="/META-INF/templates/example_template.xhtml">
+    <ui:define name="main_content">
+
+    <!-- 
+    <f:loadBundle basename="org.apache.myfaces.examples.resource.example_messages" var="example_messages"/>
+     -->
+    <h:form id="mainForm">
+        <p>This example uses s:onEventAjax to render a inline function that fade the image using f:ajax 'onevent' property.
+        This is a variant of s:jsCallbackFunction to make easier write this specific callback  
+        </p>
+        <p>The typical use case is how to hook f:ajax 'onevent' with a function callback. The param 'e' knows the source
+        of the ajax operation, but doesn't know the target of further operations. In this case, s:effectFade forId="panel" is
+        used to indicate that a fade operation is required to be applied on the panel with the image.  
+        </p>
+        <p>To generate the event name there are two options:</p>
+        <ul>
+        <li>mc:findComponentFrom(component,'someId').functionName</li>
+        <li>s:jsCallbackFunctionName(component,'someId')</li>
+        </ul>
+        <br/>
+        
+        <t:dataList id="items" value="#{jsCallbackFunctionBean.items}" var="item" layout="simple">
+          <p>Panel #{item}</p>
+          <p>The generated function name is : <h:outputText value="#{mc:findComponentFrom(component,'jsFC1').functionName}"></h:outputText></p>
+          <br/>
+          <t:div id="panel" style="width:210px; height:100px; background:#ffffff; border:1px solid #333;">
+              <h:graphicImage library="images" name="myfaces_logo.jpg" alt="MyFaces Logo" />
+          </t:div>
+          <br/>
+          <s:jsOnEventAjax id="jsFC1" eventName="action" type="success">
+              <s:effectFade forId="panel"/>
+          </s:jsOnEventAjax>
+          <h:commandButton id="button1" type="button" value="Click me!">
+              <f:ajax render="panel" onevent="#{mc:findComponentFrom(component,'jsFC1').functionName}" />
+          </h:commandButton>
+          <h:commandButton id="button2" type="button" value="Click me!">
+              <f:ajax render="panel" onevent="#{s:jsCallbackFunctionName(component,'jsFC1')}"/>
+          </h:commandButton>
+          <h:commandButton type="button" value="Reset">
+              <s:effectShow forId="panel"/>
+          </h:commandButton>
+        </t:dataList>
+    </h:form>
+  </ui:define>
+ </ui:composition>
+</body>
+</html>

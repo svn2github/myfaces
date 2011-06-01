@@ -27,6 +27,12 @@
           <managed-bean-class>org.apache.myfaces.examples.passwordStrength.PasswordStrengthBean</managed-bean-class>
           <managed-bean-scope>request</managed-bean-scope>
      </managed-bean> 
+     
+    <managed-bean>
+          <managed-bean-name>jsCallbackFunctionBean</managed-bean-name>
+          <managed-bean-class>org.apache.myfaces.examples.jsCallbackFunction.JsCallbackFunctionBean</managed-bean-class>
+          <managed-bean-scope>request</managed-bean-scope>
+     </managed-bean> 
 
 </faces-config>
 
