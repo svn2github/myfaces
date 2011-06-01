@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:t="http://myfaces.apache.org/tomahawk"
+        xmlns:s="http://myfaces.apache.org/sandbox"
+        xmlns:mc="http://myfaces.apache.org/commons/components">
+<!--
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+//-->
+<body>
+<ui:composition template="/META-INF/templates/example_template.xhtml">
+    <ui:define name="main_content">
+      <h:outputStylesheet library="styles" name="datatable.css"/>
+      <h:form id="mainForm">
+        <h:panelGroup id="idbody">
+            <p>This example shows an ajaxified t:dataTable detailStamp, using f:ajax, s:effectXXX and s:jsOnEventAjax.
+            With this strategy you have full control about what's going on in the dataTable.
+            </p>
+            <p>In this way you can make your applications looks better with just some few steps, and note this will
+            work for any jsf component library, because this is all based on JSF 2.0 client behavior standard feature.
+            </p>
+            <p>Note the javascript functions are outside the area updated by the ajax request.  
+            </p>
+            <br/>
+           
+            <t:dataTable id="data" styleClass="standardTable" headerClass="standardTable_Header" footerClass="standardTable_Header"
+                     rowClasses="standardTable_Row1,standardTable_Row2"
+                     columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column" var="currentCountry"
+                     value="#{countryList.countries}" preserveDataModel="true" varDetailToggler="detailToggler" ajaxRowRender="true"
+                     >
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Country"/>
+                </f:facet>
+                <h:outputText value="#{currentCountry.name}"/>
+            </h:column>
+        
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="ISO"/>
+                </f:facet>
+                <h:outputText value="#{currentCountry.isoCode}"/>
+            </h:column>
+        
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Cities"/>
+                </f:facet>
+                <!-- Js code for hide, note some effects does not work well on tables, so we hide the inner panel -->
+                <s:jsOnEventAjax id="jsHide" eventName="action">
+                    <s:effectSlideUp forId="citiesPanel" event="action" afterFinish="#{s:jsCallbackFunctionName(component,'jsHideRow')}"/>
+                </s:jsOnEventAjax>
+                <!-- this eliminate space occupied by detailStampRow -->
+                <s:jsCallbackFunction id="jsHideRow" eventName="action">
+                    <s:effectHide forId="detailStampRow" event="action"/>
+                </s:jsCallbackFunction>
+                
+                <!-- Js code for show, note some effects does not work well on tables, so we hide the inner panel -->
+                <s:jsOnEventAjax id="jsShow" eventName="action">
+                  <s:effectSlideDown forId="citiesPanel" event="action" />
+                </s:jsOnEventAjax>
+                
+                <t:div id="panel">
+                  <h:commandLink id="hide" rendered="#{detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
+                    <h:outputText value="Hide"/>
+                    <f:ajax render="panel" onevent="#{s:jsCallbackFunctionName(component,'jsHide')}"/>
+                  </h:commandLink>
+                  <h:commandLink id="show" rendered="#{!detailToggler.currentDetailExpanded}" action="#{detailToggler.toggleDetail}">
+                      <h:outputText value="Show"/>
+                      <f:ajax render="panel detailStampRow" onevent="#{s:jsCallbackFunctionName(component,'jsShow')}"/>
+                  </h:commandLink>
+                </t:div>
+            </h:column>
+            <f:facet name="detailStamp">
+              <!-- Note the style="display:none is for hide it after ajax, later it will be shown by the effect." -->
+              <t:div id="citiesPanel" style="#{detailToggler.currentDetailExpanded ? 'display:none' : ''}">
+                <t:dataTable id="cities" styleClass="standardTable_Column" var="city" value="#{currentCountry.cities}">
+                    <h:column>
+                        <h:outputText value="#{city}" style="font-size: 11px"/>
+                    </h:column>
+                    <h:column>
+                        <h:selectBooleanCheckbox id="selcity" value="#{city.selected}" onclick="this.blur();">
+                            <f:ajax/>
+                        </h:selectBooleanCheckbox>
+                    </h:column>
+                    <h:column>
+                        <h:commandLink action="#{city.unselect}" value="Unselect">
+                            <f:ajax execute="@this" render="cities"></f:ajax>
+                        </h:commandLink>
+                    </h:column>
+                </t:dataTable>
+              </t:div>
+            </f:facet>
+        </t:dataTable>
+        
+        </h:panelGroup>
+      </h:form>
+  </ui:define>
+ </ui:composition>
+</body>
+</html>

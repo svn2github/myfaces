@@ -1,0 +1,44 @@
+.standardTable {
+    font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #000000;
+    padding: 2;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.standardTable_Header {
+    color: #000000;
+    background-color: #FFDD00;
+    padding: 3;
+    text-align: center;
+    border: none;
+}
+
+.standardTable_SortHeader {
+    background-color: #FFDD00;
+    color: #000000;
+    padding: 3;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+}
+
+.standardTable_Footer {
+    background-color: #FFFFE0;
+}
+
+.standardTable_Row1 {
+    background-color: #FFFFE0;
+}
+
+.standardTable_Row2 {
+    background-color: #FFFFE0;
+}
+
+.standardTable_Column {
+}
+
+.standardTable_ColumnCentered {
+    text-align: center
+}
