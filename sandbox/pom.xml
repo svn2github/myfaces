@@ -24,6 +24,7 @@
          This allows mvn release:prepare to
          run successfully on the assembly projects.
          But note than sandbox is never released. -->
+    <!--
     <profile>
       <id>prepare-release</id>
       <activation>
@@ -35,6 +36,7 @@
         <module>assembly</module>
       </modules>
     </profile>
+    -->
     <profile>
       <id>generate-site</id>
       <modules>
