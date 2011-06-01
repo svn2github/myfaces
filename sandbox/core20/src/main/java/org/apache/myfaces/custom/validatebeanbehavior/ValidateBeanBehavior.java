@@ -68,7 +68,7 @@ import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFClientB
 @JSFClientBehavior(
         name="s:validateBean",
         id="org.apache.myfaces.custom.ValidateBeanBehavior")
-@ResourceDependency(name = "validateBeanBehavior.js")
+@ResourceDependency(library="oam.custom.validateBean", name = "validateBeanBehavior.js")
 public class ValidateBeanBehavior extends ClientBehaviorBase {
 
     /** {@inheritDoc} */
