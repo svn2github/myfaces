@@ -8,6 +8,11 @@
         <variable-resolver>org.apache.myfaces.examples.accessedbeans.AccessTrackingVariableResolver</variable-resolver>
     </application>
 
+    <managed-bean>
+        <managed-bean-name>itemsBean</managed-bean-name>
+        <managed-bean-class>org.apache.myfaces.examples.listexample.ItemsBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
 	<managed-bean>
 		<managed-bean-name>environmentInfo</managed-bean-name>
