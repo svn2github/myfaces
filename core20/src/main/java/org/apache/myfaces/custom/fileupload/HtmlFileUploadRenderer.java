@@ -18,31 +18,36 @@
  */
 package org.apache.myfaces.custom.fileupload;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.FacesException;
+import javax.faces.application.ProjectStage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.UserRoleUtils;
+import org.apache.myfaces.shared_tomahawk.util.WebConfigParamUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRenderer;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
+import org.apache.myfaces.tomahawk.util.ExternalContextUtils;
+import org.apache.myfaces.webapp.filter.ExtensionsFilter;
 import org.apache.myfaces.webapp.filter.MultipartRequestWrapper;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.FacesException;
-import javax.faces.context.ResponseWriter;
-import javax.faces.context.ExternalContext;
-import javax.faces.convert.ConverterException;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import org.apache.myfaces.webapp.filter.TomahawkFacesContextFactory;
 
 /**
  * Renderer for the HtmlInputFileUpload component.
@@ -61,11 +66,53 @@ public class HtmlFileUploadRenderer
         extends HtmlRenderer
 {
     private static final Log log = LogFactory.getLog(HtmlFileUploadRenderer.class);
+    
+    private static boolean getBooleanInitParameterValue(String initParameter, boolean defaultVal)
+    {
+        if(initParameter == null || initParameter.trim().length()==0)
+            return defaultVal;
 
+        return (initParameter.equalsIgnoreCase("on") || initParameter.equals("1") || initParameter.equalsIgnoreCase("true"));
+    }  
+    
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException
     {
         super.encodeEnd(facesContext, uiComponent); //check for NP
+
+        //Check the current setup has ExtensionsFilter or TomahawkFacesContextWrapper
+        boolean isDisabledTomahawkFacesContextWrapper = getBooleanInitParameterValue(
+                WebConfigParamUtils.getStringInitParameter(facesContext.getExternalContext(),
+                        TomahawkFacesContextFactory.DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER), 
+                        TomahawkFacesContextFactory.DISABLE_TOMAHAWK_FACES_CONTEXT_WRAPPER_DEFAULT);
+
+        if (!facesContext.isProjectStage(ProjectStage.Production))
+        {
+            boolean isPortlet = ExternalContextUtils.getRequestType(facesContext.getExternalContext()).isPortlet();
+            //if it is a portlet request and no TomahawkFacesContextWrapper set or
+            //is servlet and no ExtensionsFilter/TomahawkFacesContextWrapper set
+            //log a warning, because something is not right
+            boolean requestInterceptedByFilter = facesContext.getExternalContext().getRequestMap().containsKey(ExtensionsFilter.DOFILTER_CALLED);
+            boolean extensionsFilterInitialized = facesContext.getExternalContext().getApplicationMap().containsKey(ExtensionsFilter.EXTENSIONS_FILTER_INITIALIZED); 
+            if ( (isPortlet && isDisabledTomahawkFacesContextWrapper) ||
+                 (isDisabledTomahawkFacesContextWrapper &&
+                  !(requestInterceptedByFilter && extensionsFilterInitialized)))
+            {
+                if (log.isWarnEnabled())
+                {
+                    log.warn("t:inputFileUpload requires ExtensionsFilter or TomahawkFacesContextFactory configured to handle multipart file upload, and any of " +
+                            "them has been detected. Please read the instructions on http://myfaces.apache.org/tomahawk/extensionsFilter.html " +
+                            "for more information about how to setup your environment correctly. Please be sure ExtensionsFilter is the top most " +
+                            "filter if you are using multiple jsf libraries.");
+                    if (extensionsFilterInitialized && !requestInterceptedByFilter)
+                    {
+                        log.warn("t:inputFileUpload requires the current request be intercepted by the filter in order to handle forms with multipart encode type. " +
+                                "ExtensionsFilter was initialized but the current request was not intercepted. " +
+                                "Please add a filter-mapping entry to intercept jsf page requests.");
+                    }
+                }
+            }
+        }
 
         ResponseWriter writer = facesContext.getResponseWriter();
         
