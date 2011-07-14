@@ -103,8 +103,11 @@ public abstract class AbstractHtmlInputFileUpload
     public abstract String getStorage();
 
     /**
-     * This property appears to have no purpose at all. It certainly has no
-     * documentation.
+     * This attribute specifies a comma-separated list of content types that 
+     * a server processing this form will handle correctly. User agents may 
+     * use this information to filter out non-conforming files when prompting 
+     * a user to select files to be sent to the server 
+     * (cf. the INPUT element when type="file")."
      * 
      * @JSFProperty
      */
