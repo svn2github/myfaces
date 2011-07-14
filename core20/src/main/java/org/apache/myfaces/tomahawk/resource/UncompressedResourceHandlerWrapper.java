@@ -75,9 +75,11 @@ public class UncompressedResourceHandlerWrapper extends javax.faces.application.
                 contentType = FacesContext.getCurrentInstance().getExternalContext().getMimeType(resourceName);
             }
             
-            if(getResourceLoaderCache().containsResource(resourceName, libraryName, contentType))
+            final String localePrefix = getLocalePrefixForLocateResource();
+            
+            if(getResourceLoaderCache().containsResource(resourceName, libraryName, contentType, localePrefix))
             {
-                ResourceValue resourceValue = getResourceLoaderCache().getResource(resourceName, libraryName, contentType);
+                ResourceValue resourceValue = getResourceLoaderCache().getResource(resourceName, libraryName, contentType, localePrefix);
                 resource = new ResourceImpl(resourceValue.getResourceMeta(), resourceValue.getResourceLoader(),
                         getResourceHandlerSupport(), contentType);
             }
@@ -94,7 +96,7 @@ public class UncompressedResourceHandlerWrapper extends javax.faces.application.
                         resource = new ResourceImpl(resourceMeta, loader,
                                 getResourceHandlerSupport(), contentType);
                         
-                        getResourceLoaderCache().putResource(resourceName, libraryName, contentType, resourceMeta, loader);
+                        getResourceLoaderCache().putResource(resourceName, libraryName, contentType, localePrefix, resourceMeta, loader);
                         break;
                     }
                 }
