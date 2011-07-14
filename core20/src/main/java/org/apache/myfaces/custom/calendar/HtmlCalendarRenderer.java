@@ -202,7 +202,15 @@ public class HtmlCalendarRenderer
             else
             {
                 //Use converter to retrieve the value.
-                value = (Date) inputCalendar.getValue();
+                if(converter instanceof DateConverter)
+                {
+                    value = ((DateConverter) converter).getAsDate(facesContext, inputCalendar);
+                }
+                else
+                {
+                    value = (Date) inputCalendar.getValue();
+                }
+                
                 textValue = converter.getAsString(facesContext, inputCalendar, value);
             }
         }
