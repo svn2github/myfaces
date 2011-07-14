@@ -35,6 +35,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
@@ -54,18 +55,13 @@
                     </configuration>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>maven-jetty-plugin</artifactId>
-                <version>6.1.11</version>
-                <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                </configuration>
-            </plugin>
+             -->
       </plugins>
    </build>
-   
+
    <properties>
+        <maven.jetty.plugin.version>7.4.4.v20110707</maven.jetty.plugin.version>
+        <cargo.version>1.1.1</cargo.version>
      <!-- Tomahawk examples must only have runtime dependency to the imlementation
           so that it will be automatically added to war. But there must not be
           any compile dependency on impl so that is is always possible to use
@@ -507,6 +503,110 @@
                 <hostedqa.clientConfigs>117,118</hostedqa.clientConfigs>
                 <hostedqa.appConfigs>56</hostedqa.appConfigs>
             </properties>
+        </profile>
+        <profile>
+            <!-- Plugin embedded jetty 7 container. 
+                 Just running use:
+                 mvn clean jetty:run or mvn clean -Djsf=myfaces -Dcontainer=jetty jetty:run 
+            -->
+            <!-- For debugging use (attach debugger port 8000):
+                 mvnDebug clean jetty:run or mvn clean -Djsf=myfaces -Dcontainer=jetty jetty:run 
+            -->
+            <id>jettyConfig</id>
+            <activation>
+                <property>
+                    <name>!container</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!--This plugin allows to run the war using mvn jetty:run -->
+                        <groupId>org.mortbay.jetty</groupId>
+                        <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${maven.jetty.plugin.version}</version>
+                        <configuration>
+                            <scanIntervalSeconds>5</scanIntervalSeconds>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
+            <!-- Plugin embedded tomcat 6 container. 
+                 Just running use:
+                 mvn clean -Djsf=myfaces -Dcontainer=tomcat tomcat:run-war 
+            -->
+            <!-- For debugging use (attach debugger port 8000):
+                 mvnDebug clean -Djsf=myfaces -Dcontainer=tomcat tomcat:run-war 
+            -->
+            <id>tomcatConfig</id>
+            <activation>
+                <property>
+                    <name>container</name>
+                    <value>tomcat</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                      <groupId>org.codehaus.mojo</groupId>
+                      <artifactId>tomcat-maven-plugin</artifactId>
+                      <version>1.1</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!-- Installed tomcat 7 running war file through cargo 
+                 Attach debugger on port 8000:
+                 mvn clean -Djsf=myfaces -Dcontainer=tomcat7 install cargo:run -->
+            <id>cargo-tomcat7</id>
+            <activation>
+                <property>
+                    <name>container</name>
+                    <value>tomcat7</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                      <groupId>org.codehaus.cargo</groupId>
+                      <artifactId>cargo-maven2-plugin</artifactId>
+                      <version>${cargo.version}</version>
+                      <configuration>
+                        <wait>true</wait>
+                        <properties>
+                            <cargo.servlet.port>8080</cargo.servlet.port>
+                            <cargo.jvmargs>
+                              -Xdebug
+                              -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000
+                              -Xnoagent
+                              -Djava.compiler=NONE
+                            </cargo.jvmargs>
+                        </properties>
+                        <container>
+                          <containerId>tomcat7x</containerId>
+                          <zipUrlInstaller>
+                            <url>http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.zip</url>
+                            <!-- 
+                            <installDir>${basedir}/tomcat7x</installDir>
+                             -->
+                            <downloadDir>${basedir}/downloads</downloadDir>
+                            <extractDir>${basedir}/tomcat7x</extractDir>
+                          </zipUrlInstaller>
+                        </container>
+                        <configuration>
+                          <home>${basedir}/target/tomcat7x</home>
+                          <properties>
+                            <cargo.jvmargs>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000 -Xnoagent -Djava.compiler=NONE</cargo.jvmargs>
+                          </properties>
+                        </configuration>
+                      </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
     
