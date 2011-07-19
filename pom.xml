@@ -393,7 +393,7 @@
     <!--  
       - Define what shared lib version tomahawk20 and sandbox20 code will be compiled with.
       -->
-    <myfaces-shared20-version>4.0.8-SNAPSHOT</myfaces-shared20-version>
+    <myfaces-shared20-version>4.0.8</myfaces-shared20-version>
 
     <myfaces-core21-version>2.1.1</myfaces-core21-version>
 
