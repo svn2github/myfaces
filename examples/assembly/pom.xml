@@ -113,7 +113,6 @@
             <plugin>
                 <!-- EXECUTE mvn package to generate assembly files -->
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.1</version>
                 <executions>
                     <execution>
                         <id>make_assembly_src</id>
