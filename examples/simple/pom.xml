@@ -14,7 +14,9 @@
     <packaging>war</packaging>
     <name>Tomahawk Examples: Simple</name>
    <build>
+        <!--
         <finalName>${artifactId}</finalName>
+        -->
 
         <resources>
             <resource>
