@@ -221,7 +221,9 @@
     </dependencies>
 
     <build>
+        <!--
         <finalName>${artifactId}</finalName>
+        -->
 
         <resources>
             <resource>
