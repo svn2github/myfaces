@@ -165,12 +165,30 @@ public class HtmlCalendarRenderer
             }
             else
             {
+                Object componentValue = null;
+                boolean usedComponentValue = false;
                 //Use converter to retrieve the value.
-                value = (Date) inputCalendar.getValue();
-                textValue = converter.getAsString(facesContext, inputCalendar, value);
+                if(converter instanceof DateConverter)
+                {
+                    value = ((DateConverter) converter).getAsDate(facesContext, inputCalendar);
+                }
+                else
+                {
+                    componentValue = inputCalendar.getValue();
+                    if (componentValue instanceof Date)
+                    {
+                        value = (Date) componentValue;
+                    }
+                    else
+                    {
+                        usedComponentValue = true;
+                        value = null;
+                    }
+                }
+                textValue = converter.getAsString(facesContext, inputCalendar, usedComponentValue ? componentValue : value);
             }
         }
-        /*
+        /*        
         try
         {
             // value = RendererUtils.getDateValue(inputCalendar);

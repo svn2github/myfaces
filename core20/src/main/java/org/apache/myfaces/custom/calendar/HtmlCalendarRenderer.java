@@ -201,6 +201,8 @@ public class HtmlCalendarRenderer
             }
             else
             {
+                Object componentValue = null;
+                boolean usedComponentValue = false;
                 //Use converter to retrieve the value.
                 if(converter instanceof DateConverter)
                 {
@@ -208,10 +210,18 @@ public class HtmlCalendarRenderer
                 }
                 else
                 {
-                    value = (Date) inputCalendar.getValue();
+                    componentValue = inputCalendar.getValue();
+                    if (componentValue instanceof Date)
+                    {
+                        value = (Date) componentValue;
+                    }
+                    else
+                    {
+                        usedComponentValue = true;
+                        value = null;
+                    }
                 }
-                
-                textValue = converter.getAsString(facesContext, inputCalendar, value);
+                textValue = converter.getAsString(facesContext, inputCalendar, usedComponentValue ? componentValue : value);
             }
         }
         /*        
