@@ -25,8 +25,8 @@ import org.apache.myfaces.component.behavior.AbstractClientBehaviorTestCase;
 import org.apache.myfaces.component.behavior.HtmlClientEventAttributesUtil;
 import org.apache.myfaces.component.behavior.HtmlRenderedClientEventAttr;
 import org.apache.myfaces.custom.calendar.HtmlInputCalendar;
-import org.apache.myfaces.shared_impl.renderkit.ClientBehaviorEvents;
-import org.apache.myfaces.shared_impl.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class HtmlCalendarInlineClientBehaviorRendererTest extends AbstractClient
     {
         super.setUp();
         attrs = (HtmlRenderedClientEventAttr[]) 
-            org.apache.myfaces.shared_impl.util.ArrayUtils.concat( 
+            org.apache.myfaces.shared_tomahawk.util.ArrayUtils.concat( 
                     HtmlClientEventAttributesUtil.generateClientBehaviorEventAttrs(),
                 new HtmlRenderedClientEventAttr[]{
                     new HtmlRenderedClientEventAttr(HTML.ONBLUR_ATTR, ClientBehaviorEvents.BLUR),

@@ -25,8 +25,6 @@ import org.apache.myfaces.component.behavior.AbstractClientBehaviorTestCase;
 import org.apache.myfaces.component.behavior.HtmlClientEventAttributesUtil;
 import org.apache.myfaces.component.behavior.HtmlRenderedClientEventAttr;
 import org.apache.myfaces.custom.calendar.HtmlInputCalendar;
-import org.apache.myfaces.shared_impl.renderkit.ClientBehaviorEvents;
-import org.apache.myfaces.shared_impl.renderkit.html.HTML;
 import org.junit.Ignore;
 import org.junit.Test;
 

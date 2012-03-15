@@ -21,14 +21,13 @@ package org.apache.myfaces.custom.toggle;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 
-import org.apache.myfaces.application.NavigationHandlerImpl;
 import org.apache.myfaces.component.behavior.AbstractClientBehaviorTestCase;
 import org.apache.myfaces.component.behavior.HtmlClientEventAttributesUtil;
 import org.apache.myfaces.component.behavior.HtmlRenderedClientEventAttr;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
-import org.apache.myfaces.shared_impl.renderkit.ClientBehaviorEvents;
-import org.apache.myfaces.shared_impl.renderkit.html.HTML;
-import org.apache.myfaces.shared_impl.util.ArrayUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.ClientBehaviorEvents;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.util.ArrayUtils;
 
 /**
  * @author Leonardo Uribe (latest modification by $Author: jankeesvanandel $)
