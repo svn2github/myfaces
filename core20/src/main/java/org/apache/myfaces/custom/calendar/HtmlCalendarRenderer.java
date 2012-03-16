@@ -368,8 +368,9 @@ public class HtmlCalendarRenderer
 
         RendererUtils.renderChild(facesContext, inputText);
 
-        inputCalendar.getChildren().remove(inputText);
-
+        // Remove inputText moved to the end of this method. 
+        // inputCalendar.getChildren().remove(inputText);
+        
         //Set back the correct id to the input calendar
         //inputCalendar.setId(inputText.getId());
 
@@ -404,16 +405,44 @@ public class HtmlCalendarRenderer
                     public String getFunctionCall(FacesContext facesContext, UIComponent uiComponent, String dateFormat)
                     {
                         String clientId = uiComponent.getClientId(facesContext);
+                        String inputClientId = null;
+                        if (Boolean.TRUE.equals(uiComponent.getAttributes().get(JSFAttr.FORCE_ID_ATTR)))
+                        {
+                            if (uiComponent.getChildCount() > 0)
+                            {
+                                for (int i = 0, size = uiComponent.getChildCount(); i < size ; i++)
+                                {
+                                    UIComponent child = uiComponent.getChildren().get(i);
+                                    if (child instanceof HtmlInputTextHelp && child.getId() != null && child.getId().endsWith("_input"))
+                                    {
+                                        inputClientId = child.getClientId();
+                                    }
+                                }
+                            }
+                            if (inputClientId == null)
+                            {
+                                String oldId = uiComponent.getId();
+                                uiComponent.setId(uiComponent.getId()+"_input");
+                                inputClientId = uiComponent.getClientId();
+                                uiComponent.setId(oldId);
+                            }
+                        }
+                        else
+                        {
+                            inputClientId = clientId;
+                        }
 
                         String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
 
-                        return clientVar+"._popUpCalendar(this,document.getElementById('"+clientId+"_input'),'"+dateFormat+"')";
+                        return clientVar+"._popUpCalendar(this,document.getElementById('"+inputClientId+"'),'"+dateFormat+"')";
                     }
                 });
             }
         }
-        
+
         writer.endElement(HTML.SPAN_ELEM);
+
+        inputCalendar.getChildren().remove(inputText);
     }
 
     private void renderInline(
