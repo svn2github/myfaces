@@ -76,7 +76,7 @@
   			Validate managed beans, navigation rules and ensure that forms are not nested.
   		</description>
        	<param-name>org.apache.myfaces.VALIDATE</param-name>
-       	<param-value>true</param-value>
+       	<param-value>false</param-value>
     </context-param>
 
   <context-param>
