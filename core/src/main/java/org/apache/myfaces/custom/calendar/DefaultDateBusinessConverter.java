@@ -38,12 +38,15 @@ public class DefaultDateBusinessConverter implements DateBusinessConverter
             Date value)
     {
         ValueBinding vb = component.getValueBinding("value");
-        Class type = vb.getType(context); 
-        if (type != null)
+        if (vb != null)
         {
-            if (java.sql.Date.class.isAssignableFrom(type))
+            Class type = vb.getType(context); 
+            if (type != null)
             {
-                return new java.sql.Date(value.getTime());
+                if (java.sql.Date.class.isAssignableFrom(type))
+                {
+                    return new java.sql.Date(value.getTime());
+                }
             }
         }
         return value;
