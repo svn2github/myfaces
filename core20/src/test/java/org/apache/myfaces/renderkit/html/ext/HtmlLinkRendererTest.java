@@ -24,7 +24,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.myfaces.component.html.ext.HtmlCommandLink;
-import org.apache.myfaces.shared_impl.config.MyfacesConfig;
+import org.apache.myfaces.shared_tomahawk.config.MyfacesConfig;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
 import org.apache.myfaces.test.mock.MockExternalContext;
@@ -119,7 +119,7 @@ public class HtmlLinkRendererTest extends AbstractTomahawkViewControllerTestCase
             new HtmlRenderedAttr("onfocus"), 
             new HtmlRenderedAttr("onblur"),
             //_EventProperties
-            new HtmlRenderedAttr("onclick"), 
+            //new HtmlRenderedAttr("onclick"), 
             new HtmlRenderedAttr("ondblclick"), 
             new HtmlRenderedAttr("onkeydown"), 
             new HtmlRenderedAttr("onkeypress"),
@@ -143,8 +143,8 @@ public class HtmlLinkRendererTest extends AbstractTomahawkViewControllerTestCase
         servletContext.addInitParameter("org.apache.myfaces.ALLOW_JAVASCRIPT", "false");
         MockExternalContext mockExtCtx = new MockExternalContext(servletContext, 
                 new MockHttpServletRequest(), new MockHttpServletResponse());
-        MyfacesConfig config = MyfacesConfig.getCurrentInstance(mockExtCtx);
-        facesContext.setExternalContext(mockExtCtx);
+        //MyfacesConfig config = MyfacesConfig.getCurrentInstance(mockExtCtx);
+        //facesContext.setExternalContext(mockExtCtx);
         
         HtmlCheckAttributesUtil.checkRenderedAttributes(
                 link, facesContext, writer, attrs);
