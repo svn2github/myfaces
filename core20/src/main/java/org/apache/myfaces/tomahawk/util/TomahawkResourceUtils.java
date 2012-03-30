@@ -105,6 +105,24 @@ public class TomahawkResourceUtils
         markResourceAsAdded(facesContext, libraryName, resourceName);
     }
     
+    public static void addOutputScriptResource(final FacesContext facesContext, final String libraryName, final String resourceName, final String target)
+    {
+        if (isAddedResource(facesContext, libraryName, resourceName))
+        {
+            return;
+        }
+        
+        UIOutput outputScript = (UIOutput) facesContext.getApplication().
+            createComponent(facesContext, ResourceUtils.JAVAX_FACES_OUTPUT_COMPONENT_TYPE, ResourceUtils.DEFAULT_SCRIPT_RENDERER_TYPE);
+        outputScript.getAttributes().put(JSFAttr.LIBRARY_ATTR, libraryName);
+        outputScript.getAttributes().put(JSFAttr.NAME_ATTR, resourceName);
+        outputScript.setTransient(true);
+        outputScript.setId(facesContext.getViewRoot().createUniqueId());
+        facesContext.getViewRoot().addComponentResource(facesContext, outputScript);
+        
+        markResourceAsAdded(facesContext, libraryName, resourceName);
+    }
+    
     public static void addOutputStylesheetResource(final FacesContext facesContext, final String libraryName, final String resourceName)
     {
         if (isAddedResource(facesContext, libraryName, resourceName))
