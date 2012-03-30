@@ -364,7 +364,7 @@
     <!--  
       - Define what shared lib version tomahawk and sandbox code will be compiled with.
       -->
-    <myfaces-shared11-version>2.0.12</myfaces-shared11-version>
+    <myfaces-shared11-version>2.0.13-SNAPSHOT</myfaces-shared11-version>
 
     <!--
       - Define what version of myfaces core 1.2 the tomahawk core12 and sandbox12
@@ -379,7 +379,7 @@
     <!--  
       - Define what shared lib version tomahawk12 and sandbox12 code will be compiled with.
       -->
-    <myfaces-shared12-version>3.0.10</myfaces-shared12-version>
+    <myfaces-shared12-version>3.0.11-SNAPSHOT</myfaces-shared12-version>
     <!--
       - Define what version of myfaces core 2.0 the tomahawk core20 and sandbox20
       - code will be compiled and tested against.
@@ -393,7 +393,7 @@
     <!--  
       - Define what shared lib version tomahawk20 and sandbox20 code will be compiled with.
       -->
-    <myfaces-shared20-version>4.0.12</myfaces-shared20-version>
+    <myfaces-shared20-version>4.0.13-SNAPSHOT</myfaces-shared20-version>
 
     <myfaces-core21-version>2.1.6</myfaces-core21-version>
 
