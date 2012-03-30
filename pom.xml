@@ -359,12 +359,12 @@
       - against *when jsf1.1 is selected*. When jsf1.2 or a Sun implementation
       - are selected for running the examples, this is ignored.
       -->
-    <myfaces-core11-version>1.1.8</myfaces-core11-version>
+    <myfaces-core11-version>1.1.9</myfaces-core11-version>
 
     <!--  
       - Define what shared lib version tomahawk and sandbox code will be compiled with.
       -->
-    <myfaces-shared11-version>2.0.11</myfaces-shared11-version>
+    <myfaces-shared11-version>2.0.12</myfaces-shared11-version>
 
     <!--
       - Define what version of myfaces core 1.2 the tomahawk core12 and sandbox12
@@ -374,12 +374,12 @@
       - against *when jsf1.2 is selected*. When jsf1.1 or a Sun implementation
       - are selected for running the examples, this is ignored.
       -->
-    <myfaces-core12-version>1.2.9</myfaces-core12-version>
+    <myfaces-core12-version>1.2.11</myfaces-core12-version>
 
     <!--  
       - Define what shared lib version tomahawk12 and sandbox12 code will be compiled with.
       -->
-    <myfaces-shared12-version>3.0.8</myfaces-shared12-version>
+    <myfaces-shared12-version>3.0.10</myfaces-shared12-version>
     <!--
       - Define what version of myfaces core 2.0 the tomahawk core20 and sandbox20
       - code will be compiled and tested against.
@@ -393,7 +393,7 @@
     <!--  
       - Define what shared lib version tomahawk20 and sandbox20 code will be compiled with.
       -->
-    <myfaces-shared20-version>4.0.10</myfaces-shared20-version>
+    <myfaces-shared20-version>4.0.12</myfaces-shared20-version>
 
     <myfaces-core21-version>2.1.6</myfaces-core21-version>
 
