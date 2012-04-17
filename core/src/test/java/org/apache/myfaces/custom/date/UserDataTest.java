@@ -210,6 +210,31 @@ public class UserDataTest extends TestCase {
         }
     }
     
+    public void testItalyDaylightSavingTime() 
+    {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Rome"));
+        
+        userData = new UserData(null, Locale.ITALY, "Europe/Rome", true, "date");
+        
+        userData.setDay("27");
+        userData.setMonth("5");
+        userData.setYear("1979");
+        userData.setHours("");
+        userData.setMinutes("");
+        userData.setSeconds("");
+        userData.setAmpm("-1");
+        
+        try 
+        {
+            Date parsedDate = userData.parse();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+            assertEquals("1979-05-27 01:00:00", sdf.format(parsedDate));
+        } 
+        catch (ParseException e)
+        {
+            fail(e.getMessage());
+        }
+    }
     
 
 }

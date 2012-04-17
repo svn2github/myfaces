@@ -157,10 +157,28 @@ public abstract class AbstractHtmlInputDate extends HtmlInputText
                     
                     if( type.equals("date") ) {
                         //Reset hour, minute, second and milisecond to type date
+                        
+                        // According to Calendar javadoc: "... The HOUR_OF_DAY, HOUR 
+                        // and AM_PM fields are handled independently and the the 
+                        // resolution rule for the time of day is applied. 
+                        // Clearing one of the fields doesn't reset the hour of day 
+                        // value of this Calendar. Use set(Calendar.HOUR_OF_DAY, 0)
+                        // to reset the hour value.  
                         tempCalendar.set(Calendar.HOUR_OF_DAY, 0);
                         tempCalendar.set(Calendar.MINUTE, 0);
                         tempCalendar.set(Calendar.SECOND, 0);
                         tempCalendar.set(Calendar.MILLISECOND, 0);
+                        
+                        // Call to clear sets the given calendar field value and the 
+                        // time value (millisecond offset from the Epoch) of this 
+                        // Calendar undefined.
+                        tempCalendar.clear(Calendar.HOUR);
+                        tempCalendar.clear(Calendar.HOUR_OF_DAY);
+                        tempCalendar.clear(Calendar.AM_PM);
+                        tempCalendar.clear(Calendar.MINUTE);
+                        tempCalendar.clear(Calendar.SECOND);
+                        tempCalendar.clear(Calendar.MILLISECOND);
+
                         return new java.sql.Date(tempCalendar.getTimeInMillis());
                     }
                 }
