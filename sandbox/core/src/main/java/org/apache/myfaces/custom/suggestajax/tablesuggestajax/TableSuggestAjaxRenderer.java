@@ -326,10 +326,14 @@ public class TableSuggestAjaxRenderer extends SuggestAjaxRenderer implements Aja
                         response.append("\"label\": ");
                         response.append("\"").append(escapeQuotes(htmlOutputText.getLabel())).append("\",");
                         response.append("\"value\": ");
-                        response.append("\"").append(escapeQuotes(htmlOutputText.getValue().toString())).append("\"");
+                        response.append("\"")
+                                .append(htmlOutputText.getValue() != null ? escapeQuotes(htmlOutputText.getValue().toString()) : "")
+                                .append("\"");
                     } else {
                         response.append("\"label\": ");
-                        response.append("\"").append(escapeQuotes(htmlOutputText.getValue().toString())).append("\"");
+                        response.append("\"")
+                                .append(htmlOutputText.getValue() != null ? escapeQuotes(htmlOutputText.getValue().toString()) : "")
+                                .append("\"");
                     }
                     response.append("}");
                     if (columnChildren.hasNext() || columns.hasNext()) {
