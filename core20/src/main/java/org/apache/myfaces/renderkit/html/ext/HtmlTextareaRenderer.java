@@ -47,6 +47,18 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 public class HtmlTextareaRenderer
         extends HtmlTextareaRendererBase
 {
+    @Override
+    protected boolean isCommonPropertiesOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
+    @Override
+    protected boolean isCommonEventsOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))

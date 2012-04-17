@@ -124,6 +124,13 @@ $innersource
         return CLIENT_EVENTS_LIST;
     }
 #end
+
+    @Override
+    public void addClientBehavior(String eventName, javax.faces.component.behavior.ClientBehavior behavior)
+    {
+        super.addClientBehavior(eventName, behavior);
+        org.apache.myfaces.shared_tomahawk.renderkit.html.CommonEventConstants.markEvent(this, eventName);
+    }
 #end
 #if ($component.defaultEventName)
 #if ($component.isOverrideDefaultEventName())
@@ -136,9 +143,51 @@ $innersource
 #end
 #end
 
-#set ($propertyList = ${component.propertyComponentList})
+##set ($propertyList = ${component.propertyComponentList})
+#set ($propertyList = ${component.propertyList})
     
 #foreach( $property in $propertyList )
+#if ((!$property.isInherited() && $property.isGenerated()) ||
+     $property.name == "style" ||
+     $property.name == "styleClass" ||
+     $property.name == "dir" ||
+     $property.name == "lang" ||
+     $property.name == "title" ||
+     $property.name == "escape" ||
+     $property.name == "disabled" ||
+     $property.name == "enabled" ||
+     $property.name == "readonly" ||
+     $property.name == "accesskey" ||
+     $property.name == "alt" ||
+     $property.name == "onchange" ||
+     $property.name == "onselect" ||
+     $property.name == "onclick" ||
+     $property.name == "ondblclick" ||
+     $property.name == "onmousedown" ||
+     $property.name == "onmouseup" ||
+     $property.name == "onmouseover" ||
+     $property.name == "onmousemove" ||
+     $property.name == "onmouseout" ||
+     $property.name == "onkeypress" ||
+     $property.name == "onkeydown" ||
+     $property.name == "onkeyup" ||
+     $property.name == "onfocus" ||
+     $property.name == "onblur" ||
+     $property.name == "label" ||
+     $property.name == "charset" ||
+     $property.name == "coords" ||
+     $property.name == "hreflang" ||
+     $property.name == "rel" ||
+     $property.name == "rev" ||
+     $property.name == "shape" ||
+     $property.name == "target" ||
+     $property.name == "type" ||
+     $property.name == "tabindex" ||
+     $property.name == "align" ||
+     $property.name == "checked" ||
+     $property.name == "maxlength" ||
+     $property.name == "size"
+)
 #set ($field = $property.fieldName)
 #set ($type = $utils.getClassFromFullClass($property.className))
 #if($utils.getDefaultValueField($property)) 
@@ -303,15 +352,115 @@ $innersource
     public void $utils.getPrefixedPropertyName("set", $property.name)($type $utils.getVariableFromName($property.name))
     {
         getStateHelper().put(PropertyKeys.$field, $utils.getVariableFromName($property.name) ); 
+#if ($property.name == "style" ||
+     $property.name == "styleClass" ||
+     $property.name == "dir" ||
+     $property.name == "lang" ||
+     $property.name == "title" ||
+     $property.name == "escape" ||
+     $property.name == "disabled" ||
+     $property.name == "enabled" ||
+     $property.name == "readonly" ||
+     $property.name == "accesskey" ||
+     $property.name == "alt" ||
+     $property.name == "onchange" ||
+     $property.name == "onselect" ||
+     $property.name == "onclick" ||
+     $property.name == "ondblclick" ||
+     $property.name == "onmousedown" ||
+     $property.name == "onmouseup" ||
+     $property.name == "onmouseover" ||
+     $property.name == "onmousemove" ||
+     $property.name == "onmouseout" ||
+     $property.name == "onkeypress" ||
+     $property.name == "onkeydown" ||
+     $property.name == "onkeyup" ||
+     $property.name == "onfocus" ||
+     $property.name == "onblur" ||
+     $property.name == "label" ||
+     $property.name == "charset" ||
+     $property.name == "coords" ||
+     $property.name == "hreflang" ||
+     $property.name == "rel" ||
+     $property.name == "rev" ||
+     $property.name == "shape" ||
+     $property.name == "target" ||
+     $property.name == "type" ||
+     $property.name == "tabindex" ||
+     $property.name == "align" ||
+     $property.name == "checked" ||
+     $property.name == "maxlength" ||
+     $property.name == "size"
+      )
+#set($overrideSetValueExpression = true)
+        org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyConstants.markProperty(this,
+            org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyConstants.${property.name.toUpperCase()}_PROP);
+#end
     }    
 #end
 #end
+#end
 
+#if ($overrideSetValueExpression)
+    public void setValueBinding(String name, javax.faces.el.ValueBinding binding)
+    {
+        super.setValueBinding(name, binding);
+        org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyConstants.markProperty(this, name);
+    }
+
+    public void setValueExpression(String name, ValueExpression expression)
+    {
+        super.setValueExpression(name, expression);
+        org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyConstants.markProperty(this, name);
+    }
+
+#end
     protected enum PropertyKeys
     {
 #set ($comma = "")
 #set ($addc = "false")
 #foreach( $property in $propertyList )
+#if ((!$property.isInherited() && $property.isGenerated()) ||
+     $property.name == "style" ||
+     $property.name == "styleClass" ||
+     $property.name == "dir" ||
+     $property.name == "lang" ||
+     $property.name == "title" ||
+     $property.name == "escape" ||
+     $property.name == "disabled" ||
+     $property.name == "enabled" ||
+     $property.name == "readonly" ||
+     $property.name == "accesskey" ||
+     $property.name == "alt" ||
+     $property.name == "onchange" ||
+     $property.name == "onselect" ||
+     $property.name == "onclick" ||
+     $property.name == "ondblclick" ||
+     $property.name == "onmousedown" ||
+     $property.name == "onmouseup" ||
+     $property.name == "onmouseover" ||
+     $property.name == "onmousemove" ||
+     $property.name == "onmouseout" ||
+     $property.name == "onkeypress" ||
+     $property.name == "onkeydown" ||
+     $property.name == "onkeyup" ||
+     $property.name == "onfocus" ||
+     $property.name == "onblur" ||
+     $property.name == "label" ||
+     $property.name == "charset" ||
+     $property.name == "coords" ||
+     $property.name == "hreflang" ||
+     $property.name == "rel" ||
+     $property.name == "rev" ||
+     $property.name == "shape" ||
+     $property.name == "target" ||
+     $property.name == "type" ||
+     $property.name == "tabindex" ||
+     $property.name == "align" ||
+     $property.name == "checked" ||
+     $property.name == "maxlength" ||
+     $property.name == "size"
+)
 #if ($property.name == "for")
 #set ($addc = "true")
 ## To keep compatibility with RI, we should call it forVal
@@ -336,6 +485,7 @@ $innersource
 #end
 #set($comma = ",")
 #end
+#end
 #if ("true" == $addc)
         ;
         String c;
@@ -357,6 +507,7 @@ $innersource
 #end
     }
 
+#set ($propertyList = ${component.propertyComponentList})
 #set ($primitiveCount = 1) ## $propertyList.size() + 1 
 #foreach( $property in $propertyList )
 #if ($property.isPartialStateHolder())

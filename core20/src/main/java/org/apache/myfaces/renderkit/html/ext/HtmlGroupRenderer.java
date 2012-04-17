@@ -32,6 +32,8 @@ import javax.faces.context.ResponseWriter;
 import org.apache.myfaces.buildtools.maven2.plugin.builder.annotation.JSFRenderer;
 import org.apache.myfaces.component.html.ext.HtmlPanelGroup;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.CommonEventUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlGroupRendererBase;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
@@ -50,6 +52,18 @@ import org.apache.myfaces.shared_tomahawk.renderkit.html.util.ResourceUtils;
 public class HtmlGroupRenderer
     extends HtmlGroupRendererBase
 {
+
+    @Override
+    protected boolean isCommonPropertiesOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
+    @Override
+    protected boolean isCommonEventsOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
 
     @Override
     public void decode(FacesContext context, UIComponent component)
@@ -80,8 +94,29 @@ public class HtmlGroupRenderer
             span = true;
             writer.startElement(element, component);
             writer.writeAttribute(HTML.ID_ATTR, component.getClientId(context),null);
-            HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.UNIVERSAL_ATTRIBUTES);
-            HtmlRendererUtils.renderBehaviorizedEventHandlers(context, writer, component, behaviors);
+            if (isCommonPropertiesOptimizationEnabled(context))
+            {
+                long commonPropertiesMarked = CommonPropertyUtils.getCommonPropertiesMarked(component);
+                
+                CommonPropertyUtils.renderUniversalProperties(writer, commonPropertiesMarked, component);
+                CommonPropertyUtils.renderStyleProperties(writer, commonPropertiesMarked, component);
+
+                if (isCommonEventsOptimizationEnabled(context))
+                {
+                    Long commonEventsMarked = CommonEventUtils.getCommonEventsMarked(component);
+                    CommonEventUtils.renderBehaviorizedEventHandlers(context, writer, 
+                            commonPropertiesMarked, commonEventsMarked, component, behaviors);
+                }
+                else
+                {
+                    HtmlRendererUtils.renderBehaviorizedEventHandlers(context, writer, component, behaviors);
+                }
+            }
+            else
+            {
+                HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.UNIVERSAL_ATTRIBUTES);
+                HtmlRendererUtils.renderBehaviorizedEventHandlers(context, writer, component, behaviors);
+            }
         }
         else
         {
@@ -94,14 +129,37 @@ public class HtmlGroupRenderer
 
                 HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
 
-                HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                if (isCommonPropertiesOptimizationEnabled(context))
+                {
+                    CommonPropertyUtils.renderCommonPassthroughProperties(writer, 
+                            CommonPropertyUtils.getCommonPropertiesMarked(component), component);
+                }
+                else
+                {
+                    HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                }
             }
             else
             {
-                span=HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer,
-                                                                                 component,
-                                                                                 element,
-                                                                                 HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                if (isCommonPropertiesOptimizationEnabled(context))
+                {
+                    long commonPropertiesMarked = CommonPropertyUtils.getCommonPropertiesMarked(component);
+                    if (commonPropertiesMarked > 0)
+                    {
+                        span = true;
+                        writer.startElement(element, component);
+                        HtmlRendererUtils.writeIdIfNecessary(writer, component, context);
+
+                        CommonPropertyUtils.renderCommonPassthroughProperties(writer, commonPropertiesMarked, component);
+                    }
+                }
+                else
+                {
+                    span=HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer,
+                                                                                     component,
+                                                                                     element,
+                                                                                     HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                }
             }
         }
 

@@ -51,6 +51,19 @@ public class HtmlMenuRenderer
         extends HtmlMenuRendererBase
 {
     //private static final Log log = LogFactory.getLog(HtmlMenuRenderer.class);
+    
+    @Override
+    protected boolean isCommonPropertiesOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
+    @Override
+    protected boolean isCommonEventsOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+    
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))

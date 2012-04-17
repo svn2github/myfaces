@@ -136,6 +136,17 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
     private static final String[] COLUMN_ATTRIBUTES = (String [])
         (String[]) ArrayUtils.concat(HTML.COMMON_PASSTROUGH_ATTRIBUTES_WITHOUT_STYLE, new String[]{HTML.COLSPAN_ATTR});
 
+    @Override
+    protected boolean isCommonPropertiesOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
+    @Override
+    protected boolean isCommonEventsOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
 
     /**
      * @param component dataTable

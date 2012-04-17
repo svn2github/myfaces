@@ -39,6 +39,9 @@ import org.apache.myfaces.component.html.ext.HtmlInputText;
 import org.apache.myfaces.shared_tomahawk.component.EscapeCapable;
 import org.apache.myfaces.shared_tomahawk.renderkit.JSFAttr;
 import org.apache.myfaces.shared_tomahawk.renderkit.RendererUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.CommonEventUtils;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyConstants;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.CommonPropertyUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlRendererUtils;
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HtmlTextRendererBase;
@@ -68,6 +71,18 @@ public class HtmlTextRenderer
     //private static final Log log = LogFactory.getLog(HtmlTextRenderer.class);
     private static final Logger log = Logger.getLogger(HtmlTextRenderer.class.getName());
     
+    @Override
+    protected boolean isCommonPropertiesOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
+    @Override
+    protected boolean isCommonEventsOptimizationEnabled(FacesContext facesContext)
+    {
+        return true;
+    }
+
     protected boolean isDisabled(FacesContext facesContext, UIComponent uiComponent)
     {
         if (!UserRoleUtils.isEnabledOnUserRole(uiComponent))
@@ -138,26 +153,74 @@ public class HtmlTextRenderer
                 span = true;
                 writer.startElement(HTML.SPAN_ELEM, component);
                 writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext),null);
-                HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.UNIVERSAL_ATTRIBUTES);
-                HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, component, behaviors);
-            }
-            else
-            {
-                if(component.getId()!=null && !component.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
+                if (isCommonPropertiesOptimizationEnabled(facesContext))
                 {
-                    span = true;
-    
-                    writer.startElement(HTML.SPAN_ELEM, component);
-    
-                    HtmlRendererUtils.writeIdIfNecessary(writer, component, facesContext);
-    
-                    HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
-    
+                    long commonPropertiesMarked = CommonPropertyUtils.getCommonPropertiesMarked(component);
+                    
+                    CommonPropertyUtils.renderUniversalProperties(writer, commonPropertiesMarked, component);
+                    CommonPropertyUtils.renderStyleProperties(writer, commonPropertiesMarked, component);
+
+                    if (isCommonEventsOptimizationEnabled(facesContext))
+                    {
+                        Long commonEventsMarked = CommonEventUtils.getCommonEventsMarked(component);
+                        CommonEventUtils.renderBehaviorizedEventHandlers(facesContext, writer, 
+                                commonPropertiesMarked, commonEventsMarked, component, behaviors);
+                    }
+                    else
+                    {
+                        HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, component, behaviors);
+                    }
                 }
                 else
                 {
-                    span = HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer,component,
-                            HTML.SPAN_ELEM,HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                    HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.UNIVERSAL_ATTRIBUTES);
+                    HtmlRendererUtils.renderBehaviorizedEventHandlers(facesContext, writer, component, behaviors);
+                }
+            }
+            else
+            {
+                if (isCommonPropertiesOptimizationEnabled(facesContext))
+                {
+                    long commonPropertiesMarked = CommonPropertyUtils.getCommonPropertiesMarked(component);
+                    if ( (commonPropertiesMarked & ~(CommonPropertyConstants.ESCAPE_PROP)) > 0)
+                    {
+                        span = true;
+                        writer.startElement(HTML.SPAN_ELEM, component);
+                        HtmlRendererUtils.writeIdIfNecessary(writer, component, facesContext);
+                    }
+                    else if (CommonPropertyUtils.isIdRenderingNecessary(component))
+                    {
+                        span = true;
+                        writer.startElement(HTML.SPAN_ELEM, component);
+                        writer.writeAttribute(HTML.ID_ATTR, component.getClientId(facesContext), null);
+                    }
+                    
+                    CommonPropertyUtils.renderUniversalProperties(writer, commonPropertiesMarked, component);
+                    CommonPropertyUtils.renderStyleProperties(writer, commonPropertiesMarked, component);
+                    
+                    if (isRenderOutputEventAttributes())
+                    {
+                        HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.EVENT_HANDLER_ATTRIBUTES);
+                    }
+                }
+                else
+                {
+                    if(component.getId()!=null && !component.getId().startsWith(UIViewRoot.UNIQUE_ID_PREFIX))
+                    {
+                        span = true;
+        
+                        writer.startElement(HTML.SPAN_ELEM, component);
+        
+                        HtmlRendererUtils.writeIdIfNecessary(writer, component, facesContext);
+        
+                        HtmlRendererUtils.renderHTMLAttributes(writer, component, HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+        
+                    }
+                    else
+                    {
+                        span = HtmlRendererUtils.renderHTMLAttributesWithOptionalStartElement(writer,component,
+                                HTML.SPAN_ELEM,HTML.COMMON_PASSTROUGH_ATTRIBUTES);
+                    }
                 }
             }
 
