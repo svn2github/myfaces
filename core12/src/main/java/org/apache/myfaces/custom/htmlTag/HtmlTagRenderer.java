@@ -133,7 +133,11 @@ public class HtmlTagRenderer extends HtmlRenderer
 
             ResponseWriter writer = context.getResponseWriter();
             // force separate end tag
-            writer.writeText("", null);            
+            // -= Leonardo Uribe =- Ensure when to close the end tag
+            // using a separate one or not is responsibility of
+            // the ResponseWriter implementation provided by the 
+            // RenderKit used. This line is invalid
+            //writer.writeText("", null);
             writer.endElement( tag );
         }
     }
