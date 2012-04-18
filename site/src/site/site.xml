@@ -16,83 +16,91 @@
  * limitations under the License.
 -->
 <project name="MyFaces Tomahawk">
+    <bannerLeft>
+        <name>Apache MyFaces Tomahawk</name>
+        <src>img/banners/MyFaces_logo.jpg</src>
+        <href>http://myfaces.apache.org/</href>
+    </bannerLeft>
+    
+    <bannerRight>
+        <name>Apache Banner</name>
+        <src>img/banners/apache_banner.png</src>
+        <href>http://myfaces.apache.org/</href>
+    </bannerRight>
+    
+    <publishDate format="dd MMM yyyy" />
+    
+    <skin>
+      <groupId>org.apache.myfaces.maven</groupId>
+      <artifactId>myfaces-site-skin</artifactId>
+      <version>3</version>
+    </skin>
+    
+    <body>
+        <links>
+            <item name="Apache" href="http://www.apache.org/"/>
+            <item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
+            <item name="Download Tomahawk" href="./download.html"/>
+        </links>
 
-  <bannerLeft>
-    <name>Apache MyFaces Tomahawk</name>
-    <src>img/banners/MyFaces_logo.jpg</src>
-    <href>http://myfaces.apache.org/</href>
-  </bannerLeft>
-    
-  <bannerRight>
-    <name>Apache Banner</name>
-    <src>img/banners/apache_banner.png</src>
-    <href>http://myfaces.apache.org/</href>
-  </bannerRight>
-    
-  <publishDate format="dd MMM yyyy" />
-    
-  <skin>
-    <groupId>org.apache.myfaces.maven</groupId>
-    <artifactId>myfaces-site-skin</artifactId>
-    <version>3</version>
-  </skin>
+        <menu name="JSF Implementations" inherit="top">
+            <item name="Core JSF-2.1"   href="./index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="Core JSF-2.0"   href="../core20/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="Core JSF-1.2"   href="../core12/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="Core JSF-1.1"   href="../core11/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+        </menu>
 
-  <body>
-    <links>
-      <item name="Apache" href="http://www.apache.org/"/>
-      <item name="MyFaces" href="http://myfaces.apache.org/index.html"/>
-      <item name="Download Tomahawk" href="./download.html"/>
-     </links>
-    
-    <menu name="MyFaces Projects">
-      <item name="Overview" href="http://myfaces.apache.org/index.html"/>
-      <item name="Core JSF-1.1"   href="http://myfaces.apache.org/core11/index.html" collapse="true">
-        <item name="dummy"        href="dummy"/>
-      </item>
-      <item name="Core JSF-1.2"   href="http://myfaces.apache.org/core12/index.html" collapse="true">
-        <item name="dummy"        href="dummy"/>
-      </item>
-      <item name="Core JSF-2.0"   href="http://myfaces.apache.org/core20/index.html" collapse="true">
-        <item name="dummy"        href="dummy"/>
-      </item>
-      <item name="Trinidad" href="http://myfaces.apache.org/trinidad/index.html"/>
-      <item name="Tobago" href="http://myfaces.apache.org/tobago/index.html"/>
-      <item name="Tomahawk" href="http://myfaces.apache.org/tomahawk/index.html">
-        <item name="Tomahawk for JSF 1.1" href="http://myfaces.apache.org/tomahawk-project/tomahawk/index.html"/>
-        <item name="Tomahawk for JSF 1.2" href="http://myfaces.apache.org/tomahawk-project/tomahawk12/index.html"/>
-        <item name="Tomahawk for JSF 2.0" href="http://myfaces.apache.org/tomahawk-project/tomahawk20/index.html"/>
-      </item>
-      <item name="Sandbox" href="http://myfaces.apache.org/sandbox/index.html" collapse="true">
-        <item name="dummy"        href="dummy"/>
-      </item>
-      <item name="Orchestra" href="http://myfaces.apache.org/orchestra/index.html"/>
-      <item name="Portlet Bridge" href="http://myfaces.apache.org/portlet-bridge/index.html"/>
-      <item name="ExtVal"         href="http://myfaces.apache.org/extensions/validator/index.html"/>
-      <item name="Commons"        href="http://myfaces.apache.org/commons/index.html"/>
-      <item name="Test"           href="http://myfaces.apache.org/test/index.html"/>
-      <item name="Others"         href="http://myfaces.apache.org/otherProjects.html"/>
-    </menu>
-        
-    <menu name="Documentation">
-      <item name="JSF Tag Documentation 1.1" href="http://myfaces.apache.org/tomahawk-project/tomahawk/tagdoc.html"/>
-      <item name="JSF Tag Documentation 1.2" href="http://myfaces.apache.org/tomahawk-project/tomahawk12/tagdoc.html"/>
-      <item name="JSF Tag Documentation 2.0" href="http://myfaces.apache.org/tomahawk-project/tomahawk20/tagdoc.html"/>
-      <item name="Extensions filter" href="./extensionsFilter.html"/>
-      <item name="forceId" href="./forceId.html"/>
-      <item name="Tiles Support" href="./tiles.html"/>
-    </menu>    
-    
-    <menu ref="reports"/>
+        <menu name="UI-Component Sets" inherit="top">
+            <item name="Trinidad" href="../trinidad/index.html"/>
+            <item name="Tobago" href="../tobago/index.html"/>
+            <item name="Tomahawk" href="./index.html" collapse="false">
+              <item name="Tomahawk for JSF 1.1" href="http://myfaces.apache.org/tomahawk-project/tomahawk/index.html"/>
+              <item name="Tomahawk for JSF 1.2" href="http://myfaces.apache.org/tomahawk-project/tomahawk12/index.html"/>
+              <item name="Tomahawk for JSF 2.0" href="http://myfaces.apache.org/tomahawk-project/tomahawk20/index.html"/>
+            </item>
+        </menu>
 
-    <menu name="Testing">
-      <item name="OpenQA Selenium" href="http://myfaces.apache.org/tomahawk/testing/selenium.html"/>
-      <item name="Autoriginate HostedQA" href="http://myfaces.apache.org/tomahawk/testing/hostedqa.html"/>
-    </menu>
-    
-    <menu name="Foundation">
-      <item name="ASF" href="http://apache.org/" />
-      <item name="Sponsorship" href="http://www.apache.org/foundation/sponsorship.html" />
-      <item name="Thanks" href="http://www.apache.org/foundation/thanks.html" />
-    </menu>
-  </body>
+        <menu name="Add-ons and Extensions" inherit="top">
+            <item name="CODI"           href="../extensions/cdi/index.html"/>
+            <item name="Orchestra"      href="../orchestra/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="ExtVal"         href="../extensions/validator/index.html"/>
+            <item name="Portlet Bridge" href="../portlet-bridge/index.html"/>
+            <item name="Test"           href="../test/index.html"/>
+            <item name="Commons"        href="../commons/index.html"/>
+            <item name="Ext-Scripting"  href="../extensions/scripting/index.html"/>
+            <item name="Sandbox"        href="../sandbox/index.html" collapse="true">
+              <item name="dummy"        href="dummy"/>
+            </item>
+            <item name="Others"         href="../otherProjects.html"/>
+        </menu>
+
+        <menu name="Documentation">
+            <item name="JSF Tag Documentation 1.1" href="http://myfaces.apache.org/tomahawk-project/tomahawk/tagdoc.html"/>
+            <item name="JSF Tag Documentation 1.2" href="http://myfaces.apache.org/tomahawk-project/tomahawk12/tagdoc.html"/>
+            <item name="JSF Tag Documentation 2.0" href="http://myfaces.apache.org/tomahawk-project/tomahawk20/tagdoc.html"/>
+            <item name="Extensions filter" href="./extensionsFilter.html"/>
+            <item name="forceId" href="./forceId.html"/>
+            <item name="Tiles Support" href="./tiles.html"/>
+        </menu>
+
+        <menu ref="reports" inherit="top"/>
+
+        <menu name="Foundation" inherit="top">
+            <item name="ASF"            href="http://www.apache.org/" />
+            <item name="Sponsorship"    href="http://www.apache.org/foundation/sponsorship.html" />
+            <item name="Thanks"         href="http://www.apache.org/foundation/thanks.html" />
+            <item name="Security"       href="http://www.apache.org/security/" />
+            <item name="License"        href="http://www.apache.org/licenses/" />
+        </menu>
+    </body>
 </project>
