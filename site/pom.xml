@@ -30,7 +30,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1</version>
         <configuration>
           <checkoutDirectoryName>tomahawk</checkoutDirectoryName>
           <anonymousConnection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk</anonymousConnection>

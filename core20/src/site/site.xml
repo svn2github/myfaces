@@ -44,7 +44,7 @@
         </links>
 
         <menu name="JSF Implementations" inherit="top">
-            <item name="Core JSF-2.1"   href="../../index.html" collapse="true">
+            <item name="Core JSF-2.1"   href="../../core21/index.html" collapse="true">
               <item name="dummy"        href="dummy"/>
             </item>
             <item name="Core JSF-2.0"   href="../../core20/index.html" collapse="true">
