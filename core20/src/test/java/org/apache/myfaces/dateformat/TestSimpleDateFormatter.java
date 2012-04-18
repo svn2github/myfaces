@@ -391,6 +391,7 @@ public class TestSimpleDateFormatter extends TestCase
         assertEquals(0, d.getSeconds());
     }
     
+/*
     public void testWeekFormatAgainstJoda() throws Exception
     {
         // for every year from 2000-2010, test:
@@ -431,6 +432,7 @@ public class TestSimpleDateFormatter extends TestCase
              checkWeekFormatAgainstJoda(year, 11, 31);
          }
     }
+*/
 
     private void checkWeekFormatAgainstJoda(int year, int month, int day)
     {
