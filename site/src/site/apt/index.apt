@@ -40,7 +40,7 @@ Requirements and Setup
   * Put the <<<tomahawk.jar>>> in your <<<WEB-INF/lib>>> directory (or in the classpath of your
   application server.)
 
-  * Configure the {{{extensionsFilter.html}MyFaces Extensions filter}} in your <<<WEB-INF/web.xml>>> file.
+  * Configure the {{{./extensionsFilter.html}MyFaces Extensions filter}} in your <<<WEB-INF/web.xml>>> file.
 
   * Add the following to your JSP page in order to use one of the MyFaces custom components:\
   <<<\<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %\>>>>

@@ -185,13 +185,12 @@
       <artifactId>joda-time</artifactId>
       <scope>test</scope>
     </dependency>
-<!--
+
     <dependency>
       <groupId>cactus</groupId>
       <artifactId>cactus</artifactId>
       <scope>test</scope>
     </dependency>
-    -->
 
     <dependency>
       <groupId>org.aspectj</groupId>

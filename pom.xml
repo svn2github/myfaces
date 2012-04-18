@@ -244,7 +244,7 @@
         <dependency>
           <groupId>cactus</groupId>
           <artifactId>cactus</artifactId>
-          <version>13-1.7.2</version>
+          <version>13-1.7.1</version>
           <scope>test</scope>
         </dependency>
     
