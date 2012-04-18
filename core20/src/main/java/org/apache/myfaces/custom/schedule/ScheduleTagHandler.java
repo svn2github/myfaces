@@ -31,6 +31,7 @@ import org.apache.myfaces.custom.facelets.tag.MethodRule;
 public class ScheduleTagHandler extends ComponentHandler {
  
     private static final String MOUSE_LISTENER = "mouseListener";
+    private static final String MOUSE_LISTENER_EXPRESSION = "mouseListenerExpression";
     
     private static final Class [] mouseListenerParamList = new Class[]{ScheduleMouseEvent.class}; 
 
@@ -42,7 +43,7 @@ public class ScheduleTagHandler extends ComponentHandler {
     {       
         return super.createMetaRuleset(type).alias("class", "styleClass")
             .addRule(
-                new MethodRule(MOUSE_LISTENER, 
+                new MethodRule(MOUSE_LISTENER, MOUSE_LISTENER_EXPRESSION, 
                         String.class, mouseListenerParamList));
     }
 
