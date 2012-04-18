@@ -218,6 +218,43 @@ public abstract class AbstractHtmlDataList
     }
     
     @Override
+    protected void restoreDescendantComponentStates(Object state)
+    {
+        restoreDescendantComponentStates(getChildren().iterator(), state, true);
+    }
+
+    @Override
+    protected Object saveDescendantComponentStates()
+    {
+        return saveDescendantComponentStates(getChildren().iterator(), true);
+    }
+    
+    @Override
+    protected Map<String,Object> saveFullDescendantComponentStates(FacesContext facesContext)
+    {
+        return saveFullDescendantComponentStates(facesContext, null, getChildren().iterator(), true, getContainerClientId(facesContext));
+    }
+    
+    @Override
+    protected void restoreFullDescendantComponentStates(FacesContext facesContext, Object initialState)
+    {
+        restoreFullDescendantComponentStates(facesContext, getChildren().iterator(), initialState, true);
+    }
+
+    @Override
+    protected void restoreFullDescendantComponentDeltaStates(FacesContext facesContext,
+            Map<String, Object> rowState, Object initialState)
+    {
+        restoreFullDescendantComponentDeltaStates(facesContext, getChildren().iterator(), rowState, initialState, true, getContainerClientId(facesContext));
+    }
+    
+    @Override
+    protected Collection<Object[]> saveDescendantInitialComponentStates(FacesContext facesContext)
+    {
+        return saveDescendantInitialComponentStates(facesContext, getChildren().iterator(), true);
+    }
+
+    @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
         throws FacesException
     {

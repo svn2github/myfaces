@@ -268,15 +268,13 @@ public abstract class HtmlDataTableHack extends
         {
             if (_initialDescendantComponentState == null)
             {
-                _initialDescendantComponentState = saveDescendantComponentStates(getChildren()
-                                .iterator(), false);
+                _initialDescendantComponentState = saveDescendantComponentStates();
             }
         }
         else
         {
             _rowStates.put(getClientId(facesContext),
-                            saveDescendantComponentStates(getChildren()
-                                            .iterator(), false));
+                            saveDescendantComponentStates());
         }
 
         _rowIndex = rowIndex;
@@ -312,21 +310,18 @@ public abstract class HtmlDataTableHack extends
 
         if (_rowIndex == -1)
         {
-            restoreDescendantComponentStates(getChildren().iterator(),
-                            _initialDescendantComponentState, false);
+            restoreDescendantComponentStates(_initialDescendantComponentState);
         }
         else
         {
             Object rowState = _rowStates.get(getClientId(facesContext));
             if (rowState == null)
             {
-                restoreDescendantComponentStates(getChildren().iterator(),
-                                _initialDescendantComponentState, false);
+                restoreDescendantComponentStates(_initialDescendantComponentState);
             }
             else
             {
-                restoreDescendantComponentStates(getChildren().iterator(),
-                                rowState, false);
+                restoreDescendantComponentStates(rowState);
             }
         }
     }

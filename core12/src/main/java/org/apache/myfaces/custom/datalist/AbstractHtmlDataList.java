@@ -211,6 +211,18 @@ public abstract class AbstractHtmlDataList
             }
         }
     }
+    
+    @Override
+    protected void restoreDescendantComponentStates(Object state)
+    {
+        restoreDescendantComponentStates(getChildren().iterator(), state, true);
+    }
+    
+    @Override
+    protected Object saveDescendantComponentStates()
+    {
+        return saveDescendantComponentStates(getChildren().iterator(), true);
+    }
 
     @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)

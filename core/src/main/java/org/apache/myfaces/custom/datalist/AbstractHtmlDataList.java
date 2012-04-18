@@ -205,7 +205,19 @@ public abstract class AbstractHtmlDataList
             }
         }
     }
-    
+
+    @Override
+    protected void restoreDescendantComponentStates(Object state)
+    {
+        restoreDescendantComponentStates(getChildren().iterator(), state, true);
+    }
+
+    @Override
+    protected Object saveDescendantComponentStates()
+    {
+        return saveDescendantComponentStates(getChildren().iterator(), true);
+    }
+
     /**
      * A parameter name, under which the rowCount is set in request 
      * scope similar to the var parameter.
