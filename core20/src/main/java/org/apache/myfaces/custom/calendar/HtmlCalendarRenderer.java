@@ -429,7 +429,7 @@ public class HtmlCalendarRenderer
                         }
                         else
                         {
-                            inputClientId = clientId;
+                            inputClientId = clientId+"_input";
                         }
 
                         String clientVar = JavascriptUtils.getValidJavascriptName(clientId+"CalendarVar",true);
