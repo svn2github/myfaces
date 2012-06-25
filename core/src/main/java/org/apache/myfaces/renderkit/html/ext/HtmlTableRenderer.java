@@ -560,6 +560,11 @@ public class HtmlTableRenderer extends HtmlTableRendererBase {
         if (rowStyleClass == null) {
             super.renderRowStyle(facesContext, writer, uiData, styles, rowStyleIndex);
         }
+        else if (rowStyleClass != null && rowStyleClass.length() <= 0)
+        {
+            // TOMAHAWK-1628 rowStyleClass can hold an EL that return null and is coerced to empty string
+            super.renderRowStyle(facesContext, writer, uiData, styles, rowStyleIndex);
+        }
         else {
             writer.writeAttribute(HTML.CLASS_ATTR, rowStyleClass, null);
         }
