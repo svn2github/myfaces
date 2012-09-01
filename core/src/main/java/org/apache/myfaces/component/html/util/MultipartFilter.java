@@ -45,9 +45,9 @@ import org.apache.myfaces.webapp.filter.MultipartRequestWrapper;
 public class MultipartFilter implements Filter
 {
 
-    private int uploadMaxSize = 100 * 1024 * 1024; // 100 MB
+    private long uploadMaxSize = 100 * 1024 * 1024; // 100 MB
     
-    private int uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
+    private long uploadMaxFileSize = 100 * 1024 * 1024; // 10 MB
 
     private int uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
@@ -99,6 +99,35 @@ public class MultipartFilter implements Filter
             }
 
             numberParam = Integer.parseInt(number) * factor;
+        }
+        return numberParam;
+    }
+    
+    private long resolveSize(String param, long defaultValue)
+    {
+        long numberParam = defaultValue;
+
+        if (param != null)
+        {
+            param = param.toLowerCase();
+            long factor = 1;
+            String number = param;
+
+            if (param.endsWith("g"))
+            {
+                factor = 1024 * 1024 * 1024;
+                number = param.substring(0, param.length() - 1);
+            } else if (param.endsWith("m"))
+            {
+                factor = 1024 * 1024;
+                number = param.substring(0, param.length() - 1);
+            } else if (param.endsWith("k"))
+            {
+                factor = 1024;
+                number = param.substring(0, param.length() - 1);
+            }
+
+            numberParam = Long.parseLong(number) * factor;
         }
         return numberParam;
     }

@@ -144,9 +144,9 @@ public class ExtensionsFilter implements Filter {
 
     private Log log = LogFactory.getLog(ExtensionsFilter.class);
     
-    private int _uploadMaxSize = 100 * 1024 * 1024; // 100 MB
+    private long _uploadMaxSize = 100 * 1024 * 1024; // 100 MB
 
-    private int _uploadMaxFileSize = 100 * 1024 * 1024; // 100 MB
+    private long _uploadMaxFileSize = 100 * 1024 * 1024; // 100 MB
 
     private int _uploadThresholdSize = 1 * 1024 * 1024; // 1 MB
 
@@ -247,6 +247,30 @@ public class ExtensionsFilter implements Filter {
         _servletContext = filterConfig.getServletContext();
     }
 
+    private long resolveSize(String param, long defaultValue) {
+        long numberParam = defaultValue;
+
+        if (param != null) {
+            param = param.toLowerCase();
+            long factor = 1;
+            String number = param;
+
+            if (param.endsWith("g")) {
+                factor = 1024 * 1024 * 1024;
+                number = param.substring(0, param.length() - 1);
+            } else if (param.endsWith("m")) {
+                factor = 1024 * 1024;
+                number = param.substring(0, param.length() - 1);
+            } else if (param.endsWith("k")) {
+                factor = 1024;
+                number = param.substring(0, param.length() - 1);
+            }
+
+            numberParam = Long.parseLong(number) * factor;
+        }
+        return numberParam;
+    }
+    
     private int resolveSize(String param, int defaultValue) {
         int numberParam = defaultValue;
 
@@ -270,6 +294,7 @@ public class ExtensionsFilter implements Filter {
         }
         return numberParam;
     }
+
     
     private static boolean getBooleanValue(String initParameter, boolean defaultVal)
     {

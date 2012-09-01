@@ -55,8 +55,8 @@ public class PortletMultipartRequestWrapper
     HashMap parametersMap = null;
     PortletFileUpload fileUpload = null;
     HashMap fileItems = null;
-    int maxFileSize;
-    int maxSize;
+    long maxFileSize;
+    long maxSize;
     int thresholdSize;
     String repositoryPath;
     boolean cacheFileSizeErrors;
@@ -86,6 +86,30 @@ public class PortletMultipartRequestWrapper
         this.cacheFileSizeErrors = cacheFileSizeErrors;
     }
 
+        public PortletMultipartRequestWrapper(Object request,
+                                   long maxFileSize, int thresholdSize,
+                                   String repositoryPath){
+        super((ActionRequest) request );
+        this.request = (ActionRequest) request;
+        this.maxFileSize = maxFileSize;
+        this.thresholdSize = thresholdSize;
+        this.repositoryPath = repositoryPath;
+        //Default values
+        this.maxSize = maxFileSize;
+        this.cacheFileSizeErrors = false;
+    }
+    
+    public PortletMultipartRequestWrapper(Object request,
+            long maxFileSize, int thresholdSize,
+            String repositoryPath, long maxRequestSize, boolean cacheFileSizeErrors){
+        super((ActionRequest) request );
+        this.request = (ActionRequest) request;
+        this.maxFileSize = maxFileSize;
+        this.maxSize = maxRequestSize;
+        this.thresholdSize = thresholdSize;
+        this.repositoryPath = repositoryPath;
+        this.cacheFileSizeErrors = cacheFileSizeErrors;
+    }
 
     private void parseRequest() {
         if (cacheFileSizeErrors)

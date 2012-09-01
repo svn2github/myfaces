@@ -56,8 +56,8 @@ public class MultipartRequestWrapper
     HashMap parametersMap = null;
     ServletFileUpload fileUpload = null;
     HashMap fileItems = null;
-    int maxFileSize;
-    int maxSize;
+    long maxFileSize;
+    long maxSize;
     int thresholdSize;
     String repositoryPath;
     boolean cacheFileSizeErrors;
@@ -78,6 +78,31 @@ public class MultipartRequestWrapper
     public MultipartRequestWrapper(HttpServletRequest request,
             int maxFileSize, int thresholdSize,
             String repositoryPath, int maxRequestSize, boolean cacheFileSizeErrors){
+        super( request );
+        this.request = request;
+        this.maxFileSize = maxFileSize;
+        this.maxSize = maxRequestSize;
+        this.thresholdSize = thresholdSize;
+        this.repositoryPath = repositoryPath;
+        this.cacheFileSizeErrors = cacheFileSizeErrors;
+    }
+    
+    public MultipartRequestWrapper(HttpServletRequest request,
+                                   long maxFileSize, int thresholdSize,
+                                   String repositoryPath){
+        super( request );
+        this.request = request;
+        this.maxFileSize = maxFileSize;
+        this.thresholdSize = thresholdSize;
+        this.repositoryPath = repositoryPath;
+        //Default values
+        this.maxSize = maxFileSize;
+        this.cacheFileSizeErrors = false;
+    }
+    
+    public MultipartRequestWrapper(HttpServletRequest request,
+            long maxFileSize, int thresholdSize,
+            String repositoryPath, long maxRequestSize, boolean cacheFileSizeErrors){
         super( request );
         this.request = request;
         this.maxFileSize = maxFileSize;
