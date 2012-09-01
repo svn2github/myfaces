@@ -19,6 +19,8 @@
 package org.apache.myfaces.custom.captcha;
 
 import javax.faces.component.UIComponentBase;
+import javax.faces.context.ExternalContext;
+import org.apache.myfaces.tomahawk.config.TomahawkConfig;
 
 /**
  * 
@@ -42,7 +44,9 @@ public abstract class AbstractCAPTCHAComponent extends UIComponentBase {
     public static final String ATTRIBUTE_IMAGE_HEIGHT = "imageHeight";
     
     /**
-     * Determines the CAPTCHA session key name.
+     * Determines the CAPTCHA session key name. If
+     * org.apache.myfaces.tomahawk.PREFIX_CAPTCHA_SESSION_KEY is set to true (default),
+     * a prefix defined by the component is added to this key name.
      * 
      * @JSFProperty
      * @return
@@ -61,6 +65,25 @@ public abstract class AbstractCAPTCHAComponent extends UIComponentBase {
      * 
      * @JSFProperty
      */
-    public abstract String getImageHeight();      
-   
+    public abstract String getImageHeight();
+
+    /**
+     * Return the value stored in session map related to captchaSessionKeyName
+     * 
+     * @return 
+     */
+    public String getCaptchaSessionValue()
+    {
+        //Return the value stored
+        ExternalContext externalContext = getFacesContext().getExternalContext();
+        TomahawkConfig config = TomahawkConfig.getCurrentInstance(externalContext);
+        if (externalContext.getSession(false) != null)
+        {
+            return (String) getFacesContext().getExternalContext().getSessionMap().get(
+                    config.isPrefixCaptchaSessionKey() ? 
+                        ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME+"_"+getCaptchaSessionKeyName() : 
+                        getCaptchaSessionKeyName());
+        }
+        return null;
+    }
 }

@@ -48,6 +48,7 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import org.apache.myfaces.renderkit.html.util.ResourceLoader;
 
 import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
+import org.apache.myfaces.tomahawk.config.TomahawkConfig;
 
 /**
  *
@@ -201,9 +202,12 @@ public class CAPTCHARenderer extends Renderer implements ResourceLoader
             // Generate random CAPTCHA text.
             captchaText = CAPTCHATextGenerator.generateRandomText();
 
+            TomahawkConfig config = TomahawkConfig.getCurrentInstance(facesContext);
             // Set the generated text in the user session.
             facesContext.getExternalContext().getSessionMap().put(
-                    captchaSessionKeyName, captchaText);
+                    config.isPrefixCaptchaSessionKey() ? 
+                    AbstractCAPTCHAComponent.ATTRIBUTE_CAPTCHA_SESSION_KEY_NAME+
+                    "_"+captchaSessionKeyName : captchaSessionKeyName, captchaText);
 
             // Generate the image, the BG color is randomized from starting to ending colors.
             captchaImageGenerator.generateImage(response, captchaText,
