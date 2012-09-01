@@ -25,8 +25,12 @@ import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.application.ViewHandlerWrapper;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 
 import org.apache.myfaces.custom.autoscroll.AutoscrollBehaviorTagHandler;
 import org.apache.myfaces.custom.autoscroll.AutoscrollBodyScript;
@@ -39,6 +43,13 @@ import org.apache.myfaces.tomahawk.util.TomahawkResourceUtils;
 
 public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
 {
+    private static final String SET_RESOURCE_CONTAINER_DUMMY_COMPONENT_ID = 
+            "oam_autoscroll_setResourceContainer";
+    private static final String BODY_SCRIPT_COMPONENT_ID =
+            "oam_autoscroll_body_script";
+    private static final String HIDDEN_FIELD_COMPONENT_ID =
+            "oam_autoscroll_hidden_field";
+    
     private ViewHandler _delegate;
 
     public ResourceViewHandlerWrapper(ViewHandler delegate)
@@ -51,6 +62,69 @@ public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
     public ViewHandler getWrapped()
     {
         return _delegate;
+    }
+
+    @Override
+    public UIViewRoot createView(FacesContext context, String viewId)
+    {
+        UIViewRoot root = super.createView(context, viewId);
+        // This listener just ensures that the locations for autoscroll component are
+        // set before call markInitialState(). In this way, the state size is reduced when
+        // partial state saving is used.
+        root.subscribeToViewEvent(PostAddToViewEvent.class, new SystemEventListener() {
+
+            public boolean isListenerForSource(Object o)
+            {
+                return o instanceof UIViewRoot;
+            }
+
+            public void processEvent(SystemEvent se)
+            {
+                FacesContext context = FacesContext.getCurrentInstance();
+                UIViewRoot viewToRender = (UIViewRoot) se.getSource();
+                if (MyfacesConfig.getCurrentInstance(context.getExternalContext()).isAutoScroll() ||
+                    viewToRender.getAttributes().containsKey(AutoscrollBehaviorTagHandler.AUTOSCROLL_TAG_ON_PAGE))
+                {
+                    UIOutput test = new UIOutput();
+                    test.setId(SET_RESOURCE_CONTAINER_DUMMY_COMPONENT_ID);
+                    test.setTransient(true);
+                    UIComponent facet = null;
+                    facet = viewToRender.getFacet(TomahawkResourceUtils.FORM_LOCATION);
+                    if (facet == null)
+                    {
+                        viewToRender.addComponentResource(context, test, TomahawkResourceUtils.FORM_LOCATION);
+                        facet = viewToRender.getFacet(TomahawkResourceUtils.FORM_LOCATION);
+                        if (facet != null)
+                        {
+                            facet.getChildren().remove(test);
+                        }
+                    }
+                    
+                    facet = viewToRender.getFacet(TomahawkResourceUtils.BODY_LOCATION);
+                    if (facet == null)
+                    {
+                        viewToRender.addComponentResource(context, test, TomahawkResourceUtils.BODY_LOCATION);
+                        facet = viewToRender.getFacet(TomahawkResourceUtils.BODY_LOCATION);
+                        if (facet != null)
+                        {
+                            facet.getChildren().remove(test);
+                        }
+                    }
+
+                    facet = viewToRender.getFacet(TomahawkResourceUtils.HEAD_LOCATION);
+                    if (facet == null)
+                    {
+                        viewToRender.addComponentResource(context, test, TomahawkResourceUtils.HEAD_LOCATION);
+                        facet = viewToRender.getFacet(TomahawkResourceUtils.HEAD_LOCATION);
+                        if (facet != null)
+                        {
+                            facet.getChildren().remove(test);
+                        }
+                    }
+                }
+            }
+        });
+        return root;
     }
 
     @Override
@@ -70,6 +144,7 @@ public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
                     context.getApplication().createComponent(context, 
                         AutoscrollBodyScript.COMPONENT_TYPE,
                         AutoscrollBodyScript.DEFAULT_RENDERER_TYPE);
+                autoscrollBodyScript.setId(BODY_SCRIPT_COMPONENT_ID);
                 autoscrollBodyScript.setTransient(true);
                 autoscrollBodyScript.getAttributes().put(
                         JSFAttr.TARGET_ATTR, 
@@ -81,6 +156,7 @@ public class ResourceViewHandlerWrapper extends ViewHandlerWrapper
                 createComponent(context, 
                         AutoscrollHiddenField.COMPONENT_TYPE,
                         AutoscrollHiddenField.DEFAULT_RENDERER_TYPE);
+            autoscrollHiddenField.setId(HIDDEN_FIELD_COMPONENT_ID);
             autoscrollHiddenField.setTransient(true);
             autoscrollHiddenField.getAttributes().put(JSFAttr.TARGET_ATTR, TomahawkResourceUtils.FORM_LOCATION);
             viewToRender.addComponentResource(context, autoscrollHiddenField);
