@@ -1522,7 +1522,14 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     public Object saveState(FacesContext context)
     {
-        boolean preserveSort = isPreserveSort();
+        // It only has sense to save sorting stuff if presertSort is set to true
+        // or if it is not set (default true) if sortColumn and sortAscending is set,
+        // or a ValueExpression has been set for it.
+        boolean preserveSort = 
+                (isSetPreserveSort() && isPreserveSort()) ||
+                (!isSetPreserveSort() && (isSetSortColumn() || isSetSortAscending() || 
+                                         (getValueExpression("sortColumn") != null) ||
+                                         (getValueExpression("sortAscending") != null) ) );
 
         if (initialStateMarked())
         {
@@ -1803,10 +1810,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * the DataModel's contents.
      * 
      */
-    @JSFProperty
+    @JSFProperty(setMethod=true)
     public String getSortColumn()
     {
         return (String) getStateHelper().eval(PropertyKeys.sortColumn);
+    }
+    
+    public boolean isSetSortColumn()
+    {
+        return getStateHelper().get(PropertyKeys.sortColumn) != null;
     }
 
     public void setSortAscending(boolean sortAscending)
@@ -1833,10 +1845,15 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * determine how to sort the DataModel's contents.
      * 
      */
-    @JSFProperty(defaultValue="true")
+    @JSFProperty(defaultValue="true", setMethod=true)
     public boolean isSortAscending()
     {
         return (Boolean) getStateHelper().eval(PropertyKeys.sortAscending, DEFAULT_SORTASCENDING);
+    }
+    
+    public boolean isSetSortAscending()
+    {
+        return getStateHelper().get(PropertyKeys.sortAscending) != null;
     }
 
     public abstract void setSortProperty(String sortProperty);
@@ -2273,8 +2290,10 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * model during the update model phase. Default: true
      * 
      */
-    @JSFProperty(defaultValue = "true")
+    @JSFProperty(defaultValue = "true", setMethod=true)
     public abstract boolean isPreserveSort();
+    
+    protected abstract boolean isSetPreserveSort();
 
     /**
      * Indicates whether this table should be rendered if the 
