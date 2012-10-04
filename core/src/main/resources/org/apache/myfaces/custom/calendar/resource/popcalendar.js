@@ -1655,14 +1655,6 @@ org_apache_myfaces_PopupCalendar.prototype._getVisibleBodyRectangle = function()
     return visibleRect;
 }
 
-function org_apache_myfaces_Rectangle()
-{
-    this.top = 0;
-    this.left = 0;
-    this.bottom = 0;
-    this.right = 0;
-}
-
 org_apache_myfaces_PopupCalendar.prototype._formatInt = function(str)
 {
 
@@ -1680,5 +1672,11 @@ org_apache_myfaces_PopupCalendar.prototype._formatInt = function(str)
 
 }
 
-
+function org_apache_myfaces_Rectangle()
+{
+    this.top = 0;
+    this.left = 0;
+    this.bottom = 0;
+    this.right = 0;
+}
 
