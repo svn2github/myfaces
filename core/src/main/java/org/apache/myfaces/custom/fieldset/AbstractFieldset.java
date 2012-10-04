@@ -18,6 +18,7 @@
  */
 package org.apache.myfaces.custom.fieldset;
 
+import org.apache.myfaces.component.EscapeAware;
 import org.apache.myfaces.custom.htmlTag.HtmlTag;
 
 /**
@@ -34,7 +35,7 @@ import org.apache.myfaces.custom.htmlTag.HtmlTag;
  * @author svieujot (latest modification by $Author$)
  * @version $Revision$ $Date$
  */
-public abstract class AbstractFieldset extends HtmlTag {
+public abstract class AbstractFieldset extends HtmlTag implements EscapeAware {
   public static final String COMPONENT_TYPE = "org.apache.myfaces.Fieldset";
   public static final String COMPONENT_FAMILY = "javax.faces.Output";
   private static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.FieldsetRenderer";

@@ -62,7 +62,14 @@ public class FieldsetRenderer extends HtmlTagRenderer
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("legend", fieldset);
-            writer.write( legend );
+            if (fieldset.isEscape())
+            {
+                writer.writeText(legend , "legend");
+            }
+            else
+            {
+                writer.write(legend);
+            }
             writer.endElement( "legend" );
         }  
     }
