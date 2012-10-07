@@ -85,7 +85,8 @@ import org.apache.myfaces.shared_tomahawk.util.ClassUtils;
    clazz = "org.apache.myfaces.component.html.ext.HtmlDataTable",
    tagClass = "org.apache.myfaces.generated.taglib.html.ext.HtmlDataTableTag",
    tagHandler = "org.apache.myfaces.component.html.ext.HtmlDataTableTagHandler")
-public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements UserRoleAware, NewspaperTable
+public abstract class AbstractHtmlDataTable extends HtmlDataTableHack 
+    implements UserRoleAware, NewspaperTable, DetailTogglerModel
 {
     private static final Log log = LogFactory.getLog(AbstractHtmlDataTable.class);
 
@@ -121,8 +122,6 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
 
     private boolean _isValidChildren = true;
 
-    private Map<String, Boolean> _expandedNodes = new HashMap<String, Boolean>();
-
     //private Map<String, Object> _detailRowStates = new HashMap<String, Object>();
 
     private TableContext _tableContext = null;
@@ -145,7 +144,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      * This facet renders an additional row after or before (according
      * to detailStampLocation value) the current row, usually containing
      * additional information of the related row. It is toggled usually
-     * using varDetailToggle variable and the method toggleDetail().
+     * using varDetailToggler variable and the method toggleDetail().
      * 
      * @JSFFacet name="detailStamp"
      */
@@ -1543,7 +1542,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
                 return null;
             }
             
-            Object[] values = new Object[5];
+            Object[] values = new Object[4];
             values[0] = parentSaved;
             
             if (isPreserveDataModel())
@@ -1558,12 +1557,11 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             
             values[2] = preserveSort ? getSortColumn() : null;
             values[3] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
-            values[4] = _expandedNodes;
             return values;
         }
         else
         {
-            Object[] values = new Object[5];
+            Object[] values = new Object[4];
             values[0] = super.saveState(context);
 
             if (isPreserveDataModel())
@@ -1578,7 +1576,6 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             
             values[2] = preserveSort ? getSortColumn() : null;
             values[3] = preserveSort ? Boolean.valueOf(isSortAscending()) : null;
-            values[4] = _expandedNodes;
 
             return values;
         }
@@ -1685,7 +1682,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             }
         }
 
-        _expandedNodes = (Map) values[4];
+        //_expandedNodes = (Map) values[4];
     }
 
     public _SerializableDataModel getSerializableDataModel()
@@ -1899,6 +1896,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     @JSFProperty(defaultValue="false")
     public abstract boolean isDetailStampExpandedDefault();
+    
+    public abstract void setDetailStampExpandedDefault(boolean value);
 
     /**
      * before|after - where to render the detailStamp, before the 
@@ -2015,10 +2014,41 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
         _preservedDataModel = preservedDataModel;
     }
 
+    protected Map<String, Object> getExpandedNodes()
+    {
+        return (Map<String, Object>) getStateHelper().get(PropertyKeys.expandedNodes);
+    }
+    
+    protected void clearExpandedNodes()
+    {
+        Map<String, Object> nodes = (Map<String, Object>) getExpandedNodes();
+        if (nodes != null)
+        {
+            nodes.clear();
+        }
+    }
+    
+    protected Boolean getExpandedNode(String key)
+    {
+        Map<String, Object> nodes = (Map<String, Object>) getExpandedNodes();
+        return (Boolean) ( (nodes == null) ? null : nodes.get(key) );
+    }
+    
+    protected Boolean setExpandedNode(String key, Boolean value)
+    {
+        return (Boolean) getStateHelper().put(PropertyKeys.expandedNodes, key, value);
+    }
+    
+    protected Boolean removeExpandedNode(String key)
+    {
+        return (Boolean) getStateHelper().remove(PropertyKeys.expandedNodes, key);
+    }
 
     public boolean isCurrentDetailExpanded()
     {
-        Boolean expanded = (Boolean) _expandedNodes.get(getContainerClientId(getFacesContext()));
+        Boolean expanded = (getValueExpression("rowKey") != null) ?
+                (Boolean) getExpandedNode(getContainerClientId(getFacesContext())) :
+                (Boolean) getExpandedNode(new Integer(getRowIndex()).toString());
         if (expanded != null)
         {
             return expanded.booleanValue();
@@ -2084,7 +2114,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public void toggleDetail()
     {
-        String derivedRowKey = getContainerClientId(getFacesContext());
+        String derivedRowKey = (getValueExpression("rowKey") != null) ?
+                getContainerClientId(getFacesContext()) : new Integer(getRowIndex()).toString();
 
         // get the current expanded state of the row
         boolean expanded = isDetailExpanded();
@@ -2095,12 +2126,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (isDetailStampExpandedDefault())
             {
                 // if default is expanded we have to override with FALSE here
-                _expandedNodes.put(derivedRowKey, Boolean.FALSE);
+                setExpandedNode(derivedRowKey, Boolean.FALSE);
             }
             else
             {
                 // if default is collapsed we can fallback to this default
-                _expandedNodes.remove(derivedRowKey);
+                removeExpandedNode(derivedRowKey);
             }
         }
         else
@@ -2110,12 +2141,12 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
             if (isDetailStampExpandedDefault())
             {
                 // if default is expanded we can fallback to this default
-                _expandedNodes.remove(derivedRowKey);
+                removeExpandedNode(derivedRowKey);
             }
             else
             {
                 // if default is collapsed we have to override with TRUE
-                _expandedNodes.put(derivedRowKey, Boolean.TRUE);
+                setExpandedNode(derivedRowKey, Boolean.TRUE);
             }
         }
     }
@@ -2127,7 +2158,9 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public boolean isDetailExpanded()
     {
-        Boolean expanded = (Boolean) _expandedNodes.get(getContainerClientId(getFacesContext()));
+        Boolean expanded = (getValueExpression("rowKey") != null) ?
+                getExpandedNode(getContainerClientId(getFacesContext())) :
+                getExpandedNode(new Integer(getRowIndex()).toString());
         if (expanded == null)
         {
             return isDetailStampExpandedDefault();
@@ -2192,31 +2225,51 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public void expandAllDetails()
     {
-        int rowCount = getRowCount();
+        clearExpandedNodes();
 
-        _expandedNodes.clear();
-        
-        if (getRowKey() != null)
+        if (!isDetailStampExpandedDefault())
         {
+            setDetailStampExpandedDefault(true);
+        }
+    }
+    
+    public void expandAllPageDetails()
+    {
+        clearExpandedNodes();
+
+        if (!isDetailStampExpandedDefault())
+        {
+            // iterate over the rows
+            int rowsToProcess = getRows();
+            // if getRows() returns 0, all rows have to be processed
+            if (rowsToProcess == 0)
+            {
+                rowsToProcess = getRowCount();
+            }
+            int rowIndex = getFirst();
             int oldRow = getRowIndex();
+            boolean hasRowKey = getValueExpression("rowKey") != null;
             try
             {
-                for (int row = 0; row < rowCount; row++)
+                for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
                 {
-                    setRowIndex(row);
-                    _expandedNodes.put(getContainerClientId(getFacesContext()), Boolean.TRUE);
+                    if (hasRowKey)
+                    {
+                        setRowIndex(rowIndex);
+                        setExpandedNode(getContainerClientId(getFacesContext()), Boolean.TRUE);
+                    }
+                    else
+                    {
+                        setExpandedNode(new Integer(rowIndex).toString(), Boolean.TRUE);
+                    }
                 }
             }
             finally
             {
-                setRowIndex(oldRow);
-            }
-        }
-        else
-        {
-            for (int row = 0; row < rowCount; row++)
-            {
-                _expandedNodes.put(new Integer(row).toString(), Boolean.TRUE);
+                if (hasRowKey)
+                {
+                    setRowIndex(oldRow);
+                }
             }
         }
     }
@@ -2226,7 +2279,53 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
      */
     public void collapseAllDetails()
     {
-        _expandedNodes.clear();
+        clearExpandedNodes();
+        
+        if (isDetailStampExpandedDefault())
+        {
+            setDetailStampExpandedDefault(false);
+        }
+    }
+    
+    public void collapseAllPageDetails()
+    {
+        clearExpandedNodes();
+        
+        if (isDetailStampExpandedDefault())
+        {
+            // iterate over the rows
+            int rowsToProcess = getRows();
+            // if getRows() returns 0, all rows have to be processed
+            if (rowsToProcess == 0)
+            {
+                rowsToProcess = getRowCount();
+            }
+            int rowIndex = getFirst();
+            int oldRow = getRowIndex();
+            boolean hasRowKey = getValueExpression("rowKey") != null;
+            try
+            {
+                for (int rowsProcessed = 0; rowsProcessed < rowsToProcess; rowsProcessed++, rowIndex++)
+                {
+                    if (hasRowKey)
+                    {
+                        setRowIndex(rowIndex);
+                        setExpandedNode(getContainerClientId(getFacesContext()), Boolean.FALSE);
+                    }
+                    else
+                    {
+                        setExpandedNode(new Integer(rowIndex).toString(), Boolean.FALSE);
+                    }
+                }
+            }
+            finally
+            {
+                if (hasRowKey)
+                {
+                    setRowIndex(oldRow);
+                }
+            }
+        }
     }
 
     /**
@@ -2235,9 +2334,9 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     public boolean isExpandedEmpty()
     {
         boolean expandedEmpty = true;
-        if (_expandedNodes != null)
+        if (getExpandedNodes() != null)
         {
-            expandedEmpty = _expandedNodes.isEmpty();
+            expandedEmpty = getExpandedNodes().isEmpty();
         }
         return expandedEmpty;
     }
@@ -2251,10 +2350,7 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack implements
     {
         if (expandedEmpty)
         {
-            if (_expandedNodes != null)
-            {
-                _expandedNodes.clear();
-            }
+            clearExpandedNodes();
         }
     }
 

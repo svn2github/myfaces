@@ -36,7 +36,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.model.ListDataModel;
 
-import junit.framework.Test;
 
 import org.apache.myfaces.component.html.ext.HtmlDataTablePreserveRowComponentStateTest.RowData;
 import org.apache.myfaces.test.AbstractTomahawkViewControllerTestCase;
@@ -348,5 +347,184 @@ public class HtmlDataTableTest extends AbstractTomahawkViewControllerTestCase
             assertEquals(model.get(i).getText(), detailStampText.getValue());
         }
     }
+    
+    public void testDetailStampRowState3() throws Exception
+    {
+        List<RowData> model = new ArrayList<RowData>();
+        model.add(new RowData("text1","style1"));
+        model.add(new RowData("text1","style2"));
+        model.add(new RowData("text1","style3"));
+        model.add(new RowData("text1","style4"));
+        
+        //Put on request map to be resolved later
+        request.setAttribute("list", model);
+        
+        UIViewRoot root = facesContext.getViewRoot();
+        HtmlDataTable table = new HtmlDataTable();
+        UIColumn column = new UIColumn();
+        UIPanel detailStampPanel = new UIPanel();
+        UIOutput text = new UIOutput();
+        UIOutput detailStampText = new UIOutput();
+        
+        //This is only required if markInitiaState fix is not used 
+        root.setId("root");
+        table.setId("table");
+        detailStampPanel.setId("detailStamp");
+        column.setId("column");
+        text.setId("text");
+        detailStampText.setId("detailStampText");
+        
+        table.setVar("row");
+        table.setPreserveRowComponentState(true);
+        table.setValueExpression("value", application.
+                getExpressionFactory().createValueExpression(
+                        facesContext.getELContext(),"#{list}",List.class));
+        
+        text.setValueExpression("value", application.
+                getExpressionFactory().createValueExpression(
+                        facesContext.getELContext(),"#{row.text}",String.class));
 
+        detailStampText.setValueExpression("value", application.
+                getExpressionFactory().createValueExpression(
+                        facesContext.getELContext(),"#{row.text}",String.class));
+        
+        root.getChildren().add(table);
+        table.getChildren().add(column);
+        table.getFacets().put(AbstractHtmlDataTable.DETAIL_STAMP_FACET_NAME, detailStampPanel);
+        column.getChildren().add(text);
+        detailStampPanel.getChildren().add(detailStampText);
+
+        //Check the value expressions are working and change the component state 
+        for (int i = 0; i < model.size(); i++)
+        {
+            RowData rowData = model.get(i); 
+            table.setRowIndex(i);
+            assertEquals(rowData.getText(), text.getValue());
+            assertEquals(rowData.getText(), detailStampText.getValue());
+        }
+        
+        //Reset row index
+        table.setRowIndex(-1);
+
+        //Remove a row
+        table.deleteRowStateForRow(1);
+        model.remove(1);
+
+        //Check the values were not lost
+        for (int i = 0; i < model.size(); i++)
+        {
+            table.setRowIndex(i);
+            assertEquals(model.get(i).getText(), text.getValue());
+            assertEquals(model.get(i).getText(), detailStampText.getValue());
+        }
+        
+        table.expandAllDetails();
+        
+        for (int i = 0; i < model.size(); i++)
+        {
+            table.setRowIndex(i);
+            assertTrue(table.isDetailExpanded());
+        }
+        
+        table.collapseAllDetails();
+        for (int i = 0; i < model.size(); i++)
+        {
+            table.setRowIndex(i);
+            assertFalse(table.isDetailExpanded());
+        }        
+    }
+    
+    public void testDetailStampRowState4() throws Exception
+    {
+        List<RowData> model = new ArrayList<RowData>();
+        model.add(new RowData("text1","style1"));
+        model.add(new RowData("text1","style2"));
+        model.add(new RowData("text1","style3"));
+        model.add(new RowData("text1","style4"));
+        
+        //Put on request map to be resolved later
+        request.setAttribute("list", model);
+        
+        UIViewRoot root = facesContext.getViewRoot();
+        HtmlDataTable table = new HtmlDataTable();
+        UIColumn column = new UIColumn();
+        UIPanel detailStampPanel = new UIPanel();
+        UIOutput text = new UIOutput();
+        UIOutput detailStampText = new UIOutput();
+        
+        //This is only required if markInitiaState fix is not used 
+        root.setId("root");
+        table.setId("table");
+        detailStampPanel.setId("detailStamp");
+        column.setId("column");
+        text.setId("text");
+        detailStampText.setId("detailStampText");
+        
+        table.setVar("row");
+        table.setPreserveRowComponentState(true);
+        table.setValueExpression("value", application.
+                getExpressionFactory().createValueExpression(
+                        facesContext.getELContext(),"#{list}",List.class));
+        table.setRows(2);
+        
+        text.setValueExpression("value", application.
+                getExpressionFactory().createValueExpression(
+                        facesContext.getELContext(),"#{row.text}",String.class));
+
+        detailStampText.setValueExpression("value", application.
+                getExpressionFactory().createValueExpression(
+                        facesContext.getELContext(),"#{row.text}",String.class));
+        
+        root.getChildren().add(table);
+        table.getChildren().add(column);
+        table.getFacets().put(AbstractHtmlDataTable.DETAIL_STAMP_FACET_NAME, detailStampPanel);
+        column.getChildren().add(text);
+        detailStampPanel.getChildren().add(detailStampText);
+
+        //Check the value expressions are working and change the component state 
+        for (int i = 0; i < model.size(); i++)
+        {
+            RowData rowData = model.get(i); 
+            table.setRowIndex(i);
+            assertEquals(rowData.getText(), text.getValue());
+            assertEquals(rowData.getText(), detailStampText.getValue());
+        }
+        
+        //Reset row index
+        table.setRowIndex(-1);
+
+        //Remove a row
+        table.deleteRowStateForRow(1);
+        model.remove(1);
+
+        //Check the values were not lost
+        for (int i = 0; i < model.size(); i++)
+        {
+            table.setRowIndex(i);
+            assertEquals(model.get(i).getText(), text.getValue());
+            assertEquals(model.get(i).getText(), detailStampText.getValue());
+        }
+        
+        table.expandAllPageDetails();
+        
+        for (int i = 0; i < model.size(); i++)
+        {
+            table.setRowIndex(i);
+            if (i < 2)
+            {
+                assertTrue(table.isDetailExpanded());
+            }
+            else
+            {
+                assertFalse(table.isDetailExpanded());
+            }
+        }
+        
+        table.collapseAllPageDetails();
+        for (int i = 0; i < model.size(); i++)
+        {
+            table.setRowIndex(i);
+            assertFalse(table.isDetailExpanded());
+        }        
+    }
 }
