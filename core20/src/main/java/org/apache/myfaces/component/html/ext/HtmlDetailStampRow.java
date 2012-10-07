@@ -29,6 +29,8 @@ public class HtmlDetailStampRow extends UIPanel
     public static final String COMPONENT_TYPE = "org.apache.myfaces.HtmlDetailStampRow";
     public static final String DEFAULT_RENDERER_TYPE = "org.apache.myfaces.HtmlDetailStampRow";
 
+    public static final String DEFAULT_ID="detailStampRow";
+    
     public HtmlDetailStampRow()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);

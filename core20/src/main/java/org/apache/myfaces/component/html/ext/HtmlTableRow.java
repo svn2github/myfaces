@@ -40,6 +40,8 @@ public class HtmlTableRow extends UIPanel
 
     private String _alternateClientId;
     
+    public static final String DEFAULT_ID="row";
+    
     public HtmlTableRow()
     {
         setRendererType(DEFAULT_RENDERER_TYPE);

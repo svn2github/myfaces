@@ -117,6 +117,8 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack
     public static final String DETAIL_STAMP_ROW_FACET_NAME = "detailStampRow";
     
     public static final String TABLE_ROW_FACET_NAME = "row";
+    
+    public static final String TABLE_BODY_FACET_NAME = "tbody_element";
 
     private _SerializableDataModel _preservedDataModel;
 
@@ -2493,14 +2495,27 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack
      * Indicate if "row" can be a target for an ajax render
      * operation. In other words, if it is set to true,
      * a special component is added on a facet with name "row"
-     * and with id="row" that can be used to indicate it is 
-     * necessary to render the row.
+     * and with id="row" that can be used as a target 
+     * for f:ajax or similar components to render the row.
      * By default is set to false.
      * 
      * @return
      */
     @JSFProperty(defaultValue="false")
     public abstract boolean isAjaxRowRender();
+    
+    /**
+     * Indicate if the "body" can be a target for an ajax render
+     * operation. In other words, if it is set to true,
+     * a special component is added on a facet with name "tbody_element"
+     * and with id="tbody_element" that can be used as a target 
+     * for f:ajax or similar components to render the body.
+     * By default is set to false.
+     * 
+     * @return
+     */
+    @JSFProperty(defaultValue="false")
+    public abstract boolean isAjaxBodyRender();
 
     protected enum PropertyKeys
     {
