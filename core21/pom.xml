@@ -5,11 +5,11 @@
   <groupId>org.apache.myfaces.tomahawk</groupId>
   <artifactId>tomahawk21</artifactId>
   <packaging>jar</packaging>
-  <name>Tomahawk 2.0 Core</name>
+  <name>Tomahawk 2.1 Core</name>
   <description>
     JSF components and utilities that can be used with any JSF implementation.
     This library is based on the JSF1.1 version of Tomahawk, but with minor source code and build
-    changes to take advantage of JSF2.0 features. A JSF2.0 implementation is required to use this
+    changes to take advantage of JSF2.1 features. A JSF2.1 implementation is required to use this
     version of the Tomahawk library.
   </description>
 
