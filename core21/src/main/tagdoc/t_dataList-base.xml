@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+           <div><img src="../images/datalist.png" alt="datalist"/></div>
+        </section>    
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:dataList id="String"
+               styleClass="CSSClass1"
+               itemStyleClass="CSSClass2"
+               var="String"
+               value="List"
+               layout="Constant"
+               rowCountVar="int"
+               rowIndexVar="int"&gt;
+    &lt;h:outputText .../&gt;
+&lt;/t:dataList&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see examples/dataList.jsp for an example!</p>
+        </section>
+    </body>
+</document>

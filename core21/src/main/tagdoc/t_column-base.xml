@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:datatable var="row" ...&gt;
+    &lt;t:column styleClass="#{row.styleClass}"&gt;
+    ...
+    &lt;/t:column&gt;
+&lt;/t:datatable&gt;
+            </source>
+        </section>
+    </body>
+</document>

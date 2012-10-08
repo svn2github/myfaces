@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- screen shot -->
+        <section name="Screen Shot">
+            <div><img src="../images/panelnavigation.png" alt="panelnavigation"/></div>
+        </section>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+&lt;t:panelNavigation [ standard HTML table attributes ]
+                      [itemClass="normal-menu-item-css-class"]
+                      [openItemClass="open-menu-item-css-class"]
+                      [activeItemClass="active-menu-item-css-class"]
+                      [separatorClass="separator-css-class"]
+                      [itemStyle="normal-menu-item-css-style"]
+                      [openItemStyle="open-menu-item-css-style"]
+                      [activeItemStyle="active-menu-item-css-style"]
+                      [separatorStyle="separator-css-style"]&gt;
+    Nested &lt;t:commandNavigation&gt; tags (menu items) and output components (separat
+&lt;/t:panelNavigation&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>
+                Body content must be a combination of &lt;t:commandNavigation&gt; tags
+                and standard output tags. Output tags are rendered as separators
+                and can be used to divide the menu into sections.
+            </p>
+        </section>        
+    </body>
+</document>

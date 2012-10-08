@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve">
+                &lt;t:jsValueChangeListener for="id"
+                            property="property"
+                            expressionValue="{true|false}" 
+                            bodyTagEvent="eventName" /&gt;
+            </source>
+        </section>
+        <!-- Examples -->
+        <section name="Examples">
+            
+            <p>
+               Some examples will throw more light on the usage of this component.
+            </p>
+        
+            <p>
+            <strong>Example 1</strong><br/>
+                Suppose we have two text fields on a page. We would like to keep the value of the second text field 
+                in sync with the value of the first. This can be accomplised with the following code:
+            </p>
+            <source xml:space="preserve">
+                &lt;h:inputText id="text1"&gt;
+                    &lt;t:jsValueChangeListener for="text2" property="value" 
+                                                expressionValue="$srcElem.value" /&gt;
+                &lt;/h:inputText&gt;
+                &lt;h:inputText id="text2"/&gt;
+            </source>
+            <p> 
+                When the value of text1 changes, the 'onchange' event is triggered. The javascript expression specified by 
+                'expressionValue' is evaluated, and the result is assigned to the specified property (in this case, 'value') 
+                of the target control.
+            </p>
+
+            <p>
+            <strong>Example 2</strong><br/>
+                Sometimes, the evalution of the javascript expression itself causes the desired side-effect. In this case, 
+                it is not necessary to specify the 'property' attribute for the target control. In this example, we have 
+                a combo-box, and we want the selection of a specific value in the combo-box to cause a text box to be hidden.
+            </p>
+            <source xml:space="preserve">
+       &lt;h:selectOneMenu id="selone_menu_colors" value="red" styleClass="selectOneMenu"&gt;
+           &lt;f:selectItems value="#{carconf.colors}" /&gt;
+           &lt;t:jsValueChangeListener for="selone_menu_subcolors" 
+             expressionValue="($srcElem.options[$srcElem.selectedIndex].value=='black')?
+             $destElem.style.display='inline':$destElem.style.display='none';"/&gt;
+       &lt;/h:selectOneMenu&gt;
+       &lt;h:inputText id="selone_menu_subcolors"/&gt;
+            </source>
+            <p> 
+                The evaluation of the expression causes the text box to be hidden when the appropriate value is selected.
+            </p>        
+       </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>see examples/jslistener.jsp for an example!</p>
+        </section>
+    </body>
+</document>

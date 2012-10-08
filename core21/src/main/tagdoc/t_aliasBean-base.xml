@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+        <section name="Usage">            
+            <source xml:space="preserve" >
+&lt;t:aliasBean alias="#{holder}" value="#{aliasTest1}"" &gt;
+    &lt;f:subview id="simulatedIncludedSubform1"&gt;
+        &lt;h:outputLabel for="name" value="Name:"/&gt;
+        &lt;h:inputText id="name" value="#{holder.name}"/&gt;
+    &lt;/f:subview&gt;   
+&lt;/t:aliasBean&gt;
+            </source>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>See examples/aliasBean.jsp for an example!</p>
+        </section>
+    </body>
+</document>

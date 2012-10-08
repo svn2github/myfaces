@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+        <!-- Usage -->
+    <section name="Usage">Submit from outside the subForm:<source
+    xml:space="preserve"><![CDATA[<h:form>
+   <t:subForm id="subFormId">
+       <h:inputText value="#{bean.value}" />
+   </t:subForm>
+   <t:commandButton value="Submit subForm" actionFor="subFormId"/>
+</h:form>]]></source>Submit from inside the subForm:<source
+    xml:space="preserve"><![CDATA[<h:form>
+   <t:subForm id="subFormId">
+       <h:inputText value="#{bean.value}" />
+       <t:commandButton value="Submit subForm"/>
+   </t:subForm>
+</h:form>]]></source>Do not keep any entered value if submitted another subform<source
+    xml:space="preserve"><![CDATA[<h:form>
+   <t:subForm id="subFormId" preserveSubmittedValues="false">
+       <h:inputText value="#{bean.value}" />
+       <t:commandButton value="Submit subForm"/>
+   </t:subForm>
+</h:form>]]></source></section>
+        <!-- Instructions -->
+	    <section name="Additional Information">
+	      <p>There are cases when the subForm needs to be submitted not just by
+	      clicking a button inside or outside of it, but by clicking or changing
+	      fields like combo-boxes, check-boxes or radio-buttons, or many other
+	      fields; usualy this is done by invoking a JavaScript code in their
+	      "onchange" attribute for example. It's possible to submit the subForm
+	      also by JavaScript, if id="subFormId" then you just have to invoke
+	      "subFormId_submit()". For an example see subForm.jsp in the Tomahawk
+	      examples.</p>
+	    </section>
+    </body>
+</document>

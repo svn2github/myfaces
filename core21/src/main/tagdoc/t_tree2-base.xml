@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation Maven//EN"
+ "http://maven.apache.org/dtd/xdoc_1_0.dtd">      
+<document>
+    <properties>
+      <title></title>
+    </properties>
+    <!-- All code under body will be put after "Summary" section -->
+    <body>
+	    <section name="Screen Shot">
+	      <div><img src="../images/tree2.jpeg" alt="tree2.jpeg"/></div>
+	    </section>
+        <!-- Usage -->
+        <section name="Usage"> 
+          <p>See the <a href="http://people.apache.org/builds/myfaces/nightly/">Tomahawk Examples.</a></p>
+        </section>
+        <!-- Instructions -->
+        <section name="Instructions">
+            <p>[pending]</p>
+        </section>
+	    <!-- Additional Information -->
+	    <section name="Additional Information">
+	      <p>See the <a href="http://wiki.apache.org/myfaces/Tree2">MyFaces Wiki.</a></p>
+	    </section>        
+    </body>
+</document>
