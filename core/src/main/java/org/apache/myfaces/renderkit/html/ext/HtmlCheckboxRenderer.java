@@ -314,7 +314,7 @@ public class HtmlCheckboxRenderer
         if (pageDirectionLayout)
             writer.startElement(HTML.TR_ELEM, selectMany);
         writer.startElement(HTML.TD_ELEM, selectMany);
-        writer.writeText(selectItemGroup.getLabel());
+        writer.writeText(selectItemGroup.getLabel(), null);
         writer.endElement(HTML.TD_ELEM);
         
         if (pageDirectionLayout) {
