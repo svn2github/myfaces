@@ -354,6 +354,7 @@
     <module>core</module>
     <module>core12</module>
     <module>core20</module>
+    <module>core21</module>
     <module>examples</module>
     <module>sandbox</module>
   </modules>
@@ -396,14 +397,16 @@
       - against *when jsf2.0 is selected*. When jsf1.1 or a Sun implementation
       - are selected for running the examples, this is ignored.
       -->
-    <myfaces-core20-version>2.0.13</myfaces-core20-version>
+    <myfaces-core20-version>2.0.15</myfaces-core20-version>
 
     <!--  
       - Define what shared lib version tomahawk20 and sandbox20 code will be compiled with.
       -->
-    <myfaces-shared20-version>4.0.13</myfaces-shared20-version>
+    <myfaces-shared20-version>4.0.15</myfaces-shared20-version>
 
-    <myfaces-core21-version>2.1.7</myfaces-core21-version>
+    <myfaces-shared21-version>4.1.7</myfaces-shared21-version>
+
+    <myfaces-core21-version>2.1.9</myfaces-core21-version>
 
     <myfaces-builder-annotations-version>1.0.9</myfaces-builder-annotations-version>
 
