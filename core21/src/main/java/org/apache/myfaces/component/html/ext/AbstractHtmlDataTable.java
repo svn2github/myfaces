@@ -1562,21 +1562,6 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack
 
     public Object saveState(FacesContext context)
     {
-        // BEGIN Reset mode saveState
-        if (context.getViewRoot() != null)
-        {
-            Integer resetMode = (Integer) context.getViewRoot().getAttributes().get(
-                    RESET_SAVE_STATE_MODE_KEY);
-            if (resetMode != null)
-            {
-                if (resetMode == RESET_MODE_HARD)
-                {
-                    _preservedDataModel = null;
-                }
-            }
-        }
-        // END Reset mode saveState
-        
         // It only has sense to save sorting stuff if presertSort is set to true
         // or if it is not set (default true) if sortColumn and sortAscending is set,
         // or a ValueExpression has been set for it.
@@ -1590,6 +1575,27 @@ public abstract class AbstractHtmlDataTable extends HtmlDataTableHack
         {
             Object parentSaved = super.saveState(context);
             boolean preserveDataModel = isPreserveDataModel();
+            Integer resetMode = null;
+            // BEGIN Reset mode saveState
+            if (context.getViewRoot() != null)
+            {
+                resetMode = (Integer) context.getViewRoot().getAttributes().get(
+                        RESET_SAVE_STATE_MODE_KEY);
+            }
+            // END Reset mode saveState
+            if (resetMode != null && resetMode == RESET_MODE_HARD)
+            {
+                // In hard reset, the delta is cleared when super.saveState(context)
+                // is called, so expandedNodes and preserveSort is cleared. The only
+                // one to clear here is _preserveDataModel, and we can simplify
+                // the conditions to return null;
+                _preservedDataModel = null;
+                if (parentSaved == null)
+                {
+                    //No values
+                    return null;
+                }
+            }
             
             if (parentSaved == null && !preserveSort 
                     && !preserveDataModel && isExpandedEmpty())
