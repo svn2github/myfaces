@@ -7,14 +7,14 @@
     <parent>
         <groupId>org.apache.myfaces.tomahawk</groupId>
         <artifactId>sandbox-project</artifactId>
-        <version>1.1.14</version>
+        <version>1.1.15-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/tags/tomahawk-project-1.1.14/sandbox/examples20</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/tags/tomahawk-project-1.1.14/sandbox/examples20</developerConnection>
-        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/tags/tomahawk-project-1.1.14/sandbox/examples20</url>
+        <connection>scm:svn:http://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples20</connection>
+        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/myfaces/tomahawk/trunk/sandbox/examples20</developerConnection>
+        <url>http://svn.apache.org/viewcvs.cgi/myfaces/tomahawk/trunk/sandbox/examples20</url>
     </scm>
 
     <profiles>
